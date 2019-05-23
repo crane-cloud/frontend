@@ -1,2 +1,2 @@
-# osprey
+# Osprey Cloud
 Managed Kubernetes Platform
