@@ -1,0 +1,19 @@
+.ParentDoton{
+    color: green;
+    /*
+    height: 100%;
+    width: 10px;
+    border-radius: 10px;
+    background-color: red;
+    */
+}
+
+.ParentDotoff{
+    color: red;
+    /*
+    height: 100%;
+    width: 30%;
+    border-radius: 50%;
+    background-color: red;
+    */
+}
