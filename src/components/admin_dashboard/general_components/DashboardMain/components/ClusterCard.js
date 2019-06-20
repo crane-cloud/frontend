@@ -1,10 +1,28 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Line } from 'react-chartjs-2';
+import Modal from 'react-awesome-modal';
+
+import  NodesModal  from "./modalComponents/NodeModal";
 
 
 
 export default class clusterCard extends Component {
+    state = {
+        visible : false
+    };
+
+    openModal = () => {
+        this.setState({
+            visible : true
+        });
+    }
+
+    closeModal = () => {
+        this.setState({
+            visible : false
+        });
+    }
 
 render(){
     return (
@@ -16,27 +34,7 @@ clusterCard = () => {
     return (
         <div className="col-4  my-4">
                     <div className="card text-center">
-                        <div className="card-header">
-                            <div className="row">
-                                <div className="col-4">{ this.props.cluster.name }</div>
-                                <div className="col-4">
-                                    <div className={ `ParentDot${this.props.cluster.status} mx-auto` }>
-                                        { this.props.cluster.status }
-                                    </div>
-                                </div>
-                                <div className="col-4">
-                                    <div className="dropdown">
-                                        <div id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <a href="#"> <span className="oi oi-ellipses"></span> </a>
-                                        </div>
-                                        <div className="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                            <button className="dropdown-item" type="button">Rename Cluster</button>
-                                            <button className="dropdown-item" type="button">Delete Cluster</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        { this.renderCardHeader() }
                         { this.createCardBody() }
                         <div className="card-footer text-muted">
                             { this.props.cluster.date_of_creation }
@@ -103,6 +101,54 @@ renderNameSpaces = () => {
                 }
             </div>
         </span>
+    );
+}
+
+renderCardHeader = () => {
+    return (
+        <div className="card-header">
+            <div className="row">
+                <div className="col-4">{this.props.cluster.name}</div>
+                <div className="col-4">
+                    <div className={`ParentDot${this.props.cluster.status} mx-auto`}>
+                        {this.props.cluster.status}
+                    </div>
+                </div>
+                <div className="col-4">
+                    <div className="dropdown">
+                        <div id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a href="#"> <span className="oi oi-ellipses"></span> </a>
+                        </div>
+                        <div className="dropdown-menu" aria-labelledby="dropdownMenu2">
+                            <button className="dropdown-item" type="button" onClick={() => this.openModal() }>Nodes <span className="badge badge-info"> 3 </span> </button>
+                            <button className="dropdown-item" type="button">Persistent Volumes <span className="badge badge-info"> 0 </span> </button>
+                            <button className="dropdown-item" type="button">Rename Cluster</button>
+                            <button className="dropdown-item" type="button">Delete Cluster</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <NodesModal  
+                title = { this.props.cluster.name }
+                closeModal = { this.closeModal }
+                visible = { this.state.visible }
+                clusterID = { this.props.cluster.cluster_id }
+            />
+        </div>
+    );
+}
+
+renderNodesModal = (name) => {
+    return (
+        <section>
+            <Modal visible={this.state.visible} width="400"  /* height="300" */  effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                <div>
+                    <h1>{ name }</h1>
+                    <p>Some Contents</p>
+                    <a href="javascript:void(0);" onClick={() => this.closeModal()}>Close</a>
+                </div>
+            </Modal>
+        </section>
     );
 }
 
