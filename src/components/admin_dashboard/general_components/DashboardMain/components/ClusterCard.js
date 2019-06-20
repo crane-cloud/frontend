@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { Line } from 'react-chartjs-2';
 
 
@@ -97,7 +98,7 @@ renderNameSpaces = () => {
             <div className="dropdown-menu" aria-labelledby="dropdownMenu4">
                 {
                     this.props.cluster.nameSpaces.map((namespace) => {
-                        return <button className="dropdown-item" type="button" key = { namespace.nameSpaceId }> { namespace.name } </button>
+                        return <button className="dropdown-item" type="button" key = { namespace.nameSpaceId }> <Link to="/namespaces"> { namespace.name } </Link> </button>
                     })
                 }
             </div>
