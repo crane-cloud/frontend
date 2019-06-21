@@ -4,7 +4,7 @@ import HeaderNav from "./components/homepage/Header";
 import HomePage from "./components/homepage/Home";
 import UserAuthPage from "./components/authentication/UserAuth";
 import AdminDashboard from "./components/admin_dashboard/AdminDashboard"
-import NamespacesTable from "./components/admin_dashboard/Namespaces";
+import Namespace from "./components/namespace/NamespaceDetails";
 
 export default class App extends Component{
     render(){
@@ -14,7 +14,7 @@ export default class App extends Component{
                 <Route exact path="/" component={HomePage} />
                 <Route exact path="/sign-in" component={UserAuthPage} />
                 <Route exact path="/admin-dashboard" component={AdminDashboard} />
-                <Route exact path="/namespaces" component={NamespacesTable} />
+                <Route exact path="/namespaces" component={Namespace} />
             </Router>
         );
     }
