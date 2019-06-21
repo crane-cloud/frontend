@@ -4,24 +4,22 @@ import { Line } from 'react-chartjs-2';
 import Modal from 'react-awesome-modal';
 
 import  NodesModal  from "./modalComponents/NodeModal";
+import PersistentVolumesModal from "./modalComponents/PersistentVolumesModal"
 
 
 
 export default class clusterCard extends Component {
     state = {
-        visible : false
+        visibleNodesModal : false,
+        visiblePersistentVolumesModal : false
     };
 
-    openModal = () => {
-        this.setState({
-            visible : true
-        });
+    openModal = (stateObj) => {
+        this.setState(stateObj);
     }
 
-    closeModal = () => {
-        this.setState({
-            visible : false
-        });
+    closeModal = (stateObj) => {
+        this.setState(stateObj);
     }
 
 render(){
@@ -120,8 +118,8 @@ renderCardHeader = () => {
                             <a href="#"> <span className="oi oi-ellipses"></span> </a>
                         </div>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenu2">
-                            <button className="dropdown-item" type="button" onClick={() => this.openModal() }>Nodes <span className="badge badge-info"> 3 </span> </button>
-                            <button className="dropdown-item" type="button">Persistent Volumes <span className="badge badge-info"> 0 </span> </button>
+                            <button className="dropdown-item" type="button" onClick={ () => this.openModal({ visibleNodesModal : true })} >Nodes <span className="badge badge-info"> 3 </span> </button>
+                            <button className="dropdown-item" type="button" onClick={ () => this.openModal({ visiblePersistentVolumesModal : true })} >Persistent Volumes <span className="badge badge-info"> 0 </span> </button>
                             <button className="dropdown-item" type="button">Rename Cluster</button>
                             <button className="dropdown-item" type="button">Delete Cluster</button>
                         </div>
@@ -131,24 +129,17 @@ renderCardHeader = () => {
             <NodesModal  
                 title = { this.props.cluster.name }
                 closeModal = { this.closeModal }
-                visible = { this.state.visible }
+                visible = { this.state.visibleNodesModal }
+                clusterID = { this.props.cluster.cluster_id }
+            />
+
+            <PersistentVolumesModal  
+                title = { this.props.cluster.name }
+                closeModal = { this.closeModal }
+                visible = { this.state.visiblePersistentVolumesModal }
                 clusterID = { this.props.cluster.cluster_id }
             />
         </div>
-    );
-}
-
-renderNodesModal = (name) => {
-    return (
-        <section>
-            <Modal visible={this.state.visible} width="400"  /* height="300" */  effect="fadeInUp" onClickAway={() => this.closeModal()}>
-                <div>
-                    <h1>{ name }</h1>
-                    <p>Some Contents</p>
-                    <a href="javascript:void(0);" onClick={() => this.closeModal()}>Close</a>
-                </div>
-            </Modal>
-        </section>
     );
 }
 
