@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import TopNav from "../admin_dashboard/general_components/TopNav";
-import NamespaceTable from "./NamespaceTable";
-// import Deployments from "./components/subcomponents/workloads/Deployments"; // TODO: Route Components
-// import ReplicaSets from "./components/subcomponents/workloads/ReplicaSets";
-// import Controllers from "./components/subcomponents/workloads/ReplicationControllers"
-// import DeamonSets from "./components/subcomponents/workloads/DeamonSets"
 
 import "../../assets/css/namespace.css";
 
-class Namespace extends Component {
+class NamespaceDetails extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -17,9 +10,9 @@ class Namespace extends Component {
         }
     }
 
-    renderDetails = () => {
+    render() {
         return (
-            <div className="card first" >
+            <div className="card" >
                 <div className="card-body">
                     <h5 className="card-title">Namespace Name</h5>
                     <div className="card-item">
@@ -38,16 +31,6 @@ class Namespace extends Component {
             </div>
         );
     }
-
-    render() {
-        return (
-            <div className="container-fluid">
-                <TopNav />
-                {this.renderDetails()}
-                <NamespaceTable />
-            </div>
-        )
-    }
 }
 
-export default Namespace;
+export default NamespaceDetails;

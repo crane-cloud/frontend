@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@trendmicro/react-sidenav": "^0.4.5",
     "chart.js": "^2.8.0",
+    "node-sass": "^4.12.0",
     "react": "^16.8.6",
     "react-awesome-modal": "^2.0.5",
     "react-chartjs-2": "^2.7.6",

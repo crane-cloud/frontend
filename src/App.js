@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import HeaderNav from "./components/homepage/Header";
 import HomePage from "./components/homepage/Home";
 import UserAuthPage from "./components/authentication/UserAuth";
 import AdminDashboard from "./components/admin_dashboard/AdminDashboard"
-import Namespace from "./components/namespace/NamespaceDetails";
+import Namespace from "./components/namespace/Namespace";    
 
 export default class App extends Component{
     render(){
         return (
-            <Router>
-                <HeaderNav/>
+            <Router >
                 <Route exact path="/" component={HomePage} />
                 <Route exact path="/sign-in" component={UserAuthPage} />
                 <Route exact path="/admin-dashboard" component={AdminDashboard} />
