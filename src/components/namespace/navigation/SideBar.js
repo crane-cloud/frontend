@@ -38,7 +38,7 @@ export default class SideNavigation extends Component {
 
                 <NavItem eventKey="workloads">
                   <NavIcon>
-                    <i className="fa fa-fw fa-home" style={{ fontSize: '1.75em' }} />
+                    <i className="fa fa-fw fa-pie-chart" style={{ fontSize: '1.75em' }} />
                   </NavIcon>
                   <NavText>
                     Workloads
@@ -72,7 +72,7 @@ export default class SideNavigation extends Component {
 
                 <NavItem eventKey="services">
                   <NavIcon>
-                    <i className="fa fa-fw fa-line-chart" style={{ fontSize: '1.75em' }} />
+                    <i className="fa fa-fw fa-server" style={{ fontSize: '1.75em' }} />
                   </NavIcon>
                   <NavText>
                     Services and Delivery
@@ -93,7 +93,7 @@ export default class SideNavigation extends Component {
 
                 <NavItem eventKey="storage">
                   <NavIcon>
-                    <i className="fa fa-fw fa-line-chart" style={{ fontSize: '1.75em' }} />
+                    <i className="fa fa-fw fa-hdd-o" style={{ fontSize: '1.75em' }} />
                   </NavIcon>
                   <NavText>
                     Storage
@@ -109,7 +109,7 @@ export default class SideNavigation extends Component {
 
                 <NavItem eventKey="config">
                   <NavIcon>
-                    <i className="fa fa-fw fa-line-chart" style={{ fontSize: '1.75em' }} />
+                    <i className="fa fa-fw fa-cogs" style={{ fontSize: '1.75em' }} />
                   </NavIcon>
                   <NavText>
                     Config
