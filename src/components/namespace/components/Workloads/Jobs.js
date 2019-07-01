@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 class Jobs extends Component {
-    constructor () {
-        super ()
+    constructor() {
+        super()
     }
 
     jobsSucceding() {
@@ -10,8 +10,10 @@ class Jobs extends Component {
         return (
             <div className="col-sm-6">
                 <div className="card">
+                    <div className="card-header text-center success">
+                        Jobs Succeeded
+                    </div>
                     <div className="card-body">
-                        <h5 className="card-title">Jobs Suceeded</h5>
                         <h1 className="card-title text-center">{suceededJobs}</h1>
                     </div>
                 </div>
@@ -24,8 +26,10 @@ class Jobs extends Component {
         return (
             <div className="col-sm-6">
                 <div className="card">
+                    <div className="card-header text-center fail">
+                        Jobs Failed
+                    </div>
                     <div className="card-body">
-                        <h5 className="card-title">Jobs Failed</h5>
                         <h1 className="card-title text-center">{failedJobs}</h1>
                     </div>
                 </div>

@@ -45,17 +45,6 @@ footer {
 	color: #fff;
 }
 
-.fa {
-	padding: 15px;
-	font-size: 25px;
-	color: #fff;
-}
-
-.fa:hover {
-	color: #d5d5d5;
-	text-decoration: none;
-}
-
 .icon {
 	max-width: 200px;
 }

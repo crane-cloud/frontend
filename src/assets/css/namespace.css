@@ -15,3 +15,20 @@
   margin-top: 2%;
 }
 
+.success {
+  background-color: lightgreen;
+}
+
+.fail {
+  background-color: #fd5252;
+}
+
+.pending {
+  background-color: orange;
+}
+
+#pods-table {
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+  widows: 100%;
+}
