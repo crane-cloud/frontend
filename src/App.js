@@ -12,7 +12,7 @@ export default class App extends Component{
                 <Route exact path="/" component={HomePage} />
                 <Route exact path="/sign-in" component={UserAuthPage} />
                 <Route exact path="/admin-dashboard" component={AdminDashboard} />
-                <Route exact path="/namespaces" component={Namespace} />
+                <Route exact path="/namespaces/:namespaceId" component={Namespace} />
             </Router>
         );
     }

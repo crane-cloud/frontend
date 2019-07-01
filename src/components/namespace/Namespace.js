@@ -14,6 +14,7 @@ class Namespace extends Component {
     }
 
     render() {
+        console.log(this.props.match.params.namespaceId)
         return (
             <div>
                 <TopNavigation />

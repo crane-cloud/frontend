@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import "../../../assets/scss/TopBarNav.scss";
 
 export default class TopNavigation extends Component {
@@ -9,17 +10,16 @@ export default class TopNavigation extends Component {
                 <nav>
                     <div className="navWide">
                         <div className="wideDiv">
-                            <a href="#">Link 1</a>
-                            <a href="#">Link 2</a>
-                            <a href="#">Link 3</a>
+                        <Link to="/admin-dashboard" >Dashboard</Link>
+                            <Link to="/billing" >Billing</Link>
+                            <Link to="sign-in" >Sign Out</Link>
                         </div>
                     </div>
                     <div className="navNarrow">
-                        <i className="fa fa-bars fa-2x" onClick={this.burgerToggle}></i>
                         <div className="narrowLinks">
-                            <a href="#" onClick={this.burgerToggle}>Link 1</a>
-                            <a href="#" onClick={this.burgerToggle}>Link 2</a>
-                            <a href="#" onClick={this.burgerToggle}>Link 3</a>
+                        <Link to="/admin-dashboard" >Dashboard</Link>
+                            <Link to="/billing" >Billing</Link>
+                            <Link to="sign-in" >Sign Out</Link>
                         </div>
                     </div>
                 </nav>

@@ -86,6 +86,7 @@ class Deployments extends Component {
     
 
     render() {
+        console.log(window.location.pathname)
         return (
             this.renderDeploymentsTable()
         )
