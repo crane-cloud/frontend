@@ -81,7 +81,7 @@ class Pods extends Component {
         return (
             <div className="card col-sm-12">
                 <div className="card-header text-center">
-                    Pods Table
+                    Pods
                     </div>
                 <div className="card-body">
                     {this.createTable()}
