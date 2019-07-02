@@ -31,7 +31,7 @@ class Ingresses extends Component {
 
     createTable() {
         return (<div>
-            <table className="table table-striped" id="deployments-table">
+            <table className="table table-striped custom-table">
                 <thead>
                     <tr>
                         <th scope="col">Name</th>

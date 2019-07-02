@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-class ReplicaSets extends Component {
+class Organizations extends Component {
 
-    replicaSetsArray = [
+    organizationsArray = [
         {
-            replicaSetID: 346,
-            name: "nfs-client-provisioner-54bd7c49f6",
-            labels: "app: nfs-client-provisioner pod-template-hash: 1068370592",
-            pods: "0/1",
-            age: "9 days",
-            images: "quay.io/external_storage/nfs-client-provisioner:latest"
+            organizationId: "1",
+            name: "OrganizationX",
+            bill: "501,89"
+        },
+        {
+            organizationId: "2",
+            name: "OrganizationY",
+            bill: "157,420"
+        },
+        {
+            organizationId: "3",
+            name: "OrganizationZ",
+            bill: "7,002,189"
         }
     ]
 
@@ -18,23 +26,19 @@ class ReplicaSets extends Component {
             <table className="table table-striped custom-table">
                 <thead>
                     <tr>
+                        <th scope="col">ID</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Labels</th>
-                        <th scope="col">Pods</th>
-                        <th scope="col">Age</th>
-                        <th scope="col">Images</th>
+                        <th scope="col">Current Bill (Ugx)</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        this.replicaSetsArray.map((element) => {
+                        this.organizationsArray.map((element) => {
                             return (
-                                <tr key={this.replicaSetsArray.indexOf(element)}>
+                                <tr key={this.organizationsArray.indexOf(element)}>
+                                    <td> {element.id}</td>
                                     <td> {element.name}</td>
-                                    <td> {element.labels} </td>
-                                    <td> {element.pods} </td>
-                                    <td> {element.age} </td>
-                                    <td> {element.images} </td>
+                                    <td> {element.bill} </td>
                                     <td> {this.dropDown()} </td>
                                 </tr>
                             );
@@ -53,20 +57,19 @@ class ReplicaSets extends Component {
                     <a href="#"> <span className="fa fa-ellipsis-v" aria-hidden="true"></span></a>
                 </div>
                 <div className="dropdown-menu">
-                    <button className="dropdown-item" type="button">Edit YAML</button>
-                    <button className="dropdown-item" type="button">Scale</button>
+                    <button className="dropdown-item" type="button"><Link to="/organization-resources">Resources</Link></button>
                     <button className="dropdown-item" type="button">Delete</button>
                 </div>
             </div>
         )
     }
 
-    renderRepSetsTable() {
+    renderOrganizationsTable() {
         return (
             <div className="card col-sm-12">
-                <div className="card-header text-center">
-                    Replica Sets
-                    </div>
+                {/* <div className="card-header text-center">
+                    Organizations
+                    </div> */}
                 <div className="card-body">
                     {this.createTable()}
                 </div>
@@ -74,14 +77,14 @@ class ReplicaSets extends Component {
 
         );
     }
-    
-    
+
+
 
     render() {
         return (
-            this.renderRepSetsTable()
+            this.renderOrganizationsTable()
         )
     }
 }
 
-export default ReplicaSets;
+export default Organizations;

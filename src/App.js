@@ -6,6 +6,7 @@ import AdminDashboard from "./components/admin_dashboard/AdminDashboard"
 import Namespace from "./components/namespace/Namespace";    
 import OrganizationsDashboard from "./components/admin_dashboard/organizationsDashboard";
 
+
 export default class App extends Component{
     render(){
         return (

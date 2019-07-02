@@ -32,3 +32,9 @@
   border-collapse: collapse;
   widows: 100%;
 }
+
+.custom-table {
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+  widows: 100%;
+}
