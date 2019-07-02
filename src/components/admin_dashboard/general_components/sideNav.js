@@ -26,6 +26,12 @@ export default class SideNav extends Component{
                       Errors
                     </a>
                   </li>
+                  <li className="nav-item">
+                    <a className="nav-link" href="#">
+                      <span data-feather="shopping-cart"></span>
+                      Organizations
+                    </a>
+                  </li>
                 </ul>
     
                 { /*  start of divider */ }
