@@ -94,7 +94,14 @@ renderNameSpaces = () => {
             <div className="dropdown-menu" aria-labelledby="dropdownMenu4">
                 {
                     this.props.cluster.nameSpaces.map((namespace) => {
-                        return <button className="dropdown-item" type="button" key = { namespace.nameSpaceId }> <Link to={`/namespaces/${namespace.nameSpaceId}`}> { namespace.name } </Link> </button>
+                        return <button className="dropdown-item" type="button" key = { namespace.nameSpaceId }> 
+                        <Link to={{
+                            pathname: `/namespaces/${namespace.nameSpaceId}`,
+                            state : {
+                                nameSpace : namespace
+                            },
+                        }}>
+                        { namespace.name } </Link> </button>
                     })
                 }
             </div>

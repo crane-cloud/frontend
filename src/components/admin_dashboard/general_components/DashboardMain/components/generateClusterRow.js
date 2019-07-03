@@ -14,7 +14,11 @@ export default class GenerateClusterRow extends Component {
                 {error: 'pod off', error_id: 12 }, 
                 { error: '3 services down' , error_id: 13 }
             ],
-            nameSpaces : [{name : 'chapRide', nameSpaceId: 45}, { name :'cityBank', nameSpaceId: 46 }, { name : 'easyBus', nameSpaceId : 47 }],
+            nameSpaces : [  
+                { name : 'chapRide', nameSpaceId: 45, dateCreated: "13/02/2019", label: "app: chap-ride-client", status: "Active" }, 
+                { name :'cityBank', nameSpaceId: 46, dateCreated: "21/04/2019", label: "app: city-bank-client-provisioner", status: "Disabled" }, 
+                { name : 'easyBus', nameSpaceId : 47, dateCreated: "15/07/2018", label: "app: easy-bus-client", status: "Active" }
+            ],
             date_of_creation : '2 years back',
             data: [0, 5, 0, 40, 20, 60, 10], /* these are for days, as in mon to sun, subject to change */
         },

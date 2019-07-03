@@ -14,6 +14,8 @@ import PersistentVolumes from "../components/Storage/PersistentVolumes";
 
 
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
+import "../../../assets/css/dashbaord.css"
+import "../../../assets/css/style.css"
 
 export default class SideNavigation extends Component {
 
@@ -23,6 +25,9 @@ export default class SideNavigation extends Component {
         <Route render={({ location, history }) => (
           <React.Fragment>
 
+              <nav className="col-md-2 d-none d-md-block bg-light sidebar">
+              <div className="sidebar-sticky">
+                
             <SideNav
               onSelect={(selected) => {
                 const to = '/' + selected;
@@ -132,6 +137,9 @@ export default class SideNavigation extends Component {
                 </NavItem>
               </SideNav.Nav>
             </SideNav>
+              </div>
+              </nav>
+            
             <main>
               <Route path="/workloads/deployments" exact component={Deployments} />
               <Route path="/workloads/jobs" component={Jobs} />
