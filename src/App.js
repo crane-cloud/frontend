@@ -5,6 +5,7 @@ import UserAuthPage from "./components/authentication/UserAuth";
 import AdminDashboard from "./components/admin_dashboard/AdminDashboard"
 import Namespace from "./components/namespace/Namespace";    
 import OrganizationsDashboard from "./components/admin_dashboard/organizationsDashboard";
+import TotalResources from "./components/admin_dashboard/general_components/Organizations/components/TotalResources";
 
 
 export default class App extends Component{
@@ -16,6 +17,7 @@ export default class App extends Component{
                 <Route exact path="/admin-dashboard" component={AdminDashboard} />
                 <Route exact path="/namespaces/:namespaceId" component={Namespace} />
                 <Route exact path="/organizations" component={OrganizationsDashboard} />
+                <Route exact path="/organization-resources" component={TotalResources} />
             </Router>
         );
     }

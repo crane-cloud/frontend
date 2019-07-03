@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import SideNav, { Toggle, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
+import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 
 import Deployments from "../components/Workloads/Deployments";
 import Jobs from "../components/Workloads/Jobs";
@@ -29,10 +29,12 @@ export default class SideNavigation extends Component {
                 if (location.pathname !== to) {
                   history.push(to);
                 }
-              }}
+              }
+          }
+          expanded={true}
             >
 
-              <Toggle />
+              <div class="my-5"></div>
 
               <SideNav.Nav defaultSelected="namespaces">
 

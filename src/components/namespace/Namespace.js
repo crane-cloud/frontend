@@ -19,8 +19,10 @@ class Namespace extends Component {
             <div>
                 <TopNavigation />
                 <div className="container">
-                    <NamespaceDetails />
-                    <SideNavigation />
+                    <div className="col-md-9 ml-sm-auto col-lg-10 px-4 my-5">
+                        <NamespaceDetails />
+                        <SideNavigation />
+                    </div>  
                 </div>
             </div>
         )

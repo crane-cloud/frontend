@@ -1,4 +1,5 @@
 import React , { Component } from "react";
+import { Link } from 'react-router-dom';
 
 
 export default class SideNav extends Component{
@@ -9,10 +10,10 @@ export default class SideNav extends Component{
               <div className="sidebar-sticky">
                 <ul className="nav flex-column">
                   <li className="nav-item">
-                    <a className="nav-link active" href="#">
+                    <Link className="nav-link active" to="/admin-dashboard">
                       <span data-feather="home"></span>
                       Dashboard <span className="sr-only">(current)</span>
-                    </a>
+                    </Link>
                   </li>
                   <li className="nav-item">
                     <a className="nav-link" href="#">
@@ -27,10 +28,10 @@ export default class SideNav extends Component{
                     </a>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link" href="#">
+                    <Link className="nav-link" to="/organizations">
                       <span data-feather="shopping-cart"></span>
                       Organizations
-                    </a>
+                    </Link>
                   </li>
                 </ul>
     

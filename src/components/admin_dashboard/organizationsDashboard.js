@@ -15,7 +15,6 @@ export default class OrganizationsDashboard extends Component {
 
     render() {
         return (
-            <Router>
                 <div>
                     <TopNav />
                     <div className="container-fluid">
@@ -23,8 +22,6 @@ export default class OrganizationsDashboard extends Component {
                         {this.main()}
                     </div>
                 </div>
-                <Route exact path="/organization-resources" component={TotalResources} />
-            </Router>
         );
     }
 

@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 
+import TopNav from "../../TopNav";
+import SideNav from "../../sideNav"
+
+
 class TotalResources extends Component {
 
     totalResources = {
@@ -9,11 +13,11 @@ class TotalResources extends Component {
     }
 
     cpuUsage() {
-        
+
         return (
-            <div className="col-sm-4">
+            <div className="col-4  my-4">
                 <div className="card">
-                    <div className="card-header text-center success">
+                    <div className="card-header text-center">
                         CPU USAGE
                     </div>
                     <div className="card-body">
@@ -27,9 +31,9 @@ class TotalResources extends Component {
     memoryUsage() {
         const failedJobs = 1;
         return (
-            <div className="col-sm-4">
+            <div className="col-4  my-4">
                 <div className="card">
-                    <div className="card-header text-center fail">
+                    <div className="card-header text-center">
                         MEMORY USAGE
                     </div>
                     <div className="card-body">
@@ -43,9 +47,9 @@ class TotalResources extends Component {
     diskUsage() {
         const failedJobs = 1;
         return (
-            <div className="col-sm-4">
+            <div className="col-4  my-4">
                 <div className="card">
-                    <div className="card-header text-center fail">
+                    <div className="card-header text-center">
                         STORAGE DISK USAGE
                     </div>
                     <div className="card-body">
@@ -57,27 +61,25 @@ class TotalResources extends Component {
     }
 
 
-    renderUsage() {
+    renderUsage() { 
         return (
-            <div className="card parent">
-                <div className="card-header">
-                    Jobs
-                </div>
-                <div className="card-body">
-                    <div className="row">
-                        {this.cpuUsage()}
-                        {this.memoryUsage()}
-                        {this.diskUsage()}
-                    </div>
-
-                </div>
+            <div className="row">
+                {this.cpuUsage()}
+                {this.memoryUsage()}
+                {this.diskUsage()}
             </div>
         );
     }
 
     render() {
         return (
-            this.renderUsage()
+            <div role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <TopNav />
+                <div className="container-fluid">
+                <SideNav />
+                     { this.renderUsage() } 
+                </div>
+            </div>
         );
     }
 }
