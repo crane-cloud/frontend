@@ -37,9 +37,9 @@ export default class SideNavigation extends Component {
               }
           }
           expanded={true}
-            >
+            > 
 
-              <div class="my-5"></div>
+              <div className="my-5"></div>
 
               <SideNav.Nav defaultSelected="namespaces">
 
