@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 
 class Deployments extends Component {
+    constructor() {
+        super()
+        this.state = {
+            deploymentsArray: null
+        }
+    }
 
     deploymentsArray = [
         {
@@ -21,33 +27,49 @@ class Deployments extends Component {
         }
     ]
 
+    getDeployments = () => {
+        // let deployments = null;
+        const apiRoute = 'http://54.84.186.47:31765/monitor/deployment/replicas/info';
+        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+        fetch(proxyUrl + apiRoute)
+            .then((response) => {
+                return response.json()
+            })
+            .then((data) => {
+                this.printDataToTable(data.data.result);
+
+            })
+            .catch(() => console.log("Cant access " + apiRoute));
+    }
+
+    printDataToTable = (array) => {
+        array.map((element) => {
+            return (
+                <tr key={this.state.deploymentsArray.indexOf(element)}>
+                    <td> {element.metric.deployment}</td>
+                    <td> {element.metric.kubernetes_node} </td>
+                    <td> {element.metric.namespace} </td>
+                    <td> {element.value[1]} </td>
+
+                    <td> {this.dropDown()} </td>
+                </tr>
+            );
+        })
+    }
+
     createTable() {
         return (<div>
             <table className="table table-striped custom-table">
                 <thead>
                     <tr>
                         <th scope="col">Name</th>
-                        <th scope="col">Labels</th>
-                        <th scope="col">Pods</th>
-                        <th scope="col">Age</th>
-                        <th scope="col">Images</th>
+                        <th scope="col">Node</th>
+                        <th scope="col">Namespace</th>
+                        <th scope="col">Value</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {
-                        this.deploymentsArray.map((element) => {
-                            return (
-                                <tr key={this.deploymentsArray.indexOf(element)}>
-                                    <td> {element.name}</td>
-                                    <td> {element.label} </td>
-                                    <td> {element.pods} </td>
-                                    <td> {element.age} </td>
-                                    <td> {element.images} </td>
-                                    <td> {this.dropDown()} </td>
-                                </tr>
-                            );
-                        })
-                    }
+                    {this.getDeployments()}
                 </tbody>
             </table>
         </div>
@@ -82,11 +104,8 @@ class Deployments extends Component {
 
         );
     }
-    
-    
 
     render() {
-        console.log(window.location.pathname)
         return (
             this.renderDeploymentsTable()
         )

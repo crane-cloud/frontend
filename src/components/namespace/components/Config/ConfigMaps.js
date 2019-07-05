@@ -9,26 +9,26 @@ class ConfigMaps extends Component {
     }
 
     getData = ({ resources }) => {
-        const data = resources;
-        this.setState({ apiData: data });
-        return this.state.apiData[0].toString();
+        const [...data] = resources;
+        return this.setState({ apiData: data });
     }
 
     renderapiData = () => {
+        const apiRoute = 'http://54.84.186.47:31765/resources/';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        const api = 'http://54.84.186.47:31765/resources/';
-        fetch(proxyUrl + api)
+        fetch(proxyUrl + apiRoute)
         .then((response) => {
             return response.json()
         })
         .then((data) => {
             this.getData(data);
         })
-        .catch(() => console.log("Can't access " + api + " response. Blocked by browser?"));
+        .catch(() => console.log("Can't access " + apiRoute));
     }
 
     render() {
         this.renderapiData();
+        console.log(React.version);
         return (
             <div>
                 TODO: Config Maps component
