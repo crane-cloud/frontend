@@ -1,0 +1,40 @@
+.card-item {
+    background: #eee;
+    float: left;
+    width: 29%;
+    margin: 1%;
+    padding: 1%;
+}
+
+.container {
+  /* position: relative; */
+  width: auto;
+}
+
+.parent {
+  margin-top: 2%;
+}
+
+.success {
+  background-color: lightgreen;
+}
+
+.fail {
+  background-color: #fd5252;
+}
+
+.pending {
+  background-color: orange;
+}
+
+#pods-table {
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+  widows: 100%;
+}
+
+.custom-table {
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+  widows: 100%;
+}

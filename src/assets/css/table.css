@@ -1,0 +1,39 @@
+.table {
+  position: relative;
+  margin-top: 5%;
+}
+
+#title {
+    text-align: center;
+    font-family: arial, sans-serif;
+}
+  
+#namespaces {
+  text-align: center;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  border: 3px solid #ddd;
+  width: 100%;
+}
+
+#namespaces td, #namespaces th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#namespaces tr:nth-child(even){background-color: #f2f2f2;}
+
+#namespaces tr:hover {background-color: #ddd;}
+
+#namespaces th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #007bff;
+  color: white;
+}
+
+.ageData {
+    text-align: left;
+    padding-left: 10px;
+}

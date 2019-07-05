@@ -1,0 +1,68 @@
+
+#home {
+	background: url(../img/bird.jpg) no-repeat center fixed;
+	display: table;
+	/* height: 100%; */
+	width: 100%;
+	background-size: cover;
+}
+
+.landing-text {
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.landing-text h1 {
+	padding-top: 100px;
+	font-size: 500%;
+	font-weight: 700;
+	color: #000;
+	text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+}
+
+.padding {
+	padding: 80px 0;
+}
+
+.padding img {
+	width: 100%;
+}
+
+#fixed {
+	background: url(../img/background.jpg) no-repeat center center fixed;
+	display: table;
+	height: 60%;
+	position: relative;
+	width: 100%;
+	background-size: cover; 
+}
+
+footer {
+	width: 100%;
+	background-color: #23415c;
+	padding: 5% 5% 10% 5%;
+	color: #fff;
+}
+
+.icon {
+	max-width: 200px;
+}
+
+@media (max-width: 768px) {
+	.landing-text h1 {
+		font-size: 300%;
+	}
+	.fa {
+		font-size: 20px;
+		padding: 10px;
+	}
+	.icon {
+		padding-top: 5%;
+		max-width: 100px;;
+	}
+}
+
+.sidenav---sidenav---_2tBP{
+	min-width: 228px !important;
+}
