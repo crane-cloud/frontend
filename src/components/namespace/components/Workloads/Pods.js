@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 
 class Pods extends Component {
+    constructor() {
+        super()
+        this.state = {
+            podsRunning: 0,
+            podsPending: 0,
+            podsSucceding: 0,
+            podsFailing: 0
+        }
+    }
 
     // link/nodes/{ this.props.clusterID }
     podsArray = [
@@ -92,7 +101,18 @@ class Pods extends Component {
     }
 
     getPodsRunning() {
-        const podsRunning = 50;
+        const apiRoute = 'http://54.84.186.47:31765/monitor/pods';
+        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+        fetch(proxyUrl + apiRoute)
+        .then((response) => {
+            return response.json()
+        })
+        .then((data) => {
+            this.setState({ podsRunning: data.data.result[0].value[1]} );
+        })
+        .catch(() => console.log("Cant access " + apiRoute));
+        
+        // const podsRunning = 50;
         return (
             <div className="col-sm-6">
                 <div className="card">
@@ -100,7 +120,7 @@ class Pods extends Component {
                         Pods Running
                     </div>
                     <div className="card-body">
-                        <h1 className="card-title text-center">{podsRunning}</h1>
+                        <h1 className="card-title text-center">{this.state.podsRunning}</h1>
                     </div>
                 </div>
             </div>
@@ -108,7 +128,17 @@ class Pods extends Component {
     }
 
     getPodsPending() {
-        const podsPending = 2;
+        const apiRoute = 'http://54.84.186.47:31765/monitor/pods/pending';
+        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+        fetch(proxyUrl + apiRoute)
+        .then((response) => {
+            return response.json()
+        })
+        .then((data) => {
+            this.setState({ podsPending: data.data.result[0].value[1]} );
+        })
+        .catch(() => console.log("Cant access " + apiRoute));
+        
         return (
             <div className="col-sm-6">
                 <div className="card">
@@ -116,7 +146,7 @@ class Pods extends Component {
                         Pending Pods
                     </div>
                     <div className="card-body">
-                        <h1 className="card-title text-center">{podsPending}</h1>
+                        <h1 className="card-title text-center">{this.state.podsPending}</h1>
                     </div>
                 </div>
             </div>
@@ -124,7 +154,17 @@ class Pods extends Component {
     }
 
     podsSucceding() {
-        const suceededPods = 6;
+        const apiRoute = 'http://54.84.186.47:31765/monitor/pods/succeeded';
+        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+        fetch(proxyUrl + apiRoute)
+        .then((response) => {
+            return response.json()
+        })
+        .then((data) => {
+            this.setState({ podsSucceding: data.data.result[0].value[1]} );
+        })
+        .catch(() => console.log("Cant access " + apiRoute));
+        
         return (
             <div className="col-sm-6">
                 <div className="card">
@@ -132,7 +172,7 @@ class Pods extends Component {
                         Pods Succeeded
                     </div>
                     <div className="card-body">
-                        <h1 className="card-title text-center">{suceededPods}</h1>
+                        <h1 className="card-title text-center">{this.state.podsSucceding}</h1>
                     </div>
                 </div>
             </div>
@@ -140,7 +180,17 @@ class Pods extends Component {
     }
 
     podsFailing() {
-        const failedPods = 1;
+        const apiRoute = 'http://54.84.186.47:31765/monitor/pods/failed';
+        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+        fetch(proxyUrl + apiRoute)
+        .then((response) => {
+            return response.json()
+        })
+        .then((data) => {
+            this.setState({ podsFailing: data.data.result[0].value[1]} );
+        })
+        .catch(() => console.log("Cant access " + apiRoute));
+
         return (
             <div className="col-sm-6">
                 <div className="card">
@@ -148,7 +198,7 @@ class Pods extends Component {
                         Pods Failed
                     </div>
                     <div className="card-body">
-                        <h1 className="card-title text-center">{failedPods}</h1>
+                        <h1 className="card-title text-center">{this.state.podsFailing}</h1>
                     </div>
                 </div>
             </div>
