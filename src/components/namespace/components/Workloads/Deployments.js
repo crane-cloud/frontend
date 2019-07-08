@@ -36,26 +36,21 @@ class Deployments extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.renderTableBody()}
+                        {
+                            this.state.deploymentsArray.map( element => ( 
+                                <tr key={this.state.deploymentsArray.indexOf(element)}>
+                                    <td> {element.metric.deployment}</td>
+                                    <td> {element.metric.kubernetes_node} </td>
+                                    <td> {element.metric.namespace} </td>
+                                    <td> {element.value[1]} </td>
+                                    <td> {this.dropDown()} </td>
+                                </tr>
+                            ))                  
+                        }
                     </tbody>
                 </table>
             </div>
         );
-    }
-
-    renderTableBody = () => {
-        this.state.deploymentsArray.map((element) => {
-            console.log(element.metric.deployment)
-            return (
-                <tr key={this.state.deploymentsArray.indexOf(element)}>
-                    <td> {element.metric.deployment}</td>
-                    <td> {element.metric.kubernetes_node} </td>
-                    <td> {element.metric.namespace} </td>
-                    <td> {element.value[1]} </td>
-                    <td> {this.dropDown()} </td>
-                </tr>
-            );
-        });
     }
 
     dropDown = () => {
