@@ -7,7 +7,7 @@ class NamespaceDetails extends Component {
 
     render() {
         const { nameSpace } = this.props;
-        console.log( nameSpace );
+        // console.log( nameSpace );
         return (
             <div className="card" >
                 <div className="card-body">
