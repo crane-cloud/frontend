@@ -3,29 +3,50 @@ import { Link } from "react-router-dom";
 
 import "../../assets/css/signin.css";
 
+import loginSuccess from '../../redux/actions/loginSuccess';
+import axios from 'axios';
+import { BASE_URL } from '../../config';
+
 class SignInForm extends Component {
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
 
       this.state = {
-        email: "",
-        password: ""
+        data: {
+          email: '',
+          password: ''
+        }
       }
     }
 
-    handleChange = (e) => {
-      let target = e.target;
-      let value = target.type === "checkbox" ? target.checked : target.value;
-      let name = target.name;
-
-      this.setState({ [name]: value });
+    handleChange = (event) => {
+      this.setState({
+        [event.target.name]: event.target.value
+      });
     }
 
-    handleSubmit = (e) => {
-      e.preventDefault();
-      if (this.state.email == "admin@email.com" && this.state.password == "1234") {
-        window.location = "/admin-dashboard";
-      }
+    handleSubmit = (event) => {
+      event.preventDefault();
+      /**
+       * make api call
+       */
+      axios(BASE_URL + '/register/', {
+        method: 'POST',
+        data: this.state.data,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then (response => {
+        // dispatch action on success
+        console.log(response);
+
+        loginSuccess({
+          user: this.state,
+          accessToken: '988t8tyvvgd777'
+        })
+      }).catch(error => {
+        console.log(error);
+      });
     }
 
     render() {
