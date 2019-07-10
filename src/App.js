@@ -6,7 +6,7 @@ import AdminDashboard from "./components/admin_dashboard/AdminDashboard"
 import Namespace from "./components/namespace/Namespace";    
 import OrganizationsDashboard from "./components/admin_dashboard/organizationsDashboard";
 import TotalResources from "./components/admin_dashboard/general_components/Organizations/components/TotalResources";
-import ClusterInfo from "./components/admin_dashboard/general_components/DashboardMain/components/ClusterInfo";
+import ClusterInfo from "./components/admin_dashboard/general_components/DashboardMain/components/ClusterInfo/ClusterInfo";
 
 
 export default class App extends Component{
