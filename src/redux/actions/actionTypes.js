@@ -1,1 +1,1 @@
-export const AUTHENTICATE = 'AUTHENTICATE';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
