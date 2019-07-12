@@ -20,7 +20,7 @@ export default class HeaderNav extends Component{
 
                     <ul className="navbar-nav px-3 ml-auto">
                         <li className="nav-item text-nowrap">
-                            <Link className="nav-link text-white" to="/sign-in">Sign in</Link>
+                            <Link className="nav-link text-white" to="/login">Sign in</Link>
                         </li>
                     </ul>
                 </div>

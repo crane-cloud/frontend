@@ -7,6 +7,8 @@ import Namespace from "./components/namespace/Namespace";
 import OrganizationsDashboard from "./components/admin_dashboard/organizationsDashboard";
 import TotalResources from "./components/admin_dashboard/general_components/Organizations/components/TotalResources";
 import ClusterInfo from "./components/admin_dashboard/general_components/DashboardMain/components/ClusterInfo/ClusterInfo";
+import Victory from "./components/admin_dashboard/general_components/Organizations/components/Victory";
+// import Nodes from "./components/admin_dashboard/general_components/DashboardMain/components/Nodes/Nodes";
 
 
 export default class App extends Component{
@@ -14,12 +16,14 @@ export default class App extends Component{
         return (
             <Router >
                 <Route exact path="/" component={HomePage} />
-                <Route exact path="/sign-in" component={UserAuthPage} />
+                <Route exact path="/login" component={UserAuthPage} />
                 <Route exact path="/admin-dashboard" component={AdminDashboard} />
                 <Route exact path="/namespaces/:namespaceId" component={Namespace} />
                 <Route exact path="/organizations" component={OrganizationsDashboard} />
                 <Route exact path="/organization-resources" component={TotalResources} />
-                <Route exact path="/cluster-info" component={ClusterInfo} />
+                <Route exact path="/:name/cluster-info" component={ClusterInfo} />
+                {/* <Route exact path="/:name/nodes" component={Nodes} /> */}
+                <Route exact path="/victory" component={Victory} />
             </Router>
         );
     }

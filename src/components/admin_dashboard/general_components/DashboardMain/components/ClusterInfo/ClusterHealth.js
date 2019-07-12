@@ -23,12 +23,12 @@ class ClusterHealth extends Component {
                 return response.json()
             })
             .then((data) => {
-                let percentageCPU = ((data.data.result[0].value[1]) * 100);
+                let percentageCPU = this.roundToTwo((data.data.result[0].value[1]) * 100);
                 this.setState({ clusterCPU: percentageCPU });
             })
             .catch(() => console.log("Cant access " + apiRoute));
-        
-            return (
+
+        return (
             <div className="card">
                 <div className="card-header">
                     Cluster CPU Usage
@@ -58,12 +58,12 @@ class ClusterHealth extends Component {
                 return response.json()
             })
             .then((data) => {
-                let percentageMemory = ((data.data.result[0].value[1]) * 100);
+                let percentageMemory = this.roundToTwo((data.data.result[0].value[1]) * 100);
                 this.setState({ clusterMemory: percentageMemory });
             })
             .catch(() => console.log("Cant access " + apiRoute));
-        
-            return (
+
+        return (
             <div className="card">
                 <div className="card-header">
                     Cluster Memory Usage
@@ -93,13 +93,13 @@ class ClusterHealth extends Component {
                 return response.json()
             })
             .then((data) => {
-                let percentageDisk = ((data.data.result[0].value[1]) * 100)
+                let percentageDisk = this.roundToTwo((data.data.result[0].value[1]) * 100)
                 console.log(percentageDisk);
                 this.setState({ clusterDisk: percentageDisk });
             })
             .catch(() => console.log("Cant access " + apiRoute));
-        
-            return (
+
+        return (
             <div className="card">
                 <div className="card-header">
                     Cluster Disk Usage
@@ -129,13 +129,13 @@ class ClusterHealth extends Component {
                 return response.json()
             })
             .then((data) => {
-                let percentagePod = ((data.data.result[0].value[1]) * 100)
+                let percentagePod = this.roundToTwo((data.data.result[0].value[1]) * 100)
                 console.log(percentagePod);
                 this.setState({ clusterPod: percentagePod });
             })
             .catch(() => console.log("Cant access " + apiRoute));
-        
-            return (
+
+        return (
             <div className="card">
                 <div className="card-header">
                     Cluster Pod Usage
@@ -158,20 +158,32 @@ class ClusterHealth extends Component {
         )
     }
 
+    roundToTwo = (num) => {    
+        return +(Math.round(num + "e+2")  + "e-2");
+    }
+
     renderClusterHealth = () => {
         return (
-            <div className="row">
-                <div className="column-3">
-                    {this.getCpuUsage()}
+            <div className="card parent">
+                <div className="card-header">
+                    Cluster Health
                 </div>
-                <div className="column-3">
-                    {this.getMemoryUsage()}
+
+                <div className="row">
+                    <div className="col-6">
+                        {this.getCpuUsage()}
+                    </div>
+                    <div className="col-6">
+                        {this.getMemoryUsage()}
+                    </div>
                 </div>
-                <div className="column-3">
-                    {this.getDiskUsage()}
-                </div>
-                <div className="column-3">
-                    {this.getPodUsage()}
+                <div className="row">
+                    <div className="col-6">
+                        {this.getDiskUsage()}
+                    </div>
+                    <div className="col-6">
+                        {this.getPodUsage()}
+                    </div>
                 </div>
             </div>
         )

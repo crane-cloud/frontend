@@ -30,7 +30,7 @@ export default class clusterCard extends Component {
 
     clusterCard = () => {
         return (
-            <div className="col-4  my-4">
+            <div className="col-6  my-4">
                 <div className="card text-center">
                     {this.renderCardHeader()}
                     {this.createCardBody()}
@@ -120,12 +120,13 @@ export default class clusterCard extends Component {
                     <div className="col-4">
                         <div className="dropdown">
                             <div id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <a href="#"> <span className="fa fa-info-circle"></span></a>
+                                <a href="#"> <span className="fa fa-ellipsis-v"></span></a>
                             </div>
                             <div className="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                <button className="dropdown-item" type="button" onClick={() => this.openModal({ visibleNodesModal: true })} >Nodes <span className="badge badge-info"> 3 </span> </button>
-                                <button className="dropdown-item" type="button" onClick={() => this.openModal({ visiblePersistentVolumesModal: true })} >Persistent Volumes <span className="badge badge-info"> 0 </span> </button>
-                                <button className="dropdown-item" type="button"><Link to="/cluster-info">View Cluster Info</Link></button>
+                                {/* <button className="dropdown-item" type="button" onClick={() => this.openModal({ visibleNodesModal: true })} >Nodes <span className="badge badge-info"> 3 </span> </button>
+                                <button className="dropdown-item" type="button" onClick={() => this.openModal({ visiblePersistentVolumesModal: true })} >Persistent Volumes <span className="badge badge-info"> 0 </span> </button> */}
+                                <button className="dropdown-item" type="button"><Link to={`${this.props.cluster.name}/nodes`}>Nodes</Link></button>
+                                <button className="dropdown-item" type="button"><Link to={`${this.props.cluster.name}/cluster-info`}>View Cluster Info</Link></button>
                                 <button className="dropdown-item" type="button">Rename Cluster</button>
                                 <button className="dropdown-item" type="button">Delete Cluster</button>
                             </div>

@@ -16,12 +16,12 @@ class UserAuthPage extends Component {
                     <div className="SignIn_aside"></div>
                     <div className="SignIn_form" id="scrollable">
                         <div className="FormTitle">
-                            <NavLink to="/sign-in" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign In</NavLink> or <NavLink exact to="/sign-up"
+                            <NavLink to="/login" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign In</NavLink> or <NavLink exact to="/register"
                                 activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign Up</NavLink>
                         </div>
                         <Route exact path="/admin-dashboard" component={AdminDashboard} />
-                        <Route exact path="/sign-up" component={SignUpForm} />
-                        <Route exact path="/sign-in" component={SignInForm} />
+                        <Route exact path="/register" component={SignUpForm} />
+                        <Route exact path="/login" component={SignInForm} />
                     </div>
                 </div>
             </Router>
