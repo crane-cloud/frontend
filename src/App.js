@@ -7,6 +7,7 @@ import Namespace from "./components/namespace/Namespace";
 import OrganizationsDashboard from "./components/admin_dashboard/organizationsDashboard";
 import TotalResources from "./components/admin_dashboard/general_components/Organizations/components/TotalResources";
 import ClusterInfo from "./components/admin_dashboard/general_components/DashboardMain/components/ClusterInfo";
+import UserDashboard from "./components/user_dashboard/main";
 
 
 export default class App extends Component{
@@ -20,6 +21,7 @@ export default class App extends Component{
                 <Route exact path="/organizations" component={OrganizationsDashboard} />
                 <Route exact path="/organization-resources" component={TotalResources} />
                 <Route exact path="/cluster-info" component={ClusterInfo} />
+                <Route exact path="/user-dashboard" component={UserDashboard} />
             </Router>
         );
     }
