@@ -9,6 +9,7 @@ import TotalResources from "./components/admin_dashboard/general_components/Orga
 import ClusterInfo from "./components/admin_dashboard/general_components/DashboardMain/components/ClusterInfo/ClusterInfo";
 import Victory from "./components/admin_dashboard/general_components/Organizations/components/Victory";
 // import Nodes from "./components/admin_dashboard/general_components/DashboardMain/components/Nodes/Nodes";
+import UserDashboard from "./components/user_dashboard/main";
 
 
 export default class App extends Component{
@@ -24,6 +25,7 @@ export default class App extends Component{
                 <Route exact path="/:name/cluster-info" component={ClusterInfo} />
                 {/* <Route exact path="/:name/nodes" component={Nodes} /> */}
                 <Route exact path="/victory" component={Victory} />
+                <Route exact path="/user-dashboard" component={UserDashboard} />
             </Router>
         );
     }
