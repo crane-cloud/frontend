@@ -23,9 +23,10 @@ class SignInForm extends Component {
 
     handleSubmit = (e) => {
       e.preventDefault();
-      if (this.state.email == "admin@email.com" && this.state.password == "1234") {
-        window.location = "/admin-dashboard";
-      }
+      console.log(this.state.email)
+      // if (this.state.email == "admin@email.com" && this.state.password == "1234") {
+      //   // window.location = "/admin-dashboard";
+      // }
     }
 
     render() {

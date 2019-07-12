@@ -45,7 +45,7 @@ export default class clusterCard extends Component {
     createCardBody = () => {
 
         let data = {
-            labels: ["Mon", "Teu", "Wed", "Thur", "Fri", 'Sat', "Sun"],
+            labels: ["Mon", "Tue", "Wed", "Thur", "Fri", 'Sat', "Sun"],
             datasets: [{
                 label: "Resource Usage",
                 backgroundColor: 'rgb(30,144,255)',

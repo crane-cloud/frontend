@@ -8,7 +8,7 @@ export default class GenerateClusterRow extends Component {
         {
             cluster_id : 12,
             status : 'on',
-            name : 'City square',
+            name : 'AWS Cluster',
             errors : [ 
                 {error: 'node off', error_id: 11 }, 
                 {error: 'pod off', error_id: 12 }, 
