@@ -8,7 +8,6 @@ import OrganizationsDashboard from "./components/admin_dashboard/organizationsDa
 import TotalResources from "./components/admin_dashboard/general_components/Organizations/components/TotalResources";
 import ClusterInfo from "./components/admin_dashboard/general_components/DashboardMain/components/ClusterInfo/ClusterInfo";
 import Victory from "./components/admin_dashboard/general_components/Organizations/components/Victory";
-// import Nodes from "./components/admin_dashboard/general_components/DashboardMain/components/Nodes/Nodes";
 import UserDashboard from "./components/user_dashboard/main";
 
 

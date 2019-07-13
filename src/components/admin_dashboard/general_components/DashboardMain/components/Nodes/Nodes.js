@@ -6,9 +6,94 @@ class Nodes extends Component {
         super()
         this.state = {
             loading: true,
-            nodesArray: []
+            nodesArray: [],
+            nodesTotal: 0,
+            nodesOutOfDisk: 0,
+            nodesUnavailable: 0
         }
     }
+
+    getTotalNodes =()=> {
+        const apiRoute = 'http://54.84.186.47:31765/monitor/nodes';
+        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+        fetch(proxyUrl + apiRoute)
+        .then((response) => {
+            return response.json()
+        })
+        .then((data) => {
+            let totalNodes = data.data.result[0].value[1];
+            this.setState({ nodesTotal: totalNodes} );
+        })
+        .catch(() => console.log("Can't access " + apiRoute));
+
+        return (
+            <div className="col-sm-4">
+                <div className="card">
+                    <div className="card-header text-center">
+                        Total Nodes
+                    </div>
+                    <div className="card-body">
+                        <h1 className="card-title text-center">{this.state.nodesTotal}</h1>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    getNodesOutOfDisk =()=> {
+        const apiRoute = 'http://54.84.186.47:31765/monitor/nodes/outofdisk';
+        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+        fetch(proxyUrl + apiRoute)
+        .then((response) => {
+            return response.json()
+        })
+        .then((data) => {
+            let fetchedNodes = data.data.result[0].value[1];
+            this.setState({ nodesOutOfDisk: fetchedNodes} );
+        })
+        .catch(() => console.log("Can't access " + apiRoute));
+
+        return (
+            <div className="col-sm-4">
+                <div className="card">
+                    <div className="card-header text-center">
+                        Nodes out of disk
+                    </div>
+                    <div className="card-body">
+                        <h1 className="card-title text-center">{this.state.nodesOutOfDisk}</h1>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    getNodesUnavailable =()=> {
+        const apiRoute = 'http://54.84.186.47:31765/monitor/nodes/unavailable';
+        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+        fetch(proxyUrl + apiRoute)
+        .then((response) => {
+            return response.json()
+        })
+        .then((data) => {
+            let unavailableNodes = data.data.result[0].value[1];
+            this.setState({ nodesUnavailable: unavailableNodes} );
+        })
+        .catch(() => console.log("Can't access " + apiRoute));
+
+        return (
+            <div className="col-sm-4">
+                <div className="card">
+                    <div className="card-header text-center">
+                        Nodes Unavailable
+                    </div>
+                    <div className="card-body">
+                        <h1 className="card-title text-center">{this.state.nodesUnavailable}</h1>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
 
     async componentDidMount() {
         const apiRoute = 'http://54.84.186.47:31765/monitor/nodes/info';
@@ -81,13 +166,13 @@ class Nodes extends Component {
     header = () => {
         return (
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 className="h2">Dashboard</h1>
-                    <div className="btn-toolbar mb-2 mb-md-0">
-                        <div className="btn-group mr-2">
-                            <button className="btn btn-sm btn-outline-secondary"><span className="fa fa-plus"></span> New Node</button>
-                        </div>
+                <h1 className="h2">Dashboard</h1>
+                <div className="btn-toolbar mb-2 mb-md-0">
+                    <div className="btn-group mr-2">
+                        <button className="btn btn-sm btn-outline-secondary"><span className="fa fa-plus"></span> New Node</button>
                     </div>
                 </div>
+            </div>
         )
     }
 
@@ -95,8 +180,13 @@ class Nodes extends Component {
         return (
             <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
                 <TopNav />
-                { this.header() }
+                {this.header()}
                 <h2 className="text-center">AWS Cluster Nodes</h2>
+                <div className="row">
+                    {this.getTotalNodes()}
+                    {this.getNodesOutOfDisk()}
+                    {this.getNodesUnavailable()}
+                </div>    
                 {this.renderNodesTable()}
             </main>
         )

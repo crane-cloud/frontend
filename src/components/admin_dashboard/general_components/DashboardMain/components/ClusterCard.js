@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Line } from 'react-chartjs-2';
-import Modal from 'react-awesome-modal';
 
-import NodesModal from "./modalComponents/NodeModal";
 import PersistentVolumesModal from "./modalComponents/PersistentVolumesModal"
 
 
@@ -123,10 +121,10 @@ export default class clusterCard extends Component {
                                 <a href="#"> <span className="fa fa-ellipsis-v"></span></a>
                             </div>
                             <div className="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                {/* <button className="dropdown-item" type="button" onClick={() => this.openModal({ visibleNodesModal: true })} >Nodes <span className="badge badge-info"> 3 </span> </button>
-                                <button className="dropdown-item" type="button" onClick={() => this.openModal({ visiblePersistentVolumesModal: true })} >Persistent Volumes <span className="badge badge-info"> 0 </span> </button> */}
+                                {/* <button className="dropdown-item" type="button" onClick={() => this.openModal({ visibleNodesModal: true })} >Nodes <span className="badge badge-info"> 3 </span> </button> */}
                                 <button className="dropdown-item" type="button"><Link to={`${this.props.cluster.name}/nodes`}>Nodes</Link></button>
                                 <button className="dropdown-item" type="button"><Link to={`${this.props.cluster.name}/cluster-info`}>View Cluster Info</Link></button>
+                                <button className="dropdown-item" type="button" onClick={() => this.openModal({ visiblePersistentVolumesModal: true })} >Persistent Volumes <span className="badge badge-info"> 0 </span> </button>
                                 <button className="dropdown-item" type="button">Rename Cluster</button>
                                 <button className="dropdown-item" type="button">Delete Cluster</button>
                             </div>
@@ -134,13 +132,7 @@ export default class clusterCard extends Component {
                         
                     </div>
                 </div>
-                <NodesModal
-                    title={this.props.cluster.name}
-                    closeModal={this.closeModal}
-                    visible={this.state.visibleNodesModal}
-                    clusterID={this.props.cluster.cluster_id}
-                />
-
+                
                 <PersistentVolumesModal
                     title={this.props.cluster.name}
                     closeModal={this.closeModal}
