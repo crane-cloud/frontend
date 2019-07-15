@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 class Containers extends Component {
     constructor() {
@@ -16,14 +17,12 @@ class Containers extends Component {
     getContainersRunning =()=> {
         const apiRoute = 'http://54.84.186.47:31765/monitor/containers';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-        .then((response) => {
-            return response.json()
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            this.setState({ containersRunning: response.data.data.result[0].value[1]} );
         })
-        .then((data) => {
-            this.setState({ containersRunning: data.data.result[0].value[1]} );
-        })
-        .catch(() => console.log("Cant access " + apiRoute));
+        .catch(error => console.log("Can't access " + apiRoute, error))
 
         return (
             <div className="col-sm-6">
@@ -42,14 +41,12 @@ class Containers extends Component {
     getContainersWaiting =()=> {
         const apiRoute = 'http://54.84.186.47:31765/monitor/containers/waiting';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-        .then((response) => {
-            return response.json()
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            this.setState({ containersWaiting: response.data.data.result[0].value[1]} );
         })
-        .then((data) => {
-            this.setState({ containersWaiting: data.data.result[0].value[1]} );
-        })
-        .catch(() => console.log("Cant access " + apiRoute));
+        .catch(error => console.log("Can't access " + apiRoute, error))
 
         return (
             <div className="col-sm-6">
@@ -68,14 +65,12 @@ class Containers extends Component {
     getContainersTerminated =()=> {
         const apiRoute = 'http://54.84.186.47:31765/monitor/containers/terminated';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-        .then((response) => {
-            return response.json()
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            this.setState({ containersTerminated: response.data.data.result[0].value[1]} );
         })
-        .then((data) => {
-            this.setState({ containersTerminated: data.data.result[0].value[1]} );
-        })
-        .catch(() => console.log("Cant access " + apiRoute));
+        .catch(error => console.log("Can't access " + apiRoute, error))
 
         return (
             <div className="col-sm-6">
@@ -94,14 +89,12 @@ class Containers extends Component {
     getContainerRestarts =()=> {
         const apiRoute = 'http://54.84.186.47:31765/monitor/containers/restarts';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-        .then((response) => {
-            return response.json()
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            this.setState({ containerRestarts: response.data.data.result[0].value[1]} );
         })
-        .then((data) => {
-            this.setState({ containerRestarts: data.data.result[0].value[1]} );
-        })
-        .catch(() => console.log("Cant access " + apiRoute));
+        .catch(error => console.log("Can't access " + apiRoute, error))
 
         return (
             <div className="col-sm-6">
@@ -120,15 +113,13 @@ class Containers extends Component {
     getCPURequests =()=> {
         const apiRoute = 'http://54.84.186.47:31765/monitor/containers/cpu';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-        .then((response) => {
-            return response.json()
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            let cpuRequests = Math.round(response.data.data.result[0].value[1])
+            this.setState({ containerCpuCores: cpuRequests} );
         })
-        .then((data) => {
-            let cpuRequests = Math.round(data.data.result[0].value[1])
-            this.setState({ containerMemoryRequests: cpuRequests} );
-        })
-        .catch(() => console.log("Cant access " + apiRoute));
+        .catch(error => console.log("Can't access " + apiRoute, error))
 
         return (
             <div className="col-sm-6">
@@ -137,7 +128,7 @@ class Containers extends Component {
                         Containers CPU Requests
                     </div>
                     <div className="card-body">
-                        <h1 className="card-title text-center">{this.state.containerMemoryRequests}</h1>
+                        <h1 className="card-title text-center">{this.state.containerCpuCores}</h1>
                     </div>
                 </div>
             </div>
@@ -147,16 +138,14 @@ class Containers extends Component {
     getContainerMemoryRequests =()=> {
         const apiRoute = 'http://54.84.186.47:31765/monitor/coontainers/memory';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-        .then((response) => {
-            return response.json()
-        })
-        .then((data) => {
-            let memUsage = ((data.data.result[0].value[1]) / 1000000000)
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            let memUsage = ((response.data.data.result[0].value[1]) / 1000000000)
             memUsage = this.roundToTwo(memUsage);
             this.setState({ containerMemRequests: memUsage} );
         })
-        .catch(() => console.log("Cant access " + apiRoute));
+        .catch(error => console.log("Can't access " + apiRoute, error))
 
         return (
             <div className="col-sm-6">

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
 import TopNav from "../../../TopNav";
 
 class Nodes extends Component {
@@ -16,15 +18,14 @@ class Nodes extends Component {
     getTotalNodes =()=> {
         const apiRoute = 'http://54.84.186.47:31765/monitor/nodes';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-        .then((response) => {
-            return response.json()
-        })
-        .then((data) => {
-            let totalNodes = data.data.result[0].value[1];
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            let totalNodes = response.data.data.result[0].value[1];
             this.setState({ nodesTotal: totalNodes} );
         })
-        .catch(() => console.log("Can't access " + apiRoute));
+        .catch(error => console.log("Can't access " + apiRoute, error))
+        
 
         return (
             <div className="col-sm-4">
@@ -43,15 +44,13 @@ class Nodes extends Component {
     getNodesOutOfDisk =()=> {
         const apiRoute = 'http://54.84.186.47:31765/monitor/nodes/outofdisk';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-        .then((response) => {
-            return response.json()
-        })
-        .then((data) => {
-            let fetchedNodes = data.data.result[0].value[1];
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            let fetchedNodes = response.data.data.result[0].value[1];
             this.setState({ nodesOutOfDisk: fetchedNodes} );
         })
-        .catch(() => console.log("Can't access " + apiRoute));
+        .catch(error => console.log("Can't access " + apiRoute, error))
 
         return (
             <div className="col-sm-4">
@@ -70,15 +69,13 @@ class Nodes extends Component {
     getNodesUnavailable =()=> {
         const apiRoute = 'http://54.84.186.47:31765/monitor/nodes/unavailable';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-        .then((response) => {
-            return response.json()
-        })
-        .then((data) => {
-            let unavailableNodes = data.data.result[0].value[1];
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            let unavailableNodes = response.data.data.result[0].value[1];
             this.setState({ nodesUnavailable: unavailableNodes} );
         })
-        .catch(() => console.log("Can't access " + apiRoute));
+        .catch(error => console.log("Can't access " + apiRoute, error))
 
         return (
             <div className="col-sm-4">
@@ -98,14 +95,12 @@ class Nodes extends Component {
     async componentDidMount() {
         const apiRoute = 'http://54.84.186.47:31765/monitor/nodes/info';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-            .then((response) => {
-                return response.json()
-            })
-            .then((data) => {
-                this.setState({ nodesArray: data.data.result, loading: false })
-            })
-            .catch(() => console.log("Can't access " + apiRoute));
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            this.setState({ nodesArray: response.data.data.result, loading: false } );
+        })
+        .catch(error => console.log("Can't access " + apiRoute, error))
     }
 
     createTable = () => {

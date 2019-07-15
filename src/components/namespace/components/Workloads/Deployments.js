@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 class Deployments extends Component {
     constructor() {
@@ -12,15 +13,13 @@ class Deployments extends Component {
     async componentDidMount() {
         const apiRoute = 'http://54.84.186.47:31765/monitor/deployment/replicas/info';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-            .then((response) => {
-                return response.json()
-            })
-            .then((data) => {
-                // console.log(data.data.result)
-                this.setState({ deploymentsArray: data.data.result, loading: false })
-            })
-            .catch(() => console.log("Cant access " + apiRoute));
+        
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            this.setState({ deploymentsArray: response.data.data.result, loading: false })
+        })
+        .catch(error => console.log("Can't access " + apiRoute, error))
+
     }
 
     createTable = () => {
