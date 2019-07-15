@@ -46,12 +46,12 @@ export default class LandingContent extends Component{
             </h4>
 
             <div className={this.state.deploymentsListVisible ? "deploymentsListVisible" : "deploymentsListInvisible"}>
-                <p> hshshs shshshs shshsh  <span class="badge badge-success aLittleMargin">Okay</span> </p>
-                <p> hshshs shshshs shshsh  <span class="badge badge-success aLittleMargin">Okay</span> </p>
-                <p> hshshs shshshs shshsh  <span class="badge badge-success aLittleMargin">Okay</span> </p>
-                <p> hshshs shshshs shshsh  <span class="badge badge-success aLittleMargin">Okay</span> </p>
-                <p> hshshs shshshs shshsh  <span class="badge badge-danger aLittleMargin">Check Error</span> </p>
-                <p> hshshs shshshs shshsh  <span class="badge badge-danger aLittleMargin">Check Error</span> </p>
+                <p> Kampala Trians  <span class="badge badge-success aLittleMargin">Okay</span> </p>
+                <p> City Traders  <span class="badge badge-success aLittleMargin">Okay</span> </p>
+                <p> City high school  <span class="badge badge-success aLittleMargin">Okay</span> </p>
+                <p> Wandegeya market  <span class="badge badge-success aLittleMargin">Okay</span> </p>
+                <p> Kiseka market  <span class="badge badge-danger aLittleMargin">Check Error</span> </p>
+                <p> Cosis  <span class="badge badge-danger aLittleMargin">Check Error</span> </p>
             </div>
         </div>)
     } 
@@ -66,12 +66,12 @@ export default class LandingContent extends Component{
             </h4>
 
             <div className={this.state.organizationsListVisible ? "organizationsListVisible" : "organizationsListInvisible"}>
-                <p> hshshs shshshs shshsh  <span class="badge badge-success aLittleMargin">Okay</span> </p>
-                <p> hshshs shshshs shshsh  <span class="badge badge-success aLittleMargin">Okay</span> </p>
-                <p> hshshs shshshs shshsh  <span class="badge badge-success aLittleMargin">Okay</span> </p>
-                <p> hshshs shshshs shshsh  <span class="badge badge-success aLittleMargin">Okay</span> </p>
-                <p> hshshs shshshs shshsh  <span class="badge badge-danger aLittleMargin">Check Error</span> </p>
-                <p> hshshs shshshs shshsh  <span class="badge badge-danger aLittleMargin">Check Error</span> </p>
+                <p> Makerere  <span class="badge badge-success aLittleMargin">Okay</span> </p>
+                <p> KCCA  <span class="badge badge-success aLittleMargin">Okay</span> </p>
+                <p> Biomed Tech  <span class="badge badge-success aLittleMargin">Okay</span> </p>
+                <p> city oil  <span class="badge badge-success aLittleMargin">Okay</span> </p>
+                <p> Move app  <span class="badge badge-danger aLittleMargin">Check Error</span> </p>
+                <p> Bujagali dam  <span class="badge badge-danger aLittleMargin">Check Error</span> </p>
             </div>
         </div>)
     } 
