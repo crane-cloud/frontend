@@ -1,5 +1,7 @@
 import React , { Component } from "react";
 
+import UserResourceUsage from "./components/user_resource_usage/userResourceUsage";
+
 import "./LandingContent.css";
 
 export default class LandingContent extends Component{
@@ -20,6 +22,7 @@ export default class LandingContent extends Component{
 
     render(){
         return (
+            <div>
             <div class="row">
                 <div class="col">
                     <div class="card">
@@ -32,6 +35,8 @@ export default class LandingContent extends Component{
                         { this.returnOrganizationsCard() }
                     </div>
                 </div>
+            </div>
+                <UserResourceUsage />
             </div>
             );
     }
@@ -46,12 +51,41 @@ export default class LandingContent extends Component{
             </h4>
 
             <div className={this.state.deploymentsListVisible ? "deploymentsListVisible" : "deploymentsListInvisible"}>
-                <p> Kampala Trians  <span class="badge badge-success aLittleMargin">Okay</span> </p>
-                <p> City Traders  <span class="badge badge-success aLittleMargin">Okay</span> </p>
-                <p> City high school  <span class="badge badge-success aLittleMargin">Okay</span> </p>
-                <p> Wandegeya market  <span class="badge badge-success aLittleMargin">Okay</span> </p>
-                <p> Kiseka market  <span class="badge badge-danger aLittleMargin">Check Error</span> </p>
-                <p> Cosis  <span class="badge badge-danger aLittleMargin">Check Error</span> </p>
+                <table class="table table-borderless text-left">
+                    <thead>
+                        <th>Name</th> 
+                        <th>Status</th>
+                        <th>Billing  (ugx 2,334,590)</th>
+                    </thead>
+                    <tbody>
+                        <tr >
+                            <td>Kampala Trians</td>     
+                            <td><span class="badge badge-success aLittleMargin">Okay</span></td> 
+                            <td>UGX 25,000</td>
+                        </tr> 
+                        <tr>
+                            <td>City Traders</td>     
+                            <td><span class="badge badge-success aLittleMargin">Okay</span></td> 
+                            <td>UGX 25,00</td>
+                        </tr>        
+                        <tr>
+                            <td>City high school</td>     
+                            <td><span class="badge badge-success aLittleMargin">Okay</span></td> 
+                            <td>UGX 300,000</td>
+                        </tr>  
+                        <tr>
+                            <td>Wandegeya market</td>     
+                            <td><span class="badge badge-danger aLittleMargin">Check error</span></td> 
+                            <td>UGX 700,00</td>
+                        </tr>  
+                        <tr>
+                            <td>Kiseka market</td>     
+                            <td><span class="badge badge-danger aLittleMargin">Check error</span></td> 
+                            <td>UGX 860,00</td>
+                        </tr>    
+                                
+                    </tbody>
+                </table>          
             </div>
         </div>)
     } 
@@ -66,12 +100,42 @@ export default class LandingContent extends Component{
             </h4>
 
             <div className={this.state.organizationsListVisible ? "organizationsListVisible" : "organizationsListInvisible"}>
-                <p> Makerere  <span class="badge badge-success aLittleMargin">Okay</span> </p>
-                <p> KCCA  <span class="badge badge-success aLittleMargin">Okay</span> </p>
-                <p> Biomed Tech  <span class="badge badge-success aLittleMargin">Okay</span> </p>
-                <p> city oil  <span class="badge badge-success aLittleMargin">Okay</span> </p>
-                <p> Move app  <span class="badge badge-danger aLittleMargin">Check Error</span> </p>
-                <p> Bujagali dam  <span class="badge badge-danger aLittleMargin">Check Error</span> </p>
+               
+                <table class="table table-borderless text-left">
+                    <thead>
+                        <th>Name</th> 
+                        <th>Status</th>
+                        <th>Billing  (ugx 1,300,590)</th>
+                    </thead>
+                    <tbody>
+                        <tr >
+                            <td>Makerere</td>     
+                            <td><span class="badge badge-success aLittleMargin">Okay</span></td> 
+                            <td>UGX 25,000</td>
+                        </tr> 
+                        <tr>
+                            <td>KCCA</td>     
+                            <td><span class="badge badge-success aLittleMargin">Okay</span></td> 
+                            <td>UGX 25,00</td>
+                        </tr>        
+                        <tr>
+                            <td>Biomed Tech</td>     
+                            <td><span class="badge badge-success aLittleMargin">Okay</span></td> 
+                            <td>UGX 300,000</td>
+                        </tr>  
+                        <tr>
+                            <td>city oil</td>     
+                            <td><span class="badge badge-danger aLittleMargin">Check error</span></td> 
+                            <td>UGX 700,00</td>
+                        </tr>  
+                        <tr>
+                            <td>Move app</td>     
+                            <td><span class="badge badge-danger aLittleMargin">Check error</span></td> 
+                            <td>UGX 860,00</td>
+                        </tr>    
+                                
+                    </tbody>
+                </table>          
             </div>
         </div>)
     } 
