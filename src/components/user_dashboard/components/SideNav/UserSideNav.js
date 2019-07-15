@@ -42,13 +42,19 @@ export default class UserSideNav extends Component{
                   <li className="nav-item">
                     <a className="nav-link" href="#">
                       <span data-feather="file-text"></span>
-                      Deployments
+                      Organizations
                     </a>
                   </li>
                   <li className="nav-item">
                     <a className="nav-link" href="#">
                       <span data-feather="file-text"></span>
-                      Organizations
+                      Namespaces
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link" href="#">
+                      <span data-feather="file-text"></span>
+                      Deployments
                     </a>
                   </li>
                 </ul>

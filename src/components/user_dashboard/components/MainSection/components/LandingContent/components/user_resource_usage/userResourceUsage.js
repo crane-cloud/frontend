@@ -19,7 +19,7 @@ export default class UserResourceUsage extends Component{
 
 
         return (<div class="row user-resource">
-            <div class="col text-center m-5">
+            <div class="col-9 text-center my-5 mx-auto">
                 <h5 class="mb-5">Total Bill : UGX 3,274,578</h5>
                 <Line data={data} />
             </div>

@@ -1,4 +1,6 @@
 import React , { Component } from "react";
+import { Link } from 'react-router-dom';
+
 
 import UserResourceUsage from "./components/user_resource_usage/userResourceUsage";
 
@@ -109,7 +111,7 @@ export default class LandingContent extends Component{
                     </thead>
                     <tbody>
                         <tr >
-                            <td>Makerere</td>     
+                            <td><Link to="/user-organization">Makerere</Link></td>     
                             <td><span class="badge badge-success aLittleMargin">Okay</span></td> 
                             <td>UGX 25,000</td>
                         </tr> 
