@@ -13,7 +13,7 @@ class NewDeployment extends Component {
             <form>
                 <h5>Write Deployment File</h5>
                 <p>Write your deployment on the area below. The configuration will be saved as a YAML file</p>
-                <textarea className="rounded-0 writeYAML" rows="10" cols="80"></textarea>
+                <textarea className="rounded-0 writeYAML" rows="10" cols="100"></textarea>
             </form>
         )
     }

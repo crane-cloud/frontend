@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 class Pods extends Component {
     constructor() {
@@ -103,16 +104,13 @@ class Pods extends Component {
     getPodsRunning() {
         const apiRoute = 'http://54.84.186.47:31765/monitor/pods';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-        .then((response) => {
-            return response.json()
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            this.setState({ podsRunning: response.data.data.result[0].value[1]} );
         })
-        .then((data) => {
-            this.setState({ podsRunning: data.data.result[0].value[1]} );
-        })
-        .catch(() => console.log("Cant access " + apiRoute));
-        
-        // const podsRunning = 50;
+        .catch(error => console.log("Can't access " + apiRoute, error));
+
         return (
             <div className="col-sm-6">
                 <div className="card">
@@ -130,15 +128,13 @@ class Pods extends Component {
     getPodsPending() {
         const apiRoute = 'http://54.84.186.47:31765/monitor/pods/pending';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-        .then((response) => {
-            return response.json()
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            this.setState({ podsPending: response.data.data.result[0].value[1]} );
         })
-        .then((data) => {
-            this.setState({ podsPending: data.data.result[0].value[1]} );
-        })
-        .catch(() => console.log("Cant access " + apiRoute));
-        
+        .catch(error => console.log("Can't access " + apiRoute, error));
+
         return (
             <div className="col-sm-6">
                 <div className="card">
@@ -156,15 +152,14 @@ class Pods extends Component {
     podsSucceding() {
         const apiRoute = 'http://54.84.186.47:31765/monitor/pods/succeeded';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-        .then((response) => {
-            return response.json()
+
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            this.setState({ podsSucceding: response.data.data.result[0].value[1]} );
         })
-        .then((data) => {
-            this.setState({ podsSucceding: data.data.result[0].value[1]} );
-        })
-        .catch(() => console.log("Cant access " + apiRoute));
-        
+        .catch(error => console.log("Can't access " + apiRoute, error));
+
         return (
             <div className="col-sm-6">
                 <div className="card">
@@ -182,14 +177,12 @@ class Pods extends Component {
     podsFailing() {
         const apiRoute = 'http://54.84.186.47:31765/monitor/pods/failed';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-        .then((response) => {
-            return response.json()
+        
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            this.setState({ podsFailing: response.data.data.result[0].value[1]} );
         })
-        .then((data) => {
-            this.setState({ podsFailing: data.data.result[0].value[1]} );
-        })
-        .catch(() => console.log("Cant access " + apiRoute));
+        .catch(error => console.log("Can't access " + apiRoute, error));
 
         return (
             <div className="col-sm-6">

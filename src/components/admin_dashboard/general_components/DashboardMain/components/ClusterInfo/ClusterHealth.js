@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import axios from 'axios';
+
 import TopNav from "../../../TopNav";
 import SideNav from "../../../sideNav";
 import DonutChart from 'react-donut-chart';
@@ -18,15 +20,13 @@ class ClusterHealth extends Component {
     getCpuUsage = () => {
         const apiRoute = 'http://54.84.186.47:31765/monitor/cluster/cpu';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-            .then((response) => {
-                return response.json()
-            })
-            .then((data) => {
-                let percentageCPU = this.roundToTwo((data.data.result[0].value[1]) * 100);
-                this.setState({ clusterCPU: percentageCPU });
-            })
-            .catch(() => console.log("Cant access " + apiRoute));
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            let percentageCPU = this.roundToTwo((response.data.data.result[0].value[1]) * 100);
+            this.setState({ clusterCPU: percentageCPU });
+        })
+        .catch(error => console.log("Can't access " + apiRoute, error))
 
         return (
             <div className="card">
@@ -53,15 +53,13 @@ class ClusterHealth extends Component {
     getMemoryUsage = () => {
         const apiRoute = 'http://54.84.186.47:31765/monitor/cluster/memory';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-            .then((response) => {
-                return response.json()
-            })
-            .then((data) => {
-                let percentageMemory = this.roundToTwo((data.data.result[0].value[1]) * 100);
-                this.setState({ clusterMemory: percentageMemory });
-            })
-            .catch(() => console.log("Cant access " + apiRoute));
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            let percentageMemory = this.roundToTwo((response.data.data.result[0].value[1]) * 100);
+            this.setState({ clusterMemory: percentageMemory });
+        })
+        .catch(error => console.log("Can't access " + apiRoute, error))
 
         return (
             <div className="card">
@@ -88,16 +86,13 @@ class ClusterHealth extends Component {
     getDiskUsage = () => {
         const apiRoute = 'http://54.84.186.47:31765/monitor/cluster/disk';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-            .then((response) => {
-                return response.json()
-            })
-            .then((data) => {
-                let percentageDisk = this.roundToTwo((data.data.result[0].value[1]) * 100)
-                console.log(percentageDisk);
-                this.setState({ clusterDisk: percentageDisk });
-            })
-            .catch(() => console.log("Cant access " + apiRoute));
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            let percentageDisk = this.roundToTwo((response.data.data.result[0].value[1]) * 100);
+            this.setState({ clusterDisk: percentageDisk });
+        })
+        .catch(error => console.log("Can't access " + apiRoute, error))
 
         return (
             <div className="card">
@@ -124,16 +119,13 @@ class ClusterHealth extends Component {
     getPodUsage = () => {
         const apiRoute = 'http://54.84.186.47:31765/monitor/cluster/cpu';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-            .then((response) => {
-                return response.json()
-            })
-            .then((data) => {
-                let percentagePod = this.roundToTwo((data.data.result[0].value[1]) * 100)
-                console.log(percentagePod);
-                this.setState({ clusterPod: percentagePod });
-            })
-            .catch(() => console.log("Cant access " + apiRoute));
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            let percentagePod = this.roundToTwo((response.data.data.result[0].value[1]) * 100)
+            this.setState({ clusterPod: percentagePod });
+        })
+        .catch(error => console.log("Can't access " + apiRoute, error))
 
         return (
             <div className="card">
