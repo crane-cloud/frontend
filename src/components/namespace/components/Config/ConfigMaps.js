@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 class ConfigMaps extends Component {
     constructor() {
@@ -16,14 +17,13 @@ class ConfigMaps extends Component {
     renderapiData = () => {
         const apiRoute = 'http://54.84.186.47:31765/resources/';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-        .then((response) => {
-            return response.json()
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            this.getData(response.data);
         })
-        .then((data) => {
-            this.getData(data);
-        })
-        .catch(() => console.log("Can't access " + apiRoute));
+        .catch(error => console.log("Can't access " + apiRoute, error))
+        
     }
 
     render() {

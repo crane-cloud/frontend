@@ -42,8 +42,8 @@ render(){
                     { this.renderNodeTable() }
                     <a href="javascript:void(0);" onClick={() => this.props.closeModal({ visibleNodesModal : false })}>Close</a>
                 </div>
-            </Modal>
-        </section>
+                </Modal>
+            </section>
     );
 }
 

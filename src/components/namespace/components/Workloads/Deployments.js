@@ -1,82 +1,58 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 class Deployments extends Component {
     constructor() {
         super()
         this.state = {
-            deploymentsArray: null
+            loading: true,
+            deploymentsArray: []
         }
     }
 
-    deploymentsArray = [
-        {
-            deploymentID: 345,
-            name: "nfs-client-provisioner",
-            label: "app: nfs-client-provisioner",
-            pods: "0/1",
-            age: "21 days",
-            images: "quay.io/external_storage/nfs-client-provisioner:latest"
-        },
-        {
-            deploymentID: 345,
-            name: "nfs-client-provisioner",
-            label: "app: nfs-client-provisioner",
-            pods: "0/1",
-            age: "21 days",
-            images: "quay.io/external_storage/nfs-client-provisioner:latest"
-        }
-    ]
-
-    getDeployments = () => {
-        // let deployments = null;
+    async componentDidMount() {
         const apiRoute = 'http://54.84.186.47:31765/monitor/deployment/replicas/info';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-            .then((response) => {
-                return response.json()
-            })
-            .then((data) => {
-                this.printDataToTable(data.data.result);
-
-            })
-            .catch(() => console.log("Cant access " + apiRoute));
-    }
-
-    printDataToTable = (array) => {
-        array.map((element) => {
-            return (
-                <tr key={this.state.deploymentsArray.indexOf(element)}>
-                    <td> {element.metric.deployment}</td>
-                    <td> {element.metric.kubernetes_node} </td>
-                    <td> {element.metric.namespace} </td>
-                    <td> {element.value[1]} </td>
-
-                    <td> {this.dropDown()} </td>
-                </tr>
-            );
+        
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            this.setState({ deploymentsArray: response.data.data.result, loading: false })
         })
+        .catch(error => console.log("Can't access " + apiRoute, error))
+
     }
 
-    createTable() {
-        return (<div>
-            <table className="table table-striped custom-table">
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Node</th>
-                        <th scope="col">Namespace</th>
-                        <th scope="col">Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.getDeployments()}
-                </tbody>
-            </table>
-        </div>
+    createTable = () => {
+        return (
+            <div>
+                <table className="table table-striped custom-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Node</th>
+                            <th scope="col">Namespace</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            this.state.deploymentsArray.map( element => ( 
+                                <tr key={this.state.deploymentsArray.indexOf(element)}>
+                                    <td> {element.metric.deployment}</td>
+                                    <td> {element.metric.kubernetes_node} </td>
+                                    <td> {element.metric.namespace} </td>
+                                    <td> {element.value[1]} </td>
+                                    <td> {this.dropDown()} </td>
+                                </tr>
+                            ))                  
+                        }
+                    </tbody>
+                </table>
+            </div>
         );
     }
 
-    dropDown() {
+    dropDown = () => {
         return (
             <div className="dropdown">
                 <div data-toggle="dropdown">
@@ -91,7 +67,7 @@ class Deployments extends Component {
         )
     }
 
-    renderDeploymentsTable() {
+    renderDeploymentsTable = () => {
         return (
             <div className="card col-sm-12">
                 <div className="card-header text-center">

@@ -1,0 +1,13 @@
+.writeYAML {
+    background: url(http://i.imgur.com/2cOaJ.png);
+    background-attachment: local;
+    background-repeat: no-repeat;
+    padding-left: 3%;
+    padding-top: 10px;
+    border-color:#ccc;
+}
+
+.Modal {
+    height: 100%;
+    overflow: auto;
+}

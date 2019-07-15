@@ -10,6 +10,22 @@ class ReplicaSets extends Component {
             pods: "0/1",
             age: "9 days",
             images: "quay.io/external_storage/nfs-client-provisioner:latest"
+        },
+        {
+            replicaSetID: 346,
+            name: "nfs-client-provisioner-54bd7c49f6",
+            labels: "app: nfs-client-provisioner pod-template-hash: 1068370592",
+            pods: "0/1",
+            age: "9 days",
+            images: "quay.io/external_storage/nfs-client-provisioner:latest"
+        },
+        {
+            replicaSetID: 346,
+            name: "nfs-client-provisioner-54bd7c49f6",
+            labels: "app: nfs-client-provisioner pod-template-hash: 1068370592",
+            pods: "0/1",
+            age: "9 days",
+            images: "quay.io/external_storage/nfs-client-provisioner:latest"
         }
     ]
 

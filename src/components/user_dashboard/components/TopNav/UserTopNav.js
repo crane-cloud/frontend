@@ -1,7 +1,7 @@
 import React , { Component } from "react";
 import { Link } from "react-router-dom";
 
-export default class TopNav extends Component{
+export default class UserTopNav extends Component{
 
     render(){
         return ( 

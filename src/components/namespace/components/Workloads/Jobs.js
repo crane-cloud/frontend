@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 class Jobs extends Component {
     constructor() {
@@ -13,14 +14,12 @@ class Jobs extends Component {
     jobsSucceding() {
         const apiRoute = 'http://54.84.186.47:31765/monitor/jobs/suceeded';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-        .then((response) => {
-            return response.json()
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            this.setState({ jobsSucceded: response.data.data.result[0].value[1]} );
         })
-        .then((data) => {
-            this.setState({ jobsSucceded: data.data.result[0].value[1]} );
-        })
-        .catch(() => console.log("Cant access " + apiRoute));
+        .catch(error => console.log("Can't access " + apiRoute, error))
 
         return (
             <div className="col-sm-6">
@@ -39,14 +38,12 @@ class Jobs extends Component {
     jobsFailing() {
         const apiRoute = 'http://54.84.186.47:31765/monitor/job/failed';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + apiRoute)
-        .then((response) => {
-            return response.json()
+
+        axios.get(proxyUrl + apiRoute)
+        .then(response => {
+            this.setState({ jobsFailed: response.data.data.result[0].value[1]} );
         })
-        .then((data) => {
-            this.setState({ jobsFailed: data.data.result[0].value[1]} );
-        })
-        .catch(() => console.log("Cant access " + apiRoute));
+        .catch(error => console.log("Can't access " + apiRoute, error))
 
         return (
             <div className="col-sm-6">

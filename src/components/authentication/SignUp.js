@@ -26,7 +26,7 @@ class SignUpForm extends Component {
       handleSubmit = (e) => {
         e.preventDefault();
         console.log('The form was submitted with the following data:');
-        console.log(this.state);
+        console.log(this.state);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
       }
     
     render() {
@@ -57,7 +57,7 @@ class SignUpForm extends Component {
                     </div>
 
                     <div className="FormField">
-                        <button className="FormField__Button mr-20">Sign Up</button> <Link to="/sign-in" className="FormField__Link">I'm already a member</Link>
+                        <button className="FormField__Button mr-20">Sign Up</button> <Link to="/login" className="FormField__Link">I'm already a member</Link>
                     </div>
 
                 </form>
