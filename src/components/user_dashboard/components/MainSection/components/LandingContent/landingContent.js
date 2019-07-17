@@ -7,9 +7,53 @@ import UserResourceUsage from "./components/user_resource_usage/userResourceUsag
 import "./LandingContent.css";
 
 export default class LandingContent extends Component{
+
+    // /user-id/organizations
+    // eg /07/organizations
+    organizationsArray =  [
+        {
+            name : "Makerere",
+            orgID : 46782,
+            status : "okey",
+            billing : "200957"
+        },
+        {
+            name : "KCCA",
+            orgID : 46784,
+            status : "error",
+            billing : "489774"
+        }
+    ];
+
+    // /user-id/organizations/org-id/deployments
+    // eg /07/organizations/05/deployments
+    deploymentsArray =  [
+        {
+            name : "Kampala Trains",
+            deploymentID : 46373,
+            status : "okey",
+            billing : "2057483"
+        },
+        {
+            name : "City Traders",
+            deploymentID : 57480,
+            status : "error",
+            billing : "4895894"
+        }
+    ];
+
     state = {
         deploymentsListVisible : false,
         organizationsListVisible : false,
+        organizationsArray : [],
+        deploymentsArray : []
+    }
+
+    componentDidMount(){
+        this.setState({
+            organizationsArray : this.organizationsArray,
+            deploymentsArray : this.deploymentsArray
+        });
     }
 
     toggleDeployments = () => {
@@ -44,12 +88,26 @@ export default class LandingContent extends Component{
     }
 
     returnDeploymentsCard = () => {
+        let numberOfErrors = 0;
+        let numberOfOkey = 0;
+        let totalBilling = 0;
+
+        this.state.deploymentsArray.map((deployment) => {
+            if(deployment.status === "okey"){
+                numberOfOkey = numberOfOkey + 1;
+            } else if(deployment.status === "error"){
+                numberOfErrors = numberOfErrors + 1;
+            }
+
+            totalBilling = parseFloat(totalBilling) + parseFloat(deployment.billing);
+        })
+
         return (<div class="card-body text-center">
             <h4 onClick={this.toggleDeployments} className="hoverCursor">
                 <span className={this.state.deploymentsListVisible ? "oi oi-minus pushPlusLeft" : "oi oi-plus pushPlusLeft"} ></span>
                 Deployments
-            <span class="badge badge-success aLittleMargin">Okay 5</span>
-                <span class="badge badge-danger aLittleMargin">Errors 2</span>
+            <span class="badge badge-success aLittleMargin">Okay { numberOfOkey }</span>
+                <span class="badge badge-danger aLittleMargin">Errors { numberOfErrors }</span>
             </h4>
 
             <div className={this.state.deploymentsListVisible ? "deploymentsListVisible" : "deploymentsListInvisible"}>
@@ -57,35 +115,20 @@ export default class LandingContent extends Component{
                     <thead>
                         <th>Name</th> 
                         <th>Status</th>
-                        <th>Billing  (ugx 2,334,590)</th>
+                        <th>Billing  (ugx { totalBilling })</th>
                     </thead>
                     <tbody>
-                        <tr >
-                            <td>Kampala Trians</td>     
-                            <td><span class="badge badge-success aLittleMargin">Okay</span></td> 
-                            <td>UGX 25,000</td>
-                        </tr> 
-                        <tr>
-                            <td>City Traders</td>     
-                            <td><span class="badge badge-success aLittleMargin">Okay</span></td> 
-                            <td>UGX 25,00</td>
-                        </tr>        
-                        <tr>
-                            <td>City high school</td>     
-                            <td><span class="badge badge-success aLittleMargin">Okay</span></td> 
-                            <td>UGX 300,000</td>
-                        </tr>  
-                        <tr>
-                            <td>Wandegeya market</td>     
-                            <td><span class="badge badge-danger aLittleMargin">Check error</span></td> 
-                            <td>UGX 700,00</td>
-                        </tr>  
-                        <tr>
-                            <td>Kiseka market</td>     
-                            <td><span class="badge badge-danger aLittleMargin">Check error</span></td> 
-                            <td>UGX 860,00</td>
-                        </tr>    
-                                
+                    {
+                            this.state.deploymentsArray.map((deployment) => {
+                                return (
+                                    <tr >
+                                        <td> { deployment.name }</td>     
+                                        <td><span class={ `badge badge-${ deployment.status === 'okey' ? 'success' : 'danger' } aLittleMargin` }>{ deployment.status }</span></td> 
+                                        <td>{ deployment.billing }</td>
+                                    </tr>
+                                );
+                            })
+                        }              
                     </tbody>
                 </table>          
             </div>
@@ -93,12 +136,26 @@ export default class LandingContent extends Component{
     } 
 
     returnOrganizationsCard = () => {
+        let numberOfErrors = 0;
+        let numberOfOkey = 0;
+        let totalBilling = 0;
+
+        this.state.organizationsArray.map((org) => {
+            if(org.status === "okey"){
+                numberOfOkey = numberOfOkey + 1;
+            } else if(org.status === "error"){
+                numberOfErrors = numberOfErrors + 1;
+            }
+
+            totalBilling = parseFloat(totalBilling) + parseFloat(org.billing);
+        })
+
         return (<div class="card-body text-center">
             <h4 onClick={this.toggleOrganizations} className="hoverCursor">
                 <span className={this.state.organizationsListVisible ? "oi oi-minus pushPlusLeft" : "oi oi-plus pushPlusLeft"} ></span>
                 Organizations
-            <span class="badge badge-success aLittleMargin">Okay 5</span>
-                <span class="badge badge-danger aLittleMargin">Errors 2</span>
+            <span class="badge badge-success aLittleMargin">Okay { numberOfOkey }</span>
+                <span class="badge badge-danger aLittleMargin">Errors { numberOfErrors }</span>
             </h4>
 
             <div className={this.state.organizationsListVisible ? "organizationsListVisible" : "organizationsListInvisible"}>
@@ -107,35 +164,20 @@ export default class LandingContent extends Component{
                     <thead>
                         <th>Name</th> 
                         <th>Status</th>
-                        <th>Billing  (ugx 1,300,590)</th>
+                        <th>Billing  (ugx { totalBilling })</th>
                     </thead>
                     <tbody>
-                        <tr >
-                            <td><Link to="/user-organization">Makerere</Link></td>     
-                            <td><span class="badge badge-success aLittleMargin">Okay</span></td> 
-                            <td>UGX 25,000</td>
-                        </tr> 
-                        <tr>
-                            <td>KCCA</td>     
-                            <td><span class="badge badge-success aLittleMargin">Okay</span></td> 
-                            <td>UGX 25,00</td>
-                        </tr>        
-                        <tr>
-                            <td>Biomed Tech</td>     
-                            <td><span class="badge badge-success aLittleMargin">Okay</span></td> 
-                            <td>UGX 300,000</td>
-                        </tr>  
-                        <tr>
-                            <td>city oil</td>     
-                            <td><span class="badge badge-danger aLittleMargin">Check error</span></td> 
-                            <td>UGX 700,00</td>
-                        </tr>  
-                        <tr>
-                            <td>Move app</td>     
-                            <td><span class="badge badge-danger aLittleMargin">Check error</span></td> 
-                            <td>UGX 860,00</td>
-                        </tr>    
-                                
+                    {
+                            this.state.organizationsArray.map((org) => {
+                                return (
+                                    <tr >
+                                        <td> { org.name }</td>     
+                                        <td><span class={ `badge badge-${ org.status === 'okey' ? 'success' : 'danger' } aLittleMargin` }>{ org.status }</span></td> 
+                                        <td>{ org.billing }</td>
+                                    </tr>
+                                );
+                            })
+                        }        
                     </tbody>
                 </table>          
             </div>
