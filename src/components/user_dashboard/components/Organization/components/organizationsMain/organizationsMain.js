@@ -64,6 +64,11 @@ export default class OrganizationsMain extends Component{
 
                 {
                     this.state.organizationNameSpaces.map((namespace) => {
+                        let totalBill = 0;
+                        namespace.deployments.map((dep) => {
+                            totalBill = totalBill + dep.billing;
+                        });
+
                         return (
                             <div class="col-6 mb-5">
                                 <div class="card">
@@ -74,7 +79,7 @@ export default class OrganizationsMain extends Component{
                                         <thead>
                                             <th>Deployment</th> 
                                             <th>Status</th>
-                                            <th>Billing  (ugx 2,334,590)</th>
+                                            <th>Billing  (ugx { totalBill })</th>
                                         </thead>
                                         <tbody>
                                             {
@@ -83,7 +88,7 @@ export default class OrganizationsMain extends Component{
                                                         <tr>
                                                             <td> { deployment.name } </td>
                                                             <td><span class={ `badge badge-${ deployment.status === 'okey' ? 'success' : 'danger' } aLittleMargin` }>{ deployment.status }</span></td>
-                                                            <td> UGX { deployment.bill } </td> 
+                                                            <td> UGX { deployment.billing } </td> 
                                                         </tr>
                                                     );
                                                 })

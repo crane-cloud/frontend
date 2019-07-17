@@ -171,7 +171,7 @@ export default class LandingContent extends Component{
                             this.state.organizationsArray.map((org) => {
                                 return (
                                     <tr >
-                                        <td> <Link to={ `/user-organization/${org.orgID}` }> { org.name } </Link></td>     
+                                        <td> <Link to={ `/user-organizations/${org.orgID}` }> { org.name } </Link></td>     
                                         <td><span class={ `badge badge-${ org.status === 'okey' ? 'success' : 'danger' } aLittleMargin` }>{ org.status }</span></td> 
                                         <td>{ org.billing }</td>
                                     </tr>

@@ -25,7 +25,7 @@ export default class App extends Component{
                 <Route exact path="/:name/cluster-info" component={ClusterInfo} />
                 <Route exact path="/victory" component={Victory} />
                 <Route exact path="/user-dashboard" component={UserDashboard} />
-                <Route exact path="/user-organization/:orgID" component={UserOrganization} />
+                <Route exact path="/user-organizations/:orgID" component={UserOrganization} />
             </Router>
         );
     }
