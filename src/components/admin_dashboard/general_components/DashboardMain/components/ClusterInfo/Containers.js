@@ -165,7 +165,7 @@ class Containers extends Component {
         return +(Math.round(num + "e+2")  + "e-2");
     }
 
-    renderContainers() {
+    renderContainers = () => {
         return (
             <div className="card parent">
                 <div className="card-header">

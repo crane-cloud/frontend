@@ -8,13 +8,13 @@
   .SignIn_aside {
     width: 50%;
     /* background-color: #66DAC7; */
-    background-color: #9DA6B1;
+    background-color: #fff;
   }
   
   .SignIn_form {
     width: 50%;
     /* background-color: #2E4158; */
-    background-color: black;
+    background-color: #1b87c2;
     padding: 25px 40px;
     overflow: auto;
   }
@@ -28,13 +28,13 @@
   }
   
   .FormTitle {
-    color: #707C8B;
+    color: #fff;
     font-weight: 300;
     margin-bottom: 50px;
   }
   
   .FormTitle__Link {
-    color: #707C8B;
+    color: #fff;
     text-decoration: none;
     display: inline-block;
     font-size: 1.7em;
@@ -47,8 +47,8 @@
   }
   
   .FormTitle__Link--Active {
-    color: white;
-    border-bottom: 1px solid #199087;
+    color: #ffffff;
+    border-bottom: 1px solid #fff;
   }
   
   .FormField {
@@ -67,7 +67,7 @@
     border: none;
     color: white;
     outline: none;
-    border-bottom: 1px solid #445366;
+    border-bottom: 1px solid #fff;
     font-size: 1em;
     font-weight: 300;
     padding-bottom: 10px;
@@ -75,31 +75,31 @@
   }
   
   .FormField__Input::placeholder {
-    color: #616E7F;
+    color: #c8ced6;
   }
   
   .FormField__Button {
-    background-color: #52C4B9;
-    color: white;
+    background-color: #e9eef0;
+    color: #1b87c2;
     border: none;
     outline: none;
     border-radius: 25px;
     padding: 15px 70px;
-    font-size: .8em;
+    font-size: 1em;
     font-weight: 500;
     margin-right: 10px;
   }
   
   .FormField__Link {
-    color: #66707D;
+    color: #fff;
     text-decoration: none;
     display: inline-block;
-    border-bottom: 1.5px solid #225E62;
+    border-bottom: 1.5px solid #fff;
     padding-bottom: 5px;
   }
   
   .FormField__CheckboxLabel {
-    color: #646F7D;
+    color: #fff;
     font-size: .9em;
   }
   
@@ -110,7 +110,7 @@
   
   .FormField__TermsLink {
     color: white;
-    border-bottom: 1px solid #199087;
+    border-bottom: 1px solid #fff;
     text-decoration: none;
     display: inline-block;
   padding-bottom: 2px;

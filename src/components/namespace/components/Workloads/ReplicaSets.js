@@ -29,7 +29,7 @@ class ReplicaSets extends Component {
         }
     ]
 
-    createTable() {
+    createTable = () => {
         return (<div>
             <table className="table table-striped custom-table">
                 <thead>
@@ -62,7 +62,7 @@ class ReplicaSets extends Component {
         );
     }
 
-    dropDown() {
+    dropDown = () => {
         return (
             <div className="dropdown">
                 <div data-toggle="dropdown">
@@ -77,7 +77,7 @@ class ReplicaSets extends Component {
         )
     }
 
-    renderRepSetsTable() {
+    renderRepSetsTable = () => {
         return (
             <div className="card col-sm-12">
                 <div className="card-header text-center">

@@ -12,7 +12,7 @@ class TotalResources extends Component {
         diskUsage: "27%"
     }
 
-    cpuUsage() {
+    cpuUsage = () => {
 
         return (
             <div className="col-4  my-4">
@@ -28,7 +28,7 @@ class TotalResources extends Component {
         );
     }
 
-    memoryUsage() {
+    memoryUsage = () => {
         const failedJobs = 1;
         return (
             <div className="col-4  my-4">
@@ -44,7 +44,7 @@ class TotalResources extends Component {
         );
     }
 
-    diskUsage() {
+    diskUsage = () => {
         const failedJobs = 1;
         return (
             <div className="col-4  my-4">
@@ -61,7 +61,7 @@ class TotalResources extends Component {
     }
 
 
-    renderUsage() { 
+    renderUsage = () => { 
         return (
             <div className="row">
                 {this.cpuUsage()}

@@ -47,7 +47,7 @@ render(){
     );
 }
 
-renderNodeTable () {
+renderNodeTable  = () => {
     return (<div>
         <table className="table table-striped">
             <thead>
