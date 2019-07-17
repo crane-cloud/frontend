@@ -6,10 +6,9 @@ import "./userResource.css";
 
 export default class UserResourceUsage extends Component{
 
-    // /userID/totalBill
-    //eg /09/totalBill
+    // /userID/totalBill&totalgraph
+    //eg /09/totalBill&totalgraph
     totalBill = 2336720;
-
     graphLabels = ["Jan", "Feb", "Apr", "May", "Jun", 'Jul', "Aug"];
     graphDataValues = [10,20,60,80,5,2,70];
 
