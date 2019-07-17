@@ -29,7 +29,7 @@ class Secrets extends Component {
         }
     ]
 
-    createTable() {
+    createTable = () => {
         return (<div>
             <table className="table table-striped custom-table" >
                 <thead>
@@ -58,7 +58,7 @@ class Secrets extends Component {
         );
     }
 
-    dropDown() {
+    dropDown = () => {
         return (
             <div className="dropdown">
                 <div data-toggle="dropdown">
@@ -72,7 +72,7 @@ class Secrets extends Component {
         )
     }
 
-    renderSecretsTable() {
+    renderSecretsTable = () => {
         return (
             <div className="card col-sm-12">
                 <div className="card-header text-center">

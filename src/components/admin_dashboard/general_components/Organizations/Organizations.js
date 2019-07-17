@@ -21,7 +21,7 @@ class Organizations extends Component {
         }
     ]
 
-    createTable() {
+    createTable = () => {
         return (<div>
             <table className="table table-striped custom-table">
                 <thead>
@@ -50,7 +50,7 @@ class Organizations extends Component {
         );
     }
 
-    dropDown() {
+    dropDown = () => {
         return (
             <div className="dropdown">
                 <div data-toggle="dropdown">
@@ -64,7 +64,7 @@ class Organizations extends Component {
         )
     }
 
-    renderOrganizationsTable() {
+    renderOrganizationsTable = () => {
         return (
             <div className="card col-sm-12">
                 {/* <div className="card-header text-center">

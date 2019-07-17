@@ -40,7 +40,7 @@ class Pods extends Component {
         }
     ]
 
-    createTable() {
+    createTable = () => {
         return (<div>
             <table className="table table-striped" id="pods-table">
                 <thead>
@@ -73,7 +73,7 @@ class Pods extends Component {
         );
     }
 
-    dropDown() {
+    dropDown = () => {
         return (
             <div className="dropdown">
                 <div data-toggle="dropdown">
@@ -87,7 +87,7 @@ class Pods extends Component {
         )
     }
 
-    renderPodsTable() {
+    renderPodsTable = () => {
         return (
             <div className="card col-sm-12">
                 <div className="card-header text-center">
@@ -101,7 +101,7 @@ class Pods extends Component {
         );
     }
 
-    getPodsRunning() {
+    getPodsRunning = () => {
         const apiRoute = 'http://54.84.186.47:31765/monitor/pods';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
@@ -125,7 +125,7 @@ class Pods extends Component {
         );
     }
 
-    getPodsPending() {
+    getPodsPending = () => {
         const apiRoute = 'http://54.84.186.47:31765/monitor/pods/pending';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
@@ -149,7 +149,7 @@ class Pods extends Component {
         );
     }
 
-    podsSucceding() {
+    podsSucceding = () => {
         const apiRoute = 'http://54.84.186.47:31765/monitor/pods/succeeded';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
@@ -174,7 +174,7 @@ class Pods extends Component {
         );
     }
 
-    podsFailing() {
+    podsFailing = () => {
         const apiRoute = 'http://54.84.186.47:31765/monitor/pods/failed';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
         
@@ -199,7 +199,7 @@ class Pods extends Component {
     }
 
 
-    renderPods() {
+    renderPods = () => {
         return (
             <div className="card parent">
                 <div className="card-header">

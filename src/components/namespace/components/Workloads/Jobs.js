@@ -11,7 +11,7 @@ class Jobs extends Component {
         }
     }
 
-    jobsSucceding() {
+    jobsSucceding = () => {
         const apiRoute = 'http://54.84.186.47:31765/monitor/jobs/suceeded';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
@@ -35,7 +35,7 @@ class Jobs extends Component {
         );
     }
 
-    jobsFailing() {
+    jobsFailing = () => {
         const apiRoute = 'http://54.84.186.47:31765/monitor/job/failed';
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
@@ -60,7 +60,7 @@ class Jobs extends Component {
     }
 
 
-    renderJobs() {
+    renderJobs = () => {
         return (
             <div className="card parent">
                 <div className="card-header">

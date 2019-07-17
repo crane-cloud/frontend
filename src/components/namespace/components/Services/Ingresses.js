@@ -29,7 +29,7 @@ class Ingresses extends Component {
         }
     ]
 
-    createTable() {
+    createTable = () => {
         return (<div>
             <table className="table table-striped custom-table">
                 <thead>
@@ -57,7 +57,7 @@ class Ingresses extends Component {
         );
     }
 
-    renderIngressesTable() {
+    renderIngressesTable = () => {
         return (
             <div className="card col-sm-12">
                 <div className="card-header text-center">
