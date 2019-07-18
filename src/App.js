@@ -10,7 +10,7 @@ import ClusterInfo from "./components/admin_dashboard/general_components/Dashboa
 import Victory from "./components/admin_dashboard/general_components/Organizations/components/Victory";
 import UserDashboard from "./components/user_dashboard/main";
 import UserOrganization from "./components/user_dashboard/components/Organization/organization";
-
+import Deployment from "./components/user_dashboard/components/Deployment/ExistingDeployment/Deployment";
 
 export default class App extends Component{
     render(){
@@ -26,6 +26,7 @@ export default class App extends Component{
                 <Route exact path="/victory" component={Victory} />
                 <Route exact path="/user-dashboard" component={UserDashboard} />
                 <Route exact path="/user-organizations/:orgID" component={UserOrganization} />
+                <Route exact path="/deployments/:deploymentID" component={Deployment} />
             </Router>
         );
     }
