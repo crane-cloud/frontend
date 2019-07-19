@@ -9,6 +9,7 @@ class Namespace extends Component {
 
     render() {
         const { nameSpace } = this.props.location.state;
+        
         return (
             <div>
                 <TopNav />
