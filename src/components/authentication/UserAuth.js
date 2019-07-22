@@ -11,7 +11,7 @@ class UserAuthPage extends Component {
     render() {
         return (
             <Router>
-                <TopNav />
+                {/* <TopNav /> */}
                 <div className="SignIn">
                     <div className="SignIn_aside"></div>
                     <div className="SignIn_form" id="scrollable">

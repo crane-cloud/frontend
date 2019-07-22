@@ -2,7 +2,7 @@
     display: flex;
     color: white;
     height: 100vh;
-    padding-top: 3%;
+    /* padding-top: 3%; */
   }
 
   .SignIn_aside {
@@ -30,7 +30,7 @@
   .FormTitle {
     color: #fff;
     font-weight: 300;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
   }
   
   .FormTitle__Link {

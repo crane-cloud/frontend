@@ -1,4 +1,4 @@
-import { FETCH_JOBS_SUCCEEDED, FETCH_JOBS_FAILED } from './actionTypes';
+import { FETCH_JOBS_SUCCESS, FETCH_JOBS_FAILED } from './actionTypes';
 import axios from 'axios';
 
 // actions for fetching existing jobs stats - 
@@ -14,7 +14,7 @@ export const fetchJobsSucceeded = () => dispatch => {
 
     axios.get(proxyUrl + apiRoute)
         .then(response => dispatch({
-            type: FETCH_JOBS_SUCCEEDED,
+            type: FETCH_JOBS_SUCCESS,
             payload: response.data.data.result[0].value[1]
         }))
         .catch(error => console.log("Can't access " + apiRoute, error));

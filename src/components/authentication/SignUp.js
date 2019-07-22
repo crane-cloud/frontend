@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import { BASE_URL } from '../../config';
 
@@ -15,7 +15,8 @@ class SignUpForm extends Component {
             email: "",
             password: "",
             confirmPassword: "",
-            hasAgreed: false
+            hasAgreed: false,
+            redirect: false
         }
     }
 
@@ -36,24 +37,21 @@ class SignUpForm extends Component {
         } else if (this.state.hasAgreed !== true) {
             return;
         } else {
-            console.log('The form was submitted with the following data:');
-            console.log(this.state);
             this.registerUser();
 
         }
     }
 
     registerUser = () => {
-        const { name, email, password, confirmPassword } = this.state;
+        const { name, email, password } = this.state;
 
         axios.post(BASE_URL + '/register', {
             name: name,
             email: email,
             password: password
-
         })
             .then((response) => {
-                // handle JWT response here
+                this.setState({ redirect: true });
                 console.log(response);
             })
             .catch((error) => {
@@ -63,7 +61,10 @@ class SignUpForm extends Component {
     }
 
     render() {
-        const { name, email, password, confirmPassword } = this.state;
+        const { name, email, password, confirmPassword, redirect } = this.state;
+        if (redirect) {
+            return <Redirect to="/user-dashboard"/>;
+        }
         return (
             <div className="FormCenter">
 

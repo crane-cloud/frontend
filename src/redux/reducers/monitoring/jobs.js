@@ -1,4 +1,4 @@
-import { FETCH_JOBS_FAILED, FETCH_JOBS_SUCCEEDED } from '../actions/actionTypes';
+import { FETCH_JOBS_FAILED, FETCH_JOBS_SUCCESS } from '../../actions/actionTypes';
 
 const initialState = {
     jobsSucceeded: "",
@@ -13,7 +13,7 @@ const jobsReducer = (state = initialState, action) => {
                 jobsFailed: action.payload
             };
 
-        case FETCH_JOBS_SUCCEEDED:
+        case FETCH_JOBS_SUCCESS:
             return {
                 ...state,
                 jobsSucceeded: action.payload

@@ -18,6 +18,7 @@ export default class App extends Component{
             <Router >
                 <Route exact path="/" component={HomePage} />
                 <Route exact path="/login" component={UserAuthPage} />
+                <Route exact path="/register" component={UserAuthPage} />
                 <Route exact path="/admin-dashboard" component={AdminDashboard} />
                 <Route exact path="/namespaces/:namespaceId" component={Namespace} />
                 <Route exact path="/organizations" component={OrganizationsDashboard} />

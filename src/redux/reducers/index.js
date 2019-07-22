@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import loginSuccess from './loginSuccess';
-import jobsReducer from './jobsReducer';
+import loginSuccess from './auth/loginSuccess';
+import jobsReducer from './monitoring/jobs';
 
 
 export default combineReducers({

@@ -30,23 +30,30 @@ class SignInForm extends Component {
     /**
      * make api call
      */
-    axios(BASE_URL + '/register/', {
+    axios(BASE_URL + '/login', {
       method: 'POST',
       data: this.state.data,
       headers: {
         'Content-Type': 'application/json'
       }
     }).then(response => {
-      // dispatch action on success
-      console.log(response);
+      // if (response.status === 200 && response.data.jwt && response.data.expireAt) {
+      //   let jwt = response.data.jwt;
+      //   let expire_at = response.data.expireAt;
 
-      loginSuccess({
-        user: this.state,
-        accessToken: '988t8tyvvgd777'
-      })
-    }).catch(error => {
-      console.log(error);
-    });
+      //   localStorage.setItem("access_token", jwt);
+      //   localStorage.setItem("expire_at", expire_at);
+
+        // dispatch action on success
+        // console.log(response);
+
+        loginSuccess({
+          user: this.state,
+          accessToken: '988t8tyvvgd777'
+        })
+      }).catch(error => {
+        console.log(error);
+      });
   }
 
   render() {
