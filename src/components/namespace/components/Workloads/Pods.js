@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import {
+    fetchPodsSuccess,
+    fetchPodsFailed,
+    fetchPodsPending,
+    fetchPodsRunning
+} from "../../../../redux/actions/monitoring/fetchPods";
 
 class Pods extends Component {
-    constructor() {
-        super()
-        this.state = {
-            podsRunning: 0,
-            podsPending: 0,
-            podsSucceding: 0,
-            podsFailing: 0
-        }
+
+    componentWillMount() {
+        this.props.fetchPodsRunning();
+        this.props.fetchPodsPending();
+        this.props.fetchPodsSuccess();
+        this.props.fetchPodsFailed();
     }
 
     // link/nodes/{ this.props.clusterID }
@@ -87,6 +92,7 @@ class Pods extends Component {
         )
     }
 
+
     renderPodsTable = () => {
         return (
             <div className="card col-sm-12">
@@ -101,16 +107,7 @@ class Pods extends Component {
         );
     }
 
-    getPodsRunning = () => {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/pods';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            this.setState({ podsRunning: response.data.data.result[0].value[1]} );
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error));
-
+    getPodsRunning = (podsRunning) => {
         return (
             <div className="col-sm-6">
                 <div className="card">
@@ -118,23 +115,14 @@ class Pods extends Component {
                         Pods Running
                     </div>
                     <div className="card-body">
-                        <h1 className="card-title text-center">{this.state.podsRunning}</h1>
+                        <h1 className="card-title text-center">{podsRunning}</h1>
                     </div>
                 </div>
             </div>
         );
     }
 
-    getPodsPending = () => {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/pods/pending';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            this.setState({ podsPending: response.data.data.result[0].value[1]} );
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error));
-
+    getPodsPending = (podsPending) => {
         return (
             <div className="col-sm-6">
                 <div className="card">
@@ -142,24 +130,14 @@ class Pods extends Component {
                         Pending Pods
                     </div>
                     <div className="card-body">
-                        <h1 className="card-title text-center">{this.state.podsPending}</h1>
+                        <h1 className="card-title text-center">{podsPending}</h1>
                     </div>
                 </div>
             </div>
         );
     }
 
-    podsSucceding = () => {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/pods/succeeded';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            this.setState({ podsSucceding: response.data.data.result[0].value[1]} );
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error));
-
+    podsSuccess = (podsSuccess) => {
         return (
             <div className="col-sm-6">
                 <div className="card">
@@ -167,23 +145,14 @@ class Pods extends Component {
                         Pods Succeeded
                     </div>
                     <div className="card-body">
-                        <h1 className="card-title text-center">{this.state.podsSucceding}</h1>
+                        <h1 className="card-title text-center">{podsSuccess}</h1>
                     </div>
                 </div>
             </div>
         );
     }
 
-    podsFailing = () => {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/pods/failed';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            this.setState({ podsFailing: response.data.data.result[0].value[1]} );
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error));
-
+    podsFailing = (podsFail) => {
         return (
             <div className="col-sm-6">
                 <div className="card">
@@ -191,7 +160,7 @@ class Pods extends Component {
                         Pods Failed
                     </div>
                     <div className="card-body">
-                        <h1 className="card-title text-center">{this.state.podsFailing}</h1>
+                        <h1 className="card-title text-center">{podsFail}</h1>
                     </div>
                 </div>
             </div>
@@ -200,6 +169,13 @@ class Pods extends Component {
 
 
     renderPods = () => {
+        const {
+            podsRunning,
+            podsPending,
+            podsSuccess,
+            podsFailed
+        } = this.props;
+
         return (
             <div className="card parent">
                 <div className="card-header">
@@ -207,12 +183,12 @@ class Pods extends Component {
                 </div>
                 <div className="card-body">
                     <div className="row">
-                        {this.getPodsRunning()}
-                        {this.getPodsPending()}
+                        {this.getPodsRunning(podsRunning)}
+                        {this.getPodsPending(podsPending)}
                     </div>
                     <div className="row">
-                        {this.podsSucceding()}
-                        {this.podsFailing()}
+                        {this.podsSuccess(podsSuccess)}
+                        {this.podsFailing(podsFailed)}
                     </div>
                     <div className="row">
                         {this.renderPodsTable()}
@@ -229,4 +205,31 @@ class Pods extends Component {
     }
 }
 
-export default Pods;
+Pods.propTypes = {
+    fetchPodsRunning: PropTypes.func.isRequired,
+    fetchPodsPending: PropTypes.func.isRequired,
+    fetchPodsSuccess: PropTypes.func.isRequired,
+    fetchPodsFailed: PropTypes.func.isRequired,
+    podsRunning: PropTypes.string,
+    podsPending: PropTypes.string,
+    podsSuccess: PropTypes.string,
+    podsFailed: PropTypes.string
+
+}
+
+const mapStateToProps = state => ({
+    podsRunning: state.pods.podsRunning,
+    podsPending: state.pods.podsPending,
+    podsSuccess: state.pods.podsSuccess,
+    podsFailed: state.pods.podsFailed
+});
+
+export default connect(
+    mapStateToProps,
+    {
+        fetchPodsRunning,
+        fetchPodsFailed,
+        fetchPodsSuccess,
+        fetchPodsPending
+    }
+)(Pods);

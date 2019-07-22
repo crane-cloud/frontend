@@ -1,28 +1,17 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { fetchDeployments } from '../../../../redux/actions/monitoring/fetchDeployments';
+
 
 class Deployments extends Component {
-    constructor() {
-        super()
-        this.state = {
-            loading: true,
-            deploymentsArray: []
-        }
-    }
 
-    async componentDidMount() {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/deployment/replicas/info';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            this.setState({ deploymentsArray: response.data.data.result, loading: false })
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error))
-
+    componentWillMount() {
+        this.props.fetchDeployments();
     }
 
     createTable = () => {
+        
         return (
             <div>
                 <table className="table table-striped custom-table">
@@ -36,8 +25,8 @@ class Deployments extends Component {
                     </thead>
                     <tbody>
                         {
-                            this.state.deploymentsArray.map( element => ( 
-                                <tr key={this.state.deploymentsArray.indexOf(element)}>
+                            this.props.deploymentsArray.map( element => ( 
+                                <tr key={this.props.deploymentsArray.indexOf(element)}>
                                     <td> {element.metric.deployment}</td>
                                     <td> {element.metric.kubernetes_node} </td>
                                     <td> {element.metric.namespace} </td>
@@ -88,4 +77,13 @@ class Deployments extends Component {
     }
 }
 
-export default Deployments;
+Deployments.propTypes = {
+    fetchDeployments: PropTypes.func.isRequired,
+    deploymentsArray: PropTypes.array.isRequired
+}
+
+const mapStateToProps = state => ({
+    deploymentsArray: state.deployments.deploymentsArray
+})
+
+export default connect(mapStateToProps, { fetchDeployments })(Deployments);

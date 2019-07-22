@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import "../../assets/css/signin.css";
 
-import loginSuccess from '../../redux/actions/loginSuccess';
+import loginSuccess from '../../redux/actions/auth/loginSuccess';
 import axios from 'axios';
 import { BASE_URL } from '../../config';
 

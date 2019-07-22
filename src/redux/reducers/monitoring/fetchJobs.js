@@ -5,7 +5,7 @@ const initialState = {
     jobsFailed: ""
 }
 
-const jobsReducer = (state = initialState, action) => {
+const fetchJobs = (state = initialState, action) => {
     switch (action.type) {
         case FETCH_JOBS_FAILED:
             return {
@@ -25,5 +25,5 @@ const jobsReducer = (state = initialState, action) => {
     }
 }
 
-export default jobsReducer;
+export default fetchJobs;
 

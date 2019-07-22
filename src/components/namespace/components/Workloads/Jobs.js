@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchJobsSucceeded, fetchJobsFailed } from '../../../../redux/actions/jobsAction';
+import { fetchJobsSuccess, fetchJobsFailed } from '../../../../redux/actions/monitoring/fetchJobs';
 
 class Jobs extends Component {
 
     componentWillMount() {
         this.props.fetchJobsFailed();
-        this.props.fetchJobsSucceeded();
+        this.props.fetchJobsSuccess();
     }
 
 
@@ -56,10 +56,10 @@ class Jobs extends Component {
 }
 
 Jobs.propTypes = {
-    fetchJobsSucceeded: PropTypes.func.isRequired,
+    fetchJobsSuccess: PropTypes.func.isRequired,
     fetchJobsFailed: PropTypes.func.isRequired,
-    jobsFailed: PropTypes.number,
-    jobsSucceeded: PropTypes.number
+    jobsFailed: PropTypes.string,
+    jobsSucceeded: PropTypes.string
 }
 
 const mapStateToProps = state => ({
@@ -67,4 +67,4 @@ const mapStateToProps = state => ({
     jobsSucceeded: state.jobs.jobsSucceeded
 });
 
-export default connect(mapStateToProps, { fetchJobsFailed, fetchJobsSucceeded })(Jobs);
+export default connect(mapStateToProps, { fetchJobsFailed, fetchJobsSuccess })(Jobs);
