@@ -38,9 +38,9 @@ export default class UserResourceUsage extends Component{
         };
 
 
-        return (<div class="row user-resource">
-            <div class="col-9 text-center my-5 mx-auto">
-                <h5 class="mb-5">Total Bill : UGX { this.state.totalBill }</h5>
+        return (<div className="row user-resource">
+            <div className="col-9 text-center my-5 mx-auto">
+                <h5 className="mb-5">Total Bill : UGX { this.state.totalBill }</h5>
                 <Line data={data} />
             </div>
         </div>);

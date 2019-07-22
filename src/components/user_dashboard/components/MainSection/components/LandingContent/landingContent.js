@@ -69,15 +69,15 @@ export default class LandingContent extends Component{
     render(){
         return (
             <div>
-            <div class="row">
-                <div class="col">
-                    <div class="card">
+            <div className="row">
+                <div className="col">
+                    <div className="card">
                         { this.returnDeploymentsCard() }
                     </div>
                 </div>
 
-                <div class="col">
-                <div class="card">
+                <div className="col">
+                <div className="card">
                         { this.returnOrganizationsCard() }
                     </div>
                 </div>
@@ -102,16 +102,16 @@ export default class LandingContent extends Component{
             totalBilling = parseFloat(totalBilling) + parseFloat(deployment.billing);
         })
 
-        return (<div class="card-body text-center">
+        return (<div className="card-body text-center">
             <h4 onClick={this.toggleDeployments} className="hoverCursor">
                 <span className={this.state.deploymentsListVisible ? "oi oi-minus pushPlusLeft" : "oi oi-plus pushPlusLeft"} ></span>
                 Deployments
-            <span class="badge badge-success aLittleMargin">Okay { numberOfOkey }</span>
-                <span class="badge badge-danger aLittleMargin">Errors { numberOfErrors }</span>
+            <span className="badge badge-success aLittleMargin">Okay { numberOfOkey }</span>
+                <span className="badge badge-danger aLittleMargin">Errors { numberOfErrors }</span>
             </h4>
 
             <div className={this.state.deploymentsListVisible ? "deploymentsListVisible" : "deploymentsListInvisible"}>
-                <table class="table table-borderless text-left">
+                <table className="table table-borderless text-left">
                     <thead>
                         <th>Name</th> 
                         <th>Status</th>
@@ -122,8 +122,8 @@ export default class LandingContent extends Component{
                             this.state.deploymentsArray.map((deployment) => {
                                 return (
                                     <tr >
-                                        <td> { deployment.name }</td>     
-                                        <td><span class={ `badge badge-${ deployment.status === 'okey' ? 'success' : 'danger' } aLittleMargin` }>{ deployment.status }</span></td> 
+                                        <td> <Link to={ `/deployments/${deployment.deploymentID}` }> { deployment.name } </Link></td>     
+                                        <td><span className={ `badge badge-${ deployment.status === 'okey' ? 'success' : 'danger' } aLittleMargin` }>{ deployment.status }</span></td> 
                                         <td>{ deployment.billing }</td>
                                     </tr>
                                 );
@@ -150,17 +150,17 @@ export default class LandingContent extends Component{
             totalBilling = parseFloat(totalBilling) + parseFloat(org.billing);
         })
 
-        return (<div class="card-body text-center">
+        return (<div className="card-body text-center">
             <h4 onClick={this.toggleOrganizations} className="hoverCursor">
                 <span className={this.state.organizationsListVisible ? "oi oi-minus pushPlusLeft" : "oi oi-plus pushPlusLeft"} ></span>
                 Organizations
-            <span class="badge badge-success aLittleMargin">Okay { numberOfOkey }</span>
-                <span class="badge badge-danger aLittleMargin">Errors { numberOfErrors }</span>
+            <span className="badge badge-success aLittleMargin">Okay { numberOfOkey }</span>
+                <span className="badge badge-danger aLittleMargin">Errors { numberOfErrors }</span>
             </h4>
 
             <div className={this.state.organizationsListVisible ? "organizationsListVisible" : "organizationsListInvisible"}>
                
-                <table class="table table-borderless text-left">
+                <table className="table table-borderless text-left">
                     <thead>
                         <th>Name</th> 
                         <th>Status</th>
@@ -171,8 +171,8 @@ export default class LandingContent extends Component{
                             this.state.organizationsArray.map((org) => {
                                 return (
                                     <tr >
-                                        <td> { org.name }</td>     
-                                        <td><span class={ `badge badge-${ org.status === 'okey' ? 'success' : 'danger' } aLittleMargin` }>{ org.status }</span></td> 
+                                        <td> <Link to={ `/user-organizations/${org.orgID}` }> { org.name } </Link></td>     
+                                        <td><span className={ `badge badge-${ org.status === 'okey' ? 'success' : 'danger' } aLittleMargin` }>{ org.status }</span></td> 
                                         <td>{ org.billing }</td>
                                     </tr>
                                 );
