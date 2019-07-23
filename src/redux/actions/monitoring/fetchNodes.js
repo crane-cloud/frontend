@@ -1,60 +1,56 @@
 import {
-    FETCH_PODS_RUNNING,
-    FETCH_PODS_PENDING,
-    FETCH_PODS_SUCCESS,
-    FETCH_PODS_FAILED
-} from '../actionTypes';
+    FETCH_NODES_TABLE,
+    FETCH_TOTAL_NODES,
+    FETCH_NODES_OUTOFDISK,
+    FETCH_NODES_UNAVAILABLE
+} from "../../actions/actionTypes";
 
 import axios from 'axios';
 import { PROXY_URL } from "../../../config";
 
-// export function fetchPosts() {
-//     return function(dispatch) {
-// in ES6 we'd write this stuff (above) like this (below)
-
-export const fetchPodsRunning = () => dispatch => {
+export const fetchNodesTable = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/pods';
+    const apiRoute = 'http://54.84.186.47:31765/monitor/nodes/info';
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
-            type: FETCH_PODS_RUNNING,
+            type: FETCH_NODES_TABLE,
+            payload: response.data.data.result
+        }))
+        .catch(error => console.log("Can't access " + apiRoute, error));
+}
+
+export const fetchTotalNodes = () => dispatch => {
+    // this is where we create our fetch.. the one to be used in the jobs component
+    const apiRoute = 'http://54.84.186.47:31765/monitor/nodes';
+
+    axios.get(PROXY_URL + apiRoute)
+        .then(response => dispatch({
+            type: FETCH_TOTAL_NODES,
             payload: response.data.data.result[0].value[1]
         }))
         .catch(error => console.log("Can't access " + apiRoute, error));
 }
 
-export const fetchPodsPending = () => dispatch => {
+export const fetchNodesOutOfDisk = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/pods/pending';
+    const apiRoute = 'http://54.84.186.47:31765/monitor/nodes/outofdisk';
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
-            type: FETCH_PODS_PENDING,
+            type: FETCH_NODES_OUTOFDISK,
             payload: response.data.data.result[0].value[1]
         }))
         .catch(error => console.log("Can't access " + apiRoute, error));
 }
 
-export const fetchPodsSuccess = () => dispatch => {
+export const fetchNodesUnavailable = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/pods/succeeded';
+    const apiRoute = 'http://54.84.186.47:31765/monitor/nodes/unavailable';
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
-            type: FETCH_PODS_SUCCESS,
-            payload: response.data.data.result[0].value[1]
-        }))
-        .catch(error => console.log("Can't access " + apiRoute, error));
-}
-
-export const fetchPodsFailed = () => dispatch => {
-    // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/pods/failed';
-
-    axios.get(PROXY_URL + apiRoute)
-        .then(response => dispatch({
-            type: FETCH_PODS_FAILED,
+            type: FETCH_NODES_UNAVAILABLE,
             payload: response.data.data.result[0].value[1]
         }))
         .catch(error => console.log("Can't access " + apiRoute, error));

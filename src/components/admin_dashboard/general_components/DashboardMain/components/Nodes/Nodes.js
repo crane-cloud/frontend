@@ -1,32 +1,20 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { fetchedNodesTable, fetchTotalNodes, fetchNodesOutOfDisk, fetchNodesUnavailable } from '../../../../redux/actions/monitoring/fetchDeployments';
 
 import TopNav from "../../../TopNav";
 
 class Nodes extends Component {
-    constructor() {
-        super()
-        this.state = {
-            loading: true,
-            nodesArray: [],
-            nodesTotal: 0,
-            nodesOutOfDisk: 0,
-            nodesUnavailable: 0
-        }
+    
+    componentWillMount() {
+        this.props.fetchedNodesTable();
+        this.props.fetchTotalNodes();
+        this.props.fetchNodesUnavailable();
+        this.props.fetchNodesOutOfDisk();
     }
 
-    getTotalNodes =()=> {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/nodes';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            let totalNodes = response.data.data.result[0].value[1];
-            this.setState({ nodesTotal: totalNodes} );
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error))
-        
-
+    getTotalNodes =(totalNodes)=> {
         return (
             <div className="col-sm-4">
                 <div className="card">
@@ -34,24 +22,14 @@ class Nodes extends Component {
                         Total Nodes
                     </div>
                     <div className="card-body">
-                        <h1 className="card-title text-center">{this.state.nodesTotal}</h1>
+                        <h1 className="card-title text-center">{totalNodes}</h1>
                     </div>
                 </div>
             </div>
         );
     }
 
-    getNodesOutOfDisk =()=> {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/nodes/outofdisk';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            let fetchedNodes = response.data.data.result[0].value[1];
-            this.setState({ nodesOutOfDisk: fetchedNodes} );
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error))
-
+    getNodesOutOfDisk =(nodesOutofDisk)=> {
         return (
             <div className="col-sm-4">
                 <div className="card">
@@ -59,24 +37,14 @@ class Nodes extends Component {
                         Nodes out of disk
                     </div>
                     <div className="card-body">
-                        <h1 className="card-title text-center">{this.state.nodesOutOfDisk}</h1>
+                        <h1 className="card-title text-center">{nodesOutofDisk}</h1>
                     </div>
                 </div>
             </div>
         );
     }
 
-    getNodesUnavailable =()=> {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/nodes/unavailable';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            let unavailableNodes = response.data.data.result[0].value[1];
-            this.setState({ nodesUnavailable: unavailableNodes} );
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error))
-
+    getNodesUnavailable =(nodesUnavailable)=> {
         return (
             <div className="col-sm-4">
                 <div className="card">
@@ -84,26 +52,14 @@ class Nodes extends Component {
                         Nodes Unavailable
                     </div>
                     <div className="card-body">
-                        <h1 className="card-title text-center">{this.state.nodesUnavailable}</h1>
+                        <h1 className="card-title text-center">{nodesUnavailable}</h1>
                     </div>
                 </div>
             </div>
         );
     }
 
-
-    async componentDidMount() {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/nodes/info';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            this.setState({ nodesArray: response.data.data.result, loading: false } );
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error))
-    }
-
-    createTable = () => {
+    createTable = (array) => {
         return (
             <div>
                 <table className="table table-striped custom-table">
@@ -116,8 +72,8 @@ class Nodes extends Component {
                     </thead>
                     <tbody>
                         {
-                            this.state.nodesArray.map(element => (
-                                <tr key={this.state.nodesArray.indexOf(element)}>
+                            array.map(element => (
+                                <tr key={array.indexOf(element)}>
                                     <td> {element.metric.node}</td>
                                     <td> {element.metric.os_image} </td>
                                     <td> {element.metric.instance} </td>
@@ -151,7 +107,7 @@ class Nodes extends Component {
                     Nodes
                     </div>
                 <div className="card-body">
-                    {this.createTable()}
+                    {this.createTable(this.props.nodesArray)}
                 </div>
             </div>
 
@@ -172,15 +128,16 @@ class Nodes extends Component {
     }
 
     render() {
+        const { nodesTotal, nodesOutOfDisk, nodesUnavailable } = this.props;
         return (
             <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
                 <TopNav />
                 {this.header()}
                 <h2 className="text-center">AWS Cluster Nodes</h2>
                 <div className="row">
-                    {this.getTotalNodes()}
-                    {this.getNodesOutOfDisk()}
-                    {this.getNodesUnavailable()}
+                    {this.getTotalNodes(nodesTotal)}
+                    {this.getNodesOutOfDisk(nodesOutOfDisk)}
+                    {this.getNodesUnavailable(nodesUnavailable)}
                 </div>    
                 {this.renderNodesTable()}
             </main>
@@ -188,4 +145,25 @@ class Nodes extends Component {
     }
 }
 
-export default Nodes;
+Nodes.propTypes = {
+    fetchedNodesTable: PropTypes.func.isRequired, 
+    fetchTotalNodes: PropTypes.func.isRequired,
+    fetchNodesUnavailable: PropTypes.func.isRequired,
+    fetchNodesOutOfDisk: PropTypes.func.isRequired
+}
+
+const mapStateToProps = state => ({
+    nodesArray: state.nodes.nodesArray,
+    nodesTotal: state.nodes.nodesTotal,
+    nodesOutOfDisk: state.nodes.nodesOutOfDisk,
+    nodesUnavailable: state.nodes.nodesUnavailable
+});
+
+export default connect(
+    mapStateToProps,
+    {
+        fetchedNodesTable,
+        fetchTotalNodes,
+        fetchNodesOutOfDisk,
+        fetchNodesUnavailable
+    })(Nodes);

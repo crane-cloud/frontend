@@ -84,6 +84,6 @@ Deployments.propTypes = {
 
 const mapStateToProps = state => ({
     deploymentsArray: state.deployments.deploymentsArray
-})
+});
 
 export default connect(mapStateToProps, { fetchDeployments })(Deployments);
