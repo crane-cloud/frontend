@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchedNodesTable, fetchTotalNodes, fetchNodesOutOfDisk, fetchNodesUnavailable } from '../../../../redux/actions/monitoring/fetchDeployments';
+import { fetchNodesTable, fetchTotalNodes, fetchNodesOutOfDisk, fetchNodesUnavailable } from '../../../../../../redux/actions/monitoring/fetchNodes';
 
 import TopNav from "../../../TopNav";
 
 class Nodes extends Component {
     
     componentWillMount() {
-        this.props.fetchedNodesTable();
+        this.props.fetchNodesTable();
         this.props.fetchTotalNodes();
         this.props.fetchNodesUnavailable();
         this.props.fetchNodesOutOfDisk();
@@ -146,7 +146,7 @@ class Nodes extends Component {
 }
 
 Nodes.propTypes = {
-    fetchedNodesTable: PropTypes.func.isRequired, 
+    fetchNodesTable: PropTypes.func.isRequired, 
     fetchTotalNodes: PropTypes.func.isRequired,
     fetchNodesUnavailable: PropTypes.func.isRequired,
     fetchNodesOutOfDisk: PropTypes.func.isRequired
@@ -162,7 +162,7 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     {
-        fetchedNodesTable,
+        fetchNodesTable,
         fetchTotalNodes,
         fetchNodesOutOfDisk,
         fetchNodesUnavailable

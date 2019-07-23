@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import axios from 'axios';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import {
+    fetchClusterCpuUsage,
+    fetchClusterMemoryUsage,
+    fetchClusterDiskUsage,
+    fetchClusterPods
+} from '../../../../../../redux/actions/monitoring/fetchClusterInfo';
 
 import TopNav from "../../../TopNav";
 import SideNav from "../../../sideNav";
@@ -7,42 +14,30 @@ import DonutChart from 'react-donut-chart';
 
 
 class ClusterHealth extends Component {
-    constructor() {
-        super()
-        this.state = {
-            clusterCPU: 0,
-            clusterMemory: 0,
-            clusterDisk: 0,
-            clusterPod: 0
-        }
+
+    componentWillMount() {
+        this.props.fetchClusterCpuUsage();
+        this.props.fetchClusterMemoryUsage();
+        this.props.fetchClusterDiskUsage();
+        this.props.fetchClusterPods();
     }
 
-    getCpuUsage = () => {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/cluster/cpu';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            let percentageCPU = this.roundToTwo((response.data.data.result[0].value[1]) * 100);
-            this.setState({ clusterCPU: percentageCPU });
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error))
-
+    getCpuUsage = (cpuUsage) => {
         return (
             <div className="card">
                 <div className="card-header">
                     Cluster CPU Usage
-                </div>
+                </div>FETCH_NODES_TABLE
                 <div className="card-body">
                     <DonutChart data={
                         [{
                             label: 'Used',
-                            value: this.state.clusterCPU,
+                            value: cpuUsage,
                             color: "red"
                         },
                         {
                             label: 'Available',
-                            value: 100 - this.state.clusterCPU,
+                            value: 100 - cpuUsage,
                             color: "#008000"
                         }]} width={400} height={300} />
                 </div>
@@ -50,17 +45,7 @@ class ClusterHealth extends Component {
         )
     }
 
-    getMemoryUsage = () => {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/cluster/memory';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            let percentageMemory = this.roundToTwo((response.data.data.result[0].value[1]) * 100);
-            this.setState({ clusterMemory: percentageMemory });
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error))
-
+    getMemoryUsage = (memoryUsage) => {
         return (
             <div className="card">
                 <div className="card-header">
@@ -70,12 +55,12 @@ class ClusterHealth extends Component {
                     <DonutChart data={
                         [{
                             label: 'Used',
-                            value: this.state.clusterMemory,
+                            value: memoryUsage,
                             color: "red"
                         },
                         {
                             label: 'Available',
-                            value: 100 - this.state.clusterMemory,
+                            value: 100 - memoryUsage,
                             color: "#008000"
                         }]} width={400} height={300} />
                 </div>
@@ -83,17 +68,7 @@ class ClusterHealth extends Component {
         )
     }
 
-    getDiskUsage = () => {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/cluster/disk';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            let percentageDisk = this.roundToTwo((response.data.data.result[0].value[1]) * 100);
-            this.setState({ clusterDisk: percentageDisk });
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error))
-
+    getDiskUsage = (diskUsage) => {
         return (
             <div className="card">
                 <div className="card-header">
@@ -103,12 +78,12 @@ class ClusterHealth extends Component {
                     <DonutChart data={
                         [{
                             label: 'Used',
-                            value: this.state.clusterDisk,
+                            value: diskUsage,
                             color: "red"
                         },
                         {
                             label: 'Available',
-                            value: 100 - this.state.clusterDisk,
+                            value: 100 - diskUsage,
                             color: "#008000"
                         }]} width={400} height={300} />
                 </div>
@@ -116,17 +91,7 @@ class ClusterHealth extends Component {
         )
     }
 
-    getPodUsage = () => {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/cluster/cpu';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            let percentagePod = this.roundToTwo((response.data.data.result[0].value[1]) * 100)
-            this.setState({ clusterPod: percentagePod });
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error))
-
+    getPodUsage = (pods) => {
         return (
             <div className="card">
                 <div className="card-header">
@@ -136,13 +101,13 @@ class ClusterHealth extends Component {
                     <DonutChart data={
                         [{
                             label: 'Used',
-                            value: this.state.clusterPod,
+                            value: pods,
                             // color: "red"
                             color: ["#66ff33"]
                         },
                         {
                             label: 'Available',
-                            value: 100 - this.state.clusterPod,
+                            value: 100 - pods,
                             color: ["#66ff33"]
                         }]} width={400} height={300} />
                 </div>
@@ -150,11 +115,14 @@ class ClusterHealth extends Component {
         )
     }
 
-    roundToTwo = (num) => {    
-        return +(Math.round(num + "e+2")  + "e-2");
-    }
-
     renderClusterHealth = () => {
+        const {
+            clusterCPU,
+            clusterMemory,
+            clusterDisk,
+            clusterPod
+        } = this.props;
+
         return (
             <div className="card parent">
                 <div className="card-header">
@@ -163,18 +131,18 @@ class ClusterHealth extends Component {
 
                 <div className="row">
                     <div className="col-6">
-                        {this.getCpuUsage()}
+                        {this.getCpuUsage(clusterCPU)}
                     </div>
                     <div className="col-6">
-                        {this.getMemoryUsage()}
+                        {this.getMemoryUsage(clusterMemory)}
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-6">
-                        {this.getDiskUsage()}
+                        {this.getDiskUsage(clusterDisk)}
                     </div>
                     <div className="col-6">
-                        {this.getPodUsage()}
+                        {this.getPodUsage(clusterPod)}
                     </div>
                 </div>
             </div>
@@ -194,4 +162,31 @@ class ClusterHealth extends Component {
     }
 }
 
-export default ClusterHealth;
+
+
+ClusterHealth.propTypes = {
+    fetchClusterCpuUsage: PropTypes.func.isRequired,
+    fetchClusterMemoryUsage: PropTypes.func.isRequired,
+    fetchClusterDiskUsage: PropTypes.func.isRequired,
+    fetchClusterPods: PropTypes.func.isRequired,
+    clusterCPU: PropTypes.number,
+    clusterMemory: PropTypes.number,
+    clusterDisk: PropTypes.number,
+    clusterPod: PropTypes.number
+}
+
+const mapStateToProps = state => ({
+    clusterCPU: state.clusterInfo.clusterCPU,
+    clusterMemory: state.clusterInfo.clusterMemory,
+    clusterDisk: state.clusterInfo.clusterDisk,
+    clusterPod: state.clusterInfo.clusterPod
+});
+
+export default connect(mapStateToProps,
+    {
+        fetchClusterCpuUsage,
+        fetchClusterMemoryUsage,
+        fetchClusterDiskUsage,
+        fetchClusterPods
+    }
+)(ClusterHealth);
