@@ -182,7 +182,8 @@ const mapStateToProps = state => ({
     clusterPod: state.clusterInfo.clusterPod
 });
 
-export default connect(mapStateToProps,
+export default connect(
+    mapStateToProps,
     {
         fetchClusterCpuUsage,
         fetchClusterMemoryUsage,

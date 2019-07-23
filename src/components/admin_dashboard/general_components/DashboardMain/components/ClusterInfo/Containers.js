@@ -1,53 +1,41 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, { Component } from "react";
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import {
+    fetchContainersRunning,
+    fetchContainersWaiting,
+    fetchContainersTerminated,
+    fetchContainerRestarts,
+    fetchContainerCpuRequests,
+    fetchContainerMemoryRequests
+} from '../../../../../../redux/actions/monitoring/fetchContainers';
 
 class Containers extends Component {
-    constructor() {
-        super()
-        this.state = {
-            containersRunning: 0,
-            containersWaiting: 0,
-            containersTerminated: 0,
-            containerRestarts: 0,
-            containerCpuCores: 0,
-            containerMemRequests: 0
-        }
+    componentWillMount() {
+        this.props.fetchContainersRunning();
+        this.props.fetchContainersWaiting();
+        this.props.fetchContainersTerminated();
+        this.props.fetchContainerRestarts();
+        this.props.fetchContainerCpuRequests();
+        this.props.fetchContainerMemoryRequests();
     }
 
-    getContainersRunning =()=> {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/containers';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            this.setState({ containersRunning: response.data.data.result[0].value[1]} );
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error))
-
+    getContainersRunning = (containersRunning) => {
         return (
             <div className="col-sm-6">
                 <div className="card">
                     <div className="card-header text-center success">
                         Containers Running
                     </div>
-                    <div className="card-body">
-                        <h1 className="card-title text-center">{this.state.containersRunning}</h1>
+                    <div className="card-bodyFETCH_CLUSTER_CPU_USAGE">
+                        <h1 className="card-title text-center">{containersRunning}</h1>
                     </div>
                 </div>
             </div>
         );
     }
 
-    getContainersWaiting =()=> {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/containers/waiting';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            this.setState({ containersWaiting: response.data.data.result[0].value[1]} );
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error))
-
+    getContainersWaiting = (containersWaiting) => {
         return (
             <div className="col-sm-6">
                 <div className="card">
@@ -55,23 +43,14 @@ class Containers extends Component {
                         Containers Waiting
                     </div>
                     <div className="card-body">
-                        <h1 className="card-title text-center">{this.state.containersWaiting}</h1>
+                        <h1 className="card-title text-center">{containersWaiting}</h1>
                     </div>
                 </div>
             </div>
         );
     }
 
-    getContainersTerminated =()=> {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/containers/terminated';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            this.setState({ containersTerminated: response.data.data.result[0].value[1]} );
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error))
-
+    getContainersTerminated = (containersTerminated) => {
         return (
             <div className="col-sm-6">
                 <div className="card">
@@ -79,23 +58,14 @@ class Containers extends Component {
                         Containers Terminated
                     </div>
                     <div className="card-body">
-                        <h1 className="card-title text-center">{this.state.containersTerminated}</h1>
+                        <h1 className="card-title text-center">{containersTerminated}</h1>
                     </div>
                 </div>
             </div>
         );
     }
 
-    getContainerRestarts =()=> {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/containers/restarts';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            this.setState({ containerRestarts: response.data.data.result[0].value[1]} );
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error))
-
+    getContainerRestarts = (containerRestarts) => {
         return (
             <div className="col-sm-6">
                 <div className="card">
@@ -103,24 +73,14 @@ class Containers extends Component {
                         Container Restarts (last 30 minutes)
                     </div>
                     <div className="card-body">
-                        <h1 className="card-title text-center">{this.state.containerRestarts}</h1>
+                        <h1 className="card-title text-center">{containerRestarts}</h1>
                     </div>
                 </div>
             </div>
         );
     }
 
-    getCPURequests =()=> {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/containers/cpu';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            let cpuRequests = Math.round(response.data.data.result[0].value[1])
-            this.setState({ containerCpuCores: cpuRequests} );
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error))
-
+    getCPURequests = (cpuRequests) => {
         return (
             <div className="col-sm-6">
                 <div className="card">
@@ -128,25 +88,14 @@ class Containers extends Component {
                         Containers CPU Requests
                     </div>
                     <div className="card-body">
-                        <h1 className="card-title text-center">{this.state.containerCpuCores}</h1>
+                        <h1 className="card-title text-center">{cpuRequests}</h1>
                     </div>
                 </div>
             </div>
         );
     }
 
-    getContainerMemoryRequests =()=> {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/coontainers/memory';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            let memUsage = ((response.data.data.result[0].value[1]) / 1000000000)
-            memUsage = this.roundToTwo(memUsage);
-            this.setState({ containerMemRequests: memUsage} );
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error))
-
+    getContainerMemoryRequests = (memoryRequests) => {
         return (
             <div className="col-sm-6">
                 <div className="card">
@@ -154,18 +103,23 @@ class Containers extends Component {
                         Total Container Memory Requested
                     </div>
                     <div className="card-body">
-                        <h1 className="card-title text-center">{this.state.containerMemRequests} GB</h1>
+                        <h1 className="card-title text-center">{memoryRequests} GB</h1>
                     </div>
                 </div>
             </div>
         );
     }
 
-    roundToTwo = (num) => {    
-        return +(Math.round(num + "e+2")  + "e-2");
-    }
-
     renderContainers = () => {
+        const {
+            containersRunning,
+            containersWaiting,
+            containersTerminated,
+            containerRestarts,
+            containerCpuCores,
+            containerMemRequests
+        } = this.props;
+
         return (
             <div className="card parent">
                 <div className="card-header">
@@ -173,12 +127,12 @@ class Containers extends Component {
                 </div>
                 <div className="card-body">
                     <div className="row">
-                        {this.getContainersRunning()}
-                        {this.getContainersWaiting()}
-                        {this.getContainersTerminated()}
-                        {this.getContainerRestarts()}
-                        {this.getCPURequests()}
-                        {this.getContainerMemoryRequests()}
+                        {this.getContainersRunning(containersRunning)}
+                        {this.getContainersWaiting(containersWaiting)}
+                        {this.getContainersTerminated(containersTerminated)}
+                        {this.getContainerRestarts(containerRestarts)}
+                        {this.getCPURequests(containerCpuCores)}
+                        {this.getContainerMemoryRequests(containerMemRequests)}
                     </div>
 
                 </div>
@@ -193,4 +147,38 @@ class Containers extends Component {
     }
 }
 
-export default Containers;
+Containers.propTypes = {
+    fetchContainersRunning: PropTypes.func.isRequired,
+    fetchContainersWaiting: PropTypes.func.isRequired,
+    fetchContainerRestarts: PropTypes.func.isRequired,
+    fetchContainersTerminated: PropTypes.func.isRequired,
+    fetchContainerCpuRequests: PropTypes.func.isRequired,
+    fetchContainerMemoryRequests: PropTypes.func.isRequired,
+    containersRunning: PropTypes.string,
+    containersWaiting: PropTypes.string,
+    containerRestarts: PropTypes.string,
+    containersTerminated: PropTypes.string,
+    containerMemRequests: PropTypes.number,
+    containerCpuCores: PropTypes.number,
+}
+
+const mapStateToProps = state => ({
+    containersRunning: state.containers.containersRunning,
+    containersWaiting: state.containers.containersWaiting,
+    containerRestarts: state.containers.containerRestarts,
+    containersTerminated: state.containers.containersTerminated,
+    containerMemRequests: state.containers.containerMemRequests,
+    containerCpuCores: state.containers.containerCpuCores
+});
+
+export default connect(
+    mapStateToProps,
+    {
+        fetchContainerCpuRequests,
+        fetchContainerMemoryRequests,
+        fetchContainerRestarts,
+        fetchContainersRunning,
+        fetchContainersTerminated,
+        fetchContainersWaiting
+    }
+)(Containers);
