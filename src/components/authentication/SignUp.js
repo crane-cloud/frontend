@@ -7,17 +7,13 @@ import "../../assets/css/signin.css";
 import axios from 'axios';
 
 class SignUpForm extends Component {
-    constructor() {
-        super();
-
-        this.state = {
-            name: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-            hasAgreed: false,
-            redirect: false
-        }
+    state = {
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        hasAgreed: false,
+        redirect: false
     }
 
     handleChange = (e) => {
@@ -63,7 +59,7 @@ class SignUpForm extends Component {
     render() {
         const { name, email, password, confirmPassword, redirect } = this.state;
         if (redirect) {
-            return <Redirect to="/user-dashboard"/>;
+            return <Redirect to="/user-dashboard" />;
         }
         return (
             <div className="FormCenter">
