@@ -1,7 +1,10 @@
 import React , { Component } from "react";
 import { Link } from 'react-router-dom';
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import library css
 
 import Header from "../../../MainSection/components/header/header";
+import './organizationsMain.css';
 
 export default class OrganizationsMain extends Component{
 
@@ -65,7 +68,19 @@ export default class OrganizationsMain extends Component{
         return (
             <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
                 <Header />
-                <h2 className="text-center mx-3"> { this.organizationNameSpaces.orgName } namespaces </h2>
+                <h2 className="text-center mx-3"> { this.organizationNameSpaces.orgName }
+                    <span className="dropdown manageOrgMenu">
+                            <span id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span className="fa fa-ellipsis-v"></span>
+                            </span>
+                            <div className="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                {/* <button className="dropdown-item" type="button" onClick={() => this.openModal({ visibleNodesModal: true })} >Nodes <span className="badge badge-info"> 3 </span> </button> */}
+                                {/* <button className="dropdown-item" type="button" onClick={() => this.openModal({ visiblePersistentVolumesModal: true })} >Persistent Volumes <span className="badge badge-info"> 0 </span> </button> */}
+                                <button className="dropdown-item" type="button">Rename Organization</button>
+                                <button className="dropdown-item" type="button"  onClick={ this.deleteOrg }>Delete Organization</button>
+                            </div>
+                        </span>
+                </h2>
                 <div className="row">
                     
 
@@ -80,7 +95,7 @@ export default class OrganizationsMain extends Component{
                             <div className="col-6 mb-5">
                                 <div className="card">
                                     <div className="card-body text-center">
-                                    <h4> { namespace.name } </h4>
+                                    <h4> { `namespace: ${namespace.name}` } </h4>
 
                                     <table className="table table-borderless text-left">
                                         <thead>
@@ -112,5 +127,26 @@ export default class OrganizationsMain extends Component{
                 </div>
             </main>
         );
+    }
+
+    deleteOrg = () => {
+        confirmAlert({
+            title: 'Confirm',
+            message: 'Delete Org?',
+            buttons: [
+              {
+                label: 'Yes',
+                onClick: () => {
+                    /* hit delete end point */
+                    // delete /organizations/orgID  available via this.orgID
+                    console.log(this.orgID);
+                }
+              },
+              {
+                label: 'No',
+                onClick: () => {}
+              }
+            ]
+          });
     }
 }
