@@ -2,6 +2,8 @@ import React , { Component } from "react";
 import { Link } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import library css
+import Modal from 'react-awesome-modal';
+
 
 import Header from "../../../MainSection/components/header/header";
 import './organizationsMain.css';
@@ -55,13 +57,36 @@ export default class OrganizationsMain extends Component{
     };
 
     state = {
-        organizationNameSpaces : []
+        organizationNameSpaces : [],
+        visible : false,
+        renameValue : ''
     }
 
     componentDidMount(){
         this.setState({
             organizationNameSpaces : this.organizationNameSpaces.namespaces
         });
+    }
+
+    deleteOrg = () => {
+        confirmAlert({
+            title: 'Confirm',
+            message: 'Delete Org?',
+            buttons: [
+              {
+                label: 'Yes',
+                onClick: () => {
+                    /* hit delete end point */
+                    // delete /organizations/orgID  available via this.orgID
+                    console.log(this.orgID);
+                }
+              },
+              {
+                label: 'No',
+                onClick: () => {}
+              }
+            ]
+          });
     }
     
     render(){
@@ -76,11 +101,13 @@ export default class OrganizationsMain extends Component{
                             <div className="dropdown-menu" aria-labelledby="dropdownMenu2">
                                 {/* <button className="dropdown-item" type="button" onClick={() => this.openModal({ visibleNodesModal: true })} >Nodes <span className="badge badge-info"> 3 </span> </button> */}
                                 {/* <button className="dropdown-item" type="button" onClick={() => this.openModal({ visiblePersistentVolumesModal: true })} >Persistent Volumes <span className="badge badge-info"> 0 </span> </button> */}
-                                <button className="dropdown-item" type="button">Rename Organization</button>
+                                <button className="dropdown-item" type="button" onClick={ this.openModal }>Rename Organization</button>
                                 <button className="dropdown-item" type="button"  onClick={ this.deleteOrg }>Delete Organization</button>
                             </div>
                         </span>
                 </h2>
+                { this.modalSpan() }
+                
                 <div className="row">
                     
 
@@ -129,24 +156,49 @@ export default class OrganizationsMain extends Component{
         );
     }
 
-    deleteOrg = () => {
-        confirmAlert({
-            title: 'Confirm',
-            message: 'Delete Org?',
-            buttons: [
-              {
-                label: 'Yes',
-                onClick: () => {
-                    /* hit delete end point */
-                    // delete /organizations/orgID  available via this.orgID
-                    console.log(this.orgID);
-                }
-              },
-              {
-                label: 'No',
-                onClick: () => {}
-              }
-            ]
-          });
+    openModal = () => {
+        this.setState({
+            visible : true
+        });
     }
+
+    closeModal = () => {
+        this.setState({
+            visible : false
+        });
+    }
+
+    modalSpan = () => {
+        return (
+            <span className='text-center renameSpanModal'>
+                <Modal visible={this.state.visible} width="40%" height="50%" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                    <div class='modalContainer'>
+                        <h3>Rename Organization</h3>
+                        <form>
+                            <input type="text" class="form-control" placeholder="Rename organization" onChange={ this.handleChange } />
+                        </form>
+                        <div class='buttons'>
+                            <input type='button' className="modalBtn btn btn-outline-info" onClick={() => this.closeModal()} value='cancel'/>
+                            <input type='button' className="modalBtn btn btn-outline-info" onClick={ this.handleRename } value='Rename ORG'/>
+                        </div>
+                    </div>
+                </Modal>
+                </span>
+        );
+    }
+
+    handleChange = (event) => {
+        this.setState({ renameValue: event.target.value });
+    }
+
+    handleRename = () => {
+        /* hit rename url */
+        // /organizations/orgID/rename/new-name
+        // eg /organizations/46739/rename/nile breweries
+        // org id available via this.orgID
+        alert(`new name is: ${ this.state.renameValue }`)
+        this.setState({ visible: false });
+    }
+
+    
 }
