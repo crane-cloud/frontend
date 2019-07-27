@@ -6,6 +6,7 @@ import Modal from 'react-awesome-modal';
 
 
 import Header from "../../../MainSection/components/header/header";
+import NamespaceModal from './components/namespaceModal';
 import './organizationsMain.css';
 
 export default class OrganizationsMain extends Component{
@@ -37,7 +38,7 @@ export default class OrganizationsMain extends Component{
             },
             {
                 name : "Farms Co",
-                namespaceID : 46748,
+                namespaceID : 46749,
                 deployments : [
                     {
                         name : "Tororo Maize",
@@ -58,7 +59,7 @@ export default class OrganizationsMain extends Component{
 
     state = {
         organizationNameSpaces : [],
-        visible : false,
+        orgModalVisible : false,
         renameValue : ''
     }
 
@@ -104,7 +105,7 @@ export default class OrganizationsMain extends Component{
                                 <button className="dropdown-item" type="button" onClick={ this.openModal }>Rename Organization</button>
                                 <button className="dropdown-item" type="button"  onClick={ this.deleteOrg }>Delete Organization</button>
                             </div>
-                        </span>
+                    </span>
                 </h2>
                 { this.modalSpan() }
                 
@@ -122,7 +123,7 @@ export default class OrganizationsMain extends Component{
                             <div className="col-6 mb-5">
                                 <div className="card">
                                     <div className="card-body text-center">
-                                    <h4> { `namespace: ${namespace.name}` } </h4>
+                                    <h4> { `namespace: ${namespace.name}` } <NamespaceModal namespaceID={ namespace.namespaceID }/> </h4>
 
                                     <table className="table table-borderless text-left">
                                         <thead>
@@ -158,20 +159,20 @@ export default class OrganizationsMain extends Component{
 
     openModal = () => {
         this.setState({
-            visible : true
+            orgModalVisible : true
         });
     }
 
     closeModal = () => {
         this.setState({
-            visible : false
+            orgModalVisible : false
         });
     }
 
     modalSpan = () => {
         return (
             <span className='text-center renameSpanModal'>
-                <Modal visible={this.state.visible} width="40%" height="50%" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                <Modal visible={this.state.orgModalVisible} width="40%" height="50%" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div class='modalContainer'>
                         <h3>Rename Organization</h3>
                         <form>
@@ -183,7 +184,7 @@ export default class OrganizationsMain extends Component{
                         </div>
                     </div>
                 </Modal>
-                </span>
+            </span>
         );
     }
 
@@ -197,7 +198,7 @@ export default class OrganizationsMain extends Component{
         // eg /organizations/46739/rename/nile breweries
         // org id available via this.orgID
         alert(`new name is: ${ this.state.renameValue }`)
-        this.setState({ visible: false });
+        this.setState({ orgModalVisible: false });
     }
 
     
