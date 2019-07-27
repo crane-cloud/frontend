@@ -68,9 +68,9 @@ export default class DeploymentModal extends Component{
 
     handleRename = () => {
         /* hit rename url */
-        // /names/namespaceID/rename/new-name
-        // eg /namespaces/46739/rename/nile breweries
-        // namespaceID available via this.props.namespaceID
+        // /deployments/deploymentID/rename/new-name
+        // eg /deployments/46739/rename/nile breweries
+        // depID available via this.props.depID
         alert(`new name is: ${ this.state.renameValue }`)
         this.setState({ visible: false });
     }
