@@ -2,6 +2,7 @@ import React , { Component } from "react";
 
 import Header from "../../../MainSection/components/header/header";
 import DeploymentRow from "./components/deploymentRow";
+import DeploymentModal from './components/deploymentModal';
 
 
 export default class DeploymentsMain extends Component{
@@ -23,7 +24,10 @@ export default class DeploymentsMain extends Component{
         return (
             <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
                     <Header />
-                    <h2 className="text-center headingMargin ">{ this.deployment.name }  UGX { this.deployment.billing}</h2>
+                    <span>
+                        <h2 className="text-center headingMargin "> { this.deployment.name }   <DeploymentModal depID={ this.props.depID } /> </h2>
+                        <h3 className="text-center">UGX { this.deployment.billing}</h3>
+                    </span>
                     <DeploymentRow deployment={this.deployment}/>
             </main>
          );
