@@ -41,8 +41,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "redux-devtools-extension": "^2.13.8",
-    "redux-thunk": "^2.3.0"
-  }
+  "devDependencies": {}
 }
