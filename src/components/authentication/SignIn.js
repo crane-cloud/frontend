@@ -25,29 +25,29 @@ class SignInForm extends Component {
     });
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    /**
-     * make api call
-     */
-    axios(BASE_URL + '/register/', {
-      method: 'POST',
-      data: this.state.data,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(response => {
-      // dispatch action on success
-      console.log(response);
+    handleSubmit = (event) => {
+      event.preventDefault();
+      /**
+       * make api call
+       */
+      fetch(BASE_URL + '/login', {
+        method: 'POST',
+        data: this.state.data,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then (response => {
+        // dispatch action on success
+        console.log(response);
 
-      loginSuccess({
-        user: this.state,
-        accessToken: '988t8tyvvgd777'
-      })
-    }).catch(error => {
-      console.log(error);
-    });
-  }
+        loginSuccess({
+          user: this.state,
+          accessToken: response.access_token
+        })
+      }).catch(error => {
+        console.log(error);
+      });
+    }
 
   render() {
     return (
