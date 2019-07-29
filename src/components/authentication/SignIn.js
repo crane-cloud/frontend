@@ -12,10 +12,8 @@ class SignInForm extends Component {
     super(props);
 
     this.state = {
-      data: {
-        email: '',
-        password: ''
-      }
+      email: '',
+      password: ''
     }
   }
 
@@ -27,6 +25,7 @@ class SignInForm extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
+    // console.log(this.state);
     /**
      * make api call
      */
@@ -37,23 +36,23 @@ class SignInForm extends Component {
         'Content-Type': 'application/json'
       }
     }).then(response => {
-      // if (response.status === 200 && response.data.jwt && response.data.expireAt) {
-      //   let jwt = response.data.jwt;
-      //   let expire_at = response.data.expireAt;
+    // if (response.status === 200 && response.data.jwt && response.data.expireAt) {
+    //   let jwt = response.data.jwt;
+    //   let expire_at = response.data.expireAt;
 
-      //   localStorage.setItem("access_token", jwt);
-      //   localStorage.setItem("expire_at", expire_at);
+    //   localStorage.setItem("access_token", jwt);
+    //   localStorage.setItem("expire_at", expire_at);
 
-        // dispatch action on success
-        // console.log(response);
+    // dispatch action on success
+      console.log(response);
 
-        loginSuccess({
-          user: this.state,
-          accessToken: '988t8tyvvgd777'
-        })
-      }).catch(error => {
-        console.log(error);
-      });
+      loginSuccess({
+        user: this.state,
+        accessToken: '988t8tyvvgd777'
+      })
+    }).catch(error => {
+      console.log(error);
+    });
   }
 
   render() {

@@ -2,9 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchDeployments } from '../../../../redux/actions/monitoring/fetchDeployments';
+// import Loader from '../../../loader/loader';
 
 
 class Deployments extends Component {
+    // constructor(props){
+    //     super(props)
+    //     this.state = {
+    //         isLoading: false
+    //     }
+    // }
 
     componentWillMount() {
         this.props.fetchDeployments();
@@ -24,6 +31,7 @@ class Deployments extends Component {
                         </tr>
                     </thead>
                     <tbody>
+                        {/* { this.state.isLoading ? <Loader /> : } */}
                         {
                             this.props.deploymentsArray.map( element => ( 
                                 <tr key={this.props.deploymentsArray.indexOf(element)}>

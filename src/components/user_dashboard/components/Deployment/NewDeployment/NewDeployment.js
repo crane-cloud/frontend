@@ -18,12 +18,16 @@ class NewDeployment extends Component {
                 <div className="form-group">
                     <h5>Write Deployment File</h5>
                     <p>Write your deployment on the area below. The configuration will be saved as a YAML file</p>
-                    <textarea className="rounded-0 writeYAML" rows="10" cols="100" value={this.state.yamlData}></textarea>
+                    <textarea className="rounded-0 writeYAML" rows="10" cols="100"></textarea>
                 </div>
                 <h5>Upload Deployment File</h5>
                 <div className="form-group">
                     <label htmlFor="exampleFormControlFile1">Click the button below and select a .YAML file from your computer</label><br />
                     <input type="file" accept=".yaml, .json" className="form-control-file" onChange={this.captureFile} />
+                </div>
+                <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" onClick={() => this.props.closeModal({ visibleNewDeploymentModal: false })}>Cancel</button>
+                    <button type="button" className="btn btn-primary" onClick={this.handleYAMLSubmit}>Save Deployment</button>
                 </div>
             </form>
         )
@@ -62,6 +66,10 @@ class NewDeployment extends Component {
                         </select>
                     </div>
                 </div>
+                <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" onClick={() => this.props.closeModal({ visibleNewDeploymentModal: false })}>Cancel</button>
+                    <button type="button" className="btn btn-primary" onClick={this.handleFormSubmit}>Save Deployment</button>
+                </div>
             </form>
         )
     }
@@ -80,20 +88,24 @@ class NewDeployment extends Component {
     handleYAMLSubmit = (event) => {
         event.preventDefault();
         const { fileContent } = this.state;
-        if(fileContent == "") {
+        if (fileContent == "") {
             return;
         } else {
             axios.post(PROXY_URL + BASE_URL + '/deploy/yaml', {
                 yaml_file: fileContent,
                 namespace: "test"
             })
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
         }
+    }
+
+    handleFormSubmit = () => {
+        console.log("hey man!");
     }
 
 
@@ -129,10 +141,6 @@ class NewDeployment extends Component {
 
                                 <div className="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">{this.deployUsingForm()}</div>
                             </div>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" onClick={() => this.props.closeModal({ visibleNewDeploymentModal: false })}>Cancel</button>
-                            <button type="button" className="btn btn-primary" onClick={this.handleYAMLSubmit}>Save Deployment</button>
                         </div>
                     </div>
 
