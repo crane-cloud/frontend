@@ -57,7 +57,7 @@ class NewOrganization extends Component {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" onClick={() => closeModal({ newOrganizationModal: false })}>Cancel</button>
-                            <button type="button" className="btn btn-primary">Save Deployment</button>
+                            <button type="button" className="btn btn-primary">Create Organization</button>
                         </div>
                     </div>
 

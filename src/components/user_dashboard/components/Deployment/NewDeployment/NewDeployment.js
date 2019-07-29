@@ -18,7 +18,7 @@ class NewDeployment extends Component {
                 <div className="form-group">
                     <h5>Write Deployment File</h5>
                     <p>Write your deployment on the area below. The configuration will be saved as a YAML file</p>
-                    <textarea className="rounded-0 writeYAML" rows="10" cols="100"></textarea>
+                    <textarea name="yamlData" className="rounded-0 writeYAML" rows="16" cols="100" value={this.state.yamlData} onChange={this.handleOnChange}></textarea>
                 </div>
                 <h5>Upload Deployment File</h5>
                 <div className="form-group">
@@ -27,7 +27,7 @@ class NewDeployment extends Component {
                 </div>
                 <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" onClick={() => this.props.closeModal({ visibleNewDeploymentModal: false })}>Cancel</button>
-                    <button type="button" className="btn btn-primary" onClick={this.handleYAMLSubmit}>Save Deployment</button>
+                    <button type="button" className="btn btn-primary" onClick={this.handleYAMLSubmit}>Deploy</button>
                 </div>
             </form>
         )
@@ -68,7 +68,7 @@ class NewDeployment extends Component {
                 </div>
                 <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" onClick={() => this.props.closeModal({ visibleNewDeploymentModal: false })}>Cancel</button>
-                    <button type="button" className="btn btn-primary" onClick={this.handleFormSubmit}>Save Deployment</button>
+                    <button type="button" className="btn btn-primary" onClick={this.handleFormSubmit}>Deploy</button>
                 </div>
             </form>
         )
@@ -78,19 +78,33 @@ class NewDeployment extends Component {
         event.preventDefault();
         const file = event.target.files[0];
         const reader = new FileReader();
+        const content = new FileReader();
         reader.readAsDataURL(file);
+        content.readAsText(file);
         reader.onloadend = () => {
             const yaml = reader.result.replace("data:application/x-yaml;base64,", "");
             this.setState({ fileContent: yaml });
         }
+        content.onloadend = () => {
+            this.setState({ yamlData: content.result });
+        }
+    }
+
+    handleOnChange = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value 
+        })
+
     }
 
     handleYAMLSubmit = (event) => {
         event.preventDefault();
-        const { fileContent } = this.state;
+        const { fileContent, yamlData } = this.state;
         if (fileContent == "") {
             return;
         } else {
+            // console.log(fileContent);
+            // console.log(yamlData);
             axios.post(PROXY_URL + BASE_URL + '/deploy/yaml', {
                 yaml_file: fileContent,
                 namespace: "test"
