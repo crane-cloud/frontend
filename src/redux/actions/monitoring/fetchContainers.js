@@ -12,7 +12,7 @@ import { PROXY_URL } from "../../../config";
 
 export const fetchContainersRunning = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/containers';
+    const apiRoute = 'http://54.84.186.47:31765/monitor/containers/all';
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
@@ -25,7 +25,7 @@ export const fetchContainersRunning = () => dispatch => {
 
 export const fetchContainersWaiting = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/containers/waiting';
+    const apiRoute = 'http://54.84.186.47:31765/monitor/containers/wainting/all';
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
@@ -37,7 +37,7 @@ export const fetchContainersWaiting = () => dispatch => {
 
 export const fetchContainersTerminated = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/containers/terminated';
+    const apiRoute = 'http://54.84.186.47:31765/monitor/containers/terminated/all';
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
@@ -49,7 +49,7 @@ export const fetchContainersTerminated = () => dispatch => {
 
 export const fetchContainerRestarts = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/containers/restarts';
+    const apiRoute = 'http://54.84.186.47:31765/monitor/containers/restarts/all';
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
@@ -61,7 +61,7 @@ export const fetchContainerRestarts = () => dispatch => {
 
 export const fetchContainerCpuRequests = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/containers/cpu';
+    const apiRoute = 'http://54.84.186.47:31765/monitor/containers/cpu/all';
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
@@ -73,7 +73,7 @@ export const fetchContainerCpuRequests = () => dispatch => {
 
 export const fetchContainerMemoryRequests = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/coontainers/memory';
+    const apiRoute = 'http://54.84.186.47:31765/monitor/coontainers/memory/all';
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({

@@ -14,7 +14,7 @@ import { PROXY_URL } from "../../../config";
 
 export const fetchPodsRunning = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/pods';
+    const apiRoute = 'http://54.84.186.47:31765/monitor/pods/all';
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
@@ -26,7 +26,7 @@ export const fetchPodsRunning = () => dispatch => {
 
 export const fetchPodsPending = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/pods/pending';
+    const apiRoute = 'http://54.84.186.47:31765/monitor/pods/pending/all';
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
@@ -38,7 +38,7 @@ export const fetchPodsPending = () => dispatch => {
 
 export const fetchPodsSuccess = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/pods/succeeded';
+    const apiRoute = 'http://54.84.186.47:31765/monitor/pods/succeeded/all';
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
@@ -50,7 +50,7 @@ export const fetchPodsSuccess = () => dispatch => {
 
 export const fetchPodsFailed = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/pods/failed';
+    const apiRoute = 'http://54.84.186.47:31765/monitor/pods/failed/all';
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({

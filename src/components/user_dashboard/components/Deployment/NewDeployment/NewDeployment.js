@@ -3,6 +3,9 @@ import Modal from 'react-awesome-modal';
 import axios from 'axios';
 import { BASE_URL, PROXY_URL } from '../../../../../config';
 
+import DeployUsingYaml from './yamlDeploy';
+import DeployUsingForm from './formDeploy';
+
 import "../../../../../assets/css/userdashboard.css";
 
 class NewDeployment extends Component {
@@ -11,117 +14,6 @@ class NewDeployment extends Component {
         fileContent: "",
         yamlData: ""
     }
-
-    deployWithYaml = () => {
-        return (
-            <form onSubmit={this.handleYAMLSubmit}>
-                <div className="form-group">
-                    <h5>Write Deployment File</h5>
-                    <p>Write your deployment on the area below. The configuration will be saved as a YAML file</p>
-                    <textarea name="yamlData" className="rounded-0 writeYAML" rows="16" cols="100" value={this.state.yamlData} onChange={this.handleOnChange}></textarea>
-                </div>
-                <h5>Upload Deployment File</h5>
-                <div className="form-group">
-                    <label htmlFor="exampleFormControlFile1">Click the button below and select a .YAML file from your computer</label><br />
-                    <input type="file" accept=".yaml, .json" className="form-control-file" onChange={this.captureFile} />
-                </div>
-                <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" onClick={() => this.props.closeModal({ visibleNewDeploymentModal: false })}>Cancel</button>
-                    <button type="button" className="btn btn-primary" onClick={this.handleYAMLSubmit}>Deploy</button>
-                </div>
-            </form>
-        )
-    }
-
-    deployUsingForm = () => {
-        return (
-            <form>
-                <h5>Fill the form below to create your Deployment</h5>
-                <div className="form-group">
-                    <label htmlFor="exampleFormControlInput1">Deployment name</label>
-                    <input required type="text" className="form-control" placeholder="Enter a name for your app name" />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="exampleFormControlTextarea1">Description</label>
-                    <textarea className="form-control" rows="3"></textarea>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="exampleFormControlSelect1">Container image</label>
-                    <input required type="url" className="form-control" placeholder="Enter registry URL to your app's image" />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="exampleFormControlSelect2">Number of pods</label>
-                    <input required type="number" className="form-control" />
-                </div>
-
-                <div className="form-group">
-                    <div className="input-group mb-3">
-                        <div className="input-group-prepend">
-                            <label className="input-group-text" htmlFor="inputGroupSelect01">Service</label>
-                        </div>
-                        <select required className="custom-select" id="inputGroupSelect01">
-                            <option selected value="1">None</option>
-                            <option value="2">Internal</option>
-                            <option value="3">External</option>
-                        </select>
-                    </div>
-                </div>
-                <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" onClick={() => this.props.closeModal({ visibleNewDeploymentModal: false })}>Cancel</button>
-                    <button type="button" className="btn btn-primary" onClick={this.handleFormSubmit}>Deploy</button>
-                </div>
-            </form>
-        )
-    }
-
-    captureFile = (event) => {
-        event.preventDefault();
-        const file = event.target.files[0];
-        const reader = new FileReader();
-        const content = new FileReader();
-        reader.readAsDataURL(file);
-        content.readAsText(file);
-        reader.onloadend = () => {
-            const yaml = reader.result.replace("data:application/x-yaml;base64,", "");
-            this.setState({ fileContent: yaml });
-        }
-        content.onloadend = () => {
-            this.setState({ yamlData: content.result });
-        }
-    }
-
-    handleOnChange = (event) => {
-        this.setState({
-            [event.target.name]: event.target.value 
-        })
-
-    }
-
-    handleYAMLSubmit = (event) => {
-        event.preventDefault();
-        const { fileContent, yamlData } = this.state;
-        if (fileContent == "") {
-            return;
-        } else {
-            // console.log(fileContent);
-            // console.log(yamlData);
-            axios.post(PROXY_URL + BASE_URL + '/deploy/yaml', {
-                yaml_file: fileContent,
-                namespace: "test"
-            })
-                .then((response) => {
-                    console.log(response);
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-        }
-    }
-
-    handleFormSubmit = () => {
-        console.log("hey man!");
-    }
-
 
     render() {
         return (
@@ -151,9 +43,8 @@ class NewDeployment extends Component {
                                 </div>
                             </nav>
                             <div className="tab-content" id="nav-tabContent">
-                                <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">{this.deployWithYaml()}</div>
-
-                                <div className="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">{this.deployUsingForm()}</div>
+                                <DeployUsingYaml />
+                                <DeployUsingForm />
                             </div>
                         </div>
                     </div>

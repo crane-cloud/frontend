@@ -10,7 +10,7 @@ import { PROXY_URL } from "../../../config";
 
 export const fetchJobsSuccess = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/jobs/suceeded';
+    const apiRoute = 'http://54.84.186.47:31765/monitor/jobs/succeeded/all';
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
@@ -23,7 +23,7 @@ export const fetchJobsSuccess = () => dispatch => {
 
 export const fetchJobsFailed = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/job/failed';
+    const apiRoute = 'http://54.84.186.47:31765/monitor/job/failed/all';
     
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
