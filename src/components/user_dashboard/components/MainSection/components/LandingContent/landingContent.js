@@ -69,14 +69,14 @@ export default class LandingContent extends Component{
     render(){
         return (
             <div>
-            <div className="row">
-                <div className="col">
+            <div className="row align-items-center justify-content-center">
+                {/* <div className="col">
                     <div className="card">
                         { this.returnDeploymentsCard() }
                     </div>
-                </div>
+                </div> */}
 
-                <div className="col">
+                <div className="col-9">
                 <div className="card">
                         { this.returnOrganizationsCard() }
                     </div>
