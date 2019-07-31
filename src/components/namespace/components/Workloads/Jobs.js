@@ -1,66 +1,19 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { fetchJobsSuccess, fetchJobsFailed } from '../../../../redux/actions/monitoring/fetchJobs';
 
 class Jobs extends Component {
-    constructor() {
-        super()
-        this.state = {
-            jobsFailed: 0,
-            jobsSucceded: 0
 
-        }
-    }
-
-    jobsSucceding() {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/jobs/suceeded';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            this.setState({ jobsSucceded: response.data.data.result[0].value[1]} );
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error))
-
-        return (
-            <div className="col-sm-6">
-                <div className="card">
-                    <div className="card-header text-center success">
-                        Jobs Succeeded
-                    </div>
-                    <div className="card-body">
-                        <h1 className="card-title text-center">{this.state.jobsSucceded}</h1>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    jobsFailing() {
-        const apiRoute = 'http://54.84.186.47:31765/monitor/job/failed';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-        axios.get(proxyUrl + apiRoute)
-        .then(response => {
-            this.setState({ jobsFailed: response.data.data.result[0].value[1]} );
-        })
-        .catch(error => console.log("Can't access " + apiRoute, error))
-
-        return (
-            <div className="col-sm-6">
-                <div className="card">
-                    <div className="card-header text-center fail">
-                        Jobs Failed
-                    </div>
-                    <div className="card-body">
-                        <h1 className="card-title text-center">{this.state.jobsFailed}</h1>
-                    </div>
-                </div>
-            </div>
-        );
+    componentWillMount() {
+        this.props.fetchJobsFailed();
+        this.props.fetchJobsSuccess();
     }
 
 
-    renderJobs() {
+    renderJobs = () => {
+        const { jobsFailed, jobsSucceeded } = this.props;
+
         return (
             <div className="card parent">
                 <div className="card-header">
@@ -68,8 +21,26 @@ class Jobs extends Component {
                 </div>
                 <div className="card-body">
                     <div className="row">
-                        {this.jobsSucceding()}
-                        {this.jobsFailing()}
+                        <div className="col-sm-6">
+                            <div className="card">
+                                <div className="card-header text-center success">
+                                    Jobs Succeeded
+                                </div>
+                                <div className="card-body">
+                                    <h1 className="card-title text-center">{jobsSucceeded}</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-sm-6">
+                            <div className="card">
+                                <div className="card-header text-center fail">
+                                    Jobs Failed
+                                </div>
+                                <div className="card-body">
+                                    <h1 className="card-title text-center">{jobsFailed}</h1>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -84,4 +55,16 @@ class Jobs extends Component {
     }
 }
 
-export default Jobs;
+Jobs.propTypes = {
+    fetchJobsSuccess: PropTypes.func.isRequired,
+    fetchJobsFailed: PropTypes.func.isRequired,
+    jobsFailed: PropTypes.string,
+    jobsSucceeded: PropTypes.string
+}
+
+const mapStateToProps = state => ({
+    jobsFailed: state.jobs.jobsFailed,
+    jobsSucceeded: state.jobs.jobsSucceeded
+});
+
+export default connect(mapStateToProps, { fetchJobsFailed, fetchJobsSuccess })(Jobs);

@@ -1,5 +1,5 @@
-import store from '../../store';
-import * as ACTIONTYPES from './actionTypes'
+import store from '../../../store';
+import * as ACTIONTYPES from '../actionTypes'
 
 const loginSuccess = (data) => {
     store.dispatch({

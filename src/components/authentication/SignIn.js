@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import "../../assets/css/signin.css";
 
-import loginSuccess from '../../redux/actions/loginSuccess';
+import loginSuccess from '../../redux/actions/auth/loginSuccess';
 import axios from 'axios';
 import { BASE_URL } from '../../config';
 
@@ -12,10 +12,8 @@ class SignInForm extends Component {
     super(props);
 
     this.state = {
-      data: {
-        email: '',
-        password: ''
-      }
+      email: '',
+      password: ''
     }
   }
 
@@ -25,22 +23,30 @@ class SignInForm extends Component {
     });
   }
 
-    handleSubmit = (event) => {
-      event.preventDefault();
-      /**
-       * make api call
-       */
-      fetch(BASE_URL + '/login', {
-        method: 'POST',
-        data: this.state.data,
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then (response => {
-        // dispatch action on success
-        console.log(response);
+  handleSubmit = (event) => {
+    event.preventDefault();
+    // console.log(this.state);
+    /**
+     * make api call
+     */
+    axios(BASE_URL + '/login', {
+      method: 'POST',
+      data: this.state.data,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+    // if (response.status === 200 && response.data.jwt && response.data.expireAt) {
+    //   let jwt = response.data.jwt;
+    //   let expire_at = response.data.expireAt;
 
-        loginSuccess({
+    //   localStorage.setItem("access_token", jwt);
+    //   localStorage.setItem("expire_at", expire_at);
+
+    // dispatch action on success
+      console.log(response);
+
+      loginSuccess({
           user: this.state,
           accessToken: response.access_token
         })

@@ -1,6 +1,18 @@
 import { combineReducers } from 'redux';
-import loginSuccess from './loginSuccess';
+import loginSuccess from './auth/loginSuccess';
+import fetchJobs from './monitoring/fetchJobs';
+import fetchPods from './monitoring/fetchPods';
+import fetchDeployments from './monitoring/fetchDeployments';
+import fetchNodes from './monitoring/fetchNodes';
+import fetchClusterInfo from './monitoring/fetchClusterInfo';
+import fetchContainers from './monitoring/fetchContainers';
 
 export default combineReducers({
-    loginSuccess
+    loginSuccess,
+    jobs: fetchJobs,
+    pods: fetchPods,
+    deployments: fetchDeployments,
+    nodes: fetchNodes,
+    clusterInfo: fetchClusterInfo,
+    containers: fetchContainers
 });
