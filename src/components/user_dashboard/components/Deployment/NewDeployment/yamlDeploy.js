@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { BASE_URL, PROXY_URL } from '../../../../../config';
+import NotificationAlert from 'react-notification-alert';
 
+import "react-notification-alert/dist/animate.css";
 import "../../../../../assets/css/userdashboard.css";
 
 class DeployUsingYaml extends Component {
@@ -11,9 +13,30 @@ class DeployUsingYaml extends Component {
         namespace: ""
     }
 
+    optionsSuccess = {
+        place: "tc",
+        message: "Your Deployment was successful!",
+        type: "success",
+        icon: "fa fa-smile-o",
+        autoDismiss: 3,
+        closeButton: false
+    }
+
+    optionsFail = {
+        place: "tc",
+        message: "Failed! - Deployment already exists!",
+        type: "danger",
+        icon: "fa fa-frown-o",
+        autoDismiss: 3,
+        closeButton: false
+    }
+
     render() {
         return (
             <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div>
+                    <NotificationAlert ref="notify" />
+                </div>
                 {this.deployWithYaml()}
             </div>
         );
@@ -92,6 +115,8 @@ class DeployUsingYaml extends Component {
             })
                 .then((response) => {
                     console.log(response);
+                    response.data == "Error Already exits" ? this.refs.notify.notificationAlert(this.optionsFail) : this.refs.notify.notificationAlert(this.optionsSuccess);
+                    this.props.closeModal({ visibleNewDeploymentModal: false });
                 })
                 .catch((error) => {
                     console.log(error);
