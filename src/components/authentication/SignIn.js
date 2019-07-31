@@ -47,13 +47,13 @@ class SignInForm extends Component {
       console.log(response);
 
       loginSuccess({
-        user: this.state,
-        accessToken: '988t8tyvvgd777'
-      })
-    }).catch(error => {
-      console.log(error);
-    });
-  }
+          user: this.state,
+          accessToken: response.access_token
+        })
+      }).catch(error => {
+        console.log(error);
+      });
+    }
 
   render() {
     return (
