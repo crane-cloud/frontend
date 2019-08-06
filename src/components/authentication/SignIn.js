@@ -1,25 +1,25 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-import "../../assets/css/signin.css";
+import '../../assets/css/signin.css';
 
-import loginSuccess from "../../redux/actions/auth/loginSuccess";
-import axios from "axios";
-import { BASE_URL } from "../../config";
+import loginSuccess from '../../redux/actions/auth/loginSuccess';
+import axios from 'axios';
+import { BASE_URL } from '../../config';
 
 class SignInForm extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      email: "",
-      password: ""
+      email: '',
+      password: '',
     };
   }
 
   handleChange = event => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
@@ -29,14 +29,13 @@ class SignInForm extends Component {
      * make api call
      */
     axios
-      .post(BASE_URL + "/login", {
-        ...this.state
+      .post(BASE_URL + '/login', {
+        ...this.state,
       })
       .then(response => {
         // dispatch action on success
         loginSuccess({
-          user: this.state,
-          accessToken: response.access_token
+          accessToken: response.data.access_token,
         });
       })
       .catch(error => {
@@ -79,7 +78,9 @@ class SignInForm extends Component {
           </div>
 
           <div className="FormField">
-            <button className="FormField__Button mr-20">Sign In</button>
+            <button className="FormField__Button mr-20">
+              Sign In
+            </button>
             <Link to="/register" className="FormField__Link">
               Create an account
             </Link>
