@@ -15,7 +15,7 @@ export default class OrganizationsMain extends Component{
 
     // /organizations/orgID/namespaces/
     // eg /organizations/340/namespaces/
-    organizationNameSpaces = {
+    organizationNameSpaces = {  
         orgName : "org name",
         namespaces : [
             {
