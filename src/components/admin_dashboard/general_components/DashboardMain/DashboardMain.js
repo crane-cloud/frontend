@@ -9,7 +9,7 @@ export default class DashboardMain extends Component {
         return (
             <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
                 {this.header()}
-                <h2 className="text-center">Osprey Clusters</h2>
+                <h2 className="text-center">Crane Cloud Clusters</h2>
                 <GenerateClusterRow />
             </main>);
     }

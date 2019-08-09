@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { ReactComponent as Logo} from '../../assets/img/logo.svg';
 import { ReactComponent as Ham} from '../../assets/img/ham.svg';
 import { ReactComponent as Exit} from '../../assets/img/exit.svg';
@@ -33,7 +34,7 @@ class HomePage extends Component {
               <li><a href="#">home</a></li>
               <li><a href="#">services</a></li>
               <li><a href="#">about</a></li>
-              <li><a href="#">contact</a></li>
+              <li class="btn-sign-in"><Link to="/login">Sign In</Link></li>
             </ul>
           </nav>
         </header>
