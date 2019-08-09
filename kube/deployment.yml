@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: react-frontend
-          image: ckwagaba/osprey-frontend:$COMMIT_SHA1
+          image: ckwagaba/crane-cloud-frontend:$COMMIT_SHA1
           ports:
             - containerPort: 3000
               name: react-frontend
