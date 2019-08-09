@@ -41,7 +41,7 @@ class HomePage extends Component {
 
         <section>
           <Server className="server" alt="server graphic"/>
-          <h1>Managed Kubernetes platform on premise and on mulitple public clouds.</h1>
+          <h1>Managed Kubernetes platform on premise and mulitple public clouds.</h1>
           <p className="subhead">Scale with your need. Pay only for what you use.</p>
           <Scroll className="scroll hide-mobile show-desktop" />
         </section>

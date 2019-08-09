@@ -31,7 +31,8 @@ class SignInForm extends Component {
      */
     axios(BASE_URL + '/login', {
       method: 'POST',
-      data: this.state.data,
+      email: this.state.email,
+      password: this.state.password,
       headers: {
         'Content-Type': 'application/json'
       }

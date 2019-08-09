@@ -4,7 +4,7 @@
     background-repeat: no-repeat;
     padding-left: 1.8rem;
     padding-top: 10px;
-    border-color:#ccc;
+    border-color: #ccc;
     font-size: .8em;
 }
 
@@ -20,4 +20,8 @@
 .form-control-file {
     background-color: cadetblue;
     color: white;
+}
+
+.new-namespace {
+    margin-bottom: 10px;
 }
