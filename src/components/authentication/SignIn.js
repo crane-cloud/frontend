@@ -28,6 +28,31 @@ class SignInForm extends Component {
     /**
      * make api call
      */
+<<<<<<< HEAD
+    axios(BASE_URL + '/login', {
+      method: 'POST',
+      email: this.state.email,
+      password: this.state.password,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+    // if (response.status === 200 && response.data.jwt && response.data.expireAt) {
+    //   let jwt = response.data.jwt;
+    //   let expire_at = response.data.expireAt;
+
+    //   localStorage.setItem("access_token", jwt);
+    //   localStorage.setItem("expire_at", expire_at);
+
+    // dispatch action on success
+      console.log(response);
+
+      // loginSuccess({
+      //     user: this.state,
+      //     accessToken: response.access_token
+      //   })
+      }).catch(error => {
+=======
     axios
       .post(BASE_URL + '/login', {
         ...this.state,
@@ -39,6 +64,7 @@ class SignInForm extends Component {
         });
       })
       .catch(error => {
+>>>>>>> a5ed95e65117e27e696e412a3fceb3facc152906
         console.log(error);
       });
   };

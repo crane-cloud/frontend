@@ -14,22 +14,6 @@ class NewOrganization extends Component {
                     <input required type="text" className="form-control" placeholder="Enter a name for the organization" />
                 </div>
                 <div className="form-group">
-                    <label>Create Namespace</label>
-                    <input required type="text" className="form-control" placeholder="Add a new namespace" />
-                </div>
-                <div className="form-group">
-                    <div className="input-group mb-3">
-                        <div className="input-group-prepend">
-                            <label className="input-group-text" htmlFor="inputGroupSelect01">Or select existing namespace</label>
-                        </div>
-                        <select required className="custom-select" id="inputGroupSelect01">
-                            <option selected value="1">None</option>
-                            <option value="2">Namespace1</option>
-                            <option value="3">Namespace2</option>
-                        </select>
-                    </div>
-                </div>
-                <div className="form-group">
                     <label>Members</label>
                     <form>
                         <div class="form-row align-items-center">
