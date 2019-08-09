@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { ReactComponent as Logo} from '../../assets/img/logo.svg';
 import { ReactComponent as Ham} from '../../assets/img/ham.svg';
 import { ReactComponent as Exit} from '../../assets/img/exit.svg';
@@ -30,17 +31,17 @@ class HomePage extends Component {
               <li onClick={this.handleNavExpand} id="exit" className="exit-btn hide-desktop">
                 <Exit alt="exit menu" />
               </li>
-              <li><a href="#">home</a></li>
-              <li><a href="#">services</a></li>
-              <li><a href="#">about</a></li>
-              <li><a href="#">contact</a></li>
+              <li><Link to="#">Home</Link></li>
+              <li><Link to="#">Services</Link></li>
+              <li><Link to="#">About</Link></li>
+              <li><Link to="/login" className="btn-sign-in">Sign In</Link></li>
             </ul>
           </nav>
         </header>
 
         <section>
           <Server className="server" alt="server graphic"/>
-          <h1>Managed Kubernetes platform for the modern era</h1>
+          <h1>Managed Kubernetes platform on premise and on mulitple public clouds.</h1>
           <p className="subhead">Scale with your need. Pay only for what you use.</p>
           <Scroll className="scroll hide-mobile show-desktop" />
         </section>

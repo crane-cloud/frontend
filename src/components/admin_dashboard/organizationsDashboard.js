@@ -29,7 +29,7 @@ export default class OrganizationsDashboard extends Component {
         return (
             <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
                 {this.head()}
-                <h2 className="text-center">Osprey Organizations</h2>
+                <h2 className="text-center">Crane Cloud Organizations</h2>
                 <Organizations />
             </main>
         );
