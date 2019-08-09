@@ -31,10 +31,10 @@ class HomePage extends Component {
               <li onClick={this.handleNavExpand} id="exit" className="exit-btn hide-desktop">
                 <Exit alt="exit menu" />
               </li>
-              <li><a href="#">home</a></li>
-              <li><a href="#">services</a></li>
-              <li><a href="#">about</a></li>
-              <li className="btn-sign-in"><Link to="/login">Sign In</Link></li>
+              <li><Link to="#">home</Link></li>
+              <li><Link to="#">services</Link></li>
+              <li><Link to="#">about</Link></li>
+              <li><Link to="/login" className="btn-sign-in">Sign In</Link></li>
             </ul>
           </nav>
         </header>

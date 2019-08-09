@@ -148,6 +148,17 @@
             background-color: inherit;
         }
 
+        nav ul li:last-of-type a {
+            color: #00ade2cc;
+            text-decoration: solid wavy;
+            font-weight: bolder;
+            // animation: shake 5s infinite alternate;
+        }
+
+        nav ul li:last-of-type a:hover {
+            color: orange;
+        }
+        
         .show-desktop {
             display: block; 
             margin: 0 auto 10% auto;
@@ -161,10 +172,9 @@
             width: 25px;
             animation: move 1s infinite alternate;
         }
-	}
-
+    }
+    
 	
-
 	@keyframes move {
 		0% {
 			transform: translateY(0px);

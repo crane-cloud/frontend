@@ -1,7 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
-
-
 body {
 	margin: 0;
 	font-family: 'Montserrat', sans-serif;
@@ -27,8 +25,6 @@ ul {
 .logo {
 	width: 130px;
 }
-
-
 
 header {
 	display: flex;
@@ -99,17 +95,14 @@ nav ul a:hover {
 	.server {
 		width: 50%;
 	}
-
 	h1 {
 		font-size: 3em;
 		margin: 0;
 	}
-
 	.subhead {
 		font-size: 1.4em;
 		margin-bottom: 12%;
 	}
-
 	nav ul {
 		width: 40%;
 	}
@@ -122,21 +115,17 @@ nav ul a:hover {
 }
 
 @media only screen and (min-width: 1024px) {
-
 	.container {
 		width: 80%;
 		margin: 0 auto;
 	}
-
 	.show-desktop {
-		display: block; 
+		display: block;
 		margin: 0 auto 10% auto;
 	}
-
 	.hide-desktop {
 		display: none;
 	}
-
 	nav ul {
 		position: inherit;
 		width: auto;
@@ -145,27 +134,29 @@ nav ul a:hover {
 		display: flex;
 		padding-top: 0;
 	}
-
 	nav ul li {
 		float: left;
 	}
-
 	nav ul li a {
 		color: black;
 		background-color: inherit;
 		text-align: right;
 		padding: 1em 2em;
 	}
-
 	nav ul li a:hover {
 		background-color: inherit;
 	}
-	
+
+	nav ul li:last-of-type a {
+		color: #00ec00cc;
+		text-decoration: solid wavy;
+		font-weight: bolder;
+	}
+
 	.scroll {
 		width: 25px;
 		animation: move 1s infinite alternate;
 	}
-
 	@keyframes move {
 		0% {
 			transform: translateY(0px);
@@ -177,17 +168,14 @@ nav ul a:hover {
 }
 
 @media only screen and (min-width: 1600px) {
-
 	.server {
 		width: 40%;
 		margin: 5em auto 4em 15%;
 	}
-
 	.container {
 		width: 70%;
 	}
-
 	h2 {
-		margin-top: 4em; 
+		margin-top: 4em;
 	}
 }
