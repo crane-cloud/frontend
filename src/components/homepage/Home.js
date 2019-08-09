@@ -31,9 +31,9 @@ class HomePage extends Component {
               <li onClick={this.handleNavExpand} id="exit" className="exit-btn hide-desktop">
                 <Exit alt="exit menu" />
               </li>
-              <li><Link to="#">home</Link></li>
-              <li><Link to="#">services</Link></li>
-              <li><Link to="#">about</Link></li>
+              <li><Link to="#">Home</Link></li>
+              <li><Link to="#">Services</Link></li>
+              <li><Link to="#">About</Link></li>
               <li><Link to="/login" className="btn-sign-in">Sign In</Link></li>
             </ul>
           </nav>
@@ -41,7 +41,7 @@ class HomePage extends Component {
 
         <section>
           <Server className="server" alt="server graphic"/>
-          <h1>Managed Kubernetes platform for the modern era</h1>
+          <h1>Managed Kubernetes platform on premise and on mulitple public clouds.</h1>
           <p className="subhead">Scale with your need. Pay only for what you use.</p>
           <Scroll className="scroll hide-mobile show-desktop" />
         </section>

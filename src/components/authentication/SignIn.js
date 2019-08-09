@@ -46,10 +46,10 @@ class SignInForm extends Component {
     // dispatch action on success
       console.log(response);
 
-      loginSuccess({
-          user: this.state,
-          accessToken: response.access_token
-        })
+      // loginSuccess({
+      //     user: this.state,
+      //     accessToken: response.access_token
+      //   })
       }).catch(error => {
         console.log(error);
       });
