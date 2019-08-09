@@ -104,7 +104,7 @@ class DeployUsingYaml extends Component {
     handleYAMLSubmit = (event) => {
         event.preventDefault();
         const { fileContent, namespace } = this.state;
-        if (fileContent == "" || namespace == "") {
+        if (fileContent === "" || namespace === "") {
             return;
         } else {
             // console.log(fileContent);
@@ -115,7 +115,7 @@ class DeployUsingYaml extends Component {
             })
                 .then((response) => {
                     console.log(response);
-                    response.data == "Error Already exits" ? this.refs.notify.notificationAlert(this.optionsFail) : this.refs.notify.notificationAlert(this.optionsSuccess);
+                    response.data === "Error Already exits" ? this.refs.notify.notificationAlert(this.optionsFail) : this.refs.notify.notificationAlert(this.optionsSuccess);
                     this.props.closeModal({ visibleNewDeploymentModal: false });
                 })
                 .catch((error) => {
