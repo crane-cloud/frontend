@@ -25,10 +25,10 @@ ul {
 }
 
 .logo {
-	min-width: 150px;
-	max-height: 50px;
-	padding-left: .5em;
+	width: 130px;
 }
+
+
 
 header {
 	display: flex;

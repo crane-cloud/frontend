@@ -34,7 +34,7 @@ class HomePage extends Component {
               <li><a href="#">home</a></li>
               <li><a href="#">services</a></li>
               <li><a href="#">about</a></li>
-              <li class="btn-sign-in"><Link to="/login">Sign In</Link></li>
+              <li className="btn-sign-in"><Link to="/login">Sign In</Link></li>
             </ul>
           </nav>
         </header>
