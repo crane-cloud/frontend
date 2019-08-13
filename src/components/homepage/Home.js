@@ -7,7 +7,7 @@ import { ReactComponent as Server} from '../../assets/img/server.svg';
 import { ReactComponent as Scroll} from '../../assets/img/scroll.svg';
 
 
-import "../../assets/css/signin.css";
+import "../../assets/css/auth.css";
 import '../../assets/css/style.css';
 import '../../assets/scss/home.scss';
 
