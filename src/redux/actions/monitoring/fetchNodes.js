@@ -6,11 +6,11 @@ import {
 } from "../../actions/actionTypes";
 
 import axios from 'axios';
-import { PROXY_URL } from "../../../config";
+import { BASE_URL, PROXY_URL } from "../../../config";
 
 export const fetchNodesTable = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/nodes/info';
+    const apiRoute = `${BASE_URL}/monitor/nodes/info`;
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
@@ -22,7 +22,7 @@ export const fetchNodesTable = () => dispatch => {
 
 export const fetchTotalNodes = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/nodes';
+    const apiRoute = `${BASE_URL}/monitor/nodes`;
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
@@ -34,7 +34,7 @@ export const fetchTotalNodes = () => dispatch => {
 
 export const fetchNodesOutOfDisk = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/nodes/outofdisk';
+    const apiRoute = `${BASE_URL}/monitor/nodes/outofdisk`;
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
@@ -46,7 +46,7 @@ export const fetchNodesOutOfDisk = () => dispatch => {
 
 export const fetchNodesUnavailable = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/nodes/unavailable';
+    const apiRoute = `${BASE_URL}/monitor/nodes/unavailable`;
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
