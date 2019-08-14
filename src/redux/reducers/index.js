@@ -6,6 +6,7 @@ import fetchDeployments from './monitoring/fetchDeployments';
 import fetchNodes from './monitoring/fetchNodes';
 import fetchClusterInfo from './monitoring/fetchClusterInfo';
 import fetchContainers from './monitoring/fetchContainers';
+import fetchReplicaSets from './monitoring/fetchReplicaSets';
 
 export default combineReducers({
     loginSuccess,
@@ -14,5 +15,6 @@ export default combineReducers({
     deployments: fetchDeployments,
     nodes: fetchNodes,
     clusterInfo: fetchClusterInfo,
-    containers: fetchContainers
+    containers: fetchContainers,
+    replicaSets: fetchReplicaSets
 });

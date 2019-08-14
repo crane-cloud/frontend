@@ -1,33 +1,12 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { fetchReplicaSets } from '../../../../redux/actions/monitoring/fetchReplicaSets';
 class ReplicaSets extends Component {
 
-    replicaSetsArray = [
-        {
-            replicaSetID: 346,
-            name: "nfs-client-provisioner-54bd7c49f6",
-            labels: "app: nfs-client-provisioner pod-template-hash: 1068370592",
-            pods: "0/1",
-            age: "9 days",
-            images: "quay.io/external_storage/nfs-client-provisioner:latest"
-        },
-        {
-            replicaSetID: 346,
-            name: "nfs-client-provisioner-54bd7c49f6",
-            labels: "app: nfs-client-provisioner pod-template-hash: 1068370592",
-            pods: "0/1",
-            age: "9 days",
-            images: "quay.io/external_storage/nfs-client-provisioner:latest"
-        },
-        {
-            replicaSetID: 346,
-            name: "nfs-client-provisioner-54bd7c49f6",
-            labels: "app: nfs-client-provisioner pod-template-hash: 1068370592",
-            pods: "0/1",
-            age: "9 days",
-            images: "quay.io/external_storage/nfs-client-provisioner:latest"
-        }
-    ]
+    componentWillMount() {
+        this.props.fetchReplicaSets();
+    }
 
     createTable = () => {
         return (<div>
@@ -37,20 +16,20 @@ class ReplicaSets extends Component {
                         <th scope="col">Name</th>
                         <th scope="col">Labels</th>
                         <th scope="col">Pods</th>
-                        <th scope="col">Age</th>
-                        <th scope="col">Images</th>
+                        {/* <th scope="col">Age</th> */}
+                        {/* <th scope="col">Images</th> */}
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        this.replicaSetsArray.map((element) => {
+                        this.props.replicaSetsArray.map((element) => {
                             return (
-                                <tr key={this.replicaSetsArray.indexOf(element)}>
-                                    <td> {element.name}</td>
-                                    <td> {element.labels} </td>
-                                    <td> {element.pods} </td>
-                                    <td> {element.age} </td>
-                                    <td> {element.images} </td>
+                                <tr key={this.props.replicaSetsArray.indexOf(element)}>
+                                    <td> {element.metric.replicaset}</td>
+                                    <td> {element.metric.label_app}{element.metric.label_pod_template_hash} </td>
+                                    <td> {element.value[1]} </td>
+                                    {/* <td> {element.age} </td>
+                                    <td> {element.images} </td> */}
                                     <td> {this.dropDown()} </td>
                                 </tr>
                             );
@@ -100,4 +79,13 @@ class ReplicaSets extends Component {
     }
 }
 
-export default ReplicaSets;
+ReplicaSets.propTypes = {
+    fetchReplicaSets: PropTypes.func.isRequired,
+    replicaSetsArray: PropTypes.array.isRequired
+}
+
+const mapStateToProps = state => ({
+    replicaSetsArray: state.replicaSets.replicaSetsArray
+});
+
+export default connect(mapStateToProps, { fetchReplicaSets })(ReplicaSets);
