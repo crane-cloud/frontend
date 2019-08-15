@@ -26,7 +26,7 @@ class ReplicaSets extends Component {
                             return (
                                 <tr key={this.props.replicaSetsArray.indexOf(element)}>
                                     <td> {element.metric.replicaset}</td>
-                                    <td> {element.metric.label_app}{element.metric.label_pod_template_hash} </td>
+                                    <td> APP:{element.metric.label_app}, TEMPLATE_HASH:{element.metric.label_pod_template_hash} </td>
                                     <td> {element.value[1]} </td>
                                     {/* <td> {element.age} </td>
                                     <td> {element.images} </td> */}
