@@ -16,8 +16,8 @@ class ReplicaSets extends Component {
                         <th scope="col">Name</th>
                         <th scope="col">Labels</th>
                         <th scope="col">Pods</th>
-                        {/* <th scope="col">Age</th> */}
-                        {/* <th scope="col">Images</th> */}
+                        <th scope="col">Images</th>
+                        <th scope="col">Age</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,11 +25,11 @@ class ReplicaSets extends Component {
                         this.props.replicaSetsArray.map((element) => {
                             return (
                                 <tr key={this.props.replicaSetsArray.indexOf(element)}>
-                                    <td> {element.metric.replicaset}</td>
-                                    <td> APP:{element.metric.label_app}, TEMPLATE_HASH:{element.metric.label_pod_template_hash} </td>
-                                    <td> {element.value[1]} </td>
-                                    {/* <td> {element.age} </td>
-                                    <td> {element.images} </td> */}
+                                    <td>{element.metric.replicaset}</td>
+                                    <td>APP:{element.metric.label_app}, HASH:{element.metric.label_pod_template_hash}</td>
+                                    <td>{element.value[1]}</td>
+                                <td>-</td>
+                                    <td>-</td>
                                     <td> {this.dropDown()} </td>
                                 </tr>
                             );

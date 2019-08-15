@@ -73,6 +73,7 @@ class SignInForm extends Component {
 
         <button className="form-field-button">Sign In</button>
 
+        <Link to="/forgot-password" className="form-field-link">Forgot password?</Link>
         <p className="redirect">Not yet a member? <Link to="/register" className="form-field-link">Create an account</Link></p>
 
       </form>

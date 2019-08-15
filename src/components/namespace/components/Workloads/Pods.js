@@ -30,8 +30,8 @@ class Pods extends Component {
                 <th scope="col">Name</th>
                 <th scope="col">Node</th>
                 <th scope="col">Status</th>
-                {/* <th scope="col">Restarts</th>
-                <th scope="col">Age</th> */}
+                <th scope="col">Restarts</th>
+                <th scope="col">Age</th>
               </tr>
             </thead>
             <tbody>
@@ -43,7 +43,8 @@ class Pods extends Component {
                       <td> {element.spec.nodeName}</td>
                       <td> {element.status.phase}</td>
                       {/* <td> {element.containerStatuses[0].restartCount}</td> */}
-                      {/* <td> {element.status.phase}</td> */}
+                      <td>-</td>
+                      <td>-</td>
                       <td> {this.dropDown()} </td>
                     </tr>
                   );

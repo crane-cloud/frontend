@@ -31,6 +31,13 @@
   border-bottom: 1px solid #1b87c2;
 }
 
+.form-field p {
+  text-decoration: none;
+  color: #1b87c2;
+  margin-left: .5em;
+  font-family: 'Montserrat', sans-serif;
+}
+
 .form-field input {
   border: none;
   outline: none;
@@ -59,6 +66,7 @@
   text-decoration: none;
   color: #1b87c2;
   margin-left: .5em;
+  margin-top: 10px;
   font-family: 'Montserrat', sans-serif;
 }
 
