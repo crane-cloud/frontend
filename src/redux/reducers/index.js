@@ -9,6 +9,7 @@ import fetchContainers from './monitoring/fetchContainers';
 import fetchReplicaSets from './monitoring/fetchReplicaSets';
 import fetchConfigMaps from './monitoring/fetchConfigMaps';
 import fetchPersistentVolumes from './monitoring/fetchPersistentVolumes';
+import fetchpvClaims from './monitoring/fetchPVClaims';
 
 export default combineReducers({
     loginSuccess,
@@ -20,5 +21,6 @@ export default combineReducers({
     containers: fetchContainers,
     replicaSets: fetchReplicaSets,
     configMaps: fetchConfigMaps,
-    persistentVolumes: fetchPersistentVolumes
+    persistentVolumes: fetchPersistentVolumes,
+    pvClaims: fetchpvClaims
 });

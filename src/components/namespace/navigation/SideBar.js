@@ -11,6 +11,7 @@ import ConfigMaps from "../components/Config/ConfigMaps";
 import Services from "../components/Services/Services";
 import Ingresses from "../components/Services/Ingresses";
 import PersistentVolumes from "../components/Storage/PersistentVolumes";
+import PersistentVolumeClaims from "../components/Storage/PersistentVolumeClaims";
 
 
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
@@ -106,6 +107,12 @@ export default class SideNavigation extends Component {
                     Storage
                   </NavText>
 
+                  <NavItem eventKey="storage/persistent-volumes">
+                    <NavText>
+                      Persistent Volumes
+                    </NavText>
+                  </NavItem>
+
                   <NavItem eventKey="storage/persistent-volume-claims">
                     <NavText>
                       Persistent Volume Claims
@@ -147,7 +154,8 @@ export default class SideNavigation extends Component {
               <Route path="/workloads/replica-sets" component={ReplicaSets} />               
               <Route path="/services/services" component={Services} />
               <Route path="/services/ingresses" component={Ingresses} />
-              <Route path="/storage/persistent-volume-claims" component={PersistentVolumes} />
+              <Route path="/storage/persistent-volumes" component={PersistentVolumes} />
+              <Route path="/storage/persistent-volume-claims" component={PersistentVolumeClaims} />
               <Route path="/config/secrets" component={Secrets} />
               <Route path="/config/config-maps" component={ConfigMaps} />
             </main>
