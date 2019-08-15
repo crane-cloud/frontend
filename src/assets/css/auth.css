@@ -63,9 +63,9 @@
 }
 
 .form-field-link {
+  font-size: .8em;
   text-decoration: none;
   color: #1b87c2;
-  margin-left: .5em;
   margin-top: 10px;
   font-family: 'Montserrat', sans-serif;
 }

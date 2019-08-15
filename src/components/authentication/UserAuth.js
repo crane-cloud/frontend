@@ -4,21 +4,25 @@ import AdminDashboard from "../admin_dashboard/AdminDashboard";
 import SignUpForm from './SignUp';
 import SignInForm from './SignIn';
 import PasswordReset from './PasswordReset';
+import HeaderComponent from '../homepage/header';
 
 import "../../assets/css/auth.css";
+import "../../assets/css/home.css"
 
 class UserAuthPage extends Component {
     render() {
         return (
-            <div className="auth-form">
-                <Router>
+            <Router>
+                <div className="home-container">
+                    <HeaderComponent />
+                </div>
+                <div className="auth-form">
                     <Route exact path="/admin-dashboard" component={AdminDashboard} />
                     <Route exact path="/register" component={SignUpForm} />
                     <Route exact path="/login" component={SignInForm} />
                     <Route exact path="/forgot-password" component={PasswordReset} />
-                </Router>
-            </div>
-
+                </div>
+            </Router>
         );
     }
 }
