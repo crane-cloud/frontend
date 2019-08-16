@@ -52,7 +52,7 @@ class App extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        loggedIn : state.loginSuccess.loggedIn
+        loggedIn : state.auth.loggedIn
     }
 }
 

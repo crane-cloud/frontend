@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import loginSuccess from './auth/loginSuccess';
+import auth from './auth/authReducer';
 import fetchJobs from './monitoring/fetchJobs';
 import fetchPods from './monitoring/fetchPods';
 import fetchDeployments from './monitoring/fetchDeployments';
@@ -12,7 +12,7 @@ import fetchPersistentVolumes from './monitoring/fetchPersistentVolumes';
 import fetchpvClaims from './monitoring/fetchPVClaims';
 
 export default combineReducers({
-    loginSuccess,
+    auth,
     jobs: fetchJobs,
     pods: fetchPods,
     deployments: fetchDeployments,

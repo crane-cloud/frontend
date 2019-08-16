@@ -4,7 +4,7 @@ const initialState = {
   loggedIn: false,
 };
 
-const loginSuccess = (state = initialState, action) => {
+const auth = (state = initialState, action) => {
   switch (action.type) {
     case ACTIONTYPES.LOGIN_SUCCESS:
       return {
@@ -12,9 +12,18 @@ const loginSuccess = (state = initialState, action) => {
         loggedIn: true,
         accessToken: action.payload.accessToken,
       };
+
+      case ACTIONTYPES.LOGOUT:
+        /** disable session here */
+        return {
+          ...state,
+          loggedIn: false,
+          accessToken: "",
+        };
+
     default:
       return state;
   }
 };
 
-export default loginSuccess;
+export default auth;

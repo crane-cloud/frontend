@@ -1,8 +1,7 @@
 import React , { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
-export default class UserTopNav extends Component{
-
+class UserTopNav extends Component{
     render(){
         return ( 
             <nav className="navbar navbar-dark fixed-top bg-primary flex-md-nowrap p-0 shadow navbar-expand-lg">
@@ -28,5 +27,7 @@ export default class UserTopNav extends Component{
         )
     }
 }
+
+export default withRouter(UserTopNav);
 
 

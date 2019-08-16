@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 
-import loginSuccess from '../../redux/actions/auth/loginSuccess';
+import logOutAction from "../../redux/actions/auth/logoutAction";
 import axios from 'axios';
 import { BASE_URL } from '../../config';
 import { loginApiCall } from "../../apiCalls/auth/login";
@@ -36,6 +36,12 @@ class SignInForm extends Component {
 
     loginApiCall(BASE_URL, this.state);
   };
+
+  componentDidMount(){
+    /* dispatch logout action after call to /login */
+    logOutAction()
+    
+  }
 
   render() {
     if(this.props.loggedIn){
@@ -87,8 +93,8 @@ class SignInForm extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn : state.loginSuccess.loggedIn
+    loggedIn : state.auth.loggedIn
   }
 }
 
-export default  connect(mapStateToProps)(SignInForm);
+export default  withRouter(connect(mapStateToProps)(SignInForm));
