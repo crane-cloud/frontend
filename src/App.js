@@ -1,7 +1,10 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
+import { connect } from "react-redux";
+ 
 import HomePage from "./components/homepage/Home";
 import UserAuthPage from "./components/authentication/UserAuth";
+import SignInForm from "./components/authentication/SignIn";
 import AdminDashboard from "./components/admin_dashboard/AdminDashboard"
 import Namespace from "./components/namespace/Namespace";
 import OrganizationsDashboard from "./components/admin_dashboard/organizationsDashboard";
@@ -12,13 +15,14 @@ import UserDashboard from "./components/user_dashboard/main";
 import UserOrganization from "./components/user_dashboard/components/Organization/organization";
 import Deployment from "./components/user_dashboard/components/Deployment/ExistingDeployment/Deployment";
 
-export default class App extends Component {
+class App extends Component {
     render() {
+        const { loggedIn } = this.props;
         return (
             <Router>
                 <Switch >
                     <Route exact path="/" component={HomePage} />
-                    <Route exact path="/login" component={UserAuthPage} />
+                    <Route exact path="/login" component={SignInForm} />
                     <Route exact path="/register" component={UserAuthPage} />
                     <Route exact path="/forgot-password" component={UserAuthPage} />
                     <Route exact path="/admin-dashboard" component={AdminDashboard} />
@@ -27,7 +31,13 @@ export default class App extends Component {
                     <Route exact path="/organization-resources" component={TotalResources} />
                     <Route exact path="/:name/cluster-info" component={ClusterInfo} />
                     <Route exact path="/victory" component={Victory} />
-                    <Route exact path="/user-dashboard" component={UserDashboard} />
+
+                    <Route exact path="/user-dashboard" 
+                        render={() => loggedIn ? 
+                                        <UserDashboard /> : 
+                                        <Redirect to="/login" /> }
+                    />
+
                     <Route exact path="/user-organizations/:orgID" component={UserOrganization} />
                     <Route exact path="/deployments/:deploymentID" component={Deployment} />
                 </Switch>
@@ -39,3 +49,11 @@ export default class App extends Component {
 
 
 }
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        loggedIn : state.loginSuccess.loggedIn
+    }
+}
+
+export default connect(mapStateToProps)(App);

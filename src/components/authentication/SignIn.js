@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
-import '../../assets/css/auth.css';
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 import loginSuccess from '../../redux/actions/auth/loginSuccess';
 import axios from 'axios';
 import { BASE_URL } from '../../config';
+import { loginApiCall } from "../../apiCalls/auth/login";
+import HeaderComponent from '../homepage/header';
+
+import '../../assets/css/auth.css';
+import '../../assets/css/home.css';
 
 class SignInForm extends Component {
   constructor(props) {
@@ -28,23 +33,20 @@ class SignInForm extends Component {
     /**
      * make api call
      */
-    axios
-      .post(BASE_URL + '/login', {
-        ...this.state,
-      })
-      .then(response => {
-        // dispatch action on success
-        loginSuccess({
-          accessToken: response.data.access_token,
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+
+    loginApiCall(BASE_URL, this.state);
   };
 
   render() {
+    if(this.props.loggedIn){
+      return <Redirect to="/user-dashboard"/>
+    }
     return (
+      <>
+      <div className="home-container">
+                    <HeaderComponent />
+      </div>
+      <div className="auth-form">
       <form onSubmit={this.handleSubmit}>
 
         <div className="form-title">
@@ -77,8 +79,16 @@ class SignInForm extends Component {
         <p className="redirect">Not yet a member? <Link to="/register" className="form-field-link">Create an account</Link></p>
 
       </form>
+      </div>
+      </>
     );
   }
 }
 
-export default SignInForm;
+const mapStateToProps = (state) => {
+  return {
+    loggedIn : state.loginSuccess.loggedIn
+  }
+}
+
+export default  connect(mapStateToProps)(SignInForm);
