@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import loginSuccess from "../../redux/actions/auth/loginSuccess";
+import loginFailure from "../../redux/actions/auth/loginFailure";
 
 export const loginApiCall = (BASE_URL, payload) => {
     return axios
@@ -12,10 +13,22 @@ export const loginApiCall = (BASE_URL, payload) => {
               loginSuccess({
                 accessToken: response.data.access_token 
               });
+            } else {
+              /* do something basing on status codes */
             }
           })
 
           .catch((loginError) => {
             console.log(loginError);
+            /* dispatch login failure error */
+            loginError.response.status === 401 ?
+
+            loginFailure({
+              message: "Wrong email or Password"
+            })
+            :
+            loginFailure({
+              message: loginError.response.data.message
+            });
           })
 }

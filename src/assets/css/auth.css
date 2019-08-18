@@ -62,6 +62,19 @@
   margin-right: 10px;
 }
 
+.form-field-button-processing {
+  width: 100%;
+  color: black;
+  background-color: #cbe4ee;
+  border: none;
+  outline: none;
+  border-radius: 25px;
+  padding: 15px 70px;
+  font-size: 1em;
+  font-weight: 500;
+  margin-right: 10px;
+}
+
 .form-field-link {
   font-size: .8em;
   text-decoration: none;

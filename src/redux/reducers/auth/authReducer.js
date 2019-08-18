@@ -11,6 +11,7 @@ const auth = (state = initialState, action) => {
         ...state,
         loggedIn: true,
         accessToken: action.payload.accessToken,
+        message: false
       };
 
       case ACTIONTYPES.LOGOUT:
@@ -20,6 +21,12 @@ const auth = (state = initialState, action) => {
           loggedIn: false,
           accessToken: "",
         };
+
+        case ACTIONTYPES.LOGIN_FAILURE:
+          return {
+            ...state,
+            loginFailureMessage: action.loginFailureMessage
+          };
 
     default:
       return state;

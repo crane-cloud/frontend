@@ -19,34 +19,68 @@ class SignInForm extends Component {
     this.state = {
       email: '',
       password: '',
+      submitButtonValue: 'Sign In',
+      buttonClass : 'form-field-button',
+      displayLoginError : false
     };
   }
 
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value,
+      displayLoginError: false
     });
   };
 
   handleSubmit = event => {
     event.preventDefault();
+    this.setState({
+      submitButtonValue: "Processing ....",
+      buttonClass: 'form-field-button-processing'
+    })
     /**
      * make api call
      */
-
-    loginApiCall(BASE_URL, this.state);
+    loginApiCall(BASE_URL, this.state)
   };
 
   componentDidMount(){
     /* dispatch logout action after call to /login */
     logOutAction()
-    
+  }
+
+  componentWillReceiveProps(props){
+    if(props.loginFailureMessage){
+      this.setState({
+        email: '',
+        password: '',
+        submitButtonValue: 'Sign In',
+        buttonClass : 'form-field-button',
+        displayLoginError: true
+    });
+    }
+
+  }
+
+  displayLoginError = (displayLoginError, loginFailureMessage) => {
+    if(displayLoginError){
+      return (
+        <div className="alert alert-danger text-center">
+        { loginFailureMessage }
+        </div> )
+    } else {
+      return;
+    }
   }
 
   render() {
-    if(this.props.loggedIn){
+    const { buttonClass, submitButtonValue, displayLoginError } = this.state;
+    const { loggedIn, loginFailureMessage } = this.props;
+
+    if(loggedIn){
       return <Redirect to="/user-dashboard"/>
     }
+
     return (
       <>
       <div className="home-container">
@@ -55,7 +89,9 @@ class SignInForm extends Component {
       <div className="auth-form">
       <form onSubmit={this.handleSubmit}>
 
-        <div className="form-title">
+        { this.displayLoginError(displayLoginError, loginFailureMessage) }
+        
+        <div className="form-title"> 
           Sign In
         </div>
 
@@ -79,7 +115,7 @@ class SignInForm extends Component {
           />
         </div>
 
-        <button className="form-field-button">Sign In</button>
+        <button className={buttonClass}>{submitButtonValue}</button>
 
         <Link to="/forgot-password" className="form-field-link">Forgot password?</Link>
         <p className="redirect">Not yet a member? <Link to="/register" className="form-field-link">Create an account</Link></p>
@@ -93,7 +129,8 @@ class SignInForm extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn : state.auth.loggedIn
+    loggedIn : state.auth.loggedIn,
+    loginFailureMessage: state.auth.loginFailureMessage
   }
 }
 
