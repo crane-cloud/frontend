@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import emailExistence from "email-existence";
 
 import { BASE_URL } from '../../config';
 import { registerUserAPI } from '../../apiCalls/auth/register';
@@ -17,7 +18,9 @@ class SignUpForm extends Component {
     hasAgreed: false,
     submitButtonValue: 'Sign Up',
     buttonClass : 'form-field-button',
-    displayLoginError : false
+    displayLoginError : false,
+    registrationError : false,
+    displayApiRegError: false,
   }
 
   handleChange = (e) => {
@@ -29,12 +32,14 @@ class SignUpForm extends Component {
       [name]: value,
       submitButtonValue: 'Sign Up',
       buttonClass : 'form-field-button',
+      registrationError: false,
+      displayLoginError: false,
+      displayApiRegError: false
     });
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-
     this.setState({
       submitButtonValue: "Processing ....",
       buttonClass: 'form-field-button-processing'
@@ -42,9 +47,15 @@ class SignUpForm extends Component {
     });
 
     const { password, confirmPassword, name, email } = this.state;
-    
     if (password !== confirmPassword) {
-      alert("passwords dont match")
+      debugger;
+      this.setState({
+        registrationError: 'Passwords dont match',
+        password: '',
+        confirmPassword: '',
+        submitButtonValue: 'Sign Up',
+        buttonClass : 'form-field-button',
+      })
       return;
     } else if (this.state.hasAgreed !== true) {
       return;
@@ -57,7 +68,31 @@ class SignUpForm extends Component {
     if(displayLoginError){
       return (
         <div className="alert alert-danger text-center">
-        { loginFailureMessage }
+          { loginFailureMessage }
+        </div> )
+    } else {
+      return;
+    }
+  }
+
+  displayRegistrationError = () => {
+    const { registrationError } = this.state;
+    if(registrationError){
+      return (
+        <div className="alert alert-danger text-center">
+        { registrationError }
+        </div> )
+    } else {
+      return;
+    }
+  }
+
+
+  displayApiRegError = (displayApiRegError, registrationFailureMessage) => {
+    if(displayApiRegError){
+      return (
+        <div className="alert alert-danger text-center">
+          { registrationFailureMessage }
         </div> )
     } else {
       return;
@@ -73,8 +108,8 @@ class SignUpForm extends Component {
   }
 
   render() {
-    const { name, email, password, confirmPassword, submitButtonValue, buttonClass, displayLoginError } = this.state;
-    const { loggedIn, loginFailureMessage } = this.props;
+    const { name, email, password, confirmPassword, submitButtonValue, buttonClass, displayLoginError, displayApiRegError } = this.state;
+    const { loggedIn, loginFailureMessage, registrationFailureMessage } = this.props;
 
     if(loggedIn){
       return <Redirect to="/user-dashboard"/>
@@ -88,6 +123,8 @@ class SignUpForm extends Component {
       <div className="auth-form">
       <form onSubmit={this.handleSubmit}>
         { this.displayLoginError(displayLoginError, loginFailureMessage) }
+        { this.displayRegistrationError() }
+        { this.displayApiRegError(displayApiRegError, registrationFailureMessage) }
         <div className="form-title">
           Sign Up
         </div>
@@ -162,7 +199,8 @@ class SignUpForm extends Component {
 const mapStateToProps = (state) => {
   return {
     loggedIn : state.auth.loggedIn,
-    loginFailureMessage: state.auth.loginFailureMessage
+    loginFailureMessage: state.auth.loginFailureMessage,
+    registrationFailureMessage: state.auth.registrationFailureMessage
   }
 }
 

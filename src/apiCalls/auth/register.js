@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { loginApiCall } from './login';
+import registrationFailure from '../../redux/actions/auth/registrationAction';
 
 export const registerUserAPI = (name, email, password, BASE_URL) => {
   return axios.post(BASE_URL + '/register', {
@@ -15,8 +16,11 @@ export const registerUserAPI = (name, email, password, BASE_URL) => {
         loginApiCall(BASE_URL, {email, password});
       }
     })
-    .catch((error) => {
-      console.log(error)
+    .catch((registerationError) => {
+      console.log(registerationError)
       /* update store with error */
+      registrationFailure({
+        message: registerationError.response.data.message
+      });
     })
 }

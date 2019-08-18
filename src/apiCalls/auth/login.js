@@ -4,7 +4,6 @@ import loginSuccess from "../../redux/actions/auth/loginSuccess";
 import loginFailure from "../../redux/actions/auth/loginFailure";
 
 export const loginApiCall = (BASE_URL, payload) => {
-    debugger;
     return axios
         .post(BASE_URL + '/login', payload)
 

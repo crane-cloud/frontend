@@ -28,6 +28,12 @@ const auth = (state = initialState, action) => {
             loginFailureMessage: action.loginFailureMessage
           };
 
+        case ACTIONTYPES.REGISTRATION_FAILURE:
+          return {
+            ...state,
+            registrationFailureMessage: action.registrationFailureMessage
+          };
+
     default:
       return state;
   }
