@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import HomePage from "./components/homepage/Home";
 import UserAuthPage from "./components/authentication/UserAuth";
 import SignInForm from "./components/authentication/SignIn";
+import SignUpForm from "./components/authentication/SignUp";
 import AdminDashboard from "./components/admin_dashboard/AdminDashboard"
 import Namespace from "./components/namespace/Namespace";
 import OrganizationsDashboard from "./components/admin_dashboard/organizationsDashboard";
@@ -23,7 +24,8 @@ class App extends Component {
                 <Switch >
                     <Route exact path="/" component={HomePage} />
                     <Route exact path="/login" component={SignInForm} />
-                    <Route exact path="/register" component={UserAuthPage} />
+                    {/* <Route exact path="/register" component={UserAuthPage} /> */}
+                    <Route exact path="/register" component={SignUpForm} />
                     <Route exact path="/forgot-password" component={UserAuthPage} />
                     <Route exact path="/admin-dashboard" component={AdminDashboard} />
                     <Route exact path="/namespaces/:namespaceId" component={Namespace} />

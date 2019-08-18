@@ -4,6 +4,7 @@ import loginSuccess from "../../redux/actions/auth/loginSuccess";
 import loginFailure from "../../redux/actions/auth/loginFailure";
 
 export const loginApiCall = (BASE_URL, payload) => {
+    debugger;
     return axios
         .post(BASE_URL + '/login', payload)
 
@@ -22,7 +23,6 @@ export const loginApiCall = (BASE_URL, payload) => {
             console.log(loginError);
             /* dispatch login failure error */
             loginError.response.status === 401 ?
-
             loginFailure({
               message: "Wrong email or Password"
             })

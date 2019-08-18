@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
 import { BASE_URL } from '../../config';
+import { registerUserAPI } from '../../apiCalls/auth/register';
+import HeaderComponent from '../homepage/header';
 
 import "../../assets/css/auth.css";
-import axios from 'axios';
 
 class SignUpForm extends Component {
   state = {
@@ -13,7 +15,9 @@ class SignUpForm extends Component {
     password: "",
     confirmPassword: "",
     hasAgreed: false,
-    redirect: false
+    submitButtonValue: 'Sign Up',
+    buttonClass : 'form-field-button',
+    displayLoginError : false
   }
 
   handleChange = (e) => {
@@ -21,49 +25,69 @@ class SignUpForm extends Component {
     let value = target.type === "checkbox" ? target.checked : target.value;
     let name = target.name;
 
-    this.setState({ [name]: value });
+    this.setState({ 
+      [name]: value,
+      submitButtonValue: 'Sign Up',
+      buttonClass : 'form-field-button',
+    });
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { password, confirmPassword } = this.state;
+
+    this.setState({
+      submitButtonValue: "Processing ....",
+      buttonClass: 'form-field-button-processing'
+
+    });
+
+    const { password, confirmPassword, name, email } = this.state;
+    
     if (password !== confirmPassword) {
       alert("passwords dont match")
       return;
     } else if (this.state.hasAgreed !== true) {
       return;
     } else {
-      this.registerUser();
-
+      registerUserAPI(name, email, password, BASE_URL);
     }
   }
 
-  registerUser = () => {
-    const { name, email, password } = this.state;
+  displayLoginError = (displayLoginError, loginFailureMessage) => {
+    if(displayLoginError){
+      return (
+        <div className="alert alert-danger text-center">
+        { loginFailureMessage }
+        </div> )
+    } else {
+      return;
+    }
+  }
 
-    axios.post(BASE_URL + '/register', {
-      name: name,
-      email: email,
-      password: password
-    })
-      .then((response) => {
-        this.setState({ redirect: true });
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-
+  componentWillReceiveProps(props){
+    if(props.loginFailureMessage){
+      this.setState({
+        displayLoginError: true
+      });
+    }
   }
 
   render() {
-    const { name, email, password, confirmPassword, redirect } = this.state;
-    if (redirect) {
-      return <Redirect to="/user-dashboard" />;
-    }
-    return (
-      <form onSubmit={this.handleSubmit}>
+    const { name, email, password, confirmPassword, submitButtonValue, buttonClass, displayLoginError } = this.state;
+    const { loggedIn, loginFailureMessage } = this.props;
 
+    if(loggedIn){
+      return <Redirect to="/user-dashboard"/>
+    }
+
+    return (
+      <>
+      <div className="home-container">
+                    <HeaderComponent />
+      </div>
+      <div className="auth-form">
+      <form onSubmit={this.handleSubmit}>
+        { this.displayLoginError(displayLoginError, loginFailureMessage) }
         <div className="form-title">
           Sign Up
         </div>
@@ -124,13 +148,24 @@ class SignUpForm extends Component {
           I agree to the <Link to="/terms" className="form-field__TermsLink">terms of service</Link>
         </label>
 
-        <button className="form-field-button">Sign Up</button>
+        <button className={buttonClass}>{submitButtonValue}</button>
 
         <p className="redirect">Already a member? <Link to="/login" className="form-field-link">Log in here</Link></p>
 
       </form>
+      </div>
+      </>
     );
   }
 }
 
-export default SignUpForm;
+const mapStateToProps = (state) => {
+  return {
+    loggedIn : state.auth.loggedIn,
+    loginFailureMessage: state.auth.loginFailureMessage
+  }
+}
+
+export default  withRouter(connect(mapStateToProps)(SignUpForm));
+
+// export default SignUpForm;

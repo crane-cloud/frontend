@@ -57,9 +57,8 @@ class SignInForm extends Component {
         submitButtonValue: 'Sign In',
         buttonClass : 'form-field-button',
         displayLoginError: true
-    });
+      });
     }
-
   }
 
   displayLoginError = (displayLoginError, loginFailureMessage) => {
