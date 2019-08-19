@@ -1,44 +1,38 @@
 import styled from 'styled-components';
 import SideNav, {
-    Toggle,
     Nav,
     NavItem,
     NavIcon,
     NavText
-} from '../SideNav';
+} from '@trendmicro/react-sidenav';
 
 // SideNav
 const StyledSideNav = styled(SideNav)`
-    background-color: #fff;
+    background-color: #0786ed;
     border-right: 1px solid #ddd;
 `;
 StyledSideNav.defaultProps = SideNav.defaultProps;
 
-// Toggle
-const StyledToggle = styled(Toggle)`
-    background-color: #db3d44;
-`;
-StyledToggle.defaultProps = Toggle.defaultProps;
-
 // Nav
 const StyledNav = styled(Nav)`
-    background-color: #fff;
+    background-color: #0786ed;
+
     &&[class*="expanded--"] {
         [class*="sidenav-subnav--"] {
             > [class*="sidenav-subnavitem--"],
             > [class*="sidenav-subnavitem--"]:hover {
                 > [class*="navitem--"] {
-                    color: #222;
+                    color: #d1cfcf;
                 }
             }
             > [class*="sidenav-subnavitem--"]:hover {
                 > [class*="navitem--"] {
-                    background-color: #eee;
+                    background-color: #1260a3;
                 }
             }
             > [class*="sidenav-subnavitem--"][class*="selected--"] {
                 > [class*="navitem--"] {
-                    color: #db3d44;
+                    color: #fff;
                 }
                 > [class*="navitem--"]::before {
                     border-left: 2px solid #db3d44;
@@ -46,15 +40,16 @@ const StyledNav = styled(Nav)`
             }
         }
     }
+
     && > [class*="sidenav-navitem--"] {
         > [class*="navitem--"] {
-            background-color: inherit;
-            color: #222;
+            background-color: #0786ed;
+            color: #fff;
         }
     }
     && > [class*="sidenav-navitem--"]:hover {
         > [class*="navitem--"] {
-            background-color: #eee;
+            background-color: #1260a3;
         }
     }
     && > [class*="sidenav-navitem--"],
@@ -62,23 +57,24 @@ const StyledNav = styled(Nav)`
         > [class*="navitem--"] {
             [class*="navicon--"] {
                 &, > * {
-                    color: #666;
+                    color: #a6a4a4;
                 }
             }
             [class*="sidenav-nav-text--"] {
                 &, > * {
-                    color: #222;
+                    color: #fff;
                 }
             }
         }
     }
+
     && > [class*="sidenav-navitem--"][class*="highlighted--"],
     && > [class*="sidenav-navitem--"][class*="highlighted--"]:hover {
         > [class*="navitem--"] {
             [class*="navicon--"],
             [class*="navtext--"] {
                 &, > * {
-                    color: #db3d44;
+                    color: #fff;
                 }
             }
             [class*="sidenav-nav-text--"] {
@@ -93,7 +89,7 @@ StyledNav.defaultProps = Nav.defaultProps;
 const StyledNavItem = styled(NavItem)`
     &&&:hover {
         [class*="navtext--"] {
-            color: #222;
+            color: #fff;
         }
     }
 `;
@@ -107,12 +103,11 @@ StyledNavIcon.defaultProps = NavIcon.defaultProps;
 
 // NavText
 const StyledNavText = styled(NavText)`
-    color: #222;
+    color: #d1cfcf;
 `;
 StyledNavText.defaultProps = NavText.defaultProps;
 
 export {
-    StyledToggle as Toggle,
     StyledNav as Nav,
     StyledNavItem as NavItem,
     StyledNavIcon as NavIcon,
