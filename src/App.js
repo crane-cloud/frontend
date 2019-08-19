@@ -19,6 +19,8 @@ import Deployment from "./components/user_dashboard/components/Deployment/Existi
 class App extends Component {
     render() {
         const { loggedIn } = this.props;
+        const session =  sessionStorage.getItem("creds") || "";
+
         return (
             <Router>
                 <Switch >
@@ -35,7 +37,7 @@ class App extends Component {
                     <Route exact path="/victory" component={Victory} />
 
                     <Route exact path="/user-dashboard" 
-                        render={() => loggedIn ? 
+                        render={() => session ? 
                                         <UserDashboard /> : 
                                         <Redirect to="/login" /> }
                     />

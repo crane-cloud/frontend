@@ -7,6 +7,8 @@ const initialState = {
 const auth = (state = initialState, action) => {
   switch (action.type) {
     case ACTIONTYPES.LOGIN_SUCCESS:
+      /* set user session here */
+      sessionStorage.setItem("creds", action.payload.accessToken);
       return {
         ...state,
         loggedIn: true,
@@ -16,6 +18,7 @@ const auth = (state = initialState, action) => {
 
       case ACTIONTYPES.LOGOUT:
         /** disable session here */
+        sessionStorage.removeItem("creds")
         return {
           ...state,
           loggedIn: false,
