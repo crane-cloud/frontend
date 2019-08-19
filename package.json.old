@@ -10,7 +10,6 @@
     "chart.js": "^2.8.0",
     "classnames": "^2.2.6",
     "crypto-random-string": "^3.0.1",
-    "email-existence": "^0.1.6",
     "jquery": "^3.4.1",
     "node-sass": "^4.12.0",
     "react": "^16.8.6",
@@ -37,38 +36,7 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": [
-      "eslint:recommended",
-      "plugin:react/recommended",
-      "plugin:import/errors",
-      "plugin:import/warnings"
-    ],
-    "parser": "babel-eslint",
-    "parserOptions": {
-      "ecmaVersion": 2018,
-      "sourceType": "module",
-      "ecmaFeatures": {
-        "jsx": true
-      }
-    },
-    "env": {
-      "browser": true,
-      "node": true,
-      "es6": true,
-      "jest": true
-    },
-    "rules": {
-      "no-debugger": "off",
-      "no-console": "off",
-      "no-unused-vars": "warn",
-      "react/prop-types": "warn"
-    },
-    "settings": {
-      "react": {
-        "version": "detect"
-      }
-    },
-    "root": true
+    "extends": "react-app"
   },
   "browserslist": {
     "production": [

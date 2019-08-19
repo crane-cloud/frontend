@@ -6,11 +6,11 @@ import {
 } from '../actionTypes';
 
 import axios from 'axios';
-import { PROXY_URL } from "../../../config";
+import { BASE_URL, PROXY_URL } from "../../../config";
 
 export const fetchClusterCpuUsage = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/cluster/cpu';
+    const apiRoute = `${BASE_URL}/monitor/cluster/cpu`;
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
@@ -22,7 +22,7 @@ export const fetchClusterCpuUsage = () => dispatch => {
 
 export const fetchClusterMemoryUsage = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/cluster/memory';
+    const apiRoute = `${BASE_URL}/monitor/cluster/memory`;
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
@@ -34,7 +34,7 @@ export const fetchClusterMemoryUsage = () => dispatch => {
 
 export const fetchClusterDiskUsage = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/cluster/disk';
+    const apiRoute = `${BASE_URL}/monitor/cluster/disk`;
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
@@ -46,7 +46,7 @@ export const fetchClusterDiskUsage = () => dispatch => {
 
 export const fetchClusterPods = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/cluster/cpu';
+    const apiRoute = `${BASE_URL}/monitor/cluster/cpu`;
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({

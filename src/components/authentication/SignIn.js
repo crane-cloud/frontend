@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from "react-redux";
+import { Redirect, withRouter } from "react-router-dom";
 
-import '../../assets/css/signin.css';
-
-import loginSuccess from '../../redux/actions/auth/loginSuccess';
+import logOutAction from "../../redux/actions/auth/logoutAction";
 import axios from 'axios';
 import { BASE_URL } from '../../config';
+import { loginApiCall } from "../../apiCalls/auth/login";
+import HeaderComponent from '../homepage/header';
+
+import '../../assets/css/auth.css';
+import '../../assets/css/home.css';
 
 class SignInForm extends Component {
   constructor(props) {
@@ -14,81 +19,118 @@ class SignInForm extends Component {
     this.state = {
       email: '',
       password: '',
+      submitButtonValue: 'Sign In',
+      buttonClass : 'form-field-button',
+      displayLoginError : false
     };
   }
 
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value,
+      displayLoginError: false
     });
   };
 
   handleSubmit = event => {
     event.preventDefault();
+    this.setState({
+      submitButtonValue: "Processing ....",
+      buttonClass: 'form-field-button-processing'
+    })
     /**
      * make api call
      */
-    axios
-      .post(BASE_URL + '/login', {
-        ...this.state,
-      })
-      .then(response => {
-        // dispatch action on success
-        loginSuccess({
-          accessToken: response.data.access_token,
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    loginApiCall(BASE_URL, this.state)
   };
 
+  componentDidMount(){
+    /* dispatch logout action after call to /login */
+    logOutAction()
+  }
+
+  componentWillReceiveProps(props){
+    if(props.loginFailureMessage){
+      this.setState({
+        email: '',
+        password: '',
+        submitButtonValue: 'Sign In',
+        buttonClass : 'form-field-button',
+        displayLoginError: true
+      });
+    }
+  }
+
+  displayLoginError = (displayLoginError, loginFailureMessage) => {
+    if(displayLoginError){
+      return (
+        <div className="alert alert-danger text-center">
+        { loginFailureMessage }
+        </div> )
+    } else {
+      return;
+    }
+  }
+
   render() {
+    const { buttonClass, submitButtonValue, displayLoginError } = this.state;
+    const { loggedIn, loginFailureMessage } = this.props;
+
+    if(loggedIn){
+      return <Redirect to="/user-dashboard"/>
+    }
+
     return (
-      <div className="FormCenter">
-        <form className="FormFields" onSubmit={this.handleSubmit}>
-          <div className="FormField">
-            <label className="FormField__Label" htmlFor="email">
-              E-mail Address
-            </label>
-            <input
-              type="email"
-              id="email"
-              className="FormField__Input"
-              placeholder="Enter your email"
-              name="email"
-              value={this.state.email}
-              onChange={this.handleChange}
-            />
-          </div>
-
-          <div className="FormField">
-            <label className="FormField__Label" htmlFor="name">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              className="FormField__Input"
-              placeholder="Enter your password"
-              name="password"
-              value={this.state.password}
-              onChange={this.handleChange}
-            />
-          </div>
-
-          <div className="FormField">
-            <button className="FormField__Button mr-20">
-              Sign In
-            </button>
-            <Link to="/register" className="FormField__Link">
-              Create an account
-            </Link>
-          </div>
-        </form>
+      <>
+      <div className="home-container">
+                    <HeaderComponent />
       </div>
+      <div className="auth-form">
+      <form onSubmit={this.handleSubmit}>
+
+        { this.displayLoginError(displayLoginError, loginFailureMessage) }
+        
+        <div className="form-title"> 
+          Sign In
+        </div>
+
+        <div className="form-field">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            name="email"
+            value={this.state.email}
+            onChange={this.handleChange}
+          />
+        </div>
+
+        <div className="form-field">
+          <input
+            type="password"
+            placeholder="Enter password"
+            name="password"
+            value={this.state.password}
+            onChange={this.handleChange}
+          />
+        </div>
+
+        <button className={buttonClass}>{submitButtonValue}</button>
+
+        <Link to="/forgot-password" className="form-field-link">Forgot password?</Link>
+        <p className="redirect">Not yet a member? <Link to="/register" className="form-field-link">Create an account</Link></p>
+
+      </form>
+      </div>
+      </>
     );
   }
 }
 
-export default SignInForm;
+const mapStateToProps = (state) => {
+  return {
+    loggedIn : state.auth.loggedIn,
+    loginFailureMessage: state.auth.loginFailureMessage
+  }
+}
+
+export default  withRouter(connect(mapStateToProps)(SignInForm));

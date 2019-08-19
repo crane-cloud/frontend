@@ -2,14 +2,16 @@ import {
     FETCH_PODS_RUNNING,
     FETCH_PODS_PENDING,
     FETCH_PODS_SUCCESS,
-    FETCH_PODS_FAILED
+    FETCH_PODS_FAILED,
+    FETCH_PODS_TABLE
 } from '../../actions/actionTypes';
 
 const initialState = {
     podsRunning: "",
     podsPending: "",
     podsSucceding: "",
-    podsFailing: ""
+    podsFailing: "",
+    podsArray: []
 }
 
 const fetchPods = (state = initialState, action) => {
@@ -37,6 +39,12 @@ const fetchPods = (state = initialState, action) => {
                 ...state,
                 podsFailed: action.payload
             };
+
+        case FETCH_PODS_TABLE:
+            return {
+                ...state,
+                podsArray: action.payload
+            }
 
         default:
             return state;

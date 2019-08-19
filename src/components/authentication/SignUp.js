@@ -1,107 +1,209 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import emailExistence from "email-existence";
 
 import { BASE_URL } from '../../config';
+import { registerUserAPI } from '../../apiCalls/auth/register';
+import HeaderComponent from '../homepage/header';
 
-import "../../assets/css/signin.css";
-import axios from 'axios';
+import "../../assets/css/auth.css";
 
 class SignUpForm extends Component {
-    state = {
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        hasAgreed: false,
-        redirect: false
+  state = {
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    hasAgreed: false,
+    submitButtonValue: 'Sign Up',
+    buttonClass : 'form-field-button',
+    displayLoginError : false,
+    registrationError : false,
+    displayApiRegError: false,
+  }
+
+  handleChange = (e) => {
+    let target = e.target;
+    let value = target.type === "checkbox" ? target.checked : target.value;
+    let name = target.name;
+
+    this.setState({ 
+      [name]: value,
+      submitButtonValue: 'Sign Up',
+      buttonClass : 'form-field-button',
+      registrationError: false,
+      displayLoginError: false,
+      displayApiRegError: false
+    });
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.setState({
+      submitButtonValue: "Processing ....",
+      buttonClass: 'form-field-button-processing'
+
+    });
+
+    const { password, confirmPassword, name, email } = this.state;
+    if (password !== confirmPassword) {
+      debugger;
+      this.setState({
+        registrationError: 'Passwords dont match',
+        password: '',
+        confirmPassword: '',
+        submitButtonValue: 'Sign Up',
+        buttonClass : 'form-field-button',
+      })
+      return;
+    } else if (this.state.hasAgreed !== true) {
+      return;
+    } else {
+      registerUserAPI(name, email, password, BASE_URL);
+    }
+  }
+
+  displayLoginError = (displayLoginError, loginFailureMessage) => {
+    if(displayLoginError){
+      return (
+        <div className="alert alert-danger text-center">
+          { loginFailureMessage }
+        </div> )
+    } else {
+      return;
+    }
+  }
+
+  displayRegistrationError = () => {
+    const { registrationError } = this.state;
+    if(registrationError){
+      return (
+        <div className="alert alert-danger text-center">
+        { registrationError }
+        </div> )
+    } else {
+      return;
+    }
+  }
+
+
+  displayApiRegError = (displayApiRegError, registrationFailureMessage) => {
+    if(displayApiRegError){
+      return (
+        <div className="alert alert-danger text-center">
+          { registrationFailureMessage }
+        </div> )
+    } else {
+      return;
+    }
+  }
+
+  componentWillReceiveProps(props){
+    if(props.loginFailureMessage){
+      this.setState({
+        displayLoginError: true
+      });
+    }
+  }
+
+  render() {
+    const { name, email, password, confirmPassword, submitButtonValue, buttonClass, displayLoginError, displayApiRegError } = this.state;
+    const { loggedIn, loginFailureMessage, registrationFailureMessage } = this.props;
+
+    if(loggedIn){
+      return <Redirect to="/user-dashboard"/>
     }
 
-    handleChange = (e) => {
-        let target = e.target;
-        let value = target.type === "checkbox" ? target.checked : target.value;
-        let name = target.name;
+    return (
+      <>
+      <div className="home-container">
+                    <HeaderComponent />
+      </div>
+      <div className="auth-form">
+      <form onSubmit={this.handleSubmit}>
+        { this.displayLoginError(displayLoginError, loginFailureMessage) }
+        { this.displayRegistrationError() }
+        { this.displayApiRegError(displayApiRegError, registrationFailureMessage) }
+        <div className="form-title">
+          Sign Up
+        </div>
 
-        this.setState({ [name]: value });
-    }
+        <div className="form-field">
+          <input
+            type="text"
+            placeholder="Name"
+            name="name"
+            value={name}
+            onChange={this.handleChange}
+            required autoFocus
+          />
+        </div>
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        const { password, confirmPassword } = this.state;
-        if (password !== confirmPassword) {
-            alert("passwords dont match")
-            return;
-        } else if (this.state.hasAgreed !== true) {
-            return;
-        } else {
-            this.registerUser();
+        <div className="form-field">
+          <input
+            type="email"
+            placeholder="Email"
+            name="email"
+            value={email}
+            onChange={this.handleChange}
+            required
+          />
+        </div>
 
-        }
-    }
+        <div className="form-field">
+          <input
+            type="password"
+            placeholder="Enter password"
+            name="password"
+            value={password}
+            onChange={this.handleChange}
+            required
+          />
+        </div>
 
-    registerUser = () => {
-        const { name, email, password } = this.state;
+        <div className="form-field">
+          <input
+            type="password"
+            placeholder="Confirm password"
+            name="confirmPassword"
+            value={confirmPassword}
+            onChange={this.handleChange}
+            required
+          />
+        </div>
 
-        axios.post(BASE_URL + '/register', {
-            name: name,
-            email: email,
-            password: password
-        })
-            .then((response) => {
-                this.setState({ redirect: true });
-                console.log(response);
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+        <label className="form-field-checkbox-label">
+          <input
+            required
+            type="checkbox"
+            className="form-field-checkbox"
+            name="hasAgreed"
+            value={this.state.hasAgreed}
+            onChange={this.handleChange}
+          />
+          I agree to the <Link to="/terms" className="form-field__TermsLink">terms of service</Link>
+        </label>
 
-    }
+        <button className={buttonClass}>{submitButtonValue}</button>
 
-    render() {
-        const { name, email, password, confirmPassword, redirect } = this.state;
-        if (redirect) {
-            return <Redirect to="/user-dashboard" />;
-        }
-        return (
-            <div className="FormCenter">
+        <p className="redirect">Already a member? <Link to="/login" className="form-field-link">Log in here</Link></p>
 
-                <form className="FormFields" onSubmit={this.handleSubmit}>
-
-                    <div className="FormField">
-                        <label className="FormField__Label" htmlFor="name">Full Name</label>
-                        <input type="text" id="name" className="FormField__Input" placeholder="Enter your full name" name="name" value={name} onChange={this.handleChange} required autoFocus />
-                    </div>
-
-                    <div className="FormField">
-                        <label className="FormField__Label" htmlFor="email">E-mail Address</label>
-                        <input type="email" id="email" className="FormField__Input" placeholder="Enter your email" name="email" value={email} onChange={this.handleChange} required />
-                    </div>
-
-                    <div className="FormField">
-                        <label className="FormField__Label" htmlFor="password">Password</label>
-                        <input type="password" id="password" className="FormField__Input" placeholder="Enter your password" name="password" value={password} onChange={this.handleChange} required />
-                    </div>
-
-                    <div className="FormField">
-                        <label className="FormField__Label" htmlFor="password">Confirm password</label>
-                        <input type="password" className="FormField__Input" placeholder="Enter your password" name="confirmPassword" value={confirmPassword} onChange={this.handleChange} required />
-                    </div>
-
-                    <div className="FormField">
-                        <label className="FormField__CheckboxLabel">
-                            <input type="checkbox" className="FormField__Checkbox" name="hasAgreed" value={this.state.hasAgreed} onChange={this.handleChange} />I agree to the <a href="" className="FormField__TermsLink">terms of service</a>
-                        </label>
-                    </div>
-
-                    <div className="FormField">
-                        <button className="FormField__Button mr-20">Sign Up</button> <Link to="/login" className="FormField__Link">I'm already a member</Link>
-                    </div>
-
-                </form>
-
-            </div>
-
-        );
-    }
+      </form>
+      </div>
+      </>
+    );
+  }
 }
 
-export default SignUpForm;
+const mapStateToProps = (state) => {
+  return {
+    loggedIn : state.auth.loggedIn,
+    loginFailureMessage: state.auth.loginFailureMessage,
+    registrationFailureMessage: state.auth.registrationFailureMessage
+  }
+}
+
+export default  withRouter(connect(mapStateToProps)(SignUpForm));
+
+// export default SignUpForm;

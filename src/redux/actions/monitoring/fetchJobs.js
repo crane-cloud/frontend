@@ -1,6 +1,6 @@
 import { FETCH_JOBS_SUCCESS, FETCH_JOBS_FAILED } from '../actionTypes';
 import axios from 'axios';
-import { PROXY_URL } from "../../../config";
+import { BASE_URL, PROXY_URL } from "../../../config";
 
 // actions for fetching existing jobs stats - 
 
@@ -10,7 +10,7 @@ import { PROXY_URL } from "../../../config";
 
 export const fetchJobsSuccess = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/jobs/succeeded/all';
+    const apiRoute = `${BASE_URL}/monitor/jobs/succeeded/all`;
 
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({
@@ -23,7 +23,7 @@ export const fetchJobsSuccess = () => dispatch => {
 
 export const fetchJobsFailed = () => dispatch => {
     // this is where we create our fetch.. the one to be used in the jobs component
-    const apiRoute = 'http://54.84.186.47:31765/monitor/job/failed/all';
+    const apiRoute = `${BASE_URL}/monitor/job/failed/all`;
     
     axios.get(PROXY_URL + apiRoute)
         .then(response => dispatch({

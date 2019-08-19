@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchPersistentVolumes } from '../../../../redux/actions/monitoring/fetchPersistentVolumes';
+import { fetchpvClaims } from '../../../../redux/actions/monitoring/fetchPVClaims';
 // import Loader from '../../../loader/loader';
 
 
-class PersistentVolumes extends Component {
+class PersistentVolumeClaims extends Component {
 
 
     componentWillMount() {
-        this.props.fetchPersistentVolumes();
+        this.props.fetchpvClaims();
     }
 
     createTable = () => {
@@ -20,29 +20,27 @@ class PersistentVolumes extends Component {
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
+                            <th scope="col">Namespace</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Volume</th>
                             <th scope="col">Capacity</th>
                             <th scope="col">Access Modes</th>
-                            <th scope="col">Reclaim Policy</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Claim</th>
                             <th scope="col">Storage Class</th>
-                            <th scope="col">Reason</th>
                             <th scope="col">Age</th>
                         </tr>
                     </thead>
                     <tbody>
                         {/* { this.state.isLoading ? <Loader /> : } */}
                         {
-                            this.props.persistentVolumes.map( element => ( 
-                                <tr key={this.props.persistentVolumes.indexOf(element)}>
-                                    <td> {element.metric.persistentvolume}</td>
+                            this.props.pvClaims.map( element => ( 
+                                <tr key={this.props.pvClaims.indexOf(element)}>
+                                    <td>{element.metric.persistentvolumeclaim}</td>
+                                    <td>{element.metric.namespace}</td>
                                     <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
+                                    <td>{element.metric.volumename}</td>
                                     <td>-</td>
                                     <td>-</td>
                                     <td> {element.metric.storageclass} </td>
-                                    <td>-</td>
                                     <td>-</td>
                                     <td> {this.dropDown()} </td>
                                 </tr>
@@ -73,7 +71,7 @@ class PersistentVolumes extends Component {
         return (
             <div className="card col-sm-12">
                 <div className="card-header text-center">
-                    Persistent Volumes
+                    Persistent Volume Claims
                     </div>
                 <div className="card-body">
                     {this.createTable()}
@@ -90,13 +88,13 @@ class PersistentVolumes extends Component {
     }
 }
 
-PersistentVolumes.propTypes = {
-    fetchPersistentVolumes: PropTypes.func.isRequired,
-    persistentVolumes: PropTypes.array.isRequired
+PersistentVolumeClaims.propTypes = {
+    fetchpvClaims: PropTypes.func.isRequired,
+    pvClaims: PropTypes.array.isRequired
 }
 
 const mapStateToProps = state => ({
-    persistentVolumes: state.persistentVolumes.persistentVolumes
+    pvClaims: state.pvClaims.pvClaims
 });
 
-export default connect(mapStateToProps, { fetchPersistentVolumes })(PersistentVolumes);
+export default connect(mapStateToProps, { fetchpvClaims })(PersistentVolumeClaims);
