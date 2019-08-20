@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import emailExistence from "email-existence";
 
 import { BASE_URL } from '../../config';
 import { registerUserAPI } from '../../apiCalls/auth/register';
