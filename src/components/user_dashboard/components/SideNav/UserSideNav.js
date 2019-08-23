@@ -1,6 +1,8 @@
 import React , { Component } from "react";
 import { Link } from 'react-router-dom';
 
+import "./userSideNav.css";
+
 
 export default class UserSideNav extends Component{
 

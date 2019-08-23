@@ -2,12 +2,26 @@
     background: url(http://i.imgur.com/2cOaJ.png);
     background-attachment: local;
     background-repeat: no-repeat;
-    padding-left: 3%;
+    padding-left: 1.8rem;
     padding-top: 10px;
-    border-color:#ccc;
+    border-color: #ccc;
+    font-size: .8em;
 }
 
 .Modal {
     height: 100%;
     overflow: auto;
+}
+
+.form-group {
+    margin-top: 2%;
+}
+
+.form-control-file {
+    background-color: cadetblue;
+    color: white;
+}
+
+.new-namespace {
+    margin-bottom: 10px;
 }

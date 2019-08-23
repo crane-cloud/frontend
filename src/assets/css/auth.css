@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css?family=Dancing+Script&display=swap');
+
+.auth-form {
+  color: black;
+  width: 30%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}
+
+.form-title {
+  float: left;
+  font-size: 30px;
+  margin-bottom: 30px;
+  border-top: 1px solid #1b87c2;
+  border-bottom: 1px solid #1b87c2;
+  padding: 10px;
+  border-radius: 5%;
+  background-color: #e9eef0;
+  color: #1b87c2;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.form-field {
+  width: 100%;
+  overflow: hidden;
+  font-size: 20px;
+  padding: 8px 0;
+  margin: 8px 0;
+  border-bottom: 1px solid #1b87c2;
+}
+
+.form-field p {
+  text-decoration: none;
+  color: #1b87c2;
+  margin-left: .5em;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.form-field input {
+  border: none;
+  outline: none;
+  background: none;
+  color: black;
+  font-size: 18px;
+  width: 80%;
+  float: left;
+  margin: 0 10px;
+}
+
+.form-field-button {
+  width: 100%;
+  color: #e9eef0;
+  background-color: #1b87c2;
+  border: none;
+  outline: none;
+  border-radius: 25px;
+  padding: 15px 70px;
+  font-size: 1em;
+  font-weight: 500;
+  margin-right: 10px;
+}
+
+.form-field-button-processing {
+  width: 100%;
+  color: black;
+  background-color: #cbe4ee;
+  border: none;
+  outline: none;
+  border-radius: 25px;
+  padding: 15px 70px;
+  font-size: 1em;
+  font-weight: 500;
+  margin-right: 10px;
+}
+
+.form-field-link {
+  font-size: .8em;
+  text-decoration: none;
+  color: #1b87c2;
+  margin-top: 10px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.form-field-link:hover {
+  color: #1b87c2;
+  text-decoration: solid underline;
+}
+
+.form-field-checkbox-label {
+  color: black;
+  font-size: 1em;
+}
+
+.form-field-checkbox-label, .form-field-button {
+  margin-top: 10px;
+}
+
+.redirect {
+  margin-top: 20px;
+  font-size: 1.3em;
+  font-family: 'Dancing Script', cursive;
+}

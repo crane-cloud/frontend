@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SideNavigation from "./navigation/SideBar";
+import SideNavigation from "./navigation/sideNav";
 import NamespaceDetails from "./NamespaceDetails";
 import TopNav from "../admin_dashboard/general_components/TopNav";
 
@@ -9,6 +9,7 @@ class Namespace extends Component {
 
     render() {
         const { nameSpace } = this.props.location.state;
+        
         return (
             <div>
                 <TopNav />
