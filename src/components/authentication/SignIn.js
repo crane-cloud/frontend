@@ -101,6 +101,7 @@ class SignInForm extends Component {
             name="email"
             value={this.state.email}
             onChange={this.handleChange}
+            required autoFocus
           />
         </div>
 
@@ -111,6 +112,7 @@ class SignInForm extends Component {
             name="password"
             value={this.state.password}
             onChange={this.handleChange}
+            required
           />
         </div>
 

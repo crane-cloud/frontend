@@ -12,7 +12,7 @@ import HeaderComponent from '../homepage/header';
 import '../../assets/css/auth.css';
 import '../../assets/css/home.css';
 
-class SignInForm extends Component {
+class ConfirmEmail extends Component {
   constructor(props) {
     super(props);
 
@@ -41,13 +41,7 @@ class SignInForm extends Component {
     /**
      * make api call
      */
-    loginApiCall(BASE_URL, this.state)
   };
-
-  componentDidMount(){
-    /* dispatch logout action after call to /login */
-    logOutAction()
-  }
 
   componentWillReceiveProps(props){
     if(props.loginFailureMessage){
@@ -61,7 +55,7 @@ class SignInForm extends Component {
     }
   }
 
-  displayLoginError = (displayLoginError, loginFailureMessage) => {
+  displayError = (displayLoginError, loginFailureMessage) => {
     if(displayLoginError){
       return (
         <div className="alert alert-danger text-center">
@@ -88,7 +82,7 @@ class SignInForm extends Component {
       <div className="auth-form">
       <form onSubmit={this.handleSubmit}>
 
-        { this.displayLoginError(displayLoginError, loginFailureMessage) }
+        { this.displayError(displayLoginError, loginFailureMessage) }
         
         <div className="form-title"> 
           Sign In
@@ -101,6 +95,7 @@ class SignInForm extends Component {
             name="email"
             value={this.state.email}
             onChange={this.handleChange}
+            required autoFocus
           />
         </div>
 
@@ -111,6 +106,7 @@ class SignInForm extends Component {
             name="password"
             value={this.state.password}
             onChange={this.handleChange}
+            required
           />
         </div>
 
@@ -133,4 +129,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default  withRouter(connect(mapStateToProps)(SignInForm));
+export default  withRouter(connect(mapStateToProps)(ConfirmEmail));
