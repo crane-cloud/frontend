@@ -27,6 +27,7 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "sequelize": "^5.10.3",
+    "styled-components": "^4.3.2",
     "victory": "^32.3.3"
   },
   "scripts": {
