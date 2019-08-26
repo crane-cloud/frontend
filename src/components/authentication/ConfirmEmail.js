@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
-import { Redirect, withRouter } from "react-router-dom";
 
-import logOutAction from "../../redux/actions/auth/logoutAction";
-import axios from 'axios';
-import { BASE_URL } from '../../config';
-import { loginApiCall } from "../../apiCalls/auth/login";
 import HeaderComponent from '../homepage/header';
 
 import '../../assets/css/auth.css';
@@ -20,8 +15,7 @@ class ConfirmEmail extends Component {
       email: '',
       token: '',
       submitButtonValue: 'Verify Email',
-      buttonClass: 'form-field-button',
-      displayLoginError: false
+      buttonClass: 'form-field-button'
     };
   }
 
@@ -48,7 +42,7 @@ class ConfirmEmail extends Component {
   }
 
   render() {
-    const { buttonClass, submitButtonValue, displayLoginError } = this.state;
+    const { buttonClass, submitButtonValue } = this.state;
 
     return (
       <>
