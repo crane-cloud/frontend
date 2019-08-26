@@ -88,8 +88,8 @@
 }
 
 .form-field-link:hover {
-  color: #1b87c2;
-  text-decoration: solid underline;
+  color: orange;
+  text-decoration: none;
 }
 
 .form-field-checkbox-label {

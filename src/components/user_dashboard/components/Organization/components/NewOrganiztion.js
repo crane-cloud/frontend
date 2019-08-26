@@ -16,17 +16,17 @@ class NewOrganization extends Component {
                 <div className="form-group">
                     <label>Members</label>
                     <form>
-                        <div class="form-row align-items-center">
-                            <div class="col-sm-10 my-1">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">@</div>
+                        <div className="form-row align-items-center">
+                            <div className="col-sm-10 my-1">
+                                <div className="input-group">
+                                    <div className="input-group-prepend">
+                                        <div className="input-group-text">@</div>
                                     </div>
-                                    <input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="Enter member email to invite" />
+                                    <input type="text" className="form-control" id="inlineFormInputGroupUsername" placeholder="Enter member email to invite" />
                                 </div>
                             </div>
-                            <div class="col-auto my-1">
-                                <button class="btn btn-secondary">Invite</button>
+                            <div className="col-auto my-1">
+                                <button className="btn btn-secondary">Invite</button>
                             </div>
                         </div>
                     </form>
