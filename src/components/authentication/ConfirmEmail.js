@@ -18,10 +18,10 @@ class ConfirmEmail extends Component {
 
     this.state = {
       email: '',
-      password: '',
-      submitButtonValue: 'Sign In',
-      buttonClass : 'form-field-button',
-      displayLoginError : false
+      token: '',
+      submitButtonValue: 'Verify Email',
+      buttonClass: 'form-field-button',
+      displayLoginError: false
     };
   }
 
@@ -43,80 +43,46 @@ class ConfirmEmail extends Component {
      */
   };
 
-  componentWillReceiveProps(props){
-    if(props.loginFailureMessage){
-      this.setState({
-        email: '',
-        password: '',
-        submitButtonValue: 'Sign In',
-        buttonClass : 'form-field-button',
-        displayLoginError: true
-      });
-    }
-  }
-
-  displayError = (displayLoginError, loginFailureMessage) => {
-    if(displayLoginError){
-      return (
-        <div className="alert alert-danger text-center">
-        { loginFailureMessage }
-        </div> )
-    } else {
-      return;
-    }
+  resendTokenEmail = () => {
+    // TODO: Resend token email here.
   }
 
   render() {
     const { buttonClass, submitButtonValue, displayLoginError } = this.state;
-    const { loggedIn, loginFailureMessage } = this.props;
-
-    if(loggedIn){
-      return <Redirect to="/user-dashboard"/>
-    }
 
     return (
       <>
-      <div className="home-container">
-                    <HeaderComponent />
-      </div>
-      <div className="auth-form">
-      <form onSubmit={this.handleSubmit}>
-
-        { this.displayError(displayLoginError, loginFailureMessage) }
-        
-        <div className="form-title"> 
-          Sign In
+        <div className="home-container">
+          <HeaderComponent />
         </div>
+        <div className="auth-form">
+          <form onSubmit={this.handleSubmit}>
 
-        <div className="form-field">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            name="email"
-            value={this.state.email}
-            onChange={this.handleChange}
-            required autoFocus
-          />
+            <div className="form-title">
+              Verify Your Email
+            </div>
+
+            <div className="form-field-msg">
+              <p>We have sent you an email with a token. Please enter it below to verify your email.</p>
+            </div>
+
+            <div className="form-field">
+              <input
+                type="text"
+                placeholder="Enter token"
+                name="token"
+                value={this.state.token}
+                onChange={this.handleChange}
+                required
+              />
+            </div>
+
+            <button className={buttonClass}>{submitButtonValue}</button>
+
+            <p className="redirect">Did not receive email? <Link onClick = {this.resendTokenEmail} className="form-field-link">Click here to resend.</Link></p>
+
+          </form>
         </div>
-
-        <div className="form-field">
-          <input
-            type="password"
-            placeholder="Enter password"
-            name="password"
-            value={this.state.password}
-            onChange={this.handleChange}
-            required
-          />
-        </div>
-
-        <button className={buttonClass}>{submitButtonValue}</button>
-
-        <Link to="/forgot-password" className="form-field-link">Forgot password?</Link>
-        <p className="redirect">Not yet a member? <Link to="/register" className="form-field-link">Create an account</Link></p>
-
-      </form>
-      </div>
       </>
     );
   }
@@ -124,9 +90,9 @@ class ConfirmEmail extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn : state.auth.loggedIn,
+    loggedIn: state.auth.loggedIn,
     loginFailureMessage: state.auth.loginFailureMessage
   }
 }
 
-export default  withRouter(connect(mapStateToProps)(ConfirmEmail));
+export default withRouter(connect(mapStateToProps)(ConfirmEmail));

@@ -7,7 +7,7 @@ import PasswordReset from './PasswordReset';
 import HeaderComponent from '../homepage/header';
 
 import "../../assets/css/auth.css";
-import "../../assets/css/home.css"
+import "../../assets/css/home.css";
 
 class UserAuthPage extends Component {
     render() {

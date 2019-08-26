@@ -33,7 +33,7 @@ class PasswordReset extends Component {
           Reset Your Password
         </div>
 
-        <div className="form-field">
+        <div className="form-field-msg">
           <p>Submit your email address and we’ll send you a link to reset your password.</p>
         </div>
 
