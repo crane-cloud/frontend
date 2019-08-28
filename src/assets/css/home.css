@@ -142,12 +142,14 @@ nav ul a:hover {
 	nav ul li {
 		float: left;
 	}
+	
 	nav ul li a {
 		color: black;
 		background-color: inherit;
 		text-align: right;
-		padding: 1em 2em;
+		padding: 1em 1em;
 	}
+	
 	nav ul li a:hover {
 		background-color: inherit;
 	}

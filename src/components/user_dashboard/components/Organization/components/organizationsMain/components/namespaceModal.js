@@ -78,12 +78,12 @@ export default class NamespaceModal extends Component{
         return (
             <span className='text-center renameSpanModal'>
                 <Modal visible={this.state.visible} width="40%" height="50%" effect="fadeInUp" onClickAway={() => this.closeModal()}>
-                    <div class='modalContainer'>
+                    <div className='modalContainer'>
                         <h3>Rename namespace</h3>
                         <form>
-                            <input type="text" class="form-control" placeholder="Rename namespace" onChange={ this.handleChange } />
+                            <input type="text" className="form-control" placeholder="Rename namespace" onChange={ this.handleChange } />
                         </form>
-                        <div class='buttons'>
+                        <div className='buttons'>
                             <input type='button' className="modalBtn btn btn-outline-info" onClick={() => this.closeModal()} value='cancel'/>
                             <input type='button' className="modalBtn btn btn-outline-info" onClick={ this.handleRename } value='Rename'/>
                         </div>

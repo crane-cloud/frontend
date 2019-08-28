@@ -6,6 +6,7 @@ import HomePage from "./components/homepage/Home";
 import UserAuthPage from "./components/authentication/UserAuth";
 import SignInForm from "./components/authentication/SignIn";
 import SignUpForm from "./components/authentication/SignUp";
+import ConfirmEmail from './components/authentication/ConfirmEmail';
 import AdminDashboard from "./components/admin_dashboard/AdminDashboard"
 import Namespace from "./components/namespace/Namespace";
 import OrganizationsDashboard from "./components/admin_dashboard/organizationsDashboard";
@@ -18,7 +19,7 @@ import Deployment from "./components/user_dashboard/components/Deployment/Existi
 
 class App extends Component {
     render() {
-        const { loggedIn } = this.props;
+        // const { loggedIn } = this.props;
         const session =  sessionStorage.getItem("creds") || "";
 
         return (
@@ -26,8 +27,8 @@ class App extends Component {
                 <Switch >
                     <Route exact path="/" component={HomePage} />
                     <Route exact path="/login" component={SignInForm} />
-                    {/* <Route exact path="/register" component={UserAuthPage} /> */}
                     <Route exact path="/register" component={SignUpForm} />
+                    <Route exact path="/confirm-email" component={ConfirmEmail} />
                     <Route exact path="/forgot-password" component={UserAuthPage} />
                     <Route exact path="/admin-dashboard" component={AdminDashboard} />
                     <Route exact path="/namespaces/:namespaceId" component={Namespace} />
@@ -54,7 +55,7 @@ class App extends Component {
 
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     return {
         loggedIn : state.auth.loggedIn
     }
