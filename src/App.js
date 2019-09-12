@@ -19,7 +19,7 @@ import Deployment from "./components/user_dashboard/components/Deployment/Existi
 
 class App extends Component {
     render() {
-        const { loggedIn } = this.props;
+        // const { loggedIn } = this.props;
         const session =  sessionStorage.getItem("creds") || "";
 
         return (
@@ -27,7 +27,6 @@ class App extends Component {
                 <Switch >
                     <Route exact path="/" component={HomePage} />
                     <Route exact path="/login" component={SignInForm} />
-                    {/* <Route exact path="/register" component={UserAuthPage} /> */}
                     <Route exact path="/register" component={SignUpForm} />
                     <Route exact path="/confirm-email" component={ConfirmEmail} />
                     <Route exact path="/forgot-password" component={UserAuthPage} />
@@ -56,7 +55,7 @@ class App extends Component {
 
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     return {
         loggedIn : state.auth.loggedIn
     }

@@ -40,7 +40,7 @@ export default class OrganizationsDashboard extends Component {
             <h1 className="h2">Dashboard</h1>
             <div className="btn-toolbar mb-2 mb-md-0">
                 <div className="btn-group mr-2">
-                    <button className="btn btn-sm btn-outline-secondary">New Cluster <span className="oi oi-plus"></span> </button>
+                    <button className="btn btn-sm btn-outline-secondary">New Cluster <span className="fa fa-plus"></span> </button>
                     <button className="btn btn-sm btn-outline-secondary">Export</button>
                     <button className="btn btn-sm btn-outline-secondary">Additional feature</button>
                 </div>

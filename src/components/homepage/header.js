@@ -18,7 +18,7 @@ class HeaderComponent extends Component {
         <header>
           <Link to="/"><Logo className="logo" alt="Crane_Cloud"/></Link>
 
-          <nav>
+          <nav id="home-nav">
             <a href="#" onClick={this.handleNavExpand} className="hide-desktop">
               <Ham alt="toggle-menu" className="menu" id="menu" />
             </a>

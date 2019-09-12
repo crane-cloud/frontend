@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
-import { Redirect, withRouter } from "react-router-dom";
 
-import logOutAction from "../../redux/actions/auth/logoutAction";
-import axios from 'axios';
-import { BASE_URL } from '../../config';
-import { loginApiCall } from "../../apiCalls/auth/login";
 import HeaderComponent from '../homepage/header';
 
 import '../../assets/css/auth.css';
@@ -18,17 +13,16 @@ class ConfirmEmail extends Component {
 
     this.state = {
       email: '',
-      emailToken: '',
-      submitButtonValue: 'Confirm',
-      buttonClass : 'form-field-button',
-      displayError : false
+      token: '',
+      submitButtonValue: 'Verify Email',
+      buttonClass: 'form-field-button'
     };
   }
 
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value,
-      displayError: false
+      displayLoginError: false
     });
   };
 
@@ -41,89 +35,48 @@ class ConfirmEmail extends Component {
     /**
      * make api call
      */
-    console.log(this.state);
   };
 
-  componentWillReceiveProps(props){
-    if(props.loginFailureMessage){
-      this.setState({
-        email: '',
-        password: '',
-        submitButtonValue: 'Confirm',
-        buttonClass : 'form-field-button',
-        displayLoginError: true
-      });
-    }
-  }
-
-  displayError = (displayError, errorMessage) => {
-    if(displayError){
-      return (
-        <div className="alert alert-danger text-center">
-        { errorMessage }
-        </div> )
-    } else {
-      return;
-    }
-  }
-
-  displayHelperAlert = () => {
-      return (
-        <div className="alert alert-info" role="alert">
-          An access token has been sent to your email. Please enter that access
-          token to confirm your email address
-        </div> )
+  resendTokenEmail = () => {
+    // TODO: Resend token email here.
   }
 
   render() {
-    const { buttonClass, submitButtonValue, displayError } = this.state;
-    const { loggedIn, loginFailureMessage } = this.props;
-
-    if(loggedIn){
-      return <Redirect to="/user-dashboard"/>
-    }
+    const { buttonClass, submitButtonValue } = this.state;
 
     return (
       <>
-      <div className="home-container">
-                    <HeaderComponent />
-      </div>
-      <div className="auth-form">
-      <form onSubmit={this.handleSubmit}>
-
-        { this.displayHelperAlert() }
-        { this.displayError(displayError, loginFailureMessage) }
-        
-        <div className="form-title"> 
-          Confirm email
+        <div className="home-container">
+          <HeaderComponent />
         </div>
+        <div className="auth-form">
+          <form onSubmit={this.handleSubmit}>
 
-        <div className="form-field">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            name="email"
-            value={this.state.email}
-            onChange={this.handleChange}
-            required autoFocus
-          />
+            <div className="form-title">
+              Verify Your Email
+            </div>
+
+            <div className="form-field-msg">
+              <p>We have sent you an email with a token. Please enter it below to verify your email.</p>
+            </div>
+
+            <div className="form-field">
+              <input
+                type="text"
+                placeholder="Enter token"
+                name="token"
+                value={this.state.token}
+                onChange={this.handleChange}
+                required
+              />
+            </div>
+
+            <button className={buttonClass}>{submitButtonValue}</button>
+
+            <p className="redirect">Did not receive email? <Link onClick = {this.resendTokenEmail} className="form-field-link">Click here to resend.</Link></p>
+
+          </form>
         </div>
-
-        <div className="form-field">
-          <input
-            type="text"
-            placeholder="Enter the token"
-            name="emailToken"
-            value={this.state.emailToken}
-            onChange={this.handleChange}
-            required
-          />
-        </div>
-
-        <button className={buttonClass}>{submitButtonValue}</button>
-
-      </form>
-      </div>
       </>
     );
   }
@@ -131,9 +84,9 @@ class ConfirmEmail extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn : state.auth.loggedIn,
+    loggedIn: state.auth.loggedIn,
     loginFailureMessage: state.auth.loginFailureMessage
   }
 }
 
-export default  withRouter(connect(mapStateToProps)(ConfirmEmail));
+export default withRouter(connect(mapStateToProps)(ConfirmEmail));

@@ -19,7 +19,7 @@ export default class CreateNewCluster extends Component {
                                 <h5 className="card-title">Create a new cluster</h5>
                                 <div className="card-text">
                                     <a href="#">
-                                        <span className="oi oi-plus"></span>
+                                        <span className="fa fa-plus"></span>
                                     </a>
                                 </div>
                             </div>

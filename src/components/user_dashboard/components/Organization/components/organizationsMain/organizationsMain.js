@@ -5,7 +5,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import library css
 import Modal from 'react-awesome-modal';
 
 
-import Header from "../../../MainSection/components/header/header";
+import Header from "../../../Organization/components/header.js";
 import NamespaceModal from './components/namespaceModal';
 import './organizationsMain.css';
 

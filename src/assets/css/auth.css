@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css?family=Dancing+Script&display=swap');
-
 .auth-form {
   color: black;
   width: 30%;
@@ -31,7 +30,12 @@
   border-bottom: 1px solid #1b87c2;
 }
 
-.form-field p {
+.form-field-msg {
+  width: 100%;
+  overflow: hidden;
+  font-size: 20px;
+  padding: 8px 0;
+  margin: 8px 0;
   text-decoration: none;
   color: #1b87c2;
   margin-left: .5em;
@@ -84,8 +88,8 @@
 }
 
 .form-field-link:hover {
-  color: #1b87c2;
-  text-decoration: solid underline;
+  color: orange;
+  text-decoration: none;
 }
 
 .form-field-checkbox-label {
