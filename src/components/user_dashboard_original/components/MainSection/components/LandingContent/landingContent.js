@@ -8,6 +8,8 @@ import "./LandingContent.css";
 
 export default class LandingContent extends Component {
 
+    // /user-id/organizations
+    // eg /07/organizations
     organizationsArray = [
         {
             name: "Makerere",
@@ -23,6 +25,8 @@ export default class LandingContent extends Component {
         }
     ];
 
+    // /user-id/organizations/org-id/deployments
+    // eg /07/organizations/05/deployments
     deploymentsArray = [
         {
             name: "Kampala Trains",
@@ -164,9 +168,9 @@ export default class LandingContent extends Component {
                     </thead>
                     <tbody>
                         {
-                            this.state.organizationsArray.map((org, index) => {
+                            this.state.organizationsArray.map((org) => {
                                 return (
-                                    <tr key={index}>
+                                    <tr >
                                         <td> <Link to={`/user-organizations/${org.orgID}`}> {org.name} </Link></td>
                                         <td><span className={`badge badge-${org.status === 'okey' ? 'success' : 'danger'} aLittleMargin`}>{org.status}</span></td>
                                         <td>{org.billing}</td>

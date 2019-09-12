@@ -37,11 +37,13 @@ class App extends Component {
                     <Route exact path="/:name/cluster-info" component={ClusterInfo} />
                     <Route exact path="/victory" component={Victory} />
 
-                    <Route exact path="/user-dashboard" 
+                    {/* <Route exact path="/user-dashboard" 
                         render={() => session ? 
                                         <UserDashboard /> : 
                                         <Redirect to="/login" /> }
-                    />
+                    /> */}
+                    <Route exact path="/user-dashboard" component={UserDashboard} />
+                    
 
                     <Route exact path="/user-organizations/:orgID" component={UserOrganization} />
                     <Route exact path="/deployments/:deploymentID" component={Deployment} />
