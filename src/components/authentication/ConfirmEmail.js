@@ -18,17 +18,17 @@ class ConfirmEmail extends Component {
 
     this.state = {
       email: '',
-      password: '',
-      submitButtonValue: 'Sign In',
+      emailToken: '',
+      submitButtonValue: 'Confirm',
       buttonClass : 'form-field-button',
-      displayLoginError : false
+      displayError : false
     };
   }
 
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value,
-      displayLoginError: false
+      displayError: false
     });
   };
 
@@ -41,6 +41,7 @@ class ConfirmEmail extends Component {
     /**
      * make api call
      */
+    console.log(this.state);
   };
 
   componentWillReceiveProps(props){
@@ -48,26 +49,34 @@ class ConfirmEmail extends Component {
       this.setState({
         email: '',
         password: '',
-        submitButtonValue: 'Sign In',
+        submitButtonValue: 'Confirm',
         buttonClass : 'form-field-button',
         displayLoginError: true
       });
     }
   }
 
-  displayError = (displayLoginError, loginFailureMessage) => {
-    if(displayLoginError){
+  displayError = (displayError, errorMessage) => {
+    if(displayError){
       return (
         <div className="alert alert-danger text-center">
-        { loginFailureMessage }
+        { errorMessage }
         </div> )
     } else {
       return;
     }
   }
 
+  displayHelperAlert = () => {
+      return (
+        <div className="alert alert-info" role="alert">
+          An access token has been sent to your email. Please enter that access
+          token to confirm your email address
+        </div> )
+  }
+
   render() {
-    const { buttonClass, submitButtonValue, displayLoginError } = this.state;
+    const { buttonClass, submitButtonValue, displayError } = this.state;
     const { loggedIn, loginFailureMessage } = this.props;
 
     if(loggedIn){
@@ -82,10 +91,11 @@ class ConfirmEmail extends Component {
       <div className="auth-form">
       <form onSubmit={this.handleSubmit}>
 
-        { this.displayError(displayLoginError, loginFailureMessage) }
+        { this.displayHelperAlert() }
+        { this.displayError(displayError, loginFailureMessage) }
         
         <div className="form-title"> 
-          Sign In
+          Confirm email
         </div>
 
         <div className="form-field">
@@ -101,19 +111,16 @@ class ConfirmEmail extends Component {
 
         <div className="form-field">
           <input
-            type="password"
-            placeholder="Enter password"
-            name="password"
-            value={this.state.password}
+            type="text"
+            placeholder="Enter the token"
+            name="emailToken"
+            value={this.state.emailToken}
             onChange={this.handleChange}
             required
           />
         </div>
 
         <button className={buttonClass}>{submitButtonValue}</button>
-
-        <Link to="/forgot-password" className="form-field-link">Forgot password?</Link>
-        <p className="redirect">Not yet a member? <Link to="/register" className="form-field-link">Create an account</Link></p>
 
       </form>
       </div>
