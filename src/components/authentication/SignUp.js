@@ -16,9 +16,9 @@ class SignUpForm extends Component {
     confirmPassword: "",
     hasAgreed: false,
     submitButtonValue: 'Sign Up',
-    buttonClass : 'form-field-button',
-    displayLoginError : false,
-    registrationError : false,
+    buttonClass: 'form-field-button',
+    displayLoginError: false,
+    registrationError: false,
     displayApiRegError: false,
   }
 
@@ -27,10 +27,10 @@ class SignUpForm extends Component {
     let value = target.type === "checkbox" ? target.checked : target.value;
     let name = target.name;
 
-    this.setState({ 
+    this.setState({
       [name]: value,
       submitButtonValue: 'Sign Up',
-      buttonClass : 'form-field-button',
+      buttonClass: 'form-field-button',
       registrationError: false,
       displayLoginError: false,
       displayApiRegError: false
@@ -53,7 +53,7 @@ class SignUpForm extends Component {
         password: '',
         confirmPassword: '',
         submitButtonValue: 'Sign Up',
-        buttonClass : 'form-field-button',
+        buttonClass: 'form-field-button',
       })
       return;
     } else if (this.state.hasAgreed !== true) {
@@ -64,11 +64,11 @@ class SignUpForm extends Component {
   }
 
   displayLoginError = (displayLoginError, loginFailureMessage) => {
-    if(displayLoginError){
+    if (displayLoginError) {
       return (
         <div className="alert alert-danger text-center">
-          { loginFailureMessage }
-        </div> )
+          {loginFailureMessage}
+        </div>)
     } else {
       return;
     }
@@ -76,11 +76,11 @@ class SignUpForm extends Component {
 
   displayRegistrationError = () => {
     const { registrationError } = this.state;
-    if(registrationError){
+    if (registrationError) {
       return (
         <div className="alert alert-danger text-center">
-        { registrationError }
-        </div> )
+          {registrationError}
+        </div>)
     } else {
       return;
     }
@@ -88,18 +88,18 @@ class SignUpForm extends Component {
 
 
   displayApiRegError = (displayApiRegError, registrationFailureMessage) => {
-    if(displayApiRegError){
+    if (displayApiRegError) {
       return (
         <div className="alert alert-danger text-center">
-          { registrationFailureMessage }
-        </div> )
+          {registrationFailureMessage}
+        </div>)
     } else {
       return;
     }
   }
 
-  componentWillReceiveProps(props){
-    if(props.loginFailureMessage){
+  componentWillReceiveProps(props) {
+    if (props.loginFailureMessage) {
       this.setState({
         displayLoginError: true
       });
@@ -110,86 +110,86 @@ class SignUpForm extends Component {
     const { name, email, password, confirmPassword, submitButtonValue, buttonClass, displayLoginError, displayApiRegError } = this.state;
     const { loggedIn, loginFailureMessage, registrationFailureMessage } = this.props;
 
-    if(loggedIn){
-      return <Redirect to="/user-dashboard"/>
+    if (loggedIn) {
+      return <Redirect to="/user-dashboard" />
     }
 
     return (
       <>
-      <div className="home-container">
-                    <HeaderComponent />
-      </div>
-      <div className="auth-form">
-      <form onSubmit={this.handleSubmit}>
-        { this.displayLoginError(displayLoginError, loginFailureMessage) }
-        { this.displayRegistrationError() }
-        { this.displayApiRegError(displayApiRegError, registrationFailureMessage) }
-        <div className="form-title">
-          Sign Up
+        <div className="home-container">
+          <HeaderComponent />
+        </div>
+        <div className="auth-form">
+          <form onSubmit={this.handleSubmit}>
+            {this.displayLoginError(displayLoginError, loginFailureMessage)}
+            {this.displayRegistrationError()}
+            {this.displayApiRegError(displayApiRegError, registrationFailureMessage)}
+            <div className="form-title">
+              Sign Up
         </div>
 
-        <div className="form-field">
-          <input
-            type="text"
-            placeholder="Name"
-            name="name"
-            value={name}
-            onChange={this.handleChange}
-            required autoFocus
-          />
+            <div className="form-field">
+              <input
+                type="text"
+                placeholder="Name"
+                name="name"
+                value={name}
+                onChange={this.handleChange}
+                required autoFocus
+              />
+            </div>
+
+            <div className="form-field">
+              <input
+                type="email"
+                placeholder="Email"
+                name="email"
+                value={email}
+                onChange={this.handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-field">
+              <input
+                type="password"
+                placeholder="Enter password"
+                name="password"
+                value={password}
+                onChange={this.handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-field">
+              <input
+                type="password"
+                placeholder="Confirm password"
+                name="confirmPassword"
+                value={confirmPassword}
+                onChange={this.handleChange}
+                required
+              />
+            </div>
+
+            <label className="form-field-checkbox-label">
+              <input
+                required
+                type="checkbox"
+                className="form-field-checkbox"
+                name="hasAgreed"
+                value={this.state.hasAgreed}
+                onChange={this.handleChange}
+              />
+              I agree to the <Link to="/terms" className="form-field__TermsLink">terms of service</Link>
+            </label>
+
+            <button className={buttonClass}>{submitButtonValue}</button>
+
+            <p className="redirect">Already a member? <Link to="/login" className="form-field-link">Log in here</Link></p>
+
+          </form>
         </div>
-
-        <div className="form-field">
-          <input
-            type="email"
-            placeholder="Email"
-            name="email"
-            value={email}
-            onChange={this.handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-field">
-          <input
-            type="password"
-            placeholder="Enter password"
-            name="password"
-            value={password}
-            onChange={this.handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-field">
-          <input
-            type="password"
-            placeholder="Confirm password"
-            name="confirmPassword"
-            value={confirmPassword}
-            onChange={this.handleChange}
-            required
-          />
-        </div>
-
-        <label className="form-field-checkbox-label">
-          <input
-            required
-            type="checkbox"
-            className="form-field-checkbox"
-            name="hasAgreed"
-            value={this.state.hasAgreed}
-            onChange={this.handleChange}
-          />
-          I agree to the <Link to="/terms" className="form-field__TermsLink">terms of service</Link>
-        </label>
-
-        <button className={buttonClass}>{submitButtonValue}</button>
-
-        <p className="redirect">Already a member? <Link to="/login" className="form-field-link">Log in here</Link></p>
-
-      </form>
-      </div>
       </>
     );
   }
@@ -197,12 +197,12 @@ class SignUpForm extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn : state.auth.loggedIn,
+    loggedIn: state.auth.loggedIn,
     loginFailureMessage: state.auth.loginFailureMessage,
     registrationFailureMessage: state.auth.registrationFailureMessage
   }
 }
 
-export default  withRouter(connect(mapStateToProps)(SignUpForm));
+export default withRouter(connect(mapStateToProps)(SignUpForm));
 
 // export default SignUpForm;

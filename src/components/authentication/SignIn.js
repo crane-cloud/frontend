@@ -10,7 +10,7 @@ import { loginApiCall } from "../../apiCalls/auth/login";
 import HeaderComponent from '../homepage/header';
 
 import '../../assets/css/auth.css';
-import '../../assets/css/home.css';
+// import '../../assets/css/home.css';
 
 class SignInForm extends Component {
   constructor(props) {
@@ -20,8 +20,8 @@ class SignInForm extends Component {
       email: '',
       password: '',
       submitButtonValue: 'Sign In',
-      buttonClass : 'form-field-button',
-      displayLoginError : false
+      buttonClass: 'form-field-button',
+      displayLoginError: false
     };
   }
 
@@ -44,29 +44,29 @@ class SignInForm extends Component {
     loginApiCall(BASE_URL, this.state)
   };
 
-  componentDidMount(){
+  componentDidMount() {
     /* dispatch logout action after call to /login */
     logOutAction()
   }
 
-  componentWillReceiveProps(props){
-    if(props.loginFailureMessage){
+  componentWillReceiveProps(props) {
+    if (props.loginFailureMessage) {
       this.setState({
         email: '',
         password: '',
         submitButtonValue: 'Sign In',
-        buttonClass : 'form-field-button',
+        buttonClass: 'form-field-button',
         displayLoginError: true
       });
     }
   }
 
   displayLoginError = (displayLoginError, loginFailureMessage) => {
-    if(displayLoginError){
+    if (displayLoginError) {
       return (
         <div className="alert alert-danger text-center">
-        { loginFailureMessage }
-        </div> )
+          {loginFailureMessage}
+        </div>)
     } else {
       return;
     }
@@ -76,53 +76,53 @@ class SignInForm extends Component {
     const { buttonClass, submitButtonValue, displayLoginError } = this.state;
     const { loggedIn, loginFailureMessage } = this.props;
 
-    if(loggedIn){
-      return <Redirect to="/user-dashboard"/>
+    if (loggedIn) {
+      return <Redirect to="/user-dashboard" />
     }
 
     return (
       <>
-      <div className="home-container">
-                    <HeaderComponent />
-      </div>
-      <div className="auth-form">
-      <form onSubmit={this.handleSubmit}>
+        <div className="home-container">
+          <HeaderComponent />
+        </div>
+        <div className="auth-form">
+          <form onSubmit={this.handleSubmit}>
 
-        { this.displayLoginError(displayLoginError, loginFailureMessage) }
-        
-        <div className="form-title"> 
-          Sign In
+            {this.displayLoginError(displayLoginError, loginFailureMessage)}
+
+            <div className="form-title">
+              Sign In
         </div>
 
-        <div className="form-field">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            name="email"
-            value={this.state.email}
-            onChange={this.handleChange}
-            required autoFocus
-          />
+            <div className="form-field">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                name="email"
+                value={this.state.email}
+                onChange={this.handleChange}
+                required autoFocus
+              />
+            </div>
+
+            <div className="form-field">
+              <input
+                type="password"
+                placeholder="Enter password"
+                name="password"
+                value={this.state.password}
+                onChange={this.handleChange}
+                required
+              />
+            </div>
+
+            <button className={buttonClass}>{submitButtonValue}</button>
+
+            <Link to="/forgot-password" className="form-field-link">Forgot password?</Link>
+            <p className="redirect">Not yet a member? <Link to="/register" className="form-field-link">Create an account</Link></p>
+
+          </form>
         </div>
-
-        <div className="form-field">
-          <input
-            type="password"
-            placeholder="Enter password"
-            name="password"
-            value={this.state.password}
-            onChange={this.handleChange}
-            required
-          />
-        </div>
-
-        <button className={buttonClass}>{submitButtonValue}</button>
-
-        <Link to="/forgot-password" className="form-field-link">Forgot password?</Link>
-        <p className="redirect">Not yet a member? <Link to="/register" className="form-field-link">Create an account</Link></p>
-
-      </form>
-      </div>
       </>
     );
   }
@@ -130,9 +130,9 @@ class SignInForm extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn : state.auth.loggedIn,
+    loggedIn: state.auth.loggedIn,
     loginFailureMessage: state.auth.loginFailureMessage
   }
 }
 
-export default  withRouter(connect(mapStateToProps)(SignInForm));
+export default withRouter(connect(mapStateToProps)(SignInForm));
