@@ -19,8 +19,8 @@ import PasswordReset from "./components/authentication/PasswordReset";
 
 class App extends Component {
   render() {
-    // const { loggedIn } = this.props;
-    // const session = sessionStorage.getItem("creds") || "";
+    const { loggedIn } = this.props;
+    const session = sessionStorage.getItem("creds") || "";
 
     return (
       <Router>
@@ -37,12 +37,12 @@ class App extends Component {
           <Route exact path="/:name/cluster-info" component={ClusterInfo} />
           <Route exact path="/victory" component={Victory} />
 
-          {/* <Route exact path="/user-dashboard"
+          <Route exact path="/user-dashboard"
             render={() => session ?
               <UserDashboard /> :
               <Redirect to="/login" />}
-          /> */}
-          <Route exact path="/user-dashboard" component={UserDashboard} />
+          />
+          {/* <Route exact path="/user-dashboard" component={UserDashboard} /> */}
 
 
           <Route exact path="/user-organizations/:orgID" component={UserOrganization} />
