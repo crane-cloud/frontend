@@ -1,35 +1,53 @@
 import React, { Component } from 'react';
 import Modal from 'react-awesome-modal';
+import axios from 'axios';
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { BASE_URL, PROXY_URL } from '../../../../../config';
 
 import "../../../../../assets/css/userdashboard.css";
 
 class NewOrganization extends Component {
+    state = {
+        orgName: ''
+    }
+
+    handleChange = (event) => {
+        const { target } = event;
+        this.setState({
+            [target.name]: target.value
+        });
+    }
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+        const data = {
+            org_name: this.state.orgName,
+        };
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + this.props.token
+            }
+        };
+        axios.post(PROXY_URL + BASE_URL + '/create/organisation', data, config);
+    }
 
     createOrganization = () => {
         return (
-            <form>
-                <h5>Fill the form below to create a new Organization</h5>
+            <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
                     <label>Name</label>
-                    <input required type="text" className="form-control" placeholder="Enter a name for the organization" />
-                </div>
-                <div className="form-group">
-                    <label>Members</label>
-                    <form>
-                        <div className="form-row align-items-center">
-                            <div className="col-sm-10 my-1">
-                                <div className="input-group">
-                                    <div className="input-group-prepend">
-                                        <div className="input-group-text">@</div>
-                                    </div>
-                                    <input type="text" className="form-control" id="inlineFormInputGroupUsername" placeholder="Enter member email to invite" />
-                                </div>
-                            </div>
-                            <div className="col-auto my-1">
-                                <button className="btn btn-secondary">Invite</button>
-                            </div>
-                        </div>
-                    </form>
+                    <input
+                        autoFocus
+                        required
+                        type="text"
+                        name="orgName"
+                        value={this.state.orgName}
+                        onChange={this.handleChange}
+                        className="form-control"
+                        placeholder="Enter a name for the organization"
+                    />
                 </div>
             </form>
         );
@@ -43,8 +61,8 @@ class NewOrganization extends Component {
                     visible={this.props.visible}
                     effect="fadeInUp"
                     onClickAway={() => closeModal({ newOrganizationModal: false })}
-                    width="70%"
-                    height="100%" >
+                    width="50%"
+                    height="60%" >
 
 
                     <div className="modal-content Modal">
@@ -59,7 +77,7 @@ class NewOrganization extends Component {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" onClick={() => closeModal({ newOrganizationModal: false })}>Cancel</button>
-                            <button type="button" className="btn btn-primary">Create Organization</button>
+                            <button onClick={this.handleSubmit} type="button" className="btn btn-primary">Create Organization</button>
                         </div>
                     </div>
 
@@ -71,4 +89,11 @@ class NewOrganization extends Component {
     }
 }
 
-export default NewOrganization;
+const mapStateToProps = (state) => {
+    return {
+        token: state.auth.accessToken
+    }
+}
+
+export default withRouter(connect(mapStateToProps)(NewOrganization));
+
