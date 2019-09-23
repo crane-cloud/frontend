@@ -10,7 +10,6 @@ import { loginApiCall } from "../../apiCalls/auth/login";
 import HeaderComponent from '../homepage/header';
 
 import '../../assets/css/auth.css';
-// import '../../assets/css/home.css';
 
 class SignInForm extends Component {
   constructor(props) {

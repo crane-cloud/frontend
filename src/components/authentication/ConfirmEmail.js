@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import HeaderComponent from '../homepage/header';
 
 import '../../assets/css/auth.css';
-import '../../assets/css/home.css';
+import '../../assets/scss/home.scss';
 
 class ConfirmEmail extends Component {
   constructor(props) {
