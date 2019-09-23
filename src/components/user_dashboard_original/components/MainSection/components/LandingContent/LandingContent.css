@@ -1,0 +1,28 @@
+.deploymentsListInvisible{
+    display: none;
+}
+
+.deploymentsListVisible{
+    visibility: visible;
+}
+
+.organizationsListInvisible{
+    display : none;
+}
+
+.organizationsListVisible{
+    visibility: visible;
+}
+
+
+.hoverCursor{
+    cursor: pointer;
+}
+
+.pushPlusLeft{
+    padding-right: 12%;
+}
+
+.aLittleMargin{
+    margin-left: 1%;
+}
