@@ -143,7 +143,7 @@ export default class OrganizationsMain extends Component {
               <input type='button' className="modalBtn btn btn-outline-info" onClick={() => this.closeRenameOrgModal()} value='cancel' />
               <input type='button' className="modalBtn btn btn-outline-info" onClick={this.handleRename} value='Rename ORG' />
             </div>
-          </div>
+          </div>https://ospreycloud.slack.com
         </Modal>
       </span>
     );
@@ -166,7 +166,7 @@ export default class OrganizationsMain extends Component {
           <span className="fa fa-plus"></span>  New Namespace</button>
 
         {/* <!-- Modal --> */}
-        <div className="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+        <div className="modal fade" id="exampleModalScrollable" tabIndex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
           <div className="modal-dialog modal-dialog-scrollable" role="document">
             <div className="modal-content">
               <div className="modal-header">

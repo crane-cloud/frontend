@@ -9,7 +9,6 @@ import loginSuccess from '../../redux/actions/auth/loginSuccess';
 import HeaderComponent from '../homepage/header';
 
 import '../../assets/css/auth.css';
-import '../../assets/css/home.css';
 
 class SignInForm extends Component {
   constructor(props) {
@@ -67,18 +66,19 @@ class SignInForm extends Component {
               loginError: loginError.response.data.message
             });
             } else {
+              console.log(loginError.response);
               this.setState({
                 email: '',
                 password: '',
                 submitButtonValue: 'Sign In',
                 buttonClass : 'form-field-button',
-                loginError: loginError
+                loginError: loginError.response.statusText
               });
             }
           })
   };
 
-  componentDidMount(){
+  componentDidMount() {
     /* dispatch logout action after call to /login */
     logOutAction()
   }
@@ -99,53 +99,52 @@ class SignInForm extends Component {
     const { buttonClass, submitButtonValue, loginError } = this.state;
     const { loggedIn } = this.props;
 
-    if(loggedIn){
-      return <Redirect to="/user-dashboard"/>
+    if (loggedIn) {
+      return <Redirect to="/user-dashboard" />
     }
 
     return (
       <>
-      <div className="home-container">
-                    <HeaderComponent />
-      </div>
-      <div className="auth-form">
-      <form onSubmit={this.handleSubmit}>
-
-        { this.displayLoginError(loginError) }
-        
-        <div className="form-title"> 
-          Sign In
+          <div className="home-container">
+          <HeaderComponent />
         </div>
+        <div className="auth-form">
+          <form onSubmit={this.handleSubmit}>
 
-        <div className="form-field">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            name="email"
-            value={this.state.email}
-            onChange={this.handleChange}
-            required autoFocus
-          />
+            { this.displayLoginError(loginError) }
+
+            <div className="form-title">
+              Sign In
         </div>
+            <div className="form-field">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                name="email"
+                value={this.state.email}
+                onChange={this.handleChange}
+                required autoFocus
+              />
+            </div>
 
-        <div className="form-field">
-          <input
-            type="password"
-            placeholder="Enter password"
-            name="password"
-            value={this.state.password}
-            onChange={this.handleChange}
-            required
-          />
+            <div className="form-field">
+              <input
+                type="password"
+                placeholder="Enter password"
+                name="password"
+                value={this.state.password}
+                onChange={this.handleChange}
+                required
+              />
+            </div>
+
+            <button className={buttonClass}>{submitButtonValue}</button>
+
+            <Link to="/forgot-password" className="form-field-link">Forgot password?</Link>
+            <p className="redirect">Not yet a member? <Link to="/register" className="form-field-link">Create an account</Link></p>
+
+          </form>
         </div>
-
-        <button className={buttonClass}>{submitButtonValue}</button>
-
-        <Link to="/forgot-password" className="form-field-link">Forgot password?</Link>
-        <p className="redirect">Not yet a member? <Link to="/register" className="form-field-link">Create an account</Link></p>
-
-      </form>
-      </div>
       </>
     );
   }
@@ -157,4 +156,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default  withRouter(connect(mapStateToProps)(SignInForm));
+export default withRouter(connect(mapStateToProps)(SignInForm));
