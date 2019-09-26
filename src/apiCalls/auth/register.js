@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { loginApiCall } from './login';
+// import { loginApiCall } from './login';
 import registrationFailure from '../../redux/actions/auth/registrationAction';
 
 export const registerUserAPI = (name, email, password, BASE_URL) => {
@@ -13,7 +13,7 @@ export const registerUserAPI = (name, email, password, BASE_URL) => {
       console.log(response);
       if(response.status === 201){
         /* log the user in and get access token */
-        loginApiCall(BASE_URL, {email, password});
+        // loginApiCall(BASE_URL, {email, password});
       }
     })
     .catch((registerationError) => {

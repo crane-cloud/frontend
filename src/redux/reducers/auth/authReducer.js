@@ -25,12 +25,6 @@ const auth = (state = initialState, action) => {
           accessToken: "",
         };
 
-        case ACTIONTYPES.LOGIN_FAILURE:
-          return {
-            ...state,
-            loginFailureMessage: action.loginFailureMessage
-          };
-
         case ACTIONTYPES.REGISTRATION_FAILURE:
           return {
             ...state,
