@@ -66,7 +66,6 @@ class SignInForm extends Component {
               loginError: loginError.response.data.message
             });
             } else {
-              console.log(loginError.response);
               this.setState({
                 email: '',
                 password: '',

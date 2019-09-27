@@ -16,11 +16,16 @@ import UserDashboard from "./components/user_dashboard/main";
 import UserOrganization from "./components/user_dashboard/components/Organization/organization";
 import Deployment from "./components/user_dashboard/components/Deployment/ExistingDeployment/Deployment";
 import PasswordReset from "./components/authentication/PasswordReset";
+import loginSuccess from './redux/actions/auth/loginSuccess';
 
 class App extends Component {
   render() {
     const { loggedIn } = this.props;
     const session = sessionStorage.getItem("creds") || "";
+    
+    if(!loggedIn && session){
+      loginSuccess({ accessToken: session });
+    }
 
     return (
       <Router>

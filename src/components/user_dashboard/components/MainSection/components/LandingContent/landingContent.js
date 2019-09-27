@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import { Link, withRouter } from 'react-router-dom';
 import axios from "axios";
 import { connect } from "react-redux";
-import { BASE_URL, PROXY_URL } from '../../../../../../config';
+import moment from 'moment';
 
+import { BASE_URL, PROXY_URL } from '../../../../../../config';
 import UserResourceUsage from "./components/user_resource_usage/userResourceUsage";
+import Spinner from '../../../../../common/Spinner';
 
 import "./LandingContent.css";
 
@@ -13,7 +15,9 @@ class LandingContent extends Component {
     deploymentsListVisible: false,
     organizationsListVisible: false,
     organizationsArray: [],
-    deploymentsArray: []
+    deploymentsArray: [],
+    spinner: true,
+    loadingError: ''
   }
 
   componentDidMount() {
@@ -24,8 +28,25 @@ class LandingContent extends Component {
       }
     };
     axios.get(PROXY_URL + BASE_URL + '/user/get/organisations', config)
-      .then(response => this.setState({ organizationsArray: response.data }))
-      .catch(error => console.log(error));
+      .then(response => this.setState(
+        { 
+          organizationsArray: response.data ,
+          spinner: false
+        }))
+      .catch(error => {
+        console.log(error);
+        if (error.response.data && error.response.data.message) {
+          this.setState({
+            spinner: false,
+            loadingError: error.response.data.message
+          });
+        } else {
+          this.setState({
+            spinner: false,
+            loadingError: error.response.statusText
+          });
+        }
+      });
   }
 
   toggleDeployments = () => {
@@ -112,6 +133,8 @@ class LandingContent extends Component {
     let numberOfOkey = 0;
     let totalBilling = 0;
 
+    const { spinner, loadingError } = this.state;
+
     this.state.organizationsArray.map((org) => {
       if (org.status === "okey") {
         numberOfOkey = numberOfOkey + 1;
@@ -131,26 +154,32 @@ class LandingContent extends Component {
       </h4>
 
       <div className={this.state.organizationsListVisible ? "organizationsListVisible" : "organizationsListInvisible"}>
-
+        
         <table className="table table-borderless text-left">
-          <thead>
             <th>Name</th>
             <th>Status</th>
             <th>Billing  (ugx {totalBilling})</th>
-            <th>Age </th>
-          </thead>
+            <th>Created </th>
           <tbody>
-            {
+          { loadingError 
+            &&  <tr><div className="alert alert-danger text-center">
+            { loadingError }
+            </div> </tr> 
+          }
+            { spinner ? ( <tr ><Spinner /></tr> )
+            :
+            (
               this.state.organizationsArray.map((org, index) => {
                 return (
-                  <tr key={index}>
-                    <td> <Link to={`/user-organizations/${org.orgID}`}> {org.name} </Link></td>
+                  <tr key={org.id}>
+                    <td> <Link to={`/user-organizations/${org.id}`}> {org.name} </Link></td>
                     <td><span className={`badge badge-${org.status === 'okey' ? 'success' : 'danger'} aLittleMargin`}>{org.status}</span></td>
                     <td>{org.billing}</td>
-                    <td>{ org.date_created }</td>
+                    <td>{ moment(org.date_created).fromNow() }</td>
                   </tr>
                 );
               })
+            )
             }
           </tbody>
         </table>
