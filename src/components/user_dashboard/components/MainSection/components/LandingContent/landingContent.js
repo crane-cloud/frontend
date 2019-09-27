@@ -137,6 +137,7 @@ class LandingContent extends Component {
             <th>Name</th>
             <th>Status</th>
             <th>Billing  (ugx {totalBilling})</th>
+            <th>Age </th>
           </thead>
           <tbody>
             {
@@ -146,6 +147,7 @@ class LandingContent extends Component {
                     <td> <Link to={`/user-organizations/${org.orgID}`}> {org.name} </Link></td>
                     <td><span className={`badge badge-${org.status === 'okey' ? 'success' : 'danger'} aLittleMargin`}>{org.status}</span></td>
                     <td>{org.billing}</td>
+                    <td>{ org.date_created }</td>
                   </tr>
                 );
               })
