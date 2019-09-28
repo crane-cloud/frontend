@@ -62,6 +62,7 @@ class SignUpForm extends Component {
         password
       })
         .then((response) => {
+          debugger;
           if(response.status === 201){
             /* log the user in and get access token */
             loginSuccess({ accessToken: response.data.access_token });

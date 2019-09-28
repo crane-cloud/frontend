@@ -12,6 +12,12 @@ const org = (state = initialState, action) => {
         organizations: action.orgs
       }
 
+    case types.ADD_ORG:
+      return {
+        ...state,
+        organizations: [ ...state.organizations, action.org ]
+      }
+
     default:
       return state;
   }

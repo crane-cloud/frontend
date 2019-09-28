@@ -3,24 +3,31 @@ import Modal from 'react-awesome-modal';
 import axios from 'axios';
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+
 import { BASE_URL, PROXY_URL } from '../../../../../config';
+import Spinner from '../../../../common/Spinner';
+import * as orgActions from '../../../../../redux/actions/user_dashboard_actions/organizationActions'; 
 
 import "../../../../../assets/css/userdashboard.css";
 
 class NewOrganization extends Component {
     state = {
-        orgName: ''
+        orgName: '',
+        spinner: false,
+        feedbackMessage: ''
     }
 
     handleChange = (event) => {
         const { target } = event;
         this.setState({
-            [target.name]: target.value
+            [target.name]: target.value,
+            feedbackMessage: '',
         });
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
+        this.setState({ spinner: true });
         const data = {
             org_name: this.state.orgName,
         };
@@ -30,12 +37,36 @@ class NewOrganization extends Component {
                 Authorization: 'Bearer ' + this.props.token
             }
         };
-        axios.post(PROXY_URL + BASE_URL + '/create/organisation', data, config);
+        axios.post(PROXY_URL + BASE_URL + '/create/organisation', data, config)
+            .then((response) => {
+                debugger;
+                if(response.status === 201){
+                    const { orgName } = this.state;
+                    // *****this.props.addOrganization(org);
+                    this.setState({
+                        feedbackMessage: `${orgName} created successfully.`,
+                        spinner: false,
+                        orgName: ''
+                    });
+                }
+            })
+
+            .catch((err) => {
+                this.setState({
+                    feedbackMessage: `${err.message}, Please try again`,
+                    spinner: false
+                });
+            });
     }
 
     createOrganization = () => {
         return (
             <form onSubmit={this.handleSubmit}>
+                { this.state.feedbackMessage 
+                    && <div className="alert alert-success text-center">
+                        { this.state.feedbackMessage }
+                    </div>
+                }
                 <div className="form-group">
                     <label>Name</label>
                     <input
@@ -49,6 +80,12 @@ class NewOrganization extends Component {
                         placeholder="Enter a name for the organization"
                     />
                 </div>
+
+                { this.state.spinner
+                  && <div className='form-group'>
+                        <Spinner />
+                    </div>
+                }
             </form>
         );
     }
@@ -95,5 +132,10 @@ const mapStateToProps = (state) => {
     }
 }
 
+const matchDispatchToProps = {
+    addOrganizations: orgActions.addOrganization
+  };
+
+  
 export default withRouter(connect(mapStateToProps)(NewOrganization));
 
