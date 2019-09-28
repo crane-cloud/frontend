@@ -7,6 +7,7 @@ import moment from 'moment';
 import { BASE_URL, PROXY_URL } from '../../../../../../config';
 import UserResourceUsage from "./components/user_resource_usage/userResourceUsage";
 import Spinner from '../../../../../common/Spinner';
+import * as orgActions from '../../../../../../redux/actions/user_dashboard_actions/organizationActions';
 
 import "./LandingContent.css";
 
@@ -20,6 +21,12 @@ class LandingContent extends Component {
     loadingError: ''
   }
 
+  componentWillReceiveProps(props){
+    this.setState({
+      organizationsArray: props.organizations
+    });
+  }
+
   componentDidMount() {
     const config = {
       headers: {
@@ -28,22 +35,27 @@ class LandingContent extends Component {
       }
     };
     axios.get(PROXY_URL + BASE_URL + '/user/get/organisations', config)
-      .then(response => this.setState(
-        { 
-          organizationsArray: response.data ,
-          spinner: false
-        }))
+      .then(response => { 
+        this.props.storeOrganizations(response.data);
+        this.setState({ spinner: false }) 
+        })
+        
       .catch(error => {
-        console.log(error);
-        if (error.response.data && error.response.data.message) {
+        console.log(error.stack);
+        if (error.response && error.response.data && error.response.data.message) {
           this.setState({
             spinner: false,
             loadingError: error.response.data.message
           });
-        } else {
+        } else if (error.response && error.response.statusText) {
           this.setState({
             spinner: false,
             loadingError: error.response.statusText
+          });
+        }else {
+          this.setState({
+            spinner: false,
+            loadingError: error.message
           });
         }
       });
@@ -190,9 +202,16 @@ class LandingContent extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    token: state.auth.accessToken
+    token: state.auth.accessToken,
+    organizations: state.org.organizations
   }
 }
 
-export default withRouter(connect(mapStateToProps)(LandingContent));
+
+const matchDispatchToProps = {
+  storeOrganizations: orgActions.storeOrganizations
+};
+
+
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(LandingContent));
 

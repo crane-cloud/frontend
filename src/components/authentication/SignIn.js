@@ -49,7 +49,7 @@ class SignInForm extends Component {
             }
           })
           .catch((loginError) => {
-            if (loginError.response.status === 401) {
+            if (loginError.response && loginError.response.status && loginError.response.status === 401) {
               this.setState({
                 email: '',
                 password: '',
@@ -57,7 +57,7 @@ class SignInForm extends Component {
                 buttonClass : 'form-field-button',
                 loginError: 'Wrong email or password'
               });
-            } else if(loginError.response.data && loginError.response.data.message){
+            } else if(loginError.response && loginError.response.data && loginError.response.data.message){
             this.setState({
               email: '',
               password: '',
@@ -65,13 +65,21 @@ class SignInForm extends Component {
               buttonClass : 'form-field-button',
               loginError: loginError.response.data.message
             });
-            } else {
+            } else if (loginError.response && loginError.response.statusText) {
               this.setState({
                 email: '',
                 password: '',
                 submitButtonValue: 'Sign In',
                 buttonClass : 'form-field-button',
                 loginError: loginError.response.statusText
+              });
+            }else {
+              this.setState({
+                email: '',
+                password: '',
+                submitButtonValue: 'Sign In',
+                buttonClass : 'form-field-button',
+                loginError: loginError.message
               });
             }
           })
