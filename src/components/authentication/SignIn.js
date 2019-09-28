@@ -71,7 +71,7 @@ class SignInForm extends Component {
                 password: '',
                 submitButtonValue: 'Sign In',
                 buttonClass : 'form-field-button',
-                loginError: loginError.response.statusText
+                loginError: `Error occured: ${loginError.response.statusText}. Please try again `
               });
             }else {
               this.setState({
@@ -79,7 +79,7 @@ class SignInForm extends Component {
                 password: '',
                 submitButtonValue: 'Sign In',
                 buttonClass : 'form-field-button',
-                loginError: loginError.message
+                loginError: `Error occured: ${loginError.message}. Please try again`
               });
             }
           })

@@ -50,12 +50,12 @@ class LandingContent extends Component {
         } else if (error.response && error.response.statusText) {
           this.setState({
             spinner: false,
-            loadingError: error.response.statusText
+            loadingError: `Error ocuured: ${error.response.statusText}. Please try again`
           });
         }else {
           this.setState({
             spinner: false,
-            loadingError: error.message
+            loadingError: `Error occured: ${error.message}. Please try again`
           });
         }
       });
@@ -174,9 +174,9 @@ class LandingContent extends Component {
             <th>Created </th>
           <tbody>
           { loadingError 
-            &&  <tr><div className="alert alert-danger text-center">
-            { loadingError }
-            </div> </tr> 
+            &&  <tr className="alert alert-danger text-center">
+              <td></td><td>{ loadingError }</td><td></td><td></td>
+            </tr> 
           }
             { spinner ? ( <tr ><Spinner /></tr> )
             :

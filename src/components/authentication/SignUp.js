@@ -67,24 +67,24 @@ class SignUpForm extends Component {
             loginSuccess({ accessToken: response.data.access_token });
           }
         })
-        .catch((registerationError) => {
-          if (registerationError.response.status === 401) {
-            this.setState({
-              submitButtonValue: 'Sign Up',
-              buttonClass: 'form-field-button',
-              errorMessage: registerationError.response.data.message
-            });
-          } else if(registerationError.response.data && registerationError.response.data.message){
+        .catch((regErr) => {
+          if(regErr.response && regErr.response.data && regErr.response.data.message){
           this.setState({
             submitButtonValue: 'Sign Up',
             buttonClass: 'form-field-button',
-            errorMessage: registerationError.response.data.message
+            errorMessage: regErr.response.data.message
           });
+          } else if (regErr.response && regErr.response.statusText) {
+            this.setState({
+              submitButtonValue: 'Sign Up',
+              buttonClass: 'form-field-button',
+              errorMessage: `Error occured: ${regErr.response.statusText}. Please try again`
+            });
           } else {
             this.setState({
               submitButtonValue: 'Sign Up',
               buttonClass: 'form-field-button',
-              errorMessage: registerationError.response.statusText
+              errorMessage: `Error occured: ${regErr.message}. Please try again`
             });
           }
         })
