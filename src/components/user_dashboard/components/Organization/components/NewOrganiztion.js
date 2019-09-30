@@ -35,7 +35,7 @@ class NewOrganization extends Component {
             errorMessage: ''
         });
         const data = {
-            organisation_name: this.state.orgName,
+            organisation_name: this.state.orgName
         };
         const config = {
             headers: {
@@ -43,6 +43,8 @@ class NewOrganization extends Component {
                 Authorization: 'Bearer ' + this.props.token
             }
         };
+        console.log(this.props.token);
+        debugger;
         axios.post(PROXY_URL + BASE_URL + '/create/organisation', data, config)
             .then((response) => {
                 debugger;
@@ -138,6 +140,7 @@ class NewOrganization extends Component {
 }
 
 const mapStateToProps = (state) => {
+    debugger;
     return {
         token: state.auth.accessToken
     }
@@ -148,5 +151,5 @@ const matchDispatchToProps = {
   };
 
   
-export default withRouter(connect(mapStateToProps. matchDispatchToProps)(NewOrganization));
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(NewOrganization));
 
