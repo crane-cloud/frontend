@@ -51,7 +51,6 @@ class SignInForm extends Component {
           .catch((loginError) => {
             if (loginError.response && loginError.response.status && loginError.response.status === 401) {
               this.setState({
-                email: '',
                 password: '',
                 submitButtonValue: 'Sign In',
                 buttonClass : 'form-field-button',
@@ -59,7 +58,6 @@ class SignInForm extends Component {
               });
             } else if(loginError.response && loginError.response.data && loginError.response.data.message){
             this.setState({
-              email: '',
               password: '',
               submitButtonValue: 'Sign In',
               buttonClass : 'form-field-button',
@@ -67,7 +65,6 @@ class SignInForm extends Component {
             });
             } else if (loginError.response && loginError.response.statusText) {
               this.setState({
-                email: '',
                 password: '',
                 submitButtonValue: 'Sign In',
                 buttonClass : 'form-field-button',
@@ -75,7 +72,6 @@ class SignInForm extends Component {
               });
             }else {
               this.setState({
-                email: '',
                 password: '',
                 submitButtonValue: 'Sign In',
                 buttonClass : 'form-field-button',
