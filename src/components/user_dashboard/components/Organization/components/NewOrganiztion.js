@@ -14,22 +14,28 @@ class NewOrganization extends Component {
     state = {
         orgName: '',
         spinner: false,
-        feedbackMessage: ''
+        errorMessage: '',
+        successMessage: ''
     }
 
     handleChange = (event) => {
         const { target } = event;
         this.setState({
             [target.name]: target.value,
-            feedbackMessage: '',
+            errorMessage: '',
+            successMessage: ''
         });
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.setState({ spinner: true });
+        this.setState({ 
+            spinner: true,
+            successMessage: '',
+            errorMessage: ''
+        });
         const data = {
-            org_name: this.state.orgName,
+            organisation_name: this.state.orgName,
         };
         const config = {
             headers: {
@@ -40,11 +46,11 @@ class NewOrganization extends Component {
         axios.post(PROXY_URL + BASE_URL + '/create/organisation', data, config)
             .then((response) => {
                 debugger;
-                if(response.status === 201){
+                if(response.status === 201 || response.status === 200){
                     const { orgName } = this.state;
-                    // *****this.props.addOrganization(org);
+                    this.props.addOrganization(response.data);
                     this.setState({
-                        feedbackMessage: `${orgName} created successfully.`,
+                        successMessage: `${orgName} created successfully.`,
                         spinner: false,
                         orgName: ''
                     });
@@ -53,7 +59,7 @@ class NewOrganization extends Component {
 
             .catch((err) => {
                 this.setState({
-                    feedbackMessage: `${err.message}, Please try again`,
+                    errorMessage: `${err.message}, Please try again`,
                     spinner: false
                 });
             });
@@ -62,9 +68,14 @@ class NewOrganization extends Component {
     createOrganization = () => {
         return (
             <form onSubmit={this.handleSubmit}>
-                { this.state.feedbackMessage 
+                { this.state.errorMessage 
+                    && <div className="alert alert-danger text-center">
+                        { this.state.errorMessage }
+                    </div>
+                }
+                { this.state.successMessage 
                     && <div className="alert alert-success text-center">
-                        { this.state.feedbackMessage }
+                        { this.state.successMessage }
                     </div>
                 }
                 <div className="form-group">
@@ -133,9 +144,9 @@ const mapStateToProps = (state) => {
 }
 
 const matchDispatchToProps = {
-    addOrganizations: orgActions.addOrganization
+    addOrganization: orgActions.addOrganization
   };
 
   
-export default withRouter(connect(mapStateToProps)(NewOrganization));
+export default withRouter(connect(mapStateToProps. matchDispatchToProps)(NewOrganization));
 
