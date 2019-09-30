@@ -10,6 +10,7 @@ import fetchReplicaSets from './monitoring/fetchReplicaSets';
 import fetchConfigMaps from './monitoring/fetchConfigMaps';
 import fetchPersistentVolumes from './monitoring/fetchPersistentVolumes';
 import fetchpvClaims from './monitoring/fetchPVClaims';
+import org from './organization/orgReducer';
 
 export default combineReducers({
     auth,
@@ -22,5 +23,6 @@ export default combineReducers({
     replicaSets: fetchReplicaSets,
     configMaps: fetchConfigMaps,
     persistentVolumes: fetchPersistentVolumes,
-    pvClaims: fetchpvClaims
+    pvClaims: fetchpvClaims,
+    org
 });

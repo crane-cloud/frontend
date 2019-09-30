@@ -12,6 +12,7 @@ import './organizationsMain.css';
 export default class OrganizationsMain extends Component {
 
   orgID = this.props.orgID;
+  namespaceChangeValue = "";
 
   organizationNameSpaces = {
     orgName: "org name",
@@ -129,7 +130,7 @@ export default class OrganizationsMain extends Component {
     this.setState({ orgModalVisible: false });
   }
 
-  modalSpan = () => {
+  renameOrgModalSpan = () => {
     return (
       <span className='text-center renameSpanModal'>
         <Modal visible={this.state.orgModalVisible} width="40%" height="50%" effect="fadeInUp" onClickAway={() => this.closeRenameOrgModal()}>
@@ -146,6 +147,15 @@ export default class OrganizationsMain extends Component {
         </Modal>
       </span>
     );
+  }
+
+  handleNewNamespaceChange = (event) => {
+    this.namespaceChangeValue = event.target.value;
+  }
+
+  handleNewNamespace = () => {
+    // this.namespaceChangeValue
+    //hit end point
   }
 
   newNamespace = () => {
@@ -169,13 +179,13 @@ export default class OrganizationsMain extends Component {
 
                 <div className="form-group">
                   <label>Create Namespace</label>
-                  <input required type="text" className="form-control" placeholder="Add a new namespace" />
+                  <input required type="text" className="form-control" placeholder="Add a new namespace" onChange={this.handleNewNamespaceChange}/>
                 </div>
 
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" className="btn btn-primary">Save</button>
+                <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.handleNewNamespace}>Save</button>
               </div>
             </div>
           </div>
@@ -237,7 +247,7 @@ export default class OrganizationsMain extends Component {
       <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
         <Header />
         {this.renderOrgname()}
-        {this.modalSpan()}
+        {this.renameOrgModalSpan()}
         {this.newNamespace()}
         {this.renderNameSpaces()}
       </main>
