@@ -50,6 +50,7 @@ export default class SideNavigation extends Component {
                     }
                   }
                   defaultExpanded={true}
+                  style={{ backgroundColor: '#1260a3' }}
                 >
 
                   <div className="my-5"></div>
