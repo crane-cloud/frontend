@@ -30,6 +30,7 @@
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
-    "no-useless-return": 1
+    "no-useless-return": 1,
+    "class-methods-use-this": 0
   }
 }

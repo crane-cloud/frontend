@@ -36,10 +36,10 @@ export default class PersistentVolumesModal extends Component {
       <section>
         <Modal visible={this.props.visible} /* width="400"   height="300" */ effect="fadeInUp" onClickAway={() => this.props.closeModal()}>
           <div>
-            <a href="javascript:void(0);" onClick={() => this.props.closeModal({ visiblePersistentVolumesModal: false })}>Close</a>
+            <a href="" onClick={() => this.props.closeModal({ visiblePersistentVolumesModal: false })}>Close</a>
             <h1>{this.props.title} {this.props.clusterID} Persistent Volumes</h1>
             {this.renderNodeTable()}
-            <a href="javascript:void(0);" onClick={() => this.props.closeModal({ visiblePersistentVolumesModal: false })}>Close</a>
+            <a href="" onClick={() => this.props.closeModal({ visiblePersistentVolumesModal: false })}>Close</a>
           </div>
         </Modal>
       </section>
