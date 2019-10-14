@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from "react-redux";
-import { Redirect, withRouter, Link } from "react-router-dom";
-
-import logOutAction from "../../redux/actions/auth/logoutAction";
+import { connect } from 'react-redux';
+import { Redirect, withRouter, Link } from 'react-router-dom';
 import axios from 'axios';
+
+import logOutAction from '../../redux/actions/auth/logoutAction';
 import { BASE_URL } from '../../config';
 import loginSuccess from '../../redux/actions/auth/loginSuccess';
 import HeaderComponent from '../homepage/header';
@@ -18,107 +18,103 @@ class SignInForm extends Component {
       email: '',
       password: '',
       submitButtonValue: 'Sign In',
-      buttonClass : 'form-field-button',
-      loginError : ''
+      buttonClass: 'form-field-button',
+      loginError: ''
     };
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
       loginError: ''
     });
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
     this.setState({
-      submitButtonValue: "Processing ....",
+      submitButtonValue: 'Processing ....',
       buttonClass: 'form-field-button-processing'
-    })
+    });
     /**
      * make api call
      */
     const { email, password } = this.state;
     const payload = { email, password };
 
-    axios.post(BASE_URL + '/login', payload)
-        .then((response) => {
-            if(response.status === 200){
-              loginSuccess({ accessToken: response.data.access_token });
-            }
-          })
-          .catch((loginError) => {
-            if (loginError.response && loginError.response.status && loginError.response.status === 401) {
-              this.setState({
-                password: '',
-                submitButtonValue: 'Sign In',
-                buttonClass : 'form-field-button',
-                loginError: 'Wrong email or password'
-              });
-            } else if(loginError.response && loginError.response.data && loginError.response.data.message){
-            this.setState({
-              password: '',
-              submitButtonValue: 'Sign In',
-              buttonClass : 'form-field-button',
-              loginError: loginError.response.data.message
-            });
-            } else if (loginError.response && loginError.response.statusText) {
-              this.setState({
-                password: '',
-                submitButtonValue: 'Sign In',
-                buttonClass : 'form-field-button',
-                loginError: `Error occured: ${loginError.response.statusText}. Please try again `
-              });
-            }else {
-              this.setState({
-                password: '',
-                submitButtonValue: 'Sign In',
-                buttonClass : 'form-field-button',
-                loginError: `Error occured: ${loginError.message}. Please try again`
-              });
-            }
-          })
+    axios.post(`${BASE_URL}/login`, payload)
+      .then((response) => {
+        if (response.status === 200) {
+          loginSuccess({ accessToken: response.data.access_token });
+        }
+      })
+      .catch((loginError) => {
+        const { message, response, response: { statusText, data } } = loginError;
+        if (response && response.status && response.status === 401) {
+          this.setState({
+            password: '',
+            submitButtonValue: 'Sign In',
+            buttonClass: 'form-field-button',
+            loginError: 'Wrong email or password'
+          });
+        } else if (response && data && message) {
+          this.setState({
+            password: '',
+            submitButtonValue: 'Sign In',
+            buttonClass: 'form-field-button',
+            loginError: data.message
+          });
+        } else if (response && statusText) {
+          this.setState({
+            password: '',
+            submitButtonValue: 'Sign In',
+            buttonClass: 'form-field-button',
+            loginError: `Error occured: ${statusText}. Please try again `
+          });
+        } else {
+          this.setState({
+            password: '',
+            submitButtonValue: 'Sign In',
+            buttonClass: 'form-field-button',
+            loginError: `Error occured: ${message}. Please try again`
+          });
+        }
+      });
   };
 
   componentDidMount() {
     /* dispatch logout action after call to /login */
-    logOutAction()
+    logOutAction();
   }
 
 
-  displayLoginError = (loginError) => {
-    if(loginError){
-      return (
-        <div className="alert alert-danger text-center">
-        { loginError }
-        </div> )
-    } else {
-      return;
-    }
-  }
+  displayLoginError = (loginError) => (
+    <div className="alert alert-danger text-center">
+      {loginError}
+    </div>
+  );
 
   render() {
     const { buttonClass, submitButtonValue, loginError } = this.state;
     const { loggedIn } = this.props;
 
     if (loggedIn) {
-      return <Redirect to="/user-dashboard" />
+      return <Redirect to="/user-dashboard" />;
     }
 
     return (
       <>
-          <div className="home-container">
+        <div className="home-container">
           <HeaderComponent />
         </div>
         <div className="auth-form">
           <form onSubmit={this.handleSubmit}>
 
-            { this.displayLoginError(loginError) }
+            { loginError && this.displayLoginError(loginError) }
 
             <div className="form-title">
               Sign In
-        </div>
+            </div>
             <div className="form-field">
               <input
                 type="email"
@@ -153,10 +149,8 @@ class SignInForm extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    loggedIn : state.auth.loggedIn
-  }
-}
+const mapStateToProps = (state) => ({
+  loggedIn: state.auth.loggedIn
+});
 
 export default withRouter(connect(mapStateToProps)(SignInForm));
