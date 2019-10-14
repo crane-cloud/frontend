@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import SideNav, { Nav, NavItem, NavIcon, NavText } from './sideNavStyling';
+import SideNav, {
+  Nav, NavItem, NavIcon, NavText
+} from './sideNavStyling';
 
-import Deployments from "../components/Workloads/Deployments";
-import Jobs from "../components/Workloads/Jobs";
-import Pods from "../components/Workloads/Pods";
-import ReplicaSets from "../components/Workloads/ReplicaSets";
-import Secrets from "../components/Config/Secrets";
-import ConfigMaps from "../components/Config/ConfigMaps";
-import Services from "../components/Services/Services";
-import Ingresses from "../components/Services/Ingresses";
-import PersistentVolumes from "../components/Storage/PersistentVolumes";
-import PersistentVolumeClaims from "../components/Storage/PersistentVolumeClaims";
+import Deployments from '../components/Workloads/Deployments';
+import Jobs from '../components/Workloads/Jobs';
+import Pods from '../components/Workloads/Pods';
+import ReplicaSets from '../components/Workloads/ReplicaSets';
+import Secrets from '../components/Config/Secrets';
+import ConfigMaps from '../components/Config/ConfigMaps';
+import Services from '../components/Services/Services';
+import Ingresses from '../components/Services/Ingresses';
+import PersistentVolumes from '../components/Storage/PersistentVolumes';
+import PersistentVolumeClaims from '../components/Storage/PersistentVolumeClaims';
 
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
-import "../../../assets/css/dashbaord.css"
-import "../../../assets/css/style.css"
+import '../../../assets/css/dashbaord.css';
+import '../../../assets/css/style.css';
 
 
 export default class SideNavigation extends Component {
@@ -24,7 +26,7 @@ export default class SideNavigation extends Component {
   };
 
   onSelect = (selected) => {
-    this.setState({ selected: selected });
+    this.setState({ selected });
   };
 
   render() {
@@ -41,9 +43,9 @@ export default class SideNavigation extends Component {
 
                 <SideNav
                   onSelect={
-                    (selected) => {
-                      this.onSelect()
-                      const to = '/' + selected;
+                    () => {
+                      this.onSelect();
+                      const to = `/${selected}`;
                       if (location.pathname !== to) {
                         history.push(to);
                       }
@@ -64,26 +66,26 @@ export default class SideNavigation extends Component {
                       </NavIcon>
                       <NavText style={{ paddingRight: 32 }}>
                         WORKLOADS
-              </NavText>
+                      </NavText>
                       <NavItem eventKey="workloads/deployments">
                         <NavText>
                           Deployments
-                  </NavText>
+                        </NavText>
                       </NavItem>
                       <NavItem eventKey="workloads/replica-sets">
                         <NavText>
                           Replica sets
-                  </NavText>
+                        </NavText>
                       </NavItem>
                       <NavItem eventKey="workloads/jobs">
                         <NavText>
                           Jobs
-                  </NavText>
+                        </NavText>
                       </NavItem>
                       <NavItem eventKey="workloads/pods">
                         <NavText>
                           Pods
-                  </NavText>
+                        </NavText>
                       </NavItem>
                     </NavItem>
 
@@ -93,18 +95,18 @@ export default class SideNavigation extends Component {
                       </NavIcon>
                       <NavText>
                         SERVICES & DELIVERY
-              </NavText>
+                      </NavText>
 
                       <NavItem eventKey="services/services">
                         <NavText>
                           Services
-                      </NavText>
+                        </NavText>
                       </NavItem>
 
                       <NavItem eventKey="services/ingresses">
                         <NavText>
                           Ingresses
-                      </NavText>
+                        </NavText>
                       </NavItem>
                     </NavItem>
 
@@ -114,18 +116,18 @@ export default class SideNavigation extends Component {
                       </NavIcon>
                       <NavText>
                         STORAGE
-              </NavText>
+                      </NavText>
 
                       <NavItem eventKey="storage/persistent-volumes">
                         <NavText>
                           Persistent Volumes
-                </NavText>
+                        </NavText>
                       </NavItem>
 
                       <NavItem eventKey="storage/persistent-volume-claims">
                         <NavText>
                           Persistent Volume Claims
-                </NavText>
+                        </NavText>
                       </NavItem>
 
                     </NavItem>
@@ -136,18 +138,18 @@ export default class SideNavigation extends Component {
                       </NavIcon>
                       <NavText>
                         CONFIG
-                  </NavText>
+                      </NavText>
 
                       <NavItem eventKey="config/secrets">
                         <NavText>
                           Secrets
-                    </NavText>
+                        </NavText>
                       </NavItem>
 
                       <NavItem eventKey="config/config-maps">
                         <NavText>
                           Config Maps
-                    </NavText>
+                        </NavText>
                       </NavItem>
 
                     </NavItem>
