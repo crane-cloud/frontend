@@ -49,56 +49,34 @@ class SignInForm extends Component {
         }
       })
       .catch((loginError) => {
-<<<<<<< HEAD
         const { message, response, response: { statusText, data } } = loginError;
         if (response && response.status && response.status === 401) {
-=======
-        if (loginError.response && loginError.response.status && loginError.response.status === 401) {
->>>>>>> d22eaa466365992a71427335a4665a0208f46e8d
           this.setState({
             password: '',
             submitButtonValue: 'Sign In',
             buttonClass: 'form-field-button',
             loginError: 'Wrong email or password'
           });
-<<<<<<< HEAD
         } else if (response && data && message) {
-=======
-        } else if (loginError.response && loginError.response.data && loginError.response.data.message) {
->>>>>>> d22eaa466365992a71427335a4665a0208f46e8d
           this.setState({
             password: '',
             submitButtonValue: 'Sign In',
             buttonClass: 'form-field-button',
-<<<<<<< HEAD
             loginError: data.message
           });
         } else if (response && statusText) {
-=======
-            loginError: loginError.response.data.message
-          });
-        } else if (loginError.response && loginError.response.statusText) {
->>>>>>> d22eaa466365992a71427335a4665a0208f46e8d
           this.setState({
             password: '',
             submitButtonValue: 'Sign In',
             buttonClass: 'form-field-button',
-<<<<<<< HEAD
             loginError: `Error occured: ${statusText}. Please try again `
-=======
-            loginError: `Error occured: ${loginError.response.statusText}. Please try again `
->>>>>>> d22eaa466365992a71427335a4665a0208f46e8d
           });
         } else {
           this.setState({
             password: '',
             submitButtonValue: 'Sign In',
             buttonClass: 'form-field-button',
-<<<<<<< HEAD
             loginError: `Error occured: ${message}. Please try again`
-=======
-            loginError: `Error occured: ${loginError.message}. Please try again`
->>>>>>> d22eaa466365992a71427335a4665a0208f46e8d
           });
         }
       });
@@ -111,23 +89,11 @@ class SignInForm extends Component {
   }
 
 
-<<<<<<< HEAD
   displayLoginError = (loginError) => (
     <div className="alert alert-danger text-center">
       {loginError}
     </div>
   );
-=======
-  displayLoginError = (loginError) => {
-    if (loginError) {
-      return (
-        <div className="alert alert-danger text-center">
-          {loginError}
-        </div>);
-    }
-    return undefined;
-  }
->>>>>>> d22eaa466365992a71427335a4665a0208f46e8d
 
   render() {
     const { buttonClass, submitButtonValue, loginError } = this.state;
@@ -145,11 +111,7 @@ class SignInForm extends Component {
         <div className="auth-form">
           <form onSubmit={this.handleSubmit}>
 
-<<<<<<< HEAD
             { loginError && this.displayLoginError(loginError) }
-=======
-            {this.displayLoginError(loginError)}
->>>>>>> d22eaa466365992a71427335a4665a0208f46e8d
 
             <div className="form-title">
               Sign In
@@ -188,16 +150,8 @@ class SignInForm extends Component {
   }
 }
 
-<<<<<<< HEAD
 const mapStateToProps = (state) => ({
   loggedIn: state.auth.loggedIn
 });
-=======
-const mapStateToProps = (state) => {
-  return {
-    loggedIn: state.auth.loggedIn
-  }
-}
->>>>>>> d22eaa466365992a71427335a4665a0208f46e8d
 
 export default withRouter(connect(mapStateToProps)(SignInForm));
