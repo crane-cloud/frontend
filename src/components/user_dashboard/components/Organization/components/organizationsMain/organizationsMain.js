@@ -120,7 +120,6 @@ class OrganizationsMain extends Component {
               })
               .catch((deleteError) => {
                 if (deleteError.response && deleteError.response.data && deleteError.response.data.message) {
-
                 }
               });
           }

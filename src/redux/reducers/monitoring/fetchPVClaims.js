@@ -1,21 +1,20 @@
-import { FETCH_PV_CLAIMS } from "../../actions/actionTypes";
+import { FETCH_PV_CLAIMS } from '../../actions/actionTypes';
 
 const initialState = {
-    pvClaims: []   
-}
+  pvClaims: []
+};
 
 const fetchpvClaims = (state = initialState, action) => {
-    switch (action.type) {
-        case FETCH_PV_CLAIMS:
-            return {
-                ...state,
-                pvClaims: action.payload
-            };
+  switch (action.type) {
+  case FETCH_PV_CLAIMS:
+    return {
+      ...state,
+      pvClaims: action.payload
+    };
 
-            default:
-            return state;
-
-    }
-}
+  default:
+    return state;
+  }
+};
 
 export default fetchpvClaims;

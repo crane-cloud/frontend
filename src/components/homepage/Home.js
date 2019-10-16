@@ -3,7 +3,7 @@ import { ReactComponent as Server } from '../../assets/img/server.svg';
 import { ReactComponent as Scroll } from '../../assets/img/scroll.svg';
 import HeaderComponent from './header';
 
-import "../../assets/css/auth.css";
+import '../../assets/css/auth.css';
 import '../../assets/css/style.css';
 import '../../assets/scss/home.scss';
 
@@ -28,7 +28,7 @@ class HomePage extends Component {
 
   handleNavExpand = () => {
     const currentState = this.state.expand;
-    this.setState({ expand: !currentState })
+    this.setState({ expand: !currentState });
   }
 }
 

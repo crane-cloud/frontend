@@ -1,29 +1,31 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import {
+  BrowserRouter as Router, Switch, Route, Redirect
+} from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import HomePage from "./components/homepage/Home";
-import SignInForm from "./components/authentication/SignIn";
-import SignUpForm from "./components/authentication/SignUp";
+import HomePage from './components/homepage/Home';
+import SignInForm from './components/authentication/SignIn';
+import SignUpForm from './components/authentication/SignUp';
 import ConfirmEmail from './components/authentication/ConfirmEmail';
-import AdminDashboard from "./components/admin_dashboard/AdminDashboard";
-import Namespace from "./components/namespace/Namespace";
-import OrganizationsDashboard from "./components/admin_dashboard/organizationsDashboard";
-import TotalResources from "./components/admin_dashboard/general_components/Organizations/components/TotalResources";
-import ClusterInfo from "./components/admin_dashboard/general_components/DashboardMain/components/ClusterInfo/ClusterInfo";
-import Victory from "./components/admin_dashboard/general_components/Organizations/components/Victory";
-import UserDashboard from "./components/user_dashboard/main";
-import UserOrganization from "./components/user_dashboard/components/Organization/organization";
-import Deployment from "./components/user_dashboard/components/Deployment/ExistingDeployment/Deployment";
-import PasswordReset from "./components/authentication/PasswordReset";
+import AdminDashboard from './components/admin_dashboard/AdminDashboard';
+import Namespace from './components/namespace/Namespace';
+import OrganizationsDashboard from './components/admin_dashboard/organizationsDashboard';
+import TotalResources from './components/admin_dashboard/general_components/Organizations/components/TotalResources';
+import ClusterInfo from './components/admin_dashboard/general_components/DashboardMain/components/ClusterInfo/ClusterInfo';
+import Victory from './components/admin_dashboard/general_components/Organizations/components/Victory';
+import UserDashboard from './components/user_dashboard/main';
+import UserOrganization from './components/user_dashboard/components/Organization/organization';
+import Deployment from './components/user_dashboard/components/Deployment/ExistingDeployment/Deployment';
+import PasswordReset from './components/authentication/PasswordReset';
 import loginSuccess from './redux/actions/auth/loginSuccess';
 
 class App extends Component {
   render() {
     const { loggedIn } = this.props;
-    const session = sessionStorage.getItem("creds") || "";
-    
-    if(!loggedIn && session){
+    const session = sessionStorage.getItem('creds') || '';
+
+    if (!loggedIn && session) {
       loginSuccess({ accessToken: session });
     }
 
@@ -43,9 +45,9 @@ class App extends Component {
           <Route exact path="/victory" component={Victory} />
 
           <Route exact path="/user-dashboard"
-            render={() => session ?
-              <UserDashboard /> :
-              <Redirect to="/login" />}
+            render={() => (session
+              ? <UserDashboard />
+              : <Redirect to="/login" />)}
           />
           {/* <Route exact path="/user-dashboard" component={UserDashboard} /> */}
 
@@ -58,14 +60,10 @@ class App extends Component {
   }
 
   componentDidMount() { }
-
-
 }
 
-const mapStateToProps = (state) => {
-  return {
-    loggedIn: state.auth.loggedIn
-  }
-}
+const mapStateToProps = (state) => ({
+  loggedIn: state.auth.loggedIn
+});
 
 export default connect(mapStateToProps)(App);

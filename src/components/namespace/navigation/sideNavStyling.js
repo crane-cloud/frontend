@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import SideNav, {
-    Nav,
-    NavItem,
-    NavIcon,
-    NavText
+  Nav,
+  NavItem,
+  NavIcon,
+  NavText
 } from '@trendmicro/react-sidenav';
 
 // SideNav
@@ -108,9 +108,9 @@ const StyledNavText = styled(NavText)`
 StyledNavText.defaultProps = NavText.defaultProps;
 
 export {
-    StyledNav as Nav,
-    StyledNavItem as NavItem,
-    StyledNavIcon as NavIcon,
-    StyledNavText as NavText
+  StyledNav as Nav,
+  StyledNavItem as NavItem,
+  StyledNavIcon as NavIcon,
+  StyledNavText as NavText
 };
 export default StyledSideNav;
