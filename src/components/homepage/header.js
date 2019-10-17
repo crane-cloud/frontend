@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import craneLogo from '../../assets/img/craneLogo.jpg';
 import { ReactComponent as Logo } from '../../assets/img/logo.svg';
 import { ReactComponent as Ham } from '../../assets/img/ham.svg';
 import { ReactComponent as Exit } from '../../assets/img/exit.svg';
@@ -16,7 +17,8 @@ class HeaderComponent extends Component {
   render() {
     return (
       <header>
-        <Link to="/"><Logo className="logo" alt="Crane_Cloud"/></Link>
+        {/* <Link to="/"><Logo className="logo" alt="Crane_Cloud"/></Link> */}
+        <Link to="/"><img src={craneLogo} className="logo" alt="Crane_Cloud"/></Link>
 
         <nav id="home-nav">
           <a href="#" onClick={this.handleNavExpand} className="hide-desktop">

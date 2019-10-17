@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchReplicaSets } from '../../../../redux/actions/monitoring/fetchReplicaSets';
+import fetchReplicaSets from '../../../../redux/actions/monitoring/fetchReplicaSets';
 
 class ReplicaSets extends Component {
   componentWillMount() {

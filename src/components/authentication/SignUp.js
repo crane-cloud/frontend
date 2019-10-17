@@ -18,7 +18,7 @@ class SignUpForm extends Component {
     hasAgreed: false,
     submitButtonValue: 'Sign Up',
     buttonClass: 'form-field-button',
-    errorMEssage: ''
+    errorMessage: ''
   }
 
   handleChange = (e) => {
@@ -108,7 +108,7 @@ class SignUpForm extends Component {
   render() {
     const { loggedIn } = this.props;
     const {
-      name, email, password, confirmPassword, submitButtonValue, buttonClass
+      name, email, password, confirmPassword, submitButtonValue, buttonClass, errorMessage
     } = this.state;
 
     if (loggedIn) {
@@ -122,7 +122,9 @@ class SignUpForm extends Component {
         </div>
         <div className="auth-form">
           <form onSubmit={this.handleSubmit}>
-            {this.displayError()}
+
+            { errorMessage && this.displayError()}
+
             <div className="form-title">
               Sign Up
             </div>
@@ -173,7 +175,7 @@ class SignUpForm extends Component {
 
             <label className="form-field-checkbox-label">
               <input
-                required
+                // required
                 type="checkbox"
                 className="form-field-checkbox"
                 name="hasAgreed"
