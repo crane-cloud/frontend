@@ -1,206 +1,196 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
-@import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:200&display=swap");
 
-.home-container {
+html,
+body {
+  height: 100%;
+}
+
+body {
   margin: 0;
-  text-align: center;
+}
+
+/* ---------- HOME CONTAINER ------------ */
+.home-container {
+  height: 100vh;
+  background-color: #008ac1;
+  color: #fff;
+  margin: 0;
   padding: 0.8em 1.2em;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Roboto", sans-serif;
+}
 
-  section p {
-    font-size: 0.9em;
-    line-height: 1.6em;
-  }
+/* ---------- HEADER ------------ */
+.header {
+  background: #008ac1; /* fallback for old browsers */
+  width: 100%;
 
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .logo {
-    width: 100px;
-    // max-height: 50px;
+  img.logo {
+    width: 250px;
     padding-left: 0.5em;
   }
 
-  // .logo {
-  //   min-width: 150px;
-  //   max-height: 50px;
-  //   padding-left: 0.5em;
-  // }
-
-  header {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .hide-mobile {
-    display: none;
-  }
-
-  .menu {
-    width: 25px;
-    margin-top: 45%;
-  }
-
-  .server {
-    width: 70%;
-    margin: 0.1em auto 1em 25%;
-  }
-
-  h1,
-  .subhead {
-    position: relative;
-    z-index: 3;
-  }
-
-  .subhead {
-    font-size: 1.1em;
-  }
-
-  nav#home-nav ul {
-    position: fixed;
-    width: 60%;
-    top: 0;
-    right: 0;
-    text-align: left;
-    background: rgb(36, 41, 44);
-    height: 100%;
-    z-index: 5;
-    padding-top: 3em;
-  }
-
-  nav#home-nav ul a {
-    color: #fff;
+  .links a {
+    color: white;
     text-decoration: none;
-    display: block;
-    width: 100%;
-    padding: 1em 2em;
-    background-color: rgb(49, 55, 59);
+    font-size: 1.1em;
+    padding: 0.8em;
+
+    &:hover {
+      font-weight: bolder;
+      transition-delay: 100ms;
+    }
   }
 
-  nav#home-nav ul a:hover {
-    background-color: rgb(65, 73, 78);
-  }
+  .links a.btn-sign-in {
+    border: 2px white solid;
+    border-radius: 10px;
 
-  .exit-btn {
-    margin-bottom: 1em;
-    margin-top: -1.3em;
-    text-align: right;
-    padding: 0 1.4em;
-  }
-
-  .exit-btn img {
-    width: 15px;
-    cursor: pointer;
+    &:hover {
+      border-radius: 0;
+    }
   }
 }
 
-@media only screen and (min-width: 650px) {
-  .server {
-    width: 50%;
+/* ---------- LANDING ------------ */
+.home-grid {
+  margin-top: 10rem;
+
+  .col-right {
+    text-align: left;
+    margin-top: -40px;
   }
 
   h1 {
-    font-size: 2.5em;
-    margin: 0;
+    font-family: "Montserrat", sans-serif;
+    font-size: 3.5em;
+  }
+
+  .subhead {
+    font-size: 17px;
     font-weight: bold;
   }
 
-  .subhead {
-    font-size: 1.4em;
-    margin-bottom: 12%;
+  button.btn-get-started {
+    background-color: #d2741d;
+    margin-top: 20px;
+    padding: 0.8em 2em;
+    border-radius: 25px;
   }
 
-  nav#home-nav ul {
-    width: 40%;
-  }
-}
-
-@media only screen and (min-width: 875px) {
-  .subhead {
-    margin-bottom: 3%;
+  .cloud {
+    width: 400px;
+    height: 400px;
   }
 }
 
-@media only screen and (min-width: 1024px) {
+@media screen and (min-width: 990px) {
+  .medium {
+    display: none;
+  }
+}
+
+/* PHONES */
+@media screen and (max-width: 650px) {
+  /* ---------- HOME CONTAINER ------------ */
   .home-container {
-    width: 80%;
-    margin: 0 auto;
+    height: 100vh;
+    margin: 0;
+  }
 
-    nav#home-nav ul {
-      position: inherit;
-      width: auto;
-      background: none;
-      height: auto;
-      display: flex;
-      padding-top: 0;
+  /* ---------- HEADER ------------ */
+  .header {
+    background: #008ac1; /* fallback for old browsers */
+    width: 100%;
+
+    img.logo {
+      width: 200px;
+      padding-left: 0.5em;
     }
 
-    nav#home-nav ul li {
-      float: left;
+    .links a {
+      text-decoration: none;
+      font-size: 1em;
     }
 
-    nav#home-nav ul li a {
-      color: black;
-      background-color: inherit;
-      text-align: right;
-      padding: 1em 2em;
+    .links a.btn-sign-in {
+      border: 0px;
+    }
+  }
+
+  /* ---------- LANDING ------------ */
+  .home-grid {
+    margin: 3rem 0 40px;
+
+    .col-right {
+      display: none; /* TEMPORARY */
+      text-align: left;
+      margin-top: 40px;
     }
 
-    nav#home-nav ul li a:hover {
-      background-color: inherit;
-      color: #00ade2cc;
+    h1 {
+      font-size: 2.3em;
     }
 
-    nav#home-nav ul li:last-of-type a {
-      color: #00ade2cc;
-      text-decoration: solid wavy;
-      font-weight: bolder;
-      // animation: shake 5s infinite alternate;
+    .subhead {
+      font-size: 14px;
     }
 
-    nav#home-nav ul li:last-of-type a:hover {
-      color: orange;
+    button.btn-get-started {
+      margin-top: 20px;
+      width: 70%;
+      padding: 0.8em 2em;
+      border-radius: 25px;
     }
 
-    .show-desktop {
-      display: block;
-      margin: 0 auto 10% auto;
+    .cloud {
+      text-align: left;
+      width: 200px;
+      height: 200px;
     }
+  }
+}
 
-    .hide-desktop {
+/* TABLETS */
+@media screen and (max-width: 989px) {
+  /* ---------- HOME CONTAINER ------------ */
+  .home-container {
+    height: 100vh;
+    margin: 0;
+  }
+  
+  /* ---------- LANDING ------------ */
+  .home-grid {
+    margin: 3rem 0 40px;
+    text-align: center;
+
+    .col-right {
       display: none;
     }
 
-    .scroll {
-      width: 25px;
-      animation: move 1s infinite alternate;
+    .medium {
+      text-align: center;
+      margin-left: 10px;
+      .cloud {
+        width: 400px;
+        height: 400px;
+      }
     }
-  }
 
-  @keyframes move {
-    0% {
-      transform: translateY(0px);
+    h1 {
+      margin-top: 40px;
+      font-size: 3em;
     }
-    100% {
-      transform: translateY(20px);
+
+    .subhead {
+      font-size: 19px;
     }
-  }
-}
 
-@media only screen and (min-width: 1600px) {
-  .server {
-    width: 40%;
-    margin: 5em auto 4em 15%;
-  }
-
-  .home-container {
-    width: 70%;
-
-    h2 {
-      margin-top: 4em;
+    button.btn-get-started {
+      margin: 20px auto;
+      width: 70%;
+      padding: 0.8em 2em;
+      border-radius: 25px;
     }
   }
 }

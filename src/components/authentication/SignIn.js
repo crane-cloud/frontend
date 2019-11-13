@@ -105,13 +105,11 @@ class SignInForm extends Component {
 
     return (
       <>
-        <div className="home-container">
-          <HeaderComponent />
-        </div>
+        <HeaderComponent />
         <div className="auth-form">
           <form onSubmit={this.handleSubmit}>
 
-            { loginError && this.displayLoginError(loginError) }
+            {loginError && this.displayLoginError(loginError)}
 
             <div className="form-title">
               Sign In

@@ -117,13 +117,11 @@ class SignUpForm extends Component {
 
     return (
       <>
-        <div className="home-container">
-          <HeaderComponent />
-        </div>
+        <HeaderComponent />
         <div className="auth-form">
           <form onSubmit={this.handleSubmit}>
 
-            { errorMessage && this.displayError()}
+            {errorMessage && this.displayError()}
 
             <div className="form-title">
               Sign Up
