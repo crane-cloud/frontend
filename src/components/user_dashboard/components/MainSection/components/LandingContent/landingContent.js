@@ -34,7 +34,7 @@ class LandingContent extends Component {
         Authorization: `Bearer ${this.props.token}`
       }
     };
-    axios.get(`{BASE_URL}/user/get/organisations`, config)
+    axios.get(`${BASE_URL}/user/get/organisations`, config)
       .then((response) => {
         debugger;
         if (response.data.message === 'Not registered user') {
@@ -141,7 +141,8 @@ class LandingContent extends Component {
             </div>
           </div>
         </div>
-        <UserResourceUsage />
+        {/* Has graph and total billing*/}
+        {/* <UserResourceUsage /> */}
       </div>
     );
   }
