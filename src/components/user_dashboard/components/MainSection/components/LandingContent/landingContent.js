@@ -34,8 +34,9 @@ class LandingContent extends Component {
         Authorization: `Bearer ${this.props.token}`
       }
     };
-    axios.get(`${PROXY_URL}${BASE_URL}/user/get/organisations`, config)
+    axios.get(`{BASE_URL}/user/get/organisations`, config)
       .then((response) => {
+        debugger;
         if (response.data.message === 'Not registered user') {
           this.setState({
             spinner: false,
@@ -48,6 +49,7 @@ class LandingContent extends Component {
       })
 
       .catch((error) => {
+        debugger;
         console.log(error.stack);
         if (error.response && error.response.data && error.response.data.message) {
           this.setState({
