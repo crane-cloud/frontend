@@ -158,6 +158,16 @@ body {
     height: 100vh;
     margin: 0;
   }
+
+  /* ---------- HEADER ------------ */
+  .header {
+    background: #008ac1; /* fallback for old browsers */
+    width: 100%;
+
+    .links a.btn-sign-in {
+      border: 0px;
+    }
+  }
   
   /* ---------- LANDING ------------ */
   .home-grid {
