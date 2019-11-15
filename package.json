@@ -37,7 +37,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "mockapi": "nodemon --watch 'mockAPI' mockAPI/server.js"
   },
   "browserslist": {
     "production": [
@@ -52,6 +53,14 @@
     ]
   },
   "devDependencies": {
-    "eslint-config-airbnb-base": "^14.0.0"
+    "@koa/cors": "^2.2.3",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "koa": "^2.11.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-json": "^2.0.2",
+    "koa-logger": "^3.2.1",
+    "koa-onerror": "^4.1.0",
+    "koa-router": "^7.4.0",
+    "nodemon": "^1.19.4"
   }
 }

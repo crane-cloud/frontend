@@ -44,12 +44,15 @@ class SignInForm extends Component {
 
     axios.post(`${BASE_URL}/login`, payload)
       .then((response) => {
+        debugger;
         if (response.status === 200) {
           loginSuccess({ accessToken: response.data.access_token });
         }
       })
       .catch((loginError) => {
-        const { message, response, response: { statusText, data } } = loginError;
+        debugger;
+        const { message, response } = loginError;
+        // , response: { statusText, data }
         if (response && response.status && response.status === 401) {
           this.setState({
             password: '',
@@ -57,19 +60,19 @@ class SignInForm extends Component {
             buttonClass: 'form-field-button',
             loginError: 'Wrong email or password'
           });
-        } else if (response && data && message) {
+        } else if (response && response.data && message) {
           this.setState({
             password: '',
             submitButtonValue: 'Sign In',
             buttonClass: 'form-field-button',
-            loginError: data.message
+            loginError: response.data.message
           });
-        } else if (response && statusText) {
+        } else if (response && response.statusText) {
           this.setState({
             password: '',
             submitButtonValue: 'Sign In',
             buttonClass: 'form-field-button',
-            loginError: `Error occured: ${statusText}. Please try again `
+            loginError: `Error occured: ${response.statusText}. Please try again `
           });
         } else {
           this.setState({
