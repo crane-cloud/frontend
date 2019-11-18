@@ -59,6 +59,9 @@ router.post('/rename/organisation', (ctx) => {
     if (org.name === renameOrg.organisation_name) {
       org.name = renameOrg.New_name;
       console.log(organisations[index]);
+
+      ctx.status = 201;
+      ctx.body = {};
     }
   });
 });

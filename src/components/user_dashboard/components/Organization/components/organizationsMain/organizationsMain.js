@@ -35,7 +35,8 @@ class OrganizationsMain extends Component {
       renameValue: '',
       spinner: false,
       successFeedback: '',
-      errorFeedback: ''
+      errorFeedback: '',
+      renameSuccessful: ''
     };
 
     this.orgID = this.props.orgID;
@@ -173,8 +174,9 @@ class OrganizationsMain extends Component {
       New_name: this.state.renameValue
     })
       .then((response) => { 
-        debugger;
-        console.log(response);
+        if (response.status === 201) {
+          this.setState({ renameSuccessful: 'The organisation was successfully renamed' });
+        }
       })
       .catch((error) => {
         debugger;
@@ -369,6 +371,11 @@ class OrganizationsMain extends Component {
         {this.state.errorFeedback
                 && <div className="alert alert-danger text-center">
                   {this.state.errorFeedback}
+                </div>
+        }
+        {this.state.renameSuccessful
+                && <div className="alert alert-success text-center">
+                  {this.state.renameSuccessful}
                 </div>
         }
         {this.renderOrgname()}
