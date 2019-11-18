@@ -16,7 +16,8 @@ import { BASE_URL } from '../../../../../../config';
 import Spinner from '../../../../../common/Spinner';
 
 const mapStateToProps = (state) => ({
-  allOrganizations: state.org.organizations
+  allOrganizations: state.org.organizations,
+  token: state.auth.accessToken
 });
 
 const matchDispatchToProps = {
@@ -37,9 +38,7 @@ class OrganizationsMain extends Component {
       errorFeedback: ''
     };
 
-
     this.orgID = this.props.orgID;
-
 
     this.org = props.allOrganizations.filter((org) => {
       return org.id === parseInt(props.orgID, 10);
@@ -165,10 +164,36 @@ class OrganizationsMain extends Component {
   }
 
   handleRename = () => {
-    /* hit rename url */
-    // /organizations/orgID/rename/new-name
-    // eg /organizations/46739/rename/nile breweries
-    // org id available via this.orgID
+    axios.defaults.headers.common = {
+      Authorization: `Bearer ${this.props.token}`
+    };
+
+    axios.post(`${BASE_URL}/rename/organisation`, {
+      organisation_name: this.org[0].name,
+      New_name: this.state.renameValue
+    })
+      .then((response) => { 
+        debugger;
+        console.log(response);
+      })
+      .catch((error) => {
+        debugger;
+        console.log(error.stack);
+        if (error.response && error.response.data && error.response.data.message) {
+          this.setState({
+            errorFeedback: error.response.data.message
+          });
+        } else if (error.response && error.response.statusText) {
+          this.setState({
+            errorFeedback: `Error ocuured: ${error.response.statusText}. Please try again`
+          });
+        } else {
+          this.setState({
+            errorFeedback: `Error occured: ${error.message}. Please try again`
+          });
+        }
+      });
+
     alert(`new name is: ${this.state.renameValue}`);
     this.setState({ orgModalVisible: false });
   }
@@ -341,6 +366,11 @@ class OrganizationsMain extends Component {
     return (
       <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
         <Header />
+        {this.state.errorFeedback
+                && <div className="alert alert-danger text-center">
+                  {this.state.errorFeedback}
+                </div>
+        }
         {this.renderOrgname()}
         {this.renameOrgModalSpan()}
         {this.newNamespace()}

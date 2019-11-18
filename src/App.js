@@ -3,6 +3,8 @@ import {
   BrowserRouter as Router, Switch, Route, Redirect
 } from 'react-router-dom';
 import { connect } from 'react-redux';
+import axios from 'axios'; 
+
 
 import HomePage from './components/homepage/Home';
 import SignInForm from './components/authentication/SignIn';
@@ -21,6 +23,7 @@ import PasswordReset from './components/authentication/PasswordReset';
 import loginSuccess from './redux/actions/auth/loginSuccess';
 
 class App extends Component {
+
   render() {
     const { loggedIn } = this.props;
     const session = sessionStorage.getItem('creds') || '';
@@ -65,5 +68,6 @@ class App extends Component {
 const mapStateToProps = (state) => ({
   loggedIn: state.auth.loggedIn
 });
+
 
 export default connect(mapStateToProps)(App);
