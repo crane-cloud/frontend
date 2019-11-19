@@ -66,6 +66,23 @@ router.post('/rename/organisation', (ctx) => {
   });
 });
 
+router.post('/delete/organisation', (ctx) => {
+  const orgToDelete = ctx.request.body;
+  console.log(orgToDelete);
+  organisations.forEach((org, index) => {
+    if (org.name === orgToDelete.organisation_name) {
+      organisations.splice(index, 1);
+      ctx.status = 201;
+      ctx.body = {};
+    } else {
+      ctx.status = 500;
+      ctx.body = {
+        message: 'Failed to delete org'
+      };
+    }
+  });
+});
+
 router.post('/create/organisation', (ctx) => {
   const newOrg = ctx.request.body;
   const org = {

@@ -36,7 +36,8 @@ class OrganizationsMain extends Component {
       spinner: false,
       successFeedback: '',
       errorFeedback: '',
-      renameSuccessful: ''
+      successMessage: ''
+      
     };
 
     this.orgID = this.props.orgID;
@@ -113,13 +114,33 @@ class OrganizationsMain extends Component {
               organisation_name: this.org[0].name
             };
 
-            axios.delete(`${BASE_URL}/delete/organisation`, payload)
+            axios.defaults.headers.common = {
+              Authorization: `Bearer ${this.props.token}`
+            };
+
+            axios.post(`${BASE_URL}/delete/organisation`, payload)
               .then((response) => {
                 console.log(response);
-                debugger;
+                if (response.status === 201) {
+                  this.setState({
+                    successMessage: 'This organisation\'s data has been wiped clean'
+                  });
+                }
               })
-              .catch((deleteError) => {
-                if (deleteError.response && deleteError.response.data && deleteError.response.data.message) {
+              .catch((error) => {
+                console.log(error.stack);
+                if (error.response && error.response.data && error.response.data.message) {
+                  this.setState({
+                    errorFeedback: error.response.data.message
+                  });
+                } else if (error.response && error.response.statusText) {
+                  this.setState({
+                    errorFeedback: `Error ocuured: ${error.response.statusText}. Please try again`
+                  });
+                } else {
+                  this.setState({
+                    errorFeedback: `Error occured: ${error.message}. Please try again`
+                  });
                 }
               });
           }
@@ -175,7 +196,7 @@ class OrganizationsMain extends Component {
     })
       .then((response) => { 
         if (response.status === 201) {
-          this.setState({ renameSuccessful: 'The organisation was successfully renamed' });
+          this.setState({ successMessage: 'The organisation was successfully renamed' });
         }
       })
       .catch((error) => {
@@ -373,9 +394,9 @@ class OrganizationsMain extends Component {
                   {this.state.errorFeedback}
                 </div>
         }
-        {this.state.renameSuccessful
+        {this.state.successMessage
                 && <div className="alert alert-success text-center">
-                  {this.state.renameSuccessful}
+                  {this.state.successMessage}
                 </div>
         }
         {this.renderOrgname()}
