@@ -29,26 +29,25 @@ class NewOrganization extends Component {
 
     handleSubmit = (event) => {
       event.preventDefault();
+      
       this.setState({
         spinner: true,
         successMessage: '',
         errorMessage: ''
       });
+
       const data = {
         organisation_name: this.state.orgName
       };
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.props.token}`
-        }
+
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ${this.props.token}`
       };
-      console.log(this.props.token);
-      debugger;
-      axios.post(`${PROXY_URL + BASE_URL }/create/organisation`, data, config)
+
+      axios.post(`${BASE_URL}/create/organisation`, data)
         .then((response) => {
           debugger;
-          if (response.status === 201 || response.status === 200) {
+          if (response.status === 201) {
             const { orgName } = this.state;
             this.props.addOrganization(response.data);
             this.setState({

@@ -66,4 +66,18 @@ router.post('/rename/organisation', (ctx) => {
   });
 });
 
+router.post('/create/organisation', (ctx) => {
+  const newOrg = ctx.request.body;
+  const org = {
+    date_created: new Date(),
+    id: 2,
+    name: newOrg.organisation_name,
+    ownerToken: 'hghr74567hdh74'
+  };
+  organisations.push(org);
+  ctx.status = 201;
+  ctx.body = org;
+});
+
+
 module.exports = router;
