@@ -3,7 +3,7 @@ import { Link, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import { BASE_URL } from '../../config';
+import { BASE_URL, PROXY_URL } from '../../config';
 import HeaderComponent from '../homepage/header';
 import loginSuccess from '../../redux/actions/auth/loginSuccess';
 
@@ -60,7 +60,7 @@ class SignUpForm extends Component {
       this.setState({ errorMessage: 'Please agree to the terms of service' });
     } else {
       /* api call */
-      axios.post(`${BASE_URL}/register`, {
+      axios.post(`${PROXY_URL + BASE_URL}/register`, {
         name,
         email,
         password
