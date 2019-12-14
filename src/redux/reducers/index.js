@@ -13,16 +13,16 @@ import fetchpvClaims from './monitoring/fetchPVClaims';
 import org from './organization/orgReducer';
 
 export default combineReducers({
-    auth,
-    jobs: fetchJobs,
-    pods: fetchPods,
-    deployments: fetchDeployments,
-    nodes: fetchNodes,
-    clusterInfo: fetchClusterInfo,
-    containers: fetchContainers,
-    replicaSets: fetchReplicaSets,
-    configMaps: fetchConfigMaps,
-    persistentVolumes: fetchPersistentVolumes,
-    pvClaims: fetchpvClaims,
-    org
+  auth,
+  jobs: fetchJobs,
+  pods: fetchPods,
+  deployments: fetchDeployments,
+  nodes: fetchNodes,
+  clusterInfo: fetchClusterInfo,
+  containers: fetchContainers,
+  replicaSets: fetchReplicaSets,
+  configMaps: fetchConfigMaps,
+  persistentVolumes: fetchPersistentVolumes,
+  pvClaims: fetchpvClaims,
+  org
 });

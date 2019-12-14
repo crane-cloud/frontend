@@ -31,11 +31,12 @@ class LandingContent extends Component {
     const config = {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.props.token
+        Authorization: `Bearer ${this.props.token}`
       }
     };
-    axios.get(PROXY_URL + BASE_URL + '/user/get/organisations', config)
-      .then(response => {
+    axios.get(`${BASE_URL}/user/get/organisations`, config)
+      .then((response) => {
+        debugger;
         if (response.data.message === 'Not registered user') {
           this.setState({
             spinner: false,
@@ -43,11 +44,12 @@ class LandingContent extends Component {
           });
         } else {
           this.props.storeOrganizations(response.data);
-          this.setState({ spinner: false })
+          this.setState({ spinner: false });
         }
       })
 
-      .catch(error => {
+      .catch((error) => {
+        debugger;
         console.log(error.stack);
         if (error.response && error.response.data && error.response.data.message) {
           this.setState({
@@ -81,19 +83,20 @@ class LandingContent extends Component {
     const { spinner, loadingError } = this.state;
     this.state.organizationsArray.map((org) => {
       if (org.status === 'okey') {
-        numberOfOkey = numberOfOkey + 1;
+        numberOfOkey += 1;
       } else if (org.status === 'error') {
-        numberOfErrors = numberOfErrors + 1;
+        numberOfErrors += 1;
       }
 
       totalBilling = parseFloat(totalBilling) + parseFloat(org.billing);
-    })
+      return;
+    });
 
     return (<div className="card-body text-center">
       <h4 onClick={this.toggleOrganizations} className="hoverCursor">
         <span className={this.state.organizationsListVisible ? 'oi oi-minus pushPlusLeft' : 'fa fa-plus pushPlusLeft'} ></span>
         Organizations
-            <span className="badge badge-success aLittleMargin">Okay {numberOfOkey}</span>
+        <span className="badge badge-success aLittleMargin">Okay {numberOfOkey}</span>
         <span className="badge badge-danger aLittleMargin">Errors {numberOfErrors}</span>
       </h4>
 
@@ -111,24 +114,21 @@ class LandingContent extends Component {
               </tr>
             }
             {spinner ? (<tr ><Spinner /></tr>)
-              :
-              (
-                this.state.organizationsArray.map((org, index) => {
-                  return (
-                    <tr key={org.id}>
-                      <td> <Link to={`/user-organizations/${org.id}`}> {org.name} </Link></td>
-                      <td><span className={`badge badge-${org.status === 'okey' ? 'success' : 'danger'} aLittleMargin`}>{org.status}</span></td>
-                      <td>{org.billing}</td>
-                      <td>{moment(org.date_created).fromNow()}</td>
-                    </tr>
-                  );
-                })
+              : (
+                this.state.organizationsArray.map((org) => (
+                  <tr key={org.id}>
+                    <td> <Link to={`/user-organizations/${org.id}`}> {org.name} </Link></td>
+                    <td><span className={`badge badge-${org.status === 'okey' ? 'success' : 'danger'} aLittleMargin`}>{org.status}</span></td>
+                    <td>{org.billing}</td>
+                    <td>{moment(org.date_created).fromNow()}</td>
+                  </tr>
+                ))
               )
             }
           </tbody>
         </table>
       </div>
-    </div>)
+    </div>);
   }
 
   render() {
@@ -141,19 +141,17 @@ class LandingContent extends Component {
             </div>
           </div>
         </div>
-        <UserResourceUsage />
+        {/* Has graph and total billing*/}
+        {/* <UserResourceUsage /> */}
       </div>
     );
   }
-
 }
 
-const mapStateToProps = (state) => {
-  return {
-    token: state.auth.accessToken,
-    organizations: state.org.organizations
-  }
-}
+const mapStateToProps = (state) => ({
+  token: state.auth.accessToken,
+  organizations: state.org.organizations
+});
 
 
 const matchDispatchToProps = {
@@ -162,4 +160,3 @@ const matchDispatchToProps = {
 
 
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(LandingContent));
-

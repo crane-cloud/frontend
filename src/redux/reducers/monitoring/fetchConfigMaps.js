@@ -1,21 +1,20 @@
-import { FETCH_CONFIG_MAPS } from "../../actions/actionTypes";
+import { FETCH_CONFIG_MAPS } from '../../actions/actionTypes';
 
 const initialState = {
-    configMapsArray: []
-}
+  configMapsArray: []
+};
 
 const fetchConfigMaps = (state = initialState, action) => {
-    switch (action.type) {
-        case FETCH_CONFIG_MAPS:
-            return {
-                ...state,
-                configMapsArray: action.payload
-            };
+  switch (action.type) {
+  case FETCH_CONFIG_MAPS:
+    return {
+      ...state,
+      configMapsArray: action.payload
+    };
 
-            default:
-            return state;
-
-    }
-}
+  default:
+    return state;
+  }
+};
 
 export default fetchConfigMaps;

@@ -1,46 +1,45 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ReactComponent as Logo} from '../../assets/img/logo.svg';
-import { ReactComponent as Ham} from '../../assets/img/ham.svg';
-import { ReactComponent as Exit} from '../../assets/img/exit.svg';
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  Nav,
+  NavItem,
+  NavLink
+} from 'reactstrap';
 
-import "../../assets/css/auth.css";
-import '../../assets/css/style.css';
-import '../../assets/scss/home.scss';
+import logo from '../../assets/img/logo.png';
 
-class HeaderComponent extends Component {
-  state = {
-    expand: false
-  }
+const HeaderComponent = () => {
+  const [isOpen, setIsOpen] = useState(false);
 
-  render() {
-    return (
-        <header>
-          <Link to="/"><Logo className="logo" alt="Crane_Cloud"/></Link>
+  const toggle = () => setIsOpen(!isOpen);
 
-          <nav id="home-nav">
-            <a href="#" onClick={this.handleNavExpand} className="hide-desktop">
-              <Ham alt="toggle-menu" className="menu" id="menu" />
-            </a>
-
-            <ul className={this.state.expand ? "show-desktop" : "show-desktop hide-mobile"} id="nav">
-              <li onClick={this.handleNavExpand} id="exit" className="exit-btn hide-desktop">
-                <Exit alt="exit menu" />
-              </li>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/services">Services</Link></li>
-              <li><Link to="/about">About</Link></li>
-              <li><Link to="/login" className="btn-sign-in">Sign In</Link></li>
-            </ul>
-          </nav>
-        </header>
-    );
-  }
-
-  handleNavExpand = () => {
-    const currentState = this.state.expand;
-    this.setState({ expand: !currentState})
-  }
-}
+  return (
+    <div>
+      <Navbar className='header' dark expand="md">
+        <Link className='link' to='/'><img className='logo' src={logo} alt="Crane_Cloud" /></Link>
+        <NavbarToggler style={{ color: 'white' }} onClick={toggle} />
+        <Collapse isOpen={isOpen} navbar>
+          <Nav className="links ml-auto" navbar>
+            <NavItem>
+              <NavLink><Link to="/about">About</Link></NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink><Link to="/services">Services</Link></NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink><Link to="/learn">Learn More</Link></NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink><Link to="/login" className="btn-sign-in">Sign In</Link></NavLink>
+            </NavItem>
+          </Nav>
+        </Collapse>
+      </Navbar>
+    </div>
+  );
+};
 
 export default HeaderComponent;

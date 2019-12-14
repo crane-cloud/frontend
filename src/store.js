@@ -6,9 +6,9 @@ import rootReducer from './redux/reducers';
 const initialState = {};
 
 const store = createStore(
-    rootReducer,
-    initialState,
-    composeWithDevTools(applyMiddleware(thunk))
+  rootReducer,
+  initialState,
+  composeWithDevTools(applyMiddleware(thunk))
 );
 
 export default store;

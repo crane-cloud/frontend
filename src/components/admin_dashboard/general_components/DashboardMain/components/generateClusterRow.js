@@ -1,75 +1,77 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import ClusterCard from "./ClusterCard";
+import ClusterCard from './ClusterCard';
 
 
 export default class GenerateClusterRow extends Component {
-    array_of_clusters = [
+  arrayOfClusters = [
+    {
+      cluster_id: 12,
+      status: 'on',
+      name: 'AWS Cluster',
+      errors: [
+        { error: 'node off', error_id: 11 },
+        { error: 'pod off', error_id: 12 },
+        { error: '3 services down', error_id: 13 }
+      ],
+      nameSpaces: [
         {
-            cluster_id : 12,
-            status : 'on',
-            name : 'AWS Cluster',
-            errors : [ 
-                {error: 'node off', error_id: 11 }, 
-                {error: 'pod off', error_id: 12 }, 
-                { error: '3 services down' , error_id: 13 }
-            ],
-            nameSpaces : [  
-                { name : 'all namespaces', nameSpaceId: 45, dateCreated: "13/02/2019", label: "app: all-namespaces-client", status: "Active" }, 
-                { name :'default', nameSpaceId: 46, dateCreated: "21/04/2019", label: "app: default-client-provisioner", status: "Disabled" }, 
-                { name : 'monitoring', nameSpaceId : 47, dateCreated: "15/07/2018", label: "app: monitoring-client", status: "Active" }
-            ],
-            date_of_creation : '2 years back',
-            data: [0, 5, 0, 40, 20, 60, 10], /* these are for days, as in mon to sun, subject to change */
+          name: 'all namespaces', nameSpaceId: 45, dateCreated: '13/02/2019', label: 'app: all-namespaces-client', status: 'Active'
         },
         {
-            cluster_id : 13,
-            name : 'Makerere',
-            status : 'off',
-            errors : [ 
-                {error: 'node off', error_id: 21 }, 
-                {error: 'pod off', error_id: 22 }, 
-            ],
-            nameSpaces : [{ name :'COSIS', nameSpaceId : 24 }, { name: 'COBAMS', nameSpaceId : 25}, { name: 'VET', nameSpaceId : 26 }],
-            date_of_creation : '2 months back',
-            data: [0, 10, 20, 40, 50, 60, 43],
+          name: 'default', nameSpaceId: 46, dateCreated: '21/04/2019', label: 'app: default-client-provisioner', status: 'Disabled'
         },
         {
-            cluster_id : 14,
-            name : 'kenya',
-            status : 'on',
-            errors : [
-                { error: '2 pod off', error_id : '31' }],
-            nameSpaces : [{ name : 'high court', nameSpaceId : 67 }, { name : 'state house', nameSpaceId : 68 }],
-            date_of_creation : '6 months back',
-            data: [50, 10, 30, 0, 60, 70, 7],
-        },
-        {
-            cluster_id : 15,
-            name : 'Russia',
-            status : 'off',
-            errors : [],
-            nameSpaces : [{name : 'uber', nameSpaceId : 98 }, { name : 'microsoft',  nameSpaceId : 99}],
-            date_of_creation : '1 year back',
-            data: [6, 30, 5, 20, 80, 90, 0], /* these are for days, as in mon to sun, subject to change */
+          name: 'monitoring', nameSpaceId: 47, dateCreated: '15/07/2018', label: 'app: monitoring-client', status: 'Active'
         }
-    ];
-
-    render(){ 
-        return (
-            this.generateClusterRow() 
-        );
+      ],
+      date_of_creation: '2 years back',
+      data: [0, 5, 0, 40, 20, 60, 10], /* these are for days, as in mon to sun, subject to change */
+    },
+    {
+      cluster_id: 13,
+      name: 'Makerere',
+      status: 'off',
+      errors: [
+        { error: 'node off', error_id: 21 },
+        { error: 'pod off', error_id: 22 },
+      ],
+      nameSpaces: [{ name: 'COSIS', nameSpaceId: 24 }, { name: 'COBAMS', nameSpaceId: 25 }, { name: 'VET', nameSpaceId: 26 }],
+      date_of_creation: '2 months back',
+      data: [0, 10, 20, 40, 50, 60, 43],
+    },
+    {
+      cluster_id: 14,
+      name: 'kenya',
+      status: 'on',
+      errors: [
+        { error: '2 pod off', error_id: '31' }],
+      nameSpaces: [{ name: 'high court', nameSpaceId: 67 }, { name: 'state house', nameSpaceId: 68 }],
+      date_of_creation: '6 months back',
+      data: [50, 10, 30, 0, 60, 70, 7],
+    },
+    {
+      cluster_id: 15,
+      name: 'Russia',
+      status: 'off',
+      errors: [],
+      nameSpaces: [{ name: 'uber', nameSpaceId: 98 }, { name: 'microsoft', nameSpaceId: 99 }],
+      date_of_creation: '1 year back',
+      data: [6, 30, 5, 20, 80, 90, 0], /* these are for days, as in mon to sun, subject to change */
     }
+  ];
 
-    generateClusterRow = () => {
-        return (
-            <div className="row">
-                {
-                   this.array_of_clusters.map((item) => {
-                    return <ClusterCard cluster={ item } key={ item.cluster_id }/>;
-                   }) 
-                }
-            </div>
-        );
-    }
+  render() {
+    return (
+      this.generateClusterRow()
+    );
+  }
+
+  generateClusterRow = () => (
+    <div className="row">
+      {
+        this.arrayOfClusters.map((item) => <ClusterCard cluster={item} key={item.cluster_id} />)
+      }
+    </div>
+  )
 }

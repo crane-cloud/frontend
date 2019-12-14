@@ -1,21 +1,20 @@
-import { FETCH_REPLICA_SETS } from "../../actions/actionTypes";
+import { FETCH_REPLICA_SETS } from '../../actions/actionTypes';
 
 const initialState = {
-    replicaSetsArray: []
-}
+  replicaSetsArray: []
+};
 
 const fetchReplicaSets = (state = initialState, action) => {
-    switch (action.type) {
-        case FETCH_REPLICA_SETS:
-            return {
-                ...state,
-                replicaSetsArray: action.payload
-            };
+  switch (action.type) {
+  case FETCH_REPLICA_SETS:
+    return {
+      ...state,
+      replicaSetsArray: action.payload
+    };
 
-        default:
-            return state;
-
-    }
-}
+  default:
+    return state;
+  }
+};
 
 export default fetchReplicaSets;

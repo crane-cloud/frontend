@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
 import HeaderComponent from '../homepage/header';
 
@@ -19,19 +19,19 @@ class ConfirmEmail extends Component {
     };
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
       displayLoginError: false
     });
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
     this.setState({
-      submitButtonValue: "Processing ....",
+      submitButtonValue: 'Processing ....',
       buttonClass: 'form-field-button-processing'
-    })
+    });
     /**
      * make api call
      */
@@ -57,7 +57,10 @@ class ConfirmEmail extends Component {
             </div>
 
             <div className="form-field-msg">
-              <p>We have sent you an email with a token. Please enter it below to verify your email.</p>
+              <p>
+                We have sent you an email with a token.
+                Please enter it below to verify your email.
+              </p>
             </div>
 
             <div className="form-field">
@@ -73,7 +76,7 @@ class ConfirmEmail extends Component {
 
             <button className={buttonClass}>{submitButtonValue}</button>
 
-            <p className="redirect">Did not receive email? <Link onClick = {this.resendTokenEmail} className="form-field-link">Click here to resend.</Link></p>
+            <p className="redirect">Did not receive email? <Link onClick={this.resendTokenEmail} className="form-field-link">Click here to resend.</Link></p>
 
           </form>
         </div>
@@ -82,11 +85,9 @@ class ConfirmEmail extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    loggedIn: state.auth.loggedIn,
-    loginFailureMessage: state.auth.loginFailureMessage
-  }
-}
+const mapStateToProps = (state) => ({
+  loggedIn: state.auth.loggedIn,
+  loginFailureMessage: state.auth.loginFailureMessage
+});
 
 export default withRouter(connect(mapStateToProps)(ConfirmEmail));

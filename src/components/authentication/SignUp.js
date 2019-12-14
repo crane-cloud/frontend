@@ -1,30 +1,30 @@
 import React, { Component } from 'react';
-import { Link, Redirect, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
+import { Link, Redirect, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import axios from 'axios';
 
 import { BASE_URL } from '../../config';
 import HeaderComponent from '../homepage/header';
-import loginSuccess from '../../redux/actions/auth/loginSuccess'
+import loginSuccess from '../../redux/actions/auth/loginSuccess';
 
-import "../../assets/css/auth.css";
+import '../../assets/css/auth.css';
 
 class SignUpForm extends Component {
   state = {
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
     hasAgreed: false,
     submitButtonValue: 'Sign Up',
     buttonClass: 'form-field-button',
-    errorMEssage: ''
+    errorMessage: ''
   }
 
   handleChange = (e) => {
-    let target = e.target;
-    let value = target.type === "checkbox" ? target.checked : target.value;
-    let name = target.name;
+    const { target } = e;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const { name } = target;
 
     this.setState({
       [name]: value,
@@ -37,11 +37,17 @@ class SignUpForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.setState({
-      submitButtonValue: "Processing ....",
+      submitButtonValue: 'Processing ....',
       buttonClass: 'form-field-button-processing'
     });
 
-    const { password, confirmPassword, name, email } = this.state;
+    const {
+      password,
+      confirmPassword,
+      name,
+      email
+    } = this.state;
+
     if (password !== confirmPassword) {
       this.setState({
         errorMessage: 'Passwords dont match',
@@ -49,32 +55,29 @@ class SignUpForm extends Component {
         confirmPassword: '',
         submitButtonValue: 'Sign Up',
         buttonClass: 'form-field-button',
-      })
-      return;
+      });
     } else if (this.state.hasAgreed !== true) {
       this.setState({ errorMessage: 'Please agree to the terms of service' });
-      return;
     } else {
       /* api call */
-      axios.post(BASE_URL + '/register', {
+      axios.post(`${BASE_URL}/register`, {
         name,
         email,
         password
       })
         .then((response) => {
-          debugger;
-          if(response.status === 201){
+          if (response.status === 201) {
             /* log the user in and get access token */
             loginSuccess({ accessToken: response.data.access_token });
           }
         })
         .catch((regErr) => {
-          if(regErr.response && regErr.response.data && regErr.response.data.message){
-          this.setState({
-            submitButtonValue: 'Sign Up',
-            buttonClass: 'form-field-button',
-            errorMessage: regErr.response.data.message
-          });
+          if (regErr.response && regErr.response.data && regErr.response.data.message) {
+            this.setState({
+              submitButtonValue: 'Sign Up',
+              buttonClass: 'form-field-button',
+              errorMessage: regErr.response.data.message
+            });
           } else if (regErr.response && regErr.response.statusText) {
             this.setState({
               submitButtonValue: 'Sign Up',
@@ -88,42 +91,41 @@ class SignUpForm extends Component {
               errorMessage: `Error occured: ${regErr.message}. Please try again`
             });
           }
-        })
+        });
     }
   }
 
   displayError = () => {
-    const { errorMessage } = this.state
-    if (errorMessage) {
-      return (
-        <div className="alert alert-danger text-center">
-          { errorMessage }
-        </div>)
-    } else {
-      return;
-    }
+    const { errorMessage } = this.state;
+    return (
+      <div className="alert alert-danger text-center">
+        {errorMessage}
+      </div>
+    );
   }
 
 
   render() {
-    const { name, email, password, confirmPassword, submitButtonValue, buttonClass } = this.state;
     const { loggedIn } = this.props;
+    const {
+      name, email, password, confirmPassword, submitButtonValue, buttonClass, errorMessage
+    } = this.state;
 
     if (loggedIn) {
-      return <Redirect to="/user-dashboard" />
+      return <Redirect to="/user-dashboard" />;
     }
 
     return (
       <>
-        <div className="home-container">
-          <HeaderComponent />
-        </div>
+        <HeaderComponent />
         <div className="auth-form">
           <form onSubmit={this.handleSubmit}>
-            { this.displayError() }
+
+            {errorMessage && this.displayError()}
+
             <div className="form-title">
               Sign Up
-        </div>
+            </div>
 
             <div className="form-field">
               <input
@@ -171,7 +173,7 @@ class SignUpForm extends Component {
 
             <label className="form-field-checkbox-label">
               <input
-                required
+                // required
                 type="checkbox"
                 className="form-field-checkbox"
                 name="hasAgreed"
@@ -192,12 +194,8 @@ class SignUpForm extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    loggedIn: state.auth.loggedIn,
-  }
-}
+const mapStateToProps = (state) => ({
+  loggedIn: state.auth.loggedIn,
+});
 
 export default withRouter(connect(mapStateToProps)(SignUpForm));
-
-// export default SignUpForm;

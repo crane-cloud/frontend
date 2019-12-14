@@ -7,10 +7,9 @@ import {
   fetchPodsPending,
   fetchPodsRunning,
   fetchPodsTable
-} from "../../../../redux/actions/monitoring/fetchPods";
+} from '../../../../redux/actions/monitoring/fetchPods';
 
 class Pods extends Component {
-
   componentWillMount() {
     this.props.fetchPodsTable();
     this.props.fetchPodsRunning();
@@ -19,7 +18,6 @@ class Pods extends Component {
     this.props.fetchPodsFailed();
   }
 
-  // link/nodes/{ this.props.clusterID }
   createTable = () => {
     if (this.props.podsArray.length !== 0) {
       return (
@@ -36,117 +34,101 @@ class Pods extends Component {
             </thead>
             <tbody>
               {
-                this.props.podsArray.map((element) => {
-                  return (
-                    <tr key={this.props.podsArray.indexOf(element)}>
-                      <td> {element.metadata.name}</td>
-                      <td> {element.spec.nodeName}</td>
-                      <td> {element.status.phase}</td>
-                      {/* <td> {element.containerStatuses[0].restartCount}</td> */}
-                      <td>-</td>
-                      <td>-</td>
-                      <td> {this.dropDown()} </td>
-                    </tr>
-                  );
-                })
+                this.props.podsArray.map((element) => (
+                  <tr key={this.props.podsArray.indexOf(element)}>
+                    <td> {element.metadata.name}</td>
+                    <td> {element.spec.nodeName}</td>
+                    <td> {element.status.phase}</td>
+                    {/* <td> {element.containerStatuses[0].restartCount}</td> */}
+                    <td>-</td>
+                    <td>-</td>
+                    <td> {this.dropDown()} </td>
+                  </tr>
+                ))
               }
             </tbody>
           </table>
         </div>
       );
-    } else {
-      return;
     }
   }
 
-  dropDown = () => {
-    return (
-      <div className="dropdown">
-        <div data-toggle="dropdown">
-          <a href="#"> <span className="fa fa-ellipsis-v" aria-hidden="true"></span></a>
-        </div>
-        <div className="dropdown-menu">
-          <button className="dropdown-item" type="button">Edit YAML</button>
-          <button className="dropdown-item" type="button">Delete Pod</button>
-        </div>
+  dropDown = () => (
+    <div className="dropdown">
+      <div data-toggle="dropdown">
+        <a href="#"> <span className="fa fa-ellipsis-v" aria-hidden="true"></span></a>
       </div>
-    )
-  }
+      <div className="dropdown-menu">
+        <button className="dropdown-item" type="button">Edit YAML</button>
+        <button className="dropdown-item" type="button">Delete Pod</button>
+      </div>
+    </div>
+  )
 
 
-  renderPodsTable = () => {
-    return (
-      <div className="card col-sm-12">
-        <div className="card-header text-center">
+  renderPodsTable = () => (
+    <div className="card col-sm-12">
+      <div className="card-header text-center">
           Pods
-                    </div>
-        <div className="card-body">
-          {this.createTable()}
-        </div>
       </div>
+      <div className="card-body">
+        {this.createTable()}
+      </div>
+    </div>
 
-    );
-  }
+  )
 
-  getPodsRunning = (podsRunning) => {
-    return (
-      <div className="col-sm-6">
-        <div className="card">
-          <div className="card-header text-center">
+  getPodsRunning = (podsRunning) => (
+    <div className="col-sm-6">
+      <div className="card">
+        <div className="card-header text-center">
             Pods Running
-                    </div>
-          <div className="card-body">
-            <h1 className="card-title text-center">{podsRunning}</h1>
-          </div>
+        </div>
+        <div className="card-body">
+          <h1 className="card-title text-center">{podsRunning}</h1>
         </div>
       </div>
-    );
-  }
+    </div>
+  )
 
-  getPodsPending = (podsPending) => {
-    return (
-      <div className="col-sm-6">
-        <div className="card">
-          <div className="card-header text-center pending">
+  getPodsPending = (podsPending) => (
+    <div className="col-sm-6">
+      <div className="card">
+        <div className="card-header text-center pending">
             Pending Pods
-                    </div>
-          <div className="card-body">
-            <h1 className="card-title text-center">{podsPending}</h1>
-          </div>
+        </div>
+        <div className="card-body">
+          <h1 className="card-title text-center">{podsPending}</h1>
         </div>
       </div>
-    );
-  }
+    </div>
+  )
 
-  podsSuccess = (podsSuccess) => {
-    return (
-      <div className="col-sm-6">
-        <div className="card">
-          <div className="card-header text-center success">
+  podsSuccess = (podsSuccess) => (
+    <div className="col-sm-6">
+      <div className="card">
+        <div className="card-header text-center success">
             Pods Succeeded
-                    </div>
-          <div className="card-body">
-            <h1 className="card-title text-center">{podsSuccess}</h1>
-          </div>
+        </div>
+        <div className="card-body">
+          <h1 className="card-title text-center">{podsSuccess}</h1>
         </div>
       </div>
-    );
-  }
+    </div>
+  )
 
-  podsFailing = (podsFail) => {
-    return (
-      <div className="col-sm-6">
-        <div className="card">
-          <div className="card-header text-center fail">
+  podsFailing = (podsFail) => (
+    <div className="col-sm-6">
+      <div className="card">
+        <div className="card-header text-center fail">
             Pods Failed
-          </div>
-          <div className="card-body">
-            <h1 className="card-title text-center">{podsFail}</h1>
-          </div>
+        </div>
+        <div className="card-body">
+          <h1 className="card-title text-center">{podsFail}</h1>
         </div>
       </div>
-    );
-  }
+    </div>
+  )
 
 
   renderPods = () => {
@@ -161,7 +143,7 @@ class Pods extends Component {
       <div className="card parent">
         <div className="card-header">
           Pods
-                </div>
+        </div>
         <div className="card-body">
           <div className="row">
             {this.getPodsRunning(podsRunning)}
@@ -198,9 +180,9 @@ Pods.propTypes = {
   podsFailed: PropTypes.string,
   podsArray: PropTypes.array.isRequired
 
-}
+};
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   podsArray: state.pods.podsArray,
   podsRunning: state.pods.podsRunning,
   podsPending: state.pods.podsPending,
