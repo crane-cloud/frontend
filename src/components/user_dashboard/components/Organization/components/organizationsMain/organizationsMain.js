@@ -37,7 +37,6 @@ class OrganizationsMain extends Component {
       successFeedback: '',
       errorFeedback: '',
       successMessage: ''
-      
     };
 
     this.orgID = this.props.orgID;
@@ -92,6 +91,49 @@ class OrganizationsMain extends Component {
   };
 
   componentDidMount() {
+    this.setState({ spinner: true });
+
+    axios.defaults.headers.common = {
+      Authorization: `Bearer ${this.props.token}`
+    };
+
+    const organisation = {
+      organisation_name: this.org[0].name
+    };
+    
+
+    axios.get(`${BASE_URL}/organisation/show/namespaces`, organisation)
+      .then((response) => {
+        debugger;
+        this.setState({ spinner: false });
+      })
+
+      .catch((error) => {
+        debugger;
+        console.log(error.stack);
+        if (error.response && error.response.data && error.response.data.message) {
+          this.setState({
+            spinner: false,
+            loadingError: error.response.data.message
+          });
+        } else if (error.response && error.response.data && error.response.data.msg) {
+          this.setState({
+            spinner: false,
+            loadingError: error.response.data.msg
+          });
+        } else if (error.response && error.response.statusText) {
+          this.setState({
+            spinner: false,
+            loadingError: `Error ocuured: ${error.response.statusText}. Please try again`
+          });
+        } else {
+          this.setState({
+            spinner: false,
+            loadingError: `Error occured: ${error.message}. Please try again`
+          });
+        }
+      });
+
     this.setState({
       organizationNameSpaces: this.organizationNameSpaces.namespaces
     });

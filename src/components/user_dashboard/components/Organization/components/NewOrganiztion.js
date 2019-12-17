@@ -59,10 +59,29 @@ class NewOrganization extends Component {
         })
 
         .catch((err) => {
-          this.setState({
-            errorMessage: `${err.message}, Please try again`,
-            spinner: false
-          });
+          const { response } = err;
+
+          if (response && response.data && response.data.message) {
+            this.setState({
+              spinner: false,
+              errorMessage: `${response.data.message}, Please try again`
+            });
+          } else if (response && response.data && response.data.msg) {
+            this.setState({
+              spinner: false,
+              errorMessage: `${response.data.msg}, Please try again`
+            });
+          } else if (response && response.statusText) {
+            this.setState({
+              spinner: false,
+              errorMessage: `${response.statusText}, Please try again`
+            });
+          } else {
+            this.setState({
+              spinner: false,
+              errorMessage: `${err.message}, Please try again`
+            });
+          }
         });
     }
 

@@ -72,17 +72,24 @@ class SignUpForm extends Component {
           }
         })
         .catch((regErr) => {
-          if (regErr.response && regErr.response.data && regErr.response.data.message) {
+          const { response } = regErr;
+          if (response && response.data && response.data.message) {
             this.setState({
               submitButtonValue: 'Sign Up',
               buttonClass: 'form-field-button',
-              errorMessage: regErr.response.data.message
+              errorMessage: response.data.message
+            });
+          } else if (response && response.data && response.data.msg) {
+            this.setState({
+              submitButtonValue: 'Sign Up',
+              buttonClass: 'form-field-button',
+              errorMessage: response.data.msg
             });
           } else if (regErr.response && regErr.response.statusText) {
             this.setState({
               submitButtonValue: 'Sign Up',
               buttonClass: 'form-field-button',
-              errorMessage: `Error occured: ${regErr.response.statusText}. Please try again`
+              errorMessage: `Error occured: ${response.statusText}. Please try again`
             });
           } else {
             this.setState({

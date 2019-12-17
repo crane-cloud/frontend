@@ -51,7 +51,7 @@ class SignInForm extends Component {
       })
       .catch((loginError) => {
         debugger;
-        const { message, response } = loginError;
+        const { response } = loginError;
         // , response: { statusText, data }
         if (response && response.status && response.status === 401) {
           this.setState({
@@ -60,12 +60,19 @@ class SignInForm extends Component {
             buttonClass: 'form-field-button',
             loginError: 'Wrong email or password'
           });
-        } else if (response && response.data && message) {
+        } else if (response && response.data && response.data.message) {
           this.setState({
             password: '',
             submitButtonValue: 'Sign In',
             buttonClass: 'form-field-button',
             loginError: response.data.message
+          });
+        } else if (response && response.data && response.data.msg) {
+          this.setState({
+            password: '',
+            submitButtonValue: 'Sign In',
+            buttonClass: 'form-field-button',
+            loginError: response.data.msg
           });
         } else if (response && response.statusText) {
           this.setState({
