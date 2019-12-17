@@ -111,20 +111,23 @@ class OrganizationsMain extends Component {
       .catch((error) => {
         debugger;
         console.log(error.stack);
-        if (error.response && error.response.data && error.response.data.message) {
+
+        const { response } = error;
+
+        if (response && response.data && response.data.message) {
           this.setState({
             spinner: false,
-            loadingError: error.response.data.message
+            loadingError: response.data.message
           });
-        } else if (error.response && error.response.data && error.response.data.msg) {
+        } else if (response && response.data && response.data.msg) {
           this.setState({
             spinner: false,
-            loadingError: error.response.data.msg
+            loadingError: response.data.msg
           });
-        } else if (error.response && error.response.statusText) {
+        } else if (response && response.statusText) {
           this.setState({
             spinner: false,
-            loadingError: `Error ocuured: ${error.response.statusText}. Please try again`
+            loadingError: `Error ocuured: ${response.statusText}. Please try again`
           });
         } else {
           this.setState({
@@ -171,13 +174,14 @@ class OrganizationsMain extends Component {
               })
               .catch((error) => {
                 console.log(error.stack);
-                if (error.response && error.response.data && error.response.data.message) {
+                const { response } = error;
+                if (response && response.data && response.data.message) {
                   this.setState({
-                    errorFeedback: error.response.data.message
+                    errorFeedback: response.data.message
                   });
-                } else if (error.response && error.response.statusText) {
+                } else if (response && response.statusText) {
                   this.setState({
-                    errorFeedback: `Error ocuured: ${error.response.statusText}. Please try again`
+                    errorFeedback: `Error ocuured: ${response.statusText}. Please try again`
                   });
                 } else {
                   this.setState({
