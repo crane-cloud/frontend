@@ -86,7 +86,7 @@ class SignInForm extends Component {
             password: '',
             submitButtonValue: 'Sign In',
             buttonClass: 'form-field-button',
-            loginError: `Error occured: ${message}. Please try again`
+            loginError: `Error occured: ${loginError.message}. Please try again`
           });
         }
       });
