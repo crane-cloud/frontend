@@ -28,13 +28,11 @@ class LandingContent extends Component {
   }
 
   componentDidMount() {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.props.token}`
-      }
+    axios.defaults.headers.common = {
+      Authorization: `Bearer ${this.props.token}`
     };
-    axios.get(`${BASE_URL}/user/get/organisations`, config)
+
+    axios.get(`${BASE_URL}/user/get/organisations`)
       .then((response) => {
         debugger;
         if (response.data.message === 'Not registered user') {
@@ -51,15 +49,21 @@ class LandingContent extends Component {
       .catch((error) => {
         debugger;
         console.log(error.stack);
-        if (error.response && error.response.data && error.response.data.message) {
+        const { response } = error;
+        if (response && response.data && response.data.message) {
           this.setState({
             spinner: false,
-            loadingError: error.response.data.message
+            loadingError: response.data.message
           });
-        } else if (error.response && error.response.statusText) {
+        } else if (response && response.data && response.data.msg) {
           this.setState({
             spinner: false,
-            loadingError: `Error ocuured: ${error.response.statusText}. Please try again`
+            loadingError: response.data.msg
+          });
+        } else if (response && response.statusText) {
+          this.setState({
+            spinner: false,
+            loadingError: `Error ocuured: ${response.statusText}. Please try again`
           });
         } else {
           this.setState({

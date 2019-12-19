@@ -37,7 +37,6 @@ class OrganizationsMain extends Component {
       successFeedback: '',
       errorFeedback: '',
       successMessage: ''
-      
     };
 
     this.orgID = this.props.orgID;
@@ -92,6 +91,52 @@ class OrganizationsMain extends Component {
   };
 
   componentDidMount() {
+    this.setState({ spinner: true });
+
+    axios.defaults.headers.common = {
+      Authorization: `Bearer ${this.props.token}`
+    };
+
+    const organisation = {
+      organisation_name: this.org[0].name
+    };
+    
+
+    axios.get(`${BASE_URL}/organisation/show/namespaces`, organisation)
+      .then((response) => {
+        debugger;
+        this.setState({ spinner: false });
+      })
+
+      .catch((error) => {
+        debugger;
+        console.log(error.stack);
+
+        const { response } = error;
+
+        if (response && response.data && response.data.message) {
+          this.setState({
+            spinner: false,
+            loadingError: response.data.message
+          });
+        } else if (response && response.data && response.data.msg) {
+          this.setState({
+            spinner: false,
+            loadingError: response.data.msg
+          });
+        } else if (response && response.statusText) {
+          this.setState({
+            spinner: false,
+            loadingError: `Error ocuured: ${response.statusText}. Please try again`
+          });
+        } else {
+          this.setState({
+            spinner: false,
+            loadingError: `Error occured: ${error.message}. Please try again`
+          });
+        }
+      });
+
     this.setState({
       organizationNameSpaces: this.organizationNameSpaces.namespaces
     });
@@ -129,13 +174,14 @@ class OrganizationsMain extends Component {
               })
               .catch((error) => {
                 console.log(error.stack);
-                if (error.response && error.response.data && error.response.data.message) {
+                const { response } = error;
+                if (response && response.data && response.data.message) {
                   this.setState({
-                    errorFeedback: error.response.data.message
+                    errorFeedback: response.data.message
                   });
-                } else if (error.response && error.response.statusText) {
+                } else if (response && response.statusText) {
                   this.setState({
-                    errorFeedback: `Error ocuured: ${error.response.statusText}. Please try again`
+                    errorFeedback: `Error ocuured: ${response.statusText}. Please try again`
                   });
                 } else {
                   this.setState({
