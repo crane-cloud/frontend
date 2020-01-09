@@ -4,7 +4,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { BASE_URL, PROXY_URL } from '../../../../../config';
+import { BASE_URL } from '../../../../../config';
 import Spinner from '../../../../common/Spinner';
 import * as orgActions from '../../../../../redux/actions/user_dashboard_actions/organizationActions';
 

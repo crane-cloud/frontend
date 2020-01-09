@@ -51,7 +51,7 @@ class PersistentVolumes extends Component {
     dropDown = () => (
       <div className="dropdown">
         <div data-toggle="dropdown">
-          <a href="#"> <span className="fa fa-ellipsis-v" aria-hidden="true"></span></a>
+          <a href="/home"> <span className="fa fa-ellipsis-v" aria-hidden="true"></span></a>
         </div>
         <div className="dropdown-menu">
           <button className="dropdown-item" type="button">Edit YAML</button>

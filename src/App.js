@@ -3,7 +3,6 @@ import {
   BrowserRouter as Router, Switch, Route, Redirect
 } from 'react-router-dom';
 import { connect } from 'react-redux';
-import axios from 'axios'; 
 
 
 import HomePage from './components/homepage/Home';

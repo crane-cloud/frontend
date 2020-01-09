@@ -4,8 +4,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-import { BASE_URL, PROXY_URL } from '../../../../../../config';
-import UserResourceUsage from './components/user_resource_usage/userResourceUsage';
+import { BASE_URL } from '../../../../../../config';
 import Spinner from '../../../../../common/Spinner';
 import * as orgActions from '../../../../../../redux/actions/user_dashboard_actions/organizationActions';
 
