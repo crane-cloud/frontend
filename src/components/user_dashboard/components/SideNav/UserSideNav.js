@@ -17,13 +17,13 @@ export default class UserSideNav extends Component {
               </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="/home">
                 <span data-feather="file"></span>
                       Monitoring
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="/home">
                 <span data-feather="shopping-cart"></span>
                       Errors
               </a>
@@ -33,7 +33,7 @@ export default class UserSideNav extends Component {
           { /*  start of divider */ }
           <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
             <span></span>
-            <a className="d-flex align-items-center text-muted" href="#">
+            <a className="d-flex align-items-center text-muted" href="/home">
               <span data-feather="plus-circle"></span>
             </a>
           </h6>
@@ -41,19 +41,19 @@ export default class UserSideNav extends Component {
 
           <ul className="nav flex-column mb-2">
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="/home">
                 <span data-feather="file-text"></span>
                       Organizations
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="/home">
                 <span data-feather="file-text"></span>
                       Namespaces
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="/home">
                 <span data-feather="file-text"></span>
                       Deployments
               </a>

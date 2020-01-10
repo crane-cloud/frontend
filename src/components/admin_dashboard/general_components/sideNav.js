@@ -15,13 +15,13 @@ export default class SideNav extends Component {
               </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="/home">
                 <span data-feather="file"></span>
                       Monitoring
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="/home">
                 <span data-feather="shopping-cart"></span>
                       Errors
               </a>
@@ -37,7 +37,7 @@ export default class SideNav extends Component {
           { /*  start of divider */ }
           <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
             <span>Users</span>
-            <a className="d-flex align-items-center text-muted" href="#">
+            <a className="d-flex align-items-center text-muted" href="/home">
               <span data-feather="plus-circle"></span>
             </a>
           </h6>
@@ -45,13 +45,13 @@ export default class SideNav extends Component {
 
           <ul className="nav flex-column mb-2">
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="/home">
                 <span data-feather="file-text"></span>
                       Billing
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="/home">
                 <span data-feather="file-text"></span>
                       All users
               </a>

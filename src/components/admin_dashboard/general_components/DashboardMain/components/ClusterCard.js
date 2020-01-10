@@ -102,7 +102,7 @@ export default class clusterCard extends Component {
         <div className="col-4">
           <div className="dropdown">
             <div id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <a href="#"> <span className="fa fa-ellipsis-v"></span></a>
+              <a href="/home"> <span className="fa fa-ellipsis-v"></span></a>
             </div>
             <div className="dropdown-menu" aria-labelledby="dropdownMenu2">
               <button className="dropdown-item" type="button"><Link to={`${this.props.cluster.name}/nodes`}>Nodes</Link></button>
