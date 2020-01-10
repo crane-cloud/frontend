@@ -92,6 +92,7 @@ class LandingContent extends Component {
       }
 
       totalBilling = parseFloat(totalBilling) + parseFloat(org.billing);
+      //eslint-disable-next-line
       return;
     });
 

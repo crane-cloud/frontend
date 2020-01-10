@@ -394,6 +394,7 @@ class OrganizationsMain extends Component {
           let totalBill = 0;
           namespace.deployments.map((dep) => {
             totalBill += dep.billing;
+            //eslint-disable-next-line
             return;
           });
 
