@@ -8,9 +8,9 @@ import {
   NavItem,
   NavLink
 } from 'reactstrap';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 import logo from '../../assets/img/logo.png';
-import user_icon from '../../assets/img/user-circle.svg';
 
 const token = sessionStorage.getItem('creds');
 
@@ -35,18 +35,19 @@ const HeaderComponent = () => {
             <NavItem>
               <NavLink><Link to="/learn">Learn More</Link></NavLink>
             </NavItem>
-            <NavItem>
+            <NavItem style={{paddingRight: "130px"}}>
               {
                 token ? (
-                <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <img className="user-icon" src={user_icon} alt="user_profile" />
+                <li className="nav-item dropdown ">
+                <a className="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  
+                  <FontAwesomeIcon icon={faUser} size="1x"/>
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Something else here</a>
+                <div className="dropdown-menu dropdown-menu-lg-left text-muted" aria-labelledby="navbarDropdown">
+                  {/* <a className="dropdown-item text-reset" href="/organisation">Create Organisation</a> */}
+                  {/* <a class="dropdown-item" href="#">Another action</a> */}
+                  {/* <div className="dropdown-divider"></div> */}
+                  <Link className="nav-link text-reset text-center" to="/login">Sign out</Link>
                 </div>
               </li>) : (<NavLink><Link to="/login" className="btn-sign-in">Sign in</Link></NavLink>)
               }
