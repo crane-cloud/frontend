@@ -18,6 +18,6 @@ jobs:
       - run:
           # deploy develop to cluster
           command: |
-            if [ "${CIRCLE_BRANCH}" == "develop-new" ]; then
+            if [ "${CIRCLE_BRANCH}" == "staging" ]; then
               ./scripts/ci-deploy.sh
             fi
