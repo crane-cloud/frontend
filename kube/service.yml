@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: react-frontend
+  namespace: default
+  labels:
+    app: react-frontend
+spec:
+  type: NodePort
+  ports:
+    - port: 3000
+      targetPort: react-frontend
+      name: react-frontend
+  selector:
+    app: react-frontend
