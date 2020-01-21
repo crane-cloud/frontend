@@ -1,6 +1,6 @@
 import React from 'react';
 import './Footer.css';
-import LOGO from '../../helpers/img/craneLogo.png';
+import LOGO from '../../assets/img/craneLogo.png';
 
 const Footer = () => (
   <React.Fragment>
