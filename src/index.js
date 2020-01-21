@@ -3,6 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
+import store from './redux/store';
+import { saveState } from './helpers/localStorage';
+
+// update localstorage whenever state changes
+store.subscribe(() => {
+    saveState(store.getState());
+  });
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
