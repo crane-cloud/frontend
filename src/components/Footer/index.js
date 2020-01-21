@@ -1,52 +1,53 @@
 import React from 'react';
 import './Footer.css';
-import 
+import LOGO from '../../helpers/img/craneLogo.png';
+
 const Footer = () => (
   <React.Fragment>
-    <footer className="footer" role="contentinfo">
-      <div className="footer--inner">
+    <footer className="footer">
+      <div className="footer-inner">
         <div className="logo">
-          <a href="https://www.proximagroupafrica.com">
+          <a href="https://cranecloud.io">
             <img
-              src="https://www.proximagroup.com/wp-content/themes/creode/img/logo.svg"
+              src={LOGO}
               alt="Logo"
               className="logo-img"
             />
           </a>
         </div>
 
-        <div className="footer__address address--secondary">
+        <div className="footer-address">
           East Africa
           <br />
           +256(782)75 7010
           <br />
-          Kampala Boulevard
+          COCIS Building Block B
           <br />
-          Kampala
+          Pool Road, Kampala
           <br />
-          Plot 298 William Street
+          Makerere University
           <br />
-          Uganda
+          Kampala, Uganda
         </div>
 
-        <div className="footer__address">
-          Southern Africa
+        <div className="footer-address">
+          Derek
           <br />
-          +27(312)281 2911
+          +256(782)75 7010
           <br />
-          Suite 880, 311 S. Wacker Drive
+          COCIS Building Block B
           <br />
-          East Cape, Cape Town
+          Pool Road, Kampala
           <br />
-          60606
+          Makerere University
           <br />
-          South Africa
+          Kampala, Uganda
         </div>
 
-        <div className="footer__social">
+        <div className="footer-social">
           <a
-            className="social__twitter"
-            href="https://twitter.com/proxima_group_africa"
+            className="social-twitter"
+            href="https://twitter.com/cranecloud"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -54,8 +55,8 @@ const Footer = () => (
           </a>
 
           <a
-            className="social__linkedin"
-            href="https://www.linkedin.com/company/proxima-group_africa"
+            className="social-linkedin"
+            href="https://www.linkedin.com/company/cranecloud"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -63,7 +64,7 @@ const Footer = () => (
           </a>
         </div>
 
-        <div className="footer__menu">
+        <div className="footer-menu">
           <ul id="menu-footer" className="menu">
             <li
               id="menu-item-10"
@@ -89,7 +90,7 @@ const Footer = () => (
         </div>
 
         <p className="copyright">
-          &copy; Proxima Group Africa 2020 | Company number UG-1079619
+          &copy; Crane Cloud 2020 | Makerere University
         </p>
       </div>
     </footer>
