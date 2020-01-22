@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import './Footer.css';
 import LOGO from '../../assets/img/craneLogo.png';
 
@@ -31,17 +32,17 @@ const Footer = () => (
         </div>
 
         <div className="footer-address">
-          Derek
+          {/* <Link to="/">Home</Link> */}Home
           <br />
-          +256(782)75 7010
+          {/* <Link to="/about">About Us</Link> */}About
           <br />
-          COCIS Building Block B
+          {/* <Link to="/contact">Contact Us</Link> */}Contact
           <br />
-          Pool Road, Kampala
+          {/* <Link to="news">News & Insights</Link> */}News
           <br />
-          Makerere University
+          {/* <Link to="/resources">Resources</Link> */}Resource
           <br />
-          Kampala, Uganda
+          {/* <Link to="/team">Team</Link> */}Team
         </div>
 
         <div className="footer-social">
@@ -83,7 +84,7 @@ const Footer = () => (
               className="menu-item menu-item-type-custom menu-item-object-custom menu-item-13"
             >
               <a href="/corporate-social-responsibility">
-                Corporate Social Responsibility
+                Social Responsibility
               </a>
             </li>
           </ul>
