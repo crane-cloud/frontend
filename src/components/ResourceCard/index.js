@@ -2,9 +2,9 @@ import React from 'react';
 import './ResourceCard.css';
 
 const ResourceCard = (props) => (
-    <div className="card">
-      <div className="cardHeader">{props.title}</div>
-      <div className="resourceDigit"><h1>{props.resourceNumber}</h1></div>
+    <div className="Card">
+      <div className="CardHeader">{props.title}</div>
+      <div className="ResourceDigit"><h1>{props.resourceCount}</h1></div>
     </div>
   )
 

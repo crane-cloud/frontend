@@ -1,15 +1,22 @@
 import React from 'react';
 import './App.css';
-import ResourceCard from '../ResourceCard';
+import Content from '../ResourceCard/Example';
 
 /* These below are for showing purposes */
+const resources = [
+  {
+    "name": "Nodes",
+    "resourceNumber": 7
+  },
+  {
+    "name": "Secrets",
+    "resourceNumber": 3
+  }
+]
 
-const title = "Nodes";
-const resourceNumber = 7;
+
 function App() {
-  return <div>
-    <ResourceCard title={title} resourceNumber={resourceNumber}/>
-  </div>;
+  return <div><Content resources={resources}/></div>
 }
 
 export default App;
