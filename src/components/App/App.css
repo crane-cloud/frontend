@@ -27,6 +27,10 @@
 .App-link {
   color: #61dafb;
 }
+.Disposable{
+  /* min-height: 1000px; */
+  display: flex;
+}
 
 @keyframes App-logo-spin {
   from {

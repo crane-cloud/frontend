@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
-// import Footer from '../Footer/';
+import Footer from '../Footer/';
 import Content from '../ResourceCard/Example';
 
 /* These below are for showing purposes */
+/* THIS IS GOING TO BE REMOVED IN THE DASHBOARD FEATURE */
 const resources = [
   {
     "name": "Nodes",
@@ -17,7 +18,12 @@ const resources = [
 
 
 function App() {
-  return <div><Content resources={resources}/></div>
+  return <div>
+    <div className="Disposable">
+      <Content resources={resources}/>
+    </div>
+    <Footer />
+    </div>
 }
 
 export default App;
