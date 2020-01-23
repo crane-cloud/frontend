@@ -1,23 +1,26 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import './Footer.css';
-import LOGO from '../../assets/img/craneLogo.png';
+import LOGO from '../../assets/images/craneLogo.png';
+import Linkedin from '../../assets/images/linkedin.svg';
+import Facebook from '../../assets/images/facebook.svg';
+import Twitter from '../../assets/images/twitter.svg';
 
 const Footer = () => (
   <React.Fragment>
-    <footer className="footer">
-      <div className="footer-inner">
-        <div className="logo">
+    <footer className="Footer">
+      <div className="Footer-Inner">
+        <div className="Logo">
           <a href="https://cranecloud.io">
             <img
               src={LOGO}
               alt="Logo"
-              className="logo-img"
+              className="Logo-Img"
             />
           </a>
         </div>
 
-        <div className="footer-address">
+        <div className="Footer-Address">
           East Africa
           <br />
           +256(782)75 7010
@@ -31,7 +34,7 @@ const Footer = () => (
           Kampala, Uganda
         </div>
 
-        <div className="footer-address">
+        <div className="Footer-Address">
           {/* <Link to="/">Home</Link> */}Home
           <br />
           {/* <Link to="/about">About Us</Link> */}About
@@ -45,43 +48,65 @@ const Footer = () => (
           {/* <Link to="/team">Team</Link> */}Team
         </div>
 
-        <div className="footer-social">
+        <div className="Footer-Social">
           <a
-            className="social-twitter"
+            className="Social-Twitter"
             href="https://twitter.com/cranecloud"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <i className="fa fa-twitter fa-3x"></i>
+            <img
+              src={Twitter}
+              alt="Twitter"
+              className="Social-Logos"
+            />
           </a>
 
           <a
-            className="social-linkedin"
+            className="Social-Linkedin"
             href="https://www.linkedin.com/company/cranecloud"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <i className="fa fa-linkedin fa-3x"></i>
+            <img
+              src={Linkedin}
+              alt="Linkedin"
+              className="Social-Logos"
+            />
+            
+          </a>
+          <a
+            className="Social-Facebook"
+            href="https://www.facebook.com/cranecloud"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src={Facebook}
+              alt="Facebook"
+              className="Social-Logos"
+            />
+            
           </a>
         </div>
 
-        <div className="footer-menu">
-          <ul id="menu-footer" className="menu">
+        <div className="Footer-Menu">
+          <ul id="Menu-Footer" className="Menu">
             <li
               id="menu-item-10"
-              className="menu-item menu-item-type-custom menu-item-object-custom menu-item-10"
+              className="Menu-Item"
             >
               <a href="/terms-conditions">Terms and Conditions</a>
             </li>
             <li
               id="menu-item-11"
-              className="menu-item menu-item-type-custom menu-item-object-custom menu-item-11"
+              className="Menu-Item"
             >
               <a href="/privacy-cookie-policy">Privacy &#038; cookie policy</a>
             </li>
             <li
               id="menu-item-13"
-              className="menu-item menu-item-type-custom menu-item-object-custom menu-item-13"
+              className="Menu-Item"
             >
               <a href="/corporate-social-responsibility">
                 Social Responsibility
@@ -90,7 +115,7 @@ const Footer = () => (
           </ul>
         </div>
 
-        <p className="copyright">
+        <p className="CopyRight">
           &copy; Crane Cloud 2020 | Makerere University
         </p>
       </div>
