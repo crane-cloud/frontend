@@ -41,7 +41,7 @@ const Footer = () => (
           <br />
           {/* <Link to="/contact">Contact Us</Link> */}Contact
           <br />
-          {/* <Link to="news">News & Insights</Link> */}News
+          {/* <Link to="/news">News & Insights</Link> */}News
           <br />
           {/* <Link to="/resources">Resources</Link> */}Resource
           <br />
@@ -51,7 +51,7 @@ const Footer = () => (
         <div className="Footer-Social">
           <a
             className="Social-Twitter"
-            href="https://twitter.com/cranecloud"
+            href="https://twitter.com"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -64,7 +64,7 @@ const Footer = () => (
 
           <a
             className="Social-Linkedin"
-            href="https://www.linkedin.com/company/cranecloud"
+            href="https://www.linkedin.com"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -77,7 +77,7 @@ const Footer = () => (
           </a>
           <a
             className="Social-Facebook"
-            href="https://www.facebook.com/cranecloud"
+            href="https://www.facebook.com"
             target="_blank"
             rel="noopener noreferrer"
           >
