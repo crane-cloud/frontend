@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
-import ClusterResource from '../ResourceCard';
+import ClusterResources from '../ClusterResources/';
+
 
 function App() {
-  return <div><ClusterResource /></div>
+  return <div><ClusterResources /></div>
 }
 
 export default App;

@@ -1,0 +1,12 @@
+.ClusterContainer{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.ClusterItem{
+    flex: 1;
+    min-width: 299px;
+    margin-top: 35px;
+}
