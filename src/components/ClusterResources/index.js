@@ -11,20 +11,20 @@ const resources = [
       "resourceNumber": 3
     },
     {
-      "name": "Nodes",
-      "resourceNumber": 7
+      "name": "Deployments",
+      "resourceNumber": 11
       },
       {
-      "name": "Secrets",
-      "resourceNumber": 3
+      "name": "Pods",
+      "resourceNumber": 9
       },
       {
-      "name": "Nodes",
-      "resourceNumber": 7
+      "name": "Volumes",
+      "resourceNumber": 5
       },
       {
-      "name": "Secrets",
-      "resourceNumber": 3
+      "name": "Daemon Sets",
+      "resourceNumber": 0
       }
   ]
 const ClusterResources = () =>
