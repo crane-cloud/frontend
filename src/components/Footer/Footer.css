@@ -29,13 +29,10 @@ a{
 }
 .Logo{
     font-family: Signika,sans-serif;
-    font-size: 2rem;
+    /* font-size: 2rem; */
     font-weight: 900;
     color: #fff;
     box-sizing: inherit;
-
-    /* height: 138px; */
-    /* width: 180px; */
 }
 img{
     vertical-align: middle;
@@ -46,8 +43,6 @@ img{
 }
 .Footer .Footer-Address{
     width: 22%;
-    font-size: 14px;
-    line-height: 23px;
     margin-left: auto;
     color: beige;
 }
@@ -81,4 +76,5 @@ Footer .CopyRight{
     width: 100%;
     font-size: 14px;
     padding-top: 50px;
+    text-align: center;
 }
