@@ -3,12 +3,13 @@
 .ClusterContainer{
     display: flex;
     flex-wrap: wrap;
+    align-items: flex-start;
     flex-direction: row;
-    justify-content: space-evenly;
+    width: 100%;
 }
 
 .ClusterItem{
-    flex: 1;
     min-width: 299px;
-    margin-top: 35px;
+    margin: 35px 35px;
+    text-align: center;
 }
