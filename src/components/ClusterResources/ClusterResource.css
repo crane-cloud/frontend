@@ -1,3 +1,5 @@
+/* This Component is ideal for re-use for both the clusters and cluster resources */
+
 .ClusterContainer{
     display: flex;
     flex-wrap: wrap;
