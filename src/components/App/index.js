@@ -1,22 +1,10 @@
 import React from 'react';
 import './App.css';
-import Content from '../ResourceCard/Example';
-
-/* These below are for showing purposes */
-const resources = [
-  {
-    "name": "Nodes",
-    "resourceNumber": 7
-  },
-  {
-    "name": "Secrets",
-    "resourceNumber": 3
-  }
-]
+import ClusterResources from '../ClusterResources/';
 
 
 function App() {
-  return <div><Content resources={resources}/></div>
+  return <div><ClusterResources /></div>
 }
 
 export default App;
