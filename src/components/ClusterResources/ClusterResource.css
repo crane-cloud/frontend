@@ -1,0 +1,15 @@
+/* This Component is ideal for re-use for both the clusters and cluster resources */
+
+.ClusterContainer{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    flex-direction: row;
+    width: 100%;
+}
+
+.ClusterItem{
+    min-width: 299px;
+    margin: 35px 35px;
+    text-align: center;
+}
