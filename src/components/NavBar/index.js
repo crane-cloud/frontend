@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import logo from '../../assets/images/logo.png';
 import PROFILE from '../../assets/images/profile.svg';
+import './NavBar.css';
 
 const NavBar = () => {
   // const [isOpen, setIsOpen] = useState(false);
@@ -10,16 +11,15 @@ const NavBar = () => {
 
   return (
     <React.Fragment>
-      <div className="header" dark expand="md">
-        {/* <Link className="link" to="/"> */}
-          <img className="logo" src={logo} alt="Crane_Cloud" />
-        {/* </Link> */}
-        <div style={{ color: "white" }}  />
-        <div divbar>
-          <div className="links ml-auto" divbar>
+      <div className="Header">
+        <Link className="Link" to="/">
+          <img className="Logo" src={logo} alt="Crane_Cloud" />
+        </Link>
+        <div >
+          <div className="links ml-auto">
             <div>
               <div>
-                {/* <Link to="/about">About</Link> */}
+                <Link to="/about">About</Link>
               </div>
             </div>
             <div>

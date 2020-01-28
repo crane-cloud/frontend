@@ -1,0 +1,66 @@
+.Header{
+    background-color: #008ac1;
+    color: white;
+    /* padding: 40px 10px 20px; */
+    overflow: hidden;
+    /* display: block; */
+    font-family: aller,Oxygen,Arial,Helvetica,sans-serif,Helvetica Neue;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 300;
+}
+.Header .Header-Inner{
+    max-width: 1240px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    color: #fff;
+}
+.Header a{
+    text-decoration: none;
+    color: beige;
+    background-color: transparent;
+    cursor: pointer;
+}
+.Header .Logo{
+    width: 250px;
+    padding-left: 0.5em;
+}
+.Header img{
+    vertical-align: middle;
+    border-style: none;
+    box-sizing: none;
+
+}
+.Header .Header-Address{
+    width: 22%;
+    margin-left: auto;
+    color: beige;
+}
+.Header .Header-Social{
+    display: flex;
+    flex-direction: column;
+    width: 17%;
+}
+.Header .Header-Menu{
+    width: 20%;
+}
+.Header .Header-Menu ul{
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+.Header-Menu li{
+    list-style: none;
+    margin-bottom: 8px;
+    color: red;
+}
+.Header-Menu li:hover{
+    color: white;
+    text-decoration: none;
+
+}
