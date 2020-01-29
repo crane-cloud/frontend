@@ -11,35 +11,13 @@ const NavBar = () => {
 
   return (
     <React.Fragment>
-      <section className="Navigation">
+      <div className="Navigation">
+        <input type="checkbox" id="nav-check" />
         <div className="Nav-container">
           <div className="Brand">
             <Link className="Link" to="/">
               <img className="Logo" src={logo} alt="Crane_Cloud" />
             </Link>
-          </div>
-          <nav>
-            <div className="nav-mobile">
-              <a id="nav-toggle" href="#!"><span></span></a>
-            </div>
-            <ul className="nav-list">
-              <li><a href="#!">Home</a></li>
-              <li><a href="#!">About</a></li>
-              <li><a href="#!">Contact</a></li>
-              <li><a href="#!">Services</a>
-                <ul className="nav-dropdown">
-                  <li><a href="/logout">Sign Out</a></li>
-                </ul>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </section>
-      <div class="nav">
-        <input type="checkbox" id="nav-check">
-        <div class="nav-header">
-          <div class="nav-title">
-            JoGeek
           </div>
         </div>
         <div class="nav-btn">
@@ -49,13 +27,14 @@ const NavBar = () => {
             <span></span>
           </label>
         </div>
-        
         <div class="nav-links">
-          <a href="//github.io/jo_geek" target="_blank">Github</a>
-          <a href="http://stackoverflow.com/users/4084003/" target="_blank">Stackoverflow</a>
-          <a href="https://in.linkedin.com/in/jonesvinothjoseph" target="_blank">LinkedIn</a>
-          <a href="https://codepen.io/jo_Geek/" target="_blank">Codepen</a>
-          <a href="https://jsfiddle.net/user/jo_Geek/" target="_blank">JsFiddle</a>
+          <a href="#!">Home</a>
+          <a href="#!">About</a>
+          <a href="#!">Contact</a>
+          <a href="#!">Services</a>
+          <div className="nav-dropdown">
+            <li><a href="/logout">Sign Out</a></li>
+          </div>
         </div>
       </div>
       {/* <div className="Header">
