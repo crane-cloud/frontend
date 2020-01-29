@@ -11,7 +11,31 @@ const NavBar = () => {
 
   return (
     <React.Fragment>
-      <div className="Header">
+      <section className="Navigation">
+        <div className="Nav-container">
+          <div className="Brand">
+            <Link className="Link" to="/">
+              <img className="Logo" src={logo} alt="Crane_Cloud" />
+            </Link>
+          </div>
+          <nav>
+            <div className="nav-mobile">
+              <a id="nav-toggle" href="#!"><span></span></a>
+            </div>
+            <ul className="nav-list">
+              <li><a href="#!">Home</a></li>
+              <li><a href="#!">About</a></li>
+              <li><a href="#!">Contact</a></li>
+              <li><a href="#!">Services</a>
+                <ul className="nav-dropdown">
+                  <li><a href="/logout">Sign Out</a></li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </section>
+      {/* <div className="Header">
         <Link className="Link" to="/">
           <img className="Logo" src={logo} alt="Crane_Cloud" />
         </Link>
@@ -25,16 +49,16 @@ const NavBar = () => {
             <div>
               <div>
                 {/* <Link to="/services">Services</Link> */}
-              </div>
+              {/* </div>
             </div>
             <div>
-              <div>
+              <div> */}
                 {/* <Link to="/learn">Learn More</Link> */}
-              </div>
+              {/* </div>
             </div>
-            <div style={{ paddingRight: "130px" }}>
+            <div style={{ paddingRight: "130px" }}> */}
               {/* {token ? ( */}
-                <li className="div-item dropdown ">
+                {/* <li className="div-item dropdown ">
                   <a
                     className="div-link dropdown-toggle "
                     href="#"
@@ -49,11 +73,11 @@ const NavBar = () => {
                   <div
                     className="dropdown-menu dropdown-menu-lg-left text-muted"
                     aria-labelledby="divbarDropdown"
-                  >
+                  > */}
                     {/* <a className="dropdown-item text-reset" href="/organisation">Create Organisation</a> */}
                     {/* <a class="dropdown-item" href="#">Another action</a> */}
                     {/* <div className="dropdown-divider"></div> */}
-                    <a
+                    {/* <a
                       className="div-link text-reset text-center"
                       to="/login"
                     >
@@ -64,14 +88,14 @@ const NavBar = () => {
               ) : (
                 <div>
                   {/* <Link to="/login" className="btn-sign-in"> */}
-                    Sign in
+                    {/* Sign in */}
                   {/* </Link> */}
-                </div>
+                {/* </div>
               )}
             </div>
           </div>
-        </div>
-      </div>
+        </div> */}
+      {/* </div>  */}
     </React.Fragment>
   );
 };
