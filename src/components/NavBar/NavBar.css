@@ -51,11 +51,13 @@ text-decoration: none;
   display: inline;
   float: right;
   font-size: 18px;
+  height: 100%;
+  margin-right: 100px;
 }
 
 .Navigation > .Nav-Links > a {
   display: inline-block;
-  padding: 23px 10px 23px 10px;
+  padding: 23px 20px 23px 20px;
   text-decoration: none;
   color: #efefef;
   cursor: pointer;
@@ -65,12 +67,62 @@ text-decoration: none;
 .Navigation > .Nav-Links > a:hover {
   background-color: rgba(0, 0, 0, 0.3);
   height: 100%;
+  font-weight: 700;
 }
-
+.Navigation > .Nav-Links a:last-child {
+  padding-right: 110px;
+}
 .Navigation > #nav-check {
   display: none;
 }
 
+.Navigation .Dropdown-Icon img{
+  width: 50px;
+  height: 100%;
+  vertical-align: middle;
+  border-style: none;
+  box-sizing: none;
+  margin-top: 15px;
+}
+.Navigation .Nav-dropdown{
+  float: left;
+  overflow: hidden;
+  height: 100%;
+}
+.Navigation .Nav-dropdown .Dropdown-Icon{
+  /* font-size: 16px;   */
+  border: none;
+  outline: none;
+  color: white;
+  padding: 1px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.Navigation .Dropdown-Content{
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 260px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+.Navigation .Dropdown-Content a{
+  float: none;
+  color: black;
+  /* padding: 12px 16px; */
+  text-decoration: none;
+  display: block;
+  padding: 15px 15px;
+  text-align: center;
+}
+.Navigation .Dropdown-Content a:hover{
+  background-color: #ddd;
+}
+.Navigation .Nav-dropdown:hover .Dropdown-Content{
+  display: block;
+}
 @media (max-width:600px) {
   .Navigation > .Nav-btn {
     display: inline-block;

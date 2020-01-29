@@ -28,59 +28,21 @@ const NavBar = () => {
           </label>
         </div>
         <div class="Nav-Links">
-          <Link to="/">Home</Link>
+          {/* <Link to="/">Home</Link>
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>
           <Link to="/services">Services</Link>
-          <Link to="/login">Sign In</Link>
-          {/* <div className="Nav-dropdown">
-            <a href="/logout">Sign Out</a>
-          </div> */}
-        </div>
-      </div>
-                {/* <Link to="/learn">Learn More</Link> */}
-              {/* </div>
+          <Link to="/login">Sign In</Link> */}
+          <div className="Nav-dropdown">
+            <div className="Dropdown-Icon">
+              <img src={PROFILE} size="1x" alt="profile"/>
             </div>
-            <div style={{ paddingRight: "130px" }}> */}
-              {/* {token ? ( */}
-                {/* <li className="div-item dropdown ">
-                  <a
-                    className="div-link dropdown-toggle "
-                    href="#"
-                    id="divbarDropdown"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <img icon={PROFILE} size="1x" />
-                  </a>
-                  <div
-                    className="dropdown-menu dropdown-menu-lg-left text-muted"
-                    aria-labelledby="divbarDropdown"
-                  > */}
-                    {/* <a className="dropdown-item text-reset" href="/organisation">Create Organisation</a> */}
-                    {/* <a class="dropdown-item" href="#">Another action</a> */}
-                    {/* <div className="dropdown-divider"></div> */}
-                    {/* <a
-                      className="div-link text-reset text-center"
-                      to="/login"
-                    >
-                      Sign out
-                    </a>
-                  </div>
-                </li>
-              ) : (
-                <div>
-                  {/* <Link to="/login" className="btn-sign-in"> */}
-                    {/* Sign in */}
-                  {/* </Link> */}
-                {/* </div>
-              )}
+            <div className="Dropdown-Content">
+              <Link to="/logout">Sign Out</Link>
             </div>
           </div>
-        </div> */}
-      {/* </div>  */}
+        </div>
+      </div>
     </React.Fragment>
   );
 };
