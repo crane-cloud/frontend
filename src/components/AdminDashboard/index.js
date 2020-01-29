@@ -12,7 +12,7 @@ class AdminDashboard extends React.Component{
         <div className="Disposable">
           <div><ClusterResources /></div>
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     )
   }

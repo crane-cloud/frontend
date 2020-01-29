@@ -20,41 +20,24 @@ const NavBar = () => {
             </Link>
           </div>
         </div>
-        <div class="nav-btn">
-          <label for="nav-check">
+        <div class="Nav-Btn">
+          <label for="Nav-Check">
             <span></span>
             <span></span>
             <span></span>
           </label>
         </div>
-        <div class="nav-links">
-          <a href="#!">Home</a>
-          <a href="#!">About</a>
-          <a href="#!">Contact</a>
-          <a href="#!">Services</a>
-          <div className="nav-dropdown">
-            <li><a href="/logout">Sign Out</a></li>
-          </div>
+        <div class="Nav-Links">
+          <Link to="/">Home</Link>
+          <Link to="/about">About</Link>
+          <Link to="/contact">Contact</Link>
+          <Link to="/services">Services</Link>
+          <Link to="/login">Sign In</Link>
+          {/* <div className="Nav-dropdown">
+            <a href="/logout">Sign Out</a>
+          </div> */}
         </div>
       </div>
-      {/* <div className="Header">
-        <Link className="Link" to="/">
-          <img className="Logo" src={logo} alt="Crane_Cloud" />
-        </Link>
-        <div >
-          <div className="links ml-auto">
-            <div>
-              <div>
-                <Link to="/about">About</Link>
-              </div>
-            </div>
-            <div>
-              <div>
-                {/* <Link to="/services">Services</Link> */}
-              {/* </div>
-            </div>
-            <div>
-              <div> */}
                 {/* <Link to="/learn">Learn More</Link> */}
               {/* </div>
             </div>
