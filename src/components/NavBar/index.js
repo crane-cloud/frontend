@@ -81,32 +81,14 @@ const NavBar = () => {
                   })
                 }</select>
             </div>
-            {/* <div className="Nav-dropdown Drop Profile">
+            <div className="Nav-dropdown Drop Profile">
               <div className="Dropdown-Icon">
                 <img src={PROFILE} size="1x" alt="profile"/>
               </div>
               <div className="Dropdown-Content">
                 <Link to="/logout">Sign Out</Link>
               </div>
-            </div> */}
-            <div className="dropdown">
-              {/* <div className="Dropdown-Icon">
-                <img src={PROFILE} size="1x" alt="profile"/>
-              </div> */}
-              <button class="dropbtn">Right</button>
-
-              <div className="dropdown-Content">
-                <Link to="/logout">Sign Out</Link>
-              </div>
             </div>
-            {/* <div class="dropdown">
-              <button class="dropbtn">Right</button>
-              <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>

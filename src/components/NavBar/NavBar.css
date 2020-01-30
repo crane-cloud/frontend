@@ -7,11 +7,9 @@
     height: 70px;
     width: 100%;
     position: relative;
-    overflow: hidden;
 }
 .Navigation .Logo{
     width: 250px;
-    /* padding-left: 0.5em; */
 }
 .Navigation img{
     vertical-align: middle;
@@ -21,7 +19,6 @@
 }
 .Brand {
 position: absolute;
-/* padding-left: 5px; */
 float: left;
 line-height: 70px;
 text-transform: uppercase;
@@ -40,8 +37,6 @@ text-decoration: none;
 .Navigation > .Nav-container > .Brand {
   display: inline-block;
   font-size: 22px;
-  /* color: #fff; */
-  /* padding: 10px 10px 10px 10px; */
 }
 
 .Navigation > .Nav-btn {
@@ -50,13 +45,10 @@ text-decoration: none;
 
 .Navigation > .Nav-Links {
   display: inline;
-  
   font-size: 18px;
   height: 100%;
   float: right;
   max-width: 60%;
-  /* width: 350px; */
-  /* margin-right: 100px; */
 }
 
 .Navigation > .Nav-Links > .Logged-In{
@@ -64,19 +56,17 @@ text-decoration: none;
 }
 
 .Navigation .Nav-Links .Drop{
-  /* float: right; */
   margin-right: 100px;
 }
 
 .Navigation .Nav-Links .Namespaces{
   float: left;
-  /* height: 100%; */
-  /* width: 50%; */
 }
 
 .Profile{
   float: right;
-  /* width: 50%; */
+  position: relative;
+  display: inline-block;
 }
 
 .Navigation > .Nav-Links > a {
@@ -101,7 +91,6 @@ text-decoration: none;
 }
 .Navigation .Nav-dropdown{
   /* float: left; */
-  overflow: hidden;
   height: 100%;
   position: relative;
   display: inline-block;
@@ -113,7 +102,6 @@ text-decoration: none;
 }
 .Navigation .Dropdown-Icon img{
   width: 50px;
-  height: 100%;
   vertical-align: middle;
   border-style: none;
   box-sizing: none;
@@ -122,7 +110,7 @@ text-decoration: none;
 
 .Navigation .Nav-dropdown .Dropdown-Icon{
   /* font-size: 16px;   */
-  float: left;
+  /* float: left; */
   border: none;
   outline: none;
   color: white;
@@ -141,36 +129,18 @@ text-decoration: none;
   z-index: 1;
 }
 .Navigation .Dropdown-Content a{
-  float: none;
+  /* float: none; */
   color: black;
-  /* padding: 12px 16px; */
+  padding: 12px 16px;
   text-decoration: none;
   display: block;
-  padding: 15px 15px;
+  padding: 15px 5px;
   text-align: center;
 }
 .Navigation .Dropdown-Content a:hover{
   background-color: #ddd;
 }
 .Navigation .Nav-dropdown:hover .Dropdown-Content{
-  display: block;
-}
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  right: 0;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.dropdown:hover .dropdown-content a:hover {
   display: block;
 }
 
