@@ -61,6 +61,7 @@ text-decoration: none;
 
 .Navigation .Nav-Links .Namespaces{
   float: left;
+  margin-right: 200px;
 }
 
 .Profile{
@@ -97,8 +98,16 @@ text-decoration: none;
 }
 .Navigation .Nav-dropdown select{
   float: right;
-  overflow: hidden;
-  height: 100%;
+  /* overflow: hidden; */
+  height: 70%;
+  margin-top: 15px;
+  border-radius: 6px;
+  width: 130px;
+  padding-left: 5px;
+}
+.Navigation select option{
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 .Navigation .Dropdown-Icon img{
   width: 50px;

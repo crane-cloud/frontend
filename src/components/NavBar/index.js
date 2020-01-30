@@ -6,37 +6,37 @@ import './NavBar.css';
 
 const namespaces = [
   {
-    "name": "Nodes",
+    "name": "Cranecloud-m1",
     "resourceNumber": 7,
     "id": 1
   },
   {
-    "name": "Secrets",
+    "name": "Mak-w3",
     "resourceNumber": 3,
     "id": 2
   },
   {
-    "name": "Deployments",
+    "name": "AirQuality",
     "resourceNumber": 11,
     "id": 3
   },
   {
-    "name": "Pods",
+    "name": "Cocis",
     "resourceNumber": 9,
     "id": 4
   },
   {
-    "name": "Volumes",
+    "name": "Level5Hub",
     "resourceNumber": 5,
     "id": 5
   },
   {
-    "name": "Daemon Sets",
+    "name": "Catalysts",
     "resourceNumber": 0,
     "id": 6
   },
   {
-    "name": "Replica",
+    "name": "Backup",
     "resourceNumber": 2,
     "id": 7
   }
