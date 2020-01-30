@@ -4,6 +4,44 @@ import logo from '../../assets/images/logo.png';
 import PROFILE from '../../assets/images/profile.svg';
 import './NavBar.css';
 
+const namespaces = [
+  {
+    "name": "Nodes",
+    "resourceNumber": 7,
+    "id": 1
+  },
+  {
+    "name": "Secrets",
+    "resourceNumber": 3,
+    "id": 2
+  },
+  {
+    "name": "Deployments",
+    "resourceNumber": 11,
+    "id": 3
+  },
+  {
+    "name": "Pods",
+    "resourceNumber": 9,
+    "id": 4
+  },
+  {
+    "name": "Volumes",
+    "resourceNumber": 5,
+    "id": 5
+  },
+  {
+    "name": "Daemon Sets",
+    "resourceNumber": 0,
+    "id": 6
+  },
+  {
+    "name": "Replica",
+    "resourceNumber": 2,
+    "id": 7
+  }
+]
+
 const NavBar = () => {
   // const [isOpen, setIsOpen] = useState(false);
 
@@ -33,13 +71,42 @@ const NavBar = () => {
           <Link to="/contact">Contact</Link>
           <Link to="/services">Services</Link>
           <Link to="/login">Sign In</Link> */}
-          <div className="Nav-dropdown">
-            <div className="Dropdown-Icon">
-              <img src={PROFILE} size="1x" alt="profile"/>
+          <div className="Logged-In">
+            <div className="Nav-dropdown Drop Namespaces">
+                <select>
+                  <option value="">Namespaces</option>
+                  {
+                  namespaces.map((obj) => {
+                      return <option value={obj.id}>{obj.name}</option>
+                  })
+                }</select>
             </div>
-            <div className="Dropdown-Content">
-              <Link to="/logout">Sign Out</Link>
+            {/* <div className="Nav-dropdown Drop Profile">
+              <div className="Dropdown-Icon">
+                <img src={PROFILE} size="1x" alt="profile"/>
+              </div>
+              <div className="Dropdown-Content">
+                <Link to="/logout">Sign Out</Link>
+              </div>
+            </div> */}
+            <div className="dropdown">
+              {/* <div className="Dropdown-Icon">
+                <img src={PROFILE} size="1x" alt="profile"/>
+              </div> */}
+              <button class="dropbtn">Right</button>
+
+              <div className="dropdown-Content">
+                <Link to="/logout">Sign Out</Link>
+              </div>
             </div>
+            {/* <div class="dropdown">
+              <button class="dropbtn">Right</button>
+              <div class="dropdown-content">
+                <a href="#">Link 1</a>
+                <a href="#">Link 2</a>
+                <a href="#">Link 3</a>
+              </div>
+            </div> */}
           </div>
         </div>
       </div>
