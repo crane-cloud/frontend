@@ -91,14 +91,12 @@ text-decoration: none;
   display: none;
 }
 .Navigation .Nav-dropdown{
-  /* float: left; */
   height: 100%;
   position: relative;
   display: inline-block;
 }
 .Navigation .Nav-dropdown select{
   float: right;
-  /* overflow: hidden; */
   height: 70%;
   margin-top: 15px;
   border-radius: 6px;
