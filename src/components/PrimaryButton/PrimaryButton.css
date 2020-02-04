@@ -8,7 +8,9 @@
   font-weight: bold;
   font-family: Roboto;
   line-height: 19px;
-  text-align: center ;
+  text-align: center;
+  border: 2px solid #F7B21F;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 .Primary-Btn:hover{
