@@ -4,8 +4,11 @@
   height: 50px;
   color: white;
   font-size: 16px;
-  font-weight: 900;
-  font-family: Roboto-sans;
+  font-style: normal;
+  font-weight: bold;
+  font-family: Roboto;
+  line-height: 19px;
+  text-align: center ;
 }
 
 .Primary-Btn:hover{
