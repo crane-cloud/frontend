@@ -3,8 +3,7 @@ import './App.css';
 import Footer from '../Footer/';
 import ClusterResources from '../ClusterResources/';
 import PrimaryButton from '../PrimaryButton/';
-/* These below are for showing purposes */
-/* THIS IS GOING TO BE REMOVED IN THE DASHBOARD FEATURE */
+import SecondaryButton from '../SecondaryButton/';
 
 function App() {
   return <div>
@@ -13,6 +12,8 @@ function App() {
     </div>
     <Footer /> */}
     <PrimaryButton
+      label="Sign In" />
+    <SecondaryButton
       label="Sign In" />
   </div>
 }

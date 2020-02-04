@@ -1,8 +1,8 @@
 import React from 'react';
-import './PrimaryButton.css';
+import './SecondaryButton.css';
 
 const SecondaryButton = props => {
-    return <button className="Primary-Btn">{props.label}</button>;
+    return <button className="Secondary-Btn">{props.label}</button>;
 };
 
 export default SecondaryButton;
