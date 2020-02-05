@@ -11,8 +11,8 @@ function App() {
       {/* <div><ClusterResources /></div> */}
     {/* </div>
     <Footer /> */}
-    <InputText value="Name"
-      placeholder="name"
+    <InputText
+      placeholder="Email Address"
       // onChange={ this.handleChange } 
       />
 
