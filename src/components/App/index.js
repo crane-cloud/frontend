@@ -3,6 +3,7 @@ import './App.css';
 import Footer from '../Footer/';
 import ClusterResources from '../ClusterResources/';
 import InputText from '../InputText/';
+import InputPassword from '../InputPassword/';
 
 
 function App() {
@@ -13,6 +14,10 @@ function App() {
     <Footer /> */}
     <InputText
       placeholder="Email Address"
+      // onChange={ this.handleChange } 
+      />
+    <InputPassword
+      placeholder="Password"
       // onChange={ this.handleChange } 
       />
 
