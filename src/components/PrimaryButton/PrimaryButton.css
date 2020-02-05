@@ -6,13 +6,16 @@
   font-size: 16px;
   font-style: normal;
   font-weight: bold;
-  font-family: Roboto;
+  font-family: sans-serif;
   line-height: 19px;
   text-align: center;
-  border: 2px solid #F7B21F;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  border: none;
+  outline: 2px solid #F7B21F;
+  /* box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); */
 }
 
 .Primary-Btn:hover{
-  background-color: #d2741d;
+  background-color: white;
+  color: #F7B21F;
+  outline: 2px solid #F7B21F;
 }

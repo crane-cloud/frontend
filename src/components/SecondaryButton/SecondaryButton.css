@@ -4,13 +4,17 @@
     height: 50px;
     color: white;
     font-size: 16px;
-    font-weight: 900;
-    font-family: Roboto;
-    border: 2px solid white;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    font-weight: 700;
+    font-family: sans-serif;
+    border: none;
+    position: absolute;
+    outline: 2px solid white;
+    /* box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); */
   }
   
   .Secondary-Btn:hover{
-    background-color: #99d2e9;
+    background-color: white;
+    color: #008ac1;
+    outline: 2px solid #008ac1;
   }
   
