@@ -12,9 +12,9 @@ function App() {
     </div>
     <Footer /> */}
     <PrimaryButton
-      label="Reset" />
+      label="RESET" />
     <SecondaryButton
-      label="Reset" />
+      label="RESET" />
   </div>
 }
 
