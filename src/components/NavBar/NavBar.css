@@ -73,20 +73,21 @@ text-decoration: none;
 
 .Navigation > .Nav-Links > a {
   display: inline-block;
-  padding: 23px 20px 23px 20px;
   text-decoration: none;
-  color: #efefef;
+  color: white;
   cursor: pointer;
+  font-weight: normal;
+  padding: 42px 15px;
   height: 100%;
 }
 
 .Navigation > .Nav-Links > a:hover {
-  background-color: rgba(0, 0, 0, 0.3);
+  /* background-color: rgba(0, 0, 0, 0.3); */
   height: 100%;
-  font-weight: 700;
+  font-weight: bold;
 }
 .Navigation > .Nav-Links a:last-child {
-  padding-right: 110px;
+  padding-right: 160px;
 }
 .Navigation > #nav-check {
   display: none;

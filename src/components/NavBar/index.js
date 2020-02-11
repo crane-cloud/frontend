@@ -67,11 +67,8 @@ const NavBar = () => {
           </label>
         </div>
         <div class="Nav-Links">
-          {/* <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-          <Link to="/contact">Contact</Link>
-          <Link to="/services">Services</Link>
-          <Link to="/login">Sign In</Link> */}
+          <Link to="/pricing">PRICING</Link>
+          <Link to="/docs">DOCS</Link>
           {/* <div className="Logged-In">
             <div className="Nav-dropdown Drop Namespaces">
                 <select>
