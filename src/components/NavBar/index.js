@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import logo from '../../assets/images/logo.png';
+import NavLogo from '../NavLogo/index';
 import PROFILE from '../../assets/images/profile.svg';
 import './NavBar.css';
 
@@ -53,11 +53,7 @@ const NavBar = () => {
       <div className="Navigation">
         <input type="checkbox" id="nav-check" />
         <div className="Nav-container">
-          <div className="Brand">
-            <Link className="Link" to="/">
-              <img className="Logo" src={logo} alt="Crane_Cloud" />
-            </Link>
-          </div>
+          <NavLogo />
         </div>
         <div class="Nav-Btn">
           <label for="Nav-Check">

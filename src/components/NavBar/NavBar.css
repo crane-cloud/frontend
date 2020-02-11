@@ -8,36 +8,9 @@
     width: 100%;
     position: relative;
 }
-.Navigation .Logo{
-    width: 300px;
-    padding: 10px 0px;
-}
-.Navigation img{
-    vertical-align: middle;
-    border-style: none;
-    box-sizing: none;
-
-}
-.Brand {
-position: absolute;
-float: left;
-line-height: 70px;
-text-transform: uppercase;
-font-size: 1.4em;
-}
-.Brand a,
-.Brand a:visited {
-color: #463f3f;
-text-decoration: none;
-}
 
 .Navigation > .Nav-header {
   display: inline;
-}
-
-.Navigation > .Nav-container > .Brand {
-  display: inline-block;
-  font-size: 22px;
 }
 
 .Navigation > .Nav-btn {
