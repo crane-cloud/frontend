@@ -1,6 +1,5 @@
 .sidenav {
     position: absolute;
-    padding: 18px;
     width: 267px;
     height: 100%;
     background: #06222F;
@@ -8,34 +7,43 @@
     margin-left: 0px;
 
 }
+.list{
+
+
+}
 
 .list-item{
     height: 21px;
-    font-family: Roboto;
+    font-family: Roboto, sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 16px;
     line-height: 19px;
     color: #F7B21F;
     margin-top: 20px;
+    cursor: pointer;
+    padding-left: 18px;
+    text-transform: uppercase;
 }
 
 .sub-list-Item{
     height: 21px;
-    font-family: Roboto;
+    font-family: Roboto,sans-serif;
     font-style: normal;
     font-weight: normal;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 19px;
     color: #99D2E9;
     padding: 5px;
+    cursor: pointer;
+    padding-left: 20px;
 }
 
 .side-footer{
     position: absolute;
     width: 165px;
     height: 28px;
-    font-family: Roboto;
+    font-family: Roboto, sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 12px;
@@ -43,5 +51,17 @@
     bottom: 0;
     margin-bottom: 15px;
     color: #008AC1;
+    padding: 18px;
+    cursor: pointer;
 
+}
+.side-footer:hover{
+    color: rgb(131, 182, 202);
+}
+.list-item:hover{
+    text-shadow: 0 0 .5px rgb(255, 194, 62);
+}
+.sub-list-Item:hover{
+    background-color: rgb(13, 60, 82);
+    color: rgb(164, 228, 253);
 }
