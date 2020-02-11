@@ -1,15 +1,16 @@
 .Navigation{
     background-color: #008ac1;
     color: white;
-    font-family: aller,Oxygen,Arial,Helvetica,sans-serif,Helvetica Neue;
+    font-family: 'Roboto', sans-serif;
     line-height: 24px;
     font-weight: 300;
-    height: 70px;
+    height: 95px;
     width: 100%;
     position: relative;
 }
 .Navigation .Logo{
-    width: 250px;
+    width: 300px;
+    padding: 10px 0px;
 }
 .Navigation img{
     vertical-align: middle;
