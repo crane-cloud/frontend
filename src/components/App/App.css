@@ -28,28 +28,32 @@
   color: #61dafb;
 }
 
+.index{
+  height: 100vh;
+}
+
 .row-nav{
   height:5%;
 }
 .row-main{
-  height: 80%;
+  height: 95%;
   width: 100%;
   margin-left: 0px;
-}
-.row-footer{
-  height: 15%;
-  bottom: 0;
+  overflow: scroll;
 }
 
 .side-nav{
   width: 20%;
   float: left;
+  height: 100%;
+  position: fixed;
 }
 .content{
   width: 80%;
   float: right;
   overflow: hidden;
 }
+
 
 .Disposable{
   /* min-height: 1000px; */
