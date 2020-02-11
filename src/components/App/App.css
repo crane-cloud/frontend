@@ -27,6 +27,30 @@
 .App-link {
   color: #61dafb;
 }
+
+.row-nav{
+  height:5%;
+}
+.row-main{
+  height: 80%;
+  width: 100%;
+  margin-left: 0px;
+}
+.row-footer{
+  height: 15%;
+  bottom: 0;
+}
+
+.side-nav{
+  width: 20%;
+  float: left;
+}
+.content{
+  width: 80%;
+  float: right;
+  overflow: hidden;
+}
+
 .Disposable{
   /* min-height: 1000px; */
   display: flex;

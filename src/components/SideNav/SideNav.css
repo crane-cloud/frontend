@@ -1,0 +1,47 @@
+.sidenav {
+    position: absolute;
+    padding: 18px;
+    width: 267px;
+    height: 100%;
+    background: #06222F;
+    mix-blend-mode: normal;
+    margin-left: 0px;
+
+}
+
+.list-item{
+    height: 21px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+    color: #F7B21F;
+    margin-top: 20px;
+}
+
+.sub-list-Item{
+    height: 21px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    color: #99D2E9;
+    padding: 5px;
+}
+
+.side-footer{
+    position: absolute;
+    width: 165px;
+    height: 28px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 14px;
+    bottom: 0;
+    margin-bottom: 15px;
+    color: #008AC1;
+
+}

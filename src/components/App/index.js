@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 import Footer from '../Footer/';
-import Content from '../ResourceCard/Example';
+import SideNav from '../SideNav';
+// import Content from '../ResourceCard/Example';
 import ClusterResources from '../ClusterResources/';
 
 /* These below are for showing purposes */
@@ -9,11 +10,16 @@ import ClusterResources from '../ClusterResources/';
 
 function App() {
   return <div>
-    <div className="Disposable">
-      <div><ClusterResources /></div>
+    <div className='row-nav'></div>
+
+    <div className='row-main'>
+      <div className='side-nav'><SideNav/></div>
+      <div className='content'><div className="Disposable"><ClusterResources/></div></div>
     </div>
-    <Footer />
-  </div>
+
+    <div className='row-footer'><Footer /></div>    
+  
+  </div>;
 }
 
 export default App;
