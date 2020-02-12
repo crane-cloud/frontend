@@ -37,21 +37,21 @@ const items = [
 
 function SideNav() {
   return (
-    <div className='side-nav'>
-      <div className='cluster-name'>Cluster Name</div>
-      <div className="list">
+    <div className='SideNav'>
+      <div className='ClusterName'>Cluster Name</div>
+      <div className="List">
         {items.map((item) =>
           <div key={item.name}>
-            <div key={items.indexOf(item)} className="list-item">{item.name}</div>
+            <div key={items.indexOf(item)} className="ListItem">{item.name}</div>
             <div key={items.indexOf(item)} className="">
               {item.items.map((subitem) =>
-                <div key={items.indexOf(subitem)} className="sub-list-Item">{subitem.name}</div>
+                <div key={items.indexOf(subitem)} className="SubListItem">{subitem.name}</div>
               )}
             </div>
           </div>
         )}
       </div>
-      <div className='side-footer'>
+      <div className='SideFooter'>
         Copyright © 2020 Crane Cloud.<br/> All Rights Reserved.
       </div>
     </div>

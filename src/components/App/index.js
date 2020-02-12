@@ -8,12 +8,12 @@ import ClusterResources from '../ClusterResources/';
 /* THIS IS GOING TO BE REMOVED IN THE DASHBOARD FEATURE */
 
 function App() {
-  return <div className='index'>
-    <div className='row-nav'></div>
+  return <div className='Index'>
+    <div className='RowNav'></div>
 
-    <div className='row-main'>
-      <div className='side-nave'><SideNav/></div>
-      <div className='content'><div className="Disposable"><ClusterResources/></div></div>
+    <div className='RowMain'>
+      <div className='SideNave'><SideNav/></div>
+      <div className='Content'><div className="Disposable"><ClusterResources/></div></div>
     </div>  
   </div>;
 }

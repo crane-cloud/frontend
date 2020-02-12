@@ -2,18 +2,18 @@
   text-align: center;
 }
 
-.App-logo {
+.AppLogo {
   height: 40vmin;
   pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
+  .AppLogo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
 
-.App-header {
+.AppHeader {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -24,31 +24,31 @@
   color: white;
 }
 
-.App-link {
+.AppLink {
   color: #61dafb;
 }
 
-.index{
+.Index{
   height: 100vh;
 }
 
-.row-nav{
+.RowNav{
   height:5%;
 }
-.row-main{
+.RowMain{
   height: 95%;
   width: 100%;
   margin-left: 0px;
   overflow: scroll;
 }
 
-.side-nave{
+.SideNave{
   width: 20%;
   float: left;
   height: 100%;
   position: fixed;
 }
-.content{
+.Content{
   width: 80%;
   float: right;
   overflow: hidden;
