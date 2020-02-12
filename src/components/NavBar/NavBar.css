@@ -13,6 +13,9 @@
   display: inline;
 }
 
+.Navigation .NavContainer{
+  margin-left: 60px;
+}
 .Navigation > .Nav-btn {
   display: none;
 }

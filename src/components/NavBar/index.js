@@ -52,7 +52,7 @@ const NavBar = () => {
     <React.Fragment>
       <div className="Navigation">
         <input type="checkbox" id="nav-check" />
-        <div className="Nav-container">
+        <div className="NavContainer">
           <NavLogo />
         </div>
         <div class="Nav-Btn">
@@ -63,18 +63,10 @@ const NavBar = () => {
           </label>
         </div>
         <div class="Nav-Links">
-          <Link to="/pricing">PRICING</Link>
-          <Link to="/docs">DOCS</Link>
-          {/* <div className="Logged-In">
-            <div className="Nav-dropdown Drop Namespaces">
-                <select>
-                  <option value="">Namespaces</option>
-                  {
-                  namespaces.map((obj) => {
-                      return <option value={obj.id}>{obj.name}</option>
-                  })
-                }</select>
-            </div>
+          {/* <Link to="/pricing">PRICING</Link>
+          <Link to="/docs">DOCS</Link> */}
+          <div className="Logged-In">
+            
             <div className="Nav-dropdown Drop Profile">
               <div className="Dropdown-Icon">
                 <img src={PROFILE} size="1x" alt="profile"/>
@@ -83,7 +75,7 @@ const NavBar = () => {
                 <Link to="/logout">Sign Out</Link>
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     </React.Fragment>
