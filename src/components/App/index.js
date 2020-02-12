@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-import Footer from '../Footer/';
-import ClusterResources from '../ClusterResources/';
+import Footer from '../Footer';
+import ClusterResources from '../ClusterResources';
 import NavBar from '../NavBar/';
 
 /* These below are for showing purposes */
@@ -12,7 +12,7 @@ function App() {
     <NavBar />
     <div className="Disposable">
       <div><ClusterResources /></div>
-    </div>;
+    </div>
     <Footer />
   </div>
 }

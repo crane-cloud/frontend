@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
 import { Link } from "react-router-dom";
-import './NavLogo.css';
-import logo from '../../assets/images/logo.png';
+import "./NavLogo.css";
+import logo from "../../assets/images/logo.png";
 
 const NavLogo = () => (
-  <React.Fragment>
+  <>
     <div className="Brand">
       <Link className="Link" to="/">
         <img className="Logo" src={logo} alt="Crane_Cloud" />
       </Link>
     </div>
-  </React.Fragment>
+  </>
 );
 
 export default NavLogo;
