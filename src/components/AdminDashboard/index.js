@@ -16,7 +16,7 @@ class AdminDashboard extends React.Component{
         </div>
         {/* <Footer /> */}
       </div>
-    )
+    );
   }
 }
 

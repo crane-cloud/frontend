@@ -12,7 +12,7 @@ function App() {
     <NavBar />
     <div className="Disposable">
       <div><ClusterResources /></div>
-    </div>
+    </div>;
     <Footer />
   </div>
 }

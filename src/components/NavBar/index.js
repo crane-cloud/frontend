@@ -41,7 +41,7 @@ const namespaces = [
     "resourceNumber": 2,
     "id": 7
   }
-]
+];
 
 const NavBar = () => {
   // const [isOpen, setIsOpen] = useState(false);
@@ -62,7 +62,7 @@ const NavBar = () => {
             <span></span>
           </label>
         </div>
-        <div class="Nav-Links">
+        <div className="Nav-Links">
           {/* <Link to="/pricing">PRICING</Link>
           <Link to="/docs">DOCS</Link> */}
           <div className="Logged-In">

@@ -10,8 +10,8 @@ import Routes from './Router';
 
 // update localstorage whenever state changes
 store.subscribe(() => {
-    saveState(store.getState());
-  });
+  saveState(store.getState());
+});
 
 ReactDOM.render(<Routes />, document.getElementById('root'));
 
