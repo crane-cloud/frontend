@@ -1,11 +1,11 @@
 import React from 'react';
-import {ReactComponent as ButtonPlus} from '../../assets/images/buttonplus.svg'
-import './ButtonComponent.css'
+import {ReactComponent as ButtonPlus} from '../../assets/images/buttonplus.svg';
+import './ButtonComponent.css';
 
- const CreateButton =(props) =>( 
+  const CreateButton =(props) =>( 
       <button className="RoundAddButton" onClick={props.onClick}>
-        < ButtonPlus/>
+          < ButtonPlus/>
       </button>
-   );
+    );
 
 export default CreateButton;
