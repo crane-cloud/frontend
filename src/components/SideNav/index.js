@@ -37,7 +37,8 @@ const items = [
 
 function SideNav() {
   return (
-    <div className='sidenav'>
+    <div className='side-nav'>
+      <div className='cluster-name'>Cluster Name</div>
       <div className="list">
         {items.map((item) =>
           <div key={item.name}>
@@ -51,7 +52,7 @@ function SideNav() {
         )}
       </div>
       <div className='side-footer'>
-        Copyright © 2020 Crane Cloud. All Rights Reserved.
+        Copyright © 2020 Crane Cloud.<br/> All Rights Reserved.
       </div>
     </div>
   );

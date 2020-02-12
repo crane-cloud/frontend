@@ -12,7 +12,7 @@ function App() {
     <div className='row-nav'></div>
 
     <div className='row-main'>
-      <div className='side-nav'><SideNav/></div>
+      <div className='side-nave'><SideNav/></div>
       <div className='content'><div className="Disposable"><ClusterResources/></div></div>
     </div>  
   </div>;
