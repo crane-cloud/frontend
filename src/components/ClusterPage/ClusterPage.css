@@ -1,0 +1,18 @@
+.Page{
+    margin: 0;
+}
+
+.TopRow{
+    height: 3.5rem;
+    width: 100%;
+    background-color: blue;
+}
+
+.MainRow{
+    width: 100%;
+}
+
+.FooterRow{
+    width: 100%;
+    bottom: 0;
+}

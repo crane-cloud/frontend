@@ -1,21 +1,17 @@
 import React from 'react';
 import './App.css';
-import Footer from '../Footer/';
-import ClusterResources from '../ClusterResources/';
-import PrimaryButton from '../PrimaryButton/';
-import SecondaryButton from '../SecondaryButton/';
+import Footer from '../Footer';
+import ClusterResources from '../ClusterResources';
+import PrimaryButton from '../PrimaryButton';
+import SecondaryButton from '../SecondaryButton';
+import ClusterPage from '../ClusterPage';
 
 function App() {
-  return <div>
-    {/* <div className="Disposable">
-      <div><ClusterResources /></div>
+  return (
+    <div>
+      <ClusterPage />
     </div>
-    <Footer /> */}
-    <PrimaryButton
-      label="RESET" />
-    <SecondaryButton
-      label="RESET" />
-  </div>
+  );
 }
 
 export default App;
