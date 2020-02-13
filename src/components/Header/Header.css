@@ -2,3 +2,22 @@ header.Header {
   display: flex;
   justify-content: space-between;
 }
+
+.HeaderLinks {
+  padding-top: 3rem;
+}
+
+.HeaderLinksWrap {
+  margin: 1rem 3rem auto 0;
+}
+
+.HeaderLinks a {
+  color: white;
+  padding: 1rem;
+}
+
+.HeaderLinks a.HeaderLinkLogin {
+  border: 2px solid #ffffff;
+  padding: 1rem 3rem;
+  margin-left: 2rem;
+}
