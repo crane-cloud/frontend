@@ -34,7 +34,7 @@ const NavBar = () =>
             <div className="UserProfileName">
               <div className="NameUser"><strong>Colin Wagaba</strong></div>
             </div>
-            <div className="Nav-dropdown Drop Profile">
+            <div className="NavDropdown Drop Profile">
 
               <div className="DropdownIcon">
                 <i className="Arrow" />
