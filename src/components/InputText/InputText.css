@@ -1,4 +1,4 @@
-.Input-Text{
+.InputText{
   width: 400px;
   height: 72px;
   border: 2px solid #fff;
@@ -9,6 +9,6 @@
   padding: 1rem;
   padding-left: 2rem;
 }
-.Input-Text::placeholder {
+.InputText::placeholder {
     color: #fff;
 }
