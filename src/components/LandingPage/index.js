@@ -1,6 +1,7 @@
 import React from 'react';
 import PrimaryButton from '../PrimaryButton';
 import Header from '../Header';
+import LandingFooter from '../LandingFooter';
 import { ReactComponent as InfrastrucurePic } from '../../assets/images/infrastructure.svg';
 import './LandingPage.css';
 
@@ -17,6 +18,7 @@ const LandingPage = () => (
         <InfrastrucurePic className="LandingPageInfrastructurePic" />
       </div>
     </div>
+    <LandingFooter />
   </div>
 );
 
