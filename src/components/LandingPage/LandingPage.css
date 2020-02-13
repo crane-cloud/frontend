@@ -1,0 +1,32 @@
+.LandingPageMain {
+
+}
+
+.LandingPageMainContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+}
+
+
+.LandingPageMainContentInfo {
+  margin: 4rem;
+  padding: 2rem;
+}
+
+.LandingPageMainContentInfo h1 {
+  font-size: 32px;
+  color: #F7B21F;
+}
+
+.LandingPageMainContentInfo h3 {
+  color: #ffffff;
+  line-height: 37px;
+  font-size: 32px;
+  width: 80%;
+}
+
+.LandingPageMainContentImg {
+  margin: 4rem;
+  padding: 2rem;
+}
