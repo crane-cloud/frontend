@@ -15,7 +15,7 @@
 }
 
 .Primary-Btn:hover{
-  background-color: white;
+  background-color: transparent;
   color: #F7B21F;
   outline: 2px solid #F7B21F;
 }
