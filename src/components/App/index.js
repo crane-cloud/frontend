@@ -1,23 +1,21 @@
 import React from 'react';
 import './App.css';
-import ClusterList from '../ClustersList';
-// import Content from '../ResourceCard/Example';
-import ClusterResources from '../ClusterResources';
-
-/* These below are for showing purposes */
-/* THIS IS GOING TO BE REMOVED IN THE DASHBOARD FEATURE */
+import Footer from '../Footer/';
+import ClusterResources from '../ClusterResources/';
+import PrimaryButton from '../PrimaryButton/';
+import SecondaryButton from '../SecondaryButton/';
 
 function App() {
-  return (
-    <div className="Index">
-      <div className="RowNav" />
-
-      <div className="RowMain">
-        <ClusterList/>
-        {/* <div className="Content"><div className="Disposable"><ClusterResources /></div></div> */}
-      </div>
+  return <div>
+    {/* <div className="Disposable">
+      <div><ClusterResources /></div>
     </div>
-  );
+    <Footer /> */}
+    <PrimaryButton
+      label="RESET" />
+    <SecondaryButton
+      label="RESET" />
+  </div>
 }
 
 export default App;
