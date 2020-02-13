@@ -1,11 +1,11 @@
 import React from 'react';
 import './InputPassword.css';
 
-const InputPassword = (props) => (
+const InputPassword = props => (
   <input
     className="InputPassword"
     type="password"
-    placeholder={props.placeholder+ " *"}
+    placeholder={props.placeholder + ' *'}
   />
 );
 
