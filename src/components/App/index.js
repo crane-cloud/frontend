@@ -1,12 +1,9 @@
 import React from 'react';
 import './App.css';
 import Footer from '../Footer/';
-
 import ClusterResources from '../ClusterResources/';
-import InformationBar from '../InformationBar';
-
-/* These below are for showing purposes */
-/* THIS IS GOING TO BE REMOVED IN THE DASHBOARD FEATURE */
+import PrimaryButton from '../PrimaryButton/';
+import SecondaryButton from '../SecondaryButton/';
 
 function App() {
   return <div>
@@ -14,7 +11,10 @@ function App() {
       <div><ClusterResources /></div>
     </div>
     <Footer /> */}
-    <InformationBar/>
+    <PrimaryButton
+      label="RESET" />
+    <SecondaryButton
+      label="RESET" />
   </div>
 }
 
