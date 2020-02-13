@@ -1,18 +1,20 @@
 import React from 'react';
 import './App.css';
 import Footer from '../Footer/';
-import Content from '../ResourceCard/Example';
 import ClusterResources from '../ClusterResources/';
-
-/* These below are for showing purposes */
-/* THIS IS GOING TO BE REMOVED IN THE DASHBOARD FEATURE */
+import PrimaryButton from '../PrimaryButton/';
+import SecondaryButton from '../SecondaryButton/';
 
 function App() {
   return <div>
-    <div className="Disposable">
+    {/* <div className="Disposable">
       <div><ClusterResources /></div>
     </div>
-    <Footer />
+    <Footer /> */}
+    <PrimaryButton
+      label="RESET" />
+    <SecondaryButton
+      label="RESET" />
   </div>
 }
 
