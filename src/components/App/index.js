@@ -3,9 +3,8 @@ import './App.css';
 import SideNav from '../SideNav';
 // import Content from '../ResourceCard/Example';
 import ClusterResources from '../ClusterResources/';
-
-/* These below are for showing purposes */
-/* THIS IS GOING TO BE REMOVED IN THE DASHBOARD FEATURE */
+import PrimaryButton from '../PrimaryButton/';
+import SecondaryButton from '../SecondaryButton/';
 
 function App() {
   return <div className='Index'>
