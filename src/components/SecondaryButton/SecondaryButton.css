@@ -1,5 +1,4 @@
 .Secondary-Btn {
-    background-color: #008ac1;
     width: 155px;
     height: 50px;
     color: white;
@@ -13,7 +12,7 @@
   }
   
   .Secondary-Btn:hover{
-    background-color: white;
+    background-color: #DDDDDD;
     color: #008ac1;
     outline: 2px solid #008ac1;
   }
