@@ -15,14 +15,11 @@
   display: flex;
 }
 
-.Navigation .NavContainer{
-  
-}
 .Navigation > .Nav-btn {
   display: none;
 }
 
-.Navigation > .Nav-Links {
+.Navigation > .NavLinks {
   /* display: inline; */
   /* flex: 1; */
   align-self: flex-end;
@@ -32,16 +29,16 @@
   max-width: 60%;
 }
 
-.Navigation > .Nav-Links > .Logged-In{
+.Navigation > .NavLinks > .LoggedIn{
   display: flex;
   align-items: baseline;
 }
 
-.Navigation .Nav-Links .Drop{
+.Navigation .NavLinks .Drop{
   margin-right: 100px;
 }
 
-.Navigation .Nav-Links .Namespaces{
+.Navigation .NavLinks .Namespaces{
   float: left;
   margin-right: 200px;
 }
@@ -49,10 +46,9 @@
 .Profile{
   float: right;
   position: relative;
-  /* display: inline-block; */
 }
 
-.Navigation > .Nav-Links > a {
+.Navigation > .NavLinks > a {
   display: inline-block;
   text-decoration: none;
   color: white;
@@ -61,7 +57,7 @@
   padding: 42px 15px;
   height: 100%;
 }
-.Navigation .Nav-Links .Showing{
+.Navigation .NavLinks .Showing{
   display: inline-block;
 }
 .Navigation .UserProfileName{
@@ -86,11 +82,11 @@
   /* -webkit-transform: rotate(45deg); */
 }
 
-.Navigation > .Nav-Links > a:hover {
+.Navigation > .NavLinks > a:hover {
   height: 100%;
   font-weight: bold;
 }
-.Navigation > .Nav-Links a:last-child {
+.Navigation > .NavLinks a:last-child {
   padding-right: 160px;
 }
 .Navigation > #nav-check {
@@ -118,7 +114,6 @@
   vertical-align: middle;
   border-style: none;
   box-sizing: none;
-  margin-top: 15px;
 }
 
 .Navigation .Nav-dropdown .DropdownIcon{
@@ -133,7 +128,7 @@
   margin: 0;
 }
 
-.Navigation .Dropdown-Content{
+.Navigation .DropdownContent{
   display: none;
   position: absolute;
   background-color: #f9f9f9;
@@ -141,7 +136,7 @@
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
-.Navigation .Dropdown-Content a{
+.Navigation .DropdownContent a{
   /* float: none; */
   color: black;
   padding: 12px 16px;
@@ -150,10 +145,10 @@
   padding: 15px 5px;
   text-align: center;
 }
-.Navigation .Dropdown-Content a:hover{
+.Navigation .DropdownContent a:hover{
   background-color: #ddd;
 }
-.Navigation .Nav-dropdown:hover .Dropdown-Content{
+.Navigation .Nav-dropdown:hover .DropdownContent{
   display: block;
 }
 

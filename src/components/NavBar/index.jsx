@@ -24,10 +24,10 @@ const NavBar = () =>
             <span />
           </label>
         </div> */}
-        <div className="Nav-Links">
+        <div className="NavLinks">
           {/* <Link to="/pricing">PRICING</Link>
           <Link to="/docs">DOCS</Link> */}
-          <div className="Logged-In">
+          <div className="LoggedIn">
             <div className="DropdownIcon Showing">
               <img src={PROFILE} size="1x" alt="profile" />
             </div>
@@ -37,9 +37,9 @@ const NavBar = () =>
             <div className="Nav-dropdown Drop Profile">
 
               <div className="DropdownIcon">
-                <i class="arrow down"></i>
+                <i className="Arrow" />
               </div>
-              <div className="Dropdown-Content">
+              <div className="DropdownContent">
                 <Link to="/logout">Sign Out</Link>
               </div>
             </div>
