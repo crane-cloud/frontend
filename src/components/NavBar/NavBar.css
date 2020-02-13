@@ -56,9 +56,13 @@
   padding: 42px 15px;
   height: 100%;
 }
-
+.Navigation .Nav-Links .Showing{
+  display: inline-block;
+}
+.Navigation .UserProfileName{
+  display: inline;
+}
 .Navigation > .Nav-Links > a:hover {
-  /* background-color: rgba(0, 0, 0, 0.3); */
   height: 100%;
   font-weight: bold;
 }
@@ -85,7 +89,7 @@
   font-size: 16px;
   font-family: Arial, Helvetica, sans-serif;
 }
-.Navigation .Dropdown-Icon img{
+.Navigation .DropdownIcon img{
   width: 50px;
   vertical-align: middle;
   border-style: none;
@@ -93,7 +97,7 @@
   margin-top: 15px;
 }
 
-.Navigation .Nav-dropdown .Dropdown-Icon{
+.Navigation .Nav-dropdown .DropdownIcon{
   /* font-size: 16px;   */
   /* float: left; */
   border: none;
