@@ -1,10 +1,10 @@
 import React from 'react';
-import './InformatioBar.css';
+import './InformationBar.css';
 
 function InformationBar() {
   return (
-    <div className="informationBar">
-      
+    <div className="InformationBar">
+      <div className="InfoHeader">Header</div>
     </div>
   );
 }
