@@ -20,8 +20,6 @@
 }
 
 .Navigation > .NavLinks {
-  /* display: inline; */
-  /* flex: 1; */
   align-self: flex-end;
   font-size: 18px;
   height: 100%;
