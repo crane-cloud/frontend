@@ -5,7 +5,7 @@ const InputPassword = (props) => (
   <input
     className="InputPassword"
     type="password"
-    placeholder={props.placeholder+ "*"}
+    placeholder={props.placeholder+ " *"}
   />
 );
 

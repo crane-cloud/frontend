@@ -5,7 +5,7 @@ const InputText = (props) => (
   <input
     className="InputText"
     type="text"
-    placeholder={props.placeholder + "*"}
+    placeholder={props.placeholder + " *"}
   />
 );
 
