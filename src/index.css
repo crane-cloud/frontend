@@ -52,3 +52,36 @@ textarea:focus, input:focus, select:focus, button:focus {
 .extra-bold {
   font-weight: 900;
 }
+
+a {
+  text-decoration: none;
+}
+
+textarea,
+input,
+select,
+button {
+  font-family: inherit;
+  font-size: inherit;
+  border-radius: 0;
+  margin: 0;
+}
+
+textarea:focus,
+input:focus,
+select:focus,
+button:focus {
+  outline: none;
+}
+
+img {
+  display: block;
+}
+
+input[type="text"],
+input[type="search"],
+input[type="email"],
+input[type="tel"],
+input[type="password"] {
+  box-sizing: border-box;
+}
