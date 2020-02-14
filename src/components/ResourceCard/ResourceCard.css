@@ -2,7 +2,7 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     max-width: 300px;
     margin: auto;
-    text-align: center;
+    text-align: left;
     font-family: arial;
     margin-bottom: 1rem;
     background: #f8f9fa;
@@ -26,9 +26,9 @@
     border: none;
     outline: 0;
     padding: 12px;
-    color: white;
-    background-color: #1b87c2;
-    text-align: center;
+    /* color: white; */
+    /* background-color: #1b87c2; */
+    text-align: left;
     cursor: pointer;
     /* width: 100%; */
     font-size: 18px;

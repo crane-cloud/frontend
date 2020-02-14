@@ -103,10 +103,11 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 .Navigation .DropdownIcon img{
-  width: 50px;
+  width: 43px;
   vertical-align: middle;
   border-style: none;
   box-sizing: none;
+  display: inline;
 }
 
 .Navigation .NavDropdown .DropdownIcon{

@@ -1,16 +1,21 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "./ClusterResourcesPage.css";
-import NavBar from "../NavBar";
-import InformationBar from "../InformationBar";
-// import SideNav from '../';
+/* eslint-disable linebreak-style */
+import React from 'react';
+// import { Link } from 'react-router-dom';
+import './ClusterResourcesPage.css';
+import NavBar from '../NavBar';
+import InformationBar from '../InformationBar';
+import SideNav from '../SideNav';
 
-class ClusterResourcesPage extends React.Component {
-  render() {
-    return (
-        <NavBar />
-    );
-  }
-}
+const ClusterResourcesPage = () => (
+  <>
+    <NavBar />
+    <div className="MainSection">
+      <SideNav />
+      <div className="Content">
+        <InformationBar />
+      </div>
+    </div>
+  </>
+);
 
 export default ClusterResourcesPage;
