@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
-import Footer from '../Footer/';
+import SideNav from '../SideNav';
+// import Content from '../ResourceCard/Example';
 import ClusterResources from '../ClusterResources/';
 import InputText from '../InputText/';
 import InputPassword from '../InputPassword/';
