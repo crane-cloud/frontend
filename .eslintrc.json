@@ -22,7 +22,8 @@
         "react"
     ],
     "rules": {
-      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/button-has-type": 0,
     "no-underscore-dangle": 0,
     "comma-dangle": 0,
     "react/prop-types": "warn",
