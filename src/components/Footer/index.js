@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import './Footer.css';
 import LOGO from '../../assets/images/craneLogo.png';
 import Linkedin from '../../assets/images/linkedin.svg';
@@ -23,8 +23,6 @@ const Footer = () => (
         <div className="Footer-Address">
           East Africa
           <br />
-          +256(782)75 7010
-          <br />
           COCIS Building Block B
           <br />
           Pool Road, Kampala
@@ -35,17 +33,17 @@ const Footer = () => (
         </div>
 
         <div className="Footer-Address">
-          {/* <Link to="/">Home</Link> */}Home
+          <Link to="/">Home</Link>
           <br />
-          {/* <Link to="/about">About Us</Link> */}About
+          <Link to="/about">About Us</Link>
           <br />
-          {/* <Link to="/contact">Contact Us</Link> */}Contact
+          <Link to="/contact">Contact Us</Link>
           <br />
-          {/* <Link to="/news">News & Insights</Link> */}News
+          <Link to="/news">News & Insights</Link>
           <br />
-          {/* <Link to="/resources">Resources</Link> */}Resource
+          <Link to="/resources">Resources</Link>
           <br />
-          {/* <Link to="/team">Team</Link> */}Team
+          <Link to="/team">Team</Link>
         </div>
 
         <div className="Footer-Social">

@@ -5,7 +5,6 @@
     overflow: hidden;
     display: block;
     font-family: aller,Oxygen,Arial,Helvetica,sans-serif,Helvetica Neue;
-    position: absolute;
     left: 0;
     bottom: 0;
     width: 100%;
@@ -21,20 +20,20 @@
     justify-content: space-between;
     color: #fff;
 }
-a{
+.Footer a{
     text-decoration: none;
     color: beige;
     background-color: transparent;
     cursor: pointer;
 }
-.Logo{
+.Footer .Logo{
     font-family: Signika,sans-serif;
     /* font-size: 2rem; */
     font-weight: 900;
     color: #fff;
     box-sizing: inherit;
 }
-img{
+.Footer img{
     vertical-align: middle;
     border-style: none;
     box-sizing: none;
@@ -54,7 +53,7 @@ img{
 .Footer .Footer-Menu{
     width: 20%;
 }
-.Footer-Menu ul{
+.Footer .Footer-Menu ul{
     margin-top: 0;
     margin-bottom: 1rem;
 }
