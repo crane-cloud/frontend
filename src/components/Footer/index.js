@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import './Footer.css';
 import LOGO from '../../assets/images/craneLogo.png';
 import Linkedin from '../../assets/images/linkedin.svg';
