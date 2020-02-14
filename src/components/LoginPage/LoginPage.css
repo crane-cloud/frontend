@@ -1,4 +1,15 @@
 .LoginPageContainer {
     background: #008ac1;
     height: 100vh;
+    color: #ffffff;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+.LoginContent {
+ justify-self: center;
+}
+
+.LoginContentHeading {
+  
 }
