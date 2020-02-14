@@ -1,19 +1,29 @@
 .InformationBar{
     width: 100%;
     background: #F8F7E5;
-    min-height: 2rem;
-    padding: 10px;
+    min-height: 4rem;
+    padding-top: 5px;
 }
 .InfoHeader{
-    float: right;
+    float: left;
     font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 24px;
     text-align: right;
-    padding-right: 20px;
+    margin-left: 20px;
+    padding: 10px;
     cursor: pointer;
 }
+.CreateButton{
+    float: right;
+    margin-right: 20px;
+}
+.InformationBar::after{
+    clear: float;
+    clear: both;
+}
+/* 
 .DropDownDiv{
     font-family: 'Roboto', sans-serif;
     font-style: normal;
@@ -26,7 +36,7 @@
     display: inline-block;
 }
 .NamespaceDropDown{
-    padding: 5px 16px;
+    padding: 5px 30px 5px 16px;
     border: 1px solid #000;
 }
 
@@ -55,4 +65,4 @@
 
 .DropDownDiv:hover .NamespaceDropDown {
     background-color: #f9f9f9;
-  }
+  } */
