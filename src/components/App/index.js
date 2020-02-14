@@ -3,18 +3,26 @@ import './App.css';
 import SideNav from '../SideNav';
 // import Content from '../ResourceCard/Example';
 import ClusterResources from '../ClusterResources/';
-import PrimaryButton from '../PrimaryButton/';
-import SecondaryButton from '../SecondaryButton/';
+import InputText from '../InputText/';
+import InputPassword from '../InputPassword/';
+
 
 function App() {
-  return <div className='Index'>
-    <div className='RowNav'></div>
+  return <div>
+    {/* <div className="Disposable"> */}
+      {/* <div><ClusterResources /></div> */}
+    {/* </div>
+    <Footer /> */}
+    <InputText
+      placeholder="Email Address"
+      // onChange={ this.handleChange } 
+      />
+    <InputPassword
+      placeholder="Password"
+      // onChange={ this.handleChange } 
+      />
 
-    <div className='RowMain'>
-      <div className='SideNave'><SideNav/></div>
-      <div className='Content'><div className="Disposable"><ClusterResources/></div></div>
-    </div>  
-  </div>;
+  </div>
 }
 
 export default App;
