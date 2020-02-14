@@ -18,7 +18,6 @@
 .Navigation > .NavLinks {
   align-self: flex-end;
   font-size: 18px;
-  height: 100%;
   float: right;
   max-width: 60%;
 }
@@ -49,6 +48,7 @@
   cursor: pointer;
   font-weight: normal;
   padding: 42px 15px;
+  height: 100%;
 }
 .Navigation .NavLinks .Showing{
   display: inline-block;
