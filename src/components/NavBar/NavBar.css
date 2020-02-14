@@ -49,7 +49,6 @@
   cursor: pointer;
   font-weight: normal;
   padding: 42px 15px;
-  height: 100%;
 }
 .Navigation .NavLinks .Showing{
   display: inline-block;
