@@ -1,0 +1,26 @@
+.MainSection {
+    background-color: #F1F1F1;
+}
+
+.MainSection .SiteSideNav{
+    /* position: fixed; */
+    float: left;
+    width: 20%;
+    /* display: inline; */
+}
+
+.MainSection .Content{
+    /* overflow: scroll; */
+    /* float: right; */
+    width: 80%;
+    float: left;
+    background-color: #F1F1F1;
+    
+}
+.MainSection .UpperBar{
+    height: 10%;
+}
+
+.MainSection LowerBar{
+    height: 90%;
+}

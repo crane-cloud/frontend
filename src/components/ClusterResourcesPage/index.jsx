@@ -5,14 +5,22 @@ import './ClusterResourcesPage.css';
 import NavBar from '../NavBar';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
+import ClusterResources from '../ClusterResources';
 
 const ClusterResourcesPage = () => (
   <>
     <NavBar />
     <div className="MainSection">
-      <SideNav />
+      <div className="SiteSideNav">
+        <SideNav />
+      </div>
       <div className="Content">
-        <InformationBar />
+        <div className="UpperBar">
+          <InformationBar />
+        </div>
+        <div className="LowerBar">
+          <ClusterResources />
+        </div>
       </div>
     </div>
   </>

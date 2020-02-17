@@ -4,32 +4,32 @@ import './ClusterResource.css';
 
 const resources = [
   {
-    'name': 'Nodes',
-    'resourceNumber': 7
+    name: 'Nodes',
+    resourceNumber: 7
   },
   {
-    'name': 'Secrets',
-    'resourceNumber': 3
+    name: 'Secrets',
+    resourceNumber: 3
   },
   {
-    'name': 'Deployments',
-    'resourceNumber': 11
+    name: 'Deployments',
+    resourceNumber: 11
   },
   {
-    'name': 'Pods',
-    'resourceNumber': 9
+    name: 'Pods',
+    resourceNumber: 9
   },
   {
-    'name': 'Volumes',
-    'resourceNumber': 5
+    name: 'Volumes',
+    resourceNumber: 5
   },
   {
-    'name': 'Daemon Sets',
-    'resourceNumber': 0
+    name: 'Daemon Sets',
+    resourceNumber: 0
   },
   {
-    'name': 'Replica',
-    'resourceNumber': 2
+    name: 'Replica',
+    resourceNumber: 2
   }
 ];
 
@@ -37,11 +37,11 @@ const resources = [
 function ClusterResources() {
   return (
     <div className="ClusterContainer">
-      {resources.map((resource) =>
+      {resources.map((resource) => (
         <div className="ClusterItem">
           <ResourceCard title={resource.name} resourceCount={resource.resourceNumber} />
         </div>
-      )}
+      ))}
     </div>
   );
 }
