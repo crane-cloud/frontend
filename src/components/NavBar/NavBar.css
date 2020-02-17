@@ -17,7 +17,7 @@
 
 .Navigation > .NavLinks {
   align-self: flex-end;
-  font-size: 18px;
+  font-size: 16px;
   float: right;
   max-width: 60%;
 }
@@ -103,7 +103,7 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 .Navigation .DropdownIcon img{
-  width: 50px;
+  width: 40px;
   vertical-align: middle;
   border-style: none;
   box-sizing: none;
