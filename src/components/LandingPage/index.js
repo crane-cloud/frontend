@@ -18,7 +18,9 @@ const LandingPage = () => (
         <InfrastrucurePic className="LandingPageInfrastructurePic" />
       </div>
     </div>
-    <LandingFooter />
+    <div className="RegisterPageFooter">
+      <LandingFooter />
+    </div>
   </div>
 );
 

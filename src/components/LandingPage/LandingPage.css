@@ -1,7 +1,9 @@
 .LandingPageMain {
+  background: #008AC1;
   height: 100vh;
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
+  /* height: 100vh; */
+  display: flex;
+  flex-direction: column;
 }
 
 .LandingPageMainContent {
@@ -13,7 +15,7 @@
 
 .LandingPageMainContentInfo {
   /* margin: 2rem; */
-  padding: 4rem;
+  padding: 3rem;
 }
 
 .LandingPageMainContentInfo h1 {
@@ -30,7 +32,12 @@
 
 .LandingPageMainContentImg {
   width: 50%;
-  padding: 4rem;
+  padding: 3rem;
+}
+
+.LandingPageFooter {
+  position: relative;
+  margin-top: 0;
 }
 
 @media only screen and (max-width: 640px) {

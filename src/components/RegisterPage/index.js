@@ -40,7 +40,9 @@ export default class RegisterPage extends Component {
 
           </div>
         </div>
-        <LandingFooter />
+        <div className="RegisterPageFooter">
+          <LandingFooter />
+        </div>
       </div>
     );
   }

@@ -2,16 +2,12 @@
     background: #008ac1;
     height: 100vh;
     color: #ffffff;
-    display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
+    display: flex;
+    flex-direction: column;
 }
 
 .LoginContent {
- justify-self: center;
-}
-
-.LoginContentHeading {
-  
+ align-self: center;
 }
 
 .LoginContentInputs {
@@ -32,3 +28,9 @@ a.LoginContentLink {
 .LoginContentBottomLink {
   margin-top: 1rem;
 }
+
+.LoginPageFooter {
+  position: relative;
+  margin-top: 5rem;
+}
+
