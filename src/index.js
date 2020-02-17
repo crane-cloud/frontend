@@ -6,7 +6,6 @@ import store from './redux/store';
 import { saveState } from './helpers/localStorage';
 import Routes from './router';
 
-
 // update localstorage whenever state changes
 store.subscribe(() => {
   saveState(store.getState());
