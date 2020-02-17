@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../Header';
 import LandingFooter from '../LandingFooter';
 import InputText from '../InputText';
@@ -27,6 +28,11 @@ class LoginPage extends React.Component {
             <InputPassword
               placeholder='Password'
             />
+
+            <div className="LoginLinkContainer">
+              <Link to='/forgot-password' className="LoginContentLink">Forgot your password?</Link>
+            </div>
+            
           </div>
         </div>
         <LandingFooter />
