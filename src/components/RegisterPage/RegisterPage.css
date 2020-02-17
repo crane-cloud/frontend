@@ -1,0 +1,34 @@
+.RegisterPageContainer {
+    background: #008ac1;
+    height: 100vh;
+    color: #ffffff;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+.RegisterContent {
+ justify-self: center;
+}
+
+.RegisterContentHeading {
+  
+}
+
+.RegisterContentInputs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.RegisterLinkContainer {
+  display: inline-block;
+}
+
+a.RegisterContentLink {
+  color: #F7B21F;
+  border-bottom: 1px solid #F7B21F;
+}
+
+.RegisterContentBottomLink {
+  margin-top: 1rem;
+}
