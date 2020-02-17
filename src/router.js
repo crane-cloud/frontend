@@ -1,16 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import AdminDashboard from './components/AdminDashboard/';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import App from './components/App';
+import LoginPage from './components/LoginPage';
 
 const Routes = () => (
-  <Router>
+  <BrowserRouter>
     <Switch>
-      <Route exact path="/">
-        <AdminDashboard />
-        {/* <NavBar /> */}
-      </Route>
+      <Route exact path="/" component={App} />
+      <Route path="/login" component={LoginPage} />
     </Switch>
-  </Router>
+  </BrowserRouter>
 );
 
 export default Routes;
