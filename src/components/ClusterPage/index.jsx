@@ -1,17 +1,20 @@
 import React from 'react';
 import './ClusterPage.css';
-import Footer from '../Footer';
-import ClusterResources from '../ClusterResources';
+import InformationBar from '../InformationBar';
+import ClustersList from '../ClustersList';
+import NavBar from '../NavBar';
 
 function ClusterPage() {
   return (
     <div className="Page">
-      <div className="TopRow" />
+      <div className="TopRow" >
+        <NavBar />
+        <InformationBar />
+      </div>
       <div className="MainRow">
-        <ClusterResources />
+        <ClustersList />
       </div>
       <div className="FooterRow">
-        <Footer />
       </div>
     </div>
 

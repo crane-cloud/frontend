@@ -1,11 +1,10 @@
 .Page{
     margin: 0;
+    background: #F1F1F1;
 }
 
 .TopRow{
-    height: 3.5rem;
     width: 100%;
-    background-color: blue;
 }
 
 .MainRow{
