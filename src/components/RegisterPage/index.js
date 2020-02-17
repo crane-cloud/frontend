@@ -15,26 +15,28 @@ export default class RegisterPage extends Component {
         <Header />
         <div className="RegisterContent">
           <div className="RegisterContentHeading">
-            <h1>Register to the cloud</h1>
+            <h1>Create an account</h1>
           </div>
           <div className="RegisterContentInputs">
             {/* Input fields */}
+            <InputText
+              placeholder='Name'
+            />
             <InputText
               placeholder='Email Address'
             />
             <InputPassword
               placeholder='Password'
             />
+            <InputPassword
+              placeholder='Repeat Password'
+            />
 
-            <div className="RegisterLinkContainer">
-              <Link to='/forgot-password' className="RegisterContentLink">Forgot your password?</Link>
+            <div className="RegisterContentBottomLink RegisterLinkContainer">
+              I agree to Crane Cloud&apos;s&nbsp;&nbsp;<Link to='/register' className="RegisterContentLink">Terms of service.</Link>
             </div>
 
             <PrimaryButton label="Register" />
-
-            <div className="RegisterContentBottomLink RegisterLinkContainer">
-              Not signed up?  <Link to='/register' className="RegisterContentLink">Create an account.</Link>
-            </div>
 
           </div>
         </div>
