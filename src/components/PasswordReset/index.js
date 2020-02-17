@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import Header from '../Header';
 import LandingFooter from '../LandingFooter';
 import InputText from '../InputText';
-import InputPassword from '../InputPassword';
 import PrimaryButton from '../PrimaryButton';
 import './PasswordReset.css';
 
@@ -14,25 +13,19 @@ export default class PasswordReset extends React.Component {
         <Header />
         <div className="ResetPasswordContent">
           <div className="ResetPasswordContentHeading">
-            <h1>ResetPassword to the cloud</h1>
+            <h1>Reset password</h1>
+            <p>Enter your email address so that we can send you a link to reset your password.</p>
           </div>
           <div className="ResetPasswordContentInputs">
             {/* Input fields */}
             <InputText
               placeholder='Email Address'
             />
-            <InputPassword
-              placeholder='Password'
-            />
 
-            <div className="ResetPasswordLinkContainer">
-              <Link to='/forgot-password' className="ResetPasswordContentLink">Forgot your password?</Link>
-            </div>
-
-            <PrimaryButton label="ResetPassword" />
+            <PrimaryButton label="RESET" />
 
             <div className="ResetPasswordContentBottomLink ResetPasswordLinkContainer">
-                            Not signed up?  <Link to='/register' className="ResetPasswordContentLink">Create an account.</Link>
+              <Link to='/login' className="ResetPasswordContentLink">Back to Login.</Link>
             </div>
 
           </div>
