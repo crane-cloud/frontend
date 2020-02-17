@@ -28,3 +28,7 @@ a.LoginContentLink {
   color: #F7B21F;
   border-bottom: 1px solid #F7B21F;
 }
+
+.LoginContentBottomLink {
+  margin-top: 1rem;
+}
