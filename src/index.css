@@ -1,3 +1,90 @@
 body{
     margin: 0;
 }
+@font-face {
+  font-family: Roboto;
+  src: url("./assets/fonts/Roboto-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: Roboto;
+  font-weight: 200;
+  src: url("./assets/fonts/Roboto-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: Roboto;
+  font-weight: 500;
+  src: url("./assets/fonts/Roboto-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: Roboto;
+  font-weight: 900;
+  src: url("./assets/fonts/Roboto-Black.ttf") format("truetype");
+}
+
+body {
+  margin: 0;
+  color: #000;
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+}
+
+textarea, input, select, button {
+  font-family: inherit;
+  font-size: inherit;
+  margin: 0;
+}
+
+textarea:focus, input:focus, select:focus, button:focus {
+  outline: none;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.tiny {
+  font-weight: 200;
+}
+
+.bold {
+  font-weight: 500;
+}
+
+.extra-bold {
+  font-weight: 900;
+}
+
+a {
+  text-decoration: none;
+}
+
+textarea,
+input,
+select,
+button {
+  font-family: inherit;
+  font-size: inherit;
+  border-radius: 0;
+  margin: 0;
+}
+
+textarea:focus,
+input:focus,
+select:focus,
+button:focus {
+  outline: none;
+}
+
+img {
+  display: block;
+}
+
+input[type="text"],
+input[type="search"],
+input[type="email"],
+input[type="tel"],
+input[type="password"] {
+  box-sizing: border-box;
+}
