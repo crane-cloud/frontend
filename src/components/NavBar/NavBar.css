@@ -1,5 +1,5 @@
 .Navigation{
-    background-color: #99D2E9;
+    background-color: #008ac1;
     color: white;
     font-family: 'Roboto', sans-serif;
     line-height: 24px;
@@ -11,13 +11,13 @@
     justify-content: space-between;
 }
 
-/* .Navigation > .Nav-btn {
-  display: none;
-} */
+.Navigation .DropdownIcon .DownIcon {
+  width: 1.4rem;
+}
 
 .Navigation > .NavLinks {
   align-self: flex-end;
-  font-size: 18px;
+  font-size: 16px;
   float: right;
   max-width: 60%;
 }
@@ -60,7 +60,7 @@
 }
 .Navigation .UserProfileName strong{
   padding-bottom: 4rem;
-  color: black;
+  color: #fff;
 }
 .UserProfileName .NameUser{
   display: inherit;
@@ -103,7 +103,7 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 .Navigation .DropdownIcon img{
-  width: 43px;
+  width: 40px;
   vertical-align: middle;
   border-style: none;
   box-sizing: none;

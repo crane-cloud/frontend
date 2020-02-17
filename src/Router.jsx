@@ -1,20 +1,16 @@
-import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
-import AdminDashboard from "./components/AdminDashboard";
+import React from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import AdminDashboard from './components/AdminDashboard';
 // import NavBar from './components/NavBar/';
-import ClusterResourcesPage from "./components/ClusterResourcesPage";
 
-const Routes = () => (
+const routes = () => (
   <BrowserRouter>
     <Switch>
       <Route exact path="/">
         <AdminDashboard />
       </Route>
-      <Route exact path="/resources">
-        <ClusterResourcesPage />
-      </Route>
     </Switch>
   </BrowserRouter>
 );
 
-export default Routes;
+export default routes;
