@@ -3,6 +3,7 @@ import React from 'react';
 import './App.css';
 import SideNav from '../SideNav';
 import ClusterResources from '../ClusterResources';
+import InformationBar from '../InformationBar';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           </div>
         </div>
       </div>
+      <InformationBar />
     </div>
   );
 }
