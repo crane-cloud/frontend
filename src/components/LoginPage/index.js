@@ -1,6 +1,8 @@
 import React from 'react';
 import Header from '../Header';
 import LandingFooter from '../LandingFooter';
+import InputText from '../InputText';
+import InputPassword from '../InputPassword';
 import './LoginPage.css';
 
 class LoginPage extends React.Component {
@@ -18,7 +20,13 @@ class LoginPage extends React.Component {
             <h1>Login to the cloud</h1>
           </div>
           <div className="LoginContentInputs">
-            hello
+            {/* Input fields */}
+            <InputText
+              placeholder='Email Address'
+            />
+            <InputPassword
+              placeholder='Password'
+            />
           </div>
         </div>
         <LandingFooter />
