@@ -11,9 +11,9 @@
     justify-content: space-between;
 }
 
-/* .Navigation > .Nav-btn {
-  display: none;
-} */
+.Navigation .DropdownIcon .DownIcon {
+  width: 1.4rem;
+}
 
 .Navigation > .NavLinks {
   align-self: flex-end;
@@ -60,7 +60,7 @@
 }
 .Navigation .UserProfileName strong{
   padding-bottom: 4rem;
-  color: black;
+  color: #fff;
 }
 .UserProfileName .NameUser{
   display: inherit;

@@ -37,7 +37,7 @@ const NavBar = () =>
             </div>
             <div className="NavDropdown Drop Profile">
 
-              <div className="DropdownIcon Showing">
+              <div className="DropdownIcon">
                 <img src={DOWN} size="1x" className='DownIcon' alt="DOWN"/>
               </div>
               <div className="DropdownContent">
