@@ -22,3 +22,7 @@ header.Header {
   padding: 1rem 3rem;
   margin-left: 2rem;
 }
+
+/* remove focus from logo link - mozilla */
+.LogoLink:focus {outline:none;}
+.LogoLink::-moz-focus-inner {border:0;}
