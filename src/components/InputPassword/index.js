@@ -6,6 +6,11 @@ const InputPassword = props => (
     className="InputPassword"
     type="password"
     placeholder={`${props.placeholder} *`}
+    name={props.name}
+    value={props.value}
+    onChange={e => {
+      props.onChange(e);
+    }}
   />
 );
 
