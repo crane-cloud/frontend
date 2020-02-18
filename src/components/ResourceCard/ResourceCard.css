@@ -38,8 +38,8 @@
     border-bottom: 1px solid rgba(0,0,0,.125);
 }
   
-.Card .CardHeader:hover {
+.Card:hover {
     opacity: 0.7;
-    color: #008ac1;
+    border: 1px solid #F7B21F;
 }
   
