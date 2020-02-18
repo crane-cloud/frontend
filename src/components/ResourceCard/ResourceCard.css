@@ -1,6 +1,5 @@
 .Card {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    max-width: 300px;
+    max-width: 338px;
     margin: auto;
     text-align: left;
     font-family: arial;
@@ -12,13 +11,15 @@
     background-clip: border-box;
     border: 1px solid rgba(0,0,0,.125);
     border-radius: .25rem;
+    height: 200px;
 }
   
 .ResourceDigit {
     /* color: grey; */
     flex: 1 1 auto;
     padding: 1.25rem;
-    font-size: 22px;
+    font-size: 32px;
+    font-weight: normal;
     box-sizing: border-box;
 }
 .Card .CardHeader {
@@ -31,7 +32,7 @@
     text-align: left;
     cursor: pointer;
     /* width: 100%; */
-    font-size: 18px;
+    font-size: 16px;
     border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
     padding: .75rem 1.25rem;
     margin-bottom: 0;
