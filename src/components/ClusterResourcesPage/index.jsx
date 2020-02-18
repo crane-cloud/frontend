@@ -8,6 +8,7 @@ import SideNav from '../SideNav';
 import ClusterResources from '../ClusterResources';
 
 const ClusterResourcesPage = () => (
+    
   <>
     <NavBar />
     <div className="MainSection">
