@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import saveUser from '../../redux/actions/saveUser';
+import { connect } from 'react-redux';
 import Header from '../Header';
 import LandingFooter from '../LandingFooter';
 import InputText from '../InputText';
@@ -37,6 +39,7 @@ class LoginPage extends React.Component {
       .post(`${API_BASE_URL}/users/login`, userCredentials)
       .then(res => {
         console.log(res);
+        this.props.saveUser(res.data.data);
       })
       .catch(err => {
         console.log(err);
@@ -91,4 +94,15 @@ class LoginPage extends React.Component {
   }
 }
 
-export default LoginPage;
+const mapStateToProps = state => {
+  return { user: state.user };
+};
+
+const mapDispatchToProps = {
+  saveUser: saveUser
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(LoginPage));
