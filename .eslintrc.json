@@ -26,7 +26,8 @@
   "react/button-has-type": 0,
   "no-underscore-dangle": 0,
   "comma-dangle": 0,
-  "react/prop-types": "warn",
+  "react/prop-types": ["error", { "ignore": ["my_prop_key_that_uses_object_map"]}],
+  // "react/prop-types": "warn",
   "indent": [
     "error",
     2

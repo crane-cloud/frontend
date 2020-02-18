@@ -4,47 +4,18 @@ import { connect } from 'react-redux';
 import ResourceCard from '../ResourceCard';
 import getClusterResourcesCount from '../../redux/actions/ClusterResourcesActions';
 import './ClusterResource.css';
-
-const resources = [
-  {
-    name: 'Nodes',
-    resourceNumber: 7
-  },
-  {
-    name: 'Secrets',
-    resourceNumber: 3
-  },
-  {
-    name: 'Deployments',
-    resourceNumber: 11
-  },
-  {
-    name: 'Pods',
-    resourceNumber: 9
-  },
-  {
-    name: 'Volumes',
-    resourceNumber: 5
-  },
-  {
-    name: 'Daemon Sets',
-    resourceNumber: 0
-  },
-  {
-    name: 'Replica',
-    resourceNumber: 2
-  }
-];
+import { bindActionCreators } from 'redux';
 
 
 class ClusterResources extends React.Component {
   componentDidMount() {
-    const { fetchClusterResources } = this.props;
-    fetchClusterResources();
+    const { getClusterResourcesCount } = this.props;
+    getClusterResourcesCount();
   }
 
   render() {
     const { resource_count } = this.props;
+    console.log(resource_count);
     return (
       <div className="ClusterContainer">
         {resource_count.map((resource) => (
@@ -74,11 +45,9 @@ export const mapStateToProps = (state) => {
   return { isRetrieving, resource_count };
 };
 
-export const mapDispatchToProps = (dispatch) => ({
-  getArticles: () => {
-    dispatch(getClusterResourcesCount());
-  }
-});
+export const mapDispatchToProps = (dispatch) => bindActionCreators({
+  getClusterResourcesCount: getClusterResourcesCount
+}, dispatch);
 
 export default connect(
   mapStateToProps,
