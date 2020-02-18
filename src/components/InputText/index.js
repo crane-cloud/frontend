@@ -6,6 +6,11 @@ const InputText = (props) => (
     className="InputText"
     type="text"
     placeholder={`${props.placeholder} *`}
+    name={props.name}
+    value={props.value}
+    onChange={e => {
+      props.onChange(e);
+    }}
   />
 );
 

@@ -1,16 +1,46 @@
 import React from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Header from '../Header';
 import LandingFooter from '../LandingFooter';
 import InputText from '../InputText';
 import InputPassword from '../InputPassword';
 import PrimaryButton from '../PrimaryButton';
+import { API_BASE_URL } from '../../config';
 import './LoginPage.css';
 
 class LoginPage extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      email: '',
+      password: ''
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  handleSubmit() {
+    const userCredentials = {
+      email: this.state.email,
+      password: this.state.password
+    };
+
+    axios
+      .post(`${API_BASE_URL}/users/login`, userCredentials)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   render() {
@@ -25,16 +55,29 @@ class LoginPage extends React.Component {
             {/* Input fields */}
             <InputText
               placeholder='Email Address'
+              name='email'
+              value={this.state.email}
+              onChange={e => {
+                this.handleChange(e);
+              }}
             />
             <InputPassword
               placeholder='Password'
+              name='password'
+              value={this.state.password}
+              onChange={e => {
+                this.handleChange(e);
+              }}
             />
 
             <div className="LoginLinkContainer">
               <Link to='/forgot-password' className="LoginContentLink">Forgot your password?</Link>
             </div>
 
-            <PrimaryButton label="login" />
+            <PrimaryButton
+              label="login"
+              onClick={this.handleSubmit}
+            />
 
             <div className="LoginContentBottomLink LoginLinkContainer">
               Not signed up?  <Link to='/register' className="LoginContentLink">Create an account.</Link>
