@@ -10,7 +10,17 @@ import './LoginPage.css';
 class LoginPage extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      email: '',
+      password: ''
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
   }
 
   render() {
@@ -25,9 +35,19 @@ class LoginPage extends React.Component {
             {/* Input fields */}
             <InputText
               placeholder='Email Address'
+              name='email'
+              value={this.state.email}
+              onChange={e => {
+                this.handleChange(e);
+              }}
             />
             <InputPassword
               placeholder='Password'
+              name='password'
+              value={this.state.password}
+              onChange={e => {
+                this.handleChange(e);
+              }}
             />
 
             <div className="LoginLinkContainer">
