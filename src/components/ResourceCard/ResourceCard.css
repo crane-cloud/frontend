@@ -40,5 +40,6 @@
   
 .Card .CardHeader:hover {
     opacity: 0.7;
+    color: #008ac1;
 }
   

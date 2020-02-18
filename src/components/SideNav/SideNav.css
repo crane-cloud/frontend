@@ -52,7 +52,9 @@
     cursor: pointer;
 }
 
-
+.List{
+    height: 120vh;
+}
 .SideFooter{
     position: fixed;
     overflow: hidden;
