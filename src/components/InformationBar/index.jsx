@@ -6,7 +6,7 @@ function InformationBar() {
   return (
     <div className="InformationBar">
 
-      <div className="InfoHeader">Header</div>
+      <div className="InfoHeader">Cluster Resources</div>
       <div className="CreateButton"><CreateButton /></div>
       {/* <div className="DropDownDiv">
         <span className="NamespaceDropDown">name space</span>
