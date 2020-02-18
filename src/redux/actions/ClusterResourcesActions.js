@@ -21,7 +21,7 @@ export const getResourcesFail = (error) => ({
 const getClusterResourcesCount = () => (dispatch) => {
   dispatch(startFetchingResources());
 
-  return axios.get('https://ah-backend-realers-staging.herokuapp.com/api/articles/')
+  return axios.get('http://crane-mak-w1.cranecloud.io:30895/clusters/')
     .then((response) => dispatch(getResourcesSuccess(response)))
     .catch((error) => {
       dispatch(getResourcesFail(error));
