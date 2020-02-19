@@ -13,7 +13,7 @@ export default class PasswordReset extends React.Component {
         <Header />
         <div className="ResetPasswordContent">
           <div className="ResetPasswordContentHeading">
-            <h1>Reset password</h1>
+            <h1>Password Reset</h1>
             <p>Enter your email address so that we can send you a link to reset your password.</p>
           </div>
           <div className="ResetPasswordContentInputs">
