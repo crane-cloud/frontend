@@ -5,7 +5,7 @@ import {
 } from '../actions/actionTypes';
 
 const initialState = {
-  resource_count: [],
+  resourceCount: [],
   isRetrieving: false,
   message: 'Cluster Resources Not Available'
 };
@@ -15,7 +15,7 @@ const ClusterResourcesReducer = (state = initialState, action) => {
   case GET_RESOURCES_COUNT:
     return {
       ...state,
-      resource_count: action.payload,
+      resourceCount: action.payload,
       isRetrieving: false,
       message: 'All Cluster Resources fetched'
     };

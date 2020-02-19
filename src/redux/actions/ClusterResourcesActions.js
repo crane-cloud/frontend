@@ -8,7 +8,7 @@ export const startFetchingResources = () => ({
 
 export const getResourcesSuccess = (response) => ({
   type: GET_RESOURCES_COUNT,
-  payload: response.data.data.resource_count,
+  payload: response.resource_count.data.clusters,
 });
 
 export const getResourcesFail = (error) => ({
@@ -22,7 +22,7 @@ export const getResourcesFail = (error) => ({
 const getClusterResourcesCount = () => (dispatch) => {
   dispatch(startFetchingResources());
 
-  return axios.get('http://crane-mak-w1.cranecloud.io:30895/clusters/')
+  return axios.get('http://crane-mak-w1.cranecloud.io:30895/clusters')
     .then((response) => dispatch(getResourcesSuccess(response)))
     .catch((error) => {
       dispatch(getResourcesFail(error));

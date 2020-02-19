@@ -1,24 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import ResourceCard from '../ResourceCard';
 import getClusterResourcesCount from '../../redux/actions/ClusterResourcesActions';
 import './ClusterResource.css';
-import { bindActionCreators } from 'redux';
 
 
 class ClusterResources extends React.Component {
+
   componentDidMount() {
     const { getClusterResourcesCount } = this.props;
     getClusterResourcesCount();
   }
 
   render() {
-    const { resource_count } = this.props;
-    console.log(resource_count);
+    const { resourceCount } = this.props;
+    console.log(resourceCount);
     return (
       <div className="ClusterContainer">
-        {resource_count.map((resource) => (
+        {resourceCount.map((resource) => (
           <div className="ClusterItem">
             <ResourceCard title={resource.name} resourceCount={resource.resourceNumber} />
           </div>
@@ -28,7 +29,7 @@ class ClusterResources extends React.Component {
   }
 }
 ClusterResources.propTypes = {
-  allResources: PropTypes.shape({
+  resourceCount: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string
   }),
@@ -36,17 +37,17 @@ ClusterResources.propTypes = {
 };
 
 ClusterResources.defaultProps = {
-  allResources: [],
+  resourceCount: [],
   isRetrieving: false
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, resource_count } = state.ClusterResourcesReducer;
-  return { isRetrieving, resource_count };
+  const { isRetrieving, resourceCount } = state.ClusterResourcesReducer;
+  return { isRetrieving, resourceCount };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  getClusterResourcesCount: getClusterResourcesCount
+  getClusterResourcesCount
 }, dispatch);
 
 export default connect(
