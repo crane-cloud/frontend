@@ -15,8 +15,11 @@ function ClusterPage() {
         <ClustersList />
       </div>
       <div className="FooterRow">
+        <p>Copyright © 2020 Crane Cloud.
+All Rights Reserved.</p>
       </div>
     </div>
+   
 
   );
 }
