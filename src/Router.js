@@ -1,6 +1,7 @@
-import React from "react";
+import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import AdminDashboard from './components/AdminDashboard/';
+import SideNav from './components/SideNav';
 // import NavBar from './components/NavBar/';
 
 const Routes = () => (
@@ -9,6 +10,9 @@ const Routes = () => (
       <Route exact path="/">
         <AdminDashboard />
         {/* <NavBar /> */}
+      </Route>
+      <Route exact path="/side">
+        <SideNav />
       </Route>
     </Switch>
   </BrowserRouter>

@@ -56,8 +56,6 @@
 
 
 .SideFooter{
-    position: fixed;
-    overflow: hidden;
     height: 30px;
     font-family: Roboto, sans-serif;
     font-style: normal;
