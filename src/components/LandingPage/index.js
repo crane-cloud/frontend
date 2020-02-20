@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PrimaryButton from '../PrimaryButton';
 import Header from '../Header';
 import LandingFooter from '../LandingFooter';
@@ -13,7 +14,7 @@ const LandingPage = () => (
         <div>
           <h1 className="uppercase extra-bold">managed kubernetes platform</h1>
           <h3 className="bold">Automated container deployment, scaling and management.</h3>
-          <PrimaryButton label="get started" />
+          <Link to='/register'><PrimaryButton label="get started" /></Link>
         </div>
       </div>
       <div className="LandingPageMainContentImg">
