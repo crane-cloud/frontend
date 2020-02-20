@@ -36,6 +36,7 @@ export default class RegisterPage extends Component {
     const userData = {
       name: this.state.name,
       email: this.state.email,
+
       password: this.state.password,
       verificationCode: this.state.verificationCode
     };
@@ -47,7 +48,7 @@ export default class RegisterPage extends Component {
       })
       .catch(error => {
         console.log(error);
-      }); 
+      });
   }
 
 
@@ -96,9 +97,7 @@ export default class RegisterPage extends Component {
             <div className="RegisterContentBottomLink RegisterLinkContainer">
               I agree to Crane Cloud&apos;s&nbsp;&nbsp;<Link to='/register' className="RegisterContentLink">Terms of service.</Link>
             </div>
-
-            <PrimaryButton label="Register" onClick={this.handleSubmit}  />
-
+            <PrimaryButton label="Register" onClick={this.handleSubmit} />
           </div>
         </div>
         <div className="RegisterPageFooter">
