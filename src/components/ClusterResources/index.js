@@ -17,9 +17,11 @@ class ClusterResources extends React.Component {
   render() {
     const { resourceCount } = this.props;
     console.log(resourceCount);
+    console.log(resourceCount.data);
+    console.log(resourceCount.data.clusters);
     return (
       <div className="ClusterContainer">
-        {resourceCount.map((resource) => (
+        {resourceCount.data.clusters.map((resource) => (
           <div className="ClusterItem">
             <ResourceCard title={resource.name} resourceCount={resource.resourceNumber} />
           </div>
@@ -29,10 +31,7 @@ class ClusterResources extends React.Component {
   }
 }
 ClusterResources.propTypes = {
-  resourceCount: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string
-  }),
+  resourceCount: PropTypes.arrayOf(PropTypes.object),
   isRetrieving: PropTypes.bool
 };
 
