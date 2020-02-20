@@ -30,7 +30,9 @@ export default class PasswordReset extends React.Component {
 
           </div>
         </div>
-        <LandingFooter />
+        <div className="PasswordResetPageFooter">
+          <LandingFooter />
+        </div>
       </div>
     );
   }
