@@ -1,11 +1,5 @@
-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  margin-bottom: 2rem;
-}
-
-.LandingFooter {
+footer.LandingFooter {
   color: white;
   text-align: center;
+  padding-bottom: 1rem;
 }

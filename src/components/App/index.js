@@ -8,4 +8,5 @@ const App = () => (
     <LandingPage />
   </div>
 );
+
 export default App;
