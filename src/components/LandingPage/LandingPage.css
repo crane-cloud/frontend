@@ -1,0 +1,40 @@
+.LandingPageMain {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+.LandingPageMainContent {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  justify-items: center;
+}
+
+
+.LandingPageMainContentInfo {
+  /* margin: 2rem; */
+  padding: 4rem;
+}
+
+.LandingPageMainContentInfo h1 {
+  font-size: 32px;
+  color: #F7B21F;
+}
+
+.LandingPageMainContentInfo h3 {
+  color: #ffffff;
+  line-height: 37px;
+  font-size: 32px;
+  width: 80%;
+}
+
+.LandingPageMainContentImg {
+  width: 50%;
+  padding: 4rem;
+}
+
+@media only screen and (max-width: 640px) {
+  .LandingPageMainContentImg {
+    display: none;
+  }
+}
