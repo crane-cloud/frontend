@@ -19,11 +19,12 @@ export default class RegisterPage extends Component {
       email: '',
       password: '',
       passwordConfirm: '',
-      verificationCode:''
+      verificationCode: ''
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.getCode = this.getCode.bind(this);
   }
 
   handleOnChange(e) {
@@ -47,9 +48,12 @@ export default class RegisterPage extends Component {
       })
       .catch(error => {
         console.log(error);
-      }); 
+      });
   }
 
+  getCode() {
+    console.log('Getting veirifcation code...');
+  }
 
   render() {
     return (
@@ -74,12 +78,17 @@ export default class RegisterPage extends Component {
               value={this.state.email}
               onChange={this.handleOnChange}
             />
-            <InputText
-              placeholder='Verification Code'
-              name='verificationCode'
-              value={this.state.verificationCode}
-              onChange={this.handleOnChange}
-            />
+            <div className="VerificationCodeInput">
+              <InputText
+                placeholder='Verification Code'
+                name='verificationCode'
+                value={this.state.verificationCode}
+                onChange={this.handleOnChange}
+              />
+              <div className="VerificationGetCodeBtnSection">
+                <div className="VerificationGetCodeBtn" onClick={this.getCode}>get code</div>
+              </div>
+            </div>
             <InputPassword
               placeholder='Password'
               name='password'
@@ -97,7 +106,7 @@ export default class RegisterPage extends Component {
               I agree to Crane Cloud&apos;s&nbsp;&nbsp;<Link to='/register' className="RegisterContentLink">Terms of service.</Link>
             </div>
 
-            <PrimaryButton label="Register" onClick={this.handleSubmit}  />
+            <PrimaryButton label="Register" onClick={this.handleSubmit} />
 
           </div>
         </div>
