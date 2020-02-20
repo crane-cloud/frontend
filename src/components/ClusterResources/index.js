@@ -16,14 +16,12 @@ class ClusterResources extends React.Component {
 
   render() {
     const { resourceCount } = this.props;
-    console.log(resourceCount);
-    console.log(resourceCount.data);
-    console.log(resourceCount.data.clusters);
+
     return (
       <div className="ClusterContainer">
-        {resourceCount.data.clusters.map((resource) => (
+        {resourceCount.resource_count.map((resource) => (
           <div className="ClusterItem">
-            <ResourceCard title={resource.name} resourceCount={resource.resourceNumber} />
+            <ResourceCard title={resource.name} resourceCount={resource.count} />
           </div>
         ))}
       </div>

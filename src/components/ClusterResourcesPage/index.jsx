@@ -13,7 +13,7 @@ const ClusterResourcesPage = () => (
     <NavBar />
     <div className="MainSection">
       <div className="SiteSideNav">
-        {/* <SideNav /> */}
+        <SideNav />
       </div>
       <div className="Content">
         <div className="UpperBar">
