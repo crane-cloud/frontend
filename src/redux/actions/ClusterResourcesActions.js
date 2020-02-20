@@ -9,7 +9,7 @@ export const startFetchingResources = () => ({
 export const getResourcesSuccess = (response) => (
   {
     type: GET_RESOURCES_COUNT,
-    payload: response.data.data,
+    payload: response.data.data.resource_count,
   });
 
 export const getResourcesFail = (error) => ({
