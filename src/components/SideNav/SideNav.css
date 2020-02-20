@@ -38,6 +38,7 @@
     cursor: pointer;
     padding-left: 18px;
     text-transform: uppercase;
+    display: block;
 }
 
 .SubListItem{
@@ -50,6 +51,7 @@
     color: #99D2E9;
     padding: 8px 0px 8px 20px;
     cursor: pointer;
+    display: block;
 }
 
 
