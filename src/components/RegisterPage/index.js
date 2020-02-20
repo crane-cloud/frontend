@@ -6,6 +6,7 @@ import LandingFooter from '../LandingFooter';
 import InputText from '../InputText';
 import InputPassword from '../InputPassword';
 import PrimaryButton from '../PrimaryButton';
+import Spinner from '../SpinnerComponent';
 import { API_BASE_URL } from '../../config';
 
 import './RegisterPage.css';
@@ -19,7 +20,9 @@ export default class RegisterPage extends Component {
       email: '',
       password: '',
       passwordConfirm: '',
-      verificationCode: ''
+      verificationCode: '',
+      codeLoading: false,
+      loading: false
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -52,6 +55,9 @@ export default class RegisterPage extends Component {
   }
 
   getCode() {
+    if (!this.state.codeLoading) {
+      this.setState({ codeLoading: true });
+    }
     console.log('Getting veirifcation code...');
   }
 
@@ -86,7 +92,10 @@ export default class RegisterPage extends Component {
                 onChange={this.handleOnChange}
               />
               <div className="VerificationGetCodeBtnSection">
-                <div className="VerificationGetCodeBtn" onClick={this.getCode}>get code</div>
+                {!this.state.codeLoading ? (
+                  <div className="VerificationGetCodeBtn" onClick={this.getCode}>get code</div>
+                ) : <Spinner />
+                }
               </div>
             </div>
             <InputPassword
