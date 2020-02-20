@@ -18,11 +18,12 @@ export default class RegisterPage extends Component {
       name: '',
       email: '',
       password: '',
-      passwordConfirm: ''
+      passwordConfirm: '',
+      verificationCode:''
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
-     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleOnChange(e) {
@@ -35,7 +36,8 @@ export default class RegisterPage extends Component {
     const userData = {
       name: this.state.name,
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+      verificationCode: this.state.verificationCode
     };
 
     axios
@@ -70,6 +72,12 @@ export default class RegisterPage extends Component {
               placeholder='Email Address'
               name='email'
               value={this.state.email}
+              onChange={this.handleOnChange}
+            />
+            <InputText
+              placeholder='Verification Code'
+              name='verificationCode'
+              value={this.state.verificationCode}
               onChange={this.handleOnChange}
             />
             <InputPassword
