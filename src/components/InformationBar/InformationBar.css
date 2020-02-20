@@ -15,6 +15,17 @@
     padding: 10px;
     cursor: pointer;
 }
+.LeftHeader{
+    float: right;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    text-align: right;
+    margin-right: 20px;
+    padding: 10px;
+    cursor: pointer;
+}
 .CreateButton{
     float: right;
     margin-right: 20px;
