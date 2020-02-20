@@ -1,17 +1,17 @@
 .LoginPageContainer {
-    background: #008ac1;
     height: 100vh;
+    background: #008ac1;
     color: #ffffff;
-    display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
+    display: flex;
+    flex-direction: column;
 }
 
 .LoginContent {
- justify-self: center;
-}
-
-.LoginContentHeading {
-  
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-content: center;
 }
 
 .LoginContentInputs {

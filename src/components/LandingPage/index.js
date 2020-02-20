@@ -10,9 +10,11 @@ const LandingPage = () => (
     <Header />
     <div className="LandingPageMainContent">
       <div className="LandingPageMainContentInfo">
-        <h1 className="uppercase extra-bold">managed kubernetes platform</h1>
-        <h3 className="bold">Automated container deployment, scaling and management.</h3>
-        <PrimaryButton label="get started" />
+        <div>
+          <h1 className="uppercase extra-bold">managed kubernetes platform</h1>
+          <h3 className="bold">Automated container deployment, scaling and management.</h3>
+          <PrimaryButton label="get started" />
+        </div>
       </div>
       <div className="LandingPageMainContentImg">
         <InfrastrucurePic className="LandingPageInfrastructurePic" />
