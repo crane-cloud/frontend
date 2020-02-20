@@ -44,13 +44,29 @@ export default class RegisterPage extends Component {
       verificationCode: this.state.verificationCode
     };
 
+    this.setState({
+      loading: true
+    });
+
     axios
       .post(`${API_BASE_URL}/users`, userData)
       .then((response) => {
-        console.log(response);
+        this.setState({
+          loading: false
+        });
+
+        if (response.data.status === 'success') {
+          console.log('User registered successfully...');
+          this.props.history.push('/login');
+        }
       })
       .catch(error => {
-        console.log(error);
+        this.setState({
+          loading: false
+        });
+
+        console.log('Problem logging in...', error);
+        console.log('Email already exists...');
       });
   }
 
@@ -115,7 +131,10 @@ export default class RegisterPage extends Component {
               I agree to Crane Cloud&apos;s&nbsp;&nbsp;<Link to='/register' className="RegisterContentLink">Terms of service.</Link>
             </div>
 
-            <PrimaryButton label="Register" onClick={this.handleSubmit} />
+            <PrimaryButton
+              label={this.state.loading ? <Spinner /> : 'Register'}
+              onClick={this.handleSubmit}
+            />
 
           </div>
         </div>
