@@ -88,7 +88,10 @@ class LoginPage extends React.Component {
 
           </div>
         </div>
-        <LandingFooter />
+
+        <div className="LoginPageFooter">
+          <LandingFooter />
+        </div>
       </div>
     );
   }
