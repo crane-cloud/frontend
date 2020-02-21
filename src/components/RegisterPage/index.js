@@ -57,7 +57,9 @@ export default class RegisterPage extends Component {
 
         if (response.data.status === 'success') {
           console.log('User registered successfully...');
-          this.props.history.push('/login');
+          setTimeout(() => {
+            this.props.history.push('/login');
+          }, 1000);
         }
       })
       .catch(error => {
