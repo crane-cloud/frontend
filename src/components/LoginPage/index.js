@@ -16,7 +16,8 @@ class LoginPage extends React.Component {
     super();
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      loading: false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -35,14 +36,31 @@ class LoginPage extends React.Component {
       password: this.state.password
     };
 
+    this.setState({
+      loading: true
+    });
+
     axios
       .post(`${API_BASE_URL}/users/login`, userCredentials)
       .then(res => {
-        console.log(res);
-        this.props.saveUser(res.data.data);
+        if (res.data.status === 'success') {
+          this.setState({
+            loading: false
+          });
+          console.log('Login successful...');
+
+          // save user data to store
+          this.props.saveUser(res.data.data);
+          
+          // redirect to dashboard
+          setTimeout(() => {
+            this.props.history.push('/dashboard');
+          }, 1000);
+        }
       })
       .catch(err => {
         console.log(err);
+        console.log('Check your email / password...');
       });
   }
 

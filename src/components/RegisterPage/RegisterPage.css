@@ -20,6 +20,22 @@
   gap: 1rem;
 }
 
+.VerificationCodeInput {
+  position: relative;
+}
+
+.VerificationGetCodeBtnSection {
+  position: absolute;
+  right: 1rem;
+  top: 32%;
+}
+
+.VerificationGetCodeBtn {
+  color: #f7b21f;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
 .RegisterLinkContainer {
   display: inline-block;
 }
@@ -27,6 +43,10 @@
 a.RegisterContentLink {
   color: #f7b21f;
   border-bottom: 1px solid #f7b21f;
+}
+
+.RegisterCheckbox {
+  display: flex;
 }
 
 .RegisterContentBottomLink {
@@ -45,5 +65,13 @@ a.RegisterContentLink {
 
   .InputPassword, .InputText {
     width: 90%;
-  } 
+  }
+
+  .VerificationCodeInput {
+    width: 90%;
+  }
+
+  .VerificationCodeInput .InputText {
+    width: 100%;
+  }
 }
