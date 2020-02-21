@@ -9,7 +9,7 @@ function ClusterPage() {
     <div className="Page">
       <div className="TopRow" >
         <NavBar />
-        <InformationBar />
+        <InformationBar header="Select Infrastructure" showBtn={true}/>
       </div>
       <div className="MainRow">
         <ClustersList />
