@@ -9,13 +9,16 @@
     /* display: inline; */
 }
 .MainSection:after{
-    clear: both;
+    /* clear: both; */
 }
 .MainSection .Content{
     /* overflow: scroll; */
     /* float: right; */
     width: 82%;
-    float: right;
+    /* float: right; */
+    display: flex;
+    flex-flow: column;
+    /* min-height: 860px; */
     background-color: #F1F1F1;
     
 }
@@ -25,4 +28,6 @@
 
 .MainSection LowerBar{
     height: 90%;
+    flex: 2;
+    overflow: auto;
 }

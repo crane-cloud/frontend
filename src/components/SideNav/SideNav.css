@@ -53,7 +53,8 @@
 }
 
 .List{
-    height: 120vh;
+    height: min-content;
+    overflow: auto;
 }
 .SideFooter{
     position: fixed;
