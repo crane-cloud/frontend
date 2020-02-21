@@ -29,7 +29,7 @@
     outline: 0;
     padding: 12px;
     /* color: white; */
-    /* background-color: #1b87c2; */
+    text-transform: lowercase;
     text-align: left;
     cursor: pointer;
     /* width: 100%; */
@@ -38,6 +38,10 @@
     padding: .75rem 1.25rem;
     margin-bottom: 0;
     border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+.Card .CardHeader::first-letter {
+    text-transform: uppercase;
 }
   
 .Card:hover {
