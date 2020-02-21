@@ -8,6 +8,7 @@ import LandingFooter from '../LandingFooter';
 import InputText from '../InputText';
 import InputPassword from '../InputPassword';
 import PrimaryButton from '../PrimaryButton';
+import Spinner from '../SpinnerComponent';
 import { API_BASE_URL } from '../../config';
 import './LoginPage.css';
 
@@ -59,6 +60,9 @@ class LoginPage extends React.Component {
         }
       })
       .catch(err => {
+        this.setState({
+          loading: false
+        });
         console.log(err);
         console.log('Check your email / password...');
       });
@@ -96,7 +100,7 @@ class LoginPage extends React.Component {
             </div>
 
             <PrimaryButton
-              label="login"
+              label={this.state.loading ? <Spinner /> : 'login'}
               onClick={this.handleSubmit}
             />
 
