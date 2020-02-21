@@ -1,18 +1,12 @@
 /* eslint-disable react/jsx-wrap-multilines */
 import React from 'react';
+import LandingPage from '../LandingPage';
 import './App.css';
-import Footer from '../Footer';
-import ClusterResources from '../ClusterResources';
-import PrimaryButton from '../PrimaryButton';
-import SecondaryButton from '../SecondaryButton';
-import ClusterPage from '../ClusterPage';
 
-function App() {
-  return (
-    <div>
-      <ClusterPage />
-    </div>
-  );
-}
+const App = () => (
+  <div className="LandingPage">
+    <LandingPage />
+  </div>
+);
 
 export default App;
