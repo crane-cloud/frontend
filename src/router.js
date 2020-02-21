@@ -4,6 +4,8 @@ import App from './components/App';
 import LoginPage from './components/LoginPage';
 import PasswordReset from './components/PasswordReset';
 import RegisterPage from './components/RegisterPage';
+import AddClusterPage from './components/AddClusterPage';
+
 
 const Routes = () => (
   <BrowserRouter>
@@ -12,6 +14,7 @@ const Routes = () => (
       <Route path="/login" component={LoginPage} />
       <Route path="/forgot-password" component={PasswordReset} />
       <Route path="/register" component={RegisterPage} />
+      <Route path="/add" component={AddClusterPage} />
     </Switch>
   </BrowserRouter>
 );

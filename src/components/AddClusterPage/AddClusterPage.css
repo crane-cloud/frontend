@@ -1,0 +1,39 @@
+.AddPageContainer {
+    background: #008ac1;
+    color: #000;
+    margin: auto;
+    height: 200;
+    width: 414px;
+    height: 617px;
+    padding: 20px 48px;
+}
+.AddHeading{
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  color: #000000;
+  margin-top: 10px;
+  margin-bottom: 40px;
+}
+  
+.AddFormContent{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-content: center;
+}
+
+.AddFormInputs {
+    display: grid;
+    gap: 1rem;
+}
+
+
+.AddBtn{
+    float: left;
+}
+.AddCancelBtn{
+    float: right;
+}
