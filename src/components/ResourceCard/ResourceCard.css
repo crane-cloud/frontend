@@ -1,4 +1,5 @@
 .Card {
+    width: 100%;
     max-width: 338px;
     margin: auto;
     text-align: left;
