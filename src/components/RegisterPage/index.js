@@ -56,6 +56,7 @@ export default class RegisterPage extends Component {
     const userData = {
       name: this.state.name,
       email: this.state.email,
+
       password: this.state.password,
       verificationCode: this.state.verificationCode
     };
@@ -147,7 +148,6 @@ export default class RegisterPage extends Component {
               label={this.state.loading ? <Spinner /> : 'Register'}
               onClick={this.handleSubmit}
             />
-
           </div>
         </div>
         <div className="RegisterPageFooter">
