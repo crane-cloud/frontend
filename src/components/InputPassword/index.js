@@ -5,7 +5,12 @@ const InputPassword = props => (
   <input
     className="InputPassword"
     type="password"
-    placeholder={props.placeholder + ' *'}
+    placeholder={`${props.placeholder} *`}
+    name={props.name}
+    value={props.value}
+    onChange={e => {
+      props.onChange(e);
+    }}
   />
 );
 

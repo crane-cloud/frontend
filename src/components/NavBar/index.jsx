@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import NavLogo from '../NavLogo/index';
 import PROFILE from '../../assets/images/profile.svg';
+import DOWN from '../../assets/images/downarrow.svg';
 import './NavBar.css';
 
 
@@ -36,7 +37,7 @@ const NavBar = () =>
             <div className="NavDropdown Drop Profile">
 
               <div className="DropdownIcon">
-                <i className="Arrow" />
+                <img src={DOWN} size="1x" className='DownIcon' alt="DOWN"/>
               </div>
               <div className="DropdownContent">
                 <Link to="/logout">Sign Out</Link>

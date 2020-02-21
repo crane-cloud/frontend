@@ -1,14 +1,12 @@
 /* eslint-disable react/jsx-wrap-multilines */
 import React from 'react';
+import LandingPage from '../LandingPage';
 import './App.css';
-import InformationBar from '../InformationBar';
 
-function App() {
-  return (
-    <div>
-      <InformationBar />
-    </div>
-  );
-}
+const App = () => (
+  <div className="LandingPage">
+    <LandingPage />
+  </div>
+);
 
 export default App;
