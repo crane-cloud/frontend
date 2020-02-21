@@ -20,31 +20,30 @@
   },
   "plugins": [
       "react"
-  ],
-  "rules": {
-  "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-  "react/button-has-type": 0,
-  "no-underscore-dangle": 0,
-  "comma-dangle": 0,
-  "react/prop-types": ["error", { "ignore": ["my_prop_key_that_uses_object_map"]}],
-  // "react/prop-types": "warn",
-  "indent": [
-    "error",
-    2
-  ],
-  "linebreak-style": [
-    "error",
-    "unix"
-  ],
-  "quotes": [
-    "error",
-    "single"
-  ],
-  "semi": [
-    "error",
-    "always"
-  ],
-  "no-useless-return": 1,
-  "class-methods-use-this": 0
-}
+    ],
+    "rules": {
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/button-has-type": 0,
+    "no-underscore-dangle": 0,
+    "comma-dangle": 0,
+    "react/prop-types": "warn",
+    "indent": [
+      "error",
+      2
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "no-useless-return": 1,
+    "class-methods-use-this": 0
+  }
 }

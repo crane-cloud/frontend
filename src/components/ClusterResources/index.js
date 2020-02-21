@@ -8,7 +8,6 @@ import './ClusterResource.css';
 
 
 class ClusterResources extends React.Component {
-
   componentDidMount() {
     const { getClusterResourcesCount } = this.props;
     getClusterResourcesCount();
