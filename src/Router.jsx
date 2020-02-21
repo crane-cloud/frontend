@@ -3,7 +3,6 @@ import {Provider } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import AdminDashboard from './components/AdminDashboard';
 import ClusterResourcesPage from './components/ClusterResourcesPage';
-// import NavBar from './components/NavBar/';
 import store from './redux/store';
 
 const routes = () => (

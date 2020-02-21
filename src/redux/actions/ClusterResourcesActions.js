@@ -10,6 +10,7 @@ export const getResourcesSuccess = (response) => (
   {
     type: GET_RESOURCES_COUNT,
     payload: response.data.data.resource_count,
+    clusterName: response.data.data.name,
   });
 
 export const getResourcesFail = (error) => ({

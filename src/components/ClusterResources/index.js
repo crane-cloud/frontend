@@ -14,7 +14,7 @@ class ClusterResources extends React.Component {
   }
 
   render() {
-    const { resourceCount } = this.props;
+    const { resourceCount, clusterName } = this.props;
     return (
       <div className="ClusterContainer">
         {resourceCount.map((resource) => (
@@ -28,17 +28,19 @@ class ClusterResources extends React.Component {
 }
 ClusterResources.propTypes = {
   resourceCount: PropTypes.arrayOf(PropTypes.object),
-  isRetrieving: PropTypes.bool
+  isRetrieving: PropTypes.bool,
+  clusterName: PropTypes.string,
 };
 
 ClusterResources.defaultProps = {
   resourceCount: [],
-  isRetrieving: false
+  isRetrieving: false,
+  clusterName: '',
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, resourceCount } = state.ClusterResourcesReducer;
-  return { isRetrieving, resourceCount };
+  const { isRetrieving, resourceCount, clusterName } = state.ClusterResourcesReducer;
+  return { isRetrieving, resourceCount, clusterName };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({

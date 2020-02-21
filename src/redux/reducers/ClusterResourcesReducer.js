@@ -17,6 +17,7 @@ const ClusterResourcesReducer = (state = initialState, action) => {
       ...state,
       resourceCount: action.payload,
       isRetrieving: false,
+      clusterName: action.name,
       message: 'All Cluster Resources fetched'
     };
   case START_GETTING_RESOURCES_COUNT:
