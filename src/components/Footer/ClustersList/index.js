@@ -1,5 +1,5 @@
 import React from 'react';
-import ClusterCard from '../ClusterCard';
+import ClusterCard from '../../ClusterCard';
 import './ClustersList.css';
 import crane from '../../assets/images/craneLogo.png';
 import kikoni from '../../assets/images/cloud.svg';
