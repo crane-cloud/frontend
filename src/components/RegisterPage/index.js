@@ -6,6 +6,8 @@ import LandingFooter from '../LandingFooter';
 import InputText from '../InputText';
 import InputPassword from '../InputPassword';
 import PrimaryButton from '../PrimaryButton';
+import Spinner from '../SpinnerComponent';
+import Checkbox from '../Checkbox';
 import { API_BASE_URL } from '../../config';
 
 import './RegisterPage.css';
@@ -19,11 +21,29 @@ export default class RegisterPage extends Component {
       email: '',
       password: '',
       passwordConfirm: '',
-      verificationCode:''
+      verificationCode: '',
+      hasAgreed: false,
+      codeLoading: false,
+      loading: false
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.getCode = this.getCode.bind(this);
+    this.toggleAgreed = this.toggleAgreed.bind(this);
+  }
+
+  toggleAgreed(value) {
+    this.setState({
+      hasAgreed: value
+    });
+  }
+
+  getCode() {
+    if (!this.state.codeLoading) {
+      this.setState({ codeLoading: true });
+    }
+    console.log('Getting veirifcation code...');
   }
 
   handleOnChange(e) {
@@ -41,16 +61,32 @@ export default class RegisterPage extends Component {
       verificationCode: this.state.verificationCode
     };
 
+    this.setState({
+      loading: true
+    });
+
     axios
       .post(`${API_BASE_URL}/users`, userData)
       .then((response) => {
-        console.log(response);
+        if (response.data.status === 'success') {
+          this.setState({
+            loading: false
+          });
+          console.log('User registered successfully...');
+          setTimeout(() => {
+            this.props.history.push('/login');
+          }, 1000);
+        }
       })
       .catch(error => {
-        console.log(error);
+        this.setState({
+          loading: false
+        });
+
+        console.log('Problem logging in...', error);
+        console.log('Email already exists...');
       });
   }
-
 
   render() {
     return (
@@ -75,12 +111,20 @@ export default class RegisterPage extends Component {
               value={this.state.email}
               onChange={this.handleOnChange}
             />
-            <InputText
-              placeholder='Verification Code'
-              name='verificationCode'
-              value={this.state.verificationCode}
-              onChange={this.handleOnChange}
-            />
+            <div className="VerificationCodeInput">
+              <InputText
+                placeholder='Verification Code'
+                name='verificationCode'
+                value={this.state.verificationCode}
+                onChange={this.handleOnChange}
+              />
+              <div className="VerificationGetCodeBtnSection">
+                {!this.state.codeLoading ? (
+                  <div className="VerificationGetCodeBtn" onClick={this.getCode}>get code</div>
+                ) : <Spinner />
+                }
+              </div>
+            </div>
             <InputPassword
               placeholder='Password'
               name='password'
@@ -94,10 +138,16 @@ export default class RegisterPage extends Component {
               onChange={this.handleOnChange}
             />
 
-            <div className="RegisterContentBottomLink RegisterLinkContainer">
-              I agree to Crane Cloud&apos;s&nbsp;&nbsp;<Link to='/register' className="RegisterContentLink">Terms of service.</Link>
+            <div className="RegisterContentBottomLink RegisterLinkContainer RegisterCheckbox">
+              <Checkbox
+                onClick={this.toggleAgreed}
+              /> &nbsp;  I agree to Crane Cloud&apos;s&nbsp;&nbsp;<Link to='/register' className="RegisterContentLink">Terms of service.</Link>
             </div>
-            <PrimaryButton label="Register" onClick={this.handleSubmit} />
+
+            <PrimaryButton
+              label={this.state.loading ? <Spinner /> : 'Register'}
+              onClick={this.handleSubmit}
+            />
           </div>
         </div>
         <div className="RegisterPageFooter">
