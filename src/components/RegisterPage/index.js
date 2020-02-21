@@ -7,6 +7,7 @@ import InputText from '../InputText';
 import InputPassword from '../InputPassword';
 import PrimaryButton from '../PrimaryButton';
 import Spinner from '../SpinnerComponent';
+import Checkbox from '../Checkbox';
 import { API_BASE_URL } from '../../config';
 
 import './RegisterPage.css';
@@ -21,6 +22,7 @@ export default class RegisterPage extends Component {
       password: '',
       passwordConfirm: '',
       verificationCode: '',
+      hasAgreed: false,
       codeLoading: false,
       loading: false
     };
@@ -28,6 +30,20 @@ export default class RegisterPage extends Component {
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.getCode = this.getCode.bind(this);
+    this.toggleAgreed = this.toggleAgreed.bind(this);
+  }
+
+  toggleAgreed(value) {
+    this.setState({
+      hasAgreed: value
+    });
+  }
+
+  getCode() {
+    if (!this.state.codeLoading) {
+      this.setState({ codeLoading: true });
+    }
+    console.log('Getting veirifcation code...');
   }
 
   handleOnChange(e) {
@@ -51,11 +67,10 @@ export default class RegisterPage extends Component {
     axios
       .post(`${API_BASE_URL}/users`, userData)
       .then((response) => {
-        this.setState({
-          loading: false
-        });
-
         if (response.data.status === 'success') {
+          this.setState({
+            loading: false
+          });
           console.log('User registered successfully...');
           setTimeout(() => {
             this.props.history.push('/login');
@@ -70,13 +85,6 @@ export default class RegisterPage extends Component {
         console.log('Problem logging in...', error);
         console.log('Email already exists...');
       });
-  }
-
-  getCode() {
-    if (!this.state.codeLoading) {
-      this.setState({ codeLoading: true });
-    }
-    console.log('Getting veirifcation code...');
   }
 
   render() {
@@ -129,8 +137,10 @@ export default class RegisterPage extends Component {
               onChange={this.handleOnChange}
             />
 
-            <div className="RegisterContentBottomLink RegisterLinkContainer">
-              I agree to Crane Cloud&apos;s&nbsp;&nbsp;<Link to='/register' className="RegisterContentLink">Terms of service.</Link>
+            <div className="RegisterContentBottomLink RegisterLinkContainer RegisterCheckbox">
+              <Checkbox
+                onClick={this.toggleAgreed}
+              /> &nbsp;  I agree to Crane Cloud&apos;s&nbsp;&nbsp;<Link to='/register' className="RegisterContentLink">Terms of service.</Link>
             </div>
 
             <PrimaryButton

@@ -45,6 +45,10 @@ a.RegisterContentLink {
   border-bottom: 1px solid #f7b21f;
 }
 
+.RegisterCheckbox {
+  display: flex;
+}
+
 .RegisterContentBottomLink {
   margin-top: 1rem;
 }
