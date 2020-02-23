@@ -6,9 +6,13 @@ function ClusterResources(props) {
   const { resourceCount } = props;
   return (
     <div className="ClusterContainer">
-      {resourceCount.map(
-        (resource) => <ResourceCard title={resource.name} count={resource.count} />
-      ) }
+      {
+        resourceCount.length !== 0 ? (resourceCount.map(
+          (resource) => <ResourceCard title={resource.name} count={resource.count} />
+        )) : (
+          <h3 className="EmptyList">No Resources Available</h3>
+        )
+      }
     </div>
   );
 }
