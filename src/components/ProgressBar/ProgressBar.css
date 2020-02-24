@@ -9,6 +9,8 @@
   height: 100%;
   border-radius: inherit;
   transition: width .5s ease-in;
+  color: white;
+  text-align: center;
 }
 
 .ProgressBarFillQuarter1 {
