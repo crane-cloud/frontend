@@ -6,7 +6,7 @@ export default class ProgressBarExample extends Component {
     super(props);
 
     this.state = {
-      percentage: 10
+      percentage: 79
     };
   }
 
