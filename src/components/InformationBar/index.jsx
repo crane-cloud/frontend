@@ -6,14 +6,12 @@ function InformationBar(props) {
   return (
     <div className="InformationBar">
 
-
-      {props.showBtn
-        ? (
-          <div>
-            <div className="InfoHeader">{ props.header }</div>
-            <div className="CreateButton"><CreateButton /></div>
-          </div>
-        )
+      {props.showBtn ? (
+        <div>
+          <div className="InfoHeader">{ props.header }</div>
+          <div className="CreateButton"><CreateButton /></div>
+        </div>
+      )
         : <div className="LeftHeader">{ props.header }</div>}
 
       {/* <div className="DropDownDiv">
