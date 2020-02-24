@@ -5,6 +5,8 @@ import LoginPage from './components/LoginPage';
 import PasswordReset from './components/PasswordReset';
 import RegisterPage from './components/RegisterPage';
 
+import ProgressBarExample from './components/ProgressBar/ProgressBarExample.js';
+
 const Routes = () => (
   <BrowserRouter>
     <Switch>
@@ -12,6 +14,7 @@ const Routes = () => (
       <Route path="/login" component={LoginPage} />
       <Route path="/forgot-password" component={PasswordReset} />
       <Route path="/register" component={RegisterPage} />
+      <Route path="/progress" component={ProgressBarExample} />
     </Switch>
   </BrowserRouter>
 );

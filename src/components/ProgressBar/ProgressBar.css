@@ -1,0 +1,13 @@
+.ProgressBar {
+  position: relative;
+  height: 20px;
+  width: 80%;
+  background-color: #DDDDDD;
+}
+
+.ProgressBarFiller {
+  background-color: red;
+  height: 100%;
+  border-radius: inherit;
+  transition: width .5s ease-in;
+}
