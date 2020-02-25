@@ -4,7 +4,7 @@ import App from './components/App';
 import LoginPage from './components/LoginPage';
 import PasswordReset from './components/PasswordReset';
 import RegisterPage from './components/RegisterPage';
-import SideNav from './components/SideNav';
+import ClusterPage from './components/ClusterPage';
 
 
 const Routes = () => (
@@ -14,7 +14,7 @@ const Routes = () => (
       <Route path="/login" component={LoginPage} />
       <Route path="/forgot-password" component={PasswordReset} />
       <Route path="/register" component={RegisterPage} />
-      <Route path="/side" component={SideNav}/>
+      <Route path="/clusters" component={ClusterPage}/>
     </Switch>
   </BrowserRouter>
 );

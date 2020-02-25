@@ -5,7 +5,6 @@ import CreateButton from '../ButtonComponent';
 function InformationBar(props) {
   return (
     <div className="InformationBar">
-
       
       {props.showBtn ? 
         <div>
