@@ -1,6 +1,6 @@
 import React from 'react';
 import './InformationBar.css';
-// import CreateButton from '../ButtonComponent';
+import CreateButton from '../ButtonComponent';
 
 function InformationBar(props) {
   return (
