@@ -1,0 +1,10 @@
+thead {background-color:transparent;}
+tbody {background-color:transparent;}
+tfoot {background-color:transparent;}
+
+table, th, td {
+    background-color:transparent;
+}
+td, th{
+  padding: 5px;
+}
