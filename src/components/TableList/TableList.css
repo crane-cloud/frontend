@@ -1,10 +1,32 @@
-thead {background-color:transparent;}
+thead {
+    background-color:transparent;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    color: #008ac1;
+}
 tbody {background-color:transparent;}
 tfoot {background-color:transparent;}
 
-table, th, td {
+table, td {
     background-color:transparent;
+    width: 100%;
+    padding: 2rem;
 }
 td, th{
-  padding: 5px;
+  padding: .8rem;
+}
+tr{
+    width: 100%;
+    text-align: center;
+}
+tr td:first-child, th:first-child{
+    text-align: left;
+}
+tr td:last-child {
+    text-align: right;
+    min-width: 100px;
+}
+td:first-child{
+    width: 20%;
 }
