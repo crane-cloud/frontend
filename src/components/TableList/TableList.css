@@ -30,3 +30,6 @@ tr td:last-child {
 td:first-child{
     width: 20%;
 }
+tr td:nth-last-child(2){
+    min-width: 400px;
+}

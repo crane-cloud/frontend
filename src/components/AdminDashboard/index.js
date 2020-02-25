@@ -11,11 +11,11 @@ class AdminDashboard extends React.Component {
     super(props);
     this.state={
       responseData:[
-        {'name': 'Derek', 'status': 'Ready', 'age': '2 Days ago'},
-        {'name': 'owen', 'status': 'Unknown', 'age': '3 Hrs ago'},
-        {'name': 'makair', 'status': 'Ready', 'age': '46 Days ago'},
+        {'name': 'Derek', 'status': 'Pending', 'Ready':'Half', 'age': '2 Days ago'},
+        {'name': 'owen', 'status': 'Running', 'Ready':'Quarter', 'age': '3 Hrs ago'},
+        {'name': 'makair', 'status': 'CrashLoopBackOff', 'Ready':'Full', 'age': '46 Days ago'},
       ]
-    }
+    };
   }
   render() {
     return (
