@@ -1,11 +1,74 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import axios from 'axios';
+import { Link, withRouter } from 'react-router-dom';
 import './AddClusterPage.css';
-import InputText from '../InputText';
+import BlackInputText from '../BlackInputText';
 import SecondaryButton from '../SecondaryButton';
 import PrimaryButton from '../PrimaryButton';
+import Spinner from '../SpinnerComponent';
+import { API_BASE_URL } from '../../config';
+
 
 
 class AddClusterPage extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      name: '',
+      host: '',
+      token: '',
+      loading: false
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  handleSubmit() {
+    const cluster = {
+      host: this.state.host,
+      name: this.state.name,
+      token: this.state.token
+    };
+
+    this.setState({
+      loading: true
+    });
+
+    axios
+      .post(`${API_BASE_URL}/clusters`, cluster)
+      .then(res => {
+        if (res.data.status === 'success') {
+          this.setState({
+            loading: false
+          });
+          console.log('Added Cluster...');
+
+          // save cluster data to store
+          // this.props.addCluster(res.data.data);
+          
+          // redirect to dashboard
+          setTimeout(() => {
+            this.props.history.push('/clusters');
+          }, 1000);
+        }
+      })
+      .catch(err => {
+        this.setState({
+          loading: false
+        });
+        console.log(err);
+        console.log('Was not successful...');
+      });
+  }
+
   render() {
     return (
       <div className="AddPageContainer">
@@ -15,34 +78,26 @@ class AddClusterPage extends React.Component {
           </div>
           <div className="AddFormInputs">
             {/* Input fields */}
-            <InputText
+            <BlackInputText
               placeholder='Host'
               name='host'
-              value=""
+              value={this.state.host}
               onChange={e => {
                 this.handleChange(e);
               }}
             />
-            <InputText
+            <BlackInputText
               placeholder='Token'
               name='token'
-              value=""
+              value={this.state.token}
               onChange={e => {
                 this.handleChange(e);
               }}
             />
-            <InputText
+            <BlackInputText
               placeholder='Name'
-              name='host'
-              value=""
-              onChange={e => {
-                this.handleChange(e);
-              }}
-            />
-            <InputText
-              placeholder='Description'
-              name='host'
-              value=""
+              name='name'
+              value={this.state.name}
               onChange={e => {
                 this.handleChange(e);
               }}
@@ -51,13 +106,16 @@ class AddClusterPage extends React.Component {
             <div className='AddButtons'>
               <div className="AddBtn">
                 <PrimaryButton 
-                  label='ADD'
-                  onClick={this.handleSubmit}/>
+                  label={this.state.loading ? <Spinner /> : 'ADD'}
+                  onClick={this.handleSubmit}
+                />
               </div>
               <div className="AddCancelBtn">
-                <SecondaryButton className="AddCancelBtn"
-                  label='CANCEL'
-                />
+                <Link to='/clusters'>
+                  <SecondaryButton isBlack={true} className="AddCancelBtn"
+                    label='CANCEL'
+                  />
+                </Link>
               </div>
             </div>
 
@@ -68,5 +126,4 @@ class AddClusterPage extends React.Component {
     );
   }
 }
-
 export default AddClusterPage;

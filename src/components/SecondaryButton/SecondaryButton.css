@@ -2,16 +2,24 @@
     background-color: transparent;
     width: 155px;
     height: 50px;
-    color: white;
     font-size: 16px;
     font-weight: bold;
     font-family: 'Roboto', sans-serif;
     border: none;
-    outline: 2px solid white;
     /* box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); */
-  }
-  
-  .Secondary-Btn:hover{
-    background-color: #DDDDDD;
-  }
+}
+
+.Secondary-Btn:hover{
+  background-color: #DDDDDD;
+}
+
+.SecondaryBlack{
+  outline: 2px solid black;
+  color: black;
+}
+
+.SecondaryWhite{
+  outline: 2px solid white;
+  color: white;
+}
   
