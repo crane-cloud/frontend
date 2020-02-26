@@ -4,14 +4,14 @@ import ResourceCard from '../ResourceCard';
 import './ClusterResource.css';
 
 function ClusterResources(props) {
-  const { resourceCount } = props;
-  let myClusterID = props.match.params.clusterID
+  const { resourceCount, myClusterID } = props;
+  
   return (
     <div className="ClusterContainer">
       {
         resourceCount.length !== 0 ? (resourceCount.map(
           (resource) => (
-            <Link to={{ pathname: `?${myClusterID}/resources/${resource.name.toLowerCase()}` }}>
+            <Link to={{ pathname: `?${myClusterID}/resources/${resource.name.toLowerCase()}` }} key={resource.count}>
               <ResourceCard title={resource.name} count={resource.count} />
             </Link>
           )

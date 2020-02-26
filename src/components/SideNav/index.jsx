@@ -30,8 +30,7 @@ const SideNav = (props) => {
         <Link to={{ pathname: `${BASE_URL}/deployments` }} className="SubListItem">Deployments</Link>
         <Link to={{ pathname: `${BASE_URL}/jobs` }} className="SubListItem">Jobs</Link>
       </div>
-      <a className="ListItem">Users</a>
-      <Link to={{ pathname: `${BASE_URL}/pods` }} className="ListItem">Pods</Link>
+      <Link to={{ pathname: `${BASE_URL}/users` }} className="ListItem">Users</Link>
       <div>
         <Link to={{ pathname: `${BASE_URL}/accounts` }} className="SubListItem">Accounts</Link>
         <Link to={{ pathname: `${BASE_URL}/projects` }} className="SubListItem">Projects</Link>

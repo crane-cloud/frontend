@@ -25,14 +25,14 @@ class ClusterResourcesPage extends React.Component {
         <NavBar />
         <div className="MainSection">
           <div className="SiteSideNav">
-            {/* <SideNav name={clusterName} /> */}
+            <SideNav name={clusterName} />
           </div>
           <div className="Content">
             <div className="UpperBar">
-              <InformationBar />
+              <InformationBar header='Overview' showBtn={false} />
             </div>
             <div className="LowerBar">
-              <ClusterResources resourceCount={resourceCount} />
+              <ClusterResources resourceCount={resourceCount} myClusterID={this.props.match.params.clusterID} />
             </div>
           </div>
         </div>
