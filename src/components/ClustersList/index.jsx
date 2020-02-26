@@ -17,7 +17,7 @@ class ClustersList extends Component {
 
   render() {
     const { clusters } = this.props;
-    console.log(typeof (clusters.clusters));
+    console.log(clusters);
 
     return (
       <div className="ClusterList">
