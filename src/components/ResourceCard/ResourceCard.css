@@ -7,7 +7,7 @@
     margin-bottom: 1rem;
     background: #fff;
     position: relative;
-    /* display: flex; */
+    color: #000000;
     word-wrap: break-word;
     background-clip: border-box;
     border: 1px solid rgba(0,0,0,.125);
@@ -22,6 +22,7 @@
     font-size: 32px;
     font-weight: normal;
     box-sizing: border-box;
+    padding-top: 4rem;
 }
 .Card .CardHeader {
     
