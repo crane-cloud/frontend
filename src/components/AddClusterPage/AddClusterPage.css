@@ -1,11 +1,14 @@
 .AddPageContainer {
     background: #008ac1;
     color: #000;
-    margin: auto;
-    margin-top: 30px;
     width: 425px;
+    margin:auto;
     height: 550px;
     padding: 20px 48px;
+}
+.popupcontent{
+  width: 425px;
+  padding: 0px;
 }
 .AddHeading{
   font-family: Roboto;

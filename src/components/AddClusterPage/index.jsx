@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import Popup from 'reactjs-popup';
 import { Link, withRouter } from 'react-router-dom';
 import './AddClusterPage.css';
 import BlackInputText from '../BlackInputText';
@@ -70,58 +71,63 @@ class AddClusterPage extends React.Component {
   }
 
   render() {
+    
     return (
-      <div className="AddPageContainer">
-        <div className="AddPageContent">
-          <div className="AddHeading">
+      <div className="App">
+        <h1>Create React Modal with 22 line of code </h1>
+        <Popup trigger={<button>Click Me</button>} modal className="popup">
+          {close =>(
+            <div className="AddPageContainer">
+              <div className="AddPageContent">
+                <div className="AddHeading">
             Add a cluster
-          </div>
-          <div className="AddFormInputs">
-            {/* Input fields */}
-            <BlackInputText
-              placeholder='Host'
-              name='host'
-              value={this.state.host}
-              onChange={e => {
-                this.handleChange(e);
-              }}
-            />
-            <BlackInputText
-              placeholder='Token'
-              name='token'
-              value={this.state.token}
-              onChange={e => {
-                this.handleChange(e);
-              }}
-            />
-            <BlackInputText
-              placeholder='Name'
-              name='name'
-              value={this.state.name}
-              onChange={e => {
-                this.handleChange(e);
-              }}
-            />
-
-            <div className='AddButtons'>
-              <div className="AddBtn">
-                <PrimaryButton 
-                  label={this.state.loading ? <Spinner /> : 'ADD'}
-                  onClick={this.handleSubmit}
-                />
-              </div>
-              <div className="AddCancelBtn">
-                <Link to='/clusters'>
-                  <SecondaryButton isBlack={true} className="AddCancelBtn"
-                    label='CANCEL'
+                </div>
+                <div className="AddFormInputs">
+                  {/* Input fields */}
+                  <BlackInputText
+                    placeholder='Host'
+                    name='host'
+                    value={this.state.host}
+                    onChange={e => {
+                      this.handleChange(e);
+                    }}
                   />
-                </Link>
+                  <BlackInputText
+                    placeholder='Token'
+                    name='token'
+                    value={this.state.token}
+                    onChange={e => {
+                      this.handleChange(e);
+                    }}
+                  />
+                  <BlackInputText
+                    placeholder='Name'
+                    name='name'
+                    value={this.state.name}
+                    onChange={e => {
+                      this.handleChange(e);
+                    }}
+                  />
+
+                  <div className='AddButtons'>
+                    <div className="AddBtn">
+                      <PrimaryButton 
+                        label={this.state.loading ? <Spinner /> : 'ADD'}
+                        onClick={this.handleSubmit}
+                      />
+                    </div>
+                    <a className="AddCancelBtn" onClick={close}>
+                      <SecondaryButton isBlack={true} 
+                        className="AddCancelBtn"
+                        label='CANCEL'
+                      />
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
-
-          </div>
-        </div>
-
+          )}
+        </Popup>
       </div>
     );
   }
