@@ -1,14 +1,16 @@
 .AddPageContainer {
-    background: #008ac1;
+    background: #fff;
     color: #000;
     width: 425px;
     margin:auto;
-    height: 550px;
+    height: 617px;
     padding: 20px 48px;
 }
-.popupcontent{
-  width: 425px;
-  padding: 0px;
+
+.popup-content{
+  width: initial!important;
+  padding: 0px!important;
+  margin: auto!important;
 }
 .AddHeading{
   font-family: Roboto;
@@ -16,8 +18,8 @@
   font-weight: bold;
   font-size: 24px;
   color: #000000;
-  margin-top: 10px;
-  margin-bottom: 40px;
+  margin-top: 20px;
+  margin-bottom: 50px;
 }
   
 .AddFormContent{
@@ -33,6 +35,9 @@
     gap: 1rem;
 }
 
+.AddButtons{
+  margin-top: 20px;
+}
 
 .AddBtn{
     float: left;

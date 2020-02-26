@@ -74,7 +74,6 @@ class AddClusterPage extends React.Component {
     
     return (
       <div className="App">
-        <h1>Create React Modal with 22 line of code </h1>
         <Popup trigger={<button>Click Me</button>} modal className="popup">
           {close =>(
             <div className="AddPageContainer">
@@ -103,6 +102,14 @@ class AddClusterPage extends React.Component {
                   <BlackInputText
                     placeholder='Name'
                     name='name'
+                    value={this.state.name}
+                    onChange={e => {
+                      this.handleChange(e);
+                    }}
+                  />
+                  <BlackInputText
+                    placeholder='Description'
+                    name='description'
                     value={this.state.name}
                     onChange={e => {
                       this.handleChange(e);
