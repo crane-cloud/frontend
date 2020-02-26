@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import { API_BASE_URL } from '../../config';
+import { API_BASE_URL } from '../../config';
 import { GET_RESOURCES_COUNT, GET_RESOURCES_COUNT_FAILED, START_GETTING_RESOURCES_COUNT } from './actionTypes';
 
 export const startFetchingResources = () => ({
@@ -21,10 +21,10 @@ export const getResourcesFail = (error) => ({
   },
 });
 
-const getClusterResourcesCount = () => (dispatch) => {
+const getClusterResourcesCount = (boyi) => (dispatch) => {
   dispatch(startFetchingResources());
 
-  return axios.get('http://crane-mak-w1.cranecloud.io:30895/clusters/0f1a47b9-3d50-4a8f-916b-eb16d0cb7ce7')
+  return axios.get(`${API_BASE_URL}/clusters/${boyi}`)
     .then((response) => dispatch(getResourcesSuccess(response)))
     .catch((error) => {
       dispatch(getResourcesFail(error));

@@ -14,7 +14,7 @@ import getClusterResourcesCount from '../../redux/actions/ClusterResourcesAction
 class ClusterResourcesPage extends React.Component {
   componentDidMount() {
     const { getClusterResourcesCount } = this.props;
-    getClusterResourcesCount();
+    getClusterResourcesCount("223b3472-4300-48a1-819c-9b07a8a4af61");
   }
 
   render() {
