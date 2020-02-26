@@ -19,12 +19,13 @@ class ClusterResourcesPage extends React.Component {
 
   render() {
     const { resourceCount, clusterName } = this.props;
+    console.log(clusterName);
     return (
       <div>
         <NavBar />
         <div className="MainSection">
           <div className="SiteSideNav">
-            <SideNav name={clusterName} />
+            {/* <SideNav name={clusterName} /> */}
           </div>
           <div className="Content">
             <div className="UpperBar">
