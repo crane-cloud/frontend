@@ -1,6 +1,6 @@
 /* eslint-disable linebreak-style */
 import React from 'react';
-// import { Link } from 'react-router-dom';
+// import { Link, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -14,8 +14,8 @@ import getClusterResourcesCount from '../../redux/actions/ClusterResourcesAction
 class ClusterResourcesPage extends React.Component {
   componentDidMount() {
     const { getClusterResourcesCount } = this.props;
-    getClusterResourcesCount("223b3472-4300-48a1-819c-9b07a8a4af61");
-  }
+    getClusterResourcesCount(this.props.match.params.clusterID);
+  };
 
   render() {
     const { resourceCount, clusterName } = this.props;

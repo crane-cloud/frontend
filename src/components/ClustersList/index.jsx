@@ -17,7 +17,6 @@ class ClustersList extends Component {
 
   render() {
     const { clusters } = this.props;
-    console.log(clusters);
 
     return (
       <div className="ClusterList">
