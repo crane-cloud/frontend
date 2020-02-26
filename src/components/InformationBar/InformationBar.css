@@ -1,18 +1,16 @@
 .InformationBar{
-    width: 100%;
     background: #F8F7E5;
-    min-height: 4rem;
-    padding-top: 5px;
+    min-height: 3.5rem;
+    padding: 10px;
 }
 .InfoHeader{
-    float: left;
+    display: inline;
     font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 24px;
     text-align: right;
-    margin-left: 20px;
-    padding: 10px;
+    margin-left: 30px;
     cursor: pointer;
 }
 .LeftHeader{

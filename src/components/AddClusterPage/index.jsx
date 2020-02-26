@@ -70,13 +70,16 @@ class AddClusterPage extends React.Component {
       });
   }
 
+
   render() {
     
     return (
       <div className="App">
         <Popup trigger={<button>Click Me</button>} modal className="popup">
           {close =>(
-            <div className="AddPageContainer">
+            <div className="AddPageContainer" model="user"
+              onSubmit={(values) => this.handleSubmit(values)}>
+
               <div className="AddPageContent">
                 <div className="AddHeading">
             Add a cluster
