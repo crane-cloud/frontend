@@ -1,0 +1,13 @@
+.StatusSignal {
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+}
+
+.StatusIsOn {
+  background-color: #98A058;
+}
+
+.StatusIsOff {
+  background-color: #FF0000;
+}
