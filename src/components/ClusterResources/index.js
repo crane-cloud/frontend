@@ -11,7 +11,7 @@ function ClusterResources(props) {
       {
         resourceCount.length !== 0 ? (resourceCount.map(
           (resource) => (
-            <Link to={{ pathname: `?${myClusterID}/resources/${resource.name.toLowerCase()}` }} key={resource.count}>
+            <Link to={{ pathname: `/clusters/${myClusterID}/${resource.name.toLowerCase()}` }} key={resource.count}>
               <ResourceCard title={resource.name} count={resource.count} />
             </Link>
           )
