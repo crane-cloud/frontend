@@ -11,7 +11,7 @@ const AddClusterReducer = ( state = initialState, action) => {
     return {
       ...state,
       cluster: action.payload,
-      isSending: false,
+      isFailed: false,
       isAdded: true,
       message: 'Cluster Added SuccessFully'
     };
@@ -20,12 +20,12 @@ const AddClusterReducer = ( state = initialState, action) => {
     return {
       ...state,
       isAdded: false,
-      isSending: true
+      isFailed: false
     };
   case ADD_CLUSTERS_FAIL:
     return {
       ...state,
-      isSending: false,
+      isFailed: true,
       isAdded: false,
       errorOccured: action.payload.error,
       message: 'Failed to add cluster'

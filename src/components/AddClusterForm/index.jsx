@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Popup from 'reactjs-popup';
 import PropTypes from 'prop-types';
 import './AddClusterForm.css';
 import BlackInputText from '../BlackInputText';
@@ -50,87 +49,80 @@ class AddClusterForm extends React.Component {
 
 
   render() {
-    const { isAdded, errorOccured } = this.props;
+    const { isAdded, isFailed, errorOccured } = this.props;
     console.log(errorOccured);
     return (
-      <div className="App">
-        <Popup trigger={<button>Click Me</button>} modal className="popup">
-          {close =>(
-            <div className="AddPageContainer" model="user"
-              onSubmit={(values) => this.handleSubmit(values)}>
+      <div className="AddPageContainer" model="user"
+        onSubmit={(values) => this.handleSubmit(values)}>
 
-              <div className="AddPageContent">
-                <div className="AddHeading">
+        <div className="AddPageContent">
+          <div className="AddHeading">
             Add a cluster
-                </div>
-                <div className="AddFormInputs">
-                  {/* Input fields */}
-                  <BlackInputText
-                    placeholder='Host'
-                    name='host'
-                    value={this.state.host}
-                    onChange={e => {
-                      this.handleChange(e);
-                    }}
-                  />
-                  <BlackInputText
-                    placeholder='Token'
-                    name='token'
-                    value={this.state.token}
-                    onChange={e => {
-                      this.handleChange(e);
-                    }}
-                  />
-                  <BlackInputText
-                    placeholder='Name'
-                    name='name'
-                    value={this.state.name}
-                    onChange={e => {
-                      this.handleChange(e);
-                    }}
-                  />
-                  <BlackInputText
-                    placeholder='Description'
-                    name='description'
-                    value={this.state.name}
-                    onChange={e => {
-                      this.handleChange(e);
-                    }}
-                  />
+          </div>
+          <div className="AddFormInputs">
+            {/* Input fields */}
+            <BlackInputText
+              placeholder='Host'
+              name='host'
+              value={this.state.host}
+              onChange={e => {
+                this.handleChange(e);
+              }}
+            />
+            <BlackInputText
+              placeholder='Token'
+              name='token'
+              value={this.state.token}
+              onChange={e => {
+                this.handleChange(e);
+              }}
+            />
+            <BlackInputText
+              placeholder='Name'
+              name='name'
+              value={this.state.name}
+              onChange={e => {
+                this.handleChange(e);
+              }}
+            />
+            <BlackInputText
+              placeholder='Description'
+              name='description'
+              value={this.state.name}
+              onChange={e => {
+                this.handleChange(e);
+              }}
+            />
 
-                  <div className='AddButtons'>
-                    <div className="AddBtn">
-                      <PrimaryButton 
-                        label={this.state.isSending ? <Spinner /> : 'ADD'}
-                        onClick={this.handleSubmit}
-                      />
-                    </div>
-                    <a className="AddCancelBtn" onClick={close}>
-                      <SecondaryButton isBlack={true} 
-                        className="AddCancelBtn"
-                        label='CANCEL'
-                      />
-                    </a>
-                  </div>
-                  <div className="Info-div">
-                    {/* If error arises */}
-                    { 
-                      errorOccured == 500 ?
-                        (
-                          <div>  Failed to Add Cluster</div>
-                        ):
-                        (<div/>)
-                    }
-                    {
-                      isAdded && <div>Cluster has been successfully added </div>
-                    }
-                      
-                  </div>
-                </div>
+            <div className='AddButtons'>
+              <div className="AddBtn">
+                <PrimaryButton 
+                  label={this.state.isSending ? <Spinner /> : 'ADD'}
+                  onClick={this.handleSubmit}
+                />
               </div>
+              <a className="AddCancelBtn" onClick={this.props.close}>
+                <SecondaryButton isBlack={true} 
+                  className="AddCancelBtn"
+                  label='CANCEL'
+                />
+              </a>
             </div>
-          )}
-        </Popup>
+            <div className="Info-div">
+              {/* If error arises */}
+              { isFailed == true && errorOccured == 500 ?
+                (
+                  <div> Failed to Add Cluster</div>
+                ):
+                (<div/>)
+              }
+              {
+                isAdded && <div>Cluster has been successfully added </div>
+              }
+                      
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -140,12 +132,13 @@ class AddClusterForm extends React.Component {
 AddClusterForm.propTypes = {
   AddCluster:PropTypes.func.isRequired,
   isAdded:PropTypes.bool.isRequired,
+  isFailed:PropTypes.bool.isRequired
 };
 
 
 export const mapStateToProps = state => {
-  const { isAdded, cluster, errorOccured} = state.AddClusterReducer;
-  return { isAdded, cluster, errorOccured};
+  const { isAdded, isFailed, cluster, errorOccured} = state.AddClusterReducer;
+  return { isAdded, isFailed, cluster, errorOccured};
 };
 
 export default connect(
