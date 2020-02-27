@@ -10,7 +10,7 @@ const SecondaryButton = props => {
       }
     </div>
   );
-  
+    
 };
-
+  
 export default SecondaryButton;

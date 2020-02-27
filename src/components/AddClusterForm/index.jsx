@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import './AddClusterForm.css';
 import BlackInputText from '../BlackInputText';
 import SecondaryButton from '../SecondaryButton';
@@ -101,16 +102,16 @@ class AddClusterForm extends React.Component {
                   onClick={this.handleSubmit}
                 />
               </div>
-              <a className="AddCancelBtn" onClick={this.props.close}>
+              <Link className="AddCancelBtn" onClick={this.props.close}>
                 <SecondaryButton isBlack={true} 
                   className="AddCancelBtn"
                   label='CANCEL'
                 />
-              </a>
+              </Link>
             </div>
             <div className="Info-div">
               {/* If error arises */}
-              { isFailed == true && errorOccured == 500 ?
+              { isFailed === true && errorOccured === 500 ?
                 (
                   <div> Failed to Add Cluster</div>
                 ):
