@@ -1,18 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import Popup from 'reactjs-popup';
-import { Link, withRouter } from 'react-router-dom';
-import './AddClusterPage.css';
+import PropTypes from 'prop-types';
+import './AddClusterForm.css';
 import BlackInputText from '../BlackInputText';
 import SecondaryButton from '../SecondaryButton';
 import PrimaryButton from '../PrimaryButton';
 import Spinner from '../SpinnerComponent';
-import { API_BASE_URL } from '../../config';
+import AddCluster from '../../redux/actions/addCluster';
 
 
 
-class AddClusterPage extends React.Component {
+class AddClusterForm extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -36,43 +35,23 @@ class AddClusterPage extends React.Component {
     const cluster = {
       host: this.state.host,
       name: this.state.name,
-      token: this.state.token
+      token: this.state.token,
+      description: this.state.description
     };
 
     this.setState({
       loading: true
     });
+    const { AddCluster } = this.props;
+    
+    AddCluster(cluster);
 
-    axios
-      .post(`${API_BASE_URL}/clusters`, cluster)
-      .then(res => {
-        if (res.data.status === 'success') {
-          this.setState({
-            loading: false
-          });
-          console.log('Added Cluster...');
-
-          // save cluster data to store
-          // this.props.addCluster(res.data.data);
-          
-          // redirect to dashboard
-          setTimeout(() => {
-            this.props.history.push('/clusters');
-          }, 1000);
-        }
-      })
-      .catch(err => {
-        this.setState({
-          loading: false
-        });
-        console.log(err);
-        console.log('Was not successful...');
-      });
   }
 
 
   render() {
-    
+    const { isAdded, errorOccured } = this.props;
+    console.log(errorOccured);
     return (
       <div className="App">
         <Popup trigger={<button>Click Me</button>} modal className="popup">
@@ -122,7 +101,7 @@ class AddClusterPage extends React.Component {
                   <div className='AddButtons'>
                     <div className="AddBtn">
                       <PrimaryButton 
-                        label={this.state.loading ? <Spinner /> : 'ADD'}
+                        label={this.state.isSending ? <Spinner /> : 'ADD'}
                         onClick={this.handleSubmit}
                       />
                     </div>
@@ -133,6 +112,20 @@ class AddClusterPage extends React.Component {
                       />
                     </a>
                   </div>
+                  <div className="Info-div">
+                    {/* If error arises */}
+                    { 
+                      errorOccured == 500 ?
+                        (
+                          <div>  Failed to Add Cluster</div>
+                        ):
+                        (<div/>)
+                    }
+                    {
+                      isAdded && <div>Cluster has been successfully added </div>
+                    }
+                      
+                  </div>
                 </div>
               </div>
             </div>
@@ -142,4 +135,22 @@ class AddClusterPage extends React.Component {
     );
   }
 }
-export default AddClusterPage;
+
+// inititate props
+AddClusterForm.propTypes = {
+  AddCluster:PropTypes.func.isRequired,
+  isAdded:PropTypes.bool.isRequired,
+};
+
+
+export const mapStateToProps = state => {
+  const { isAdded, cluster, errorOccured} = state.AddClusterReducer;
+  return { isAdded, cluster, errorOccured};
+};
+
+export default connect(
+  mapStateToProps,
+  { AddCluster }
+)(AddClusterForm);
+
+

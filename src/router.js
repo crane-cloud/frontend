@@ -5,7 +5,7 @@ import LoginPage from './components/LoginPage';
 import PasswordReset from './components/PasswordReset';
 import RegisterPage from './components/RegisterPage';
 import ClusterPage from './components/ClusterPage';
-import AddClusterPage from './components/AddClusterPage';
+import AddClusterPage from './components/AddClusterForm';
 
 
 
