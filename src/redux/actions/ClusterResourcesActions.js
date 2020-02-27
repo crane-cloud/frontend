@@ -10,7 +10,7 @@ export const getResourcesSuccess = (response) => (
   {
     type: GET_RESOURCES_COUNT,
     payload: response.data.data.resource_count,
-    clusterName: response.data.data,
+    clusterName: response.data.data.cluster.name,
   });
 
 export const getResourcesFail = (error) => ({
@@ -21,10 +21,9 @@ export const getResourcesFail = (error) => ({
   },
 });
 
-const getClusterResourcesCount = (clusterIDNumber) => (dispatch) => {
+const getClusterResourcesCount = (params) => (dispatch) => {
   dispatch(startFetchingResources());
-
-  return axios.get(`${API_BASE_URL}/clusters/${clusterIDNumber}`)
+  return axios.get(`${API_BASE_URL}/clusters/${params.clusterID}`)
     .then((response) => dispatch(getResourcesSuccess(response)))
     .catch((error) => {
       dispatch(getResourcesFail(error));

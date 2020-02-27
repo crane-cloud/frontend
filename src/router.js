@@ -15,8 +15,8 @@ const Routes = () => (
       <Route path="/login" component={LoginPage} />
       <Route path="/forgot-password" component={PasswordReset} />
       <Route path="/register" component={RegisterPage} />
-      <Route path="/clusters" component={ClusterPage} />
-      <Route path="/resources" component={ClusterResourcesPage} />
+      <Route exact path="/clusters/:clusterID/resources" component={ClusterResourcesPage} />
+      <Route exact path="/clusters" component={ClusterPage} />
     </Switch>
   </BrowserRouter>
 );

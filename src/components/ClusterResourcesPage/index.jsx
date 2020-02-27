@@ -2,6 +2,7 @@
 import React from 'react';
 // import { Link, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './ClusterResourcesPage.css';
@@ -14,8 +15,10 @@ import getClusterResourcesCount from '../../redux/actions/ClusterResourcesAction
 class ClusterResourcesPage extends React.Component {
   componentDidMount() {
     const { getClusterResourcesCount } = this.props;
-    getClusterResourcesCount(this.props.match.params.clusterID);
-  };
+    const { match: { params } } = this.props;
+
+    getClusterResourcesCount(params);
+  }
 
   render() {
     const { resourceCount, clusterName } = this.props;
@@ -25,14 +28,17 @@ class ClusterResourcesPage extends React.Component {
         <NavBar />
         <div className="MainSection">
           <div className="SiteSideNav">
-            <SideNav name={clusterName} />
+            <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
           </div>
           <div className="Content">
             <div className="UpperBar">
-              <InformationBar header='Overview' showBtn={false} />
+              <InformationBar header="Overview" showBtn={false} />
             </div>
             <div className="LowerBar">
-              <ClusterResources resourceCount={resourceCount} myClusterID={this.props.match.params.clusterID} />
+              <ClusterResources
+                resourceCount={resourceCount}
+                myClusterID={this.props.match.params.clusterID}
+              />
             </div>
           </div>
         </div>
@@ -65,4 +71,4 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ClusterResourcesPage);
+)(withRouter(ClusterResourcesPage));

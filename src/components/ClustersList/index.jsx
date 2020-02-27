@@ -21,7 +21,7 @@ class ClustersList extends Component {
     return (
       <div className="ClusterList">
         {clusters !== 0 ? (clusters.clusters.map((cluster) => (
-          <Link to={{ pathname: `/resources/?clusterID=${cluster.id}` }} key={cluster.id}>
+          <Link to={{ pathname: `/clusters/${cluster.id}/resources` }} key={cluster.id}>
             <div key={cluster.id} className="ClusterCardItem">
               <ClusterCard name={cluster.name} description={cluster.host} icon={crane} />
             </div>
