@@ -1,6 +1,5 @@
 /* eslint-disable linebreak-style */
 import React from 'react';
-// import { Link, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
@@ -16,13 +15,12 @@ class ClusterResourcesPage extends React.Component {
   componentDidMount() {
     const { getClusterResourcesCount } = this.props;
     const { match: { params } } = this.props;
-
     getClusterResourcesCount(params);
   }
 
   render() {
     const { resourceCount, clusterName } = this.props;
-    console.log(clusterName);
+
     return (
       <div>
         <NavBar />

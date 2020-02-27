@@ -5,7 +5,7 @@ import './ClusterResource.css';
 
 function ClusterResources(props) {
   const { resourceCount, myClusterID } = props;
-  
+
   return (
     <div className="ClusterContainer">
       {
