@@ -7,18 +7,20 @@ import CreateButton from '../ButtonComponent';
 function InformationBar(props) {
   return (
     <div className="InformationBar">
-      
-      {props.showBtn ? 
+
+      {props.showBtn ? (
         <div>
           <div className="InfoHeader">{ props.header }</div>
           <Popup trigger={<div className="CreateButton"><CreateButton /></div>} modal className="popup">
-            {close =>(
+            {(close) => (
               <AddClusterForm close={close} />
             )}
           </Popup>
-        </div> :
-        <div className="LeftHeader">{ props.header }</div>}
-      
+        </div>
+      ) : (
+        <div className="LeftHeader">{ props.header }</div>
+      )}
+
       {/* <div className="DropDownDiv">
         <span className="NamespaceDropDown">name space</span>
         <div className="DropDownContent">

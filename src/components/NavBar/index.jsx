@@ -32,7 +32,7 @@ const NavBar = () =>
               <img src={PROFILE} size="1x" alt="profile" />
             </div>
             <div className="UserProfileName">
-              <div className="NameUser"><strong>Colin Wagaba</strong></div>
+              <div className="NameUser"><strong>Pablo Escobar</strong></div>
             </div>
             <div className="NavDropdown Drop Profile">
 

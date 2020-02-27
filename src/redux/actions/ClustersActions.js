@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import {API_BASE_URL} from '../../config.js';
+import { API_BASE_URL } from '../../config';
 
 import { GET_CLUSTERS, GET_CLUSTERS_FAIL, START_GETTING_CLUSTERS } from './actionTypes';
 
@@ -33,4 +33,3 @@ const getClustersList = () => (dispatch) => {
 
 
 export default getClustersList;
-

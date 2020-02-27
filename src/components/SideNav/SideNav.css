@@ -54,7 +54,10 @@
     display: block;
 }
 
-
+.List{
+    height: min-content;
+    overflow: auto;
+}
 .SideFooter{
     height: 30px;
     font-family: Roboto, sans-serif;
