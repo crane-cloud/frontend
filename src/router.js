@@ -17,7 +17,6 @@ const Routes = () => (
       <Route path="/register" component={RegisterPage} />
       <Route path="/clusters" component={ClusterPage} />
       <Route exact path="/clusters/:clusterID/resources" component={ClusterResourcesPage} />
-      <Route exact path="/clusters" component={ClusterPage} />
     </Switch>
   </BrowserRouter>
 );
