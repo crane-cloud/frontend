@@ -18,7 +18,7 @@ class PodsList extends Component {
     return (
       <div className="ClusterList">
         {isFetched ? (pods.pods.map((pod) => (
-          <div>{ pod.name }</div>
+          <div>{ pod.metadata.name }</div>
         ))) : (
           <h3 className="EmptyList">No Pods Available</h3>
         )}
@@ -43,7 +43,7 @@ PodsList.defaultProps = {
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, pods, isFetched } = state.ClustersReducer;
+  const { isRetrieving, pods, isFetched } = state.podsReducer;
   return { isRetrieving, pods, isFetched };
 };
 
