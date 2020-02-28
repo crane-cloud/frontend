@@ -21,15 +21,13 @@ export default class RegisterPage extends Component {
       email: '',
       password: '',
       passwordConfirm: '',
-      verificationCode: '',
       hasAgreed: false,
-      codeLoading: false,
       loading: false
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.getCode = this.getCode.bind(this);
+    // this.getCode = this.getCode.bind(this);
     this.toggleAgreed = this.toggleAgreed.bind(this);
   }
 
@@ -39,12 +37,12 @@ export default class RegisterPage extends Component {
     });
   }
 
-  getCode() {
-    if (!this.state.codeLoading) {
-      this.setState({ codeLoading: true });
-    }
-    console.log('Getting veirifcation code...');
-  }
+  // getCode() {
+  //   if (!this.state.codeLoading) {
+  //     this.setState({ codeLoading: true });
+  //   }
+  //   console.log('Getting veirifcation code...');
+  // }
 
   handleOnChange(e) {
     this.setState({
@@ -56,9 +54,7 @@ export default class RegisterPage extends Component {
     const userData = {
       name: this.state.name,
       email: this.state.email,
-
-      password: this.state.password,
-      verificationCode: this.state.verificationCode
+      password: this.state.password
     };
 
     this.setState({
@@ -111,7 +107,7 @@ export default class RegisterPage extends Component {
               value={this.state.email}
               onChange={this.handleOnChange}
             />
-            <div className="VerificationCodeInput">
+            {/* <div className="VerificationCodeInput">
               <InputText
                 placeholder='Verification Code'
                 name='verificationCode'
@@ -124,7 +120,7 @@ export default class RegisterPage extends Component {
                 ) : <Spinner />
                 }
               </div>
-            </div>
+            </div> */}
             <InputPassword
               placeholder='Password'
               name='password'
