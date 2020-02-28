@@ -4,22 +4,22 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import './NamespacesListPage.css';
+import './NamespacesList.css';
 import NavBar from '../NavBar';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
-import ClusterResources from '../ClusterResources';
-import getNamespaces from '../../redux/actions/ClusterResourcesActions';
+import getNamespaces from '../../redux/actions/NamespacesActions';
+import TableList from '../TableList';
 
 class NamespacesListPage extends React.Component {
   componentDidMount() {
     const { getNamespaces } = this.props;
     const { match: { params } } = this.props;
-    getClusterResourcesCount(params);
+    getNamespaces(params);
   }
 
   render() {
-    const { clusterName } = this.props;
+    const { namespacesList, clusterName } = this.props;
 
     return (
       <div>
@@ -30,13 +30,10 @@ class NamespacesListPage extends React.Component {
           </div>
           <div className="Content">
             <div className="UpperBar">
-              <InformationBar header="Overview" showBtn={false} />
+              <InformationBar header="Namespaces" showBtn={true} />
             </div>
             <div className="LowerBar">
-              <ClusterResources
-                namespacesList={namespacesList}
-                myClusterID={this.props.match.params.clusterID}
-              />
+              <TableList data={namespacesList} />
             </div>
           </div>
         </div>
