@@ -18,7 +18,6 @@ class AddClusterForm extends React.Component {
       name: '',
       host: '',
       token: '',
-      loading: false
     };
 
     this.handleChange = this.handleChange.bind(this);

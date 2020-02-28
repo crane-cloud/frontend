@@ -45,3 +45,6 @@
 .AddCancelBtn{
     float: right;
 }
+.EmptyList{
+  margin: 50px 40px;
+}
