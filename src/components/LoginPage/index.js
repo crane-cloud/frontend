@@ -59,7 +59,7 @@ class LoginPage extends React.Component {
 
           // redirect to dashboard
           setTimeout(() => {
-            history.push('/dashboard');
+            history.push('/clusters');
           }, 1000);
         }
       })
