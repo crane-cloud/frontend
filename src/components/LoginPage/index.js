@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
-import saveUser from '../../redux/actions/saveUser';
 import { connect } from 'react-redux';
+import saveUser from '../../redux/actions/saveUser';
 import Header from '../Header';
 import LandingFooter from '../LandingFooter';
 import InputText from '../InputText';
@@ -32,9 +32,13 @@ class LoginPage extends React.Component {
   }
 
   handleSubmit() {
+    const { history } = this.props;
+
+    const { email, password } = this.state;
+
     const userCredentials = {
-      email: this.state.email,
-      password: this.state.password
+      email,
+      password
     };
 
     this.setState({
@@ -43,7 +47,7 @@ class LoginPage extends React.Component {
 
     axios
       .post(`${API_BASE_URL}/users/login`, userCredentials)
-      .then(res => {
+      .then((res) => {
         if (res.data.status === 'success') {
           this.setState({
             loading: false
@@ -51,15 +55,15 @@ class LoginPage extends React.Component {
           console.log('Login successful...');
 
           // save user data to store
-          this.props.saveUser(res.data.data);
-          
+          saveUser(res.data.data);
+
           // redirect to dashboard
           setTimeout(() => {
-            this.props.history.push('/dashboard');
+            history.push('/clusters');
           }, 1000);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({
           loading: false
         });
@@ -69,6 +73,8 @@ class LoginPage extends React.Component {
   }
 
   render() {
+    const { email, password, loading } = this.state;
+
     return (
       <div className="LoginPageContainer">
         <Header />
@@ -79,33 +85,34 @@ class LoginPage extends React.Component {
           <div className="LoginContentInputs">
             {/* Input fields */}
             <InputText
-              placeholder='Email Address'
-              name='email'
-              value={this.state.email}
-              onChange={e => {
+              placeholder="Email Address"
+              name="email"
+              value={email}
+              onChange={(e) => {
                 this.handleChange(e);
               }}
             />
             <InputPassword
-              placeholder='Password'
-              name='password'
-              value={this.state.password}
-              onChange={e => {
+              placeholder="Password"
+              name="password"
+              value={password}
+              onChange={(e) => {
                 this.handleChange(e);
               }}
             />
 
             <div className="LoginLinkContainer">
-              <Link to='/forgot-password' className="LoginContentLink">Forgot your password?</Link>
+              <Link to="/forgot-password" className="LoginContentLink">Forgot your password?</Link>
             </div>
 
             <PrimaryButton
-              label={this.state.loading ? <Spinner /> : 'login'}
+              label={loading ? <Spinner /> : 'login'}
               onClick={this.handleSubmit}
             />
 
             <div className="LoginContentBottomLink LoginLinkContainer">
-              Not signed up?  <Link to='/register' className="LoginContentLink">Create an account.</Link>
+              Not signed up? &nbsp;
+              <Link to="/register" className="LoginContentLink">Create an account.</Link>
             </div>
 
           </div>
@@ -119,12 +126,12 @@ class LoginPage extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return { user: state.user };
-};
+const mapStateToProps = (state) => (
+  { user: state.user }
+);
 
 const mapDispatchToProps = {
-  saveUser: saveUser
+  saveUser
 };
 
 export default connect(
