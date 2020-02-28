@@ -6,6 +6,7 @@ import PasswordReset from './components/PasswordReset';
 import RegisterPage from './components/RegisterPage';
 import ClusterPage from './components/ClusterPage';
 import ClusterResourcesPage from './components/ClusterResourcesPage';
+import PodsList from './components/ClusterComponents/PodsList';
 
 
 const Routes = () => (
@@ -17,6 +18,8 @@ const Routes = () => (
       <Route path="/register" component={RegisterPage} />
       <Route exact path="/clusters/:clusterID/resources" component={ClusterResourcesPage} />
       <Route exact path="/clusters" component={ClusterPage} />
+      <Route exact path="/pods" component={PodsList} />
+
     </Switch>
   </BrowserRouter>
 );
