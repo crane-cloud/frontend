@@ -16,10 +16,14 @@ class NamespacesListPage extends React.Component {
     const { getNamespaces } = this.props;
     const { match: { params } } = this.props;
     getNamespaces(params);
+    console.log(params);
   }
 
   render() {
     const { namespacesList, clusterName } = this.props;
+    const columns = ['Name', 'Status', 'Age'];
+    console.log(this.props);
+    console.log(namespacesList);
 
     return (
       <div>
@@ -30,10 +34,13 @@ class NamespacesListPage extends React.Component {
           </div>
           <div className="Content">
             <div className="UpperBar">
-              <InformationBar header="Namespaces" showBtn={true} />
+              <InformationBar header="Namespaces" showBtn={false} />
             </div>
             <div className="LowerBar">
-              <TableList data={namespacesList} />
+              <TableList
+              // data={namespacesList}
+                headers={columns}
+              />
             </div>
           </div>
         </div>
@@ -48,14 +55,14 @@ NamespacesListPage.propTypes = {
   clusterName: PropTypes.string,
 };
 
-NamespacesListPage.defaultProps = {
-  namespacesList: [],
-  isRetrieving: false,
-  clusterName: '',
-};
+// NamespacesListPage.defaultProps = {
+//   namespacesList: [],
+//   isRetrieving: false,
+//   clusterName: '',
+// };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, namespacesList, clusterName } = state.ClusterResourcesReducer;
+  const { isRetrieving, namespacesList, clusterName } = state.NamespacesListReducer;
   return { isRetrieving, namespacesList, clusterName };
 };
 

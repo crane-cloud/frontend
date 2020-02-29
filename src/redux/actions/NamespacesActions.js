@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../../config';
-import { IS_FETCHING, FECTH_NAMESPACES_SUCCESS, FETCH_NAMESPACES_FAILED } from './actionTypes';
+import { IS_FETCHING, FETCH_NAMESPACES_SUCCESS, FETCH_NAMESPACES_FAILED } from './actionTypes';
 
 export const initiateFetch = () => ({
   type: IS_FETCHING,
@@ -8,8 +8,8 @@ export const initiateFetch = () => ({
 
 export const getNamespacesSuccess = (response) => (
   {
-    type: FECTH_NAMESPACES_SUCCESS,
-    payload: response.data.data,
+    type: FETCH_NAMESPACES_SUCCESS,
+    payload: response.data.data.namespaces,
     clusterName: response.data.data.cluster.name,
   });
 
@@ -24,7 +24,8 @@ export const getNamespacesFailed = (error) => ({
 const getNamespaces = (params) => (dispatch) => {
   dispatch(initiateFetch());
   return axios.get(`${API_BASE_URL}/clusters/${params.clusterID}/namespaces`)
-    .then((response) => dispatch(getNamespacesSuccess(response)))
+    .then((response) => (dispatch(getNamespacesSuccess(response))))
+    // .then((response) => (dispatch(console.log(response))))
     .catch((error) => {
       dispatch(getNamespacesFailed(error));
     });

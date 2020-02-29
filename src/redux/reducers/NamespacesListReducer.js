@@ -1,5 +1,7 @@
 import {
-  IS_FETCHING, FECTH_NAMESPACES_SUCCESS, FETCH_NAMESPACES_FAILED
+  IS_FETCHING,
+  FETCH_NAMESPACES_SUCCESS,
+  FETCH_NAMESPACES_FAILED
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -10,7 +12,7 @@ const initialState = {
 
 const NamespacesListReducer = (state = initialState, action) => {
   switch (action.type) {
-  case FECTH_NAMESPACES_SUCCESS:
+  case FETCH_NAMESPACES_SUCCESS:
     return {
       ...state,
       namespacesList: action.payload,
