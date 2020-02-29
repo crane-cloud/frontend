@@ -6,7 +6,7 @@ import PasswordReset from './components/PasswordReset';
 import RegisterPage from './components/RegisterPage';
 import ClusterPage from './components/ClusterPage';
 import ClusterResourcesPage from './components/ClusterResourcesPage';
-import ClusterNodes from './components/ClusterNodes';
+import ClusterNodes from './components/NodesList';
 
 
 const Routes = () => (

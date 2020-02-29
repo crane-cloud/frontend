@@ -1,7 +1,7 @@
 import {
   START_GETTING_RESOURCE,
   GET_RESOURCE_FAIL,
-  GET_RECOURCE_SUCCESS
+  GET_RESOURCE_SUCCESS
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -13,7 +13,7 @@ const initialState = {
 
 const NodesReducer = (state = initialState, action) => {
   switch (action.type) {
-  case GET_RECOURCE_SUCCESS:
+  case GET_RESOURCE_SUCCESS:
     return {
       ...state,
       nodes: action.payload,
