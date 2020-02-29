@@ -18,23 +18,22 @@ class PodsList extends Component {
     return creationTimestamp;
   }
 
-  // returnReadyPods(containerList) {
-  //   let readyCount = 0;
-  //   let count = 0;
-  //   console.log(containerList);
-  //   if (containerList === undefined) {
-  //     containerList.map((container, i) => {
-  //       console.log(containerList.ready);
-  //       if (container.ready) {
-  //         readyCount += 1;
-  //       }
-  //       count += 1;
-  //       return 0;
-  //     });
-  //     return `${readyCount}/${count}`;
-  //   }
-  //   return 0;
-  // }
+  podStatuses(containerlist) {
+    if (typeof (containerlist) !== 'undefined') {
+      const count = containerlist.length;
+      let ready = 0;
+      containerlist.map(
+        (container) => {
+          if (container.ready) {
+            ready += 1;
+          }
+          return 0;
+        }
+      );
+      return `${ready}/${count}`;
+    }
+    return 0;
+  }
 
   render() {
     const { pods, isFetched, isRetrieving } = this.props;
@@ -54,8 +53,7 @@ class PodsList extends Component {
               isFetched ? (pods.pods.map((pod) => (
                 <tr>
                   <td>{pod.metadata.name}</td>
-                  {/* <td>{this.returnReadyPods(pod.status.containerStatuses)}</td> */}
-                  <td>{pod.status.qosClass}</td>
+                  <td>{this.podStatuses(pod.status.containerStatuses)}</td>
                   <td>{pod.status.phase}</td>
                   <td>{tellTime(pod.metadata.creationTimestamp)}</td>
                 </tr>
