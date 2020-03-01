@@ -1,16 +1,26 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import getDeployments from '../../redux/actions/getDeployments';
 import NavBar from '../NavBar';
 import SideNav from '../SideNav';
 import './DeploymentsPage.css';
 import InformationBar from '../InformationBar';
 
-export default class DeploymentsPage extends Component {
+class DeploymentsPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+    };
   }
 
+  componentDidMount() {
+    this.props.getDeployments();
+  }
+
+
   render() {
+    console.log(this.props.deployments);
     return (
       <div className="DeploymentsPageContainer">
         <NavBar />
@@ -23,7 +33,7 @@ export default class DeploymentsPage extends Component {
             <div className="DeploymentsPageTableSection">
               <div className="DeploymentsPageTable">
                 <table>
-                  <thead className="uppercase extra-bold">
+                  <thead className="uppercase">
                     <tr>
                       <th>name</th>
                       <th>ready</th>
@@ -56,3 +66,14 @@ export default class DeploymentsPage extends Component {
     );
   }
 }
+
+DeploymentsPage.propTypes = {
+  getDeployments: PropTypes.func.isRequired,
+  deployments: PropTypes.arrayOf(PropTypes.object).isRequired
+};
+
+const mapStateToProps = (state) => ({
+  deployments: state.deployments
+});
+
+export default connect(mapStateToProps, { getDeployments })(DeploymentsPage);
