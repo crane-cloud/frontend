@@ -13,5 +13,39 @@
 
 .DeploymentsPageMainContent {
   flex: 1;
-  background: #F1F1F1;
+  background: #f1f1f1;
 }
+
+/*- ///// TABLE STYLING HERE ///////// */
+.DeploymentsPageTable {
+  padding: 2rem;
+}
+
+.DeploymentsPageTable table {
+  text-align: center;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.DeploymentsPageTable table th {
+  padding: 1rem;
+  color: #008AC1;
+  text-align: center;
+}
+
+.DeploymentsPageTable table th:first-child, 
+.DeploymentsPageTable table td:first-child {
+  text-align: left;
+}
+
+.DeploymentsPageTable table th:last-child,
+.DeploymentsPageTable table td:last-child {
+  text-align: right;
+}
+
+.DeploymentsPageTable table td {
+  padding: .5rem 1rem;
+  font-weight: normal;
+}
+
+/*- ////////////////////////////////// */
