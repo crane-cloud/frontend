@@ -1,0 +1,17 @@
+.DeploymentsPageContainer {
+  height: auto;
+}
+
+.DeploymentsPageMain {
+  display: flex;
+  flex-direction: row;
+}
+
+.DeploymentsPageSideNav {
+  min-width: 250px;
+}
+
+.DeploymentsPageMainContent {
+  flex: 1;
+  background: #F1F1F1;
+}
