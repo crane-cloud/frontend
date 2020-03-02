@@ -1,0 +1,72 @@
+.MainSection {
+    background-color: #F1F1F1;
+}
+
+.MainSection .SiteSideNav{
+    /* position: fixed; */
+    float: left;
+    width: 18%;
+    /* display: inline; */
+}
+.MainSection:after{
+    /* clear: both; */
+}
+.MainSection .Content{
+    /* overflow: scroll; */
+    /* float: right; */
+    width: 82%;
+    /* float: right; */
+    display: flex;
+    flex-flow: column;
+    /* min-height: 860px; */
+    background-color: #F1F1F1;
+    
+}
+.MainSection .UpperBar{
+    height: 10%;
+}
+
+.MainSection LowerBar{
+    height: 90%;
+    flex: 2;
+    flex-grow: 1;
+    overflow: auto;
+}
+.StatusColumn{
+    text-align: center;
+}
+thead {
+    background-color:transparent;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    color: #008ac1;
+}
+tbody {background-color:transparent;}
+tfoot {background-color:transparent;}
+  
+table{
+    background-color:transparent;
+    width: 100%;
+    padding: 2rem;
+}
+td, th{
+  padding: .8rem;
+}
+tr{
+    width: 100%;
+    text-align: center;
+}
+tr td:first-child, th:first-child{
+    text-align: left;
+}
+tr td:last-child, th:last-child {
+    text-align: right;
+    min-width: 100px;
+}
+td:first-child{
+    width: 20%;
+}
+th{
+    color: #008ac1;
+}
