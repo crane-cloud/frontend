@@ -71,7 +71,7 @@ class PodsList extends Component {
             </div>
             <div className="LowerBar">
               <div className="ClusterList">
-                <table className="Pods table">
+                <table className="PodsTable">
                   <tr>
                     <th>Name</th>
                     <th>Ready</th>

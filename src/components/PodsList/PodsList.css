@@ -1,0 +1,5 @@
+table.PodsTable {
+    width: 100%;
+    table-layout: fixed;
+    text-align: center;
+}

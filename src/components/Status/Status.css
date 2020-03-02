@@ -1,3 +1,9 @@
+.StatusWrapper {
+width: 100%;
+display: grid;
+justify-content: center;
+}
+
 .StatusSignal {
   border-radius: 50%;
   width: 1rem;
