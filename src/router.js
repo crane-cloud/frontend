@@ -17,9 +17,8 @@ const Routes = () => (
       <Route path="/forgot-password" component={PasswordReset} />
       <Route path="/register" component={RegisterPage} />
       <Route exact path="/clusters/:clusterID/resources" component={ClusterResourcesPage} />
+      <Route exact path="/clusters/:clusterID/pods" component={PodsList} />
       <Route exact path="/clusters" component={ClusterPage} />
-      <Route exact path="/pods" component={PodsList} />
-
     </Switch>
   </BrowserRouter>
 );

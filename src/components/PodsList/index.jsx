@@ -5,12 +5,17 @@ import { connect } from 'react-redux';
 import getPodsList from '../../redux/actions/podsActions';
 import tellAge from '../../helpers/ageUtility';
 import './PodsList.css';
+import NavBar from '../NavBar';
+import Status from '../Status';
+import InformationBar from '../InformationBar';
+import SideNav from '../SideNav';
 
 
 class PodsList extends Component {
   componentDidMount() {
     const { getPodsList } = this.props;
-    getPodsList();
+    const { match: { params } } = this.props;
+    getPodsList(params.clusterID);
   }
 
   getAge(utcDate) {
@@ -18,7 +23,21 @@ class PodsList extends Component {
     return creationTimestamp;
   }
 
-  podStatuses(containerlist) {
+  podStatus(conditions) {
+    let status = '';
+    conditions.map((condition) => {
+      if (condition.type === 'Ready') {
+        status = condition.status;
+      }
+      return null;
+    });
+    if (status === 'True') {
+      return true;
+    }
+    return false;
+  }
+
+  podReady(containerlist) {
     if (typeof (containerlist) !== 'undefined') {
       const count = containerlist.length;
       let ready = 0;
@@ -37,35 +56,55 @@ class PodsList extends Component {
 
   render() {
     const { pods, isFetched, isRetrieving } = this.props;
+    const { clusterName } = this.props;
     return (
-      <div className="ClusterList">
-        <table className="Pods table">
-          <tr>
-            <th>Name</th>
-            <th>Ready</th>
-            <th>Status</th>
-            <th>Age</th>
-          </tr>
-          {
-            isRetrieving ? (
-              <div>Fetching Pods</div>
-            ) : (
-              isFetched ? (pods.pods.map((pod) => (
-                <tr>
-                  <td>{pod.metadata.name}</td>
-                  <td>{this.podStatuses(pod.status.containerStatuses)}</td>
-                  <td>{pod.status.phase}</td>
-                  <td>{tellAge(pod.metadata.creationTimestamp)}</td>
-                </tr>
 
-              ))) : (
-                <h3 className="EmptyList">No Pods Available</h3>
-              )
-            )
-          }
-        </table>
+      <div>
+        <NavBar />
+        <div className="MainSection">
+          <div className="SiteSideNav">
+            <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
+          </div>
+          <div className="Content">
+            <div className="UpperBar">
+              <InformationBar header="Pods" showBtn={false} />
+            </div>
+            <div className="LowerBar">
+              <div className="ClusterList">
+                <table className="Pods table">
+                  <tr>
+                    <th>Name</th>
+                    <th>Ready</th>
+                    <th>Status</th>
+                    <th>Age</th>
+                  </tr>
+                  {
+                    isRetrieving ? (
+                      <div>Fetching Pods</div>
+                    ) : (
+                      isFetched ? (pods.pods.map((pod) => (
+                        <tr>
+                          <td>{pod.metadata.name}</td>
+                          <td>{this.podReady(pod.status.containerStatuses)}</td>
+                          {/* <td>{this.podStatus(pod.status.conditions)}</td> */}
+                          {/* {console.log(this.podStatus(pod.status.conditions))} */}
+                          <td><Status status={this.podStatus(pod.status.conditions)} /></td>
+                          <td>{tellAge(pod.metadata.creationTimestamp)}</td>
+                        </tr>
 
+                      ))) : (
+                        <h3 className="EmptyList">No Pods Available</h3>
+                      )
+                    )
+                  }
+                </table>
+
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
     );
   }
 }
