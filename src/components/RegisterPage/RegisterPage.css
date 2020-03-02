@@ -75,3 +75,14 @@ a.RegisterContentLink {
     width: 100%;
   }
 }
+
+/* weird media query to fix fullscreen misbehavior */
+@media only screen and (min-height: 700px) {
+  .RegisterPageContainer {
+    height: 100vh;
+  }
+
+  .RegisterContent {
+    padding: 8rem 4rem 0;
+  }
+}

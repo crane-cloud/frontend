@@ -7,6 +7,7 @@ import {
 
 const initialState = {
   clusters: [],
+  isRetrieved: false,
   isRetrieving: false,
   message: 'Clusters Not Available'
 };
@@ -18,20 +19,23 @@ const ClustersReducer = (state = initialState, action) => {
       ...state,
       clusters: action.payload,
       isRetrieving: false,
+      isRetrieved: true,
       message: 'All Cluster fetched'
     };
 
   case START_GETTING_CLUSTERS:
     return {
       ...state,
-      isRetrieving: true
+      isRetrieving: true,
+      isRetrieved: false
     };
 
   case GET_CLUSTERS_FAIL:
     return {
       ...state,
       message: action.payload,
-      isRetrieving: false
+      isRetrieving: false,
+      isRetrieved: false,
     };
 
   default:
