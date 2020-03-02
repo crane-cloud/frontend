@@ -1,7 +1,5 @@
-/* eslint-disable linebreak-style */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './NamespacesList.css';
@@ -16,12 +14,11 @@ class NamespacesListPage extends React.Component {
     const { getNamespaces } = this.props;
     const { match: { params } } = this.props;
     getNamespaces(params);
-    console.log(params);
   }
 
   render() {
     const { namespacesList, clusterName } = this.props;
-    const columns = ['Name', 'Status', 'Age'];
+    
     console.log(this.props);
     console.log(namespacesList);
 
@@ -37,10 +34,29 @@ class NamespacesListPage extends React.Component {
               <InformationBar header="Namespaces" showBtn={false} />
             </div>
             <div className="LowerBar">
-              <TableList
-              // data={namespacesList}
-                headers={columns}
-              />
+            <div className="ClusterList">
+              <table className="NamespacesTable">
+                <tr>
+                  <th>Name</th>
+                  <th>Status</th>
+                  <th>Age</th>
+                </tr>
+                {
+                  namespacesList.length !== 0 ? (
+                    namespacesList.map((namespace) => (
+                      <tr>
+                        <td>{namespace.metadata.name}</td>
+                        <td>{this.namespacesListtatuses(namespace.status.containerStatuses)}</td>
+                        <td>{namespace.status.phase}</td>
+                        <td>{tellTime(namespace.metadata.creationTimestamp)}</td>
+                      </tr>
+
+                    ))) : (
+                      <h3 className="EmptyList">No Namespaces Available</h3>
+                    )
+                  }
+              </table>
+
             </div>
           </div>
         </div>
@@ -55,11 +71,11 @@ NamespacesListPage.propTypes = {
   clusterName: PropTypes.string,
 };
 
-// NamespacesListPage.defaultProps = {
-//   namespacesList: [],
-//   isRetrieving: false,
-//   clusterName: '',
-// };
+NamespacesListPage.defaultProps = {
+  namespacesList: [],
+  isRetrieving: false,
+  clusterName: '',
+};
 
 export const mapStateToProps = (state) => {
   const { isRetrieving, namespacesList, clusterName } = state.NamespacesListReducer;
@@ -73,4 +89,4 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(NamespacesListPage));
+)(NamespacesListPage);

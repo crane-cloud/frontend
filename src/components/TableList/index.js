@@ -17,7 +17,7 @@ class TableList extends React.Component {
     
     
     getRowsData = function(){
-      return this.props.namespaces.map((row, index)=>{
+      return this.props.list.map((row, index)=>{
         return <tr key={row}><td className="Name">{row.metadata.name}</td></tr>
       })
     }
@@ -30,7 +30,7 @@ class TableList extends React.Component {
               <tr>{this.getHeader()}</tr>
             </thead>
             <tbody>
-              {/* {this.getRowsData()} */}
+              {this.getRowsData()}
             </tbody>
             </table>
           </div>

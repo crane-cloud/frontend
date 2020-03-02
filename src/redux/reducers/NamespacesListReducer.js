@@ -17,14 +17,15 @@ const NamespacesListReducer = (state = initialState, action) => {
       ...state,
       namespacesList: action.payload,
       isRetrieving: false,
-      clusterName: action.clusterName,
       message: 'All Namespaces in this Cluster fetched'
     };
+
   case IS_FETCHING:
     return {
       ...state,
       isRetrieving: true
     };
+
   case FETCH_NAMESPACES_FAILED:
     return {
       ...state,

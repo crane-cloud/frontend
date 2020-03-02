@@ -10,7 +10,6 @@ export const getNamespacesSuccess = (response) => (
   {
     type: FETCH_NAMESPACES_SUCCESS,
     payload: response.data.data.namespaces,
-    clusterName: response.data.data.cluster.name,
   });
 
 export const getNamespacesFailed = (error) => ({
@@ -24,7 +23,7 @@ export const getNamespacesFailed = (error) => ({
 const getNamespaces = (params) => (dispatch) => {
   dispatch(initiateFetch());
   return axios.get(`${API_BASE_URL}/clusters/${params.clusterID}/namespaces`)
-    .then((response) => (dispatch(getNamespacesSuccess(response))))
+    .then((response) => dispatch(getNamespacesSuccess(response)))
     // .then((response) => (dispatch(console.log(response))))
     .catch((error) => {
       dispatch(getNamespacesFailed(error));
