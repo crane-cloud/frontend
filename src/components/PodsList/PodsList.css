@@ -1,5 +1,6 @@
-table.PodsTable {
+.CenterSpinner{
     width: 100%;
-    table-layout: fixed;
-    text-align: center;
+    display: grid;
+    justify-self: center;
+    margin: auto;
 }

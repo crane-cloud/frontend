@@ -7,6 +7,7 @@ import tellAge from '../../helpers/ageUtility';
 import './PodsList.css';
 import NavBar from '../NavBar';
 import Status from '../Status';
+import SpinnerComponents from '../SpinnerComponent';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 
@@ -70,7 +71,7 @@ class PodsList extends Component {
               <InformationBar header="Pods" showBtn={false} />
             </div>
             <div className="LowerBar">
-              <div className="ClusterList">
+              <div className="ResourcesTable">
                 <table className="PodsTable">
                   <tr>
                     <th>Name</th>
@@ -80,7 +81,7 @@ class PodsList extends Component {
                   </tr>
                   {
                     isRetrieving ? (
-                      <div>Fetching Pods</div>
+                      <div className='CenterSpinner'><SpinnerComponents /></div>
                     ) : (
                       isFetched ? (pods.pods.map((pod) => (
                         <tr>
@@ -91,9 +92,9 @@ class PodsList extends Component {
                           <td><Status status={this.podStatus(pod.status.conditions)} /></td>
                           <td>{tellAge(pod.metadata.creationTimestamp)}</td>
                         </tr>
-
                       ))) : (
-                        <h3 className="EmptyList">No Pods Available</h3>
+                        <h3 className="EmptyList">No  Available</h3>
+
                       )
                     )
                   }

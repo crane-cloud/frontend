@@ -2,12 +2,10 @@ import React from 'react';
 import './SpinnerComponent.css';
 
 
-const Spinner = () => {
-  return (
-    <div className="SpinnerWrapper">
-      <div className="Spinner"></div>            
-    </div>
-  );
-};
+const Spinner = () => (
+  <div className="SpinnerWrapper">
+    <div className="Spinner" />
+  </div>
+);
 
 export default Spinner;
