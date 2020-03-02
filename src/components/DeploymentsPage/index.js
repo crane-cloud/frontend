@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import getDeployments from '../../redux/actions/getDeployments';
 import NavBar from '../NavBar';
 import SideNav from '../SideNav';
@@ -15,8 +16,8 @@ class DeploymentsPage extends Component {
       loading: false
     };
 
-    // this.filterTableData = this.filterAndCreateRows.bind(this);
     this.calculatePercentage = this.calculatePercentage.bind(this);
+    this.calculateAge = this.calculateAge.bind(this);
   }
 
   componentDidMount() {
@@ -28,7 +29,11 @@ class DeploymentsPage extends Component {
   }
 
   calculatePercentage(proportion, total) {
-    return ((proportion / total) * 100);
+    return Math.round((proportion / total) * 100);
+  }
+
+  calculateAge(date) {
+    return moment(date).fromNow();
   }
 
   render() {
@@ -58,11 +63,17 @@ class DeploymentsPage extends Component {
                       <tr>
                         <td>{deployment.metadata.name}</td>
                         <td>
-                          <ProgressBar
-                            percentage={this.calculatePercentage(deployment.status.readyReplicas, deployment.status.availableReplicas)}
-                          />
+                          {Object.prototype.hasOwnProperty.call(deployment.status, 'readyReplicas') ? (
+                            <ProgressBar
+                              percentage={this.calculatePercentage(deployment.status.readyReplicas, deployment.status.replicas)}
+                            />
+                          ) : (
+                            <ProgressBar
+                              percentage={this.calculatePercentage(0, deployment.status.replicas)}
+                            />
+                          )}
                         </td>
-                        <td>{deployment.metadata.creationTimestamp}</td>
+                        <td>{this.calculateAge(deployment.metadata.creationTimestamp)}</td>
                       </tr>
                     ))}
                   </tbody>
