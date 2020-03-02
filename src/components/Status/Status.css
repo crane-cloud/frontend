@@ -1,13 +1,20 @@
+.StatusWrapper {
+  width: 100%;
+  display: grid;
+  justify-content: center;
+}
+  
 .StatusSignal {
-  border-radius: 50%;
-  width: 1rem;
-  height: 1rem;
+    border-radius: 50%;
+    width: 1rem;
+    height: 1rem;
 }
-
+  
 .StatusIsOn {
-  background-color: #98A058;
+    background-color: #98A058;
 }
-
+  
 .StatusIsOff {
-  background-color: #FF0000;
+    background-color: #FF0000;
 }
+  
