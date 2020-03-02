@@ -20,10 +20,10 @@ export const getNodesFail = (error) => ({
   },
 });
 
-const getNodesList = () => (dispatch) => {
+const getNodesList = (clusterID) => (dispatch) => {
   dispatch(startFetchingNodes());
 
-  return axios.get(`${API_BASE_URL}/clusters/dd66c9a7-dd48-4616-9438-166258e77453/nodes`)
+  return axios.get(`${API_BASE_URL}/clusters/${clusterID}/nodes`)
     .then((response) => dispatch(getNodesSuccess(response)))
     .catch((error) => {
       dispatch(getNodesFail(error));

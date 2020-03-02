@@ -3,14 +3,20 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getNodesList from '../../redux/actions/nodeClusterActions';
-// import tellTime from '../../helpers/ageUtility';
+// import tellAge from '../../helpers/ageUtility';
 import './NodesList.css';
+import NavBar from '../NavBar';
+import Status from '../Status';
+import SpinnerComponents from '../SpinnerComponent';
+import InformationBar from '../InformationBar';
+import SideNav from '../SideNav';
 
 
 class NodesList extends Component {
   componentDidMount() {
     const { getNodesList } = this.props;
-    getNodesList();
+    const { match: { params } } = this.props;
+    getNodesList(params.clusterID);
   }
 
   getAge(utcDate) {
@@ -28,48 +34,68 @@ class NodesList extends Component {
     return '<none>';
   }
 
-
-  nodeStatus(condition) {
-    if (condition.type === 'Ready') {
-      if (condition.status === 'True') {
-        return 'Ready';
+  nodeStatus(conditions) {
+    let status = '';
+    conditions.map((condition) => {
+      if (condition.type === 'Ready') {
+        status = condition.status;
       }
-      return condition.status;
+      return null;
+    });
+    if (status === 'True') {
+      return true;
     }
-    return null;
+    return false;
   }
+
 
   render() {
     const { nodes, isFetched, isRetrieving } = this.props;
-    return (
-      <div className="ClusterList">
-        <table className="Nodes table">
-          <tr>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Roles</th>
-            <th>Age</th>
-            <th>Version</th>
-          </tr>
-          {
-            isRetrieving ? (
-              <div>Fetching Nodes</div>
-            ) : (
-              isFetched ? (nodes.nodes.map((node) => (
-                <tr>
-                  <td>{node.metadata.name}</td>
-                  <td>{node.status.conditions.map(this.nodeStatus)}</td>
-                  <td>{ this.getRoles(node) }</td>
-                  <td>{node.metadata.creationTimestamp}</td>
-                  <td>{node.status.nodeInfo.kubeProxyVersion}</td>
-                </tr>
-              ))) : (
-                <h3 className="EmptyList">No Pods Available</h3>
-              )
-            )
-          }
-        </table>
+    const { clusterName } = this.props;
 
+    return (
+      <div>
+        <NavBar />
+        <div className="MainSection">
+          <div className="SiteSideNav">
+            <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
+          </div>
+          <div className="Content">
+            <div className="UpperBar">
+              <InformationBar header="Nodes" showBtn={false} />
+            </div>
+            <div className="LowerBar" />
+
+            <div className="ResourcesTable">
+              <table className="Nodes table">
+                <tr>
+                  <th>Name</th>
+                  <th>Status</th>
+                  <th>Roles</th>
+                  <th>Age</th>
+                  <th>Version</th>
+                </tr>
+                {
+                  isRetrieving ? (
+                    <div className="CenterSpinner"><SpinnerComponents /></div>) : (
+                    isFetched ? (nodes.nodes.map((node) => (
+                      <tr>
+                        <td>{node.metadata.name}</td>
+                        <td><Status status={this.nodeStatus(node.status.conditions)} /></td>
+                        <td>{ this.getRoles(node) }</td>
+                        <td>{node.metadata.creationTimestamp}</td>
+                        {/* <td>{tellAge(node.metadata.creationTimestamp)}</td> */}
+                        <td>{node.status.nodeInfo.kubeProxyVersion}</td>
+                      </tr>
+                    ))) : (
+                      <h3 className="EmptyList">No Pods Available</h3>
+                    )
+                  )
+                }
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
