@@ -19,6 +19,22 @@
 /*- ///// TABLE STYLING HERE ///////// */
 .DeploymentsPageTable {
   padding: 2rem;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.DeploymentsPageTable::-webkit-scrollbar {
+  width: 4px;
+  height: 0px;
+}
+.DeploymentsPageTable::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.DeploymentsPageTable::-webkit-scrollbar-thumb {
+  background: #888;
+}
+.DeploymentsPageTable::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .DeploymentsPageTable table {
