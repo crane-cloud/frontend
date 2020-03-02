@@ -68,6 +68,6 @@ tr td:last-child, th:last-child {
 td:first-child{
     width: 20%;
 }
-th, td{
-    text-align: center;
+th{
+    color: #008ac1;
 }
