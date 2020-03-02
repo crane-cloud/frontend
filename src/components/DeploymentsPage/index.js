@@ -51,7 +51,7 @@ class DeploymentsPage extends Component {
           <div className="DeploymentsPageMainContent">
             <InformationBar header="Deployments" />
             <div className="DeploymentsPageTableSection">
-              <div className="DeploymentsPageTable">
+              <div className="ResourcesTable">
                 <table>
                   <thead className="uppercase">
                     <tr>
