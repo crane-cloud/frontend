@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import getDeployments from '../../redux/actions/getDeployments';
@@ -22,10 +23,11 @@ class DeploymentsPage extends Component {
 
   componentDidMount() {
     const { getDeployments } = this.props;
+    const { match } = this.props;
     this.setState({
       loading: true
     });
-    getDeployments();
+    getDeployments(match.params.clusterID);
   }
 
   calculatePercentage(proportion, total) {
@@ -96,4 +98,4 @@ const mapStateToProps = (state) => ({
   deployments: state.deployments
 });
 
-export default connect(mapStateToProps, { getDeployments })(DeploymentsPage);
+export default connect(mapStateToProps, { getDeployments })(withRouter(DeploymentsPage));
