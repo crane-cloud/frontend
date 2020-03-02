@@ -20,9 +20,9 @@ export const getPvcsFailed = (error) => ({
   },
 });
 
-const getPvcs = (params) => (dispatch) => {
+const getPvcs = (clusterId) => (dispatch) => {
   dispatch(startTheFetch());
-  return axios.get(`${API_BASE_URL}/clusters/${params.clusterID}/pvcs`)
+  return axios.get(`${API_BASE_URL}/clusters/${clusterId}/pvcs`)
     .then((response) => dispatch(getPvcsSuccess(response)))
     .catch((error) => {
       dispatch(getPvcsFailed(error));

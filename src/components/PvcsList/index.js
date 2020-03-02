@@ -12,9 +12,9 @@ import timePast from '../../helpers/timeUtility';
 
 class PvcsListPage extends React.Component {
   componentDidMount() {
-    const { getpvcs } = this.props;
+    const { getPvcs } = this.props;
     const { match: { params } } = this.props;
-    getpvcs(params);
+    getPvcs(params.clusterID);
   }
 
   render() {
@@ -78,7 +78,7 @@ PvcsListPage.defaultProps = {
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, pvcs } = state.PvcsListReducer;
+  const { isRetrieving, pvcs } = state.PvcsReducer;
   return { isRetrieving, pvcs };
 };
 
