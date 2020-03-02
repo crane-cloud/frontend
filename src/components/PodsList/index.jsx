@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getPodsList from '../../redux/actions/podsActions';
-import tellTime from '../../helpers/ageUtility';
+import tellAge from '../../helpers/ageUtility';
 import './PodsList.css';
 
 
@@ -55,7 +55,7 @@ class PodsList extends Component {
                   <td>{pod.metadata.name}</td>
                   <td>{this.podStatuses(pod.status.containerStatuses)}</td>
                   <td>{pod.status.phase}</td>
-                  <td>{tellTime(pod.metadata.creationTimestamp)}</td>
+                  <td>{tellAge(pod.metadata.creationTimestamp)}</td>
                 </tr>
 
               ))) : (
