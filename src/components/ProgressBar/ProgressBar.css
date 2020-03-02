@@ -1,7 +1,7 @@
 .ProgressBar {
   position: relative;
   height: 20px;
-  width: 80%;
+  width: 100%;
   background-color: #DDDDDD;
 }
 
