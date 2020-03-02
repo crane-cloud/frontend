@@ -55,7 +55,7 @@ class DeploymentsPage extends Component {
                   </thead>
                   <tbody>
                     {deployments.deployments.map((deployment) => (
-                      <tr className="DeploymentsTableRows">
+                      <tr>
                         <td>{deployment.metadata.name}</td>
                         <td>
                           <ProgressBar
