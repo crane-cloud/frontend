@@ -7,7 +7,8 @@ import NavBar from '../NavBar';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 import getNamespaces from '../../redux/actions/NamespacesActions';
-import TableList from '../TableList';
+import Status from '../Status';
+import timePast from '../../helpers/timeUtility';
 
 class NamespacesListPage extends React.Component {
   componentDidMount() {
@@ -17,10 +18,8 @@ class NamespacesListPage extends React.Component {
   }
 
   render() {
-    const { namespacesList, clusterName } = this.props;
-    
-    console.log(this.props);
-    console.log(namespacesList);
+    const { namespacesList } = this.props;
+    const clusterName = localStorage.getItem('clusterName');
 
     return (
       <div>
@@ -34,29 +33,31 @@ class NamespacesListPage extends React.Component {
               <InformationBar header="Namespaces" showBtn={false} />
             </div>
             <div className="LowerBar">
-            <div className="ClusterList">
-              <table className="NamespacesTable">
-                <tr>
-                  <th>Name</th>
-                  <th>Status</th>
-                  <th>Age</th>
-                </tr>
-                {
-                  namespacesList.length !== 0 ? (
-                    namespacesList.map((namespace) => (
-                      <tr>
-                        <td>{namespace.metadata.name}</td>
-                        <td>{this.namespacesListtatuses(namespace.status.containerStatuses)}</td>
-                        <td>{namespace.status.phase}</td>
-                        <td>{tellTime(namespace.metadata.creationTimestamp)}</td>
-                      </tr>
+              <div className="ClusterList">
+                <table className="NamespacesTable">
+                  <tr>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Age</th>
+                  </tr>
+                  {
+                    namespacesList.length !== 0 ? (
+                      namespacesList.map((namespace) => (
+                        <tr>
+                          <td>{namespace.metadata.name}</td>
+                          <td className="StatusColumn"><Status status={namespace.status.phase} /></td>
+                          <td>{timePast(namespace.metadata.creationTimestamp)}</td>
+                        </tr>
 
-                    ))) : (
-                      <h3 className="EmptyList">No Namespaces Available</h3>
+                      ))) : (
+                      <h3 className="EmptyList">
+                        No Namespaces Available
+                      </h3>
                     )
                   }
-              </table>
+                </table>
 
+              </div>
             </div>
           </div>
         </div>
@@ -66,7 +67,7 @@ class NamespacesListPage extends React.Component {
 }
 
 NamespacesListPage.propTypes = {
-  namespacesList: PropTypes.arrayOf(PropTypes.object),
+  namespacesList: PropTypes.object,
   isRetrieving: PropTypes.bool,
   clusterName: PropTypes.string,
 };

@@ -24,7 +24,6 @@ const getNamespaces = (params) => (dispatch) => {
   dispatch(initiateFetch());
   return axios.get(`${API_BASE_URL}/clusters/${params.clusterID}/namespaces`)
     .then((response) => dispatch(getNamespacesSuccess(response)))
-    // .then((response) => (dispatch(console.log(response))))
     .catch((error) => {
       dispatch(getNamespacesFailed(error));
     });
