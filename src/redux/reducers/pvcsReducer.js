@@ -2,13 +2,13 @@
 import {
   FETCH_PVCS_SUCCESS,
   FETCH_PVCS_FAILED,
-  START_GETTING_CLUSTERS
+  IS_FETCHING
 } from '../actions/actionTypes';
 
 const initialState = {
-  clusters: [],
+  pvcs: [],
   isRetrieving: false,
-  message: 'Clusters Not Available'
+  message: 'Cluster pvcs Not Available'
 };
 
 const PvcsReducer = (state = initialState, action) => {
@@ -16,12 +16,12 @@ const PvcsReducer = (state = initialState, action) => {
   case FETCH_PVCS_SUCCESS:
     return {
       ...state,
-      clusters: action.payload,
+      pvcs: action.payload,
       isRetrieving: false,
       message: 'All Cluster Pvcs fetched'
     };
 
-  case START_GETTING_CLUSTERS:
+  case IS_FETCHING:
     return {
       ...state,
       isRetrieving: true

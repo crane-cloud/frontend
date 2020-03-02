@@ -2,7 +2,7 @@ import axios from 'axios';
 import { API_BASE_URL } from '../../config';
 import { IS_FETCHING, FETCH_PVCS_SUCCESS, FETCH_PVCS_FAILED } from './actionTypes';
 
-export const initiateFetch = () => ({
+export const startTheFetch = () => ({
   type: IS_FETCHING,
 });
 
@@ -21,7 +21,7 @@ export const getPvcsFailed = (error) => ({
 });
 
 const getPvcs = (params) => (dispatch) => {
-  dispatch(initiateFetch());
+  dispatch(startTheFetch());
   return axios.get(`${API_BASE_URL}/clusters/${params.clusterID}/pvcs`)
     .then((response) => dispatch(getPvcsSuccess(response)))
     .catch((error) => {

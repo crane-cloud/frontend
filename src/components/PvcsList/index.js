@@ -2,24 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import './NamespacesList.css';
+import './PvcsList.css';
 import NavBar from '../NavBar';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
-import getNamespaces from '../../redux/actions/NamespacesActions';
+import getPvcs from '../../redux/actions/PvcsActions';
 import Status from '../Status';
 import timePast from '../../helpers/timeUtility';
 
-class NamespacesListPage extends React.Component {
+class PvcsListPage extends React.Component {
   componentDidMount() {
-    const { getNamespaces } = this.props;
+    const { getpvcs } = this.props;
     const { match: { params } } = this.props;
-    getNamespaces(params);
+    getpvcs(params);
   }
 
   render() {
-    const { namespacesList } = this.props;
+    const { pvcs } = this.props;
     const clusterName = localStorage.getItem('clusterName');
+    console.log(pvcs);
 
     return (
       <div>
@@ -30,28 +31,28 @@ class NamespacesListPage extends React.Component {
           </div>
           <div className="Content">
             <div className="UpperBar">
-              <InformationBar header="Namespaces" showBtn={false} />
+              <InformationBar header="Pvcs" showBtn={false} />
             </div>
             <div className="LowerBar">
-              <div className="ClusterList">
-                <table className="NamespacesTable">
+              <div className="PvcsList">
+                <table className="PvcsTable">
                   <tr>
                     <th>Name</th>
                     <th>Status</th>
                     <th>Age</th>
                   </tr>
                   {
-                    namespacesList.length !== 0 ? (
-                      namespacesList.map((namespace) => (
+                    pvcs.length !== 0 ? (
+                      pvcs.map((pvc) => (
                         <tr>
-                          <td>{namespace.metadata.name}</td>
-                          <td className="StatusColumn"><Status status={namespace.status.phase} /></td>
-                          <td>{timePast(namespace.metadata.creationTimestamp)}</td>
+                          <td>{pvc.metadata.name}</td>
+                          <td className="StatusColumn"><Status status={pvc.status.phase} /></td>
+                          <td>{timePast(pvc.metadata.creationTimestamp)}</td>
                         </tr>
 
                       ))) : (
                       <h3 className="EmptyList">
-                        No Namespaces Available
+                        No pvcs Available
                       </h3>
                     )
                   }
@@ -66,28 +67,26 @@ class NamespacesListPage extends React.Component {
   }
 }
 
-NamespacesListPage.propTypes = {
-  namespacesList: PropTypes.object,
+PvcsListPage.propTypes = {
+  pvcs: PropTypes.object,
   isRetrieving: PropTypes.bool,
-  clusterName: PropTypes.string,
 };
 
-NamespacesListPage.defaultProps = {
-  namespacesList: [],
+PvcsListPage.defaultProps = {
+  pvcs: [],
   isRetrieving: false,
-  clusterName: '',
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, namespacesList, clusterName } = state.NamespacesListReducer;
-  return { isRetrieving, namespacesList, clusterName };
+  const { isRetrieving, pvcs } = state.PvcsListReducer;
+  return { isRetrieving, pvcs };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  getNamespaces
+  getPvcs
 }, dispatch);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(NamespacesListPage);
+)(PvcsListPage);
