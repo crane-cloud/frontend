@@ -22,6 +22,7 @@
 }
 
 .DeploymentsPageTable table {
+  table-layout: fixed;
   text-align: center;
   border-collapse: collapse;
   width: 100%;
