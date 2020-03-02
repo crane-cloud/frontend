@@ -17,52 +17,58 @@
 }
 
 /*- ///// TABLE STYLING HERE ///////// */
-.DeploymentsPageTable {
+.ResourcesTable {
   padding: 2rem;
   height: 100vh;
   overflow-y: auto;
 }
 
-.DeploymentsPageTable::-webkit-scrollbar {
+.ResourcesTable table thead {
+  text-transform: uppercase;
+}
+
+.ResourcesTable::-webkit-scrollbar {
   width: 4px;
   height: 0px;
 }
-.DeploymentsPageTable::-webkit-scrollbar-track {
+.ResourcesTable::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
-.DeploymentsPageTable::-webkit-scrollbar-thumb {
+.ResourcesTable::-webkit-scrollbar-thumb {
   background: #888;
 }
-.DeploymentsPageTable::-webkit-scrollbar-thumb:hover {
+.ResourcesTable::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 
-.DeploymentsPageTable table {
+.ResourcesTable table {
   table-layout: fixed;
   text-align: center;
   border-collapse: collapse;
   width: 100%;
 }
 
-.DeploymentsPageTable table th {
+.ResourcesTable table th {
   padding: 1rem;
   color: #008AC1;
   text-align: center;
 }
 
-.DeploymentsPageTable table th:first-child, 
-.DeploymentsPageTable table td:first-child {
+.ResourcesTable table th:first-child, 
+.ResourcesTable table td:first-child {
   text-align: left;
 }
 
-.DeploymentsPageTable table th:last-child,
-.DeploymentsPageTable table td:last-child {
+.ResourcesTable table th:last-child,
+.ResourcesTable table td:last-child {
   text-align: right;
 }
 
-.DeploymentsPageTable table td {
+.ResourcesTable table td {
   padding: .8rem 1rem;
   font-weight: normal;
 }
 
 /*- ////////////////////////////////// */
+
+
