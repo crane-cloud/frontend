@@ -20,7 +20,6 @@ class PvsListPage extends React.Component {
   render() {
     const { pvs } = this.props;
     const clusterName = localStorage.getItem('clusterName');
-    console.log(pvs);
 
     return (
       <div>
