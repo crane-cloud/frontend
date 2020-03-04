@@ -32,42 +32,54 @@
     flex-grow: 1;
     overflow: auto;
 }
-.StatusColumn{
-    text-align: center;
-}
-thead {
-    background-color:transparent;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
-    color: #008ac1;
-}
-tbody {background-color:transparent;}
-tfoot {background-color:transparent;}
-  
-table{
-    background-color:transparent;
-    width: 100%;
+.ResourcesTable {
     padding: 2rem;
+    height: 100vh;
+    overflow-y: auto;
 }
-td, th{
-  padding: .8rem;
+  
+.ResourcesTable table thead {
+    text-transform: uppercase;
 }
-tr{
+  
+.ResourcesTable::-webkit-scrollbar {
+    width: 4px;
+    height: 0px;
+}
+.ResourcesTable::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.ResourcesTable::-webkit-scrollbar-thumb {
+    background: #888;
+}
+.ResourcesTable::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+  
+.ResourcesTable table {
+    table-layout: fixed;
+    text-align: center;
+    border-collapse: collapse;
     width: 100%;
+}
+  
+.ResourcesTable table th {
+    padding: 1rem;
+    color: #008AC1;
     text-align: center;
 }
-tr td:first-child, th:first-child{
+  
+.ResourcesTable table th:first-child, 
+.ResourcesTable table td:first-child {
     text-align: left;
 }
-tr td:last-child, th:last-child {
+  
+.ResourcesTable table th:last-child,
+.ResourcesTable table td:last-child {
     text-align: right;
-    min-width: 100px;
 }
-td:first-child{
-    width: 20%;
-}
-th{
-    color: #008ac1;
-    padding-bottom: 2rem;
+  
+.ResourcesTable table td {
+    padding: .8rem 1rem;
+    font-weight: normal;
 }
