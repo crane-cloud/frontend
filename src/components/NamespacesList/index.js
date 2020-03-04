@@ -33,7 +33,7 @@ class NamespacesListPage extends React.Component {
               <InformationBar header="Namespaces" showBtn={false} />
             </div>
             <div className="LowerBar">
-              <div className="ClusterList">
+              <div className="ResourcesTable">
                 <table className="NamespacesTable">
                   <tr>
                     <th>Name</th>
