@@ -18,9 +18,9 @@ class ServicesListPage extends React.Component {
   }
 
   render() {
-    const { servicesArray } = this.props;
+    const { services } = this.props;
     const clusterName = localStorage.getItem('clusterName');
-    console.log(servicesArray);
+    console.log(services);
 
     return (
       <div>
@@ -38,16 +38,16 @@ class ServicesListPage extends React.Component {
                 <table>
                   <tr>
                     <th>Name</th>
-                    <th>Status</th>
+                    {/* <th>Status</th> */}
                     <th>Age</th>
                   </tr>
                   {
-                    servicesArray.length !== 0 ? (
-                      servicesArray.map((singleService) => (
+                    services.length !== 0 ? (
+                      services.map((service) => (
                         <tr>
-                          <td>{singleService.metadata.name}</td>
-                          <td><Status status={singleService.status.phase} /></td>
-                          <td>{timePast(singleService.metadata.creationTimestamp)}</td>
+                          <td>{service.metadata.name}</td>
+                          {/* <td><Status status={singleService.status.phase} /></td> */}
+                          <td>{timePast(service.metadata.creationTimestamp)}</td>
                         </tr>
 
                       ))) : (
@@ -68,18 +68,18 @@ class ServicesListPage extends React.Component {
 }
 
 ServicesListPage.propTypes = {
-  servicesArray: PropTypes.object,
+  services: PropTypes.object,
   isRetrieving: PropTypes.bool,
 };
 
 ServicesListPage.defaultProps = {
-  servicesArray: [],
+  services: [],
   isRetrieving: false,
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, servicesArray } = state.ServicesReducer;
-  return { isRetrieving, servicesArray };
+  const { isRetrieving, services } = state.ServicesReducer;
+  return { isRetrieving, services };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({

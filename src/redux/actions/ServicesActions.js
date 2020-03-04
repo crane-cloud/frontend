@@ -9,7 +9,7 @@ export const startTheFetch = () => ({
 export const getServicesSuccess = (response) => (
   {
     type: FETCH_SERVICES_SUCCESS,
-    payload: response.data.data.pvcs,
+    payload: response.data.data.services,
   });
 
 export const getServicesFailed = (error) => ({

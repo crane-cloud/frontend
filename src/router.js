@@ -7,6 +7,7 @@ import RegisterPage from './components/RegisterPage';
 import ClusterPage from './components/ClusterPage';
 import ClusterResourcesPage from './components/ClusterResourcesPage';
 import CreateNewPassword from './components/CreateNewPassword';
+import ServicesListPage from './components/ServicesList';
 
 
 const Routes = () => (
@@ -18,6 +19,7 @@ const Routes = () => (
       <Route path="/register" component={RegisterPage} />
       <Route path="/new-password" component={CreateNewPassword} />
       <Route exact path="/clusters/:clusterID/resources" component={ClusterResourcesPage} />
+      <Route exact path="/clusters/:clusterID/services" component={ServicesListPage} />
       <Route path="/clusters" component={ClusterPage} />
     </Switch>
   </BrowserRouter>
