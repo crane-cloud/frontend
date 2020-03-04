@@ -18,9 +18,9 @@ class PvsListPage extends React.Component {
   }
 
   render() {
-    const { volumes } = this.props;
+    const { pvs } = this.props;
     const clusterName = localStorage.getItem('clusterName');
-    console.log(volumes);
+    console.log(pvs);
 
     return (
       <div>
@@ -42,12 +42,12 @@ class PvsListPage extends React.Component {
                     <th>Age</th>
                   </tr>
                   {
-                    volumes.length !== 0 ? (
-                      volumes.map((volume) => (
+                    pvs.length !== 0 ? (
+                      pvs.map((pv) => (
                         <tr>
-                          <td>{volume.metadata.name}</td>
-                          <td><Status status={volume.status.phase} /></td>
-                          <td>{timePast(volume.metadata.creationTimestamp)}</td>
+                          <td>{pv.metadata.name}</td>
+                          <td><Status status={pv.status.phase} /></td>
+                          <td>{timePast(pv.metadata.creationTimestamp)}</td>
                         </tr>
 
                       ))) : (
@@ -68,18 +68,18 @@ class PvsListPage extends React.Component {
 }
 
 PvsListPage.propTypes = {
-  volumes: PropTypes.object,
+  pvs: PropTypes.object,
   isRetrieving: PropTypes.bool,
 };
 
 PvsListPage.defaultProps = {
-  volumes: [],
+  pvs: [],
   isRetrieving: false,
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, volumes } = state.PvsReducer;
-  return { isRetrieving, volumes };
+  const { isRetrieving, pvs } = state.PvsReducer;
+  return { isRetrieving, pvs };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({

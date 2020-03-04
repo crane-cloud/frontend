@@ -28,6 +28,7 @@
   flex-grow: 1;
   overflow: auto;
 }
+
 .ResourcesTable {
   padding: 2rem;
   height: 100vh;
@@ -61,11 +62,11 @@
 
 .ResourcesTable table th {
   padding: 1rem;
-  color: #008ac1;
+  color: #008AC1;
   text-align: center;
 }
 
-.ResourcesTable table th:first-child,
+.ResourcesTable table th:first-child, 
 .ResourcesTable table td:first-child {
   text-align: left;
 }
@@ -76,6 +77,6 @@
 }
 
 .ResourcesTable table td {
-  padding: 0.8rem 1rem;
+  padding: .8rem 1rem;
   font-weight: normal;
 }
