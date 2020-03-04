@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../../config';
-import { IS_FETCHING, FETCH_SERVICES_SUCCESS, FETCH_SERVICES_SUCCESS } from './actionTypes';
+import { IS_FETCHING, FETCH_SERVICES_SUCCESS, FETCH_SERVICES_FAILED } from './actionTypes';
 
 export const startTheFetch = () => ({
   type: IS_FETCHING,
@@ -13,7 +13,7 @@ export const getServicesSuccess = (response) => (
   });
 
 export const getServicesFailed = (error) => ({
-  type: FETCH_SERVICES_SUCCESS,
+  type: FETCH_SERVICES_FAILED,
   payload: {
     status: false,
     error: error.status,
