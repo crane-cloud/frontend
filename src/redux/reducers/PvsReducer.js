@@ -5,7 +5,7 @@ import {
 } from '../actions/actionTypes';
 
 const initialState = {
-  pvs: [],
+  volumes: [],
   isRetrieving: false,
   message: 'Cluster Volumes Not Available'
 };
@@ -15,7 +15,7 @@ const PvsReducer = (state = initialState, action) => {
   case FETCH_PVS_SUCCESS:
     return {
       ...state,
-      pvs: action.payload,
+      volumes: action.payload,
       isRetrieving: false,
       message: 'All Cluster Volumes fetched'
     };
