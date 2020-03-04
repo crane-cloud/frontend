@@ -20,6 +20,7 @@ class ClusterResourcesPage extends React.Component {
 
   render() {
     const { resourceCount, clusterName } = this.props;
+    localStorage.setItem('clusterName', clusterName);
 
     return (
       <div>

@@ -19,11 +19,6 @@ class NodesList extends Component {
     getNodesList(params.clusterID);
   }
 
-  getAge(utcDate) {
-    const creationTimestamp = new Date(utcDate).getTime();
-    return creationTimestamp;
-  }
-
   getRoles(node) {
     if (typeof (node.spec.taints) !== 'undefined') {
       const str = String(node.spec.taints[0].key);
@@ -51,7 +46,7 @@ class NodesList extends Component {
 
   render() {
     const { nodes, isFetched, isRetrieving } = this.props;
-    const { clusterName } = this.props;
+    const clusterName = localStorage.getItem('clusterName');
 
     return (
       <div>
