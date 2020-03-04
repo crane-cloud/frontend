@@ -2,25 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import './PvcsList.css';
+import './ServicesList.css';
 import NavBar from '../NavBar';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
-import getPvcs from '../../redux/actions/PvcsActions';
+import getServices from '../../redux/actions/ServicesActions';
 import Status from '../Status';
 import timePast from '../../helpers/timeUtility';
 
-class PvcsListPage extends React.Component {
+class ServicesListPage extends React.Component {
   componentDidMount() {
-    const { getPvcs } = this.props;
+    const { getServices } = this.props;
     const { match: { params } } = this.props;
-    getPvcs(params.clusterID);
+    getServices(params.clusterID);
   }
 
   render() {
-    const { pvcs } = this.props;
+    const { servicesArray } = this.props;
     const clusterName = localStorage.getItem('clusterName');
-    console.log(pvcs);
+    console.log(servicesArray);
 
     return (
       <div>
@@ -31,7 +31,7 @@ class PvcsListPage extends React.Component {
           </div>
           <div className="Content">
             <div className="UpperBar">
-              <InformationBar header="Pvcs" showBtn={false} />
+              <InformationBar header="Services" showBtn={false} />
             </div>
             <div className="LowerBar">
               <div className="ResourcesTable">
@@ -42,17 +42,17 @@ class PvcsListPage extends React.Component {
                     <th>Age</th>
                   </tr>
                   {
-                    pvcs.length !== 0 ? (
-                      pvcs.map((pvc) => (
+                    servicesArray.length !== 0 ? (
+                      servicesArray.map((singleService) => (
                         <tr>
-                          <td>{pvc.metadata.name}</td>
-                          <td><Status status={pvc.status.phase} /></td>
-                          <td>{timePast(pvc.metadata.creationTimestamp)}</td>
+                          <td>{singleService.metadata.name}</td>
+                          <td><Status status={singleService.status.phase} /></td>
+                          <td>{timePast(singleService.metadata.creationTimestamp)}</td>
                         </tr>
 
                       ))) : (
                       <h3 className="EmptyList">
-                        No pvcs Available
+                        No Services Available
                       </h3>
                     )
                   }
@@ -67,26 +67,26 @@ class PvcsListPage extends React.Component {
   }
 }
 
-PvcsListPage.propTypes = {
-  pvcs: PropTypes.object,
+ServicesListPage.propTypes = {
+  servicesArray: PropTypes.object,
   isRetrieving: PropTypes.bool,
 };
 
-PvcsListPage.defaultProps = {
-  pvcs: [],
+ServicesListPage.defaultProps = {
+  servicesArray: [],
   isRetrieving: false,
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, pvcs } = state.PvcsReducer;
-  return { isRetrieving, pvcs };
+  const { isRetrieving, servicesArray } = state.ServicesReducer;
+  return { isRetrieving, servicesArray };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  getPvcs
+  getServices
 }, dispatch);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PvcsListPage);
+)(ServicesListPage);
