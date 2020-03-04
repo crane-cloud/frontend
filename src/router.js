@@ -7,7 +7,7 @@ import RegisterPage from './components/RegisterPage';
 import ClusterPage from './components/ClusterPage';
 import ClusterResourcesPage from './components/ClusterResourcesPage';
 import CreateNewPassword from './components/CreateNewPassword';
-import PvsListPage from './components/PvsListPage/';
+import PvsListPage from './components/PvsListPage';
 
 
 const Routes = () => (
