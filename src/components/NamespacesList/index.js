@@ -8,7 +8,7 @@ import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 import getNamespaces from '../../redux/actions/NamespacesActions';
 import Status from '../Status';
-import timePast from '../../helpers/timeUtility';
+import tellAge from '../../helpers/ageUtility';
 
 class NamespacesListPage extends React.Component {
   componentDidMount() {
@@ -46,7 +46,7 @@ class NamespacesListPage extends React.Component {
                         <tr>
                           <td>{namespace.metadata.name}</td>
                           <td className="StatusColumn"><Status status={namespace.status.phase} /></td>
-                          <td>{timePast(namespace.metadata.creationTimestamp)}</td>
+                          <td>{tellAge(namespace.metadata.creationTimestamp)}</td>
                         </tr>
 
                       ))) : (
