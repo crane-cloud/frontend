@@ -34,8 +34,8 @@ class PvcsListPage extends React.Component {
               <InformationBar header="Pvcs" showBtn={false} />
             </div>
             <div className="LowerBar">
-              <div className="PvcsList">
-                <table className="ResourcesTable">
+              <div className="ResourcesTable">
+                <table>
                   <tr>
                     <th>Name</th>
                     <th>Status</th>
