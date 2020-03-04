@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import Header from '../Header';
 import LandingFooter from '../LandingFooter';
 import InputPassword from '../InputPassword';
@@ -7,7 +6,6 @@ import PrimaryButton from '../PrimaryButton';
 import './CreateNewPassword.css';
 
 export default class CreateNewPassword extends React.Component {
-
   render() {
     return (
       <div className="NewPasswordPageContainer">
@@ -20,23 +18,20 @@ export default class CreateNewPassword extends React.Component {
           <div className="NewPasswordContentInputs">
             {/* Input fields */}
             <InputPassword
-              placeholder='Password'
-              name='password'
-             
+              placeholder="Password"
+              name="password"
 
 
             />
             <InputPassword
-              placeholder='Confirm Password'
-              name='confirmPassword'
-              
+              placeholder="Confirm Password"
+              name="confirmPassword"
 
 
             />
 
             <PrimaryButton label="RESET" />
 
-           
 
           </div>
         </div>
