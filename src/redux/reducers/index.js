@@ -4,6 +4,9 @@ import AddClusterReducer from './addClusterReducer';
 import user from './user';
 import ClusterResourcesReducer from './ClusterResourcesReducer';
 import ServicesReducer from './servicesReducer';
+import PvcsReducer from './pvcsReducer';
+import NamespacesListReducer from './NamespacesListReducer';
+import podsReducer from './podsReducer';
 
 
 export default combineReducers({
@@ -11,5 +14,9 @@ export default combineReducers({
   ClustersReducer,
   user,
   AddClusterReducer,
-  ServicesReducer
+  ServicesReducer,
+  PvcsReducer,
+  NamespacesListReducer,
+  podsReducer
+
 });
