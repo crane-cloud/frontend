@@ -7,7 +7,7 @@ import {
 const initialState = {
   pvs: [],
   isRetrieving: false,
-  message: 'Cluster Persistent Volumes Not Available'
+  message: 'Cluster Volumes Not Available'
 };
 
 const PvsReducer = (state = initialState, action) => {
@@ -17,7 +17,7 @@ const PvsReducer = (state = initialState, action) => {
       ...state,
       pvs: action.payload,
       isRetrieving: false,
-      message: 'All Cluster Persistent Volumes fetched'
+      message: 'All Cluster Volumes fetched'
     };
 
   case IS_FETCHING:
