@@ -35,7 +35,7 @@ class PvcsListPage extends React.Component {
             </div>
             <div className="LowerBar">
               <div className="PvcsList">
-                <table className="PvcsTable">
+                <table className="ResourcesTable">
                   <tr>
                     <th>Name</th>
                     <th>Status</th>
@@ -46,7 +46,7 @@ class PvcsListPage extends React.Component {
                       pvcs.map((pvc) => (
                         <tr>
                           <td>{pvc.metadata.name}</td>
-                          <td className="StatusColumn"><Status status={pvc.status.phase} /></td>
+                          <td><Status status={pvc.status.phase} /></td>
                           <td>{timePast(pvc.metadata.creationTimestamp)}</td>
                         </tr>
 

@@ -8,9 +8,6 @@
     width: 18%;
     /* display: inline; */
 }
-.MainSection:after{
-    /* clear: both; */
-}
 .MainSection .Content{
     /* overflow: scroll; */
     /* float: right; */
@@ -56,7 +53,7 @@
     background: #555;
 }
   
-.ResourcesTable table {
+.ResourcesTable {
     table-layout: fixed;
     text-align: center;
     border-collapse: collapse;
@@ -69,17 +66,17 @@
     text-align: center;
 }
   
-.ResourcesTable table th:first-child, 
-.ResourcesTable table td:first-child {
+.ResourcesTable tr th:first-child, 
+.ResourcesTable tr td:first-child {
     text-align: left;
 }
   
-.ResourcesTable table th:last-child,
-.ResourcesTable table td:last-child {
+.ResourcesTable tr th:last-child,
+.ResourcesTable tr td:last-child {
     text-align: right;
 }
   
-.ResourcesTable table td {
+.ResourcesTable td {
     padding: .8rem 1rem;
     font-weight: normal;
 }
