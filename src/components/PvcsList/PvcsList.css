@@ -1,82 +1,81 @@
 .MainSection {
-    background-color: #F1F1F1;
+  background-color: #f1f1f1;
 }
 
-.MainSection .SiteSideNav{
-    /* position: fixed; */
-    float: left;
-    width: 18%;
-    /* display: inline; */
+.MainSection .SiteSideNav {
+  /* position: fixed; */
+  float: left;
+  width: 18%;
+  /* display: inline; */
 }
-.MainSection .Content{
-    /* overflow: scroll; */
-    /* float: right; */
-    width: 82%;
-    /* float: right; */
-    display: flex;
-    flex-flow: column;
-    /* min-height: 860px; */
-    background-color: #F1F1F1;
-    
+.MainSection .Content {
+  /* overflow: scroll; */
+  /* float: right; */
+  width: 82%;
+  /* float: right; */
+  display: flex;
+  flex-flow: column;
+  /* min-height: 860px; */
+  background-color: #f1f1f1;
 }
-.MainSection .UpperBar{
-    height: 10%;
+.MainSection .UpperBar {
+  height: 10%;
 }
 
-.MainSection LowerBar{
-    height: 90%;
-    flex: 2;
-    flex-grow: 1;
-    overflow: auto;
+.MainSection LowerBar {
+  height: 90%;
+  flex: 2;
+  flex-grow: 1;
+  overflow: auto;
 }
 .ResourcesTable {
-    padding: 2rem;
-    height: 100vh;
-    overflow-y: auto;
+  padding: 2rem;
+  height: 100vh;
+  overflow-y: auto;
 }
-  
+
 .ResourcesTable table thead {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
-  
+
 .ResourcesTable::-webkit-scrollbar {
-    width: 4px;
-    height: 0px;
+  width: 4px;
+  height: 0px;
 }
 .ResourcesTable::-webkit-scrollbar-track {
-    background: #f1f1f1;
+  background: #f1f1f1;
 }
 .ResourcesTable::-webkit-scrollbar-thumb {
-    background: #888;
+  background: #888;
 }
 .ResourcesTable::-webkit-scrollbar-thumb:hover {
-    background: #555;
+  background: #555;
 }
-  
-.ResourcesTable {
-    table-layout: fixed;
-    text-align: center;
-    border-collapse: collapse;
-    width: 100%;
+
+.ResourcesTable table {
+  table-layout: fixed;
+  text-align: center;
+  border-collapse: collapse;
+  width: 100%;
 }
-  
+
 .ResourcesTable table th {
-    padding: 1rem;
-    color: #008AC1;
-    text-align: center;
+  padding: 1rem;
+  color: #008ac1;
+  text-align: center;
 }
-  
-.ResourcesTable tr th:first-child, 
-.ResourcesTable tr td:first-child {
-    text-align: left;
+
+.ResourcesTable table th:first-child,
+.ResourcesTable table td:first-child {
+  text-align: left;
 }
-  
-.ResourcesTable tr th:last-child,
-.ResourcesTable tr td:last-child {
-    text-align: right;
+
+.ResourcesTable table th:last-child,
+.ResourcesTable table td:last-child {
+  text-align: right;
 }
-  
-.ResourcesTable td {
-    padding: .8rem 1rem;
-    font-weight: normal;
+
+.ResourcesTable table td {
+  padding: 0.8rem 1rem;
+  font-weight: normal;
 }
