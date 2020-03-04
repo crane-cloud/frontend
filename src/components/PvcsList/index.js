@@ -8,7 +8,7 @@ import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 import getPvcs from '../../redux/actions/PvcsActions';
 import Status from '../Status';
-import timePast from '../../helpers/timeUtility';
+import tellAge from '../../helpers/ageUtility';
 
 class PvcsListPage extends React.Component {
   componentDidMount() {
@@ -20,7 +20,6 @@ class PvcsListPage extends React.Component {
   render() {
     const { pvcs } = this.props;
     const clusterName = localStorage.getItem('clusterName');
-    console.log(pvcs);
 
     return (
       <div>
@@ -47,7 +46,7 @@ class PvcsListPage extends React.Component {
                         <tr>
                           <td>{pvc.metadata.name}</td>
                           <td><Status status={pvc.status.phase} /></td>
-                          <td>{timePast(pvc.metadata.creationTimestamp)}</td>
+                          <td>{tellAge(pvc.metadata.creationTimestamp)}</td>
                         </tr>
 
                       ))) : (
