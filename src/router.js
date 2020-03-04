@@ -7,6 +7,7 @@ import RegisterPage from './components/RegisterPage';
 import ClusterPage from './components/ClusterPage';
 import ClusterResourcesPage from './components/ClusterResourcesPage';
 import NamespacesListPage from './components/NamespacesList';
+import CreateNewPassword from './components/CreateNewPassword';
 
 
 const Routes = () => (
@@ -16,6 +17,7 @@ const Routes = () => (
       <Route path="/login" component={LoginPage} />
       <Route path="/forgot-password" component={PasswordReset} />
       <Route path="/register" component={RegisterPage} />
+      <Route path="/new-password" component={CreateNewPassword} />
       <Route exact path="/clusters/:clusterID/resources" component={ClusterResourcesPage} />
       <Route exact path="/clusters/:clusterID/namespaces" component={NamespacesListPage} />
       <Route exact path="/clusters" component={ClusterPage} />
