@@ -7,7 +7,7 @@ const SideNav = (props) => {
   const { clusterId } = props;
   const { clusterName } = props;
 
-  const BASE_URL = `/cluster/${clusterId}`;
+  const BASE_URL = `/clusters/${clusterId}`;
   return (
     <div className="SideNav">
       <div className="ClusterName">{ clusterName }</div>
