@@ -57,7 +57,7 @@ class PodsList extends Component {
 
   render() {
     const { pods, isFetched, isRetrieving } = this.props;
-    const { clusterName } = this.props;
+    const clusterName = localStorage.getItem('clusterName');
     return (
 
       <div>
