@@ -1,6 +1,6 @@
 import React from 'react';
 import './SideNav.css';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 
 const SideNav = (props) => {
@@ -10,30 +10,30 @@ const SideNav = (props) => {
   const BASE_URL = `/clusters/${clusterId}`;
   return (
     <div className="SideNav">
-      <div className="ClusterName">{ clusterName }</div>
+      <div className="ClusterName"><Link to={{ pathname: `${BASE_URL}/resources` }}>{ clusterName }</Link></div>
 
-      <Link to={{ pathname: `${BASE_URL}/infrastructure` }} className="ListItem">Infrastructure</Link>
+      <Link to={{ pathname: `${BASE_URL}/resources` }} className="ListItem">Infrastructure</Link>
       <div>
-        <Link to={{ pathname: `${BASE_URL}/nodes` }} className="SubListItem">Nodes</Link>
-        <Link to={{ pathname: `${BASE_URL}/volumes` }} className="SubListItem">Volumes</Link>
-        <Link to={{ pathname: `${BASE_URL}/storage-classes` }} className="SubListItem">Storage Classes</Link>
-        <Link to={{ pathname: `${BASE_URL}/namespaces` }} className="SubListItem">Namespaces</Link>
+        <NavLink to={{ pathname: `${BASE_URL}/nodes` }} activeClassName="active" className="SubListItem">Nodes</NavLink>
+        <NavLink to={{ pathname: `${BASE_URL}/pvcs` }} className="SubListItem">Volumes</NavLink>
+        <NavLink to={{ pathname: `${BASE_URL}/storage-classes` }} className="SubListItem">Storage Classes</NavLink>
+        <NavLink to={{ pathname: `${BASE_URL}/namespaces` }} className="SubListItem">Namespaces</NavLink>
       </div>
       <Link to={{ pathname: `${BASE_URL}/pods` }} className="ListItem">Pods</Link>
       <div>
-        <Link to={{ pathname: `${BASE_URL}/pods` }} className="SubListItem">Pods</Link>
-        <Link to={{ pathname: `${BASE_URL}/ingresses` }} className="SubListItem">Ingresses</Link>
-        <Link to={{ pathname: `${BASE_URL}/services` }} className="SubListItem">Services</Link>
+        <NavLink to={{ pathname: `${BASE_URL}/pods` }} activeClassName="active" className="SubListItem">Pods</NavLink>
+        <NavLink to={{ pathname: `${BASE_URL}/ingresses` }} className="SubListItem">Ingresses</NavLink>
+        <NavLink to={{ pathname: `${BASE_URL}/services` }} className="SubListItem">Services</NavLink>
       </div>
-      <Link to={{ pathname: `${BASE_URL}/pods` }} className="ListItem">Controllers</Link>
+      <Link to={{ pathname: `${BASE_URL}/deployments` }} className="ListItem">Controllers</Link>
       <div>
-        <Link to={{ pathname: `${BASE_URL}/deployments` }} className="SubListItem">Deployments</Link>
-        <Link to={{ pathname: `${BASE_URL}/jobs` }} className="SubListItem">Jobs</Link>
+        <NavLink to={{ pathname: `${BASE_URL}/deployments` }} className="SubListItem">Deployments</NavLink>
+        <NavLink to={{ pathname: `${BASE_URL}/jobs` }} className="SubListItem">Jobs</NavLink>
       </div>
       <Link to={{ pathname: `${BASE_URL}/users` }} className="ListItem">Users</Link>
       <div>
-        <Link to={{ pathname: `${BASE_URL}/accounts` }} className="SubListItem">Accounts</Link>
-        <Link to={{ pathname: `${BASE_URL}/projects` }} className="SubListItem">Projects</Link>
+        <NavLink to={{ pathname: `${BASE_URL}/accounts` }} className="SubListItem">Accounts</NavLink>
+        <NavLink to={{ pathname: `${BASE_URL}/projects` }} className="SubListItem">Projects</NavLink>
 
       </div>
 
