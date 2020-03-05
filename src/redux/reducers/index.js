@@ -6,6 +6,7 @@ import ClusterResourcesReducer from './ClusterResourcesReducer';
 import PvcsReducer from './pvcsReducer';
 import NamespacesListReducer from './NamespacesListReducer';
 import podsReducer from './podsReducer';
+import storageClassesReducer from './storageClassReducer';
 
 
 export default combineReducers({
@@ -15,6 +16,7 @@ export default combineReducers({
   AddClusterReducer,
   PvcsReducer,
   NamespacesListReducer,
-  podsReducer
+  podsReducer,
+  storageClassesReducer
 
 });
