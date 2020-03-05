@@ -2,7 +2,7 @@ import React from 'react';
 import './ProgressBar.css';
 
 const ProgressBar = (props) => {
-  const { percentage } = props;
+  const { percentage, fractionLabel } = props;
   let fillColor;
   if (percentage < 25) {
     fillColor = 'Quarter1';
@@ -21,7 +21,7 @@ const ProgressBar = (props) => {
           className={`ProgressBarFiller ProgressBarFill${fillColor}`}
           style={{ width: `${percentage === 0 ? '100' : percentage}%` }}
         >
-          {`${percentage}%`}
+          {fractionLabel ? `${fractionLabel}` : `${percentage}%`}
         </div>
       </div>
     </div>

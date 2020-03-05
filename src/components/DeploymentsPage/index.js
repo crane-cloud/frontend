@@ -13,25 +13,23 @@ import ProgressBar from '../ProgressBar';
 class DeploymentsPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      loading: false
-    };
 
     this.calculatePercentage = this.calculatePercentage.bind(this);
     this.calculateAge = this.calculateAge.bind(this);
+    this.displayFraction = this.displayFraction.bind(this);
   }
 
   componentDidMount() {
-    const { getDeployments } = this.props;
-    const { match } = this.props;
-    this.setState({
-      loading: true
-    });
+    const { match, getDeployments } = this.props;
     getDeployments(match.params.clusterID);
   }
 
   calculatePercentage(proportion, total) {
     return Math.round((proportion / total) * 100);
+  }
+
+  displayFraction(numerator, denominator) {
+    return `${numerator}/${denominator}`;
   }
 
   calculateAge(date) {
@@ -68,10 +66,12 @@ class DeploymentsPage extends Component {
                           {Object.prototype.hasOwnProperty.call(deployment.status, 'readyReplicas') ? (
                             <ProgressBar
                               percentage={this.calculatePercentage(deployment.status.readyReplicas, deployment.status.replicas)}
+                              fractionLabel={this.displayFraction(deployment.status.readyReplicas, deployment.status.replicas)}
                             />
                           ) : (
                             <ProgressBar
                               percentage={this.calculatePercentage(0, deployment.status.replicas)}
+                              fractionLabel={this.displayFraction(0, deployment.status.replicas)}
                             />
                           )}
                         </td>
