@@ -37,14 +37,18 @@ class DeploymentsPage extends Component {
   }
 
   render() {
-    const { deployments } = this.props;
+    const { match, deployments } = this.props;
+    const clusterName = localStorage.getItem('clusterName');
 
     return (
       <div className="DeploymentsPageContainer">
         <NavBar />
         <div className="DeploymentsPageMain">
           <div className="DeploymentsPageSideNav">
-            <SideNav />
+            <SideNav
+              clusterName={clusterName}
+              clusterId={match.params.clusterID}
+            />
           </div>
           <div className="DeploymentsPageMainContent">
             <InformationBar header="Deployments" />
@@ -69,11 +73,11 @@ class DeploymentsPage extends Component {
                               fractionLabel={this.displayFraction(deployment.status.readyReplicas, deployment.status.replicas)}
                             />
                           ) : (
-                            <ProgressBar
-                              percentage={this.calculatePercentage(0, deployment.status.replicas)}
-                              fractionLabel={this.displayFraction(0, deployment.status.replicas)}
-                            />
-                          )}
+                              <ProgressBar
+                                percentage={this.calculatePercentage(0, deployment.status.replicas)}
+                                fractionLabel={this.displayFraction(0, deployment.status.replicas)}
+                              />
+                            )}
                         </td>
                         <td>{this.calculateAge(deployment.metadata.creationTimestamp)}</td>
                       </tr>
