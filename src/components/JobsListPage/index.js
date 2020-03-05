@@ -37,6 +37,7 @@ class JobsListPage extends React.Component {
                 <table>
                   <tr>
                     <th>Name</th>
+                    <th>Completion</th>
                     <th>Status</th>
                     <th>Age</th>
                   </tr>
@@ -45,7 +46,7 @@ class JobsListPage extends React.Component {
                       jobs.map((job) => (
                         <tr>
                           <td>{job.metadata.name}</td>
-                          {/* <td>{job.spec.capacity.storage}</td> */}
+                          <td>{tellAge(job.status.completionTime)}</td>
                           <td><Status status={job.status.succeeded} /></td>
                           <td>{tellAge(job.metadata.creationTimestamp)}</td>
                         </tr>
