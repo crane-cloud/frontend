@@ -37,7 +37,8 @@ class PvsListPage extends React.Component {
                 <table>
                   <tr>
                     <th>Name</th>
-                    <th>Capacity</th>
+                    <th>Access Mode</th>
+                    <th>Reclaim Policy</th>
                     <th>Status</th>
                     <th>Age</th>
                   </tr>
@@ -46,7 +47,8 @@ class PvsListPage extends React.Component {
                       pvs.map((pv) => (
                         <tr>
                           <td>{pv.metadata.name}</td>
-                          <td>{pv.spec.capacity.storage}</td>
+                          <td>{pv.spec.accessModes[0]}</td>
+                          <td>{pv.spec.persistentVolumeReclaimPolicy}</td>
                           <td><Status status={pv.status.phase} /></td>
                           <td>{tellAge(pv.metadata.creationTimestamp)}</td>
                         </tr>
