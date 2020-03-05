@@ -37,8 +37,13 @@ class DeploymentsPage extends Component {
   }
 
   render() {
-    const { match, deployments } = this.props;
     const clusterName = localStorage.getItem('clusterName');
+    const {
+      match,
+      deployments,
+      isFetchingDeployments,
+      isFetched
+    } = this.props;
 
     return (
       <div className="DeploymentsPageContainer">
@@ -62,27 +67,34 @@ class DeploymentsPage extends Component {
                       <th>age</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    {deployments.deployments.map((deployment) => (
-                      <tr>
-                        <td>{deployment.metadata.name}</td>
-                        <td>
-                          {Object.prototype.hasOwnProperty.call(deployment.status, 'readyReplicas') ? (
-                            <ProgressBar
-                              percentage={this.calculatePercentage(deployment.status.readyReplicas, deployment.status.replicas)}
-                              fractionLabel={this.displayFraction(deployment.status.readyReplicas, deployment.status.replicas)}
-                            />
-                          ) : (
-                              <ProgressBar
-                                percentage={this.calculatePercentage(0, deployment.status.replicas)}
-                                fractionLabel={this.displayFraction(0, deployment.status.replicas)}
-                              />
-                            )}
-                        </td>
-                        <td>{this.calculateAge(deployment.metadata.creationTimestamp)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
+                  {isFetchingDeployments ? (
+                    <div>Spinner</div>
+                  ) : (
+                    <tbody>
+                      {isFetched ? (
+                        deployments.map((deployment) => (
+                          <tr>
+                            <td>{deployment.metadata.name}</td>
+                            <td>
+                              {Object.prototype.hasOwnProperty.call(deployment.status, 'readyReplicas') ? (
+                                <ProgressBar
+                                  percentage={this.calculatePercentage(deployment.status.readyReplicas, deployment.status.replicas)}
+                                  fractionLabel={this.displayFraction(deployment.status.readyReplicas, deployment.status.replicas)}
+                                />
+                              ) : (
+                                <ProgressBar
+                                  percentage={this.calculatePercentage(0, deployment.status.replicas)}
+                                  fractionLabel={this.displayFraction(0, deployment.status.replicas)}
+                                />
+                              )}
+                            </td>
+                            <td>{this.calculateAge(deployment.metadata.creationTimestamp)}</td>
+                          </tr>
+                        ))) : (
+                        <div>No deployments</div>
+                      )}
+                    </tbody>
+                  )}
                 </table>
               </div>
             </div>
@@ -95,11 +107,24 @@ class DeploymentsPage extends Component {
 
 DeploymentsPage.propTypes = {
   getDeployments: PropTypes.func.isRequired,
-  deployments: PropTypes.arrayOf(PropTypes.object).isRequired
+  deployments: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isFetchingDeployments: PropTypes.bool,
+  isFetched: PropTypes.bool
 };
 
-const mapStateToProps = (state) => ({
-  deployments: state.deployments
-});
+DeploymentsPage.defaultProps = {
+  isFetchingDeployments: false,
+  isFetched: false
+};
+
+const mapStateToProps = (state) => {
+  const {
+    deployments,
+    isFetchingDeployments,
+    isFetched
+  } = state.deployments;
+
+  return { deployments, isFetched, isFetchingDeployments };
+};
 
 export default connect(mapStateToProps, { getDeployments })(withRouter(DeploymentsPage));
