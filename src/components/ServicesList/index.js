@@ -7,8 +7,7 @@ import NavBar from '../NavBar';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 import getServices from '../../redux/actions/ServicesActions';
-import Status from '../Status';
-import timePast from '../../helpers/timeUtility';
+import tellAge from '../../helpers/ageUtility';
 
 class ServicesListPage extends React.Component {
   componentDidMount() {
@@ -20,7 +19,6 @@ class ServicesListPage extends React.Component {
   render() {
     const { services } = this.props;
     const clusterName = localStorage.getItem('clusterName');
-    console.log(services);
 
     return (
       <div>
@@ -38,7 +36,6 @@ class ServicesListPage extends React.Component {
                 <table>
                   <tr>
                     <th>Name</th>
-                    {/* <th>Status</th> */}
                     <th>Age</th>
                   </tr>
                   {
@@ -46,8 +43,7 @@ class ServicesListPage extends React.Component {
                       services.map((service) => (
                         <tr>
                           <td>{service.metadata.name}</td>
-                          {/* <td><Status status={singleService.status.phase} /></td> */}
-                          <td>{timePast(service.metadata.creationTimestamp)}</td>
+                          <td>{tellAge(service.metadata.creationTimestamp)}</td>
                         </tr>
 
                       ))) : (
