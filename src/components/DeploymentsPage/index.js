@@ -2,21 +2,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import getDeployments from '../../redux/actions/getDeployments';
 import NavBar from '../NavBar';
 import SideNav from '../SideNav';
-import './DeploymentsPage.css';
 import InformationBar from '../InformationBar';
 import ProgressBar from '../ProgressBar';
 import { BigSpinner } from '../SpinnerComponent';
+import tellAge from '../../helpers/ageUtility';
+import './DeploymentsPage.css';
 
 class DeploymentsPage extends Component {
   constructor(props) {
     super(props);
 
     this.calculatePercentage = this.calculatePercentage.bind(this);
-    this.calculateAge = this.calculateAge.bind(this);
     this.displayFraction = this.displayFraction.bind(this);
   }
 
@@ -31,10 +30,6 @@ class DeploymentsPage extends Component {
 
   displayFraction(numerator, denominator) {
     return `${numerator}/${denominator}`;
-  }
-
-  calculateAge(date) {
-    return moment(date).fromNow();
   }
 
   render() {
@@ -93,11 +88,9 @@ class DeploymentsPage extends Component {
                                 />
                               )}
                             </td>
-                            <td>{this.calculateAge(deployment.metadata.creationTimestamp)}</td>
+                            <td>{tellAge(deployment.metadata.creationTimestamp)}</td>
                           </tr>
-                        ))) : (
-                        <div>No deployments</div>
-                      )}
+                        ))) : <div>No deployments</div>}
                     </tbody>
                   )}
                 </table>
