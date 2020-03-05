@@ -36,6 +36,8 @@ class ServicesListPage extends React.Component {
                 <table>
                   <tr>
                     <th>Name</th>
+                    <th>Type</th>
+                    <th>Cluster IP</th>
                     <th>Age</th>
                   </tr>
                   {
@@ -43,6 +45,8 @@ class ServicesListPage extends React.Component {
                       services.map((service) => (
                         <tr>
                           <td>{service.metadata.name}</td>
+                          <td>{service.spec.type}</td>
+                          <td>{service.spec.clusterIP}</td>
                           <td>{tellAge(service.metadata.creationTimestamp)}</td>
                         </tr>
 
