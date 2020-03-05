@@ -1,19 +1,19 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../../config';
 
-import { GET_RESOURCE_SUCCESS, GET_RESOURCE_FAIL, START_GETTING_RESOURCE } from './actionTypes';
+import { GET_NODES_SUCCESS, GET_NODES_FAIL, START_GETTING_NODES } from './actionTypes';
 
 export const startFetchingNodes = () => ({
-  type: START_GETTING_RESOURCE,
+  type: START_GETTING_NODES,
 });
 
 export const getNodesSuccess = (response) => ({
-  type: GET_RESOURCE_SUCCESS,
+  type: GET_NODES_SUCCESS,
   payload: response.data.data,
 });
 
 export const getNodesFail = (error) => ({
-  type: GET_RESOURCE_FAIL,
+  type: GET_NODES_FAIL,
   payload: {
     status: false,
     error: error.status,

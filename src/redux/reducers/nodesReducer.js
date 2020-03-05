@@ -1,7 +1,7 @@
 import {
-  START_GETTING_RESOURCE,
-  GET_RESOURCE_FAIL,
-  GET_RESOURCE_SUCCESS
+  START_GETTING_NODES,
+  GET_NODES_FAIL,
+  GET_NODES_SUCCESS
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -13,7 +13,7 @@ const initialState = {
 
 const NodesReducer = (state = initialState, action) => {
   switch (action.type) {
-  case GET_RESOURCE_SUCCESS:
+  case GET_NODES_SUCCESS:
     return {
       ...state,
       nodes: action.payload,
@@ -22,14 +22,14 @@ const NodesReducer = (state = initialState, action) => {
       message: 'All Nodes fetched'
     };
 
-  case START_GETTING_RESOURCE:
+  case START_GETTING_NODES:
     return {
       ...state,
       isFetched: false,
       isRetrieving: true
     };
 
-  case GET_RESOURCE_FAIL:
+  case GET_NODES_FAIL:
     return {
       ...state,
       message: action.payload,

@@ -82,7 +82,7 @@ class NodesList extends Component {
                         <td>{node.status.nodeInfo.kubeProxyVersion}</td>
                       </tr>
                     ))) : (
-                      <h3 className="EmptyList">No Pods Available</h3>
+                      <h3 className="EmptyList">No Nodes Available</h3>
                     )
                   )
                 }
