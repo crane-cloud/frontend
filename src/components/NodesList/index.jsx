@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getNodesList from '../../redux/actions/nodeClusterActions';
-// import tellAge from '../../helpers/ageUtility';
+import tellAge from '../../helpers/ageUtility';
 import './NodesList.css';
 import NavBar from '../NavBar';
 import Status from '../Status';
@@ -78,8 +78,7 @@ class NodesList extends Component {
                         <td>{node.metadata.name}</td>
                         <td><Status status={this.nodeStatus(node.status.conditions)} /></td>
                         <td>{ this.getRoles(node) }</td>
-                        <td>{node.metadata.creationTimestamp}</td>
-                        {/* <td>{tellAge(node.metadata.creationTimestamp)}</td> */}
+                        <td>{tellAge(node.metadata.creationTimestamp)}</td>
                         <td>{node.status.nodeInfo.kubeProxyVersion}</td>
                       </tr>
                     ))) : (
