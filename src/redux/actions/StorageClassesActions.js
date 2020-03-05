@@ -23,7 +23,7 @@ export const getStorageClassFail = (error) => ({
 const getStorageClassList = (clusterId) => (dispatch) => {
   dispatch(startFetchingStorageClass());
 
-  return axios.get(`${API_BASE_URL}/clusters/${clusterId}/storage_class`)
+  return axios.get(`${API_BASE_URL}/clusters/${clusterId}/storage_classes`)
     .then((response) => dispatch(getStorageClassSuccess(response)))
     .catch((error) => {
       dispatch(getStorageClassFail(error));

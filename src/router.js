@@ -10,6 +10,7 @@ import PvcsList from './components/PvcsList';
 import NamespacesListPage from './components/NamespacesList';
 import PodsList from './components/PodsList';
 import CreateNewPassword from './components/CreateNewPassword';
+import StorageClassList from './components/StorageClassList';
 
 
 const Routes = () => (
@@ -24,6 +25,7 @@ const Routes = () => (
       <Route exact path="/clusters/:clusterID/pvcs" component={PvcsList} />
       <Route exact path="/clusters/:clusterID/namespaces" component={NamespacesListPage} />
       <Route exact path="/clusters/:clusterID/pods" component={PodsList} />
+      <Route exact path="/clusters/:clusterID/storage-class" component={StorageClassList} />
       <Route exact path="/clusters" component={ClusterPage} />
     </Switch>
   </BrowserRouter>

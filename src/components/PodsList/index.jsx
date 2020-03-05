@@ -19,11 +19,6 @@ class PodsList extends Component {
     getPodsList(params.clusterID);
   }
 
-  getAge(utcDate) {
-    const creationTimestamp = new Date(utcDate).getTime();
-    return creationTimestamp;
-  }
-
   podStatus(conditions) {
     let status = '';
     conditions.map((condition) => {

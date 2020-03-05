@@ -6,7 +6,7 @@ import {
 } from '../actions/actionTypes';
 
 const initialState = {
-  storage_classes: [],
+  storageClasses: [],
   isRetrieving: false,
   isFetched: false,
   message: 'Storage Classes Not Available'
@@ -17,7 +17,7 @@ const storageClassesReducer = (state = initialState, action) => {
   case GET_STORAGE_CLASS_SUCCESS:
     return {
       ...state,
-      storage_classes: action.payload,
+      storageClasses: action.payload,
       isRetrieving: false,
       isFetched: true,
       message: 'All Storage Classes fetched'
