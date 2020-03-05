@@ -16,14 +16,6 @@ class ServicesListPage extends React.Component {
     getServices(params.clusterID);
   }
 
-  displayPorts(conditions) {
-    let portStr = '';
-    conditions.map((condition) => {
-      portStr = `${condition.port}:${condition.nodePort}/${condition.protocol}`;
-      return "Young";
-    });
-  }
-
   render() {
     const { services } = this.props;
     const clusterName = localStorage.getItem('clusterName');
@@ -46,7 +38,6 @@ class ServicesListPage extends React.Component {
                     <th>Name</th>
                     <th>Type</th>
                     <th>Cluster IP</th>
-                    <th>Ports</th>
                     <th>Age</th>
                   </tr>
                   {
@@ -56,7 +47,6 @@ class ServicesListPage extends React.Component {
                           <td>{service.metadata.name}</td>
                           <td>{service.spec.type}</td>
                           <td>{service.spec.clusterIP}</td>
-                          <td>{service.spec.ports.map((item) => {return `${item.port}:${item.nodePort}/${item.protocol}`; })}</td>
                           <td>{tellAge(service.metadata.creationTimestamp)}</td>
                         </tr>
 
