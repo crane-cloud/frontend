@@ -46,14 +46,14 @@ class JobsListPage extends React.Component {
                       jobs.map((job) => (
                         <tr>
                           <td>{job.metadata.name}</td>
-                          <td>{job.spec.capacity.storage}</td>
+                          {/* <td>{job.spec.capacity.storage}</td> */}
                           <td><Status status={job.status.phase} /></td>
                           <td>{tellAge(job.metadata.creationTimestamp)}</td>
                         </tr>
 
                       ))) : (
                       <h3 className="EmptyList">
-                        No Volumes Available
+                        No Jobs Available
                       </h3>
                     )
                   }
