@@ -8,7 +8,7 @@ import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 import getPvs from '../../redux/actions/PvsActions';
 import Status from '../Status';
-import timePast from '../../helpers/timeUtility';
+import tellAge from '../../helpers/ageUtility';
 
 class PvsListPage extends React.Component {
   componentDidMount() {
@@ -46,7 +46,7 @@ class PvsListPage extends React.Component {
                         <tr>
                           <td>{pv.metadata.name}</td>
                           <td><Status status={pv.status.phase} /></td>
-                          <td>{timePast(pv.metadata.creationTimestamp)}</td>
+                          <td>{tellAge(pv.metadata.creationTimestamp)}</td>
                         </tr>
 
                       ))) : (
