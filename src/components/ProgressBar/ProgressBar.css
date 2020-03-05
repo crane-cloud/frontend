@@ -1,7 +1,14 @@
+.ProgressBarContainer {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
 .ProgressBar {
   position: relative;
   height: 20px;
-  width: 100%;
+  width: 70%;
   background-color: #DDDDDD;
 }
 
