@@ -9,6 +9,7 @@ import SideNav from '../SideNav';
 import './DeploymentsPage.css';
 import InformationBar from '../InformationBar';
 import ProgressBar from '../ProgressBar';
+import { BigSpinner } from '../SpinnerComponent';
 
 class DeploymentsPage extends Component {
   constructor(props) {
@@ -68,7 +69,11 @@ class DeploymentsPage extends Component {
                     </tr>
                   </thead>
                   {isFetchingDeployments ? (
-                    <div>Spinner</div>
+                    <tr className="TableLoading">
+                      <div className="SpinnerWrapper">
+                        <BigSpinner />
+                      </div>
+                    </tr>
                   ) : (
                     <tbody>
                       {isFetched ? (

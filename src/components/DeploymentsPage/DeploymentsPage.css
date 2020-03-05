@@ -42,6 +42,7 @@
 }
 
 .ResourcesTable table {
+  position: relative;
   table-layout: fixed;
   text-align: center;
   border-collapse: collapse;
@@ -67,6 +68,16 @@
 .ResourcesTable table td {
   padding: .8rem 1rem;
   font-weight: normal;
+}
+
+.ResourcesTable .TableLoading {
+  position: relative;
+}
+
+.TableLoading .SpinnerWrapper {
+  position: absolute;
+  width: 100%;
+  margin-top: 4rem;
 }
 
 /*- ////////////////////////////////// */
