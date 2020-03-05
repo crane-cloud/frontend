@@ -6,6 +6,9 @@ import PasswordReset from './components/PasswordReset';
 import RegisterPage from './components/RegisterPage';
 import ClusterPage from './components/ClusterPage';
 import ClusterResourcesPage from './components/ClusterResourcesPage';
+import PvcsList from './components/PvcsList';
+import NamespacesListPage from './components/NamespacesList';
+import PodsList from './components/PodsList';
 import CreateNewPassword from './components/CreateNewPassword';
 import PvsListPage from './components/PvsListPage';
 
@@ -20,7 +23,10 @@ const Routes = () => (
       <Route path="/new-password" component={CreateNewPassword} />
       <Route exact path="/clusters/:clusterID/resources" component={ClusterResourcesPage} />
       <Route exact path="/clusters/:clusterID/volumes" component={PvsListPage} />
-      <Route path="/clusters" component={ClusterPage} />
+      <Route exact path="/clusters/:clusterID/pvcs" component={PvcsList} />
+      <Route exact path="/clusters/:clusterID/namespaces" component={NamespacesListPage} />
+      <Route exact path="/clusters/:clusterID/pods" component={PodsList} />
+      <Route exact path="/clusters" component={ClusterPage} />
     </Switch>
   </BrowserRouter>
 );

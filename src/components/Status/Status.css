@@ -3,17 +3,21 @@
   display: grid;
   justify-content: center;
 }
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 7c35abe4bdf73bf1e3bbc2f06507b96723b8f59b
 .StatusSignal {
-  border-radius: 50%;
-  width: 1rem;
-  height: 1rem;
+    border-radius: 50%;
+    width: 1rem;
+    height: 1rem;
 }
-
+  
 .StatusIsOn {
   background-color: #98a058;
 }
-
+  
 .StatusIsOff {
   background-color: #ff0000;
 }
