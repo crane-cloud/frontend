@@ -38,6 +38,7 @@ class ServicesListPage extends React.Component {
                     <th>Name</th>
                     <th>Type</th>
                     <th>Cluster IP</th>
+                    <th>Ports</th>
                     <th>Age</th>
                   </tr>
                   {
@@ -47,6 +48,7 @@ class ServicesListPage extends React.Component {
                           <td>{service.metadata.name}</td>
                           <td>{service.spec.type}</td>
                           <td>{service.spec.clusterIP}</td>
+                          <td>{service.spec.ports[0].name}</td>
                           <td>{tellAge(service.metadata.creationTimestamp)}</td>
                         </tr>
 
