@@ -30,7 +30,7 @@ class PvsListPage extends React.Component {
           </div>
           <div className="Content">
             <div className="UpperBar">
-              <InformationBar header="PVs" showBtn={false} />
+              <InformationBar header="Volumes" showBtn={false} />
             </div>
             <div className="LowerBar">
               <div className="ResourcesTable">
