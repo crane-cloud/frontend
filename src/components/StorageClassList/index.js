@@ -6,16 +6,16 @@ import getStorageClassList from '../../redux/actions/StorageClassesActions';
 import tellAge from '../../helpers/ageUtility';
 import './StorageClassList.css';
 import NavBar from '../NavBar';
-import SpinnerComponents from '../SpinnerComponent';
+import { BigSpinner } from '../SpinnerComponent';
+
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 
 
 class StorageClassList extends Component {
   componentDidMount() {
-    const { getStorageClassList } = this.props;
-    const { match: { params } } = this.props;
-    getStorageClassList(params.clusterID);
+    const { match, getStorageClassList } = this.props;
+    getStorageClassList(match.params.clusterID);
   }
 
 
@@ -44,17 +44,25 @@ class StorageClassList extends Component {
                   </tr>
                   {
                     isRetrieving ? (
-                      <div className="CenterSpinner"><SpinnerComponents /></div>
+                      <tr className="TableLoading">
+                        <div className="SpinnerWrapper">
+                          <BigSpinner />
+                        </div>
+                      </tr>
                     ) : (
-                      isFetched ? (storageClasses.storage_classes.map((storageClass) => (
-                        <tr>
-                          <td>{storageClass.metadata.name}</td>
-                          <td>{storageClass.provisioner}</td>
-                          <td>{tellAge(storageClass.metadata.creationTimestamp)}</td>
-                        </tr>
-                      ))) : (
-                        <h3 className="EmptyList">No Storage Classes Available</h3>
-                      )
+                      <tbody>
+                        {isFetched ? (storageClasses.storage_classes.map((storageClass) => (
+                          <tr>
+                            <td>{storageClass.metadata.name}</td>
+                            <td>{storageClass.provisioner}</td>
+                            <td>{tellAge(storageClass.metadata.creationTimestamp)}</td>
+                          </tr>
+                        ))) : (
+                          <div className="EmptyList">
+                            <h3>No Storage Classes Available</h3>
+                          </div>
+                        )}
+                      </tbody>
                     )
                   }
                 </table>
@@ -71,10 +79,10 @@ class StorageClassList extends Component {
 
 // inititate props
 StorageClassList.propTypes = {
-  storageClasses: PropTypes.object,
+  storageClasses: PropTypes.arrayOf(PropTypes.object),
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
-  getStorageClassList: PropTypes.func
+  getStorageClassList: PropTypes.func.isRequired
 };
 
 // assigning defaults

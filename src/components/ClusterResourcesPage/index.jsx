@@ -22,7 +22,6 @@ class ClusterResourcesPage extends React.Component {
     const { resourceCount, clusterName } = this.props;
     localStorage.setItem('clusterName', clusterName);
 
-
     return (
       <div>
         <NavBar />

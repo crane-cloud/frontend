@@ -23,10 +23,17 @@
     padding: 18px;
     text-transform: uppercase;
 }
+.ClusterName a{
+    color: #fff;
+}
 .SideNav::-webkit-scrollbar {
     display: none;
   }
-
+.active{
+    color: #06222F !important;
+    background-color: #99D2E9; 
+    padding-left: 20px; 
+}
 .ListItem{
     height: 21px;
     font-family: Roboto, sans-serif;
