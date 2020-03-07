@@ -9,6 +9,7 @@ import SideNav from '../SideNav';
 import getPvcs from '../../redux/actions/PvcsActions';
 import Status from '../Status';
 import tellAge from '../../helpers/ageUtility';
+import { BigSpinner } from '../SpinnerComponent';
 
 class PvcsListPage extends React.Component {
   componentDidMount() {
@@ -18,7 +19,7 @@ class PvcsListPage extends React.Component {
   }
 
   render() {
-    const { pvcs } = this.props;
+    const { pvcs, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
 
     return (
@@ -43,18 +44,31 @@ class PvcsListPage extends React.Component {
                     </tr>
                   </thead>
                   {
-                    pvcs.length !== 0 ? (
-                      pvcs.map((pvc) => (
-                        <tr>
-                          <td>{pvc.metadata.name}</td>
-                          <td><Status status={pvc.status.phase} /></td>
-                          <td>{tellAge(pvc.metadata.creationTimestamp)}</td>
-                        </tr>
+                    isRetrieving ? (
+                      <tr className="TableLoading">
+                        <div className="SpinnerWrapper">
+                          <BigSpinner />
+                        </div>
+                      </tr>
+                    ) : (
+                      <tbody>
+                        {pvcs.length !== 0 ? (
+                          pvcs.map((pvc) => (
+                            <tr>
+                              <td>{pvc.metadata.name}</td>
+                              <td><Status status={pvc.status.phase} /></td>
+                              <td>{tellAge(pvc.metadata.creationTimestamp)}</td>
+                            </tr>
 
-                      ))) : (
-                        <h3 className="EmptyList">
-                        No pvcs Available
-                      </h3>
+                          )))
+                          : (
+                            <tr>
+                              <div className="EmptyList">
+                                <h3>No Pvcs Available</h3>
+                              </div>
+                            </tr>
+                          )}
+                      </tbody>
                     )
                   }
                 </table>

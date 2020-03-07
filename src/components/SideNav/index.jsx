@@ -15,7 +15,8 @@ const SideNav = (props) => {
       <Link to={{ pathname: `${BASE_URL}/resources` }} className="ListItem">Infrastructure</Link>
       <div>
         <NavLink to={{ pathname: `${BASE_URL}/nodes` }} activeClassName="active" className="SubListItem">Nodes</NavLink>
-        <NavLink to={{ pathname: `${BASE_URL}/pvcs` }} className="SubListItem">Volumes</NavLink>
+        <NavLink to={{ pathname: `${BASE_URL}/pvs` }} className="SubListItem">Volumes</NavLink>
+        <NavLink to={{ pathname: `${BASE_URL}/pvcs` }} className="SubListItem">Volume Claims</NavLink>
         <NavLink to={{ pathname: `${BASE_URL}/storage-classes` }} className="SubListItem">Storage Classes</NavLink>
         <NavLink to={{ pathname: `${BASE_URL}/namespaces` }} className="SubListItem">Namespaces</NavLink>
       </div>

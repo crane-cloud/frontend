@@ -99,9 +99,11 @@ class PodsList extends Component {
                           </tr>
                         )))
                           : (
-                            <div className="EmptyList">
-                              <h3>No Pods Available</h3>
-                            </div>
+                            <tr>
+                              <div className="EmptyList">
+                                <h3>No Pods Available</h3>
+                              </div>
+                            </tr>
                           )}
                       </tbody>
                     )
