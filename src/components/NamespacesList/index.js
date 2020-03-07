@@ -37,11 +37,13 @@ class NamespacesListPage extends React.Component {
             <div className="LowerBar">
               <div className="ResourcesTable">
                 <table className="NamespacesTable">
-                  <tr>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Age</th>
-                  </tr>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Status</th>
+                      <th>Age</th>
+                    </tr>
+                  </thead>
                   {
                     isRetrieving ? (
                       <tr className="TableLoading">

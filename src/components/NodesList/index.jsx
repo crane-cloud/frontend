@@ -63,13 +63,15 @@ class NodesList extends Component {
 
             <div className="ResourcesTable">
               <table className="Nodes table">
-                <tr>
-                  <th>Name</th>
-                  <th>Status</th>
-                  <th>Roles</th>
-                  <th>Age</th>
-                  <th>Version</th>
-                </tr>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Roles</th>
+                    <th>Age</th>
+                    <th>Version</th>
+                  </tr>
+                </thead>
                 {
                   isRetrieving ? (
                     <tr className="TableLoading">

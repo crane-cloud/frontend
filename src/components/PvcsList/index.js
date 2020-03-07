@@ -35,11 +35,13 @@ class PvcsListPage extends React.Component {
             <div className="LowerBar">
               <div className="ResourcesTable">
                 <table>
-                  <tr>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Age</th>
-                  </tr>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Status</th>
+                      <th>Age</th>
+                    </tr>
+                  </thead>
                   {
                     pvcs.length !== 0 ? (
                       pvcs.map((pvc) => (
@@ -50,7 +52,7 @@ class PvcsListPage extends React.Component {
                         </tr>
 
                       ))) : (
-                      <h3 className="EmptyList">
+                        <h3 className="EmptyList">
                         No pvcs Available
                       </h3>
                     )
