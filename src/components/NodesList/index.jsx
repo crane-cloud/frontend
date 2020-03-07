@@ -7,7 +7,7 @@ import tellAge from '../../helpers/ageUtility';
 import './NodesList.css';
 import NavBar from '../NavBar';
 import Status from '../Status';
-import SpinnerComponents from '../SpinnerComponent';
+import { BigSpinner } from '../SpinnerComponent';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 
@@ -72,18 +72,28 @@ class NodesList extends Component {
                 </tr>
                 {
                   isRetrieving ? (
-                    <div className="CenterSpinner"><SpinnerComponents /></div>) : (
-                    isFetched ? (nodes.nodes.map((node) => (
-                      <tr>
-                        <td>{node.metadata.name}</td>
-                        <td><Status status={this.nodeStatus(node.status.conditions)} /></td>
-                        <td>{ this.getRoles(node) }</td>
-                        <td>{tellAge(node.metadata.creationTimestamp)}</td>
-                        <td>{node.status.nodeInfo.kubeProxyVersion}</td>
-                      </tr>
-                    ))) : (
-                      <h3 className="EmptyList">No Nodes Available</h3>
-                    )
+                    <tr className="TableLoading">
+                      <div className="SpinnerWrapper">
+                        <BigSpinner />
+                      </div>
+                    </tr>
+                  ) : (
+                    <tbody>
+                      {isFetched ? (nodes.nodes.map((node) => (
+                        <tr>
+                          <td>{node.metadata.name}</td>
+                          <td><Status status={this.nodeStatus(node.status.conditions)} /></td>
+                          <td>{ this.getRoles(node) }</td>
+                          <td>{tellAge(node.metadata.creationTimestamp)}</td>
+                          <td>{node.status.nodeInfo.kubeProxyVersion}</td>
+                        </tr>
+                      )))
+                        : (
+                          <div className="EmptyList">
+                            <h3>No Nodes Available</h3>
+                          </div>
+                        )}
+                    </tbody>
                   )
                 }
               </table>

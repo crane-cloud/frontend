@@ -61,8 +61,8 @@ class NamespacesListPage extends React.Component {
 
                           )))
                           : (
-                            <div>
-                              <h3 className="EmptyList">No Namespaces Available</h3>
+                            <div className="EmptyList">
+                              <h3>No Namespaces Available</h3>
                             </div>
                           )}
                       </tbody>
