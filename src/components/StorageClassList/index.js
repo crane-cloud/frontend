@@ -53,7 +53,7 @@ class StorageClassList extends Component {
                           <td>{tellAge(storageClass.metadata.creationTimestamp)}</td>
                         </tr>
                       ))) : (
-                        <h3 className="EmptyList">No  Available</h3>
+                        <h3 className="EmptyList">No Storage Classes Available</h3>
                       )
                     )
                   }
