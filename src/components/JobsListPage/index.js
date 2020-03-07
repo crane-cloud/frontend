@@ -46,7 +46,8 @@ class JobsListPage extends React.Component {
                       jobs.map((job) => (
                         <tr>
                           <td>{job.metadata.name}</td>
-                          <td>{tellAge(job.status.completionTime)}</td>
+                          {/* <td>{Math.abs(Math.round(((job.status.completionTime - job.status.startTime) / 1000) / 60))}</td> */}
+                          <td>{Math.floor((Date.parse(job.status.completionTime) - Date.parse(job.status.startTime)) / 1000)}</td>
                           <td><Status status={job.status.succeeded} /></td>
                           <td>{tellAge(job.metadata.creationTimestamp)}</td>
                         </tr>
