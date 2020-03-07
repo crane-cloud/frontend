@@ -37,7 +37,7 @@ class JobsListPage extends React.Component {
                 <table>
                   <tr>
                     <th>Name</th>
-                    <th>Completion</th>
+                    <th>Duration</th>
                     <th>Status</th>
                     <th>Age</th>
                   </tr>
@@ -46,12 +46,10 @@ class JobsListPage extends React.Component {
                       jobs.map((job) => (
                         <tr>
                           <td>{job.metadata.name}</td>
-                          {/* <td>{Math.abs(Math.round(((job.status.completionTime - job.status.startTime) / 1000) / 60))}</td> */}
-                          <td>{Math.floor((Date.parse(job.status.completionTime) - Date.parse(job.status.startTime)) / 1000)}</td>
+                          <td>{Math.floor((Date.parse(job.status.completionTime) - Date.parse(job.status.startTime)) / 1000) + " seconds"}</td>
                           <td><Status status={job.status.succeeded} /></td>
                           <td>{tellAge(job.metadata.creationTimestamp)}</td>
                         </tr>
-
                       ))) : (
                       <h3 className="EmptyList">
                         No Jobs Available
