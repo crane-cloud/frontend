@@ -23,7 +23,7 @@ const Routes = () => (
       <Route path="/forgot-password" component={PasswordReset} />
       <Route path="/register" component={RegisterPage} />
       <Route path="/new-password" component={CreateNewPassword} />
-      <Route path="/users/verify/:token?" component={VerificationSentPage} />
+      <Route path="/users/verify/:token" component={VerificationSentPage} />
       <Route exact path="/clusters/:clusterID/resources" component={ClusterResourcesPage} />
       <Route exact path="/clusters/:clusterID/nodes" component={ClusterNodes} />
       <Route exact path="/clusters/:clusterID/pvcs" component={PvcsList} />

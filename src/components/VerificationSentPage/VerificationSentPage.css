@@ -13,7 +13,7 @@
 }
 
 .VerificationPageContent {
-  padding: 5rem;
+  padding: 2rem;
   /* margin: 1rem; */
 }
 
@@ -25,6 +25,15 @@
   color: #f7b21f;
 }
 
+.ResendLinkForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.ResendLinkForm .ResendLinkBtn {
+  margin-top: 1rem;
+}
+
 .VerificationPageFooter {
   position: relative;
   margin-top: 5rem;
@@ -34,9 +43,5 @@
 @media only screen and (min-height: 642px) {
   .VerificationPageContainer {
     height: 100vh;
-  }
-
-  .VerificationPageContent {
-    padding: 8rem 4rem 0;
   }
 }
