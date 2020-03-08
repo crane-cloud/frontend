@@ -16,6 +16,22 @@ class ServicesListPage extends React.Component {
     getServices(params.clusterID);
   }
 
+  showPorts(ports) {
+    let portValue = '';
+    ports.map((port) => {
+      if (portValue !== '') {
+        portValue += ', ';
+      }
+      portValue += `${port.port}`;
+      if (port.nodePort !== undefined) {
+        portValue += `:${port.nodePort}`;
+      }
+      portValue += `/${port.protocol}`;
+      return portValue;
+    });
+    return portValue;
+  }
+
   render() {
     const { services } = this.props;
     const clusterName = localStorage.getItem('clusterName');
@@ -38,6 +54,7 @@ class ServicesListPage extends React.Component {
                     <th>Name</th>
                     <th>Type</th>
                     <th>Cluster IP</th>
+                    <th>Ports</th>
                     <th>Age</th>
                   </tr>
                   {
@@ -47,13 +64,16 @@ class ServicesListPage extends React.Component {
                           <td>{service.metadata.name}</td>
                           <td>{service.spec.type}</td>
                           <td>{service.spec.clusterIP}</td>
+                          <td>{this.showPorts(service.spec.ports)}</td>
                           <td>{tellAge(service.metadata.creationTimestamp)}</td>
                         </tr>
 
                       ))) : (
-                      <h3 className="EmptyList">
-                        No Services Available
+                        <div className="EmptyList">
+                      <h3>
+                          No Services Available
                       </h3>
+                      </div>
                     )
                   }
                 </table>
