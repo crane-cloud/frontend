@@ -66,9 +66,15 @@ class PodsList extends Component {
           return 0;
         }
       );
-      return [ready, count];
+      return <ProgressBar
+      percentage={this.calculatePercentage(ready, count)}
+      fractionLabel={this.displayFraction(ready, count)}
+    />;
     }
-    return 0;
+    return <ProgressBar
+    percentage={this.calculatePercentage(0, 0)}
+    fractionLabel={this.displayFraction(0, 0)}
+  />;;
   }
 
   render() {
@@ -102,28 +108,14 @@ class PodsList extends Component {
                       isFetched ? (pods.pods.map((pod) => (
                         <tr>
                           <td>{pod.metadata.name}</td>
-                          {/* <td>{this.podReady(pod.status.containerStatuses)}</td> */}
-                          <td>
-                            { const valuesProgress = this.podReady(pod.status.containerStatuses)
-                              // Object.prototype.hasOwnProperty.call(pod.status, 'containerStatuses') ? (
-                              <ProgressBar
-                                percentage={this.calculatePercentage(valuesProgress[0], valuesProgress[1])}
-                                fractionLabel={this.displayFraction(valuesProgress[0], valuesProgress[1])}
-                              />
-                            // ) : (
-                            //   <ProgressBar
-                            //     percentage={this.calculatePercentage(0, valuesProgress[1])}
-                            //     fractionLabel={this.displayFraction(0, valuesProgress[1])}
-                            //   />
-                            }
-                          </td>
+                          <td>{this.podReady(pod.status.containerStatuses)}</td>
                           {/* <td>{this.podStatus(pod.status.conditions)}</td> */}
                           {/* {console.log(this.podStatus(pod.status.conditions))} */}
                           <td><Status status={this.podStatus(pod.status.conditions)} /></td>
                           <td>{tellAge(pod.metadata.creationTimestamp)}</td>
                         </tr>
                       ))) : (
-                        <h3 className="EmptyList">No  Available</h3>
+                        <h3 className="EmptyList">No Pods Available</h3>
 
                       )
                     )
