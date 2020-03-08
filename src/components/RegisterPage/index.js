@@ -22,12 +22,12 @@ export default class RegisterPage extends Component {
       password: '',
       passwordConfirm: '',
       hasAgreed: false,
-      loading: false
+      loading: false,
+      registered: false
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    // this.getCode = this.getCode.bind(this);
     this.toggleAgreed = this.toggleAgreed.bind(this);
   }
 
@@ -44,7 +44,6 @@ export default class RegisterPage extends Component {
   }
 
   handleSubmit() {
-    const { history } = this.props;
     const { name, email, password } = this.state;
     const userData = {
       name,
@@ -63,9 +62,10 @@ export default class RegisterPage extends Component {
           this.setState({
             loading: false
           });
-          // redirect them to verification page
           setTimeout(() => {
-            history.push('/login');
+            this.setState({
+              registered: true
+            });
           }, 1000);
         }
       })
@@ -85,57 +85,76 @@ export default class RegisterPage extends Component {
       email,
       password,
       passwordConfirm,
-      loading
+      loading,
+      registered
     } = this.state;
 
     return (
       <div className="RegisterPageContainer">
         <Header />
         <div className="RegisterContent">
-          <div className="RegisterContentHeading">
-            <h1>Create an account</h1>
-          </div>
-          <div className="RegisterContentInputs">
-            {/* Input fields */}
-            <InputText
-              placeholder="Name"
-              name="name"
-              value={name}
-              onChange={this.handleOnChange}
+          {!registered ? (
+            <>
+              <div className="RegisterContentHeading">
+                <h1>Create an account</h1>
+              </div>
+              <div className="RegisterContentInputs">
 
-            />
-            <InputText
-              placeholder="Email Address"
-              name="email"
-              value={email}
-              onChange={this.handleOnChange}
-            />
-            <InputPassword
-              placeholder="Password"
-              name="password"
-              value={password}
-              onChange={this.handleOnChange}
-            />
-            <InputPassword
-              placeholder="Repeat Password"
-              name="passwordConfirm"
-              value={passwordConfirm}
-              onChange={this.handleOnChange}
-            />
+                <InputText
+                  placeholder="Name"
+                  name="name"
+                  value={name}
+                  onChange={this.handleOnChange}
 
-            <div className="RegisterContentBottomLink RegisterLinkContainer RegisterCheckbox">
-              <Checkbox
-                onClick={this.toggleAgreed}
-              />
-              &nbsp; I agree to Crane Cloud&apos;s&nbsp;&nbsp;
-              <Link to="/register" className="RegisterContentLink">Terms of service.</Link>
+                />
+                <InputText
+                  placeholder="Email Address"
+                  name="email"
+                  value={email}
+                  onChange={this.handleOnChange}
+                />
+                <InputPassword
+                  placeholder="Password"
+                  name="password"
+                  value={password}
+                  onChange={this.handleOnChange}
+                />
+                <InputPassword
+                  placeholder="Repeat Password"
+                  name="passwordConfirm"
+                  value={passwordConfirm}
+                  onChange={this.handleOnChange}
+                />
+
+                <div className="RegisterContentBottomLink RegisterLinkContainer RegisterCheckbox">
+                  <Checkbox
+                    onClick={this.toggleAgreed}
+                  />
+                  &nbsp; I agree to Crane Cloud&apos;s&nbsp;&nbsp;
+                  <Link to="/register" className="RegisterContentLink">Terms of service.</Link>
+                </div>
+
+                <PrimaryButton
+                  label={loading ? <Spinner /> : 'Register'}
+                  onClick={this.handleSubmit}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="RegisterSuccessContent">
+              <div className="RegisteredMessage">
+                <h2>Thank you for registering with us!</h2>
+                <p>
+                  We&apos;ve sent a link to your email address:&nbsp;
+                  <span>{email}</span>
+                  .
+                  <br />
+                  <br />
+                  The link will expire after 24 hours. Please use this link to activate and start using your account.
+                </p>
+              </div>
             </div>
-
-            <PrimaryButton
-              label={loading ? <Spinner /> : 'Register'}
-              onClick={this.handleSubmit}
-            />
-          </div>
+          )}
         </div>
         <div className="RegisterPageFooter">
           <LandingFooter />

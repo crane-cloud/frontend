@@ -1,0 +1,42 @@
+.VerificationPageContainer {
+  background: #008ac1;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.VerificationPageMain {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
+.VerificationPageContent {
+  padding: 5rem;
+  /* margin: 1rem; */
+}
+
+.VerificationPageContent h2 {
+  color: #f7b21f;
+}
+
+.VerificationPageContent p span {
+  color: #f7b21f;
+}
+
+.VerificationPageFooter {
+  position: relative;
+  margin-top: 5rem;
+}
+
+/* weird media query to fix fullscreen misbehavior */
+@media only screen and (min-height: 642px) {
+  .VerificationPageContainer {
+    height: 100vh;
+  }
+
+  .VerificationPageContent {
+    padding: 8rem 4rem 0;
+  }
+}
