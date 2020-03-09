@@ -1,5 +1,5 @@
 # Crane Cloud
-Managed Kubernetes Platform
+> Centralised location for all your files.
 
 ## How to setup the project:
  #### Clone the repository
@@ -13,3 +13,6 @@ Managed Kubernetes Platform
      > `Yarn install`
 
 *  Run  `Yarn start` to start the application.
+
+## Deployment
+* The Deployed app is [here.](http://crane-mak-w1.cranecloud.io:32667)
