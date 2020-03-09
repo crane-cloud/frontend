@@ -28,6 +28,9 @@ a.LoginContentLink {
   color: #f7b21f;
   border-bottom: 1px solid #f7b21f;
 }
+.LoginErrorDiv {
+  color: red;
+}
 
 .LoginContentBottomLink {
   margin-top: 1rem;

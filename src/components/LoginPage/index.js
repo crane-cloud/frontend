@@ -114,12 +114,7 @@ class LoginPage extends React.Component {
         <Header />
         <div className="LoginContent">
           <div className="LoginContentHeading">
-            {errors.map((error) => (
-              <p key={error}>
-                Error:
-                {error}
-              </p>
-            ))}
+
             <h1>Login to the cloud</h1>
           </div>
           <div className="LoginContentInputs">
@@ -140,6 +135,13 @@ class LoginPage extends React.Component {
                 this.handleChange(e);
               }}
             />
+            <div className="LoginErrorDiv">
+              {errors.map((error) => (
+                <p key={error}>
+                  {error}
+                </p>
+              ))}
+            </div>
 
             <div className="LoginLinkContainer">
               <Link to="/forgot-password" className="LoginContentLink">Forgot your password?</Link>
