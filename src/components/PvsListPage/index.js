@@ -8,7 +8,6 @@ import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 import getPvs from '../../redux/actions/PvsActions';
 import Status from '../Status';
-import tellAge from '../../helpers/ageUtility';
 
 class PvsListPage extends React.Component {
   componentDidMount() {
@@ -40,7 +39,7 @@ class PvsListPage extends React.Component {
                     <th>Access Mode</th>
                     <th>Reclaim Policy</th>
                     <th>Status</th>
-                    <th>Age</th>
+                    <th>Capacity</th>
                   </tr>
                   {
                     pvs.length !== 0 ? (
@@ -50,7 +49,7 @@ class PvsListPage extends React.Component {
                           <td>{pv.spec.accessModes[0]}</td>
                           <td>{pv.spec.persistentVolumeReclaimPolicy}</td>
                           <td><Status status={pv.status.phase} /></td>
-                          <td>{tellAge(pv.metadata.creationTimestamp)}</td>
+                          <td>{pv.spec.capacity.storage}</td>
                         </tr>
 
                       ))) : (
