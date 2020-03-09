@@ -7,7 +7,7 @@ import Facebook from '../../assets/images/facebook.svg';
 import Twitter from '../../assets/images/twitter.svg';
 
 const Footer = () => (
-  <React.Fragment>
+  <>
     <footer className="Footer">
       <div className="Footer-Inner">
         <div className="Logo">
@@ -71,7 +71,7 @@ const Footer = () => (
               alt="Linkedin"
               className="Social-Logos"
             />
-            
+
           </a>
           <a
             className="Social-Facebook"
@@ -84,7 +84,7 @@ const Footer = () => (
               alt="Facebook"
               className="Social-Logos"
             />
-            
+
           </a>
         </div>
 
@@ -118,7 +118,7 @@ const Footer = () => (
         </p>
       </div>
     </footer>
-  </React.Fragment>
+  </>
 );
 
 export default Footer;

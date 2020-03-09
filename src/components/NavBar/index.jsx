@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import NavLogo from '../NavLogo/index';
 import PROFILE from '../../assets/images/profile.svg';
+import DOWN from '../../assets/images/downarrow.svg';
 import './NavBar.css';
 
 
@@ -9,7 +10,6 @@ const NavBar = () =>
 // const [isOpen, setIsOpen] = useState(false);
 
 // const toggle = () => setIsOpen(!isOpen);
-
   (
     <>
       <div className="Navigation">
@@ -32,12 +32,12 @@ const NavBar = () =>
               <img src={PROFILE} size="1x" alt="profile" />
             </div>
             <div className="UserProfileName">
-              <div className="NameUser"><strong>Colin Wagaba</strong></div>
+              <div className="NameUser"><strong>Derek Greatest</strong></div>
             </div>
             <div className="NavDropdown Drop Profile">
 
               <div className="DropdownIcon">
-                <i className="Arrow" />
+                <img src={DOWN} size="1x" className='DownIcon' alt="DOWN"/>
               </div>
               <div className="DropdownContent">
                 <Link to="/logout">Sign Out</Link>
