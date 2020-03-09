@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import './ServicesList.css';
 import NavBar from '../NavBar';
 import InformationBar from '../InformationBar';
+import { BigSpinner } from '../SpinnerComponent';
 import SideNav from '../SideNav';
 import getServices from '../../redux/actions/ServicesActions';
 
@@ -32,7 +33,7 @@ class ServicesListPage extends React.Component {
   }
 
   render() {
-    const { services } = this.props;
+    const { services, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
 
     return (
@@ -49,28 +50,41 @@ class ServicesListPage extends React.Component {
             <div className="LowerBar">
               <div className="ResourcesTable">
                 <table>
-                  <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Cluster IP</th>
-                    <th>Ports</th>
-                  </tr>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Cluster IP</th>
+                      <th>Ports</th>
+                    </tr>
+                  </thead>
                   {
-                    services.length !== 0 ? (
-                      services.map((service) => (
-                        <tr>
-                          <td>{service.metadata.name}</td>
-                          <td>{service.spec.type}</td>
-                          <td>{service.spec.clusterIP}</td>
-                          <td>{this.showPorts(service.spec.ports)}</td>
-                        </tr>
+                    isRetrieving ? (
+                      <tr className="TableLoading">
+                        <div className="SpinnerWrapper">
+                          <BigSpinner />
+                        </div>
+                      </tr>
+                    ) : (
+                      <tbody>
+                        {services.length !== 0 ? (
+                          services.map((service) => (
+                            <tr>
+                              <td>{service.metadata.name}</td>
+                              <td>{service.spec.type}</td>
+                              <td>{service.spec.clusterIP}</td>
+                              <td>{this.showPorts(service.spec.ports)}</td>
+                            </tr>
 
-                      ))) : (
-                        <div className="EmptyList">
-                      <h3>
-                          No Services Available
-                      </h3>
-                      </div>
+                          )))
+                          : (
+                            <tr>
+                              <div className="EmptyList">
+                                <h3>No Services Available</h3>
+                              </div>
+                            </tr>
+                          )}
+                      </tbody>
                     )
                   }
                 </table>
