@@ -12,6 +12,7 @@ import NamespacesListPage from './components/NamespacesList';
 import PodsList from './components/PodsList';
 import CreateNewPassword from './components/CreateNewPassword';
 import ServicesListPage from './components/ServicesList';
+import StorageClassList from './components/StorageClassList';
 import PvsListPage from './components/PvsListPage';
 import JobsListPage from './components/JobsListPage';
 import DeploymentsPage from './components/DeploymentsPage';
@@ -32,6 +33,7 @@ const Routes = () => (
       <Route exact path="/clusters/:clusterID/pvcs" component={PvcsList} />
       <Route exact path="/clusters/:clusterID/namespaces" component={NamespacesListPage} />
       <Route exact path="/clusters/:clusterID/pods" component={PodsList} />
+      <Route exact path="/clusters/:clusterID/storage-classes" component={StorageClassList} />
       <Route exact path="/clusters/:clusterID/jobs" component={JobsListPage} />
       <Route exact path="/clusters/:clusterID/deployments" component={DeploymentsPage} />
       <Route exact path="/clusters" component={ClusterPage} />
