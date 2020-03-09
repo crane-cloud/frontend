@@ -1,4 +1,6 @@
 header.Header {
+  background-color: #008ac1;
+  color: #ffffff;
   display: flex;
   justify-content: space-between;
 }
@@ -7,8 +9,12 @@ header.Header {
   padding-top: 2rem;
 }
 
+.LogoWrap {
+  margin: 1rem 0 auto 2rem;
+}
+
 .HeaderLinksWrap {
-  margin: 1rem 3rem auto 0;
+  margin: 0 3rem 0 0;
 }
 
 .HeaderLinks a {
@@ -29,6 +35,26 @@ header.Header {
 }
 .LogoLink::-moz-focus-inner {
   border: 0;
+}
+
+div.HeaderLinksWrap.LoggedIn {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, auto);
+  align-items: center;
+}
+
+.ProfileIconWrap img {
+  width: 3rem;
+  align-self: center;
+}
+
+.DropDownArrow img {
+  width: 1rem;
+}
+
+.UserNames {
+  font-weight: bold;
 }
 
 @media only screen and (max-width: 640px) {

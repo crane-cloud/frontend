@@ -5,10 +5,12 @@ import Header from '../Header';
 import LandingFooter from '../LandingFooter';
 import { ReactComponent as InfrastrucurePic } from '../../assets/images/infrastructure.svg';
 import './LandingPage.css';
+import NavBar from '../NavBar';
 
 const LandingPage = () => (
   <div className="LandingPageMain">
     <Header />
+    {/* <NavBar /> */}
     <div className="LandingPageMainContent">
       <div className="LandingPageMainContentInfo">
         <div>
