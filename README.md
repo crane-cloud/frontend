@@ -5,7 +5,7 @@
  #### Clone the repository
   ` git clone https://github.com/crane-cloud/frontend.git`
 
- * If `develop-new` is not up to date, `git checkout develop-new` for it is the default base branch.
+ * If `develop-new` is not up to date, `git checkout develop-new` for it is the default base branch for this project.
    #### Install a package manager 
     Either `npm` but we prefer `yarn`
  * Navigate to this page and get instructions on how to download `yarn` for your OS. `https://classic.yarnpkg.com/en/docs/install`
