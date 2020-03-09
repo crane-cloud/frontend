@@ -1,4 +1,4 @@
-import { SAVE_USER } from '../actions/actionTypes';
+import { SAVE_USER, REMOVE_USER } from '../actions/actionTypes';
 
 const user = ( user = { accessToken: false, data: {} }, action) => {
   switch (action.type) {
@@ -9,6 +9,13 @@ const user = ( user = { accessToken: false, data: {} }, action) => {
       data: {
         ...restOfProperties
       }
+    };
+  }
+
+  case REMOVE_USER: {
+    return {
+      accessToken: false,
+      data: {}
     };
   }
 
