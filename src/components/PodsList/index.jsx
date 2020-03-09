@@ -10,9 +10,17 @@ import Status from '../Status';
 import SpinnerComponents from '../SpinnerComponent';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
+import ProgressBar from '../ProgressBar';
 
 
 class PodsList extends Component {
+  constructor(props) {
+    super(props);
+
+    this.calculatePercentage = this.calculatePercentage.bind(this);
+    this.displayFraction = this.displayFraction.bind(this);
+  }
+
   componentDidMount() {
     const { getPodsList } = this.props;
     const { match: { params } } = this.props;
@@ -33,6 +41,14 @@ class PodsList extends Component {
     return false;
   }
 
+  calculatePercentage(proportion, total) {
+    return Math.round((proportion / total) * 100);
+  }
+
+  displayFraction(numerator, denominator) {
+    return `${numerator}/${denominator}`;
+  }
+
   podReady(containerlist) {
     if (typeof (containerlist) !== 'undefined') {
       const count = containerlist.length;
@@ -45,9 +61,15 @@ class PodsList extends Component {
           return 0;
         }
       );
-      return `${ready}/${count}`;
+      return <ProgressBar
+      percentage={this.calculatePercentage(ready, count)}
+      fractionLabel={this.displayFraction(ready, count)}
+    />;
     }
-    return 0;
+    return <ProgressBar
+    percentage={this.calculatePercentage(0, 0)}
+    fractionLabel={this.displayFraction(0, 0)}
+  />;;
   }
 
   render() {
@@ -76,7 +98,7 @@ class PodsList extends Component {
                   </tr>
                   {
                     isRetrieving ? (
-                      <div className='CenterSpinner'><SpinnerComponents /></div>
+                      <div className="CenterSpinner"><SpinnerComponents /></div>
                     ) : (
                       isFetched ? (pods.pods.map((pod) => (
                         <tr>
@@ -88,7 +110,7 @@ class PodsList extends Component {
                           <td>{tellAge(pod.metadata.creationTimestamp)}</td>
                         </tr>
                       ))) : (
-                        <h3 className="EmptyList">No  Available</h3>
+                        <h3 className="EmptyList">No Pods Available</h3>
 
                       )
                     )
