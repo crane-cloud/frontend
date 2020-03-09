@@ -7,7 +7,6 @@ import NavBar from '../NavBar';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 import getServices from '../../redux/actions/ServicesActions';
-import tellAge from '../../helpers/ageUtility';
 
 class ServicesListPage extends React.Component {
   componentDidMount() {
@@ -55,7 +54,6 @@ class ServicesListPage extends React.Component {
                     <th>Type</th>
                     <th>Cluster IP</th>
                     <th>Ports</th>
-                    <th>Age</th>
                   </tr>
                   {
                     services.length !== 0 ? (
@@ -65,7 +63,6 @@ class ServicesListPage extends React.Component {
                           <td>{service.spec.type}</td>
                           <td>{service.spec.clusterIP}</td>
                           <td>{this.showPorts(service.spec.ports)}</td>
-                          <td>{tellAge(service.metadata.creationTimestamp)}</td>
                         </tr>
 
                       ))) : (
