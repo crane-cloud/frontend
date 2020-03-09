@@ -3,6 +3,7 @@ import ClustersReducer from './clustersReducer';
 import AddClusterReducer from './addClusterReducer';
 import user from './user';
 import ClusterResourcesReducer from './ClusterResourcesReducer';
+import ServicesReducer from './servicesReducer';
 import PvsReducer from './PvsReducer';
 import nodesReducer from './nodesReducer';
 import PvcsReducer from './pvcsReducer';
@@ -18,6 +19,7 @@ export default combineReducers({
   ClustersReducer,
   user,
   AddClusterReducer,
+  ServicesReducer,
   PvsReducer,
   nodesReducer,
   PvcsReducer,
@@ -25,5 +27,5 @@ export default combineReducers({
   podsReducer,
   storageClassesReducer,
   getDeployments,
-  JobsReducer
+  JobsReducer,
 });
