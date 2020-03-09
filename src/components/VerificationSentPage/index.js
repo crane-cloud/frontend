@@ -69,8 +69,9 @@ class VerificationSentPage extends React.Component {
           <div className="VerificationPageContent">
             {!isTokenChecked && (
               <>
-                <div>Loading...(spinner here)</div>
-                <div>Please wait</div>
+                <div><Spinner size="Big" /></div>
+                <br />
+                <div>Please wait...</div>
               </>
             )}
             {isVerificationFailed && (
