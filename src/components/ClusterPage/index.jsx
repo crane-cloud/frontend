@@ -2,13 +2,13 @@ import React from 'react';
 import './ClusterPage.css';
 import InformationBar from '../InformationBar';
 import ClustersList from '../ClustersList';
-import NavBar from '../NavBar';
+import Header from '../Header';
 
 function ClusterPage() {
   return (
     <div className="Page">
       <div className="TopRow" >
-        <NavBar />
+        <Header />
         <InformationBar header="Select Infrastructure" showBtn={true}/>
       </div>
       <div className="MainRow">

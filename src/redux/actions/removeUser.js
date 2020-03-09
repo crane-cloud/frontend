@@ -1,7 +1,7 @@
 import { REMOVE_USER } from './actionTypes';
 
-const removeUserData = () => ({
+const removeUser = () => ({
   type: REMOVE_USER
 });
 
-export default removeUserData;
+export default removeUser;

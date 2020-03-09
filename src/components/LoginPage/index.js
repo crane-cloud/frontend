@@ -32,7 +32,7 @@ class LoginPage extends React.Component {
   }
 
   handleSubmit() {
-    const { history } = this.props;
+    const { history, saveUser } = this.props;
 
     const { email, password } = this.state;
 
@@ -52,13 +52,11 @@ class LoginPage extends React.Component {
           this.setState({
             loading: false
           });
-          console.log('Login successful...');
-
-          // save user data to store
-          saveUser(res.data.data);
 
           // redirect to dashboard
           setTimeout(() => {
+            // save user data to store
+            saveUser(res.data.data);
             history.push('/clusters');
           }, 1000);
         }
