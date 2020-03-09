@@ -51,22 +51,24 @@ class JobsListPage extends React.Component {
                       </tr>
                     ) : (
                       <tbody>
-                        {jobs.length !== 0 ? (
-                          jobs.map((job) => (
-                            <tr>
-                              <td>{job.metadata.name}</td>
-                              <td>{`${Math.floor((Date.parse(job.status.completionTime) - Date.parse(job.status.startTime)) / 1000)} seconds`}</td>
-                              <td><Status status={job.status.succeeded} /></td>
-                              <td>{tellAge(job.metadata.creationTimestamp)}</td>
-                            </tr>
-                          )))
-                          : (
-                            <tr>
-                              <div className="EmptyList">
-                                <h3>No Jobs Available</h3>
-                              </div>
-                            </tr>
-                          )}
+                        {
+                          jobs.length !== 0 ? (
+                            jobs.map((job) => (
+                              <tr>
+                                <td>{job.metadata.name}</td>
+                                <td>{`${Math.floor((Date.parse(job.status.completionTime) - Date.parse(job.status.startTime)) / 1000)} seconds`}</td>
+                                <td><Status status={job.status.succeeded} /></td>
+                                <td>{tellAge(job.metadata.creationTimestamp)}</td>
+                              </tr>
+                            )))
+                            : (
+                              <tr>
+                                <div className="EmptyList">
+                                  <h3>No Jobs Available</h3>
+                                </div>
+                              </tr>
+                            )
+                        }
                       </tbody>
                     )
                   }
