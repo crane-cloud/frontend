@@ -6,6 +6,7 @@ import './PvsListPage.css';
 import NavBar from '../NavBar';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
+import { BigSpinner } from '../SpinnerComponent';
 import getPvs from '../../redux/actions/PvsActions';
 import Status from '../Status';
 
@@ -17,7 +18,7 @@ class PvsListPage extends React.Component {
   }
 
   render() {
-    const { pvs } = this.props;
+    const { pvs, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
 
     return (
@@ -34,28 +35,43 @@ class PvsListPage extends React.Component {
             <div className="LowerBar">
               <div className="ResourcesTable">
                 <table>
-                  <tr>
-                    <th>Name</th>
-                    <th>Access Mode</th>
-                    <th>Reclaim Policy</th>
-                    <th>Status</th>
-                    <th>Capacity</th>
-                  </tr>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Access Mode</th>
+                      <th>Reclaim Policy</th>
+                      <th>Status</th>
+                      <th>Capacity</th>
+                    </tr>
+                  </thead>
                   {
-                    pvs.length !== 0 ? (
-                      pvs.map((pv) => (
-                        <tr>
-                          <td>{pv.metadata.name}</td>
-                          <td>{pv.spec.accessModes[0]}</td>
-                          <td>{pv.spec.persistentVolumeReclaimPolicy}</td>
-                          <td><Status status={pv.status.phase} /></td>
-                          <td>{pv.spec.capacity.storage}</td>
-                        </tr>
+                    isRetrieving ? (
+                      <tr className="TableLoading">
+                        <div className="SpinnerWrapper">
+                          <BigSpinner />
+                        </div>
+                      </tr>
+                    ) : (
+                      <tbody>
+                        {pvs.length !== 0 ? (
+                          pvs.map((pv) => (
+                            <tr>
+                              <td>{pv.metadata.name}</td>
+                              <td>{pv.spec.accessModes[0]}</td>
+                              <td>{pv.spec.persistentVolumeReclaimPolicy}</td>
+                              <td><Status status={pv.status.phase} /></td>
+                              <td>{pv.spec.capacity.storage}</td>
+                            </tr>
 
-                      ))) : (
-                      <h3 className="EmptyList">
-                        No Volumes Available
-                      </h3>
+                          )))
+                          : (
+                            <tr>
+                              <div className="EmptyList">
+                                <h3>No Volumes Available</h3>
+                              </div>
+                            </tr>
+                          )}
+                      </tbody>
                     )
                   }
                 </table>

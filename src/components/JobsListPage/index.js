@@ -8,6 +8,7 @@ import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 import getJobs from '../../redux/actions/JobsActions';
 import Status from '../Status';
+import { BigSpinner } from '../SpinnerComponent';
 import tellAge from '../../helpers/ageUtility';
 
 class JobsListPage extends React.Component {
@@ -18,7 +19,7 @@ class JobsListPage extends React.Component {
   }
 
   render() {
-    const { jobs } = this.props;
+    const { jobs, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
 
     return (
@@ -42,18 +43,33 @@ class JobsListPage extends React.Component {
                     <th>Age</th>
                   </tr>
                   {
-                    jobs.length !== 0 ? (
-                      jobs.map((job) => (
-                        <tr>
-                          <td>{job.metadata.name}</td>
-                          <td>{Math.floor((Date.parse(job.status.completionTime) - Date.parse(job.status.startTime)) / 1000) + " seconds"}</td>
-                          <td><Status status={job.status.succeeded} /></td>
-                          <td>{tellAge(job.metadata.creationTimestamp)}</td>
-                        </tr>
-                      ))) : (
-                      <h3 className="EmptyList">
-                        No Jobs Available
-                      </h3>
+                    isRetrieving ? (
+                      <tr className="TableLoading">
+                        <div className="SpinnerWrapper">
+                          <BigSpinner />
+                        </div>
+                      </tr>
+                    ) : (
+                      <tbody>
+                        {
+                          jobs.length !== 0 ? (
+                            jobs.map((job) => (
+                              <tr>
+                                <td>{job.metadata.name}</td>
+                                <td>{`${Math.floor((Date.parse(job.status.completionTime) - Date.parse(job.status.startTime)) / 1000)} seconds`}</td>
+                                <td><Status status={job.status.succeeded} /></td>
+                                <td>{tellAge(job.metadata.creationTimestamp)}</td>
+                              </tr>
+                            )))
+                            : (
+                              <tr>
+                                <div className="EmptyList">
+                                  <h3>No Jobs Available</h3>
+                                </div>
+                              </tr>
+                            )
+                        }
+                      </tbody>
                     )
                   }
                 </table>

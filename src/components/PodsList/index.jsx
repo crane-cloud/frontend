@@ -7,7 +7,7 @@ import tellAge from '../../helpers/ageUtility';
 import './PodsList.css';
 import NavBar from '../NavBar';
 import Status from '../Status';
-import SpinnerComponents from '../SpinnerComponent';
+import { BigSpinner } from '../SpinnerComponent';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 import ProgressBar from '../ProgressBar';
@@ -90,29 +90,39 @@ class PodsList extends Component {
             <div className="LowerBar">
               <div className="ResourcesTable">
                 <table className="PodsTable">
-                  <tr>
-                    <th>Name</th>
-                    <th>Ready</th>
-                    <th>Status</th>
-                    <th>Age</th>
-                  </tr>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Ready</th>
+                      <th>Status</th>
+                      <th>Age</th>
+                    </tr>
+                  </thead>
                   {
                     isRetrieving ? (
-                      <div className="CenterSpinner"><SpinnerComponents /></div>
+                      <tr className="TableLoading">
+                        <div className="SpinnerWrapper">
+                          <BigSpinner />
+                        </div>
+                      </tr>
                     ) : (
-                      isFetched ? (pods.pods.map((pod) => (
-                        <tr>
-                          <td>{pod.metadata.name}</td>
-                          <td>{this.podReady(pod.status.containerStatuses)}</td>
-                          {/* <td>{this.podStatus(pod.status.conditions)}</td> */}
-                          {/* {console.log(this.podStatus(pod.status.conditions))} */}
-                          <td><Status status={this.podStatus(pod.status.conditions)} /></td>
-                          <td>{tellAge(pod.metadata.creationTimestamp)}</td>
-                        </tr>
-                      ))) : (
-                        <h3 className="EmptyList">No Pods Available</h3>
-
-                      )
+                      <tbody>
+                        {isFetched && pods.pods !== undefined ? (pods.pods.map((pod) => (
+                          <tr>
+                            <td>{pod.metadata.name}</td>
+                            <td>{this.podReady(pod.status.containerStatuses)}</td>
+                            <td><Status status={this.podStatus(pod.status.conditions)} /></td>
+                            <td>{tellAge(pod.metadata.creationTimestamp)}</td>
+                          </tr>
+                        )))
+                          : (
+                            <tr>
+                              <div className="EmptyList">
+                                <h3>No Pods Available</h3>
+                              </div>
+                            </tr>
+                          )}
+                      </tbody>
                     )
                   }
                 </table>

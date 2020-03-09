@@ -7,7 +7,6 @@ import tellAge from '../../helpers/ageUtility';
 import './StorageClassList.css';
 import NavBar from '../NavBar';
 import { BigSpinner } from '../SpinnerComponent';
-
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 
@@ -51,17 +50,18 @@ class StorageClassList extends Component {
                       </tr>
                     ) : (
                       <tbody>
-                        {isFetched ? (storageClasses.storage_classes.map((storageClass) => (
-                          <tr>
-                            <td>{storageClass.metadata.name}</td>
-                            <td>{storageClass.provisioner}</td>
-                            <td>{tellAge(storageClass.metadata.creationTimestamp)}</td>
-                          </tr>
-                        ))) : (
-                          <div className="EmptyList">
-                            <h3>No Storage Classes Available</h3>
-                          </div>
-                        )}
+                        {isFetched && storageClasses.storage_classes !== undefined
+                          ? (storageClasses.storage_classes.map((storageClass) => (
+                            <tr>
+                              <td>{storageClass.metadata.name}</td>
+                              <td>{storageClass.provisioner}</td>
+                              <td>{tellAge(storageClass.metadata.creationTimestamp)}</td>
+                            </tr>
+                          ))) : (
+                            <div className="EmptyList">
+                              <h3>No Storage Classes Available</h3>
+                            </div>
+                          )}
                       </tbody>
                     )
                   }

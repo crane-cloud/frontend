@@ -26,6 +26,6 @@ export default combineReducers({
   NamespacesListReducer,
   podsReducer,
   storageClassesReducer,
-  getDeployments,
+  deployments: getDeployments,
   JobsReducer,
 });

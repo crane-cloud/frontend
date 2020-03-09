@@ -71,7 +71,7 @@ class DeploymentsPage extends Component {
                     </tr>
                   ) : (
                     <tbody>
-                      {isFetched ? (
+                      {isFetched && deployments !== undefined ? (
                         deployments.map((deployment) => (
                           <tr>
                             <td>{deployment.metadata.name}</td>
