@@ -7,13 +7,28 @@ import NavBar from '../NavBar';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 import getServices from '../../redux/actions/ServicesActions';
-import tellAge from '../../helpers/ageUtility';
 
 class ServicesListPage extends React.Component {
   componentDidMount() {
     const { getServices } = this.props;
     const { match: { params } } = this.props;
     getServices(params.clusterID);
+  }
+
+  showPorts(ports) {
+    let portValue = '';
+    ports.map((port) => {
+      if (portValue !== '') {
+        portValue += ', ';
+      }
+      portValue += `${port.port}`;
+      if (port.nodePort !== undefined) {
+        portValue += `:${port.nodePort}`;
+      }
+      portValue += `/${port.protocol}`;
+      return portValue;
+    });
+    return portValue;
   }
 
   render() {
@@ -38,7 +53,7 @@ class ServicesListPage extends React.Component {
                     <th>Name</th>
                     <th>Type</th>
                     <th>Cluster IP</th>
-                    <th>Age</th>
+                    <th>Ports</th>
                   </tr>
                   {
                     services.length !== 0 ? (
@@ -47,13 +62,15 @@ class ServicesListPage extends React.Component {
                           <td>{service.metadata.name}</td>
                           <td>{service.spec.type}</td>
                           <td>{service.spec.clusterIP}</td>
-                          <td>{tellAge(service.metadata.creationTimestamp)}</td>
+                          <td>{this.showPorts(service.spec.ports)}</td>
                         </tr>
 
                       ))) : (
-                      <h3 className="EmptyList">
-                        No Services Available
+                        <div className="EmptyList">
+                      <h3>
+                          No Services Available
                       </h3>
+                      </div>
                     )
                   }
                 </table>
