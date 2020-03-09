@@ -18,7 +18,8 @@ class LoginPage extends React.Component {
     this.state = {
       email: '',
       password: '',
-      loading: false
+      loading: false,
+      errors: []
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -31,6 +32,27 @@ class LoginPage extends React.Component {
       [e.target.name]: e.target.value
     });
   }
+
+  validate(email, password) {
+    // we are going to store errors for all fields
+    // in a signle array
+    const errors = [];
+
+    if (email.length < 5) {
+      if (email.split("").filter(x => x === "@").length !== 1) {
+        if (email.indexOf(".") === -1) {
+          errors.push('Email is invalid');
+        }
+      }
+    }
+
+    if (password.length < 6) {
+      errors.push('Password should be at least 6 characters long');
+    }
+
+    return errors;
+  }
+
 
   handleSubmit() {
     const { history } = this.props;
@@ -46,63 +68,58 @@ class LoginPage extends React.Component {
       loading: true
     });
 
-    axios
-      .post(`${API_BASE_URL}/users/login`, userCredentials)
-      .then((res) => {
-        if (res.data.status === 'success') {
+    const inputIsValid = this.validate(email, password);
+    console.log(inputIsValid);
+    if (inputIsValid.length === 0) {
+      axios
+        .post(`${API_BASE_URL}/users/login`, userCredentials)
+        .then((res) => {
+          if (res.data.status === 'success') {
+            this.setState({
+              loading: false
+            });
+            console.log('Login successful...');
+
+            // save user data to store
+            saveUser(res.data.data);
+
+            // redirect to dashboard
+            setTimeout(() => {
+              history.push('/clusters');
+            }, 1000);
+          }
+        })
+        .catch((err) => {
           this.setState({
             loading: false
           });
-          console.log('Login successful...');
-
-          // save user data to store
-          saveUser(res.data.data);
-
-          // redirect to dashboard
-          setTimeout(() => {
-            history.push('/clusters');
-          }, 1000);
-        }
-      })
-      .catch((err) => {
-        this.setState({
-          loading: false
+          console.log(err);
+          console.log('Check your email / password...');
         });
-        console.log(err);
-        console.log('Check your email / password...');
-      });
+    } else {
+      const errors = this.validate(email, password);
+      if (errors.length > 0) {
+        this.setState({ errors });
+      }
+    }
+
+
   }
-    validate = (email, password) => {
-    // we are going to store errors for all fields
-    // in a signle array
-    const errors = [];
-  
-    if (email.length < 5) {
-      errors.push("Email should be at least 5 charcters long");
-    }
-    if (email.split("").filter(x => x === "@").length !== 1) {
-      errors.push("Email should contain a @");
-    }
-    if (email.indexOf(".") === -1) {
-      errors.push("Email should contain at least one dot");
-    }
-  
-    if (password.length < 6) {
-      errors.push("Password should be at least 6 characters long");
-    }
-  
-    return errors;
-  }
-  
 
   render() {
-    const { email, password, loading } = this.state;
+    const { errors, email, password, loading } = this.state;
 
     return (
       <div className="LoginPageContainer">
         <Header />
         <div className="LoginContent">
           <div className="LoginContentHeading">
+            {errors.map((error) => (
+              <p key={error}>
+                Error:
+                {error}
+              </p>
+            ))}
             <h1>Login to the cloud</h1>
           </div>
           <div className="LoginContentInputs">
