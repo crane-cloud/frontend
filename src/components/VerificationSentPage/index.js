@@ -23,7 +23,7 @@ class VerificationSentPage extends React.Component {
   }
 
   async componentDidMount() {
-    const { match, history } = this.props;
+    const { match, history, saveUser } = this.props;
     const { token } = match.params;
 
     await axios
@@ -34,11 +34,10 @@ class VerificationSentPage extends React.Component {
             isTokenChecked: true
           });
 
-          // save user data to store and log them in
-          saveUser(response.data.data);
-
           // redirect to dashboard
           setTimeout(() => {
+            // save user data to store and log them in
+            saveUser(response.data.data);
             history.push('/clusters');
           }, 1000);
         }
