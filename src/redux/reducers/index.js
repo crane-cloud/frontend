@@ -7,6 +7,7 @@ import nodesReducer from './nodesReducer';
 import PvcsReducer from './pvcsReducer';
 import NamespacesListReducer from './NamespacesListReducer';
 import podsReducer from './podsReducer';
+import JobsReducer from './jobsReducer';
 import getDeployments from './getDeployments';
 
 
@@ -19,5 +20,7 @@ export default combineReducers({
   PvcsReducer,
   NamespacesListReducer,
   podsReducer,
+  JobsReducer,
+
   deployments: getDeployments
 });
