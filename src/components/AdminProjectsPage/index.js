@@ -18,7 +18,6 @@ class AdminProjectsPage extends React.Component {
 
   render() {
     const { projects, isRetrieving } = this.props;
-    console.log(this.props);
 
     return (
       <div className="Page">
@@ -51,8 +50,7 @@ class AdminProjectsPage extends React.Component {
 
 AdminProjectsPage.propTypes = {
   projects: PropTypes.object,
-  isRetrieving: PropTypes.bool,
-  getAdminProjects: PropTypes.func
+  isRetrieving: PropTypes.bool
 };
 
 AdminProjectsPage.defaultProps = {
