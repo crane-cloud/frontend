@@ -21,7 +21,7 @@ const Header = (props) => {
         <Logo />
       </div>
 
-      {!user.accessToken && (
+      {/* {!user.accessToken && (
         <div className="HeaderLinksWrap">
           <div className="HeaderLinks bold uppercase">
             <Link to="/" className="HeaderLinkPricing">pricing</Link>
@@ -29,23 +29,42 @@ const Header = (props) => {
             <Link to="/login" className="HeaderLinkLogin">login</Link>
           </div>
         </div>
-      )}
+      )} */}
 
-      {user.accessToken && (
-        <div className="HeaderLinksWrap LoggedIn">
+      {/* {( */}
+      <div className="HeaderLinksWrap LoggedIn">
+        <div className="OnHeader">
           <div className="ProfileIconWrap">
             <img src={ProfileIcon} alt="profile" />
           </div>
 
           <div className="UserNames">
             {user.data.name}
+            Steve Araka
           </div>
 
           <div className="DropDownArrow">
-            <img src={DownArrow} alt="down_arrow" onClick={logout} />
+            <img src={DownArrow} alt="down_arrow" />
           </div>
         </div>
-      )}
+        <div className="BelowHeader">
+          <div className="DropDownContent">
+            <div className="DropDownLink">
+              <Link to="/profile">Profile</Link>
+            </div>
+            <div className="DropDownLink">
+              <Link to="/profile">Account</Link>
+            </div>
+            <div className="DropDownLink">
+              <Link to="/profile">Settings</Link>
+            </div>
+            <div className="DropDownLink" onClick={logout}>
+              Logout
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* )} */}
 
     </header>
   );

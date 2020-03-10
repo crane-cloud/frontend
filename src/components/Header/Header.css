@@ -3,6 +3,7 @@ header.Header {
   color: #ffffff;
   display: flex;
   justify-content: space-between;
+  height: 80px !important; /* I hate to do this but I had to limit this height */
 }
 
 .HeaderLinks {
@@ -38,10 +39,21 @@ header.Header {
 }
 
 div.HeaderLinksWrap.LoggedIn {
+  grid-template-areas: "area1" "area2";
+}
+
+div.HeaderLinksWrap.LoggedIn .OnHeader {
   display: grid;
+  height: 100%;
   gap: 1rem;
   grid-template-columns: repeat(3, auto);
   align-items: center;
+  grid-area: area1;
+}
+
+div.HeaderLinksWrap.LoggedIn .BelowHeader {
+  background-color: #F9F9F9;
+  grid-area: area2;
 }
 
 .ProfileIconWrap img {
@@ -55,6 +67,22 @@ div.HeaderLinksWrap.LoggedIn {
 
 .UserNames {
   font-weight: bold;
+}
+
+.DropDownContent {
+  color: #000;
+}
+
+.DropDownContent:first-child {
+  margin-top: .5rem;
+}
+
+.DropDownLink {
+  padding: .5rem 0rem .5rem 1rem;
+}
+
+.DropDownLink:hover, .DropDownLink:active {
+  background-color: #F1F1F1;
 }
 
 @media only screen and (max-width: 640px) {
