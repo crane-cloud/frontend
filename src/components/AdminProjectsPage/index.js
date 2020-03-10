@@ -6,6 +6,7 @@ import './AdminProjectsPage.css';
 import InformationBar from '../InformationBar';
 import NavBar from '../NavBar';
 import getAdminProjects from '../../redux/actions/AdminProjectsActions';
+import ClusterCard from '../ClusterCard';
 import { BigSpinner } from '../SpinnerComponent';
 
 class AdminProjectsPage extends React.Component {
@@ -24,6 +25,15 @@ class AdminProjectsPage extends React.Component {
           <InformationBar header="Projects" showBtn={true} />
         </div>
         <div className="MainRow">
+          <div className="ProjectList">
+          {isRetrieving ? (projects.map((project) => (
+            <div key={project.id} className="ProjectCardItem">
+              <ClusterCard name={project.name} description={project.host} icon={crane} />
+            </div>
+          ))) : (
+            <h3 className="EmptyList">No Projects Yet.</h3>
+          )}
+        </div>
         </div>
         <div className="FooterRow">
           <p>
