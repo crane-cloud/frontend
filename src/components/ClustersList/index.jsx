@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import getClustersList from '../../redux/actions/ClustersActions';
 import ClusterCard from '../ClusterCard';
+import { BigSpinner } from '../SpinnerComponent';
 import './ClustersList.css';
 import crane from '../../assets/images/craneLogo.png';
 
@@ -16,19 +17,41 @@ class ClustersList extends Component {
   }
 
   render() {
-    const { clusters, isRetrieved } = this.props;
+    const { clusters, isRetrieved, isRetrieving } = this.props;
 
     return (
       <div className="ClusterList">
-        {isRetrieved ? (clusters.clusters.map((cluster) => (
-          <Link to={{ pathname: `/clusters/${cluster.id}/resources` }} key={cluster.id}>
-            <div key={cluster.id} className="ClusterCardItem">
-              <ClusterCard name={cluster.name} description={cluster.host} icon={crane} />
+        {
+          isRetrieving ? (
+            <tr className="TableLoading">
+              <div className="SpinnerWrapper">
+                <BigSpinner />
+              </div>
+            </tr>
+          ) : (
+            <div>
+              {isRetrieved ? (clusters.clusters.map((cluster) => (
+                <Link to={{ pathname: `/clusters/${cluster.id}/resources` }} key={cluster.id}>
+                  <div key={cluster.id} className="ClusterCardItem">
+                    <ClusterCard
+                      name={cluster.name}
+                      description={cluster.description}
+                      icon={crane}
+                    />
+                  </div>
+                </Link>
+              )))
+                : (
+                  <tr>
+                    <div className="EmptyList">
+                      <h3>No Clusters Available</h3>
+                    </div>
+                  </tr>
+                )}
             </div>
-          </Link>
-        ))) : (
-          <h3 className="EmptyList">No Clusters Available</h3>
-        )}
+          )
+        }
+
       </div>
     );
   }
@@ -36,14 +59,16 @@ class ClustersList extends Component {
 
 // inititate props
 ClustersList.propTypes = {
-  clusters: PropTypes.object,
-  isRetrieved: PropTypes.bool
+  clusters: PropTypes.arrayOf(PropTypes.object),
+  isRetrieved: PropTypes.bool,
+  isRetrieving: PropTypes.bool
 };
 
 // assigning defaults
 ClustersList.defaultProps = {
   clusters: [],
-  isRetrieved: false
+  isRetrieved: false,
+  isRetrieving: true
 };
 
 export const mapStateToProps = (state) => {
