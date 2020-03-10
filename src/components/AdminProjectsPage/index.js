@@ -8,6 +8,7 @@ import NavBar from '../NavBar';
 import getAdminProjects from '../../redux/actions/AdminProjectsActions';
 import ClusterCard from '../ClusterCard';
 import { BigSpinner } from '../SpinnerComponent';
+import crane from '../../assets/images/craneLogo.png';
 
 class AdminProjectsPage extends React.Component {
   componentDidMount() {
@@ -26,14 +27,14 @@ class AdminProjectsPage extends React.Component {
         </div>
         <div className="MainRow">
           <div className="ProjectList">
-          {isRetrieving ? (projects.map((project) => (
-            <div key={project.id} className="ProjectCardItem">
-              <ClusterCard name={project.name} description={project.host} icon={crane} />
-            </div>
-          ))) : (
-            <h3 className="EmptyList">No Projects Yet.</h3>
-          )}
-        </div>
+            {isRetrieving ? (projects.map((project) => (
+              <div key={project.id} className="ProjectCardItem">
+                <ClusterCard name={project.name} description={project.host} icon={crane} />
+              </div>
+            ))) : (
+              <h3 className="EmptyList">No Projects Yet.</h3>
+            )}
+          </div>
         </div>
         <div className="FooterRow">
           <p>
