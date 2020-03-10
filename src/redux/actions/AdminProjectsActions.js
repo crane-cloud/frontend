@@ -1,32 +1,32 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../../config';
-import { IS_FETCHING, FETCH_PROJECTS_SUCCESS, FETCH_PROJECTS_FAILED } from './actionTypes';
+import { IS_FETCHING, FETCH_ADMIN_PROJECTS_SUCCESS, FETCH_ADMIN_PROJECTS_FAILED } from './actionTypes';
 
 export const startTheFetch = () => ({
   type: IS_FETCHING,
 });
 
-export const getProjectsSuccess = (response) => (
+export const getAdminProjectsSuccess = (response) => (
   {
-    type: FETCH_PROJECTS_SUCCESS,
+    type: FETCH_ADMIN_PROJECTS_SUCCESS,
     payload: response.data.data.projects,
   });
 
-export const getProjectsFailed = (error) => ({
-  type: FETCH_PROJECTS_FAILED,
+export const getAdminProjectsFailed = (error) => ({
+  type: FETCH_ADMIN_PROJECTS_FAILED,
   payload: {
     status: false,
     error: error.status,
   },
 });
 
-const getProjects = () => (dispatch) => {
+const getAdminProjects = () => (dispatch) => {
   dispatch(startTheFetch());
   return axios.get(`${API_BASE_URL}/projects`)
-    .then((response) => dispatch(getProjectsSuccess(response)))
+    .then((response) => dispatch(getAdminProjectsSuccess(response)))
     .catch((error) => {
-      dispatch(getProjectsFailed(error));
+      dispatch(getAdminProjectsFailed(error));
     });
 };
 
-export default getProjects;
+export default getAdminProjects;

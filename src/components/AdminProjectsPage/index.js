@@ -1,7 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import './AdminProjectsPage.css';
 import InformationBar from '../InformationBar';
 import NavBar from '../NavBar';
+import getAdminProjects from '../../redux/actions/AdminProjectsActions';
+import { BigSpinner } from '../SpinnerComponent';
 
 class AdminProjectsPage extends React.Component {
   render() {
