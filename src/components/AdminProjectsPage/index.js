@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import './AdminProjectsPage.css';
 import InformationBar from '../InformationBar';
 import NavBar from '../NavBar';
-import getAdminProjects from '../../redux/actions/AdminProjectsActions';
+import getAdminProjects from '../../redux/actions/userProjectsActions';
 import { BigSpinner } from '../SpinnerComponent';
 
 class AdminProjectsPage extends React.Component {
