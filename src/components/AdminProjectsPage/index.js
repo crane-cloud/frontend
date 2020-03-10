@@ -9,7 +9,11 @@ import getAdminProjects from '../../redux/actions/AdminProjectsActions';
 import { BigSpinner } from '../SpinnerComponent';
 
 class AdminProjectsPage extends React.Component {
-  
+  componentDidMount() {
+    const { getAdminProjects } = this.props;
+    getAdminProjects();
+  }
+
   render() {
     const { projects, isRetrieving } = this.props;
 
@@ -29,9 +33,8 @@ class AdminProjectsPage extends React.Component {
           </p>
         </div>
       </div>
-
-
-  );
+    );
+  }
 }
 
 AdminProjectsPage.propTypes = {
