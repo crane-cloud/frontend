@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Logo from '../Logo';
@@ -8,7 +8,16 @@ import removeUser from '../../redux/actions/removeUser';
 import './Header.css';
 
 const Header = (props) => {
+  const [hidden, setHidden] = useState(false);
   const { user } = props;
+
+  const toggleHidden = () => {
+    if (hidden) {
+      setHidden(false);
+    } else {
+      setHidden(true);
+    }
+  };
 
   const logout = () => {
     props.removeUser();
@@ -21,7 +30,7 @@ const Header = (props) => {
         <Logo />
       </div>
 
-      {/* {!user.accessToken && (
+      {!user.accessToken && (
         <div className="HeaderLinksWrap">
           <div className="HeaderLinks bold uppercase">
             <Link to="/" className="HeaderLinkPricing">pricing</Link>
@@ -29,42 +38,36 @@ const Header = (props) => {
             <Link to="/login" className="HeaderLinkLogin">login</Link>
           </div>
         </div>
-      )} */}
+      )}
 
-      {/* {( */}
-      <div className="HeaderLinksWrap LoggedIn">
-        <div className="OnHeader">
-          <div className="ProfileIconWrap">
-            <img src={ProfileIcon} alt="profile" />
+      {user.accessToken && (
+        <div className="HeaderLinksWrap LoggedIn">
+          <div className="OnHeader">
+            <div className="ProfileIconWrap">
+              <img src={ProfileIcon} alt="profile" />
+            </div>
+
+            <div className="UserNames">
+              {user.data.name}
+            </div>
+
+            <div className="DropDownArrow">
+              <img src={DownArrow} alt="down_arrow" onClick={toggleHidden} />
+            </div>
           </div>
 
-          <div className="UserNames">
-            {user.data.name}
-            Steve Araka
-          </div>
-
-          <div className="DropDownArrow">
-            <img src={DownArrow} alt="down_arrow" />
-          </div>
+          {hidden && (
+            <div className="BelowHeader">
+              <div className="DropDownContent">
+                <Link to="/profile" className="DropDownLink">Profile</Link>
+                <Link to="/account" className="DropDownLink">Account</Link>
+                <Link to="/settings" className="DropDownLink">Settings</Link>
+                <div className="DropDownLink" onClick={logout}>Logout</div>
+              </div>
+            </div>
+          )}
         </div>
-        <div className="BelowHeader">
-          <div className="DropDownContent">
-            <div className="DropDownLink">
-              <Link to="/profile">Profile</Link>
-            </div>
-            <div className="DropDownLink">
-              <Link to="/profile">Account</Link>
-            </div>
-            <div className="DropDownLink">
-              <Link to="/profile">Settings</Link>
-            </div>
-            <div className="DropDownLink" onClick={logout}>
-              Logout
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* )} */}
+      )}
 
     </header>
   );

@@ -71,6 +71,8 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
 
 .DropDownContent {
   color: #000;
+  display: flex;
+  flex-direction: column;
 }
 
 .DropDownContent:first-child {
@@ -78,11 +80,17 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
 }
 
 .DropDownLink {
+  cursor: pointer;
   padding: .5rem 0rem .5rem 1rem;
 }
 
 .DropDownLink:hover, .DropDownLink:active {
   background-color: #F1F1F1;
+}
+
+.DropDownLink {
+  color: #000;
+  text-decoration: none;
 }
 
 @media only screen and (max-width: 640px) {
