@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import './AdminProjectsPage.css';
+import './UserProjectsPage.css';
 import InformationBar from '../InformationBar';
 import NavBar from '../NavBar';
 import getUserProjects from '../../redux/actions/userProjectsActions';
 import { BigSpinner } from '../SpinnerComponent';
+import ClusterCard from '../ClusterCard';
+import crane from '../../assets/images/craneLogo.png';
 
 class UserProjectsPage extends React.Component {
   componentDidMount() {

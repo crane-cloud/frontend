@@ -16,6 +16,7 @@ import StorageClassList from './components/StorageClassList';
 import PvsListPage from './components/PvsListPage';
 import JobsListPage from './components/JobsListPage';
 import DeploymentsPage from './components/DeploymentsPage';
+import UserProjectsPage from './components/UserProjectsPage';
 
 
 const Routes = () => (
@@ -26,6 +27,7 @@ const Routes = () => (
       <Route path="/forgot-password" component={PasswordReset} />
       <Route path="/register" component={RegisterPage} />
       <Route path="/new-password" component={CreateNewPassword} />
+      <Route exact path="/:userID/projects" component={UserProjectsPage} />
       <Route exact path="/clusters/:clusterID/resources" component={ClusterResourcesPage} />
       <Route exact path="/clusters/:clusterID/services" component={ServicesListPage} />
       <Route exact path="/clusters/:clusterID/volumes" component={PvsListPage} />
