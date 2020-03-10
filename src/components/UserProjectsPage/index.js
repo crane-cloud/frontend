@@ -9,6 +9,12 @@ import getUserProjects from '../../redux/actions/userProjectsActions';
 import { BigSpinner } from '../SpinnerComponent';
 
 class UserProjectsPage extends React.Component {
+  componentDidMount() {
+    const { getUserProjects } = this.props;
+    const userID = localStorage.getItem('userID');
+    getUserProjects(userID);
+  }
+
   render() {
     const { projects, isRetrieving } = this.props;
 
@@ -19,6 +25,15 @@ class UserProjectsPage extends React.Component {
           <InformationBar header="Projects" showBtn={true} />
         </div>
         <div className="MainRow">
+          <div className="ProjectList">
+            {isRetrieving ? (projects.map((project) => (
+              <div key={project.id} className="ProjectCardItem">
+                <ClusterCard name={project.name} description={project.host} icon={crane} />
+              </div>
+            ))) : (
+              <h3 className="EmptyList">No Projects Yet.</h3>
+            )}
+          </div>
         </div>
         <div className="FooterRow">
           <p>
@@ -28,9 +43,8 @@ class UserProjectsPage extends React.Component {
           </p>
         </div>
       </div>
-
-
-  );
+    );
+  }
 }
 
 UserProjectsPage.propTypes = {
@@ -55,4 +69,4 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AdminProjectsPage);
+)(UserProjectsPage);
