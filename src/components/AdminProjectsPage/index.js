@@ -18,6 +18,7 @@ class AdminProjectsPage extends React.Component {
 
   render() {
     const { projects, isRetrieving } = this.props;
+    console.log(this.props);
 
     return (
       <div className="Page">
@@ -50,7 +51,8 @@ class AdminProjectsPage extends React.Component {
 
 AdminProjectsPage.propTypes = {
   projects: PropTypes.object,
-  isRetrieving: PropTypes.bool
+  isRetrieving: PropTypes.bool,
+  getAdminProjects: PropTypes.func
 };
 
 AdminProjectsPage.defaultProps = {
@@ -59,7 +61,7 @@ AdminProjectsPage.defaultProps = {
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, projects } = state.adminProjectsReducer;
+  const { isRetrieving, projects } = state.AdminProjectsReducer;
   return { isRetrieving, projects };
 };
 
