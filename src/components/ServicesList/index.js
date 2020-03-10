@@ -2,24 +2,38 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import './PvcsList.css';
+import './ServicesList.css';
 import NavBar from '../NavBar';
 import InformationBar from '../InformationBar';
-import SideNav from '../SideNav';
-import getPvcs from '../../redux/actions/PvcsActions';
-import Status from '../Status';
-import tellAge from '../../helpers/ageUtility';
 import { BigSpinner } from '../SpinnerComponent';
+import SideNav from '../SideNav';
+import getServices from '../../redux/actions/ServicesActions';
 
-class PvcsListPage extends React.Component {
+class ServicesListPage extends React.Component {
   componentDidMount() {
-    const { getPvcs } = this.props;
+    const { getServices } = this.props;
     const { match: { params } } = this.props;
-    getPvcs(params.clusterID);
+    getServices(params.clusterID);
+  }
+
+  showPorts(ports) {
+    let portValue = '';
+    ports.map((port) => {
+      if (portValue !== '') {
+        portValue += ', ';
+      }
+      portValue += `${port.port}`;
+      if (port.nodePort !== undefined) {
+        portValue += `:${port.nodePort}`;
+      }
+      portValue += `/${port.protocol}`;
+      return portValue;
+    });
+    return portValue;
   }
 
   render() {
-    const { pvcs, isRetrieving } = this.props;
+    const { services, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
 
     return (
@@ -31,7 +45,7 @@ class PvcsListPage extends React.Component {
           </div>
           <div className="Content">
             <div className="UpperBar">
-              <InformationBar header="Pvcs" showBtn={false} />
+              <InformationBar header="Services" showBtn={false} />
             </div>
             <div className="LowerBar">
               <div className="ResourcesTable">
@@ -39,8 +53,9 @@ class PvcsListPage extends React.Component {
                   <thead>
                     <tr>
                       <th>Name</th>
-                      <th>Status</th>
-                      <th>Age</th>
+                      <th>Type</th>
+                      <th>Cluster IP</th>
+                      <th>Ports</th>
                     </tr>
                   </thead>
                   {
@@ -52,19 +67,20 @@ class PvcsListPage extends React.Component {
                       </tr>
                     ) : (
                       <tbody>
-                        {pvcs.length !== 0 ? (
-                          pvcs.map((pvc) => (
+                        {services.length !== 0 ? (
+                          services.map((service) => (
                             <tr>
-                              <td>{pvc.metadata.name}</td>
-                              <td><Status status={pvc.status.phase} /></td>
-                              <td>{tellAge(pvc.metadata.creationTimestamp)}</td>
+                              <td>{service.metadata.name}</td>
+                              <td>{service.spec.type}</td>
+                              <td>{service.spec.clusterIP}</td>
+                              <td>{this.showPorts(service.spec.ports)}</td>
                             </tr>
 
                           )))
                           : (
                             <tr>
                               <div className="EmptyList">
-                                <h3>No Pvcs Available</h3>
+                                <h3>No Services Available</h3>
                               </div>
                             </tr>
                           )}
@@ -82,26 +98,26 @@ class PvcsListPage extends React.Component {
   }
 }
 
-PvcsListPage.propTypes = {
-  pvcs: PropTypes.object,
+ServicesListPage.propTypes = {
+  services: PropTypes.object,
   isRetrieving: PropTypes.bool,
 };
 
-PvcsListPage.defaultProps = {
-  pvcs: [],
+ServicesListPage.defaultProps = {
+  services: [],
   isRetrieving: false,
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, pvcs } = state.PvcsReducer;
-  return { isRetrieving, pvcs };
+  const { isRetrieving, services } = state.ServicesReducer;
+  return { isRetrieving, services };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  getPvcs
+  getServices
 }, dispatch);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PvcsListPage);
+)(ServicesListPage);
