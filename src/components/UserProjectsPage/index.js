@@ -5,10 +5,10 @@ import { bindActionCreators } from 'redux';
 import './AdminProjectsPage.css';
 import InformationBar from '../InformationBar';
 import NavBar from '../NavBar';
-import getAdminProjects from '../../redux/actions/userProjectsActions';
+import getUserProjects from '../../redux/actions/userProjectsActions';
 import { BigSpinner } from '../SpinnerComponent';
 
-class AdminProjectsPage extends React.Component {
+class UserProjectsPage extends React.Component {
   render() {
     const { projects, isRetrieving } = this.props;
 
@@ -33,23 +33,23 @@ class AdminProjectsPage extends React.Component {
   );
 }
 
-AdminProjectsPage.propTypes = {
+UserProjectsPage.propTypes = {
   projects: PropTypes.object,
   isRetrieving: PropTypes.bool
 };
 
-AdminProjectsPage.defaultProps = {
+UserProjectsPage.defaultProps = {
   projects: [],
   isRetrieving: false
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, projects } = state.adminProjectsReducer;
+  const { isRetrieving, projects } = state.UserProjectsReducer;
   return { isRetrieving, projects };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  getAdminProjects
+  getUserProjects
 }, dispatch);
 
 export default connect(
