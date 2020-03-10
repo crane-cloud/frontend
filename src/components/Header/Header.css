@@ -1,0 +1,38 @@
+header.Header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.HeaderLinks {
+  padding-top: 2rem;
+}
+
+.HeaderLinksWrap {
+  margin: 1rem 3rem auto 0;
+}
+
+.HeaderLinks a {
+  font-size: 0.9em;
+  color: white;
+  padding: 1rem;
+}
+
+.HeaderLinks a.HeaderLinkLogin {
+  border: 2px solid #ffffff;
+  padding: 1rem 3rem;
+  margin-left: 2rem;
+}
+
+/* remove focus from logo link - mozilla */
+.LogoLink:focus {
+  outline: none;
+}
+.LogoLink::-moz-focus-inner {
+  border: 0;
+}
+
+@media only screen and (max-width: 640px) {
+  .HeaderLinkPricing,.HeaderLinkDocs {
+    display: none;
+  }
+}
