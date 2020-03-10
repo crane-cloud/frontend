@@ -4,7 +4,7 @@ const user = (user = { accessToken: false, data: {} }, action) => {
   switch (action.type) {
   case SAVE_USER:
     return {
-      accessToken: action.payload.acess_token,
+      accessToken: action.payload.access_token,
       data: {
         name: action.payload.username,
         email: action.payload.email,
