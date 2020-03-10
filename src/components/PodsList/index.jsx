@@ -7,21 +7,24 @@ import tellAge from '../../helpers/ageUtility';
 import './PodsList.css';
 import NavBar from '../NavBar';
 import Status from '../Status';
-import SpinnerComponents from '../SpinnerComponent';
+import { BigSpinner } from '../SpinnerComponent';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
+import ProgressBar from '../ProgressBar';
 
 
 class PodsList extends Component {
+  constructor(props) {
+    super(props);
+
+    this.calculatePercentage = this.calculatePercentage.bind(this);
+    this.displayFraction = this.displayFraction.bind(this);
+  }
+
   componentDidMount() {
     const { getPodsList } = this.props;
     const { match: { params } } = this.props;
     getPodsList(params.clusterID);
-  }
-
-  getAge(utcDate) {
-    const creationTimestamp = new Date(utcDate).getTime();
-    return creationTimestamp;
   }
 
   podStatus(conditions) {
@@ -38,6 +41,14 @@ class PodsList extends Component {
     return false;
   }
 
+  calculatePercentage(proportion, total) {
+    return Math.round((proportion / total) * 100);
+  }
+
+  displayFraction(numerator, denominator) {
+    return `${numerator}/${denominator}`;
+  }
+
   podReady(containerlist) {
     if (typeof (containerlist) !== 'undefined') {
       const count = containerlist.length;
@@ -50,9 +61,15 @@ class PodsList extends Component {
           return 0;
         }
       );
-      return `${ready}/${count}`;
+      return <ProgressBar
+      percentage={this.calculatePercentage(ready, count)}
+      fractionLabel={this.displayFraction(ready, count)}
+    />;
     }
-    return 0;
+    return <ProgressBar
+    percentage={this.calculatePercentage(0, 0)}
+    fractionLabel={this.displayFraction(0, 0)}
+  />;;
   }
 
   render() {
@@ -73,29 +90,39 @@ class PodsList extends Component {
             <div className="LowerBar">
               <div className="ResourcesTable">
                 <table className="PodsTable">
-                  <tr>
-                    <th>Name</th>
-                    <th>Ready</th>
-                    <th>Status</th>
-                    <th>Age</th>
-                  </tr>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Ready</th>
+                      <th>Status</th>
+                      <th>Age</th>
+                    </tr>
+                  </thead>
                   {
                     isRetrieving ? (
-                      <div className='CenterSpinner'><SpinnerComponents /></div>
+                      <tr className="TableLoading">
+                        <div className="SpinnerWrapper">
+                          <BigSpinner />
+                        </div>
+                      </tr>
                     ) : (
-                      isFetched ? (pods.pods.map((pod) => (
-                        <tr>
-                          <td>{pod.metadata.name}</td>
-                          <td>{this.podReady(pod.status.containerStatuses)}</td>
-                          {/* <td>{this.podStatus(pod.status.conditions)}</td> */}
-                          {/* {console.log(this.podStatus(pod.status.conditions))} */}
-                          <td><Status status={this.podStatus(pod.status.conditions)} /></td>
-                          <td>{tellAge(pod.metadata.creationTimestamp)}</td>
-                        </tr>
-                      ))) : (
-                        <h3 className="EmptyList">No  Available</h3>
-
-                      )
+                      <tbody>
+                        {isFetched && pods.pods !== undefined ? (pods.pods.map((pod) => (
+                          <tr>
+                            <td>{pod.metadata.name}</td>
+                            <td>{this.podReady(pod.status.containerStatuses)}</td>
+                            <td><Status status={this.podStatus(pod.status.conditions)} /></td>
+                            <td>{tellAge(pod.metadata.creationTimestamp)}</td>
+                          </tr>
+                        )))
+                          : (
+                            <tr>
+                              <div className="EmptyList">
+                                <h3>No Pods Available</h3>
+                              </div>
+                            </tr>
+                          )}
+                      </tbody>
                     )
                   }
                 </table>

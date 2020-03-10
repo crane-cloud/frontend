@@ -2,24 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import './PvcsList.css';
+import './JobsListPage.css';
 import NavBar from '../NavBar';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
-import getPvcs from '../../redux/actions/PvcsActions';
+import getJobs from '../../redux/actions/JobsActions';
 import Status from '../Status';
-import tellAge from '../../helpers/ageUtility';
 import { BigSpinner } from '../SpinnerComponent';
+import tellAge from '../../helpers/ageUtility';
 
-class PvcsListPage extends React.Component {
+class JobsListPage extends React.Component {
   componentDidMount() {
-    const { getPvcs } = this.props;
+    const { getJobs } = this.props;
     const { match: { params } } = this.props;
-    getPvcs(params.clusterID);
+    getJobs(params.clusterID);
   }
 
   render() {
-    const { pvcs, isRetrieving } = this.props;
+    const { jobs, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
 
     return (
@@ -31,18 +31,17 @@ class PvcsListPage extends React.Component {
           </div>
           <div className="Content">
             <div className="UpperBar">
-              <InformationBar header="Pvcs" showBtn={false} />
+              <InformationBar header="Jobs" showBtn={false} />
             </div>
             <div className="LowerBar">
               <div className="ResourcesTable">
                 <table>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Status</th>
-                      <th>Age</th>
-                    </tr>
-                  </thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Duration</th>
+                    <th>Status</th>
+                    <th>Age</th>
+                  </tr>
                   {
                     isRetrieving ? (
                       <tr className="TableLoading">
@@ -52,22 +51,24 @@ class PvcsListPage extends React.Component {
                       </tr>
                     ) : (
                       <tbody>
-                        {pvcs.length !== 0 ? (
-                          pvcs.map((pvc) => (
-                            <tr>
-                              <td>{pvc.metadata.name}</td>
-                              <td><Status status={pvc.status.phase} /></td>
-                              <td>{tellAge(pvc.metadata.creationTimestamp)}</td>
-                            </tr>
-
-                          )))
-                          : (
-                            <tr>
-                              <div className="EmptyList">
-                                <h3>No Pvcs Available</h3>
-                              </div>
-                            </tr>
-                          )}
+                        {
+                          jobs.length !== 0 ? (
+                            jobs.map((job) => (
+                              <tr>
+                                <td>{job.metadata.name}</td>
+                                <td>{`${Math.floor((Date.parse(job.status.completionTime) - Date.parse(job.status.startTime)) / 1000)} seconds`}</td>
+                                <td><Status status={job.status.succeeded} /></td>
+                                <td>{tellAge(job.metadata.creationTimestamp)}</td>
+                              </tr>
+                            )))
+                            : (
+                              <tr>
+                                <div className="EmptyList">
+                                  <h3>No Jobs Available</h3>
+                                </div>
+                              </tr>
+                            )
+                        }
                       </tbody>
                     )
                   }
@@ -82,26 +83,26 @@ class PvcsListPage extends React.Component {
   }
 }
 
-PvcsListPage.propTypes = {
-  pvcs: PropTypes.object,
+JobsListPage.propTypes = {
+  jobs: PropTypes.object,
   isRetrieving: PropTypes.bool,
 };
 
-PvcsListPage.defaultProps = {
-  pvcs: [],
+JobsListPage.defaultProps = {
+  jobs: [],
   isRetrieving: false,
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, pvcs } = state.PvcsReducer;
-  return { isRetrieving, pvcs };
+  const { isRetrieving, jobs } = state.JobsReducer;
+  return { isRetrieving, jobs };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  getPvcs
+  getJobs
 }, dispatch);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PvcsListPage);
+)(JobsListPage);
