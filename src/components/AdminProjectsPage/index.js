@@ -31,7 +31,7 @@ class AdminProjectsPage extends React.Component {
           </div>
           <div className="Content">
             <div className="UpperBar">
-              <InformationBar header="Namespaces" showBtn={false} />
+              <InformationBar header="Projects" showBtn={false} />
             </div>
             <div className="LowerBar">
               <div className="ProjectList">
