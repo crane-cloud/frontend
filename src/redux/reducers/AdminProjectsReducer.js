@@ -16,7 +16,7 @@ const AdminProjectsReducer = (state = initialState, action) => {
   case FETCH_ADMIN_PROJECTS_SUCCESS:
     return {
       ...state,
-      pvcs: action.payload,
+      projects: action.payload,
       isRetrieving: false,
       message: 'All Projects fetched'
     };

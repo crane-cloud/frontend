@@ -9,8 +9,8 @@ export const startTheFetch = () => ({
 export const getAdminProjectsSuccess = (response) => (
   {
     type: FETCH_ADMIN_PROJECTS_SUCCESS,
-    payload: response.data.data,
-  });
+    payload: response.data.data.projects,
+});
 
 export const getAdminProjectsFailed = (error) => ({
   type: FETCH_ADMIN_PROJECTS_FAILED,
