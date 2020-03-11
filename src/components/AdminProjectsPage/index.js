@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import './AdminProjectsPage.css';
 import InformationBar from '../InformationBar';
 import NavBar from '../NavBar';
+import SideNav from '../SideNav';
 import getAdminProjects from '../../redux/actions/AdminProjectsActions';
 import ClusterCard from '../ClusterCard';
 import { BigSpinner } from '../SpinnerComponent';
@@ -19,50 +20,50 @@ class AdminProjectsPage extends React.Component {
 
   render() {
     const { projects, isRetrieving } = this.props;
-    console.log(projects);
+    const clusterName = localStorage.getItem('clusterName');
 
     return (
-      <div className="Page">
-        <div className="TopRow">
-          <NavBar />
-          <InformationBar header="Projects" showBtn={true} />
-        </div>
-        <div className="MainRow">
-          <div className="ProjectList">
-            {
-              isRetrieving ? (
-                <div className="TableLoading">
-                  <div className="SpinnerWrapper">
-                    <BigSpinner />
-                  </div>
-                </div>
-              ) : (
-                <div className="ProjectList">
-                  { projects !== 0 ? (projects.map((project) => (
-                    <Link to={{ pathname: `/projects/${project.id}`}} key={project.id}>
-                      <div key={project.id} className="ProjectCardItem">
-                        <ClusterCard
-                          name={project.name}
-                          description={project.alias}
-                          icon={crane}
-                        />
-                      </div>
-                    </Link>
-                  )))
-                    : (
-                      <h3 className="EmptyList">No Projects Yet.</h3>
-                    )
-                  }
-                </div>
-              )
-            }
+      <div>
+        <NavBar />
+        <div className="MainSection">
+          <div className="SiteSideNav">
+            <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
           </div>
-          <div className="FooterRow">
-            <p>
-              Copyright © 2020 Crane Cloud.
-              All Rights Reserved.
-
-            </p>
+          <div className="Content">
+            <div className="UpperBar">
+              <InformationBar header="Namespaces" showBtn={false} />
+            </div>
+            <div className="LowerBar">
+              <div className="ProjectList">
+                {
+                  isRetrieving ? (
+                    <div className="TableLoading">
+                      <div className="SpinnerWrapper">
+                        <BigSpinner />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="ProjectList">
+                      { projects !== 0 ? (projects.map((project) => (
+                        <Link to={{ pathname: `/projects/${project.id}`}} key={project.id}>
+                          <div key={project.id} className="ProjectCardItem">
+                            <ClusterCard
+                              name={project.name}
+                              description={project.alias}
+                              icon={crane}
+                            />
+                          </div>
+                        </Link>
+                      )))
+                        : (
+                          <h3 className="EmptyList">No Projects Yet.</h3>
+                        )
+                      }
+                    </div>
+                  )
+                }
+              </div>
+            </div>
           </div>
         </div>
       </div>
