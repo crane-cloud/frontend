@@ -18,6 +18,7 @@ class AdminProjectsPage extends React.Component {
 
   render() {
     const { projects, isRetrieving } = this.props;
+    console.log(projects);
 
     return (
       <div className="Page">
@@ -27,11 +28,24 @@ class AdminProjectsPage extends React.Component {
         </div>
         <div className="MainRow">
           <div className="ProjectList">
-            {isRetrieving ? (projects.map((project) => (
-              <div key={project.id} className="ProjectCardItem">
-                <ClusterCard name={project.name} description={project.host} icon={crane} />
+            {
+              isRetrieving ? (
+                <div className="TableLoading">
+                  <div className="SpinnerWrapper">
+                    <BigSpinner />
+                  </div>
+                </div>
+              ) : (
+                <div> 
+                  projects !== 0 ? (projects.map((project) => (
+                    <div key={project.id} className="ProjectCardItem">
+                      <ClusterCard name={project.name} description={project.alias} icon={crane} />
+                    </div>
+                  )
+                )
+                )
               </div>
-            ))) : (
+              ) : (
               <h3 className="EmptyList">No Projects Yet.</h3>
             )}
           </div>

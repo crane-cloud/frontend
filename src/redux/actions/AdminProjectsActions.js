@@ -9,7 +9,7 @@ export const startTheFetch = () => ({
 export const getAdminProjectsSuccess = (response) => (
   {
     type: FETCH_ADMIN_PROJECTS_SUCCESS,
-    payload: response.data.data.projects,
+    payload: response.data.data,
   });
 
 export const getAdminProjectsFailed = (error) => ({
