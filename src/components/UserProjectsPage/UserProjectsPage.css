@@ -39,3 +39,7 @@
     margin: 25px 25px;
     color: black;
 }
+
+.CardImageDiv{
+    background-size: unset!important;
+}
