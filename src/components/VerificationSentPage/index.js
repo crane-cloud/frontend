@@ -38,7 +38,7 @@ class VerificationSentPage extends React.Component {
           setTimeout(() => {
             // save user data to store and log them in
             saveUser(response.data.data);
-            history.push('/clusters');
+            history.push('/user');
           }, 1000);
         }
       })

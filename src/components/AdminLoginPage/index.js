@@ -10,7 +10,7 @@ import InputPassword from '../InputPassword';
 import PrimaryButton from '../PrimaryButton';
 import Spinner from '../SpinnerComponent';
 import { API_BASE_URL } from '../../config';
-import './LoginPage.css';
+import '../LoginPage/LoginPage.css';
 
 class LoginPage extends React.Component {
   constructor() {
@@ -36,7 +36,7 @@ class LoginPage extends React.Component {
 
     const { email, password } = this.state;
 
-    const userCredentials = {
+    const adminCredentials = {
       email,
       password
     };
@@ -46,7 +46,7 @@ class LoginPage extends React.Component {
     });
 
     axios
-      .post(`${API_BASE_URL}/users/login`, userCredentials)
+      .post(`${API_BASE_URL}/users/login`, adminCredentials)
       .then((res) => {
         if (res.data.status === 'success') {
           this.setState({
@@ -57,7 +57,7 @@ class LoginPage extends React.Component {
           setTimeout(() => {
             // save user data to store
             saveUser(res.data.data);
-            history.push('/user');
+            history.push('/clusters');
           }, 1000);
         }
       })
@@ -77,7 +77,7 @@ class LoginPage extends React.Component {
         <Header />
         <div className="LoginContent">
           <div className="LoginContentHeading">
-            <h1>Login to the cloud</h1>
+            <h1>Admin Login</h1>
           </div>
           <div className="LoginContentInputs">
             {/* Input fields */}
@@ -108,8 +108,7 @@ class LoginPage extends React.Component {
             />
 
             <div className="LoginContentBottomLink LoginLinkContainer">
-              Not signed up? &nbsp;
-              <Link to="/register" className="LoginContentLink">Create an account.</Link>
+              <Link to="/login" className="LoginContentLink">Go to user login.</Link>
             </div>
 
           </div>

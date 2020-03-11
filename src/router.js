@@ -17,6 +17,7 @@ import PvsListPage from './components/PvsListPage';
 import JobsListPage from './components/JobsListPage';
 import DeploymentsPage from './components/DeploymentsPage';
 import VerificationSentPage from './components/VerificationSentPage';
+import AdminLoginPage from './components/AdminLoginPage';
 
 
 const Routes = () => (
@@ -24,6 +25,7 @@ const Routes = () => (
     <Switch>
       <Route exact path="/" component={App} />
       <Route path="/login" component={LoginPage} />
+      <Route path="/admin-login" component={AdminLoginPage} />
       <Route path="/forgot-password" component={PasswordReset} />
       <Route path="/register" component={RegisterPage} />
       <Route path="/new-password" component={CreateNewPassword} />
