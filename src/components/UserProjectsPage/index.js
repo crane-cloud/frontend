@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
 import InformationBar from '../InformationBar';
 import NavBar from '../NavBar';
@@ -28,21 +29,41 @@ class UserProjectsPage extends React.Component {
         </div>
         <div className="MainRow">
           <div className="ProjectList">
-            {isRetrieving ? (projects.map((project) => (
-              <div key={project.id} className="ProjectCardItem">
-                <ClusterCard name={project.name} description={project.host} icon={crane} />
-              </div>
-            ))) : (
-              <h3 className="EmptyList">No Projects Yet.</h3>
-            )}
+            {
+              isRetrieving ? (
+                <div className="TableLoading">
+                  <div className="SpinnerWrapper">
+                    <BigSpinner />
+                  </div>
+                </div>
+              ) : (
+                <div className="ProjectList">
+                  { projects !== 0 ? (projects.map((project) => (
+                    <Link to={{ pathname: `/projects/${project.id}`}} key={project.id}>
+                      <div key={project.id} className="ProjectCardItem">
+                        <ClusterCard
+                          name={project.name}
+                          description={project.alias}
+                          icon={crane}
+                        />
+                      </div>
+                    </Link>
+                  )))
+                    : (
+                      <h3 className="EmptyList">No Projects Yet.</h3>
+                    )
+                  }
+                </div>
+              )
+            }
           </div>
-        </div>
-        <div className="FooterRow">
-          <p>
-            Copyright © 2020 Crane Cloud.
-            All Rights Reserved.
+          <div className="FooterRow">
+            <p>
+              Copyright © 2020 Crane Cloud.
+              All Rights Reserved.
 
-          </p>
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -50,7 +71,7 @@ class UserProjectsPage extends React.Component {
 }
 
 UserProjectsPage.propTypes = {
-  projects: PropTypes.object,
+  projects: PropTypes.arrayOf(PropTypes.object),
   isRetrieving: PropTypes.bool
 };
 
