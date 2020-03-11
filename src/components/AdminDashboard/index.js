@@ -1,7 +1,7 @@
 /* eslint-disable react/prefer-stateless-function */
 import React from 'react';
 import './AdminDashboard.css';
-import NavBar from '../NavBar';
+import Header from '../Header';
 import TableList from '../TableList';
 
 class AdminDashboard extends React.Component {
@@ -25,8 +25,7 @@ class AdminDashboard extends React.Component {
   render() {
     return (
       <div>
-        <NavBar />
-
+        <Header />
         <div className="Disposable">
           <div>
             <TableList data={this.state.responseData} />
