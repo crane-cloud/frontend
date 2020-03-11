@@ -10,7 +10,7 @@ import SideNav from '../SideNav';
 import getAdminProjects from '../../redux/actions/AdminProjectsActions';
 import ClusterCard from '../ClusterCard';
 import { BigSpinner } from '../SpinnerComponent';
-import crane from '../../assets/images/craneLogo.png';
+import crane from '../../assets/images/plant.svg';
 
 class AdminProjectsPage extends React.Component {
   componentDidMount() {
