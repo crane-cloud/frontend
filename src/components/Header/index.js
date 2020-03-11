@@ -9,7 +9,7 @@ import './Header.css';
 
 const Header = (props) => {
   const [hidden, setHidden] = useState(false);
-  const { user } = props;
+  const { user, match } = props;
 
   const toggleHidden = () => {
     if (hidden) {
@@ -43,13 +43,19 @@ const Header = (props) => {
       {user.accessToken && (
         <div className="HeaderLinksWrap LoggedIn">
           <div className="OnHeader">
-            <div className="ProfileIconWrap">
-              <img src={ProfileIcon} alt="profile" />
-            </div>
+            {match.path === '/' ? (
+              <Link to="/clusters" className="HeaderLinkBackToConsole">dashboard</Link>
+            ) : (
+              <>
+                <div className="ProfileIconWrap">
+                  <img src={ProfileIcon} alt="profile" />
+                </div>
 
-            <div className="UserNames">
-              {user.data.name}
-            </div>
+                <div className="UserNames">
+                  {user.data.name}
+                </div>
+              </>
+            )}
 
             <div className="DropDownArrow">
               <img src={DownArrow} alt="down_arrow" onClick={toggleHidden} />
@@ -67,9 +73,10 @@ const Header = (props) => {
             </div>
           )}
         </div>
-      )}
+      )
+      }
 
-    </header>
+    </header >
   );
 };
 

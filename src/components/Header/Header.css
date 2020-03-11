@@ -1,4 +1,5 @@
 header.Header {
+  z-index: 2;
   background-color: #008ac1;
   color: #ffffff;
   display: flex;
@@ -62,6 +63,7 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
 }
 
 .DropDownArrow img {
+  cursor: pointer;
   width: 1rem;
 }
 
@@ -91,6 +93,16 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
 .DropDownLink {
   color: #000;
   text-decoration: none;
+}
+
+.OnHeader a.HeaderLinkBackToConsole {
+  text-transform: uppercase;
+  border: 2px solid #ffffff;
+  padding: 1rem 3rem;
+  /* margin-left: 2rem; */
+  font-size: 0.9em;
+  color: white;
+  padding: 1rem;
 }
 
 @media only screen and (max-width: 640px) {
