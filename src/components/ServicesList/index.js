@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './ServicesList.css';
-import NavBar from '../NavBar';
+import Header from '../Header';
 import InformationBar from '../InformationBar';
 import { BigSpinner } from '../SpinnerComponent';
 import SideNav from '../SideNav';
@@ -38,7 +38,7 @@ class ServicesListPage extends React.Component {
 
     return (
       <div>
-        <NavBar />
+        <Header />
         <div className="MainSection">
           <div className="SiteSideNav">
             <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />

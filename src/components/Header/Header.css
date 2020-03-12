@@ -1,14 +1,22 @@
 header.Header {
+  z-index: 2;
+  background-color: #008ac1;
+  color: #ffffff;
   display: flex;
   justify-content: space-between;
+  height: 80px !important; /* I hate to do this but I had to limit this height */
 }
 
 .HeaderLinks {
   padding-top: 2rem;
 }
 
+.LogoWrap {
+  margin: 1rem 0 auto 2rem;
+}
+
 .HeaderLinksWrap {
-  margin: 1rem 3rem auto 0;
+  margin: 0 3rem 0 0;
 }
 
 .HeaderLinks a {
@@ -29,6 +37,72 @@ header.Header {
 }
 .LogoLink::-moz-focus-inner {
   border: 0;
+}
+
+div.HeaderLinksWrap.LoggedIn {
+  grid-template-areas: "area1" "area2";
+}
+
+div.HeaderLinksWrap.LoggedIn .OnHeader {
+  display: grid;
+  height: 100%;
+  gap: 1rem;
+  grid-template-columns: repeat(3, auto);
+  align-items: center;
+  grid-area: area1;
+}
+
+div.HeaderLinksWrap.LoggedIn .BelowHeader {
+  background-color: #F9F9F9;
+  grid-area: area2;
+}
+
+.ProfileIconWrap img {
+  width: 3rem;
+  align-self: center;
+}
+
+.DropDownArrow img {
+  cursor: pointer;
+  width: 1rem;
+}
+
+.UserNames {
+  font-weight: bold;
+}
+
+.DropDownContent {
+  color: #000;
+  display: flex;
+  flex-direction: column;
+}
+
+.DropDownContent:first-child {
+  margin-top: .5rem;
+}
+
+.DropDownLink {
+  cursor: pointer;
+  padding: .5rem 0rem .5rem 1rem;
+}
+
+.DropDownLink:hover, .DropDownLink:active {
+  background-color: #F1F1F1;
+}
+
+.DropDownLink {
+  color: #000;
+  text-decoration: none;
+}
+
+.OnHeader a.HeaderLinkBackToConsole {
+  text-transform: uppercase;
+  border: 2px solid #ffffff;
+  padding: 1rem 3rem;
+  /* margin-left: 2rem; */
+  font-size: 0.9em;
+  color: white;
+  padding: 1rem;
 }
 
 @media only screen and (max-width: 640px) {

@@ -22,7 +22,10 @@ export const getServicesFailed = (error) => ({
 
 const getServices = (clusterId) => (dispatch) => {
   dispatch(startTheFetch());
-  return axios.get(`${API_BASE_URL}/clusters/${clusterId}/services`)
+  return axios.get(`${API_BASE_URL}/clusters/${clusterId}/services`,
+    {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
     .then((response) => dispatch(getServicesSuccess(response)))
     .catch((error) => {
       dispatch(getServicesFailed(error));
