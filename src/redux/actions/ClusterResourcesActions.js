@@ -23,7 +23,10 @@ export const getResourcesFail = (error) => ({
 
 const getClusterResourcesCount = (params) => (dispatch) => {
   dispatch(startFetchingResources());
-  return axios.get(`${API_BASE_URL}/clusters/${params.clusterID}`)
+  return axios.get(`${API_BASE_URL}/clusters/${params.clusterID}`,
+    {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
     .then((response) => dispatch(getResourcesSuccess(response)))
     .catch((error) => {
       dispatch(getResourcesFail(error));

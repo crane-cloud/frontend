@@ -22,7 +22,10 @@ export const getJobsFailed = (error) => ({
 
 const getJobs = (clusterId) => (dispatch) => {
   dispatch(startTheFetch());
-  return axios.get(`${API_BASE_URL}/clusters/${clusterId}/jobs`)
+  return axios.get(`${API_BASE_URL}/clusters/${clusterId}/jobs`,
+    {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
     .then((response) => dispatch(getJobsSuccess(response)))
     .catch((error) => {
       dispatch(getJobsFailed(error));
