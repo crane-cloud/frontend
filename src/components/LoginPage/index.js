@@ -88,8 +88,10 @@ class LoginPage extends React.Component {
             this.setState({
               loading: false
             });
-            console.log(err);
-            console.log('Check your email / password...');
+            this.setState({
+              error: 'Please enter correct email and password'
+            });
+
           });
       } else {
         this.setState({
