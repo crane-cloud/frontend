@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import getNodesList from '../../redux/actions/nodeClusterActions';
 import tellAge from '../../helpers/ageUtility';
 import './NodesList.css';
-import NavBar from '../NavBar';
+import Header from '../Header';
 import Status from '../Status';
 import { BigSpinner } from '../SpinnerComponent';
 import InformationBar from '../InformationBar';
@@ -50,7 +50,7 @@ class NodesList extends Component {
 
     return (
       <div>
-        <NavBar />
+        <Header />
         <div className="MainSection">
           <div className="SiteSideNav">
             <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />

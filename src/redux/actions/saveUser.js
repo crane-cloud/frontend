@@ -1,10 +1,8 @@
-import { SAVE_USER } from '../actions/actionTypes';
+import { SAVE_USER } from './actionTypes';
 
-const saveUser = user => {
-  return {
-    type: SAVE_USER,
-    user
-  };
-};
+const saveUser = (user) => ({
+  type: SAVE_USER,
+  payload: user
+});
 
 export default saveUser;
