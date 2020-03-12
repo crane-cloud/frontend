@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  BrowserRouter,
+  BrowserRouter as Router,
   Switch,
   Route,
   Redirect
@@ -37,7 +37,7 @@ const ProtectedRoute = ({ isAllowed, ...props }) => (
 const hasToken = store.getState().user.accessToken;
 
 const Routes = () => (
-  <BrowserRouter>
+  <Router>
     <Switch>
       <Route exact path="/" component={App} />
       <Route path="/login" component={LoginPage} />
@@ -46,19 +46,19 @@ const Routes = () => (
       <Route path="/register" component={RegisterPage} />
       <Route path="/new-password" component={CreateNewPassword} />
       <Route path="/verify/:token" component={VerificationSentPage} />
-      <ProtectedRoute isAllowed={hasToken} exact path="/clusters/:clusterID/resources" component={ClusterResourcesPage} />
-      <ProtectedRoute isAllowed={hasToken} exact path="/clusters/:clusterID/services" component={ServicesListPage} />
-      <ProtectedRoute isAllowed={hasToken} exact path="/clusters/:clusterID/volumes" component={PvsListPage} />
-      <ProtectedRoute isAllowed={hasToken} exact path="/clusters/:clusterID/nodes" component={ClusterNodes} />
-      <ProtectedRoute isAllowed={hasToken} exact path="/clusters/:clusterID/pvcs" component={PvcsList} />
-      <ProtectedRoute isAllowed={hasToken} exact path="/clusters/:clusterID/namespaces" component={NamespacesListPage} />
-      <ProtectedRoute isAllowed={hasToken} exact path="/clusters/:clusterID/pods" component={PodsList} />
-      <ProtectedRoute isAllowed={hasToken} exact path="/clusters/:clusterID/storage-classes" component={StorageClassList} />
-      <ProtectedRoute isAllowed={hasToken} exact path="/clusters/:clusterID/jobs" component={JobsListPage} />
-      <ProtectedRoute isAllowed={hasToken} exact path="/clusters/:clusterID/deployments" component={DeploymentsPage} />
+      <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/resources" component={ClusterResourcesPage} />
+      <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/services" component={ServicesListPage} />
+      <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/volumes" component={PvsListPage} />
+      <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/nodes" component={ClusterNodes} />
+      <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/pvcs" component={PvcsList} />
+      <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/namespaces" component={NamespacesListPage} />
+      <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/pods" component={PodsList} />
+      <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/storage-classes" component={StorageClassList} />
+      <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/jobs" component={JobsListPage} />
+      <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/deployments" component={DeploymentsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/clusters" component={ClusterPage} />
     </Switch>
-  </BrowserRouter>
+  </Router>
 );
 
 export default Routes;

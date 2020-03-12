@@ -1,4 +1,6 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import './ClusterPage.css';
 import InformationBar from '../InformationBar';
 import ClustersList from '../ClustersList';
@@ -19,8 +21,9 @@ function ClusterPage() {
 All Rights Reserved.</p>
       </div>
     </div>
-   
-
   );
 }
-export default ClusterPage;
+
+const mapStateToProps = (state) => ({ user: state.user });
+
+export default connect(mapStateToProps, null)(withRouter(ClusterPage));

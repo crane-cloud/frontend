@@ -18,7 +18,8 @@ class LoginPage extends React.Component {
     this.state = {
       email: '',
       password: '',
-      loading: false
+      loading: false,
+      feedbackMessage: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -32,7 +33,7 @@ class LoginPage extends React.Component {
   }
 
   handleSubmit() {
-    const { history, saveUser } = this.props;
+    const { saveUser } = this.props;
 
     const { email, password } = this.state;
 
@@ -57,7 +58,14 @@ class LoginPage extends React.Component {
           setTimeout(() => {
             // save user data to store
             saveUser(res.data.data);
-            history.push('/user');
+            this.setState(
+              {
+                feedbackMessage: 'Login Successful'
+              },
+              () => {
+                window.location.href = '/user';
+              }
+            );
           }, 1000);
         }
       })

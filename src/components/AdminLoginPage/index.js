@@ -18,7 +18,8 @@ class LoginPage extends React.Component {
     this.state = {
       email: '',
       password: '',
-      loading: false
+      loading: false,
+      feedbackMessage: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -32,7 +33,7 @@ class LoginPage extends React.Component {
   }
 
   handleSubmit() {
-    const { history, saveUser } = this.props;
+    const { saveUser } = this.props;
 
     const { email, password } = this.state;
 
@@ -46,7 +47,7 @@ class LoginPage extends React.Component {
     });
 
     axios
-      .post(`${API_BASE_URL}/users/login`, adminCredentials)
+      .post(`${API_BASE_URL}/users/admin_login`, adminCredentials)
       .then((res) => {
         if (res.data.status === 'success') {
           this.setState({
@@ -54,11 +55,16 @@ class LoginPage extends React.Component {
           });
 
           // redirect to dashboard
-          setTimeout(() => {
-            // save user data to store
-            saveUser(res.data.data);
-            history.push('/clusters');
-          }, 1000);
+          // save user data to store
+          saveUser(res.data.data);
+          this.setState(
+            {
+              feedbackMessage: 'Login Successful'
+            },
+            () => {
+              window.location.href = '/clusters';
+            }
+          );
         }
       })
       .catch((err) => {
