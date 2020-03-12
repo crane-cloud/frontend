@@ -23,7 +23,10 @@ export const getPodsFail = (error) => ({
 const getPodsList = (clusterId) => (dispatch) => {
   dispatch(startFetchingPods());
 
-  return axios.get(`${API_BASE_URL}/clusters/${clusterId}/pods`)
+  return axios.get(`${API_BASE_URL}/clusters/${clusterId}/pods`,
+    {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
     .then((response) => dispatch(getPodsSuccess(response)))
     .catch((error) => {
       dispatch(getPodsFail(error));

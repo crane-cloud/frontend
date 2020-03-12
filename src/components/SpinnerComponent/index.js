@@ -2,11 +2,15 @@ import React from 'react';
 import './SpinnerComponent.css';
 
 
-const Spinner = () => (
-  <div className="SpinnerWrapper">
-    <div className="Spinner" />
-  </div>
-);
+const Spinner = (props) => {
+  const { size } = props;
+
+  return (
+    <div className="SpinnerWrapper">
+      <div className={`Spinner Spinner${size}`} />
+    </div>
+  );
+};
 
 const BigSpinner = () => (
   <div className="BigSpinnerContainer">
