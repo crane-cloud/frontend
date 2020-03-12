@@ -6,6 +6,7 @@ import {
   GETTING_DEPLOYMENTS
 } from './actionTypes';
 
+
 const startGettingDeployments = () => ({
   type: GETTING_DEPLOYMENTS
 });
