@@ -10,7 +10,7 @@ export const getAdminProjectsSuccess = (response) => (
   {
     type: FETCH_ADMIN_PROJECTS_SUCCESS,
     payload: response.data.data.projects,
-});
+  });
 
 export const getAdminProjectsFailed = (error) => ({
   type: FETCH_ADMIN_PROJECTS_FAILED,
@@ -22,7 +22,10 @@ export const getAdminProjectsFailed = (error) => ({
 
 const getAdminProjects = () => (dispatch) => {
   dispatch(startTheFetch());
-  return axios.get(`${API_BASE_URL}/projects`)
+  return axios.get(`${API_BASE_URL}/projects`,
+    {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
     .then((response) => dispatch(getAdminProjectsSuccess(response)))
     .catch((error) => {
       dispatch(getAdminProjectsFailed(error));
