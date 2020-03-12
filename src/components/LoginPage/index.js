@@ -19,7 +19,8 @@ class LoginPage extends React.Component {
       email: '',
       password: '',
       loading: false,
-      error: ''
+      error: '',
+      feedbackMessage: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -46,7 +47,7 @@ class LoginPage extends React.Component {
   }
 
   handleSubmit() {
-    const { history } = this.props;
+    const { saveUser } = this.props;
 
     const { email, password } = this.state;
 
@@ -94,6 +95,22 @@ class LoginPage extends React.Component {
 
           });
       } else {
+          // redirect to dashboard
+          setTimeout(() => {
+            // save user data to store
+            saveUser(res.data.data);
+            this.setState(
+              {
+                feedbackMessage: 'Login Successful'
+              },
+              () => {
+                window.location.href = '/user';
+              }
+            );
+          }, 1000);
+        }
+      })
+      .catch((err) => {
         this.setState({
           error: 'Please provide a valid email address'
         });

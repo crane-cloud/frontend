@@ -14,7 +14,7 @@ const LandingPage = () => (
         <div>
           <h1 className="uppercase extra-bold">managed kubernetes platform</h1>
           <h3 className="bold">Automated container deployment, scaling and management.</h3>
-          <Link to='/register'><PrimaryButton label="get started" /></Link>
+          <Link to="/register"><PrimaryButton label="get started" /></Link>
         </div>
       </div>
       <div className="LandingPageMainContentImg">

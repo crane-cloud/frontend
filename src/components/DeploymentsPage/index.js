@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import getDeployments from '../../redux/actions/getDeployments';
-import NavBar from '../NavBar';
+import Header from '../Header';
 import SideNav from '../SideNav';
 import InformationBar from '../InformationBar';
 import ProgressBar from '../ProgressBar';
@@ -43,7 +43,7 @@ class DeploymentsPage extends Component {
 
     return (
       <div className="DeploymentsPageContainer">
-        <NavBar />
+        <Header />
         <div className="DeploymentsPageMain">
           <div className="DeploymentsPageSideNav">
             <SideNav
@@ -71,7 +71,7 @@ class DeploymentsPage extends Component {
                     </tr>
                   ) : (
                     <tbody>
-                      {isFetched ? (
+                      {isFetched && deployments !== undefined ? (
                         deployments.map((deployment) => (
                           <tr>
                             <td>{deployment.metadata.name}</td>

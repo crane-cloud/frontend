@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './PvcsList.css';
-import NavBar from '../NavBar';
+import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 import getPvcs from '../../redux/actions/PvcsActions';
 import Status from '../Status';
 import tellAge from '../../helpers/ageUtility';
+import { BigSpinner } from '../SpinnerComponent';
 
 class PvcsListPage extends React.Component {
   componentDidMount() {
@@ -18,12 +19,12 @@ class PvcsListPage extends React.Component {
   }
 
   render() {
-    const { pvcs } = this.props;
+    const { pvcs, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
 
     return (
       <div>
-        <NavBar />
+        <Header />
         <div className="MainSection">
           <div className="SiteSideNav">
             <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
@@ -35,24 +36,39 @@ class PvcsListPage extends React.Component {
             <div className="LowerBar">
               <div className="ResourcesTable">
                 <table>
-                  <tr>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Age</th>
-                  </tr>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Status</th>
+                      <th>Age</th>
+                    </tr>
+                  </thead>
                   {
-                    pvcs.length !== 0 ? (
-                      pvcs.map((pvc) => (
-                        <tr>
-                          <td>{pvc.metadata.name}</td>
-                          <td><Status status={pvc.status.phase} /></td>
-                          <td>{tellAge(pvc.metadata.creationTimestamp)}</td>
-                        </tr>
+                    isRetrieving ? (
+                      <tr className="TableLoading">
+                        <div className="SpinnerWrapper">
+                          <BigSpinner />
+                        </div>
+                      </tr>
+                    ) : (
+                      <tbody>
+                        {pvcs.length !== 0 ? (
+                          pvcs.map((pvc) => (
+                            <tr>
+                              <td>{pvc.metadata.name}</td>
+                              <td><Status status={pvc.status.phase} /></td>
+                              <td>{tellAge(pvc.metadata.creationTimestamp)}</td>
+                            </tr>
 
-                      ))) : (
-                      <h3 className="EmptyList">
-                        No pvcs Available
-                      </h3>
+                          )))
+                          : (
+                            <tr>
+                              <div className="EmptyList">
+                                <h3>No Pvcs Available</h3>
+                              </div>
+                            </tr>
+                          )}
+                      </tbody>
                     )
                   }
                 </table>
