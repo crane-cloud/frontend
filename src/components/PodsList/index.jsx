@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import getPodsList from '../../redux/actions/podsActions';
 import tellAge from '../../helpers/ageUtility';
 import './PodsList.css';
-import NavBar from '../NavBar';
+import Header from '../Header';
 import Status from '../Status';
 import { BigSpinner } from '../SpinnerComponent';
 import InformationBar from '../InformationBar';
@@ -78,7 +78,7 @@ class PodsList extends Component {
     return (
 
       <div>
-        <NavBar />
+        <Header />
         <div className="MainSection">
           <div className="SiteSideNav">
             <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import getStorageClassList from '../../redux/actions/StorageClassesActions';
 import tellAge from '../../helpers/ageUtility';
 import './StorageClassList.css';
-import NavBar from '../NavBar';
+import Header from '../Header';
 import { BigSpinner } from '../SpinnerComponent';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
@@ -24,7 +24,7 @@ class StorageClassList extends Component {
     return (
 
       <div>
-        <NavBar />
+        <Header />
         <div className="MainSection">
           <div className="SiteSideNav">
             <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />

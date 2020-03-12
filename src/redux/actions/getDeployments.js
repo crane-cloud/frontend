@@ -6,6 +6,7 @@ import {
   GETTING_DEPLOYMENTS
 } from './actionTypes';
 
+
 const startGettingDeployments = () => ({
   type: GETTING_DEPLOYMENTS
 });
@@ -26,7 +27,10 @@ const getDeploymentsFail = (error) => ({
 const getDeployments = (clusterID) => (dispatch) => {
   dispatch(startGettingDeployments());
 
-  axios.get(`${API_BASE_URL}/clusters/${clusterID}/deployments`)
+  axios.get(`${API_BASE_URL}/clusters/${clusterID}/deployments`,
+    {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
     .then((response) => dispatch(getDeploymentsSuccess(response)))
     .catch((error) => dispatch(getDeploymentsFail(error)));
 };
