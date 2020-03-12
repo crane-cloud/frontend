@@ -13,9 +13,8 @@ import crane from '../../assets/images/craneLogo.png';
 
 class UserProjectsPage extends React.Component {
   componentDidMount() {
-    const { getUserProjects } = this.props;
-    const userID = localStorage.getItem('userID');
-    getUserProjects(userID);
+    const { getUserProjects, data } = this.props;
+    getUserProjects(data.id);
   }
 
   render() {
@@ -82,7 +81,8 @@ UserProjectsPage.defaultProps = {
 
 export const mapStateToProps = (state) => {
   const { isRetrieving, projects } = state.UserProjectsReducer;
-  return { isRetrieving, projects };
+  const { data } = state.user;
+  return { isRetrieving, projects, data };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
