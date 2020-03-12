@@ -29,7 +29,10 @@ a.LoginContentLink {
   border-bottom: 1px solid #f7b21f;
 }
 .LoginErrorDiv {
-  color: red;
+  background-color: rgba(255, 255, 255, 0.5);
+  color: rgb(214, 59, 59);
+  text-align: center;
+  padding: 1rem 0;
 }
 
 .LoginContentBottomLink {

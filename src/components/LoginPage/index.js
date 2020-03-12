@@ -19,40 +19,31 @@ class LoginPage extends React.Component {
       email: '',
       password: '',
       loading: false,
-      errors: []
+      error: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.validate = this.validate.bind(this);
+    this.validateEmail = this.validateEmail.bind(this);
   }
 
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
     });
+    this.error = this.state;
+    if (this.error) {
+      this.setState({
+        error: ''
+      });
+    }
   }
 
-  validate(email, password) {
-    // we are going to store errors for all fields
-    // in a signle array
-    const errors = [];
-
-    if (email.length < 5) {
-      if (email.split("").filter(x => x === "@").length !== 1) {
-        if (email.indexOf(".") === -1) {
-          errors.push('Email is invalid');
-        }
-      }
-    }
-
-    if (password.length < 6) {
-      errors.push('Password should be at least 6 characters long');
-    }
-
-    return errors;
+  validateEmail(email) {
+    // eslint-disable-next-line no-useless-escape
+    const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return emailRegEx.test(String(email).toLowerCase());
   }
-
 
   handleSubmit() {
     const { history } = this.props;
@@ -64,50 +55,57 @@ class LoginPage extends React.Component {
       password
     };
 
-    this.setState({
-      loading: true
-    });
+    if (!email || !password) {
+      // if user tries to submit empty email/password
+      this.setState({
+        error: 'Please enter your email and password'
+      });
+    } else {
+      if (this.validateEmail(email)) {
+        this.setState({
+          loading: true
+        });
 
-    const inputIsValid = this.validate(email, password);
-    console.log(inputIsValid);
-    if (inputIsValid.length === 0) {
-      axios
-        .post(`${API_BASE_URL}/users/login`, userCredentials)
-        .then((res) => {
-          if (res.data.status === 'success') {
+        axios
+          .post(`${API_BASE_URL}/users/login`, userCredentials)
+          .then((res) => {
+            if (res.data.status === 'success') {
+              this.setState({
+                loading: false
+              });
+              console.log('Login successful...');
+
+              // save user data to store
+              saveUser(res.data.data);
+
+              // redirect to dashboard
+              setTimeout(() => {
+                history.push('/clusters');
+              }, 1000);
+            }
+          })
+          .catch((err) => {
             this.setState({
               loading: false
             });
-            console.log('Login successful...');
-
-            // save user data to store
-            saveUser(res.data.data);
-
-            // redirect to dashboard
-            setTimeout(() => {
-              history.push('/clusters');
-            }, 1000);
-          }
-        })
-        .catch((err) => {
-          this.setState({
-            loading: false
+            console.log(err);
+            console.log('Check your email / password...');
           });
-          console.log(err);
-          console.log('Check your email / password...');
+      } else {
+        this.setState({
+          error: 'Please provide a valid email address'
         });
-    } else {
-      const errors = this.validate(email, password);
-      if (errors.length > 0) {
-        this.setState({ errors });
       }
     }
-
-
   }
 
   render() {
-    const { errors, email, password, loading } = this.state;
+    const {
+      error,
+      email,
+      password,
+      loading
+    } = this.state;
 
     return (
       <div className="LoginPageContainer">
@@ -135,13 +133,12 @@ class LoginPage extends React.Component {
                 this.handleChange(e);
               }}
             />
-            <div className="LoginErrorDiv">
-              {errors.map((error) => (
-                <p key={error}>
-                  {error}
-                </p>
-              ))}
-            </div>
+
+            {error && (
+              <div className="LoginErrorDiv">
+                {error}
+              </div>
+            )}
 
             <div className="LoginLinkContainer">
               <Link to="/forgot-password" className="LoginContentLink">Forgot your password?</Link>
