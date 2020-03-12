@@ -23,11 +23,11 @@ class ClustersList extends Component {
       <div className="ClusterList">
         {
           isRetrieving ? (
-            <tr className="TableLoading">
+            <div className="TableLoading">
               <div className="SpinnerWrapper">
                 <BigSpinner />
               </div>
-            </tr>
+            </div>
           ) : (
             <div>
               {isRetrieved ? (clusters.clusters.map((cluster) => (
@@ -42,11 +42,9 @@ class ClustersList extends Component {
                 </Link>
               )))
                 : (
-                  <tr>
-                    <div className="EmptyList">
-                      <h3>No Clusters Available</h3>
-                    </div>
-                  </tr>
+                  <div className="EmptyList">
+                    <h3>No Clusters Available</h3>
+                  </div>
                 )}
             </div>
           )
