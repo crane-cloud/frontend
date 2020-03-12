@@ -12,7 +12,7 @@ import Spinner from '../SpinnerComponent';
 import { API_BASE_URL } from '../../config';
 import '../LoginPage/LoginPage.css';
 
-class LoginPage extends React.Component {
+class AdminLoginPage extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -139,4 +139,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(LoginPage));
+)(withRouter(AdminLoginPage));
