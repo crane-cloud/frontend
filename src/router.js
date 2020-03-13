@@ -22,6 +22,7 @@ import StorageClassList from './components/StorageClassList';
 import PvsListPage from './components/PvsListPage';
 import JobsListPage from './components/JobsListPage';
 import DeploymentsPage from './components/DeploymentsPage';
+import UserProjectsPage from './components/UserProjectsPage';
 import AdminProjectsPage from './components/AdminProjectsPage';
 import VerificationSentPage from './components/VerificationSentPage';
 import AdminLoginPage from './components/AdminLoginPage';
@@ -46,8 +47,10 @@ const Routes = () => (
       <Route path="/forgot-password" component={PasswordReset} />
       <Route path="/register" component={RegisterPage} />
       <Route path="/new-password" component={CreateNewPassword} />
+      <ProtectedRoute isAllowed={hasToken} exact path="/:userID/projects" component={UserProjectsPage} />
       <ProtectedRoute isAllowed={hasToken} path="/projects" component={AdminProjectsPage} />
       <Route path="/verify/:token" component={VerificationSentPage} />
+      <ProtectedRoute isAllowed={hasToken} exact path="/:userID/projects" component={UserProjectsPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/resources" component={ClusterResourcesPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/services" component={ServicesListPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/volumes" component={PvsListPage} />

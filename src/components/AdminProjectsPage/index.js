@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import './AdminProjectsPage.css';
 import InformationBar from '../InformationBar';
-import NavBar from '../NavBar';
+import Header from '../Header';
 import SideNav from '../SideNav';
 import getAdminProjects from '../../redux/actions/AdminProjectsActions';
 import ClusterCard from '../ClusterCard';
@@ -24,7 +24,7 @@ class AdminProjectsPage extends React.Component {
 
     return (
       <div>
-        <NavBar />
+        <Header />
         <div className="MainSection">
           <div className="SiteSideNav">
             <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
