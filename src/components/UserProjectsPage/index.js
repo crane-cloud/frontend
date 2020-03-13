@@ -37,19 +37,22 @@ class UserProjectsPage extends React.Component {
                 </div>
               ) : (
                 <div className="ProjectList">
-                  { projects !== 0 ? (projects.map((project) => (
-                    <Link to={{ pathname: `/projects/${project.id}`}} key={project.id}>
-                      <div key={project.id} className="ProjectCardItem">
-                        <ClusterCard
-                          name={project.name}
-                          description={project.alias}
-                          icon={crane}
-                        />
-                      </div>
-                    </Link>
-                  )))
+                  { projects.length !== 0 ? (
+                    projects.map((project) => (
+                      <Link to={{ pathname: `/projects/${project.id}`}} key={project.id}>
+                        <div key={project.id} className="ProjectCardItem">
+                          <ClusterCard
+                            name={project.name}
+                            description={project.alias}
+                            icon={crane}
+                          />
+                        </div>
+                      </Link>
+                    )))
                     : (
-                      <h3 className="EmptyList">No Projects Yet.</h3>
+                      <div className="EmptyList">
+                        <h3>No Projects Yet.</h3>
+                      </div>
                     )
                   }
                 </div>
