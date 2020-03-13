@@ -58,12 +58,13 @@ class LoginPage extends React.Component {
           setTimeout(() => {
             // save user data to store
             saveUser(res.data.data);
+            let usersId = res.data.data.id; 
             this.setState(
               {
                 feedbackMessage: 'Login Successful'
               },
               () => {
-                window.location.href = '/user';
+                window.location.href = usersId + '/projects'
               }
             );
           }, 1000);
