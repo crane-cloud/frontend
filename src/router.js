@@ -22,7 +22,11 @@ import StorageClassList from './components/StorageClassList';
 import PvsListPage from './components/PvsListPage';
 import JobsListPage from './components/JobsListPage';
 import DeploymentsPage from './components/DeploymentsPage';
+<<<<<<< HEAD
 import UserProjectsPage from './components/UserProjectsPage';
+=======
+import AdminProjectsPage from './components/AdminProjectsPage';
+>>>>>>> 451457078874dc37104ffcb7ab818399a7730bf8
 import VerificationSentPage from './components/VerificationSentPage';
 import AdminLoginPage from './components/AdminLoginPage';
 
@@ -46,7 +50,11 @@ const Routes = () => (
       <Route path="/forgot-password" component={PasswordReset} />
       <Route path="/register" component={RegisterPage} />
       <Route path="/new-password" component={CreateNewPassword} />
+<<<<<<< HEAD
       <ProtectedRoute isAllowed={hasToken} exact path="/:userID/projects" component={UserProjectsPage} />
+=======
+      <ProtectedRoute isAllowed={hasToken} path="/projects" component={AdminProjectsPage} />
+>>>>>>> 451457078874dc37104ffcb7ab818399a7730bf8
       <Route path="/verify/:token" component={VerificationSentPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/:userID/projects" component={UserProjectsPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/resources" component={ClusterResourcesPage} />
