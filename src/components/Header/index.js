@@ -46,7 +46,7 @@ const Header = (props) => {
         <div className="HeaderLinksWrap LoggedIn">
           <div className="OnHeader">
             {match.path === '/' ? (
-              <Link to="/clusters" className="HeaderLinkBackToConsole">dashboard</Link>
+              <Link to={`${user.data.id}/projects`} className="HeaderLinkBackToConsole">dashboard</Link>
             ) : (
               <>
                 <div className="ProfileIconWrap">
