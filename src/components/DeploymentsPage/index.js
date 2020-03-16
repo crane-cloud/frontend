@@ -43,7 +43,9 @@ class DeploymentsPage extends Component {
 
     return (
       <div className="DeploymentsPageContainer">
-        <Header />
+        <div className="PageHeaderContainer">
+          <Header />
+        </div>
         <div className="DeploymentsPageMain">
           <div className="DeploymentsPageSideNav">
             <SideNav
@@ -71,7 +73,7 @@ class DeploymentsPage extends Component {
                     </tr>
                   ) : (
                     <tbody>
-                      {isFetched && deployments !== undefined ? (
+                      {(isFetched && deployments !== undefined) && (
                         deployments.map((deployment) => (
                           <tr>
                             <td>{deployment.metadata.name}</td>
@@ -90,10 +92,19 @@ class DeploymentsPage extends Component {
                             </td>
                             <td>{tellAge(deployment.metadata.creationTimestamp)}</td>
                           </tr>
-                        ))) : <div>No deployments</div>}
+                        )))}
                     </tbody>
                   )}
                 </table>
+                {(!isFetchingDeployments && !isFetched) && (
+                  <div className="FailedToRetrieveMsg">
+                    <p>
+                      Oops! Something went wrong!
+                      <br />
+                      Failed to retrieve deployments.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
