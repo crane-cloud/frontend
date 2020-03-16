@@ -14,26 +14,26 @@
   justify-content: center;
 }
 
+.RegisterSuccessContent {
+  min-height: 25rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-content: center;
+  align-items: center;
+}
+
+.RegisterSuccessContent h2 {
+  color: #f7b21f;
+}
+
+.RegisterSuccessContent p span {
+  color: #f7b21f;
+}
+
 .RegisterContentInputs {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
-}
-
-.VerificationCodeInput {
-  position: relative;
-}
-
-.VerificationGetCodeBtnSection {
-  position: absolute;
-  right: 1rem;
-  top: 32%;
-}
-
-.VerificationGetCodeBtn {
-  color: #f7b21f;
-  text-transform: capitalize;
-  cursor: pointer;
 }
 
 .RegisterLinkContainer {
@@ -74,4 +74,15 @@ a.RegisterContentLink {
   .VerificationCodeInput .InputText {
     width: 100%;
   }
+}
+
+/* weird media query to fix fullscreen misbehavior */
+@media only screen and (min-height: 700px) {
+  .RegisterPageContainer {
+    height: 100vh;
+  }
+
+  /* .RegisterContent {
+    padding: 8rem 4rem 0;
+  } */
 }

@@ -1,47 +1,24 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import ResourceCard from '../ResourceCard';
 import './ClusterResource.css';
 
-const resources = [
-  {
-    'name': 'Nodes',
-    'resourceNumber': 7
-  },
-  {
-    'name': 'Secrets',
-    'resourceNumber': 3
-  },
-  {
-    'name': 'Deployments',
-    'resourceNumber': 11
-  },
-  {
-    'name': 'Pods',
-    'resourceNumber': 9
-  },
-  {
-    'name': 'Volumes',
-    'resourceNumber': 5
-  },
-  {
-    'name': 'Daemon Sets',
-    'resourceNumber': 0
-  },
-  {
-    'name': 'Replica',
-    'resourceNumber': 2
-  }
-];
+function ClusterResources(props) {
+  const { resourceCount, myClusterID } = props;
 
-
-function ClusterResources() {
   return (
     <div className="ClusterContainer">
-      {resources.map((resource) =>
-        <div className="ClusterItem">
-          <ResourceCard title={resource.name} resourceCount={resource.resourceNumber} />
-        </div>
-      )}
+      {
+        resourceCount.length !== 0 ? (resourceCount.map(
+          (resource) => (
+            <Link to={{ pathname: `/clusters/${myClusterID}/${resource.name.toLowerCase()}` }} key={resource.count}>
+              <ResourceCard title={resource.name} count={resource.count} />
+            </Link>
+          )
+        )) : (
+          <h3 className="EmptyList">No Resources Available</h3>
+        )
+      }
     </div>
   );
 }
