@@ -31,7 +31,7 @@ class AddProjectForm extends React.Component {
   }
 
   handleSubmit() {
-    const cluster = {
+    const project = {
       host: this.state.host,
       name: this.state.name,
       token: this.state.token,
@@ -43,7 +43,7 @@ class AddProjectForm extends React.Component {
     });
     const { AddProject } = this.props;
     
-    AddProject(cluster);
+    AddProject(project);
 
   }
 
@@ -57,7 +57,7 @@ class AddProjectForm extends React.Component {
 
         <div className="AddPageContent">
           <div className="AddHeading">
-            Add a cluster
+            Add a Project
           </div>
           <div className="AddFormInputs">
             {/* Input fields */}
@@ -112,12 +112,12 @@ class AddProjectForm extends React.Component {
               {/* If error arises */}
               { isFailed === true && errorOccured === 500 ?
                 (
-                  <div> Failed to Add Cluster</div>
+                  <div> Failed to Add Project</div>
                 ):
                 (<div/>)
               }
               {
-                isAdded && <div>Cluster has been successfully added </div>
+                isAdded && <div>Project has been successfully added </div>
               }
                       
             </div>
@@ -137,8 +137,8 @@ AddProjectForm.propTypes = {
 
 
 export const mapStateToProps = state => {
-  const { isAdded, isFailed, cluster, errorOccured} = state.AddProjectReducer;
-  return { isAdded, isFailed, cluster, errorOccured};
+  const { isAdded, isFailed, project, errorOccured} = state.AddProjectReducer;
+  return { isAdded, isFailed, project, errorOccured};
 };
 
 export default connect(
