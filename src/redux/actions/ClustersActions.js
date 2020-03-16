@@ -24,7 +24,10 @@ export const getClustersFail = (error) => ({
 const getClustersList = () => (dispatch) => {
   dispatch(startFetchingClusters());
 
-  return axios.get(`${API_BASE_URL}/clusters`)
+  return axios.get(`${API_BASE_URL}/clusters`,
+    {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
     .then((response) => dispatch(getClustersSuccess(response)))
     .catch((error) => {
       dispatch(getClustersFail(error));

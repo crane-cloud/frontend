@@ -22,7 +22,10 @@ export const getPvcsFailed = (error) => ({
 
 const getPvcs = (clusterId) => (dispatch) => {
   dispatch(startTheFetch());
-  return axios.get(`${API_BASE_URL}/clusters/${clusterId}/pvcs`)
+  return axios.get(`${API_BASE_URL}/clusters/${clusterId}/pvcs`,
+    {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
     .then((response) => dispatch(getPvcsSuccess(response)))
     .catch((error) => {
       dispatch(getPvcsFailed(error));

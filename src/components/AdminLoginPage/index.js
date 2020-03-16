@@ -10,9 +10,9 @@ import InputPassword from '../InputPassword';
 import PrimaryButton from '../PrimaryButton';
 import Spinner from '../SpinnerComponent';
 import { API_BASE_URL } from '../../config';
-import './LoginPage.css';
+import '../LoginPage/LoginPage.css';
 
-class LoginPage extends React.Component {
+class AdminLoginPage extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -37,7 +37,7 @@ class LoginPage extends React.Component {
 
     const { email, password } = this.state;
 
-    const userCredentials = {
+    const adminCredentials = {
       email,
       password
     };
@@ -47,7 +47,7 @@ class LoginPage extends React.Component {
     });
 
     axios
-      .post(`${API_BASE_URL}/users/login`, userCredentials)
+      .post(`${API_BASE_URL}/users/admin_login`, adminCredentials)
       .then((res) => {
         if (res.data.status === 'success') {
           this.setState({
@@ -55,19 +55,16 @@ class LoginPage extends React.Component {
           });
 
           // redirect to dashboard
-          setTimeout(() => {
-            // save user data to store
-            saveUser(res.data.data);
-            let usersId = res.data.data.id; 
-            this.setState(
-              {
-                feedbackMessage: 'Login Successful'
-              },
-              () => {
-                window.location.href = usersId + '/projects'
-              }
-            );
-          }, 1000);
+          // save user data to store
+          saveUser(res.data.data);
+          this.setState(
+            {
+              feedbackMessage: 'Login Successful'
+            },
+            () => {
+              window.location.href = '/clusters';
+            }
+          );
         }
       })
       .catch((err) => {
@@ -86,7 +83,7 @@ class LoginPage extends React.Component {
         <Header />
         <div className="LoginContent">
           <div className="LoginContentHeading">
-            <h1>Login to the cloud</h1>
+            <h1>Admin Login</h1>
           </div>
           <div className="LoginContentInputs">
             {/* Input fields */}
@@ -117,8 +114,7 @@ class LoginPage extends React.Component {
             />
 
             <div className="LoginContentBottomLink LoginLinkContainer">
-              Not signed up? &nbsp;
-              <Link to="/register" className="LoginContentLink">Create an account.</Link>
+              <Link to="/login" className="LoginContentLink">Go to user login.</Link>
             </div>
 
           </div>
@@ -143,4 +139,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(LoginPage));
+)(withRouter(AdminLoginPage));
