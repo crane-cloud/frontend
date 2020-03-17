@@ -16,8 +16,8 @@ class AddProjectForm extends React.Component {
     super();
     this.state = {
       name: '',
-      host: '',
-      token: '',
+      cluster_ID: '',
+      alias: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -30,12 +30,13 @@ class AddProjectForm extends React.Component {
     });
   }
 
+  const { user } = this.props;
   handleSubmit() {
     const project = {
-      host: this.state.host,
+      alias: this.state.alias,
       name: this.state.name,
-      token: this.state.token,
-      description: this.state.description
+      cluster_ID: this.state.token,
+      owner_ID: data.id
     };
 
     this.setState({
@@ -50,7 +51,7 @@ class AddProjectForm extends React.Component {
 
   render() {
     const { isAdded, isFailed, errorOccured } = this.props;
-    console.log(errorOccured);
+    
     return (
       <div className="AddPageContainer" model="user"
         onSubmit={(values) => this.handleSubmit(values)}>
@@ -138,7 +139,8 @@ AddProjectForm.propTypes = {
 
 export const mapStateToProps = state => {
   const { isAdded, isFailed, project, errorOccured} = state.AddProjectReducer;
-  return { isAdded, isFailed, project, errorOccured};
+  const { data } = state.user;
+  return { isAdded, isFailed, project, errorOccured, data};
 };
 
 export default connect(
