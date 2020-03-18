@@ -20,21 +20,23 @@ class NamespacesListPage extends React.Component {
   }
 
   render() {
-    const { namespacesList, isRetrieving } = this.props;
+    const { namespacesList, isRetrieving, isRetrieved } = this.props;
     const clusterName = localStorage.getItem('clusterName');
 
     return (
-      <div>
-        <Header />
-        <div className="MainSection">
-          <div className="SiteSideNav">
+      <div className="DashboardContainer">
+        <div className="DashboardHeaderContainer">
+          <Header />
+        </div>
+        <div className="DashboardMainContainer">
+          <div className="DashboardSideNav">
             <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
           </div>
-          <div className="Content">
-            <div className="UpperBar">
+          <div className="DashboardContentWrap">
+            <div className="DashboardContentInfobar">
               <InformationBar header="Namespaces" showBtn={false} />
             </div>
-            <div className="LowerBar">
+            <div className="DashboardContentMain">
               <div className="ResourcesTable">
                 <table className="NamespacesTable">
                   <thead>
@@ -71,7 +73,15 @@ class NamespacesListPage extends React.Component {
                     )
                   }
                 </table>
-
+                {(!isRetrieving && !isRetrieved) && (
+                  <div className="FailedToRetrieveMsg">
+                    <p>
+                      Oops! Something went wrong!
+                      <br />
+                      Failed to retrieve deployments.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
