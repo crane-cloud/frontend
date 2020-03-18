@@ -10,11 +10,25 @@ import getUserProjects from '../../redux/actions/userProjectsActions';
 import { BigSpinner } from '../SpinnerComponent';
 import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/craneLogo.png';
+import CreateButton from '../ButtonComponent';
+import AddProjectForm from '../AddProject';
 
 class UserProjectsPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      // toggle box is closed initially
+      isOpened: false,
+    };
+  }
+
   componentDidMount() {
     const { getUserProjects, data } = this.props;
     getUserProjects(data.id);
+  }
+
+  openForm() {
+    this.setState({isOpened: true});
   }
 
   render() {
@@ -24,7 +38,10 @@ class UserProjectsPage extends React.Component {
       <div className="Page">
         <div className="TopRow">
           <Header />
-          <InformationBar header="Projects" showBtn={true} />
+          {/* <InformationBar header="Projects" showBtn={true} /> */}
+          {/* <CreateButton /> */}
+          <button class="open-button" onclick={this.openForm()}>Open Form</button>
+          { this.state.isOpened && <AddProjectForm /> }
         </div>
         <div className="MainRow">
           <div className="ProjectList">

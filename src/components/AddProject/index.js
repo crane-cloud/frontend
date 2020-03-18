@@ -30,13 +30,14 @@ class AddProjectForm extends React.Component {
     });
   }
 
-  const { user } = this.props;
+  // let data = this.props.data;
+
   handleSubmit() {
     const project = {
       alias: this.state.alias,
       name: this.state.name,
       cluster_ID: this.state.token,
-      owner_ID: data.id
+      owner_ID: this.state.data.id
     };
 
     this.setState({
@@ -63,17 +64,9 @@ class AddProjectForm extends React.Component {
           <div className="AddFormInputs">
             {/* Input fields */}
             <BlackInputText
-              placeholder='Host'
-              name='host'
-              value={this.state.host}
-              onChange={e => {
-                this.handleChange(e);
-              }}
-            />
-            <BlackInputText
-              placeholder='Token'
-              name='token'
-              value={this.state.token}
+              placeholder='Cluster ID'
+              name='cluster_ID'
+              value={this.state.cluster_ID}
               onChange={e => {
                 this.handleChange(e);
               }}
@@ -87,13 +80,21 @@ class AddProjectForm extends React.Component {
               }}
             />
             <BlackInputText
+              placeholder='Alias'
+              name='alias'
+              value={this.state.alias}
+              onChange={e => {
+                this.handleChange(e);
+              }}
+            />
+            {/* <BlackInputText
               placeholder='Description'
               name='description'
               value={this.state.name}
               onChange={e => {
                 this.handleChange(e);
               }}
-            />
+            /> */}
 
             <div className='AddButtons'>
               <div className="AddBtn">
