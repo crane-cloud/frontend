@@ -3,32 +3,32 @@ import { API_BASE_URL } from '../../config.js';
 import { START_ADDING_CLUSTER, ADD_CLUSTER_SUCCESS, ADD_CLUSTERS_FAIL } from '../actions/actionTypes';
 
 
-const startPostingCluster = () => ({
+const startPostingProject = () => ({
   type: START_ADDING_CLUSTER,
 });
 
-export const addClusterSuccess = (response) => ({
+export const addProjectSuccess = (response) => ({
   type: ADD_CLUSTER_SUCCESS,
   payload: response.data,
 });
 
-export const addClusterFail = (error) => ({
+export const addProjectFail = (error) => ({
   type: ADD_CLUSTERS_FAIL,
   payload: {
     error: error.response.status,
   },
 });
 
-const AddCluster = (clusterData) => (dispatch) => {
+const AddProject = (clusterData) => (dispatch) => {
   dispatch(startPostingCluster());
 
-  return axios.post(`${API_BASE_URL}/clusters`, clusterData,
+  return axios.post(`${API_BASE_URL}/projects`, clusterData,
     {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
-    .then((response) => dispatch(addClusterSuccess(response)))
+    .then((response) => dispatch(addProjectSuccess(response)))
     .catch((error) => {
-      dispatch(addClusterFail(error));
+      dispatch(addProjectFail(error));
     });
 };
-export default AddCluster;
+export default AddProject;

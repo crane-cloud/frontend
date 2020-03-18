@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import './AddProjectForm.css';
+import './AddProject.css';
 import BlackInputText from '../BlackInputText';
 import SecondaryButton from '../SecondaryButton';
 import PrimaryButton from '../PrimaryButton';
