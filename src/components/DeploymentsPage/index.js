@@ -98,6 +98,11 @@ class DeploymentsPage extends Component {
                     </tbody>
                   )}
                 </table>
+                {(isFetched && deployments.length === 0) && (
+                  <div className="FailedToRetrieveMsg">
+                    <p>No deployments available</p>
+                  </div>
+                )}
                 {(!isFetchingDeployments && !isFetched) && (
                   <div className="FailedToRetrieveMsg">
                     <p>

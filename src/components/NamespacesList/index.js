@@ -55,7 +55,7 @@ class NamespacesListPage extends React.Component {
                       </tr>
                     ) : (
                       <tbody>
-                        {namespacesList.length !== 0 ? (
+                        {isRetrieved && namespacesList.length !== 0 && (
                           namespacesList.map((namespace) => (
                             <tr>
                               <td>{namespace.metadata.name}</td>
@@ -63,22 +63,22 @@ class NamespacesListPage extends React.Component {
                               <td>{tellAge(namespace.metadata.creationTimestamp)}</td>
                             </tr>
 
-                          )))
-                          : (
-                            <div className="EmptyList">
-                              <h3>No Namespaces Available</h3>
-                            </div>
-                          )}
+                          )))}
                       </tbody>
                     )
                   }
                 </table>
+                {(isRetrieved && namespacesList.length === 0) && (
+                  <div className="FailedToRetrieveMsg">
+                    <p>No namespaces available</p>
+                  </div>
+                )}
                 {(!isRetrieving && !isRetrieved) && (
                   <div className="FailedToRetrieveMsg">
                     <p>
                       Oops! Something went wrong!
                       <br />
-                      Failed to retrieve deployments.
+                      Failed to retrieve namespaces.
                     </p>
                   </div>
                 )}
