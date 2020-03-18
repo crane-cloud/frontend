@@ -1,28 +1,28 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../../config.js';
-import { START_ADDING_CLUSTER, ADD_CLUSTER_SUCCESS, ADD_CLUSTERS_FAIL } from '../actions/actionTypes';
+import { START_ADDING_PROJECT, ADD_PROJECT_SUCCESS, ADD_PROJECT_FAILED } from '../actions/actionTypes';
 
 
 const startPostingProject = () => ({
-  type: START_ADDING_CLUSTER,
+  type: START_ADDING_PROJECT,
 });
 
 export const addProjectSuccess = (response) => ({
-  type: ADD_CLUSTER_SUCCESS,
+  type: ADD_PROJECT_SUCCESS,
   payload: response.data,
 });
 
 export const addProjectFail = (error) => ({
-  type: ADD_CLUSTERS_FAIL,
+  type: ADD_PROJECT_FAILED,
   payload: {
     error: error.response.status,
   },
 });
 
-const AddProject = (clusterData) => (dispatch) => {
-  dispatch(startPostingCluster());
+const AddProject = (projectData) => (dispatch) => {
+  dispatch(startPostingProject());
 
-  return axios.post(`${API_BASE_URL}/projects`, clusterData,
+  return axios.post(`${API_BASE_URL}/projects`, projectData,
     {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
