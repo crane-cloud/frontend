@@ -1,19 +1,20 @@
-.DeploymentsPageContainer {
+.DashboardContainer {
   height: auto;
   display: flex;
   flex-direction: column;
 }
 
-.DeploymentsPageMain {
+.DashboardMainContainer {
+  margin-top: 80px; /* Height of the hedaer */
   display: flex;
   flex-direction: row;
 }
 
-.DeploymentsPageSideNav {
+.DashboardSideNav {
   min-width: 250px;
 }
 
-.DeploymentsPageMainContent {
+.DashboardContentWrap {
   flex: 1;
   background: #f1f1f1;
 }
@@ -31,15 +32,12 @@
   padding: 5rem;
 }
 
-.PageHeaderContainer {
+.DashboardHeaderContainer {
   position: fixed;
   width: 100%;
   z-index: 5;
 }
 
-.DeploymentsPageMain {
-  margin-top: 80px; /* Height of the hedaer */
-}
 
 
 /*- ///// TABLE STYLING HERE ///////// */

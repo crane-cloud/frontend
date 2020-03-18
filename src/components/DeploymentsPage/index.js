@@ -42,20 +42,22 @@ class DeploymentsPage extends Component {
     } = this.props;
 
     return (
-      <div className="DeploymentsPageContainer">
-        <div className="PageHeaderContainer">
+      <div className="DashboardContainer">
+        <div className="DashboardHeaderContainer">
           <Header />
         </div>
-        <div className="DeploymentsPageMain">
-          <div className="DeploymentsPageSideNav">
+        <div className="DashboardMainContainer">
+          <div className="DashboardSideNav">
             <SideNav
               clusterName={clusterName}
               clusterId={match.params.clusterID}
             />
           </div>
-          <div className="DeploymentsPageMainContent">
-            <InformationBar header="Deployments" />
-            <div className="DeploymentsPageTableSection">
+          <div className="DashboardContentWrap">
+            <div className="DashboardContentInfobar">
+              <InformationBar header="Deployments" />
+            </div>
+            <div className="DashboardContentMain">
               <div className="ResourcesTable">
                 <table>
                   <thead className="uppercase">
