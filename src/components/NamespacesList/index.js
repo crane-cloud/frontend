@@ -94,18 +94,20 @@ class NamespacesListPage extends React.Component {
 NamespacesListPage.propTypes = {
   namespacesList: PropTypes.object,
   isRetrieving: PropTypes.bool,
+  isRetrieved: PropTypes.bool,
   clusterName: PropTypes.string,
 };
 
 NamespacesListPage.defaultProps = {
   namespacesList: [],
   isRetrieving: false,
+  isRetrieved: false,
   clusterName: '',
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, namespacesList, clusterName } = state.NamespacesListReducer;
-  return { isRetrieving, namespacesList, clusterName };
+  const { isRetrieved, isRetrieving, namespacesList, clusterName } = state.NamespacesListReducer;
+  return { isRetrieved, isRetrieving, namespacesList, clusterName };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
