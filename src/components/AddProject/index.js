@@ -10,7 +10,6 @@ import Spinner from '../SpinnerComponent';
 import AddProject from '../../redux/actions/addProject';
 
 
-
 class AddProjectForm extends React.Component {
   constructor() {
     super();
@@ -36,7 +35,7 @@ class AddProjectForm extends React.Component {
     const project = {
       alias: this.state.alias,
       name: this.state.name,
-      cluster_ID: this.state.token,
+      cluster_ID: this.state.cluster_ID,
       owner_ID: this.state.data.id
     };
 
