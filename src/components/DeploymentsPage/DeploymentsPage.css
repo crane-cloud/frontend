@@ -1,20 +1,44 @@
-.DeploymentsPageContainer {
+.DashboardContainer {
   height: auto;
+  display: flex;
+  flex-direction: column;
 }
 
-.DeploymentsPageMain {
+.DashboardMainContainer {
+  margin-top: 80px; /* Height of the hedaer */
   display: flex;
   flex-direction: row;
 }
 
-.DeploymentsPageSideNav {
+.DashboardSideNav {
   min-width: 250px;
 }
 
-.DeploymentsPageMainContent {
+.DashboardContentWrap {
   flex: 1;
   background: #f1f1f1;
 }
+
+.FailedToRetrieveMsg {
+  text-align: center;
+  color: #555;
+  display: flex;
+  justify-content: center;
+}
+
+.FailedToRetrieveMsg p {
+  box-shadow: .5rem .5rem rgba(0, 138, 193, 0.2);
+  border-radius: 25px;
+  padding: 5rem;
+}
+
+.DashboardHeaderContainer {
+  position: fixed;
+  width: 100%;
+  z-index: 5;
+}
+
+
 
 /*- ///// TABLE STYLING HERE ///////// */
 .ResourcesTable {
@@ -28,16 +52,31 @@
 }
 
 .ResourcesTable::-webkit-scrollbar {
-  width: 4px;
+  width: 10px;
   height: 0px;
 }
 .ResourcesTable::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 .ResourcesTable::-webkit-scrollbar-thumb {
-  background: #888;
+  border-radius: 25px;
+  background: #008AC1;
 }
 .ResourcesTable::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+body::-webkit-scrollbar {
+  width: 4px;
+  height: 0px;
+}
+body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+body::-webkit-scrollbar-thumb {
+  background: #888;
+}
+body::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 
