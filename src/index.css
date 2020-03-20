@@ -88,3 +88,130 @@ input[type="tel"],
 input[type="password"] {
   box-sizing: border-box;
 }
+
+/*- ///// GENERAL DASHBOARD STYLING ///////// */
+.DashboardContainer {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.DashboardMainContainer {
+  margin-top: 80px; /* Height of the hedaer */
+  display: flex;
+  flex-direction: row;
+}
+
+.DashboardSideNav {
+  min-width: 250px;
+}
+
+.DashboardContentWrap {
+  flex: 1;
+  background: #f1f1f1;
+}
+
+.FailedToRetrieveMsg {
+  text-align: center;
+  color: #555;
+  display: flex;
+  justify-content: center;
+}
+
+.FailedToRetrieveMsg p {
+  box-shadow: .5rem .5rem rgba(0, 138, 193, 0.2);
+  border-radius: 25px;
+  padding: 5rem;
+}
+
+.DashboardHeaderContainer {
+  position: fixed;
+  width: 100%;
+  z-index: 5;
+}
+
+/*- ////////////////////////////////// */
+
+
+/*- ///// TABLE STYLING ///////// */
+.ResourcesTable {
+  padding: 2rem;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.ResourcesTable table thead {
+  text-transform: uppercase;
+}
+
+.ResourcesTable::-webkit-scrollbar {
+  width: 10px;
+  height: 0px;
+}
+.ResourcesTable::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.ResourcesTable::-webkit-scrollbar-thumb {
+  border-radius: 25px;
+  background: #008AC1;
+}
+.ResourcesTable::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+body::-webkit-scrollbar {
+  width: 4px;
+  height: 0px;
+}
+body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+body::-webkit-scrollbar-thumb {
+  background: #888;
+}
+body::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.ResourcesTable table {
+  position: relative;
+  table-layout: fixed;
+  text-align: center;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.ResourcesTable table th {
+  padding: 1rem;
+  color: #008AC1;
+  text-align: center;
+}
+
+.ResourcesTable table th:first-child, 
+.ResourcesTable table td:first-child {
+  text-align: left;
+}
+
+.ResourcesTable table th:last-child,
+.ResourcesTable table td:last-child {
+  text-align: right;
+}
+
+.ResourcesTable table td {
+  padding: .8rem 1rem;
+  font-weight: normal;
+}
+
+.ResourcesTable .TableLoading {
+  position: relative;
+}
+
+.TableLoading .SpinnerWrapper {
+  position: absolute;
+  width: 100%;
+  margin-top: 4rem;
+}
+
+/*- ////////////////////////////////// */
+
+
