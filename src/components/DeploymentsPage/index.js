@@ -42,18 +42,22 @@ class DeploymentsPage extends Component {
     } = this.props;
 
     return (
-      <div className="DeploymentsPageContainer">
-        <Header />
-        <div className="DeploymentsPageMain">
-          <div className="DeploymentsPageSideNav">
+      <div className="DashboardContainer">
+        <div className="DashboardHeaderContainer">
+          <Header />
+        </div>
+        <div className="DashboardMainContainer">
+          <div className="DashboardSideNav">
             <SideNav
               clusterName={clusterName}
               clusterId={match.params.clusterID}
             />
           </div>
-          <div className="DeploymentsPageMainContent">
-            <InformationBar header="Deployments" />
-            <div className="DeploymentsPageTableSection">
+          <div className="DashboardContentWrap">
+            <div className="DashboardContentInfobar">
+              <InformationBar header="Deployments" />
+            </div>
+            <div className="DashboardContentMain">
               <div className="ResourcesTable">
                 <table>
                   <thead className="uppercase">
@@ -71,7 +75,7 @@ class DeploymentsPage extends Component {
                     </tr>
                   ) : (
                     <tbody>
-                      {isFetched && deployments !== undefined ? (
+                      {(isFetched && deployments !== undefined) && (
                         deployments.map((deployment) => (
                           <tr>
                             <td>{deployment.metadata.name}</td>
@@ -90,10 +94,24 @@ class DeploymentsPage extends Component {
                             </td>
                             <td>{tellAge(deployment.metadata.creationTimestamp)}</td>
                           </tr>
-                        ))) : <div>No deployments</div>}
+                        )))}
                     </tbody>
                   )}
                 </table>
+                {(isFetched && deployments.length === 0) && (
+                  <div className="FailedToRetrieveMsg">
+                    <p>No deployments available</p>
+                  </div>
+                )}
+                {(!isFetchingDeployments && !isFetched) && (
+                  <div className="FailedToRetrieveMsg">
+                    <p>
+                      Oops! Something went wrong!
+                      <br />
+                      Failed to retrieve deployments.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
