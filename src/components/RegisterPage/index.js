@@ -69,6 +69,8 @@ export default class RegisterPage extends Component {
       this.setState({
         error: 'Please enter all fields'
       });
+    } else {
+      
     }
 
     this.setState({
@@ -94,8 +96,6 @@ export default class RegisterPage extends Component {
           loading: false
         });
 
-        console.log('Problem logging in...', error);
-        console.log('Email already exists...');
       });
   }
 
