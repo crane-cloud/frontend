@@ -38,7 +38,7 @@ class VerificationSentPage extends React.Component {
           setTimeout(() => {
             // save user data to store and log them in
             saveUser(response.data.data);
-            history.push('/user');
+            history.push(`${response.data.data.id}/projects`);
           }, 1000);
         }
       })
@@ -47,7 +47,6 @@ class VerificationSentPage extends React.Component {
           isTokenChecked: true,
           isVerificationFailed: true
         });
-        console.log(error);
       });
   }
 

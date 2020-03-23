@@ -7,6 +7,7 @@ import {
 const initialState = {
   namespacesList: [],
   isRetrieving: false,
+  isRetrieved: false,
   message: 'No Namespaces Available'
 };
 
@@ -17,20 +18,23 @@ const NamespacesListReducer = (state = initialState, action) => {
       ...state,
       namespacesList: action.payload,
       isRetrieving: false,
+      isRetrieved: true,
       message: 'All Namespaces in this Cluster fetched'
     };
 
   case IS_FETCHING:
     return {
       ...state,
-      isRetrieving: true
+      isRetrieving: true,
+      isRetrieved: false,
     };
 
   case FETCH_NAMESPACES_FAILED:
     return {
       ...state,
       message: action.payload,
-      isRetrieving: false
+      isRetrieving: false,
+      isRetrieved: false,
     };
   default:
     return state;
