@@ -5,7 +5,6 @@ import Header from '../Header';
 import LandingFooter from '../LandingFooter';
 import { ReactComponent as InfrastrucurePic } from '../../assets/images/infrastructure.svg';
 import './LandingPage.css';
-import Modal from '../Modal';
 
 const LandingPage = () => (
   <div className="LandingPageMain">
@@ -25,11 +24,6 @@ const LandingPage = () => (
     <div className="LandingPageFooter">
       <LandingFooter />
     </div>
-    <Modal showModal>
-      <div>
-        Hello, I'm a modal.. That's right, not model, but modal
-      </div>
-    </Modal>
   </div>
 );
 
