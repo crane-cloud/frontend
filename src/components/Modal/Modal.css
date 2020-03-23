@@ -11,8 +11,8 @@
 
 .ModalChildWrap {
   position: absolute;
-  width: 300px;
-  height: 100px;
+  width: auto;
+  min-height: 100px;
   padding: 1rem;
   background: #fff;
   display: flex;
