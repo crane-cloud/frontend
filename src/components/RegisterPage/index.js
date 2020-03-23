@@ -33,9 +33,10 @@ export default class RegisterPage extends Component {
     this.validateEmail = this.validateEmail.bind(this);
   }
 
-  toggleAgreed(value) {
+  toggleAgreed() {
+    const { hasAgreed } = this.state;
     this.setState({
-      hasAgreed: value
+      hasAgreed: !hasAgreed
     });
   }
 
@@ -127,7 +128,8 @@ export default class RegisterPage extends Component {
       passwordConfirm,
       loading,
       registered,
-      error
+      error,
+      hasAgreed
     } = this.state;
 
     return (
@@ -176,6 +178,7 @@ export default class RegisterPage extends Component {
                 <div className="RegisterContentBottomLink RegisterLinkContainer RegisterCheckbox">
                   <Checkbox
                     onClick={this.toggleAgreed}
+                    isChecked={hasAgreed}
                   />
                   &nbsp; I agree to Crane Cloud&apos;s&nbsp;&nbsp;
                   <Link to="/register" className="RegisterContentLink">Terms of service.</Link>
