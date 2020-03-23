@@ -69,8 +69,19 @@ export default class RegisterPage extends Component {
       this.setState({
         error: 'Please enter all fields'
       });
-    } else {
-      
+    } else if (this.validateEmail(email) === false) {
+      this.setState({
+        loading: false,
+        error: 'Please provide a valid email address'
+      });
+    } else if (password !== passwordConfirm) {
+      this.setState({
+        loading: false,
+        error: 'Passwords do not match'
+      });
+
+    } else{
+
     }
 
     this.setState({
@@ -172,12 +183,12 @@ export default class RegisterPage extends Component {
               <div className="RegisteredMessage">
                 <h2>Thank you for registering with us!</h2>
                 <p>
-                  We&apos;ve sent a link to your email address:&nbsp;
+                    We&apos;ve sent a link to your email address:&nbsp;
                   <span>{email}</span>
-                  .
+                    .
                   <br />
                   <br />
-                  The link will expire after 24 hours. Please use this link to activate and start using your account.
+                    The link will expire after 24 hours. Please use this link to activate and start using your account.
                 </p>
               </div>
             </div>
