@@ -59,7 +59,7 @@ export default class RegisterPage extends Component {
   }
 
   handleSubmit() {
-    const { name, email, password, passwordConfirm } = this.state;
+    const { name, email, password, passwordConfirm, hasAgreed } = this.state;
     const userData = {
       name,
       email,
@@ -79,35 +79,40 @@ export default class RegisterPage extends Component {
         loading: false,
         error: 'Passwords do not match'
       });
+    } else if (hasAgreed === true) {
+      this.setState({
+        loading: false,
+        error: 'Agree to the terms and conditions'
+      });
+    } else {
+      this.setState({
+        loading: true
+      });
 
-    } else{
-
-    }
-
-    this.setState({
-      loading: true
-    });
-
-    axios
-      .post(`${API_BASE_URL}/users`, userData)
-      .then((response) => {
-        if (response.data.status === 'success') {
+      axios
+        .post(`${API_BASE_URL}/users`, userData)
+        .then((response) => {
+          if (response.data.status === 'success') {
+            this.setState({
+              loading: false
+            });
+            setTimeout(() => {
+              this.setState({
+                registered: true
+              });
+            }, 1000);
+          }
+        })
+        .catch((error) => {
           this.setState({
             loading: false
           });
-          setTimeout(() => {
-            this.setState({
-              registered: true
-            });
-          }, 1000);
-        }
-      })
-      .catch((error) => {
-        this.setState({
-          loading: false
+
         });
 
-      });
+    }
+
+
   }
 
   render() {
@@ -179,20 +184,20 @@ export default class RegisterPage extends Component {
               </div>
             </>
           ) : (
-            <div className="RegisterSuccessContent">
-              <div className="RegisteredMessage">
-                <h2>Thank you for registering with us!</h2>
-                <p>
+              <div className="RegisterSuccessContent">
+                <div className="RegisteredMessage">
+                  <h2>Thank you for registering with us!</h2>
+                  <p>
                     We&apos;ve sent a link to your email address:&nbsp;
                   <span>{email}</span>
                     .
                   <br />
-                  <br />
+                    <br />
                     The link will expire after 24 hours. Please use this link to activate and start using your account.
                 </p>
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
 
 
