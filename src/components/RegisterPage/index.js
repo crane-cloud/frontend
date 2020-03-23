@@ -59,13 +59,17 @@ export default class RegisterPage extends Component {
   }
 
   handleSubmit() {
-    const { name, email, password } = this.state;
+    const { name, email, password, passwordConfirm } = this.state;
     const userData = {
       name,
       email,
       password
     };
-
+    if (!email || !password || !name || !passwordConfirm) {
+      this.setState({
+        error: 'Please enter all fields'
+      });
+    }
 
     this.setState({
       loading: true
@@ -102,7 +106,8 @@ export default class RegisterPage extends Component {
       password,
       passwordConfirm,
       loading,
-      registered
+      registered,
+      error
     } = this.state;
 
     return (
@@ -141,6 +146,12 @@ export default class RegisterPage extends Component {
                   value={passwordConfirm}
                   onChange={this.handleOnChange}
                 />
+                {error && (
+                  <div className="RegisterErrorDiv">
+                    {error}
+                  </div>
+                )}
+
 
                 <div className="RegisterContentBottomLink RegisterLinkContainer RegisterCheckbox">
                   <Checkbox
@@ -157,21 +168,23 @@ export default class RegisterPage extends Component {
               </div>
             </>
           ) : (
-              <div className="RegisterSuccessContent">
-                <div className="RegisteredMessage">
-                  <h2>Thank you for registering with us!</h2>
-                  <p>
-                    We&apos;ve sent a link to your email address:&nbsp;
+            <div className="RegisterSuccessContent">
+              <div className="RegisteredMessage">
+                <h2>Thank you for registering with us!</h2>
+                <p>
+                  We&apos;ve sent a link to your email address:&nbsp;
                   <span>{email}</span>
-                    .
+                  .
                   <br />
-                    <br />
-                    The link will expire after 24 hours. Please use this link to activate and start using your account.
+                  <br />
+                  The link will expire after 24 hours. Please use this link to activate and start using your account.
                 </p>
-                </div>
               </div>
-            )}
+            </div>
+          )}
         </div>
+
+
         <div className="RegisterPageFooter">
           <LandingFooter />
         </div>
