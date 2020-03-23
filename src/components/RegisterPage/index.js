@@ -34,19 +34,25 @@ export default class RegisterPage extends Component {
   }
 
   toggleAgreed() {
-    const { hasAgreed } = this.state;
+    const { hasAgreed, error } = this.state;
     this.setState({
       hasAgreed: !hasAgreed
     });
+
+    if (error) {
+      this.setState({
+        error: ''
+      });
+    }
   }
 
   handleOnChange(e) {
+    const { error } = this.state;
     this.setState({
       [e.target.name]: e.target.value
     });
 
-    this.error = this.state;
-    if (this.error) {
+    if (error) {
       this.setState({
         error: ''
       });
@@ -88,10 +94,10 @@ export default class RegisterPage extends Component {
         loading: false,
         error: 'Passwords do not match'
       });
-    } else if (hasAgreed === true) {
+    } else if (!hasAgreed) {
       this.setState({
         loading: false,
-        error: 'Agree to the terms and conditions'
+        error: 'Please agree to the terms and conditions'
       });
     } else {
       this.setState({
