@@ -97,7 +97,7 @@ export default class RegisterPage extends Component {
     } else if (!hasAgreed) {
       this.setState({
         loading: false,
-        error: 'Please agree to the terms and conditions'
+        error: 'Please agree to our Terms of Service'
       });
     } else {
       this.setState({
