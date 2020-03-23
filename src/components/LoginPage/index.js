@@ -46,8 +46,6 @@ class LoginPage extends React.Component {
   }
 
   handleSubmit() {
-    const { history } = this.props;
-
     const { email, password } = this.state;
 
     const userCredentials = {
@@ -74,13 +72,17 @@ class LoginPage extends React.Component {
                 loading: false
               });
 
+              // redirect to dashboard
               // save user data to store
               saveUser(res.data.data);
-
-              // redirect to dashboard
-              setTimeout(() => {
-                history.push('/clusters');
-              }, 1000);
+              this.setState(
+                {
+                  feedbackMessage: 'Login Successful'
+                },
+                () => {
+                  window.location.href = '/user';
+                }
+              );
             }
           })
           .catch((err) => {
@@ -88,9 +90,8 @@ class LoginPage extends React.Component {
               loading: false
             });
             this.setState({
-              error: 'Please enter correct email and password'
+              error: 'Incorrect email or password'
             });
-
           });
       } else {
         this.setState({
