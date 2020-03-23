@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './Checkbox.css';
 import { ReactComponent as Checkmark } from '../../assets/images/check.svg';
 
@@ -14,5 +15,10 @@ const Checkbox = ({ isChecked, onClick }) => (
     </div>
   </div>
 );
+
+Checkbox.propTypes = {
+  isChecked: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired
+};
 
 export default Checkbox;
