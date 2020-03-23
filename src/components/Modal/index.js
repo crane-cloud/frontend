@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { ReactComponent as CloseIcon } from '../../assets/images/close.svg';
 import './Modal.css';
 
@@ -22,6 +23,11 @@ const Modal = ({ showModal, children }) => {
       </div>
     ))
   );
+};
+
+Modal.propTypes = {
+  showModal: PropTypes.bool,
+  children: PropTypes.node.isRequired
 };
 
 Modal.defaultProps = {

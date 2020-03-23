@@ -25,7 +25,11 @@ const LandingPage = () => (
     <div className="LandingPageFooter">
       <LandingFooter />
     </div>
-    <Modal />
+    <Modal showModal>
+      <div>
+        Hello, I'm a modal.. That's right, not model, but modal
+      </div>
+    </Modal>
   </div>
 );
 
