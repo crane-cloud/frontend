@@ -47,6 +47,7 @@ class LoginPage extends React.Component {
 
   handleSubmit() {
     const { email, password } = this.state;
+    const { saveUser, user } = this.props;
 
     const userCredentials = {
       email,
@@ -80,7 +81,7 @@ class LoginPage extends React.Component {
                   feedbackMessage: 'Login Successful'
                 },
                 () => {
-                  window.location.href = '/user';
+                  window.location.href = `${user.data.id}/projects`;
                 }
               );
             }
