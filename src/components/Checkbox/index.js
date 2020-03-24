@@ -1,43 +1,24 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './Checkbox.css';
 import { ReactComponent as Checkmark } from '../../assets/images/check.svg';
 
-class Checkbox extends React.Component {
-  constructor(props) {
-    super(props);
+const Checkbox = ({ isChecked, onClick }) => (
+  <div className="Checkbox">
+    <input
+      type="checkbox"
+      onChange={onClick}
+      checked={isChecked}
+    />
+    <div className={`CheckMarkWrapper Checked-${isChecked}`}>
+      <Checkmark />
+    </div>
+  </div>
+);
 
-    this.state = {
-      checked: false
-    };
-
-    this.toggleCheckmark = this.toggleCheckmark.bind(this);
-  }
-
-  toggleCheckmark() {
-    this.setState({
-      checked: !this.state.checked
-    });
-  }
-
-  render() {
-    return (
-      <div
-        className="Checkbox"
-        onClick={() => {
-          this.props.onClick(this.state.checked);
-        }}
-      >
-        <input
-          type="checkbox"
-          onChange={this.toggleCheckmark}
-          checked={this.state.checked}
-        />
-        <div className={`CheckMarkWrapper Checked-${this.state.checked}`}>
-          <Checkmark />
-        </div>
-      </div>
-    );
-  }
-}
+Checkbox.propTypes = {
+  isChecked: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired
+};
 
 export default Checkbox;
