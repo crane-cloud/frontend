@@ -96,14 +96,14 @@ class UserProjectsPage extends React.Component {
         <Modal showModal={openModal}>
           <div className="ModalForm">
             <div className="ModalFormHeading">
-              <h3>Add a project</h3>
+              <h2>Add a project</h2>
             </div>
             <div className="ModalFormInputs">
               <InputText
-                placeholder="project name"
+                placeholder="Project Name"
               />
               <InputText
-                placeholder="some other stuff"
+                placeholder="+ some other stuff"
               />
             </div>
             <div className="ModalFormButtons">

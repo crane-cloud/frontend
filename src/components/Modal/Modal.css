@@ -13,6 +13,7 @@
   position: absolute;
   width: auto;
   min-height: 100px;
+  height: 70%;
   padding: 2rem;
   background: #fff;
   display: flex;
@@ -20,15 +21,21 @@
 }
 
 .ModalContentSection {
-  margin-top: 1rem;
+}
+
+.ModalForm {
+  display: grid;
+  gap: 1rem;
 }
 
 .ModalFormHeading {
-  font-weight: bold;  
+  font-weight: bold;
+  margin-bottom: 1rem;  
 }
 
 .ModalForm .ModalFormInputs {
   display: grid;
+  gap: 1rem;
 }
 
 .ModalForm .ModalFormInputs .InputText {
@@ -40,7 +47,8 @@
   color: #000;
 }
 
-.ModalButtons {
+.ModalForm .ModalFormButtons {
+  margin-top: 1rem;
   display: flex;
   justify-content: space-between;
 }
