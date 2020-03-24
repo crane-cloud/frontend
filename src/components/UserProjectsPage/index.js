@@ -10,6 +10,7 @@ import getUserProjects from '../../redux/actions/userProjectsActions';
 import { BigSpinner } from '../SpinnerComponent';
 import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/craneLogo.png';
+import Modal from '../Modal';
 import CreateButton from '../ButtonComponent';
 import AddProjectForm from '../AddProject';
 
@@ -17,8 +18,8 @@ class UserProjectsPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // toggle box is closed initially
-      isOpened: false,
+      // add project modal is closed initially
+      openModal: false
     };
   }
 
@@ -27,21 +28,19 @@ class UserProjectsPage extends React.Component {
     getUserProjects(data.id);
   }
 
-  openForm() {
-    this.setState({isOpened: true});
+  showAddProjectForm() {
+    this.setState({ openModal: true });
   }
 
   render() {
     const { projects, isRetrieving } = this.props;
+    const { openModal } = this.state;
 
     return (
       <div className="Page">
         <div className="TopRow">
           <Header />
-          {/* <InformationBar header="Projects" showBtn={true} /> */}
-          {/* <CreateButton /> */}
-          <button class="open-button" onclick={this.openForm()}>Open Form</button>
-          { this.state.isOpened && <AddProjectForm /> }
+          <InformationBar header="Projects" showBtn btnAction={this.showAddProjectForm} />
         </div>
         <div className="MainRow">
           <div className="ProjectList">
@@ -56,7 +55,7 @@ class UserProjectsPage extends React.Component {
                 <div className="ProjectList">
                   { projects.length !== 0 ? (
                     projects.map((project) => (
-                      <Link to={{ pathname: `/projects/${project.id}`}} key={project.id}>
+                      <Link to={{ pathname: `/projects/${project.id}` }} key={project.id}>
                         <div key={project.id} className="ProjectCardItem">
                           <ClusterCard
                             name={project.name}
@@ -69,6 +68,13 @@ class UserProjectsPage extends React.Component {
                     : (
                       <div className="EmptyList">
                         <h3>No Projects Yet.</h3>
+                        {/* Modal for creating a new project
+                        Its triggered by the value of state.openModal */}
+                        <Modal showModal={openModal}>
+                          <div>
+                            Kati our form for adding a project comes here... Then the close button (X) on this modal should cancel this...
+                          </div>
+                        </Modal>
                       </div>
                     )
                   }
