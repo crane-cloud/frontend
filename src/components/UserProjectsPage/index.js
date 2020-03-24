@@ -18,9 +18,10 @@ class UserProjectsPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // add project modal is closed initially
-      openModal: false
+      openModal: false // add project modal is closed initially
     };
+
+    this.showAddProjectForm = this.showAddProjectForm.bind(this);
   }
 
   componentDidMount() {

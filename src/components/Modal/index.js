@@ -4,11 +4,11 @@ import { ReactComponent as CloseIcon } from '../../assets/images/close.svg';
 import './Modal.css';
 
 const Modal = ({ showModal, children }) => {
-  const [show, setShow] = useState(showModal);
+  const [show, setShow] = useState(true);
   const toggleModalOff = () => setShow(false);
 
   return (
-    (show && (
+    ((showModal && show) && (
       <div className="ModalParentWrap">
         <div className="ModalChildWrap">
           <div className="ModalHeaderSection">
@@ -26,12 +26,12 @@ const Modal = ({ showModal, children }) => {
 };
 
 Modal.propTypes = {
-  showModal: PropTypes.bool,
+  showModal: PropTypes.bool.isRequired,
   children: PropTypes.node.isRequired
 };
 
-Modal.defaultProps = {
-  showModal: false
-};
+// Modal.defaultProps = {
+//   showModal: false
+// };
 
 export default Modal;
