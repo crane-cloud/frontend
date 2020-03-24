@@ -1,28 +1,51 @@
 
-
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import getAppsList from '../../redux/actions/appsListActions';
-import AppCard from '../AppCard';
+import AppsCard from '../AppsCard';
 import { BigSpinner } from '../SpinnerComponent';
 import './AppsList.css';
-import crane from '../../assets/images/craneLogo.png';
 
-
+const myapps = [
+  {
+    title: 'Flask',
+    status: 'true',
+    url: 'http://www.flaskapp.com'
+  },
+  {
+    title: 'Bootstrap',
+    status: 'true',
+    url: 'http://www.flaskapp.com'
+  },
+  {
+    title: 'nginx',
+    status: 'false',
+    url: 'http://www.flaskapp.com/asdfam/asdf/asdfas/asd/fas/df/as/df/as/df/asd/'
+  },
+  {
+    title: 'Postgres',
+    status: 'true',
+    url: 'http://www.flaskapp.com'
+  },
+  {
+    title: 'React',
+    status: 'true',
+    url: 'http://www.flaskapp.com'
+  }
+];
 class AppsList extends Component {
   componentDidMount() {
-    const { getAppsList } = this.props;
-    getAppsList();
+    // const { getAppsList } = this.props;
+    // getAppsList();
   }
 
   render() {
     const { apps, isRetrieved, isRetrieving } = this.props;
 
     return (
-      <div className="AppList">
+      <div className="AppsList">
         {
           isRetrieving ? (
             <div className="TableLoading">
@@ -31,20 +54,18 @@ class AppsList extends Component {
               </div>
             </div>
           ) : (
-            <div>
-              {isRetrieved ? (apps.apps.map((app) => (
-                <Link to={{ pathname: `/apps/${app.id}/resources` }} key={app.id}>
-                  <div key={app.id} className="AppCardItem">
-                    <AppCard
-                      name={app.name}
-                      description={app.description}
-                      icon={crane}
-                    />
-                  </div>
-                </Link>
+            <div className="AppList">
+              {!isRetrieved ? (myapps.map((app) => (
+                <div key={app.id} className="AppCardItem">
+                  <AppsCard
+                    title={app.title}
+                    status={app.status}
+                    url={app.url}
+                  />
+                </div>
               )))
                 : (
-                  <div className="EmptyList">
+                  <div className="FailedToRetrieveMsg">
                     <h3>No Apps Available</h3>
                   </div>
                 )}
@@ -57,31 +78,32 @@ class AppsList extends Component {
   }
 }
 
-// inititate props
-AppsList.propTypes = {
-  apps: PropTypes.arrayOf(PropTypes.object),
-  isRetrieved: PropTypes.bool,
-  isRetrieving: PropTypes.bool
-};
+// // inititate props
+// AppsList.propTypes = {
+//   apps: PropTypes.arrayOf(PropTypes.object),
+//   isRetrieved: PropTypes.bool,
+//   isRetrieving: PropTypes.bool
+// };
 
-// assigning defaults
-AppsList.defaultProps = {
-  apps: [],
-  isRetrieved: false,
-  isRetrieving: true
-};
+// // assigning defaults
+// AppsList.defaultProps = {
+//   apps: [],
+//   isRetrieved: false,
+//   isRetrieving: true
+// };
 
-export const mapStateToProps = (state) => {
-  const { isRetrieving, apps, isRetrieved } = state.AppsReducer;
-  return { isRetrieving, apps, isRetrieved };
-};
+// export const mapStateToProps = (state) => {
+//   const { isRetrieving, apps, isRetrieved } = state.AppsReducer;
+//   return { isRetrieving, apps, isRetrieved };
+// };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  getAppsList
-}, dispatch);
+// export const mapDispatchToProps = (dispatch) => bindActionCreators({
+//   getAppsList
+// }, dispatch);
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AppsList);
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(AppsList);
 
+export default AppsList;

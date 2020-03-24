@@ -2,6 +2,7 @@ import React from 'react';
 
 import './AppsCard.css';
 import Status from '../Status';
+import { Link } from 'react-router-dom';
 
 const AppsCard = (props) => (
   <div className="AppCard">
@@ -13,7 +14,7 @@ const AppsCard = (props) => (
         </tr>
       </table>
     </div>
-    <div className="AppUrl">{props.url}</div>
+    <Link to={props.url}><div className="AppUrl">{props.url}</div></Link>
   </div>
 );
 

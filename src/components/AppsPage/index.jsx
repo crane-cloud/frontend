@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './AppsPage.css';
 import InformationBar from '../InformationBar';
-// import AppsList from '../AppsList';
+import AppsList from '../AppsList';
 import Header from '../Header';
 
 const AppsPage = (props) =>
@@ -17,7 +17,7 @@ const AppsPage = (props) =>
         <InformationBar header="Apps" showBtn />
       </div>
       <div className="MainRow">
-        {/* <AppsList /> */}
+        <AppsList />
       </div>
       <div className="FooterRow">
         <p>
