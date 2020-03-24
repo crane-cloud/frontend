@@ -4,11 +4,11 @@ import { ReactComponent as CloseIcon } from '../../assets/images/close.svg';
 import './Modal.css';
 
 const Modal = ({ showModal, children }) => {
-  const [hidden, setHidden] = useState(showModal);
-  const toggleModalOff = () => setHidden(false);
+  const [show, setShow] = useState(showModal);
+  const toggleModalOff = () => setShow(false);
 
   return (
-    (hidden && (
+    (show && (
       <div className="ModalParentWrap">
         <div className="ModalChildWrap">
           <div className="ModalHeaderSection">
