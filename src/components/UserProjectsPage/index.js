@@ -97,7 +97,7 @@ class UserProjectsPage extends React.Component {
             Kati our form for adding a project comes here... Then the close button (X) on this modal should cancel this...
             <div className="ModalButtons">
               <PrimaryButton label="create project" />
-              <PrimaryButton label="cancel" onClick={this.hideForm} />
+              <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
             </div>
           </div>
         </Modal>
