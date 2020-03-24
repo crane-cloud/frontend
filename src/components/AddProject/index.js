@@ -43,7 +43,7 @@ class AddProjectForm extends React.Component {
       loading: true
     });
     const { AddProject } = this.props;
-    
+
     AddProject(project);
 
   }
@@ -51,7 +51,7 @@ class AddProjectForm extends React.Component {
 
   render() {
     const { isAdded, isFailed, errorOccured } = this.props;
-    
+
     return (
       <div className="AddPageContainer" model="user"
         onSubmit={(values) => this.handleSubmit(values)}>
@@ -120,7 +120,6 @@ class AddProjectForm extends React.Component {
               {
                 isAdded && <div>Project has been successfully added </div>
               }
-                      
             </div>
           </div>
         </div>
