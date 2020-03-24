@@ -13,27 +13,10 @@
   position: absolute;
   width: auto;
   min-height: 100px;
-  padding: 1rem;
+  padding: 2rem;
   background: #fff;
   display: flex;
   flex-direction: column;
-}
-
-.ModalHeaderSection {
-  position: relative;
-  height: 2rem;
-}
-
-.CloseModalBtn {
-  position: absolute;
-  right: 0;
-  border: none;
-  outline: none;
-  background: inherit;
-  color: #000;
-  height: 1.5rem;
-  width: 1.5rem;
-  cursor: pointer;
 }
 
 .ModalContentSection {

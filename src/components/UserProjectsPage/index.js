@@ -22,6 +22,7 @@ class UserProjectsPage extends React.Component {
     };
 
     this.showAddProjectForm = this.showAddProjectForm.bind(this);
+    this.hideAddProjectForm = this.hideAddProjectForm.bind(this);
   }
 
   componentDidMount() {
@@ -31,6 +32,10 @@ class UserProjectsPage extends React.Component {
 
   showAddProjectForm() {
     this.setState({ openModal: true });
+  }
+
+  hideAddProjectForm() {
+    this.setState({ openModal: false });
   }
 
   render() {
@@ -69,16 +74,8 @@ class UserProjectsPage extends React.Component {
                     : (
                       <div className="EmptyList">
                         <h3>No Projects Yet.</h3>
-                        {/* Modal for creating a new project
-                        Its triggered by the value of state.openModal */}
-                        <Modal showModal={openModal}>
-                          <div>
-                            Kati our form for adding a project comes here... Then the close button (X) on this modal should cancel this...
-                          </div>
-                        </Modal>
                       </div>
-                    )
-                  }
+                    )}
                 </div>
               )
             }
@@ -91,6 +88,17 @@ class UserProjectsPage extends React.Component {
             </p>
           </div>
         </div>
+
+        {/* Modal for creating a new project
+        Its triggered by the value of state.openModal */}
+        <Modal showModal={openModal}>
+          <div>
+            Kati our form for adding a project comes here... Then the close button (X) on this modal should cancel this...
+            <div>
+
+            </div>
+          </div>
+        </Modal>
       </div>
     );
   }
