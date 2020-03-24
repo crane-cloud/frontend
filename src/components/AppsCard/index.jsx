@@ -14,7 +14,8 @@ const AppsCard = (props) => (
         </tr>
       </table>
     </div>
-    <Link to={props.url}><div className="AppUrl">{props.url}</div></Link>
+    <div className="AppUrlText">Url :</div>
+    <div className="AppUrl"><a href={props.url} target="_blank">{props.url}</a></div>
   </div>
 );
 
