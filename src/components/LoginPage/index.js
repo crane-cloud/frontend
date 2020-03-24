@@ -47,7 +47,7 @@ class LoginPage extends React.Component {
 
   handleSubmit() {
     const { email, password } = this.state;
-    const { saveUser, user } = this.props;
+    const { saveUser } = this.props;
 
     const userCredentials = {
       email,
