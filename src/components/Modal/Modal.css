@@ -23,6 +23,23 @@
   margin-top: 1rem;
 }
 
+.ModalFormHeading {
+  font-weight: bold;  
+}
+
+.ModalForm .ModalFormInputs {
+  display: grid;
+}
+
+.ModalForm .ModalFormInputs .InputText {
+  border: 2px solid #000000;
+  color: #000;
+}
+
+.ModalForm .ModalFormInputs .InputText::placeholder {
+  color: #000;
+}
+
 .ModalButtons {
   display: flex;
   justify-content: space-between;

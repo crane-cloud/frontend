@@ -12,6 +12,7 @@ import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/craneLogo.png';
 import Modal from '../Modal';
 import PrimaryButton from '../PrimaryButton';
+import InputText from '../InputText';
 import CreateButton from '../ButtonComponent';
 import AddProjectForm from '../AddProject';
 
@@ -93,9 +94,19 @@ class UserProjectsPage extends React.Component {
         {/* Modal for creating a new project
         Its triggered by the value of state.openModal */}
         <Modal showModal={openModal}>
-          <div>
-            Kati our form for adding a project comes here... Then the close button (X) on this modal should cancel this...
-            <div className="ModalButtons">
+          <div className="ModalForm">
+            <div className="ModalFormHeading">
+              <h3>Add a project</h3>
+            </div>
+            <div className="ModalFormInputs">
+              <InputText
+                placeholder="project name"
+              />
+              <InputText
+                placeholder="some other stuff"
+              />
+            </div>
+            <div className="ModalFormButtons">
               <PrimaryButton label="create project" />
               <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
             </div>
