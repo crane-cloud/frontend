@@ -3,16 +3,16 @@ import React from 'react';
 import './AppsCard.css';
 
 const AppsCard = (props) => (
-  <div className="Card">
-    <div className="CardHeader">
-        <div className="">
-            Flask
-        </div>
-        <div>
-            Status
-        </div>
+  <div className="AppCard">
+    <div className="AppCardHeader">
+      <table className="AppTable">
+        <tr>
+          <td>Flask</td>
+          <td>Status</td>
+        </tr>
+      </table>
     </div>
-    <div className="ResourceDigit">Url</div>
+    <div className="AppUrl">Url</div>
   </div>
 );
 
