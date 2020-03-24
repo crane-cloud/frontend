@@ -11,6 +11,7 @@ import { BigSpinner } from '../SpinnerComponent';
 import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/craneLogo.png';
 import Modal from '../Modal';
+import PrimaryButton from '../PrimaryButton';
 import CreateButton from '../ButtonComponent';
 import AddProjectForm from '../AddProject';
 
@@ -21,8 +22,8 @@ class UserProjectsPage extends React.Component {
       openModal: false // add project modal is closed initially
     };
 
-    this.showAddProjectForm = this.showAddProjectForm.bind(this);
-    this.hideAddProjectForm = this.hideAddProjectForm.bind(this);
+    this.showForm = this.showForm.bind(this);
+    this.hideForm = this.hideForm.bind(this);
   }
 
   componentDidMount() {
@@ -30,11 +31,11 @@ class UserProjectsPage extends React.Component {
     getUserProjects(data.id);
   }
 
-  showAddProjectForm() {
+  showForm() {
     this.setState({ openModal: true });
   }
 
-  hideAddProjectForm() {
+  hideForm() {
     this.setState({ openModal: false });
   }
 
@@ -46,7 +47,7 @@ class UserProjectsPage extends React.Component {
       <div className="Page">
         <div className="TopRow">
           <Header />
-          <InformationBar header="Projects" showBtn btnAction={this.showAddProjectForm} />
+          <InformationBar header="Projects" showBtn btnAction={this.showForm} />
         </div>
         <div className="MainRow">
           <div className="ProjectList">
@@ -94,8 +95,9 @@ class UserProjectsPage extends React.Component {
         <Modal showModal={openModal}>
           <div>
             Kati our form for adding a project comes here... Then the close button (X) on this modal should cancel this...
-            <div>
-
+            <div className="ModalButtons">
+              <PrimaryButton label="create project" />
+              <PrimaryButton label="cancel" onClick={this.hideForm} />
             </div>
           </div>
         </Modal>

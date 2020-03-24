@@ -22,3 +22,8 @@
 .ModalContentSection {
   margin-top: 1rem;
 }
+
+.ModalButtons {
+  display: flex;
+  justify-content: space-between;
+}
