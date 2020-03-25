@@ -50,10 +50,10 @@ class CreateAppForm extends React.Component {
       // Later, We'll throw it away and use Allan's page
       <div>
         <Header />
-        <InformationBar header="App" showBtn />
+        <InformationBar header="App" showBtn btnAction={this.showForm} />
         {/* Modal for creating a new project
         Its triggered by the value of state.openModal */}
-        <Modal showModal>
+        <Modal showModal={openModal}>
           <div className="ModalForm">
             <div className="ModalFormHeading">
               <h2>Add a project</h2>
