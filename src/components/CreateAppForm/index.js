@@ -38,7 +38,6 @@ class CreateAppForm extends React.Component {
     });
 
     const { CreateApp } = this.props;
-    
     CreateApp(app);
   }
 
@@ -52,12 +51,12 @@ class CreateAppForm extends React.Component {
 
         <div className="AddPageContent">
           <div className="AddHeading">
-            Create an Application
+            Deploy an App
           </div>
           <div className="AddFormInputs">
             {/* Input fields */}
             <BlackInputText
-              placeholder='Name of App'
+              placeholder='Name'
               name='name'
               value={this.state.name}
               onChange={(e) => {
@@ -65,7 +64,7 @@ class CreateAppForm extends React.Component {
               }}
             />
             <BlackInputText
-              placeholder='Link to image'
+              placeholder='Image Url'
               name='link'
               value={this.state.link}
               onChange={(e) => {
@@ -99,7 +98,7 @@ class CreateAppForm extends React.Component {
               {
                 isAdded && <div>App has been successfully created </div>
               }
-                      
+
             </div>
           </div>
         </div>
@@ -109,10 +108,6 @@ class CreateAppForm extends React.Component {
 
 
 
-
-
-
-// end of class  
 }
 
 
