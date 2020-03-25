@@ -8,6 +8,7 @@ import SecondaryButton from '../SecondaryButton';
 import PrimaryButton from '../PrimaryButton';
 import Spinner from '../SpinnerComponent';
 import AddProject from '../../redux/actions/addProject';
+import Modal from '../Modal';
 
 
 class AddProjectForm extends React.Component {
@@ -53,40 +54,42 @@ class AddProjectForm extends React.Component {
     const { isAdded, isFailed, errorOccured } = this.props;
 
     return (
-      <div className="AddPageContainer" model="user"
-        onSubmit={(values) => this.handleSubmit(values)}>
+      <div>
+        <Modal>
+          <div className="AddPageContainer" model="user"
+            onSubmit={(values) => this.handleSubmit(values)}>
 
-        <div className="AddPageContent">
-          <div className="AddHeading">
-            Add a Project
-          </div>
-          <div className="AddFormInputs">
-            {/* Input fields */}
-            <BlackInputText
-              placeholder='Cluster ID'
-              name='cluster_ID'
-              value={this.state.cluster_ID}
-              onChange={e => {
-                this.handleChange(e);
-              }}
-            />
-            <BlackInputText
-              placeholder='Name'
-              name='name'
-              value={this.state.name}
-              onChange={e => {
-                this.handleChange(e);
-              }}
-            />
-            <BlackInputText
-              placeholder='Alias'
-              name='alias'
-              value={this.state.alias}
-              onChange={e => {
-                this.handleChange(e);
-              }}
-            />
-            {/* <BlackInputText
+            <div className="AddPageContent">
+              <div className="AddHeading">
+                Add a Project
+              </div>
+              <div className="AddFormInputs">
+                {/* Input fields */}
+                <BlackInputText
+                  placeholder='Cluster ID'
+                  name='cluster_ID'
+                  value={this.state.cluster_ID}
+                  onChange={e => {
+                    this.handleChange(e);
+                  }}
+                />
+                <BlackInputText
+                  placeholder='Name'
+                  name='name'
+                  value={this.state.name}
+                  onChange={e => {
+                    this.handleChange(e);
+                  }}
+                />
+                <BlackInputText
+                  placeholder='Alias'
+                  name='alias'
+                  value={this.state.alias}
+                  onChange={e => {
+                    this.handleChange(e);
+                  }}
+                />
+                {/* <BlackInputText
               placeholder='Description'
               name='description'
               value={this.state.name}
@@ -95,34 +98,36 @@ class AddProjectForm extends React.Component {
               }}
             /> */}
 
-            <div className='AddButtons'>
-              <div className="AddBtn">
-                <PrimaryButton 
-                  label={this.state.isSending ? <Spinner /> : 'ADD'}
-                  onClick={this.handleSubmit}
-                />
+                <div className='AddButtons'>
+                  <div className="AddBtn">
+                    <PrimaryButton 
+                      label={this.state.isSending ? <Spinner /> : 'ADD'}
+                      onClick={this.handleSubmit}
+                    />
+                  </div>
+                  <Link className="AddCancelBtn" onClick={this.props.close}>
+                    <SecondaryButton isBlack={true} 
+                      className="AddCancelBtn"
+                      label='CANCEL'
+                    />
+                  </Link>
+                </div>
+                <div className="Info-div">
+                  {/* If error arises */}
+                  { isFailed === true && errorOccured === 500 ?
+                    (
+                      <div> Failed to Add Project</div>
+                    ):
+                    (<div/>)
+                  }
+                  {
+                    isAdded && <div>Project has been successfully added </div>
+                  }
+                </div>
               </div>
-              <Link className="AddCancelBtn" onClick={this.props.close}>
-                <SecondaryButton isBlack={true} 
-                  className="AddCancelBtn"
-                  label='CANCEL'
-                />
-              </Link>
-            </div>
-            <div className="Info-div">
-              {/* If error arises */}
-              { isFailed === true && errorOccured === 500 ?
-                (
-                  <div> Failed to Add Project</div>
-                ):
-                (<div/>)
-              }
-              {
-                isAdded && <div>Project has been successfully added </div>
-              }
             </div>
           </div>
-        </div>
+        </Modal>
       </div>
     );
   }
