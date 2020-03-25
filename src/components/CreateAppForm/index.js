@@ -7,7 +7,6 @@ import Modal from '../Modal';
 import RemoveIcon from '../../assets/images/remove.svg';
 import './CreateAppForm.css';
 
-
 class CreateAppForm extends React.Component {
   constructor() {
     super();
