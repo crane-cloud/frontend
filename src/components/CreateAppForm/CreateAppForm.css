@@ -1,50 +1,45 @@
-.AddPageContainer {
-    background: #fff;
-    color: #000;
-    width: 425px;
-    margin:auto;
-    height: 617px;
-    padding: 20px 48px;
+.ModalFormInputsBasic {
+  display: grid;
+  gap: 1rem;
 }
 
-.popup-content{
-  width: initial!important;
-  padding: 0px!important;
-  margin: auto!important;
-}
-.AddHeading{
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 24px;
-  color: #000000;
-  margin-top: 20px;
-  margin-bottom: 50px;
-}
-  
-.AddFormContent{
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-self: center;
-  justify-content: center;
+.ModalFormInputsBasic input {
+  max-width: 25rem;
 }
 
-.AddFormInputs {
-    display: grid;
-    gap: 1rem;
+.EnvVarsInputGroup  {
+  width: 100%;
+  max-width: 25rem;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: .5rem;
 }
 
-.AddButtons{
-  margin-top: 20px;
+.EnvVarsInputGroup .EnvVarsInputs {
+  width: 70%;
+  max-width: 25rem;
+  display: grid;
+  gap: .5rem;
+  grid-template-columns: 1fr 1fr;
 }
 
-.AddBtn{
-    float: left;
+.EnvVarsInputGroup .EnvVarsAddBtn {
+  position: relative;
 }
-.AddCancelBtn{
-    float: right;
+
+.EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn {
+  position: absolute;
+  margin-top: .2rem;
+  max-width: 100%;
+  color: #fff;
+  background-color: #008ac1;
+  outline: 2px solid #008ac1;
 }
-.EmptyList{
-  margin: 50px 40px;
+
+.EnvVarsInputGroup input {
+  max-width: 10rem;
+}
+
+.ModalFormButtons {
+  width: 100%;
 }
