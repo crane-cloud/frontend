@@ -27,6 +27,7 @@ import AdminProjectsPage from './components/AdminProjectsPage';
 import VerificationSentPage from './components/VerificationSentPage';
 import AdminLoginPage from './components/AdminLoginPage';
 import AppsPage from './components/AppsPage';
+import CreateAppForm from './components/CreateAppForm';
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) => (
