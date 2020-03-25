@@ -1,8 +1,6 @@
 import React from 'react';
-import Popup from 'reactjs-popup';
-import './InformationBar.css';
-import AddClusterForm from '../AddClusterForm';
 import CreateButton from '../ButtonComponent';
+import './InformationBar.css';
 
 function InformationBar(props) {
   const { header, showBtn } = props;
