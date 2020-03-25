@@ -1,7 +1,7 @@
 import React from 'react';
 import Popup from 'reactjs-popup';
 import './InformationBar.css';
-import CreateAppForm from '../CreateAppForm';
+import AddClusterForm from '../AddClusterForm';
 import CreateButton from '../ButtonComponent';
 
 function InformationBar(props) {
@@ -13,7 +13,7 @@ function InformationBar(props) {
           <div className="InfoHeader">{ props.header }</div>
           <Popup trigger={<div className="CreateButton"><CreateButton /></div>} modal className="popup">
             {(close) => (
-              <CreateAppForm close={close} />
+              <AddClusterForm close={close} />
             )}
           </Popup>
         </div>
