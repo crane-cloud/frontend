@@ -1,15 +1,13 @@
 import React from 'react';
-import Popup from 'reactjs-popup';
-import './InformationBar.css';
-import AddClusterForm from '../AddClusterForm';
 import CreateButton from '../ButtonComponent';
+import './InformationBar.css';
 
 function InformationBar(props) {
   const { header, showBtn } = props;
   return (
     <div className="InformationBar">
 
-      {props.showBtn ? (
+      {showBtn ? (
         <div>
           <div className="InfoHeader">{ header }</div>
           <Popup trigger={<div className="CreateButton"><CreateButton /></div>} modal className="popup">
