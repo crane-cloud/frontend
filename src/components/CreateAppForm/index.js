@@ -1,6 +1,5 @@
 import React from 'react';
 import InputText from '../BlackInputText';
-import SecondaryButton from '../SecondaryButton';
 import PrimaryButton from '../PrimaryButton';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
@@ -13,10 +12,11 @@ class CreateAppForm extends React.Component {
     super();
     this.state = {
       name: '',
-      link: '',
+      uri: '',
       openModal: false // add project modal is closed initially
     };
 
+    this.addEnvVar = this.addEnvVar.bind(this);
     this.showForm = this.showForm.bind(this);
     this.hideForm = this.hideForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -37,38 +37,94 @@ class CreateAppForm extends React.Component {
     });
   }
 
+  addEnvVar() {
+    // add env var
+  }
+
   handleSubmit() {
+    const { name, uri } = this.state;
+    const app = {
+      name,
+      uri
+    };
+
     // we shall add that here
+    console.log(app);
   }
 
 
   render() {
-    const { openModal } = this.state;
+    const { openModal, name, uri } = this.state;
 
     return (
       // this is a dummy page where we'll check our modal...
       // Later, We'll throw it away and use Allan's page
-      <div>
-        <Header />
-        <InformationBar header="App" showBtn btnAction={this.showForm} />
+      <div className="Page">
+        <div className="TopRow">
+          <Header />
+          <InformationBar header="App" showBtn btnAction={this.showForm} />
+        </div>
+
         {/* Modal for creating a new project
         Its triggered by the value of state.openModal */}
-        <Modal showModal={openModal}>
+        <Modal showModal>
           <div className="ModalForm">
             <div className="ModalFormHeading">
-              <h2>Add a project</h2>
+              <h2>Deploy an app</h2>
             </div>
             <div className="ModalFormInputs">
-              <InputText
-                placeholder="Project Name"
-              />
-              <InputText
-                placeholder="+ some other stuff"
-              />
+              <div className="ModalFormInputsBasic">
+                <InputText
+                  placeholder="Name"
+                  name="name"
+                  value={name}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+                />
+                <InputText
+                  placeholder="Image Uri"
+                  name="uri"
+                  value={uri}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+                />
+              </div>
+              <div className="ModalFormInputsEnvVars">
+                <h4>Environment Variables</h4>
+                <div className="EnvVarsInputGroup">
+                  <div className="EnvVarsInputs">
+                    <InputText
+                      placeholder="Name"
+                      name="varName"
+                      // value={uri}
+                      onChange={(e) => {
+                        this.handleChange(e);
+                      }}
+                    />
+                    <InputText
+                      placeholder="Value"
+                      name="varValue"
+                      // value={uri}
+                      onChange={(e) => {
+                        this.handleChange(e);
+                      }}
+                    />
+                  </div>
+                  <div className="EnvVarsAddBtn">
+                    <PrimaryButton
+                      label="add"
+                      onClick={this.addEnvVar}
+                      className="EnvVarAddBtn"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="ModalFormButtons">
-              <PrimaryButton label="create project" />
               <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
+              <PrimaryButton label="proceed" onClick={this.handleSubmit} />
             </div>
           </div>
         </Modal>
