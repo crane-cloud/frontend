@@ -63,7 +63,7 @@ const Routes = () => (
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/storage-classes" component={StorageClassList} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/jobs" component={JobsListPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/deployments" component={DeploymentsPage} />
-      <ProtectedRoute isAllowed={hasToken} exact path="/clusters" component={ClusterPage} />
+      <ProtectedRoute isAllowed exact path="/clusters" component={ClusterPage} />
     </Switch>
   </Router>
 );
