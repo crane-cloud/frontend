@@ -19,3 +19,14 @@
   color: #F7B21F;
   outline: 2px solid #F7B21F;
 }
+
+.Primary-Btn.CancelBtn {
+  outline: 2px solid #000000;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.Primary-Btn.CancelBtn:hover {
+  color: #fff;
+  background-color: #000;
+}
