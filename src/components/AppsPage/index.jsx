@@ -6,10 +6,10 @@ import InformationBar from '../InformationBar';
 import AppsList from '../AppsList';
 import Header from '../Header';
 
-const AppsPage = (props) =>
-//   const { user: { accessToken } } = props;
-//   localStorage.setItem('token', accessToken);
-  (
+const AppsPage = (props) => {
+  const { user: { accessToken } } = props;
+  localStorage.setItem('token', accessToken);
+  return (
     <div className="Page">
       <div className="TopRow">
         <Header />
@@ -27,6 +27,7 @@ const AppsPage = (props) =>
       </div>
     </div>
   );
+};
 const mapStateToProps = (state) => ({ user: state.user });
 
 export default connect(mapStateToProps, null)(withRouter(AppsPage));

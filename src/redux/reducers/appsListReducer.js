@@ -1,6 +1,6 @@
 
 import {
-  GET_APPS,
+  GET_APPS_SUCCESS,
   GET_APPS_FAIL,
   START_GETTING_APPS
 } from '../actions/actionTypes';
@@ -12,9 +12,9 @@ const initialState = {
   message: 'Apps Not Available'
 };
 
-const AppsReducer = (state = initialState, action) => {
+const AppsListReducer = (state = initialState, action) => {
   switch (action.type) {
-  case GET_APPS:
+  case GET_APPS_SUCCESS:
     return {
       ...state,
       apps: action.payload,
@@ -42,4 +42,4 @@ const AppsReducer = (state = initialState, action) => {
     return state;
   }
 };
-export default AppsReducer;
+export default AppsListReducer;

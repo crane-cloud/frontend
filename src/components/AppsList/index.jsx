@@ -37,13 +37,15 @@ const myapps = [
 ];
 class AppsList extends Component {
   componentDidMount() {
-    // const { getAppsList } = this.props;
-    // getAppsList();
+    const { match, getAppsList } = this.props;
+    console.log(this.props);
+    if (match !== undefined) {
+      getAppsList(match.params);
+    }
   }
 
-  render() {
+  render(props) {
     const { apps, isRetrieved, isRetrieving } = this.props;
-
     return (
       <div className="AppsList">
         {
@@ -55,7 +57,7 @@ class AppsList extends Component {
             </div>
           ) : (
             <div className="AppList">
-              {!isRetrieved ? (myapps.map((app) => (
+              {isRetrieved ? (apps.apps.map((app) => (
                 <div key={app.id} className="AppCardItem">
                   <AppsCard
                     title={app.title}
@@ -78,32 +80,30 @@ class AppsList extends Component {
   }
 }
 
-// // inititate props
-// AppsList.propTypes = {
-//   apps: PropTypes.arrayOf(PropTypes.object),
-//   isRetrieved: PropTypes.bool,
-//   isRetrieving: PropTypes.bool
-// };
+// inititate props
+AppsList.propTypes = {
+  apps: PropTypes.arrayOf(PropTypes.object),
+  isRetrieved: PropTypes.bool,
+  isRetrieving: PropTypes.bool
+};
 
-// // assigning defaults
-// AppsList.defaultProps = {
-//   apps: [],
-//   isRetrieved: false,
-//   isRetrieving: true
-// };
+// assigning defaults
+AppsList.defaultProps = {
+  apps: [],
+  isRetrieved: false,
+  isRetrieving: true
+};
 
-// export const mapStateToProps = (state) => {
-//   const { isRetrieving, apps, isRetrieved } = state.AppsReducer;
-//   return { isRetrieving, apps, isRetrieved };
-// };
+export const mapStateToProps = (state) => {
+  const { isRetrieving, apps, isRetrieved } = state.AppsListReducer;
+  return { isRetrieving, apps, isRetrieved };
+};
 
-// export const mapDispatchToProps = (dispatch) => bindActionCreators({
-//   getAppsList
-// }, dispatch);
+export const mapDispatchToProps = (dispatch) => bindActionCreators({
+  getAppsList
+}, dispatch);
 
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(AppsList);
-
-export default AppsList;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AppsList);

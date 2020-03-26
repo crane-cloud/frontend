@@ -24,7 +24,7 @@ class UserProjectsPage extends React.Component {
       <div className="Page">
         <div className="TopRow">
           <Header />
-          <InformationBar header="Projects" showBtn={true} />
+          <InformationBar header="Projects" showBtn />
         </div>
         <div className="MainRow">
           <div className="ProjectList">
@@ -53,8 +53,7 @@ class UserProjectsPage extends React.Component {
                       <div className="EmptyList">
                         <h3>No Projects Yet.</h3>
                       </div>
-                    )
-                  }
+                    )}
                 </div>
               )
             }
