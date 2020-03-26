@@ -14,6 +14,9 @@ class CreateAppForm extends React.Component {
     this.state = {
       name: '',
       uri: '',
+      varName: '',
+      varValue: '',
+      envVars: [],
       openModal: false // add project modal is closed initially
     };
 
@@ -39,11 +42,19 @@ class CreateAppForm extends React.Component {
   }
 
   addEnvVar() {
-    // add env var
+    const { varName, varValue } = this.state;
+    const newEnvVar = {
+      name: varName,
+      value: varValue
+    };
+
+    this.setState((prevState) => ({
+      envVars: [...prevState.envVars, newEnvVar]
+    }));
   }
 
   handleSubmit() {
-    const { name, uri } = this.state;
+    const { name, uri, envVars } = this.state;
     const app = {
       name,
       uri
@@ -51,11 +62,19 @@ class CreateAppForm extends React.Component {
 
     // we shall add that here
     console.log(app);
+    console.log(envVars);
   }
 
 
   render() {
-    const { openModal, name, uri } = this.state;
+    const {
+      openModal,
+      name,
+      uri,
+      varName,
+      varValue,
+      envVars
+    } = this.state;
 
     return (
       // this is a dummy page where we'll check our modal...
@@ -94,35 +113,34 @@ class CreateAppForm extends React.Component {
               </div>
               <div className="ModalFormInputsEnvVars">
                 <h4>Environment Variables</h4>
-                <div className="EnvVarsTable">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Value</th>
-                        <th>Remove</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Steve</td>
-                        <td>hfhf7f44</td>
-                        <td><img src={RemoveIcon} alt="remove_ico" /></td>
-                      </tr>
-                      <tr>
-                        <td>Steve</td>
-                        <td>hfhf7f44</td>
-                        <td><img src={RemoveIcon} alt="remove_ico" /></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                {(envVars.length > 0) && (
+                  <div className="EnvVarsTable">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Value</th>
+                          <th>Remove</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {envVars.map((envVar) => (
+                          <tr key={envVars.indexOf(envVar)}>
+                            <td>{envVar.name}</td>
+                            <td>{envVar.value}</td>
+                            <td><img src={RemoveIcon} alt="remove_ico" /></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
                 <div className="EnvVarsInputGroup">
                   <div className="EnvVarsInputs">
                     <InputText
                       placeholder="Name"
                       name="varName"
-                      // value={uri}
+                      value={varName}
                       onChange={(e) => {
                         this.handleChange(e);
                       }}
@@ -130,7 +148,7 @@ class CreateAppForm extends React.Component {
                     <InputText
                       placeholder="Value"
                       name="varValue"
-                      // value={uri}
+                      value={varValue}
                       onChange={(e) => {
                         this.handleChange(e);
                       }}
