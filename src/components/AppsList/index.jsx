@@ -8,41 +8,13 @@ import AppsCard from '../AppsCard';
 import { BigSpinner } from '../SpinnerComponent';
 import './AppsList.css';
 
-const myapps = [
-  {
-    title: 'Flask',
-    status: 'true',
-    url: 'http://www.flaskapp.com'
-  },
-  {
-    title: 'Bootstrap',
-    status: 'true',
-    url: 'http://www.flaskapp.com'
-  },
-  {
-    title: 'nginx',
-    status: 'false',
-    url: 'http://www.flaskapp.com/asdfam/asdf/asdfas/asd/fas/df/as/df/as/df/asd/'
-  },
-  {
-    title: 'Postgres',
-    status: 'true',
-    url: 'http://www.flaskapp.com'
-  },
-  {
-    title: 'React',
-    status: 'true',
-    url: 'http://www.flaskapp.com'
-  }
-];
+
 class AppsList extends React.Component {
   componentDidMount() {
     const { match, getAppsList } = this.props;
     if (match !== undefined) {
       getAppsList(match.params);
     }
-  //   const projectId = "93ac9f44-717b-4ee9-91cc-1c8a4ac0ae58";
-  //   getAppsList(projectId);
   }
 
   render() {
