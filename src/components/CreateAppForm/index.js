@@ -79,8 +79,7 @@ class CreateAppForm extends React.Component {
   }
 
   handleSubmit() {
-    const { name, uri, envVars, error 
-    } = this.state;
+    const { name, uri, envVars } = this.state;
     const app = {
       name,
       uri
