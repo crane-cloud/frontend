@@ -14,10 +14,11 @@ import Modal from '../Modal';
 import PrimaryButton from '../PrimaryButton';
 import InputText from '../InputText';
 import CreateButton from '../ButtonComponent';
-import AddProjectForm from '../AddProject';
+// import AddProjectForm from '../AddProject';
 
 
-let randomstrword = Math.random().toString(36).substr(2, 7);
+let todaysDate = new Date();
+
 class UserProjectsPage extends React.Component {
   constructor(props) {
     super(props);
@@ -42,7 +43,7 @@ class UserProjectsPage extends React.Component {
 
   handleSubmit() {
     const project = {
-      alias: this.state.alias,
+      alias: this.state.projectName + todaysDate.toISOString(),
       projectName: this.state.projectName,
       cluster_ID: this.state.cluster_ID,
       owner_ID: this.state.data.id
@@ -131,15 +132,6 @@ class UserProjectsPage extends React.Component {
                 onChange={(e) => {
                   this.handleChange(e);
                 }}
-              />
-              <InputText
-                placeholder="Alias"
-                name="alias"
-                value={alias}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
-
               />
             </div>
             <div className="ModalFormButtons">
