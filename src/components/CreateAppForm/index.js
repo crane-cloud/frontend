@@ -122,18 +122,29 @@ class CreateAppForm extends React.Component {
 
     if (varName && varValue) {
       this.setState((prevState) => ({
-        envVars: [...prevState.envVars, newEnvVar]
+        envVars: {
+          ...prevState.envVars,
+          [varName]: varValue
+        }
       }));
+      this.setState({
+        varName: '', varValue: ''
+      });
     }
   }
 
   removeEnvVar(index) {
     const { envVars } = this.state;
-    const envVarsArray = [...envVars]; // make a separate copy of the array
-    if (index !== -1) {
-      envVarsArray.splice(index, 1);
-      this.setState({ envVars: envVarsArray });
-    }
+    const keyToRemove = Object.keys(envVars)[index];
+    const newEnvVars = Object.keys(envVars).reduce((object, key) => {
+      if (key !== keyToRemove) {
+        object[key] = envVars[key];
+      }
+      return object;
+    }, {});
+
+    this.setState({ envVars: newEnvVars });
+    console.log(envVars);
   }
 
   handleSubmit() {
