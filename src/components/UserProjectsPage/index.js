@@ -10,6 +10,9 @@ import getUserProjects from '../../redux/actions/userProjectsActions';
 import { BigSpinner } from '../SpinnerComponent';
 import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/craneLogo.png';
+import Modal from '../Modal';
+import PrimaryButton from '../PrimaryButton';
+import InputText from '../InputText';
 import CreateButton from '../ButtonComponent';
 import AddProjectForm from '../AddProject';
 
@@ -17,9 +20,11 @@ class UserProjectsPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // toggle box is closed initially
-      isOpened: false,
+      openModal: false // add project modal is closed initially
     };
+
+    this.showForm = this.showForm.bind(this);
+    this.hideForm = this.hideForm.bind(this);
   }
 
   componentDidMount() {
@@ -27,21 +32,23 @@ class UserProjectsPage extends React.Component {
     getUserProjects(data.id);
   }
 
-  openForm() {
-    this.setState({isOpened: true});
+  showForm() {
+    this.setState({ openModal: true });
+  }
+
+  hideForm() {
+    this.setState({ openModal: false });
   }
 
   render() {
     const { projects, isRetrieving } = this.props;
+    const { openModal } = this.state;
 
     return (
       <div className="Page">
         <div className="TopRow">
           <Header />
-          {/* <InformationBar header="Projects" showBtn={true} /> */}
-          {/* <CreateButton /> */}
-          <button class="open-button" onclick={this.openForm()}>Open Form</button>
-          { this.state.isOpened && <AddProjectForm /> }
+          <InformationBar header="Projects" showBtn btnAction={this.showForm} />
         </div>
         <div className="MainRow">
           <div className="ProjectList">
@@ -56,7 +63,7 @@ class UserProjectsPage extends React.Component {
                 <div className="ProjectList">
                   { projects.length !== 0 ? (
                     projects.map((project) => (
-                      <Link to={{ pathname: `/projects/${project.id}`}} key={project.id}>
+                      <Link to={{ pathname: `/projects/${project.id}` }} key={project.id}>
                         <div key={project.id} className="ProjectCardItem">
                           <ClusterCard
                             name={project.name}
@@ -70,8 +77,7 @@ class UserProjectsPage extends React.Component {
                       <div className="EmptyList">
                         <h3>No Projects Yet.</h3>
                       </div>
-                    )
-                  }
+                    )}
                 </div>
               )
             }
@@ -84,6 +90,28 @@ class UserProjectsPage extends React.Component {
             </p>
           </div>
         </div>
+
+        {/* Modal for creating a new project
+        Its triggered by the value of state.openModal */}
+        <Modal showModal={openModal}>
+          <div className="ModalForm">
+            <div className="ModalFormHeading">
+              <h2>Add a project</h2>
+            </div>
+            <div className="ModalFormInputs">
+              <InputText
+                placeholder="Project Name"
+              />
+              <InputText
+                placeholder="+ some other stuff"
+              />
+            </div>
+            <div className="ModalFormButtons">
+              <PrimaryButton label="create project" />
+              <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
+            </div>
+          </div>
+        </Modal>
       </div>
     );
   }
