@@ -40,6 +40,12 @@ class CreateAppForm extends React.Component {
     this.setState({
       [e.target.name]: e.target.value
     });
+    this.error = this.state;
+    if (this.error) {
+      this.setState({
+        error: ''
+      });
+    }
   }
 
   addEnvVar() {
