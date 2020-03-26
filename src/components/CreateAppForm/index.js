@@ -120,9 +120,11 @@ class CreateAppForm extends React.Component {
       value: varValue
     };
 
-    this.setState((prevState) => ({
-      envVars: [...prevState.envVars, newEnvVar]
-    }));
+    if (varName || varValue) {
+      this.setState((prevState) => ({
+        envVars: [...prevState.envVars, newEnvVar]
+      }));
+    }
   }
 
   removeEnvVar(index) {
