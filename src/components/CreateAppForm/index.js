@@ -68,7 +68,7 @@ class CreateAppForm extends React.Component {
         {/* Modal for creating a new project
         Its triggered by the value of state.openModal */}
         <Modal showModal>
-          <div className="ModalForm">
+          <div className="ModalForm AddAppModal">
             <div className="ModalFormHeading">
               <h2>Deploy an app</h2>
             </div>
@@ -122,7 +122,7 @@ class CreateAppForm extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="ModalFormButtons">
+            <div className="ModalFormButtons AddAddButtons">
               <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
               <PrimaryButton label="proceed" onClick={this.handleSubmit} />
             </div>
