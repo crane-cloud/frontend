@@ -9,7 +9,6 @@ import Header from '../Header';
 const AppsPage = (props) =>
 //   const { user: { accessToken } } = props;
 //   localStorage.setItem('token', accessToken);
-
   (
     <div className="Page">
       <div className="TopRow">
