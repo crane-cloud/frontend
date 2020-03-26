@@ -17,7 +17,8 @@ class CreateAppForm extends React.Component {
       varName: '',
       varValue: '',
       envVars: [],
-      openModal: false // add project modal is closed initially
+      openModal: false, // add project modal is closed initially
+      error: ''
     };
 
     this.addEnvVar = this.addEnvVar.bind(this);
@@ -54,15 +55,24 @@ class CreateAppForm extends React.Component {
   }
 
   handleSubmit() {
-    const { name, uri, envVars } = this.state;
+    const { name, uri, envVars, error 
+    } = this.state;
     const app = {
       name,
       uri
     };
 
-    // we shall add that here
-    console.log(app);
-    console.log(envVars);
+
+    if (!name || !uri) {
+      // if user tries to submit empty email/password
+      this.setState({
+        error: 'Please enter the App Name and Image Uri'
+      });
+    } else {
+      // we shall add that here
+      console.log(app);
+      console.log(envVars);
+    }
   }
 
 
