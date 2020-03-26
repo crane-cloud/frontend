@@ -11,7 +11,7 @@ import AddProject from '../../redux/actions/addProject';
 import Modal from '../Modal';
 
 
-let randomstrword = Math.random().toString(36).substr(2, 7);
+
 class AddProjectForm extends React.Component {
   constructor() {
     super();
@@ -36,7 +36,7 @@ class AddProjectForm extends React.Component {
 
   handleSubmit() {
     const project = {
-      alias: this.state.alias + randomstrword,
+      alias: this.state.alias,
       name: this.state.name,
       cluster_ID: this.state.cluster_ID,
       owner_ID: this.state.data.id

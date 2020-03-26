@@ -16,16 +16,41 @@ import InputText from '../InputText';
 import CreateButton from '../ButtonComponent';
 import AddProjectForm from '../AddProject';
 
+
+let randomstrword = Math.random().toString(36).substr(2, 7);
 class UserProjectsPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      openModal: false // add project modal is closed initially
+      openModal: false, // add project modal is closed initially
+      name: '',
+      cluster_ID: '',
+      alias: '',
     };
 
     this.showForm = this.showForm.bind(this);
     this.hideForm = this.hideForm.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  handleSubmit() {
+    const project = {
+      alias: this.state.alias,
+      projectName: this.state.projectName,
+      cluster_ID: this.state.cluster_ID,
+      owner_ID: this.state.data.id
+    };
+
+    this.setState({
+      loading: true
+    });
 
   componentDidMount() {
     const { getUserProjects, data } = this.props;
@@ -101,14 +126,25 @@ class UserProjectsPage extends React.Component {
             <div className="ModalFormInputs">
               <InputText
                 placeholder="Project Name"
+                name="projectName"
+                value={projectName}
+                onChange={(e) => {
+                  this.handleChange(e);
+                }}
               />
               <InputText
                 placeholder="Alias"
+                name="alias"
+                value={alias}
+                onChange={(e) => {
+                  this.handleChange(e);
+                }}
+
               />
             </div>
             <div className="ModalFormButtons">
-              <PrimaryButton label="create project" />
-              <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
+              <PrimaryButton label="Create project" />
+              <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />
             </div>
           </div>
         </Modal>
