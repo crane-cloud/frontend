@@ -1,3 +1,7 @@
+.ModalForm.AddAppModal .ChildWrap {
+  height: 80%;
+}
+
 .ModalFormInputsBasic {
   display: grid;
   gap: 1rem;
@@ -5,6 +9,7 @@
 
 .ModalFormInputsBasic input {
   max-width: 25rem;
+  height: 1rem;
 }
 
 .EnvVarsInputGroup  {
@@ -23,15 +28,24 @@
   grid-template-columns: 1fr 1fr;
 }
 
+.EnvVarsInputGroup .EnvVarsInputs input {
+  height: 1rem;
+}
+
+.ModalFormInputs .ModalFormInputsEnvVars {
+  height: 200px; /* I've had to limit this height for now */
+}
+
 .EnvVarsInputGroup .EnvVarsAddBtn {
   position: relative;
 }
 
 .EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn {
   position: absolute;
-  margin-top: .2rem;
+  /* margin-top: .2rem; */
   max-width: 100%;
   color: #fff;
+  height: 100%;
   background-color: #008ac1;
   outline: 2px solid #008ac1;
 }
@@ -42,4 +56,13 @@
 
 .ModalFormButtons {
   width: 100%;
+}
+
+.ModalFormButtons.AddAddButtons {
+  max-width: 25rem;
+  margin-bottom: 2rem;
+}
+
+.ModalFormButtons.AddAddButtons button {
+  height: 2rem;
 }
