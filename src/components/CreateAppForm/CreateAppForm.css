@@ -1,7 +1,3 @@
-.ModalForm.AddAppModal .ChildWrap {
-  height: 80%;
-}
-
 .ModalFormInputsBasic {
   display: grid;
   gap: 1rem;
