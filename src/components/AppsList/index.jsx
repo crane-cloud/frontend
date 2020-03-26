@@ -35,13 +35,14 @@ const myapps = [
     url: 'http://www.flaskapp.com'
   }
 ];
-class AppsList extends Component {
+class AppsList extends React.Component {
   componentDidMount() {
     const { match, getAppsList } = this.props;
-    console.log(this.props);
     if (match !== undefined) {
       getAppsList(match.params);
     }
+    const projectId = "93ac9f44-717b-4ee9-91cc-1c8a4ac0ae58";
+    getAppsList(projectId);
   }
 
   render() {
@@ -57,11 +58,11 @@ class AppsList extends Component {
             </div>
           ) : (
             <div className="AppList">
-              {!isRetrieved ? (myapps.map((app) => (
+              {isRetrieved ? (apps.apps.map((app) => (
                 <div key={app.id} className="AppCardItem">
                   <AppsCard
-                    title={app.title}
-                    status={app.status}
+                    name={app.name}
+                    status={ true }
                     url={app.url}
                   />
                 </div>

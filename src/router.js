@@ -49,6 +49,11 @@ const Routes = () => (
       <Route path="/register" component={RegisterPage} />
       <Route path="/new-password" component={CreateNewPassword} />
       <Route path="/verify/:token" component={VerificationSentPage} />
+      // projects
+      <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects" component={UserProjectsPage} />
+      <ProtectedRoute isAllowed={hasToken} path="/users/:userID/projects/:projectID/apps" component={AppsPage} />
+      <ProtectedRoute isAllowed={hasToken} path="/projects" component={AdminProjectsPage} />
+      {/* <Route path="/app" component={AppsPage} /> */}
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/resources" component={ClusterResourcesPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/services" component={ServicesListPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/volumes" component={PvsListPage} />
@@ -61,11 +66,7 @@ const Routes = () => (
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/deployments" component={DeploymentsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/clusters" component={ClusterPage} />
 
-      // projects
-      <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/apps" component={AppsPage} />
-      <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects" component={UserProjectsPage} />
-      <ProtectedRoute isAllowed={hasToken} path="/projects" component={AdminProjectsPage} />
-      <Route path="/app" component={AppsPage} />
+      
     </Switch>
   </Router>
 );

@@ -14,6 +14,7 @@ import crane from '../../assets/images/craneLogo.png';
 class UserProjectsPage extends React.Component {
   componentDidMount() {
     const { getUserProjects, data } = this.props;
+    console.log(this.props);
     getUserProjects(data.id);
   }
 

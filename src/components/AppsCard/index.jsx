@@ -4,14 +4,14 @@ import './AppsCard.css';
 import Status from '../Status';
 
 const AppsCard = (props) => {
-  const { title, status, url } = props;
+  const { name, status, url } = props;
 
   return (
     <div className="AppCard">
       <div className="AppCardHeader">
         <table className="AppTable">
           <tr>
-            <td>{title}</td>
+            <td>{name}</td>
             <td className="StatusData"><Status status={status} /></td>
           </tr>
         </table>
