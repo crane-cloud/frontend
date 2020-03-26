@@ -9,7 +9,7 @@ import { BigSpinner } from '../SpinnerComponent';
 import './AppsList.css';
 
 
-class AppsList extends React.Component {
+class AppsList extends Component {
   componentDidMount() {
     const { match, getAppsList } = this.props;
     if (match !== undefined) {
