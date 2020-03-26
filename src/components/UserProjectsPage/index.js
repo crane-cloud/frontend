@@ -39,7 +39,7 @@ class UserProjectsPage extends React.Component {
                 <div className="ProjectList">
                   { projects.length !== 0 ? (
                     projects.map((project) => (
-                      <Link to={{ pathname: `/${userId}/projects/${project.id}/apps` }} key={project.id}>
+                      <Link to={{ pathname: `/users/${userId}/projects/${project.id}/apps` }} key={project.id}>
                         <div key={project.id} className="ProjectCardItem">
                           <ClusterCard
                             name={project.name}

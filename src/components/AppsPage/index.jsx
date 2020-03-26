@@ -21,6 +21,7 @@ const AppsPage = (props) => {
       <div className="FooterRow">
         <p>
           Copyright © 2020 Crane Cloud.
+          <br />
           All Rights Reserved.
 
         </p>

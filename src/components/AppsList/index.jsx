@@ -44,7 +44,7 @@ class AppsList extends Component {
     }
   }
 
-  render(props) {
+  render() {
     const { apps, isRetrieved, isRetrieving } = this.props;
     return (
       <div className="AppsList">
@@ -67,9 +67,7 @@ class AppsList extends Component {
                 </div>
               )))
                 : (
-                  <div className="FailedToRetrieveMsg">
-                    <h3>No Apps Available</h3>
-                  </div>
+                  <div className="NoAppsDiv">You haven’t deployed any apps. Click the create button to get started.</div>
                 )}
             </div>
           )
