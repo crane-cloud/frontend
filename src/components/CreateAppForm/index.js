@@ -215,7 +215,6 @@ class CreateAppForm extends React.Component {
                 </div>
               </div>
             </div>
-
             <div className="ModalFormButtons AddAddButtons">
               <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
               <PrimaryButton label="proceed" onClick={this.handleSubmit} />
