@@ -14,6 +14,7 @@ import JobsReducer from './jobsReducer';
 import getDeployments from './getDeployments';
 import UserProjectsReducer from './userProjectsReducer';
 import AdminProjectsReducer from './AdminProjectsReducer';
+import AppsListReducer from './appsListReducer';
 
 
 export default combineReducers({
@@ -32,4 +33,5 @@ export default combineReducers({
   JobsReducer,
   UserProjectsReducer,
   AdminProjectsReducer,
+  AppsListReducer
 });
