@@ -1,6 +1,8 @@
 import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import createApp from '../../redux/actions/createApp';
 import PrimaryButton from '../PrimaryButton';
 import InputText from '../BlackInputText';
 import Modal from '../Modal';
@@ -88,6 +90,7 @@ class AppsPage extends React.Component {
       name,
       uri
     };
+    const { createApp } = this.props;
 
 
     if (!name || !uri) {
@@ -96,9 +99,13 @@ class AppsPage extends React.Component {
         error: 'Please enter the App Name and Image Uri'
       });
     } else {
-      // we shall add that here
-      console.log(app);
-      console.log(envVars);
+      const appInfo = {
+        env_vars: envVars,
+        image: uri,
+        name,
+        project_id: '123' //! Need to get this from Derek's PR
+      };
+      createApp(appInfo);
     }
   }
 
@@ -113,6 +120,7 @@ class AppsPage extends React.Component {
       error,
     } = this.state;
 
+    console.log(this.props);
     const { user: { accessToken, data } } = this.props;
     const userId = data.id;
     localStorage.setItem('token', accessToken);
@@ -248,6 +256,22 @@ class AppsPage extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({ user: state.user });
+const mapStateToProps = ({ user, createAppReducer }) => {
+  const { isCreated, isCreating, app } = createAppReducer;
+  return {
+    user,
+    isCreated,
+    isCreating,
+    app
+  };
+};
+
+// const mapStateToProps = (state) => (
+//   { user: state.user }
+// );
+
+export const mapDispatchToProps = (dispatch) => bindActionCreators({
+  createApp
+}, dispatch);
 
 export default connect(mapStateToProps, null)(withRouter(AppsPage));

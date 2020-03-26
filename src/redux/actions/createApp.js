@@ -1,0 +1,38 @@
+
+import axios from 'axios';
+import { API_BASE_URL } from '../../config';
+import { CREATE_APP_SUCCESS, CREATE_APP_FAIL, START_CREATING_APP } from './actionTypes';
+
+export const startCreatingApp = () => ({
+  type: START_CREATING_APP,
+});
+
+export const createAppSuccess = (response) => ({
+  type: CREATE_APP_SUCCESS,
+  payload: response.data.data,
+});
+
+export const createAppFail = (error) => ({
+  type: CREATE_APP_FAIL,
+  payload: {
+    status: false,
+    error: error.status,
+  },
+});
+
+const createApp = (appInfo) => (dispatch) => {
+  dispatch(startCreatingApp());
+
+  return axios.post(`${API_BASE_URL}/apps`,
+    {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    },
+    appInfo)
+    .then((response) => dispatch(createAppSuccess(response)))
+    .catch((error) => {
+      dispatch(createAppFail(error));
+    });
+};
+
+
+export default createApp;
