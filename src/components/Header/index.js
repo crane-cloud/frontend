@@ -59,8 +59,8 @@ const Header = (props) => {
               </>
             )}
 
-            <div className="DropDownArrow">
-              <img src={DownArrow} alt="down_arrow" onClick={toggleHidden} />
+            <div className="DropDownArrow"  onClick={toggleHidden} >
+              <img src={DownArrow} alt="down_arrow"/>
             </div>
           </div>
 

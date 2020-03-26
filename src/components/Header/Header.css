@@ -16,7 +16,7 @@ header.Header {
 }
 
 .HeaderLinksWrap {
-  margin: 0 3rem 0 0;
+  margin-right: 1rem;
 }
 
 .HeaderLinks a {
@@ -55,6 +55,7 @@ div.HeaderLinksWrap.LoggedIn .OnHeader {
 div.HeaderLinksWrap.LoggedIn .BelowHeader {
   background-color: #F9F9F9;
   grid-area: area2;
+  width: 13rem;
 }
 
 .ProfileIconWrap img {
@@ -62,9 +63,18 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   align-self: center;
 }
 
-.DropDownArrow img {
+.DropDownArrow{
+  padding: .5rem 1rem ;
   cursor: pointer;
+}
+
+.DropDownArrow img {
   width: 1rem;
+}
+
+.DropDownArrow:hover{
+  transition: 0.5s;
+  transform: scale(1.2);
 }
 
 .UserNames {
@@ -83,7 +93,7 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
 
 .DropDownLink {
   cursor: pointer;
-  padding: .5rem 0rem .5rem 1rem;
+  padding: 1rem 1.5rem;
 }
 
 .DropDownLink:hover, .DropDownLink:active {
