@@ -103,7 +103,7 @@ class UserProjectsPage extends React.Component {
                 placeholder="Project Name"
               />
               <InputText
-                placeholder="+ some other stuff"
+                placeholder="Alias"
               />
             </div>
             <div className="ModalFormButtons">
