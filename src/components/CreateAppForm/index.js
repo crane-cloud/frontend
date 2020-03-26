@@ -4,6 +4,7 @@ import PrimaryButton from '../PrimaryButton';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
 import Modal from '../Modal';
+import RemoveIcon from '../../assets/images/remove.svg';
 import './CreateAppForm.css';
 
 
@@ -93,6 +94,29 @@ class CreateAppForm extends React.Component {
               </div>
               <div className="ModalFormInputsEnvVars">
                 <h4>Environment Variables</h4>
+                <div className="EnvVarsTable">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Value</th>
+                        <th>Remove</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Steve</td>
+                        <td>hfhf7f44</td>
+                        <td><img src={RemoveIcon} alt="remove_ico" /></td>
+                      </tr>
+                      <tr>
+                        <td>Steve</td>
+                        <td>hfhf7f44</td>
+                        <td><img src={RemoveIcon} alt="remove_ico" /></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
                 <div className="EnvVarsInputGroup">
                   <div className="EnvVarsInputs">
                     <InputText
