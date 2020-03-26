@@ -2,7 +2,7 @@ import React from 'react';
 import InputText from '../BlackInputText';
 import PrimaryButton from '../PrimaryButton';
 import Header from '../Header';
-import InformationBar from '../InformationBar';
+import InformationBarSub from '../InformationBarSub';
 import Modal from '../Modal';
 import RemoveIcon from '../../assets/images/remove.svg';
 import './CreateAppForm.css';
@@ -117,7 +117,7 @@ class CreateAppForm extends React.Component {
       <div className="Page">
         <div className="TopRow">
           <Header />
-          <InformationBar header="App" showBtn btnAction={this.showForm} />
+          <InformationBarSub header="App" showBtn btnAction={this.showForm} />
         </div>
 
         {/* Modal for creating a new project
