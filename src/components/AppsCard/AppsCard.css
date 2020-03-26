@@ -66,8 +66,13 @@
 }
 
 .AppUrl a{
-    text-decoration: inherit;
-    color: inherit;
+    text-decoration: underline;
+    width: 253px;
+    height: 22px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    color: #008AC1;
 }
 
 .AppTable tr td:hover {

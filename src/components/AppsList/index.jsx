@@ -57,7 +57,7 @@ class AppsList extends Component {
             </div>
           ) : (
             <div className="AppList">
-              {isRetrieved ? (apps.apps.map((app) => (
+              {!isRetrieved ? (myapps.map((app) => (
                 <div key={app.id} className="AppCardItem">
                   <AppsCard
                     title={app.title}
