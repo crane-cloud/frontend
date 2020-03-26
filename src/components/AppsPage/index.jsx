@@ -1,6 +1,8 @@
 import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import createApp from '../../redux/actions/createApp';
 import PrimaryButton from '../PrimaryButton';
 import InputText from '../BlackInputText';
 import Modal from '../Modal';
@@ -78,6 +80,7 @@ class AppsPage extends React.Component {
       return object;
     }, {});
 
+<<<<<<< HEAD
 const AppsPage = (props) => {
   const { user: { accessToken, data } } = props;
   const { match: { params } } = props;
@@ -94,6 +97,111 @@ const AppsPage = (props) => {
                 <img src={BackButton} alt="Back Button" />
                 {' '}
                 <p>&nbsp; Apps</p>
+=======
+    this.setState({ envVars: newEnvVars });
+    console.log(envVars);
+  }
+
+  handleSubmit() {
+    const { name, uri, envVars } = this.state;
+    const app = {
+      name,
+      uri
+    };
+    const { createApp } = this.props;
+
+
+    if (!name || !uri) {
+      // if user tries to submit empty email/password
+      this.setState({
+        error: 'Please enter the App Name and Image Uri'
+      });
+    } else {
+      const appInfo = {
+        env_vars: envVars,
+        image: uri,
+        name,
+        project_id: '123' //! Need to get this from Derek's PR
+      };
+      createApp(appInfo);
+    }
+  }
+
+  render() {
+    const {
+      openModal,
+      name,
+      uri,
+      varName,
+      varValue,
+      envVars,
+      error,
+    } = this.state;
+
+    console.log(this.props);
+    const { user: { accessToken, data } } = this.props;
+    const userId = data.id;
+    localStorage.setItem('token', accessToken);
+    return (
+      <div className="Page">
+        <div className="TopRow">
+          <Header />
+          <InformationBarSub
+            header={(
+              <Link to={{ pathname: `/users/${userId}/projects/` }}>
+                <div className="BackDiv">
+                  <img src={BackButton} alt="Back Button" />
+                  {' '}
+                  <p>&nbsp; Apps</p>
+                </div>
+              </Link>
+            )}
+            showBtn
+            btnAction={this.showForm}
+          />
+        </div>
+        <div className="MainRow">
+          <AppsList />
+        </div>
+        <div className="FooterRow">
+          <p>
+            Copyright © 2020 Crane Cloud.
+            <br />
+            All Rights Reserved.
+          </p>
+        </div>
+
+        {/* Modal for creating a new project
+        Its triggered by the value of state.openModal */}
+        <Modal showModal={openModal}>
+          <div className="ModalForm AddAppModal">
+            <div className="ModalFormHeading">
+              <h2>Deploy an app</h2>
+            </div>
+            <div className="ModalFormInputs">
+              <div className="ModalFormInputsBasic">
+                <InputText
+                  placeholder="Name"
+                  name="name"
+                  value={name}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+                />
+                <InputText
+                  placeholder="Image Uri"
+                  name="uri"
+                  value={uri}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+                />
+                {error && (
+                  <div className="AppFormErrorDiv">
+                    {error}
+                  </div>
+                )}
+>>>>>>> post to backend
               </div>
             </Link>
           )}
@@ -120,6 +228,22 @@ const AppsPage = (props) => {
   }
 }
 
-const mapStateToProps = (state) => ({ user: state.user });
+const mapStateToProps = ({ user, createAppReducer }) => {
+  const { isCreated, isCreating, app } = createAppReducer;
+  return {
+    user,
+    isCreated,
+    isCreating,
+    app
+  };
+};
+
+// const mapStateToProps = (state) => (
+//   { user: state.user }
+// );
+
+export const mapDispatchToProps = (dispatch) => bindActionCreators({
+  createApp
+}, dispatch);
 
 export default connect(mapStateToProps, null)(withRouter(AppsPage));
