@@ -23,60 +23,107 @@ export default class RegisterPage extends Component {
       passwordConfirm: '',
       hasAgreed: false,
       loading: false,
-      registered: false
+      registered: false,
+      error: ''
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleAgreed = this.toggleAgreed.bind(this);
+    this.validateEmail = this.validateEmail.bind(this);
   }
 
-  toggleAgreed(value) {
+  toggleAgreed() {
+    const { hasAgreed, error } = this.state;
     this.setState({
-      hasAgreed: value
+      hasAgreed: !hasAgreed
     });
+
+    if (error) {
+      this.setState({
+        error: ''
+      });
+    }
   }
 
   handleOnChange(e) {
+    const { error } = this.state;
     this.setState({
       [e.target.name]: e.target.value
     });
+
+    if (error) {
+      this.setState({
+        error: ''
+      });
+    }
+  }
+
+  validateEmail(email) {
+    // eslint-disable-next-line no-useless-escape
+    const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return emailRegEx.test(String(email).toLowerCase());
   }
 
   handleSubmit() {
-    const { name, email, password } = this.state;
+    const {
+      name,
+      email,
+      password,
+      passwordConfirm,
+      hasAgreed
+    } = this.state;
+
     const userData = {
       name,
       email,
       password
     };
 
-    this.setState({
-      loading: true
-    });
+    if (!email || !password || !name || !passwordConfirm) {
+      this.setState({
+        error: 'Please enter all fields'
+      });
+    } else if (this.validateEmail(email) === false) {
+      this.setState({
+        loading: false,
+        error: 'Please provide a valid email address'
+      });
+    } else if (password !== passwordConfirm) {
+      this.setState({
+        loading: false,
+        error: 'Passwords do not match'
+      });
+    } else if (!hasAgreed) {
+      this.setState({
+        loading: false,
+        error: 'Please agree to our Terms of Service'
+      });
+    } else {
+      this.setState({
+        loading: true
+      });
 
-    axios
-      .post(`${API_BASE_URL}/users`, userData)
-      .then((response) => {
-        if (response.data.status === 'success') {
+      axios
+        .post(`${API_BASE_URL}/users`, userData)
+        .then((response) => {
+          if (response.data.status === 'success') {
+            this.setState({
+              loading: false
+            });
+            setTimeout(() => {
+              this.setState({
+                registered: true
+              });
+            }, 1000);
+          }
+        })
+        .catch((error) => {
           this.setState({
             loading: false
           });
-          setTimeout(() => {
-            this.setState({
-              registered: true
-            });
-          }, 1000);
-        }
-      })
-      .catch((error) => {
-        this.setState({
-          loading: false
         });
-
-        console.log('Problem logging in...', error);
-        console.log('Email already exists...');
-      });
+    }
   }
 
   render() {
@@ -86,7 +133,9 @@ export default class RegisterPage extends Component {
       password,
       passwordConfirm,
       loading,
-      registered
+      registered,
+      error,
+      hasAgreed
     } = this.state;
 
     return (
@@ -125,10 +174,17 @@ export default class RegisterPage extends Component {
                   value={passwordConfirm}
                   onChange={this.handleOnChange}
                 />
+                {error && (
+                  <div className="RegisterErrorDiv">
+                    {error}
+                  </div>
+                )}
+
 
                 <div className="RegisterContentBottomLink RegisterLinkContainer RegisterCheckbox">
                   <Checkbox
                     onClick={this.toggleAgreed}
+                    isChecked={hasAgreed}
                   />
                   &nbsp; I agree to Crane Cloud&apos;s&nbsp;&nbsp;
                   <Link to="/register" className="RegisterContentLink">Terms of service.</Link>
@@ -156,6 +212,8 @@ export default class RegisterPage extends Component {
             </div>
           )}
         </div>
+
+
         <div className="RegisterPageFooter">
           <LandingFooter />
         </div>
