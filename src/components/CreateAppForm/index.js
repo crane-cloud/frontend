@@ -16,7 +16,7 @@ class CreateAppForm extends React.Component {
       uri: '',
       varName: '',
       varValue: '',
-      envVars: [],
+      envVars: {},
       openModal: false, // add project modal is closed initially
       error: ''
     };
@@ -51,25 +51,32 @@ class CreateAppForm extends React.Component {
 
   addEnvVar() {
     const { varName, varValue } = this.state;
-    const newEnvVar = {
-      name: varName,
-      value: varValue
-    };
 
     if (varName && varValue) {
       this.setState((prevState) => ({
-        envVars: [...prevState.envVars, newEnvVar]
+        envVars: {
+          ...prevState.envVars,
+          [varName]: varValue
+        }
       }));
+      this.setState({
+        varName: '', varValue: ''
+      });
     }
   }
 
   removeEnvVar(index) {
     const { envVars } = this.state;
-    const envVarsArray = [...envVars]; // make a separate copy of the array
-    if (index !== -1) {
-      envVarsArray.splice(index, 1);
-      this.setState({ envVars: envVarsArray });
-    }
+    const keyToRemove = Object.keys(envVars)[index];
+    const newEnvVars = Object.keys(envVars).reduce((object, key) => {
+      if (key !== keyToRemove) {
+        object[key] = envVars[key];
+      }
+      return object;
+    }, {});
+
+    this.setState({ envVars: newEnvVars });
+    console.log(envVars);
   }
 
   handleSubmit() {
@@ -146,7 +153,7 @@ class CreateAppForm extends React.Component {
               </div>
               <div className="ModalFormInputsEnvVars">
                 <h4>Environment Variables</h4>
-                {(envVars.length > 0) && (
+                {(Object.keys(envVars).length > 0) && (
                   <div className="EnvVarsTable">
                     <table>
                       <thead>
@@ -157,15 +164,16 @@ class CreateAppForm extends React.Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {envVars.map((envVar) => (
-                          <tr key={envVars.indexOf(envVar)}>
-                            <td>{envVar.name}</td>
-                            <td>{envVar.value}</td>
+                        {Object.keys(envVars).map((envVar, index) => (
+                          // I'm adding date.now coz I'm so tired
+                          <tr key={Date.now()}>
+                            <td>{Object.keys(envVars)[index]}</td>
+                            <td>{envVars[Object.keys(envVars)[index]]}</td>
                             <td>
                               <img
                                 src={RemoveIcon}
                                 alt="remove_ico"
-                                onClick={() => this.removeEnvVar(envVars.indexOf(envVar))}
+                                onClick={() => this.removeEnvVar(index)}
                               />
                             </td>
                           </tr>
