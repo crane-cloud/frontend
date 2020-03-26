@@ -15,6 +15,7 @@ import PrimaryButton from '../PrimaryButton';
 import InputText from '../InputText';
 import CreateButton from '../ButtonComponent';
 // import AddProjectForm from '../AddProject';
+import { availableClusters } from '../../helpers/allClusters.js';
 
 
 let todaysDate = new Date();
@@ -24,15 +25,27 @@ class UserProjectsPage extends React.Component {
     super(props);
     this.state = {
       openModal: false, // add project modal is closed initially
-      name: '',
+      projectName: '',
       cluster_ID: '',
-      alias: '',
+      clusters: [],
     };
 
     this.showForm = this.showForm.bind(this);
     this.hideForm = this.hideForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    const { getUserProjects, data } = this.props;
+    getUserProjects(data.id);
+    availableClusters()
+      .then(res => {
+        this.setState({
+          clusters: res.data.clusters
+        });
+        console.log("hello", this.state.clusters);
+      });
   }
 
   handleChange(e) {
@@ -43,8 +56,8 @@ class UserProjectsPage extends React.Component {
 
   handleSubmit() {
     const project = {
-      alias: this.state.projectName + todaysDate.toISOString(),
       projectName: this.state.projectName,
+      alias: this.state.projectName + todaysDate.toISOString(),
       cluster_ID: this.state.cluster_ID,
       owner_ID: this.state.data.id
     };
@@ -52,12 +65,7 @@ class UserProjectsPage extends React.Component {
     this.setState({
       loading: true
     });
-
-  componentDidMount() {
-    const { getUserProjects, data } = this.props;
-    getUserProjects(data.id);
   }
-
   showForm() {
     this.setState({ openModal: true });
   }
@@ -68,7 +76,12 @@ class UserProjectsPage extends React.Component {
 
   render() {
     const { projects, isRetrieving } = this.props;
-    const { openModal } = this.state;
+    const {
+      openModal,
+      projectName,
+      cluster_ID,
+      loading
+    } = this.state;
 
     return (
       <div className="Page">
@@ -158,7 +171,6 @@ UserProjectsPage.defaultProps = {
 export const mapStateToProps = (state) => {
   const { isRetrieving, projects } = state.UserProjectsReducer;
   const { data } = state.user;
-  const { clusters } = state.
   return { isRetrieving, projects, data };
 };
 
