@@ -78,18 +78,6 @@ class CreateAppForm extends React.Component {
     console.log(envVars);
   }
 
-  addEnvVar() {
-    const { varName, varValue } = this.state;
-    const newEnvVar = {
-      name: varName,
-      value: varValue
-    };
-
-    this.setState((prevState) => ({
-      envVars: [...prevState.envVars, newEnvVar]
-    }));
-  }
-
   handleSubmit() {
     const { name, uri, envVars, error 
     } = this.state;
