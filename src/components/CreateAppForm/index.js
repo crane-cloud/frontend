@@ -56,7 +56,7 @@ class CreateAppForm extends React.Component {
       value: varValue
     };
 
-    if (varName || varValue) {
+    if (varName && varValue) {
       this.setState((prevState) => ({
         envVars: [...prevState.envVars, newEnvVar]
       }));
@@ -115,7 +115,7 @@ class CreateAppForm extends React.Component {
 
         {/* Modal for creating a new project
         Its triggered by the value of state.openModal */}
-        <Modal showModal>
+        <Modal showModal={openModal}>
           <div className="ModalForm AddAppModal">
             <div className="ModalFormHeading">
               <h2>Deploy an app</h2>
