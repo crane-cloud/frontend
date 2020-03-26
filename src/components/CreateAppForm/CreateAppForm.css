@@ -1,3 +1,7 @@
+.ModalForm.AddAppModal .ModalFormHeading {
+  margin-bottom: 0;
+}
+
 .ModalFormInputsBasic {
   display: grid;
   gap: 1rem;
@@ -61,4 +65,38 @@
 
 .ModalFormButtons.AddAddButtons button {
   height: 2rem;
+}
+
+.EnvVarsTable {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.EnvVarsTable table {
+  width: 100%;
+  text-align: left;
+}
+
+.EnvVarsTable table th {
+  font-weight: normal;
+  color: #555;
+}
+
+.EnvVarsTable table th:last-child {
+  width: 3rem;
+  text-align: right;
+} 
+
+.EnvVarsTable table td:last-child {
+  width: 3rem;
+  display: block;
+  margin: auto;
+}
+
+.EnvVarsTable table td {
+  font-weight: normal;
+}
+
+.EnvVarsTable table td img {
+  margin: auto;
 }
