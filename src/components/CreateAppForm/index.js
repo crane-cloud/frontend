@@ -22,6 +22,7 @@ class CreateAppForm extends React.Component {
     };
 
     this.addEnvVar = this.addEnvVar.bind(this);
+    this.removeEnvVar = this.removeEnvVar.bind(this);
     this.showForm = this.showForm.bind(this);
     this.hideForm = this.hideForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -58,6 +59,15 @@ class CreateAppForm extends React.Component {
     this.setState((prevState) => ({
       envVars: [...prevState.envVars, newEnvVar]
     }));
+  }
+
+  removeEnvVar(index) {
+    const { envVars } = this.state;
+    const envVarsArray = [...envVars]; // make a separate copy of the array
+    if (index !== -1) {
+      envVarsArray.splice(index, 1);
+      this.setState({ envVars: envVarsArray });
+    }
   }
 
   handleSubmit() {
@@ -149,7 +159,13 @@ class CreateAppForm extends React.Component {
                           <tr key={envVars.indexOf(envVar)}>
                             <td>{envVar.name}</td>
                             <td>{envVar.value}</td>
-                            <td><img src={RemoveIcon} alt="remove_ico" /></td>
+                            <td>
+                              <img
+                                src={RemoveIcon}
+                                alt="remove_ico"
+                                onClick={() => this.removeEnvVar(envVars.indexOf(envVar))}
+                              />
+                            </td>
                           </tr>
                         ))}
                       </tbody>
