@@ -83,7 +83,8 @@ class CreateAppForm extends React.Component {
       uri,
       varName,
       varValue,
-      envVars
+      envVars,
+      error,
     } = this.state;
 
     return (
@@ -120,6 +121,11 @@ class CreateAppForm extends React.Component {
                     this.handleChange(e);
                   }}
                 />
+                {error && (
+                  <div className="AppFormErrorDiv">
+                    {error}
+                  </div>
+                )}
               </div>
               <div className="ModalFormInputsEnvVars">
                 <h4>Environment Variables</h4>
@@ -174,6 +180,7 @@ class CreateAppForm extends React.Component {
                 </div>
               </div>
             </div>
+
             <div className="ModalFormButtons AddAddButtons">
               <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
               <PrimaryButton label="proceed" onClick={this.handleSubmit} />
