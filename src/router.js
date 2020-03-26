@@ -27,7 +27,6 @@ import AdminProjectsPage from './components/AdminProjectsPage';
 import VerificationSentPage from './components/VerificationSentPage';
 import AdminLoginPage from './components/AdminLoginPage';
 import AppsPage from './components/AppsPage';
-import CreateAppForm from './components/CreateAppForm';
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) => (
@@ -52,7 +51,8 @@ const Routes = () => (
       <Route path="/verify/:token" component={VerificationSentPage} />
       // projects
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects" component={UserProjectsPage} />
-      <ProtectedRoute isAllowed={hasToken} path="/users/:userID/projects/:projectID/apps" component={AppsPage} />
+      {/* <ProtectedRoute isAllowed={hasToken} path="/users/:userID/projects/:projectID/apps" component={AppsPage} /> */}
+      <ProtectedRoute isAllowed path="/apps" component={AppsPage} />
       <ProtectedRoute isAllowed={hasToken} path="/projects" component={AdminProjectsPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/resources" component={ClusterResourcesPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/services" component={ServicesListPage} />
