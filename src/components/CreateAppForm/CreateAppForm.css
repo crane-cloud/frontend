@@ -12,19 +12,19 @@
   height: 1rem;
 }
 
-.EnvVarsInputGroup  {
+.EnvVarsInputGroup {
   width: 100%;
   max-width: 25rem;
   display: grid;
   grid-template-columns: 3fr 1fr;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 .EnvVarsInputGroup .EnvVarsInputs {
   width: 70%;
   max-width: 25rem;
   display: grid;
-  gap: .5rem;
+  gap: 0.5rem;
   grid-template-columns: 1fr 1fr;
 }
 
@@ -73,22 +73,22 @@
 }
 
 .EnvVarsTable table {
-  width: 100%;
+  max-width: 25rem;
   text-align: left;
 }
 
-.EnvVarsTable table th {
+.EnvVarsTable table thead td {
   font-weight: normal;
   color: #555;
 }
 
-.EnvVarsTable table th:last-child {
-  width: 3rem;
+.EnvVarsTable table thead td:last-child {
+  width: 4rem;
   text-align: right;
-} 
+}
 
 .EnvVarsTable table td:last-child {
-  width: 3rem;
+  width: 4rem;
   display: block;
   margin: auto;
 }
@@ -101,10 +101,36 @@
   margin: auto;
 }
 
+.EnvVarsTable table tbody {
+  overflow: auto;
+  display: block;
+  height: 65px;
+}
+
+.EnvVarsTable thead, .EnvVarsTable tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
 .AppFormErrorDiv {
   background-color: rgba(255, 255, 255, 0.5);
   color: rgb(214, 59, 59);
   text-align: center;
   padding: 1rem 0;
   height: 1rem;
+}
+
+.EnvVarsTable table tbody::-webkit-scrollbar {
+  width: 10px;
+  height: 0px;
+}
+.EnvVarsTable table tbody::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.EnvVarsTable table tbody::-webkit-scrollbar-thumb {
+  background: #008AC1;
+}
+.EnvVarsTable table tbody::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
