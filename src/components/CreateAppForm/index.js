@@ -151,9 +151,9 @@ class CreateAppForm extends React.Component {
                     <table>
                       <thead>
                         <tr>
-                          <th>Name</th>
-                          <th>Value</th>
-                          <th>Remove</th>
+                          <td>Name</td>
+                          <td>Value</td>
+                          <td>Remove</td>
                         </tr>
                       </thead>
                       <tbody>
