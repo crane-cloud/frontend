@@ -100,3 +100,11 @@
 .EnvVarsTable table td img {
   margin: auto;
 }
+
+.AppFormErrorDiv {
+  background-color: rgba(255, 255, 255, 0.5);
+  color: rgb(214, 59, 59);
+  text-align: center;
+  padding: 1rem 0;
+  height: 1rem;
+}
