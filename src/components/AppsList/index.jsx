@@ -41,8 +41,8 @@ class AppsList extends React.Component {
     if (match !== undefined) {
       getAppsList(match.params);
     }
-    const projectId = "93ac9f44-717b-4ee9-91cc-1c8a4ac0ae58";
-    getAppsList(projectId);
+  //   const projectId = "93ac9f44-717b-4ee9-91cc-1c8a4ac0ae58";
+  //   getAppsList(projectId);
   }
 
   render() {
