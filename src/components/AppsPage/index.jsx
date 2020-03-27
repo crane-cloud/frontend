@@ -108,7 +108,7 @@ const AppsPage = (props) => {
       name,
       uri
     };
-    const { createApp } = this.props;
+    const { createApp, match } = this.props;
 
 
     if (!name || !uri) {
@@ -121,7 +121,7 @@ const AppsPage = (props) => {
         env_vars: envVars,
         image: uri,
         name,
-        project_id: '123' //! Need to get this from Derek's PR
+        project_id: match.params.projectID
       };
       createApp(appInfo);
     }
