@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
-import InformationBar from '../InformationBar';
+import InformationBar2 from '../InformationBar2';
 import Header from '../Header';
 import getUserProjects from '../../redux/actions/userProjectsActions';
 import { BigSpinner } from '../SpinnerComponent';
@@ -87,7 +87,7 @@ class UserProjectsPage extends React.Component {
       <div className="Page">
         <div className="TopRow">
           <Header />
-          <InformationBar header="Projects" showBtn btnAction={this.showForm} />
+          <InformationBar2 header="Projects" showBtn btnAction={this.showForm} />
         </div>
         <div className="MainRow">
           <div className="ProjectList">
