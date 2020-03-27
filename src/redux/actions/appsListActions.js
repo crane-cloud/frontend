@@ -21,11 +21,10 @@ export const getAppsFail = (error) => ({
   },
 });
 
-const getAppsList = (params) => (dispatch) => {
+const getAppsList = (projectID) => (dispatch) => {
   dispatch(startFetchingApps());
 
-  return axios.get(`${API_BASE_URL}/projects/${params.projectID}/apps`,
-  // return axios.get(`${API_BASE_URL}/projects/${params}/apps`,
+  return axios.get(`${API_BASE_URL}/projects/${projectID}/apps`,
 
     {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }

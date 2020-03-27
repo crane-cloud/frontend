@@ -11,10 +11,8 @@ import './AppsList.css';
 
 class AppsList extends Component {
   componentDidMount() {
-    const { match, getAppsList } = this.props;
-    if (match !== undefined) {
-      getAppsList(match.params);
-    }
+    const { params, getAppsList } = this.props;
+    getAppsList(params.projectID);
   }
 
   render() {
@@ -34,7 +32,7 @@ class AppsList extends Component {
                 <div key={app.id} className="AppCardItem">
                   <AppsCard
                     name={app.name}
-                    status={ true }
+                    status
                     url={app.url}
                   />
                 </div>
