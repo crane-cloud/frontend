@@ -6,6 +6,7 @@ import getDeployments from '../../redux/actions/getDeployments';
 import Header from '../Header';
 import SideNav from '../SideNav';
 import InformationBar from '../InformationBar';
+import Status from '../Status';
 import ProgressBar from '../ProgressBar';
 import { BigSpinner } from '../SpinnerComponent';
 import tellAge from '../../helpers/ageUtility';
@@ -30,6 +31,20 @@ class DeploymentsPage extends Component {
 
   displayFraction(numerator, denominator) {
     return `${numerator}/${denominator}`;
+  }
+
+  deploymentStatus(conditions) {
+    let status = '';
+    conditions.map((condition) => {
+      if (condition.type === 'Available') {
+        status = condition.status;
+      }
+      return null;
+    });
+    if (status === 'True') {
+      return true;
+    }
+    return false;
   }
 
   render() {
@@ -64,6 +79,7 @@ class DeploymentsPage extends Component {
                     <tr>
                       <th>name</th>
                       <th>ready</th>
+                      <th>status</th>
                       <th>age</th>
                     </tr>
                   </thead>
@@ -92,6 +108,7 @@ class DeploymentsPage extends Component {
                                 />
                               )}
                             </td>
+                            <td><Status status={this.deploymentStatus(deployment.status.conditions)} /></td>
                             <td>{tellAge(deployment.metadata.creationTimestamp)}</td>
                           </tr>
                         )))}
