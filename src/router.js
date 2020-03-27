@@ -26,7 +26,7 @@ import UserProjectsPage from './components/UserProjectsPage';
 import AdminProjectsPage from './components/AdminProjectsPage';
 import VerificationSentPage from './components/VerificationSentPage';
 import AdminLoginPage from './components/AdminLoginPage';
-import AddProjectForm from './components/AddProject';
+import AppsPage from './components/AppsPage';
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) => (
@@ -44,14 +44,15 @@ const Routes = () => (
     <Switch>
       <Route exact path="/" component={App} />
       <Route path="/login" component={LoginPage} />
-      <Route path="/gata" component={AddProjectForm} />
       <Route path="/admin-login" component={AdminLoginPage} />
       <Route path="/forgot-password" component={PasswordReset} />
       <Route path="/register" component={RegisterPage} />
       <Route path="/new-password" component={CreateNewPassword} />
-      <ProtectedRoute isAllowed={hasToken} exact path="/:userID/projects" component={UserProjectsPage} />
-      <ProtectedRoute isAllowed={hasToken} path="/projects" component={AdminProjectsPage} />
       <Route path="/verify/:token" component={VerificationSentPage} />
+      // projects
+      <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects" component={UserProjectsPage} />
+      <ProtectedRoute isAllowed={hasToken} path="/users/:userID/projects/:projectID/apps" component={AppsPage} />
+      <ProtectedRoute isAllowed={hasToken} path="/projects" component={AdminProjectsPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/resources" component={ClusterResourcesPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/services" component={ServicesListPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/volumes" component={PvsListPage} />
@@ -63,6 +64,7 @@ const Routes = () => (
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/jobs" component={JobsListPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/deployments" component={DeploymentsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/clusters" component={ClusterPage} />
+
     </Switch>
   </Router>
 );

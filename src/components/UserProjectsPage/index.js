@@ -66,6 +66,7 @@ class UserProjectsPage extends React.Component {
       loading: true
     });
   }
+
   showForm() {
     this.setState({ openModal: true });
   }
@@ -75,14 +76,14 @@ class UserProjectsPage extends React.Component {
   }
 
   render() {
-    const { projects, isRetrieving } = this.props;
+    const { projects, isRetrieving, data } = this.props;
     const {
       openModal,
       projectName,
       cluster_ID,
       loading
     } = this.state;
-
+    const userId = data.id;
     return (
       <div className="Page">
         <div className="TopRow">
@@ -102,7 +103,7 @@ class UserProjectsPage extends React.Component {
                 <div className="ProjectList">
                   { projects.length !== 0 ? (
                     projects.map((project) => (
-                      <Link to={{ pathname: `/projects/${project.id}` }} key={project.id}>
+                      <Link to={{ pathname: `/users/${userId}/projects/${project.id}/apps` }} key={project.id}>
                         <div key={project.id} className="ProjectCardItem">
                           <ClusterCard
                             name={project.name}

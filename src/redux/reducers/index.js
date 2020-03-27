@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 import ClustersReducer from './clustersReducer';
 import AddClusterReducer from './addClusterReducer';
-import AddProjectReducer from './addProjectReducer';
 import user from './user';
 import ClusterResourcesReducer from './ClusterResourcesReducer';
 import ServicesReducer from './servicesReducer';
@@ -15,6 +14,7 @@ import JobsReducer from './jobsReducer';
 import getDeployments from './getDeployments';
 import UserProjectsReducer from './userProjectsReducer';
 import AdminProjectsReducer from './AdminProjectsReducer';
+import AppsListReducer from './appsListReducer';
 
 
 export default combineReducers({
@@ -33,5 +33,5 @@ export default combineReducers({
   JobsReducer,
   UserProjectsReducer,
   AdminProjectsReducer,
-  AddProjectReducer,
+  AppsListReducer
 });

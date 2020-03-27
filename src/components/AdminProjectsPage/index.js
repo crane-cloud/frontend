@@ -45,7 +45,7 @@ class AdminProjectsPage extends React.Component {
                   ) : (
                     <div className="ProjectList">
                       { projects !== 0 ? (projects.map((project) => (
-                        <Link to={{ pathname: `/projects/${project.id}`}} key={project.id}>
+                        <Link to={{ pathname: `/projects/${project.id}` }} key={project.id}>
                           <div key={project.id} className="ProjectCardItem">
                             <ClusterCard
                               name={project.name}
