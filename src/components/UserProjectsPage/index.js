@@ -61,14 +61,14 @@ class UserProjectsPage extends React.Component {
   handleSubmit() {
     const { projectName, cluster_ID } = this.state;
     const { AddProject, data } = this.props;
-    const project = {
+    const newProject = {
       alias: projectName + todaysDate.toISOString(),
       cluster_id: '035f2057-c18d-4baf-9c26-17b38b5dff6c',
       name: projectName,
       owner_id: '0b033c1e-1e0e-4197-a279-b9d499d65dd9'
     };
-
-    AddProject(project);
+    console.log(newProject);
+    AddProject(newProject);
     // this.setState({
     //   loading: true
     // });
@@ -82,6 +82,13 @@ class UserProjectsPage extends React.Component {
       cluster_ID,
       loading
     } = this.state;
+    let clustersList = this.clusters.length > 0
+    && this.clusters.map((item, i) => {
+      return (
+        <option key={i} value={item.id}>{item.name}</option>
+      );
+    }, this);
+
     const userId = data.id;
     return (
       <div className="Page">
@@ -109,8 +116,7 @@ class UserProjectsPage extends React.Component {
             <div className="ModalFormInputs">
               <select required>
                 <option value="" disabled selected>Pick a Cluster</option>
-                <option value="lime">Lime</option>
-                <option value="coconut">Coconut</option>
+                {clustersList}
               </select>
               <InputText
                 placeholder="Project Name"
