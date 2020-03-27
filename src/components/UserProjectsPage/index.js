@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import './UserProjectsPage.css';
 import InformationBarSub from '../InformationBarSub';
 import Header from '../Header';
-import createProject from '../../redux/actions/userProjectsActions';
+import AddProject from '../../redux/actions/addProject';
 import Modal from '../Modal';
 import PrimaryButton from '../PrimaryButton';
 import InputText from '../InputText';
@@ -33,7 +33,7 @@ class UserProjectsPage extends React.Component {
 
   componentDidMount() {
     availableClusters()
-      .then(res => {
+      .then((res) => {
         this.setState({
           clusters: res.data.clusters
         });
@@ -143,7 +143,7 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  createProject
+  AddProject
 }, dispatch);
 
 export default connect(
