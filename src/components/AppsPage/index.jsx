@@ -11,6 +11,7 @@ import BackButton from '../../assets/images/backButton.svg';
 import InformationBarSub from '../InformationBarSub';
 import AppsList from '../AppsList';
 import Header from '../Header';
+import Spinner from '../SpinnerComponent';
 import './AppsPage.css';
 
 class AppsPage extends React.Component {
@@ -123,7 +124,8 @@ const AppsPage = (props) => {
         name,
         project_id: match.params.projectID
       };
-      createApp(appInfo);
+
+      createApp(appInfo, match.params.projectID);
     }
   }
 
@@ -138,10 +140,10 @@ const AppsPage = (props) => {
       error,
     } = this.state;
 
-    console.log(this.props);
-    const { user: { accessToken, data } } = this.props;
+    const { user: { accessToken, data, isCreating } } = this.props;
     const userId = data.id;
     localStorage.setItem('token', accessToken);
+
     return (
       <div className="Page">
         <div className="TopRow">
@@ -219,7 +221,7 @@ const AppsPage = (props) => {
 
             <div className="ModalFormButtons AddAddButtons">
               <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
-              <PrimaryButton label="proceed" onClick={this.handleSubmit} />
+              <PrimaryButton label={isCreating ? <Spinner /> : 'proceed'} onClick={this.handleSubmit} />
             </div>
           </div>
         </Modal>
@@ -238,12 +240,8 @@ const mapStateToProps = ({ user, createAppReducer }) => {
   };
 };
 
-// const mapStateToProps = (state) => (
-//   { user: state.user }
-// );
-
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   createApp
 }, dispatch);
 
-export default connect(mapStateToProps, null)(withRouter(AppsPage));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AppsPage));

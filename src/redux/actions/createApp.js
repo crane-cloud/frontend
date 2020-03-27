@@ -20,14 +20,12 @@ export const createAppFail = (error) => ({
   },
 });
 
-const createApp = (appInfo) => (dispatch) => {
+const createApp = (appInfo, projectID) => (dispatch) => {
   dispatch(startCreatingApp());
 
-  return axios.post(`${API_BASE_URL}/apps`,
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    },
-    appInfo)
+  axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+
+  return axios.post(`${API_BASE_URL}/projects/${projectID}/apps`, appInfo)
     .then((response) => dispatch(createAppSuccess(response)))
     .catch((error) => {
       dispatch(createAppFail(error));
