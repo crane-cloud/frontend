@@ -90,7 +90,7 @@ class AppsPage extends React.Component {
       name,
       uri
     };
-    const { createApp } = this.props;
+    const { createApp, match } = this.props;
 
 
     if (!name || !uri) {
@@ -103,7 +103,7 @@ class AppsPage extends React.Component {
         env_vars: envVars,
         image: uri,
         name,
-        project_id: '123' //! Need to get this from Derek's PR
+        project_id: match.params.projectID
       };
       createApp(appInfo);
     }
