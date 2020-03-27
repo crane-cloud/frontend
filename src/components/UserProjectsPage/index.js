@@ -15,7 +15,7 @@ import PrimaryButton from '../PrimaryButton';
 import InputText from '../InputText';
 import CreateButton from '../ButtonComponent';
 // import AddProjectForm from '../AddProject';
-import { availableClusters } from '../../helpers/allClusters.js';
+import availableClusters from '../../helpers/allClusters.js';
 
 
 let todaysDate = new Date();
