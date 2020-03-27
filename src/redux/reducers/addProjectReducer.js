@@ -1,11 +1,11 @@
 import { START_ADDING_PROJECT, ADD_PROJECT_SUCCESS, ADD_PROJECT_FAILED } from '../actions/actionTypes';
 
 const initialState = {
-  isSending: false,
+  isAdded: false,
   message: 'Add Project'
 };
 
-const AddProjectReducer = ( state = initialState, action) => {
+const addProjectReducer = ( state = initialState, action) => {
   switch (action.type) {
   case ADD_PROJECT_SUCCESS: {
     return {
@@ -36,4 +36,4 @@ const AddProjectReducer = ( state = initialState, action) => {
   }
 };
 
-export default AddProjectReducer;
+export default addProjectReducer;

@@ -2,20 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
 import InformationBarSub from '../InformationBarSub';
 import Header from '../Header';
-import getUserProjects from '../../redux/actions/userProjectsActions';
-import { BigSpinner } from '../SpinnerComponent';
-import ClusterCard from '../ClusterCard';
-import crane from '../../assets/images/craneLogo.png';
+import createProject from '../../redux/actions/userProjectsActions';
 import Modal from '../Modal';
 import PrimaryButton from '../PrimaryButton';
 import InputText from '../InputText';
-
-import CreateButton from '../ButtonComponent';
-// import AddProjectForm from '../AddProject';
+import ProjectList from '../ProjectsList';
 import availableClusters from '../../helpers/allClusters.js';
 
 
@@ -38,8 +32,6 @@ class UserProjectsPage extends React.Component {
   }
 
   componentDidMount() {
-    const { getUserProjects, data } = this.props;
-    getUserProjects(data.id);
     availableClusters()
       .then(res => {
         this.setState({
@@ -77,7 +69,7 @@ class UserProjectsPage extends React.Component {
   }
 
   render() {
-    const { projects, isRetrieving, data } = this.props;
+    const { project, isAdded, data } = this.props;
     const {
       openModal,
       projectName,
@@ -92,42 +84,11 @@ class UserProjectsPage extends React.Component {
           <InformationBarSub header="Projects" showBtn btnAction={this.showForm} />
         </div>
         <div className="MainRow">
-          <div className="ProjectList">
-            {
-              isRetrieving ? (
-                <div className="TableLoading">
-                  <div className="SpinnerWrapper">
-                    <BigSpinner />
-                  </div>
-                </div>
-              ) : (
-                <div className="ProjectList">
-                  { projects.length !== 0 ? (
-                    projects.map((project) => (
-                      <Link to={{ pathname: `/users/${userId}/projects/${project.id}/apps` }} key={project.id}>
-                        <div key={project.id} className="ProjectCardItem">
-                          <ClusterCard
-                            name={project.name}
-                            description={project.alias}
-                            icon={crane}
-                          />
-                        </div>
-                      </Link>
-                    )))
-                    : (
-                      <div className="EmptyList">
-                        <h3>No Projects Yet.</h3>
-                      </div>
-                    )}
-                </div>
-              )
-            }
-          </div>
+          <ProjectList />
           <div className="FooterRow">
             <p>
               Copyright © 2020 Crane Cloud.
               All Rights Reserved.
-
             </p>
           </div>
         </div>
@@ -166,23 +127,23 @@ class UserProjectsPage extends React.Component {
 }
 
 UserProjectsPage.propTypes = {
-  projects: PropTypes.arrayOf(PropTypes.object),
-  isRetrieving: PropTypes.bool
+  project: PropTypes.arrayOf(PropTypes.object),
+  isAdded: PropTypes.bool
 };
 
 UserProjectsPage.defaultProps = {
-  projects: [],
-  isRetrieving: false
+  project: [],
+  isAdded: false
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, projects } = state.UserProjectsReducer;
+  const { isAdded, project } = state.addProjectReducer;
   const { data } = state.user;
-  return { isRetrieving, projects, data };
+  return { isAdded, project, data };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  getUserProjects
+  createProject
 }, dispatch);
 
 export default connect(
