@@ -38,7 +38,7 @@ class VerificationSentPage extends React.Component {
           setTimeout(() => {
             // save user data to store and log them in
             saveUser(response.data.data);
-            history.push(`${response.data.data.id}/projects`);
+            window.location.href = (`${response.data.data.id}/projects`);
           }, 1000);
         }
       })
