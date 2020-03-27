@@ -1,5 +1,4 @@
 header.Header {
-  z-index: 2;
   background-color: #008ac1;
   color: #ffffff;
   display: flex;
@@ -85,13 +84,15 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
 
 .DropDownContent {
   color: #000;
+  background-color: #F9F9F9;
   display: flex;
   flex-direction: column;
+  z-index: 1;
+  position: relative;
+  box-shadow: 0 4px 4px 0 rgba(117, 117, 117, 0.2);
+
 }
 
-.DropDownContent:first-child {
-  margin-top: .5rem;
-}
 
 .DropDownLink {
   cursor: pointer;

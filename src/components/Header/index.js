@@ -54,7 +54,7 @@ const Header = (props) => {
                   <img src={ProfileIcon} alt="profile" />
                 </div>
                 <Link to="#">
-                  <div className="UserNames">
+                  <div className="UserNames" onClick={toggleHidden}>
                     {user.data.name}
                   </div>
                 </Link>

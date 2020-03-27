@@ -5,12 +5,13 @@ import AddClusterForm from '../AddClusterForm';
 import CreateButton from '../ButtonComponent';
 
 function InformationBar(props) {
+  const { header, showBtn } = props;
   return (
     <div className="InformationBar">
 
-      {props.showBtn ? (
+      {showBtn ? (
         <div>
-          <div className="InfoHeader">{ props.header }</div>
+          <div className="InfoHeader">{ header }</div>
           <Popup trigger={<div className="CreateButton"><CreateButton /></div>} modal className="popup">
             {(close) => (
               <AddClusterForm close={close} />
@@ -18,16 +19,9 @@ function InformationBar(props) {
           </Popup>
         </div>
       ) : (
-        <div className="LeftHeader">{ props.header }</div>
+        <div className="LeftHeader">{ header }</div>
       )}
 
-      {/* <div className="DropDownDiv">
-        <span className="NamespaceDropDown">name space</span>
-        <div className="DropDownContent">
-          <div>default</div>
-          <div>monitoring</div>
-        </div>
-      </div> */}
     </div>
   );
 }
