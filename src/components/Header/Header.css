@@ -25,10 +25,17 @@ header.Header {
 }
 
 .HeaderLinks a.HeaderLinkLogin {
-  border: 2px solid #ffffff;
+  border: 2px solid #fff;
   padding: 1rem 3rem;
   margin-left: 2rem;
 }
+
+.TurnLight:hover{
+  transition: 0.4s;
+  background-color: #F1F1F1;
+  color: #000 !important;
+}
+
 
 /* remove focus from logo link - mozilla */
 .LogoLink:focus {
@@ -117,6 +124,7 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   color: white;
   padding: 1rem;
 }
+
 
 @media only screen and (max-width: 640px) {
   .HeaderLinkPricing,.HeaderLinkDocs {

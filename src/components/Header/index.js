@@ -36,7 +36,7 @@ const Header = (props) => {
             <div className="HeaderLinks bold uppercase">
               <Link to="/" className="HeaderLinkPricing">pricing</Link>
               <Link to="/" className="HeaderLinkDocs">docs</Link>
-              <Link to="/login" className="HeaderLinkLogin">login</Link>
+              <Link to="/login" className="HeaderLinkLogin TurnLight">login</Link>
             </div>
           )}
         </div>
@@ -46,7 +46,7 @@ const Header = (props) => {
         <div className="HeaderLinksWrap LoggedIn">
           <div className="OnHeader">
             {match.path === '/' ? (
-              <Link to={`/users/${user.data.id}/projects`} className="HeaderLinkBackToConsole">dashboard</Link>
+              <Link to={`/users/${user.data.id}/projects`} className="HeaderLinkBackToConsole TurnLight">dashboard</Link>
             ) : (
               <>
 
