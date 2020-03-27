@@ -9,7 +9,7 @@ import './LandingPage.css';
 
 const LandingPage = (props) => {
   let { user } = props;
-  if (user === undefined) {
+  if (user.data.id === undefined) {
     user = false;
   }
   return (
