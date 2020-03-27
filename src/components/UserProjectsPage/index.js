@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import { API_BASE_URL } from '../../config';
 import './UserProjectsPage.css';
@@ -51,25 +50,28 @@ class UserProjectsPage extends React.Component {
     });
   }
 
-  handleSubmit() {
-    const project = {
-      projectName: this.state.projectName,
-      alias: this.state.projectName + todaysDate.toISOString(),
-      cluster_ID: this.state.cluster_ID,
-      owner_ID: this.state.data.id
-    };
-
-    this.setState({
-      loading: true
-    });
-  }
-
   showForm() {
     this.setState({ openModal: true });
   }
 
   hideForm() {
     this.setState({ openModal: false });
+  }
+
+  handleSubmit() {
+    const { projectName, cluster_ID } = this.state;
+    const { AddProject, data } = this.props;
+    const project = {
+      alias: projectName + todaysDate.toISOString(),
+      cluster_id: '035f2057-c18d-4baf-9c26-17b38b5dff6c',
+      name: projectName,
+      owner_id: '0b033c1e-1e0e-4197-a279-b9d499d65dd9'
+    };
+
+    AddProject(project);
+    // this.setState({
+    //   loading: true
+    // });
   }
 
   render() {
@@ -120,7 +122,7 @@ class UserProjectsPage extends React.Component {
               />
             </div>
             <div className="ModalFormButtons">
-              <PrimaryButton label="Create project" />
+              <PrimaryButton label="Create project" onClick={this.handleSubmit} />
               <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />
             </div>
           </div>
@@ -140,15 +142,15 @@ UserProjectsPage.defaultProps = {
   isAdded: false
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { isAdded, project } = state.addProjectReducer;
   const { data } = state.user;
   return { isAdded, project, data };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = () => ({
   AddProject
-}, dispatch);
+});
 
 export default connect(
   mapStateToProps,
