@@ -1,6 +1,4 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
 import './InputText.css';
 
 class InputText extends React.Component {
@@ -39,10 +37,4 @@ class InputText extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const { InputBackground } = state;
-  return { InputBackground };
-};
-
-
-export default connect(mapStateToProps)(withRouter(InputText));
+export default InputText;
