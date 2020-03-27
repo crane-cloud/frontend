@@ -9,8 +9,8 @@ import Header from '../Header';
 
 const AppsPage = (props) => {
   const { user: { accessToken, data } } = props;
+  const { match: { params } } = props;
   const userId = data.id;
-  console.log(props);
   localStorage.setItem('token', accessToken);
   return (
     <div className="Page">
@@ -30,7 +30,7 @@ const AppsPage = (props) => {
         />
       </div>
       <div className="MainRow">
-        <AppsList />
+        <AppsList params={params} />
       </div>
       <div className="FooterRow">
         <p>
