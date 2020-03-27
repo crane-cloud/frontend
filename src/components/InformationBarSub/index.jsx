@@ -1,8 +1,8 @@
 import React from 'react';
 import CreateButton from '../ButtonComponent';
-import './InformationBar2.css';
+import './InformationBarSub.css';
 
-function InformationBar2({ header, showBtn, btnAction }) {
+function InformationBarSub({ header, showBtn, btnAction }) {
   return (
     <div className="InformationBar">
 
@@ -19,4 +19,4 @@ function InformationBar2({ header, showBtn, btnAction }) {
     </div>
   );
 }
-export default InformationBar2;
+export default InformationBarSub;

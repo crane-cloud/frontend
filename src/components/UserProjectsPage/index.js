@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
-import InformationBar2 from '../InformationBar2';
+import InformationBarSub from '../InformationBarSub';
 import Header from '../Header';
 import getUserProjects from '../../redux/actions/userProjectsActions';
 import { BigSpinner } from '../SpinnerComponent';
@@ -88,7 +88,7 @@ class UserProjectsPage extends React.Component {
       <div className="Page">
         <div className="TopRow">
           <Header />
-          <InformationBar2 header="Projects" showBtn btnAction={this.showForm} />
+          <InformationBarSub header="Projects" showBtn btnAction={this.showForm} />
         </div>
         <div className="MainRow">
           <div className="ProjectList">
@@ -139,6 +139,7 @@ class UserProjectsPage extends React.Component {
               <h2>Add a project</h2>
             </div>
             <div className="ModalFormInputs">
+              {/* <s> */}
               <InputText
                 placeholder="Project Name"
                 name="projectName"
