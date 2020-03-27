@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import axios from 'axios';
+import { API_BASE_URL } from '../../config';
 import './UserProjectsPage.css';
 import InformationBarSub from '../InformationBarSub';
 import Header from '../Header';
@@ -9,11 +11,11 @@ import AddProject from '../../redux/actions/addProject';
 import Modal from '../Modal';
 import PrimaryButton from '../PrimaryButton';
 import InputText from '../InputText';
-import ProjectList from '../ProjectsList';
+import ProjectsList from '../ProjectsList';
 import availableClusters from '../../helpers/allClusters.js';
 
 
-let todaysDate = new Date();
+const todaysDate = new Date();
 
 class UserProjectsPage extends React.Component {
   constructor(props) {
@@ -32,13 +34,15 @@ class UserProjectsPage extends React.Component {
   }
 
   componentDidMount() {
-    availableClusters()
-      .then((res) => {
-        this.setState({
-          clusters: res.data.clusters
-        });
-        console.log("hello", this.state.clusters);
+    axios.get(`${API_BASE_URL}/clusters`,
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      }).then((res) => {
+      this.setState({
+        clusters: res.data.clusters
       });
+      console.log('hello', this.state.clusters);
+    });
   }
 
   handleChange(e) {
@@ -84,7 +88,7 @@ class UserProjectsPage extends React.Component {
           <InformationBarSub header="Projects" showBtn btnAction={this.showForm} />
         </div>
         <div className="MainRow">
-          <ProjectList />
+          <ProjectsList />
           <div className="FooterRow">
             <p>
               Copyright © 2020 Crane Cloud.

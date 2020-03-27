@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import './ProjectsList.css';
 import getUserProjects from '../../redux/actions/projectsListActions';
@@ -67,15 +66,15 @@ ProjectsList.defaultProps = {
   isRetrieving: false
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { isRetrieving, projects } = state.ProjectsListReducer;
   const { data } = state.user;
   return { isRetrieving, projects, data };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = () => ({
   getUserProjects
-}, dispatch);
+});
 
 export default connect(
   mapStateToProps,
