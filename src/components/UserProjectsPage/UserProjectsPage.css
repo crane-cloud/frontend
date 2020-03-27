@@ -43,3 +43,18 @@
 .CardImageDiv{
     background-size: unset!important;
 }
+
+select{
+  width: 25rem;
+  border: 2px solid black;
+  box-sizing: border-box;
+  /* background-color: transparent; */
+  /* color: #fff; */
+  font-size: inherit;
+  padding: 1rem;
+}
+
+section option{
+    font-size: 16px;
+    color: black;
+}

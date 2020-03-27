@@ -139,7 +139,11 @@ class UserProjectsPage extends React.Component {
               <h2>Add a project</h2>
             </div>
             <div className="ModalFormInputs">
-              {/* <s> */}
+              <select required>
+                <option value="" disabled selected>Pick a Cluster</option>
+                <option value="lime">Lime</option>
+                <option value="coconut">Coconut</option>
+              </select>
               <InputText
                 placeholder="Project Name"
                 name="projectName"
