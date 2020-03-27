@@ -61,6 +61,7 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
 .ProfileIconWrap img {
   width: 3rem;
   align-self: center;
+  cursor: pointer;
 }
 
 .DropDownArrow{
@@ -79,6 +80,7 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
 
 .UserNames {
   font-weight: bold;
+  color: #fff;
 }
 
 .DropDownContent {

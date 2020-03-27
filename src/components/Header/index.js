@@ -49,36 +49,37 @@ const Header = (props) => {
               <Link to={`/users/${user.data.id}/projects`} className="HeaderLinkBackToConsole">dashboard</Link>
             ) : (
               <>
+
                 <div className="ProfileIconWrap">
                   <img src={ProfileIcon} alt="profile" />
                 </div>
-
-                <div className="UserNames">
-                  {user.data.name}
-                </div>
+                <Link to="#">
+                  <div className="UserNames">
+                    {user.data.name}
+                  </div>
+                </Link>
               </>
             )}
 
-            <div className="DropDownArrow"  onClick={toggleHidden} >
-              <img src={DownArrow} alt="down_arrow"/>
+            <div className="DropDownArrow" onClick={toggleHidden}>
+              <img src={DownArrow} alt="down_arrow" />
             </div>
           </div>
 
           {hidden && (
             <div className="BelowHeader">
               <div className="DropDownContent">
-                <Link to="/profile" className="DropDownLink">Profile</Link>
-                <Link to="/account" className="DropDownLink">Account</Link>
-                <Link to="/settings" className="DropDownLink">Settings</Link>
+                <Link to="#" className="DropDownLink">Profile</Link>
+                <Link to="#" className="DropDownLink">Account</Link>
+                <Link to="#" className="DropDownLink">Settings</Link>
                 <div className="DropDownLink" onClick={logout}>Logout</div>
               </div>
             </div>
           )}
         </div>
-      )
-      }
+      )}
 
-    </header >
+    </header>
   );
 };
 
