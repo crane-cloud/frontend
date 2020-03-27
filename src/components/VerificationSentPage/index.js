@@ -18,7 +18,8 @@ class VerificationSentPage extends React.Component {
       email: '',
       isTokenChecked: false,
       isVerificationFailed: false,
-      loading: false
+      loading: false,
+      random: false
     };
   }
 
@@ -35,11 +36,16 @@ class VerificationSentPage extends React.Component {
           });
 
           // redirect to dashboard
-          setTimeout(() => {
-            // save user data to store and log them in
-            saveUser(response.data.data);
-            window.location.href = (`${response.data.data.id}/projects`);
-          }, 1000);
+          // save user data to store and log them in
+          saveUser(response.data.data);
+          this.setState(
+            {
+              random: true
+            },
+            () => {
+              window.location.href = `/users/${response.data.data.id}/projects`;
+            }
+          );
         }
       })
       .catch((error) => {
