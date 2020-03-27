@@ -7,7 +7,26 @@ import PrimaryButton from '../PrimaryButton';
 import './PasswordReset.css';
 
 export default class PasswordReset extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      email: '',
+
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+}
+
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+
   render() {
+    const { email } = this.state;
+
     return (
       <div className="ResetPasswordPageContainer">
         <Header />
@@ -20,6 +39,11 @@ export default class PasswordReset extends React.Component {
             {/* Input fields */}
             <InputText
               placeholder='Email Address'
+              name="email"
+              value={email}
+              onChange={(e) => {
+                this.handleChange(e);
+              }}
             />
 
             <PrimaryButton label="RESET" />
