@@ -50,21 +50,22 @@ class UserProjectsPage extends React.Component {
                       </Link>
                     )))
                     : (
-                      <div className="EmptyList">
-                        <h3>No Projects Yet.</h3>
+                      <div className="NoContentDiv">
+                        You haven’t created any projects yet.
+                        Click the create button to get started.
                       </div>
                     )}
                 </div>
               )
             }
           </div>
-          <div className="FooterRow">
-            <p>
-              Copyright © 2020 Crane Cloud.
-              All Rights Reserved.
-
-            </p>
-          </div>
+        </div>
+        <div className="FooterRow">
+          <p>
+            Copyright © 2020 Crane Cloud.
+            <br />
+            All Rights Reserved.
+          </p>
         </div>
       </div>
     );

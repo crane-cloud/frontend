@@ -214,4 +214,18 @@ body::-webkit-scrollbar-thumb:hover {
 
 /*- ////////////////////////////////// */
 
+/* Other */
+
+.NoContentDiv{
+  margin: auto;
+  margin-top: 10.5rem;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  cursor: pointer;
+}
+
+
 
