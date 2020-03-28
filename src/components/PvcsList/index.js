@@ -32,7 +32,7 @@ class PvcsListPage extends React.Component {
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
-              <InformationBar header="Nodes" showBtn={false} />
+              <InformationBar header="Volume Claims" showBtn={false} />
             </div>
             <div className="ContentSection">
               <div className="ResourcesTable">
