@@ -21,19 +21,20 @@ class PvcsListPage extends React.Component {
   render() {
     const { pvcs, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
+    const { match: { params } } = this.props;
 
     return (
-      <div>
-        <Header />
+      <div className="MainPage">
+        <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
-          <div className="SiteSideNav">
-            <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
+          <div className="SideBarSection">
+            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
           </div>
-          <div className="Content">
-            <div className="UpperBar">
-              <InformationBar header="Pvcs" showBtn={false} />
+          <div className="MainContentSection">
+            <div className="InformationBarSection">
+              <InformationBar header="Nodes" showBtn={false} />
             </div>
-            <div className="LowerBar">
+            <div className="ContentSection">
               <div className="ResourcesTable">
                 <table>
                   <thead>
