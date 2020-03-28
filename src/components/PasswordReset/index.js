@@ -15,52 +15,79 @@ export default class PasswordReset extends React.Component {
     this.state = {
       email: '',
       loading: false,
-      registered: false
+      registered: false,
+      error: ''
 
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.validateEmail = this.validateEmail.bind(this);
   }
 
   handleChange(e) {
+    const { error } = this.state;
     this.setState({
       [e.target.name]: e.target.value
     });
+
+    if (error) {
+      this.setState({
+        error: ''
+      });
+    }
+  }
+
+  validateEmail(email) {
+    // eslint-disable-next-line no-useless-escape
+    const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return emailRegEx.test(String(email).toLowerCase());
   }
 
   handleSubmit() {
     const { email } = this.state;
     const userResetEmail = { email };
 
-    this.setState({
-      loading: true
-    });
+    if (!email) {
+      this.setState({
+        error: 'Please enter your email'
+      });
+    } else if (this.validateEmail(email) === false) {
+      this.setState({
+        loading: false,
+        error: 'Please provide a valid email address'
+      });
+    } else {
 
-    axios
-      .post(`${API_BASE_URL}/users/forgot_password`, userResetEmail)
-      .then((response) => {
-        if (response.data.status === 'success') {
+      this.setState({
+        loading: true
+      });
+
+      axios
+        .post(`${API_BASE_URL}/users/forgot_password`, userResetEmail)
+        .then((response) => {
+          if (response.data.status === 'success') {
+            this.setState({
+              loading: false
+            });
+            setTimeout(() => {
+              this.setState({
+                registered: true
+              });
+            }, 1000);
+          }
+        })
+        .catch((err) => {
           this.setState({
             loading: false
           });
-          setTimeout(() => {
-            this.setState({
-              registered: true
-            });
-          }, 1000);
-        }
-      })
-      .catch((err) => {
-        this.setState({
-          loading: false
         });
-      });
+    }
   }
 
 
   render() {
-    const { email, loading, registered } = this.state;
+    const { email, loading, registered, error } = this.state;
 
     return (
       <div className="ResetPasswordPageContainer">
@@ -68,7 +95,7 @@ export default class PasswordReset extends React.Component {
         {!registered ? (
           <>
             <div className="ResetPasswordContent">
-        
+
               <div className="ResetPasswordContentHeading">
                 <h1>Password Reset</h1>
                 <p>Enter your email address so that we can send you a link to reset your password.</p>
@@ -83,6 +110,12 @@ export default class PasswordReset extends React.Component {
                     this.handleChange(e);
                   }}
                 />
+                {error && (
+                  <div className="ResetPasswordErrorDiv">
+                    {error}
+                  </div>
+                )}
+
 
                 <PrimaryButton
                   label={loading ? <Spinner /> : 'RESET'}
