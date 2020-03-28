@@ -61,33 +61,38 @@ class PodsList extends Component {
           return 0;
         }
       );
-      return <ProgressBar
-      percentage={this.calculatePercentage(ready, count)}
-      fractionLabel={this.displayFraction(ready, count)}
-    />;
+      return (
+        <ProgressBar
+          percentage={this.calculatePercentage(ready, count)}
+          fractionLabel={this.displayFraction(ready, count)}
+        />
+      );
     }
-    return <ProgressBar
-    percentage={this.calculatePercentage(0, 0)}
-    fractionLabel={this.displayFraction(0, 0)}
-  />;;
+    return (
+      <ProgressBar
+        percentage={this.calculatePercentage(0, 0)}
+        fractionLabel={this.displayFraction(0, 0)}
+      />
+    );
   }
 
   render() {
     const { pods, isFetched, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
-    return (
+    const { match: { params } } = this.props;
 
-      <div>
-        <Header />
+    return (
+      <div className="MainPage">
+        <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
-          <div className="SiteSideNav">
-            <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
+          <div className="SideBarSection">
+            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
           </div>
-          <div className="Content">
-            <div className="UpperBar">
+          <div className="MainContentSection">
+            <div className="InformationBarSection">
               <InformationBar header="Pods" showBtn={false} />
             </div>
-            <div className="LowerBar">
+            <div className="ContentSection">
               <div className="ResourcesTable">
                 <table className="PodsTable">
                   <thead>
