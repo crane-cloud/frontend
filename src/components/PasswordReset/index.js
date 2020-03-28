@@ -79,8 +79,10 @@ export default class PasswordReset extends React.Component {
         })
         .catch((err) => {
           this.setState({
-            loading: false
+            loading: false,
+            error: 'Invalid user, please create an account'
           });
+          
         });
     }
   }
