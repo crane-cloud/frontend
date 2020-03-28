@@ -23,17 +23,19 @@ class ClusterResourcesPage extends React.Component {
     localStorage.setItem('clusterName', clusterName);
 
     return (
-      <div>
-        <Header />
+      <div className="MainPage">
+
+        <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
-          <div className="SiteSideNav">
+          <div className="SideBarSection">
             <SideNav clusterName={clusterName} clusterId={params.clusterID} />
           </div>
-          <div className="Content">
-            <div className="UpperBar">
+          <div className="MainContentSection">
+            <div className="InformationBarSection">
               <InformationBar header="Overview" showBtn={false} />
+
             </div>
-            <div className="LowerBar">
+            <div className="ContentSection">
               <ClusterResources
                 resourceCount={resourceCount}
                 myClusterID={params.clusterID}

@@ -7,7 +7,7 @@
     padding-top: 10px;
     overflow-y: scroll;
     overflow-x: hidden;
-    min-height: 132vh;
+    min-height: 100vh;
 }
 
 .ClusterName{
@@ -22,6 +22,15 @@
     cursor: pointer;
     padding: 18px;
     text-transform: uppercase;
+}
+
+.StickTop{
+    position: sticky;
+    top: 0;
+}
+.StickBottom{
+    position: sticky;
+    bottom: 0;
 }
 
 .ClusterName a{

@@ -11,7 +11,7 @@ const SideNav = (props) => {
   const BASE_URL = `/clusters/${clusterId}`;
   return (
     <div className="SideNav">
-      <div className="ClusterName">
+      <div className="ClusterName StickTop">
         <Link to={{ pathname: '/clusters' }}>
           <img src={BackButton} alt="Back Button" />
           <span>&nbsp; &nbsp; &nbsp;</span>
@@ -45,7 +45,7 @@ const SideNav = (props) => {
 
       </div>
 
-      <div className="SideFooter">
+      <div className="SideFooter StickBottom">
         Copyright © 2020 Crane Cloud.
         <br />
         {' '}

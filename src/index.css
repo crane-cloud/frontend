@@ -215,3 +215,61 @@ body::-webkit-scrollbar-thumb:hover {
 /*- ////////////////////////////////// */
 
 
+
+
+/* //// ADMIN DASHBOARD PAGE STYLING  //// */
+
+.MainPage{
+  /* Divided into two rows */
+  margin: 0;
+  background: #F1F1F1;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 80px 4fr;
+  overflow-x: hidden;
+}
+.TopBarSection{
+  background-color: black;
+}
+.MainSection{
+  /* divided into two columns */
+  background-color: #F1F1F1;
+  display: grid;
+  grid-template-columns: 1.4fr 6fr;
+  overflow: hidden;
+}
+
+.SideBarSection{
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+
+.SideBarSection::-webkit-scrollbar {
+  display: none;
+  min-width: fit-content;
+}
+
+
+.SideBarSection{
+  -ms-overflow-style: none;
+}
+
+.MainContentSection{
+  /* divided into two rows */
+  display: grid;
+  grid-template-rows: 80px 4fr;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.MainContentSection::-webkit-scrollbar-thumb {
+  border-radius: 25px;
+  background: #008AC1;
+}
+
+.ContentSection{
+  overflow-x: hidden;
+}
+
+/* //////////////////////////////////////////// */
