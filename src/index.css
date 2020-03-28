@@ -136,7 +136,6 @@ input[type="password"] {
 /*- ///// TABLE STYLING ///////// */
 .ResourcesTable {
   padding: 2rem;
-  height: 100vh;
   overflow-y: auto;
 }
 
@@ -260,7 +259,7 @@ body::-webkit-scrollbar-thumb:hover {
   display: grid;
   grid-template-rows: 80px 4fr;
   overflow: hidden;
-  overflow-y: scroll;
+  
 }
 
 .MainContentSection::-webkit-scrollbar-thumb {
@@ -270,6 +269,7 @@ body::-webkit-scrollbar-thumb:hover {
 
 .ContentSection{
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* //////////////////////////////////////////// */
