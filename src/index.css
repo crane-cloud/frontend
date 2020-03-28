@@ -136,27 +136,10 @@ input[type="password"] {
 /*- ///// TABLE STYLING ///////// */
 .ResourcesTable {
   padding: 2rem;
-  height: 100vh;
-  overflow-y: auto;
 }
 
 .ResourcesTable table thead {
   text-transform: uppercase;
-}
-
-.ResourcesTable::-webkit-scrollbar {
-  width: 10px;
-  height: 0px;
-}
-.ResourcesTable::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-.ResourcesTable::-webkit-scrollbar-thumb {
-  border-radius: 25px;
-  background: #008AC1;
-}
-.ResourcesTable::-webkit-scrollbar-thumb:hover {
-  background: #555;
 }
 
 body::-webkit-scrollbar {
@@ -202,11 +185,11 @@ body::-webkit-scrollbar-thumb:hover {
   font-weight: normal;
 }
 
-.ResourcesTable .TableLoading {
+.TableLoading {
   position: relative;
 }
 
-.TableLoading .SpinnerWrapper {
+.SpinnerWrapper {
   position: absolute;
   width: 100%;
   margin-top: 4rem;
@@ -235,7 +218,7 @@ body::-webkit-scrollbar-thumb:hover {
   /* divided into two columns */
   background-color: #F1F1F1;
   display: grid;
-  grid-template-columns: 1.4fr 6fr;
+  grid-template-columns: 1.3fr 6fr;
   overflow: hidden;
 }
 
@@ -263,14 +246,23 @@ body::-webkit-scrollbar-thumb:hover {
   
 }
 
-.MainContentSection::-webkit-scrollbar-thumb {
-  border-radius: 25px;
-  background: #008AC1;
-}
-
 .ContentSection{
   overflow-x: hidden;
   overflow-y: auto;
+}
+.ContentSection::-webkit-scrollbar {
+  width: 10px;
+  height: 0px;
+}
+.ContentSection::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.ContentSection::-webkit-scrollbar-thumb {
+  border-radius: 25px;
+  background: #008AC1;
+}
+.ContentSection::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 /* //////////////////////////////////////////// */
