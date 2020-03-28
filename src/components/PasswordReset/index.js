@@ -135,7 +135,7 @@ export default class PasswordReset extends React.Component {
         ) : (
           <div className="ResetPasswordSuccessContent">
             <div className="ResetPasswordMessage">
-              <h2>Password has successfully been reset!</h2>
+              <h2>Password  reset link sent!</h2>
               <p>
                 We&apos;ve sent a link to your email address to create a new password:&nbsp;
                 <span>{email}</span>

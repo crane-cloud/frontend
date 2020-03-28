@@ -25,7 +25,6 @@ import DeploymentsPage from './components/DeploymentsPage';
 import UserProjectsPage from './components/UserProjectsPage';
 import AdminProjectsPage from './components/AdminProjectsPage';
 import VerificationSentPage from './components/VerificationSentPage';
-import ForgotPasswordVerification from './components/ForgotPasswordVerification';
 import AdminLoginPage from './components/AdminLoginPage';
 import AppsPage from './components/AppsPage';
 
@@ -50,8 +49,8 @@ const Routes = () => (
       <Route path="/register" component={RegisterPage} />
       <Route path="/new-password" component={CreateNewPassword} />
       <Route path="/verify/:token" component={VerificationSentPage} />
-      <Route path="/reset_password/:token" component={ForgotPasswordVerification} />
-      // projects
+      <Route path="/reset_password/:token" component={CreateNewPassword} />
+      {/* projects */}
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects" component={UserProjectsPage} />
       <ProtectedRoute isAllowed={hasToken} path="/users/:userID/projects/:projectID/apps" component={AppsPage} />
       <ProtectedRoute isAllowed={hasToken} path="/projects" component={AdminProjectsPage} />
