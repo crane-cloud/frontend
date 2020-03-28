@@ -18,6 +18,8 @@ class ForgotPasswordVerification extends React.Component {
   async componentDidMount() {
     const { match, history } = this.props;
     const { token } = match.params;
+    console.log(this.props);
+
 
     await axios
       .get(`${API_BASE_URL}/users/reset_password/${token}`)
