@@ -1,6 +1,7 @@
 import React from 'react';
 import './SideNav.css';
 import { NavLink, Link } from 'react-router-dom';
+import BackButton from '../../assets/images/backButton.svg';
 
 
 const SideNav = (props) => {
@@ -10,7 +11,13 @@ const SideNav = (props) => {
   const BASE_URL = `/clusters/${clusterId}`;
   return (
     <div className="SideNav">
-      <div className="ClusterName"><Link to={{ pathname: `${BASE_URL}/resources` }}>{ clusterName }</Link></div>
+      <div className="ClusterName">
+        <Link to={{ pathname: '/clusters' }}>
+          <img src={BackButton} alt="Back Button" />
+          <span>&nbsp; &nbsp; &nbsp;</span>
+        </Link>
+        <Link to={{ pathname: `${BASE_URL}/resources` }} className="CName">{ clusterName }</Link>
+      </div>
 
       <Link to={{ pathname: `${BASE_URL}/resources` }} className="ListItem">Infrastructure</Link>
       <div>

@@ -19,7 +19,7 @@ class ClusterResourcesPage extends React.Component {
   }
 
   render() {
-    const { resourceCount, clusterName } = this.props;
+    const { resourceCount, clusterName, match: { params } } = this.props;
     localStorage.setItem('clusterName', clusterName);
 
     return (
@@ -27,7 +27,7 @@ class ClusterResourcesPage extends React.Component {
         <Header />
         <div className="MainSection">
           <div className="SiteSideNav">
-            <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
+            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
           </div>
           <div className="Content">
             <div className="UpperBar">
@@ -36,7 +36,7 @@ class ClusterResourcesPage extends React.Component {
             <div className="LowerBar">
               <ClusterResources
                 resourceCount={resourceCount}
-                myClusterID={this.props.match.params.clusterID}
+                myClusterID={params.clusterID}
               />
             </div>
           </div>

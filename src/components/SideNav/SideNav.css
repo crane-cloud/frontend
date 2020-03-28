@@ -18,14 +18,31 @@
     font-size: 16px;
     line-height: 19px;
     color: #fff;
-    margin-top: 20px;
+    margin-top: 15px;
     cursor: pointer;
     padding: 18px;
     text-transform: uppercase;
 }
+
 .ClusterName a{
     color: #fff;
 }
+
+.ClusterName .CName:hover{
+    text-decoration: underline; 
+}
+
+.ClusterName a img{
+    display: inline;
+    height: 13px;
+}
+
+.ClusterName a img:hover{
+    transition: 0.2s;
+    transform: scale(1.5);
+}
+
+
 .SideNav::-webkit-scrollbar {
     display: none;
   }
