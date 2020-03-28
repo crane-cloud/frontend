@@ -33,6 +33,10 @@ export default class PasswordReset extends React.Component {
     const { email } = this.state;
     const userResetEmail = { email };
 
+    this.setState({
+      loading: true
+    });
+
     axios
       .post(`${API_BASE_URL}/users/forgot_password`, userResetEmail)
       .then((response) => {
