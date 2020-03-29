@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
 import './UserProjectsPage.css';
 import InformationBarSub from '../InformationBarSub';
 import Header from '../Header';
@@ -14,8 +12,8 @@ import PrimaryButton from '../PrimaryButton';
 import InputText from '../InputText';
 import ProjectsList from '../ProjectsList';
 
-
-const todaysDate = new Date();
+// create uuid with ccuid prefix
+const CCNSID = "ccuid"+((new Date).getTime().toString(16)+Math.floor(1E7*Math.random()).toString(16));
 
 class UserProjectsPage extends React.Component {
   constructor(props) {
@@ -34,7 +32,7 @@ class UserProjectsPage extends React.Component {
   }
 
   componentDidMount() {
-    const { data, getClustersList } = this.props;
+    const { getClustersList } = this.props;
     // getUserProjects(data.id);
     getClustersList();
   }
@@ -57,10 +55,10 @@ class UserProjectsPage extends React.Component {
     const { projectName, cluster_ID } = this.state;
     const { AddProject, data } = this.props;
     const newProject = {
-      alias: projectName + todaysDate.toISOString(),
+      alias: projectName + CCNSID,
       cluster_id: '035f2057-c18d-4baf-9c26-17b38b5dff6c',
       name: projectName,
-      owner_id: '0b033c1e-1e0e-4197-a279-b9d499d65dd9'
+      owner_id: data.id
     };
     console.log(newProject);
     AddProject(newProject);
@@ -70,19 +68,19 @@ class UserProjectsPage extends React.Component {
   }
 
   render() {
-    const { project, isAdded } = this.props;
+    const { project, isAdded, clusters } = this.props;
     const {
       openModal,
       projectName,
-      cluster_ID,
-      loading
+      // cluster_ID,
+      // loading
     } = this.state;
-    // const clustersList = this.clusters.length > 0
-    // && this.clusters.map((item, i) => {
-    //   return (
-    //     <option key={i} value={item.id}>{item.name}</option>
-    //   );
-    // }, this);
+    console.log(clusters);
+    const clustersList = clusters.length > 0 && clusters.map((item, i) => {
+      return (
+        <option key={i} value={item.id}>{item.name}</option>
+      );
+    });
 
     return (
       <div className="Page">
@@ -110,7 +108,7 @@ class UserProjectsPage extends React.Component {
             <div className="ModalFormInputs">
               <select required>
                 <option value="" disabled selected>Pick a Cluster</option>
-                {/* {clustersList} */}
+                {clustersList}
               </select>
               <InputText
                 placeholder="Project Name"
