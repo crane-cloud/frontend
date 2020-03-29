@@ -20,7 +20,7 @@ class StorageClassList extends Component {
 
   render() {
     const {
-      storageClasses, isFetched, isRetrieving, isRetrieved
+      storageClasses, isFetched, isRetrieving
     } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
@@ -71,7 +71,7 @@ class StorageClassList extends Component {
                     <p>No Storage Classes Available</p>
                   </div>
                 )}
-                {(!isRetrieving && !isRetrieved) && (
+                {(!isRetrieving && !isFetched) && (
                   <div className="NoContentDiv">
                     <p>
                       Oops! Something went wrong!
@@ -95,7 +95,6 @@ class StorageClassList extends Component {
 StorageClassList.propTypes = {
   storageClasses: PropTypes.arrayOf(PropTypes.object),
   isRetrieving: PropTypes.bool,
-  isRetrieved: PropTypes.bool,
   isFetched: PropTypes.bool,
   getStorageClassList: PropTypes.func.isRequired
 };
@@ -105,15 +104,14 @@ StorageClassList.defaultProps = {
   storageClasses: [],
   isRetrieving: false,
   isFetched: false,
-  isRetrieved: false,
 };
 
 export const mapStateToProps = (state) => {
   const {
-    isRetrieving, storageClasses, isFetched, isRetrieved
+    isRetrieving, storageClasses, isFetched
   } = state.storageClassesReducer;
   return {
-    isRetrieving, storageClasses, isFetched, isRetrieved
+    isRetrieving, storageClasses, isFetched
   };
 };
 

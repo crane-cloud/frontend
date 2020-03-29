@@ -9,7 +9,6 @@ const initialState = {
   storageClasses: [],
   isRetrieving: false,
   isFetched: false,
-  isRetrieved: false,
   message: 'Storage Classes Not Available'
 };
 
@@ -21,7 +20,6 @@ const storageClassesReducer = (state = initialState, action) => {
       storageClasses: action.payload,
       isRetrieving: false,
       isFetched: true,
-      isRetrieved: true,
       message: 'All Storage Classes fetched'
     };
 
@@ -30,7 +28,6 @@ const storageClassesReducer = (state = initialState, action) => {
       ...state,
       isFetched: false,
       isRetrieving: true,
-      isRetrieved: false
     };
 
   case GET_STORAGE_CLASS_FAIL:
@@ -39,7 +36,6 @@ const storageClassesReducer = (state = initialState, action) => {
       message: action.payload,
       isFetched: false,
       isRetrieving: false,
-      isRetrieved: false,
     };
 
   default:

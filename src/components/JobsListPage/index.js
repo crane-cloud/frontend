@@ -20,7 +20,7 @@ class JobsListPage extends React.Component {
 
   render() {
     const {
-      jobs, isRetrieving, isFetched, isRetrieved
+      jobs, isRetrieving, isFetched
     } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
@@ -74,7 +74,7 @@ class JobsListPage extends React.Component {
                     <p>No Jobs Available</p>
                   </div>
                 )}
-                {(!isRetrieving && !isRetrieved) && (
+                {(!isRetrieving && !isFetched) && (
                   <div className="NoContentDiv">
                     <p>
                       Oops! Something went wrong!
@@ -94,7 +94,6 @@ class JobsListPage extends React.Component {
 
 JobsListPage.propTypes = {
   jobs: PropTypes.arrayOf(PropTypes.object),
-  isRetrieved: PropTypes.bool,
   isFetched: PropTypes.bool,
   isRetrieving: PropTypes.bool,
 };
@@ -103,15 +102,14 @@ JobsListPage.defaultProps = {
   jobs: [],
   isRetrieving: false,
   isFetched: false,
-  isRetrieved: false,
 };
 
 export const mapStateToProps = (state) => {
   const {
-    isRetrieving, jobs, isFetched, isRetrieved
+    isRetrieving, jobs, isFetched
   } = state.JobsReducer;
   return {
-    isRetrieving, jobs, isFetched, isRetrieved
+    isRetrieving, jobs, isFetched
   };
 };
 

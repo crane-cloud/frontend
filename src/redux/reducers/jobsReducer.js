@@ -9,7 +9,6 @@ const initialState = {
   pvcs: [],
   isRetrieving: false,
   isFetched: false,
-  isRetrieved: false,
   message: 'Cluster Jobs Not Available'
 };
 
@@ -21,7 +20,6 @@ const JobsReducer = (state = initialState, action) => {
       jobs: action.payload,
       isRetrieving: false,
       isFetched: true,
-      isRetrieved: true,
       message: 'All Cluster Jobs fetched'
     };
 
@@ -30,7 +28,6 @@ const JobsReducer = (state = initialState, action) => {
       ...state,
       isRetrieving: true,
       isFetched: false,
-      isRetrieved: false,
     };
 
   case FETCH_JOBS_FAILED:
@@ -39,7 +36,6 @@ const JobsReducer = (state = initialState, action) => {
       message: action.payload,
       isRetrieving: false,
       isFetched: false,
-      isRetrieved: false,
     };
 
   default:

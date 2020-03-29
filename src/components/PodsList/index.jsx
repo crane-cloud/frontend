@@ -112,25 +112,34 @@ class PodsList extends Component {
                       </tr>
                     ) : (
                       <tbody>
-                        {isFetched && pods.pods !== undefined ? (pods.pods.map((pod) => (
-                          <tr>
-                            <td>{pod.metadata.name}</td>
-                            <td>{this.podReady(pod.status.containerStatuses)}</td>
-                            <td><Status status={this.podStatus(pod.status.conditions)} /></td>
-                            <td>{tellAge(pod.metadata.creationTimestamp)}</td>
-                          </tr>
-                        )))
-                          : (
+                        {(isFetched && pods.pods !== undefined) && (
+                          (pods.pods.map((pod) => (
                             <tr>
-                              <div className="EmptyList">
-                                <h3>No Pods Available</h3>
-                              </div>
+                              <td>{pod.metadata.name}</td>
+                              <td>{this.podReady(pod.status.containerStatuses)}</td>
+                              <td><Status status={this.podStatus(pod.status.conditions)} /></td>
+                              <td>{tellAge(pod.metadata.creationTimestamp)}</td>
                             </tr>
-                          )}
+                          )))
+                        )}
                       </tbody>
                     )
                   }
                 </table>
+                {(isFetched && pods.pods.length === 0) && (
+                  <div className="NoContentDiv">
+                    <p>No Pods Available</p>
+                  </div>
+                )}
+                {(!isRetrieving && !isFetched) && (
+                  <div className="NoContentDiv">
+                    <p>
+                      Oops! Something went wrong!
+
+                      Failed to retrieve Pods.
+                    </p>
+                  </div>
+                )}
 
               </div>
             </div>
@@ -144,10 +153,10 @@ class PodsList extends Component {
 
 // inititate props
 PodsList.propTypes = {
-  pods: PropTypes.object,
+  pods: PropTypes.arrayOf(PropTypes.object),
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
-  getPodsList: PropTypes.func
+  getPodsList: PropTypes.func.isRequired
 };
 
 // assigning defaults

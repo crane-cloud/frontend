@@ -81,24 +81,35 @@ class NodesList extends Component {
                       </tr>
                     ) : (
                       <tbody>
-                        {isFetched ? (nodes.nodes.map((node) => (
-                          <tr>
-                            <td>{node.metadata.name}</td>
-                            <td><Status status={this.nodeStatus(node.status.conditions)} /></td>
-                            <td>{ this.getRoles(node) }</td>
-                            <td>{tellAge(node.metadata.creationTimestamp)}</td>
-                            <td>{node.status.nodeInfo.kubeProxyVersion}</td>
-                          </tr>
-                        )))
-                          : (
-                            <div className="EmptyList">
-                              <h3>No Nodes Available</h3>
-                            </div>
-                          )}
+                        {(isFetched && nodes.nodes !== undefined) && (
+                          (nodes.nodes.map((node) => (
+                            <tr>
+                              <td>{node.metadata.name}</td>
+                              <td><Status status={this.nodeStatus(node.status.conditions)} /></td>
+                              <td>{ this.getRoles(node) }</td>
+                              <td>{tellAge(node.metadata.creationTimestamp)}</td>
+                              <td>{node.status.nodeInfo.kubeProxyVersion}</td>
+                            </tr>
+                          )))
+                        )}
                       </tbody>
                     )
                   }
                 </table>
+
+                {(isFetched && nodes.nodes.length === 0) && (
+                  <div className="NoContentDiv">
+                    <p>No Nodes Available</p>
+                  </div>
+                )}
+                {(!isRetrieving && !isFetched) && (
+                  <div className="NoContentDiv">
+                    <p>
+                      Oops! Something went wrong!
+                      Failed to retrieve Nodes.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
