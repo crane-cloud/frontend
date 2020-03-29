@@ -1,5 +1,4 @@
 header.Header {
-  z-index: 2;
   background-color: #008ac1;
   color: #ffffff;
   display: flex;
@@ -26,10 +25,17 @@ header.Header {
 }
 
 .HeaderLinks a.HeaderLinkLogin {
-  border: 2px solid #ffffff;
+  border: 2px solid #fff;
   padding: 1rem 3rem;
   margin-left: 2rem;
 }
+
+.TurnLight:hover{
+  transition: 0.4s;
+  background-color: #F1F1F1;
+  color: #000 !important;
+}
+
 
 /* remove focus from logo link - mozilla */
 .LogoLink:focus {
@@ -61,6 +67,7 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
 .ProfileIconWrap img {
   width: 3rem;
   align-self: center;
+  cursor: pointer;
 }
 
 .DropDownArrow{
@@ -79,17 +86,20 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
 
 .UserNames {
   font-weight: bold;
+  color: #fff;
 }
 
 .DropDownContent {
   color: #000;
+  background-color: #F9F9F9;
   display: flex;
   flex-direction: column;
+  z-index: 1;
+  position: relative;
+  box-shadow: 0 4px 4px 0 rgba(117, 117, 117, 0.2);
+
 }
 
-.DropDownContent:first-child {
-  margin-top: .5rem;
-}
 
 .DropDownLink {
   cursor: pointer;
@@ -114,6 +124,7 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   color: white;
   padding: 1rem;
 }
+
 
 @media only screen and (max-width: 640px) {
   .HeaderLinkPricing,.HeaderLinkDocs {

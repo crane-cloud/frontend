@@ -38,7 +38,7 @@ class AppsList extends Component {
                 </div>
               )))
                 : (
-                  <div className="NoAppsDiv">You haven’t deployed any apps. Click the create button to get started.</div>
+                  <div className="NoContentDiv">You haven’t deployed any apps. Click the create button to get started.</div>
                 )}
             </div>
           )
