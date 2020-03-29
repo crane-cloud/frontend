@@ -1,17 +1,19 @@
 import React from 'react';
 
 import './ClusterCard.css';
-  
-const ClusterCard = (props) => (
 
-  <div className="ClusterCard">
-    <div className="CardImageDiv"style={{backgroundImage:'url('+props.icon+')'}}></div>
-    <div className="BottomContainer">
-      <div className="ClusterCardName">{props.name}</div>
-      <div className="ClusterCardDesc">{props.description}</div>
+const ClusterCard = (props) => {
+  const { name, description, icon } = props;
+  return (
+    <div className="ClusterCard">
+      <div className="CardImageDiv" style={{ backgroundImage: `url(${icon})` }} />
+      <div className="BottomContainer">
+        <div className="ClusterCardName">{name}</div>
+        <div className="ClusterCardDesc">{description}</div>
+      </div>
     </div>
-  </div>
-    
-);
+
+  );
+};
 
 export default ClusterCard;

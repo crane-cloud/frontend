@@ -50,29 +50,24 @@ class DeploymentsPage extends Component {
   render() {
     const clusterName = localStorage.getItem('clusterName');
     const {
-      match,
+      match: { params },
       deployments,
       isFetchingDeployments,
       isFetched
     } = this.props;
 
     return (
-      <div className="DashboardContainer">
-        <div className="DashboardHeaderContainer">
-          <Header />
-        </div>
-        <div className="DashboardMainContainer">
-          <div className="DashboardSideNav">
-            <SideNav
-              clusterName={clusterName}
-              clusterId={match.params.clusterID}
-            />
+      <div className="MainPage">
+        <div className="TopBarSection"><Header /></div>
+        <div className="MainSection">
+          <div className="SideBarSection">
+            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
           </div>
-          <div className="DashboardContentWrap">
-            <div className="DashboardContentInfobar">
-              <InformationBar header="Deployments" />
+          <div className="MainContentSection">
+            <div className="InformationBarSection">
+              <InformationBar header="Deployments" showBtn={false} />
             </div>
-            <div className="DashboardContentMain">
+            <div className="ContentSection">
               <div className="ResourcesTable">
                 <table>
                   <thead className="uppercase">

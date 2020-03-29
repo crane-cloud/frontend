@@ -5,9 +5,8 @@
     mix-blend-mode: normal;
     margin-left: 0px;
     padding-top: 10px;
-    overflow-y: scroll;
     overflow-x: hidden;
-    min-height: 132vh;
+    min-height: 100vh;
 }
 
 .ClusterName{
@@ -18,14 +17,40 @@
     font-size: 16px;
     line-height: 19px;
     color: #fff;
-    margin-top: 20px;
+    margin-top: 15px;
     cursor: pointer;
     padding: 18px;
     text-transform: uppercase;
 }
+
+.StickTop{
+    position: sticky;
+    top: 0;
+}
+.StickBottom{
+    position: sticky;
+    bottom: 0;
+}
+
 .ClusterName a{
     color: #fff;
 }
+
+.ClusterName .CName:hover{
+    text-decoration: underline; 
+}
+
+.ClusterName a img{
+    display: inline;
+    height: 13px;
+}
+
+.ClusterName a img:hover{
+    transition: 0.2s;
+    transform: scale(1.5);
+}
+
+
 .SideNav::-webkit-scrollbar {
     display: none;
   }
