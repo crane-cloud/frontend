@@ -9,7 +9,7 @@
 
 .ClusterName{
     height: 1.8rem;
-    z-index: 5;
+    z-index: 2;
     background-color: #06222F;
     font-family: Roboto, sans-serif;
     font-style: normal;
@@ -17,10 +17,11 @@
     font-size: 16px;
     line-height: 19px;
     color: #fff;
+    margin-top: 15px;
     cursor: pointer;
     padding: 25px 18px 20px 18px;
     text-transform: uppercase;
-    box-shadow: 0 0 12px 0 rgba(121, 121, 121, 0.2);
+    box-shadow: 10px 5px 9px 0 rgba(90, 88, 88, 0.2);
 
 }
 
