@@ -45,13 +45,18 @@ class AppsPage extends React.Component {
   }
 
   handleChange(e) {
+    const { error, createFeedback } = this.state;
     this.setState({
       [e.target.name]: e.target.value
     });
-    this.error = this.state;
-    if (this.error) {
+    if (error) {
       this.setState({
         error: ''
+      });
+    }
+    if (createFeedback) {
+      this.setState({
+        createFeedback: ''
       });
     }
   }
@@ -91,7 +96,8 @@ class AppsPage extends React.Component {
       createApp,
       match,
       isCreating,
-      isCreated
+      isCreated,
+      attempted
     } = this.props;
 
 
@@ -110,7 +116,7 @@ class AppsPage extends React.Component {
 
       await createApp(appInfo, match.params.projectID);
 
-      if (isCreating === false && isCreated === true) {
+      if (attempted === true && isCreated === true) {
         this.setState({
           createFeedback: 'Success! App created!'
         });
@@ -125,7 +131,7 @@ class AppsPage extends React.Component {
         );
       }
 
-      if (isCreating === false && isCreated === false) {
+      if (attempted === true && isCreated === false) {
         this.setState({
           createFeedback: 'Something went wrong. Failed to deploy'
         });
@@ -145,7 +151,7 @@ class AppsPage extends React.Component {
       createFeedback
     } = this.state;
 
-    const { user: { accessToken, data, isCreating } } = this.props;
+    const { match: { params }, user: { accessToken, data, isCreating } } = this.props;
     const userId = data.id;
     localStorage.setItem('token', accessToken);
 
@@ -168,7 +174,7 @@ class AppsPage extends React.Component {
           />
         </div>
         <div className="MainRow">
-          <AppsList />
+          <AppsList params={params} />
         </div>
         <div className="FooterRow">
           <p>
@@ -287,12 +293,15 @@ class AppsPage extends React.Component {
 }
 
 const mapStateToProps = ({ user, createNewApp }) => {
-  const { isCreated, isCreating, app } = createNewApp;
+  const {
+    isCreated, isCreating, app, attempted
+  } = createNewApp;
   return {
     user,
     isCreated,
     isCreating,
-    app
+    app,
+    attempted
   };
 };
 

@@ -4,6 +4,7 @@ const initialState = {
   app: null,
   isCreated: false,
   isCreating: false,
+  attempted: false,
   message: 'Oops! App not created'
 };
 
@@ -15,6 +16,7 @@ const createAppReducer = (state = initialState, action) => {
       app: action.payload,
       isCreating: false,
       isCreated: true,
+      attempted: true,
       message: 'App created successfully'
     };
 
@@ -31,6 +33,7 @@ const createAppReducer = (state = initialState, action) => {
       message: action.payload,
       isCreating: false,
       isCreated: false,
+      attempted: true,
     };
 
   default:
