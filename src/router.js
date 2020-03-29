@@ -49,7 +49,6 @@ const Routes = () => (
       <Route path="/register" component={RegisterPage} />
       <Route path="/new-password" component={CreateNewPassword} />
       <Route path="/verify/:token" component={VerificationSentPage} />
-      // projects
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects" component={UserProjectsPage} />
       <ProtectedRoute isAllowed={hasToken} path="/users/:userID/projects/:projectID/apps" component={AppsPage} />
       <ProtectedRoute isAllowed={hasToken} path="/projects" component={AdminProjectsPage} />
