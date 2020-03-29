@@ -12,7 +12,6 @@ import podsReducer from './podsReducer';
 import storageClassesReducer from './storageClassReducer';
 import JobsReducer from './jobsReducer';
 import getDeployments from './getDeployments';
-import UserProjectsReducer from './userProjectsReducer';
 import AdminProjectsReducer from './AdminProjectsReducer';
 import AppsListReducer from './appsListReducer';
 import ProjectsListReducer from './projectsListReducer';
@@ -33,7 +32,6 @@ export default combineReducers({
   storageClassesReducer,
   deployments: getDeployments,
   JobsReducer,
-  UserProjectsReducer,
   AdminProjectsReducer,
   AppsListReducer,
   ProjectsListReducer,

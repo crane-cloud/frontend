@@ -75,21 +75,20 @@ class UserProjectsPage extends React.Component {
   }
 
   render() {
-    const { project, isAdded, data } = this.props;
+    const { project, isAdded } = this.props;
     const {
       openModal,
       projectName,
       cluster_ID,
       loading
     } = this.state;
-    let clustersList = this.clusters.length > 0
+    const clustersList = this.clusters.length > 0
     && this.clusters.map((item, i) => {
       return (
         <option key={i} value={item.id}>{item.name}</option>
       );
     }, this);
 
-    const userId = data.id;
     return (
       <div className="Page">
         <div className="TopRow">
