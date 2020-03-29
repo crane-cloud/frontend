@@ -87,7 +87,12 @@ class AppsPage extends React.Component {
 
   async handleSubmit() {
     const { name, uri, envVars } = this.state;
-    const { createApp, match, isCreating, isCreated } = this.props;
+    const {
+      createApp,
+      match,
+      isCreating,
+      isCreated
+    } = this.props;
 
 
     if (!name || !uri) {
@@ -204,19 +209,65 @@ class AppsPage extends React.Component {
                   </div>
                 )}
               </div>
-            </Link>
-          )}
-          showBtn
-        />
-      </div>
-      <div className="MainRow">
-        <AppsList params={params} />
-      </div>
-      <div className="FooterRow">
-        <p>
-          Copyright © 2020 Crane Cloud.
-          <br />
-          All Rights Reserved.
+              <div className="ModalFormInputsEnvVars">
+                <h4>Environment Variables</h4>
+                {(Object.keys(envVars).length > 0) && (
+                  <div className="EnvVarsTable">
+                    <table>
+                      <thead>
+                        <tr>
+                          <td>Name</td>
+                          <td>Value</td>
+                          <td>Remove</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {Object.keys(envVars).map((envVar, index) => (
+                          <tr key={uuidv4()}>
+                            <td>{Object.keys(envVars)[index]}</td>
+                            <td>{envVars[Object.keys(envVars)[index]]}</td>
+                            <td>
+                              <img
+                                src={RemoveIcon}
+                                alt="remove_ico"
+                                onClick={() => this.removeEnvVar(index)}
+                              />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+                <div className="EnvVarsInputGroup">
+                  <div className="EnvVarsInputs">
+                    <InputText
+                      placeholder="Name"
+                      name="varName"
+                      value={varName}
+                      onChange={(e) => {
+                        this.handleChange(e);
+                      }}
+                    />
+                    <InputText
+                      placeholder="Value"
+                      name="varValue"
+                      value={varValue}
+                      onChange={(e) => {
+                        this.handleChange(e);
+                      }}
+                    />
+                  </div>
+                  <div className="EnvVarsAddBtn">
+                    <PrimaryButton
+                      label="add"
+                      onClick={this.addEnvVar}
+                      className="EnvVarAddBtn"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div className="ModalFormButtons AddAddButtons">
               <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
