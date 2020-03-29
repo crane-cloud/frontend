@@ -142,10 +142,10 @@ export default class CreateNewPassword extends React.Component {
             <div className="NewPasswordMessage">
               <h2>New password successfully created!</h2>
               <p>
-                You&apos;ve successfully create a new password,
+                You&apos;ve successfully created a new password,
                 <br />
                 <br />
-                please login to use it.
+                Please login to use it.
               </p>
             </div>
           </div>
