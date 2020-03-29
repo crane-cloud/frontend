@@ -24,7 +24,7 @@ class VerificationSentPage extends React.Component {
   }
 
   async componentDidMount() {
-    const { match, history, saveUser } = this.props;
+    const { match, saveUser } = this.props;
     const { token } = match.params;
 
     await axios
