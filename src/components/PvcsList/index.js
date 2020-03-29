@@ -19,7 +19,7 @@ class PvcsListPage extends React.Component {
   }
 
   render() {
-    const { pvcs, isRetrieving } = this.props;
+    const { pvcs, isRetrieving, isFetched } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
 
@@ -53,7 +53,7 @@ class PvcsListPage extends React.Component {
                       </tr>
                     ) : (
                       <tbody>
-                        {pvcs.length !== 0 ? (
+                        {(isFetched && pvcs !== undefined) && (
                           pvcs.map((pvc) => (
                             <tr>
                               <td>{pvc.metadata.name}</td>
@@ -61,18 +61,27 @@ class PvcsListPage extends React.Component {
                               <td>{tellAge(pvc.metadata.creationTimestamp)}</td>
                             </tr>
 
-                          )))
-                          : (
-                            <tr>
-                              <div className="EmptyList">
-                                <h3>No Pvcs Available</h3>
-                              </div>
-                            </tr>
-                          )}
+                          ))
+                        )}
                       </tbody>
                     )
                   }
                 </table>
+
+                {(isFetched && pvcs.length === 0) && (
+                  <div className="NoContentDiv">
+                    <p>No Volume Claims Available</p>
+                  </div>
+                )}
+                {(!isRetrieving && !isFetched) && (
+                  <div className="NoContentDiv">
+                    <p>
+                      Oops! Something went wrong!
+
+                      Failed to retrieve Volume Claims.
+                    </p>
+                  </div>
+                )}
 
               </div>
             </div>
@@ -86,16 +95,19 @@ class PvcsListPage extends React.Component {
 PvcsListPage.propTypes = {
   pvcs: PropTypes.object,
   isRetrieving: PropTypes.bool,
+  isFetched: PropTypes.bool,
+
 };
 
 PvcsListPage.defaultProps = {
   pvcs: [],
   isRetrieving: false,
+  isFetched: false,
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, pvcs } = state.PvcsReducer;
-  return { isRetrieving, pvcs };
+  const { isRetrieving, pvcs, isFetched } = state.PvcsReducer;
+  return { isRetrieving, pvcs, isFetched };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({

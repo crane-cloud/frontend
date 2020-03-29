@@ -18,7 +18,7 @@ class PvsListPage extends React.Component {
   }
 
   render() {
-    const { pvs, isRetrieving } = this.props;
+    const { pvs, isRetrieving, isFetched } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
 
@@ -54,7 +54,7 @@ class PvsListPage extends React.Component {
                       </tr>
                     ) : (
                       <tbody>
-                        {pvs.length !== 0 ? (
+                        {(isFetched && pvs !== undefined) && (
                           pvs.map((pv) => (
                             <tr>
                               <td>{pv.metadata.name}</td>
@@ -63,19 +63,27 @@ class PvsListPage extends React.Component {
                               <td><Status status={pv.status.phase} /></td>
                               <td>{pv.spec.capacity.storage}</td>
                             </tr>
-
-                          )))
-                          : (
-                            <tr>
-                              <div className="EmptyList">
-                                <h3>No Volumes Available</h3>
-                              </div>
-                            </tr>
-                          )}
+                          ))
+                        )}
                       </tbody>
                     )
                   }
                 </table>
+
+                {(isFetched && pvs.length === 0) && (
+                  <div className="NoContentDiv">
+                    <p>No Volumes Available</p>
+                  </div>
+                )}
+                {(!isRetrieving && !isFetched) && (
+                  <div className="NoContentDiv">
+                    <p>
+                      Oops! Something went wrong!
+
+                      Failed to retrieve Volumes.
+                    </p>
+                  </div>
+                )}
 
               </div>
             </div>
@@ -89,16 +97,18 @@ class PvsListPage extends React.Component {
 PvsListPage.propTypes = {
   pvs: PropTypes.object,
   isRetrieving: PropTypes.bool,
+  isFetched: PropTypes.bool,
 };
 
 PvsListPage.defaultProps = {
   pvs: [],
   isRetrieving: false,
+  isFetched: false
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, pvs } = state.PvsReducer;
-  return { isRetrieving, pvs };
+  const { isRetrieving, pvs, isFetched } = state.PvsReducer;
+  return { isRetrieving, pvs, isFetched };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({

@@ -54,13 +54,13 @@ class StorageClassList extends Component {
                     ) : (
                       <tbody>
                         {(isFetched && storageClasses.storage_classes !== undefined) && (
-                          (storageClasses.storage_classes.map((storageClass) => (
+                          storageClasses.storage_classes.map((storageClass) => (
                             <tr>
                               <td>{storageClass.metadata.name}</td>
                               <td>{storageClass.provisioner}</td>
                               <td>{tellAge(storageClass.metadata.creationTimestamp)}</td>
                             </tr>
-                          )))
+                          ))
                         )}
                       </tbody>
                     )

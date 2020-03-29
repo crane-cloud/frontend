@@ -8,6 +8,7 @@ import {
 const initialState = {
   pvcs: [],
   isRetrieving: false,
+  isFetched: false,
   message: 'Cluster pvcs Not Available'
 };
 
@@ -18,19 +19,22 @@ const PvcsReducer = (state = initialState, action) => {
       ...state,
       pvcs: action.payload,
       isRetrieving: false,
+      isFetched: true,
       message: 'All Cluster Pvcs fetched'
     };
 
   case IS_FETCHING:
     return {
       ...state,
-      isRetrieving: true
+      isRetrieving: true,
+      isFetched: false,
     };
 
   case FETCH_PVCS_FAILED:
     return {
       ...state,
       message: action.payload,
+      isFetched: false,
       isRetrieving: false
     };
 
