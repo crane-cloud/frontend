@@ -27,7 +27,6 @@ const ClustersReducer = (state = initialState, action) => {
     return {
       ...state,
       isRetrieving: true,
-      isRetrieved: false
     };
 
   case GET_CLUSTERS_FAIL:

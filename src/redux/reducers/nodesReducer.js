@@ -25,7 +25,6 @@ const NodesReducer = (state = initialState, action) => {
   case START_GETTING_NODES:
     return {
       ...state,
-      isFetched: false,
       isRetrieving: true
     };
 

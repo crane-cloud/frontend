@@ -17,7 +17,7 @@ const PvsReducer = (state = initialState, action) => {
     return {
       ...state,
       pvs: action.payload,
-      isFetched: false,
+      isFetched: true,
       isRetrieving: false,
       message: 'All Cluster Volumes fetched'
     };
@@ -25,7 +25,6 @@ const PvsReducer = (state = initialState, action) => {
   case IS_FETCHING:
     return {
       ...state,
-      isFetched: false,
       isRetrieving: true
     };
 

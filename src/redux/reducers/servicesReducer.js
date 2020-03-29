@@ -6,6 +6,7 @@ import {
 
 const initialState = {
   services: [],
+  isFetched: false,
   isRetrieving: false,
   message: 'Cluster Services Not Available'
 };
@@ -16,6 +17,7 @@ const ServicesReducer = (state = initialState, action) => {
     return {
       ...state,
       services: action.payload,
+      isFetched: true,
       isRetrieving: false,
       message: 'All Cluster Services fetched'
     };
@@ -29,6 +31,7 @@ const ServicesReducer = (state = initialState, action) => {
   case FETCH_SERVICES_FAILED:
     return {
       ...state,
+      isFetched: false,
       message: action.payload,
       isRetrieving: false
     };

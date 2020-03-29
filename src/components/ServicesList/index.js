@@ -33,7 +33,7 @@ class ServicesListPage extends React.Component {
   }
 
   render() {
-    const { services, isRetrieving } = this.props;
+    const { services, isRetrieving, isFetched } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
 
@@ -68,7 +68,7 @@ class ServicesListPage extends React.Component {
                       </tr>
                     ) : (
                       <tbody>
-                        {services.length !== 0 ? (
+                        {(isFetched && services !== undefined) && (
                           services.map((service) => (
                             <tr>
                               <td>{service.metadata.name}</td>
@@ -76,19 +76,28 @@ class ServicesListPage extends React.Component {
                               <td>{service.spec.clusterIP}</td>
                               <td>{this.showPorts(service.spec.ports)}</td>
                             </tr>
-
-                          )))
-                          : (
-                            <tr>
-                              <div className="EmptyList">
-                                <h3>No Services Available</h3>
-                              </div>
-                            </tr>
-                          )}
+                          ))
+                        )}
                       </tbody>
                     )
                   }
                 </table>
+
+                {(isFetched && services.length === 0) && (
+                  <div className="NoContentDiv">
+                    <p>No Services Available</p>
+                  </div>
+                )}
+                {(!isRetrieving && !isFetched) && (
+                  <div className="NoContentDiv">
+                    <p>
+                      Oops! Something went wrong!
+
+                      Failed to retrieve Services.
+                    </p>
+                  </div>
+                )}
+
 
               </div>
             </div>
@@ -100,18 +109,20 @@ class ServicesListPage extends React.Component {
 }
 
 ServicesListPage.propTypes = {
-  services: PropTypes.object,
+  services: PropTypes.arrayOf(PropTypes.object),
+  isFetched: PropTypes.bool,
   isRetrieving: PropTypes.bool,
 };
 
 ServicesListPage.defaultProps = {
   services: [],
   isRetrieving: false,
+  isFetched: false,
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, services } = state.ServicesReducer;
-  return { isRetrieving, services };
+  const { isRetrieving, services, isFetched } = state.ServicesReducer;
+  return { isRetrieving, services, isFetched };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({

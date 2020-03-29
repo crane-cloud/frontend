@@ -27,15 +27,14 @@ const JobsReducer = (state = initialState, action) => {
     return {
       ...state,
       isRetrieving: true,
-      isFetched: false,
     };
 
   case FETCH_JOBS_FAILED:
     return {
       ...state,
       message: action.payload,
-      isRetrieving: false,
       isFetched: false,
+      isRetrieving: false,
     };
 
   default:

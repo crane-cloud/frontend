@@ -26,7 +26,6 @@ const storageClassesReducer = (state = initialState, action) => {
   case START_GETTING_STORAGE_CLASS:
     return {
       ...state,
-      isFetched: false,
       isRetrieving: true,
     };
 

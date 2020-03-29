@@ -26,7 +26,6 @@ const PodsReducer = (state = initialState, action) => {
   case START_GETTING_PODS:
     return {
       ...state,
-      isFetched: false,
       isRetrieving: true
     };
 

@@ -27,7 +27,6 @@ const PvcsReducer = (state = initialState, action) => {
     return {
       ...state,
       isRetrieving: true,
-      isFetched: false,
     };
 
   case FETCH_PVCS_FAILED:
