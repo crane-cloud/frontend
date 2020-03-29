@@ -68,15 +68,15 @@ class NamespacesListPage extends React.Component {
                   }
                 </table>
                 {(isRetrieved && namespacesList.length === 0) && (
-                  <div className="FailedToRetrieveMsg">
+                  <div className="NoContentDiv">
                     <p>No namespaces available</p>
                   </div>
                 )}
                 {(!isRetrieving && !isRetrieved) && (
-                  <div className="FailedToRetrieveMsg">
+                  <div className="NoContentDiv">
                     <p>
                       Oops! Something went wrong!
-                      <br />
+
                       Failed to retrieve namespaces.
                     </p>
                   </div>

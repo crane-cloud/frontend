@@ -19,7 +19,9 @@ class StorageClassList extends Component {
 
 
   render() {
-    const { storageClasses, isFetched, isRetrieving } = this.props;
+    const {
+      storageClasses, isFetched, isRetrieving, isRetrieved
+    } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
 
@@ -51,22 +53,33 @@ class StorageClassList extends Component {
                       </tr>
                     ) : (
                       <tbody>
-                        {isFetched && storageClasses.storage_classes !== undefined
-                          ? (storageClasses.storage_classes.map((storageClass) => (
+                        {(isFetched && storageClasses.storage_classes !== undefined) && (
+                          (storageClasses.storage_classes.map((storageClass) => (
                             <tr>
                               <td>{storageClass.metadata.name}</td>
                               <td>{storageClass.provisioner}</td>
                               <td>{tellAge(storageClass.metadata.creationTimestamp)}</td>
                             </tr>
-                          ))) : (
-                            <div className="EmptyList">
-                              <h3>No Storage Classes Available</h3>
-                            </div>
-                          )}
+                          )))
+                        )}
                       </tbody>
                     )
                   }
                 </table>
+                {(isFetched && storageClasses.storage_classes.length === 0) && (
+                  <div className="NoContentDiv">
+                    <p>No Storage Classes Available</p>
+                  </div>
+                )}
+                {(!isRetrieving && !isRetrieved) && (
+                  <div className="NoContentDiv">
+                    <p>
+                      Oops! Something went wrong!
+
+                      Failed to retrieve Storage Classes.
+                    </p>
+                  </div>
+                )}
 
               </div>
             </div>
@@ -82,6 +95,7 @@ class StorageClassList extends Component {
 StorageClassList.propTypes = {
   storageClasses: PropTypes.arrayOf(PropTypes.object),
   isRetrieving: PropTypes.bool,
+  isRetrieved: PropTypes.bool,
   isFetched: PropTypes.bool,
   getStorageClassList: PropTypes.func.isRequired
 };
@@ -91,11 +105,16 @@ StorageClassList.defaultProps = {
   storageClasses: [],
   isRetrieving: false,
   isFetched: false,
+  isRetrieved: false,
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, storageClasses, isFetched } = state.storageClassesReducer;
-  return { isRetrieving, storageClasses, isFetched };
+  const {
+    isRetrieving, storageClasses, isFetched, isRetrieved
+  } = state.storageClassesReducer;
+  return {
+    isRetrieving, storageClasses, isFetched, isRetrieved
+  };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
