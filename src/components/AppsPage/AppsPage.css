@@ -147,3 +147,7 @@
 .EnvVarsTable table tbody::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.AppFormErrorDiv.CreateSuccess {
+  color: green;
+}
