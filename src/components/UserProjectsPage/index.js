@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import { API_BASE_URL } from '../../config';
 import './UserProjectsPage.css';
 import InformationBarSub from '../InformationBarSub';
 import Header from '../Header';
 import AddProject from '../../redux/actions/addProject';
+import getClustersList from '../../redux/actions/ClustersActions';
 import Modal from '../Modal';
 import PrimaryButton from '../PrimaryButton';
 import InputText from '../InputText';
 import ProjectsList from '../ProjectsList';
-import availableClusters from '../../helpers/allClusters.js';
 
 
 const todaysDate = new Date();
@@ -33,15 +34,9 @@ class UserProjectsPage extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(`${API_BASE_URL}/clusters`,
-      {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      }).then((res) => {
-      this.setState({
-        clusters: res.data.clusters
-      });
-      console.log('hello', this.state.clusters);
-    });
+    const { data, getClustersList } = this.props;
+    // getUserProjects(data.id);
+    getClustersList();
   }
 
   handleChange(e) {
@@ -82,12 +77,12 @@ class UserProjectsPage extends React.Component {
       cluster_ID,
       loading
     } = this.state;
-    const clustersList = this.clusters.length > 0
-    && this.clusters.map((item, i) => {
-      return (
-        <option key={i} value={item.id}>{item.name}</option>
-      );
-    }, this);
+    // const clustersList = this.clusters.length > 0
+    // && this.clusters.map((item, i) => {
+    //   return (
+    //     <option key={i} value={item.id}>{item.name}</option>
+    //   );
+    // }, this);
 
     return (
       <div className="Page">
@@ -115,7 +110,7 @@ class UserProjectsPage extends React.Component {
             <div className="ModalFormInputs">
               <select required>
                 <option value="" disabled selected>Pick a Cluster</option>
-                {clustersList}
+                {/* {clustersList} */}
               </select>
               <InputText
                 placeholder="Project Name"
@@ -138,24 +133,27 @@ class UserProjectsPage extends React.Component {
 }
 
 UserProjectsPage.propTypes = {
+  clusters: PropTypes.arrayOf(PropTypes.object),
   project: PropTypes.arrayOf(PropTypes.object),
   isAdded: PropTypes.bool
 };
 
 UserProjectsPage.defaultProps = {
+  clusters: [],
   project: [],
   isAdded: false
 };
 
 const mapStateToProps = (state) => {
   const { isAdded, project } = state.addProjectReducer;
+  const { clusters } = state.ClustersReducer;
   const { data } = state.user;
-  return { isAdded, project, data };
+  return { isAdded, project, data, clusters };
 };
 
-const mapDispatchToProps = () => ({
-  AddProject
-});
+export const mapDispatchToProps = (dispatch) => bindActionCreators({
+  AddProject, getClustersList
+}, dispatch);
 
 export default connect(
   mapStateToProps,
