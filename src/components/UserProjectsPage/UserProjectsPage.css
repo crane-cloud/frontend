@@ -15,17 +15,6 @@
     width: 100%;
 }
 
-.FooterRow{
-    width: 100%;
-    bottom: 0;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 14px;
-    color: #06222F;
-    margin: 30px 30px;
-}
 
 .ProjectList{
     display: flex;
@@ -39,6 +28,7 @@
     margin: 25px 25px;
     color: black;
 }
+<<<<<<< HEAD
 
 .CardImageDiv{
     background-size: unset!important;
@@ -58,3 +48,5 @@ section option{
     font-size: 16px;
     color: black;
 }
+=======
+>>>>>>> 01506375726288e17a0942177e84e76f2a3c388f
