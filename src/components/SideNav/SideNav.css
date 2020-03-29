@@ -4,33 +4,31 @@
     background: #06222F;
     mix-blend-mode: normal;
     margin-left: 0px;
-    padding-top: 10px;
     overflow-x: hidden;
-    min-height: 100vh;
 }
 
 .ClusterName{
-    height: 21px;
+    height: 1.8rem;
+    z-index: 5;
+    background-color: #06222F;
     font-family: Roboto, sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 16px;
     line-height: 19px;
     color: #fff;
-    margin-top: 15px;
     cursor: pointer;
-    padding: 18px;
+    padding: 25px 18px 20px 18px;
     text-transform: uppercase;
+    box-shadow: 0 0 12px 0 rgba(121, 121, 121, 0.2);
+
 }
 
 .StickTop{
     position: sticky;
     top: 0;
 }
-.StickBottom{
-    position: sticky;
-    bottom: 0;
-}
+
 
 .ClusterName a{
     color: #fff;
@@ -61,6 +59,7 @@
 }
 .ListItem{
     height: 21px;
+    background-color: #06222F;
     font-family: Roboto, sans-serif;
     font-style: normal;
     font-weight: bold;
