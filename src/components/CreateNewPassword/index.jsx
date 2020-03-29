@@ -145,7 +145,7 @@ export default class CreateNewPassword extends React.Component {
                 You&apos;ve successfully create a new password,
                 <br />
                 <br />
-                Click Login to use it.
+                please login to use it.
               </p>
             </div>
           </div>
