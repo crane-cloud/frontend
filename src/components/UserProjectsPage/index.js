@@ -53,7 +53,7 @@ class UserProjectsPage extends React.Component {
 
   handleSubmit() {
     const { projectName, cluster_ID } = this.state;
-    const { AddProject, data } = this.props;
+    const { AddProject, data, isAdded } = this.props;
     const newProject = {
       alias: projectName + CCNSID,
       cluster_id: '035f2057-c18d-4baf-9c26-17b38b5dff6c',
@@ -65,6 +65,15 @@ class UserProjectsPage extends React.Component {
     // this.setState({
     //   loading: true
     // });
+    if (isAdded === true) {
+      setTimeout(
+        () => {
+          this.setState({
+            openModal: false
+          });
+        }, 1000
+      );
+    }
   }
 
   render() {
@@ -76,11 +85,10 @@ class UserProjectsPage extends React.Component {
       // loading
     } = this.state;
     console.log(clusters);
-    const clustersList = clusters.length > 0 && clusters.map((item, i) => {
-      return (
-        <option key={i} value={item.id}>{item.name}</option>
-      );
-    });
+    const clustersList = clusters.length > 0
+      && clusters.map((item, i) => (
+      <option key={i} value={item.id}>{item.name}</option>
+    ));
 
     return (
       <div className="Page">
@@ -106,10 +114,19 @@ class UserProjectsPage extends React.Component {
               <h2>Add a project</h2>
             </div>
             <div className="ModalFormInputs">
+              {/* <label htmlFor={name}>{label}</label> */}
+
               <select required>
-                <option value="" disabled selected>Pick a Cluster</option>
+                {/* <option value="" disabled selected>Pick a Cluster</option> */}
                 {clustersList}
+                {/* <option value="" /> */}
+                {/* {clusters.map((cluster) => (
+                  <option key={cluster.id} value={cluster.id}>
+                    {cluster.name}
+                  </option>
+                ))} */}
               </select>
+
               <InputText
                 placeholder="Project Name"
                 name="projectName"
