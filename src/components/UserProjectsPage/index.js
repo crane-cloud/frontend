@@ -13,7 +13,7 @@ import InputText from '../InputText';
 import ProjectsList from '../ProjectsList';
 
 // create uuid with ccuid prefix
-const CCNSID = "ccuid"+((new Date).getTime().toString(16)+Math.floor(1E7*Math.random()).toString(16));
+const CCNSID = `ccuid${(new Date()).getTime().toString(16) + Math.floor(1E7 * Math.random()).toString(16)}`;
 
 class UserProjectsPage extends React.Component {
   constructor(props) {
@@ -87,8 +87,15 @@ class UserProjectsPage extends React.Component {
     console.log(clusters);
     const clustersList = clusters.length > 0
       && clusters.map((item, i) => (
-      <option key={i} value={item.id}>{item.name}</option>
+        <option key={i} value={item.id}>{item.name}</option>
+      ), this);
+
+    let options = clusters.clusters.map((data) => (
+      <option key={data.id} value={data.id}>
+        {data.name}
+      </option>
     ));
+
 
     return (
       <div className="Page">
@@ -118,7 +125,7 @@ class UserProjectsPage extends React.Component {
 
               <select required>
                 {/* <option value="" disabled selected>Pick a Cluster</option> */}
-                {clustersList}
+                {options}
                 {/* <option value="" /> */}
                 {/* {clusters.map((cluster) => (
                   <option key={cluster.id} value={cluster.id}>
