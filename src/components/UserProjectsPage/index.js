@@ -84,18 +84,10 @@ class UserProjectsPage extends React.Component {
       // cluster_ID,
       // loading
     } = this.state;
-    console.log(clusters);
-    const clustersList = clusters.length > 0
-      && clusters.map((item, i) => (
+    const clustersList = clusters.clusters.length > 0
+      && clusters.clusters.map((item, i) => (
         <option key={i} value={item.id}>{item.name}</option>
-      ), this);
-
-    let options = clusters.clusters.map((data) => (
-      <option key={data.id} value={data.id}>
-        {data.name}
-      </option>
-    ));
-
+      ));
 
     return (
       <div className="Page">
@@ -121,17 +113,14 @@ class UserProjectsPage extends React.Component {
               <h2>Add a project</h2>
             </div>
             <div className="ModalFormInputs">
-              {/* <label htmlFor={name}>{label}</label> */}
-
-              <select required>
-                {/* <option value="" disabled selected>Pick a Cluster</option> */}
-                {options}
-                {/* <option value="" /> */}
-                {/* {clusters.map((cluster) => (
-                  <option key={cluster.id} value={cluster.id}>
-                    {cluster.name}
-                  </option>
-                ))} */}
+              <select
+                onChange={(e) => {
+                  this.handleChange(e);
+                }}
+                required
+              >
+                <option value="" disabled selected>Pick a Cluster</option>
+                {clustersList}
               </select>
 
               <InputText
