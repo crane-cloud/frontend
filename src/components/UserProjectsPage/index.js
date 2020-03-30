@@ -65,7 +65,7 @@ class UserProjectsPage extends React.Component {
     // this.setState({
     //   loading: true
     // });
-    
+
     if (isAdded === true) {
       setTimeout(
         () => {
