@@ -66,13 +66,9 @@ class UserProjectsPage extends React.Component {
     // });
 
     if (isAdded === true) {
-      setTimeout(
-        () => {
-          this.setState({
-            openModal: false
-          });
-        }, 1000
-      );
+      this.setState({
+        openModal: false
+      });
     }
   }
 
