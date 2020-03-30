@@ -9,7 +9,7 @@ function InformationBar(props) {
   return (
     <div className="InformationBar">
 
-      {showBtn ? (
+      {props.showBtn ? (
         <div>
           <div className="InfoHeader">{ header }</div>
           <Popup trigger={<div className="CreateButton"><CreateButton /></div>} modal className="popup">

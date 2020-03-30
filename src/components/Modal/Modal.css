@@ -13,29 +13,43 @@
   position: absolute;
   width: auto;
   min-height: 100px;
-  padding: 1rem;
+  height: 80%;
+  padding: 2rem;
   background: #fff;
   display: flex;
   flex-direction: column;
 }
 
-.ModalHeaderSection {
-  position: relative;
-  height: 2rem;
-}
-
-.CloseModalBtn {
-  position: absolute;
-  right: 0;
-  border: none;
-  outline: none;
-  background: inherit;
-  color: #000;
-  height: 1.5rem;
-  width: 1.5rem;
-  cursor: pointer;
-}
-
 .ModalContentSection {
+  height: 100%;
+}
+
+.ModalForm {
+  display: grid;
+  gap: 1rem;
+}
+
+.ModalFormHeading {
+  font-weight: bold;
+  margin-bottom: 1rem;  
+}
+
+.ModalForm .ModalFormInputs {
+  display: grid;
+  gap: 1rem;
+}
+
+.ModalForm .ModalFormInputs .InputText {
+  border: 2px solid #000000;
+  color: #000;
+}
+
+.ModalForm .ModalFormInputs .InputText::placeholder {
+  color: #000;
+}
+
+.ModalForm .ModalFormButtons {
   margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
 }
