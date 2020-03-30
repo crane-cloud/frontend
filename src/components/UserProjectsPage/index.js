@@ -56,11 +56,10 @@ class UserProjectsPage extends React.Component {
     const { AddProject, data, isAdded } = this.props;
     const newProject = {
       alias: projectName + CCNSID,
-      cluster_id: '035f2057-c18d-4baf-9c26-17b38b5dff6c',
+      cluster_id: clusterID,
       name: projectName,
       owner_id: data.id
     };
-    console.log(clusterID);
     AddProject(newProject);
     // this.setState({
     //   loading: true
@@ -115,7 +114,7 @@ class UserProjectsPage extends React.Component {
             </div>
             <div className="ModalFormInputs">
               <select
-                name="cluster_ID"
+                name="clusterID"
                 value={this.state.value}
                 onChange={(e) => {
                   this.handleChange(e);
