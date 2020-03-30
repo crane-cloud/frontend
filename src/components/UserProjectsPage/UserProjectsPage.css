@@ -2,8 +2,8 @@
     margin: 0;
     background: #F1F1F1;
     min-height: 100vh;
-    display: grid;
-    grid-template-rows: 150px 3fr 100px;
+    display: flex;
+    flex-direction: column;
     overflow-x: hidden;
 }
 
@@ -26,5 +26,24 @@
 
 .ProjectCardItem{
     margin: 25px 25px;
+    color: black;
+}
+
+.CardImageDiv{
+    background-size: unset!important;
+}
+
+select{
+  width: 25rem;
+  border: 2px solid black;
+  box-sizing: border-box;
+  /* background-color: transparent; */
+  /* color: #fff; */
+  font-size: inherit;
+  padding: 1rem;
+}
+
+section option{
+    font-size: 16px;
     color: black;
 }

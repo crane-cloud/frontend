@@ -12,9 +12,10 @@ import podsReducer from './podsReducer';
 import storageClassesReducer from './storageClassReducer';
 import JobsReducer from './jobsReducer';
 import getDeployments from './getDeployments';
-import UserProjectsReducer from './userProjectsReducer';
 import AdminProjectsReducer from './AdminProjectsReducer';
 import AppsListReducer from './appsListReducer';
+import UserProjectsReducer from './userProjectsReducer';
+import addProjectReducer from './addProjectReducer';
 import createAppReducer from './createApp';
 
 
@@ -32,8 +33,9 @@ export default combineReducers({
   storageClassesReducer,
   deployments: getDeployments,
   JobsReducer,
-  UserProjectsReducer,
   AdminProjectsReducer,
   AppsListReducer,
+  UserProjectsReducer,
+  addProjectReducer,
   createNewApp: createAppReducer
 });
