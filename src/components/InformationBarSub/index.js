@@ -4,7 +4,7 @@ import './InformationBarSub.css';
 
 function InformationBarSub({ header, showBtn, btnAction }) {
   return (
-    <div className="InformationBar">
+    <div className="InformationBarSub">
 
       {showBtn ? (
         <div>

@@ -1,22 +1,15 @@
 import React from 'react';
-import { withRouter, Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
-import createApp from '../../redux/actions/createApp';
-import PrimaryButton from '../PrimaryButton';
 import InputText from '../BlackInputText';
+import PrimaryButton from '../PrimaryButton';
+import Header from '../Header';
+import InformationBarSub from '../InformationBarSub';
 import Modal from '../Modal';
 import RemoveIcon from '../../assets/images/remove.svg';
-import BackButton from '../../assets/images/backButton.svg';
-import InformationBarSub from '../InformationBarSub';
-import AppsList from '../AppsList';
-import Header from '../Header';
-import Spinner from '../SpinnerComponent';
-import './AppsPage.css';
+import './CreateAppForm.css';
 
-class AppsPage extends React.Component {
-  constructor(props) {
-    super(props);
+class CreateAppForm extends React.Component {
+  constructor() {
+    super();
     this.state = {
       name: '',
       uri: '',
@@ -24,8 +17,7 @@ class AppsPage extends React.Component {
       varValue: '',
       envVars: {},
       openModal: false, // add project modal is closed initially
-      error: '',
-      createFeedback: ''
+      error: ''
     };
 
     this.addEnvVar = this.addEnvVar.bind(this);
@@ -45,18 +37,13 @@ class AppsPage extends React.Component {
   }
 
   handleChange(e) {
-    const { error, createFeedback } = this.state;
     this.setState({
       [e.target.name]: e.target.value
     });
-    if (error) {
+    this.error = this.state;
+    if (this.error) {
       this.setState({
         error: ''
-      });
-    }
-    if (createFeedback) {
-      this.setState({
-        createFeedback: ''
       });
     }
   }
@@ -88,17 +75,83 @@ class AppsPage extends React.Component {
     }, {});
 
     this.setState({ envVars: newEnvVars });
+    console.log(envVars);
   }
 
-  async handleSubmit() {
+  addEnvVar() {
+    const { varName, varValue } = this.state;
+    const newEnvVar = {
+      name: varName,
+      value: varValue
+    };
+
+    if (varName && varValue) {
+      this.setState((prevState) => ({
+        envVars: {
+          ...prevState.envVars,
+          [varName]: varValue
+        }
+      }));
+      this.setState({
+        varName: '', varValue: ''
+      });
+    }
+  }
+
+  removeEnvVar(index) {
+    const { envVars } = this.state;
+    const keyToRemove = Object.keys(envVars)[index];
+    const newEnvVars = Object.keys(envVars).reduce((object, key) => {
+      if (key !== keyToRemove) {
+        object[key] = envVars[key];
+      }
+      return object;
+    }, {});
+
+    this.setState({ envVars: newEnvVars });
+    console.log(envVars);
+  }
+
+  addEnvVar() {
+    const { varName, varValue } = this.state;
+    const newEnvVar = {
+      name: varName,
+      value: varValue
+    };
+
+    if (varName && varValue) {
+      this.setState((prevState) => ({
+        envVars: {
+          ...prevState.envVars,
+          [varName]: varValue
+        }
+      }));
+      this.setState({
+        varName: '', varValue: ''
+      });
+    }
+  }
+
+  removeEnvVar(index) {
+    const { envVars } = this.state;
+    const keyToRemove = Object.keys(envVars)[index];
+    const newEnvVars = Object.keys(envVars).reduce((object, key) => {
+      if (key !== keyToRemove) {
+        object[key] = envVars[key];
+      }
+      return object;
+    }, {});
+
+    this.setState({ envVars: newEnvVars });
+    console.log(envVars);
+  }
+
+  handleSubmit() {
     const { name, uri, envVars } = this.state;
-    const {
-      createApp,
-      match,
-      isCreating,
-      isCreated,
-      attempted
-    } = this.props;
+    const app = {
+      name,
+      uri
+    };
 
 
     if (!name || !uri) {
@@ -107,37 +160,12 @@ class AppsPage extends React.Component {
         error: 'Please enter the App Name and Image Uri'
       });
     } else {
-      const appInfo = {
-        env_vars: envVars,
-        image: uri,
-        name,
-        project_id: match.params.projectID
-      };
-
-      await createApp(appInfo, match.params.projectID);
-
-      if (attempted === true && isCreated === true) {
-        this.setState({
-          createFeedback: 'Success! App created!'
-        });
-
-        setTimeout(
-          () => {
-            this.setState({
-              openModal: false,
-              createFeedback: ''
-            });
-          }, 1000
-        );
-      }
-
-      if (attempted === true && isCreated === false) {
-        this.setState({
-          createFeedback: 'Something went wrong. Failed to deploy'
-        });
-      }
+      // we shall add that here
+      console.log(app);
+      console.log(envVars);
     }
   }
+
 
   render() {
     const {
@@ -148,40 +176,15 @@ class AppsPage extends React.Component {
       varValue,
       envVars,
       error,
-      createFeedback
     } = this.state;
 
-    const { match: { params }, user: { accessToken, data, isCreating } } = this.props;
-    const userId = data.id;
-    localStorage.setItem('token', accessToken);
-
     return (
+      // this is a dummy page where we'll check our modal...
+      // Later, We'll throw it away and use Allan's page
       <div className="Page">
         <div className="TopRow">
           <Header />
-          <InformationBarSub
-            header={(
-              <Link to={{ pathname: `/users/${userId}/projects/` }}>
-                <div className="BackDiv">
-                  <img src={BackButton} alt="Back Button" />
-                  {' '}
-                  <p>&nbsp; Apps</p>
-                </div>
-              </Link>
-            )}
-            showBtn
-            btnAction={this.showForm}
-          />
-        </div>
-        <div className="MainRow">
-          <AppsList params={params} />
-        </div>
-        <div className="FooterRow">
-          <p>
-            Copyright © 2020 Crane Cloud.
-            <br />
-            All Rights Reserved.
-          </p>
+          <InformationBarSub header="App" showBtn btnAction={this.showForm} />
         </div>
 
         {/* Modal for creating a new project
@@ -229,7 +232,8 @@ class AppsPage extends React.Component {
                       </thead>
                       <tbody>
                         {Object.keys(envVars).map((envVar, index) => (
-                          <tr key={uuidv4()}>
+                          // I'm adding date.now coz I'm so tired
+                          <tr key={Date.now()}>
                             <td>{Object.keys(envVars)[index]}</td>
                             <td>{envVars[Object.keys(envVars)[index]]}</td>
                             <td>
@@ -277,14 +281,8 @@ class AppsPage extends React.Component {
 
             <div className="ModalFormButtons AddAddButtons">
               <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
-              <PrimaryButton label={isCreating ? <Spinner /> : 'proceed'} onClick={this.handleSubmit} />
+              <PrimaryButton label="proceed" onClick={this.handleSubmit} />
             </div>
-            {createFeedback && (
-              <div
-                className={createFeedback.startsWith('Success') ? 'AppFormErrorDiv CreateSuccess' : 'AppFormErrorDiv CreateFail'}>
-                {createFeedback}
-              </div>
-            )}
           </div>
         </Modal>
       </div>
@@ -292,17 +290,4 @@ class AppsPage extends React.Component {
   }
 }
 
-const mapStateToProps = ({ user, createNewApp }) => {
-  const {
-    isCreated, isCreating, app, attempted
-  } = createNewApp;
-  return {
-    user,
-    isCreated,
-    isCreating,
-    app,
-    attempted
-  };
-};
-
-export default connect(mapStateToProps, { createApp })(withRouter(AppsPage));
+export default CreateAppForm;

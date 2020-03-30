@@ -24,3 +24,8 @@
   color: #000000;
   background-color: #ffffff;
 }
+
+.Primary-Btn.CancelBtn:hover {
+  color: #fff;
+  background-color: #000;
+}
