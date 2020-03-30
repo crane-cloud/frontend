@@ -24,7 +24,7 @@ const createApp = (appInfo, projectID) => (dispatch) => {
 
   axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
 
-  axios.post(`${API_BASE_URL}/projects/${projectID}/apps`, appInfo)
+  return axios.post(`${API_BASE_URL}/projects/${projectID}/apps`, appInfo)
     .then((response) => dispatch(createAppSuccess(response)))
     .catch((error) => {
       dispatch(createAppFail(error));
