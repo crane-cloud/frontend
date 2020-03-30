@@ -19,24 +19,26 @@ class ClusterResourcesPage extends React.Component {
   }
 
   render() {
-    const { resourceCount, clusterName } = this.props;
+    const { resourceCount, clusterName, match: { params } } = this.props;
     localStorage.setItem('clusterName', clusterName);
 
     return (
-      <div>
-        <Header />
+      <div className="MainPage">
+
+        <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
-          <div className="SiteSideNav">
-            <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
+          <div className="SideBarSection">
+            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
           </div>
-          <div className="Content">
-            <div className="UpperBar">
+          <div className="MainContentSection">
+            <div className="InformationBarSection">
               <InformationBar header="Overview" showBtn={false} />
+
             </div>
-            <div className="LowerBar">
+            <div className="ContentSection">
               <ClusterResources
                 resourceCount={resourceCount}
-                myClusterID={this.props.match.params.clusterID}
+                myClusterID={params.clusterID}
               />
             </div>
           </div>

@@ -134,29 +134,12 @@ input[type="password"] {
 
 
 /*- ///// TABLE STYLING ///////// */
-.ResourcesTable {
-  padding: 2rem;
-  height: 100vh;
-  overflow-y: auto;
+.ResourcesTable{
+  padding-top: 2rem;
 }
 
 .ResourcesTable table thead {
   text-transform: uppercase;
-}
-
-.ResourcesTable::-webkit-scrollbar {
-  width: 10px;
-  height: 0px;
-}
-.ResourcesTable::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-.ResourcesTable::-webkit-scrollbar-thumb {
-  border-radius: 25px;
-  background: #008AC1;
-}
-.ResourcesTable::-webkit-scrollbar-thumb:hover {
-  background: #555;
 }
 
 body::-webkit-scrollbar {
@@ -190,11 +173,13 @@ body::-webkit-scrollbar-thumb:hover {
 .ResourcesTable table th:first-child, 
 .ResourcesTable table td:first-child {
   text-align: left;
+  padding-left: 2rem;
 }
 
 .ResourcesTable table th:last-child,
 .ResourcesTable table td:last-child {
   text-align: right;
+  padding-right: 2rem;
 }
 
 .ResourcesTable table td {
@@ -202,14 +187,19 @@ body::-webkit-scrollbar-thumb:hover {
   font-weight: normal;
 }
 
-.ResourcesTable .TableLoading {
+.TableLoading {
   position: relative;
 }
 
-.TableLoading .SpinnerWrapper {
+.SpinnerWrapper {
   position: absolute;
   width: 100%;
   margin-top: 4rem;
+}
+
+.ResourcesTable table tr:hover{
+  background-color: #e0e0e0;
+  cursor: pointer;
 }
 
 /*- ////////////////////////////////// */
@@ -229,3 +219,70 @@ body::-webkit-scrollbar-thumb:hover {
 
 
 
+
+
+/* //// ADMIN DASHBOARD PAGE STYLING  //// */
+
+.MainPage{
+  /* Divided into two rows */
+  margin: 0;
+  background: #F1F1F1;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 80px 4fr;
+  overflow-x: hidden;
+}
+.TopBarSection{
+  background-color: black;
+}
+.MainSection{
+  /* divided into two columns */
+  background-color: #F1F1F1;
+  display: grid;
+  grid-template-columns: 1.3fr 6fr;
+  overflow: hidden;
+}
+
+.SideBarSection{
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.SideBarSection::-webkit-scrollbar {
+  display: none;
+  min-width: fit-content;
+}
+
+
+.SideBarSection{
+  -ms-overflow-style: none;
+}
+
+.MainContentSection{
+  /* divided into two rows */
+  display: grid;
+  grid-template-rows: 80px 4fr;
+  overflow: hidden;
+  
+}
+
+.ContentSection{
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.ContentSection::-webkit-scrollbar {
+  width: 10px;
+  height: 0px;
+}
+.ContentSection::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.ContentSection::-webkit-scrollbar-thumb {
+  border-radius: 25px;
+  background: #008AC1;
+}
+.ContentSection::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* //////////////////////////////////////////// */

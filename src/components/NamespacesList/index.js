@@ -22,21 +22,20 @@ class NamespacesListPage extends React.Component {
   render() {
     const { namespacesList, isRetrieving, isRetrieved } = this.props;
     const clusterName = localStorage.getItem('clusterName');
+    const { match: { params } } = this.props;
 
     return (
-      <div className="DashboardContainer">
-        <div className="DashboardHeaderContainer">
-          <Header />
-        </div>
-        <div className="DashboardMainContainer">
-          <div className="DashboardSideNav">
-            <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
+      <div className="MainPage">
+        <div className="TopBarSection"><Header /></div>
+        <div className="MainSection">
+          <div className="SideBarSection">
+            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
           </div>
-          <div className="DashboardContentWrap">
-            <div className="DashboardContentInfobar">
+          <div className="MainContentSection">
+            <div className="InformationBarSection">
               <InformationBar header="Namespaces" showBtn={false} />
             </div>
-            <div className="DashboardContentMain">
+            <div className="ContentSection">
               <div className="ResourcesTable">
                 <table className="NamespacesTable">
                   <thead>
@@ -106,8 +105,12 @@ NamespacesListPage.defaultProps = {
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieved, isRetrieving, namespacesList, clusterName } = state.NamespacesListReducer;
-  return { isRetrieved, isRetrieving, namespacesList, clusterName };
+  const {
+    isRetrieved, isRetrieving, namespacesList, clusterName
+  } = state.NamespacesListReducer;
+  return {
+    isRetrieved, isRetrieving, namespacesList, clusterName
+  };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
