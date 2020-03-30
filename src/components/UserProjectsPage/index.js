@@ -77,11 +77,11 @@ class UserProjectsPage extends React.Component {
   }
 
   render() {
-    const { project, isAdded, clusters } = this.props;
+    const { clusters } = this.props;
     const {
       openModal,
       projectName,
-      clusterID,
+      // clusterID,
       // loading
     } = this.state;
     const clustersList = clusters.clusters.length > 0
@@ -121,7 +121,7 @@ class UserProjectsPage extends React.Component {
                 }}
                 required
               >
-                <option value="" disabled selected>Pick a Cluster</option>
+                <option disabled selected>Pick a Cluster</option>
                 {clustersList}
               </select>
 
