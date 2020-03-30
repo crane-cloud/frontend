@@ -115,7 +115,7 @@ class UserProjectsPage extends React.Component {
             <div className="ModalFormInputs">
               <select
                 name="cluster_ID"
-                value={clusterID}
+                value={this.state.value}
                 onChange={(e) => {
                   this.handleChange(e);
                 }}
