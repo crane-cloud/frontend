@@ -20,6 +20,7 @@ class ProjectsList extends React.Component {
   render() {
     const { projects, isRetrieving, data } = this.props;
     const userId = data.id;
+    console.log(projects);
     return (
       <div className="ProjectList">
         {

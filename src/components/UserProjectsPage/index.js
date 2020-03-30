@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
 import InformationBarSub from '../InformationBarSub';
 import Header from '../Header';
@@ -10,7 +11,11 @@ import getClustersList from '../../redux/actions/ClustersActions';
 import Modal from '../Modal';
 import PrimaryButton from '../PrimaryButton';
 import InputText from '../InputText';
-import ProjectsList from '../ProjectsList';
+import getUserProjects from '../../redux/actions/projectsListActions';
+import { BigSpinner } from '../SpinnerComponent';
+import ClusterCard from '../ClusterCard';
+import crane from '../../assets/images/craneLogo.png';
+
 
 // create uuid with ccuid prefix
 const CCNSID = `ccuid${(new Date()).getTime().toString(16) + Math.floor(1E7 * Math.random()).toString(16)}`;
@@ -32,8 +37,8 @@ class UserProjectsPage extends React.Component {
   }
 
   componentDidMount() {
-    const { getClustersList } = this.props;
-    // getUserProjects(data.id);
+    const { getClustersList, data } = this.props;
+    getUserProjects(data.id);
     getClustersList();
   }
 
@@ -73,13 +78,15 @@ class UserProjectsPage extends React.Component {
   }
 
   render() {
-    const { clusters } = this.props;
+    // const { clusters } = this.props;
     const {
       openModal,
       projectName,
       // clusterID,
       // loading
     } = this.state;
+    const { projects, clusters, isRetrieving, data } = this.props;
+    const userId = data.id;
     const clustersList = clusters.clusters.length > 0
       && clusters.clusters.map((item, i) => (
         <option key={i} value={item.id}>{item.name}</option>
@@ -92,7 +99,38 @@ class UserProjectsPage extends React.Component {
           <InformationBarSub header="Projects" showBtn btnAction={this.showForm} />
         </div>
         <div className="MainRow">
-          <ProjectsList />
+          <div className="ProjectList">
+            {
+              isRetrieving ? (
+                <div className="TableLoading">
+                  <div className="SpinnerWrapper">
+                    <BigSpinner />
+                  </div>
+                </div>
+              ) : (
+                <div className="ProjectList">
+                  { projects.length !== 0 ? (
+                    projects.map((project) => (
+                      <Link to={{ pathname: `/users/${userId}/projects/${project.id}/apps` }} key={project.id}>
+                        <div key={project.id} className="ProjectCardItem">
+                          <ClusterCard
+                            name={project.name}
+                            description={project.alias}
+                            icon={crane}
+                          />
+                        </div>
+                      </Link>
+                    )))
+                    : (
+                      <div className="NoContentDiv">
+                        You haven’t created any projects yet.
+                        Click the create button to get started.
+                      </div>
+                    )}
+                </div>
+              )
+            }
+          </div>
           <div className="FooterRow">
             <p>
               Copyright © 2020 Crane Cloud.
@@ -144,24 +182,29 @@ class UserProjectsPage extends React.Component {
 UserProjectsPage.propTypes = {
   clusters: PropTypes.object,
   project: PropTypes.object,
-  isAdded: PropTypes.bool
+  isAdded: PropTypes.bool,
+  projects: PropTypes.arrayOf(PropTypes.object),
+  isRetrieving: PropTypes.bool
 };
 
 UserProjectsPage.defaultProps = {
   clusters: {},
   project: {},
-  isAdded: false
+  isAdded: false,
+  projects: [],
+  isRetrieving: false
 };
 
 const mapStateToProps = (state) => {
   const { isAdded, project } = state.addProjectReducer;
   const { clusters } = state.ClustersReducer;
+  const { isRetrieving, projects } = state.ProjectsListReducer;
   const { data } = state.user;
-  return { isAdded, project, data, clusters };
+  return { isAdded, project, data, isRetrieving, projects, clusters };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  AddProject, getClustersList
+  AddProject, getClustersList, getUserProjects
 }, dispatch);
 
 export default connect(
