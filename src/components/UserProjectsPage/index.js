@@ -21,7 +21,7 @@ class UserProjectsPage extends React.Component {
     this.state = {
       openModal: false, // add project modal is closed initially
       projectName: '',
-      cluster_ID: '',
+      clusterID: '',
       clusters: [],
     };
 
@@ -52,7 +52,7 @@ class UserProjectsPage extends React.Component {
   }
 
   handleSubmit() {
-    const { projectName, cluster_ID } = this.state;
+    const { projectName, clusterID } = this.state;
     const { AddProject, data, isAdded } = this.props;
     const newProject = {
       alias: projectName + CCNSID,
@@ -60,7 +60,7 @@ class UserProjectsPage extends React.Component {
       name: projectName,
       owner_id: data.id
     };
-    console.log(newProject);
+    console.log(clusterID);
     AddProject(newProject);
     // this.setState({
     //   loading: true
@@ -81,7 +81,7 @@ class UserProjectsPage extends React.Component {
     const {
       openModal,
       projectName,
-      // cluster_ID,
+      clusterID,
       // loading
     } = this.state;
     const clustersList = clusters.clusters.length > 0
@@ -114,6 +114,8 @@ class UserProjectsPage extends React.Component {
             </div>
             <div className="ModalFormInputs">
               <select
+                name="cluster_ID"
+                value={clusterID}
                 onChange={(e) => {
                   this.handleChange(e);
                 }}
@@ -144,14 +146,14 @@ class UserProjectsPage extends React.Component {
 }
 
 UserProjectsPage.propTypes = {
-  clusters: PropTypes.arrayOf(PropTypes.object),
-  project: PropTypes.arrayOf(PropTypes.object),
+  clusters: PropTypes.object,
+  project: PropTypes.object,
   isAdded: PropTypes.bool
 };
 
 UserProjectsPage.defaultProps = {
-  clusters: [],
-  project: [],
+  clusters: {},
+  project: {},
   isAdded: false
 };
 
