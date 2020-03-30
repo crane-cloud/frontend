@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
+import AddProject from '../../redux/actions/addProject';
 import InformationBarSub from '../InformationBarSub';
 import Header from '../Header';
-import AddProject from '../../redux/actions/addProject';
-import getClustersList from '../../redux/actions/ClustersActions';
-import Modal from '../Modal';
 import PrimaryButton from '../PrimaryButton';
-import InputText from '../InputText';
+import Modal from '../Modal';
+import getClustersList from '../../redux/actions/ClustersActions';
 import getUserProjects from '../../redux/actions/projectsListActions';
+import InputText from '../InputText';
 import { BigSpinner } from '../SpinnerComponent';
 import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/craneLogo.png';
@@ -37,10 +37,11 @@ class UserProjectsPage extends React.Component {
   }
 
   componentDidMount() {
-    const { getClustersList, data } = this.props;
+    const { getClustersList, getUserProjects, data } = this.props;
     getUserProjects(data.id);
     getClustersList();
   }
+
 
   handleChange(e) {
     this.setState({
@@ -77,6 +78,7 @@ class UserProjectsPage extends React.Component {
     }
   }
 
+
   render() {
     // const { clusters } = this.props;
     const {
@@ -85,12 +87,14 @@ class UserProjectsPage extends React.Component {
       // clusterID,
       // loading
     } = this.state;
-    const { projects, clusters, isRetrieving, data } = this.props;
+    const {
+      projects, clusters, isRetrieving, data
+    } = this.props;
     const userId = data.id;
     const clustersList = clusters.clusters.length > 0
-      && clusters.clusters.map((item, i) => (
-        <option key={i} value={item.id}>{item.name}</option>
-      ));
+        && clusters.clusters.map((item, i) => (
+          <option key={i} value={item.id}>{item.name}</option>
+        ));
 
     return (
       <div className="Page">
@@ -131,12 +135,13 @@ class UserProjectsPage extends React.Component {
               )
             }
           </div>
-          <div className="FooterRow">
-            <p>
-              Copyright © 2020 Crane Cloud.
-              All Rights Reserved.
-            </p>
-          </div>
+        </div>
+        <div className="FooterRow">
+          <p>
+            Copyright © 2020 Crane Cloud.
+            <br />
+            All Rights Reserved.
+          </p>
         </div>
 
         {/* Modal for creating a new project
@@ -180,10 +185,10 @@ class UserProjectsPage extends React.Component {
 }
 
 UserProjectsPage.propTypes = {
+  projects: PropTypes.arrayOf(PropTypes.object),
   clusters: PropTypes.object,
   project: PropTypes.object,
   isAdded: PropTypes.bool,
-  projects: PropTypes.arrayOf(PropTypes.object),
   isRetrieving: PropTypes.bool
 };
 
@@ -195,16 +200,16 @@ UserProjectsPage.defaultProps = {
   isRetrieving: false
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
+  const { data } = state.user;
   const { isAdded, project } = state.addProjectReducer;
   const { clusters } = state.ClustersReducer;
-  const { isRetrieving, projects } = state.ProjectsListReducer;
-  const { data } = state.user;
+  const { isRetrieving, projects } = state.UserProjectsReducer;
   return { isAdded, project, data, isRetrieving, projects, clusters };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  AddProject, getClustersList, getUserProjects
+  getUserProjects, AddProject, getClustersList,
 }, dispatch);
 
 export default connect(
