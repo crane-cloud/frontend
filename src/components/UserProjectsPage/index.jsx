@@ -80,7 +80,7 @@ class UserProjectsPage extends React.Component {
 
 
   render() {
-    // const { clusters } = this.props;
+    const { clusters } = this.props;
     const {
       openModal,
       projectName,
@@ -88,11 +88,11 @@ class UserProjectsPage extends React.Component {
       // loading
     } = this.state;
     const {
-      projects, clusters, isRetrieving, data
+      projects, isRetrieving, data
     } = this.props;
     const userId = data.id;
-    console.log(this.state);
-    const clustersList = clusters.length === 0
+    // console.log(clusters);
+    const clustersList = clusters.length > 0
         && clusters.map((item, i) => (
           <option key={i} value={item.id}>{item.name}</option>
         ));
@@ -206,7 +206,9 @@ export const mapStateToProps = (state) => {
   const { isAdded, project } = state.addProjectReducer;
   const { clusters } = state.ClustersReducer;
   const { isRetrieving, projects } = state.UserProjectsReducer;
-  return { isAdded, project, data, isRetrieving, projects, clusters };
+  return {
+    isAdded, project, data, isRetrieving, projects, clusters
+  };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
