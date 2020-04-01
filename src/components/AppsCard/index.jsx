@@ -16,7 +16,13 @@ const AppsCard = (props) => {
             <td className="OtherData">
               <div className="StatusData">
                 <Status status={status} />
-                <img src={DotsImg} alt="three dots" />
+                <div className="AppDropDown">
+                  <img src={DotsImg} alt="three dots" className="DropDownImg" />
+                  <div className="AppDropDownContent">
+                    <a href="#">Delete</a>
+                    <a href="#">Update</a>
+                  </div>
+                </div>
               </div>
             </td>
           </tr>
@@ -24,6 +30,8 @@ const AppsCard = (props) => {
       </div>
       <div className="AppUrlText">Url :</div>
       <div className="AppUrl"><a target="_blank" rel="noopener noreferrer" href={url}>{url}</a></div>
+
+
     </div>
   );
 };
