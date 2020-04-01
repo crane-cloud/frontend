@@ -17,7 +17,6 @@ const getDeployments = (state = initialState, action) => {
     return {
       ...state,
       isFetchingDeployments: true,
-      isFetched: false
     };
 
   case GET_DEPLOYMENTS_SUCCESS:
@@ -32,8 +31,8 @@ const getDeployments = (state = initialState, action) => {
     return {
       ...state,
       message: action.payload,
+      isFetched: false,
       isFetchingDeployments: false,
-      isFetched: false
     };
 
   default:

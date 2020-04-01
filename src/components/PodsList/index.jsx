@@ -80,6 +80,8 @@ class PodsList extends Component {
     const { pods, isFetched, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
+    console.log(pods);
+
 
     return (
       <div className="MainPage">
@@ -112,25 +114,32 @@ class PodsList extends Component {
                       </tr>
                     ) : (
                       <tbody>
-                        {isFetched && pods.pods !== undefined ? (pods.pods.map((pod) => (
+                        {isFetched && pods.pods !== undefined && (pods.pods.map((pod) => (
                           <tr>
                             <td>{pod.metadata.name}</td>
                             <td>{this.podReady(pod.status.containerStatuses)}</td>
                             <td><Status status={this.podStatus(pod.status.conditions)} /></td>
                             <td>{tellAge(pod.metadata.creationTimestamp)}</td>
                           </tr>
-                        )))
-                          : (
-                            <tr>
-                              <div className="EmptyList">
-                                <h3>No Pods Available</h3>
-                              </div>
-                            </tr>
-                          )}
+                        )))}
                       </tbody>
                     )
                   }
                 </table>
+                {(isFetched && pods.pods.length === 0) && (
+                  <div className="NoContentDiv">
+                    <p>No Pods Available</p>
+                  </div>
+                )}
+                {(!isRetrieving && !isFetched) && (
+                  <div className="NoContentDiv">
+                    <p>
+                      Oops! Something went wrong!
+
+                      Failed to retrieve Pods.
+                    </p>
+                  </div>
+                )}
 
               </div>
             </div>

@@ -26,15 +26,14 @@ const NamespacesListReducer = (state = initialState, action) => {
     return {
       ...state,
       isRetrieving: true,
-      isRetrieved: false,
     };
 
   case FETCH_NAMESPACES_FAILED:
     return {
       ...state,
       message: action.payload,
+      isRetrieved: true,
       isRetrieving: false,
-      isRetrieved: false,
     };
   default:
     return state;

@@ -19,7 +19,9 @@ class JobsListPage extends React.Component {
   }
 
   render() {
-    const { jobs, isRetrieving } = this.props;
+    const {
+      jobs, isRetrieving, isFetched
+    } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
 
@@ -53,7 +55,7 @@ class JobsListPage extends React.Component {
                     ) : (
                       <tbody>
                         {
-                          jobs.length !== 0 ? (
+                          (isFetched && jobs !== undefined) && (
                             jobs.map((job) => (
                               <tr>
                                 <td>{job.metadata.name}</td>
@@ -62,19 +64,25 @@ class JobsListPage extends React.Component {
                                 <td>{tellAge(job.metadata.creationTimestamp)}</td>
                               </tr>
                             )))
-                            : (
-                              <tr>
-                                <div className="EmptyList">
-                                  <h3>No Jobs Available</h3>
-                                </div>
-                              </tr>
-                            )
                         }
                       </tbody>
                     )
                   }
                 </table>
+                {(isFetched && jobs.length === 0) && (
+                  <div className="NoContentDiv">
+                    <p>No Jobs Available</p>
+                  </div>
+                )}
+                {(!isRetrieving && !isFetched) && (
+                  <div className="NoContentDiv">
+                    <p>
+                      Oops! Something went wrong!
 
+                      Failed to retrieve Jobs.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -85,18 +93,24 @@ class JobsListPage extends React.Component {
 }
 
 JobsListPage.propTypes = {
-  jobs: PropTypes.object,
+  jobs: PropTypes.arrayOf(PropTypes.object),
+  isFetched: PropTypes.bool,
   isRetrieving: PropTypes.bool,
 };
 
 JobsListPage.defaultProps = {
   jobs: [],
   isRetrieving: false,
+  isFetched: false,
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, jobs } = state.JobsReducer;
-  return { isRetrieving, jobs };
+  const {
+    isRetrieving, jobs, isFetched
+  } = state.JobsReducer;
+  return {
+    isRetrieving, jobs, isFetched
+  };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({

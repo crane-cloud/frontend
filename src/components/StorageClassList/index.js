@@ -32,7 +32,7 @@ class StorageClassList extends Component {
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
-              <InformationBar header="Nodes" showBtn={false} />
+              <InformationBar header="Storage Classes" showBtn={false} />
             </div>
             <div className="ContentSection">
               <div className="ResourcesTable">
@@ -51,22 +51,33 @@ class StorageClassList extends Component {
                       </tr>
                     ) : (
                       <tbody>
-                        {isFetched && storageClasses.storage_classes !== undefined
-                          ? (storageClasses.storage_classes.map((storageClass) => (
+                        {isFetched && storageClasses.storage_classes !== undefined && (
+                          (storageClasses.storage_classes.map((storageClass) => (
                             <tr>
                               <td>{storageClass.metadata.name}</td>
                               <td>{storageClass.provisioner}</td>
                               <td>{tellAge(storageClass.metadata.creationTimestamp)}</td>
                             </tr>
-                          ))) : (
-                            <div className="EmptyList">
-                              <h3>No Storage Classes Available</h3>
-                            </div>
-                          )}
+                          )))
+                        )}
                       </tbody>
                     )
                   }
                 </table>
+                {(isFetched && storageClasses.storage_classes.length === 0) && (
+                  <div className="NoContentDiv">
+                    <p>No Storage Classes Available</p>
+                  </div>
+                )}
+                {(!isRetrieving && !isFetched) && (
+                  <div className="NoContentDiv">
+                    <p>
+                      Oops! Something went wrong!
+
+                      Failed to retrieve Storage Classes.
+                    </p>
+                  </div>
+                )}
 
               </div>
             </div>

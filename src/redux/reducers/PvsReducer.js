@@ -7,6 +7,7 @@ import {
 const initialState = {
   pvs: [],
   isRetrieving: false,
+  isFetched: false,
   message: 'Cluster Volumes Not Available'
 };
 
@@ -16,6 +17,7 @@ const PvsReducer = (state = initialState, action) => {
     return {
       ...state,
       pvs: action.payload,
+      isFetched: true,
       isRetrieving: false,
       message: 'All Cluster Volumes fetched'
     };
@@ -30,6 +32,7 @@ const PvsReducer = (state = initialState, action) => {
     return {
       ...state,
       message: action.payload,
+      isFetched: false,
       isRetrieving: false
     };
 
