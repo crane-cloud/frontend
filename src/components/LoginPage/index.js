@@ -27,6 +27,11 @@ class LoginPage extends React.Component {
     this.validateEmail = this.validateEmail.bind(this);
   }
 
+  componentDidMount() {
+    // remove the current state
+    localStorage.removeItem('state');
+  }
+
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
