@@ -22,7 +22,6 @@
 
 .ModalFormInputsBasic input {
   max-width: 25rem;
-  height: 1rem;
 }
 
 .EnvVarsInputGroup {
@@ -39,10 +38,6 @@
   display: grid;
   gap: 0.5rem;
   grid-template-columns: 1fr 1fr;
-}
-
-.EnvVarsInputGroup .EnvVarsInputs input {
-  height: 1rem;
 }
 
 .ModalFormInputs .ModalFormInputsEnvVars {
@@ -74,10 +69,6 @@
 .ModalFormButtons.AddAddButtons {
   max-width: 25rem;
   margin-bottom: 2rem;
-}
-
-.ModalFormButtons.AddAddButtons button {
-  height: 2rem;
 }
 
 .EnvVarsTable {
@@ -150,4 +141,25 @@
 
 .AppFormErrorDiv.CreateSuccess {
   color: green;
+}
+
+
+/*- //////////////////////////////////////////////////// */
+
+.ModalForm.AddAppModal {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.ModalForm.AddAppModal .ModalFormHeading {
+  flex: 0 1 auto;
+}
+
+.ModalForm.AddAppModal .ModalFormInputs {
+  flex: 1 1 auto;
+}
+
+.ModalForm.AddAppModal .ModalFormButtons.AddAddButtons {
+  flex: 0 1 40px;
 }
