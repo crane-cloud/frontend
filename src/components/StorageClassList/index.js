@@ -13,15 +13,13 @@ import SideNav from '../SideNav';
 
 class StorageClassList extends Component {
   componentDidMount() {
-    const { match, getStorageClassList } = this.props;
+    const { getStorageClassList, match } = this.props;
     getStorageClassList(match.params.clusterID);
   }
 
 
   render() {
-    const {
-      storageClasses, isFetched, isRetrieving
-    } = this.props;
+    const { storageClasses, isFetched, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
 
@@ -53,14 +51,14 @@ class StorageClassList extends Component {
                       </tr>
                     ) : (
                       <tbody>
-                        {(isFetched && storageClasses.storage_classes !== undefined) && (
-                          storageClasses.storage_classes.map((storageClass) => (
+                        {isFetched && storageClasses.storage_classes !== undefined && (
+                          (storageClasses.storage_classes.map((storageClass) => (
                             <tr>
                               <td>{storageClass.metadata.name}</td>
                               <td>{storageClass.provisioner}</td>
                               <td>{tellAge(storageClass.metadata.creationTimestamp)}</td>
                             </tr>
-                          ))
+                          )))
                         )}
                       </tbody>
                     )
@@ -107,12 +105,8 @@ StorageClassList.defaultProps = {
 };
 
 export const mapStateToProps = (state) => {
-  const {
-    isRetrieving, storageClasses, isFetched
-  } = state.storageClassesReducer;
-  return {
-    isRetrieving, storageClasses, isFetched
-  };
+  const { isRetrieving, storageClasses, isFetched } = state.storageClassesReducer;
+  return { isRetrieving, storageClasses, isFetched };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
