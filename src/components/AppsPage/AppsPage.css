@@ -105,11 +105,11 @@
   margin: auto;
 }
 
-.EnvVarsTable table tbody {
+/* .EnvVarsTable table tbody {
   overflow: auto;
   display: block;
   height: 65px;
-}
+} */
 
 .EnvVarsTable thead, .EnvVarsTable tbody tr {
   display: table;
@@ -158,6 +158,7 @@
 
 .ModalForm.AddAppModal .ModalFormInputs {
   flex: 1 1 auto;
+  overflow-y: scroll;
 }
 
 .ModalForm.AddAppModal .ModalFormButtons.AddAddButtons {
