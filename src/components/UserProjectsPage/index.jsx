@@ -88,7 +88,7 @@ class UserProjectsPage extends React.Component {
       // loading
     } = this.state;
     const {
-      projects, clusters, isRetrieving, data
+      projects, clusters, isRetrieving, data, isFetched
     } = this.props;
     const userId = data.id;
     const clustersList = clusters.clusters.length > 0
@@ -113,8 +113,8 @@ class UserProjectsPage extends React.Component {
                 </div>
               ) : (
                 <div className="ProjectList">
-                  { projects.length !== 0 ? (
-                    projects.map((project) => (
+                  { (isFetched && projects !== undefined && (
+                    (projects.map((project) => (
                       <Link to={{ pathname: `/users/${userId}/projects/${project.id}/apps` }} key={project.id}>
                         <div key={project.id} className="ProjectCardItem">
                           <ClusterCard
@@ -124,13 +124,21 @@ class UserProjectsPage extends React.Component {
                           />
                         </div>
                       </Link>
-                    )))
-                    : (
-                      <div className="NoContentDiv">
-                        You haven’t created any projects yet.
-                        Click the create button to get started.
-                      </div>
-                    )}
+                    ))))
+                  )}
+                  {(isFetched && projects.length === 0) && (
+                    <div className="NoContentDiv">
+                      You haven’t created any projects yet.
+                      Click the create button to get started.
+                    </div>
+                  )}
+                  {(!isRetrieving && !isFetched) && (
+                    <div className="NoContentDiv">
+                      Oops! Something went wrong!
+                      Failed to retrieve Projects.
+                    </div>
+                  )}
+
                 </div>
               )
             }
@@ -186,9 +194,10 @@ class UserProjectsPage extends React.Component {
 
 UserProjectsPage.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.object),
-  clusters: PropTypes.object,
-  project: PropTypes.object,
+  clusters: PropTypes.arrayOf(PropTypes.object),
+  project: PropTypes.arrayOf(PropTypes.object),
   isAdded: PropTypes.bool,
+  isFetched: PropTypes.bool,
   isRetrieving: PropTypes.bool
 };
 
@@ -197,6 +206,7 @@ UserProjectsPage.defaultProps = {
   project: {},
   isAdded: false,
   projects: [],
+  isFetched: false,
   isRetrieving: false
 };
 
@@ -204,8 +214,10 @@ export const mapStateToProps = (state) => {
   const { data } = state.user;
   const { isAdded, project } = state.addProjectReducer;
   const { clusters } = state.ClustersReducer;
-  const { isRetrieving, projects } = state.UserProjectsReducer;
-  return { isAdded, project, data, isRetrieving, projects, clusters };
+  const { isRetrieving, projects, isFetched } = state.UserProjectsReducer;
+  return {
+    isAdded, project, data, isRetrieving, projects, clusters, isFetched
+  };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
