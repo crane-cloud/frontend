@@ -91,8 +91,9 @@ class UserProjectsPage extends React.Component {
       projects, clusters, isRetrieving, data
     } = this.props;
     const userId = data.id;
-    const clustersList = clusters.clusters.length > 0
-        && clusters.clusters.map((item, i) => (
+    console.log(this.state);
+    const clustersList = clusters.length === 0
+        && clusters.map((item, i) => (
           <option key={i} value={item.id}>{item.name}</option>
         ));
 
@@ -186,14 +187,14 @@ class UserProjectsPage extends React.Component {
 
 UserProjectsPage.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.object),
-  clusters: PropTypes.object,
+  clusters: PropTypes.arrayOf(PropTypes.object),
   project: PropTypes.object,
   isAdded: PropTypes.bool,
   isRetrieving: PropTypes.bool
 };
 
 UserProjectsPage.defaultProps = {
-  clusters: {},
+  clusters: [],
   project: {},
   isAdded: false,
   projects: [],
