@@ -80,6 +80,8 @@ class PodsList extends Component {
     const { pods, isFetched, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
+    console.log(pods);
+
 
     return (
       <div className="MainPage">
@@ -112,25 +114,19 @@ class PodsList extends Component {
                       </tr>
                     ) : (
                       <tbody>
-                        {(isFetched && pods.pods !== undefined) && (
-                          (pods.pods.map((pod) => (
-                            <tr>
-                              <td>{pod.metadata.name}</td>
-                              <td>{this.podReady(pod.status.containerStatuses)}</td>
-                              <td><Status status={this.podStatus(pod.status.conditions)} /></td>
-                              <td>{tellAge(pod.metadata.creationTimestamp)}</td>
-                            </tr>
-                          )))
-                        )}
+                        {isFetched && pods.pods !== undefined && (pods.pods.map((pod) => (
+                          <tr>
+                            <td>{pod.metadata.name}</td>
+                            <td>{this.podReady(pod.status.containerStatuses)}</td>
+                            <td><Status status={this.podStatus(pod.status.conditions)} /></td>
+                            <td>{tellAge(pod.metadata.creationTimestamp)}</td>
+                          </tr>
+                        )))}
                       </tbody>
                     )
                   }
                 </table>
-                {(isFetched && pods.pods.length === 0) && (
-                  <div className="NoContentDiv">
-                    <p>No Pods Available</p>
-                  </div>
-                )}
+
                 {(!isRetrieving && !isFetched) && (
                   <div className="NoContentDiv">
                     <p>
@@ -153,10 +149,10 @@ class PodsList extends Component {
 
 // inititate props
 PodsList.propTypes = {
-  pods: PropTypes.arrayOf(PropTypes.object),
+  pods: PropTypes.object,
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
-  getPodsList: PropTypes.func.isRequired
+  getPodsList: PropTypes.func
 };
 
 // assigning defaults

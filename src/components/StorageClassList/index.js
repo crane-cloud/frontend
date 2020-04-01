@@ -13,7 +13,7 @@ import SideNav from '../SideNav';
 
 class StorageClassList extends Component {
   componentDidMount() {
-    const { getStorageClassList, match } = this.props;
+    const { match, getStorageClassList } = this.props;
     getStorageClassList(match.params.clusterID);
   }
 
@@ -64,11 +64,6 @@ class StorageClassList extends Component {
                     )
                   }
                 </table>
-                {(isFetched && storageClasses.storage_classes.length === 0) && (
-                  <div className="NoContentDiv">
-                    <p>No Storage Classes Available</p>
-                  </div>
-                )}
                 {(!isRetrieving && !isFetched) && (
                   <div className="NoContentDiv">
                     <p>

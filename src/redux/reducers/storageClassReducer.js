@@ -1,4 +1,3 @@
-
 import {
   START_GETTING_STORAGE_CLASS,
   GET_STORAGE_CLASS_FAIL,
@@ -26,7 +25,8 @@ const storageClassesReducer = (state = initialState, action) => {
   case START_GETTING_STORAGE_CLASS:
     return {
       ...state,
-      isRetrieving: true,
+      isFetched: false,
+      isRetrieving: true
     };
 
   case GET_STORAGE_CLASS_FAIL:
@@ -34,7 +34,7 @@ const storageClassesReducer = (state = initialState, action) => {
       ...state,
       message: action.payload,
       isFetched: false,
-      isRetrieving: false,
+      isRetrieving: false
     };
 
   default:

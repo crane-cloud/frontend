@@ -1,4 +1,3 @@
-
 import {
   START_GETTING_PODS,
   GET_PODS_FAIL,
@@ -26,6 +25,7 @@ const PodsReducer = (state = initialState, action) => {
   case START_GETTING_PODS:
     return {
       ...state,
+      isFetched: false,
       isRetrieving: true
     };
 
