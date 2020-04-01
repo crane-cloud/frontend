@@ -19,7 +19,7 @@ const AppsCard = (props) => {
                 <div className="AppDropDown">
                   <img src={DotsImg} alt="three dots" className="DropDownImg" />
                   <div className="AppDropDownContent">
-                    <a href="#">Delete</a>
+                    <a href="#" onClick={(e) => this.deleteContact(e, name)}>Delete</a>
                     <a href="#">Update</a>
                   </div>
                 </div>
