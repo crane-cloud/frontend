@@ -32,7 +32,7 @@ class StorageClassList extends Component {
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
-              <InformationBar header="Nodes" showBtn={false} />
+              <InformationBar header="Storage Classes" showBtn={false} />
             </div>
             <div className="ContentSection">
               <div className="ResourcesTable">
@@ -64,6 +64,11 @@ class StorageClassList extends Component {
                     )
                   }
                 </table>
+                {(isFetched && storageClasses.storage_classes.length === 0) && (
+                  <div className="NoContentDiv">
+                    <p>No Storage Classes Available</p>
+                  </div>
+                )}
                 {(!isRetrieving && !isFetched) && (
                   <div className="NoContentDiv">
                     <p>

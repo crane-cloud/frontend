@@ -126,7 +126,11 @@ class PodsList extends Component {
                     )
                   }
                 </table>
-
+                {(isFetched && pods.pods.length === 0) && (
+                  <div className="NoContentDiv">
+                    <p>No Pods Available</p>
+                  </div>
+                )}
                 {(!isRetrieving && !isFetched) && (
                   <div className="NoContentDiv">
                     <p>
