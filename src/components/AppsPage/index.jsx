@@ -281,7 +281,8 @@ class AppsPage extends React.Component {
             </div>
             {createFeedback && (
               <div
-                className={createFeedback.startsWith('Success') ? 'AppFormErrorDiv CreateSuccess' : 'AppFormErrorDiv CreateFail'}>
+                className={createFeedback.startsWith('Success') ? 'AppFormErrorDiv CreateSuccess' : 'AppFormErrorDiv CreateFail'}
+              >
                 {createFeedback}
               </div>
             )}
