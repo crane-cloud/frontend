@@ -91,7 +91,6 @@ class UserProjectsPage extends React.Component {
       projects, isRetrieving, data
     } = this.props;
     const userId = data.id;
-    // console.log(clusters);
     const clustersList = clusters.length > 0
         && clusters.map((item, i) => (
           <option key={i} value={item.id}>{item.name}</option>
