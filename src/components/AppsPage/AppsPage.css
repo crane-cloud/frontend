@@ -2,7 +2,7 @@
     display: inline;
 }
 
-.BackDiv{
+.BackDiv{ 
     display: inline;
     color: black;
 }
@@ -22,6 +22,10 @@
 
 .ModalFormInputsBasic input {
   max-width: 25rem;
+}
+
+.ModalFormInputsBasic input::placeholder {
+  color: gray;
 }
 
 .EnvVarsInputGroup {
@@ -62,12 +66,15 @@
   max-width: 10rem;
 }
 
+.EnvVarsInputGroup input::placeholder {
+  color: grey;
+}
+
 .ModalFormButtons {
   width: 100%;
 }
 
 .ModalFormButtons.AddAddButtons {
-  max-width: 25rem;
   margin-bottom: 2rem;
 }
 
@@ -105,12 +112,6 @@
   margin: auto;
 }
 
-/* .EnvVarsTable table tbody {
-  overflow: auto;
-  display: block;
-  height: 65px;
-} */
-
 .EnvVarsTable thead, .EnvVarsTable tbody tr {
   display: table;
   width: 100%;
@@ -125,24 +126,9 @@
   height: 1rem;
 }
 
-.EnvVarsTable table tbody::-webkit-scrollbar {
-  width: 10px;
-  height: 0px;
-}
-.EnvVarsTable table tbody::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-.EnvVarsTable table tbody::-webkit-scrollbar-thumb {
-  background: #008AC1;
-}
-.EnvVarsTable table tbody::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
 .AppFormErrorDiv.CreateSuccess {
   color: green;
 }
-
 
 /*- //////////////////////////////////////////////////// */
 
@@ -152,15 +138,34 @@
   height: 100%;
 }
 
+.ModalForm.AddAppModal input {
+  max-height: 50px;
+}
+
 .ModalForm.AddAppModal .ModalFormHeading {
   flex: 0 1 auto;
 }
 
 .ModalForm.AddAppModal .ModalFormInputs {
-  flex: 1 1 auto;
-  overflow-y: scroll;
+  padding-right: 10px;
+  flex: 1 0 auto;
+  overflow-y: auto;
 }
 
 .ModalForm.AddAppModal .ModalFormButtons.AddAddButtons {
   flex: 0 1 40px;
+}
+
+.ModalForm.AddAppModal .ModalFormInputs::-webkit-scrollbar {
+  width: 4px;
+  height: 0px;
+}
+.ModalForm.AddAppModal .ModalFormInputs::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.ModalForm.AddAppModal .ModalFormInputs::-webkit-scrollbar-thumb {
+  background: #555;
+}
+.ModalForm.AddAppModal .ModalFormInputs::-webkit-scrollbar-thumb:hover {
+  background: #000;
 }
