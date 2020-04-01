@@ -174,8 +174,8 @@ class UserProjectsPage extends React.Component {
               />
             </div>
             <div className="ModalFormButtons">
-              <PrimaryButton label="Create project" onClick={this.handleSubmit} />
               <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />
+              <PrimaryButton label="Create project" onClick={this.handleSubmit} />
             </div>
           </div>
         </Modal>
