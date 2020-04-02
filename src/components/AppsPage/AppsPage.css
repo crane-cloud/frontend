@@ -54,12 +54,16 @@
 
 .EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn {
   position: absolute;
-  /* margin-top: .2rem; */
   max-width: 100%;
   color: #fff;
   height: 100%;
   background-color: #008ac1;
   outline: 2px solid #008ac1;
+}
+
+.EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn:hover {
+  color: #008ac1;
+  background-color: #fff;
 }
 
 .EnvVarsInputGroup input {
@@ -110,6 +114,11 @@
 
 .EnvVarsTable table td img {
   margin: auto;
+}
+
+.EnvVarsTable table td img:hover {
+  /* cursor: pointer; */
+  filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(180deg) brightness(119%) contrast(5%);
 }
 
 .EnvVarsTable thead, .EnvVarsTable tbody tr {
