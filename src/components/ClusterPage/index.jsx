@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import InformationBar from '../InformationBar';
+// import InformationBar from '../InformationBar';
 import InformationBarSub from '../InformationBarSub';
 import PrimaryButton from '../PrimaryButton';
 import Spinner from '../SpinnerComponent';
