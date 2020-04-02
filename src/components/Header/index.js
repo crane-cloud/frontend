@@ -22,6 +22,7 @@ const Header = (props) => {
   const logout = () => {
     props.removeUser();
     window.location.href = '/';
+    localStorage.removeItem('state');
   };
 
   return (

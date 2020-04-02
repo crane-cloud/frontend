@@ -27,6 +27,13 @@ class LoginPage extends React.Component {
     this.validateEmail = this.validateEmail.bind(this);
   }
 
+  componentDidMount() {
+    // remove the current state from local storage
+    // so that when a person logs in they dont encounter
+    // the previous state which wasnt cleared
+    localStorage.removeItem('state');
+  }
+
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value

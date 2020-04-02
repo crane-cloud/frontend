@@ -80,7 +80,6 @@ class UserProjectsPage extends React.Component {
 
 
   render() {
-    // const { clusters } = this.props;
     const {
       openModal,
       projectName,
@@ -91,8 +90,8 @@ class UserProjectsPage extends React.Component {
       projects, clusters, isRetrieving, data, isFetched
     } = this.props;
     const userId = data.id;
-    const clustersList = clusters.clusters.length > 0
-        && clusters.clusters.map((item, i) => (
+    const clustersList = clusters.length > 0
+        && clusters.map((item, i) => (
           <option key={i} value={item.id}>{item.name}</option>
         ));
 
@@ -182,8 +181,8 @@ class UserProjectsPage extends React.Component {
               />
             </div>
             <div className="ModalFormButtons">
-              <PrimaryButton label="Create project" onClick={this.handleSubmit} />
               <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />
+              <PrimaryButton label="Create project" onClick={this.handleSubmit} />
             </div>
           </div>
         </Modal>
@@ -202,7 +201,7 @@ UserProjectsPage.propTypes = {
 };
 
 UserProjectsPage.defaultProps = {
-  clusters: {},
+  clusters: [],
   project: {},
   isAdded: false,
   projects: [],
