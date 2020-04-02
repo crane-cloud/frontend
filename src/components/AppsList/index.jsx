@@ -34,6 +34,7 @@ class AppsList extends Component {
                     name={app.name}
                     status
                     url={app.url}
+                    appId={app.id}
                   />
                 </div>
               )))

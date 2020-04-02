@@ -121,7 +121,7 @@
     z-index: 99999;
 }
   
-.AppDropDownContent a {
+.AppDropDownContent div {
     color: black;
     padding: 0.5rem 1rem;
     text-decoration: none;
@@ -130,12 +130,12 @@
     text-align :left;
 }
 
-.AppDropDownContent a::first-letter {
+.AppDropDownContent div::first-letter {
     text-transform: uppercase;
 }
 
   
-.AppDropDownContent a:hover {background-color: #ddd;}
+.AppDropDownContent div:hover {background-color: #ddd;}
 
 .AppDropDown:hover .AppDropDownContent {display: block;}
 
