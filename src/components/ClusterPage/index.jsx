@@ -157,6 +157,9 @@ class ClusterPage extends React.Component {
 }
 
 ClusterPage.propTypes = {
+  user: PropTypes.shape({
+    accessToken: PropTypes.string.isRequired
+  }).isRequired,
   AddCluster: PropTypes.func.isRequired,
   isAdded: PropTypes.bool.isRequired,
   isFailed: PropTypes.bool.isRequired,
