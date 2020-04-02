@@ -10,7 +10,7 @@ export const startFetchingClusters = () => ({
 
 export const getClustersSuccess = (response) => ({
   type: GET_CLUSTERS,
-  payload: response.data.data,
+  payload: response.data.data.clusters,
 });
 
 export const getClustersFail = (error) => ({
