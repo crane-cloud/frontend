@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import './ClusterPage.css';
+import PropTypes from 'prop-types';
 import InformationBar from '../InformationBar';
 import InformationBarSub from '../InformationBarSub';
 import PrimaryButton from '../PrimaryButton';
@@ -11,6 +11,7 @@ import Modal from '../Modal';
 import ClustersList from '../ClustersList';
 import Header from '../Header';
 import AddCluster from '../../redux/actions/addCluster';
+import './ClusterPage.css';
 
 class ClusterPage extends React.Component {
   constructor(props) {
@@ -73,7 +74,10 @@ class ClusterPage extends React.Component {
 
     const {
       user: { accessToken },
-      isCreating
+      isCreating,
+      isAdded,
+      isFailed,
+      message
     } = this.props;
 
     localStorage.setItem('token', accessToken);
@@ -138,12 +142,11 @@ class ClusterPage extends React.Component {
                   <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
                   <PrimaryButton label={isCreating ? <Spinner /> : 'add'} onClick={this.handleSubmit} />
                 </div>
-                {/* {createFeedback && (
-                  <div
-                    className={createFeedback.startsWith('Success') ? 'AppFormErrorDiv CreateSuccess' : 'AppFormErrorDiv CreateFail'}>
-                    {createFeedback}
+                {(isFailed || isAdded) && (
+                  <div className={isAdded ? 'AppFormErrorDiv CreateSuccess' : 'AppFormErrorDiv CreateFail'}>
+                    {message}
                   </div>
-                )} */}
+                )}
               </div>
             </div>
           </div>
@@ -153,13 +156,21 @@ class ClusterPage extends React.Component {
   }
 }
 
+ClusterPage.propTypes = {
+  AddCluster: PropTypes.func.isRequired,
+  isAdded: PropTypes.bool.isRequired,
+  isFailed: PropTypes.bool.isRequired,
+  isCreating: PropTypes.bool.isRequired,
+  message: PropTypes.string.isRequired
+};
+
 const mapStateToProps = ({ user, AddClusterReducer }) => {
   const {
     isCreating,
     isAdded,
     isFailed,
-    cluster,
-    errorOccured
+    errorOccured,
+    message
   } = AddClusterReducer;
 
   return {
@@ -167,8 +178,8 @@ const mapStateToProps = ({ user, AddClusterReducer }) => {
     isCreating,
     isAdded,
     isFailed,
-    cluster,
-    errorOccured
+    errorOccured,
+    message
   };
 };
 
