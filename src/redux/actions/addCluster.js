@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_BASE_URL } from '../../config.js';
+import { API_BASE_URL } from '../../config';
 import { START_ADDING_CLUSTER, ADD_CLUSTER_SUCCESS, ADD_CLUSTERS_FAIL } from '../actions/actionTypes';
 
 

@@ -20,7 +20,8 @@ class ClusterPage extends React.Component {
       name: '',
       host: '',
       token: '',
-      openModal: false
+      openModal: false,
+      error: ''
     };
 
     this.showForm = this.showForm.bind(this);
@@ -38,13 +39,19 @@ class ClusterPage extends React.Component {
   }
 
   handleChange(e) {
+    const { error } = this.state;
     this.setState({
       [e.target.name]: e.target.value
     });
+    if (error) {
+      this.setState({
+        error: ''
+      });
+    }
   }
 
   handleSubmit() {
-    const { AddCluster } = this.props;
+    const { AddCluster, creatingCluster, isAdded } = this.props;
 
     const {
       host,
@@ -53,14 +60,31 @@ class ClusterPage extends React.Component {
       description
     } = this.state;
 
-    const cluster = {
-      host,
-      name,
-      token,
-      description
-    };
+    // input validation
+    if (!host || !name || !token || !description) {
+      this.setState({
+        error: 'Please provide all the information'
+      });
+    } else {
+      const cluster = {
+        host,
+        name,
+        token,
+        description
+      };
 
-    AddCluster(cluster);
+      AddCluster(cluster);
+
+      if (creatingCluster === false && isAdded === true) {
+        setTimeout(
+          () => {
+            this.setState({
+              openModal: false
+            });
+          }, 1000
+        );
+      }
+    }
   }
 
   render() {
@@ -69,12 +93,13 @@ class ClusterPage extends React.Component {
       token,
       name,
       description,
-      openModal
+      openModal,
+      error
     } = this.state;
 
     const {
       user: { accessToken },
-      isCreating,
+      creatingCluster,
       isAdded,
       isFailed,
       message
@@ -138,9 +163,15 @@ class ClusterPage extends React.Component {
                   }}
                 />
 
+                {error && (
+                  <div className="AppFormErrorDiv">
+                    {error}
+                  </div>
+                )}
+
                 <div className="ModalFormButtons AddAddButtons">
                   <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
-                  <PrimaryButton label={isCreating ? <Spinner /> : 'add'} onClick={this.handleSubmit} />
+                  <PrimaryButton label={creatingCluster ? <Spinner /> : 'add'} onClick={this.handleSubmit} />
                 </div>
                 {(isFailed || isAdded) && (
                   <div className={isAdded ? 'AppFormErrorDiv CreateSuccess' : 'AppFormErrorDiv CreateFail'}>
@@ -163,13 +194,13 @@ ClusterPage.propTypes = {
   AddCluster: PropTypes.func.isRequired,
   isAdded: PropTypes.bool.isRequired,
   isFailed: PropTypes.bool.isRequired,
-  isCreating: PropTypes.bool.isRequired,
+  creatingCluster: PropTypes.bool.isRequired,
   message: PropTypes.string.isRequired
 };
 
 const mapStateToProps = ({ user, AddClusterReducer }) => {
   const {
-    isCreating,
+    creatingCluster,
     isAdded,
     isFailed,
     errorOccured,
@@ -178,7 +209,7 @@ const mapStateToProps = ({ user, AddClusterReducer }) => {
 
   return {
     user,
-    isCreating,
+    creatingCluster,
     isAdded,
     isFailed,
     errorOccured,

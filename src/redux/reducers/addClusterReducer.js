@@ -3,7 +3,7 @@ import { ADD_CLUSTER_SUCCESS, ADD_CLUSTERS_FAIL, START_ADDING_CLUSTER } from '..
 const initialState = {
   isAdded: false,
   isFailed: false,
-  isCreating: false,
+  creatingCluster: false,
   cluster: null,
   error: null,
   message: 'Add cluster'
@@ -15,7 +15,7 @@ const AddClusterReducer = (state = initialState, action) => {
     return {
       ...state,
       cluster: action.payload,
-      isCreating: false,
+      creatingCluster: false,
       isFailed: false,
       isAdded: true,
       message: 'Cluster Added SuccessFully'
@@ -24,7 +24,7 @@ const AddClusterReducer = (state = initialState, action) => {
   case START_ADDING_CLUSTER:
     return {
       ...state,
-      isCreating: true,
+      creatingCluster: true,
       isAdded: false
     };
 
@@ -33,7 +33,7 @@ const AddClusterReducer = (state = initialState, action) => {
       ...state,
       isFailed: true,
       isAdded: false,
-      isCreating: false,
+      creatingCluster: false,
       error: action.payload.error,
       message: 'Failed to add cluster'
     };
