@@ -24,7 +24,7 @@ class UserProjectsPage extends React.Component {
       openModal: false, // add project modal is closed initially
       projectName: '',
       clusterID: '',
-      description: '',
+      projectDescription: '',
       clusters: [],
     };
 
@@ -56,10 +56,10 @@ class UserProjectsPage extends React.Component {
   }
 
   handleSubmit() {
-    const { projectName, description, clusterID } = this.state;
+    const { projectName, projectDescription, clusterID } = this.state;
     const { AddProject, data, isAdded } = this.props;
     const newProject = {
-      description: description,
+      description: projectDescription,
       cluster_id: clusterID,
       name: projectName,
       owner_id: data.id
@@ -82,6 +82,7 @@ class UserProjectsPage extends React.Component {
     const {
       openModal,
       projectName,
+      projectDescription,
       // clusterID,
       // loading
     } = this.state;
@@ -170,14 +171,16 @@ class UserProjectsPage extends React.Component {
                   this.handleChange(e);
                 }}
               />
+
               <InputText
                 placeholder="Project Description"
-                name="description"
-                value={description}
+                name="projectDescription"
+                value={projectDescription}
                 onChange={(e) => {
                   this.handleChange(e);
                 }}
               />
+
             </div>
             <div className="ModalFormButtons">
               <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />
