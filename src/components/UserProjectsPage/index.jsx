@@ -37,8 +37,8 @@ class UserProjectsPage extends React.Component {
   }
 
   componentDidMount() {
-    const { getClustersList, getUserProjects, data } = this.props;
-    getUserProjects(data.id);
+    const { getClustersList, getUserProjects } = this.props;
+    getUserProjects();
     getClustersList();
   }
 
@@ -83,8 +83,6 @@ class UserProjectsPage extends React.Component {
     const {
       openModal,
       projectName,
-      // clusterID,
-      // loading
     } = this.state;
     const {
       projects, clusters, isRetrieving, data, isFetched
