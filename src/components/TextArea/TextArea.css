@@ -1,0 +1,21 @@
+.TextArea{
+  width: 25rem;
+  border: 2px solid black;
+  box-sizing: border-box;
+  font-size: inherit;
+  padding: 1rem;
+}
+.TextArea::placeholder {
+  color: black;
+}
+
+.WhiteBackground{
+  color: #000;
+}
+.InitialBackground{
+  color: #fff;
+  background-color: transparent;
+}
+textarea {
+  resize: none;
+}

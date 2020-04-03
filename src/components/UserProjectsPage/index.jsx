@@ -12,6 +12,7 @@ import Modal from '../Modal';
 import getClustersList from '../../redux/actions/ClustersActions';
 import getUserProjects from '../../redux/actions/projectsListActions';
 import InputText from '../InputText';
+import TextArea from '../TextArea';
 import { BigSpinner } from '../SpinnerComponent';
 import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/craneLogo.png';
@@ -179,7 +180,7 @@ class UserProjectsPage extends React.Component {
                 }}
               />
 
-              <InputText
+              <TextArea
                 placeholder="Project Description"
                 name="projectDescription"
                 value={projectDescription}
