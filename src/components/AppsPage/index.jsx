@@ -95,7 +95,6 @@ class AppsPage extends React.Component {
     const {
       createApp,
       match,
-      isCreating,
       isCreated,
       attempted
     } = this.props;

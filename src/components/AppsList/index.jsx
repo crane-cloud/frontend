@@ -28,21 +28,32 @@ class AppsList extends Component {
             </div>
           ) : (
             <div className="AppList">
-              {isRetrieved ? (apps.apps.map((app) => (
-                <div key={app.id} className="AppCardItem">
-                  <AppsCard
-                    name={app.name}
-                    status
-                    url={app.url}
-                  />
-                </div>
-              )))
-                : (
-                  <div className="NoContentDiv">You haven’t deployed any apps. Click the create button to get started.</div>
-                )}
+              {isRetrieved && apps.apps !== undefined && (
+                apps.apps.map((app) => (
+                  <div key={app.id} className="AppCardItem">
+                    <AppsCard
+                      name={app.name}
+                      status
+                      url={app.url}
+                    />
+                  </div>
+                )))}
             </div>
           )
+
         }
+        {(isRetrieved && apps.apps.length === 0) && (
+          <div className="NoContentDiv">
+            You haven’t created any Apps yet.
+            Click the create button to get started.
+          </div>
+        )}
+        {(!isRetrieving && !isRetrieved) && (
+          <div className="NoContentDiv">
+            Oops! Something went wrong!
+            Failed to retrieve Apps.
+          </div>
+        )}
 
       </div>
     );
