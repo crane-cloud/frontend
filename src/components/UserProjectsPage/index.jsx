@@ -17,9 +17,6 @@ import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/craneLogo.png';
 
 
-// create uuid with ccuid prefix
-const CCNSID = `ccuid${(new Date()).getTime().toString(16) + Math.floor(1E7 * Math.random()).toString(16)}`;
-
 class UserProjectsPage extends React.Component {
   constructor(props) {
     super(props);
@@ -27,6 +24,7 @@ class UserProjectsPage extends React.Component {
       openModal: false, // add project modal is closed initially
       projectName: '',
       clusterID: '',
+      description: '',
       clusters: [],
     };
 
@@ -58,10 +56,10 @@ class UserProjectsPage extends React.Component {
   }
 
   handleSubmit() {
-    const { projectName, clusterID } = this.state;
+    const { projectName, description, clusterID } = this.state;
     const { AddProject, data, isAdded } = this.props;
     const newProject = {
-      alias: projectName + CCNSID,
+      description: description,
       cluster_id: clusterID,
       name: projectName,
       owner_id: data.id
@@ -119,7 +117,7 @@ class UserProjectsPage extends React.Component {
                         <div key={project.id} className="ProjectCardItem">
                           <ClusterCard
                             name={project.name}
-                            description={project.alias}
+                            description={project.description}
                             icon={crane}
                           />
                         </div>
@@ -168,6 +166,14 @@ class UserProjectsPage extends React.Component {
                 placeholder="Project Name"
                 name="projectName"
                 value={projectName}
+                onChange={(e) => {
+                  this.handleChange(e);
+                }}
+              />
+              <InputText
+                placeholder="Project Description"
+                name="description"
+                value={description}
                 onChange={(e) => {
                   this.handleChange(e);
                 }}
