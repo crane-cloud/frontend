@@ -5,7 +5,6 @@
     text-align: left;
     font-family: arial;
     background: #fff;
-    position: relative;
     color: #000000;
     word-wrap: break-word;
     background-clip: border-box;
@@ -104,7 +103,7 @@
     transform: scale(1.02);
 }
   
-/* Drop down */
+/*/////////////// Drop down ////////////*/
   
 .AppDropDown {
     position: relative;
@@ -112,13 +111,13 @@
 }
   
 .AppDropDownContent {
-    display: none;
-    position: absolute;
+    display: block;
+    position: absolute ;
     background-color: #f1f1f1;
     min-width: 110px;
     right: 0;
     box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
-    z-index: 99999;
+    z-index: 10;
 }
   
 .AppDropDownContent div {
@@ -137,7 +136,7 @@
   
 .AppDropDownContent div:hover {background-color: #ddd;}
 
-.AppDropDown:hover .AppDropDownContent {display: block;}
+/* .AppDropDown:hover .AppDropDownContent {display: block;} */
 
 .AppDropDown:hover .DropDownImg {
     transition: 0.5s;
@@ -155,7 +154,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 10;
+    z-index: 99999;
     background-color: rgba(0,0,0,0.5)
 }
 
@@ -164,15 +163,14 @@
 }
 
 .AppDeleteModel .ModalChildWrap{
-
     width: 20rem;
-    height: 10rem;
+    height: unset;
+    min-height: 10rem !important;
     z-index: 9999;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
 .DeleteDescription{
-    color: red;
     cursor: pointer;
 }
 
@@ -184,9 +182,25 @@
     grid-template-columns: repeat(2, auto);
     align-items: center;
     width: 100%;
-    margin-top: 5rem;
+    margin-top: 4rem;
 }
 
 .DeleteAppModelResponses button{
     display: inline;
+}
+
+.DeleteErrorDiv{
+    color: red;
+    margin: 1.5rem;
+    text-align: center;
+}
+
+.DeleteAppModelResponses .undefined{
+    background-color: red;
+    outline: 2px solid red;
+}
+.DeleteAppModelResponses .undefined:hover{
+    background-color: white;
+    outline: 2px solid red;
+    color: red;
 }

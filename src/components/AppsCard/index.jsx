@@ -14,26 +14,50 @@ class AppsCard extends React.Component {
     super(props);
     this.state = {
       openDeleteAlert: false,
-      isRemoved: false
+      openDropDown: false,
+      isRemoved: false,
+      buttonClicked: false
     };
 
     this.handleDeleteApp = this.handleDeleteApp.bind(this);
     this.showDeleteAlert = this.showDeleteAlert.bind(this);
     this.hideDeleteAlert = this.hideDeleteAlert.bind(this);
     this.reloadOndelete = this.reloadOndelete.bind(this);
+    this.toggleDropDown = this.toggleDropDown.bind(this);
+    this.hideDropDown = this.hideDropDown.bind(this);
+    this.showDropDown = this.showDropDown.bind(this);
+  }
+
+  showDropDown() {
+    this.setState({ openDropDown: true });
+  }
+
+  toggleDropDown() {
+    const { openDropDown } = this.state;
+    if (openDropDown) {
+      this.hideDropDown();
+    } else {
+      this.showDropDown();
+    }
+  }
+
+  hideDropDown() {
+    this.setState({ openDropDown: false });
   }
 
   handleDeleteApp(e, appId) {
-    const { deleteApp } = this.props;
+    const { deleteApp, isDeleted, isFailed } = this.props;
     e.preventDefault();
     deleteApp(appId);
-    setTimeout(
-      () => {
-        this.setState({
-          isRemoved: this.props.isDeleted
-        });
-      }, 1000
-    );
+    if (isDeleted) {
+      this.setState({
+        isRemoved: isDeleted,
+        openDeleteAlert: false,
+      });
+    }
+    this.setState({
+      buttonClicked: true
+    });
   }
 
 
@@ -54,10 +78,10 @@ class AppsCard extends React.Component {
 
   render() {
     const {
-      name, status, url, appId, isDeleting, isDeleted
+      name, status, url, appId, isDeleting, isDeleted, isFailed
     } = this.props;
-    const { isRemoved } = this.state;
-    const { openDeleteAlert } = this.state;
+    const { isRemoved, buttonClicked } = this.state;
+    const { openDeleteAlert, openDropDown } = this.state;
     return (
       <div className="AppCard">
         <div className="AppCardHeader">
@@ -67,12 +91,14 @@ class AppsCard extends React.Component {
               <td className="OtherData">
                 <div className="StatusData">
                   <Status status={status} />
-                  <div className="AppDropDown">
+                  <div className="AppDropDown" onClick={() => this.toggleDropDown()}>
                     <img src={DotsImg} alt="three dots" className="DropDownImg" />
-                    <div className="AppDropDownContent">
-                      <div onClick={() => this.showDeleteAlert()}>Delete</div>
-                      <div>Update</div>
-                    </div>
+                    {openDropDown && (
+                      <div className="AppDropDownContent">
+                        <div onClick={() => this.showDeleteAlert()}>Delete</div>
+                        <div>Update</div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </td>
@@ -98,6 +124,11 @@ class AppsCard extends React.Component {
                   <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteApp(e, appId)} />
                   {/* {isRemoved && (this.reloadOndelete()) && isDeleted} */}
                 </div>
+                {isFailed && buttonClicked && (
+                  <div className="DeleteErrorDiv">
+                    Failed to delete App, try again later
+                  </div>
+                )}
               </div>
 
             </Modal>
@@ -111,19 +142,21 @@ class AppsCard extends React.Component {
 // inititate props
 AppsCard.propTypes = {
   isDeleted: PropTypes.bool,
-  isDeleting: PropTypes.bool
+  isDeleting: PropTypes.bool,
+  isFailed: PropTypes.bool,
 };
 
 // assigning defaults
 AppsCard.defaultProps = {
   isDeleted: false,
-  isDeleting: false
+  isDeleting: false,
+  isFailed: false
 };
 
 
 const mapStateToProps = (state) => {
-  const { isDeleting, isDeleted } = state.deleteAppReducer;
-  return { isDeleting, isDeleted };
+  const { isDeleting, isDeleted, isFailed } = state.deleteAppReducer;
+  return { isDeleting, isDeleted, isFailed };
 };
 
 

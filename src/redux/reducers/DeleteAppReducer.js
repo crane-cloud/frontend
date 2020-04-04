@@ -4,7 +4,8 @@ const initialState = {
   app: null,
   isDeleted: false,
   isDeleting: false,
-  message: ''
+  message: '',
+  isFailed: false,
 };
 
 const deleteAppReducer = (state = initialState, action) => {
@@ -13,7 +14,8 @@ const deleteAppReducer = (state = initialState, action) => {
     return {
       ...state,
       isDeleting: true,
-      isDeleted: false
+      isDeleted: false,
+      isFailed: false,
     };
 
   case DELETE_APP_SUCCESS:
@@ -22,6 +24,7 @@ const deleteAppReducer = (state = initialState, action) => {
       app: action.payload,
       isDeleting: false,
       isDeleted: true,
+      isFailed: false,
       message: 'App Deleted Successfully'
     };
 
@@ -31,6 +34,7 @@ const deleteAppReducer = (state = initialState, action) => {
       message: action.payload,
       isDeleting: false,
       isDeleted: false,
+      isFailed: true,
     };
 
   default:
