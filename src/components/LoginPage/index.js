@@ -83,6 +83,8 @@ class LoginPage extends React.Component {
               // redirect to dashboard
               // save user data to store
               saveUser(res.data.data);
+              // add access token to localstorage
+              localStorage.setItem('token', res.data.data.access_token);
               this.setState(
                 {
                   feedbackMessage: 'Login Successful'
