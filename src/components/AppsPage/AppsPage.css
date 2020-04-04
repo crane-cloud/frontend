@@ -2,7 +2,7 @@
     display: inline;
 }
 
-.BackDiv{
+.BackDiv{ 
     display: inline;
     color: black;
 }
@@ -22,7 +22,10 @@
 
 .ModalFormInputsBasic input {
   max-width: 25rem;
-  height: 1rem;
+}
+
+.ModalFormInputsBasic input::placeholder {
+  color: gray;
 }
 
 .EnvVarsInputGroup {
@@ -41,10 +44,6 @@
   grid-template-columns: 1fr 1fr;
 }
 
-.EnvVarsInputGroup .EnvVarsInputs input {
-  height: 1rem;
-}
-
 .ModalFormInputs .ModalFormInputsEnvVars {
   height: 200px; /* I've had to limit this height for now */
 }
@@ -55,7 +54,6 @@
 
 .EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn {
   position: absolute;
-  /* margin-top: .2rem; */
   max-width: 100%;
   color: #fff;
   height: 100%;
@@ -63,8 +61,17 @@
   outline: 2px solid #008ac1;
 }
 
+.EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn:hover {
+  color: #008ac1;
+  background-color: #fff;
+}
+
 .EnvVarsInputGroup input {
   max-width: 10rem;
+}
+
+.EnvVarsInputGroup input::placeholder {
+  color: grey;
 }
 
 .ModalFormButtons {
@@ -72,12 +79,7 @@
 }
 
 .ModalFormButtons.AddAddButtons {
-  max-width: 25rem;
   margin-bottom: 2rem;
-}
-
-.ModalFormButtons.AddAddButtons button {
-  height: 2rem;
 }
 
 .EnvVarsTable {
@@ -114,10 +116,9 @@
   margin: auto;
 }
 
-.EnvVarsTable table tbody {
-  overflow: auto;
-  display: block;
-  height: 65px;
+.EnvVarsTable table td img:hover {
+  /* cursor: pointer; */
+  filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(180deg) brightness(119%) contrast(5%);
 }
 
 .EnvVarsTable thead, .EnvVarsTable tbody tr {
@@ -134,20 +135,46 @@
   height: 1rem;
 }
 
-.EnvVarsTable table tbody::-webkit-scrollbar {
-  width: 10px;
-  height: 0px;
-}
-.EnvVarsTable table tbody::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-.EnvVarsTable table tbody::-webkit-scrollbar-thumb {
-  background: #008AC1;
-}
-.EnvVarsTable table tbody::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
 .AppFormErrorDiv.CreateSuccess {
   color: green;
+}
+
+/*- //////////////////////////////////////////////////// */
+
+.ModalForm.AddAppModal {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.ModalForm.AddAppModal input {
+  max-height: 50px;
+}
+
+.ModalForm.AddAppModal .ModalFormHeading {
+  flex: 0 1 auto;
+}
+
+.ModalForm.AddAppModal .ModalFormInputs {
+  padding-right: 10px;
+  flex: 1 0 auto;
+  overflow-y: auto;
+}
+
+.ModalForm.AddAppModal .ModalFormButtons.AddAddButtons {
+  flex: 0 1 40px;
+}
+
+.ModalForm.AddAppModal .ModalFormInputs::-webkit-scrollbar {
+  width: 4px;
+  height: 0px;
+}
+.ModalForm.AddAppModal .ModalFormInputs::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.ModalForm.AddAppModal .ModalFormInputs::-webkit-scrollbar-thumb {
+  background: #555;
+}
+.ModalForm.AddAppModal .ModalFormInputs::-webkit-scrollbar-thumb:hover {
+  background: #000;
 }
