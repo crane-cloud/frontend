@@ -150,9 +150,8 @@ class AppsPage extends React.Component {
       createFeedback
     } = this.state;
 
-    const { match: { params }, user: { accessToken, data, isCreating } } = this.props;
+    const { match: { params }, user: { data, isCreating } } = this.props;
     const userId = data.id;
-    localStorage.setItem('token', accessToken);
 
     return (
       <div className="Page">

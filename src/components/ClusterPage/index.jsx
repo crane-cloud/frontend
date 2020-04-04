@@ -7,8 +7,6 @@ import ClustersList from '../ClustersList';
 import Header from '../Header';
 
 const ClusterPage = (props) => {
-  const { user: { accessToken } } = props;
-  localStorage.setItem('token', accessToken);
 
   return (
     <div className="Page">
