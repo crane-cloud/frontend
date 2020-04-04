@@ -150,7 +150,7 @@ class AppsPage extends React.Component {
       createFeedback
     } = this.state;
 
-    const { match: { params }, user: { data, isCreating } } = this.props;
+    const { match: { params }, user: { data}, isCreating  } = this.props;
     const userId = data.id;
 
     return (
@@ -189,6 +189,9 @@ class AppsPage extends React.Component {
             <div className="ModalFormHeading">
               <h2>Deploy an app</h2>
             </div>
+
+            {/* //- /////////////////////////////////// -// */}
+
             <div className="ModalFormInputs">
               <div className="ModalFormInputsBasic">
                 <InputText
@@ -273,13 +276,14 @@ class AppsPage extends React.Component {
               </div>
             </div>
 
+            {/* //- /////////////////////////////////// -// */}
+
             <div className="ModalFormButtons AddAddButtons">
               <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
               <PrimaryButton label={isCreating ? <Spinner /> : 'proceed'} onClick={this.handleSubmit} />
             </div>
             {createFeedback && (
-              <div
-                className={createFeedback.startsWith('Success') ? 'AppFormErrorDiv CreateSuccess' : 'AppFormErrorDiv CreateFail'}>
+              <div className={createFeedback.startsWith('Success') ? 'AppFormErrorDiv CreateSuccess' : 'AppFormErrorDiv CreateFail'}>
                 {createFeedback}
               </div>
             )}
