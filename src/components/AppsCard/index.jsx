@@ -82,25 +82,27 @@ class AppsCard extends React.Component {
         <div className="AppUrlText">Url :</div>
         <div className="AppUrl"><a target="_blank" rel="noopener noreferrer" href={url}>{url}</a></div>
 
-        <div className="AppDeleteModel">
-          <Modal showModal={openDeleteAlert}>
-            <div className="DeleteAppModel">
-              <div className="DeleteDescription">
-                Are You Sure You want to delete
-                {' '}
-                {name}
-                {' '}
-                App?
+        {(openDeleteAlert && (
+          <div className="AppDeleteModel">
+            <Modal showModal={openDeleteAlert}>
+              <div className="DeleteAppModel">
+                <div className="DeleteDescription">
+                  Are You Sure You want to delete
+                  {' '}
+                  {name}
+                  {' '}
+                  App?
+                </div>
+                <div className="DeleteAppModelResponses">
+                  <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
+                  <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteApp(e, appId)} />
+                  {/* {isRemoved && (this.reloadOndelete()) && isDeleted} */}
+                </div>
               </div>
-              <div className="DeleteAppModelResponses">
-                <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
-                <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteApp(e, appId)} />
-                {/* {isRemoved && (this.reloadOndelete()) && isDeleted} */}
-              </div>
-            </div>
 
-          </Modal>
-        </div>
+            </Modal>
+          </div>
+        ))}
       </div>
     );
   }
