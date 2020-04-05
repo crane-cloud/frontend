@@ -17,6 +17,7 @@
   background-color: transparent;
 }
 
+/* make it unresizable */
 textarea {
   resize: none;
 }
