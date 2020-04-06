@@ -57,6 +57,7 @@ class AdminLoginPage extends React.Component {
           // redirect to dashboard
           // save user data to store
           saveUser(res.data.data);
+          localStorage.setItem('token', res.data.data.access_token);
           this.setState(
             {
               feedbackMessage: 'Login Successful'

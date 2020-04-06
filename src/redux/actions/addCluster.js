@@ -1,22 +1,28 @@
 import axios from 'axios';
-import { API_BASE_URL } from '../../config.js';
-import { START_ADDING_CLUSTER, ADD_CLUSTER_SUCCESS, ADD_CLUSTERS_FAIL } from '../actions/actionTypes';
+import { API_BASE_URL } from '../../config';
+import {
+  START_ADDING_CLUSTER, ADD_CLUSTER_SUCCESS, ADD_CLUSTERS_FAIL, CLEAR_ADD_CLUSTER_STATE
+} from './actionTypes';
 
 
 const startPostingCluster = () => ({
   type: START_ADDING_CLUSTER,
 });
 
-export const addClusterSuccess = (response) => ({
+const addClusterSuccess = (response) => ({
   type: ADD_CLUSTER_SUCCESS,
   payload: response.data,
 });
 
-export const addClusterFail = (error) => ({
+const addClusterFail = (error) => ({
   type: ADD_CLUSTERS_FAIL,
   payload: {
     error: error.response.status,
   },
+});
+
+const clearState = () => ({
+  type: CLEAR_ADD_CLUSTER_STATE
 });
 
 const AddCluster = (clusterData) => (dispatch) => {
@@ -31,4 +37,6 @@ const AddCluster = (clusterData) => (dispatch) => {
       dispatch(addClusterFail(error));
     });
 };
+
 export default AddCluster;
+export { clearState };
