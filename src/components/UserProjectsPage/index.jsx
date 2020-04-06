@@ -34,6 +34,7 @@ class UserProjectsPage extends React.Component {
     this.hideForm = this.hideForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.validateProjectName = this.validateProjectName.bind(this);
   }
 
   componentDidMount() {
@@ -64,6 +65,13 @@ class UserProjectsPage extends React.Component {
     this.setState({ openModal: false });
   }
 
+  validateProjectName(name) {
+    if (/^[a-z]/i.test(name)) {
+      return true;
+    }
+    return false;
+  }
+
   handleSubmit() {
     const { projectName, projectDescription, clusterID } = this.state;
     const { AddProject, data, isAdded } = this.props;
@@ -72,6 +80,10 @@ class UserProjectsPage extends React.Component {
       // if user tries to submit empty email/password
       this.setState({
         error: 'Please enter the project name and select a cluster'
+      });
+    } else if (this.validateProjectName(projectName) === false) {
+      this.setState({
+        error: 'Project Name should start with a letter'
       });
     } else {
       const newProject = {
