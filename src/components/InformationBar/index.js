@@ -5,7 +5,7 @@ import './InformationBar.css';
 const InformationBar = ({ header, showBtn, btnAction }) => (
   <div className="InformationBar">
     {showBtn ? (
-      <div>
+      <div className="InformationBarWithButton">
         <div className="InfoHeader">{header}</div>
         <div className="CreateButton">
           <CreateButton onClick={btnAction} />

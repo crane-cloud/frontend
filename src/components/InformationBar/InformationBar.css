@@ -4,8 +4,14 @@
   padding: 10px;
 }
 
+.InformationBarWithButton {
+  display: flex;
+  justify-content: space-between;
+}
+
 .InfoHeader{
-  display: inline;
+  display: flex;
+  align-items: center;
   font-family: 'Roboto', sans-serif;
   font-style: normal;
   font-weight: bold;
