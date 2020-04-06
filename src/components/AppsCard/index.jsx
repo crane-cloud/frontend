@@ -16,7 +16,8 @@ class AppsCard extends React.Component {
       openDeleteAlert: false,
       openDropDown: false,
       isRemoved: false,
-      buttonClicked: false
+      buttonClicked: false,
+      deleteFeedback: ''
     };
 
     this.handleDeleteApp = this.handleDeleteApp.bind(this);
@@ -46,18 +47,41 @@ class AppsCard extends React.Component {
   }
 
   handleDeleteApp(e, appId) {
-    const { deleteApp, isDeleted, isFailed } = this.props;
+    const {
+      deleteApp, isDeleted, isFailed
+    } = this.props;
     e.preventDefault();
-    deleteApp(appId);
-    if (isDeleted) {
-      this.setState({
-        isRemoved: isDeleted,
-        openDeleteAlert: false,
-      });
-    }
     this.setState({
       buttonClicked: true
     });
+    deleteApp(appId);
+    if (isDeleted) {
+      this.setState({
+        deleteFeedback: 'App Deleted Successfully'
+      });
+      setTimeout(
+        () => {
+          this.setState({
+            isRemoved: isDeleted,
+            openDeleteAlert: false,
+            deleteFeedback: ''
+          });
+        }, 1000
+      );
+    }
+
+    if (isFailed) {
+      this.setState({
+        deleteFeedback: 'Failed to delete App. Try again'
+      });
+      setTimeout(
+        () => {
+          this.setState({
+            deleteFeedback: ''
+          });
+        }, 3000
+      );
+    }
   }
 
 
@@ -81,7 +105,8 @@ class AppsCard extends React.Component {
       name, status, url, appId, isDeleting, isDeleted, isFailed
     } = this.props;
     const { isRemoved, buttonClicked } = this.state;
-    const { openDeleteAlert, openDropDown } = this.state;
+    const { openDeleteAlert, openDropDown, deleteFeedback } = this.state;
+    console.log(isRemoved);
     return (
       <div className="AppCard">
         <div className="AppCardHeader">
@@ -128,11 +153,13 @@ class AppsCard extends React.Component {
                   <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteApp(e, appId)} />
                   {/* {isRemoved && (this.reloadOndelete()) && isDeleted} */}
                 </div>
-                {isFailed && buttonClicked && (
-                  <div className="DeleteErrorDiv">
-                    Failed to delete App, try again later
-                  </div>
-                )}
+                <div className="DeleteMessageDiv">
+                  {deleteFeedback && (
+                    <div className={deleteFeedback.startsWith('Failed') ? 'DeleteErrorDiv' : 'DeleteSuccessDiv'}>
+                      {deleteFeedback}
+                    </div>
+                  )}
+                </div>
               </div>
 
             </Modal>

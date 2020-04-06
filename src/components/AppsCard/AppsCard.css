@@ -188,10 +188,16 @@
     display: inline;
 }
 
-.DeleteErrorDiv{
-    color: red;
+.DeleteMessageDiv{
     margin: 1.5rem;
     text-align: center;
+}
+.DeleteErrorDiv{
+    color: red;
+}
+
+.DeleteSuccessDiv{
+    color: green;
 }
 
 .DeleteAppModelResponses .undefined{
