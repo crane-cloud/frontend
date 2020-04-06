@@ -113,11 +113,15 @@ class AppsCard extends React.Component {
             <Modal showModal={openDeleteAlert}>
               <div className="DeleteAppModel">
                 <div className="DeleteDescription">
-                  Are You Sure You want to delete
-                  {' '}
-                  {name}
-                  {' '}
-                  App?
+                  Are you sure you want to delete
+                  <span>
+                    <b>
+                      {' '}
+                      {name}
+                      {' '}
+                    </b>
+                  </span>
+                  ?
                 </div>
                 <div className="DeleteAppModelResponses">
                   <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />

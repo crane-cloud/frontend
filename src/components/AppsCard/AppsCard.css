@@ -92,7 +92,6 @@
 }
 
 .AppCard:hover {
-    opacity: 0.8 ;
     border: 1px solid #F7B21F;
     box-shadow: 0 1px 2px 0 #F7B21F;
     transition: 0.5s;
@@ -108,6 +107,7 @@
 .AppDropDown {
     position: relative;
     display: inline-block;
+    z-index: 0;
 }
   
 .AppDropDownContent {
@@ -117,7 +117,7 @@
     min-width: 110px;
     right: 0;
     box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
-    z-index: 10;
+    z-index: 1;
 }
   
 .AppDropDownContent div {
@@ -135,8 +135,6 @@
 
   
 .AppDropDownContent div:hover {background-color: #ddd;}
-
-/* .AppDropDown:hover .AppDropDownContent {display: block;} */
 
 .AppDropDown:hover .DropDownImg {
     transition: 0.5s;
@@ -159,7 +157,7 @@
 }
 
 .AppDeleteModel .ModalParentWrap{
-    background-color: inherit!important;
+    background-color: inherit;
 }
 
 .AppDeleteModel .ModalChildWrap{
@@ -167,6 +165,7 @@
     height: unset;
     min-height: 10rem !important;
     z-index: 9999;
+    background-color: #f1f1f1;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
