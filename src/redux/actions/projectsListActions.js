@@ -20,9 +20,9 @@ export const getUserProjectsFailed = (error) => ({
   },
 });
 
-const getUserProjects = (UserID) => (dispatch) => {
+const getUserProjects = (userID) => (dispatch) => {
   dispatch(startTheFetch());
-  return axios.get(`${API_BASE_URL}/users/${UserID}/projects`,
+  return axios.get(`${API_BASE_URL}/users/${userID}/projects`,
     {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
