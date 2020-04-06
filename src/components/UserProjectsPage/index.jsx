@@ -27,6 +27,7 @@ class UserProjectsPage extends React.Component {
       clusterID: '',
       projectDescription: '',
       clusters: [],
+      error: ''
     };
 
     this.showForm = this.showForm.bind(this);
@@ -43,9 +44,16 @@ class UserProjectsPage extends React.Component {
 
 
   handleChange(e) {
+    const { error } = this.state;
     this.setState({
       [e.target.name]: e.target.value
     });
+
+    if (error) {
+      this.setState({
+        error: ''
+      });
+    }
   }
 
   showForm() {
@@ -59,21 +67,29 @@ class UserProjectsPage extends React.Component {
   handleSubmit() {
     const { projectName, projectDescription, clusterID } = this.state;
     const { AddProject, data, isAdded } = this.props;
-    const newProject = {
-      description: projectDescription,
-      cluster_id: clusterID,
-      name: projectName,
-      owner_id: data.id
-    };
-    AddProject(newProject);
-    // this.setState({
-    //   loading: true
-    // });
 
-    if (isAdded === true) {
+    if (!projectName || !clusterID) {
+      // if user tries to submit empty email/password
       this.setState({
-        openModal: false
+        error: 'Please enter the project name and select a cluster'
       });
+    } else {
+      const newProject = {
+        description: projectDescription,
+        cluster_id: clusterID,
+        name: projectName,
+        owner_id: data.id
+      };
+      AddProject(newProject);
+      // this.setState({
+      //   loading: true
+      // });
+
+      if (isAdded === true) {
+        this.setState({
+          openModal: false
+        });
+      }
     }
   }
 
@@ -83,6 +99,8 @@ class UserProjectsPage extends React.Component {
       openModal,
       projectName,
       projectDescription,
+      error
+
       // clusterID,
       // loading
     } = this.state;
@@ -190,6 +208,11 @@ class UserProjectsPage extends React.Component {
               />
 
             </div>
+            {error && (
+              <div className="ProjectFormErrorDiv">
+                {error}
+              </div>
+            )}
             <div className="ModalFormButtons">
               <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />
               <PrimaryButton label="Create project" onClick={this.handleSubmit} />
