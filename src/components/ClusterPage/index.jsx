@@ -112,7 +112,6 @@ class ClusterPage extends React.Component {
       <div className="Page">
         <div className="TopRow">
           <Header />
-          {/* <InformationBar header="Select Infrastructure" showBtn /> */}
           <InformationBar header="Select Infrastructure" showBtn btnAction={this.showForm} />
         </div>
         <div className="MainRow">
