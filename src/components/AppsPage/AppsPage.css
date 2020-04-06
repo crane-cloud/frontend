@@ -1,13 +1,14 @@
 .BackDiv  img{
-    display: inline;
+  display: inline;
 }
 
-.BackDiv{ 
-    display: inline;
-    color: black;
+.BackDiv{
+  display: inline;
+  color: black;
 }
+
 .BackDiv p{
-    display: inline;
+  display: inline;
 }
 
 /*! ////////////////////////////////////////// */
@@ -45,11 +46,11 @@
 }
 
 .ModalFormInputs .ModalFormInputsEnvVars {
-  height: 200px; /* I've had to limit this height for now */
+height: 200px; /* I've had to limit this height for now */
 }
 
 .EnvVarsInputGroup .EnvVarsAddBtn {
-  position: relative;
+position: relative;
 }
 
 .EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn {
@@ -75,10 +76,11 @@
 }
 
 .ModalFormButtons {
-  width: 100%;
+width: 100%;
 }
 
 .ModalFormButtons.AddAddButtons {
+  /* max-width: 25rem; */
   margin-bottom: 2rem;
 }
 
@@ -88,32 +90,32 @@
 }
 
 .EnvVarsTable table {
-  max-width: 25rem;
-  text-align: left;
+max-width: 25rem;
+text-align: left;
 }
 
 .EnvVarsTable table thead td {
-  font-weight: normal;
-  color: #555;
+font-weight: normal;
+color: #555;
 }
 
 .EnvVarsTable table thead td:last-child {
-  width: 4rem;
-  text-align: right;
+width: 4rem;
+text-align: right;
 }
 
 .EnvVarsTable table td:last-child {
-  width: 4rem;
-  display: block;
-  margin: auto;
+width: 4rem;
+display: block;
+margin: auto;
 }
 
 .EnvVarsTable table td {
-  font-weight: normal;
+font-weight: normal;
 }
 
 .EnvVarsTable table td img {
-  margin: auto;
+margin: auto;
 }
 
 .EnvVarsTable table td img:hover {
@@ -122,17 +124,17 @@
 }
 
 .EnvVarsTable thead, .EnvVarsTable tbody tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
+display: table;
+width: 100%;
+table-layout: fixed;
 }
 
 .AppFormErrorDiv {
-  background-color: rgba(255, 255, 255, 0.5);
-  color: rgb(214, 59, 59);
-  text-align: center;
-  padding: 1rem 0;
-  height: 1rem;
+background-color: rgba(255, 255, 255, 0.5);
+color: rgb(214, 59, 59);
+text-align: center;
+padding: 1rem 0;
+height: 1rem;
 }
 
 .AppFormErrorDiv.CreateSuccess {
