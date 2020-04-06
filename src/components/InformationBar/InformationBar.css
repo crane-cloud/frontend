@@ -1,8 +1,9 @@
-.InformationBarSub{
+.InformationBar {
   background: #F8F7E5;
   min-height: 3.5rem;
   padding: 10px;
 }
+
 .InfoHeader{
   display: inline;
   font-family: 'Roboto', sans-serif;
@@ -13,6 +14,7 @@
   margin-left: 30px;
   cursor: pointer;
 }
+
 .LeftHeader{
   float: right;
   font-family: 'Roboto', sans-serif;
@@ -24,11 +26,13 @@
   padding: 10px;
   cursor: pointer;
 }
+
 .CreateButton{
   float: right;
   margin-right: 20px;
 }
-.InformationBarSub::after{
+
+.InformationBar::after{
   clear: float;
   clear: both;
 }

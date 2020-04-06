@@ -2,8 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import InformationBar from '../InformationBar';
-import InformationBarSub from '../InformationBarSub';
+import InformationBar from '../InformationBar';
 import PrimaryButton from '../PrimaryButton';
 import Spinner from '../SpinnerComponent';
 import BlackInputText from '../BlackInputText';
@@ -114,7 +113,7 @@ class ClusterPage extends React.Component {
         <div className="TopRow">
           <Header />
           {/* <InformationBar header="Select Infrastructure" showBtn /> */}
-          <InformationBarSub header="Select Infrastructure" showBtn btnAction={this.showForm} />
+          <InformationBar header="Select Infrastructure" showBtn btnAction={this.showForm} />
         </div>
         <div className="MainRow">
           <ClustersList />

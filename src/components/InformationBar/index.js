@@ -1,9 +1,9 @@
 import React from 'react';
 import CreateButton from '../ButtonComponent';
-import './InformationBarSub.css';
+import './InformationBar.css';
 
-const InformationBarSub = ({ header, showBtn, btnAction }) => (
-  <div className="InformationBarSub">
+const InformationBar = ({ header, showBtn, btnAction }) => (
+  <div className="InformationBar">
     {showBtn ? (
       <div>
         <div className="InfoHeader">{header}</div>
@@ -17,4 +17,4 @@ const InformationBarSub = ({ header, showBtn, btnAction }) => (
   </div>
 );
 
-export default InformationBarSub;
+export default InformationBar;
