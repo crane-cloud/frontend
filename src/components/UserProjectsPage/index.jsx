@@ -167,7 +167,7 @@ class UserProjectsPage extends React.Component {
                 }}
                 required
               >
-                <option selected>Pick a Cluster</option>
+                <option disabled selected>Pick a Cluster</option>
                 {clustersList}
               </select>
 
