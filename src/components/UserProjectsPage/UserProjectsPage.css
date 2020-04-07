@@ -50,6 +50,7 @@ section option{
 
 option{
     padding: 12px 16px;
+    line-height: 1.6rem;
     color: black;
     background-color: #0082c1;
 }
