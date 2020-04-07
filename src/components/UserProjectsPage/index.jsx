@@ -168,7 +168,6 @@ class UserProjectsPage extends React.Component {
                 required
               >
                 <option selected>Pick a Cluster</option>
-                <option>Crane Cloud</option>
                 {clustersList}
               </select>
 
