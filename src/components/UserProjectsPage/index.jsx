@@ -12,13 +12,11 @@ import Modal from '../Modal';
 import getClustersList from '../../redux/actions/ClustersActions';
 import getUserProjects from '../../redux/actions/projectsListActions';
 import InputText from '../InputText';
+import TextArea from '../TextArea';
 import { BigSpinner } from '../SpinnerComponent';
 import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/craneLogo.png';
 
-
-// create uuid with ccuid prefix
-const CCNSID = `ccuid${(new Date()).getTime().toString(16) + Math.floor(1E7 * Math.random()).toString(16)}`;
 
 class UserProjectsPage extends React.Component {
   constructor(props) {
@@ -27,6 +25,7 @@ class UserProjectsPage extends React.Component {
       openModal: false, // add project modal is closed initially
       projectName: '',
       clusterID: '',
+      projectDescription: '',
       clusters: [],
     };
 
@@ -58,10 +57,10 @@ class UserProjectsPage extends React.Component {
   }
 
   handleSubmit() {
-    const { projectName, clusterID } = this.state;
+    const { projectName, projectDescription, clusterID } = this.state;
     const { AddProject, data, isAdded } = this.props;
     const newProject = {
-      alias: projectName + CCNSID,
+      description: projectDescription,
       cluster_id: clusterID,
       name: projectName,
       owner_id: data.id
@@ -83,6 +82,9 @@ class UserProjectsPage extends React.Component {
     const {
       openModal,
       projectName,
+      projectDescription,
+      // clusterID,
+      // loading
     } = this.state;
     const {
       projects, clusters, isRetrieving, data, isFetched
@@ -116,7 +118,7 @@ class UserProjectsPage extends React.Component {
                         <div key={project.id} className="ProjectCardItem">
                           <ClusterCard
                             name={project.name}
-                            description={project.alias}
+                            description={project.description}
                             icon={crane}
                           />
                         </div>
@@ -178,6 +180,16 @@ class UserProjectsPage extends React.Component {
                   this.handleChange(e);
                 }}
               />
+
+              <TextArea
+                placeholder="Project Description"
+                name="projectDescription"
+                value={projectDescription}
+                onChange={(e) => {
+                  this.handleChange(e);
+                }}
+              />
+
             </div>
             <div className="ModalFormButtons">
               <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />

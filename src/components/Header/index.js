@@ -23,6 +23,7 @@ const Header = (props) => {
     props.removeUser();
     window.location.href = '/';
     localStorage.removeItem('state');
+    localStorage.removeItem('token');
   };
 
   return (
