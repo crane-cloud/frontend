@@ -15,15 +15,12 @@ class AppsCard extends React.Component {
     this.state = {
       openDeleteAlert: false,
       openDropDown: false,
-      isRemoved: false,
-      buttonClicked: false,
       deleteFeedback: ''
     };
 
     this.handleDeleteApp = this.handleDeleteApp.bind(this);
     this.showDeleteAlert = this.showDeleteAlert.bind(this);
     this.hideDeleteAlert = this.hideDeleteAlert.bind(this);
-    this.reloadOndelete = this.reloadOndelete.bind(this);
     this.toggleDropDown = this.toggleDropDown.bind(this);
     this.hideDropDown = this.hideDropDown.bind(this);
     this.showDropDown = this.showDropDown.bind(this);
@@ -51,9 +48,7 @@ class AppsCard extends React.Component {
       deleteApp, isDeleted, isFailed
     } = this.props;
     e.preventDefault();
-    this.setState({
-      buttonClicked: true
-    });
+
     deleteApp(appId);
     if (isDeleted) {
       this.setState({
@@ -62,7 +57,6 @@ class AppsCard extends React.Component {
       setTimeout(
         () => {
           this.setState({
-            isRemoved: isDeleted,
             openDeleteAlert: false,
             deleteFeedback: ''
           });
@@ -93,20 +87,11 @@ class AppsCard extends React.Component {
     this.setState({ openDeleteAlert: false });
   }
 
-  reloadOndelete() {
-    this.setState({
-      isRemoved: false
-    });
-    window.location.reload(false);
-  }
-
   render() {
     const {
-      name, status, url, appId, isDeleting, isDeleted, isFailed
+      name, status, url, appId, isDeleting
     } = this.props;
-    const { isRemoved, buttonClicked } = this.state;
     const { openDeleteAlert, openDropDown, deleteFeedback } = this.state;
-    console.log(isRemoved);
     return (
       <div className="AppCard">
         <div className="AppCardHeader">
