@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
 import AddProject from '../../redux/actions/addProject';
-import InformationBarSub from '../InformationBarSub';
+import InformationBar from '../InformationBar';
 import Header from '../Header';
 import PrimaryButton from '../PrimaryButton';
 import Modal from '../Modal';
@@ -99,7 +99,7 @@ class UserProjectsPage extends React.Component {
       <div className="Page">
         <div className="TopRow">
           <Header />
-          <InformationBarSub header="Projects" showBtn btnAction={this.showForm} />
+          <InformationBar header="Projects" showBtn btnAction={this.showForm} />
         </div>
         <div className="MainRow">
           <div className="ProjectList">

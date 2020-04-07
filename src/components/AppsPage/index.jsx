@@ -8,7 +8,7 @@ import InputText from '../BlackInputText';
 import Modal from '../Modal';
 import RemoveIcon from '../../assets/images/remove.svg';
 import BackButton from '../../assets/images/backButton.svg';
-import InformationBarSub from '../InformationBarSub';
+import InformationBar from '../InformationBar';
 import AppsList from '../AppsList';
 import Header from '../Header';
 import Spinner from '../SpinnerComponent';
@@ -157,7 +157,7 @@ class AppsPage extends React.Component {
       <div className="Page">
         <div className="TopRow">
           <Header />
-          <InformationBarSub
+          <InformationBar
             header={(
               <Link to={{ pathname: `/users/${userId}/projects/` }}>
                 <div className="BackDiv">
