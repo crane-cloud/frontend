@@ -47,3 +47,9 @@ section option{
     font-size: 16px;
     color: black;
 }
+
+option{
+    padding: 12px 16px;
+    color: black;
+    background-color: #0082c1;
+}

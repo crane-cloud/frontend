@@ -37,8 +37,8 @@ class UserProjectsPage extends React.Component {
   }
 
   componentDidMount() {
-    const { getClustersList, getUserProjects } = this.props;
-    getUserProjects();
+    const { getClustersList, getUserProjects, data } = this.props;
+    getUserProjects(data.id);
     getClustersList();
   }
 
@@ -165,7 +165,8 @@ class UserProjectsPage extends React.Component {
                 }}
                 required
               >
-                <option disabled selected>Pick a Cluster</option>
+                <option selected>Pick a Cluster</option>
+                <option>Crane Cloud</option>
                 {clustersList}
               </select>
 
