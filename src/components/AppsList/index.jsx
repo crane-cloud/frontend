@@ -10,10 +10,31 @@ import './AppsList.css';
 
 
 class AppsList extends Component {
+  constructor(props) {
+    super(props);
+    const { newAppCreated } = this.props;
+    this.state = {
+      newAppCreated: newAppCreated
+    };
+  }
+
   componentDidMount() {
     const { params, getAppsList } = this.props;
     getAppsList(params.projectID);
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { params, getAppsList } = this.props;
+    debugger;
+    if (prevState.newAppCreated !== this.state.newAppCreated) {
+      debugger;
+      getAppsList(params.projectID);
+    }
+  }
+
+  // static getDerivedStateFromProps(nextProps, prevState) {
+
+  // }
 
   render() {
     const { apps, isRetrieved, isRetrieving } = this.props;
