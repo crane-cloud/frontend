@@ -91,7 +91,7 @@ class AppsPage extends React.Component {
   }
 
   async handleSubmit() {
-    const { name, uri, envVars } = this.state;
+    const { name, uri, port, envVars } = this.state;
     const {
       createApp,
       match,
@@ -101,7 +101,7 @@ class AppsPage extends React.Component {
     } = this.props;
 
 
-    if (!name || !uri) {
+    if (!name || !uri || !port) {
       // if user tries to submit empty email/password
       this.setState({
         error: 'Please enter the App Name and Image Uri'
