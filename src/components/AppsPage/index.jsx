@@ -217,6 +217,14 @@ class AppsPage extends React.Component {
                     this.handleChange(e);
                   }}
                 />
+                <InputText
+                  placeholder="Port"
+                  name="port"
+                  value={port}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+                />
                 {error && (
                   <div className="AppFormErrorDiv">
                     {error}
