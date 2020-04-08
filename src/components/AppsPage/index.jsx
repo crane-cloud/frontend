@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import createApp from '../../redux/actions/createApp';
+import createApp, { clearState } from '../../redux/actions/createApp';
 import PrimaryButton from '../PrimaryButton';
 import InputText from '../BlackInputText';
 import Modal from '../Modal';
@@ -41,7 +41,9 @@ class AppsPage extends React.Component {
   }
 
   hideForm() {
+    const { clearState } = this.props;
     this.setState({ openModal: false });
+    clearState();
   }
 
   handleChange(e) {
@@ -94,12 +96,12 @@ class AppsPage extends React.Component {
     const { name, uri, envVars } = this.state;
     const {
       createApp,
+      clearState,
       match,
       isCreated,
       attempted,
       errorCode
     } = this.props;
-
 
     if (!name || !uri) {
       // if user tries to submit empty email/password
@@ -120,6 +122,8 @@ class AppsPage extends React.Component {
         this.setState({
           createFeedback: 'Success! App created!'
         });
+
+        clearState(); // restore the initial state in reducer
 
         setTimeout(
           () => {
@@ -321,4 +325,4 @@ const mapStateToProps = ({ user, createNewApp }) => {
   };
 };
 
-export default connect(mapStateToProps, { createApp })(withRouter(AppsPage));
+export default connect(mapStateToProps, { createApp, clearState })(withRouter(AppsPage));
