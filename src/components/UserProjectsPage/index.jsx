@@ -76,10 +76,10 @@ class UserProjectsPage extends React.Component {
     const { projectName, projectDescription, clusterID } = this.state;
     const { AddProject, data, isAdded } = this.props;
 
-    if (!projectName || !clusterID) {
+    if (!projectName || !clusterID || !projectDescription) {
       // if user tries to submit empty email/password
       this.setState({
-        error: 'Please enter the project name and select a cluster'
+        error: 'Please fill up all fields and select a cluster'
       });
     } else if (this.validateProjectName(projectName) === false) {
       this.setState({
