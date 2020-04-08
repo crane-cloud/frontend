@@ -8,7 +8,7 @@ import InputText from '../BlackInputText';
 import Modal from '../Modal';
 import RemoveIcon from '../../assets/images/remove.svg';
 import BackButton from '../../assets/images/backButton.svg';
-import InformationBarSub from '../InformationBarSub';
+import InformationBar from '../InformationBar';
 import AppsList from '../AppsList';
 import Header from '../Header';
 import Spinner from '../SpinnerComponent';
@@ -96,7 +96,8 @@ class AppsPage extends React.Component {
       createApp,
       match,
       isCreated,
-      attempted
+      attempted,
+      errorCode
     } = this.props;
 
 
@@ -131,9 +132,15 @@ class AppsPage extends React.Component {
       }
 
       if (attempted === true && isCreated === false) {
-        this.setState({
-          createFeedback: 'Something went wrong. Failed to deploy'
-        });
+        if (errorCode === 409) {
+          this.setState({
+            createFeedback: 'App name already in use, select another and try again'
+          });
+        } else {
+          this.setState({
+            createFeedback: 'Something went wrong. Failed to deploy'
+          });
+        }
       }
     }
   }
@@ -157,7 +164,7 @@ class AppsPage extends React.Component {
       <div className="Page">
         <div className="TopRow">
           <Header />
-          <InformationBarSub
+          <InformationBar
             header={(
               <Link to={{ pathname: `/users/${userId}/projects/` }}>
                 <div className="BackDiv">
@@ -296,14 +303,15 @@ class AppsPage extends React.Component {
 
 const mapStateToProps = ({ user, createNewApp }) => {
   const {
-    isCreated, isCreating, app, attempted
+    isCreated, isCreating, app, attempted, errorCode
   } = createNewApp;
   return {
     user,
     isCreated,
     isCreating,
     app,
-    attempted
+    attempted,
+    errorCode
   };
 };
 

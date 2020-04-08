@@ -34,6 +34,7 @@ const createAppReducer = (state = initialState, action) => {
       isCreating: false,
       isCreated: false,
       attempted: true,
+      errorCode: action.payload.errorCode
     };
 
   default:
