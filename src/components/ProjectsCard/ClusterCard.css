@@ -1,0 +1,43 @@
+.ClusterCard {
+    width: 15rem;
+}
+  
+.ClusterCard:hover {
+    transition: 0.5s;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    transform: scale(0.95);
+}
+.CardImageDiv{
+    margin: 0;
+    width: 100%;
+    height: 150px;
+    background-color: #008ac1;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.BottomContainer {
+    padding: 10px;
+    height: 80px;
+}
+
+.ClusterCardName{
+    width: 100%;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    padding-top: 5px;
+}
+.ClusterCardDesc{
+    width: 100%;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    color: #000000;
+    padding-top: 10px;
+
+}
+
