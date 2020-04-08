@@ -1,19 +1,19 @@
 import React from 'react';
 
-import './ClusterCard.css';
+import './ProjectsCard.css';
 
-const ClusterCard = (props) => {
+const ProjectsCard = (props) => {
   const { name, description, icon } = props;
   return (
-    <div className="ClusterCard">
+    <div className="ProjectsCard">
       <div className="CardImageDiv" style={{ backgroundImage: `url(${icon})` }} />
       <div className="BottomContainer">
-        <div className="ClusterCardName">{name}</div>
-        <div className="ClusterCardDesc">{description}</div>
+        <div className="ProjectsCardName">{name}</div>
+        <div className="ProjectsCardDesc">{description}</div>
       </div>
     </div>
 
   );
 };
 
-export default ClusterCard;
+export default ProjectsCard;
