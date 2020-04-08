@@ -20,6 +20,7 @@ class AppsPage extends React.Component {
     this.state = {
       name: '',
       uri: '',
+      port: '',
       varName: '',
       varValue: '',
       envVars: {},
