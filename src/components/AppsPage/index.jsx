@@ -157,7 +157,13 @@ class AppsPage extends React.Component {
       createFeedback
     } = this.state;
 
-    const { match: { params }, user: { data}, isCreating  } = this.props;
+    const {
+      match: { params },
+      user: { data },
+      isCreating,
+      isCreated
+    } = this.props;
+
     const userId = data.id;
 
     return (
@@ -179,7 +185,7 @@ class AppsPage extends React.Component {
           />
         </div>
         <div className="MainRow">
-          <AppsList params={params} />
+          <AppsList params={params} newAppCreated={isCreated} />
         </div>
         <div className="FooterRow">
           <p>
