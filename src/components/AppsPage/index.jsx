@@ -150,6 +150,7 @@ class AppsPage extends React.Component {
       openModal,
       name,
       uri,
+      port,
       varName,
       varValue,
       envVars,
