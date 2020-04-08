@@ -67,6 +67,9 @@ class UserProjectsPage extends React.Component {
 
   validateProjectName(name) {
     if (/^[a-z]/i.test(name)) {
+      if (name.match(/[^-a-zA-Z]/)) {
+        return 'false_convention';
+      }
       return true;
     }
     return false;
@@ -84,6 +87,10 @@ class UserProjectsPage extends React.Component {
     } else if (this.validateProjectName(projectName) === false) {
       this.setState({
         error: 'Project Name should start with a letter'
+      });
+    } else if (this.validateProjectName(projectName) === 'false_convention') {
+      this.setState({
+        error: 'Project Name should contain only letters and a hypen'
       });
     } else {
       const newProject = {
@@ -121,9 +128,9 @@ class UserProjectsPage extends React.Component {
     } = this.props;
     const userId = data.id;
     const clustersList = clusters.length > 0
-        && clusters.map((item, i) => (
-          <option key={i} value={item.id}>{item.name}</option>
-        ));
+      && clusters.map((item, i) => (
+        <option key={i} value={item.id}>{item.name}</option>
+      ));
 
     return (
       <div className="Page">
@@ -142,7 +149,7 @@ class UserProjectsPage extends React.Component {
                 </div>
               ) : (
                 <div className="ProjectList">
-                  { (isFetched && projects !== undefined && (
+                  {(isFetched && projects !== undefined && (
                     (projects.map((project) => (
                       <Link to={{ pathname: `/users/${userId}/projects/${project.id}/apps` }} key={project.id}>
                         <div key={project.id} className="ProjectCardItem">
@@ -157,14 +164,14 @@ class UserProjectsPage extends React.Component {
                   )}
                   {(isFetched && projects.length === 0) && (
                     <div className="NoContentDiv">
-                      You haven’t created any projects yet.
-                      Click the create button to get started.
+                        You haven’t created any projects yet.
+                        Click the create button to get started.
                     </div>
                   )}
                   {(!isRetrieving && !isFetched) && (
                     <div className="NoContentDiv">
-                      Oops! Something went wrong!
-                      Failed to retrieve Projects.
+                        Oops! Something went wrong!
+                        Failed to retrieve Projects.
                     </div>
                   )}
 
