@@ -1,11 +1,16 @@
-import { CREATE_APP_SUCCESS, CREATE_APP_FAIL, START_CREATING_APP } from '../actions/actionTypes';
+import {
+  CREATE_APP_SUCCESS,
+  CREATE_APP_FAIL,
+  START_CREATING_APP,
+  CLEAR_ADD_APP_STATE
+} from '../actions/actionTypes';
 
 const initialState = {
   app: null,
   isCreated: false,
   isCreating: false,
   attempted: false,
-  message: 'Oops! App not created'
+  message: ''
 };
 
 const createAppReducer = (state = initialState, action) => {
@@ -35,6 +40,16 @@ const createAppReducer = (state = initialState, action) => {
       isCreated: false,
       attempted: true,
       errorCode: action.payload.errorCode
+    };
+
+  case CLEAR_ADD_APP_STATE:
+    return {
+      ...state,
+      app: null,
+      isCreated: false,
+      isCreating: false,
+      attempted: false,
+      message: ''
     };
 
   default:
