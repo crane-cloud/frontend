@@ -111,6 +111,7 @@ class AppsPage extends React.Component {
         env_vars: envVars,
         image: uri,
         name,
+        port,
         project_id: match.params.projectID
       };
 
