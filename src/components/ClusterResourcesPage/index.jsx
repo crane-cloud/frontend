@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import './ClusterResourcesPage.css';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
+import { BigSpinner } from '../SpinnerComponent';
 import SideNav from '../SideNav';
 import ResourceCard from '../ResourceCard';
 import getClusterResourcesCount from '../../redux/actions/ClusterResourcesActions';
@@ -20,7 +21,7 @@ class ClusterResourcesPage extends React.Component {
   }
 
   render() {
-    const { resourceCount, clusterName, match: { params } } = this.props;
+    const { resourceCount, isRetrieving, isRetrieved, clusterName, match: { params } } = this.props;
     localStorage.setItem('clusterName', clusterName);
 
     return (
@@ -37,36 +38,36 @@ class ClusterResourcesPage extends React.Component {
 
             </div>
             <div className="ContentSection">
-              <div className="ClusterContainer">
-                {
-                  resourceCount.length !== 0 ? (resourceCount.map(
-                    (resource) => (
-                      <Link to={{ pathname: `/clusters/${params.myClusterID}/${resource.name.toLowerCase()}` }} key={resource.count}>
-                        <ResourceCard title={resource.name} count={resource.count} />
-                      </Link>
-                    )
-                  )) : (
-                    <h3 className="EmptyList">No Resources Available</h3>
-                  )
-                }
-              </div>
-              {/* <ClusterResources
-                resourceCount={resourceCount}
-                myClusterID={params.clusterID}
-              /> */}
-              {/* {(isFetched && deployments.length === 0) && (
-                <div className="NoContentDiv">
-                  <p>No deployments available</p>
+              {isRetrieving ? (
+                <div className="SpinnerWrapper">
+                  <BigSpinner />
+                </div>
+              ) : (
+                <div className="ClusterContainer">
+
+                  {(isRetrieved && resourceCount !== undefined) && (
+                    (resourceCount.map(
+                      (resource) => (
+                        <Link to={{ pathname: `/clusters/${params.myClusterID}/${resource.name.toLowerCase()}` }} key={resource.count}>
+                          <ResourceCard title={resource.name} count={resource.count} />
+                        </Link>
+                      )
+                    )))}
                 </div>
               )}
-              {(!isFetchingDeployments && !isFetched) && (
+              {(isRetrieved && resourceCount.length === 0) && (
+                <div className="NoContentDiv">
+                  <p>No Resources available</p>
+                </div>
+              )}
+              {(!isRetrieving && !isRetrieved) && (
                 <div className="NoContentDiv">
                   <p>
                     Oops! Something went wrong!
-                    Failed to retrieve deployments.
+                    Failed to retrieve Cluster Resources.
                   </p>
                 </div>
-              )} */}
+              )}
             </div>
           </div>
         </div>

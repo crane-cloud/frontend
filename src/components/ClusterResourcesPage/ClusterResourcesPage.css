@@ -7,6 +7,12 @@
     padding: 2rem 1.4rem;
 }
 
+.ContentSection .SpinnerWrapper{
+    position: relative;
+    width: 100%;
+    margin-top: 10rem;
+}
+
 .ClusterItem{
     min-width: 199px;
     margin: 15px 15px;
