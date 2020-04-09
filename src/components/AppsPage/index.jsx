@@ -42,8 +42,8 @@ class AppsPage extends React.Component {
 
   hideForm() {
     const { clearState } = this.props;
-    this.setState({ openModal: false });
     clearState();
+    this.setState({ openModal: false });
   }
 
   handleChange(e) {
@@ -96,11 +96,9 @@ class AppsPage extends React.Component {
     const { name, uri, envVars } = this.state;
     const {
       createApp,
-      clearState,
       match,
       isCreated,
-      attempted,
-      errorCode
+      attempted
     } = this.props;
 
     if (!name || !uri) {
@@ -117,30 +115,9 @@ class AppsPage extends React.Component {
       };
 
       await createApp(appInfo, match.params.projectID);
-
-      if (attempted === true && isCreated === true) {
-        // this.setState({
-        //   createFeedback: 'Success! App created!'
-        // });
-
-        // clearState(); // restore the initial state in reducer
-
-        setTimeout(
-          this.hideForm(), 1000
-        );
+      if (attempted && isCreated) {
+        this.hideForm();
       }
-
-      // if (attempted === true && isCreated === false) {
-      //   if (errorCode === 409) {
-      //     this.setState({
-      //       createFeedback: 'App name already in use, select another and try again'
-      //     });
-      //   } else {
-      //     this.setState({
-      //       createFeedback: 'Something went wrong. Failed to deploy'
-      //     });
-      //   }
-      // }
     }
   }
 
@@ -152,8 +129,7 @@ class AppsPage extends React.Component {
       varName,
       varValue,
       envVars,
-      error,
-      createFeedback
+      error
     } = this.state;
 
     const {

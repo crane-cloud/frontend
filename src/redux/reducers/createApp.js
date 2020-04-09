@@ -23,24 +23,29 @@ const createAppReducer = (state = initialState, action) => {
       isCreating: false,
       isCreated: true,
       attempted: true,
-      message: 'Success! Your app has been deployed.'
+      message: 'Success! Your app has been deployed.',
+      errorCode: null
     };
 
   case START_CREATING_APP:
     return {
       ...state,
+      app: null,
       isCreating: true,
       isCreated: false,
-      message: ''
+      attempted: true,
+      message: '',
+      errorCode: null
     };
 
   case CREATE_APP_FAIL:
     return {
       ...state,
-      message: 'Deployment failed. Please try again',
+      app: null,
       isCreating: false,
       isCreated: false,
       attempted: true,
+      message: 'Deployment failed. Please try again',
       errorCode: action.payload.errorCode
     };
 
