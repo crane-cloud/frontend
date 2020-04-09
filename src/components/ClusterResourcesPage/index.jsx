@@ -2,13 +2,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './ClusterResourcesPage.css';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
-import ClusterResources from '../ClusterResources';
+import ResourceCard from '../ResourceCard';
 import getClusterResourcesCount from '../../redux/actions/ClusterResourcesActions';
 
 class ClusterResourcesPage extends React.Component {
@@ -36,10 +37,36 @@ class ClusterResourcesPage extends React.Component {
 
             </div>
             <div className="ContentSection">
-              <ClusterResources
+              <div className="ClusterContainer">
+                {
+                  resourceCount.length !== 0 ? (resourceCount.map(
+                    (resource) => (
+                      <Link to={{ pathname: `/clusters/${params.myClusterID}/${resource.name.toLowerCase()}` }} key={resource.count}>
+                        <ResourceCard title={resource.name} count={resource.count} />
+                      </Link>
+                    )
+                  )) : (
+                    <h3 className="EmptyList">No Resources Available</h3>
+                  )
+                }
+              </div>
+              {/* <ClusterResources
                 resourceCount={resourceCount}
                 myClusterID={params.clusterID}
-              />
+              /> */}
+              {/* {(isFetched && deployments.length === 0) && (
+                <div className="NoContentDiv">
+                  <p>No deployments available</p>
+                </div>
+              )}
+              {(!isFetchingDeployments && !isFetched) && (
+                <div className="NoContentDiv">
+                  <p>
+                    Oops! Something went wrong!
+                    Failed to retrieve deployments.
+                  </p>
+                </div>
+              )} */}
             </div>
           </div>
         </div>

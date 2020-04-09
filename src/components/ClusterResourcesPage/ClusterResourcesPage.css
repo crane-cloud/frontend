@@ -1,33 +1,25 @@
-.MainSection {
-    background-color: #F1F1F1;
+/* This Component is ideal for re-use for both the clusters and cluster resources */
+
+.ClusterContainer{
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 15px;
+    padding: 2rem 1.4rem;
 }
 
-.MainSection .SiteSideNav{
-    /* position: fixed; */
-    float: left;
-    width: 18%;
-    /* display: inline; */
+.ClusterItem{
+    min-width: 199px;
+    margin: 15px 15px;
+    text-align: center;
 }
-.MainSection:after{
-    /* clear: both; */
-}
-.MainSection .Content{
-    /* overflow: scroll; */
-    /* float: right; */
-    width: 82%;
-    /* float: right; */
-    display: flex;
-    flex-flow: column;
-    /* min-height: 860px; */
-    background-color: #F1F1F1;
-    
-}
-.MainSection .UpperBar{
-    height: 10%;
-}
-
-.MainSection LowerBar{
-    height: 90%;
-    flex: 2;
-    overflow: auto;
-}
+@media only screen and (min-width: 750px) {
+    .ClusterContainer {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  /* Bigger than Phones(laptop / desktop) */
+  @media only screen and (min-width: 970px) {
+    .ClusterContainer {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
