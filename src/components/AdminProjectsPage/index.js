@@ -8,9 +8,7 @@ import InformationBar from '../InformationBar';
 import Header from '../Header';
 import SideNav from '../SideNav';
 import getAdminProjects from '../../redux/actions/AdminProjectsActions';
-import ClusterCard from '../ClusterCard';
 import { BigSpinner } from '../SpinnerComponent';
-import crane from '../../assets/images/plant.svg';
 
 class AdminProjectsPage extends React.Component {
   componentDidMount() {
@@ -19,7 +17,7 @@ class AdminProjectsPage extends React.Component {
   }
 
   render() {
-    const { projects, isRetrieving } = this.props;
+    const { projects, isRetrieving, isRetrieved } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
 
@@ -35,34 +33,45 @@ class AdminProjectsPage extends React.Component {
               <InformationBar header="Projects" showBtn={false} />
             </div>
             <div className="ContentSection">
-              <div className="ProjectList">
-                {
-                  isRetrieving ? (
-                    <div className="TableLoading">
+              <div className="ResourcesTable">
+                <table>
+                  <thead className="uppercase">
+                    <tr>
+                      <th>name</th>
+                      <th>description</th>
+                    </tr>
+                  </thead>
+                  {isRetrieving ? (
+                    <tr className="TableLoading">
                       <div className="SpinnerWrapper">
                         <BigSpinner />
                       </div>
-                    </div>
+                    </tr>
                   ) : (
-                    <div className="ProjectList">
-                      { projects !== 0 ? (projects.map((project) => (
-                        <Link to={{ pathname: `/projects/${project.id}` }} key={project.id}>
-                          <div key={project.id} className="ProjectCardItem">
-                            <ClusterCard
-                              name={project.name}
-                              description={project.alias}
-                              icon={crane}
-                            />
-                          </div>
-                        </Link>
-                      )))
-                        : (
-                          <h3 className="EmptyList">No Projects Yet.</h3>
-                        )
-                      }
-                    </div>
-                  )
-                }
+                    <tbody>
+                      {(projects !== 0 && projects !== undefined) && (
+                        projects.map((project) => (
+                          <tr>
+                            <td>{project.name}</td>
+                            <td>{project.description}</td>
+                          </tr>
+                        )))}
+                    </tbody>
+                  )}
+                </table>
+                {(isRetrieved && projects.length === 0) && (
+                  <div className="NoContentDiv">
+                    <p>No projects available</p>
+                  </div>
+                )}
+                {(!isRetrieving && !isRetrieved) && (
+                  <div className="NoContentDiv">
+                    <p>
+                      Oops! Something went wrong!
+                      Failed to retrieve projects.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -75,17 +84,19 @@ class AdminProjectsPage extends React.Component {
 
 AdminProjectsPage.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.object),
+  isRetrieved: PropTypes.bool,
   isRetrieving: PropTypes.bool
 };
 
 AdminProjectsPage.defaultProps = {
   projects: [],
+  isRetrieved: false,
   isRetrieving: false
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, projects } = state.AdminProjectsReducer;
-  return { isRetrieving, projects };
+  const { isRetrieving, projects, isRetrieved } = state.AdminProjectsReducer;
+  return { isRetrieving, projects, isRetrieved };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
