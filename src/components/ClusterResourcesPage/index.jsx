@@ -21,7 +21,9 @@ class ClusterResourcesPage extends React.Component {
   }
 
   render() {
-    const { resourceCount, isRetrieving, isRetrieved, clusterName, match: { params } } = this.props;
+    const {
+      resourceCount, isRetrieving, isRetrieved, clusterName, match: { params }
+    } = this.props;
     localStorage.setItem('clusterName', clusterName);
 
     return (
@@ -39,7 +41,7 @@ class ClusterResourcesPage extends React.Component {
             </div>
             <div className="ContentSection">
               {isRetrieving ? (
-                <div className="SpinnerWrapper">
+                <div className="ResourceSpinnerWrapper">
                   <BigSpinner />
                 </div>
               ) : (
@@ -57,7 +59,7 @@ class ClusterResourcesPage extends React.Component {
               )}
               {(isRetrieved && resourceCount.length === 0) && (
                 <div className="NoContentDiv">
-                  <p>No Resources available</p>
+                  <p>No Cluster Resources available</p>
                 </div>
               )}
               {(!isRetrieving && !isRetrieved) && (
@@ -91,8 +93,12 @@ ClusterResourcesPage.defaultProps = {
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, isRetrieved, resourceCount, clusterName } = state.ClusterResourcesReducer;
-  return { isRetrieving, isRetrieved, resourceCount, clusterName };
+  const {
+    isRetrieving, isRetrieved, resourceCount, clusterName
+  } = state.ClusterResourcesReducer;
+  return {
+    isRetrieving, isRetrieved, resourceCount, clusterName
+  };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
