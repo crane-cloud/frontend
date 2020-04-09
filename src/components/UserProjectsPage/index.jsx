@@ -15,7 +15,7 @@ import InputText from '../InputText';
 import TextArea from '../TextArea';
 import { BigSpinner } from '../SpinnerComponent';
 import ClusterCard from '../ClusterCard';
-import crane from '../../assets/images/craneLogo.png';
+import crane from '../../assets/images/plant.svg';
 
 
 class UserProjectsPage extends React.Component {
@@ -92,7 +92,7 @@ class UserProjectsPage extends React.Component {
     const userId = data.id;
     const clustersList = clusters.length > 0
         && clusters.map((item, i) => (
-          <option key={i} value={item.id}>{item.name}</option>
+          <option className="ClusterName" key={i} value={item.id}>{item.name}</option>
         ));
 
     return (
