@@ -9,7 +9,7 @@ export const startGettingUsers = () => ({
 export const getUsersSuccess = (response) => (
   {
     type: GET_USERS_SUCCESS,
-    payload: response.data.data.users,
+    payload: response.data.data.users.users,
   });
 
 export const getUsersFail = (error) => ({
@@ -20,7 +20,7 @@ export const getUsersFail = (error) => ({
   },
 });
 
-const getUsers = () => async (dispatch) => {
+const getUsersList = () => async (dispatch) => {
   dispatch(startGettingUsers());
   try {
     const response = await axios.get(`${API_BASE_URL}/users/`, {
@@ -32,4 +32,4 @@ const getUsers = () => async (dispatch) => {
   }
 };
 
-export default getUsers;
+export default getUsersList;

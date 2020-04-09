@@ -2,21 +2,32 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Link } from 'react-router-dom';
 import './AdminProjectsPage.css';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
 import SideNav from '../SideNav';
 import getAdminProjects from '../../redux/actions/AdminProjectsActions';
-import getUserDetail from '../../redux/actions/UserDetailActions';
+import getUsersList from '../../redux/actions/usersActions';
 import { BigSpinner } from '../SpinnerComponent';
 
 class AdminProjectsPage extends React.Component {
   componentDidMount() {
-    const { getAdminProjects } = this.props;
+    const { getAdminProjects, getUsersList } = this.props;
     getAdminProjects();
+    getUsersList();
   }
 
+  getUserName(userId) {
+    let username = '';
+    const { users } = this.props;
+    users.users.map((user) => {
+      if (userId === user.id) {
+        username = user.name;
+      }
+      return null;
+    });
+    return username;
+  }
 
   render() {
     const { projects, isRetrieving, isRetrieved } = this.props;
@@ -104,14 +115,14 @@ AdminProjectsPage.defaultProps = {
 
 export const mapStateToProps = (state) => {
   const { isRetrieving, projects, isRetrieved } = state.AdminProjectsReducer;
-  const { users, isFetched } = state.UserDetailReducer;
+  const { users, isFetched } = state.UsersListReducer;
   return {
     isRetrieving, projects, isRetrieved, users, isFetched
   };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  getAdminProjects, getUserDetail
+  getAdminProjects, getUsersList
 }, dispatch);
 
 export default connect(

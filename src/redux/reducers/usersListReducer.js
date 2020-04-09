@@ -17,7 +17,7 @@ const UsersListReducer = (state = initialState, action) => {
   case GET_USERS_SUCCESS:
     return {
       ...state,
-      user: action.payload,
+      users: action.payload,
       isFetching: false,
       isFetched: true,
       message: 'Users fetched'
