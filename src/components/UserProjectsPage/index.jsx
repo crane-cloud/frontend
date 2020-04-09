@@ -27,6 +27,7 @@ class UserProjectsPage extends React.Component {
       clusterID: '',
       projectDescription: '',
       clusters: [],
+      createFeedback: ''
     };
 
     this.showForm = this.showForm.bind(this);
@@ -57,8 +58,8 @@ class UserProjectsPage extends React.Component {
   }
 
   handleSubmit() {
-    const { projectName, projectDescription, clusterID } = this.state;
-    const { AddProject, data, isAdded } = this.props;
+    const { projectName, projectDescription, clusterID, createFeedback } = this.state;
+    const { AddProject, data, isAdded, isFailed, errorOccured } = this.props;
     const newProject = {
       description: projectDescription,
       cluster_id: clusterID,
@@ -70,10 +71,31 @@ class UserProjectsPage extends React.Component {
     //   loading: true
     // });
 
-    if (isAdded === true) {
+    if (isAdded === true && isFailed === false) {
       this.setState({
-        openModal: false
+        createFeedback: 'Success! Project created!'
       });
+
+      setTimeout(
+        () => {
+          this.setState({
+            openModal: false,
+            createFeedback: ''
+          });
+        }, 1000
+      );
+    }
+
+    if (isFailed === true && isAdded === false) {
+      if (errorOccured === 409) {
+        this.setState({
+          createFeedback: 'Project name already in use, select another and try again'
+        });
+      } else {
+        this.setState({
+          createFeedback: 'Something went wrong. Failed to create project'
+        });
+      }
     }
   }
 
@@ -83,8 +105,7 @@ class UserProjectsPage extends React.Component {
       openModal,
       projectName,
       projectDescription,
-      // clusterID,
-      // loading
+      createFeedback
     } = this.state;
     const {
       projects, clusters, isRetrieving, data, isFetched
@@ -194,7 +215,14 @@ class UserProjectsPage extends React.Component {
               <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />
               <PrimaryButton label="Create project" onClick={this.handleSubmit} />
             </div>
+            {createFeedback && (
+              <div className={createFeedback.startsWith('Success') ? 'ProjectFormErrorDiv CreateSuccess' : 'ProjectFormErrorDiv CreateFail'}>
+                {createFeedback}
+              </div>
+            )}
+
           </div>
+
         </Modal>
       </div>
     );
@@ -221,11 +249,11 @@ UserProjectsPage.defaultProps = {
 
 export const mapStateToProps = (state) => {
   const { data } = state.user;
-  const { isAdded, project } = state.addProjectReducer;
+  const { isAdded, project, isFailed, errorOccured } = state.addProjectReducer;
   const { clusters } = state.ClustersReducer;
   const { isRetrieving, projects, isFetched } = state.UserProjectsReducer;
   return {
-    isAdded, project, data, isRetrieving, projects, clusters, isFetched
+    isAdded, project, data, isRetrieving, projects, clusters, isFetched, isFailed, errorOccured
   };
 };
 
