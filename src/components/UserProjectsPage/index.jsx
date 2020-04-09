@@ -82,15 +82,15 @@ class UserProjectsPage extends React.Component {
     if (!projectName || !clusterID || !projectDescription) {
       // if user tries to submit empty email/password
       this.setState({
-        error: 'Please fill up all fields and select a cluster'
+        error: 'all fields are required'
       });
     } else if (this.validateProjectName(projectName) === false) {
       this.setState({
-        error: 'Project Name should start with a letter'
+        error: 'name should start with a letter'
       });
     } else if (this.validateProjectName(projectName) === 'false_convention') {
       this.setState({
-        error: 'Project Name should contain only letters and a hypen'
+        error: 'name may only contain letters and a hypen -'
       });
     } else {
       const newProject = {
