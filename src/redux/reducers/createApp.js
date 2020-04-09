@@ -10,7 +10,8 @@ const initialState = {
   isCreated: false,
   isCreating: false,
   attempted: false,
-  message: ''
+  message: '',
+  errorCode: null
 };
 
 const createAppReducer = (state = initialState, action) => {
@@ -22,20 +23,21 @@ const createAppReducer = (state = initialState, action) => {
       isCreating: false,
       isCreated: true,
       attempted: true,
-      message: 'App created successfully'
+      message: 'Success! Your app has been deployed.'
     };
 
   case START_CREATING_APP:
     return {
       ...state,
       isCreating: true,
-      isCreated: false
+      isCreated: false,
+      message: ''
     };
 
   case CREATE_APP_FAIL:
     return {
       ...state,
-      message: action.payload,
+      message: 'Deployment failed. Please try again',
       isCreating: false,
       isCreated: false,
       attempted: true,
@@ -49,7 +51,8 @@ const createAppReducer = (state = initialState, action) => {
       isCreated: false,
       isCreating: false,
       attempted: false,
-      message: ''
+      message: '',
+      errorCode: null
     };
 
   default:

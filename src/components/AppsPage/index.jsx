@@ -119,33 +119,28 @@ class AppsPage extends React.Component {
       await createApp(appInfo, match.params.projectID);
 
       if (attempted === true && isCreated === true) {
-        this.setState({
-          createFeedback: 'Success! App created!'
-        });
+        // this.setState({
+        //   createFeedback: 'Success! App created!'
+        // });
 
-        clearState(); // restore the initial state in reducer
+        // clearState(); // restore the initial state in reducer
 
         setTimeout(
-          () => {
-            this.setState({
-              openModal: false,
-              createFeedback: ''
-            });
-          }, 1000
+          this.hideForm(), 1000
         );
       }
 
-      if (attempted === true && isCreated === false) {
-        if (errorCode === 409) {
-          this.setState({
-            createFeedback: 'App name already in use, select another and try again'
-          });
-        } else {
-          this.setState({
-            createFeedback: 'Something went wrong. Failed to deploy'
-          });
-        }
-      }
+      // if (attempted === true && isCreated === false) {
+      //   if (errorCode === 409) {
+      //     this.setState({
+      //       createFeedback: 'App name already in use, select another and try again'
+      //     });
+      //   } else {
+      //     this.setState({
+      //       createFeedback: 'Something went wrong. Failed to deploy'
+      //     });
+      //   }
+      // }
     }
   }
 
@@ -165,7 +160,9 @@ class AppsPage extends React.Component {
       match: { params },
       user: { data },
       isCreating,
-      isCreated
+      isCreated,
+      message,
+      errorCode
     } = this.props;
 
     const userId = data.id;
@@ -299,9 +296,9 @@ class AppsPage extends React.Component {
               <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
               <PrimaryButton label={isCreating ? <Spinner /> : 'proceed'} onClick={this.handleSubmit} />
             </div>
-            {createFeedback && (
-              <div className={createFeedback.startsWith('Success') ? 'AppFormErrorDiv CreateSuccess' : 'AppFormErrorDiv CreateFail'}>
-                {createFeedback}
+            {message && (
+              <div className={(isCreated && errorCode !== 409) ? 'AppFormErrorDiv CreateSuccess' : 'AppFormErrorDiv CreateFail'}>
+                {errorCode === 409 ? 'Name already in use, please choose another and try again' : message}
               </div>
             )}
           </div>
@@ -313,7 +310,7 @@ class AppsPage extends React.Component {
 
 const mapStateToProps = ({ user, createNewApp }) => {
   const {
-    isCreated, isCreating, app, attempted, errorCode
+    message, isCreated, isCreating, app, attempted, errorCode
   } = createNewApp;
   return {
     user,
@@ -321,7 +318,8 @@ const mapStateToProps = ({ user, createNewApp }) => {
     isCreating,
     app,
     attempted,
-    errorCode
+    errorCode,
+    message
   };
 };
 
