@@ -20,6 +20,7 @@ class AdminProjectsPage extends React.Component {
     const { projects, isRetrieving, isRetrieved } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
+    console.log(projects);
 
     return (
       <div className="MainPage">
@@ -38,6 +39,7 @@ class AdminProjectsPage extends React.Component {
                   <thead className="uppercase">
                     <tr>
                       <th>name</th>
+                      <th>owner</th>
                       <th>description</th>
                     </tr>
                   </thead>
@@ -53,6 +55,7 @@ class AdminProjectsPage extends React.Component {
                         projects.map((project) => (
                           <tr>
                             <td>{project.name}</td>
+                            <td>{project.owner_id}</td>
                             <td>{project.description}</td>
                           </tr>
                         )))}
