@@ -6,7 +6,7 @@ import {
 } from '../actions/actionTypes';
 
 const initialState = {
-  clusters: [],
+  user: [],
   isFetched: false,
   isFetching: false,
   message: ''
@@ -17,7 +17,7 @@ const UserDetailReducer = (state = initialState, action) => {
   case GET_USER_DETAIL_SUCCESS:
     return {
       ...state,
-      clusters: action.payload,
+      user: action.payload,
       isFetching: false,
       isFetched: true,
       message: 'User detail fetched'

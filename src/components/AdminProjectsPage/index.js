@@ -8,6 +8,7 @@ import InformationBar from '../InformationBar';
 import Header from '../Header';
 import SideNav from '../SideNav';
 import getAdminProjects from '../../redux/actions/AdminProjectsActions';
+import getUserDetail from '../../redux/actions/UserDetailActions';
 import { BigSpinner } from '../SpinnerComponent';
 
 class AdminProjectsPage extends React.Component {
@@ -16,11 +17,11 @@ class AdminProjectsPage extends React.Component {
     getAdminProjects();
   }
 
+
   render() {
     const { projects, isRetrieving, isRetrieved } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
-    console.log(projects);
 
     return (
       <div className="MainPage">
@@ -55,7 +56,9 @@ class AdminProjectsPage extends React.Component {
                         projects.map((project) => (
                           <tr>
                             <td>{project.name}</td>
-                            <td>{project.owner_id}</td>
+                            <td>
+                              { this.getUserName(project.owner_id)}
+                            </td>
                             <td>{project.description}</td>
                           </tr>
                         )))}
@@ -88,22 +91,27 @@ class AdminProjectsPage extends React.Component {
 AdminProjectsPage.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.object),
   isRetrieved: PropTypes.bool,
-  isRetrieving: PropTypes.bool
+  isRetrieving: PropTypes.bool,
+  users: PropTypes.arrayOf(PropTypes.object),
 };
 
 AdminProjectsPage.defaultProps = {
   projects: [],
   isRetrieved: false,
-  isRetrieving: false
+  isRetrieving: false,
+  users: []
 };
 
 export const mapStateToProps = (state) => {
   const { isRetrieving, projects, isRetrieved } = state.AdminProjectsReducer;
-  return { isRetrieving, projects, isRetrieved };
+  const { users, isFetched } = state.UserDetailReducer;
+  return {
+    isRetrieving, projects, isRetrieved, users, isFetched
+  };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  getAdminProjects
+  getAdminProjects, getUserDetail
 }, dispatch);
 
 export default connect(
