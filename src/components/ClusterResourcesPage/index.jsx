@@ -79,18 +79,20 @@ class ClusterResourcesPage extends React.Component {
 ClusterResourcesPage.propTypes = {
   resourceCount: PropTypes.arrayOf(PropTypes.object),
   isRetrieving: PropTypes.bool,
+  isRetrieved: PropTypes.bool,
   clusterName: PropTypes.string,
 };
 
 ClusterResourcesPage.defaultProps = {
   resourceCount: [],
   isRetrieving: false,
+  isRetrieved: false,
   clusterName: '',
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, resourceCount, clusterName } = state.ClusterResourcesReducer;
-  return { isRetrieving, resourceCount, clusterName };
+  const { isRetrieving, isRetrieved, resourceCount, clusterName } = state.ClusterResourcesReducer;
+  return { isRetrieving, isRetrieved, resourceCount, clusterName };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({

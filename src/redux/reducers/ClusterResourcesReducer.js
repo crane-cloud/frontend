@@ -7,6 +7,7 @@ import {
 const initialState = {
   resourceCount: [],
   isRetrieving: false,
+  isRetrieved: false,
   message: 'Cluster Resources Not Available'
 };
 
@@ -16,6 +17,7 @@ const ClusterResourcesReducer = (state = initialState, action) => {
     return {
       ...state,
       resourceCount: action.payload,
+      isRetrieved: true,
       isRetrieving: false,
       clusterName: action.clusterName,
       message: 'All Cluster Resources fetched'
@@ -23,12 +25,14 @@ const ClusterResourcesReducer = (state = initialState, action) => {
   case START_GETTING_RESOURCES_COUNT:
     return {
       ...state,
+      isRetrieved: false,
       isRetrieving: true
     };
   case GET_RESOURCES_COUNT_FAILED:
     return {
       ...state,
       message: action.payload,
+      isRetrieved: false,
       isRetrieving: false
     };
   default:
