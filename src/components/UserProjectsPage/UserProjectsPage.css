@@ -33,17 +33,15 @@
     background-size: unset!important;
 }
 
-select{
+.ClusterDrop{
   width: 25rem;
   border: 2px solid black;
   box-sizing: border-box;
-  /* background-color: transparent; */
-  /* color: #fff; */
   font-size: inherit;
   padding: 1rem;
 }
 
-option .ClusterName{
+.ClusterName{
     padding: 2rem 1.5rem;
     /* color: #000; */
     background-color: #F9F9F9;
