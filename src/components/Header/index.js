@@ -105,7 +105,8 @@ Header.propTypes = {
   user: PropTypes.shape({
     accessToken: PropTypes.string.isRequired,
     data: PropTypes.shape({
-      id: PropTypes.string.isRequired
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired
     }).isRequired,
   }).isRequired,
   match: PropTypes.shape({
