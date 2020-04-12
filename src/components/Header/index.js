@@ -3,7 +3,6 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Logo from '../Logo';
-import ProfileIcon from '../../assets/images/profile.svg';
 import DownArrow from '../../assets/images/downarrow.svg';
 import removeUser from '../../redux/actions/removeUser';
 import './Header.css';
