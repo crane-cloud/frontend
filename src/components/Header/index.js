@@ -54,7 +54,7 @@ const Header = (props) => {
               <>
 
                 <div className="ProfileIconWrap">
-                  <img src={ProfileIcon} alt="profile" />
+                  <div className="UserAvatar">{user.data.name.charAt(0).toUpperCase()}</div>
                 </div>
                 <Link to="#">
                   <div className="UserNames" onClick={toggleHidden}>

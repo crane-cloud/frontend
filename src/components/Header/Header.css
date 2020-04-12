@@ -30,12 +30,11 @@ header.Header {
   margin-left: 2rem;
 }
 
-.TurnLight:hover{
+.TurnLight:hover {
   transition: 0.4s;
-  background-color: #F1F1F1;
+  background-color: #f1f1f1;
   color: #000 !important;
 }
-
 
 /* remove focus from logo link - mozilla */
 .LogoLink:focus {
@@ -59,19 +58,26 @@ div.HeaderLinksWrap.LoggedIn .OnHeader {
 }
 
 div.HeaderLinksWrap.LoggedIn .BelowHeader {
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
   grid-area: area2;
   width: 13rem;
 }
 
-.ProfileIconWrap img {
+.UserAvatar {
   width: 3rem;
-  align-self: center;
-  cursor: pointer;
+  height: 3rem;
+  border: 2px solid;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 24px;
+  display: flex;
+  align-items: center; /* horizontal */
+  justify-content: center; /* vertical */
 }
 
-.DropDownArrow{
-  padding: .5rem 1rem ;
+.DropDownArrow {
+  padding: 0.5rem 1rem;
   cursor: pointer;
 }
 
@@ -79,7 +85,7 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   width: 1rem;
 }
 
-.DropDownArrow:hover{
+.DropDownArrow:hover {
   transition: 0.5s;
   transform: scale(1.2);
 }
@@ -91,23 +97,22 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
 
 .DropDownContent {
   color: #000;
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
   display: flex;
   flex-direction: column;
   z-index: 1;
   position: relative;
   box-shadow: 0 4px 4px 0 rgba(117, 117, 117, 0.2);
-
 }
-
 
 .DropDownLink {
   cursor: pointer;
   padding: 1rem 1.5rem;
 }
 
-.DropDownLink:hover, .DropDownLink:active {
-  background-color: #F1F1F1;
+.DropDownLink:hover,
+.DropDownLink:active {
+  background-color: #f1f1f1;
 }
 
 .DropDownLink {
@@ -125,9 +130,9 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   padding: 1rem;
 }
 
-
 @media only screen and (max-width: 640px) {
-  .HeaderLinkPricing,.HeaderLinkDocs {
+  .HeaderLinkPricing,
+  .HeaderLinkDocs {
     display: none;
   }
 }
