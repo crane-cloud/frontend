@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Logo from '../Logo';
 import ProfileIcon from '../../assets/images/profile.svg';
 import DownArrow from '../../assets/images/downarrow.svg';
@@ -36,8 +37,8 @@ const Header = (props) => {
         <div className="HeaderLinksWrap">
           {match.path !== '/admin-login' && (
             <div className="HeaderLinks bold uppercase">
-              <Link to="/" className="HeaderLinkPricing">pricing</Link>
-              <Link to="/" className="HeaderLinkDocs">docs</Link>
+              <Link to="#" className="HeaderLinkPricing">pricing</Link>
+              <Link to="#" className="HeaderLinkDocs">docs</Link>
               <Link to="/login" className="HeaderLinkLogin TurnLight">login</Link>
             </div>
           )}
@@ -83,6 +84,19 @@ const Header = (props) => {
 
     </header>
   );
+};
+
+Header.propTypes = {
+  removeUser: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    accessToken: PropTypes.string.isRequired,
+    data: PropTypes.shape({
+      id: PropTypes.string.isRequired
+    }).isRequired,
+  }).isRequired,
+  match: PropTypes.shape({
+    path: PropTypes.string.isRequired
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => {
