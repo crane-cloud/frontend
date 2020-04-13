@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PrimaryButton from '../PrimaryButton';
 import DotsImg from '../../assets/images/3dots.svg';
+import deleteProject from '../../redux/actions/deleteProjectActions';
+import Spinner from '../SpinnerComponent';
+import Modal from '../Modal';
 import './ProjectsCard.css';
 
 class ProjectsCard extends React.Component {
