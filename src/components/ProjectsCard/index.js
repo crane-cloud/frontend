@@ -8,7 +8,7 @@ import Spinner from '../SpinnerComponent';
 import Modal from '../Modal';
 import './ProjectsCard.css';
 
-class ProjectsCard extends React.Component {
+class ProjectCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -88,83 +88,81 @@ class ProjectsCard extends React.Component {
 
   render() {
     const {
-      name, status, url, projectID, isDeleting, description, icon
+      name, projectID, isDeleting, description, icon
     } = this.props;
     const { openDeleteAlert, openDropDown, deleteFeedback } = this.state;
-  return (
-    <div className="ProjectsCard">
-      <div className="CardImageDiv" style={{ backgroundImage: `url(${icon})` }} />
-      <div className="BottomContainer">
-        <div className="ProjectsCardName">{name}</div>
-        <div className="ProjectsCardDesc">{description}</div>
-        <div className="ProjectDropDown" onClick={() => this.toggleDropDown()}>
-          <img src={DotsImg} alt="three dots" className="DropDownImg" />
-          {openDropDown && (
-            <div className="ProjectDropDownContent">
-              <div onClick={() => this.showDeleteAlert()}>Delete</div>
-              <div>Update</div>
-            </div>
-          )}
-        </div>
-      </div>
-      {(openDeleteAlert && (
-          <div className="ProjectDeleteModel">
-            <Modal showModal={openDeleteAlert}>
-              <div className="DeleteProjectModel">
-                <div className="DeleteDescription">
-                  Are you sure you want to delete
-                  <span>
-                    <b>
-                      {' '}
-                      {name}
-                      {' '}
-                    </b>
-                  </span>
-                  ?
-                </div>
-                <div className="DeleteProjectModelResponses">
-                  <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
-                  <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteProject(e, projectID)} />
-                </div>
-                <div className="DeleteMessageDiv">
-                  {deleteFeedback && (
-                    <div className={deleteFeedback.startsWith('Failed') ? 'DeleteErrorDiv' : 'DeleteSuccessDiv'}>
-                      {deleteFeedback}
-                    </div>
-                  )}
-                </div>
+    return (
+      <div className="ProjectsCard">
+        <div className="CardImageDiv" style={{ backgroundImage: `url(${icon})` }} />
+        <div className="BottomContainer">
+          <div className="ProjectsCardName">{name}</div>
+          <div className="ProjectsCardDesc">{description}</div>
+          <div className="ProjectDropDown" onClick={() => this.toggleDropDown()}>
+            <img src={DotsImg} alt="three dots" className="DropDownImg" />
+            {openDropDown && (
+              <div className="ProjectDropDownContent">
+                <div onClick={() => this.showDeleteAlert()}>Delete</div>
+                <div>Update</div>
               </div>
-
-            </Modal>
+            )}
           </div>
-        ))}
-    </div>
+        </div>
+        {(openDeleteAlert && (
+            <div className="ProjectDeleteModel">
+              <Modal showModal={openDeleteAlert}>
+                <div className="DeleteProjectModel">
+                  <div className="DeleteDescription">
+                    Are you sure you want to delete
+                    <span>
+                      <b>
+                        {' '}
+                        {name}
+                        {' '}
+                      </b>
+                    </span>
+                    ?
+                  </div>
+                  <div className="DeleteProjectModelResponses">
+                    <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
+                    <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteProject(e, projectID)} />
+                  </div>
+                  <div className="DeleteMessageDiv">
+                    {deleteFeedback && (
+                      <div className={deleteFeedback.startsWith('Failed') ? 'DeleteErrorDiv' : 'DeleteSuccessDiv'}>
+                        {deleteFeedback}
+                      </div>
+                    )}
+                  </div>
+                </div>
 
-  );
-};
+              </Modal>
+            </div>
+          ))}
+      </div>
 
-ProjectsCard.propTypes = {
+    );
+  }
+}
+
+ProjectCard.propTypes = {
   isDeleted: PropTypes.bool,
   isDeleting: PropTypes.bool,
   isFailed: PropTypes.bool,
 };
 
-// assigning defaults
-ProjectsCard.defaultProps = {
+ProjectCard.defaultProps = {
   isDeleted: false,
   isDeleting: false,
   isFailed: false
 };
-
 
 const mapStateToProps = (state) => {
   const { isDeleting, isDeleted, isFailed } = state.deleteProjectReducer;
   return { isDeleting, isDeleted, isFailed };
 };
 
-
 export const mapDispatchToProps = (dispatch) => ({
   deleteProject: (projectID) => dispatch(deleteProject(projectID))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectsCard);
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectCard);
