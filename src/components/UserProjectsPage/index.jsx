@@ -119,7 +119,6 @@ class UserProjectsPage extends React.Component {
       projectName,
       projectDescription,
       error
-
       // clusterID,
       // loading
     } = this.state;
@@ -164,14 +163,14 @@ class UserProjectsPage extends React.Component {
                   )}
                   {(isFetched && projects.length === 0) && (
                     <div className="NoContentDiv">
-                        You haven’t created any projects yet.
-                        Click the create button to get started.
+                      You haven’t created any projects yet.
+                      Click the create button to get started.
                     </div>
                   )}
                   {(!isRetrieving && !isFetched) && (
                     <div className="NoContentDiv">
-                        Oops! Something went wrong!
-                        Failed to retrieve Projects.
+                      Oops! Something went wrong!
+                      Failed to retrieve Projects.
                     </div>
                   )}
 
