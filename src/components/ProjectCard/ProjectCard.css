@@ -146,3 +146,32 @@
     outline: 2px solid red;
     color: red;
 }
+
+.StatusData{
+    display: grid;
+    grid-gap: 0.5rem;
+    grid-template-columns: repeat(2, auto);
+    align-items: center;
+    height: 100%;
+    width: 3rem;
+}
+.OtherData{
+    display: grid;
+    justify-content: end;
+}
+.StatusData img{
+    height: 1.2rem;
+    justify-self: center;
+}
+
+.AppTable{
+    width: 100%;
+}
+
+.AppTable tr td:last-child {
+    text-align: right;
+}
+
+.AppTable tr td:first-child {
+    text-align: left;
+}

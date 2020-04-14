@@ -96,7 +96,26 @@ class ProjectCard extends React.Component {
         <div className="CardImageDiv" style={{ backgroundImage: `url(${icon})` }} />
         <div className="BottomContainer">
           <div className="ProjectsCardName">{name}</div>
-          <div className="ProjectsCardDesc">{description}</div>
+          <div className="ProjectsCardDesc">
+            <table className="AppTable">
+              <tr>
+                <td className="AppName">{description}</td>
+                <td className="OtherData">
+                  <div className="StatusData">
+                    <div className="AppDropDown" onClick={() => this.toggleDropDown()}>
+                      <img src={DotsImg} alt="three dots" className="DropDownImg" />
+                      {openDropDown && (
+                        <div className="AppDropDownContent">
+                          <div onClick={() => this.showDeleteAlert()}>Delete</div>
+                          <div>Update</div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
           <div className="ProjectDropDown" onClick={() => this.toggleDropDown()}>
             <img src={DotsImg} alt="three dots" className="DropDownImg" />
             {openDropDown && (
@@ -108,36 +127,36 @@ class ProjectCard extends React.Component {
           </div>
         </div>
         {(openDeleteAlert && (
-            <div className="ProjectDeleteModel">
-              <Modal showModal={openDeleteAlert}>
-                <div className="DeleteProjectModel">
-                  <div className="DeleteDescription">
-                    Are you sure you want to delete
-                    <span>
-                      <b>
-                        {' '}
-                        {name}
-                        {' '}
-                      </b>
-                    </span>
-                    ?
-                  </div>
-                  <div className="DeleteProjectModelResponses">
-                    <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
-                    <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteProject(e, projectID)} />
-                  </div>
-                  <div className="DeleteMessageDiv">
-                    {deleteFeedback && (
-                      <div className={deleteFeedback.startsWith('Failed') ? 'DeleteErrorDiv' : 'DeleteSuccessDiv'}>
-                        {deleteFeedback}
-                      </div>
-                    )}
-                  </div>
+          <div className="ProjectDeleteModel">
+            <Modal showModal={openDeleteAlert}>
+              <div className="DeleteProjectModel">
+                <div className="DeleteDescription">
+                  Are you sure you want to delete
+                  <span>
+                    <b>
+                      {' '}
+                      {name}
+                      {' '}
+                    </b>
+                  </span>
+                  ?
                 </div>
+                <div className="DeleteProjectModelResponses">
+                  <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
+                  <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteProject(e, projectID)} />
+                </div>
+                <div className="DeleteMessageDiv">
+                  {deleteFeedback && (
+                    <div className={deleteFeedback.startsWith('Failed') ? 'DeleteErrorDiv' : 'DeleteSuccessDiv'}>
+                      {deleteFeedback}
+                    </div>
+                  )}
+                </div>
+              </div>
 
-              </Modal>
-            </div>
-          ))}
+            </Modal>
+          </div>
+        ))}
       </div>
 
     );
