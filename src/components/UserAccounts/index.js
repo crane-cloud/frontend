@@ -13,8 +13,8 @@ import SideNav from '../SideNav';
 
 class UserAccounts extends Component {
   componentDidMount() {
-    const { match, getUsersList } = this.props;
-    getStorageClassList(match.params.clusterID);
+    const { getUsersList } = this.props;
+    getUsersList();
   }
 
 

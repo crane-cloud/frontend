@@ -2,13 +2,13 @@ import {
   GET_USERS_SUCCESS,
   GET_USERS_FAIL,
   START_GETTING_USERS,
-} from "../actions/actionTypes";
+} from '../actions/actionTypes';
 
 const initialState = {
   users: [],
   isFetched: false,
   isFetching: false,
-  message: "No users yet.",
+  message: 'No users yet.',
 };
 
 const UsersListReducer = (state = initialState, action) => {
@@ -19,7 +19,7 @@ const UsersListReducer = (state = initialState, action) => {
       users: action.payload,
       isFetching: false,
       isFetched: true,
-      message: "Users fetched",
+      message: 'Users successfully fetched',
     };
 
   case START_GETTING_USERS:
