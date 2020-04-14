@@ -16,6 +16,7 @@ import TextArea from '../TextArea';
 import { BigSpinner } from '../SpinnerComponent';
 import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/craneLogo.png';
+import Spinner from '../SpinnerComponent';
 
 
 class UserProjectsPage extends React.Component {
@@ -46,14 +47,15 @@ class UserProjectsPage extends React.Component {
 
 
   handleChange(e) {
-    const { error } = this.state;
+    const { error, createFeedback } = this.state;
     this.setState({
       [e.target.name]: e.target.value
     });
 
-    if (error) {
+    if (error || createFeedback) {
       this.setState({
-        error: ''
+        error: '',
+        createFeedback: ''
       });
     }
   }
@@ -145,7 +147,7 @@ class UserProjectsPage extends React.Component {
       // loading
     } = this.state;
     const {
-      projects, clusters, isRetrieving, data, isFetched
+      projects, clusters, isRetrieving, data, isFetched, isCreating
     } = this.props;
     const userId = data.id;
     const clustersList = clusters.length > 0
@@ -255,7 +257,7 @@ class UserProjectsPage extends React.Component {
             )}
             <div className="ModalFormButtons">
               <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />
-              <PrimaryButton label="Create project" onClick={this.handleSubmit} />
+              <PrimaryButton label={isCreating ? <Spinner /> : 'Create project'} onClick={this.handleSubmit} />
             </div>
             {createFeedback && (
               <div className={createFeedback.startsWith('Success') ? 'ProjectFormErrorDiv CreateSuccess' : 'ProjectFormErrorDiv CreateFail'}>
@@ -291,11 +293,11 @@ UserProjectsPage.defaultProps = {
 
 export const mapStateToProps = (state) => {
   const { data } = state.user;
-  const { isAdded, project, isFailed, errorOccured } = state.addProjectReducer;
+  const { isAdded, project, isFailed, errorOccured, isCreating } = state.addProjectReducer;
   const { clusters } = state.ClustersReducer;
   const { isRetrieving, projects, isFetched } = state.UserProjectsReducer;
   return {
-    isAdded, project, data, isRetrieving, projects, clusters, isFetched, isFailed, errorOccured
+    isAdded, project, data, isRetrieving, projects, clusters, isFetched, isFailed, errorOccured, isCreating
   };
 };
 

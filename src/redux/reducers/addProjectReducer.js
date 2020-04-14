@@ -2,7 +2,8 @@ import { START_ADDING_PROJECT, ADD_PROJECT_SUCCESS, ADD_PROJECT_FAILED } from '.
 
 const initialState = {
   isAdded: false,
-  message: 'Add Project'
+  message: 'Add Project',
+  isCreating: false
 };
 
 const addProjectReducer = ( state = initialState, action) => {
@@ -13,14 +14,16 @@ const addProjectReducer = ( state = initialState, action) => {
       project: action.payload,
       isFailed: false,
       isAdded: true,
-      message: 'Project Added SuccessFully'
+      message: 'Project Added SuccessFully',
+      isCreating: false
     };
   }
   case START_ADDING_PROJECT:
     return {
       ...state,
       isAdded: false,
-      isFailed: false
+      isFailed: false,
+      isCreating: true
     };
   case ADD_PROJECT_FAILED:
     return {
@@ -28,7 +31,8 @@ const addProjectReducer = ( state = initialState, action) => {
       isFailed: true,
       isAdded: false,
       errorOccured: action.payload.error,
-      message: 'Failed to add Project'
+      message: 'Failed to add Project',
+      isCreating: false
     };
 
   default:
