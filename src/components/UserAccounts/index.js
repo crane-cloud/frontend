@@ -20,8 +20,7 @@ class UserAccounts extends Component {
     const { users, isFetched, isFetching } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
-    console.log(users);
-
+    
     return (
       <div className="MainPage">
         <div className="TopBarSection"><Header /></div>
