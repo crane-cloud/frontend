@@ -27,13 +27,15 @@ class UserProjectsPage extends React.Component {
       clusterID: '',
       projectDescription: '',
       clusters: [],
-      createFeedback: ''
+      createFeedback: '',
+      error: ''
     };
 
     this.showForm = this.showForm.bind(this);
     this.hideForm = this.hideForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.validateProjectName = this.validateProjectName.bind(this);
   }
 
   componentDidMount() {
@@ -44,9 +46,16 @@ class UserProjectsPage extends React.Component {
 
 
   handleChange(e) {
+    const { error } = this.state;
     this.setState({
       [e.target.name]: e.target.value
     });
+
+    if (error) {
+      this.setState({
+        error: ''
+      });
+    }
   }
 
   showForm() {
@@ -55,6 +64,16 @@ class UserProjectsPage extends React.Component {
 
   hideForm() {
     this.setState({ openModal: false });
+  }
+
+  validateProjectName(name) {
+    if (/^[a-z]/i.test(name)) {
+      if (name.match(/[^-a-zA-Z]/)) {
+        return 'false_convention';
+      }
+      return true;
+    }
+    return false;
   }
 
   handleSubmit() {
@@ -94,6 +113,38 @@ class UserProjectsPage extends React.Component {
       } else {
         this.setState({
           createFeedback: 'Something went wrong. Failed to create project'
+
+    const { projectName, projectDescription, clusterID } = this.state;
+    const { AddProject, data, isAdded } = this.props;
+
+    if (!projectName || !clusterID || !projectDescription) {
+      // if user tries to submit empty email/password
+      this.setState({
+        error: 'all fields are required'
+      });
+    } else if (this.validateProjectName(projectName) === false) {
+      this.setState({
+        error: 'name should start with a letter'
+      });
+    } else if (this.validateProjectName(projectName) === 'false_convention') {
+      this.setState({
+        error: 'name may only contain letters and a hypen -'
+      });
+    } else {
+      const newProject = {
+        description: projectDescription,
+        cluster_id: clusterID,
+        name: projectName,
+        owner_id: data.id
+      };
+      AddProject(newProject);
+      // this.setState({
+      //   loading: true
+      // });
+
+      if (isAdded === true) {
+        this.setState({
+          openModal: false
         });
       }
     }
@@ -105,16 +156,20 @@ class UserProjectsPage extends React.Component {
       openModal,
       projectName,
       projectDescription,
-      createFeedback
+      createFeedback,
+      error
+
+      // clusterID,
+      // loading
     } = this.state;
     const {
       projects, clusters, isRetrieving, data, isFetched
     } = this.props;
     const userId = data.id;
     const clustersList = clusters.length > 0
-        && clusters.map((item, i) => (
-          <option key={i} value={item.id}>{item.name}</option>
-        ));
+      && clusters.map((item, i) => (
+        <option key={i} value={item.id}>{item.name}</option>
+      ));
 
     return (
       <div className="Page">
@@ -133,7 +188,7 @@ class UserProjectsPage extends React.Component {
                 </div>
               ) : (
                 <div className="ProjectList">
-                  { (isFetched && projects !== undefined && (
+                  {(isFetched && projects !== undefined && (
                     (projects.map((project) => (
                       <Link to={{ pathname: `/users/${userId}/projects/${project.id}/apps` }} key={project.id}>
                         <div key={project.id} className="ProjectCardItem">
@@ -148,14 +203,14 @@ class UserProjectsPage extends React.Component {
                   )}
                   {(isFetched && projects.length === 0) && (
                     <div className="NoContentDiv">
-                      You haven’t created any projects yet.
-                      Click the create button to get started.
+                        You haven’t created any projects yet.
+                        Click the create button to get started.
                     </div>
                   )}
                   {(!isRetrieving && !isFetched) && (
                     <div className="NoContentDiv">
-                      Oops! Something went wrong!
-                      Failed to retrieve Projects.
+                        Oops! Something went wrong!
+                        Failed to retrieve Projects.
                     </div>
                   )}
 
@@ -211,6 +266,11 @@ class UserProjectsPage extends React.Component {
               />
 
             </div>
+            {error && (
+              <div className="ProjectFormErrorDiv">
+                {error}
+              </div>
+            )}
             <div className="ModalFormButtons">
               <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />
               <PrimaryButton label="Create project" onClick={this.handleSubmit} />
