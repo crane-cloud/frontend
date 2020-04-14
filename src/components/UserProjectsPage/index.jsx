@@ -79,41 +79,55 @@ class UserProjectsPage extends React.Component {
   handleSubmit() {
     const { projectName, projectDescription, clusterID, createFeedback } = this.state;
     const { AddProject, data, isAdded, isFailed, errorOccured } = this.props;
-    const newProject = {
-      description: projectDescription,
-      cluster_id: clusterID,
-      name: projectName,
-      owner_id: data.id
-    };
-    AddProject(newProject);
-    // this.setState({
-    //   loading: true
-    // });
 
-    if (isAdded === true && isFailed === false) {
+    if (!projectName || !clusterID || !projectDescription) {
+      // if user tries to submit empty email/password
       this.setState({
-        createFeedback: 'Success! Project created!'
+        error: 'all fields are required'
       });
+    } else if (this.validateProjectName(projectName) === false) {
+      this.setState({
+        error: 'name should start with a letter'
+      });
+    } else if (this.validateProjectName(projectName) === 'false_convention') {
+      this.setState({
+        error: 'name may only contain letters and a hypen -'
+      });
+    } else {
+      const newProject = {
+        description: projectDescription,
+        cluster_id: clusterID,
+        name: projectName,
+        owner_id: data.id
+      };
+      AddProject(newProject);
+      // this.setState({
+      //   loading: true
+      // });
 
-      setTimeout(
-        () => {
+      if (isAdded === true && isFailed === false) {
+        this.setState({
+          createFeedback: 'Success! Project created!'
+        });
+        setTimeout(
+          () => {
+            this.setState({
+              openModal: false,
+              createFeedback: ''
+            });
+          }, 1000
+        );
+      }
+      if (isFailed === true && isAdded === false) {
+        if (errorOccured === 409) {
           this.setState({
-            openModal: false,
-            createFeedback: ''
+            createFeedback: 'Project name already in use, select another and try again'
           });
-        }, 1000
-      );
-    }
-
-    if (isFailed === true && isAdded === false) {
-      if (errorOccured === 409) {
-        this.setState({
-          createFeedback: 'Project name already in use, select another and try again'
-        });
-      } else {
-        this.setState({
-          createFeedback: 'Something went wrong. Failed to create project'
-        });
+        } else {
+          this.setState({
+            createFeedback: 'Something went wrong. Failed to create project'
+          });
+        }
       }
     }
   }
