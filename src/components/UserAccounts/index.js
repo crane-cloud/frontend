@@ -13,13 +13,13 @@ import SideNav from '../SideNav';
 
 class UserAccounts extends Component {
   componentDidMount() {
-    const { match, getStorageClassList } = this.props;
+    const { match, getUsersList } = this.props;
     getStorageClassList(match.params.clusterID);
   }
 
 
   render() {
-    const { storageClasses, isFetched, isRetrieving } = this.props;
+    const { users, isFetched, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
 
@@ -36,7 +36,7 @@ class UserAccounts extends Component {
             </div>
             <div className="ContentSection">
               <div className="ResourcesTable">
-                <table className="StorageClassesTable">
+                <table className="UsersTable">
                   <tr>
                     <th>Name</th>
                     <th>Provisioner</th>
@@ -51,12 +51,12 @@ class UserAccounts extends Component {
                       </tr>
                     ) : (
                       <tbody>
-                        {isFetched && storageClasses.storage_classes !== undefined && (
-                          (storageClasses.storage_classes.map((storageClass) => (
+                        {isFetched && users.users !== undefined && (
+                          (users.users.map((user) => (
                             <tr>
-                              <td>{storageClass.metadata.name}</td>
-                              <td>{storageClass.provisioner}</td>
-                              <td>{tellAge(storageClass.metadata.creationTimestamp)}</td>
+                              <td>{user.metadata.name}</td>
+                              <td>{user.role}</td>
+                              <td>{tellAge(user.metadata.creationTimestamp)}</td>
                             </tr>
                           )))
                         )}
@@ -64,9 +64,9 @@ class UserAccounts extends Component {
                     )
                   }
                 </table>
-                {(isFetched && storageClasses.storage_classes.length === 0) && (
+                {(isFetched && users.users.length === 0) && (
                   <div className="NoContentDiv">
-                    <p>No Storage Classes Available</p>
+                    <p>No Users Available</p>
                   </div>
                 )}
                 {(!isRetrieving && !isFetched) && (
@@ -74,7 +74,7 @@ class UserAccounts extends Component {
                     <p>
                       Oops! Something went wrong!
 
-                      Failed to retrieve Storage Classes.
+                      Failed to retrieve Available Users.
                     </p>
                   </div>
                 )}
@@ -91,26 +91,26 @@ class UserAccounts extends Component {
 
 // inititate props
 UserAccounts.propTypes = {
-  storageClasses: PropTypes.arrayOf(PropTypes.object),
+  users: PropTypes.arrayOf(PropTypes.object),
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
-  getStorageClassList: PropTypes.func.isRequired
+  getUsersList: PropTypes.func.isRequired
 };
 
 // assigning defaults
 UserAccounts.defaultProps = {
-  storageClasses: [],
+  users: [],
   isRetrieving: false,
   isFetched: false,
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, storageClasses, isFetched } = state.storageClassesReducer;
-  return { isRetrieving, storageClasses, isFetched };
+  const { isRetrieving, users, isFetched } = state.usersListReducer;
+  return { isRetrieving, users, isFetched };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  getStorageClassList
+  getUsersList
 }, dispatch);
 
 export default connect(
