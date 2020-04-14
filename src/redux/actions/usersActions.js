@@ -9,7 +9,7 @@ export const startGettingUsers = () => ({
 export const getUsersSuccess = (response) => (
   {
     type: GET_USERS_SUCCESS,
-    payload: response.data.data.users.users,
+    payload: response.data.data.users,
   });
 
 export const getUsersFail = (error) => ({
@@ -23,7 +23,7 @@ export const getUsersFail = (error) => ({
 const getUsersList = () => async (dispatch) => {
   dispatch(startGettingUsers());
   try {
-    const response = await axios.get(`${API_BASE_URL}/users/`, {
+    const response = await axios.get(`${API_BASE_URL}/users`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
     return dispatch(getUsersSuccess(response));

@@ -19,13 +19,15 @@ class AdminProjectsPage extends React.Component {
 
   getUserName(userId) {
     let username = '';
-    const { users } = this.props;
-    users.users.map((user) => {
-      if (userId === user.id) {
-        username = user.name;
-      }
-      return null;
-    });
+    const { users, isFetched } = this.props;
+    if (isFetched) {
+      users.map((user) => {
+        if (userId === user.id) {
+          username = user.name;
+        }
+        return null;
+      });
+    }
     return username;
   }
 
@@ -104,13 +106,15 @@ AdminProjectsPage.propTypes = {
   isRetrieved: PropTypes.bool,
   isRetrieving: PropTypes.bool,
   users: PropTypes.arrayOf(PropTypes.object),
+  isFetched: PropTypes.bool
 };
 
 AdminProjectsPage.defaultProps = {
   projects: [],
   isRetrieved: false,
   isRetrieving: false,
-  users: []
+  users: [],
+  isFetched: false
 };
 
 export const mapStateToProps = (state) => {
