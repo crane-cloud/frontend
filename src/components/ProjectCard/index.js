@@ -6,7 +6,7 @@ import DotsImg from '../../assets/images/3dots.svg';
 import deleteProject from '../../redux/actions/deleteProjectActions';
 import Spinner from '../SpinnerComponent';
 import Modal from '../Modal';
-import './ProjectsCard.css';
+import './ProjectCard.css';
 
 class ProjectCard extends React.Component {
   constructor(props) {

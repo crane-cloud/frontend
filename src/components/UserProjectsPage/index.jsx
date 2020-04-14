@@ -14,7 +14,7 @@ import getUserProjects from '../../redux/actions/projectsListActions';
 import InputText from '../InputText';
 import TextArea from '../TextArea';
 import { BigSpinner } from '../SpinnerComponent';
-import ProjectsCard from '../ProjectsCard';
+import ProjectCard from '../ProjectCard';
 import crane from '../../assets/images/craneLogo.png';
 
 
@@ -116,7 +116,7 @@ class UserProjectsPage extends React.Component {
                     (projects.map((project) => (
                       <Link to={{ pathname: `/users/${userId}/projects/${project.id}/apps` }} key={project.id}>
                         <div key={project.id} className="ProjectCardItem">
-                          <ProjectsCard
+                          <ProjectCard
                             name={project.name}
                             description={project.description}
                             icon={crane}
