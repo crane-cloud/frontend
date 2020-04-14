@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getUsersList from '../../redux/actions/usersActions';
@@ -21,6 +20,7 @@ class UserAccounts extends Component {
     const { users, isFetched, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
+    console.log(users);
 
     return (
       <div className="MainPage">
@@ -108,9 +108,9 @@ export const mapStateToProps = (state) => {
   return { isRetrieving, users, isFetched };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getUsersList
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,
