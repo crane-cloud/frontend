@@ -79,43 +79,6 @@ class UserProjectsPage extends React.Component {
   handleSubmit() {
     const { projectName, projectDescription, clusterID, createFeedback } = this.state;
     const { AddProject, data, isAdded, isFailed, errorOccured } = this.props;
-    const newProject = {
-      description: projectDescription,
-      cluster_id: clusterID,
-      name: projectName,
-      owner_id: data.id
-    };
-    AddProject(newProject);
-    // this.setState({
-    //   loading: true
-    // });
-
-    if (isAdded === true && isFailed === false) {
-      this.setState({
-        createFeedback: 'Success! Project created!'
-      });
-
-      setTimeout(
-        () => {
-          this.setState({
-            openModal: false,
-            createFeedback: ''
-          });
-        }, 1000
-      );
-    }
-
-    if (isFailed === true && isAdded === false) {
-      if (errorOccured === 409) {
-        this.setState({
-          createFeedback: 'Project name already in use, select another and try again'
-        });
-      } else {
-        this.setState({
-          createFeedback: 'Something went wrong. Failed to create project'
-
-    const { projectName, projectDescription, clusterID } = this.state;
-    const { AddProject, data, isAdded } = this.props;
 
     if (!projectName || !clusterID || !projectDescription) {
       // if user tries to submit empty email/password
@@ -142,10 +105,29 @@ class UserProjectsPage extends React.Component {
       //   loading: true
       // });
 
-      if (isAdded === true) {
+      if (isAdded === true && isFailed === false) {
         this.setState({
-          openModal: false
+          createFeedback: 'Success! Project created!'
         });
+        setTimeout(
+          () => {
+            this.setState({
+              openModal: false,
+              createFeedback: ''
+            });
+          }, 1000
+        );
+      }
+      if (isFailed === true && isAdded === false) {
+        if (errorOccured === 409) {
+          this.setState({
+            createFeedback: 'Project name already in use, select another and try again'
+          });
+        } else {
+          this.setState({
+            createFeedback: 'Something went wrong. Failed to create project'
+          });
+        }
       }
     }
   }
