@@ -17,7 +17,7 @@ class UserAccounts extends Component {
 
 
   render() {
-    const { users, isFetched, isRetrieving } = this.props;
+    const { users, isFetched, isFetching } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
     console.log(users);
@@ -42,7 +42,7 @@ class UserAccounts extends Component {
                     <th>Role</th>
                   </tr>
                   {
-                    isRetrieving ? (
+                    isFetching ? (
                       <tr className="TableLoading">
                         <div className="SpinnerWrapper">
                           <BigSpinner />
@@ -68,7 +68,7 @@ class UserAccounts extends Component {
                     <p>No Users Available</p>
                   </div>
                 )}
-                {(!isRetrieving && !isFetched) && (
+                {(!isFetching && !isFetched) && (
                   <div className="NoContentDiv">
                     <p>
                       Oops! Something went wrong!
@@ -91,7 +91,7 @@ class UserAccounts extends Component {
 // inititate props
 UserAccounts.propTypes = {
   users: PropTypes.arrayOf(PropTypes.object),
-  isRetrieving: PropTypes.bool,
+  isFetching: PropTypes.bool,
   isFetched: PropTypes.bool,
   getUsersList: PropTypes.func.isRequired
 };
@@ -99,13 +99,13 @@ UserAccounts.propTypes = {
 // assigning defaults
 UserAccounts.defaultProps = {
   users: [],
-  isRetrieving: false,
+  isFetching: false,
   isFetched: false,
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, users, isFetched } = state.UsersListReducer;
-  return { isRetrieving, users, isFetched };
+  const { isFetching, users, isFetched } = state.UsersListReducer;
+  return { isFetching, users, isFetched };
 };
 
 const mapDispatchToProps = {
