@@ -50,8 +50,9 @@
   padding: 1rem;
 }
 
-.ClusterName{
+.ClusterNameOption{
     padding: 2rem 1.5rem;
     color: #000;
     background-color: #F9F9F9;
+    font-weight: bold;
 }
