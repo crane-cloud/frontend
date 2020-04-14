@@ -21,7 +21,6 @@ class UserAccounts extends Component {
     const { users, isFetched, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
-    console.log(users);
 
     return (
       <div className="MainPage">
@@ -51,12 +50,12 @@ class UserAccounts extends Component {
                       </tr>
                     ) : (
                       <tbody>
-                        {isFetched && users.users !== undefined && (
-                          (users.users.map((user) => (
+                        {isFetched && users !== undefined && (
+                          (users.map((user) => (
                             <tr>
                               <td>{user.name}</td>
                               <td>{user.email}</td>
-                              <td>{user.role}</td>
+                              <td>{user.roles[0].name}</td>
                             </tr>
                           )))
                         )}
@@ -64,7 +63,7 @@ class UserAccounts extends Component {
                     )
                   }
                 </table>
-                {(isFetched && users.users.length === 0) && (
+                {(isFetched && users.length === 0) && (
                   <div className="NoContentDiv">
                     <p>No Users Available</p>
                   </div>
