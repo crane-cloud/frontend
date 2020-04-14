@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getUsersList from '../../redux/actions/usersActions';
-import tellAge from '../../helpers/ageUtility';
 import './UserAccounts.css';
 import Header from '../Header';
 import { BigSpinner } from '../SpinnerComponent';
@@ -22,6 +21,7 @@ class UserAccounts extends Component {
     const { users, isFetched, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
+    console.log(users);
 
     return (
       <div className="MainPage">
@@ -32,15 +32,15 @@ class UserAccounts extends Component {
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
-              <InformationBar header="Storage Classes" showBtn={false} />
+              <InformationBar header="User Accounts" showBtn={false} />
             </div>
             <div className="ContentSection">
               <div className="ResourcesTable">
                 <table className="UsersTable">
                   <tr>
                     <th>Name</th>
-                    <th>Provisioner</th>
-                    <th>Age</th>
+                    <th>Email</th>
+                    <th>Role</th>
                   </tr>
                   {
                     isRetrieving ? (
@@ -54,9 +54,9 @@ class UserAccounts extends Component {
                         {isFetched && users.users !== undefined && (
                           (users.users.map((user) => (
                             <tr>
-                              <td>{user.metadata.name}</td>
+                              <td>{user.name}</td>
+                              <td>{user.email}</td>
                               <td>{user.role}</td>
-                              <td>{tellAge(user.metadata.creationTimestamp)}</td>
                             </tr>
                           )))
                         )}
@@ -105,7 +105,7 @@ UserAccounts.defaultProps = {
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, users, isFetched } = state.usersListReducer;
+  const { isRetrieving, users, isFetched } = state.UsersListReducer;
   return { isRetrieving, users, isFetched };
 };
 
