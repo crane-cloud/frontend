@@ -53,8 +53,8 @@ class UserAccounts extends Component {
                           (users.map((user) => (
                             <tr>
                               <td>{user.name}</td>
-                              <td>{user.email}</td>
                               <td>{user.roles[0].name}</td>
+                              <td>{user.email}</td>
                             </tr>
                           )))
                         )}
