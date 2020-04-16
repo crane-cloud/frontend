@@ -36,6 +36,17 @@ class AppsPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    const { isCreated } = this.props;
+
+    if (isCreated !== prevProps.isCreated) {
+      setTimeout(
+        this.hideForm(),
+        1000
+      );
+    }
+  }
+
   showForm() {
     this.setState({ openModal: true });
   }
@@ -84,7 +95,7 @@ class AppsPage extends React.Component {
     const keyToRemove = Object.keys(envVars)[index];
     const newEnvVars = Object.keys(envVars).reduce((object, key) => {
       if (key !== keyToRemove) {
-        object[key] = envVars[key];
+        object[key] = envVars[key]; // eslint-disable-line no-param-reassign
       }
       return object;
     }, {});
@@ -92,13 +103,11 @@ class AppsPage extends React.Component {
     this.setState({ envVars: newEnvVars });
   }
 
-  async handleSubmit() {
+  handleSubmit() {
     const { name, uri, envVars } = this.state;
     const {
       createApp,
-      match,
-      isCreated,
-      attempted
+      match
     } = this.props;
 
     if (!name || !uri) {
@@ -114,18 +123,7 @@ class AppsPage extends React.Component {
         project_id: match.params.projectID
       };
 
-      await createApp(appInfo, match.params.projectID);
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    const { isCreated } = this.props;
-
-    if (isCreated !== prevProps.isCreated) {
-      setTimeout(
-        this.hideForm(),
-        1000
-      );
+      createApp(appInfo, match.params.projectID);
     }
   }
 
@@ -236,6 +234,7 @@ class AppsPage extends React.Component {
                                 src={RemoveIcon}
                                 alt="remove_ico"
                                 onClick={() => this.removeEnvVar(index)}
+                                role="presentation"
                               />
                             </td>
                           </tr>
