@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import createApp, { clearState } from '../../redux/actions/createApp';
 import PrimaryButton from '../PrimaryButton';
@@ -291,16 +292,33 @@ class AppsPage extends React.Component {
   }
 }
 
+AppsPage.propTypes = {
+  isCreated: PropTypes.bool.isRequired,
+  isCreating: PropTypes.bool.isRequired,
+  message: PropTypes.string.isRequired,
+  clearState: PropTypes.func.isRequired,
+  createApp: PropTypes.func.isRequired,
+  errorCode: PropTypes.number.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      projectID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired,
+  user: PropTypes.shape({
+    data: PropTypes.shape({
+      id: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
+};
+
 const mapStateToProps = ({ user, createNewApp }) => {
   const {
-    message, isCreated, isCreating, app, attempted, errorCode
+    message, isCreated, isCreating, errorCode
   } = createNewApp;
   return {
     user,
     isCreated,
     isCreating,
-    app,
-    attempted,
     errorCode,
     message
   };
