@@ -41,10 +41,7 @@ class AppsPage extends React.Component {
     const { isCreated } = this.props;
 
     if (isCreated !== prevProps.isCreated) {
-      setTimeout(
-        this.hideForm(),
-        1000
-      );
+      this.hideForm();
     }
   }
 
