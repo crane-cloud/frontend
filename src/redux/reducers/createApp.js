@@ -9,7 +9,6 @@ const initialState = {
   app: null,
   isCreated: false,
   isCreating: false,
-  attempted: false,
   message: '',
   errorCode: null
 };
@@ -22,7 +21,6 @@ const createAppReducer = (state = initialState, action) => {
       app: action.payload,
       isCreating: false,
       isCreated: true,
-      attempted: true,
       message: 'Success! Your app has been deployed.',
       errorCode: null
     };
@@ -33,7 +31,6 @@ const createAppReducer = (state = initialState, action) => {
       app: null,
       isCreating: true,
       isCreated: false,
-      attempted: true,
       message: '',
       errorCode: null
     };
@@ -44,7 +41,6 @@ const createAppReducer = (state = initialState, action) => {
       app: null,
       isCreating: false,
       isCreated: false,
-      attempted: true,
       message: 'Deployment failed. Please try again',
       errorCode: action.payload.errorCode
     };
@@ -55,7 +51,6 @@ const createAppReducer = (state = initialState, action) => {
       app: null,
       isCreated: false,
       isCreating: false,
-      attempted: false,
       message: '',
       errorCode: null
     };
