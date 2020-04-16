@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../../config';
-import { CREATE_APP_SUCCESS, CREATE_APP_FAIL, START_CREATING_APP } from './actionTypes';
+import {
+  CREATE_APP_SUCCESS,
+  CLEAR_ADD_APP_STATE,
+  CREATE_APP_FAIL,
+  START_CREATING_APP
+} from './actionTypes';
 
 const startCreatingApp = () => ({
   type: START_CREATING_APP,
@@ -17,8 +22,11 @@ const createAppFail = (error) => ({
     status: false,
     error: error.status,
     errorCode: error.response.status
-
   },
+});
+
+const clearState = () => ({
+  type: CLEAR_ADD_APP_STATE
 });
 
 const createApp = (appInfo, projectID) => (dispatch) => {
@@ -35,3 +43,4 @@ const createApp = (appInfo, projectID) => (dispatch) => {
 
 
 export default createApp;
+export { clearState };
