@@ -42,17 +42,17 @@
     }
     
 
-select{
+.ClusterDrop{
   width: 25rem;
   border: 2px solid black;
   box-sizing: border-box;
-  /* background-color: transparent; */
-  /* color: #fff; */
   font-size: inherit;
   padding: 1rem;
 }
 
-section option{
-    font-size: 16px;
-    color: black;
+.ClusterNameOption{
+    padding: 2rem 1.5rem;
+    color: #000;
+    background-color: #F9F9F9;
+    font-weight: bold;
 }

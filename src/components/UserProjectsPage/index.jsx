@@ -15,7 +15,7 @@ import InputText from '../InputText';
 import TextArea from '../TextArea';
 import { BigSpinner } from '../SpinnerComponent';
 import ClusterCard from '../ClusterCard';
-import crane from '../../assets/images/craneLogo.png';
+import crane from '../../assets/images/plant.svg';
 
 
 class UserProjectsPage extends React.Component {
@@ -119,7 +119,6 @@ class UserProjectsPage extends React.Component {
       projectName,
       projectDescription,
       error
-
       // clusterID,
       // loading
     } = this.state;
@@ -128,9 +127,9 @@ class UserProjectsPage extends React.Component {
     } = this.props;
     const userId = data.id;
     const clustersList = clusters.length > 0
-      && clusters.map((item, i) => (
-        <option key={i} value={item.id}>{item.name}</option>
-      ));
+        && clusters.map((item, i) => (
+          <option className="ClusterNameOption" key={i} value={item.id}>{item.name}</option>
+        ));
 
     return (
       <div className="Page">
@@ -164,14 +163,14 @@ class UserProjectsPage extends React.Component {
                   )}
                   {(isFetched && projects.length === 0) && (
                     <div className="NoContentDiv">
-                        You haven’t created any projects yet.
-                        Click the create button to get started.
+                      You haven’t created any projects yet.
+                      Click the create button to get started.
                     </div>
                   )}
                   {(!isRetrieving && !isFetched) && (
                     <div className="NoContentDiv">
-                        Oops! Something went wrong!
-                        Failed to retrieve Projects.
+                      Oops! Something went wrong!
+                      Failed to retrieve Projects.
                     </div>
                   )}
 
@@ -197,6 +196,7 @@ class UserProjectsPage extends React.Component {
             </div>
             <div className="ModalFormInputs">
               <select
+                className="ClusterDrop"
                 name="clusterID"
                 value={this.state.value}
                 onChange={(e) => {
