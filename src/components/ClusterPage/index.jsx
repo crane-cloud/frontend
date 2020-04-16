@@ -197,6 +197,7 @@ ClusterPage.propTypes = {
     accessToken: PropTypes.string.isRequired
   }).isRequired,
   AddCluster: PropTypes.func.isRequired,
+  clearState: PropTypes.func.isRequired,
   isAdded: PropTypes.bool.isRequired,
   isFailed: PropTypes.bool.isRequired,
   creatingCluster: PropTypes.bool.isRequired,
