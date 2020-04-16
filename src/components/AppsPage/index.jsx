@@ -115,9 +115,17 @@ class AppsPage extends React.Component {
       };
 
       await createApp(appInfo, match.params.projectID);
-      if (attempted && isCreated) {
-        this.hideForm();
-      }
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { isCreated } = this.props;
+
+    if (isCreated !== prevProps.isCreated) {
+      setTimeout(
+        this.hideForm(),
+        1000
+      );
     }
   }
 
@@ -299,4 +307,8 @@ const mapStateToProps = ({ user, createNewApp }) => {
   };
 };
 
-export default connect(mapStateToProps, { createApp, clearState })(withRouter(AppsPage));
+const mapDispatchToProps = {
+  createApp, clearState
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AppsPage));
