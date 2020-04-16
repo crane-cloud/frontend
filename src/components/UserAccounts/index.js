@@ -37,8 +37,8 @@ class UserAccounts extends Component {
                 <table className="UsersTable">
                   <tr>
                     <th>Name</th>
-                    <th>Email</th>
                     <th>Role</th>
+                    <th>Email</th>
                   </tr>
                   {
                     isFetching ? (
