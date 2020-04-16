@@ -13,6 +13,7 @@ import InformationBar from '../InformationBar';
 import AppsList from '../AppsList';
 import Header from '../Header';
 import Spinner from '../SpinnerComponent';
+import Feedback from '../Feedback';
 import './AppsPage.css';
 
 class AppsPage extends React.Component {
@@ -176,7 +177,7 @@ class AppsPage extends React.Component {
           </p>
         </div>
 
-        {/* Modal for creating a new project
+        {/* Modal for creating a new app
         Its triggered by the value of state.openModal */}
         <Modal showModal={openModal}>
           <div className="ModalForm AddAppModal">
@@ -205,9 +206,10 @@ class AppsPage extends React.Component {
                   }}
                 />
                 {error && (
-                  <div className="AppFormErrorDiv">
-                    {error}
-                  </div>
+                  <Feedback
+                    type="error"
+                    message={error}
+                  />
                 )}
               </div>
               <div className="ModalFormInputsEnvVars">
@@ -277,11 +279,14 @@ class AppsPage extends React.Component {
               <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
               <PrimaryButton label={isCreating ? <Spinner /> : 'proceed'} onClick={this.handleSubmit} />
             </div>
+
             {message && (
-              <div className={(isCreated && errorCode !== 409) ? 'AppFormErrorDiv CreateSuccess' : 'AppFormErrorDiv CreateFail'}>
-                {errorCode === 409 ? 'Name already in use, please choose another and try again' : message}
-              </div>
+              <Feedback
+                message={errorCode === 409 ? 'Name already in use, please choose another and try again' : message}
+                type={(isCreated && errorCode !== 409) ? 'success' : 'error'}
+              />
             )}
+
           </div>
         </Modal>
       </div>
