@@ -6,7 +6,7 @@ const initialState = {
   isCreating: false
 };
 
-const addProjectReducer = ( state = initialState, action) => {
+const addProjectReducer = (state = initialState, action) => {
   switch (action.type) {
   case ADD_PROJECT_SUCCESS: {
     return {

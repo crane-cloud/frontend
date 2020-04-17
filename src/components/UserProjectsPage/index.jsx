@@ -28,8 +28,8 @@ class UserProjectsPage extends React.Component {
       clusterID: '',
       projectDescription: '',
       clusters: [],
-      error: '',
-      createFeedback: ''
+      createFeedback: '',
+      error: ''
     };
 
     this.showForm = this.showForm.bind(this);
@@ -141,8 +141,6 @@ class UserProjectsPage extends React.Component {
       projectName,
       projectDescription,
       error,
-      // clusterID,
-      // loading
       createFeedback
     } = this.state;
     const {
