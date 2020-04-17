@@ -6,7 +6,7 @@ import './AdminProjectsPage.css';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
 import SideNav from '../SideNav';
-import getAdminProjects from '../../redux/actions/AdminProjectsActions';
+import getAdminProjects from '../../redux/actions/adminProjects';
 import getUsersList from '../../redux/actions/usersActions';
 import { BigSpinner } from '../SpinnerComponent';
 
