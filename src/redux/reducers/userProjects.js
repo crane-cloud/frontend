@@ -12,7 +12,7 @@ const initialState = {
   message: 'You have Projects Yet.'
 };
 
-const UserProjectsReducer = (state = initialState, action) => {
+const userProjectsReducer = (state = initialState, action) => {
   switch (action.type) {
   case FETCH_USER_PROJECTS_SUCCESS:
     return {
@@ -42,4 +42,4 @@ const UserProjectsReducer = (state = initialState, action) => {
     return state;
   }
 };
-export default UserProjectsReducer;
+export default userProjectsReducer;

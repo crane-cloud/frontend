@@ -106,7 +106,7 @@ PvcsListPage.defaultProps = {
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, pvcs, isFetched } = state.PvcsReducer;
+  const { isRetrieving, pvcs, isFetched } = state.pvcsReducer;
   return { isRetrieving, pvcs, isFetched };
 };
 

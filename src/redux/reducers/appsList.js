@@ -12,7 +12,7 @@ const initialState = {
   message: 'Apps Not Available'
 };
 
-const AppsListReducer = (state = initialState, action) => {
+const appsListReducer = (state = initialState, action) => {
   switch (action.type) {
   case GET_APPS_SUCCESS:
     return {
@@ -42,4 +42,4 @@ const AppsListReducer = (state = initialState, action) => {
     return state;
   }
 };
-export default AppsListReducer;
+export default appsListReducer;

@@ -118,8 +118,8 @@ AdminProjectsPage.defaultProps = {
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, projects, isRetrieved } = state.AdminProjectsReducer;
-  const { users, isFetched } = state.UsersListReducer;
+  const { isRetrieving, projects, isRetrieved } = state.adminProjectsReducer;
+  const { users, isFetched } = state.usersListReducer;
   return {
     isRetrieving, projects, isRetrieved, users, isFetched
   };

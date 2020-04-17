@@ -12,7 +12,7 @@ const initialState = {
   message: 'Clusters Not Available'
 };
 
-const ClustersReducer = (state = initialState, action) => {
+const clustersReducer = (state = initialState, action) => {
   switch (action.type) {
   case GET_CLUSTERS:
     return {
@@ -41,4 +41,4 @@ const ClustersReducer = (state = initialState, action) => {
     return state;
   }
 };
-export default ClustersReducer;
+export default clustersReducer;

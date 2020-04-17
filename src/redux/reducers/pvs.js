@@ -11,7 +11,7 @@ const initialState = {
   message: 'Cluster Volumes Not Available'
 };
 
-const PvsReducer = (state = initialState, action) => {
+const pvsReducer = (state = initialState, action) => {
   switch (action.type) {
   case FETCH_PVS_SUCCESS:
     return {
@@ -40,4 +40,4 @@ const PvsReducer = (state = initialState, action) => {
     return state;
   }
 };
-export default PvsReducer;
+export default pvsReducer;

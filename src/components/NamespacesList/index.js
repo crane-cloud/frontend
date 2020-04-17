@@ -107,7 +107,7 @@ NamespacesListPage.defaultProps = {
 export const mapStateToProps = (state) => {
   const {
     isRetrieved, isRetrieving, namespacesList, clusterName
-  } = state.NamespacesListReducer;
+  } = state.namespacesListReducer;
   return {
     isRetrieved, isRetrieving, namespacesList, clusterName
   };

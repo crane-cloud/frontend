@@ -121,7 +121,7 @@ ServicesListPage.defaultProps = {
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, services, isFetched } = state.ServicesReducer;
+  const { isRetrieving, services, isFetched } = state.servicesReducer;
   return { isRetrieving, services, isFetched };
 };
 

@@ -83,7 +83,7 @@ UserProjectsPage.defaultProps = {
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, projects } = state.UserProjectsReducer;
+  const { isRetrieving, projects } = state.userProjectsReducer;
   const { data } = state.user;
   return { isRetrieving, projects, data };
 };

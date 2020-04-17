@@ -12,7 +12,7 @@ const initialState = {
   message: 'No Projects Yet.'
 };
 
-const AdminProjectsReducer = (state = initialState, action) => {
+const adminProjectsReducer = (state = initialState, action) => {
   switch (action.type) {
   case FETCH_ADMIN_PROJECTS_SUCCESS:
     return {
@@ -42,4 +42,4 @@ const AdminProjectsReducer = (state = initialState, action) => {
     return state;
   }
 };
-export default AdminProjectsReducer;
+export default adminProjectsReducer;

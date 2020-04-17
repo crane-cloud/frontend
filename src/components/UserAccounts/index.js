@@ -103,7 +103,7 @@ UserAccounts.defaultProps = {
 };
 
 export const mapStateToProps = (state) => {
-  const { isFetching, users, isFetched } = state.UsersListReducer;
+  const { isFetching, users, isFetched } = state.usersListReducer;
   return { isFetching, users, isFetched };
 };
 

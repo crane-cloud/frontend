@@ -88,7 +88,7 @@ AppsList.defaultProps = {
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, apps, isRetrieved } = state.AppsListReducer;
+  const { isRetrieving, apps, isRetrieved } = state.appsListReducer;
   return { isRetrieving, apps, isRetrieved };
 };
 

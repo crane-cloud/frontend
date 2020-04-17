@@ -95,7 +95,7 @@ ClusterResourcesPage.defaultProps = {
 export const mapStateToProps = (state) => {
   const {
     isRetrieving, isRetrieved, resourceCount, clusterName
-  } = state.ClusterResourcesReducer;
+  } = state.clusterResourcesReducer;
   return {
     isRetrieving, isRetrieved, resourceCount, clusterName
   };

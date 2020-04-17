@@ -107,7 +107,7 @@ JobsListPage.defaultProps = {
 export const mapStateToProps = (state) => {
   const {
     isRetrieving, jobs, isFetched
-  } = state.JobsReducer;
+  } = state.jobsReducer;
   return {
     isRetrieving, jobs, isFetched
   };
