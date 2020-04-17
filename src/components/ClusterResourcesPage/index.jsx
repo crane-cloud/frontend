@@ -1,10 +1,8 @@
 /* eslint-disable linebreak-style */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import './ClusterResourcesPage.css';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
@@ -101,11 +99,11 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getClusterResourcesCount
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(ClusterResourcesPage));
+)(ClusterResourcesPage);

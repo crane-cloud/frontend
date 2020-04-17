@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getStorageClassList from '../../redux/actions/StorageClassesActions';
@@ -109,9 +108,9 @@ const mapStateToProps = (state) => {
   return { isRetrieving, storageClasses, isFetched };
 };
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getStorageClassList
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

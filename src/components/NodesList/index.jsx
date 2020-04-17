@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getNodesList from '../../redux/actions/nodeClusterActions';
@@ -139,9 +138,9 @@ const mapStateToProps = (state) => {
   return { isRetrieving, nodes, isFetched };
 };
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getNodesList
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

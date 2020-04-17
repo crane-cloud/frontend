@@ -176,8 +176,8 @@ const mapStateToProps = (state) => {
 };
 
 
-const mapDispatchToProps = (dispatch) => ({
-  deleteApp: (appId) => dispatch(deleteApp(appId))
-});
+const mapDispatchToProps = {
+  deleteApp
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppsCard);

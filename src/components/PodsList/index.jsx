@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getPodsList from '../../redux/actions/podsActions';
@@ -171,9 +170,9 @@ const mapStateToProps = (state) => {
   return { isRetrieving, pods, isFetched };
 };
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getPodsList
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

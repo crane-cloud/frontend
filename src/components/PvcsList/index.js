@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import './PvcsList.css';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
@@ -110,9 +109,9 @@ const mapStateToProps = (state) => {
   return { isRetrieving, pvcs, isFetched };
 };
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getPvcs
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,
