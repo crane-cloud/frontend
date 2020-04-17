@@ -1,9 +1,11 @@
-import { START_ADDING_PROJECT, ADD_PROJECT_SUCCESS, ADD_PROJECT_FAILED } from '../actions/actionTypes';
+import { START_ADDING_PROJECT, ADD_PROJECT_SUCCESS, ADD_PROJECT_FAILED, CLEAR_ADD_PROJECT_STATE } from '../actions/actionTypes';
 
 const initialState = {
   isAdded: false,
-  message: 'Add Project',
-  isCreating: false
+  message: '',
+  isCreating: false,
+  errorOccured: null,
+  Project: null
 };
 
 const addProjectReducer = (state = initialState, action) => {
@@ -34,6 +36,15 @@ const addProjectReducer = (state = initialState, action) => {
       message: 'Failed to add Project',
       isCreating: false
     };
+  case CLEAR_ADD_PROJECT_STATE:
+    return {
+      ...state,
+      isAdded: false,
+      message: '',
+      isCreating: false,
+      errorOccured: null,
+      Project: null
+    }; 
 
   default:
     return state;

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
-import AddProject from '../../redux/actions/addProject';
+import AddProject, { clearProjectState } from '../../redux/actions/addProject';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
 import PrimaryButton from '../PrimaryButton';
@@ -28,7 +28,6 @@ class UserProjectsPage extends React.Component {
       clusterID: '',
       projectDescription: '',
       clusters: [],
-      createFeedback: '',
       error: ''
     };
 
@@ -65,6 +64,8 @@ class UserProjectsPage extends React.Component {
   }
 
   hideForm() {
+    const { clearProjectState } = this.props;
+    clearProjectState();
     this.setState({ openModal: false });
   }
 
@@ -79,8 +80,8 @@ class UserProjectsPage extends React.Component {
   }
 
   handleSubmit() {
-    const { projectName, projectDescription, clusterID, createFeedback } = this.state;
-    const { AddProject, data, isAdded, isFailed, errorOccured } = this.props;
+    const { projectName, projectDescription, clusterID } = this.state;
+    const { AddProject, data } = this.props;
 
     if (!projectName || !clusterID || !projectDescription) {
       // if user tries to submit empty email/password
@@ -102,35 +103,8 @@ class UserProjectsPage extends React.Component {
         name: projectName,
         owner_id: data.id
       };
-      AddProject(newProject);
-      // this.setState({
-      //   loading: true
-      // });
 
-      if (isAdded === true && isFailed === false) {
-        this.setState({
-          createFeedback: 'Success! Project created!'
-        });
-        setTimeout(
-          () => {
-            this.setState({
-              openModal: false,
-              createFeedback: ''
-            });
-          }, 1000
-        );
-      }
-      if (isFailed === true && isAdded === false) {
-        if (errorOccured === 409) {
-          this.setState({
-            createFeedback: 'Project name already in use, select another and try again'
-          });
-        } else {
-          this.setState({
-            createFeedback: 'Something went wrong. Failed to create project'
-          });
-        }
-      }
+      AddProject(newProject);
     }
   }
 
@@ -140,11 +114,10 @@ class UserProjectsPage extends React.Component {
       openModal,
       projectName,
       projectDescription,
-      error,
-      createFeedback
+      error
     } = this.state;
     const {
-      projects, clusters, isRetrieving, data, isFetched, isCreating
+      projects, clusters, isRetrieving, data, isFetched, isCreating, errorOccured, isAdded, isFailed, message
     } = this.props;
     const userId = data.id;
     const clustersList = clusters.length > 0
@@ -257,9 +230,9 @@ class UserProjectsPage extends React.Component {
               <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />
               <PrimaryButton label={isCreating ? <Spinner /> : 'Create project'} onClick={this.handleSubmit} />
             </div>
-            {createFeedback && (
-              <div className={createFeedback.startsWith('Success') ? 'ProjectFormErrorDiv CreateSuccess' : 'ProjectFormErrorDiv CreateFail'}>
-                {createFeedback}
+            {message && (
+              <div className={(isAdded && errorOccured !== 409 && isFailed === false) ? 'ProjectFormErrorDiv CreateSuccess' : 'ProjectFormErrorDiv CreateFail'}>
+                {errorOccured === 409 && isFailed === true ? 'Name already in use, please choose another and try again' : message}
               </div>
             )}
 
@@ -277,7 +250,11 @@ UserProjectsPage.propTypes = {
   project: PropTypes.arrayOf(PropTypes.object),
   isAdded: PropTypes.bool,
   isFetched: PropTypes.bool,
-  isRetrieving: PropTypes.bool
+  isRetrieving: PropTypes.bool,
+  clearProjectState: PropTypes.func.isRequired,
+  message: PropTypes.string.isRequired,
+  errorOccured: PropTypes.number.isRequired,
+  isCreating: PropTypes.bool
 };
 
 UserProjectsPage.defaultProps = {
@@ -286,21 +263,32 @@ UserProjectsPage.defaultProps = {
   isAdded: false,
   projects: [],
   isFetched: false,
-  isRetrieving: false
+  isRetrieving: false,
+  isCreating: false
 };
 
 export const mapStateToProps = (state) => {
   const { data } = state.user;
-  const { isAdded, project, isFailed, errorOccured, isCreating } = state.addProjectReducer;
+  const { isAdded, project, isFailed, errorOccured, isCreating, message } = state.addProjectReducer;
   const { clusters } = state.ClustersReducer;
   const { isRetrieving, projects, isFetched } = state.UserProjectsReducer;
   return {
-    isAdded, project, data, isRetrieving, projects, clusters, isFetched, isFailed, errorOccured, isCreating
+    isAdded,
+    project,
+    data,
+    isRetrieving,
+    projects,
+    clusters,
+    isFetched,
+    isFailed,
+    errorOccured,
+    isCreating,
+    message
   };
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  getUserProjects, AddProject, getClustersList,
+  getUserProjects, AddProject, getClustersList, clearProjectState
 }, dispatch);
 
 export default connect(

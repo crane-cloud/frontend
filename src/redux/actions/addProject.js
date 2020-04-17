@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../../config';
-import { START_ADDING_PROJECT, ADD_PROJECT_SUCCESS, ADD_PROJECT_FAILED } from './actionTypes';
+import { START_ADDING_PROJECT, ADD_PROJECT_SUCCESS, ADD_PROJECT_FAILED, CLEAR_ADD_CLUSTER_STATE } from './actionTypes';
 
 
 const startPostingProject = () => ({
@@ -19,6 +19,10 @@ export const addProjectFail = (error) => ({
   },
 });
 
+const clearProjectState = () => ({
+  type: CLEAR_ADD_CLUSTER_STATE
+});
+
 const AddProject = (projectData) => (dispatch) => {
   dispatch(startPostingProject());
 
@@ -32,3 +36,4 @@ const AddProject = (projectData) => (dispatch) => {
     });
 };
 export default AddProject;
+export { clearProjectState };
