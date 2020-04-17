@@ -11,7 +11,7 @@ const initialState = {
   message: ''
 };
 
-const AddClusterReducer = (state = initialState, action) => {
+const addCluster = (state = initialState, action) => {
   switch (action.type) {
   case ADD_CLUSTER_SUCCESS:
     return {
@@ -56,4 +56,4 @@ const AddClusterReducer = (state = initialState, action) => {
   }
 };
 
-export default AddClusterReducer;
+export default addCluster;

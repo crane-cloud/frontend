@@ -198,14 +198,14 @@ ClusterPage.propTypes = {
   message: PropTypes.string.isRequired
 };
 
-const mapStateToProps = ({ user, AddClusterReducer }) => {
+const mapStateToProps = ({ user, addCluster }) => {
   const {
     creatingCluster,
     isAdded,
     isFailed,
     errorOccured,
     message
-  } = AddClusterReducer;
+  } = addCluster;
 
   return {
     user,
