@@ -117,7 +117,7 @@ AdminProjectsPage.defaultProps = {
   isFetched: false
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { isRetrieving, projects, isRetrieved } = state.AdminProjectsReducer;
   const { users, isFetched } = state.UsersListReducer;
   return {
@@ -125,7 +125,7 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   getAdminProjects, getUsersList
 }, dispatch);
 

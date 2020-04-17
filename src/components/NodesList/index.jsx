@@ -134,12 +134,12 @@ NodesList.defaultProps = {
   isFetched: false,
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { isRetrieving, nodes, isFetched } = state.nodesReducer;
   return { isRetrieving, nodes, isFetched };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   getNodesList
 }, dispatch);
 

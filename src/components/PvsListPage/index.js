@@ -106,12 +106,12 @@ PvsListPage.defaultProps = {
   isFetched: false
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { isRetrieving, pvs, isFetched } = state.PvsReducer;
   return { isRetrieving, pvs, isFetched };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   getPvs
 }, dispatch);
 

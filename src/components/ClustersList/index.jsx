@@ -69,12 +69,12 @@ ClustersList.defaultProps = {
   isRetrieving: true
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { isRetrieving, clusters, isRetrieved } = state.ClustersReducer;
   return { isRetrieving, clusters, isRetrieved };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   getClustersList
 }, dispatch);
 

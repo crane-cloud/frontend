@@ -176,7 +176,7 @@ const mapStateToProps = (state) => {
 };
 
 
-export const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch) => ({
   deleteApp: (appId) => dispatch(deleteApp(appId))
 });
 

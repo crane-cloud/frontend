@@ -92,7 +92,7 @@ ClusterResourcesPage.defaultProps = {
   clusterName: '',
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const {
     isRetrieving, isRetrieved, resourceCount, clusterName
   } = state.ClusterResourcesReducer;
@@ -101,7 +101,7 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   getClusterResourcesCount
 }, dispatch);
 

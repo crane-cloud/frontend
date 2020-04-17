@@ -82,13 +82,13 @@ UserProjectsPage.defaultProps = {
   isRetrieving: false
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { isRetrieving, projects } = state.UserProjectsReducer;
   const { data } = state.user;
   return { isRetrieving, projects, data };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   getUserProjects
 }, dispatch);
 

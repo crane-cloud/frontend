@@ -104,7 +104,7 @@ JobsListPage.defaultProps = {
   isFetched: false,
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const {
     isRetrieving, jobs, isFetched
   } = state.JobsReducer;
@@ -113,7 +113,7 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   getJobs
 }, dispatch);
 

@@ -87,12 +87,12 @@ AppsList.defaultProps = {
   isRetrieving: true
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { isRetrieving, apps, isRetrieved } = state.AppsListReducer;
   return { isRetrieving, apps, isRetrieved };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   getAppsList
 }, dispatch);
 

@@ -120,12 +120,12 @@ ServicesListPage.defaultProps = {
   isFetched: false,
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { isRetrieving, services, isFetched } = state.ServicesReducer;
   return { isRetrieving, services, isFetched };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   getServices
 }, dispatch);
 

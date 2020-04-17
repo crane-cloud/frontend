@@ -166,12 +166,12 @@ PodsList.defaultProps = {
   isFetched: false,
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { isRetrieving, pods, isFetched } = state.podsReducer;
   return { isRetrieving, pods, isFetched };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   getPodsList
 }, dispatch);
 

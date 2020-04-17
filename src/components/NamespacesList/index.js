@@ -104,7 +104,7 @@ NamespacesListPage.defaultProps = {
   clusterName: '',
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const {
     isRetrieved, isRetrieving, namespacesList, clusterName
   } = state.NamespacesListReducer;
@@ -113,7 +113,7 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   getNamespaces
 }, dispatch);
 

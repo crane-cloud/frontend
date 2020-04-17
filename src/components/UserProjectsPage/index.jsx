@@ -261,7 +261,7 @@ UserProjectsPage.defaultProps = {
   isRetrieving: false
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { data } = state.user;
   const { isAdded, project } = state.addProjectReducer;
   const { clusters } = state.ClustersReducer;
@@ -271,7 +271,7 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   getUserProjects, AddProject, getClustersList,
 }, dispatch);
 
