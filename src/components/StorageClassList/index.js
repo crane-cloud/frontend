@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import getStorageClassList from '../../redux/actions/StorageClassesActions';
+import getStorageClassList from '../../redux/actions/storageClasses';
 import tellAge from '../../helpers/ageUtility';
 import './StorageClassList.css';
 import Header from '../Header';
