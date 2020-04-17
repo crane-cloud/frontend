@@ -7,7 +7,7 @@ import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 import { BigSpinner } from '../SpinnerComponent';
-import getPvs from '../../redux/actions/PvsActions';
+import getPvs from '../../redux/actions/pvs';
 import Status from '../Status';
 
 class PvsListPage extends React.Component {
