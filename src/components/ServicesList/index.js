@@ -7,7 +7,7 @@ import Header from '../Header';
 import InformationBar from '../InformationBar';
 import { BigSpinner } from '../SpinnerComponent';
 import SideNav from '../SideNav';
-import getServices from '../../redux/actions/ServicesActions';
+import getServices from '../../redux/actions/services';
 
 class ServicesListPage extends React.Component {
   componentDidMount() {
