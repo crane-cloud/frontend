@@ -1,20 +1,3 @@
-.Page{
-    margin: 0;
-    background: #F1F1F1;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden;
-}
-
-.TopRow{
-    width: 100%;
-}
-
-.MainRow{
-    width: 100%;
-}
-
 
 .ProjectList{
     display: flex;
