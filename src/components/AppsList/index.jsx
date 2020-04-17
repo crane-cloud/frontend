@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import getAppsList from '../../redux/actions/appsListActions';
+import getAppsList from '../../redux/actions/appsList';
 import AppsCard from '../AppsCard';
 import { BigSpinner } from '../SpinnerComponent';
 import './AppsList.css';

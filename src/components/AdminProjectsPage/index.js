@@ -7,7 +7,7 @@ import InformationBar from '../InformationBar';
 import Header from '../Header';
 import SideNav from '../SideNav';
 import getAdminProjects from '../../redux/actions/adminProjects';
-import getUsersList from '../../redux/actions/usersActions';
+import getUsersList from '../../redux/actions/users';
 import { BigSpinner } from '../SpinnerComponent';
 
 class AdminProjectsPage extends React.Component {

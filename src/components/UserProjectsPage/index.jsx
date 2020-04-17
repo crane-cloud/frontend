@@ -10,7 +10,7 @@ import Header from '../Header';
 import PrimaryButton from '../PrimaryButton';
 import Modal from '../Modal';
 import getClustersList from '../../redux/actions/clusters';
-import getUserProjects from '../../redux/actions/projectsListActions';
+import getUserProjects from '../../redux/actions/projectsList';
 import InputText from '../InputText';
 import TextArea from '../TextArea';
 import { BigSpinner } from '../SpinnerComponent';
