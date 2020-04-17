@@ -35,6 +35,7 @@ class AppsPage extends React.Component {
     this.hideForm = this.hideForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.validateAppName = this.validateAppName.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -101,6 +102,16 @@ class AppsPage extends React.Component {
     this.setState({ envVars: newEnvVars });
   }
 
+  validateAppName(name) {
+    if (/^[a-z]/i.test(name)) {
+      if (name.match(/[^-a-zA-Z0-9.]/)) {
+        return 'false_convention';
+      }
+      return true;
+    }
+    return false;
+  }
+
   handleSubmit() {
     const { name, uri, envVars } = this.state;
     const {
@@ -112,6 +123,14 @@ class AppsPage extends React.Component {
       // if user tries to submit empty email/password
       this.setState({
         error: 'Please enter the App Name and Image Uri'
+      });
+    } else if (this.validateAppName(name) === false) {
+      this.setState({
+        error: 'name should start with a letter'
+      });
+    } else if (this.validateAppName(name) === 'false_convention') {
+      this.setState({
+        error: 'name may only contain letters,numbers,dot and a hypen -'
       });
     } else {
       const appInfo = {
