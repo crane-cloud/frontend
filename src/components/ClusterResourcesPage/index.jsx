@@ -11,7 +11,7 @@ import InformationBar from '../InformationBar';
 import { BigSpinner } from '../SpinnerComponent';
 import SideNav from '../SideNav';
 import ResourceCard from '../ResourceCard';
-import getClusterResourcesCount from '../../redux/actions/ClusterResourcesActions';
+import getClusterResourcesCount from '../../redux/actions/clusterResources';
 
 class ClusterResourcesPage extends React.Component {
   componentDidMount() {
