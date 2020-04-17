@@ -1,25 +1,25 @@
 import { combineReducers } from 'redux';
-import ClustersReducer from './clustersReducer';
+import ClustersReducer from './clusters';
 import addCluster from './addCluster';
 import user from './user';
-import ClusterResourcesReducer from './ClusterResourcesReducer';
-import ServicesReducer from './servicesReducer';
-import PvsReducer from './PvsReducer';
-import nodesReducer from './nodesReducer';
-import PvcsReducer from './pvcsReducer';
-import NamespacesListReducer from './NamespacesListReducer';
-import podsReducer from './podsReducer';
-import storageClassesReducer from './storageClassReducer';
-import JobsReducer from './jobsReducer';
+import ClusterResourcesReducer from './clusterResources';
+import ServicesReducer from './services';
+import PvsReducer from './pvs';
+import nodesReducer from './nodes';
+import PvcsReducer from './pvcs';
+import NamespacesListReducer from './namespacesList';
+import podsReducer from './pods';
+import storageClassesReducer from './storageClass';
+import JobsReducer from './jobs';
 import getDeployments from './getDeployments';
-import AdminProjectsReducer from './AdminProjectsReducer';
-import AppsListReducer from './appsListReducer';
-import UserProjectsReducer from './userProjectsReducer';
-import addProjectReducer from './addProjectReducer';
+import AdminProjectsReducer from './adminProjects';
+import AppsListReducer from './appsList';
+import UserProjectsReducer from './userProjects';
+import addProject from './addProject';
 import createAppReducer from './createApp';
-import deleteAppReducer from './DeleteAppReducer';
-import UserDetailReducer from './userDetailReducer';
-import UsersListReducer from './usersListReducer';
+import deleteAppReducer from './deleteApp';
+import UserDetailReducer from './userDetails';
+import UsersListReducer from './usersList';
 
 
 export default combineReducers({
@@ -39,7 +39,7 @@ export default combineReducers({
   AdminProjectsReducer,
   AppsListReducer,
   UserProjectsReducer,
-  addProjectReducer,
+  addProject,
   createNewApp: createAppReducer,
   deleteAppReducer,
   UserDetailReducer,

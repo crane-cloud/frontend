@@ -263,7 +263,7 @@ UserProjectsPage.defaultProps = {
 
 export const mapStateToProps = (state) => {
   const { data } = state.user;
-  const { isAdded, project } = state.addProjectReducer;
+  const { isAdded, project } = state.addProject;
   const { clusters } = state.ClustersReducer;
   const { isRetrieving, projects, isFetched } = state.UserProjectsReducer;
   return {
