@@ -8,6 +8,7 @@ import {
 const initialState = {
   projects: [],
   isRetrieving: false,
+  isRetrieved: false,
   message: 'No Projects Yet.'
 };
 
@@ -17,6 +18,7 @@ const AdminProjectsReducer = (state = initialState, action) => {
     return {
       ...state,
       projects: action.payload,
+      isRetrieved: true,
       isRetrieving: false,
       message: 'All Projects fetched'
     };
@@ -24,6 +26,7 @@ const AdminProjectsReducer = (state = initialState, action) => {
   case IS_FETCHING:
     return {
       ...state,
+      isRetrieved: false,
       isRetrieving: true
     };
 
@@ -31,6 +34,7 @@ const AdminProjectsReducer = (state = initialState, action) => {
     return {
       ...state,
       message: action.payload,
+      isRetrieved: false,
       isRetrieving: false
     };
 

@@ -1,8 +1,9 @@
 import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
-import createApp from '../../redux/actions/createApp';
+import createApp, { clearState } from '../../redux/actions/createApp';
 import PrimaryButton from '../PrimaryButton';
 import InputText from '../BlackInputText';
 import Modal from '../Modal';
@@ -36,11 +37,21 @@ class AppsPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    const { isCreated } = this.props;
+
+    if (isCreated !== prevProps.isCreated) {
+      this.hideForm();
+    }
+  }
+
   showForm() {
     this.setState({ openModal: true });
   }
 
   hideForm() {
+    const { clearState } = this.props;
+    clearState();
     this.setState({ openModal: false });
   }
 
@@ -82,7 +93,7 @@ class AppsPage extends React.Component {
     const keyToRemove = Object.keys(envVars)[index];
     const newEnvVars = Object.keys(envVars).reduce((object, key) => {
       if (key !== keyToRemove) {
-        object[key] = envVars[key];
+        object[key] = envVars[key]; // eslint-disable-line no-param-reassign
       }
       return object;
     }, {});
@@ -90,16 +101,12 @@ class AppsPage extends React.Component {
     this.setState({ envVars: newEnvVars });
   }
 
-  async handleSubmit() {
+  handleSubmit() {
     const { name, uri, envVars } = this.state;
     const {
       createApp,
-      match,
-      isCreated,
-      attempted,
-      errorCode
+      match
     } = this.props;
-
 
     if (!name || !uri) {
       // if user tries to submit empty email/password
@@ -114,34 +121,7 @@ class AppsPage extends React.Component {
         project_id: match.params.projectID
       };
 
-      await createApp(appInfo, match.params.projectID);
-
-      if (attempted === true && isCreated === true) {
-        this.setState({
-          createFeedback: 'Success! App created!'
-        });
-
-        setTimeout(
-          () => {
-            this.setState({
-              openModal: false,
-              createFeedback: ''
-            });
-          }, 1000
-        );
-      }
-
-      if (attempted === true && isCreated === false) {
-        if (errorCode === 409) {
-          this.setState({
-            createFeedback: 'App name already in use, select another and try again'
-          });
-        } else {
-          this.setState({
-            createFeedback: 'Something went wrong. Failed to deploy'
-          });
-        }
-      }
+      createApp(appInfo, match.params.projectID);
     }
   }
 
@@ -153,11 +133,18 @@ class AppsPage extends React.Component {
       varName,
       varValue,
       envVars,
-      error,
-      createFeedback
+      error
     } = this.state;
 
-    const { match: { params }, user: { data}, isCreating  } = this.props;
+    const {
+      match: { params },
+      user: { data },
+      isCreating,
+      isCreated,
+      message,
+      errorCode
+    } = this.props;
+
     const userId = data.id;
 
     return (
@@ -179,7 +166,7 @@ class AppsPage extends React.Component {
           />
         </div>
         <div className="MainRow">
-          <AppsList params={params} />
+          <AppsList params={params} newAppCreated={isCreated} />
         </div>
         <div className="FooterRow">
           <p>
@@ -245,6 +232,7 @@ class AppsPage extends React.Component {
                                 src={RemoveIcon}
                                 alt="remove_ico"
                                 onClick={() => this.removeEnvVar(index)}
+                                role="presentation"
                               />
                             </td>
                           </tr>
@@ -289,9 +277,9 @@ class AppsPage extends React.Component {
               <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
               <PrimaryButton label={isCreating ? <Spinner /> : 'proceed'} onClick={this.handleSubmit} />
             </div>
-            {createFeedback && (
-              <div className={createFeedback.startsWith('Success') ? 'AppFormErrorDiv CreateSuccess' : 'AppFormErrorDiv CreateFail'}>
-                {createFeedback}
+            {message && (
+              <div className={(isCreated && errorCode !== 409) ? 'AppFormErrorDiv CreateSuccess' : 'AppFormErrorDiv CreateFail'}>
+                {errorCode === 409 ? 'Name already in use, please choose another and try again' : message}
               </div>
             )}
           </div>
@@ -301,18 +289,40 @@ class AppsPage extends React.Component {
   }
 }
 
+AppsPage.propTypes = {
+  isCreated: PropTypes.bool.isRequired,
+  isCreating: PropTypes.bool.isRequired,
+  message: PropTypes.string.isRequired,
+  clearState: PropTypes.func.isRequired,
+  createApp: PropTypes.func.isRequired,
+  errorCode: PropTypes.number.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      projectID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired,
+  user: PropTypes.shape({
+    data: PropTypes.shape({
+      id: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
+};
+
 const mapStateToProps = ({ user, createNewApp }) => {
   const {
-    isCreated, isCreating, app, attempted, errorCode
+    message, isCreated, isCreating, errorCode
   } = createNewApp;
   return {
     user,
     isCreated,
     isCreating,
-    app,
-    attempted,
-    errorCode
+    errorCode,
+    message
   };
 };
 
-export default connect(mapStateToProps, { createApp })(withRouter(AppsPage));
+const mapDispatchToProps = {
+  createApp, clearState
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AppsPage));

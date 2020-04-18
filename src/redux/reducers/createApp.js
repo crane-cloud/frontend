@@ -1,11 +1,16 @@
-import { CREATE_APP_SUCCESS, CREATE_APP_FAIL, START_CREATING_APP } from '../actions/actionTypes';
+import {
+  CREATE_APP_SUCCESS,
+  CREATE_APP_FAIL,
+  START_CREATING_APP,
+  CLEAR_ADD_APP_STATE
+} from '../actions/actionTypes';
 
 const initialState = {
   app: null,
   isCreated: false,
   isCreating: false,
-  attempted: false,
-  message: 'Oops! App not created'
+  message: '',
+  errorCode: null
 };
 
 const createAppReducer = (state = initialState, action) => {
@@ -16,25 +21,38 @@ const createAppReducer = (state = initialState, action) => {
       app: action.payload,
       isCreating: false,
       isCreated: true,
-      attempted: true,
-      message: 'App created successfully'
+      message: 'Success! Your app has been deployed.',
+      errorCode: null
     };
 
   case START_CREATING_APP:
     return {
       ...state,
+      app: null,
       isCreating: true,
-      isCreated: false
+      isCreated: false,
+      message: '',
+      errorCode: null
     };
 
   case CREATE_APP_FAIL:
     return {
       ...state,
-      message: action.payload,
+      app: null,
       isCreating: false,
       isCreated: false,
-      attempted: true,
+      message: 'Deployment failed. Please try again',
       errorCode: action.payload.errorCode
+    };
+
+  case CLEAR_ADD_APP_STATE:
+    return {
+      ...state,
+      app: null,
+      isCreated: false,
+      isCreating: false,
+      message: '',
+      errorCode: null
     };
 
   default:

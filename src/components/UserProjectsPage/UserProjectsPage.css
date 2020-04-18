@@ -29,21 +29,30 @@
     color: black;
 }
 
-.CardImageDiv{
+/* .ProjectList .CardImageDiv{
     background-size: unset!important;
-}
+} */
 
-select{
+.ProjectFormErrorDiv {
+    background-color: rgba(255, 255, 255, 0.5);
+    color: rgb(214, 59, 59);
+    text-align: center;
+    padding: 1rem 0;
+    height: 1rem;
+    }
+    
+
+.ClusterDrop{
   width: 25rem;
   border: 2px solid black;
   box-sizing: border-box;
-  /* background-color: transparent; */
-  /* color: #fff; */
   font-size: inherit;
   padding: 1rem;
 }
 
-section option{
-    font-size: 16px;
-    color: black;
+.ClusterNameOption{
+    padding: 2rem 1.5rem;
+    color: #000;
+    background-color: #F9F9F9;
+    font-weight: bold;
 }
