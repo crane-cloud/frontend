@@ -93,7 +93,7 @@ class ProjectCard extends React.Component {
     const { openDeleteAlert, openDropDown, deleteFeedback } = this.state;
     return (
       <div className="ProjectsCard">
-        <div className="CardImageDiv" style={{ backgroundImage: `url(${icon})` }} />
+        <div className="ProjectImageDiv" style={{ backgroundImage: `url(${icon})` }} />
         <div className="BottomContainer">
           <div className="ProjectsCardName">{name}</div>
           <div className="ProjectsCardDesc">
