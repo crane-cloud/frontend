@@ -102,7 +102,7 @@ class ProjectCard extends React.Component {
                 <td className="AppName">{description}</td>
                 <td className="OtherData">
                   <div className="StatusData">
-                    <div className="AppDropDown" onClick={() => this.toggleDropDown()}>
+                    <div className="ProjectDropDown" onClick={() => this.toggleDropDown()}>
                       <img src={DotsImg} alt="three dots" className="DropDownImg" />
                       {openDropDown && (
                         <div className="AppDropDownContent">
