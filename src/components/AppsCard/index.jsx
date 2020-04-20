@@ -102,11 +102,20 @@ class AppsCard extends React.Component {
               <td className="OtherData">
                 <div className="StatusData">
                   <Status status={status} />
-                  <div className="AppDropDown" onClick={() => this.toggleDropDown()}>
+                  <div
+                    className="AppDropDown"
+                    onClick={() => this.toggleDropDown()}
+                    role="presentation"
+                  >
                     <img src={DotsImg} alt="three dots" className="DropDownImg" />
                     {openDropDown && (
                       <div className="AppDropDownContent">
-                        <div onClick={() => this.showDeleteAlert()}>Delete</div>
+                        <div
+                          onClick={() => this.showDeleteAlert()}
+                          role="presentation"
+                        >
+                          Delete
+                        </div>
                         <div>Update</div>
                       </div>
                     )}
@@ -137,7 +146,6 @@ class AppsCard extends React.Component {
                 <div className="DeleteAppModelResponses">
                   <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
                   <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteApp(e, appId)} />
-                  {/* {isRemoved && (this.reloadOndelete()) && isDeleted} */}
                 </div>
 
                 {deleteFeedback && (
@@ -161,7 +169,7 @@ class AppsCard extends React.Component {
 AppsCard.propTypes = {
   isDeleted: PropTypes.bool,
   isDeleting: PropTypes.bool,
-  isFailed: PropTypes.bool,
+  isFailed: PropTypes.bool
 };
 
 // assigning defaults
