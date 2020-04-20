@@ -169,7 +169,12 @@ class AppsCard extends React.Component {
 AppsCard.propTypes = {
   isDeleted: PropTypes.bool,
   isDeleting: PropTypes.bool,
-  isFailed: PropTypes.bool
+  isFailed: PropTypes.bool,
+  name: PropTypes.string.isRequired,
+  status: PropTypes.bool.isRequired, // this is static
+  url: PropTypes.string.isRequired,
+  appId: PropTypes.string.isRequired,
+  deleteApp: PropTypes.func.isRequired
 };
 
 // assigning defaults
