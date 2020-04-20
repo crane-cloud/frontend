@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
-import AddProject, { clearState } from '../../redux/actions/addProject';
+import AddProject, { clearAddProjectState } from '../../redux/actions/addProject';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
 import PrimaryButton from '../PrimaryButton';
@@ -12,8 +12,8 @@ import getClustersList from '../../redux/actions/ClustersActions';
 import getUserProjects from '../../redux/actions/projectsListActions';
 import InputText from '../InputText';
 import TextArea from '../TextArea';
-import { BigSpinner } from '../SpinnerComponent';
-import Spinner from '../SpinnerComponent';
+import Spinner, { BigSpinner } from '../SpinnerComponent';
+
 import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/plant.svg';
 import Feedback from '../Feedback';
@@ -58,8 +58,8 @@ class UserProjectsPage extends React.Component {
   }
 
   hideForm() {
-    const { clearState } = this.props;
-    clearState();
+    const { clearAddProjectState } = this.props;
+    clearAddProjectState();
     this.setState({ openModal: false });
   }
 
@@ -88,7 +88,7 @@ class UserProjectsPage extends React.Component {
 
   handleSubmit() {
     const { projectName, projectDescription, clusterID } = this.state;
-    const { AddProject, data, isAdded } = this.props;
+    const { AddProject, data } = this.props;
 
     if (!projectName || !clusterID || !projectDescription) {
       // if user tries to submit empty email/password
@@ -129,6 +129,8 @@ class UserProjectsPage extends React.Component {
       clusters,
       isRetrieving,
       data,
+      message,
+      errorCode,
       isFetched,
       isAdded,
       isAdding
@@ -245,6 +247,14 @@ class UserProjectsPage extends React.Component {
               <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />
               <PrimaryButton label={isAdding ? <Spinner /> : 'Create project'} onClick={this.handleSubmit} />
             </div>
+
+            {message && (
+              <Feedback
+                message={errorCode === 409 ? 'Name already in use, please choose another' : message}
+                type={(isAdded && errorCode !== 409) ? 'success' : 'error'}
+              />
+            )}
+
           </div>
         </Modal>
       </div>
@@ -257,6 +267,7 @@ UserProjectsPage.propTypes = {
   clusters: PropTypes.arrayOf(PropTypes.object),
   project: PropTypes.arrayOf(PropTypes.object),
   isAdded: PropTypes.bool,
+  errorCode: PropTypes.number,
   isAdding: PropTypes.bool,
   isFetched: PropTypes.bool,
   isRetrieving: PropTypes.bool
@@ -267,6 +278,7 @@ UserProjectsPage.defaultProps = {
   project: {},
   isAdded: false,
   isAdding: false,
+  errorCode: null,
   projects: [],
   isFetched: false,
   isRetrieving: false
@@ -274,16 +286,27 @@ UserProjectsPage.defaultProps = {
 
 const mapStateToProps = (state) => {
   const { data } = state.user;
-  const { isAdded, project, isAdding } = state.addProjectReducer;
+  const {
+    isAdded, project, isAdding, message, errorCode
+  } = state.addProjectReducer;
   const { clusters } = state.ClustersReducer;
   const { isRetrieving, projects, isFetched } = state.UserProjectsReducer;
   return {
-    isAdded, project, data, isRetrieving, projects, clusters, isFetched, isAdding
+    isAdded,
+    project,
+    data,
+    isRetrieving,
+    projects,
+    clusters,
+    isFetched,
+    isAdding,
+    message,
+    errorCode
   };
 };
 
 const mapDispatchToProps = {
-  getUserProjects, AddProject, getClustersList, clearState
+  getUserProjects, AddProject, getClustersList, clearAddProjectState
 };
 
 export default connect(

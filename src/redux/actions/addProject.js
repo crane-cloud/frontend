@@ -21,12 +21,12 @@ export const addProjectFail = (error) => ({
   type: ADD_PROJECT_FAILED,
   payload: {
     status: false,
-    error: error.status,
+    errorCode: error.response.status,
   },
 });
 
 
-const clearState = () => ({
+const clearAddProjectState = () => ({
   type: CLEAR_ADD_PROJECT_STATE
 });
 
@@ -42,6 +42,6 @@ const AddProject = (projectData) => (dispatch) => {
       dispatch(addProjectFail(error));
     });
 };
-export { clearState };
+export { clearAddProjectState };
 
 export default AddProject;

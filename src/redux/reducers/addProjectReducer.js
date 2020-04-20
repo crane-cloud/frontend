@@ -8,7 +8,8 @@ import {
 const initialState = {
   isAdded: false,
   isAdding: false,
-  message: ''
+  message: '',
+  errorCode: null
 };
 
 const addProjectReducer = (state = initialState, action) => {
@@ -20,7 +21,8 @@ const addProjectReducer = (state = initialState, action) => {
       isFailed: false,
       isAdded: true,
       isAdding: false,
-      message: 'Project Added SuccessFully'
+      message: 'Project Added SuccessFully',
+      errorCode: null
     };
   }
   case START_ADDING_PROJECT:
@@ -28,6 +30,7 @@ const addProjectReducer = (state = initialState, action) => {
       ...state,
       isAdded: false,
       isAdding: true,
+      errorCode: null,
       isFailed: false
     };
   case ADD_PROJECT_FAILED:
@@ -36,7 +39,7 @@ const addProjectReducer = (state = initialState, action) => {
       isFailed: true,
       isAdded: false,
       isAdding: false,
-      errorOccured: action.payload.error,
+      errorCode: action.payload.errorCode,
       message: 'Failed to add Project'
     };
 
@@ -46,7 +49,7 @@ const addProjectReducer = (state = initialState, action) => {
       isFailed: false,
       isAdded: false,
       isAdding: false,
-      errorOccured: null,
+      errorCode: null,
       message: ''
     };
 
