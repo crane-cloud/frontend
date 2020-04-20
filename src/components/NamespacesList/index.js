@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import './NamespacesList.css';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
@@ -104,7 +103,7 @@ NamespacesListPage.defaultProps = {
   clusterName: '',
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const {
     isRetrieved, isRetrieving, namespacesList, clusterName
   } = state.namespacesListReducer;
@@ -113,9 +112,9 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getNamespaces
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

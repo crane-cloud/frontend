@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import './JobsListPage.css';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
@@ -104,7 +103,7 @@ JobsListPage.defaultProps = {
   isFetched: false,
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const {
     isRetrieving, jobs, isFetched
   } = state.jobsReducer;
@@ -113,9 +112,9 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getJobs
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

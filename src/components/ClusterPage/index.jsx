@@ -10,6 +10,7 @@ import Modal from '../Modal';
 import ClustersList from '../ClustersList';
 import Header from '../Header';
 import addCluster, { clearState } from '../../redux/actions/addCluster';
+import Feedback from '../Feedback';
 import './ClusterPage.css';
 
 class ClusterPage extends React.Component {
@@ -164,20 +165,24 @@ class ClusterPage extends React.Component {
                 />
 
                 {error && (
-                  <div className="AppFormErrorDiv">
-                    {error}
-                  </div>
+                  <Feedback
+                    type="error"
+                    message={error}
+                  />
                 )}
 
                 <div className="ModalFormButtons AddAddButtons">
                   <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
                   <PrimaryButton label={creatingCluster ? <Spinner /> : 'add'} onClick={this.handleSubmit} />
                 </div>
+
                 {(isFailed || isAdded) && (
-                  <div className={isAdded ? 'AppFormErrorDiv CreateSuccess' : 'AppFormErrorDiv CreateFail'}>
-                    {message}
-                  </div>
+                  <Feedback
+                    type={isAdded ? 'success' : 'error'}
+                    message={message}
+                  />
                 )}
+
               </div>
             </div>
           </div>
@@ -192,6 +197,7 @@ ClusterPage.propTypes = {
     accessToken: PropTypes.string.isRequired
   }).isRequired,
   addCluster: PropTypes.func.isRequired,
+  clearState: PropTypes.func.isRequired,
   isAdded: PropTypes.bool.isRequired,
   isFailed: PropTypes.bool.isRequired,
   creatingCluster: PropTypes.bool.isRequired,

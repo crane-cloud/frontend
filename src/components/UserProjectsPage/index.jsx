@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
 import addProject from '../../redux/actions/addProject';
@@ -16,6 +15,7 @@ import TextArea from '../TextArea';
 import { BigSpinner } from '../SpinnerComponent';
 import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/plant.svg';
+import Feedback from '../Feedback';
 
 
 class UserProjectsPage extends React.Component {
@@ -228,9 +228,10 @@ class UserProjectsPage extends React.Component {
 
             </div>
             {error && (
-              <div className="ProjectFormErrorDiv">
-                {error}
-              </div>
+              <Feedback
+                type="error"
+                message={error}
+              />
             )}
             <div className="ModalFormButtons">
               <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />
@@ -261,7 +262,7 @@ UserProjectsPage.defaultProps = {
   isRetrieving: false
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { data } = state.user;
   const { isAdded, project } = state.addProjectReducer;
   const { clusters } = state.clustersReducer;
@@ -271,9 +272,9 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getUserProjects, addProject, getClustersList,
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,
