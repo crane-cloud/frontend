@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Logo from '../Logo';
-import ProfileIcon from '../../assets/images/profile.svg';
 import DownArrow from '../../assets/images/downarrow.svg';
 import removeUser from '../../redux/actions/removeUser';
 import './Header.css';
@@ -26,6 +26,16 @@ const Header = (props) => {
     localStorage.removeItem('token');
   };
 
+  const nameStringToHslColor = (name) => {
+    let hash = 0;
+    let i = 0;
+    for (i; i < name.length; i += 1) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash); // eslint-disable-line no-bitwise
+    }
+    const h = hash % 360;
+    return `hsl(${h}, 30%, 80%)`; // syntax: hsl(h, s%, l%)
+  };
+
   return (
     <header className="Header">
       <div className="LogoWrap">
@@ -36,8 +46,8 @@ const Header = (props) => {
         <div className="HeaderLinksWrap">
           {match.path !== '/admin-login' && (
             <div className="HeaderLinks bold uppercase">
-              <Link to="/" className="HeaderLinkPricing">pricing</Link>
-              <Link to="/" className="HeaderLinkDocs">docs</Link>
+              <Link to="#" className="HeaderLinkPricing">pricing</Link>
+              <Link to="#" className="HeaderLinkDocs">docs</Link>
               <Link to="/login" className="HeaderLinkLogin TurnLight">login</Link>
             </div>
           )}
@@ -53,7 +63,12 @@ const Header = (props) => {
               <>
 
                 <div className="ProfileIconWrap">
-                  <img src={ProfileIcon} alt="profile" />
+                  <div
+                    className="UserAvatar"
+                    style={{ backgroundColor: nameStringToHslColor(user.data.name), color: '#555' }}
+                  >
+                    {user.data.name.charAt(0).toUpperCase()}
+                  </div>
                 </div>
                 <Link to="#">
                   <div className="UserNames" onClick={toggleHidden}>
@@ -83,6 +98,20 @@ const Header = (props) => {
 
     </header>
   );
+};
+
+Header.propTypes = {
+  removeUser: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    accessToken: PropTypes.string.isRequired,
+    data: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired
+    }).isRequired,
+  }).isRequired,
+  match: PropTypes.shape({
+    path: PropTypes.string.isRequired
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => {

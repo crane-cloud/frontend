@@ -10,6 +10,6 @@
     color: black;
 }
 
-.CardImageDiv{
+.ProjectList .CardImageDiv{
     background-size: unset!important;
 }

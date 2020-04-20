@@ -3,6 +3,7 @@
   height: 100%;
   color: #ffffff;
   display: flex;
+  overflow-y: hidden;
   flex-direction: column;
 }
 
