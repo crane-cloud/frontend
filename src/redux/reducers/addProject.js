@@ -5,7 +5,7 @@ const initialState = {
   message: 'Add Project'
 };
 
-const addProject = ( state = initialState, action) => {
+const addProjectReducer = (state = initialState, action) => {
   switch (action.type) {
   case ADD_PROJECT_SUCCESS: {
     return {
@@ -36,4 +36,4 @@ const addProject = ( state = initialState, action) => {
   }
 };
 
-export default addProject;
+export default addProjectReducer;

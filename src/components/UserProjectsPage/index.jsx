@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
-import AddProject from '../../redux/actions/addProject';
+import addProject from '../../redux/actions/addProject';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
 import PrimaryButton from '../PrimaryButton';
@@ -77,7 +77,7 @@ class UserProjectsPage extends React.Component {
 
   handleSubmit() {
     const { projectName, projectDescription, clusterID } = this.state;
-    const { AddProject, data, isAdded } = this.props;
+    const { addProject, data, isAdded } = this.props;
 
     if (!projectName || !clusterID || !projectDescription) {
       // if user tries to submit empty email/password
@@ -99,7 +99,7 @@ class UserProjectsPage extends React.Component {
         name: projectName,
         owner_id: data.id
       };
-      AddProject(newProject);
+      addProject(newProject);
       // this.setState({
       //   loading: true
       // });
@@ -263,7 +263,7 @@ UserProjectsPage.defaultProps = {
 
 export const mapStateToProps = (state) => {
   const { data } = state.user;
-  const { isAdded, project } = state.addProject;
+  const { isAdded, project } = state.addProjectReducer;
   const { clusters } = state.clustersReducer;
   const { isRetrieving, projects, isFetched } = state.userProjectsReducer;
   return {
@@ -272,7 +272,7 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  getUserProjects, AddProject, getClustersList,
+  getUserProjects, addProject, getClustersList,
 }, dispatch);
 
 export default connect(

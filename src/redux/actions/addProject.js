@@ -19,7 +19,7 @@ export const addProjectFail = (error) => ({
   },
 });
 
-const AddProject = (projectData) => (dispatch) => {
+const addProject = (projectData) => (dispatch) => {
   dispatch(startPostingProject());
 
   return axios.post(`${API_BASE_URL}/projects`, projectData,
@@ -31,4 +31,4 @@ const AddProject = (projectData) => (dispatch) => {
       dispatch(addProjectFail(error));
     });
 };
-export default AddProject;
+export default addProject;
