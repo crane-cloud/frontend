@@ -25,7 +25,7 @@ const clearState = () => ({
   type: CLEAR_ADD_CLUSTER_STATE
 });
 
-const AddCluster = (clusterData) => (dispatch) => {
+const addCluster = (clusterData) => (dispatch) => {
   dispatch(startPostingCluster());
 
   return axios.post(`${API_BASE_URL}/clusters`, clusterData,
@@ -38,5 +38,5 @@ const AddCluster = (clusterData) => (dispatch) => {
     });
 };
 
-export default AddCluster;
+export default addCluster;
 export { clearState };
