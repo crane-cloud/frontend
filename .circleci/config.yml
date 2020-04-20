@@ -60,14 +60,13 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: install kuber
+          name: install kubectl
           command: |
             curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
             chmod u+x ./kubectl
 
       - *configure_gcloud
       - *build_and_push_image
-      - *persist_to_workspace
       - *deploy_to_kubernetes
 
 workflows:
@@ -77,5 +76,5 @@ workflows:
       - build_and_deploy_staging:
           filters:
             branches:
-              only: ch-deploy-to-gcp
+              only: develop-new
       
