@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PrimaryButton from '../PrimaryButton';
 import DotsImg from '../../assets/images/3dots.svg';
-import deleteApp from '../../redux/actions/deleteAppActions';
+import deleteApp from '../../redux/actions/deleteApp';
 import Spinner from '../SpinnerComponent';
 import Modal from '../Modal';
 import Status from '../Status';

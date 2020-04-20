@@ -5,7 +5,7 @@ import './PvcsList.css';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
-import getPvcs from '../../redux/actions/PvcsActions';
+import getPvcs from '../../redux/actions/pvcs';
 import Status from '../Status';
 import tellAge from '../../helpers/ageUtility';
 import { BigSpinner } from '../SpinnerComponent';
@@ -105,7 +105,7 @@ PvcsListPage.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { isRetrieving, pvcs, isFetched } = state.PvcsReducer;
+  const { isRetrieving, pvcs, isFetched } = state.pvcsReducer;
   return { isRetrieving, pvcs, isFetched };
 };
 

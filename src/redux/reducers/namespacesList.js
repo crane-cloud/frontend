@@ -11,7 +11,7 @@ const initialState = {
   message: 'No Namespaces Available'
 };
 
-const NamespacesListReducer = (state = initialState, action) => {
+const namespacesListReducer = (state = initialState, action) => {
   switch (action.type) {
   case FETCH_NAMESPACES_SUCCESS:
     return {
@@ -40,4 +40,4 @@ const NamespacesListReducer = (state = initialState, action) => {
   }
 };
 
-export default NamespacesListReducer;
+export default namespacesListReducer;

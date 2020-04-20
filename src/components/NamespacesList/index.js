@@ -5,7 +5,7 @@ import './NamespacesList.css';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
-import getNamespaces from '../../redux/actions/NamespacesActions';
+import getNamespaces from '../../redux/actions/namespaces';
 import Status from '../Status';
 import tellAge from '../../helpers/ageUtility';
 import { BigSpinner } from '../SpinnerComponent';
@@ -106,7 +106,7 @@ NamespacesListPage.defaultProps = {
 const mapStateToProps = (state) => {
   const {
     isRetrieved, isRetrieving, namespacesList, clusterName
-  } = state.NamespacesListReducer;
+  } = state.namespacesListReducer;
   return {
     isRetrieved, isRetrieving, namespacesList, clusterName
   };

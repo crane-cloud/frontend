@@ -11,7 +11,7 @@ const initialState = {
   message: 'No users yet.',
 };
 
-const UsersListReducer = (state = initialState, action) => {
+const usersListReducer = (state = initialState, action) => {
   switch (action.type) {
   case GET_USERS_SUCCESS:
     return {
@@ -41,4 +41,4 @@ const UsersListReducer = (state = initialState, action) => {
     return state;
   }
 };
-export default UsersListReducer;
+export default usersListReducer;

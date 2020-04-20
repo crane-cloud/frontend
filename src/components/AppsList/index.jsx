@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import getAppsList from '../../redux/actions/appsListActions';
+import getAppsList from '../../redux/actions/appsList';
 import AppsCard from '../AppsCard';
 import { BigSpinner } from '../SpinnerComponent';
 import './AppsList.css';
@@ -87,7 +87,7 @@ AppsList.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { isRetrieving, apps, isRetrieved } = state.AppsListReducer;
+  const { isRetrieving, apps, isRetrieved } = state.appsListReducer;
   return { isRetrieving, apps, isRetrieved };
 };
 

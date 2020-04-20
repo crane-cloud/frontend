@@ -12,7 +12,7 @@ const initialState = {
   message: ''
 };
 
-const UserDetailReducer = (state = initialState, action) => {
+const userDetailReducer = (state = initialState, action) => {
   switch (action.type) {
   case GET_USER_DETAIL_SUCCESS:
     return {
@@ -42,4 +42,4 @@ const UserDetailReducer = (state = initialState, action) => {
     return state;
   }
 };
-export default UserDetailReducer;
+export default userDetailReducer;

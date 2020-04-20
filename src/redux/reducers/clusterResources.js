@@ -11,7 +11,7 @@ const initialState = {
   message: 'Cluster Resources Not Available'
 };
 
-const ClusterResourcesReducer = (state = initialState, action) => {
+const clusterResourcesReducer = (state = initialState, action) => {
   switch (action.type) {
   case GET_RESOURCES_COUNT:
     return {
@@ -40,4 +40,4 @@ const ClusterResourcesReducer = (state = initialState, action) => {
   }
 };
 
-export default ClusterResourcesReducer;
+export default clusterResourcesReducer;

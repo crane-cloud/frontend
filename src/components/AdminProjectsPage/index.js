@@ -5,8 +5,8 @@ import './AdminProjectsPage.css';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
 import SideNav from '../SideNav';
-import getAdminProjects from '../../redux/actions/AdminProjectsActions';
-import getUsersList from '../../redux/actions/usersActions';
+import getAdminProjects from '../../redux/actions/adminProjects';
+import getUsersList from '../../redux/actions/users';
 import { BigSpinner } from '../SpinnerComponent';
 
 class AdminProjectsPage extends React.Component {
@@ -116,9 +116,10 @@ AdminProjectsPage.defaultProps = {
   isFetched: false
 };
 
+
 const mapStateToProps = (state) => {
-  const { isRetrieving, projects, isRetrieved } = state.AdminProjectsReducer;
-  const { users, isFetched } = state.UsersListReducer;
+  const { isRetrieving, projects, isRetrieved } = state.adminProjectsReducer;
+  const { users, isFetched } = state.usersListReducer;
   return {
     isRetrieving, projects, isRetrieved, users, isFetched
   };

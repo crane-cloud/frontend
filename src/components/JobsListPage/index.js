@@ -5,7 +5,7 @@ import './JobsListPage.css';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
-import getJobs from '../../redux/actions/JobsActions';
+import getJobs from '../../redux/actions/jobs';
 import Status from '../Status';
 import { BigSpinner } from '../SpinnerComponent';
 import tellAge from '../../helpers/ageUtility';
@@ -106,7 +106,7 @@ JobsListPage.defaultProps = {
 const mapStateToProps = (state) => {
   const {
     isRetrieving, jobs, isFetched
-  } = state.JobsReducer;
+  } = state.jobsReducer;
   return {
     isRetrieving, jobs, isFetched
   };

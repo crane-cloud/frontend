@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
-import AddProject from '../../redux/actions/addProject';
+import addProject from '../../redux/actions/addProject';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
 import PrimaryButton from '../PrimaryButton';
 import Modal from '../Modal';
-import getClustersList from '../../redux/actions/ClustersActions';
-import getUserProjects from '../../redux/actions/projectsListActions';
+import getClustersList from '../../redux/actions/clusters';
+import getUserProjects from '../../redux/actions/projectsList';
 import InputText from '../InputText';
 import TextArea from '../TextArea';
 import { BigSpinner } from '../SpinnerComponent';
@@ -77,7 +77,7 @@ class UserProjectsPage extends React.Component {
 
   handleSubmit() {
     const { projectName, projectDescription, clusterID } = this.state;
-    const { AddProject, data, isAdded } = this.props;
+    const { addProject, data, isAdded } = this.props;
 
     if (!projectName || !clusterID || !projectDescription) {
       // if user tries to submit empty email/password
@@ -99,7 +99,7 @@ class UserProjectsPage extends React.Component {
         name: projectName,
         owner_id: data.id
       };
-      AddProject(newProject);
+      addProject(newProject);
       // this.setState({
       //   loading: true
       // });
@@ -265,15 +265,15 @@ UserProjectsPage.defaultProps = {
 const mapStateToProps = (state) => {
   const { data } = state.user;
   const { isAdded, project } = state.addProjectReducer;
-  const { clusters } = state.ClustersReducer;
-  const { isRetrieving, projects, isFetched } = state.UserProjectsReducer;
+  const { clusters } = state.clustersReducer;
+  const { isRetrieving, projects, isFetched } = state.userProjectsReducer;
   return {
     isAdded, project, data, isRetrieving, projects, clusters, isFetched
   };
 };
 
 const mapDispatchToProps = {
-  getUserProjects, AddProject, getClustersList,
+  getUserProjects, addProject, getClustersList,
 };
 
 export default connect(

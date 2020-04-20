@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import './ProjectsList.css';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
-import getUserProjects from '../../redux/actions/projectsListActions';
+import getUserProjects from '../../redux/actions/projectsList';
 import { BigSpinner } from '../SpinnerComponent';
 import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/craneLogo.png';
@@ -82,7 +82,7 @@ UserProjectsPage.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { isRetrieving, projects } = state.UserProjectsReducer;
+  const { isRetrieving, projects } = state.userProjectsReducer;
   const { data } = state.user;
   return { isRetrieving, projects, data };
 };

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import getNodesList from '../../redux/actions/nodeClusterActions';
+import getNodesList from '../../redux/actions/nodeCluster';
 import tellAge from '../../helpers/ageUtility';
 import './NodesList.css';
 import Header from '../Header';

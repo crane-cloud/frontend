@@ -12,7 +12,7 @@ const initialState = {
   message: 'Cluster Jobs Not Available'
 };
 
-const JobsReducer = (state = initialState, action) => {
+const jobsReducer = (state = initialState, action) => {
   switch (action.type) {
   case FETCH_JOBS_SUCCESS:
     return {
@@ -41,4 +41,4 @@ const JobsReducer = (state = initialState, action) => {
     return state;
   }
 };
-export default JobsReducer;
+export default jobsReducer;

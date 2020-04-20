@@ -6,7 +6,7 @@ import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 import { BigSpinner } from '../SpinnerComponent';
-import getPvs from '../../redux/actions/PvsActions';
+import getPvs from '../../redux/actions/pvs';
 import Status from '../Status';
 
 class PvsListPage extends React.Component {
@@ -106,7 +106,7 @@ PvsListPage.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { isRetrieving, pvs, isFetched } = state.PvsReducer;
+  const { isRetrieving, pvs, isFetched } = state.pvsReducer;
   return { isRetrieving, pvs, isFetched };
 };
 
