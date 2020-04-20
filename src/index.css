@@ -290,7 +290,7 @@ body::-webkit-scrollbar-thumb:hover {
 
 /*- /////////--- STYLING FOR FEEDBACK ---//////////// */
 .ErrorOnWhite {
-  color: black;
+  color: rgb(0, 0, 0, 0.8);
   background-color: rgb(214, 59, 59, 0.5);
   text-align: center;
   padding: .7rem 0;
