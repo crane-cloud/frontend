@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import PrimaryButton from '../PrimaryButton';
 import DotsImg from '../../assets/images/3dots.svg';
@@ -88,14 +89,17 @@ class ProjectCard extends React.Component {
 
   render() {
     const {
-      name, projectID, isDeleting, description, icon
+      name, projectID, isDeleting, data, description, icon, CardID
     } = this.props;
+    const userId = data.id;
     const { openDeleteAlert, openDropDown, deleteFeedback } = this.state;
     return (
       <div className="ProjectsCard">
         <div className="ProjectImageDiv" style={{ backgroundImage: `url(${icon})` }} />
         <div className="BottomContainer">
-          <div className="ProjectsCardName">{name}</div>
+          <Link to={{ pathname: `/users/${userId}/projects/${CardID}/apps` }} key={CardID}>
+            <div className="ProjectsCardName">{name}</div>
+          </Link>
           <div className="ProjectsCardDesc">
             <table className="AppTable">
               <tr>
@@ -176,8 +180,9 @@ ProjectCard.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
+  const { data } = state.user;
   const { isDeleting, isDeleted, isFailed } = state.deleteProjectReducer;
-  return { isDeleting, isDeleted, isFailed };
+  return { data, isDeleting, isDeleted, isFailed };
 };
 
 export const mapDispatchToProps = (dispatch) => ({

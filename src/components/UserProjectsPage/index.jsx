@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
 import AddProject from '../../redux/actions/addProject';
 import InformationBar from '../InformationBar';
@@ -123,9 +123,9 @@ class UserProjectsPage extends React.Component {
       // loading
     } = this.state;
     const {
-      projects, clusters, isRetrieving, data, isFetched
+      projects, clusters, isRetrieving, isFetched
     } = this.props;
-    const userId = data.id;
+    // const userId = data.id;
     const clustersList = clusters.length > 0
         && clusters.map((item, i) => (
           <option className="ClusterNameOption" key={i} value={item.id}>{item.name}</option>
@@ -150,15 +150,16 @@ class UserProjectsPage extends React.Component {
                 <div className="ProjectList">
                   {(isFetched && projects !== undefined && (
                     (projects.map((project) => (
-                      <Link to={{ pathname: `/users/${userId}/projects/${project.id}/apps` }} key={project.id}>
-                        <div key={project.id} className="ProjectCardItem">
-                          <ProjectCard
-                            name={project.name}
-                            description={project.description}
-                            icon={crane}
-                          />
-                        </div>
-                      </Link>
+                      // <Link to={{ pathname: `/users/${userId}/projects/${project.id}/apps` }} key={project.id}>
+                      <div key={project.id} className="ProjectCardItem">
+                        <ProjectCard
+                          name={project.name}
+                          description={project.description}
+                          CardID={project.id}
+                          icon={crane}
+                        />
+                      </div>
+                      // </Link>
                     ))))
                   )}
                   {(isFetched && projects.length === 0) && (
