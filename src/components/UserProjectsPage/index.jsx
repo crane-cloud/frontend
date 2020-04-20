@@ -16,6 +16,7 @@ import TextArea from '../TextArea';
 import { BigSpinner } from '../SpinnerComponent';
 import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/plant.svg';
+import Feedback from '../Feedback';
 
 
 class UserProjectsPage extends React.Component {
@@ -228,9 +229,10 @@ class UserProjectsPage extends React.Component {
 
             </div>
             {error && (
-              <div className="ProjectFormErrorDiv">
-                {error}
-              </div>
+              <Feedback
+                type="error"
+                message={error}
+              />
             )}
             <div className="ModalFormButtons">
               <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />

@@ -13,6 +13,7 @@ import InformationBar from '../InformationBar';
 import AppsList from '../AppsList';
 import Header from '../Header';
 import Spinner from '../SpinnerComponent';
+import Feedback from '../Feedback';
 import './AppsPage.css';
 
 class AppsPage extends React.Component {
@@ -35,6 +36,7 @@ class AppsPage extends React.Component {
     this.hideForm = this.hideForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.validateAppName = this.validateAppName.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -101,6 +103,16 @@ class AppsPage extends React.Component {
     this.setState({ envVars: newEnvVars });
   }
 
+  validateAppName(name) {
+    if (/^[a-z]/i.test(name)) {
+      if (name.match(/[^-a-zA-Z0-9.]/)) {
+        return 'false_convention';
+      }
+      return true;
+    }
+    return false;
+  }
+
   handleSubmit() {
     const { name, uri, envVars } = this.state;
     const {
@@ -112,6 +124,14 @@ class AppsPage extends React.Component {
       // if user tries to submit empty email/password
       this.setState({
         error: 'Please enter the App Name and Image Uri'
+      });
+    } else if (this.validateAppName(name) === false) {
+      this.setState({
+        error: 'name should start with a letter'
+      });
+    } else if (this.validateAppName(name) === 'false_convention') {
+      this.setState({
+        error: 'name may only contain letters,numbers,dot and a hypen -'
       });
     } else {
       const appInfo = {
@@ -176,7 +196,7 @@ class AppsPage extends React.Component {
           </p>
         </div>
 
-        {/* Modal for creating a new project
+        {/* Modal for creating a new app
         Its triggered by the value of state.openModal */}
         <Modal showModal={openModal}>
           <div className="ModalForm AddAppModal">
@@ -205,9 +225,10 @@ class AppsPage extends React.Component {
                   }}
                 />
                 {error && (
-                  <div className="AppFormErrorDiv">
-                    {error}
-                  </div>
+                  <Feedback
+                    type="error"
+                    message={error}
+                  />
                 )}
               </div>
               <div className="ModalFormInputsEnvVars">
@@ -277,11 +298,14 @@ class AppsPage extends React.Component {
               <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
               <PrimaryButton label={isCreating ? <Spinner /> : 'proceed'} onClick={this.handleSubmit} />
             </div>
+
             {message && (
-              <div className={(isCreated && errorCode !== 409) ? 'AppFormErrorDiv CreateSuccess' : 'AppFormErrorDiv CreateFail'}>
-                {errorCode === 409 ? 'Name already in use, please choose another and try again' : message}
-              </div>
+              <Feedback
+                message={errorCode === 409 ? 'Name already in use, please choose another and try again' : message}
+                type={(isCreated && errorCode !== 409) ? 'success' : 'error'}
+              />
             )}
+
           </div>
         </Modal>
       </div>
