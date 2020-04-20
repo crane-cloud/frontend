@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import clustersReducer from './clusters';
-import addCluster from './addCluster';
+import addClusterReducer from './addCluster';
 import user from './user';
 import clusterResourcesReducer from './clusterResources';
 import servicesReducer from './services';
@@ -26,7 +26,7 @@ export default combineReducers({
   clusterResourcesReducer,
   clustersReducer,
   user,
-  addCluster,
+  addClusterReducer,
   servicesReducer,
   storageClassesReducer,
   pvsReducer,
