@@ -110,6 +110,15 @@ class VerificationSentPage extends React.Component {
   }
 }
 
+VerificationSentPage.propTypes = {
+  saveUser: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      token: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
+};
+
 const mapStateToProps = (state) => (
   { user: state.user }
 );
