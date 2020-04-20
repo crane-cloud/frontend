@@ -27,7 +27,6 @@ class UserProjectsPage extends React.Component {
       projectName: '',
       clusterID: '',
       projectDescription: '',
-      clusters: [],
       error: ''
     };
 
@@ -120,7 +119,8 @@ class UserProjectsPage extends React.Component {
       openModal,
       projectName,
       projectDescription,
-      error
+      error,
+      value
       // clusterID,
       // loading
     } = this.state;
@@ -137,8 +137,8 @@ class UserProjectsPage extends React.Component {
     } = this.props;
     const userId = data.id;
     const clustersList = clusters.length > 0
-        && clusters.map((item, i) => (
-          <option className="ClusterNameOption" key={i} value={item.id}>{item.name}</option>
+        && clusters.map((item) => (
+          <option className="ClusterNameOption" key={item.id} value={item.id}>{item.name}</option>
         ));
 
     return (
@@ -208,7 +208,7 @@ class UserProjectsPage extends React.Component {
               <select
                 className="ClusterDrop"
                 name="clusterID"
-                value={this.state.value}
+                value={value}
                 onChange={(e) => {
                   this.handleChange(e);
                 }}
@@ -265,21 +265,28 @@ class UserProjectsPage extends React.Component {
 UserProjectsPage.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.object),
   clusters: PropTypes.arrayOf(PropTypes.object),
-  project: PropTypes.arrayOf(PropTypes.object),
+  getClustersList: PropTypes.func.isRequired,
+  getUserProjects: PropTypes.func.isRequired,
+  clearAddProjectState: PropTypes.func.isRequired,
+  AddProject: PropTypes.func.isRequired,
+  data: PropTypes.shape({
+    id: PropTypes.string.isRequired
+  }).isRequired,
   isAdded: PropTypes.bool,
   errorCode: PropTypes.number,
   isAdding: PropTypes.bool,
   isFetched: PropTypes.bool,
+  message: PropTypes.string,
   isRetrieving: PropTypes.bool
 };
 
 UserProjectsPage.defaultProps = {
   clusters: [],
-  project: {},
   isAdded: false,
   isAdding: false,
   errorCode: null,
   projects: [],
+  message: '',
   isFetched: false,
   isRetrieving: false
 };
@@ -287,13 +294,12 @@ UserProjectsPage.defaultProps = {
 const mapStateToProps = (state) => {
   const { data } = state.user;
   const {
-    isAdded, project, isAdding, message, errorCode
+    isAdded, isAdding, message, errorCode
   } = state.addProjectReducer;
   const { clusters } = state.ClustersReducer;
   const { isRetrieving, projects, isFetched } = state.UserProjectsReducer;
   return {
     isAdded,
-    project,
     data,
     isRetrieving,
     projects,
