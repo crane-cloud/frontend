@@ -249,6 +249,7 @@ UserProjectsPage.propTypes = {
   clusters: PropTypes.arrayOf(PropTypes.object),
   project: PropTypes.arrayOf(PropTypes.object),
   isAdded: PropTypes.bool,
+  isAdding: PropTypes.bool,
   isFetched: PropTypes.bool,
   isRetrieving: PropTypes.bool
 };
@@ -257,6 +258,7 @@ UserProjectsPage.defaultProps = {
   clusters: [],
   project: {},
   isAdded: false,
+  isAdding: false,
   projects: [],
   isFetched: false,
   isRetrieving: false
@@ -264,7 +266,7 @@ UserProjectsPage.defaultProps = {
 
 const mapStateToProps = (state) => {
   const { data } = state.user;
-  const { isAdded, project } = state.addProjectReducer;
+  const { isAdded, project, isAdding } = state.addProjectReducer;
   const { clusters } = state.ClustersReducer;
   const { isRetrieving, projects, isFetched } = state.UserProjectsReducer;
   return {

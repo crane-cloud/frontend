@@ -1,18 +1,25 @@
-import { START_ADDING_PROJECT, ADD_PROJECT_SUCCESS, ADD_PROJECT_FAILED } from '../actions/actionTypes';
+import {
+  START_ADDING_PROJECT,
+  CLEAR_ADD_PROJECT_STATE,
+  ADD_PROJECT_SUCCESS,
+  ADD_PROJECT_FAILED
+} from '../actions/actionTypes';
 
 const initialState = {
   isAdded: false,
+  isAdding: false,
   message: 'Add Project'
 };
 
-const addProjectReducer = ( state = initialState, action) => {
+const addProjectReducer = (state = initialState, action) => {
   switch (action.type) {
   case ADD_PROJECT_SUCCESS: {
     return {
       ...state,
       project: action.payload,
       isFailed: false,
-      isAdded: true,
+      isAdded: false,
+      isAdding: false,
       message: 'Project Added SuccessFully'
     };
   }
@@ -20,6 +27,7 @@ const addProjectReducer = ( state = initialState, action) => {
     return {
       ...state,
       isAdded: false,
+      isAdding: true,
       isFailed: false
     };
   case ADD_PROJECT_FAILED:
@@ -27,6 +35,17 @@ const addProjectReducer = ( state = initialState, action) => {
       ...state,
       isFailed: true,
       isAdded: false,
+      isAdding: false,
+      errorOccured: action.payload.error,
+      message: 'Failed to add Project'
+    };
+
+  case CLEAR_ADD_PROJECT_STATE:
+    return {
+      ...state,
+      isFailed: false,
+      isAdded: false,
+      isAdding: false,
       errorOccured: action.payload.error,
       message: 'Failed to add Project'
     };
