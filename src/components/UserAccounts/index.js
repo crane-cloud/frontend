@@ -102,7 +102,7 @@ UserAccounts.defaultProps = {
   isFetched: false,
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { isFetching, users, isFetched } = state.UsersListReducer;
   return { isFetching, users, isFetched };
 };

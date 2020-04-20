@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getStorageClassList from '../../redux/actions/StorageClassesActions';
@@ -104,14 +103,14 @@ StorageClassList.defaultProps = {
   isFetched: false,
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { isRetrieving, storageClasses, isFetched } = state.storageClassesReducer;
   return { isRetrieving, storageClasses, isFetched };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getStorageClassList
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

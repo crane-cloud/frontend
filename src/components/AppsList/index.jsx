@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getAppsList from '../../redux/actions/appsListActions';
@@ -87,14 +86,14 @@ AppsList.defaultProps = {
   isRetrieving: true
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { isRetrieving, apps, isRetrieved } = state.AppsListReducer;
   return { isRetrieving, apps, isRetrieved };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getAppsList
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

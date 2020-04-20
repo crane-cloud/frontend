@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -69,14 +68,14 @@ ClustersList.defaultProps = {
   isRetrieving: true
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { isRetrieving, clusters, isRetrieved } = state.ClustersReducer;
   return { isRetrieving, clusters, isRetrieved };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getClustersList
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

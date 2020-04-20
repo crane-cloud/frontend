@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
 import AddProject from '../../redux/actions/addProject';
@@ -263,7 +262,7 @@ UserProjectsPage.defaultProps = {
   isRetrieving: false
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { data } = state.user;
   const { isAdded, project } = state.addProjectReducer;
   const { clusters } = state.ClustersReducer;
@@ -273,9 +272,9 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getUserProjects, AddProject, getClustersList,
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

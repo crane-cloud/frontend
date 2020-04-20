@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import './AdminProjectsPage.css';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
@@ -117,7 +116,7 @@ AdminProjectsPage.defaultProps = {
   isFetched: false
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { isRetrieving, projects, isRetrieved } = state.AdminProjectsReducer;
   const { users, isFetched } = state.UsersListReducer;
   return {
@@ -125,9 +124,9 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getAdminProjects, getUsersList
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,
