@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
-import AddProject from '../../redux/actions/addProject';
+import AddProject, { clearState } from '../../redux/actions/addProject';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
 import PrimaryButton from '../PrimaryButton';
@@ -13,6 +13,7 @@ import getUserProjects from '../../redux/actions/projectsListActions';
 import InputText from '../InputText';
 import TextArea from '../TextArea';
 import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../SpinnerComponent';
 import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/plant.svg';
 import Feedback from '../Feedback';
@@ -100,15 +101,6 @@ class UserProjectsPage extends React.Component {
         owner_id: data.id
       };
       AddProject(newProject);
-      // this.setState({
-      //   loading: true
-      // });
-
-      if (isAdded === true) {
-        this.setState({
-          openModal: false
-        });
-      }
     }
   }
 
@@ -123,7 +115,13 @@ class UserProjectsPage extends React.Component {
       // loading
     } = this.state;
     const {
-      projects, clusters, isRetrieving, data, isFetched
+      projects,
+      clusters,
+      isRetrieving,
+      data,
+      isFetched,
+      isAdded,
+      isAdding
     } = this.props;
     const userId = data.id;
     const clustersList = clusters.length > 0
@@ -235,7 +233,7 @@ class UserProjectsPage extends React.Component {
             )}
             <div className="ModalFormButtons">
               <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />
-              <PrimaryButton label="Create project" onClick={this.handleSubmit} />
+              <PrimaryButton label={isAdding ? <Spinner /> : 'Create project'} onClick={this.handleSubmit} />
             </div>
           </div>
         </Modal>
@@ -270,7 +268,7 @@ const mapStateToProps = (state) => {
   const { clusters } = state.ClustersReducer;
   const { isRetrieving, projects, isFetched } = state.UserProjectsReducer;
   return {
-    isAdded, project, data, isRetrieving, projects, clusters, isFetched
+    isAdded, project, data, isRetrieving, projects, clusters, isFetched, isAdding
   };
 };
 
