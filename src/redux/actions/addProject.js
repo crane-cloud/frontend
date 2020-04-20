@@ -20,7 +20,8 @@ export const addProjectSuccess = (response) => ({
 export const addProjectFail = (error) => ({
   type: ADD_PROJECT_FAILED,
   payload: {
-    error: error.response.status,
+    status: false,
+    error: error.status,
   },
 });
 

@@ -8,7 +8,7 @@ import {
 const initialState = {
   isAdded: false,
   isAdding: false,
-  message: 'Add Project'
+  message: ''
 };
 
 const addProjectReducer = (state = initialState, action) => {
@@ -18,7 +18,7 @@ const addProjectReducer = (state = initialState, action) => {
       ...state,
       project: action.payload,
       isFailed: false,
-      isAdded: false,
+      isAdded: true,
       isAdding: false,
       message: 'Project Added SuccessFully'
     };
@@ -46,8 +46,8 @@ const addProjectReducer = (state = initialState, action) => {
       isFailed: false,
       isAdded: false,
       isAdding: false,
-      errorOccured: action.payload.error,
-      message: 'Failed to add Project'
+      errorOccured: null,
+      message: ''
     };
 
   default:

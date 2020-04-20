@@ -44,6 +44,34 @@ class UserProjectsPage extends React.Component {
     getClustersList();
   }
 
+  componentDidUpdate(prevProps) {
+    const { isAdded, data, getUserProjects } = this.props;
+
+    if (isAdded !== prevProps.isAdded) {
+      getUserProjects(data.id);
+      this.hideForm();
+    }
+  }
+
+  showForm() {
+    this.setState({ openModal: true });
+  }
+
+  hideForm() {
+    const { clearState } = this.props;
+    clearState();
+    this.setState({ openModal: false });
+  }
+
+  validateProjectName(name) {
+    if (/^[a-z]/i.test(name)) {
+      if (name.match(/[^-a-zA-Z]/)) {
+        return 'false_convention';
+      }
+      return true;
+    }
+    return false;
+  }
 
   handleChange(e) {
     const { error } = this.state;
@@ -56,24 +84,6 @@ class UserProjectsPage extends React.Component {
         error: ''
       });
     }
-  }
-
-  showForm() {
-    this.setState({ openModal: true });
-  }
-
-  hideForm() {
-    this.setState({ openModal: false });
-  }
-
-  validateProjectName(name) {
-    if (/^[a-z]/i.test(name)) {
-      if (name.match(/[^-a-zA-Z]/)) {
-        return 'false_convention';
-      }
-      return true;
-    }
-    return false;
   }
 
   handleSubmit() {
@@ -273,7 +283,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  getUserProjects, AddProject, getClustersList,
+  getUserProjects, AddProject, getClustersList, clearState
 };
 
 export default connect(
