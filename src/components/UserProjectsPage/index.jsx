@@ -303,6 +303,7 @@ const mapStateToProps = (state) => {
     isAdded, isAdding, message, errorCode
   } = state.addProjectReducer;
   const { clusters } = state.clustersReducer;
+  const { isDeleted } = state.deleteProjectReducer;
   const { isRetrieving, projects, isFetched } = state.userProjectsReducer;
   return {
     isAdded,
@@ -313,6 +314,7 @@ const mapStateToProps = (state) => {
     isFetched,
     isAdding,
     message,
+    isDeleted,
     errorCode
   };
 };

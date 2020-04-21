@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import PrimaryButton from '../PrimaryButton';
 import DotsImg from '../../assets/images/3dots.svg';
-import deleteProject from '../../redux/actions/deleteProject';
+import deleteProject, { clearDeleteProjectState } from '../../redux/actions/deleteProject';
 import Spinner from '../SpinnerComponent';
 import Modal from '../Modal';
 import './ProjectCard.css';
@@ -45,7 +45,7 @@ class ProjectCard extends React.Component {
 
   handleDeleteProject(e, projectID) {
     const {
-      deleteProject, isDeleted, isFailed
+      deleteProject, isDeleted, isFailed, clearDeleteProjectState
     } = this.props;
     e.preventDefault();
 
@@ -53,8 +53,7 @@ class ProjectCard extends React.Component {
     if (isDeleted) {
       this.setState({
         deleteFeedback: 'Project has been Deleted.',
-        openDeleteAlert: false,
-        isDeleted: true
+        openDeleteAlert: false
       });
     }
 
@@ -71,6 +70,7 @@ class ProjectCard extends React.Component {
         }, 2000
       );
     }
+    // clearDeleteProjectState();
   }
 
 
@@ -79,6 +79,7 @@ class ProjectCard extends React.Component {
   }
 
   hideDeleteAlert() {
+    clearDeleteProjectState();
     this.setState({ openDeleteAlert: false });
   }
 
@@ -138,13 +139,13 @@ class ProjectCard extends React.Component {
                   <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
                   <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteProject(e, CardID)} />
                 </div>
-                <div className="DeleteMessageDiv">
+                {/* <div className="DeleteMessageDiv">
                   {deleteFeedback && (
                     <div className={deleteFeedback.startsWith('Failed') ? 'DeleteErrorDiv' : 'DeleteSuccessDiv'}>
                       {deleteFeedback}
                     </div>
                   )}
-                </div>
+                </div> */}
               </div>
 
             </Modal>
@@ -161,6 +162,7 @@ ProjectCard.propTypes = {
   isDeleted: PropTypes.bool,
   isDeleting: PropTypes.bool,
   isFailed: PropTypes.bool,
+  clearDeleteProjectState: PropTypes.func.isRequired,
 };
 
 ProjectCard.defaultProps = {
@@ -171,8 +173,8 @@ ProjectCard.defaultProps = {
 
 const mapStateToProps = (state) => {
   const { data } = state.user;
-  const { isDeleting, isDeleted, isFailed } = state.deleteProjectReducer;
-  return { data, isDeleting, isDeleted, isFailed };
+  const { isDeleting, isDeleted, isFailed, clearDeleteProjectState } = state.deleteProjectReducer;
+  return { data, isDeleting, isDeleted, isFailed, clearDeleteProjectState };
 };
 
 export const mapDispatchToProps = (dispatch) => ({
