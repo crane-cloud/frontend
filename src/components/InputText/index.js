@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import './InputText.css';
 
 const InputText = (props) => {
@@ -29,6 +30,17 @@ const InputText = (props) => {
       }}
     />
   );
+};
+
+InputText.propTypes = {
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  placeholder: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
+};
+
+InputText.defaultProps = {
+  value: ''
 };
 
 export default InputText;
