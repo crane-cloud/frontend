@@ -45,7 +45,7 @@ class ProjectCard extends React.Component {
 
   handleDeleteProject(e, projectID) {
     const {
-      deleteProject, isDeleted, isFailed, clearDeleteProjectState
+      deleteProject, isDeleted, isFailed
     } = this.props;
     e.preventDefault();
 
@@ -88,7 +88,7 @@ class ProjectCard extends React.Component {
       name, isDeleting, data, description, icon, CardID
     } = this.props;
     const userId = data.id;
-    const { openDeleteAlert, openDropDown, deleteFeedback } = this.state;
+    const { openDeleteAlert, openDropDown } = this.state;
     return (
       <div className="Page">
         <div className="ProjectsCard">
@@ -139,13 +139,6 @@ class ProjectCard extends React.Component {
                   <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
                   <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteProject(e, CardID)} />
                 </div>
-                {/* <div className="DeleteMessageDiv">
-                  {deleteFeedback && (
-                    <div className={deleteFeedback.startsWith('Failed') ? 'DeleteErrorDiv' : 'DeleteSuccessDiv'}>
-                      {deleteFeedback}
-                    </div>
-                  )}
-                </div> */}
               </div>
 
             </Modal>
