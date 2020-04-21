@@ -44,12 +44,14 @@ class UserProjectsPage extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { isDeleted } = this.props;
+    const { getClustersList, getUserProjects, data, isDeleted } = this.props;
 
     if (isDeleted !== prevProps.isDeleted) {
-      
+      getUserProjects(data.id);
+      getClustersList();
     }
   }
+
 
   handleChange(e) {
     const { error } = this.state;
