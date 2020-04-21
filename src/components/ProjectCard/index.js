@@ -54,6 +54,7 @@ class ProjectCard extends React.Component {
       this.setState({
         deleteFeedback: 'Project has been Deleted.',
         openDeleteAlert: false,
+        isDeleted: true
       });
     }
 
