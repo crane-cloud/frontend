@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import PrimaryButton from '../PrimaryButton';
 import DotsImg from '../../assets/images/3dots.svg';
-import deleteProject from '../../redux/actions/deleteProjectActions';
+import deleteProject from '../../redux/actions/deleteProject';
 import Spinner from '../SpinnerComponent';
 import Modal from '../Modal';
 import './ProjectCard.css';
@@ -52,16 +52,9 @@ class ProjectCard extends React.Component {
     deleteProject(projectID);
     if (isDeleted) {
       this.setState({
-        deleteFeedback: 'Project has been Deleted.'
+        deleteFeedback: 'Project has been Deleted.',
+        openDeleteAlert: false,
       });
-      setTimeout(
-        () => {
-          this.setState({
-            openDeleteAlert: false,
-            deleteFeedback: ''
-          });
-        }, 1000
-      );
     }
 
     if (isFailed) {
@@ -71,9 +64,10 @@ class ProjectCard extends React.Component {
       setTimeout(
         () => {
           this.setState({
-            deleteFeedback: ''
+            deleteFeedback: '',
+            openDeleteAlert: false,
           });
-        }, 3000
+        }, 2000
       );
     }
   }
@@ -89,7 +83,7 @@ class ProjectCard extends React.Component {
 
   render() {
     const {
-      name, projectID, isDeleting, data, description, icon, CardID
+      name, isDeleting, data, description, icon, CardID
     } = this.props;
     const userId = data.id;
     const { openDeleteAlert, openDropDown, deleteFeedback } = this.state;
@@ -126,7 +120,7 @@ class ProjectCard extends React.Component {
             <Modal showModal={openDeleteAlert}>
               <div className="DeleteProjectModel">
                 <div className="DeleteDescription">
-                  Are you sure you want to delete
+                  Sure you want to delete project
                   <span>
                     <b>
                       {' '}
@@ -138,7 +132,7 @@ class ProjectCard extends React.Component {
                 </div>
                 <div className="DeleteProjectModelResponses">
                   <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
-                  <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteProject(e, projectID)} />
+                  <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteProject(e, CardID)} />
                 </div>
                 <div className="DeleteMessageDiv">
                   {deleteFeedback && (
