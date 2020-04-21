@@ -1,11 +1,12 @@
-import { DELETE_APP_SUCCESS, DELETE_APP_FAIL, START_DELETING_APP } from '../actions/actionTypes';
+import {
+  DELETE_APP_SUCCESS, DELETE_APP_FAIL, START_DELETING_APP, CLEAR_DELETE_APP_STATE
+} from '../actions/actionTypes';
 
 const initialState = {
-  app: null,
   isDeleted: false,
   isDeleting: false,
-  message: '',
   isFailed: false,
+  message: '',
 };
 
 const deleteAppReducer = (state = initialState, action) => {
@@ -16,12 +17,12 @@ const deleteAppReducer = (state = initialState, action) => {
       isDeleting: true,
       isDeleted: false,
       isFailed: false,
+      message: ''
     };
 
   case DELETE_APP_SUCCESS:
     return {
       ...state,
-      app: action.payload,
       isDeleting: false,
       isDeleted: true,
       isFailed: false,
@@ -31,10 +32,19 @@ const deleteAppReducer = (state = initialState, action) => {
   case DELETE_APP_FAIL:
     return {
       ...state,
-      message: action.payload,
       isDeleting: false,
       isDeleted: false,
       isFailed: true,
+      message: 'Failed to delete app. Please retry'
+    };
+
+  case CLEAR_DELETE_APP_STATE:
+    return {
+      ...state,
+      isDeleted: false,
+      isDeleting: false,
+      isFailed: false,
+      message: ''
     };
 
   default:

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
-import addProject from '../../redux/actions/addProject';
+import addProject, { clearAddProjectState } from '../../redux/actions/addProject';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
 import PrimaryButton from '../PrimaryButton';
@@ -12,7 +12,8 @@ import getClustersList from '../../redux/actions/clusters';
 import getUserProjects from '../../redux/actions/projectsList';
 import InputText from '../InputText';
 import TextArea from '../TextArea';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner, { BigSpinner } from '../SpinnerComponent';
+
 import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/plant.svg';
 import Feedback from '../Feedback';
@@ -26,7 +27,6 @@ class UserProjectsPage extends React.Component {
       projectName: '',
       clusterID: '',
       projectDescription: '',
-      clusters: [],
       error: ''
     };
 
@@ -43,6 +43,34 @@ class UserProjectsPage extends React.Component {
     getClustersList();
   }
 
+  componentDidUpdate(prevProps) {
+    const { isAdded, data, getUserProjects } = this.props;
+
+    if (isAdded !== prevProps.isAdded) {
+      getUserProjects(data.id);
+      this.hideForm();
+    }
+  }
+
+  showForm() {
+    this.setState({ openModal: true });
+  }
+
+  hideForm() {
+    const { clearAddProjectState } = this.props;
+    clearAddProjectState();
+    this.setState({ openModal: false });
+  }
+
+  validateProjectName(name) {
+    if (/^[a-z]/i.test(name)) {
+      if (name.match(/[^-a-zA-Z]/)) {
+        return 'false_convention';
+      }
+      return true;
+    }
+    return false;
+  }
 
   handleChange(e) {
     const { error } = this.state;
@@ -57,27 +85,9 @@ class UserProjectsPage extends React.Component {
     }
   }
 
-  showForm() {
-    this.setState({ openModal: true });
-  }
-
-  hideForm() {
-    this.setState({ openModal: false });
-  }
-
-  validateProjectName(name) {
-    if (/^[a-z]/i.test(name)) {
-      if (name.match(/[^-a-zA-Z]/)) {
-        return 'false_convention';
-      }
-      return true;
-    }
-    return false;
-  }
-
   handleSubmit() {
     const { projectName, projectDescription, clusterID } = this.state;
-    const { addProject, data, isAdded } = this.props;
+    const { addProject, data } = this.props;
 
     if (!projectName || !clusterID || !projectDescription) {
       // if user tries to submit empty email/password
@@ -100,15 +110,6 @@ class UserProjectsPage extends React.Component {
         owner_id: data.id
       };
       addProject(newProject);
-      // this.setState({
-      //   loading: true
-      // });
-
-      if (isAdded === true) {
-        this.setState({
-          openModal: false
-        });
-      }
     }
   }
 
@@ -118,17 +119,26 @@ class UserProjectsPage extends React.Component {
       openModal,
       projectName,
       projectDescription,
-      error
+      error,
+      value
       // clusterID,
       // loading
     } = this.state;
     const {
-      projects, clusters, isRetrieving, data, isFetched
+      projects,
+      clusters,
+      isRetrieving,
+      data,
+      message,
+      errorCode,
+      isFetched,
+      isAdded,
+      isAdding
     } = this.props;
     const userId = data.id;
     const clustersList = clusters.length > 0
-        && clusters.map((item, i) => (
-          <option className="ClusterNameOption" key={i} value={item.id}>{item.name}</option>
+        && clusters.map((item) => (
+          <option className="ClusterNameOption" key={item.id} value={item.id}>{item.name}</option>
         ));
 
     return (
@@ -198,7 +208,7 @@ class UserProjectsPage extends React.Component {
               <select
                 className="ClusterDrop"
                 name="clusterID"
-                value={this.state.value}
+                value={value}
                 onChange={(e) => {
                   this.handleChange(e);
                 }}
@@ -235,8 +245,16 @@ class UserProjectsPage extends React.Component {
             )}
             <div className="ModalFormButtons">
               <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />
-              <PrimaryButton label="Create project" onClick={this.handleSubmit} />
+              <PrimaryButton label={isAdding ? <Spinner /> : 'Create project'} onClick={this.handleSubmit} />
             </div>
+
+            {message && (
+              <Feedback
+                message={errorCode === 409 ? 'Name already in use, please choose another' : message}
+                type={(isAdded && errorCode !== 409) ? 'success' : 'error'}
+              />
+            )}
+
           </div>
         </Modal>
       </div>
@@ -247,33 +265,54 @@ class UserProjectsPage extends React.Component {
 UserProjectsPage.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.object),
   clusters: PropTypes.arrayOf(PropTypes.object),
-  project: PropTypes.arrayOf(PropTypes.object),
+  getClustersList: PropTypes.func.isRequired,
+  getUserProjects: PropTypes.func.isRequired,
+  clearAddProjectState: PropTypes.func.isRequired,
+  addProject: PropTypes.func.isRequired,
+  data: PropTypes.shape({
+    id: PropTypes.string.isRequired
+  }).isRequired,
   isAdded: PropTypes.bool,
+  errorCode: PropTypes.number,
+  isAdding: PropTypes.bool,
   isFetched: PropTypes.bool,
+  message: PropTypes.string,
   isRetrieving: PropTypes.bool
 };
 
 UserProjectsPage.defaultProps = {
   clusters: [],
-  project: {},
   isAdded: false,
+  isAdding: false,
+  errorCode: null,
   projects: [],
+  message: '',
   isFetched: false,
   isRetrieving: false
 };
 
 const mapStateToProps = (state) => {
   const { data } = state.user;
-  const { isAdded, project } = state.addProjectReducer;
+  const {
+    isAdded, isAdding, message, errorCode
+  } = state.addProjectReducer;
   const { clusters } = state.clustersReducer;
   const { isRetrieving, projects, isFetched } = state.userProjectsReducer;
   return {
-    isAdded, project, data, isRetrieving, projects, clusters, isFetched
+    isAdded,
+    data,
+    isRetrieving,
+    projects,
+    clusters,
+    isFetched,
+    isAdding,
+    message,
+    errorCode
   };
 };
 
 const mapDispatchToProps = {
-  getUserProjects, addProject, getClustersList,
+  getUserProjects, addProject, getClustersList, clearAddProjectState
 };
 
 export default connect(
