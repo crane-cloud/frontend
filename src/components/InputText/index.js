@@ -16,7 +16,7 @@ const InputText = (props) => {
     }
   };
 
-  useEffect(() => changeBackground(), [value]);
+  useEffect(() => changeBackground(), [value]); // eslint-disable-line
 
   return (
     <input
