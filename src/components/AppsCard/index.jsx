@@ -27,6 +27,15 @@ class AppsCard extends React.Component {
     this.showDropDown = this.showDropDown.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    const { isDeleted, hasDeleted } = this.props;
+
+    if (isDeleted !== prevProps.isDeleted) {
+      hasDeleted(true);
+      this.hideDeleteAlert();
+    }
+  }
+
   showDropDown() {
     this.setState({ openDropDown: true });
   }
@@ -51,19 +60,19 @@ class AppsCard extends React.Component {
     e.preventDefault();
 
     deleteApp(appId);
-    if (isDeleted) {
-      this.setState({
-        deleteFeedback: 'App Deleted Successfully'
-      });
-      setTimeout(
-        () => {
-          this.setState({
-            openDeleteAlert: false,
-            deleteFeedback: ''
-          });
-        }, 1000
-      );
-    }
+    // if (isDeleted) {
+    //   this.setState({
+    //     deleteFeedback: 'App Deleted Successfully'
+    //   });
+    //   setTimeout(
+    //     () => {
+    //       this.setState({
+    //         openDeleteAlert: false,
+    //         deleteFeedback: ''
+    //       });
+    //     }, 1000
+    //   );
+    // }
 
     if (isFailed) {
       this.setState({

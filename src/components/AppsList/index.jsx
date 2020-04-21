@@ -8,16 +8,34 @@ import './AppsList.css';
 
 
 class AppsList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      rerender: false
+    };
+
+    this.renderAfterDelete = this.renderAfterDelete.bind(this);
+  }
+
   componentDidMount() {
     const { params: { projectID }, getAppsList } = this.props;
     getAppsList(projectID);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const { params: { projectID }, getAppsList, newAppCreated } = this.props;
+    const { rerender } = this.state;
 
-    if (newAppCreated !== prevProps.newAppCreated) {
+    if ((newAppCreated !== prevProps.newAppCreated) || (rerender !== prevState.rerender)) {
       getAppsList(projectID);
+    }
+  }
+
+  renderAfterDelete(input) {
+    if (input) {
+      this.setState({
+        rerender: true
+      });
     }
   }
 
@@ -42,6 +60,7 @@ class AppsList extends Component {
                       status
                       url={app.url}
                       appId={app.id}
+                      hasDeleted={this.renderAfterDelete}
                     />
                   </div>
                 )))}

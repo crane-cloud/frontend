@@ -35,6 +35,7 @@ const deleteAppReducer = (state = initialState, action) => {
       isDeleting: false,
       isDeleted: false,
       isFailed: true,
+      message: 'Failed to delete app. Please try again.'
     };
 
   default:
