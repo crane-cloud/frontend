@@ -158,7 +158,10 @@ AppsCard.propTypes = {
   status: PropTypes.bool.isRequired, // this is static
   url: PropTypes.string.isRequired,
   appId: PropTypes.string.isRequired,
-  deleteApp: PropTypes.func.isRequired
+  deleteApp: PropTypes.func.isRequired,
+  hasDeleted: PropTypes.func.isRequired,
+  clearState: PropTypes.func.isRequired,
+  message: PropTypes.string.isRequired
 };
 
 // assigning defaults
