@@ -1,42 +1,37 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './TextArea.css';
 
-class TextArea extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      InputBackground: 'InitialBackground'
-    };
-  }
+const TextArea = (props) => {
+  const {
+    name, value, placeholder, onChange
+  } = props;
 
-  changeBackground() {
-    let { InputBackground } = this.state;
-    InputBackground = 'WhiteBackground';
-    this.setState({ InputBackground });
-  }
+  return (
+    <textarea
+      className="TextArea"
+      type="text"
+      placeholder={`${placeholder} *`}
+      rows="3"
+      cols="50"
+      name={name}
+      value={value}
+      onChange={(e) => {
+        onChange(e);
+      }}
+    />
+  );
+};
 
-  render() {
-    const { InputBackground } = this.state;
-    const { name, value, placeholder } = this.props;
+TextArea.propTypes = {
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  placeholder: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
-    return (
-      <textarea
-        className={`TextArea ${InputBackground}`}
-        type="text"
-        placeholder={`${placeholder} *`}
-        rows="3"
-        cols="50"
-        name={name}
-        value={value}
-        onChange={(e) => {
-          this.props.onChange(e);
-        }}
-        onInput={() => {
-          this.changeBackground();
-        }}
-      />
-    );
-  }
-}
+TextArea.defaultProps = {
+  value: ''
+};
 
 export default TextArea;

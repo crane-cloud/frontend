@@ -1,42 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import './InputPassword.css';
 
+const InputPassword = (props) => {
+  const [inputBackground, setBackground] = useState('InitialBackground');
+  const {
+    name, value, placeholder, onChange
+  } = props;
 
-class InputPassword extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      InputBackground: 'InitialBackground'
-    };
-  }
+  const changeBackground = () => {
+    if (value) {
+      setBackground('WhiteBackground');
+    } else {
+      setBackground('InitialBackground');
+    }
+  };
 
-  changeBackground() {
-    let { InputBackground } = this.state;
-    InputBackground = 'WhiteBackground';
-    this.setState({ InputBackground });
-  }
+  useEffect(() => changeBackground(), [value]); // eslint-disable-line
 
-  render() {
-    const { InputBackground } = this.state;
-    const { name, value, placeholder } = this.props;
+  return (
+    <input
+      className={`InputPassword ${inputBackground}`}
+      type="password"
+      placeholder={`${placeholder} *`}
+      name={name}
+      value={value}
+      onChange={(e) => {
+        onChange(e);
+      }}
+    />
+  );
+};
 
-    return (
+InputPassword.propTypes = {
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  placeholder: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
-      <input
-        className={`InputPassword ${InputBackground}`}
-        type="password"
-        placeholder={`${placeholder} *`}
-        name={name}
-        value={value}
-        onChange={(e) => {
-          this.props.onChange(e);
-        }}
-        onInput={() => {
-          this.changeBackground();
-        }}
-      />
-    );
-  }
-}
+InputPassword.defaultProps = {
+  value: ''
+};
 
 export default InputPassword;
