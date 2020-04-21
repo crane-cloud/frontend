@@ -18,19 +18,11 @@ const AppsCard = (props) => {
     clearState, name, status, url, appId, isDeleted, isDeleting, isFailed, message, hasDeleted
   } = props;
 
-  const showDropDown = () => {
-    setDropDown(true);
-  };
-
-  const hideDropDown = () => {
-    showDropDown(false);
-  };
-
   const toggleDropDown = () => {
     if (openDropDown) {
-      hideDropDown();
+      setDropDown(false);
     } else {
-      showDropDown();
+      setDropDown(true);
     }
   };
 
@@ -71,7 +63,7 @@ const AppsCard = (props) => {
                 <Status status={status} />
                 <div
                   className="AppDropDown"
-                  onClick={toggleDropDown}
+                  onClick={() => toggleDropDown()}
                   role="presentation"
                 >
                   <img src={DotsImg} alt="three dots" className="DropDownImg" />
