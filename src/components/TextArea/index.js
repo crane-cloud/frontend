@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './TextArea.css';
 
 const TextArea = (props) => {
@@ -20,6 +21,17 @@ const TextArea = (props) => {
       }}
     />
   );
+};
+
+TextArea.propTypes = {
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  placeholder: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
+};
+
+TextArea.defaultProps = {
+  value: ''
 };
 
 export default TextArea;
