@@ -26,12 +26,11 @@ const AppsCard = (props) => {
     }
   };
 
-  const handleDeleteApp = (e, appId) => {
+  const handleDeleteApp = (appId) => {
     const {
       deleteApp
     } = props;
 
-    e.preventDefault();
     deleteApp(appId);
   };
 
@@ -63,7 +62,7 @@ const AppsCard = (props) => {
                 <Status status={status} />
                 <div
                   className="AppDropDown"
-                  onClick={() => toggleDropDown()}
+                  onClick={toggleDropDown}
                   role="presentation"
                 >
                   <img src={DotsImg} alt="three dots" className="DropDownImg" />
@@ -105,7 +104,7 @@ const AppsCard = (props) => {
 
               <div className="DeleteAppModelResponses">
                 <PrimaryButton label="cancel" className="CancelBtn" onClick={hideDeleteAlert} />
-                <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => handleDeleteApp(e, appId)} />
+                <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={() => handleDeleteApp(appId)} />
               </div>
 
               {message && (
