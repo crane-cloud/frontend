@@ -1,40 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import './InputText.css';
 
-class InputText extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      InputBackground: 'InitialBackground'
-    };
-  }
+const InputText = (props) => {
+  const [inputBackground, setBackground] = useState('InitialBackground');
+  const {
+    name, value, placeholder, onChange
+  } = props;
 
-  changeBackground() {
-    let { InputBackground } = this.state;
-    InputBackground = 'WhiteBackground';
-    this.setState({ InputBackground });
-  }
+  const changeBackground = () => {
+    if (value) {
+      setBackground('WhiteBackground');
+    } else {
+      setBackground('InitialBackground');
+    }
+  };
 
-  render() {
-    const { InputBackground } = this.state;
-    const { name, value, placeholder } = this.props;
+  useEffect(() => changeBackground(), [value]); // eslint-disable-line
 
-    return (
-      <input
-        className={`InputText ${InputBackground}`}
-        type="text"
-        placeholder={`${placeholder} *`}
-        name={name}
-        value={value}
-        onChange={(e) => {
-          this.props.onChange(e);
-        }}
-        onInput={() => {
-          this.changeBackground();
-        }}
-      />
-    );
-  }
-}
+  return (
+    <input
+      className={`InputText ${inputBackground}`}
+      type="text"
+      placeholder={`${placeholder} *`}
+      name={name}
+      value={value}
+      onChange={(e) => {
+        onChange(e);
+      }}
+    />
+  );
+};
+
+InputText.propTypes = {
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  placeholder: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
+};
+
+InputText.defaultProps = {
+  value: ''
+};
 
 export default InputText;
