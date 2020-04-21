@@ -15,8 +15,7 @@ class AppsCard extends React.Component {
     super(props);
     this.state = {
       openDeleteAlert: false,
-      openDropDown: false,
-      deleteFeedback: ''
+      openDropDown: false
     };
 
     this.handleDeleteApp = this.handleDeleteApp.bind(this);
@@ -55,24 +54,11 @@ class AppsCard extends React.Component {
 
   handleDeleteApp(e, appId) {
     const {
-      deleteApp, isDeleted, isFailed
+      deleteApp
     } = this.props;
     e.preventDefault();
 
     deleteApp(appId);
-
-    if (isFailed) {
-      this.setState({
-        deleteFeedback: 'Failed to delete App. Try again'
-      });
-      setTimeout(
-        () => {
-          this.setState({
-            deleteFeedback: ''
-          });
-        }, 3000
-      );
-    }
   }
 
 
@@ -88,9 +74,9 @@ class AppsCard extends React.Component {
 
   render() {
     const {
-      name, status, url, appId, isDeleting
+      name, status, url, appId, isDeleting, isFailed, message
     } = this.props;
-    const { openDeleteAlert, openDropDown, deleteFeedback } = this.state;
+    const { openDeleteAlert, openDropDown } = this.state;
     return (
       <div className="AppCard">
         <div className="AppCardHeader">
@@ -146,10 +132,10 @@ class AppsCard extends React.Component {
                   <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteApp(e, appId)} />
                 </div>
 
-                {deleteFeedback && (
+                {message && (
                   <Feedback
-                    type={deleteFeedback.startsWith('Failed') ? 'error' : 'success'}
-                    message={deleteFeedback}
+                    type={isFailed ? 'error' : 'success'}
+                    message={message}
                   />
                 )}
 
@@ -184,8 +170,12 @@ AppsCard.defaultProps = {
 
 
 const mapStateToProps = (state) => {
-  const { isDeleting, isDeleted, isFailed } = state.deleteAppReducer;
-  return { isDeleting, isDeleted, isFailed };
+  const {
+    isDeleting, isDeleted, isFailed, message
+  } = state.deleteAppReducer;
+  return {
+    isDeleting, isDeleted, isFailed, message
+  };
 };
 
 
