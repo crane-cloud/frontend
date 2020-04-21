@@ -1,4 +1,4 @@
-import { DELETE_PROJECT_SUCCESS, DELETE_PROJECT_FAIL, START_DELETING_PROJECT } from '../actions/actionTypes';
+import { DELETE_PROJECT_SUCCESS, DELETE_PROJECT_FAIL, START_DELETING_PROJECT, CLEAR_DELETE_PROJECT_STATE } from '../actions/actionTypes';
 
 const initialState = {
   project: null,
@@ -35,6 +35,15 @@ const deleteProjectReducer = (state = initialState, action) => {
       isDeleting: false,
       isDeleted: false,
       isFailed: true,
+    };
+
+  case CLEAR_DELETE_PROJECT_STATE:
+    return {
+      ...state,
+      isDeleted: false,
+      isDeleting: false,
+      isFailed: false,
+      message: ''
     };
 
   default:
