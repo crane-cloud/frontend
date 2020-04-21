@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../../config';
-import { DELETE_APP_SUCCESS, DELETE_APP_FAIL, START_DELETING_APP } from './actionTypes';
+import {
+  DELETE_APP_SUCCESS, DELETE_APP_FAIL, START_DELETING_APP, CLEAR_DELETE_APP_STATE
+} from './actionTypes';
 
 const startDeletingApp = () => ({
   type: START_DELETING_APP,
@@ -19,6 +21,10 @@ const deleteAppFail = (error) => ({
   },
 });
 
+const clearState = () => ({
+  type: CLEAR_DELETE_APP_STATE
+});
+
 const deleteApp = (appID) => (dispatch) => {
   dispatch(startDeletingApp());
 
@@ -32,3 +38,4 @@ const deleteApp = (appID) => (dispatch) => {
 };
 
 export default deleteApp;
+export { clearState };
