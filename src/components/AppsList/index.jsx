@@ -35,14 +35,11 @@ class AppsList extends Component {
     }
   }
 
-  renderAfterDelete(input) {
+  renderAfterDelete() {
     const { rerender } = this.state;
-
-    if (input) {
-      this.setState({
-        rerender: !rerender
-      });
-    }
+    this.setState({
+      rerender: !rerender
+    });
   }
 
   render() {

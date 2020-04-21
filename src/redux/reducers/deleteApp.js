@@ -17,6 +17,7 @@ const deleteAppReducer = (state = initialState, action) => {
       isDeleting: true,
       isDeleted: false,
       isFailed: false,
+      message: ''
     };
 
   case DELETE_APP_SUCCESS:
