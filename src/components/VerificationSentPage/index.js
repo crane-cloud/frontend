@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import saveUser from '../../redux/actions/saveUser';
 import Header from '../Header';
 import LandingFooter from '../LandingFooter';
@@ -19,15 +20,15 @@ class VerificationSentPage extends React.Component {
       isTokenChecked: false,
       isVerificationFailed: false,
       loading: false,
-      random: false
+      feedback: ''
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const { match, saveUser } = this.props;
     const { token } = match.params;
 
-    await axios
+    axios
       .get(`${API_BASE_URL}/users/verify/${token}`)
       .then((response) => {
         if (response.data.status === 'success') {
@@ -38,9 +39,10 @@ class VerificationSentPage extends React.Component {
           // redirect to dashboard
           // save user data to store and log them in
           saveUser(response.data.data);
+          localStorage.setItem('token', response.data.data.access_token);
           this.setState(
             {
-              random: true
+              feedback: 'Login successful'
             },
             () => {
               window.location.href = `/users/${response.data.data.id}/projects`;
@@ -48,10 +50,11 @@ class VerificationSentPage extends React.Component {
           );
         }
       })
-      .catch((error) => {
+      .catch((/* error */) => {
         this.setState({
           isTokenChecked: true,
-          isVerificationFailed: true
+          isVerificationFailed: true,
+          feedback: 'Oops! Account verification failed!'
         });
       });
   }
@@ -61,7 +64,8 @@ class VerificationSentPage extends React.Component {
       loading,
       isTokenChecked,
       isVerificationFailed,
-      email
+      email,
+      feedback
     } = this.state;
 
     return (
@@ -80,7 +84,8 @@ class VerificationSentPage extends React.Component {
             )}
             {isVerificationFailed && (
               <div className="ResendLinkForm">
-                <h2>Oops! Account verification failed!</h2>
+                <h2>{feedback}</h2>
+                {/* eslint-disable-next-line max-len */}
                 <p>Looks like your link expired. Worry not! Just enter your email below and we&apos;ll send you another link.</p>
                 <InputText
                   placeholder="Email Address"
@@ -104,6 +109,15 @@ class VerificationSentPage extends React.Component {
     );
   }
 }
+
+VerificationSentPage.propTypes = {
+  saveUser: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      token: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
+};
 
 const mapStateToProps = (state) => (
   { user: state.user }
