@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PrimaryButton from '../PrimaryButton';
 import DotsImg from '../../assets/images/3dots.svg';
-import deleteApp from '../../redux/actions/deleteAppActions';
+import deleteApp from '../../redux/actions/deleteApp';
 import Spinner from '../SpinnerComponent';
 import Modal from '../Modal';
-import './AppsCard.css';
 import Status from '../Status';
+import Feedback from '../Feedback';
+import './AppsCard.css';
 
 class AppsCard extends React.Component {
   constructor(props) {
@@ -138,13 +139,14 @@ class AppsCard extends React.Component {
                   <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteApp(e, appId)} />
                   {/* {isRemoved && (this.reloadOndelete()) && isDeleted} */}
                 </div>
-                <div className="DeleteMessageDiv">
-                  {deleteFeedback && (
-                    <div className={deleteFeedback.startsWith('Failed') ? 'DeleteErrorDiv' : 'DeleteSuccessDiv'}>
-                      {deleteFeedback}
-                    </div>
-                  )}
-                </div>
+
+                {deleteFeedback && (
+                  <Feedback
+                    type={deleteFeedback.startsWith('Failed') ? 'error' : 'success'}
+                    message={deleteFeedback}
+                  />
+                )}
+
               </div>
 
             </Modal>
@@ -176,8 +178,8 @@ const mapStateToProps = (state) => {
 };
 
 
-export const mapDispatchToProps = (dispatch) => ({
-  deleteApp: (appId) => dispatch(deleteApp(appId))
-});
+const mapDispatchToProps = {
+  deleteApp
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppsCard);

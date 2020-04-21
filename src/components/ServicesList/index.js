@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import './ServicesList.css';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
 import { BigSpinner } from '../SpinnerComponent';
 import SideNav from '../SideNav';
-import getServices from '../../redux/actions/ServicesActions';
+import getServices from '../../redux/actions/services';
 
 class ServicesListPage extends React.Component {
   componentDidMount() {
@@ -120,14 +119,14 @@ ServicesListPage.defaultProps = {
   isFetched: false,
 };
 
-export const mapStateToProps = (state) => {
-  const { isRetrieving, services, isFetched } = state.ServicesReducer;
+const mapStateToProps = (state) => {
+  const { isRetrieving, services, isFetched } = state.servicesReducer;
   return { isRetrieving, services, isFetched };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getServices
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

@@ -175,13 +175,11 @@
 
 .DeleteAppModelResponses{
     display: grid;
-    height: 100%;
-    grid-gap: 1rem;
     gap: 1rem;
     grid-template-columns: repeat(2, auto);
     align-items: center;
-    width: 100%;
     margin-top: 4rem;
+    margin-bottom: 2rem;
 }
 
 .DeleteAppModelResponses button{

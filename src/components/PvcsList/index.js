@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import './PvcsList.css';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
-import getPvcs from '../../redux/actions/PvcsActions';
+import getPvcs from '../../redux/actions/pvcs';
 import Status from '../Status';
 import tellAge from '../../helpers/ageUtility';
 import { BigSpinner } from '../SpinnerComponent';
@@ -105,14 +104,14 @@ PvcsListPage.defaultProps = {
   isFetched: false,
 };
 
-export const mapStateToProps = (state) => {
-  const { isRetrieving, pvcs, isFetched } = state.PvcsReducer;
+const mapStateToProps = (state) => {
+  const { isRetrieving, pvcs, isFetched } = state.pvcsReducer;
   return { isRetrieving, pvcs, isFetched };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getPvcs
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

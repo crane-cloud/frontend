@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import './NamespacesList.css';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
-import getNamespaces from '../../redux/actions/NamespacesActions';
+import getNamespaces from '../../redux/actions/namespaces';
 import Status from '../Status';
 import tellAge from '../../helpers/ageUtility';
 import { BigSpinner } from '../SpinnerComponent';
@@ -104,18 +103,18 @@ NamespacesListPage.defaultProps = {
   clusterName: '',
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const {
     isRetrieved, isRetrieving, namespacesList, clusterName
-  } = state.NamespacesListReducer;
+  } = state.namespacesListReducer;
   return {
     isRetrieved, isRetrieving, namespacesList, clusterName
   };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getNamespaces
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

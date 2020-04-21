@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import getAppsList from '../../redux/actions/appsListActions';
+import getAppsList from '../../redux/actions/appsList';
 import AppsCard from '../AppsCard';
 import { BigSpinner } from '../SpinnerComponent';
 import './AppsList.css';
@@ -87,14 +86,14 @@ AppsList.defaultProps = {
   isRetrieving: true
 };
 
-export const mapStateToProps = (state) => {
-  const { isRetrieving, apps, isRetrieved } = state.AppsListReducer;
+const mapStateToProps = (state) => {
+  const { isRetrieving, apps, isRetrieved } = state.appsListReducer;
   return { isRetrieving, apps, isRetrieved };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getAppsList
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import './AdminProjectsPage.css';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
 import SideNav from '../SideNav';
-import getAdminProjects from '../../redux/actions/AdminProjectsActions';
-import getUsersList from '../../redux/actions/usersActions';
+import getAdminProjects from '../../redux/actions/adminProjects';
+import getUsersList from '../../redux/actions/users';
 import { BigSpinner } from '../SpinnerComponent';
 
 class AdminProjectsPage extends React.Component {
@@ -117,17 +116,18 @@ AdminProjectsPage.defaultProps = {
   isFetched: false
 };
 
-export const mapStateToProps = (state) => {
-  const { isRetrieving, projects, isRetrieved } = state.AdminProjectsReducer;
-  const { users, isFetched } = state.UsersListReducer;
+
+const mapStateToProps = (state) => {
+  const { isRetrieving, projects, isRetrieved } = state.adminProjectsReducer;
+  const { users, isFetched } = state.usersListReducer;
   return {
     isRetrieving, projects, isRetrieved, users, isFetched
   };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getAdminProjects, getUsersList
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

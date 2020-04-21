@@ -1,40 +1,40 @@
 
 import {
-  FETCH_USER_PROJECTS_SUCCESS,
-  FETCH_USER_PROJECTS_FAILED,
+  FETCH_ADMIN_PROJECTS_SUCCESS,
+  FETCH_ADMIN_PROJECTS_FAILED,
   IS_FETCHING
 } from '../actions/actionTypes';
 
 const initialState = {
   projects: [],
   isRetrieving: false,
-  isFetched: false,
-  message: 'You have Projects Yet.'
+  isRetrieved: false,
+  message: 'No Projects Yet.'
 };
 
-const UserProjectsReducer = (state = initialState, action) => {
+const adminProjectsReducer = (state = initialState, action) => {
   switch (action.type) {
-  case FETCH_USER_PROJECTS_SUCCESS:
+  case FETCH_ADMIN_PROJECTS_SUCCESS:
     return {
       ...state,
       projects: action.payload,
-      isFetched: true,
+      isRetrieved: true,
       isRetrieving: false,
-      message: 'All your Projects are fetched'
+      message: 'All Projects fetched'
     };
 
   case IS_FETCHING:
     return {
       ...state,
-      isRetrieving: true,
-      isFetched: false,
+      isRetrieved: false,
+      isRetrieving: true
     };
 
-  case FETCH_USER_PROJECTS_FAILED:
+  case FETCH_ADMIN_PROJECTS_FAILED:
     return {
       ...state,
-      isFetched: false,
       message: action.payload,
+      isRetrieved: false,
       isRetrieving: false
     };
 
@@ -42,4 +42,4 @@ const UserProjectsReducer = (state = initialState, action) => {
     return state;
   }
 };
-export default UserProjectsReducer;
+export default adminProjectsReducer;

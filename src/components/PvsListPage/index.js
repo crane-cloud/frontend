@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import './PvsListPage.css';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 import { BigSpinner } from '../SpinnerComponent';
-import getPvs from '../../redux/actions/PvsActions';
+import getPvs from '../../redux/actions/pvs';
 import Status from '../Status';
 
 class PvsListPage extends React.Component {
@@ -106,14 +105,14 @@ PvsListPage.defaultProps = {
   isFetched: false
 };
 
-export const mapStateToProps = (state) => {
-  const { isRetrieving, pvs, isFetched } = state.PvsReducer;
+const mapStateToProps = (state) => {
+  const { isRetrieving, pvs, isFetched } = state.pvsReducer;
   return { isRetrieving, pvs, isFetched };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getPvs
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

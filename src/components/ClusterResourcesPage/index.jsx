@@ -1,17 +1,15 @@
 /* eslint-disable linebreak-style */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import './ClusterResourcesPage.css';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
 import { BigSpinner } from '../SpinnerComponent';
 import SideNav from '../SideNav';
 import ResourceCard from '../ResourceCard';
-import getClusterResourcesCount from '../../redux/actions/ClusterResourcesActions';
+import getClusterResourcesCount from '../../redux/actions/clusterResources';
 
 class ClusterResourcesPage extends React.Component {
   componentDidMount() {
@@ -92,20 +90,20 @@ ClusterResourcesPage.defaultProps = {
   clusterName: '',
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const {
     isRetrieving, isRetrieved, resourceCount, clusterName
-  } = state.ClusterResourcesReducer;
+  } = state.clusterResourcesReducer;
   return {
     isRetrieving, isRetrieved, resourceCount, clusterName
   };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getClusterResourcesCount
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(ClusterResourcesPage));
+)(ClusterResourcesPage);

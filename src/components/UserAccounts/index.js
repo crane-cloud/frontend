@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import getUsersList from '../../redux/actions/usersActions';
+import getUsersList from '../../redux/actions/users';
 import './UserAccounts.css';
 import Header from '../Header';
 import { BigSpinner } from '../SpinnerComponent';
@@ -102,8 +102,8 @@ UserAccounts.defaultProps = {
   isFetched: false,
 };
 
-export const mapStateToProps = (state) => {
-  const { isFetching, users, isFetched } = state.UsersListReducer;
+const mapStateToProps = (state) => {
+  const { isFetching, users, isFetched } = state.usersListReducer;
   return { isFetching, users, isFetched };
 };
 

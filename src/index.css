@@ -290,7 +290,7 @@ body::-webkit-scrollbar-thumb:hover {
 
 /*- /////////--- STYLING FOR FEEDBACK ---//////////// */
 .ErrorOnWhite {
-  color: black;
+  color: rgb(0, 0, 0, 0.8);
   background-color: rgb(214, 59, 59, 0.5);
   text-align: center;
   padding: .7rem 0;
@@ -301,6 +301,41 @@ body::-webkit-scrollbar-thumb:hover {
   background-color: rgb(0, 128, 0, 0.5);
   text-align: center;
   padding: .7rem 0;
+}
+
+/* //////////////////////////////////////////// */
+
+
+/* //////////--- PAGE STYLES ---//////////// */
+
+.Page{
+  margin: 0;
+  background: #F1F1F1;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 150px 3fr 100px;
+  overflow-x: hidden;
+}
+
+.TopRow{
+  width: 100%;
+}
+
+.MainRow{
+  width: 100%;
+}
+
+.FooterRow {
+  width: 100%;
+  bottom: 0;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  color: #06222f;
+  margin: 30px;
+  cursor: pointer;
 }
 
 /* //////////////////////////////////////////// */

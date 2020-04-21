@@ -12,7 +12,7 @@ const initialState = {
   message: 'Cluster pvcs Not Available'
 };
 
-const PvcsReducer = (state = initialState, action) => {
+const pvcsReducer = (state = initialState, action) => {
   switch (action.type) {
   case FETCH_PVCS_SUCCESS:
     return {
@@ -41,4 +41,4 @@ const PvcsReducer = (state = initialState, action) => {
     return state;
   }
 };
-export default PvcsReducer;
+export default pvcsReducer;

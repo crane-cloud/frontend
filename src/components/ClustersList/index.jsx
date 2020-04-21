@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import getClustersList from '../../redux/actions/ClustersActions';
+import getClustersList from '../../redux/actions/clusters';
 import ClusterCard from '../ClusterCard';
 import { BigSpinner } from '../SpinnerComponent';
 import './ClustersList.css';
@@ -69,14 +68,14 @@ ClustersList.defaultProps = {
   isRetrieving: true
 };
 
-export const mapStateToProps = (state) => {
-  const { isRetrieving, clusters, isRetrieved } = state.ClustersReducer;
+const mapStateToProps = (state) => {
+  const { isRetrieving, clusters, isRetrieved } = state.clustersReducer;
   return { isRetrieving, clusters, isRetrieved };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getClustersList
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,
