@@ -26,15 +26,21 @@ class AppsList extends Component {
     const { params: { projectID }, getAppsList, newAppCreated } = this.props;
     const { rerender } = this.state;
 
-    if ((newAppCreated !== prevProps.newAppCreated) || (rerender !== prevState.rerender)) {
+    if (newAppCreated !== prevProps.newAppCreated) {
+      getAppsList(projectID);
+    }
+
+    if (rerender !== prevState.rerender) {
       getAppsList(projectID);
     }
   }
 
   renderAfterDelete(input) {
+    const { rerender } = this.state;
+
     if (input) {
       this.setState({
-        rerender: true
+        rerender: !rerender
       });
     }
   }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PrimaryButton from '../PrimaryButton';
 import DotsImg from '../../assets/images/3dots.svg';
-import deleteApp from '../../redux/actions/deleteApp';
+import deleteApp, { clearState } from '../../redux/actions/deleteApp';
 import Spinner from '../SpinnerComponent';
 import Modal from '../Modal';
 import Status from '../Status';
@@ -94,6 +94,8 @@ class AppsCard extends React.Component {
   }
 
   hideDeleteAlert() {
+    const { clearState } = this.props;
+    clearState();
     this.setState({ openDeleteAlert: false });
   }
 
@@ -201,7 +203,7 @@ const mapStateToProps = (state) => {
 
 
 const mapDispatchToProps = {
-  deleteApp
+  deleteApp, clearState
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppsCard);
