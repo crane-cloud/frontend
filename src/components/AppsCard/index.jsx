@@ -60,19 +60,6 @@ class AppsCard extends React.Component {
     e.preventDefault();
 
     deleteApp(appId);
-    // if (isDeleted) {
-    //   this.setState({
-    //     deleteFeedback: 'App Deleted Successfully'
-    //   });
-    //   setTimeout(
-    //     () => {
-    //       this.setState({
-    //         openDeleteAlert: false,
-    //         deleteFeedback: ''
-    //       });
-    //     }, 1000
-    //   );
-    // }
 
     if (isFailed) {
       this.setState({
