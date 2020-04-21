@@ -89,33 +89,36 @@ class ProjectCard extends React.Component {
     const userId = data.id;
     const { openDeleteAlert, openDropDown, deleteFeedback } = this.state;
     return (
-      <div className="ProjectsCard">
-        <div className="ProjectImageDiv" style={{ backgroundImage: `url(${icon})` }} />
-        <div className="BottomContainer">
-          <Link to={{ pathname: `/users/${userId}/projects/${CardID}/apps` }} key={CardID}>
-            <div className="ProjectsCardName">{name}</div>
-          </Link>
-          <div className="ProjectsCardDesc">
-            <table className="AppTable">
-              <tr>
-                <td className="AppName">{description}</td>
-                <td className="OtherData">
-                  <div className="StatusData">
-                    <div className="ProjectDropDown" onClick={() => this.toggleDropDown()}>
-                      <img src={DotsImg} alt="three dots" className="DropDownImg" />
-                      {openDropDown && (
-                        <div className="AppDropDownContent">
-                          <div onClick={() => this.showDeleteAlert()}>Delete</div>
-                          <div>Update</div>
-                        </div>
-                      )}
+      <div className="Page">
+        <div className="ProjectsCard">
+          <div className="ProjectImageDiv" style={{ backgroundImage: `url(${icon})` }} />
+          <div className="BottomContainer">
+            <Link to={{ pathname: `/users/${userId}/projects/${CardID}/apps` }} key={CardID}>
+              <div className="ProjectsCardName">{name}</div>
+            </Link>
+            <div className="ProjectsCardDesc">
+              <table className="AppTable">
+                <tr>
+                  <td className="AppName">{description}</td>
+                  <td className="OtherData">
+                    <div className="StatusData">
+                      <div className="ProjectDropDown" onClick={() => this.toggleDropDown()}>
+                        <img src={DotsImg} alt="three dots" className="DropDownImg" />
+                        {openDropDown && (
+                          <div className="AppDropDownContent">
+                            <div onClick={() => this.showDeleteAlert()}>Delete</div>
+                            <div>Update</div>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </td>
-              </tr>
-            </table>
+                  </td>
+                </tr>
+              </table>
+            </div>
           </div>
         </div>
+
         {(openDeleteAlert && (
           <div className="ProjectDeleteModel">
             <Modal showModal={openDeleteAlert}>
@@ -147,6 +150,7 @@ class ProjectCard extends React.Component {
             </Modal>
           </div>
         ))}
+
       </div>
 
     );
