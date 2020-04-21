@@ -11,7 +11,7 @@ const initialState = {
   message: 'Cluster Services Not Available'
 };
 
-const ServicesReducer = (state = initialState, action) => {
+const servicesReducer = (state = initialState, action) => {
   switch (action.type) {
   case FETCH_SERVICES_SUCCESS:
     return {
@@ -40,4 +40,4 @@ const ServicesReducer = (state = initialState, action) => {
     return state;
   }
 };
-export default ServicesReducer;
+export default servicesReducer;

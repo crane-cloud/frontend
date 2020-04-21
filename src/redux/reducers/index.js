@@ -1,47 +1,47 @@
 import { combineReducers } from 'redux';
-import ClustersReducer from './clustersReducer';
-import AddClusterReducer from './addClusterReducer';
+import clustersReducer from './clusters';
+import addClusterReducer from './addCluster';
 import user from './user';
-import ClusterResourcesReducer from './ClusterResourcesReducer';
-import ServicesReducer from './servicesReducer';
-import PvsReducer from './PvsReducer';
-import nodesReducer from './nodesReducer';
-import PvcsReducer from './pvcsReducer';
-import NamespacesListReducer from './NamespacesListReducer';
-import podsReducer from './podsReducer';
-import storageClassesReducer from './storageClassReducer';
-import JobsReducer from './jobsReducer';
+import clusterResourcesReducer from './clusterResources';
+import servicesReducer from './services';
+import pvsReducer from './pvs';
+import nodesReducer from './nodes';
+import pvcsReducer from './pvcs';
+import namespacesListReducer from './namespacesList';
+import podsReducer from './pods';
+import storageClassesReducer from './storageClass';
+import jobsReducer from './jobs';
 import getDeployments from './getDeployments';
-import AdminProjectsReducer from './AdminProjectsReducer';
-import AppsListReducer from './appsListReducer';
-import UserProjectsReducer from './userProjectsReducer';
-import addProjectReducer from './addProjectReducer';
+import adminProjectsReducer from './adminProjects';
+import appsListReducer from './appsList';
+import userProjectsReducer from './userProjects';
+import addProjectReducer from './addProject';
 import createAppReducer from './createApp';
-import deleteAppReducer from './DeleteAppReducer';
-import UserDetailReducer from './userDetailReducer';
-import UsersListReducer from './usersListReducer';
+import deleteAppReducer from './deleteApp';
+import userDetailReducer from './userDetails';
+import usersListReducer from './usersList';
 
 
 export default combineReducers({
-  ClusterResourcesReducer,
-  ClustersReducer,
+  clusterResourcesReducer,
+  clustersReducer,
   user,
-  AddClusterReducer,
-  ServicesReducer,
+  addClusterReducer,
+  servicesReducer,
   storageClassesReducer,
-  PvsReducer,
+  pvsReducer,
   nodesReducer,
-  PvcsReducer,
-  NamespacesListReducer,
+  pvcsReducer,
+  namespacesListReducer,
   podsReducer,
   deployments: getDeployments,
-  JobsReducer,
-  AdminProjectsReducer,
-  AppsListReducer,
-  UserProjectsReducer,
+  jobsReducer,
+  adminProjectsReducer,
+  appsListReducer,
+  userProjectsReducer,
   addProjectReducer,
   createNewApp: createAppReducer,
   deleteAppReducer,
-  UserDetailReducer,
-  UsersListReducer,
+  userDetailReducer,
+  usersListReducer,
 });

@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
-import AddProject, { clearAddProjectState } from '../../redux/actions/addProject';
+import addProject, { clearAddProjectState } from '../../redux/actions/addProject';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
 import PrimaryButton from '../PrimaryButton';
 import Modal from '../Modal';
-import getClustersList from '../../redux/actions/ClustersActions';
-import getUserProjects from '../../redux/actions/projectsListActions';
+import getClustersList from '../../redux/actions/clusters';
+import getUserProjects from '../../redux/actions/projectsList';
 import InputText from '../InputText';
 import TextArea from '../TextArea';
 import Spinner, { BigSpinner } from '../SpinnerComponent';
@@ -87,7 +87,7 @@ class UserProjectsPage extends React.Component {
 
   handleSubmit() {
     const { projectName, projectDescription, clusterID } = this.state;
-    const { AddProject, data } = this.props;
+    const { addProject, data } = this.props;
 
     if (!projectName || !clusterID || !projectDescription) {
       // if user tries to submit empty email/password
@@ -109,7 +109,7 @@ class UserProjectsPage extends React.Component {
         name: projectName,
         owner_id: data.id
       };
-      AddProject(newProject);
+      addProject(newProject);
     }
   }
 
@@ -268,7 +268,7 @@ UserProjectsPage.propTypes = {
   getClustersList: PropTypes.func.isRequired,
   getUserProjects: PropTypes.func.isRequired,
   clearAddProjectState: PropTypes.func.isRequired,
-  AddProject: PropTypes.func.isRequired,
+  addProject: PropTypes.func.isRequired,
   data: PropTypes.shape({
     id: PropTypes.string.isRequired
   }).isRequired,
@@ -296,8 +296,8 @@ const mapStateToProps = (state) => {
   const {
     isAdded, isAdding, message, errorCode
   } = state.addProjectReducer;
-  const { clusters } = state.ClustersReducer;
-  const { isRetrieving, projects, isFetched } = state.UserProjectsReducer;
+  const { clusters } = state.clustersReducer;
+  const { isRetrieving, projects, isFetched } = state.userProjectsReducer;
   return {
     isAdded,
     data,
@@ -312,7 +312,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  getUserProjects, AddProject, getClustersList, clearAddProjectState
+  getUserProjects, addProject, getClustersList, clearAddProjectState
 };
 
 export default connect(

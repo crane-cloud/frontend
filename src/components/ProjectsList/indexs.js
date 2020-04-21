@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './ProjectsList.css';
-import getUserProjects from '../../redux/actions/projectsListActions';
+import getUserProjects from '../../redux/actions/projectsList';
 import { BigSpinner } from '../SpinnerComponent';
 import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/craneLogo.png';

@@ -30,7 +30,7 @@ const clearAddProjectState = () => ({
   type: CLEAR_ADD_PROJECT_STATE
 });
 
-const AddProject = (projectData) => (dispatch) => {
+const addProject = (projectData) => (dispatch) => {
   dispatch(startPostingProject());
 
   return axios.post(`${API_BASE_URL}/projects`, projectData,
@@ -44,4 +44,4 @@ const AddProject = (projectData) => (dispatch) => {
 };
 export { clearAddProjectState };
 
-export default AddProject;
+export default addProject;
