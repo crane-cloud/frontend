@@ -3,9 +3,9 @@
 }
   
 .ProjectsCard:hover {
-    /* transition: 0.5s; */
+    transition: 0.5s;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-    border: 1px solid #F7B21F;
+    transform: scale(0.95);
 }
 .ProjectImageDiv{
     margin: 0;

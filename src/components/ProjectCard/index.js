@@ -120,15 +120,6 @@ class ProjectCard extends React.Component {
               </tr>
             </table>
           </div>
-          <div className="ProjectDropDown" onClick={() => this.toggleDropDown()}>
-            <img src={DotsImg} alt="three dots" className="DropDownImg" />
-            {openDropDown && (
-              <div className="ProjectDropDownContent">
-                <div onClick={() => this.showDeleteAlert()}>Delete</div>
-                <div>Update</div>
-              </div>
-            )}
-          </div>
         </div>
         {(openDeleteAlert && (
           <div className="ProjectDeleteModel">
