@@ -9,7 +9,7 @@ import BlackInputText from '../BlackInputText';
 import Modal from '../Modal';
 import ClustersList from '../ClustersList';
 import Header from '../Header';
-import addCluster, { clearState } from '../../redux/actions/addCluster';
+import addCluster, { clearAddClusterState } from '../../redux/actions/addCluster';
 import Feedback from '../Feedback';
 import './ClusterPage.css';
 
@@ -35,9 +35,9 @@ class ClusterPage extends React.Component {
   }
 
   hideForm() {
-    const { clearState } = this.props;
+    const { clearAddClusterState } = this.props;
+    clearAddClusterState();
     this.setState({ openModal: false });
-    clearState();
   }
 
   handleChange(e) {
@@ -197,7 +197,7 @@ ClusterPage.propTypes = {
     accessToken: PropTypes.string.isRequired
   }).isRequired,
   addCluster: PropTypes.func.isRequired,
-  clearState: PropTypes.func.isRequired,
+  clearAddClusterState: PropTypes.func.isRequired,
   isAdded: PropTypes.bool.isRequired,
   isFailed: PropTypes.bool.isRequired,
   creatingCluster: PropTypes.bool.isRequired,
@@ -223,4 +223,4 @@ const mapStateToProps = ({ user, addClusterReducer }) => {
   };
 };
 
-export default connect(mapStateToProps, { addCluster, clearState })(withRouter(ClusterPage));
+export default connect(mapStateToProps, { addCluster, clearAddClusterState })(withRouter(ClusterPage));
