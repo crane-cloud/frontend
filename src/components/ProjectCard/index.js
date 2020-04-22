@@ -238,6 +238,7 @@ ProjectCard.defaultProps = {
 const mapStateToProps = (state) => {
   const { data } = state.user;
   const { isDeleting, isDeleted, isFailed, clearDeleteProjectState } = state.deleteProjectReducer;
+  const {} = state.
   return { data, isDeleting, isDeleted, isFailed, clearDeleteProjectState };
 };
 
