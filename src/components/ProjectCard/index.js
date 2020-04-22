@@ -5,9 +5,11 @@ import PropTypes from 'prop-types';
 import PrimaryButton from '../PrimaryButton';
 import DotsImg from '../../assets/images/3dots.svg';
 import deleteProject, { clearDeleteProjectState } from '../../redux/actions/deleteProject';
+import updateProject from '../../redux/actions/updateProject';
+import getProjectDetail from '../../redux/actions/projectDetail';
 import Spinner from '../SpinnerComponent';
 import InputText from '../InputText';
-import TextArea from '../TextArea';
+// import TextArea from '../TextArea';
 import Modal from '../Modal';
 import './ProjectCard.css';
 
@@ -111,10 +113,10 @@ class ProjectCard extends React.Component {
 
   render() {
     const {
-      name, isDeleting, data, description, icon, CardID
+      name, isDeleting, data, description, icon, CardID, isUpdating
     } = this.props;
     const userId = data.id;
-    const { openDeleteAlert, openDropDown } = this.state;
+    const { openDeleteAlert, openDropDown, projectName, openUpdateModal } = this.state;
     return (
       <div className="Page">
         <div className="ProjectsCard">
@@ -170,51 +172,47 @@ class ProjectCard extends React.Component {
             </Modal>
           </div>
         ))}
-        <Modal showModal={this.showUpdateForm}>
-          <div className="ModalForm">
-            <div className="ModalFormHeading">
-              <h2>Update your project</h2>
-            </div>
-            <div className="ModalFormInputs">
-              <InputText
-                placeholder="Project Name"
-                name="projectName"
-                value={projectName}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
-              />
 
-              {/* <TextArea
-                placeholder="Project Description"
-                name="projectDescription"
-                value={projectDescription}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
-              /> */}
+        {(openUpdateModal && (
+          <div className="ProjectDeleteModel">
+            <Modal showModal={openUpdateModal}>
+              <div className="ModalUpdateForm">
+                <div className="ModalFormHeading">
+                  <h2>Update your project</h2>
+                </div>
+                <div className="ModalFormInputs">
+                  <InputText
+                    placeholder="New Project Name"
+                    name="projectName"
+                    value={projectName}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
 
-            </div>
-            {/* {error && (
-              <Feedback
-                type="error"
-                message={error}
-              />
-            )} */}
-            <div className="ModalFormButtons">
-              <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />
-              <PrimaryButton label={isUpdating ? <Spinner /> : 'Update project'} onClick={this.handleSubmit} />
-            </div>
+                </div>
+                {/* {error && (
+                  <Feedback
+                    type="error"
+                    message={error}
+                  />
+                )} */}
+                <div className="ModalFormButtons">
+                  <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideUpdateForm} />
+                  <PrimaryButton label={isUpdating ? <Spinner /> : 'Update project'} onClick={this.handleSubmit} />
+                </div>
 
-            {/* {message && (
-              <Feedback
-                message={errorCode === 200 ? 'Successfully Updated' : message}
-                type={(isAdded && errorCode !== 409) ? 'success' : 'error'}
-              />
-            )} */}
+                {/* {message && (
+                  <Feedback
+                    message={errorCode === 200 ? 'Successfully Updated' : message}
+                    type={(isAdded && errorCode !== 409) ? 'success' : 'error'}
+                  />
+                )} */}
 
+              </div>
+            </Modal>
           </div>
-        </Modal>
+        ))}
 
       </div>
 
@@ -237,9 +235,22 @@ ProjectCard.defaultProps = {
 
 const mapStateToProps = (state) => {
   const { data } = state.user;
-  const { isDeleting, isDeleted, isFailed, clearDeleteProjectState } = state.deleteProjectReducer;
-  const {} = state.
-  return { data, isDeleting, isDeleted, isFailed, clearDeleteProjectState };
+  const {
+    isDeleting, isDeleted, isFailed, clearDeleteProjectState 
+  } = state.deleteProjectReducer;
+  const { isUpdating, isUpdated } = state.updateProjectReducer;
+  const { project } = state.projectDetailReducer;
+
+  return {
+    data,
+    isDeleting,
+    isDeleted,
+    isFailed,
+    isUpdating,
+    isUpdated,
+    project,
+    clearDeleteProjectState 
+  };
 };
 
 export const mapDispatchToProps = (dispatch) => ({

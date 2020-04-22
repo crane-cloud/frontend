@@ -44,9 +44,14 @@ class UserProjectsPage extends React.Component {
 
   componentDidUpdate(prevProps) {
 
-    const { isAdded, getClustersList, getUserProjects, data, isDeleted } = this.props;
+    const { isAdded, getClustersList, getUserProjects, data, isDeleted, isUpdated } = this.props;
 
     if (isDeleted !== prevProps.isDeleted) {
+      getUserProjects(data.id);
+      getClustersList();
+    }
+
+    if (isUpdated !== prevProps.isUpdated) {
       getUserProjects(data.id);
       getClustersList();
     }
@@ -305,12 +310,14 @@ const mapStateToProps = (state) => {
   const { clusters } = state.clustersReducer;
   const { isDeleted } = state.deleteProjectReducer;
   const { isRetrieving, projects, isFetched } = state.userProjectsReducer;
+  const { isUpdating, isUpdated } = state.updateProjectReducer;
   return {
     isAdded,
     data,
     isRetrieving,
     projects,
     clusters,
+    isUpdated,
     isFetched,
     isAdding,
     message,
