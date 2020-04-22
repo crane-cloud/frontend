@@ -310,7 +310,7 @@ const mapStateToProps = (state) => {
   const { clusters } = state.clustersReducer;
   const { isDeleted } = state.deleteProjectReducer;
   const { isRetrieving, projects, isFetched } = state.userProjectsReducer;
-  const { isUpdating, isUpdated } = state.updateProjectReducer;
+  const { isUpdated } = state.updateProjectReducer;
   return {
     isAdded,
     data,

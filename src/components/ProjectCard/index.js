@@ -90,7 +90,7 @@ class ProjectCard extends React.Component {
   handleSubmit() {
     const { projectName } = this.state;
     console.log(this.state);
-    const { updateProject } = this.props;
+    const { updateProject, CardID } = this.props;
 
     if (!projectName) {
       this.setState({
@@ -108,7 +108,7 @@ class ProjectCard extends React.Component {
       const newProjectName = {
         name: projectName
       };
-      updateProject(newProjectName);
+      updateProject(CardID, newProjectName);
     }
   }
 
