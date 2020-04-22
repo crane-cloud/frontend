@@ -233,23 +233,11 @@ class ProjectCard extends React.Component {
                   />
 
                 </div>
-                {/* {error && (
-                  <Feedback
-                    type="error"
-                    message={error}
-                  />
-                )} */}
+
                 <div className="ModalFormButtons">
                   <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideUpdateForm} />
                   <PrimaryButton label={isUpdating ? <Spinner /> : 'Update project'} onClick={this.handleSubmit} />
                 </div>
-
-                {/* {message && (
-                  <Feedback
-                    message={errorCode === 200 ? 'Successfully Updated' : message}
-                    type={(isAdded && errorCode !== 409) ? 'success' : 'error'}
-                  />
-                )} */}
 
               </div>
             </Modal>
