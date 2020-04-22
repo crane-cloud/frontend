@@ -32,6 +32,9 @@ class ProjectCard extends React.Component {
     this.toggleDropDown = this.toggleDropDown.bind(this);
     this.hideDropDown = this.hideDropDown.bind(this);
     this.showDropDown = this.showDropDown.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.validateProjectName = this.validateProjectName.bind(this);
   }
 
   showDropDown() {
@@ -70,6 +73,45 @@ class ProjectCard extends React.Component {
     }
     return false;
   }
+
+  handleChange(e) {
+    const { error } = this.state;
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+
+    if (error) {
+      this.setState({
+        error: ''
+      });
+    }
+  }
+
+  handleSubmit() {
+    const { projectName } = this.state;
+    console.log(this.state);
+    const { updateProject } = this.props;
+
+    if (!projectName) {
+      this.setState({
+        error: 'Name fields is required'
+      });
+    } else if (this.validateProjectName(projectName) === false) {
+      this.setState({
+        error: 'name should start with a letter'
+      });
+    } else if (this.validateProjectName(projectName) === 'false_convention') {
+      this.setState({
+        error: 'name may only contain letters and a hypen -'
+      });
+    } else {
+      const newProjectName = {
+        name: projectName
+      };
+      updateProject(newProjectName);
+    }
+  }
+
 
   handleDeleteProject(e, projectID) {
     const {
@@ -253,8 +295,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch) => ({
-  deleteProject: (projectID) => dispatch(deleteProject(projectID))
-});
+export const mapDispatchToProps = {
+  deleteProject, updateProject, getProjectDetail
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectCard);
