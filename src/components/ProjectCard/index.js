@@ -6,6 +6,8 @@ import PrimaryButton from '../PrimaryButton';
 import DotsImg from '../../assets/images/3dots.svg';
 import deleteProject, { clearDeleteProjectState } from '../../redux/actions/deleteProject';
 import Spinner from '../SpinnerComponent';
+import InputText from '../InputText';
+import TextArea from '../TextArea';
 import Modal from '../Modal';
 import './ProjectCard.css';
 
@@ -13,11 +15,15 @@ class ProjectCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      openUpdateModal: false,
       openDeleteAlert: false,
       openDropDown: false,
-      deleteFeedback: ''
+      deleteFeedback: '',
+      projectName: '',
     };
 
+    this.showUpdateForm = this.showUpdateForm.bind(this);
+    this.hideUpdateForm = this.hideUpdateForm.bind(this);
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
     this.showDeleteAlert = this.showDeleteAlert.bind(this);
     this.hideDeleteAlert = this.hideDeleteAlert.bind(this);
@@ -41,6 +47,26 @@ class ProjectCard extends React.Component {
 
   hideDropDown() {
     this.setState({ openDropDown: false });
+  }
+
+  showUpdateForm() {
+    this.setState({ openUpdateModal: true });
+  }
+
+  hideUpdateForm() {
+    // const { clearAddProjectState } = this.props;
+    // clearAddProjectState();
+    this.setState({ openUpdateModal: false });
+  }
+
+  validateProjectName(name) {
+    if (/^[a-z]/i.test(name)) {
+      if (name.match(/[^-a-zA-Z]/)) {
+        return 'false_convention';
+      }
+      return true;
+    }
+    return false;
   }
 
   handleDeleteProject(e, projectID) {
@@ -108,7 +134,7 @@ class ProjectCard extends React.Component {
                         {openDropDown && (
                           <div className="AppDropDownContent">
                             <div onClick={() => this.showDeleteAlert()}>Delete</div>
-                            <div>Update</div>
+                            <div onClick={() => this.showUpdateForm()}>Update</div>
                           </div>
                         )}
                       </div>
@@ -144,6 +170,51 @@ class ProjectCard extends React.Component {
             </Modal>
           </div>
         ))}
+        <Modal showModal={this.showUpdateForm}>
+          <div className="ModalForm">
+            <div className="ModalFormHeading">
+              <h2>Update your project</h2>
+            </div>
+            <div className="ModalFormInputs">
+              <InputText
+                placeholder="Project Name"
+                name="projectName"
+                value={projectName}
+                onChange={(e) => {
+                  this.handleChange(e);
+                }}
+              />
+
+              {/* <TextArea
+                placeholder="Project Description"
+                name="projectDescription"
+                value={projectDescription}
+                onChange={(e) => {
+                  this.handleChange(e);
+                }}
+              /> */}
+
+            </div>
+            {/* {error && (
+              <Feedback
+                type="error"
+                message={error}
+              />
+            )} */}
+            <div className="ModalFormButtons">
+              <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />
+              <PrimaryButton label={isUpdating ? <Spinner /> : 'Update project'} onClick={this.handleSubmit} />
+            </div>
+
+            {/* {message && (
+              <Feedback
+                message={errorCode === 200 ? 'Successfully Updated' : message}
+                type={(isAdded && errorCode !== 409) ? 'success' : 'error'}
+              />
+            )} */}
+
+          </div>
+        </Modal>
 
       </div>
 
