@@ -11,7 +11,9 @@ header.Header {
 }
 
 .LogoWrap {
-  margin: 1rem 0 auto 2rem;
+  display: flex;
+  padding: 2rem;
+  align-items: center;
 }
 
 .HeaderLinksWrap {
