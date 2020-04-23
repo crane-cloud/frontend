@@ -35,3 +35,11 @@
 .SelectOptionsWrapper .SelectOption:hover {
   background-color: #EFEFEF;
 }
+
+.SelectArrow {
+  transition: all 400ms;
+}
+
+.SelectArrow.SelectArrowShowOptions {
+  transform: rotate(180deg);
+}

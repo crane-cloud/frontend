@@ -3,7 +3,12 @@ import { ReactComponent as DownArrow } from '../../assets/images/down-arrow-blac
 import './Select.css';
 
 
-const Select = ({ required, placeholder, options, onChange }) => {
+const Select = ({
+  required,
+  placeholder,
+  options,
+  onChange
+}) => {
   const [showOptions, setShowOptions] = useState(false);
   const [selected, setValue] = useState(`${placeholder}${required ? ' *' : ''}`);
 
@@ -22,7 +27,7 @@ const Select = ({ required, placeholder, options, onChange }) => {
       <div className="SelectElementMain" onClick={toggleOptions} role="presentation">
         <div className={`SelectElementValue ${selected.startsWith(placeholder) && 'SelectElementPlaceholder'}`}>
           {selected}
-          <div className="SelectArrow">
+          <div className={`SelectArrow ${showOptions && 'SelectArrowShowOptions'}`}>
             <DownArrow />
           </div>
         </div>
