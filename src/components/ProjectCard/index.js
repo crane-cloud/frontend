@@ -106,7 +106,8 @@ class ProjectCard extends React.Component {
       });
     } else {
       const newProjectName = {
-        name: projectName
+        name: projectName,
+        description: projectDescription
       };
       updateProject(CardID, newProjectName);
     }
