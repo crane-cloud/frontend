@@ -160,7 +160,7 @@ class ProjectCard extends React.Component {
     const userId = data.id;
     const { openDeleteAlert, openDropDown, projectName, openUpdateModal } = this.state;
     return (
-      <div className="Page">
+      <div>
         <div className="ProjectsCard">
           <div className="ProjectImageDiv" style={{ backgroundImage: `url(${icon})` }} />
           <div className="BottomContainer">
