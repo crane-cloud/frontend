@@ -9,7 +9,7 @@ import updateProject from '../../redux/actions/updateProject';
 import getProjectDetail from '../../redux/actions/projectDetail';
 import Spinner from '../SpinnerComponent';
 import InputText from '../InputText';
-// import TextArea from '../TextArea';
+import TextArea from '../TextArea';
 import Modal from '../Modal';
 import './ProjectCard.css';
 
@@ -22,6 +22,7 @@ class ProjectCard extends React.Component {
       openDropDown: false,
       deleteFeedback: '',
       projectName: '',
+      projectDescription: ''
     };
 
     this.showUpdateForm = this.showUpdateForm.bind(this);
