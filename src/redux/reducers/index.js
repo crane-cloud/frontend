@@ -17,9 +17,12 @@ import appsListReducer from './appsList';
 import userProjectsReducer from './userProjects';
 import addProjectReducer from './addProject';
 import createAppReducer from './createApp';
+import deleteProjectReducer from './deleteProject';
 import deleteAppReducer from './deleteApp';
 import userDetailReducer from './userDetails';
 import usersListReducer from './usersList';
+import projectDetailReducer from './projectDetail';
+import updateProjectReducer from './updateProject';
 
 
 export default combineReducers({
@@ -42,6 +45,9 @@ export default combineReducers({
   addProjectReducer,
   createNewApp: createAppReducer,
   deleteAppReducer,
+  deleteProjectReducer,
   userDetailReducer,
   usersListReducer,
+  projectDetailReducer,
+  updateProjectReducer,
 });
