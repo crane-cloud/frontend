@@ -3,10 +3,9 @@ import { ReactComponent as DownArrow } from '../../assets/images/down-arrow-blac
 import './Select.css';
 
 
-const Select = ({ required, placeholder }) => {
+const Select = ({ required, placeholder, options }) => {
   const [showOptions, setShowOptions] = useState(false);
   const [selectValue, setValue] = useState(`${placeholder}${required ? ' *' : ''}`);
-
 
   const toggleOptions = () => {
     setShowOptions(!showOptions);
@@ -24,9 +23,18 @@ const Select = ({ required, placeholder }) => {
       </div>
       {showOptions && (
         <div className="SelectOptionsWrapper">
-          <div className="SelectOption">Option One</div>
-          <div className="SelectOption">Option Two</div>
-          <div className="SelectOption">Option Three</div>
+          {options.map((option) => (
+            <div
+              key={option.id}
+              className="SelectOption"
+              onClick={(e) => {
+                console.log(e.target.textContent)
+              }}
+              role="presentation"
+            >
+              {option.name}
+            </div>
+          ))}
         </div>
       )}
     </div>
