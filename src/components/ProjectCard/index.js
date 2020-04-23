@@ -89,8 +89,7 @@ class ProjectCard extends React.Component {
   }
 
   handleSubmit() {
-    const { projectName } = this.state;
-    console.log(this.state);
+    const { projectName, projectDescription } = this.state;
     const { updateProject, CardID } = this.props;
 
     if (!projectName) {
