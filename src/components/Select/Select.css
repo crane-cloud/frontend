@@ -1,5 +1,7 @@
 .SelectWrapper {
   width: 100%;
+  display: grid;
+  gap: .3rem;
 }
 
 .SelectElementMain {
@@ -16,4 +18,20 @@
 
 .SelectElementValue.SelectElementPlaceholder {
   color: gray;
+}
+
+.SelectOptionsWrapper {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.SelectOptionsWrapper .SelectOption {
+  padding: 0 1rem;
+  line-height: 2.5rem;
+  height: 2.5rem;
+}
+
+.SelectOptionsWrapper .SelectOption:hover {
+  background-color: #EFEFEF;
 }

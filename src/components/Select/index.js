@@ -16,9 +16,9 @@ const Select = ({ required, placeholder }) => {
         </div>
       </div>
       <div className="SelectOptionsWrapper">
-
-
-
+        <div className="SelectOption">Option One</div>
+        <div className="SelectOption">Option Two</div>
+        <div className="SelectOption">Option Three</div>
       </div>
     </div>
   );
