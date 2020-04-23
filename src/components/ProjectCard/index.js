@@ -232,6 +232,14 @@ class ProjectCard extends React.Component {
                       this.handleChange(e);
                     }}
                   />
+                  <TextArea
+                    placeholder="Project Description"
+                    name="projectDescription"
+                    value={projectDescription}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
 
                 </div>
 
