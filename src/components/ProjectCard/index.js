@@ -92,9 +92,9 @@ class ProjectCard extends React.Component {
     const { projectName, projectDescription } = this.state;
     const { updateProject, CardID } = this.props;
 
-    if (!projectName) {
+    if (!projectName || !projectDescription) {
       this.setState({
-        error: 'Name fields is required'
+        error: 'Name and desccription fields are required'
       });
     } else if (this.validateProjectName(projectName) === false) {
       this.setState({
