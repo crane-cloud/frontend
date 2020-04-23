@@ -11,10 +11,6 @@
 
 .RoundAddButton:hover {
     box-shadow: none;
-    border-color:transparent!important;
+    border-color:transparent;
     outline:none;
-}
-
-.RoundAddButton svg{
-    padding-top: 0.32rem;
 }
