@@ -9,7 +9,9 @@
 
 .SelectElementValue {
   line-height: 2.5rem;
-  padding-left: 1rem;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
 }
 
 .SelectElementValue.SelectElementPlaceholder {
