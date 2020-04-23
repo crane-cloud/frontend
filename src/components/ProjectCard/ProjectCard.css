@@ -127,7 +127,7 @@
 }
 
 .DeleteErrorDiv{
-    color: red;
+    color: #f00;
 }
 
 .DeleteSuccessDiv{
@@ -135,13 +135,13 @@
 }
 
 .DeleteProjectModelResponses .undefined{
-    background-color: red;
-    outline: 2px solid red;
+    background-color: #f00;
+    outline: 2px solid #f00;
 }
 .DeleteProjectModelResponses .undefined:hover{
     background-color: white;
-    outline: 2px solid red;
-    color: red;
+    outline: 2px solid #f00;
+    color: #f00;
 }
 
 .StatusData{
