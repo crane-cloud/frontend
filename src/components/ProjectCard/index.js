@@ -233,7 +233,7 @@ class ProjectCard extends React.Component {
                     }}
                   />
                   <TextArea
-                    placeholder="Project Description"
+                    placeholder="Enter New Project Description"
                     name="projectDescription"
                     value={projectDescription}
                     onChange={(e) => {
