@@ -3,8 +3,15 @@
 }
 
 .SelectElementMain {
-  height: 2rem;
+  height: 2.5rem;
   border: 2px solid black;
-  padding-top: 0.5rem;
-  padding-left: 0.5rem;
+}
+
+.SelectElementValue {
+  line-height: 2.5rem;
+  padding-left: 1rem;
+}
+
+.SelectElementValue.SelectElementPlaceholder {
+  color: gray;
 }
