@@ -2,12 +2,19 @@ import React, { useState } from 'react';
 import { ReactComponent as DownArrow } from '../../assets/images/down-arrow-black.svg';
 import './Select.css';
 
+
 const Select = ({ required, placeholder }) => {
+  const [showOptions, setShowOptions] = useState(false);
   const [selectValue, setValue] = useState(`${placeholder}${required ? ' *' : ''}`);
+
+
+  const toggleOptions = () => {
+    setShowOptions(!showOptions);
+  };
 
   return (
     <div className="SelectWrapper">
-      <div className="SelectElementMain">
+      <div className="SelectElementMain" onClick={toggleOptions} role="presentation">
         <div className={`SelectElementValue ${selectValue.startsWith(placeholder) && 'SelectElementPlaceholder'}`}>
           {selectValue}
           <div className="SelectArrow">
@@ -15,11 +22,13 @@ const Select = ({ required, placeholder }) => {
           </div>
         </div>
       </div>
-      <div className="SelectOptionsWrapper">
-        <div className="SelectOption">Option One</div>
-        <div className="SelectOption">Option Two</div>
-        <div className="SelectOption">Option Three</div>
-      </div>
+      {showOptions && (
+        <div className="SelectOptionsWrapper">
+          <div className="SelectOption">Option One</div>
+          <div className="SelectOption">Option Two</div>
+          <div className="SelectOption">Option Three</div>
+        </div>
+      )}
     </div>
   );
 };
