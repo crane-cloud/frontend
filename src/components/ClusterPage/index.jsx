@@ -30,6 +30,14 @@ class ClusterPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    const { isAdded } = this.props;
+
+    if (isAdded !== prevProps.isAdded) {
+      this.hideForm();
+    }
+  }
+
   showForm() {
     this.setState({ openModal: true });
   }
@@ -53,7 +61,7 @@ class ClusterPage extends React.Component {
   }
 
   handleSubmit() {
-    const { addCluster, creatingCluster, isAdded } = this.props;
+    const { addCluster } = this.props;
 
     const {
       host,
@@ -76,16 +84,6 @@ class ClusterPage extends React.Component {
       };
 
       addCluster(cluster);
-
-      if (creatingCluster === false && isAdded === true) {
-        setTimeout(
-          () => {
-            this.setState({
-              openModal: false
-            });
-          }, 1000
-        );
-      }
     }
   }
 
@@ -106,6 +104,7 @@ class ClusterPage extends React.Component {
       isFailed,
       message
     } = this.props;
+    console.log(message);
 
     localStorage.setItem('token', accessToken);
 
@@ -116,7 +115,7 @@ class ClusterPage extends React.Component {
           <InformationBar header="Select Infrastructure" showBtn btnAction={this.showForm} />
         </div>
         <div className="MainRow">
-          <ClustersList />
+          <ClustersList newClusterAdded={isAdded} />
         </div>
         <div className="FooterRow">
           <p>Copyright © 2020 Crane Cloud. All Rights Reserved.</p>
@@ -223,4 +222,7 @@ const mapStateToProps = ({ user, addClusterReducer }) => {
   };
 };
 
-export default connect(mapStateToProps, { addCluster, clearAddClusterState })(withRouter(ClusterPage));
+export default connect(
+  mapStateToProps,
+  { addCluster, clearAddClusterState }
+)(withRouter(ClusterPage));

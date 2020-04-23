@@ -15,6 +15,14 @@ class ClustersList extends Component {
     getClustersList();
   }
 
+  componentDidUpdate(prevProps) {
+    const { getClustersList, newClusterAdded } = this.props;
+
+    if (newClusterAdded !== prevProps.newClusterAdded) {
+      getClustersList();
+    }
+  }
+
   render() {
     const { clusters, isRetrieved, isRetrieving } = this.props;
 
@@ -57,6 +65,8 @@ class ClustersList extends Component {
 // inititate props
 ClustersList.propTypes = {
   clusters: PropTypes.arrayOf(PropTypes.object),
+  getClustersList: PropTypes.func.isRequired,
+  newClusterAdded: PropTypes.bool.isRequired,
   isRetrieved: PropTypes.bool,
   isRetrieving: PropTypes.bool
 };
