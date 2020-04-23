@@ -139,7 +139,7 @@
     outline: 2px solid #f00;
 }
 .DeleteProjectModelResponses .undefined:hover{
-    background-color: white;
+    background-color: #fff;
     outline: 2px solid #f00;
     color: #f00;
 }
