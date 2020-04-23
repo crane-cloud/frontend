@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Select.css';
 
-const Select = () => {
+const Select = ({ required, placeholder }) => {
+  const [selectValue, setValue] = useState(`${placeholder} ${required ? '*' : ''}`);
+
   return (
-    <div className="">
-      
+    <div className="SelectWrapper">
+      <div className="SelectElementMain">
+        {selectValue}
+      </div>
+      <div className="SelectOptionsWrapper"></div>
     </div>
   );
 };

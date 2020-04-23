@@ -1,0 +1,10 @@
+.SelectWrapper {
+  width: 100%;
+}
+
+.SelectElementMain {
+  height: 2rem;
+  border: 2px solid black;
+  padding-top: 0.5rem;
+  padding-left: 0.5rem;
+}
