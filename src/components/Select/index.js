@@ -19,7 +19,7 @@ const Select = ({
   const handleChange = (selectedOption) => {
     setValue(selectedOption.name);
     toggleOptions();
-    onChange(selectedOption.id);
+    onChange(selectedOption);
   };
 
   return (
