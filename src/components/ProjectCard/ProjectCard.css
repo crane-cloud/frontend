@@ -161,15 +161,15 @@
     justify-self: center;
 }
 
-.AppTable{
+.ProjectTab{
     width: 100%;
 }
 
-.AppTable tr td:last-child {
+.ProjectTab tr td:last-child {
     text-align: right;
 }
 
-.AppTable tr td:first-child {
+.ProjectTab tr td:first-child {
     text-align: left;
 }
 

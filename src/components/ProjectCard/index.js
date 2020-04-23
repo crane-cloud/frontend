@@ -168,15 +168,15 @@ class ProjectCard extends React.Component {
               <div className="ProjectsCardName">{name}</div>
             </Link>
             <div className="ProjectsCardDesc">
-              <table className="AppTable">
+              <table className="ProjectTab">
                 <tr>
-                  <td className="AppName">{description}</td>
+                  <td className="ProjectName">{description}</td>
                   <td className="OtherData">
                     <div className="StatusData">
                       <div className="ProjectDropDown" onClick={() => this.toggleDropDown()}>
                         <img src={DotsImg} alt="three dots" className="DropDownImg" />
                         {openDropDown && (
-                          <div className="AppDropDownContent">
+                          <div className="ProjectDropDownContent">
                             <div onClick={() => this.showDeleteAlert()}>Delete</div>
                             <div onClick={() => this.showUpdateForm()}>Update</div>
                           </div>
