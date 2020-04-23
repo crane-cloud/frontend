@@ -16,6 +16,8 @@ const clustersList = [
   }
 ];
 
+const handleChange = (input) => console.log(input);
+
 const SelectSample = () => (
   <div style={{ backgroundColor: '#f1f1f1', height: '100vh' }}>
     <div style={{ padding: '50px', width: '400px' }}>
@@ -23,6 +25,7 @@ const SelectSample = () => (
         required
         placeholder="Choose a location"
         options={clustersList}
+        onChange={handleChange}
       />
     </div>
   </div>
