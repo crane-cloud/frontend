@@ -16,13 +16,14 @@ import ProjectCard from '../ProjectCard';
 import Spinner, { BigSpinner } from '../SpinnerComponent';
 import crane from '../../assets/images/plant.svg';
 import Feedback from '../Feedback';
+import Select from '../Select';
 
 
 class UserProjectsPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      openModal: false, // add project modal is closed initially
+      openModal: false,
       projectName: '',
       clusterID: '',
       projectDescription: '',
@@ -34,6 +35,7 @@ class UserProjectsPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateProjectName = this.validateProjectName.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
   }
 
   componentDidMount() {
@@ -95,6 +97,10 @@ class UserProjectsPage extends React.Component {
     }
   }
 
+  handleSelectChange(selected) {
+    this.setState({ clusterID: selected.id });
+  }
+
   handleSubmit() {
     const { projectName, projectDescription, clusterID } = this.state;
     const { addProject, data } = this.props;
@@ -130,9 +136,6 @@ class UserProjectsPage extends React.Component {
       projectName,
       projectDescription,
       error,
-      value
-      // clusterID,
-      // loading
     } = this.state;
     const {
       projects,
@@ -145,12 +148,7 @@ class UserProjectsPage extends React.Component {
       isAdded,
       isAdding
     } = this.props;
-    // const userId = data.id;
-    const clustersList = clusters.length > 0
-        && clusters.map((item) => (
-          <option className="ClusterNameOption" key={item.id} value={item.id}>{item.name}</option>
-        ));
-
+    
     return (
       <div className="Page">
         <div className="TopRow">
@@ -216,18 +214,12 @@ class UserProjectsPage extends React.Component {
               <h2>Add a project</h2>
             </div>
             <div className="ModalFormInputs">
-              <select
-                className="ClusterDrop"
-                name="clusterID"
-                value={value}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
+              <Select
                 required
-              >
-                <option disabled selected>Pick a Cluster</option>
-                {clustersList}
-              </select>
+                placeholder="Select a cluster"
+                options={clusters}
+                onChange={this.handleSelectChange}
+              />
 
               <InputText
                 placeholder="Project Name"
