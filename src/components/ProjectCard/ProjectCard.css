@@ -4,8 +4,9 @@
   
 .ProjectsCard:hover {
     transition: 0.5s;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 8px 16px 0px rgba(0,0,0,0.3);
     transform: scale(0.95);
+    border: 1px solid #000;
 }
 .ProjectImageDiv{
     margin: 0;
@@ -44,8 +45,7 @@
     position: relative;
     display: inline-block;
     z-index: 0;
-    margin-left: 70%;
-    margin-top: 20%;
+    left: 99%;
 }
   
 .ProjectDropDownContent {
@@ -109,6 +109,7 @@
 
 .DeleteDescription{
     cursor: pointer;
+    padding-bottom: 3rem;
 }
 
 .DeleteProjectModelResponses{
@@ -119,17 +120,12 @@
     grid-template-columns: repeat(2, auto);
     align-items: center;
     width: 100%;
-    margin-top: 4rem;
 }
 
 .DeleteProjectModelResponses button{
     display: inline;
 }
 
-.DeleteMessageDiv{
-    margin: 1.5rem;
-    text-align: center;
-}
 .DeleteErrorDiv{
     color: red;
 }
@@ -181,15 +177,11 @@
     display: grid;
     gap: 1rem;
 }
-  
-.ModalFormHeading {
-    font-weight: bold;
-    margin-bottom: 1rem;  
-}
-  
+
 .ModalUpdateForm .ModalFormInputs {
     display: grid;
     gap: 1rem;
+    padding-bottom: 1rem;
 }
   
 .ModalUpdateForm .ModalFormInputs .InputText {
@@ -202,7 +194,6 @@
 }
   
 .ModalUpdateForm .ModalFormButtons {
-    margin-top: 1rem;
     display: flex;
     justify-content: space-between;
 }

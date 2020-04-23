@@ -205,7 +205,7 @@ class ProjectCard extends React.Component {
                   </span>
                   ?
                 </div>
-                <div className="DeleteProjectModelResponses">
+                <div className="DeleteProjectModelResponses Extended">
                   <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
                   <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteProject(e, CardID)} />
                 </div>
