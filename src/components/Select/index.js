@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { ReactComponent as DownArrow } from '../../assets/images/down-arrow-black.svg';
 import './Select.css';
 
@@ -48,6 +49,20 @@ const Select = ({
       )}
     </div>
   );
+};
+
+Select.propTypes = {
+  required: PropTypes.bool,
+  placeholder: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired
+  })).isRequired,
+  onChange: PropTypes.func.isRequired
+};
+
+Select.defaultProps = {
+  required: false
 };
 
 export default Select;
