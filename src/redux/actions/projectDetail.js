@@ -24,6 +24,10 @@ export const getProjectDetailFail = (error) => ({
   },
 });
 
+const clearProjectState = () => ({
+  type: CLEAR_PROJECT_DETAILS
+});
+
 const getProjectDetail = (projectID) => (dispatch) => {
   dispatch(startGettingProjectDetail());
   return axios.get(`${API_BASE_URL}/projects/${projectID}`,
