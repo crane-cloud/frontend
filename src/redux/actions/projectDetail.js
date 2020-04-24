@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../../config';
-import 
+import {
  GET_PROJECT_DETAIL_SUCCESS,
  GET_PROJECT_DETAIL_FAIL,
  CLEAR_PROJECT_DETAILS,
