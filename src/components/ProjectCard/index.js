@@ -46,9 +46,13 @@ class ProjectCard extends React.Component {
     const { openDropDown } = this.state;
     const { getProjectDetail, CardID } = this.props;
     getProjectDetail(CardID);
+    const {project} = this.props;
+
     if (openDropDown) {
       this.hideDropDown();
     } else {
+      this.setState({ projectName: project.name });
+      this.setState({ projectDescription: project.description });
       this.showDropDown();
     }
   }
@@ -63,9 +67,13 @@ class ProjectCard extends React.Component {
   }
 
   hideUpdateForm() {
-    // const { clearAddProjectState } = this.props;
-    // clearAddProjectState();
-    this.setState({ openUpdateModal: false });
+    this.setState({ projectName: '',
+      projectDescription: '',
+      openUpdateModal: false
+    });
+    debugger;
+    // this.setState({ projectDescription: '' });
+    // this.setState({ openUpdateModal: false });
   }
 
   validateProjectName(name) {
@@ -97,7 +105,7 @@ class ProjectCard extends React.Component {
 
     if (!projectName || !projectDescription) {
       this.setState({
-        error: 'Name and desccription fields are required'
+        error: 'Name and description fields are required'
       });
     } else if (this.validateProjectName(projectName) === false) {
       this.setState({
@@ -235,7 +243,7 @@ class ProjectCard extends React.Component {
                 </div>
                 <div className="ModalFormInputs">
                   <InputText
-                    placeholder={project.name}
+                    // placeholder={project.name}
                     name="projectName"
                     value={projectName}
                     onChange={(e) => {
@@ -243,7 +251,7 @@ class ProjectCard extends React.Component {
                     }}
                   />
                   <TextArea
-                    placeholder={project.description}
+                    // placeholder={project.description}
                     name="projectDescription"
                     value={projectDescription}
                     onChange={(e) => {
