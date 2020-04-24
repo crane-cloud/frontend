@@ -41,3 +41,4 @@ const getProjectDetail = (projectID) => (dispatch) => {
 };
 
 export default getProjectDetail;
+export { clearProjectState };
