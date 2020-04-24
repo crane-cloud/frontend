@@ -44,6 +44,8 @@ class ProjectCard extends React.Component {
 
   toggleDropDown() {
     const { openDropDown } = this.state;
+    const { getProjectDetail, CardID } = this.props;
+    getProjectDetail(CardID);
     if (openDropDown) {
       this.hideDropDown();
     } else {
@@ -57,6 +59,7 @@ class ProjectCard extends React.Component {
 
   showUpdateForm() {
     this.setState({ openUpdateModal: true });
+
   }
 
   hideUpdateForm() {
@@ -156,7 +159,14 @@ class ProjectCard extends React.Component {
 
   render() {
     const {
-      name, isDeleting, data, description, icon, CardID, isUpdating
+      name,
+      isDeleting,
+      data,
+      description,
+      icon,
+      CardID,
+      isUpdating,
+      project
     } = this.props;
     const userId = data.id;
     const { openDeleteAlert, openDropDown, projectName, projectDescription, openUpdateModal } = this.state;
@@ -221,11 +231,11 @@ class ProjectCard extends React.Component {
             <Modal showModal={openUpdateModal}>
               <div className="ModalUpdateForm">
                 <div className="ModalFormHeading">
-                  <h2>Update your project</h2>
+                  <h2>Update your project <b>{' '} {project.name}</b></h2>
                 </div>
                 <div className="ModalFormInputs">
                   <InputText
-                    placeholder="New Project Name"
+                    placeholder={project.name}
                     name="projectName"
                     value={projectName}
                     onChange={(e) => {
@@ -233,7 +243,7 @@ class ProjectCard extends React.Component {
                     }}
                   />
                   <TextArea
-                    placeholder="Enter New Project Description"
+                    placeholder={project.description}
                     name="projectDescription"
                     value={projectDescription}
                     onChange={(e) => {
@@ -275,7 +285,7 @@ ProjectCard.defaultProps = {
 const mapStateToProps = (state) => {
   const { data } = state.user;
   const {
-    isDeleting, isDeleted, isFailed, clearDeleteProjectState 
+    isDeleting, isDeleted, isFailed, clearDeleteProjectState
   } = state.deleteProjectReducer;
   const { isUpdating, isUpdated } = state.updateProjectReducer;
   const { project } = state.projectDetailReducer;
@@ -288,7 +298,7 @@ const mapStateToProps = (state) => {
     isUpdating,
     isUpdated,
     project,
-    clearDeleteProjectState 
+    clearDeleteProjectState
   };
 };
 

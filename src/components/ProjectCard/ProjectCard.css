@@ -1,5 +1,6 @@
 .ProjectsCard {
     width: 15rem;
+    min-height: 17rem;
 }
   
 .ProjectsCard:hover {
@@ -203,4 +204,8 @@
 }
 .ProjectDeleteModel .ModalChildWrap{
     width: unset;
+}
+
+b{
+    color: #F7B217;
 }
