@@ -3,10 +3,11 @@ import {
   GET_PROJECT_DETAIL_SUCCESS,
   GET_PROJECT_DETAIL_FAIL,
   START_GETTING_PROJECT_DETAIL
+  CLEAR_PROJECT_DETAILS,
 } from '../actions/actionTypes';
 
 const initialState = {
-  project: [],
+  project: null,
   isFetched: false,
   isFetching: false,
   message: ''
