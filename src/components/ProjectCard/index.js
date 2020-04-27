@@ -168,9 +168,6 @@ class ProjectCard extends React.Component {
     } = this.props;
     const userId = data.id;
     const { openDeleteAlert, openDropDown, projectName, projectDescription, openUpdateModal } = this.state;
-    console.log(projectName);
-    console.log("erek");
-    console.log(projectDescription);
     return (
       <div>
         <div className="ProjectsCard">
