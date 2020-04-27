@@ -6,7 +6,7 @@ import PrimaryButton from '../PrimaryButton';
 import DotsImg from '../../assets/images/3dots.svg';
 import deleteProject, { clearDeleteProjectState } from '../../redux/actions/deleteProject';
 import updateProject from '../../redux/actions/updateProject';
-import getProjectDetail from '../../redux/actions/projectDetail';
+import getProjectDetail, { clearProjectState } from '../../redux/actions/projectDetail';
 import Spinner from '../SpinnerComponent';
 import InputText from '../InputText';
 import TextArea from '../TextArea';
@@ -44,15 +44,10 @@ class ProjectCard extends React.Component {
 
   toggleDropDown() {
     const { openDropDown } = this.state;
-    const { getProjectDetail, CardID } = this.props;
-    getProjectDetail(CardID);
-    const {project} = this.props;
 
     if (openDropDown) {
       this.hideDropDown();
     } else {
-      this.setState({ projectName: project.name });
-      this.setState({ projectDescription: project.description });
       this.showDropDown();
     }
   }
@@ -67,13 +62,9 @@ class ProjectCard extends React.Component {
   }
 
   hideUpdateForm() {
-    this.setState({ projectName: '',
-      projectDescription: '',
+    this.setState({
       openUpdateModal: false
     });
-    debugger;
-    // this.setState({ projectDescription: '' });
-    // this.setState({ openUpdateModal: false });
   }
 
   validateProjectName(name) {
@@ -152,7 +143,6 @@ class ProjectCard extends React.Component {
         }, 2000
       );
     }
-    // clearDeleteProjectState();
   }
 
 
@@ -178,6 +168,9 @@ class ProjectCard extends React.Component {
     } = this.props;
     const userId = data.id;
     const { openDeleteAlert, openDropDown, projectName, projectDescription, openUpdateModal } = this.state;
+    console.log(projectName);
+    console.log("erek");
+    console.log(projectDescription);
     return (
       <div>
         <div className="ProjectsCard">
@@ -243,7 +236,7 @@ class ProjectCard extends React.Component {
                 </div>
                 <div className="ModalFormInputs">
                   <InputText
-                    // placeholder={project.name}
+                    placeholder="New project Name"
                     name="projectName"
                     value={projectName}
                     onChange={(e) => {
@@ -251,7 +244,7 @@ class ProjectCard extends React.Component {
                     }}
                   />
                   <TextArea
-                    // placeholder={project.description}
+                    placeholder="New Description"
                     name="projectDescription"
                     value={projectDescription}
                     onChange={(e) => {
@@ -311,7 +304,7 @@ const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = {
-  deleteProject, updateProject, getProjectDetail
+  deleteProject, updateProject, getProjectDetail, clearProjectState
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectCard);
