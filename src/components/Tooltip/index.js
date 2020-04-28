@@ -4,11 +4,8 @@ import './Tooltip.css';
 
 const Tooltip = ({ showIcon, keyword, message }) => (
   <div className="TooltipContainer">
-    <div className="TooltipContentToDisplay">
-      {showIcon ? <InfoIcon /> : keyword }
-      <div className="TooltipMessage">
-        {message}
-      </div>
+    <div className="TooltipPlaceholder" tooltip-message={message}>
+      {showIcon ? <InfoIcon /> : <div className="TooltipWordPlaceholder">{keyword}</div> }
     </div>
   </div>
 );
