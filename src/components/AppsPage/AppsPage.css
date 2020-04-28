@@ -173,3 +173,19 @@ table-layout: fixed;
 .HeadingWithTooltip {
   display: flex;
 }
+
+.DbSupportSection {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0%;
+  padding-bottom: 1rem;
+}
+
+.HeadingWithTooltip h4 {
+  margin: 0;
+  padding: .5rem 0;
+}
+
+.DbSupportCheckField {
+  display: flex;
+}
