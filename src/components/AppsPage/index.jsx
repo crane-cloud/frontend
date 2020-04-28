@@ -328,6 +328,7 @@ class AppsPage extends React.Component {
             </div>
 
             <Checkbox
+              isBlack
               onClick={this.toggleAgreed}
               isChecked={needDb}
             />
