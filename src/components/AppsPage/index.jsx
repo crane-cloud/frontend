@@ -232,7 +232,9 @@ class AppsPage extends React.Component {
                 )}
               </div>
               <div className="ModalFormInputsEnvVars">
-                <h4>Environment Variables</h4>
+                <div>
+                  <h4>Environment Variables</h4>
+                </div>
                 {(Object.keys(envVars).length > 0) && (
                   <div className="EnvVarsTable">
                     <table>
