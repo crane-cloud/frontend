@@ -39,6 +39,9 @@ class ProjectCard extends React.Component {
   }
 
   showDropDown() {
+    const {getProjectDetail, CardID} = this.props;
+    getProjectDetail(CardID);
+
     this.setState({ openDropDown: true });
   }
 
@@ -168,6 +171,7 @@ class ProjectCard extends React.Component {
     } = this.props;
     const userId = data.id;
     const { openDeleteAlert, openDropDown, projectName, projectDescription, openUpdateModal } = this.state;
+    console.log(project);
     return (
       <div>
         <div className="ProjectsCard">
