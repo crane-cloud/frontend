@@ -189,3 +189,18 @@ table-layout: fixed;
 .DbSupportCheckField {
   display: flex;
 }
+
+.InputFieldWithTooltip {
+  max-width: 25rem; /* same as input field*/
+  display: flex;
+  position: relative;
+}
+
+.InputTooltipContainer {
+  position: absolute;
+  right: 0;
+  padding-right: .5rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+} 

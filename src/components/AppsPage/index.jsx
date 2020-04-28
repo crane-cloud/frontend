@@ -245,22 +245,33 @@ class AppsPage extends React.Component {
                     this.handleChange(e);
                   }}
                 />
+
+                <div className="InputFieldWithTooltip">
+                  <InputText
+                    placeholder="Entry Command"
+                    name="entryCommand"
+                    value={entryCommand}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                  <div className="InputTooltipContainer">
+                    <Tooltip
+                      showIcon
+                      message="holla holla holla"
+                    />
+                  </div>
+                </div>
+
                 <InputText
-                  placeholder="Entry Command"
-                  name="entryCommand"
-                  value={entryCommand}
-                  onChange={(e) => {
-                    this.handleChange(e);
-                  }}
-                />
-                <InputText
-                  placeholder="Port - defaults to 80"
+                  placeholder="Port (optional) - defaults to 80"
                   name="port"
                   value={port}
                   onChange={(e) => {
                     this.handleChange(e);
                   }}
                 />
+
                 {error && (
                   <Feedback
                     type="error"
