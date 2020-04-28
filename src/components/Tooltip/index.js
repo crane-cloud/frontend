@@ -1,9 +1,11 @@
 import React from 'react';
 import './Tooltip.css';
 
-const Tooltip = () => (
+const Tooltip = ({ showIcon, keyword, message }) => (
   <div className="TooltipContainer">
-    hey man
+    <div className="TooltipContentToDisplay">
+      
+    </div>
   </div>
 );
 
