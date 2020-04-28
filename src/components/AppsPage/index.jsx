@@ -237,7 +237,7 @@ class AppsPage extends React.Component {
                   <h4>Environment Variables</h4>
                   <Tooltip
                     showIcon
-                    message="These define aspects of your app’s environment that can vary"
+                    message="These are are key/value pairs which define aspects of your app’s environment that can vary"
                   />
                 </div>
                 {(Object.keys(envVars).length > 0) && (
