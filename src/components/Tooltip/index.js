@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ReactComponent as InfoIcon } from '../../assets/images/info-icon.svg';
 import './Tooltip.css';
 
@@ -9,5 +10,16 @@ const Tooltip = ({ showIcon, keyword, message }) => (
     </div>
   </div>
 );
+
+Tooltip.propTypes = {
+  showIcon: PropTypes.bool,
+  keyword: PropTypes.string,
+  message: PropTypes.string.isRequired
+};
+
+Tooltip.defaultProps = {
+  showIcon: true,
+  keyword: ''
+};
 
 export default Tooltip;
