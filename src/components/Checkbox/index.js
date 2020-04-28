@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './Checkbox.css';
-import { ReactComponent as Checkmark } from '../../assets/images/check.svg';
+import { ReactComponent as WhiteCheckmark } from '../../assets/images/white-check-mark.svg';
+import { ReactComponent as BlackCheckmark } from '../../assets/images/black-check-mark.svg';
 
 const Checkbox = ({ isChecked, onClick, isBlack }) => (
   <div className="Checkbox">
@@ -11,7 +12,7 @@ const Checkbox = ({ isChecked, onClick, isBlack }) => (
       checked={isChecked}
     />
     <div className={`CheckMarkWrapper Checked-${isChecked} ${isBlack && 'CheckMarkWrapperBlack'}`}>
-      <Checkmark />
+      {isBlack ? <BlackCheckmark /> : <WhiteCheckmark />}
     </div>
   </div>
 );
