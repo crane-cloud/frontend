@@ -170,8 +170,9 @@ class ProjectCard extends React.Component {
       project
     } = this.props;
     const userId = data.id;
-    const { openDeleteAlert, openDropDown, projectName, projectDescription, openUpdateModal } = this.state;
-    console.log(project);
+    const {
+      openDeleteAlert, openDropDown, projectName, projectDescription, openUpdateModal
+    } = this.state;
     return (
       <div>
         <div className="ProjectsCard">
@@ -233,7 +234,13 @@ class ProjectCard extends React.Component {
             <Modal showModal={openUpdateModal}>
               <div className="ModalUpdateForm">
                 <div className="ModalFormHeading">
-                  <h2>Update your project <b>{' '} {project.name}</b></h2>
+                  <h2>
+                    Update your project
+                    <b>
+                      {' '}
+                      {project.name}
+                    </b>
+                  </h2>
                 </div>
                 <div className="ModalFormInputs">
                   <InputText
