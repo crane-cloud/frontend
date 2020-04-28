@@ -42,6 +42,7 @@ class AppsPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateAppName = this.validateAppName.bind(this);
+    this.toggleNeedDb = this.toggleNeedDb.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -116,6 +117,13 @@ class AppsPage extends React.Component {
       return true;
     }
     return false;
+  }
+
+  toggleNeedDb() {
+    const { needDb } = this.state;
+    this.setState({
+      needDb: !needDb
+    });
   }
 
   handleSubmit() {
@@ -329,7 +337,7 @@ class AppsPage extends React.Component {
 
             <Checkbox
               isBlack
-              onClick={this.toggleAgreed}
+              onClick={this.toggleNeedDb}
               isChecked={needDb}
             />
             {/* //- /////////////////////////////////// -// */}
