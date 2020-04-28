@@ -14,6 +14,7 @@ import AppsList from '../AppsList';
 import Header from '../Header';
 import Spinner from '../SpinnerComponent';
 import Feedback from '../Feedback';
+import Checkbox from '../Checkbox';
 import Tooltip from '../Tooltip';
 import './AppsPage.css';
 
@@ -28,7 +29,10 @@ class AppsPage extends React.Component {
       envVars: {},
       openModal: false, // add project modal is closed initially
       error: '',
-      createFeedback: ''
+      createFeedback: '',
+      entryCommand: '',
+      port: '',
+      needDb: false
     };
 
     this.addEnvVar = this.addEnvVar.bind(this);
@@ -115,7 +119,9 @@ class AppsPage extends React.Component {
   }
 
   handleSubmit() {
-    const { name, uri, envVars, entryCommand, port } = this.state;
+    const {
+      name, uri, envVars, entryCommand, port, needDb
+    } = this.state;
     const {
       createApp,
       match
@@ -140,6 +146,7 @@ class AppsPage extends React.Component {
         env_vars: envVars,
         image: uri,
         name,
+        need_db: needDb,
         port,
         project_id: match.params.projectID
       };
@@ -158,7 +165,8 @@ class AppsPage extends React.Component {
       envVars,
       error,
       entryCommand,
-      port
+      port,
+      needDb
     } = this.state;
 
     const {
@@ -319,6 +327,10 @@ class AppsPage extends React.Component {
               </div>
             </div>
 
+            <Checkbox
+              onClick={this.toggleAgreed}
+              isChecked={needDb}
+            />
             {/* //- /////////////////////////////////// -// */}
 
             <div className="ModalFormButtons AddAddButtons">
