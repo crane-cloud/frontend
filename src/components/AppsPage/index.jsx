@@ -115,7 +115,7 @@ class AppsPage extends React.Component {
   }
 
   handleSubmit() {
-    const { name, uri, envVars } = this.state;
+    const { name, uri, envVars, entryCommand, port } = this.state;
     const {
       createApp,
       match
@@ -136,13 +136,15 @@ class AppsPage extends React.Component {
       });
     } else {
       const appInfo = {
+        command: entryCommand,
         env_vars: envVars,
         image: uri,
         name,
+        port,
         project_id: match.params.projectID
       };
 
-      createApp(appInfo, match.params.projectID);
+      console.log(appInfo, match.params.projectID);
     }
   }
 
@@ -154,7 +156,9 @@ class AppsPage extends React.Component {
       varName,
       varValue,
       envVars,
-      error
+      error,
+      entryCommand,
+      port
     } = this.state;
 
     const {
@@ -221,6 +225,22 @@ class AppsPage extends React.Component {
                   placeholder="Image Uri"
                   name="uri"
                   value={uri}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+                />
+                <InputText
+                  placeholder="Entry Command"
+                  name="entryCommand"
+                  value={entryCommand}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+                />
+                <InputText
+                  placeholder="Port - defaults to 80"
+                  name="port"
+                  value={port}
                   onChange={(e) => {
                     this.handleChange(e);
                   }}
