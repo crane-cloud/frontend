@@ -1,3 +1,27 @@
 .TooltipContainer {
-  padding-left: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: .5rem;
+}
+
+.TooltipContentToDisplay {
+  color: #F7B21F;
+  font-weight: bold;
+  position: relative;
+  overflow-y: unset;
+}
+
+.TooltipMessage {
+  width: max-content;
+  max-width: 15rem;
+  max-height: 5rem;
+  padding: .5rem;
+  background-color: rgba(241, 241, 241);
+  position: absolute;
+  left: 1rem;
+  top: 0;
+  color: black;
+  font-weight: normal;
+  font-size: .7rem;
 }

@@ -235,7 +235,10 @@ class AppsPage extends React.Component {
               <div className="ModalFormInputsEnvVars">
                 <div className="HeadingWithTooltip">
                   <h4>Environment Variables</h4>
-                  <Tooltip showIcon />
+                  <Tooltip
+                    showIcon
+                    message="These define aspects of your app’s environment that can vary"
+                  />
                 </div>
                 {(Object.keys(envVars).length > 0) && (
                   <div className="EnvVarsTable">
