@@ -335,11 +335,24 @@ class AppsPage extends React.Component {
               </div>
             </div>
 
-            <Checkbox
-              isBlack
-              onClick={this.toggleNeedDb}
-              isChecked={needDb}
-            />
+            <div className="DbSupportSection">
+              <div className="HeadingWithTooltip">
+                <h4>Database Support</h4>
+                <Tooltip
+                  showIcon
+                  message="TODO: edit this explanation / info"
+                />
+              </div>
+              <div className="DbSupportCheckField">
+                <Checkbox
+                  isBlack
+                  onClick={this.toggleNeedDb}
+                  isChecked={needDb}
+                />
+                  &nbsp; I would like database support
+              </div>
+            </div>
+
             {/* //- /////////////////////////////////// -// */}
 
             <div className="ModalFormButtons AddAddButtons">
