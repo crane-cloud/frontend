@@ -14,6 +14,7 @@ import AppsList from '../AppsList';
 import Header from '../Header';
 import Spinner from '../SpinnerComponent';
 import Feedback from '../Feedback';
+import Tooltip from '../Tooltip';
 import './AppsPage.css';
 
 class AppsPage extends React.Component {
@@ -232,8 +233,9 @@ class AppsPage extends React.Component {
                 )}
               </div>
               <div className="ModalFormInputsEnvVars">
-                <div>
+                <div className="HeadingWithTooltip">
                   <h4>Environment Variables</h4>
+                  <Tooltip />
                 </div>
                 {(Object.keys(envVars).length > 0) && (
                   <div className="EnvVarsTable">

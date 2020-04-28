@@ -169,3 +169,7 @@ table-layout: fixed;
 .ModalForm.AddAppModal .ModalFormInputs::-webkit-scrollbar-thumb:hover {
   background: #000;
 }
+
+.HeadingWithTooltip {
+  display: flex;
+}
