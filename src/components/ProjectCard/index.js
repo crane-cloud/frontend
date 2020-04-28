@@ -183,22 +183,24 @@ class ProjectCard extends React.Component {
             </Link>
             <div className="ProjectsCardDesc">
               <table className="ProjectTab">
-                <tr>
-                  <td className="ProjectName">{description}</td>
-                  <td className="OtherData">
-                    <div className="StatusData">
-                      <div className="ProjectDropDown" onClick={() => this.toggleDropDown()}>
-                        <img src={DotsImg} alt="three dots" className="DropDownImg" />
-                        {openDropDown && (
-                          <div className="ProjectDropDownContent">
-                            <div onClick={() => this.showDeleteAlert()}>Delete</div>
-                            <div onClick={() => this.showUpdateForm()}>Update</div>
-                          </div>
-                        )}
+                <tbody>
+                  <tr>
+                    <td className="ProjectName">{description}</td>
+                    <td className="OtherData">
+                      <div className="StatusData">
+                        <div className="ProjectDropDown" onClick={() => this.toggleDropDown()}>
+                          <img src={DotsImg} alt="three dots" className="DropDownImg" />
+                          {openDropDown && (
+                            <div className="ProjectDropDownContent">
+                              <div onClick={() => this.showDeleteAlert()}>Delete</div>
+                              <div onClick={() => this.showUpdateForm()}>Update</div>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -282,7 +284,6 @@ ProjectCard.propTypes = {
   isDeleted: PropTypes.bool,
   isDeleting: PropTypes.bool,
   isFailed: PropTypes.bool,
-  clearDeleteProjectState: PropTypes.func.isRequired,
 };
 
 ProjectCard.defaultProps = {
