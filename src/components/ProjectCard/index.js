@@ -10,6 +10,7 @@ import getProjectDetail, { clearProjectState } from '../../redux/actions/project
 import Spinner from '../SpinnerComponent';
 import InputText from '../InputText';
 import TextArea from '../TextArea';
+import Feedback from '../Feedback';
 import Modal from '../Modal';
 import './ProjectCard.css';
 
@@ -186,7 +187,12 @@ class ProjectCard extends React.Component {
     } = this.props;
     const userId = data.id;
     const {
-      openDeleteAlert, openDropDown, projectName, projectDescription, openUpdateModal
+      openDeleteAlert,
+      openDropDown,
+      projectName,
+      projectDescription,
+      openUpdateModal,
+      error
     } = this.state;
     return (
       <div>
@@ -276,6 +282,13 @@ class ProjectCard extends React.Component {
                       this.handleChange(e);
                     }}
                   />
+
+                  {error && (
+                    <Feedback
+                      type="error"
+                      message={error}
+                    />
+                  )}
 
                 </div>
 
