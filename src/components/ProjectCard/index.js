@@ -258,17 +258,21 @@ class ProjectCard extends React.Component {
             <Modal showModal={openUpdateModal}>
               <div className="ModalUpdateForm">
                 <div className="ModalFormHeading">
-                  <h2>
-                    Update your project
-                    <b>
-                      {' '}
-                      {project.name}
-                    </b>
-                  </h2>
-                  <Tooltip
-                    showIcon
-                    message="You can update either project name or description or both."
-                  />
+                  <div className="HeadingWithTooltip">
+                    <h2>
+                      Update your project
+                      <b>
+                        {' '}
+                        {project.name}
+                      </b>
+                    </h2>
+                    <div className="UpdateToolTip">
+                      <Tooltip
+                        showIcon
+                        message="You can update either project name or description or both."
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div className="ModalFormInputs">
                   <InputText

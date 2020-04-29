@@ -81,6 +81,15 @@
     transform: scale(1.02);
 }
 
+.HeadingWithTooltip {
+    display: inline;
+}
+
+.UpdateToolTip{
+    width: 2rem;
+    padding-top: 1.75rem;
+}
+
 
 /*///////////// Delete Model //////////////////*/
 
