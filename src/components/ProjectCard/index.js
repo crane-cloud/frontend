@@ -22,7 +22,8 @@ class ProjectCard extends React.Component {
       openDropDown: false,
       deleteFeedback: '',
       projectName: '',
-      projectDescription: ''
+      projectDescription: '',
+      error: ''
     };
 
     this.showUpdateForm = this.showUpdateForm.bind(this);
