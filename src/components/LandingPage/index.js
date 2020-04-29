@@ -19,7 +19,7 @@ const LandingPage = (props) => {
         <div className="LandingPageMainContentInfo">
           <div>
             <h1 className="uppercase extra-bold">managed kubernetes platform</h1>
-            <h3 className="bold">Automated container deployment, scaling and management.</h3>
+            <h3 className="bold">Automated application deployment, scaling and management.</h3>
             {
               user ? (
                 <Link to={`/users/${user.data.id}/projects`}><PrimaryButton label="get started" /></Link>
