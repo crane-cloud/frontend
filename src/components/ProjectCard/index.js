@@ -11,6 +11,7 @@ import Spinner from '../SpinnerComponent';
 import InputText from '../InputText';
 import TextArea from '../TextArea';
 import Feedback from '../Feedback';
+import Tooltip from '../Tooltip';
 import Modal from '../Modal';
 import './ProjectCard.css';
 
@@ -264,6 +265,10 @@ class ProjectCard extends React.Component {
                       {project.name}
                     </b>
                   </h2>
+                  <Tooltip
+                    showIcon
+                    message="You can update either project name or description or both."
+                  />
                 </div>
                 <div className="ModalFormInputs">
                   <InputText
