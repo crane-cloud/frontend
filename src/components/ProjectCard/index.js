@@ -95,9 +95,23 @@ class ProjectCard extends React.Component {
 
   handleSubmit() {
     const { projectName, projectDescription } = this.state;
-    const { updateProject, CardID } = this.props;
+    const { updateProject, CardID, project } = this.props;
 
-    if (!projectName || !projectDescription) {
+    if (projectName === project.name) {
+      this.setState({
+        error: 'You can not submit the same project Name'
+      });
+    } else if (!projectName && projectDescription) {
+      const newProjectObject = {
+        description: projectDescription
+      };
+      updateProject(CardID, newProjectObject);
+    } else if (projectName && !projectDescription) {
+      const newProjectObject = {
+        name: projectName
+      };
+      updateProject(CardID, newProjectObject);
+    } else if (!projectName && !projectDescription) {
       this.setState({
         error: 'Name and description fields are required'
       });
@@ -110,11 +124,11 @@ class ProjectCard extends React.Component {
         error: 'name may only contain letters and a hypen -'
       });
     } else {
-      const newProjectName = {
+      const newProjectObject = {
         name: projectName,
         description: projectDescription
       };
-      updateProject(CardID, newProjectName);
+      updateProject(CardID, newProjectObject);
     }
   }
 
