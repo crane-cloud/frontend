@@ -259,6 +259,7 @@ class AppsPage extends React.Component {
                     <Tooltip
                       showIcon
                       message="holla holla holla"
+                      position="left"
                     />
                   </div>
                 </div>
