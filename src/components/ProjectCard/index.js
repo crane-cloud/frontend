@@ -89,7 +89,6 @@ class ProjectCard extends React.Component {
 
   handleSubmit() {
     const { projectName } = this.state;
-    console.log(this.state);
     const { updateProject, CardID } = this.props;
 
     if (!projectName) {
@@ -115,7 +114,7 @@ class ProjectCard extends React.Component {
 
   handleDeleteProject(e, projectID) {
     const {
-      deleteProject, isDeleted, isFailed
+      deleteProject, isDeleted, isFailed, clearDeleteProjectState
     } = this.props;
     e.preventDefault();
 
@@ -140,7 +139,7 @@ class ProjectCard extends React.Component {
         }, 2000
       );
     }
-    // clearDeleteProjectState();
+    clearDeleteProjectState();
   }
 
 
@@ -261,12 +260,23 @@ ProjectCard.propTypes = {
   isDeleting: PropTypes.bool,
   isFailed: PropTypes.bool,
   clearDeleteProjectState: PropTypes.func.isRequired,
+  updateProject: PropTypes.func.isRequired,
+  deleteProject: PropTypes.func.isRequired,
+  CardID: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  isUpdating: PropTypes.bool,
+  description: PropTypes.string,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  icon: PropTypes.string.isRequired
 };
 
 ProjectCard.defaultProps = {
   isDeleted: false,
   isDeleting: false,
-  isFailed: false
+  isFailed: false,
+  name: '',
+  description: '',
+  isUpdating: false,
 };
 
 const mapStateToProps = (state) => {
