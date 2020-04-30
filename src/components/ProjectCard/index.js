@@ -158,11 +158,15 @@ class ProjectCard extends React.Component {
       name, isDeleting, data, description, icon, CardID, isUpdating
     } = this.props;
     const userId = data.id;
-    const { openDeleteAlert, openDropDown, projectName, openUpdateModal } = this.state;
+    const {
+      openDeleteAlert, openDropDown, projectName, openUpdateModal
+    } = this.state;
     return (
       <div>
         <div className="ProjectsCard">
-          <div className="ProjectImageDiv" style={{ backgroundImage: `url(${icon})` }} />
+          <Link to={{ pathname: `/users/${userId}/projects/${CardID}/apps` }} key={CardID}>
+            <div className="ProjectImageDiv" style={{ backgroundImage: `url(${icon})` }} />
+          </Link>
           <div className="BottomContainer">
             <Link to={{ pathname: `/users/${userId}/projects/${CardID}/apps` }} key={CardID}>
               <div className="ProjectsCardName">{name}</div>
@@ -172,9 +176,11 @@ class ProjectCard extends React.Component {
                 <tr>
                   <td className="ProjectName">{description}</td>
                   <td className="OtherData">
-                    <div className="StatusData">
+                    <div className="DropDownData">
                       <div className="ProjectDropDown" onClick={() => this.toggleDropDown()}>
-                        <img src={DotsImg} alt="three dots" className="DropDownImg" />
+                        <div className="DropDownIcon">
+                          <img src={DotsImg} alt="three dots" className="DropDownImg" />
+                        </div>
                         {openDropDown && (
                           <div className="ProjectDropDownContent">
                             <div onClick={() => this.showDeleteAlert()}>Delete</div>
@@ -266,7 +272,7 @@ ProjectCard.defaultProps = {
 const mapStateToProps = (state) => {
   const { data } = state.user;
   const {
-    isDeleting, isDeleted, isFailed, clearDeleteProjectState 
+    isDeleting, isDeleted, isFailed, clearDeleteProjectState
   } = state.deleteProjectReducer;
   const { isUpdating, isUpdated } = state.updateProjectReducer;
   const { project } = state.projectDetailReducer;
@@ -279,7 +285,7 @@ const mapStateToProps = (state) => {
     isUpdating,
     isUpdated,
     project,
-    clearDeleteProjectState 
+    clearDeleteProjectState
   };
 };
 
