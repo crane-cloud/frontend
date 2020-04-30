@@ -45,8 +45,9 @@ class UserProjectsPage extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-
-    const { isAdded, getClustersList, getUserProjects, data, isDeleted, isUpdated } = this.props;
+    const {
+      isAdded, getClustersList, getUserProjects, data, isDeleted, isUpdated
+    } = this.props;
 
     if (isDeleted !== prevProps.isDeleted) {
       getUserProjects(data.id);
@@ -148,7 +149,7 @@ class UserProjectsPage extends React.Component {
       isAdded,
       isAdding
     } = this.props;
-    
+
     return (
       <div className="Page">
         <div className="TopRow">
@@ -168,7 +169,6 @@ class UserProjectsPage extends React.Component {
                 <div className="ProjectList">
                   {(isFetched && projects !== undefined && (
                     (projects.map((project) => (
-                      // <Link to={{ pathname: `/users/${userId}/projects/${project.id}/apps` }} key={project.id}>
                       <div key={project.id} className="ProjectCardItem">
                         <ProjectCard
                           name={project.name}
@@ -177,7 +177,6 @@ class UserProjectsPage extends React.Component {
                           icon={crane}
                         />
                       </div>
-                      // </Link>
                     ))))
                   )}
                   {(isFetched && projects.length === 0) && (
@@ -280,6 +279,8 @@ UserProjectsPage.propTypes = {
   isAdding: PropTypes.bool,
   isFetched: PropTypes.bool,
   message: PropTypes.string,
+  isUpdated: PropTypes.bool,
+  isDeleted: PropTypes.bool,
   isRetrieving: PropTypes.bool
 };
 
@@ -291,6 +292,8 @@ UserProjectsPage.defaultProps = {
   projects: [],
   message: '',
   isFetched: false,
+  isUpdated: false,
+  isDeleted: false,
   isRetrieving: false
 };
 
