@@ -5,8 +5,7 @@
 .ProjectsCard:hover {
     transition: 0.5s;
     box-shadow: 0 8px 16px 0px rgba(0,0,0,0.3);
-    transform: scale(0.95);
-    border: 1px solid #000;
+    margin: 0;
 }
 .ProjectImageDiv{
     margin: 0;
