@@ -45,7 +45,7 @@ class ClusterPage extends React.Component {
   hideForm() {
     const { clearAddClusterState } = this.props;
     clearAddClusterState();
-    this.setState({ openModal: false });
+    this.setState({ openModal: false, error: '' });
   }
 
   handleChange(e) {
@@ -104,7 +104,6 @@ class ClusterPage extends React.Component {
       isFailed,
       message
     } = this.props;
-    console.log(message);
 
     localStorage.setItem('token', accessToken);
 
