@@ -1,0 +1,206 @@
+.ProjectsCard {
+    width: 15rem;
+}
+  
+.ProjectsCard:hover {
+    transition: 0.5s;
+    box-shadow: 0 8px 16px 0px rgba(0,0,0,0.3);
+    transform: scale(0.95);
+    border: 1px solid #000;
+}
+.ProjectImageDiv{
+    margin: 0;
+    width: 100%;
+    height: 9.375rem;
+    background-color: #008ac1;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.BottomContainer {
+    padding: 0.625rem;
+    height: 5rem;
+}
+
+.ProjectsCardName{
+    width: 100%;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.5rem;
+    padding-top: 0.3125rem;
+}
+.ProjectsCardDesc{
+    width: 100%;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1rem;
+    color: #000000;
+    padding-top: 0.625rem;
+
+}
+
+.ProjectDropDown {
+    position: relative;
+    display: inline-block;
+    z-index: 0;
+    left: 99%;
+}
+  
+.ProjectDropDownContent {
+    display: block;
+    position: absolute ;
+    background-color: #f1f1f1;
+    min-width: 6.875rem;
+    right: 0;
+    box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+  
+.ProjectDropDownContent div {
+    color: black;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    display: block;
+    font-size: 0.8125rem;
+    text-align :left;
+}
+
+.ProjectDropDownContent div::first-letter {
+    text-transform: uppercase;
+}
+
+  
+.ProjectDropDownContent div:hover {background-color: #ddd;}
+
+.ProjectDropDown:hover .DropDownImg {
+    transition: 0.5s;
+    opacity: 0.8;
+    transform: scale(1.02);
+}
+
+
+/*///////////// Delete Model //////////////////*/
+
+.ProjectDeleteModel{
+    position: fixed;
+    display: hidden!important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+    background-color: rgba(0,0,0,0.5)
+}
+
+.ProjectDeleteModel .ModalParentWrap{
+    background-color: inherit;
+}
+
+.ProjectDeleteModel .ModalChildWrap{
+    width: 20rem;
+    height: unset;
+    min-height: 10rem !important;
+    z-index: 9999;
+    background-color: #f1f1f1;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.DeleteDescription{
+    cursor: pointer;
+    padding-bottom: 3rem;
+}
+
+.DeleteProjectModelResponses{
+    display: grid;
+    height: 100%;
+    grid-gap: 1rem;
+    gap: 1rem;
+    grid-template-columns: repeat(2, auto);
+    align-items: center;
+    width: 100%;
+}
+
+.DeleteProjectModelResponses button{
+    display: inline;
+}
+
+.DeleteErrorDiv{
+    color: #f00;
+}
+
+.DeleteSuccessDiv{
+    color: green;
+}
+
+.DeleteProjectModelResponses .undefined{
+    background-color: #f00;
+    outline: 2px solid #f00;
+}
+.DeleteProjectModelResponses .undefined:hover{
+    background-color: #fff;
+    outline: 2px solid #f00;
+    color: #f00;
+}
+
+.StatusData{
+    display: grid;
+    grid-gap: 0.5rem;
+    grid-template-columns: repeat(2, auto);
+    align-items: center;
+    height: 100%;
+    width: 3rem;
+}
+.OtherData{
+    display: grid;
+    justify-content: end;
+}
+.StatusData img{
+    height: 1.2rem;
+    justify-self: center;
+}
+
+.ProjectTab{
+    width: 100%;
+}
+
+.ProjectTab tr td:last-child {
+    text-align: right;
+}
+
+.ProjectTab tr td:first-child {
+    text-align: left;
+}
+
+.ModalUpdateForm {
+    display: grid;
+    gap: 1rem;
+}
+
+.ModalUpdateForm .ModalFormInputs {
+    display: grid;
+    gap: 1rem;
+    padding-bottom: 1rem;
+}
+  
+.ModalUpdateForm .ModalFormInputs .InputText {
+    border: 2px solid #000000;
+    color: #000;
+}
+  
+.ModalUpdateForm .ModalFormInputs .InputText::placeholder {
+    color: #000;
+}
+  
+.ModalUpdateForm .ModalFormButtons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.AddedWidth{
+    width: 25rem !important;
+}
+.ProjectDeleteModel .ModalChildWrap{
+    width: unset;
+}

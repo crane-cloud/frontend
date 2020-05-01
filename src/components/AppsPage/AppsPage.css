@@ -10,6 +10,11 @@
 .BackDiv p{
   display: inline;
 }
+.BackDiv img:hover{
+  transition: 0.2s;
+  transform: scale(1.2);
+}
+
 
 /*! ////////////////////////////////////////// */
 .ModalForm.AddAppModal .ModalFormHeading {
@@ -168,4 +173,8 @@ table-layout: fixed;
 }
 .ModalForm.AddAppModal .ModalFormInputs::-webkit-scrollbar-thumb:hover {
   background: #000;
+}
+
+.HeadingWithTooltip {
+  display: flex;
 }

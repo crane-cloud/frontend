@@ -4,13 +4,16 @@
  background-color: #F7B21F;
  border-radius: 50%;
  border: none;
- box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+ box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
  cursor: pointer;
+ display: flex;
+ justify-content: center;
+ align-items: center;
 }
 
 
-.RoundAddButton:focus {
+.RoundAddButton:hover {
     box-shadow: none;
-    border-color:transparent!important;
+    border-color:transparent;
     outline:none;
 }

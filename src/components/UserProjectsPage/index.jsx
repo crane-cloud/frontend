@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
 import addProject, { clearAddProjectState } from '../../redux/actions/addProject';
 import InformationBar from '../InformationBar';
@@ -12,18 +12,18 @@ import getClustersList from '../../redux/actions/clusters';
 import getUserProjects from '../../redux/actions/projectsList';
 import InputText from '../InputText';
 import TextArea from '../TextArea';
+import ProjectCard from '../ProjectCard';
 import Spinner, { BigSpinner } from '../SpinnerComponent';
-
-import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/plant.svg';
 import Feedback from '../Feedback';
+import Select from '../Select';
 
 
 class UserProjectsPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      openModal: false, // add project modal is closed initially
+      openModal: false,
       projectName: '',
       clusterID: '',
       projectDescription: '',
@@ -35,6 +35,7 @@ class UserProjectsPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateProjectName = this.validateProjectName.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
   }
 
   componentDidMount() {
@@ -44,7 +45,18 @@ class UserProjectsPage extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { isAdded, data, getUserProjects } = this.props;
+
+    const { isAdded, getClustersList, getUserProjects, data, isDeleted, isUpdated } = this.props;
+
+    if (isDeleted !== prevProps.isDeleted) {
+      getUserProjects(data.id);
+      getClustersList();
+    }
+
+    if (isUpdated !== prevProps.isUpdated) {
+      getUserProjects(data.id);
+      getClustersList();
+    }
 
     if (isAdded !== prevProps.isAdded) {
       getUserProjects(data.id);
@@ -85,6 +97,10 @@ class UserProjectsPage extends React.Component {
     }
   }
 
+  handleSelectChange(selected) {
+    this.setState({ clusterID: selected.id });
+  }
+
   handleSubmit() {
     const { projectName, projectDescription, clusterID } = this.state;
     const { addProject, data } = this.props;
@@ -120,27 +136,19 @@ class UserProjectsPage extends React.Component {
       projectName,
       projectDescription,
       error,
-      value
-      // clusterID,
-      // loading
     } = this.state;
     const {
       projects,
       clusters,
       isRetrieving,
-      data,
+      // data,
       message,
       errorCode,
       isFetched,
       isAdded,
       isAdding
     } = this.props;
-    const userId = data.id;
-    const clustersList = clusters.length > 0
-        && clusters.map((item) => (
-          <option className="ClusterNameOption" key={item.id} value={item.id}>{item.name}</option>
-        ));
-
+    
     return (
       <div className="Page">
         <div className="TopRow">
@@ -160,15 +168,16 @@ class UserProjectsPage extends React.Component {
                 <div className="ProjectList">
                   {(isFetched && projects !== undefined && (
                     (projects.map((project) => (
-                      <Link to={{ pathname: `/users/${userId}/projects/${project.id}/apps` }} key={project.id}>
-                        <div key={project.id} className="ProjectCardItem">
-                          <ClusterCard
-                            name={project.name}
-                            description={project.description}
-                            icon={crane}
-                          />
-                        </div>
-                      </Link>
+                      // <Link to={{ pathname: `/users/${userId}/projects/${project.id}/apps` }} key={project.id}>
+                      <div key={project.id} className="ProjectCardItem">
+                        <ProjectCard
+                          name={project.name}
+                          description={project.description}
+                          CardID={project.id}
+                          icon={crane}
+                        />
+                      </div>
+                      // </Link>
                     ))))
                   )}
                   {(isFetched && projects.length === 0) && (
@@ -205,18 +214,12 @@ class UserProjectsPage extends React.Component {
               <h2>Add a project</h2>
             </div>
             <div className="ModalFormInputs">
-              <select
-                className="ClusterDrop"
-                name="clusterID"
-                value={value}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
+              <Select
                 required
-              >
-                <option disabled selected>Pick a Cluster</option>
-                {clustersList}
-              </select>
+                placeholder="Select a cluster"
+                options={clusters}
+                onChange={this.handleSelectChange}
+              />
 
               <InputText
                 placeholder="Project Name"
@@ -297,16 +300,20 @@ const mapStateToProps = (state) => {
     isAdded, isAdding, message, errorCode
   } = state.addProjectReducer;
   const { clusters } = state.clustersReducer;
+  const { isDeleted } = state.deleteProjectReducer;
   const { isRetrieving, projects, isFetched } = state.userProjectsReducer;
+  const { isUpdated } = state.updateProjectReducer;
   return {
     isAdded,
     data,
     isRetrieving,
     projects,
     clusters,
+    isUpdated,
     isFetched,
     isAdding,
     message,
+    isDeleted,
     errorCode
   };
 };
