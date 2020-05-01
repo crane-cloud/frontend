@@ -37,27 +37,39 @@ class ClustersList extends Component {
             </div>
           ) : (
             <div>
-              {isRetrieved ? (clusters.map((cluster) => (
-                <Link to={{ pathname: `/clusters/${cluster.id}/resources` }} key={cluster.id}>
-                  <div key={cluster.id} className="ClusterCardItem">
-                    <ClusterCard
-                      name={cluster.name}
-                      description={cluster.description}
-                      icon={crane}
-                    />
-                  </div>
-                </Link>
-              )))
-                : (
-                  <div className="EmptyList">
-                    <h3>No Clusters Available</h3>
-                  </div>
-                )}
+              {(isRetrieved && clusters !== undefined) && (
+                clusters.map((cluster) => (
+                  <Link to={{ pathname: `/clusters/${cluster.id}/resources` }} key={cluster.id}>
+                    <div key={cluster.id} className="ClusterCardItem">
+                      <ClusterCard
+                        name={cluster.name}
+                        description={cluster.description}
+                        icon={crane}
+                      />
+                    </div>
+                  </Link>
+                ))
+              )}
             </div>
           )
         }
+        {(isRetrieved && clusters.length === 0) && (
+          <div className="NoContentDiv">
+            <p>No Clusters Available</p>
+          </div>
+        )}
+        {(!isRetrieving && !isRetrieved) && (
+          <div className="NoContentDiv">
+            <p>
+              Oops! Something went wrong!
+
+              Failed to retrieve Clusters.
+            </p>
+          </div>
+        )}
 
       </div>
+
     );
   }
 }
