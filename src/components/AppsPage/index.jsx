@@ -138,7 +138,7 @@ class AppsPage extends React.Component {
     if (!name || !uri) {
       // if user tries to submit empty email/password
       this.setState({
-        error: 'Please enter the App Name and Image Uri'
+        error: 'app name & image uri are required'
       });
     } else if (this.validateAppName(name) === false) {
       this.setState({
