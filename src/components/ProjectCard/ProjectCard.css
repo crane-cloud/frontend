@@ -24,7 +24,6 @@
 .ProjectsCardName{
     width: 100%;
     color: black;
-    font-family: Roboto;
     font-style: normal;
     font-weight: normal;
     font-size: 1.5rem;
@@ -35,7 +34,6 @@
 }
 .ProjectsCardDesc{
     width: 100%;
-    font-family: Roboto;
     font-style: normal;
     font-weight: normal;
     font-size: 1rem;
