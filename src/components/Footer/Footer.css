@@ -4,7 +4,6 @@
     padding: 40px 10px 20px;
     overflow: hidden;
     display: block;
-    font-family: "Roboto",sans-serif;
     left: 0;
     bottom: 0;
     width: 100%;
@@ -27,8 +26,6 @@
     cursor: pointer;
 }
 .Footer .Logo{
-    font-family: Signika,sans-serif;
-    /* font-size: 2rem; */
     font-weight: 900;
     color: #fff;
     box-sizing: inherit;
