@@ -89,7 +89,6 @@ class ProjectCard extends React.Component {
 
   handleSubmit() {
     const { projectName } = this.state;
-    console.log(this.state);
     const { updateProject, CardID } = this.props;
 
     if (!projectName) {
@@ -115,7 +114,7 @@ class ProjectCard extends React.Component {
 
   handleDeleteProject(e, projectID) {
     const {
-      deleteProject, isDeleted, isFailed
+      deleteProject, isDeleted, isFailed, clearDeleteProjectState
     } = this.props;
     e.preventDefault();
 
@@ -140,7 +139,7 @@ class ProjectCard extends React.Component {
         }, 2000
       );
     }
-    // clearDeleteProjectState();
+    clearDeleteProjectState();
   }
 
 
@@ -158,11 +157,15 @@ class ProjectCard extends React.Component {
       name, isDeleting, data, description, icon, CardID, isUpdating
     } = this.props;
     const userId = data.id;
-    const { openDeleteAlert, openDropDown, projectName, openUpdateModal } = this.state;
+    const {
+      openDeleteAlert, openDropDown, projectName, openUpdateModal
+    } = this.state;
     return (
       <div>
         <div className="ProjectsCard">
-          <div className="ProjectImageDiv" style={{ backgroundImage: `url(${icon})` }} />
+          <Link to={{ pathname: `/users/${userId}/projects/${CardID}/apps` }} key={CardID}>
+            <div className="ProjectImageDiv" style={{ backgroundImage: `url(${icon})` }} />
+          </Link>
           <div className="BottomContainer">
             <Link to={{ pathname: `/users/${userId}/projects/${CardID}/apps` }} key={CardID}>
               <div className="ProjectsCardName">{name}</div>
@@ -172,9 +175,11 @@ class ProjectCard extends React.Component {
                 <tr>
                   <td className="ProjectName">{description}</td>
                   <td className="OtherData">
-                    <div className="StatusData">
+                    <div className="DropDownData">
                       <div className="ProjectDropDown" onClick={() => this.toggleDropDown()}>
-                        <img src={DotsImg} alt="three dots" className="DropDownImg" />
+                        <div className="DropDownIcon">
+                          <img src={DotsImg} alt="three dots" className="DropDownImg" />
+                        </div>
                         {openDropDown && (
                           <div className="ProjectDropDownContent">
                             <div onClick={() => this.showDeleteAlert()}>Delete</div>
@@ -255,18 +260,29 @@ ProjectCard.propTypes = {
   isDeleting: PropTypes.bool,
   isFailed: PropTypes.bool,
   clearDeleteProjectState: PropTypes.func.isRequired,
+  updateProject: PropTypes.func.isRequired,
+  deleteProject: PropTypes.func.isRequired,
+  CardID: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  isUpdating: PropTypes.bool,
+  description: PropTypes.string,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  icon: PropTypes.string.isRequired
 };
 
 ProjectCard.defaultProps = {
   isDeleted: false,
   isDeleting: false,
-  isFailed: false
+  isFailed: false,
+  name: '',
+  description: '',
+  isUpdating: false,
 };
 
 const mapStateToProps = (state) => {
   const { data } = state.user;
   const {
-    isDeleting, isDeleted, isFailed, clearDeleteProjectState 
+    isDeleting, isDeleted, isFailed, clearDeleteProjectState
   } = state.deleteProjectReducer;
   const { isUpdating, isUpdated } = state.updateProjectReducer;
   const { project } = state.projectDetailReducer;
@@ -279,7 +295,7 @@ const mapStateToProps = (state) => {
     isUpdating,
     isUpdated,
     project,
-    clearDeleteProjectState 
+    clearDeleteProjectState
   };
 };
 
