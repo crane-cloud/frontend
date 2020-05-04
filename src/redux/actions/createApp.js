@@ -19,7 +19,9 @@ const createAppSuccess = (response) => ({
 const createAppFail = (error) => ({
   type: CREATE_APP_FAIL,
   payload: {
-    error
+    status: false,
+    error: error.status,
+    errorCode: error.response.status
   },
 });
 

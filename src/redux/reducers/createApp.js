@@ -42,7 +42,7 @@ const createAppReducer = (state = initialState, action) => {
       isCreating: false,
       isCreated: false,
       message: 'Deployment failed. Please try again',
-      errorCode: action.payload.error.response.status
+      errorCode: action.payload.errorCode
     };
 
   case CLEAR_ADD_APP_STATE:
