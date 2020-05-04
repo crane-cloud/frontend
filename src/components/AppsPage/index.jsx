@@ -45,6 +45,11 @@ class AppsPage extends React.Component {
     this.toggleNeedDb = this.toggleNeedDb.bind(this);
   }
 
+  componentDidMount() {
+    const { clearState } = this.props;
+    clearState();
+  }
+
   componentDidUpdate(prevProps) {
     const { isCreated } = this.props;
 
