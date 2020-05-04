@@ -148,16 +148,23 @@ class AppsPage extends React.Component {
       this.setState({
         error: 'name may only contain letters,numbers,dot and a hypen -'
       });
+    } else if (port && !(/^[0-9]*$/.test(port))) { // validate port and ensure its a number
+      this.setState({
+        error: 'Port should be an integer'
+      });
     } else {
-      const appInfo = {
+      let appInfo = {
         command: entryCommand,
         env_vars: envVars,
         image: uri,
         name,
         need_db: needDb,
-        port,
         project_id: match.params.projectID
       };
+
+      if (port) {
+        appInfo = { ...appInfo, port: parseInt(port, 10) };
+      }
 
       createApp(appInfo, match.params.projectID);
     }
