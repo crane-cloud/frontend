@@ -38,10 +38,3 @@
   position: relative;
   margin-top: 5rem;
 }
-
-/* weird media query to fix fullscreen misbehavior */
-@media only screen and (min-height: 642px) {
-  .VerificationPageContainer {
-    height: 100vh;
-  }
-}

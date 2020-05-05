@@ -56,14 +56,3 @@ a.LoginContentLink {
     width: 90%;
   }
 }
-
-/* weird media query to fix fullscreen misbehavior */
-@media only screen and (min-height: 700px) {
-  .LoginPageContainer {
-    height: 100vh;
-  }
-
-  .LoginContent {
-    padding: 8rem 4rem 0;
-  }
-}
