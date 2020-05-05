@@ -5,7 +5,7 @@ import './InputPassword.css';
 const InputPassword = (props) => {
   const [inputBackground, setBackground] = useState('InitialBackground');
   const {
-    name, value, placeholder, onChange
+    name, value, placeholder, onChange, required
   } = props;
 
   const changeBackground = () => {
@@ -22,7 +22,7 @@ const InputPassword = (props) => {
     <input
       className={`InputPassword ${inputBackground}`}
       type="password"
-      placeholder={`${placeholder} *`}
+      placeholder={`${placeholder}${required ? ' *' : ''}`}
       name={name}
       value={value}
       onChange={(e) => {
@@ -36,11 +36,13 @@ InputPassword.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string,
   placeholder: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
+  required: PropTypes.bool
 };
 
 InputPassword.defaultProps = {
-  value: ''
+  value: '',
+  required: false
 };
 
 export default InputPassword;
