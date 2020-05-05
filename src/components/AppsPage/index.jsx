@@ -14,6 +14,7 @@ import AppsList from '../AppsList';
 import Header from '../Header';
 import Spinner from '../SpinnerComponent';
 import Feedback from '../Feedback';
+import Checkbox from '../Checkbox';
 import Tooltip from '../Tooltip';
 import './AppsPage.css';
 
@@ -28,7 +29,10 @@ class AppsPage extends React.Component {
       envVars: {},
       openModal: false, // add project modal is closed initially
       error: '',
-      createFeedback: ''
+      createFeedback: '',
+      entryCommand: '',
+      port: '',
+      needDb: false
     };
 
     this.addEnvVar = this.addEnvVar.bind(this);
@@ -38,6 +42,12 @@ class AppsPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateAppName = this.validateAppName.bind(this);
+    this.toggleNeedDb = this.toggleNeedDb.bind(this);
+  }
+
+  componentDidMount() {
+    const { clearState } = this.props;
+    clearState();
   }
 
   componentDidUpdate(prevProps) {
@@ -114,8 +124,17 @@ class AppsPage extends React.Component {
     return false;
   }
 
+  toggleNeedDb() {
+    const { needDb } = this.state;
+    this.setState({
+      needDb: !needDb
+    });
+  }
+
   handleSubmit() {
-    const { name, uri, envVars } = this.state;
+    const {
+      name, uri, envVars, entryCommand, port, needDb
+    } = this.state;
     const {
       createApp,
       match
@@ -124,7 +143,7 @@ class AppsPage extends React.Component {
     if (!name || !uri) {
       // if user tries to submit empty email/password
       this.setState({
-        error: 'Please enter the App Name and Image Uri'
+        error: 'app name & image uri are required'
       });
     } else if (this.validateAppName(name) === false) {
       this.setState({
@@ -134,13 +153,23 @@ class AppsPage extends React.Component {
       this.setState({
         error: 'name may only contain letters,numbers,dot and a hypen -'
       });
+    } else if (port && !(/^[0-9]*$/.test(port))) { // validate port and ensure its a number
+      this.setState({
+        error: 'Port should be an integer'
+      });
     } else {
-      const appInfo = {
+      let appInfo = {
+        command: entryCommand,
         env_vars: envVars,
         image: uri,
         name,
+        need_db: needDb,
         project_id: match.params.projectID
       };
+
+      if (port) {
+        appInfo = { ...appInfo, port: parseInt(port, 10) };
+      }
 
       createApp(appInfo, match.params.projectID);
     }
@@ -154,7 +183,10 @@ class AppsPage extends React.Component {
       varName,
       varValue,
       envVars,
-      error
+      error,
+      entryCommand,
+      port,
+      needDb
     } = this.state;
 
     const {
@@ -225,6 +257,34 @@ class AppsPage extends React.Component {
                     this.handleChange(e);
                   }}
                 />
+
+                <div className="InputFieldWithTooltip">
+                  <InputText
+                    placeholder="Entry Command"
+                    name="entryCommand"
+                    value={entryCommand}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                  <div className="InputTooltipContainer">
+                    <Tooltip
+                      showIcon
+                      message="holla holla holla"
+                      position="left"
+                    />
+                  </div>
+                </div>
+
+                <InputText
+                  placeholder="Port (optional) - defaults to 80"
+                  name="port"
+                  value={port}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+                />
+
                 {error && (
                   <Feedback
                     type="error"
@@ -296,6 +356,24 @@ class AppsPage extends React.Component {
                     />
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <div className="DbSupportSection">
+              <div className="HeadingWithTooltip">
+                <h4>Database Support</h4>
+                <Tooltip
+                  showIcon
+                  message="TODO: edit this explanation / info"
+                />
+              </div>
+              <div className="DbSupportCheckField">
+                <Checkbox
+                  isBlack
+                  onClick={this.toggleNeedDb}
+                  isChecked={needDb}
+                />
+                  &nbsp; I would like database support
               </div>
             </div>
 
