@@ -6,12 +6,13 @@ const BlackInputText = ({
   onChange,
   placeholder,
   name,
-  value
+  value,
+  required
 }) => (
   <input
     className="BlackInputText"
     type="text"
-    placeholder={`${placeholder} *`}
+    placeholder={`${placeholder}${required ? ' *' : ''}`}
     name={name}
     value={value}
     onChange={(e) => {
@@ -24,11 +25,13 @@ BlackInputText.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string,
   placeholder: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
+  required: PropTypes.bool
 };
 
 BlackInputText.defaultProps = {
-  value: ''
+  value: '',
+  required: false
 };
 
 export default BlackInputText;

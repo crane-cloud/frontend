@@ -5,7 +5,7 @@ import './InputText.css';
 const InputText = (props) => {
   const [inputBackground, setBackground] = useState('InitialBackground');
   const {
-    name, value, placeholder, onChange
+    name, value, placeholder, onChange, required
   } = props;
 
   const changeBackground = () => {
@@ -22,7 +22,7 @@ const InputText = (props) => {
     <input
       className={`InputText ${inputBackground}`}
       type="text"
-      placeholder={`${placeholder} *`}
+      placeholder={`${placeholder}${required ? ' *' : ''}`}
       name={name}
       value={value}
       onChange={(e) => {
@@ -36,11 +36,13 @@ InputText.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string,
   placeholder: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
+  required: PropTypes.bool
 };
 
 InputText.defaultProps = {
-  value: ''
+  value: '',
+  required: false
 };
 
 export default InputText;
