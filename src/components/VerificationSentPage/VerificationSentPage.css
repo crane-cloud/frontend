@@ -1,4 +1,5 @@
 .VerificationPageContainer {
+  height: 100%;
   background: #008ac1;
   color: #ffffff;
   display: flex;

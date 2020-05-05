@@ -293,7 +293,7 @@ body::-webkit-scrollbar-thumb:hover {
 .Page{
   margin: 0;
   background: #F1F1F1;
-  min-height: 100vh;
+  height: 100%;
   display: grid;
   grid-template-rows: 150px 3fr 100px;
   overflow-x: hidden;
