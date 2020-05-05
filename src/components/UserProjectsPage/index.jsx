@@ -221,6 +221,7 @@ class UserProjectsPage extends React.Component {
               />
 
               <InputText
+                required
                 placeholder="Project Name"
                 name="projectName"
                 value={projectName}

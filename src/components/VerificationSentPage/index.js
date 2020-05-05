@@ -88,6 +88,7 @@ class VerificationSentPage extends React.Component {
                 {/* eslint-disable-next-line max-len */}
                 <p>Looks like your link expired. Worry not! Just enter your email below and we&apos;ll send you another link.</p>
                 <InputText
+                  required
                   placeholder="Email Address"
                   name="email"
                   value={email}
