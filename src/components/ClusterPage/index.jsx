@@ -132,6 +132,7 @@ class ClusterPage extends React.Component {
             <div className="ModalFormInputs">
               <div className="ModalFormInputsBasic">
                 <BlackInputText
+                  required
                   placeholder="Host"
                   name="host"
                   value={host}
@@ -140,6 +141,7 @@ class ClusterPage extends React.Component {
                   }}
                 />
                 <BlackInputText
+                  required
                   placeholder="Token"
                   name="token"
                   value={token}
@@ -148,6 +150,7 @@ class ClusterPage extends React.Component {
                   }}
                 />
                 <BlackInputText
+                  required
                   placeholder="Name"
                   name="name"
                   value={name}
@@ -156,6 +159,7 @@ class ClusterPage extends React.Component {
                   }}
                 />
                 <BlackInputText
+                  required
                   placeholder="Description"
                   name="description"
                   value={description}

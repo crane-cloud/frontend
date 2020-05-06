@@ -88,6 +88,7 @@ class AdminLoginPage extends React.Component {
           <div className="LoginContentInputs">
             {/* Input fields */}
             <InputText
+              required
               placeholder="Email Address"
               name="email"
               value={email}
@@ -96,6 +97,7 @@ class AdminLoginPage extends React.Component {
               }}
             />
             <InputPassword
+              required
               placeholder="Password"
               name="password"
               value={password}

@@ -105,6 +105,7 @@ export default class PasswordReset extends React.Component {
               <div className="ResetPasswordContentInputs">
                 {/* Input fields */}
                 <InputText
+                  required
                   placeholder='Email Address'
                   name="email"
                   value={email}

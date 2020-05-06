@@ -242,6 +242,7 @@ class AppsPage extends React.Component {
             <div className="ModalFormInputs">
               <div className="ModalFormInputsBasic">
                 <InputText
+                  required
                   placeholder="Name"
                   name="name"
                   value={name}
@@ -250,6 +251,7 @@ class AppsPage extends React.Component {
                   }}
                 />
                 <InputText
+                  required
                   placeholder="Image Uri"
                   name="uri"
                   value={uri}
