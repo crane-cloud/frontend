@@ -1,6 +1,6 @@
 import { SAVE_USER, REMOVE_USER } from '../actions/actionTypes';
 
-const user = (user = { accessToken: false, data: {} }, action) => {
+const user = (user = { accessToken: '', data: {} }, action) => {
   switch (action.type) {
   case SAVE_USER:
     return {

@@ -105,13 +105,17 @@ Header.propTypes = {
   user: PropTypes.shape({
     accessToken: PropTypes.string.isRequired,
     data: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired
+      id: PropTypes.string,
+      name: PropTypes.string
     }).isRequired,
-  }).isRequired,
+  }),
   match: PropTypes.shape({
     path: PropTypes.string.isRequired
   }).isRequired,
+};
+
+Header.defaultProps = {
+  user: {}
 };
 
 const mapStateToProps = (state) => {
