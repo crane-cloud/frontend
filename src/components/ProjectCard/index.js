@@ -37,6 +37,14 @@ class ProjectCard extends React.Component {
     this.validateProjectName = this.validateProjectName.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    const { isDeleted } = this.props;
+
+    if (isDeleted !== prevProps.isDeleted) {
+      this.hideDeleteAlert();
+    }
+  }
+
   showDropDown() {
     this.setState({ openDropDown: true });
   }
@@ -112,34 +120,9 @@ class ProjectCard extends React.Component {
   }
 
 
-  handleDeleteProject(e, projectID) {
-    const {
-      deleteProject, isDeleted, isFailed, clearDeleteProjectState
-    } = this.props;
-    e.preventDefault();
-
+  handleDeleteProject(projectID) {
+    const { deleteProject } = this.props;
     deleteProject(projectID);
-    if (isDeleted) {
-      this.setState({
-        deleteFeedback: 'Project has been Deleted.',
-        openDeleteAlert: false
-      });
-    }
-
-    if (isFailed) {
-      this.setState({
-        deleteFeedback: 'Failed to delete Project. Try again'
-      });
-      setTimeout(
-        () => {
-          this.setState({
-            deleteFeedback: '',
-            openDeleteAlert: false,
-          });
-        }, 2000
-      );
-    }
-    clearDeleteProjectState();
   }
 
 
@@ -148,6 +131,7 @@ class ProjectCard extends React.Component {
   }
 
   hideDeleteAlert() {
+    const { clearDeleteProjectState } = this.props;
     clearDeleteProjectState();
     this.setState({ openDeleteAlert: false });
   }
