@@ -284,7 +284,7 @@ const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = {
-  deleteProject, updateProject, getProjectDetail
+  deleteProject, updateProject, getProjectDetail, clearDeleteProjectState
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectCard);
