@@ -9,7 +9,7 @@ import updateProject from '../../redux/actions/updateProject';
 import getProjectDetail from '../../redux/actions/projectDetail';
 import Spinner from '../SpinnerComponent';
 import InputText from '../InputText';
-// import TextArea from '../TextArea';
+import Feedback from '../Feedback';
 import Modal from '../Modal';
 import './ProjectCard.css';
 
@@ -20,7 +20,6 @@ class ProjectCard extends React.Component {
       openUpdateModal: false,
       openDeleteAlert: false,
       openDropDown: false,
-      deleteFeedback: '',
       projectName: '',
     };
 
@@ -138,12 +137,13 @@ class ProjectCard extends React.Component {
 
   render() {
     const {
-      name, isDeleting, data, description, icon, CardID, isUpdating
+      name, isDeleting, data, description, icon, CardID, isUpdating, message, isDeleted, isFailed
     } = this.props;
     const userId = data.id;
     const {
       openDeleteAlert, openDropDown, projectName, openUpdateModal
     } = this.state;
+
     return (
       <div>
         <div className="ProjectsCard">
@@ -160,14 +160,14 @@ class ProjectCard extends React.Component {
                   <td className="ProjectName">{description}</td>
                   <td className="OtherData">
                     <div className="DropDownData">
-                      <div className="ProjectDropDown" onClick={() => this.toggleDropDown()}>
+                      <div className="ProjectDropDown" onClick={this.toggleDropDown}>
                         <div className="DropDownIcon">
                           <img src={DotsImg} alt="three dots" className="DropDownImg" />
                         </div>
                         {openDropDown && (
                           <div className="ProjectDropDownContent">
-                            <div onClick={() => this.showDeleteAlert()}>Delete</div>
-                            <div onClick={() => this.showUpdateForm()}>Update</div>
+                            <div onClick={this.showDeleteAlert}>Delete</div>
+                            <div onClick={this.showUpdateForm}>Update</div>
                           </div>
                         )}
                       </div>
@@ -196,8 +196,15 @@ class ProjectCard extends React.Component {
                 </div>
                 <div className="DeleteProjectModelResponses Extended">
                   <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
-                  <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteProject(e, CardID)} />
+                  <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={() => this.handleDeleteProject(CardID)} />
                 </div>
+
+                {(isFailed && message) && (
+                  <Feedback
+                    message={message}
+                    type="error"
+                  />
+                )}
               </div>
 
             </Modal>
@@ -266,7 +273,7 @@ ProjectCard.defaultProps = {
 const mapStateToProps = (state) => {
   const { data } = state.user;
   const {
-    isDeleting, isDeleted, isFailed, clearDeleteProjectState
+    isDeleting, isDeleted, isFailed, clearDeleteProjectState, message
   } = state.deleteProjectReducer;
   const { isUpdating, isUpdated } = state.updateProjectReducer;
   const { project } = state.projectDetailReducer;
@@ -279,7 +286,8 @@ const mapStateToProps = (state) => {
     isUpdating,
     isUpdated,
     project,
-    clearDeleteProjectState
+    clearDeleteProjectState,
+    message
   };
 };
 
