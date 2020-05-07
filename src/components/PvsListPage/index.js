@@ -99,9 +99,15 @@ class PvsListPage extends React.Component {
 
 
 PvsListPage.propTypes = {
+  getPvs: PropTypes.func.isRequired,
   pvs: PropTypes.arrayOf(PropTypes.object),
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
 };
 
 PvsListPage.defaultProps = {
