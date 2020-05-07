@@ -119,8 +119,9 @@ class ProjectCard extends React.Component {
   }
 
 
-  handleDeleteProject(projectID) {
+  handleDeleteProject(e, projectID) {
     const { deleteProject } = this.props;
+    e.preventDefault();
     deleteProject(projectID);
   }
 
@@ -160,14 +161,28 @@ class ProjectCard extends React.Component {
                   <td className="ProjectName">{description}</td>
                   <td className="OtherData">
                     <div className="DropDownData">
-                      <div className="ProjectDropDown" onClick={this.toggleDropDown}>
+                      <div
+                        className="ProjectDropDown"
+                        onClick={this.toggleDropDown}
+                        role="presentation"
+                      >
                         <div className="DropDownIcon">
                           <img src={DotsImg} alt="three dots" className="DropDownImg" />
                         </div>
                         {openDropDown && (
                           <div className="ProjectDropDownContent">
-                            <div onClick={this.showDeleteAlert}>Delete</div>
-                            <div onClick={this.showUpdateForm}>Update</div>
+                            <div
+                              onClick={this.showDeleteAlert}
+                              role="presentation"
+                            >
+                              Delete
+                            </div>
+                            <div
+                              onClick={this.showUpdateForm}
+                              role="presentation"
+                            >
+                              Update
+                            </div>
                           </div>
                         )}
                       </div>
@@ -196,7 +211,7 @@ class ProjectCard extends React.Component {
                 </div>
                 <div className="DeleteProjectModelResponses Extended">
                   <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
-                  <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={() => this.handleDeleteProject(CardID)} />
+                  <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteProject(e, CardID)} />
                 </div>
 
                 {(isFailed && message) && (
@@ -291,7 +306,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-export const mapDispatchToProps = {
+const mapDispatchToProps = {
   deleteProject, updateProject, getProjectDetail, clearDeleteProjectState
 };
 
