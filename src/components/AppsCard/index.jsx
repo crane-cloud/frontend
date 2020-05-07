@@ -55,32 +55,34 @@ const AppsCard = (props) => {
     <div className="AppCard">
       <div className="AppCardHeader">
         <table className="AppTable">
-          <tr>
-            <td className="AppName">{name}</td>
-            <td className="OtherData">
-              <div className="StatusData">
-                <Status status={status} />
-                <div
-                  className="AppDropDown"
-                  onClick={toggleDropDown}
-                  role="presentation"
-                >
-                  <img src={DotsImg} alt="three dots" className="DropDownImg" />
-                  {openDropDown && (
-                    <div className="AppDropDownContent">
-                      <div
-                        onClick={showDeleteAlert}
-                        role="presentation"
-                      >
-                        Delete
+          <tbody>
+            <tr>
+              <td className="AppName">{name}</td>
+              <td className="OtherData">
+                <div className="StatusData">
+                  <Status status={status} />
+                  <div
+                    className="AppDropDown"
+                    onClick={toggleDropDown}
+                    role="presentation"
+                  >
+                    <img src={DotsImg} alt="three dots" className="DropDownImg" />
+                    {openDropDown && (
+                      <div className="AppDropDownContent">
+                        <div
+                          onClick={showDeleteAlert}
+                          role="presentation"
+                        >
+                          Delete
+                        </div>
+                        <div>Update</div>
                       </div>
-                      <div>Update</div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
-              </div>
-            </td>
-          </tr>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
       <div className="AppUrlText">Url :</div>
