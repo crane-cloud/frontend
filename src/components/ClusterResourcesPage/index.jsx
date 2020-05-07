@@ -48,7 +48,7 @@ class ClusterResourcesPage extends React.Component {
                   {(isRetrieved && resourceCount !== undefined) && (
                     (resourceCount.map(
                       (resource) => (
-                        <Link to={{ pathname: `/clusters/${params.myClusterID}/${resource.name.toLowerCase()}` }} key={resourceCount.indexOf(resource)}>
+                        <Link to={{ pathname: `/clusters/${params.clusterID}/${resource.name.toLowerCase()}` }} key={resourceCount.indexOf(resource)}>
                           <ResourceCard title={resource.name} count={resource.count} />
                         </Link>
                       )
@@ -84,7 +84,6 @@ ClusterResourcesPage.propTypes = {
   getClusterResourcesCount: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      myClusterID: PropTypes.string.isRequired,
       clusterID: PropTypes.string.isRequired
     }).isRequired
   }).isRequired
