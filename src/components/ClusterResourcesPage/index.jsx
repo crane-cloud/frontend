@@ -48,7 +48,7 @@ class ClusterResourcesPage extends React.Component {
                   {(isRetrieved && resourceCount !== undefined) && (
                     (resourceCount.map(
                       (resource) => (
-                        <Link to={{ pathname: `/clusters/${params.myClusterID}/${resource.name.toLowerCase()}` }} key={resource.count}>
+                        <Link to={{ pathname: `/clusters/${params.myClusterID}/${resource.name.toLowerCase()}` }} key={resourceCount.indexOf(resource)}>
                           <ResourceCard title={resource.name} count={resource.count} />
                         </Link>
                       )
