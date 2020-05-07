@@ -46,16 +46,20 @@ class PvsListPage extends React.Component {
                   </thead>
                   {
                     isRetrieving ? (
-                      <tr className="TableLoading">
-                        <div className="SpinnerWrapper">
-                          <BigSpinner />
-                        </div>
-                      </tr>
+                      <tbody>
+                        <tr className="TableLoading">
+                          <td>
+                            <div className="SpinnerWrapper">
+                              <BigSpinner />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
                     ) : (
                       <tbody>
                         {(isFetched && pvs !== undefined) && (
                           pvs.map((pv) => (
-                            <tr>
+                            <tr key={pvs.indexOf(pv)}>
                               <td>{pv.metadata.name}</td>
                               <td>{pv.spec.accessModes[0]}</td>
                               <td>{pv.spec.persistentVolumeReclaimPolicy}</td>
@@ -93,8 +97,9 @@ class PvsListPage extends React.Component {
   }
 }
 
+
 PvsListPage.propTypes = {
-  pvs: PropTypes.object,
+  pvs: PropTypes.arrayOf(PropTypes.object),
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
 };
