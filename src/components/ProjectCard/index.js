@@ -138,7 +138,7 @@ class ProjectCard extends React.Component {
 
   render() {
     const {
-      name, isDeleting, data, description, icon, CardID, isUpdating, message, isDeleted, isFailed
+      name, isDeleting, data, description, icon, CardID, isUpdating, message, isFailed
     } = this.props;
     const userId = data.id;
     const {
@@ -157,38 +157,40 @@ class ProjectCard extends React.Component {
             </Link>
             <div className="ProjectsCardDesc">
               <table className="ProjectTab">
-                <tr>
-                  <td className="ProjectName">{description}</td>
-                  <td className="OtherData">
-                    <div className="DropDownData">
-                      <div
-                        className="ProjectDropDown"
-                        onClick={this.toggleDropDown}
-                        role="presentation"
-                      >
-                        <div className="DropDownIcon">
-                          <img src={DotsImg} alt="three dots" className="DropDownImg" />
-                        </div>
-                        {openDropDown && (
-                          <div className="ProjectDropDownContent">
-                            <div
-                              onClick={this.showDeleteAlert}
-                              role="presentation"
-                            >
-                              Delete
-                            </div>
-                            <div
-                              onClick={this.showUpdateForm}
-                              role="presentation"
-                            >
-                              Update
-                            </div>
+                <tbody>
+                  <tr>
+                    <td className="ProjectName">{description}</td>
+                    <td className="OtherData">
+                      <div className="DropDownData">
+                        <div
+                          className="ProjectDropDown"
+                          onClick={this.toggleDropDown}
+                          role="presentation"
+                        >
+                          <div className="DropDownIcon">
+                            <img src={DotsImg} alt="three dots" className="DropDownImg" />
                           </div>
-                        )}
+                          {openDropDown && (
+                            <div className="ProjectDropDownContent">
+                              <div
+                                onClick={this.showDeleteAlert}
+                                role="presentation"
+                              >
+                                Delete
+                              </div>
+                              <div
+                                onClick={this.showUpdateForm}
+                                role="presentation"
+                              >
+                                Update
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -272,8 +274,11 @@ ProjectCard.propTypes = {
   name: PropTypes.string,
   isUpdating: PropTypes.bool,
   description: PropTypes.string,
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
-  icon: PropTypes.string.isRequired
+  data: PropTypes.shape({
+    id: PropTypes.string.isRequired
+  }).isRequired,
+  icon: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired
 };
 
 ProjectCard.defaultProps = {

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { Link } from 'react-router-dom';
 import './UserProjectsPage.css';
 import addProject, { clearAddProjectState } from '../../redux/actions/addProject';
 import InformationBar from '../InformationBar';
@@ -107,7 +106,6 @@ class UserProjectsPage extends React.Component {
     const { addProject, data } = this.props;
 
     if (!projectName || !clusterID || !projectDescription) {
-      // if user tries to submit empty email/password
       this.setState({
         error: 'all fields are required'
       });
@@ -142,7 +140,6 @@ class UserProjectsPage extends React.Component {
       projects,
       clusters,
       isRetrieving,
-      // data,
       message,
       errorCode,
       isFetched,
@@ -266,7 +263,7 @@ class UserProjectsPage extends React.Component {
 }
 
 UserProjectsPage.propTypes = {
-  projects: PropTypes.arrayOf(PropTypes.object),
+  projects: PropTypes.arrayOf(PropTypes.shape({})),
   clusters: PropTypes.arrayOf(PropTypes.object),
   getClustersList: PropTypes.func.isRequired,
   getUserProjects: PropTypes.func.isRequired,
