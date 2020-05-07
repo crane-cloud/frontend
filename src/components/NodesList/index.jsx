@@ -73,16 +73,20 @@ class NodesList extends Component {
                   </thead>
                   {
                     isRetrieving ? (
-                      <tr className="TableLoading">
-                        <div className="SpinnerWrapper">
-                          <BigSpinner />
-                        </div>
-                      </tr>
+                      <tbody>
+                        <tr className="TableLoading">
+                          <td>
+                            <div className="SpinnerWrapper">
+                              <BigSpinner />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
                     ) : (
                       <tbody>
                         {(isFetched && nodes.nodes !== undefined) && (
                           (nodes.nodes.map((node) => (
-                            <tr>
+                            <tr key={nodes.nodes.indexOf(node)}>
                               <td>{node.metadata.name}</td>
                               <td><Status status={this.nodeStatus(node.status.conditions)} /></td>
                               <td>{ this.getRoles(node) }</td>
@@ -120,7 +124,9 @@ class NodesList extends Component {
 
 // inititate props
 NodesList.propTypes = {
-  nodes: PropTypes.object,
+  nodes: PropTypes.shape({
+    nodes: PropTypes.arrayOf(PropTypes.object)
+  }),
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
   getNodesList: PropTypes.func
@@ -128,7 +134,7 @@ NodesList.propTypes = {
 
 // assigning defaults
 NodesList.defaultProps = {
-  nodes: [],
+  nodes: {},
   isRetrieving: false,
   isFetched: false,
 };
