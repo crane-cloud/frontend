@@ -129,7 +129,12 @@ NodesList.propTypes = {
   }),
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
-  getNodesList: PropTypes.func
+  getNodesList: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
 };
 
 // assigning defaults
