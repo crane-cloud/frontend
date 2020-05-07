@@ -7,6 +7,7 @@
     font-size: inherit;
     padding: 1rem;
   }
+
   .BlackInputText::placeholder {
-    color: #000;
+    color: #808080;
   }

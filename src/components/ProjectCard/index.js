@@ -8,7 +8,7 @@ import deleteProject, { clearDeleteProjectState } from '../../redux/actions/dele
 import updateProject from '../../redux/actions/updateProject';
 import getProjectDetail from '../../redux/actions/projectDetail';
 import Spinner from '../SpinnerComponent';
-import InputText from '../InputText';
+import BlackInputText from '../BlackInputText';
 // import TextArea from '../TextArea';
 import Modal from '../Modal';
 import './ProjectCard.css';
@@ -228,7 +228,7 @@ class ProjectCard extends React.Component {
                   <h2>Update your project</h2>
                 </div>
                 <div className="ModalFormInputs">
-                  <InputText
+                  <BlackInputText
                     placeholder="New Project Name"
                     name="projectName"
                     value={projectName}
