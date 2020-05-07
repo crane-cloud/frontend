@@ -81,6 +81,13 @@ ClusterResourcesPage.propTypes = {
   isRetrieving: PropTypes.bool,
   isRetrieved: PropTypes.bool,
   clusterName: PropTypes.string,
+  getClusterResourcesCount: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      myClusterID: PropTypes.string.isRequired,
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
 };
 
 ClusterResourcesPage.defaultProps = {
