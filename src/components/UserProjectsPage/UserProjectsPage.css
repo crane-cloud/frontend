@@ -39,3 +39,7 @@
     background-color: #F9F9F9;
     font-weight: bold;
 }
+
+.ModalFormInputs input::placeholder {
+  color: #808080;
+}
