@@ -79,16 +79,20 @@ class DeploymentsPage extends Component {
                     </tr>
                   </thead>
                   {isFetchingDeployments ? (
-                    <tr className="TableLoading">
-                      <div className="SpinnerWrapper">
-                        <BigSpinner />
-                      </div>
-                    </tr>
+                    <tbody>
+                      <tr className="TableLoading">
+                        <td>
+                          <div className="SpinnerWrapper">
+                            <BigSpinner />
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
                   ) : (
                     <tbody>
                       {(isFetched && deployments !== undefined) && (
                         deployments.map((deployment) => (
-                          <tr>
+                          <tr key={deployments.indexOf(deployment)}>
                             <td>{deployment.metadata.name}</td>
                             <td>
                               {Object.prototype.hasOwnProperty.call(deployment.status, 'readyReplicas') ? (
@@ -136,7 +140,12 @@ DeploymentsPage.propTypes = {
   getDeployments: PropTypes.func.isRequired,
   deployments: PropTypes.arrayOf(PropTypes.object).isRequired,
   isFetchingDeployments: PropTypes.bool,
-  isFetched: PropTypes.bool
+  isFetched: PropTypes.bool,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
 };
 
 DeploymentsPage.defaultProps = {

@@ -20,7 +20,7 @@ class UserAccounts extends Component {
     const { users, isFetched, isFetching } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
-    
+
     return (
       <div className="MainPage">
         <div className="TopBarSection"><Header /></div>
@@ -35,23 +35,29 @@ class UserAccounts extends Component {
             <div className="ContentSection">
               <div className="ResourcesTable">
                 <table className="UsersTable">
-                  <tr>
-                    <th>Name</th>
-                    <th>Role</th>
-                    <th>Email</th>
-                  </tr>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Role</th>
+                      <th>Email</th>
+                    </tr>
+                  </thead>
                   {
                     isFetching ? (
-                      <tr className="TableLoading">
-                        <div className="SpinnerWrapper">
-                          <BigSpinner />
-                        </div>
-                      </tr>
+                      <tbody>
+                        <tr className="TableLoading">
+                          <td>
+                            <div className="SpinnerWrapper">
+                              <BigSpinner />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
                     ) : (
                       <tbody>
                         {isFetched && users !== undefined && (
                           (users.map((user) => (
-                            <tr>
+                            <tr key={users.indexOf(user)}>
                               <td>{user.name}</td>
                               <td>{user.roles[0].name}</td>
                               <td>{user.email}</td>

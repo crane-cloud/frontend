@@ -5,7 +5,7 @@ import {
 } from '../actions/actionTypes';
 
 const initialState = {
-  pods: [],
+  pods: {},
   isRetrieving: false,
   isFetched: false,
   message: 'Pods Not Available'
