@@ -91,7 +91,9 @@ class AppsList extends Component {
 
 // inititate props
 AppsList.propTypes = {
-  apps: PropTypes.arrayOf(PropTypes.object),
+  apps: PropTypes.shape({
+    apps: PropTypes.arrayOf(PropTypes.object)
+  }),
   isRetrieved: PropTypes.bool,
   isRetrieving: PropTypes.bool,
   getAppsList: PropTypes.func.isRequired,
@@ -103,7 +105,7 @@ AppsList.propTypes = {
 
 // assigning defaults
 AppsList.defaultProps = {
-  apps: [],
+  apps: {},
   isRetrieved: false,
   isRetrieving: true
 };

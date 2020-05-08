@@ -79,8 +79,6 @@ class PodsList extends Component {
     const { pods, isFetched, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
     const { match: { params } } = this.props;
-    console.log(pods);
-
 
     return (
       <div className="MainPage">
@@ -106,15 +104,19 @@ class PodsList extends Component {
                   </thead>
                   {
                     isRetrieving ? (
-                      <tr className="TableLoading">
-                        <div className="SpinnerWrapper">
-                          <BigSpinner />
-                        </div>
-                      </tr>
+                      <tbody>
+                        <tr className="TableLoading">
+                          <td>
+                            <div className="SpinnerWrapper">
+                              <BigSpinner />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
                     ) : (
                       <tbody>
                         {isFetched && pods.pods !== undefined && (pods.pods.map((pod) => (
-                          <tr>
+                          <tr key={pods.pods.indexOf(pod)}>
                             <td>{pod.metadata.name}</td>
                             <td>{this.podReady(pod.status.containerStatuses)}</td>
                             <td><Status status={this.podStatus(pod.status.conditions)} /></td>
@@ -152,15 +154,22 @@ class PodsList extends Component {
 
 // inititate props
 PodsList.propTypes = {
-  pods: PropTypes.object,
+  pods: PropTypes.shape({
+    pods: PropTypes.arrayOf(PropTypes.object)
+  }),
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
-  getPodsList: PropTypes.func
+  getPodsList: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
 };
 
 // assigning defaults
 PodsList.defaultProps = {
-  pods: [],
+  pods: {},
   isRetrieving: false,
   isFetched: false,
 };

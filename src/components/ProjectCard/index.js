@@ -8,8 +8,8 @@ import deleteProject, { clearDeleteProjectState } from '../../redux/actions/dele
 import updateProject from '../../redux/actions/updateProject';
 import getProjectDetail from '../../redux/actions/projectDetail';
 import Spinner from '../SpinnerComponent';
-import InputText from '../InputText';
 import Feedback from '../Feedback';
+import BlackInputText from '../BlackInputText';
 import Modal from '../Modal';
 import './ProjectCard.css';
 
@@ -96,7 +96,7 @@ class ProjectCard extends React.Component {
 
   handleSubmit() {
     const { projectName } = this.state;
-    const { updateProject, CardID } = this.props;
+    const { updateProject, cardID } = this.props;
 
     if (!projectName) {
       this.setState({
@@ -114,7 +114,7 @@ class ProjectCard extends React.Component {
       const newProjectName = {
         name: projectName
       };
-      updateProject(CardID, newProjectName);
+      updateProject(cardID, newProjectName);
     }
   }
 
@@ -138,7 +138,7 @@ class ProjectCard extends React.Component {
 
   render() {
     const {
-      name, isDeleting, data, description, icon, CardID, isUpdating, message, isFailed
+      name, isDeleting, data, description, icon, cardID, isUpdating, message, isFailed
     } = this.props;
     const userId = data.id;
     const {
@@ -148,11 +148,11 @@ class ProjectCard extends React.Component {
     return (
       <div>
         <div className="ProjectsCard">
-          <Link to={{ pathname: `/users/${userId}/projects/${CardID}/apps` }} key={CardID}>
+          <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps` }} key={cardID}>
             <div className="ProjectImageDiv" style={{ backgroundImage: `url(${icon})` }} />
           </Link>
           <div className="BottomContainer">
-            <Link to={{ pathname: `/users/${userId}/projects/${CardID}/apps` }} key={CardID}>
+            <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps` }} key={cardID}>
               <div className="ProjectsCardName">{name}</div>
             </Link>
             <div className="ProjectsCardDesc">
@@ -213,7 +213,7 @@ class ProjectCard extends React.Component {
                 </div>
                 <div className="DeleteProjectModelResponses Extended">
                   <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
-                  <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteProject(e, CardID)} />
+                  <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteProject(e, cardID)} />
                 </div>
 
                 {(isFailed && message) && (
@@ -236,7 +236,7 @@ class ProjectCard extends React.Component {
                   <h2>Update your project</h2>
                 </div>
                 <div className="ModalFormInputs">
-                  <InputText
+                  <BlackInputText
                     placeholder="New Project Name"
                     name="projectName"
                     value={projectName}
@@ -270,7 +270,7 @@ ProjectCard.propTypes = {
   clearDeleteProjectState: PropTypes.func.isRequired,
   updateProject: PropTypes.func.isRequired,
   deleteProject: PropTypes.func.isRequired,
-  CardID: PropTypes.string.isRequired,
+  cardID: PropTypes.string.isRequired,
   name: PropTypes.string,
   isUpdating: PropTypes.bool,
   description: PropTypes.string,

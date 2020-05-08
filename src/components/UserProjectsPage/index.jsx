@@ -9,7 +9,7 @@ import PrimaryButton from '../PrimaryButton';
 import Modal from '../Modal';
 import getClustersList from '../../redux/actions/clusters';
 import getUserProjects from '../../redux/actions/projectsList';
-import InputText from '../InputText';
+import BlackInputText from '../BlackInputText';
 import TextArea from '../TextArea';
 import ProjectCard from '../ProjectCard';
 import Spinner, { BigSpinner } from '../SpinnerComponent';
@@ -170,7 +170,7 @@ class UserProjectsPage extends React.Component {
                         <ProjectCard
                           name={project.name}
                           description={project.description}
-                          CardID={project.id}
+                          cardID={project.id}
                           icon={crane}
                         />
                       </div>
@@ -217,7 +217,7 @@ class UserProjectsPage extends React.Component {
                 onChange={this.handleSelectChange}
               />
 
-              <InputText
+              <BlackInputText
                 required
                 placeholder="Project Name"
                 name="projectName"

@@ -36,23 +36,29 @@ class StorageClassList extends Component {
             <div className="ContentSection">
               <div className="ResourcesTable">
                 <table className="StorageClassesTable">
-                  <tr>
-                    <th>Name</th>
-                    <th>Provisioner</th>
-                    <th>Age</th>
-                  </tr>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Provisioner</th>
+                      <th>Age</th>
+                    </tr>
+                  </thead>
                   {
                     isRetrieving ? (
-                      <tr className="TableLoading">
-                        <div className="SpinnerWrapper">
-                          <BigSpinner />
-                        </div>
-                      </tr>
+                      <tbody>
+                        <tr className="TableLoading">
+                          <td>
+                            <div className="SpinnerWrapper">
+                              <BigSpinner />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
                     ) : (
                       <tbody>
                         {isFetched && storageClasses.storage_classes !== undefined && (
                           (storageClasses.storage_classes.map((storageClass) => (
-                            <tr>
+                            <tr key={storageClasses.storage_classes.indexOf(storageClass)}>
                               <td>{storageClass.metadata.name}</td>
                               <td>{storageClass.provisioner}</td>
                               <td>{tellAge(storageClass.metadata.creationTimestamp)}</td>
@@ -90,15 +96,22 @@ class StorageClassList extends Component {
 
 // inititate props
 StorageClassList.propTypes = {
-  storageClasses: PropTypes.arrayOf(PropTypes.object),
+  storageClasses: PropTypes.shape({
+    storage_classes: PropTypes.arrayOf(PropTypes.object)
+  }),
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
-  getStorageClassList: PropTypes.func.isRequired
+  getStorageClassList: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
 };
 
 // assigning defaults
 StorageClassList.defaultProps = {
-  storageClasses: [],
+  storageClasses: {},
   isRetrieving: false,
   isFetched: false,
 };

@@ -406,7 +406,7 @@ AppsPage.propTypes = {
   message: PropTypes.string.isRequired,
   clearState: PropTypes.func.isRequired,
   createApp: PropTypes.func.isRequired,
-  errorCode: PropTypes.number.isRequired,
+  errorCode: PropTypes.number,
   match: PropTypes.shape({
     params: PropTypes.shape({
       projectID: PropTypes.string.isRequired
@@ -417,6 +417,10 @@ AppsPage.propTypes = {
       id: PropTypes.string.isRequired
     }).isRequired
   }).isRequired
+};
+
+AppsPage.defaultProps = {
+  errorCode: null
 };
 
 const mapStateToProps = ({ user, createNewApp }) => {

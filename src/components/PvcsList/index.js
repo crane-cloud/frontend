@@ -45,16 +45,20 @@ class PvcsListPage extends React.Component {
                   </thead>
                   {
                     isRetrieving ? (
-                      <tr className="TableLoading">
-                        <div className="SpinnerWrapper">
-                          <BigSpinner />
-                        </div>
-                      </tr>
+                      <tbody>
+                        <tr className="TableLoading">
+                          <td>
+                            <div className="SpinnerWrapper">
+                              <BigSpinner />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
                     ) : (
                       <tbody>
                         {(isFetched && pvcs !== undefined) && (
                           pvcs.map((pvc) => (
-                            <tr>
+                            <tr key={pvcs.indexOf(pvc)}>
                               <td>{pvc.metadata.name}</td>
                               <td><Status status={pvc.status.phase} /></td>
                               <td>{tellAge(pvc.metadata.creationTimestamp)}</td>
@@ -92,10 +96,15 @@ class PvcsListPage extends React.Component {
 }
 
 PvcsListPage.propTypes = {
-  pvcs: PropTypes.object,
+  getPvcs: PropTypes.func.isRequired,
+  pvcs: PropTypes.arrayOf(PropTypes.object),
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
-
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
 };
 
 PvcsListPage.defaultProps = {
