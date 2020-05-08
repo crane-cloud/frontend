@@ -24,6 +24,7 @@ class VerificationSentPage extends React.Component {
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -65,6 +66,10 @@ class VerificationSentPage extends React.Component {
     this.setState({
       [e.target.name]: e.target.value
     });
+  }
+
+  handleSubmit() {
+    console.log('resend clicked...');
   }
 
   render() {
