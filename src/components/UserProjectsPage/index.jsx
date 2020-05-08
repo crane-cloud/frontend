@@ -173,7 +173,7 @@ class UserProjectsPage extends React.Component {
                         <ProjectCard
                           name={project.name}
                           description={project.description}
-                          CardID={project.id}
+                          cardID={project.id}
                           icon={crane}
                         />
                       </div>
