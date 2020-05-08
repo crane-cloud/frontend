@@ -366,7 +366,7 @@ class AppsPage extends React.Component {
                 <h4>Database Support</h4>
                 <Tooltip
                   showIcon
-                  message="Would you like to enable storage capability for your deployment?"
+                  message="Does your application need a database?"
                 />
               </div>
               <div className="DbSupportCheckField">
