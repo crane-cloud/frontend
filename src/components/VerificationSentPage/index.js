@@ -22,6 +22,8 @@ class VerificationSentPage extends React.Component {
       loading: false,
       feedback: ''
     };
+
+    this.handleOnChange = this.handleOnChange.bind(this);
   }
 
   componentDidMount() {
@@ -59,6 +61,12 @@ class VerificationSentPage extends React.Component {
       });
   }
 
+  handleOnChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
   render() {
     const {
       loading,
@@ -92,7 +100,7 @@ class VerificationSentPage extends React.Component {
                   placeholder="Email Address"
                   name="email"
                   value={email}
-                  onChange={this.handleOnChange}
+                  onChange={(e) => this.handleOnChange(e)}
                 />
                 <PrimaryButton
                   className="ResendLinkBtn"
