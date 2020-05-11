@@ -115,7 +115,7 @@ class ProjectCard extends React.Component {
       updateProject(cardID, newProjectObject);
     } else if (!projectName && !projectDescription) {
       this.setState({
-        error: 'Name and description fields are required'
+        error: 'You cannot submit empty fields.'
       });
     } else if (this.validateProjectName(projectName) === false) {
       this.setState({
@@ -325,7 +325,7 @@ ProjectCard.propTypes = {
   name: PropTypes.string,
   isUpdating: PropTypes.bool,
   description: PropTypes.string,
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  data: PropTypes.shape({Name: PropTypes.string}),
   icon: PropTypes.string.isRequired
 };
 
@@ -341,7 +341,7 @@ ProjectCard.defaultProps = {
 const mapStateToProps = (state) => {
   const { data } = state.user;
   const {
-    isDeleting, isDeleted, isFailed, clearDeleteProjectState
+    isDeleting, isDeleted, isFailed
   } = state.deleteProjectReducer;
   const { isUpdating, isUpdated } = state.updateProjectReducer;
   const { project } = state.projectDetailReducer;
