@@ -2,11 +2,12 @@
 import {
   GET_PROJECT_DETAIL_SUCCESS,
   GET_PROJECT_DETAIL_FAIL,
-  START_GETTING_PROJECT_DETAIL
+  START_GETTING_PROJECT_DETAIL,
+  CLEAR_PROJECT_DETAILS,
 } from '../actions/actionTypes';
 
 const initialState = {
-  project: [],
+  project: null,
   isFetched: false,
   isFetching: false,
   message: ''
@@ -37,6 +38,15 @@ const projectDetailReducer = (state = initialState, action) => {
       isFetching: false,
       isFetched: false,
     };
+
+  case CLEAR_PROJECT_DETAILS:
+    return {
+      ...state,
+      app: null,
+      isFetching: false,
+      isFetched: false,
+      message: ''
+    }
 
   default:
     return state;
