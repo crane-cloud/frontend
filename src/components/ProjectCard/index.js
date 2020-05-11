@@ -8,10 +8,10 @@ import deleteProject, { clearDeleteProjectState } from '../../redux/actions/dele
 import updateProject from '../../redux/actions/updateProject';
 import getProjectDetail, { clearProjectState } from '../../redux/actions/projectDetail';
 import Spinner from '../SpinnerComponent';
-import InputText from '../InputText';
 import TextArea from '../TextArea';
 import Feedback from '../Feedback';
 import Tooltip from '../Tooltip';
+import BlackInputText from '../BlackInputText';
 import Modal from '../Modal';
 import './ProjectCard.css';
 
@@ -42,8 +42,8 @@ class ProjectCard extends React.Component {
   }
 
   showDropDown() {
-    const {getProjectDetail, CardID} = this.props;
-    getProjectDetail(CardID);
+    const { getProjectDetail, cardID } = this.props;
+    getProjectDetail(cardID);
 
     this.setState({ openDropDown: true });
   }
@@ -64,7 +64,6 @@ class ProjectCard extends React.Component {
 
   showUpdateForm() {
     this.setState({ openUpdateModal: true });
-
   }
 
   hideUpdateForm() {
@@ -98,7 +97,7 @@ class ProjectCard extends React.Component {
 
   handleSubmit() {
     const { projectName, projectDescription } = this.state;
-    const { updateProject, CardID, project } = this.props;
+    const { updateProject, cardID, project } = this.props;
 
     if (projectName === project.name) {
       this.setState({
@@ -108,12 +107,12 @@ class ProjectCard extends React.Component {
       const newProjectObject = {
         description: projectDescription
       };
-      updateProject(CardID, newProjectObject);
+      updateProject(cardID, newProjectObject);
     } else if (projectName && !projectDescription) {
       const newProjectObject = {
         name: projectName
       };
-      updateProject(CardID, newProjectObject);
+      updateProject(cardID, newProjectObject);
     } else if (!projectName && !projectDescription) {
       this.setState({
         error: 'Name and description fields are required'
@@ -131,14 +130,14 @@ class ProjectCard extends React.Component {
         name: projectName,
         description: projectDescription
       };
-      updateProject(CardID, newProjectObject);
+      updateProject(cardID, newProjectObject);
     }
   }
 
 
   handleDeleteProject(e, projectID) {
     const {
-      deleteProject, isDeleted, isFailed
+      deleteProject, isDeleted, isFailed, clearDeleteProjectState
     } = this.props;
     e.preventDefault();
 
@@ -152,17 +151,11 @@ class ProjectCard extends React.Component {
 
     if (isFailed) {
       this.setState({
-        deleteFeedback: 'Failed to delete Project. Try again'
+        deleteFeedback: 'Failed to delete Project. Try again',
+        openDeleteAlert: false,
       });
-      setTimeout(
-        () => {
-          this.setState({
-            deleteFeedback: '',
-            openDeleteAlert: false,
-          });
-        }, 2000
-      );
     }
+    clearDeleteProjectState();
   }
 
 
@@ -182,7 +175,7 @@ class ProjectCard extends React.Component {
       data,
       description,
       icon,
-      CardID,
+      cardID,
       isUpdating,
       project
     } = this.props;
@@ -198,9 +191,11 @@ class ProjectCard extends React.Component {
     return (
       <div>
         <div className="ProjectsCard">
-          <div className="ProjectImageDiv" style={{ backgroundImage: `url(${icon})` }} />
+          <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps` }} key={cardID}>
+            <div className="ProjectImageDiv" style={{ backgroundImage: `url(${icon})` }} />
+          </Link>
           <div className="BottomContainer">
-            <Link to={{ pathname: `/users/${userId}/projects/${CardID}/apps` }} key={CardID}>
+            <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps` }} key={cardID}>
               <div className="ProjectsCardName">{name}</div>
             </Link>
             <div className="ProjectsCardDesc">
@@ -209,9 +204,11 @@ class ProjectCard extends React.Component {
                   <tr>
                     <td className="ProjectName">{description}</td>
                     <td className="OtherData">
-                      <div className="StatusData">
+                      <div className="DropDownData">
                         <div className="ProjectDropDown" onClick={() => this.toggleDropDown()}>
-                          <img src={DotsImg} alt="three dots" className="DropDownImg" />
+                          <div className="DropDownIcon">
+                            <img src={DotsImg} alt="three dots" className="DropDownImg" />
+                          </div>
                           {openDropDown && (
                             <div className="ProjectDropDownContent">
                               <div onClick={() => this.showDeleteAlert()}>Delete</div>
@@ -245,7 +242,7 @@ class ProjectCard extends React.Component {
                 </div>
                 <div className="DeleteProjectModelResponses Extended">
                   <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
-                  <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteProject(e, CardID)} />
+                  <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteProject(e, cardID)} />
                 </div>
               </div>
 
@@ -275,8 +272,8 @@ class ProjectCard extends React.Component {
                   </div>
                 </div>
                 <div className="ModalFormInputs">
-                  <InputText
-                    placeholder="New project Name"
+                  <BlackInputText
+                    placeholder="New Project Name"
                     name="projectName"
                     value={projectName}
                     onChange={(e) => {
@@ -321,12 +318,24 @@ ProjectCard.propTypes = {
   isDeleted: PropTypes.bool,
   isDeleting: PropTypes.bool,
   isFailed: PropTypes.bool,
+  clearDeleteProjectState: PropTypes.func.isRequired,
+  updateProject: PropTypes.func.isRequired,
+  deleteProject: PropTypes.func.isRequired,
+  cardID: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  isUpdating: PropTypes.bool,
+  description: PropTypes.string,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  icon: PropTypes.string.isRequired
 };
 
 ProjectCard.defaultProps = {
   isDeleted: false,
   isDeleting: false,
-  isFailed: false
+  isFailed: false,
+  name: '',
+  description: '',
+  isUpdating: false,
 };
 
 const mapStateToProps = (state) => {

@@ -150,6 +150,7 @@ export default class RegisterPage extends Component {
               <div className="RegisterContentInputs">
 
                 <InputText
+                  required
                   placeholder="Name"
                   name="name"
                   value={name}
@@ -157,18 +158,21 @@ export default class RegisterPage extends Component {
 
                 />
                 <InputText
+                  required
                   placeholder="Email Address"
                   name="email"
                   value={email}
                   onChange={this.handleOnChange}
                 />
                 <InputPassword
+                  required
                   placeholder="Password"
                   name="password"
                   value={password}
                   onChange={this.handleOnChange}
                 />
                 <InputPassword
+                  required
                   placeholder="Repeat Password"
                   name="passwordConfirm"
                   value={passwordConfirm}

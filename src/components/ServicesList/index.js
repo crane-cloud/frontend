@@ -60,16 +60,20 @@ class ServicesListPage extends React.Component {
                   </thead>
                   {
                     isRetrieving ? (
-                      <tr className="TableLoading">
-                        <div className="SpinnerWrapper">
-                          <BigSpinner />
-                        </div>
-                      </tr>
+                      <tbody>
+                        <tr className="TableLoading">
+                          <td>
+                            <div className="SpinnerWrapper">
+                              <BigSpinner />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
                     ) : (
                       <tbody>
                         {(isFetched && services !== undefined) && (
                           services.map((service) => (
-                            <tr>
+                            <tr key={services.indexOf(service)}>
                               <td>{service.metadata.name}</td>
                               <td>{service.spec.type}</td>
                               <td>{service.spec.clusterIP}</td>
@@ -108,9 +112,15 @@ class ServicesListPage extends React.Component {
 }
 
 ServicesListPage.propTypes = {
+  getServices: PropTypes.func.isRequired,
   services: PropTypes.arrayOf(PropTypes.object),
   isFetched: PropTypes.bool,
   isRetrieving: PropTypes.bool,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
 };
 
 ServicesListPage.defaultProps = {

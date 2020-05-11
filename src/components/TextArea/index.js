@@ -4,14 +4,14 @@ import './TextArea.css';
 
 const TextArea = (props) => {
   const {
-    name, value, placeholder, onChange
+    name, value, placeholder, onChange, required
   } = props;
 
   return (
     <textarea
       className="TextArea"
       type="text"
-      placeholder={`${placeholder} *`}
+      placeholder={`${placeholder}${required ? ' *' : ''}`}
       rows="3"
       cols="50"
       name={name}
@@ -27,11 +27,13 @@ TextArea.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string,
   placeholder: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
+  required: PropTypes.bool
 };
 
 TextArea.defaultProps = {
-  value: ''
+  value: '',
+  required: false
 };
 
 export default TextArea;

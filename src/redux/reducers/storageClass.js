@@ -5,7 +5,7 @@ import {
 } from '../actions/actionTypes';
 
 const initialState = {
-  storageClasses: [],
+  storageClasses: {},
   isRetrieving: false,
   isFetched: false,
   message: 'Storage Classes Not Available'

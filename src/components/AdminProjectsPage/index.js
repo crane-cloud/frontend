@@ -57,16 +57,20 @@ class AdminProjectsPage extends React.Component {
                     </tr>
                   </thead>
                   {isRetrieving ? (
-                    <tr className="TableLoading">
-                      <div className="SpinnerWrapper">
-                        <BigSpinner />
-                      </div>
-                    </tr>
+                    <tbody>
+                      <tr className="TableLoading">
+                        <td>
+                          <div className="SpinnerWrapper">
+                            <BigSpinner />
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
                   ) : (
                     <tbody>
                       {(projects !== 0 && projects !== undefined) && (
                         projects.map((project) => (
-                          <tr>
+                          <tr key={projects.indexOf(project)}>
                             <td>{project.name}</td>
                             <td>
                               { this.getUserName(project.owner_id)}
@@ -105,7 +109,14 @@ AdminProjectsPage.propTypes = {
   isRetrieved: PropTypes.bool,
   isRetrieving: PropTypes.bool,
   users: PropTypes.arrayOf(PropTypes.object),
-  isFetched: PropTypes.bool
+  isFetched: PropTypes.bool,
+  getAdminProjects: PropTypes.func.isRequired,
+  getUsersList: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
 };
 
 AdminProjectsPage.defaultProps = {

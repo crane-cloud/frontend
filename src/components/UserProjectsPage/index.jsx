@@ -10,7 +10,7 @@ import PrimaryButton from '../PrimaryButton';
 import Modal from '../Modal';
 import getClustersList from '../../redux/actions/clusters';
 import getUserProjects from '../../redux/actions/projectsList';
-import InputText from '../InputText';
+import BlackInputText from '../BlackInputText';
 import TextArea from '../TextArea';
 import ProjectCard from '../ProjectCard';
 import Spinner, { BigSpinner } from '../SpinnerComponent';
@@ -45,8 +45,9 @@ class UserProjectsPage extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-
-    const { isAdded, getClustersList, getUserProjects, data, isDeleted, isUpdated } = this.props;
+    const {
+      isAdded, getClustersList, getUserProjects, data, isDeleted, isUpdated
+    } = this.props;
 
     if (isDeleted !== prevProps.isDeleted) {
       getUserProjects(data.id);
@@ -148,7 +149,7 @@ class UserProjectsPage extends React.Component {
       isAdded,
       isAdding
     } = this.props;
-    
+
     return (
       <div className="Page">
         <div className="TopRow">
@@ -168,16 +169,14 @@ class UserProjectsPage extends React.Component {
                 <div className="ProjectList">
                   {(isFetched && projects !== undefined && (
                     (projects.map((project) => (
-                      // <Link to={{ pathname: `/users/${userId}/projects/${project.id}/apps` }} key={project.id}>
                       <div key={project.id} className="ProjectCardItem">
                         <ProjectCard
                           name={project.name}
                           description={project.description}
-                          CardID={project.id}
+                          cardID={project.id}
                           icon={crane}
                         />
                       </div>
-                      // </Link>
                     ))))
                   )}
                   {(isFetched && projects.length === 0) && (
@@ -221,7 +220,8 @@ class UserProjectsPage extends React.Component {
                 onChange={this.handleSelectChange}
               />
 
-              <InputText
+              <BlackInputText
+                required
                 placeholder="Project Name"
                 name="projectName"
                 value={projectName}
@@ -280,6 +280,8 @@ UserProjectsPage.propTypes = {
   isAdding: PropTypes.bool,
   isFetched: PropTypes.bool,
   message: PropTypes.string,
+  isUpdated: PropTypes.bool,
+  isDeleted: PropTypes.bool,
   isRetrieving: PropTypes.bool
 };
 
@@ -291,6 +293,8 @@ UserProjectsPage.defaultProps = {
   projects: [],
   message: '',
   isFetched: false,
+  isUpdated: false,
+  isDeleted: false,
   isRetrieving: false
 };
 

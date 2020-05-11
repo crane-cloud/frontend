@@ -38,25 +38,31 @@ class JobsListPage extends React.Component {
             <div className="ContentSection">
               <div className="ResourcesTable">
                 <table>
-                  <tr>
-                    <th>Name</th>
-                    <th>Duration</th>
-                    <th>Status</th>
-                    <th>Age</th>
-                  </tr>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Duration</th>
+                      <th>Status</th>
+                      <th>Age</th>
+                    </tr>
+                  </thead>
                   {
                     isRetrieving ? (
-                      <tr className="TableLoading">
-                        <div className="SpinnerWrapper">
-                          <BigSpinner />
-                        </div>
-                      </tr>
+                      <tbody>
+                        <tr className="TableLoading">
+                          <td>
+                            <div className="SpinnerWrapper">
+                              <BigSpinner />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
                     ) : (
                       <tbody>
                         {
                           (isFetched && jobs !== undefined) && (
                             jobs.map((job) => (
-                              <tr>
+                              <tr key={jobs.indexOf(job)}>
                                 <td>{job.metadata.name}</td>
                                 <td>{`${Math.floor((Date.parse(job.status.completionTime) - Date.parse(job.status.startTime)) / 1000)} seconds`}</td>
                                 <td><Status status={job.status.succeeded} /></td>
@@ -95,6 +101,12 @@ JobsListPage.propTypes = {
   jobs: PropTypes.arrayOf(PropTypes.object),
   isFetched: PropTypes.bool,
   isRetrieving: PropTypes.bool,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired,
+  getJobs: PropTypes.func.isRequired
 };
 
 JobsListPage.defaultProps = {

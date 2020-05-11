@@ -46,16 +46,20 @@ class NamespacesListPage extends React.Component {
                   </thead>
                   {
                     isRetrieving ? (
-                      <tr className="TableLoading">
-                        <div className="SpinnerWrapper">
-                          <BigSpinner />
-                        </div>
-                      </tr>
+                      <tbody>
+                        <tr className="TableLoading">
+                          <td>
+                            <div className="SpinnerWrapper">
+                              <BigSpinner />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
                     ) : (
                       <tbody>
                         {isRetrieved && namespacesList.length !== 0 && (
                           namespacesList.map((namespace) => (
-                            <tr>
+                            <tr key={namespacesList.indexOf(namespace)}>
                               <td>{namespace.metadata.name}</td>
                               <td className="StatusColumn"><Status status={namespace.status.phase} /></td>
                               <td>{tellAge(namespace.metadata.creationTimestamp)}</td>
@@ -90,17 +94,21 @@ class NamespacesListPage extends React.Component {
 }
 
 NamespacesListPage.propTypes = {
-  namespacesList: PropTypes.object,
+  getNamespaces: PropTypes.func.isRequired,
+  namespacesList: PropTypes.arrayOf(PropTypes.object),
   isRetrieving: PropTypes.bool,
   isRetrieved: PropTypes.bool,
-  clusterName: PropTypes.string,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
 };
 
 NamespacesListPage.defaultProps = {
   namespacesList: [],
   isRetrieving: false,
   isRetrieved: false,
-  clusterName: '',
 };
 
 const mapStateToProps = (state) => {

@@ -32,7 +32,6 @@
 [tooltip-message]:before {
   position: absolute;
   bottom: 150%;
-  left: 50%;
   margin-bottom: 5px;
   margin-left: -80px;
   padding: 7px;
@@ -72,4 +71,17 @@
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
+}
+
+/* Positioning the tooltip */
+[position="top"]:before {
+  left: 50%;
+}
+
+[position="left"]:before {
+  right: 0;
+}
+
+[position="right"]:before {
+  left: 50%;
 }
