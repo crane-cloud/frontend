@@ -1,6 +1,10 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../../config';
-import { GET_PROJECT_DETAIL_SUCCESS, GET_PROJECT_DETAIL_FAIL, START_GETTING_PROJECT_DETAIL } from './actionTypes';
+import {
+ GET_PROJECT_DETAIL_SUCCESS,
+ GET_PROJECT_DETAIL_FAIL,
+ CLEAR_PROJECT_DETAILS,
+ START_GETTING_PROJECT_DETAIL } from './actionTypes';
 
 export const startGettingProjectDetail = () => ({
   type: START_GETTING_PROJECT_DETAIL,
@@ -20,6 +24,10 @@ export const getProjectDetailFail = (error) => ({
   },
 });
 
+const clearProjectState = () => ({
+  type: CLEAR_PROJECT_DETAILS
+});
+
 const getProjectDetail = (projectID) => (dispatch) => {
   dispatch(startGettingProjectDetail());
   return axios.get(`${API_BASE_URL}/projects/${projectID}`,
@@ -33,3 +41,4 @@ const getProjectDetail = (projectID) => (dispatch) => {
 };
 
 export default getProjectDetail;
+export { clearProjectState };
