@@ -1,9 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import './DeleteWarning.css';
 
 const DeleteWarning = () => (
   <div className="DeleteWarning">
-    Note:<small>This action is irreversible! </small>
+    Note:
+    <small>This action is irreversible! </small>
   </div>
 );
 
