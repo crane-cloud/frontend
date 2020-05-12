@@ -1,0 +1,31 @@
+.TabsContainer {
+  border: 2px solid #000;
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.TabHeadingList {
+  margin-top: 0;
+  background-color: #F1F1F1;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 0;
+}
+
+.TabContent {
+  padding: 0 1rem;
+}
+
+.TabHeadingListItem {
+  display: inline-block;
+  list-style: none;
+  margin-bottom: -1px;
+  padding: 1rem 2rem;
+}
+
+.TabHeadingListItemActive {
+  background-color: white;
+  border-width: 0;
+  border: none;
+}

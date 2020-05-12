@@ -18,22 +18,24 @@ const Tabs = ({ children }) => {
 
   return (
     <div className="TabsContainer">
-      <ol className="tab-list">
-        {children.map((child) => {
-          const { index, label } = child.props;
+      <div>
+        <ol className="TabHeadingList">
+          {children.map((child) => {
+            const { index, label } = child.props;
 
-          return (
-            <Tab
-              activeTab={activeTab}
-              key={index}
-              index={index}
-              label={label}
-              onClick={onClickTabItem}
-            />
-          );
-        })}
-      </ol>
-      <div className="tab-content">
+            return (
+              <Tab
+                activeTab={activeTab}
+                key={index}
+                index={index}
+                label={label}
+                onClick={onClickTabItem}
+              />
+            );
+          })}
+        </ol>
+      </div>
+      <div className="TabContent">
         {children.map((child) => {
           if (child.props.index !== activeTab) return undefined;
           return child.props.children;
@@ -44,7 +46,7 @@ const Tabs = ({ children }) => {
 };
 
 Tabs.propTypes = {
-
+  children: PropTypes.instanceOf(Array).isRequired
 };
 
 export default Tabs;
