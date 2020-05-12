@@ -325,7 +325,7 @@ ProjectCard.propTypes = {
   name: PropTypes.string,
   isUpdating: PropTypes.bool,
   description: PropTypes.string,
-  data: PropTypes.shape({Name: PropTypes.string}),
+  data: PropTypes.shape({ Name: PropTypes.string }),
   icon: PropTypes.string.isRequired
 };
 
@@ -336,6 +336,7 @@ ProjectCard.defaultProps = {
   name: '',
   description: '',
   isUpdating: false,
+  data: {}
 };
 
 const mapStateToProps = (state) => {
