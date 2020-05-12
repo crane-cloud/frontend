@@ -16,7 +16,10 @@ const Tab = ({
 Tab.propTypes = {
   index: PropTypes.number.isRequired,
   onClick: PropTypes.func.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.shape({})
+  ]).isRequired,
   activeTab: PropTypes.number.isRequired
 };
 

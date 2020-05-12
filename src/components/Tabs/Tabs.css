@@ -11,17 +11,20 @@
   display: flex;
   justify-content: space-between;
   padding-left: 0;
+  height: 3rem;
 }
 
 .TabContent {
+  width: 100%;
   padding: 0 1rem;
 }
 
 .TabHeadingListItem {
+  cursor: pointer;
   display: inline-block;
   list-style: none;
   margin-bottom: -1px;
-  padding: 1rem 2rem;
+  padding: .5rem 2rem;
 }
 
 .TabHeadingListItemActive {
