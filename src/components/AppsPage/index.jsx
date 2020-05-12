@@ -272,7 +272,7 @@ class AppsPage extends React.Component {
                   <div className="InputTooltipContainer">
                     <Tooltip
                       showIcon
-                      message="holla holla holla"
+                      message="Entrypoint or command for your container"
                       position="left"
                     />
                   </div>
@@ -366,7 +366,7 @@ class AppsPage extends React.Component {
                 <h4>Database Support</h4>
                 <Tooltip
                   showIcon
-                  message="TODO: edit this explanation / info"
+                  message="Does your application need a database?"
                 />
               </div>
               <div className="DbSupportCheckField">
