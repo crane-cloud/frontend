@@ -94,7 +94,7 @@ const AppsCard = (props) => {
           <Modal showModal={openDeleteAlert}>
             <div className="DeleteAppModel">
               <div className="DeleteDescription">
-                Are you sure you want to delete
+                Are you sure you want to delete app
                 <span>
                   <b>
                     {' '}
