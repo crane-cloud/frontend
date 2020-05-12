@@ -273,7 +273,7 @@ class ProjectCard extends React.Component {
                 </div>
                 <div className="ModalFormInputs">
                   <BlackInputText
-                    placeholder="New Project Name"
+                    placeholder={project.name}
                     name="projectName"
                     value={projectName}
                     onChange={(e) => {
@@ -281,7 +281,7 @@ class ProjectCard extends React.Component {
                     }}
                   />
                   <TextArea
-                    placeholder="New Description"
+                    placeholder={project.description}
                     name="projectDescription"
                     value={projectDescription}
                     onChange={(e) => {
