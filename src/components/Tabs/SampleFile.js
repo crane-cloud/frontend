@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Tabs from '.';
 
 const SampleTabs = () => (
-  <div>
+  <div style={{ width: '25rem' }}>
     <Tabs>
       <div index={1} label="Tab One">
         Tab One
