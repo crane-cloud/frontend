@@ -359,7 +359,7 @@ class AppsPage extends React.Component {
 
                           <BlackInputText
                             required
-                            placeholder="Password"
+                            placeholder="Docker Password"
                             type="password"
                             name="password"
                             value={password}
