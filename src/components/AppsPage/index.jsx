@@ -209,7 +209,8 @@ class AppsPage extends React.Component {
         image: uri,
         name,
         need_db: needDb,
-        project_id: match.params.projectID
+        project_id: match.params.projectID,
+        private_image: isPrivateImage
       };
 
       if (port) {
@@ -226,8 +227,7 @@ class AppsPage extends React.Component {
         };
       }
 
-      // createApp(appInfo, match.params.projectID);
-      console.log(appInfo, match.params.projectID);
+      createApp(appInfo, match.params.projectID);
     }
   }
 
@@ -332,53 +332,56 @@ class AppsPage extends React.Component {
                   &nbsp; Private Image
                 </div>
 
-                <div className="PrivateImageTabContainer">
-                  <Tabs>
-                    <div index={1} label={<DockerLogo />}>
-                      <div className="PrivateImageInputs">
-                        <BlackInputText
-                          required
-                          placeholder="Docker Username"
-                          name="username"
-                          value={username}
-                          onChange={(e) => {
-                            this.handleDockerCredentialsChange(e);
-                          }}
-                        />
+                {isPrivateImage && (
+                  <div className="PrivateImageTabContainer">
+                    <Tabs>
+                      <div index={1} label={<DockerLogo />}>
+                        <div className="PrivateImageInputs">
+                          <BlackInputText
+                            required
+                            placeholder="Docker Username"
+                            name="username"
+                            value={username}
+                            onChange={(e) => {
+                              this.handleDockerCredentialsChange(e);
+                            }}
+                          />
 
-                        <BlackInputText
-                          required
-                          placeholder="Docker Email"
-                          name="email"
-                          value={email}
-                          onChange={(e) => {
-                            this.handleDockerCredentialsChange(e);
-                          }}
-                        />
+                          <BlackInputText
+                            required
+                            placeholder="Docker Email"
+                            name="email"
+                            value={email}
+                            onChange={(e) => {
+                              this.handleDockerCredentialsChange(e);
+                            }}
+                          />
 
-                        <BlackInputText
-                          required
-                          placeholder="Password"
-                          name="password"
-                          value={password}
-                          onChange={(e) => {
-                            this.handleDockerCredentialsChange(e);
-                          }}
-                        />
+                          <BlackInputText
+                            required
+                            placeholder="Password"
+                            type="password"
+                            name="password"
+                            value={password}
+                            onChange={(e) => {
+                              this.handleDockerCredentialsChange(e);
+                            }}
+                          />
 
-                        <BlackInputText
-                          required
-                          placeholder="Docker Server"
-                          name="server"
-                          value={server}
-                          onChange={(e) => {
-                            this.handleDockerCredentialsChange(e);
-                          }}
-                        />
+                          <BlackInputText
+                            required
+                            placeholder="Docker Server"
+                            name="server"
+                            value={server}
+                            onChange={(e) => {
+                              this.handleDockerCredentialsChange(e);
+                            }}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </Tabs>
-                </div>
+                    </Tabs>
+                  </div>
+                )}
 
                 <div className="InputFieldWithTooltip">
                   <BlackInputText
