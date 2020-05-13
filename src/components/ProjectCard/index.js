@@ -10,6 +10,7 @@ import getProjectDetail, { clearProjectState } from '../../redux/actions/project
 import Spinner from '../SpinnerComponent';
 import TextArea from '../TextArea';
 import Feedback from '../Feedback';
+import DeleteWarning from '../DeleteWarning';
 import Tooltip from '../Tooltip';
 import BlackInputText from '../BlackInputText';
 import Modal from '../Modal';
@@ -238,6 +239,7 @@ class ProjectCard extends React.Component {
                     </b>
                   </span>
                   ?
+                  <DeleteWarning />
                 </div>
                 <div className="DeleteProjectModelResponses Extended">
                   <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />

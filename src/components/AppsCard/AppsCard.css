@@ -171,6 +171,7 @@
 
 .DeleteDescription{
     cursor: pointer;
+    padding-bottom: 0;
 }
 
 .DeleteAppModelResponses{
@@ -178,8 +179,7 @@
     gap: 1rem;
     grid-template-columns: repeat(2, auto);
     align-items: center;
-    margin-top: 4rem;
-    margin-bottom: 2rem;
+    margin-top: 2rem;
 }
 
 .DeleteAppModelResponses button{
