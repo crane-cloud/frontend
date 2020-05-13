@@ -3,8 +3,7 @@ import './DeleteWarning.css';
 
 const DeleteWarning = () => (
   <div className="DeleteWarning">
-    Note:
-    <small>This action is irreversible! </small>
+    <small>Note that this action is irreversible.</small>
   </div>
 );
 
