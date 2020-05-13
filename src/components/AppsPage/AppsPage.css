@@ -218,3 +218,7 @@ table-layout: fixed;
   display: grid;
   gap: 0.5rem;
 }
+
+.PrivateImageInputs input {
+  width: auto;
+}
