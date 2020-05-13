@@ -191,7 +191,7 @@ table-layout: fixed;
   padding: .5rem 0;
 }
 
-.DbSupportCheckField {
+.DbSupportCheckField, .PrivateImageCheckField {
   display: flex;
 }
 
@@ -209,3 +209,12 @@ table-layout: fixed;
   display: flex;
   align-items: center;
 } 
+
+.PrivateImageTabContainer {
+  max-width: 25rem; /* this is to correspond with the width of the input elements */
+}
+
+.PrivateImageInputs {
+  display: grid;
+  gap: 0.5rem;
+}

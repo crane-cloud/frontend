@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import createApp, { clearState } from '../../redux/actions/createApp';
 import PrimaryButton from '../PrimaryButton';
-import InputText from '../BlackInputText';
+import BlackInputText from '../BlackInputText';
 import Modal from '../Modal';
 import RemoveIcon from '../../assets/images/remove.svg';
 import BackButton from '../../assets/images/backButton.svg';
@@ -16,6 +16,8 @@ import Spinner from '../SpinnerComponent';
 import Feedback from '../Feedback';
 import Checkbox from '../Checkbox';
 import Tooltip from '../Tooltip';
+import Tabs from '../Tabs';
+import { ReactComponent as DockerLogo } from '../../assets/images/docker-logo.svg';
 import './AppsPage.css';
 
 class AppsPage extends React.Component {
@@ -251,7 +253,7 @@ class AppsPage extends React.Component {
 
             <div className="ModalFormInputs">
               <div className="ModalFormInputsBasic">
-                <InputText
+                <BlackInputText
                   required
                   placeholder="Name"
                   name="name"
@@ -260,7 +262,7 @@ class AppsPage extends React.Component {
                     this.handleChange(e);
                   }}
                 />
-                <InputText
+                <BlackInputText
                   required
                   placeholder="Image Uri"
                   name="uri"
@@ -270,7 +272,7 @@ class AppsPage extends React.Component {
                   }}
                 />
 
-                <div className="DbSupportCheckField">
+                <div className="PrivateImageCheckField">
                   <Checkbox
                     isBlack
                     onClick={this.togglePrivateImage}
@@ -279,8 +281,37 @@ class AppsPage extends React.Component {
                   &nbsp; Private Image
                 </div>
 
+                <div className="PrivateImageTabContainer">
+                  <Tabs>
+                    <div index={1} label={<DockerLogo />}>
+                      <div className="PrivateImageInputs">
+                        Username
+                        <BlackInputText
+                          required
+                          placeholder="Your DockerHub Username"
+                          name="entryCommand"
+                          value={entryCommand}
+                          onChange={(e) => {
+                            this.handleChange(e);
+                          }}
+                        />
+                        Password
+                        <BlackInputText
+                          required
+                          placeholder="Password"
+                          name="entryCommand"
+                          value={entryCommand}
+                          onChange={(e) => {
+                            this.handleChange(e);
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </Tabs>
+                </div>
+
                 <div className="InputFieldWithTooltip">
-                  <InputText
+                  <BlackInputText
                     placeholder="Entry Command"
                     name="entryCommand"
                     value={entryCommand}
@@ -297,7 +328,7 @@ class AppsPage extends React.Component {
                   </div>
                 </div>
 
-                <InputText
+                <BlackInputText
                   placeholder="Port (optional) - defaults to 80"
                   name="port"
                   value={port}
@@ -352,7 +383,7 @@ class AppsPage extends React.Component {
                 )}
                 <div className="EnvVarsInputGroup">
                   <div className="EnvVarsInputs">
-                    <InputText
+                    <BlackInputText
                       placeholder="Name"
                       name="varName"
                       value={varName}
@@ -360,7 +391,7 @@ class AppsPage extends React.Component {
                         this.handleChange(e);
                       }}
                     />
-                    <InputText
+                    <BlackInputText
                       placeholder="Value"
                       name="varValue"
                       value={varValue}
