@@ -1,8 +1,8 @@
 
 import {
-  GET_CLUSTERS, 
-  GET_CLUSTERS_FAIL, 
-  START_GETTING_CLUSTERS 
+  GET_CLUSTERS,
+  GET_CLUSTERS_FAIL,
+  START_GETTING_CLUSTERS
 } from '../actions/actionTypes';
 
 const initialState = {

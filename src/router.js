@@ -54,7 +54,7 @@ const Routes = () => (
       {/* projects */}
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects" component={UserProjectsPage} />
       <ProtectedRoute isAllowed={hasToken} path="/users/:userID/projects/:projectID/apps" component={AppsPage} />
-      <ProtectedRoute isAllowed={hasToken} exact path="/accounts" component={UsersAccounts} />
+      <ProtectedRoute isAllowed={hasToken} exact path="/clusters/:clusterID/accounts" component={UsersAccounts} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/projects" component={AdminProjectsPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/resources" component={ClusterResourcesPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/services" component={ServicesListPage} />

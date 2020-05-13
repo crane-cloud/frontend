@@ -8,6 +8,7 @@ import Spinner from '../SpinnerComponent';
 import Modal from '../Modal';
 import Status from '../Status';
 import Feedback from '../Feedback';
+import DeleteWarning from '../DeleteWarning';
 import './AppsCard.css';
 
 const AppsCard = (props) => {
@@ -93,7 +94,7 @@ const AppsCard = (props) => {
           <Modal showModal={openDeleteAlert}>
             <div className="DeleteAppModel">
               <div className="DeleteDescription">
-                Are you sure you want to delete
+                Are you sure you want to delete app
                 <span>
                   <b>
                     {' '}
@@ -103,6 +104,7 @@ const AppsCard = (props) => {
                 </span>
                 ?
               </div>
+              <DeleteWarning />
 
               <div className="DeleteAppModelResponses">
                 <PrimaryButton label="cancel" className="CancelBtn" onClick={hideDeleteAlert} />
