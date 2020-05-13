@@ -31,7 +31,7 @@ const deleteProjectReducer = (state = initialState, action) => {
   case DELETE_PROJECT_FAIL:
     return {
       ...state,
-      message: action.payload,
+      message: 'Failed to delete project. Please try again.',
       isDeleting: false,
       isDeleted: false,
       isFailed: true,
