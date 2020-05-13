@@ -23,7 +23,6 @@ class ProjectCard extends React.Component {
       openUpdateModal: false,
       openDeleteAlert: false,
       openDropDown: false,
-      deleteFeedback: '',
       projectName: '',
       projectDescription: '',
       error: ''
@@ -40,6 +39,14 @@ class ProjectCard extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateProjectName = this.validateProjectName.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { isDeleted } = this.props;
+
+    if (isDeleted !== prevProps.isDeleted) {
+      this.hideDeleteAlert();
+    }
   }
 
   showDropDown() {
@@ -137,26 +144,9 @@ class ProjectCard extends React.Component {
 
 
   handleDeleteProject(e, projectID) {
-    const {
-      deleteProject, isDeleted, isFailed, clearDeleteProjectState
-    } = this.props;
+    const { deleteProject } = this.props;
     e.preventDefault();
-
     deleteProject(projectID);
-    if (isDeleted) {
-      this.setState({
-        deleteFeedback: 'Project has been Deleted.',
-        openDeleteAlert: false
-      });
-    }
-
-    if (isFailed) {
-      this.setState({
-        deleteFeedback: 'Failed to delete Project. Try again',
-        openDeleteAlert: false,
-      });
-    }
-    clearDeleteProjectState();
   }
 
 
@@ -165,20 +155,14 @@ class ProjectCard extends React.Component {
   }
 
   hideDeleteAlert() {
+    const { clearDeleteProjectState } = this.props;
     clearDeleteProjectState();
     this.setState({ openDeleteAlert: false });
   }
 
   render() {
     const {
-      name,
-      isDeleting,
-      data,
-      description,
-      icon,
-      cardID,
-      isUpdating,
-      project
+      project, name, isDeleting, data, description, icon, cardID, isUpdating, message, isFailed
     } = this.props;
     const userId = data.id;
     const {
@@ -189,6 +173,7 @@ class ProjectCard extends React.Component {
       openUpdateModal,
       error
     } = this.state;
+
     return (
       <div>
         <div className="ProjectsCard">
@@ -206,14 +191,28 @@ class ProjectCard extends React.Component {
                     <td className="ProjectName">{description}</td>
                     <td className="OtherData">
                       <div className="DropDownData">
-                        <div className="ProjectDropDown" onClick={() => this.toggleDropDown()}>
+                        <div
+                          className="ProjectDropDown"
+                          onClick={this.toggleDropDown}
+                          role="presentation"
+                        >
                           <div className="DropDownIcon">
                             <img src={DotsImg} alt="three dots" className="DropDownImg" />
                           </div>
                           {openDropDown && (
                             <div className="ProjectDropDownContent">
-                              <div onClick={() => this.showDeleteAlert()}>Delete</div>
-                              <div onClick={() => this.showUpdateForm()}>Update</div>
+                              <div
+                                onClick={this.showDeleteAlert}
+                                role="presentation"
+                              >
+                                Delete
+                              </div>
+                              <div
+                                onClick={this.showUpdateForm}
+                                role="presentation"
+                              >
+                                Update
+                              </div>
                             </div>
                           )}
                         </div>
@@ -246,6 +245,13 @@ class ProjectCard extends React.Component {
                   <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
                   <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteProject(e, cardID)} />
                 </div>
+
+                {(isFailed && message) && (
+                  <Feedback
+                    message={message}
+                    type="error"
+                  />
+                )}
               </div>
 
             </Modal>
@@ -327,8 +333,11 @@ ProjectCard.propTypes = {
   name: PropTypes.string,
   isUpdating: PropTypes.bool,
   description: PropTypes.string,
-  data: PropTypes.shape({Name: PropTypes.string}),
-  icon: PropTypes.string.isRequired
+  data: PropTypes.shape({
+    id: PropTypes.string.isRequired
+  }).isRequired,
+  icon: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired
 };
 
 ProjectCard.defaultProps = {
@@ -343,7 +352,7 @@ ProjectCard.defaultProps = {
 const mapStateToProps = (state) => {
   const { data } = state.user;
   const {
-    isDeleting, isDeleted, isFailed
+    isDeleting, isDeleted, isFailed, clearDeleteProjectState, message
   } = state.deleteProjectReducer;
   const { isUpdating, isUpdated } = state.updateProjectReducer;
   const { project } = state.projectDetailReducer;
@@ -356,12 +365,13 @@ const mapStateToProps = (state) => {
     isUpdating,
     isUpdated,
     project,
-    clearDeleteProjectState
+    clearDeleteProjectState,
+    message
   };
 };
 
-export const mapDispatchToProps = {
-  deleteProject, updateProject, getProjectDetail, clearProjectState
+const mapDispatchToProps = {
+  deleteProject, updateProject, getProjectDetail, clearProjectState, clearDeleteProjectState
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectCard);

@@ -15,6 +15,14 @@ class ClustersList extends Component {
     getClustersList();
   }
 
+  componentDidUpdate(prevProps) {
+    const { getClustersList, newClusterAdded } = this.props;
+
+    if (newClusterAdded !== prevProps.newClusterAdded) {
+      getClustersList();
+    }
+  }
+
   render() {
     const { clusters, isRetrieved, isRetrieving } = this.props;
 
@@ -29,27 +37,39 @@ class ClustersList extends Component {
             </div>
           ) : (
             <div>
-              {isRetrieved ? (clusters.map((cluster) => (
-                <Link to={{ pathname: `/clusters/${cluster.id}/resources` }} key={cluster.id}>
-                  <div key={cluster.id} className="ClusterCardItem">
-                    <ClusterCard
-                      name={cluster.name}
-                      description={cluster.description}
-                      icon={crane}
-                    />
-                  </div>
-                </Link>
-              )))
-                : (
-                  <div className="EmptyList">
-                    <h3>No Clusters Available</h3>
-                  </div>
-                )}
+              {(isRetrieved && clusters !== undefined) && (
+                clusters.map((cluster) => (
+                  <Link to={{ pathname: `/clusters/${cluster.id}/resources` }} key={cluster.id}>
+                    <div key={cluster.id} className="ClusterCardItem">
+                      <ClusterCard
+                        name={cluster.name}
+                        description={cluster.description}
+                        icon={crane}
+                      />
+                    </div>
+                  </Link>
+                ))
+              )}
             </div>
           )
         }
+        {(isRetrieved && clusters.length === 0) && (
+          <div className="NoContentDiv">
+            <p>No Clusters Available</p>
+          </div>
+        )}
+        {(!isRetrieving && !isRetrieved) && (
+          <div className="NoContentDiv">
+            <p>
+              Oops! Something went wrong!
+
+              Failed to retrieve Clusters.
+            </p>
+          </div>
+        )}
 
       </div>
+
     );
   }
 }
@@ -57,6 +77,8 @@ class ClustersList extends Component {
 // inititate props
 ClustersList.propTypes = {
   clusters: PropTypes.arrayOf(PropTypes.object),
+  getClustersList: PropTypes.func.isRequired,
+  newClusterAdded: PropTypes.bool.isRequired,
   isRetrieved: PropTypes.bool,
   isRetrieving: PropTypes.bool
 };

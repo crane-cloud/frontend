@@ -21,7 +21,7 @@ const addClusterFail = (error) => ({
   },
 });
 
-const clearState = () => ({
+const clearAddClusterState = () => ({
   type: CLEAR_ADD_CLUSTER_STATE
 });
 
@@ -39,4 +39,4 @@ const addCluster = (clusterData) => (dispatch) => {
 };
 
 export default addCluster;
-export { clearState };
+export { clearAddClusterState };

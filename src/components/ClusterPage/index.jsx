@@ -9,7 +9,7 @@ import BlackInputText from '../BlackInputText';
 import Modal from '../Modal';
 import ClustersList from '../ClustersList';
 import Header from '../Header';
-import addCluster, { clearState } from '../../redux/actions/addCluster';
+import addCluster, { clearAddClusterState } from '../../redux/actions/addCluster';
 import Feedback from '../Feedback';
 import './ClusterPage.css';
 
@@ -30,14 +30,22 @@ class ClusterPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    const { isAdded } = this.props;
+
+    if (isAdded !== prevProps.isAdded) {
+      this.hideForm();
+    }
+  }
+
   showForm() {
     this.setState({ openModal: true });
   }
 
   hideForm() {
-    const { clearState } = this.props;
-    this.setState({ openModal: false });
-    clearState();
+    const { clearAddClusterState } = this.props;
+    clearAddClusterState();
+    this.setState({ openModal: false, error: '' });
   }
 
   handleChange(e) {
@@ -53,7 +61,7 @@ class ClusterPage extends React.Component {
   }
 
   handleSubmit() {
-    const { addCluster, creatingCluster, isAdded } = this.props;
+    const { addCluster } = this.props;
 
     const {
       host,
@@ -76,16 +84,6 @@ class ClusterPage extends React.Component {
       };
 
       addCluster(cluster);
-
-      if (creatingCluster === false && isAdded === true) {
-        setTimeout(
-          () => {
-            this.setState({
-              openModal: false
-            });
-          }, 1000
-        );
-      }
     }
   }
 
@@ -116,7 +114,7 @@ class ClusterPage extends React.Component {
           <InformationBar header="Select Infrastructure" showBtn btnAction={this.showForm} />
         </div>
         <div className="MainRow">
-          <ClustersList />
+          <ClustersList newClusterAdded={isAdded} />
         </div>
         <div className="FooterRow">
           <p>Copyright © 2020 Crane Cloud. All Rights Reserved.</p>
@@ -201,7 +199,7 @@ ClusterPage.propTypes = {
     accessToken: PropTypes.string.isRequired
   }).isRequired,
   addCluster: PropTypes.func.isRequired,
-  clearState: PropTypes.func.isRequired,
+  clearAddClusterState: PropTypes.func.isRequired,
   isAdded: PropTypes.bool.isRequired,
   isFailed: PropTypes.bool.isRequired,
   creatingCluster: PropTypes.bool.isRequired,
@@ -227,4 +225,7 @@ const mapStateToProps = ({ user, addClusterReducer }) => {
   };
 };
 
-export default connect(mapStateToProps, { addCluster, clearState })(withRouter(ClusterPage));
+export default connect(
+  mapStateToProps,
+  { addCluster, clearAddClusterState }
+)(withRouter(ClusterPage));
