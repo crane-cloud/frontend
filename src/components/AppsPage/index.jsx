@@ -35,7 +35,13 @@ class AppsPage extends React.Component {
       entryCommand: '',
       port: '',
       needDb: false,
-      isPrivateImage: false
+      isPrivateImage: false,
+      dockerCredentials: {
+        username: '',
+        email: '',
+        password: '',
+        server: ''
+      }
     };
 
     this.addEnvVar = this.addEnvVar.bind(this);
@@ -43,6 +49,7 @@ class AppsPage extends React.Component {
     this.showForm = this.showForm.bind(this);
     this.hideForm = this.hideForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleDockerCredentialsChange = this.handleDockerCredentialsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateAppName = this.validateAppName.bind(this);
     this.toggleNeedDb = this.toggleNeedDb.bind(this);
@@ -85,6 +92,21 @@ class AppsPage extends React.Component {
     if (createFeedback) {
       this.setState({
         createFeedback: ''
+      });
+    }
+  }
+
+  handleDockerCredentialsChange({ target, target: { value } }) {
+    const { error } = this.state;
+    this.setState((prevState) => ({
+      dockerCredentials: {
+        ...prevState.dockerCredentials,
+        [target.name]: value
+      }
+    }));
+    if (error) {
+      this.setState({
+        error: ''
       });
     }
   }
@@ -144,7 +166,19 @@ class AppsPage extends React.Component {
 
   handleSubmit() {
     const {
-      name, uri, envVars, entryCommand, port, needDb
+      name,
+      uri,
+      envVars,
+      entryCommand,
+      port,
+      needDb,
+      isPrivateImage,
+      dockerCredentials: {
+        username,
+        email,
+        password,
+        server
+      }
     } = this.state;
     const {
       createApp,
@@ -182,7 +216,18 @@ class AppsPage extends React.Component {
         appInfo = { ...appInfo, port: parseInt(port, 10) };
       }
 
-      createApp(appInfo, match.params.projectID);
+      if (isPrivateImage) {
+        appInfo = {
+          ...appInfo,
+          docker_email: email,
+          docker_username: username,
+          docker_password: password,
+          docker_server: server
+        };
+      }
+
+      // createApp(appInfo, match.params.projectID);
+      console.log(appInfo, match.params.projectID);
     }
   }
 
@@ -198,7 +243,13 @@ class AppsPage extends React.Component {
       entryCommand,
       port,
       needDb,
-      isPrivateImage
+      isPrivateImage,
+      dockerCredentials: {
+        username,
+        email,
+        password,
+        server
+      }
     } = this.state;
 
     const {
@@ -285,24 +336,43 @@ class AppsPage extends React.Component {
                   <Tabs>
                     <div index={1} label={<DockerLogo />}>
                       <div className="PrivateImageInputs">
-                        Username
                         <BlackInputText
                           required
-                          placeholder="Your DockerHub Username"
-                          name="entryCommand"
-                          value={entryCommand}
+                          placeholder="Docker Username"
+                          name="username"
+                          value={username}
                           onChange={(e) => {
-                            this.handleChange(e);
+                            this.handleDockerCredentialsChange(e);
                           }}
                         />
-                        Password
+
+                        <BlackInputText
+                          required
+                          placeholder="Docker Email"
+                          name="email"
+                          value={email}
+                          onChange={(e) => {
+                            this.handleDockerCredentialsChange(e);
+                          }}
+                        />
+
                         <BlackInputText
                           required
                           placeholder="Password"
-                          name="entryCommand"
-                          value={entryCommand}
+                          name="password"
+                          value={password}
                           onChange={(e) => {
-                            this.handleChange(e);
+                            this.handleDockerCredentialsChange(e);
+                          }}
+                        />
+
+                        <BlackInputText
+                          required
+                          placeholder="Docker Server"
+                          name="server"
+                          value={server}
+                          onChange={(e) => {
+                            this.handleDockerCredentialsChange(e);
                           }}
                         />
                       </div>
