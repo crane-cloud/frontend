@@ -32,7 +32,8 @@ class AppsPage extends React.Component {
       createFeedback: '',
       entryCommand: '',
       port: '',
-      needDb: false
+      needDb: false,
+      isPrivateImage: false
     };
 
     this.addEnvVar = this.addEnvVar.bind(this);
@@ -43,6 +44,7 @@ class AppsPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateAppName = this.validateAppName.bind(this);
     this.toggleNeedDb = this.toggleNeedDb.bind(this);
+    this.togglePrivateImage = this.togglePrivateImage.bind(this);
   }
 
   componentDidMount() {
@@ -131,6 +133,13 @@ class AppsPage extends React.Component {
     });
   }
 
+  togglePrivateImage() {
+    const { isPrivateImage } = this.state;
+    this.setState({
+      isPrivateImage: !isPrivateImage
+    });
+  }
+
   handleSubmit() {
     const {
       name, uri, envVars, entryCommand, port, needDb
@@ -186,7 +195,8 @@ class AppsPage extends React.Component {
       error,
       entryCommand,
       port,
-      needDb
+      needDb,
+      isPrivateImage
     } = this.state;
 
     const {
@@ -259,6 +269,15 @@ class AppsPage extends React.Component {
                     this.handleChange(e);
                   }}
                 />
+
+                <div className="DbSupportCheckField">
+                  <Checkbox
+                    isBlack
+                    onClick={this.togglePrivateImage}
+                    isChecked={isPrivateImage}
+                  />
+                  &nbsp; Private Image
+                </div>
 
                 <div className="InputFieldWithTooltip">
                   <InputText
