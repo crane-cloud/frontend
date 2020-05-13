@@ -20,8 +20,12 @@ class VerificationSentPage extends React.Component {
       isTokenChecked: false,
       isVerificationFailed: false,
       loading: false,
-      feedback: ''
+      feedback: '',
+      error: ''
     };
+
+    this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -59,13 +63,51 @@ class VerificationSentPage extends React.Component {
       });
   }
 
+  handleOnChange(e) {
+    const { error } = this.state;
+
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+    if (error) {
+      this.setState({
+        error: ''
+      });
+    }
+  }
+
+  validateEmail(email) {
+    // eslint-disable-next-line no-useless-escape
+    const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return emailRegEx.test(String(email).toLowerCase());
+  }
+
+  handleSubmit() {
+    const { email } = this.state;
+    if (!email) {
+      this.setState({
+        error: 'Please enter your email address'
+      });
+    } else {
+      if (this.validateEmail(email)) {
+        // TODO: submit to backend
+        console.log('resend clicked...');
+      } else {
+        this.setState({
+          error: 'Please enter a valid email address'
+        });
+      }
+    }
+  }
+
   render() {
     const {
       loading,
       isTokenChecked,
       isVerificationFailed,
       email,
-      feedback
+      feedback,
+      error
     } = this.state;
 
     return (
@@ -87,18 +129,25 @@ class VerificationSentPage extends React.Component {
                 <h2>{feedback}</h2>
                 {/* eslint-disable-next-line max-len */}
                 <p>Looks like your link expired. Worry not! Just enter your email below and we&apos;ll send you another link.</p>
-                <InputText
-                  required
-                  placeholder="Email Address"
-                  name="email"
-                  value={email}
-                  onChange={this.handleOnChange}
-                />
-                <PrimaryButton
-                  className="ResendLinkBtn"
-                  label={loading ? <Spinner /> : 'Resend Link'}
-                  onClick={this.handleSubmit}
-                />
+                <div className="ResendFormInputs">
+                  <InputText
+                    required
+                    placeholder="Email Address"
+                    name="email"
+                    value={email}
+                    onChange={(e) => this.handleOnChange(e)}
+                  />
+                  {error && (
+                    <div className="LoginErrorDiv">
+                      {error}
+                    </div>
+                  )}
+                  <PrimaryButton
+                    className="ResendLinkBtn"
+                    label={loading ? <Spinner /> : 'Resend Link'}
+                    onClick={this.handleSubmit}
+                  />
+                </div>
               </div>
             )}
           </div>
