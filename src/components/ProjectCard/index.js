@@ -6,7 +6,6 @@ import PrimaryButton from '../PrimaryButton';
 import DotsImg from '../../assets/images/3dots.svg';
 import deleteProject, { clearDeleteProjectState } from '../../redux/actions/deleteProject';
 import updateProject from '../../redux/actions/updateProject';
-import getProjectDetail, { clearProjectState } from '../../redux/actions/projectDetail';
 import Spinner from '../SpinnerComponent';
 import TextArea from '../TextArea';
 import Feedback from '../Feedback';
@@ -51,15 +50,8 @@ class ProjectCard extends React.Component {
   }
 
   showDropDown() {
-    // const { getProjectDetail, cardID } = this.props;
-    // getProjectDetail(cardID);
-
-    // const { project } = this.props;
-
     this.setState({
       openDropDown: true,
-      // projectName: project.name,
-      // projectDescription: project.description
     });
   }
 
@@ -124,7 +116,7 @@ class ProjectCard extends React.Component {
     if (projectName !== name || projectDescription !== description) {
       if (!projectName || !projectDescription) {
         this.setState({
-          error: 'please provide either the name or description'
+          error: 'please provide either a new name or description'
         });
       } else {
         if (projectName !== name && projectDescription === description) {
@@ -369,8 +361,7 @@ ProjectCard.defaultProps = {
   isFailed: false,
   name: '',
   description: '',
-  isUpdating: false,
-  data: {}
+  isUpdating: false
 };
 
 const mapStateToProps = (state) => {
@@ -379,7 +370,6 @@ const mapStateToProps = (state) => {
     isDeleting, isDeleted, isFailed, clearDeleteProjectState, message
   } = state.deleteProjectReducer;
   const { isUpdating, isUpdated } = state.updateProjectReducer;
-  const { project } = state.projectDetailReducer;
 
   return {
     data,
@@ -388,14 +378,13 @@ const mapStateToProps = (state) => {
     isFailed,
     isUpdating,
     isUpdated,
-    project,
     clearDeleteProjectState,
     message
   };
 };
 
 const mapDispatchToProps = {
-  deleteProject, updateProject, getProjectDetail, clearProjectState, clearDeleteProjectState
+  deleteProject, updateProject, clearDeleteProjectState
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectCard);
