@@ -53,7 +53,13 @@ class ProjectCard extends React.Component {
     const { getProjectDetail, cardID } = this.props;
     getProjectDetail(cardID);
 
-    this.setState({ openDropDown: true });
+    const { project } = this.props;
+    console.log(project);
+    this.setState({ 
+      openDropDown: true,
+      projectName: project.name,
+      projectDescription: project.description
+    });
   }
 
   toggleDropDown() {
@@ -116,11 +122,6 @@ class ProjectCard extends React.Component {
         description: projectDescription
       };
       updateProject(cardID, newProjectObject);
-    } else if (projectName && !projectDescription) {
-      const newProjectObject = {
-        name: projectName
-      };
-      updateProject(cardID, newProjectObject);
     } else if (!projectName && !projectDescription) {
       this.setState({
         error: 'You cannot submit empty fields.'
@@ -133,6 +134,11 @@ class ProjectCard extends React.Component {
       this.setState({
         error: 'name may only contain letters and a hypen -'
       });
+    } else if (projectName && !projectDescription) {
+      const newProjectObject = {
+        name: projectName
+      };
+      updateProject(cardID, newProjectObject);
     } else {
       const newProjectObject = {
         name: projectName,
