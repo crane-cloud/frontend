@@ -23,7 +23,7 @@ import './AppsPage.css';
 class AppsPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.initialState = {
       name: '',
       uri: '',
       varName: '',
@@ -44,6 +44,8 @@ class AppsPage extends React.Component {
         error: ''
       }
     };
+
+    this.state = this.initialState;
 
     this.addEnvVar = this.addEnvVar.bind(this);
     this.removeEnvVar = this.removeEnvVar.bind(this);
@@ -77,7 +79,7 @@ class AppsPage extends React.Component {
   hideForm() {
     const { clearState } = this.props;
     clearState();
-    this.setState({ openModal: false });
+    this.setState(this.initialState);
   }
 
   handleChange(e) {
