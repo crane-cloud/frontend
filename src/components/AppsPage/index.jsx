@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import createApp, { clearState } from '../../redux/actions/createApp';
 import PrimaryButton from '../PrimaryButton';
-import InputText from '../BlackInputText';
+import BlackInputText from '../BlackInputText';
 import Modal from '../Modal';
 import RemoveIcon from '../../assets/images/remove.svg';
 import BackButton from '../../assets/images/backButton.svg';
@@ -16,6 +16,8 @@ import Spinner from '../SpinnerComponent';
 import Feedback from '../Feedback';
 import Checkbox from '../Checkbox';
 import Tooltip from '../Tooltip';
+import Tabs from '../Tabs';
+import { ReactComponent as DockerLogo } from '../../assets/images/docker-logo.svg';
 import './AppsPage.css';
 
 class AppsPage extends React.Component {
@@ -32,7 +34,15 @@ class AppsPage extends React.Component {
       createFeedback: '',
       entryCommand: '',
       port: '',
-      needDb: false
+      needDb: false,
+      isPrivateImage: false,
+      dockerCredentials: {
+        username: '',
+        email: '',
+        password: '',
+        server: '',
+        error: ''
+      }
     };
 
     this.addEnvVar = this.addEnvVar.bind(this);
@@ -40,9 +50,11 @@ class AppsPage extends React.Component {
     this.showForm = this.showForm.bind(this);
     this.hideForm = this.hideForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleDockerCredentialsChange = this.handleDockerCredentialsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateAppName = this.validateAppName.bind(this);
     this.toggleNeedDb = this.toggleNeedDb.bind(this);
+    this.togglePrivateImage = this.togglePrivateImage.bind(this);
   }
 
   componentDidMount() {
@@ -82,6 +94,24 @@ class AppsPage extends React.Component {
       this.setState({
         createFeedback: ''
       });
+    }
+  }
+
+  handleDockerCredentialsChange({ target, target: { value } }) {
+    const { dockerCredentials } = this.state;
+    this.setState((prevState) => ({
+      dockerCredentials: {
+        ...prevState.dockerCredentials,
+        [target.name]: value
+      }
+    }));
+    if (dockerCredentials.error) {
+      this.setState((prevState) => ({
+        dockerCredentials: {
+          ...prevState.dockerCredentials,
+          error: ''
+        }
+      }));
     }
   }
 
@@ -131,9 +161,28 @@ class AppsPage extends React.Component {
     });
   }
 
+  togglePrivateImage() {
+    const { isPrivateImage } = this.state;
+    this.setState({
+      isPrivateImage: !isPrivateImage
+    });
+  }
+
   handleSubmit() {
     const {
-      name, uri, envVars, entryCommand, port, needDb
+      name,
+      uri,
+      envVars,
+      entryCommand,
+      port,
+      needDb,
+      isPrivateImage,
+      dockerCredentials: {
+        username,
+        email,
+        password,
+        server
+      }
     } = this.state;
     const {
       createApp,
@@ -157,6 +206,13 @@ class AppsPage extends React.Component {
       this.setState({
         error: 'Port should be an integer'
       });
+    } else if (isPrivateImage && (!email || !username || !password || !server)) {
+      this.setState((prevState) => ({
+        dockerCredentials: {
+          ...prevState.dockerCredentials,
+          error: 'please provide all the information above'
+        }
+      }));
     } else {
       let appInfo = {
         command: entryCommand,
@@ -164,11 +220,22 @@ class AppsPage extends React.Component {
         image: uri,
         name,
         need_db: needDb,
-        project_id: match.params.projectID
+        project_id: match.params.projectID,
+        private_image: isPrivateImage
       };
 
       if (port) {
         appInfo = { ...appInfo, port: parseInt(port, 10) };
+      }
+
+      if (isPrivateImage) {
+        appInfo = {
+          ...appInfo,
+          docker_email: email,
+          docker_username: username,
+          docker_password: password,
+          docker_server: server
+        };
       }
 
       createApp(appInfo, match.params.projectID);
@@ -186,7 +253,15 @@ class AppsPage extends React.Component {
       error,
       entryCommand,
       port,
-      needDb
+      needDb,
+      isPrivateImage,
+      dockerCredentials,
+      dockerCredentials: {
+        username,
+        email,
+        password,
+        server,
+      }
     } = this.state;
 
     const {
@@ -241,7 +316,7 @@ class AppsPage extends React.Component {
 
             <div className="ModalFormInputs">
               <div className="ModalFormInputsBasic">
-                <InputText
+                <BlackInputText
                   required
                   placeholder="Name"
                   name="name"
@@ -250,7 +325,7 @@ class AppsPage extends React.Component {
                     this.handleChange(e);
                   }}
                 />
-                <InputText
+                <BlackInputText
                   required
                   placeholder="Image Uri"
                   name="uri"
@@ -260,8 +335,75 @@ class AppsPage extends React.Component {
                   }}
                 />
 
+                <div className="PrivateImageCheckField">
+                  <Checkbox
+                    isBlack
+                    onClick={this.togglePrivateImage}
+                    isChecked={isPrivateImage}
+                  />
+                  &nbsp; Private Image
+                </div>
+
+                {isPrivateImage && (
+                  <div className="PrivateImageTabContainer">
+                    <Tabs>
+                      <div index={1} label={<DockerLogo />}>
+                        <div className="PrivateImageInputs">
+                          <BlackInputText
+                            required
+                            placeholder="Docker Username"
+                            name="username"
+                            value={username}
+                            onChange={(e) => {
+                              this.handleDockerCredentialsChange(e);
+                            }}
+                          />
+
+                          <BlackInputText
+                            required
+                            placeholder="Docker Email"
+                            name="email"
+                            value={email}
+                            onChange={(e) => {
+                              this.handleDockerCredentialsChange(e);
+                            }}
+                          />
+
+                          <BlackInputText
+                            required
+                            placeholder="Docker Password"
+                            type="password"
+                            name="password"
+                            value={password}
+                            onChange={(e) => {
+                              this.handleDockerCredentialsChange(e);
+                            }}
+                          />
+
+                          <BlackInputText
+                            required
+                            placeholder="Docker Server"
+                            name="server"
+                            value={server}
+                            onChange={(e) => {
+                              this.handleDockerCredentialsChange(e);
+                            }}
+                          />
+
+                          {(dockerCredentials.error) && (
+                            <Feedback
+                              type="error"
+                              message={dockerCredentials.error}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </Tabs>
+                  </div>
+                )}
+
                 <div className="InputFieldWithTooltip">
-                  <InputText
+                  <BlackInputText
                     placeholder="Entry Command"
                     name="entryCommand"
                     value={entryCommand}
@@ -278,7 +420,7 @@ class AppsPage extends React.Component {
                   </div>
                 </div>
 
-                <InputText
+                <BlackInputText
                   placeholder="Port (optional) - defaults to 80"
                   name="port"
                   value={port}
@@ -333,7 +475,7 @@ class AppsPage extends React.Component {
                 )}
                 <div className="EnvVarsInputGroup">
                   <div className="EnvVarsInputs">
-                    <InputText
+                    <BlackInputText
                       placeholder="Name"
                       name="varName"
                       value={varName}
@@ -341,7 +483,7 @@ class AppsPage extends React.Component {
                         this.handleChange(e);
                       }}
                     />
-                    <InputText
+                    <BlackInputText
                       placeholder="Value"
                       name="varValue"
                       value={varValue}
