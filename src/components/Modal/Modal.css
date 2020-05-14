@@ -15,6 +15,8 @@
   width: auto;
   min-height: 100px;
   height: auto;
+  max-height: 80%;
+  overflow-y: scroll;
   padding: 2rem;
   background: #fff;
   display: flex;
@@ -53,4 +55,18 @@
   margin-top: 1rem;
   display: flex;
   justify-content: space-between;
+}
+
+.ModalChildWrap::-webkit-scrollbar {
+  width: 4px;
+  height: 0px;
+}
+.ModalChildWrap::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.ModalChildWrap::-webkit-scrollbar-thumb {
+  background: #555;
+}
+.ModalChildWrap::-webkit-scrollbar-thumb:hover {
+  background: #000;
 }
