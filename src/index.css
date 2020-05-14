@@ -1,10 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+@font-face {
+  font-family: proxima-nova;
+  src: url("./assets/fonts/proxima-nova-regular.otf") format("truetype");
+}
+
+@font-face {
+  font-family: proxima-nova;
+  font-weight: 100;
+  src: url("./assets/fonts/proxima-nova-thin.otf") format("truetype");
+}
+
+@font-face {
+  font-family: proxima-nova;
+  font-weight: 600;
+  src: url("./assets/fonts/proxima-nova-bold.otf") format("truetype");
+}
 
 body {
   margin: 0;
   padding: 0;
   color: #000;
-  font-family: 'Roboto', sans-serif;
+  font-family: proxima-nova, sans-serif;
 }
 
 textarea, input, select, button {
