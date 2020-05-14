@@ -19,12 +19,13 @@ import './ProjectCard.css';
 class ProjectCard extends React.Component {
   constructor(props) {
     super(props);
+    const { name, description } = props;
     this.state = {
       openUpdateModal: false,
       openDeleteAlert: false,
       openDropDown: false,
-      projectName: '',
-      projectDescription: '',
+      projectName: name ? props.name : '',
+      projectDescription: description ? props.description : '',
       error: ''
     };
 
@@ -50,15 +51,15 @@ class ProjectCard extends React.Component {
   }
 
   showDropDown() {
-    const { getProjectDetail, cardID } = this.props;
-    getProjectDetail(cardID);
+    // const { getProjectDetail, cardID } = this.props;
+    // getProjectDetail(cardID);
 
-    const { project } = this.props;
+    // const { project } = this.props;
 
-    this.setState({ 
+    this.setState({
       openDropDown: true,
-      projectName: project.name,
-      projectDescription: project.description
+      // projectName: project.name,
+      // projectDescription: project.description
     });
   }
 
@@ -73,7 +74,7 @@ class ProjectCard extends React.Component {
   }
 
   hideDropDown() {
-    this.setState({ 
+    this.setState({
       openDropDown: false
     });
   }
@@ -83,10 +84,11 @@ class ProjectCard extends React.Component {
   }
 
   hideUpdateForm() {
+    const { name, description } = this.props;
     this.setState({
       openUpdateModal: false,
-      projectName: '',
-      projectDescription: ''
+      projectName: name,
+      projectDescription: description
     });
   }
 
@@ -115,40 +117,51 @@ class ProjectCard extends React.Component {
 
   handleSubmit() {
     const { projectName, projectDescription } = this.state;
-    const { updateProject, cardID, project } = this.props;
+    const {
+      updateProject, cardID, name, description
+    } = this.props;
 
-    if (projectName === project.name) {
-      this.setState({
-        error: 'You can not submit the same project Name'
-      });
-    } else if (!projectName && projectDescription) {
-      const newProjectObject = {
-        description: projectDescription
-      };
-      updateProject(cardID, newProjectObject);
-    } else if (!projectName && !projectDescription) {
-      this.setState({
-        error: 'You cannot submit empty fields.'
-      });
-    } else if (this.validateProjectName(projectName) === false) {
-      this.setState({
-        error: 'name should start with a letter'
-      });
-    } else if (this.validateProjectName(projectName) === 'false_convention') {
-      this.setState({
-        error: 'name may only contain letters and a hypen -'
-      });
-    } else if (projectName && !projectDescription) {
-      const newProjectObject = {
-        name: projectName
-      };
-      updateProject(cardID, newProjectObject);
-    } else {
-      const newProjectObject = {
-        name: projectName,
-        description: projectDescription
-      };
-      updateProject(cardID, newProjectObject);
+    if (projectName !== name || projectDescription !== description) {
+      if (!projectName || !projectDescription) {
+        this.setState({
+          error: 'please provide either the name or description'
+        });
+      } else {
+        if (projectName !== name && projectDescription === description) {
+          if (!this.validateProjectName(projectName)) {
+            this.setState({
+              error: 'name should start with a letter'
+            });
+          } else if (this.validateProjectName(projectName) === 'false_convention') {
+            this.setState({
+              error: 'name may only contain letters and a hypen -'
+            });
+          } else {
+            const newProject = { name: projectName };
+            updateProject(cardID, newProject);
+          }
+        }
+
+        if (projectName === name && projectDescription !== description) {
+          const newProject = { description: projectDescription };
+          updateProject(cardID, newProject);
+        }
+
+        if (projectName !== name && projectDescription !== description) {
+          if (!this.validateProjectName(projectName)) {
+            this.setState({
+              error: 'name should start with a letter'
+            });
+          } else if (this.validateProjectName(projectName) === 'false_convention') {
+            this.setState({
+              error: 'name may only contain letters and a hypen -'
+            });
+          } else {
+            const newProject = { name: projectName, description: projectDescription };
+            updateProject(cardID, newProject);
+          }
+        }
+      }
     }
   }
 
@@ -172,7 +185,7 @@ class ProjectCard extends React.Component {
 
   render() {
     const {
-      project, name, isDeleting, data, description, icon, cardID, isUpdating, message, isFailed
+      name, isDeleting, data, description, icon, cardID, isUpdating, message, isFailed
     } = this.props;
     const userId = data.id;
     const {
@@ -278,7 +291,7 @@ class ProjectCard extends React.Component {
                       Update your project
                       <b>
                         {' '}
-                        {project.name}
+                        {name}
                       </b>
                     </h2>
                     <div className="UpdateToolTip">
@@ -291,7 +304,7 @@ class ProjectCard extends React.Component {
                 </div>
                 <div className="ModalFormInputs">
                   <BlackInputText
-                    placeholder={project.name}
+                    placeholder="Project Name"
                     name="projectName"
                     value={projectName}
                     onChange={(e) => {
@@ -299,7 +312,7 @@ class ProjectCard extends React.Component {
                     }}
                   />
                   <TextArea
-                    placeholder={project.description}
+                    placeholder="Description"
                     name="projectDescription"
                     value={projectDescription}
                     onChange={(e) => {
