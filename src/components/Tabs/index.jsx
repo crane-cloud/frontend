@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Tab from './Tab';
+// import Tab from './Tab';
 import './Tabs.css';
 
 const Tabs = ({ children }) => {
@@ -12,14 +12,14 @@ const Tabs = ({ children }) => {
     children = [...childrenArray, children];
   }
 
-  const [activeTab, setActiveTab] = useState(children[0].props.index);
+  const [activeTab/* , setActiveTab */] = useState(children[0].props.index);
 
-  const onClickTabItem = (tabIndex) => setActiveTab(tabIndex);
+  // const onClickTabItem = (tabIndex) => setActiveTab(tabIndex);
 
   return (
     <div className="TabsContainer">
       <div>
-        <ol className="TabHeadingList">
+        {/* <ol className="TabHeadingList">
           {children.map((child) => {
             const { index, label } = child.props;
 
@@ -33,7 +33,7 @@ const Tabs = ({ children }) => {
               />
             );
           })}
-        </ol>
+        </ol> */}
       </div>
       <div className="TabContent">
         {children.map((child) => {
