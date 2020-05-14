@@ -54,7 +54,7 @@ class ProjectCard extends React.Component {
     getProjectDetail(cardID);
 
     const { project } = this.props;
-    console.log(project);
+
     this.setState({ 
       openDropDown: true,
       projectName: project.name,
@@ -73,7 +73,9 @@ class ProjectCard extends React.Component {
   }
 
   hideDropDown() {
-    this.setState({ openDropDown: false });
+    this.setState({ 
+      openDropDown: false
+    });
   }
 
   showUpdateForm() {
@@ -82,7 +84,9 @@ class ProjectCard extends React.Component {
 
   hideUpdateForm() {
     this.setState({
-      openUpdateModal: false
+      openUpdateModal: false,
+      projectName: '',
+      projectDescription: ''
     });
   }
 
