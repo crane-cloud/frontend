@@ -40,7 +40,8 @@ class AppsPage extends React.Component {
         username: '',
         email: '',
         password: '',
-        server: ''
+        server: '',
+        error: ''
       }
     };
 
@@ -97,17 +98,20 @@ class AppsPage extends React.Component {
   }
 
   handleDockerCredentialsChange({ target, target: { value } }) {
-    const { error } = this.state;
+    const { dockerCredentials } = this.state;
     this.setState((prevState) => ({
       dockerCredentials: {
         ...prevState.dockerCredentials,
         [target.name]: value
       }
     }));
-    if (error) {
-      this.setState({
-        error: ''
-      });
+    if (dockerCredentials.error) {
+      this.setState((prevState) => ({
+        dockerCredentials: {
+          ...prevState.dockerCredentials,
+          error: ''
+        }
+      }));
     }
   }
 
@@ -202,6 +206,13 @@ class AppsPage extends React.Component {
       this.setState({
         error: 'Port should be an integer'
       });
+    } else if (isPrivateImage && (!email || !username || !password || !server)) {
+      this.setState((prevState) => ({
+        dockerCredentials: {
+          ...prevState.dockerCredentials,
+          error: 'please provide all the information above'
+        }
+      }));
     } else {
       let appInfo = {
         command: entryCommand,
@@ -244,11 +255,12 @@ class AppsPage extends React.Component {
       port,
       needDb,
       isPrivateImage,
+      dockerCredentials,
       dockerCredentials: {
         username,
         email,
         password,
-        server
+        server,
       }
     } = this.state;
 
@@ -377,6 +389,13 @@ class AppsPage extends React.Component {
                               this.handleDockerCredentialsChange(e);
                             }}
                           />
+
+                          {(dockerCredentials.error) && (
+                            <Feedback
+                              type="error"
+                              message={dockerCredentials.error}
+                            />
+                          )}
                         </div>
                       </div>
                     </Tabs>
