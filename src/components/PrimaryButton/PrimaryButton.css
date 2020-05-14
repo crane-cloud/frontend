@@ -11,6 +11,9 @@
   text-align: center;
   border: none;
   outline: 2px solid #F7B21F;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .Primary-Btn:hover{
