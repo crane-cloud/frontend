@@ -71,7 +71,7 @@ class UserProjectsPage extends React.Component {
   hideForm() {
     const { clearAddProjectState } = this.props;
     clearAddProjectState();
-    this.setState({ openModal: false });
+    this.setState({ openModal: false, projectName: '', projectDescription: '' });
   }
 
   validateProjectName(name) {
