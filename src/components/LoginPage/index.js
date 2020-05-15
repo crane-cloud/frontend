@@ -96,7 +96,6 @@ class LoginPage extends React.Component {
             }
           })
           .catch((err) => {
-            console.log(err.response.data.message);
             this.setState({
               loading: false
             });
