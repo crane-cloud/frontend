@@ -17,7 +17,7 @@ import Feedback from '../Feedback';
 import Checkbox from '../Checkbox';
 import Tooltip from '../Tooltip';
 import Tabs from '../Tabs';
-import { ReactComponent as DockerLogo } from '../../assets/images/docker-logo.svg';
+// import { ReactComponent as DockerLogo } from '../../assets/images/docker-logo.svg';
 import './AppsPage.css';
 
 class AppsPage extends React.Component {
@@ -347,11 +347,11 @@ class AppsPage extends React.Component {
                 {isPrivateImage && (
                   <div className="PrivateImageTabContainer">
                     <Tabs>
-                      <div index={1} label={<DockerLogo />}>
+                      <div index={1}/* label={<DockerLogo />} */>
                         <div className="PrivateImageInputs">
                           <BlackInputText
                             required
-                            placeholder="Docker Username"
+                            placeholder="Username"
                             name="username"
                             value={username}
                             onChange={(e) => {
@@ -361,7 +361,7 @@ class AppsPage extends React.Component {
 
                           <BlackInputText
                             required
-                            placeholder="Docker Email"
+                            placeholder="Email"
                             name="email"
                             value={email}
                             onChange={(e) => {
@@ -371,7 +371,7 @@ class AppsPage extends React.Component {
 
                           <BlackInputText
                             required
-                            placeholder="Docker Password"
+                            placeholder="Password"
                             type="password"
                             name="password"
                             value={password}
@@ -382,7 +382,7 @@ class AppsPage extends React.Component {
 
                           <BlackInputText
                             required
-                            placeholder="Docker Server"
+                            placeholder="Server"
                             name="server"
                             value={server}
                             onChange={(e) => {
