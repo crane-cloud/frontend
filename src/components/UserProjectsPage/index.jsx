@@ -21,13 +21,15 @@ import Select from '../Select';
 class UserProjectsPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.initialState = {
       openModal: false,
       projectName: '',
       clusterID: '',
       projectDescription: '',
       error: ''
     };
+
+    this.state = this.initialState;
 
     this.showForm = this.showForm.bind(this);
     this.hideForm = this.hideForm.bind(this);
@@ -71,7 +73,7 @@ class UserProjectsPage extends React.Component {
   hideForm() {
     const { clearAddProjectState } = this.props;
     clearAddProjectState();
-    this.setState({ openModal: false });
+    this.setState(this.initialState);
   }
 
   validateProjectName(name) {
