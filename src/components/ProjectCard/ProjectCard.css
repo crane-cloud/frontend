@@ -20,6 +20,8 @@
 .BottomContainer {
     padding: 0.625rem;
     height: 5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .ProjectsCardName{
