@@ -101,7 +101,7 @@ class LoginPage extends React.Component {
             });
             if (err.response.data.message === 'email not verified') {
               this.setState({
-                error: 'Kindly Verify your Email before Login'
+                error: 'Please verify your account.'
               });
             } else {
               this.setState({
