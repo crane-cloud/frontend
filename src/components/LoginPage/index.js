@@ -105,7 +105,7 @@ class LoginPage extends React.Component {
               });
             } else {
               this.setState({
-                error: 'Login Credentials are incorrect.'
+                error: 'Incorrect email or password.'
               });
             }
           });
