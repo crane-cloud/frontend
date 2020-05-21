@@ -121,7 +121,7 @@ export default class RegisterPage extends Component {
         .catch((error) => {
           this.setState({
             loading: false,
-            error: "Email already in use by another account."
+            error: 'Email already in use by another account.'
           });
         });
     }
