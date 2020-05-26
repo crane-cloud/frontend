@@ -99,9 +99,15 @@ class LoginPage extends React.Component {
             this.setState({
               loading: false
             });
-            this.setState({
-              error: 'Incorrect email or password'
-            });
+            if (err.response.data.message === 'email not verified') {
+              this.setState({
+                error: 'Please verify your account.'
+              });
+            } else {
+              this.setState({
+                error: 'Incorrect email or password.'
+              });
+            }
           });
       } else {
         this.setState({
