@@ -3,33 +3,27 @@ header.Header {
   color: #ffffff;
   display: flex;
   justify-content: space-between;
-  height: 80px !important; /* I hate to do this but I had to limit this height */
+  align-items: center;
+  height: 5rem;
+  padding: 0 3rem;
+  position: relative;
 }
 
 .HeaderLinks {
-  padding-top: 2rem;
-}
-
-.LogoWrap {
-  display: flex;
-  padding: 2rem;
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 1rem;
   align-items: center;
-}
-
-.HeaderLinksWrap {
-  margin-right: 1rem;
 }
 
 .HeaderLinks a {
   font-size: 0.9em;
-  color: white;
-  padding: 1rem;
+  color: #fff;
 }
 
 .HeaderLinks a.HeaderLinkLogin {
   border: 2px solid #fff;
   padding: 1rem 3rem;
-  margin-left: 2rem;
 }
 
 .TurnLight:hover {
@@ -46,23 +40,18 @@ header.Header {
   border: 0;
 }
 
-div.HeaderLinksWrap.LoggedIn {
-  grid-template-areas: "area1" "area2";
-}
-
 div.HeaderLinksWrap.LoggedIn .OnHeader {
   display: grid;
-  height: 100%;
   gap: 1rem;
-  grid-template-columns: repeat(3, auto);
+  grid-auto-flow: column;
   align-items: center;
-  grid-area: area1;
 }
 
 div.HeaderLinksWrap.LoggedIn .BelowHeader {
   background-color: #f9f9f9;
-  grid-area: area2;
   width: 13rem;
+  position: absolute;
+  top: 100%;
 }
 
 .UserAvatar {
@@ -75,11 +64,6 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   display: flex;
   align-items: center; /* horizontal */
   justify-content: center; /* vertical */
-}
-
-.DropDownArrow {
-  padding: 0.5rem 1rem;
-  cursor: pointer;
 }
 
 .DropDownArrow img {

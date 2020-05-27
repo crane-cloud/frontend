@@ -38,9 +38,7 @@ const Header = (props) => {
 
   return (
     <header className="Header">
-      <div className="LogoWrap">
-        <Logo />
-      </div>
+      <Logo />
 
       {!user.accessToken && (
         <div className="HeaderLinksWrap">
