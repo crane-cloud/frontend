@@ -179,7 +179,6 @@
     gap: 1rem;
     grid-template-columns: repeat(2, auto);
     align-items: center;
-    margin-top: 2rem;
 }
 
 .DeleteAppModelResponses button{
