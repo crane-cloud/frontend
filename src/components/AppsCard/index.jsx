@@ -70,13 +70,13 @@ const AppsCard = (props) => {
                     <img src={DotsImg} alt="three dots" className="DropDownImg" />
                     {openDropDown && (
                       <div className="AppDropDownContent">
+                        <div>Update</div>
                         <div
                           onClick={showDeleteAlert}
                           role="presentation"
                         >
                           Delete
                         </div>
-                        <div>Update</div>
                       </div>
                     )}
                   </div>
