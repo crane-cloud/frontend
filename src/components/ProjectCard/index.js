@@ -217,16 +217,16 @@ class ProjectCard extends React.Component {
                           {openDropDown && (
                             <div className="ProjectDropDownContent">
                               <div
-                                onClick={this.showDeleteAlert}
-                                role="presentation"
-                              >
-                                Delete
-                              </div>
-                              <div
                                 onClick={this.showUpdateForm}
                                 role="presentation"
                               >
                                 Update
+                              </div>
+                              <div
+                                onClick={this.showDeleteAlert}
+                                role="presentation"
+                              >
+                                Delete
                               </div>
                             </div>
                           )}
