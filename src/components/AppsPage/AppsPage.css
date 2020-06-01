@@ -210,7 +210,7 @@ table-layout: fixed;
   align-items: center;
 } 
 
-.PrivateImageTabContainer {
+.DatabaseSupportTabContainer, .PrivateImageTabContainer {
   max-width: 25rem; /* this is to correspond with the width of the input elements */
 }
 
@@ -221,4 +221,9 @@ table-layout: fixed;
 
 .PrivateImageInputs input {
   width: auto;
+}
+
+.DbCheckBoxInputGroup {
+  display: grid;
+  gap: 1rem;
 }

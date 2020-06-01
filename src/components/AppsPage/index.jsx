@@ -513,13 +513,74 @@ class AppsPage extends React.Component {
                   message="Does your application need a database?"
                 />
               </div>
-              <div className="DbSupportCheckField">
-                <Checkbox
-                  isBlack
-                  onClick={this.toggleNeedDb}
-                  isChecked={needDb}
-                />
+
+              <div className="DbCheckBoxInputGroup">
+                <div className="DbSupportCheckField">
+                  <Checkbox
+                    isBlack
+                    onClick={this.toggleNeedDb}
+                    isChecked={needDb}
+                  />
                   &nbsp; I would like database support
+                </div>
+
+                {needDb && (
+                  <div className="DatabaseSupportTabContainer">
+                    <Tabs>
+                      <div index={1}/* label={<DockerLogo />} */>
+                        <div className="PrivateImageInputs">
+                          <BlackInputText
+                            required
+                            placeholder="Username"
+                            name="username"
+                            value={username}
+                            onChange={(e) => {
+                              this.handleDockerCredentialsChange(e);
+                            }}
+                          />
+
+                          <BlackInputText
+                            required
+                            placeholder="Email"
+                            name="email"
+                            value={email}
+                            onChange={(e) => {
+                              this.handleDockerCredentialsChange(e);
+                            }}
+                          />
+
+                          <BlackInputText
+                            required
+                            placeholder="Password"
+                            type="password"
+                            name="password"
+                            value={password}
+                            onChange={(e) => {
+                              this.handleDockerCredentialsChange(e);
+                            }}
+                          />
+
+                          <BlackInputText
+                            required
+                            placeholder="Server"
+                            name="server"
+                            value={server}
+                            onChange={(e) => {
+                              this.handleDockerCredentialsChange(e);
+                            }}
+                          />
+
+                          {(dockerCredentials.error) && (
+                            <Feedback
+                              type="error"
+                              message={dockerCredentials.error}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </Tabs>
+                  </div>
+                )}
               </div>
             </div>
 
