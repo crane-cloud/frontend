@@ -58,11 +58,12 @@ class AppsPage extends React.Component {
     this.showForm = this.showForm.bind(this);
     this.hideForm = this.hideForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleDockerCredentialsChange = this.handleDockerCredentialsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateAppName = this.validateAppName.bind(this);
     this.toggleNeedDb = this.toggleNeedDb.bind(this);
     this.togglePrivateImage = this.togglePrivateImage.bind(this);
+    this.handleDockerCredentialsChange = this.handleDockerCredentialsChange.bind(this);
+    this.handleDbCredentialsChange = this.handleDbCredentialsChange.bind(this);
   }
 
   componentDidMount() {
@@ -117,6 +118,24 @@ class AppsPage extends React.Component {
       this.setState((prevState) => ({
         dockerCredentials: {
           ...prevState.dockerCredentials,
+          error: ''
+        }
+      }));
+    }
+  }
+
+  handleDbCredentialsChange({ target, target: { value } }) {
+    const { dbCredentials } = this.state;
+    this.setState((prevState) => ({
+      dbCredentials: {
+        ...prevState.dbCredentials,
+        [target.name]: value
+      }
+    }));
+    if (dbCredentials.error) {
+      this.setState((prevState) => ({
+        dbCredentials: {
+          ...prevState.dbCredentials,
           error: ''
         }
       }));
@@ -190,6 +209,11 @@ class AppsPage extends React.Component {
         email,
         password,
         server
+      },
+      dbCredentials: {
+        dbName,
+        dbUser,
+        dbPassword
       }
     } = this.state;
     const {
@@ -221,6 +245,13 @@ class AppsPage extends React.Component {
           error: 'please provide all the information above'
         }
       }));
+    } else if (needDb && (!dbName || !dbUser || !dbPassword)) {
+      this.setState((prevState) => ({
+        dbCredentials: {
+          ...prevState.dbCredentials,
+          error: 'please provide all database information'
+        }
+      }));
     } else {
       let appInfo = {
         command: entryCommand,
@@ -243,6 +274,15 @@ class AppsPage extends React.Component {
           docker_username: username,
           docker_password: password,
           docker_server: server
+        };
+      }
+
+      if (needDb) {
+        appInfo = {
+          ...appInfo,
+          dn_name: dbName,
+          db_user: dbUser,
+          db_password: dbPassword
         };
       }
 
@@ -547,7 +587,7 @@ class AppsPage extends React.Component {
                             name="dbName"
                             value={dbName}
                             onChange={(e) => {
-                              this.handleDockerCredentialsChange(e);
+                              this.handleDbCredentialsChange(e);
                             }}
                           />
 
@@ -557,7 +597,7 @@ class AppsPage extends React.Component {
                             name="dbUser"
                             value={dbUser}
                             onChange={(e) => {
-                              this.handleDockerCredentialsChange(e);
+                              this.handleDbCredentialsChange(e);
                             }}
                           />
 
@@ -568,7 +608,7 @@ class AppsPage extends React.Component {
                             name="dbPassword"
                             value={dbPassword}
                             onChange={(e) => {
-                              this.handleDockerCredentialsChange(e);
+                              this.handleDbCredentialsChange(e);
                             }}
                           />
 
