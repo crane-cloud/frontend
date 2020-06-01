@@ -214,12 +214,12 @@ table-layout: fixed;
   max-width: 25rem; /* this is to correspond with the width of the input elements */
 }
 
-.PrivateImageInputs {
+.PrivateImageInputs, .DatabaseSupportInputs {
   display: grid;
   gap: 0.5rem;
 }
 
-.PrivateImageInputs input {
+.PrivateImageInputs input, .DatabaseSupportInputs input {
   width: auto;
 }
 

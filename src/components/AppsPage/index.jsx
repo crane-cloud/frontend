@@ -42,6 +42,12 @@ class AppsPage extends React.Component {
         password: '',
         server: '',
         error: ''
+      },
+      dbCredentials: {
+        dbName: '',
+        dbUser: '',
+        dbPassword: '',
+        error: ''
       }
     };
 
@@ -263,6 +269,12 @@ class AppsPage extends React.Component {
         email,
         password,
         server,
+      },
+      dbCredentials,
+      dbCredentials: {
+        dbName,
+        dbUser,
+        dbPassword
       }
     } = this.state;
 
@@ -528,12 +540,12 @@ class AppsPage extends React.Component {
                   <div className="DatabaseSupportTabContainer">
                     <Tabs>
                       <div index={1}/* label={<DockerLogo />} */>
-                        <div className="PrivateImageInputs">
+                        <div className="DatabaseSupportInputs">
                           <BlackInputText
                             required
-                            placeholder="Username"
-                            name="username"
-                            value={username}
+                            placeholder="Database Name"
+                            name="dbName"
+                            value={dbName}
                             onChange={(e) => {
                               this.handleDockerCredentialsChange(e);
                             }}
@@ -541,9 +553,9 @@ class AppsPage extends React.Component {
 
                           <BlackInputText
                             required
-                            placeholder="Email"
-                            name="email"
-                            value={email}
+                            placeholder="Database User"
+                            name="dbUser"
+                            value={dbUser}
                             onChange={(e) => {
                               this.handleDockerCredentialsChange(e);
                             }}
@@ -551,29 +563,19 @@ class AppsPage extends React.Component {
 
                           <BlackInputText
                             required
-                            placeholder="Password"
+                            placeholder="Database Password"
                             type="password"
-                            name="password"
-                            value={password}
+                            name="dbPassword"
+                            value={dbPassword}
                             onChange={(e) => {
                               this.handleDockerCredentialsChange(e);
                             }}
                           />
 
-                          <BlackInputText
-                            required
-                            placeholder="Server"
-                            name="server"
-                            value={server}
-                            onChange={(e) => {
-                              this.handleDockerCredentialsChange(e);
-                            }}
-                          />
-
-                          {(dockerCredentials.error) && (
+                          {(dbCredentials.error) && (
                             <Feedback
                               type="error"
-                              message={dockerCredentials.error}
+                              message={dbCredentials.error}
                             />
                           )}
                         </div>
