@@ -102,19 +102,10 @@ class VerificationSentPage extends React.Component {
           .post(`${API_BASE_URL}/users/verify`, emailObject)
           .then((res) => {
             if (res.data.status === 'success') {
-              console.log(res.data.message);
               this.setState({
                 loading: false,
                 emailSent: true
               });
-              // this.setState(
-              //   {
-              //     feedbackMessage: 'Login Successful'
-              //   },
-              //   () => {
-              //     window.location.href = `/users/${res.data.data.id}/projects`;
-              //   }
-              // );
             }
           })
           .catch((err) => {
