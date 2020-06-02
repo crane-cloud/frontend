@@ -156,7 +156,21 @@ class VerificationSentPage extends React.Component {
                 <div>Please wait...</div>
               </>
             )}
-            {emailSent ? () : ()}
+            {emailSent ? (
+              <div className="RegisterSuccessContent">
+                <div className="RegisteredMessage">
+                  <h2>Thank you for registering with us!</h2>
+                  <p>
+                    We&apos;ve sent a link to your email address:&nbsp;
+                    <span>{email}</span>
+                    .
+                    <br />
+                    <br />
+                    The link will expire after 24 hours. Please use this link to activate and start using your account.
+                  </p>
+                </div>
+              </div>
+            ) : ()}
             {isVerificationFailed && (
               <div className="ResendLinkForm">
                 <h2>{feedback}</h2>
