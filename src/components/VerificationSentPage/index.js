@@ -84,14 +84,44 @@ class VerificationSentPage extends React.Component {
 
   handleSubmit() {
     const { email } = this.state;
+    const emailObject = {
+      "email": email
+    };
     if (!email) {
       this.setState({
         error: 'Please enter your email address'
       });
     } else {
       if (this.validateEmail(email)) {
-          // 
-      } else {
+        this.setState({
+          loading: true
+        });
+
+        axios
+          .post(`${API_BASE_URL}/users/verify`, emailObject)
+          .then((res) => {
+            if (res.data.status === 'success') {
+              console.log(res);
+              this.setState({
+                loading: false
+              });
+              // this.setState(
+              //   {
+              //     feedbackMessage: 'Login Successful'
+              //   },
+              //   () => {
+              //     window.location.href = `/users/${res.data.data.id}/projects`;
+              //   }
+              // );
+            }
+          })
+          .catch((err) => {
+            this.setState({
+              loading: false
+            });
+          });
+      } 
+      else {
         this.setState({
           error: 'Please enter a valid email address'
         });
