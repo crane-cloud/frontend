@@ -21,7 +21,8 @@ class VerificationSentPage extends React.Component {
       isVerificationFailed: false,
       loading: false,
       feedback: '',
-      error: ''
+      error: '',
+      emailSent: false
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -101,9 +102,10 @@ class VerificationSentPage extends React.Component {
           .post(`${API_BASE_URL}/users/verify`, emailObject)
           .then((res) => {
             if (res.data.status === 'success') {
-              console.log(res);
+              console.log(res.data.message);
               this.setState({
-                loading: false
+                loading: false,
+                emailSent: true
               });
               // this.setState(
               //   {
@@ -136,7 +138,8 @@ class VerificationSentPage extends React.Component {
       isVerificationFailed,
       email,
       feedback,
-      error
+      error,
+      emailSent
     } = this.state;
 
     return (
