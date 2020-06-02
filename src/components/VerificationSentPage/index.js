@@ -166,7 +166,7 @@ class VerificationSentPage extends React.Component {
                     .
                     <br />
                     <br />
-                    The link will expire after 24 hours. Please use this link to activate and start using your account.
+                    The link too will expire after 24 hours. Please use this link to activate and start using your account.
                   </p>
                 </div>
               </div>
