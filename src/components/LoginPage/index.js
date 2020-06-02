@@ -52,7 +52,9 @@ class LoginPage extends React.Component {
     return emailRegEx.test(String(email).toLowerCase());
   }
 
-  handleSubmit() {
+  handleSubmit(e) {
+    e.preventDefault();
+
     const { email, password } = this.state;
     const { saveUser } = this.props;
 
@@ -133,48 +135,49 @@ class LoginPage extends React.Component {
 
             <h1>Login to the cloud</h1>
           </div>
-          <div className="LoginContentInputs">
-            {/* Input fields */}
-            <InputText
-              required
-              placeholder="Email Address"
-              name="email"
-              value={email}
-              onChange={(e) => {
-                this.handleChange(e);
-              }}
-            />
-            <InputPassword
-              required
-              placeholder="Password"
-              name="password"
-              value={password}
-              onChange={(e) => {
-                this.handleChange(e);
-              }}
-            />
+          <form onSubmit={this.handleSubmit}>
+            <div className="LoginContentInputs">
+              {/* Input fields */}
+              <InputText
+                required
+                placeholder="Email Address"
+                name="email"
+                value={email}
+                onChange={(e) => {
+                  this.handleChange(e);
+                }}
+              />
+              <InputPassword
+                required
+                placeholder="Password"
+                name="password"
+                value={password}
+                onChange={(e) => {
+                  this.handleChange(e);
+                }}
+              />
 
-            {error && (
-              <div className="LoginErrorDiv">
-                {error}
+              {error && (
+                <div className="LoginErrorDiv">
+                  {error}
+                </div>
+              )}
+
+              <div className="LoginLinkContainer">
+                <Link to="/forgot-password" className="LoginContentLink">Forgot your password?</Link>
               </div>
-            )}
 
-            <div className="LoginLinkContainer">
-              <Link to="/forgot-password" className="LoginContentLink">Forgot your password?</Link>
+              <PrimaryButton
+                label={loading ? <Spinner /> : 'login'}
+                onClick={this.handleSubmit}
+              />
+
+              <div className="LoginContentBottomLink LoginLinkContainer">
+                Not signed up? &nbsp;
+                <Link to="/register" className="LoginContentLink">Create an account.</Link>
+              </div>
             </div>
-
-            <PrimaryButton
-              label={loading ? <Spinner /> : 'login'}
-              onClick={this.handleSubmit}
-            />
-
-            <div className="LoginContentBottomLink LoginLinkContainer">
-              Not signed up? &nbsp;
-              <Link to="/register" className="LoginContentLink">Create an account.</Link>
-            </div>
-
-          </div>
+          </form>
         </div>
 
         <div className="LoginPageFooter">
