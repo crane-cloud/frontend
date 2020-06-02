@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import saveUser from '../../redux/actions/saveUser';
 import Header from '../Header';
 import LandingFooter from '../LandingFooter';
@@ -200,6 +201,10 @@ const mapStateToProps = (state) => (
 
 const mapDispatchToProps = {
   saveUser
+};
+
+LoginPage.propTypes = {
+  saveUser: PropTypes.func.isRequired
 };
 
 export default connect(
