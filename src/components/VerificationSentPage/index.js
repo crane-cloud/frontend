@@ -32,6 +32,11 @@ class VerificationSentPage extends React.Component {
     const { match, saveUser } = this.props;
     const { token } = match.params;
 
+      // remove the current state from local storage
+      // so that when a person doesnt access the panel of another
+      // the previous state which wasnt cleared
+      localStorage.removeItem('state');
+
     axios
       .get(`${API_BASE_URL}/users/verify/${token}`)
       .then((response) => {
