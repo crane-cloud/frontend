@@ -1,0 +1,29 @@
+/*! SMALL SPINNER */
+.SmallSpinnerWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Spinner {
+    border: 2px solid white;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 100%;
+    border-top: 2px solid #f7b21f;
+    animation: spin 600ms linear infinite;
+}
+
+.SpinnerBig {
+  width: 4rem;
+  height: 4rem;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

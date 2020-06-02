@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import getClustersList from '../../redux/actions/clusters';
 import ClusterCard from '../ClusterCard';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import './ClustersList.css';
 import crane from '../../assets/images/craneLogo.png';
 
@@ -32,7 +32,7 @@ class ClustersList extends Component {
           isRetrieving ? (
             <div className="TableLoading">
               <div className="SpinnerWrapper">
-                <BigSpinner />
+                <Spinner />
               </div>
             </div>
           ) : (

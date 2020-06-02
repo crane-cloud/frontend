@@ -6,7 +6,7 @@ import PrimaryButton from '../PrimaryButton';
 import DotsImg from '../../assets/images/3dots.svg';
 import deleteProject, { clearDeleteProjectState } from '../../redux/actions/deleteProject';
 import updateProject from '../../redux/actions/updateProject';
-import Spinner from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import TextArea from '../TextArea';
 import Feedback from '../Feedback';
 import DeleteWarning from '../DeleteWarning';

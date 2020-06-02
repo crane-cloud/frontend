@@ -7,7 +7,7 @@ import Header from '../Header';
 import SideNav from '../SideNav';
 import getAdminProjects from '../../redux/actions/adminProjects';
 import getUsersList from '../../redux/actions/users';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 
 class AdminProjectsPage extends React.Component {
   componentDidMount() {
@@ -61,7 +61,7 @@ class AdminProjectsPage extends React.Component {
                       <tr className="TableLoading">
                         <td>
                           <div className="SpinnerWrapper">
-                            <BigSpinner />
+                            <Spinner />
                           </div>
                         </td>
                       </tr>

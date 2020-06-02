@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import './ServicesList.css';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import SideNav from '../SideNav';
 import getServices from '../../redux/actions/services';
 
@@ -64,7 +64,7 @@ class ServicesListPage extends React.Component {
                         <tr className="TableLoading">
                           <td>
                             <div className="SpinnerWrapper">
-                              <BigSpinner />
+                              <Spinner />
                             </div>
                           </td>
                         </tr>

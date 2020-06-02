@@ -6,7 +6,7 @@ import './ProjectsList.css';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
 import getUserProjects from '../../redux/actions/projectsList';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import ClusterCard from '../ClusterCard';
 import crane from '../../assets/images/craneLogo.png';
 
@@ -31,7 +31,7 @@ class UserProjectsPage extends React.Component {
               isRetrieving ? (
                 <div className="TableLoading">
                   <div className="SpinnerWrapper">
-                    <BigSpinner />
+                    <Spinner />
                   </div>
                 </div>
               ) : (
