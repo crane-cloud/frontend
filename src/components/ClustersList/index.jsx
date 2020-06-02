@@ -32,7 +32,7 @@ class ClustersList extends Component {
           isRetrieving ? (
             <div className="TableLoading">
               <div className="SpinnerWrapper">
-                <Spinner />
+                <Spinner size="big" />
               </div>
             </div>
           ) : (

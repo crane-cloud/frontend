@@ -48,7 +48,7 @@ class UserAccounts extends Component {
                         <tr className="TableLoading">
                           <td>
                             <div className="SpinnerWrapper">
-                              <Spinner />
+                              <Spinner size="big" />
                             </div>
                           </td>
                         </tr>

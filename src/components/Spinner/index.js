@@ -1,15 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './Spinner.css';
 
 
-const Spinner = (props) => {
-  const { size } = props;
+const Spinner = ({ size }) => (
+  <div className="SmallSpinnerWrapper">
+    <div className={(size === 'big') ? 'Spinner SpinnerBig' : 'Spinner'} />
+  </div>
+);
 
-  return (
-    <div className="SmallSpinnerWrapper">
-      <div className={`Spinner Spinner${size}`} />
-    </div>
-  );
+Spinner.propTypes = {
+  size: PropTypes.string
+};
+
+Spinner.defaultProps = {
+  size: ''
 };
 
 export default Spinner;

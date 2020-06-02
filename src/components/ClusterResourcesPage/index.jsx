@@ -40,7 +40,7 @@ class ClusterResourcesPage extends React.Component {
             <div className="ContentSection">
               {isRetrieving ? (
                 <div className="ResourceSpinnerWrapper">
-                  <Spinner />
+                  <Spinner size="big" />
                 </div>
               ) : (
                 <div className="ClusterContainer">
