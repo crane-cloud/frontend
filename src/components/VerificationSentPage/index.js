@@ -122,7 +122,7 @@ class VerificationSentPage extends React.Component {
               loading: false
             });
           });
-      } 
+      }
       else {
         this.setState({
           error: 'Please enter a valid email address'
@@ -161,7 +161,7 @@ class VerificationSentPage extends React.Component {
                 <div className="RegisteredMessage">
                   <h2>Thank you for registering with us!</h2>
                   <p>
-                    We&apos;ve sent a link to your email address:&nbsp;
+                    We&apos;ve re-sent a link to your email address:&nbsp;
                     <span>{email}</span>
                     .
                     <br />
@@ -171,34 +171,35 @@ class VerificationSentPage extends React.Component {
                 </div>
               </div>
             ) : (
-              {isVerificationFailed && (
-                <div className="ResendLinkForm">
-                  <h2>{feedback}</h2>
-                  {/* eslint-disable-next-line max-len */}
-                  <p>Looks like your link expired. Worry not! Just enter your email below and we&apos;ll send you another link.</p>
-                  <div className="ResendFormInputs">
-                    <InputText
-                      required
-                      placeholder="Email Address"
-                      name="email"
-                      value={email}
-                      onChange={(e) => this.handleOnChange(e)}
-                    />
-                    {error && (
-                      <div className="LoginErrorDiv">
-                        {error}
-                      </div>
-                    )}
-                    <PrimaryButton
-                      className="ResendLinkBtn"
-                      label={loading ? <Spinner /> : 'Resend Link'}
-                      onClick={this.handleSubmit}
-                    />
+              <div>
+                {isVerificationFailed && (
+                  <div className="ResendLinkForm">
+                    <h2>{feedback}</h2>
+                    {/* eslint-disable-next-line max-len */}
+                    <p>Looks like your link expired. Worry not! Just enter your email below and we&apos;ll send you another link.</p>
+                    <div className="ResendFormInputs">
+                      <InputText
+                        required
+                        placeholder="Email Address"
+                        name="email"
+                        value={email}
+                        onChange={(e) => this.handleOnChange(e)}
+                      />
+                      {error && (
+                        <div className="LoginErrorDiv">
+                          {error}
+                        </div>
+                      )}
+                      <PrimaryButton
+                        className="ResendLinkBtn"
+                        label={loading ? <Spinner /> : 'Resend Link'}
+                        onClick={this.handleSubmit}
+                      />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             )}
-            
           </div>
         </div>
         <div className="VerificationPageFooter">
