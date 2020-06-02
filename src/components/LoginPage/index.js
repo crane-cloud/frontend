@@ -35,11 +35,11 @@ class LoginPage extends React.Component {
   }
 
   handleChange(e) {
+    const { error } = this.state;
     this.setState({
       [e.target.name]: e.target.value
     });
-    this.error = this.state;
-    if (this.error) {
+    if (error) {
       this.setState({
         error: ''
       });
@@ -55,7 +55,7 @@ class LoginPage extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    const { email, password } = this.state;
+    const { error, email, password } = this.state;
     const { saveUser } = this.props;
 
     const userCredentials = {
@@ -73,6 +73,12 @@ class LoginPage extends React.Component {
         this.setState({
           loading: true
         });
+
+        if (error) {
+          this.setState({
+            error: ''
+          });
+        }
 
         axios
           .post(`${API_BASE_URL}/users/login`, userCredentials)
