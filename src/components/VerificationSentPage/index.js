@@ -90,8 +90,7 @@ class VerificationSentPage extends React.Component {
       });
     } else {
       if (this.validateEmail(email)) {
-        // TODO: submit to backend
-        console.log('resend clicked...');
+          // 
       } else {
         this.setState({
           error: 'Please enter a valid email address'
