@@ -65,7 +65,9 @@ export default class RegisterPage extends Component {
     return emailRegEx.test(String(email).toLowerCase());
   }
 
-  handleSubmit() {
+  handleSubmit(e) {
+    e.preventDefault();
+
     const {
       name,
       email,
@@ -109,13 +111,9 @@ export default class RegisterPage extends Component {
         .then((response) => {
           if (response.data.status === 'success') {
             this.setState({
-              loading: false
+              loading: false,
+              registered: true
             });
-            setTimeout(() => {
-              this.setState({
-                registered: true
-              });
-            }, 1000);
           }
         })
         .catch((error) => {
@@ -148,58 +146,60 @@ export default class RegisterPage extends Component {
               <div className="RegisterContentHeading">
                 <h1>Create an account</h1>
               </div>
-              <div className="RegisterContentInputs">
+              <form onSubmit={this.handleSubmit}>
+                <div className="RegisterContentInputs">
 
-                <InputText
-                  required
-                  placeholder="Name"
-                  name="name"
-                  value={name}
-                  onChange={this.handleOnChange}
+                  <InputText
+                    required
+                    placeholder="Name"
+                    name="name"
+                    value={name}
+                    onChange={this.handleOnChange}
 
-                />
-                <InputText
-                  required
-                  placeholder="Email Address"
-                  name="email"
-                  value={email}
-                  onChange={this.handleOnChange}
-                />
-                <InputPassword
-                  required
-                  placeholder="Password"
-                  name="password"
-                  value={password}
-                  onChange={this.handleOnChange}
-                />
-                <InputPassword
-                  required
-                  placeholder="Repeat Password"
-                  name="passwordConfirm"
-                  value={passwordConfirm}
-                  onChange={this.handleOnChange}
-                />
-                {error && (
-                  <div className="RegisterErrorDiv">
-                    {error}
-                  </div>
-                )}
-
-
-                <div className="RegisterContentBottomLink RegisterLinkContainer RegisterCheckbox">
-                  <Checkbox
-                    onClick={this.toggleAgreed}
-                    isChecked={hasAgreed}
                   />
-                  &nbsp; I agree to Crane Cloud&apos;s&nbsp;&nbsp;
-                  <Link to="/register" className="RegisterContentLink">Terms of service.</Link>
-                </div>
+                  <InputText
+                    required
+                    placeholder="Email Address"
+                    name="email"
+                    value={email}
+                    onChange={this.handleOnChange}
+                  />
+                  <InputPassword
+                    required
+                    placeholder="Password"
+                    name="password"
+                    value={password}
+                    onChange={this.handleOnChange}
+                  />
+                  <InputPassword
+                    required
+                    placeholder="Repeat Password"
+                    name="passwordConfirm"
+                    value={passwordConfirm}
+                    onChange={this.handleOnChange}
+                  />
+                  {error && (
+                    <div className="RegisterErrorDiv">
+                      {error}
+                    </div>
+                  )}
 
-                <PrimaryButton
-                  label={loading ? <Spinner /> : 'Register'}
-                  onClick={this.handleSubmit}
-                />
-              </div>
+
+                  <div className="RegisterContentBottomLink RegisterLinkContainer RegisterCheckbox">
+                    <Checkbox
+                      onClick={this.toggleAgreed}
+                      isChecked={hasAgreed}
+                    />
+                  &nbsp; I agree to Crane Cloud&apos;s&nbsp;&nbsp;
+                    <Link to="/register" className="RegisterContentLink">Terms of service.</Link>
+                  </div>
+
+                  <PrimaryButton
+                    label={loading ? <Spinner /> : 'Register'}
+                    onClick={this.handleSubmit}
+                  />
+                </div>
+              </form>
             </>
           ) : (
             <div className="RegisterSuccessContent">
