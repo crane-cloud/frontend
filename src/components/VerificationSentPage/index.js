@@ -156,6 +156,7 @@ class VerificationSentPage extends React.Component {
                 <div>Please wait...</div>
               </>
             )}
+            {emailSent ? () : ()}
             {isVerificationFailed && (
               <div className="ResendLinkForm">
                 <h2>{feedback}</h2>
