@@ -85,9 +85,7 @@ class VerificationSentPage extends React.Component {
 
   handleSubmit() {
     const { email } = this.state;
-    const emailObject = {
-      "email": email
-    };
+    
     if (!email) {
       this.setState({
         error: 'Please enter your email address'
@@ -99,7 +97,7 @@ class VerificationSentPage extends React.Component {
         });
 
         axios
-          .post(`${API_BASE_URL}/users/verify`, emailObject)
+          .post(`${API_BASE_URL}/users/verify`, { email })
           .then((res) => {
             if (res.data.status === 'success') {
               this.setState({
