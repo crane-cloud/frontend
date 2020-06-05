@@ -28,6 +28,8 @@ class ProjectCard extends React.Component {
       error: ''
     };
 
+    this.container = React.createRef();
+
     this.showUpdateForm = this.showUpdateForm.bind(this);
     this.hideUpdateForm = this.hideUpdateForm.bind(this);
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
@@ -39,6 +41,11 @@ class ProjectCard extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateProjectName = this.validateProjectName.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
   }
 
   componentDidUpdate(prevProps) {
@@ -49,10 +56,22 @@ class ProjectCard extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
   showDropDown() {
     this.setState({
       openDropDown: true,
     });
+  }
+
+  handleClickOutside(event) {
+    if (this.container.current && !this.container.current.contains(event.target)) {
+      this.setState({
+        openDropDown: false
+      });
+    }
   }
 
   toggleDropDown() {
@@ -210,6 +229,7 @@ class ProjectCard extends React.Component {
                           className="ProjectDropDown"
                           onClick={this.toggleDropDown}
                           role="presentation"
+                          ref={this.container}
                         >
                           <div className="DropDownIcon">
                             <img src={DotsImg} alt="three dots" className="DropDownImg" />
