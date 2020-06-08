@@ -55,14 +55,15 @@ height: 200px; /* I've had to limit this height for now */
 }
 
 .EnvVarsInputGroup .EnvVarsAddBtn {
-position: relative;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn {
   position: absolute;
   max-width: 100%;
   color: #fff;
-  height: 100%;
   background-color: #008ac1;
   outline: 2px solid #008ac1;
 }
@@ -144,7 +145,7 @@ table-layout: fixed;
 }
 
 .ModalForm.AddAppModal input {
-  max-height: 50px;
+  height: 3.1rem;
 }
 
 .ModalForm.AddAppModal .ModalFormHeading {
