@@ -42,6 +42,12 @@ class AppsPage extends React.Component {
         password: '',
         server: '',
         error: ''
+      },
+      dbCredentials: {
+        dbName: '',
+        dbUser: '',
+        dbPassword: '',
+        error: ''
       }
     };
 
@@ -52,11 +58,12 @@ class AppsPage extends React.Component {
     this.showForm = this.showForm.bind(this);
     this.hideForm = this.hideForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleDockerCredentialsChange = this.handleDockerCredentialsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateAppName = this.validateAppName.bind(this);
     this.toggleNeedDb = this.toggleNeedDb.bind(this);
     this.togglePrivateImage = this.togglePrivateImage.bind(this);
+    this.handleDockerCredentialsChange = this.handleDockerCredentialsChange.bind(this);
+    this.handleDbCredentialsChange = this.handleDbCredentialsChange.bind(this);
   }
 
   componentDidMount() {
@@ -111,6 +118,24 @@ class AppsPage extends React.Component {
       this.setState((prevState) => ({
         dockerCredentials: {
           ...prevState.dockerCredentials,
+          error: ''
+        }
+      }));
+    }
+  }
+
+  handleDbCredentialsChange({ target, target: { value } }) {
+    const { dbCredentials } = this.state;
+    this.setState((prevState) => ({
+      dbCredentials: {
+        ...prevState.dbCredentials,
+        [target.name]: value
+      }
+    }));
+    if (dbCredentials.error) {
+      this.setState((prevState) => ({
+        dbCredentials: {
+          ...prevState.dbCredentials,
           error: ''
         }
       }));
@@ -184,6 +209,11 @@ class AppsPage extends React.Component {
         email,
         password,
         server
+      },
+      dbCredentials: {
+        dbName,
+        dbUser,
+        dbPassword
       }
     } = this.state;
     const {
@@ -215,6 +245,13 @@ class AppsPage extends React.Component {
           error: 'please provide all the information above'
         }
       }));
+    } else if (needDb && (!dbName || !dbUser || !dbPassword)) {
+      this.setState((prevState) => ({
+        dbCredentials: {
+          ...prevState.dbCredentials,
+          error: 'please provide all database information'
+        }
+      }));
     } else {
       let appInfo = {
         command: entryCommand,
@@ -237,6 +274,15 @@ class AppsPage extends React.Component {
           docker_username: username,
           docker_password: password,
           docker_server: server
+        };
+      }
+
+      if (needDb) {
+        appInfo = {
+          ...appInfo,
+          dn_name: dbName,
+          db_user: dbUser,
+          db_password: dbPassword
         };
       }
 
@@ -263,6 +309,12 @@ class AppsPage extends React.Component {
         email,
         password,
         server,
+      },
+      dbCredentials,
+      dbCredentials: {
+        dbName,
+        dbUser,
+        dbPassword
       }
     } = this.state;
 
@@ -513,13 +565,64 @@ class AppsPage extends React.Component {
                   message="Does your application need a database?"
                 />
               </div>
-              <div className="DbSupportCheckField">
-                <Checkbox
-                  isBlack
-                  onClick={this.toggleNeedDb}
-                  isChecked={needDb}
-                />
+
+              <div className="DbCheckBoxInputGroup">
+                <div className="DbSupportCheckField">
+                  <Checkbox
+                    isBlack
+                    onClick={this.toggleNeedDb}
+                    isChecked={needDb}
+                  />
                   &nbsp; I would like database support
+                </div>
+
+                {needDb && (
+                  <div className="DatabaseSupportTabContainer">
+                    <Tabs>
+                      <div index={1}/* label={<DockerLogo />} */>
+                        <div className="DatabaseSupportInputs">
+                          <BlackInputText
+                            required
+                            placeholder="Database Name"
+                            name="dbName"
+                            value={dbName}
+                            onChange={(e) => {
+                              this.handleDbCredentialsChange(e);
+                            }}
+                          />
+
+                          <BlackInputText
+                            required
+                            placeholder="Database User"
+                            name="dbUser"
+                            value={dbUser}
+                            onChange={(e) => {
+                              this.handleDbCredentialsChange(e);
+                            }}
+                          />
+
+                          <BlackInputText
+                            required
+                            placeholder="Database Password"
+                            type="password"
+                            name="dbPassword"
+                            value={dbPassword}
+                            onChange={(e) => {
+                              this.handleDbCredentialsChange(e);
+                            }}
+                          />
+
+                          {(dbCredentials.error) && (
+                            <Feedback
+                              type="error"
+                              message={dbCredentials.error}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </Tabs>
+                  </div>
+                )}
               </div>
             </div>
 
