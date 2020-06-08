@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -9,6 +9,7 @@ import './Header.css';
 
 const Header = (props) => {
   const [hidden, setHidden] = useState(false);
+  const dropdownRef = useRef(null);
   const { user, match } = props;
 
   const toggleHidden = () => {
@@ -35,6 +36,22 @@ const Header = (props) => {
     const h = hash % 360;
     return `hsl(${h}, 30%, 80%)`; // syntax: hsl(h, s%, l%)
   };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setHidden(false);
+    }
+  };
+
+  // componentWillMount & componentWillUnmount
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // returned function will be called on component unmount
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <header className="Header">
@@ -68,26 +85,29 @@ const Header = (props) => {
                     {user.data.name.charAt(0).toUpperCase()}
                   </div>
                 </div>
-                <Link to="#">
-                  <div className="UserNames" onClick={toggleHidden}>
-                    {user.data.name}
-                  </div>
-                </Link>
+                <div className="UserNames">
+                  {user.data.name}
+                </div>
               </>
             )}
 
-            <div className="DropDownArrow" onClick={toggleHidden}>
+            <div
+              className="DropDownArrow"
+              onClick={toggleHidden}
+              role="presentation"
+              ref={dropdownRef}
+            >
               <img src={DownArrow} alt="down_arrow" />
             </div>
           </div>
 
           {hidden && (
-            <div className="BelowHeader">
+            <div ref={dropdownRef} className="BelowHeader">
               <div className="DropDownContent">
-                <Link to="#" className="DropDownLink">Profile</Link>
-                <Link to="#" className="DropDownLink">Account</Link>
-                <Link to="#" className="DropDownLink">Settings</Link>
-                <div className="DropDownLink" onClick={logout}>Logout</div>
+                <div className="DropDownLink">Profile</div>
+                <div className="DropDownLink">Account</div>
+                <div className="DropDownLink">Settings</div>
+                <div className="DropDownLink" role="presentation" onClick={logout}>Logout</div>
               </div>
             </div>
           )}

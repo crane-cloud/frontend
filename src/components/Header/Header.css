@@ -78,6 +78,7 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
 .UserNames {
   font-weight: bold;
   color: #fff;
+  cursor: default;
 }
 
 .DropDownContent {
