@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getAppsList from '../../redux/actions/appsList';
 import AppsCard from '../AppsCard';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import './AppsList.css';
 
 
@@ -50,7 +50,7 @@ class AppsList extends Component {
           isRetrieving ? (
             <div className="TableLoading">
               <div className="SpinnerWrapper">
-                <BigSpinner />
+                <Spinner size="big" />
               </div>
             </div>
           ) : (

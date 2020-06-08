@@ -8,7 +8,7 @@ import Header from '../Header';
 import LandingFooter from '../LandingFooter';
 import InputText from '../InputText';
 import PrimaryButton from '../PrimaryButton';
-import Spinner from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import './VerificationSentPage.css';
 import { API_BASE_URL } from '../../config';
 

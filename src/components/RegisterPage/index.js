@@ -6,7 +6,7 @@ import LandingFooter from '../LandingFooter';
 import InputText from '../InputText';
 import InputPassword from '../InputPassword';
 import PrimaryButton from '../PrimaryButton';
-import Spinner from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import Checkbox from '../Checkbox';
 import { API_BASE_URL } from '../../config';
 

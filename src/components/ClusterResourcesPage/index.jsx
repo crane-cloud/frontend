@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import './ClusterResourcesPage.css';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import SideNav from '../SideNav';
 import ResourceCard from '../ResourceCard';
 import getClusterResourcesCount from '../../redux/actions/clusterResources';
@@ -40,7 +40,7 @@ class ClusterResourcesPage extends React.Component {
             <div className="ContentSection">
               {isRetrieving ? (
                 <div className="ResourceSpinnerWrapper">
-                  <BigSpinner />
+                  <Spinner size="big" />
                 </div>
               ) : (
                 <div className="ClusterContainer">

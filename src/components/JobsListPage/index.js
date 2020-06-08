@@ -7,7 +7,7 @@ import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 import getJobs from '../../redux/actions/jobs';
 import Status from '../Status';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import tellAge from '../../helpers/ageUtility';
 
 class JobsListPage extends React.Component {
@@ -52,7 +52,7 @@ class JobsListPage extends React.Component {
                         <tr className="TableLoading">
                           <td>
                             <div className="SpinnerWrapper">
-                              <BigSpinner />
+                              <Spinner size="big" />
                             </div>
                           </td>
                         </tr>

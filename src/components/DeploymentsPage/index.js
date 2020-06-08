@@ -8,7 +8,7 @@ import SideNav from '../SideNav';
 import InformationBar from '../InformationBar';
 import Status from '../Status';
 import ProgressBar from '../ProgressBar';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import tellAge from '../../helpers/ageUtility';
 import './DeploymentsPage.css';
 
@@ -83,7 +83,7 @@ class DeploymentsPage extends Component {
                       <tr className="TableLoading">
                         <td>
                           <div className="SpinnerWrapper">
-                            <BigSpinner />
+                            <Spinner size="big" />
                           </div>
                         </td>
                       </tr>

@@ -5,7 +5,7 @@ import './PvsListPage.css';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import getPvs from '../../redux/actions/pvs';
 import Status from '../Status';
 
@@ -50,7 +50,7 @@ class PvsListPage extends React.Component {
                         <tr className="TableLoading">
                           <td>
                             <div className="SpinnerWrapper">
-                              <BigSpinner />
+                              <Spinner size="big" />
                             </div>
                           </td>
                         </tr>

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import InformationBar from '../InformationBar';
 import PrimaryButton from '../PrimaryButton';
-import Spinner from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import BlackInputText from '../BlackInputText';
 import Modal from '../Modal';
 import ClustersList from '../ClustersList';

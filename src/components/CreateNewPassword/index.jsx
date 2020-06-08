@@ -4,7 +4,7 @@ import Header from '../Header';
 import LandingFooter from '../LandingFooter';
 import InputPassword from '../InputPassword';
 import PrimaryButton from '../PrimaryButton';
-import Spinner from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import './CreateNewPassword.css';
 import { API_BASE_URL } from '../../config';
 

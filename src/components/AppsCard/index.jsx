@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import PrimaryButton from '../PrimaryButton';
 import DotsImg from '../../assets/images/3dots.svg';
 import deleteApp, { clearState } from '../../redux/actions/deleteApp';
-import Spinner from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import Modal from '../Modal';
 import Status from '../Status';
 import Feedback from '../Feedback';

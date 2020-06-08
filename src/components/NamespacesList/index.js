@@ -8,7 +8,7 @@ import SideNav from '../SideNav';
 import getNamespaces from '../../redux/actions/namespaces';
 import Status from '../Status';
 import tellAge from '../../helpers/ageUtility';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 
 
 class NamespacesListPage extends React.Component {
@@ -50,7 +50,7 @@ class NamespacesListPage extends React.Component {
                         <tr className="TableLoading">
                           <td>
                             <div className="SpinnerWrapper">
-                              <BigSpinner />
+                              <Spinner size="big" />
                             </div>
                           </td>
                         </tr>

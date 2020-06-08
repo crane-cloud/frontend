@@ -5,7 +5,7 @@ import getStorageClassList from '../../redux/actions/storageClasses';
 import tellAge from '../../helpers/ageUtility';
 import './StorageClassList.css';
 import Header from '../Header';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 
@@ -49,7 +49,7 @@ class StorageClassList extends Component {
                         <tr className="TableLoading">
                           <td>
                             <div className="SpinnerWrapper">
-                              <BigSpinner />
+                              <Spinner size="big" />
                             </div>
                           </td>
                         </tr>

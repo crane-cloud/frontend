@@ -8,7 +8,7 @@ import SideNav from '../SideNav';
 import getPvcs from '../../redux/actions/pvcs';
 import Status from '../Status';
 import tellAge from '../../helpers/ageUtility';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 
 class PvcsListPage extends React.Component {
   componentDidMount() {
@@ -49,7 +49,7 @@ class PvcsListPage extends React.Component {
                         <tr className="TableLoading">
                           <td>
                             <div className="SpinnerWrapper">
-                              <BigSpinner />
+                              <Spinner size="big" />
                             </div>
                           </td>
                         </tr>

@@ -12,7 +12,7 @@ import getUserProjects from '../../redux/actions/projectsList';
 import BlackInputText from '../BlackInputText';
 import TextArea from '../TextArea';
 import ProjectCard from '../ProjectCard';
-import Spinner, { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import crane from '../../assets/images/plant.svg';
 import Feedback from '../Feedback';
 import Select from '../Select';
@@ -161,7 +161,7 @@ class UserProjectsPage extends React.Component {
               isRetrieving ? (
                 <div className="TableLoading">
                   <div className="SpinnerWrapper">
-                    <BigSpinner />
+                    <Spinner size="big" />
                   </div>
                 </div>
               ) : (

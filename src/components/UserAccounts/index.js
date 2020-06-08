@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import getUsersList from '../../redux/actions/users';
 import './UserAccounts.css';
 import Header from '../Header';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 
@@ -48,7 +48,7 @@ class UserAccounts extends Component {
                         <tr className="TableLoading">
                           <td>
                             <div className="SpinnerWrapper">
-                              <BigSpinner />
+                              <Spinner size="big" />
                             </div>
                           </td>
                         </tr>

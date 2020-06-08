@@ -6,7 +6,7 @@ import tellAge from '../../helpers/ageUtility';
 import './PodsList.css';
 import Header from '../Header';
 import Status from '../Status';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 import ProgressBar from '../ProgressBar';
@@ -108,7 +108,7 @@ class PodsList extends Component {
                         <tr className="TableLoading">
                           <td>
                             <div className="SpinnerWrapper">
-                              <BigSpinner />
+                              <Spinner size="big" />
                             </div>
                           </td>
                         </tr>

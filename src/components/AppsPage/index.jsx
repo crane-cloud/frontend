@@ -12,7 +12,7 @@ import BackButton from '../../assets/images/backButton.svg';
 import InformationBar from '../InformationBar';
 import AppsList from '../AppsList';
 import Header from '../Header';
-import Spinner from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import Feedback from '../Feedback';
 import Checkbox from '../Checkbox';
 import Tooltip from '../Tooltip';
