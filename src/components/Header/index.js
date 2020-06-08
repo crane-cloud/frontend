@@ -102,7 +102,7 @@ const Header = (props) => {
           </div>
 
           {hidden && (
-            <div className="BelowHeader">
+            <div ref={dropdownRef} className="BelowHeader">
               <div className="DropDownContent">
                 <div className="DropDownLink">Profile</div>
                 <div className="DropDownLink">Account</div>
