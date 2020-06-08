@@ -21,7 +21,8 @@ class VerificationSentPage extends React.Component {
       isVerificationFailed: false,
       loading: false,
       feedback: '',
-      error: ''
+      error: '',
+      emailSent: false
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -84,15 +85,34 @@ class VerificationSentPage extends React.Component {
 
   handleSubmit() {
     const { email } = this.state;
+    
     if (!email) {
       this.setState({
         error: 'Please enter your email address'
       });
     } else {
       if (this.validateEmail(email)) {
-        // TODO: submit to backend
-        console.log('resend clicked...');
-      } else {
+        this.setState({
+          loading: true
+        });
+
+        axios
+          .post(`${API_BASE_URL}/users/verify`, { email })
+          .then((res) => {
+            if (res.data.status === 'success') {
+              this.setState({
+                loading: false,
+                emailSent: true
+              });
+            }
+          })
+          .catch((err) => {
+            this.setState({
+              loading: false
+            });
+          });
+      }
+      else {
         this.setState({
           error: 'Please enter a valid email address'
         });
@@ -107,7 +127,8 @@ class VerificationSentPage extends React.Component {
       isVerificationFailed,
       email,
       feedback,
-      error
+      error,
+      emailSent
     } = this.state;
 
     return (
@@ -124,30 +145,48 @@ class VerificationSentPage extends React.Component {
                 <div>Please wait...</div>
               </>
             )}
-            {isVerificationFailed && (
-              <div className="ResendLinkForm">
-                <h2>{feedback}</h2>
-                {/* eslint-disable-next-line max-len */}
-                <p>Looks like your link expired. Worry not! Just enter your email below and we&apos;ll send you another link.</p>
-                <div className="ResendFormInputs">
-                  <InputText
-                    required
-                    placeholder="Email Address"
-                    name="email"
-                    value={email}
-                    onChange={(e) => this.handleOnChange(e)}
-                  />
-                  {error && (
-                    <div className="LoginErrorDiv">
-                      {error}
-                    </div>
-                  )}
-                  <PrimaryButton
-                    className="ResendLinkBtn"
-                    label={loading ? <Spinner /> : 'Resend Link'}
-                    onClick={this.handleSubmit}
-                  />
+            {emailSent ? (
+              <div className="RegisterSuccessContent">
+                <div className="RegisteredMessage">
+                  <h2>Thank you for registering with us!</h2>
+                  <p>
+                    We&apos;ve re-sent a link to your email address:&nbsp;
+                    <span>{email}</span>
+                    .
+                    <br />
+                    <br />
+                    The link too will expire after 24 hours. Please use this link to activate and start using your account.
+                  </p>
                 </div>
+              </div>
+            ) : (
+              <div>
+                {isVerificationFailed && (
+                  <div className="ResendLinkForm">
+                    <h2>{feedback}</h2>
+                    {/* eslint-disable-next-line max-len */}
+                    <p>Looks like your link expired. Worry not! Just enter your email below and we&apos;ll send you another link.</p>
+                    <div className="ResendFormInputs">
+                      <InputText
+                        required
+                        placeholder="Email Address"
+                        name="email"
+                        value={email}
+                        onChange={(e) => this.handleOnChange(e)}
+                      />
+                      {error && (
+                        <div className="LoginErrorDiv">
+                          {error}
+                        </div>
+                      )}
+                      <PrimaryButton
+                        className="ResendLinkBtn"
+                        label={loading ? <Spinner /> : 'Resend Link'}
+                        onClick={this.handleSubmit}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
