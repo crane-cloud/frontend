@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import saveUser from '../../redux/actions/saveUser';
 import Header from '../Header';
 import LandingFooter from '../LandingFooter';
@@ -35,11 +36,11 @@ class LoginPage extends React.Component {
   }
 
   handleChange(e) {
+    const { error } = this.state;
     this.setState({
       [e.target.name]: e.target.value
     });
-    this.error = this.state;
-    if (this.error) {
+    if (error) {
       this.setState({
         error: ''
       });
@@ -52,8 +53,10 @@ class LoginPage extends React.Component {
     return emailRegEx.test(String(email).toLowerCase());
   }
 
-  handleSubmit() {
-    const { email, password } = this.state;
+  handleSubmit(e) {
+    e.preventDefault();
+
+    const { error, email, password } = this.state;
     const { saveUser } = this.props;
 
     const userCredentials = {
@@ -71,6 +74,12 @@ class LoginPage extends React.Component {
         this.setState({
           loading: true
         });
+
+        if (error) {
+          this.setState({
+            error: ''
+          });
+        }
 
         axios
           .post(`${API_BASE_URL}/users/login`, userCredentials)
@@ -133,48 +142,49 @@ class LoginPage extends React.Component {
 
             <h1>Login to the cloud</h1>
           </div>
-          <div className="LoginContentInputs">
-            {/* Input fields */}
-            <InputText
-              required
-              placeholder="Email Address"
-              name="email"
-              value={email}
-              onChange={(e) => {
-                this.handleChange(e);
-              }}
-            />
-            <InputPassword
-              required
-              placeholder="Password"
-              name="password"
-              value={password}
-              onChange={(e) => {
-                this.handleChange(e);
-              }}
-            />
+          <form onSubmit={this.handleSubmit}>
+            <div className="LoginContentInputs">
+              {/* Input fields */}
+              <InputText
+                required
+                placeholder="Email Address"
+                name="email"
+                value={email}
+                onChange={(e) => {
+                  this.handleChange(e);
+                }}
+              />
+              <InputPassword
+                required
+                placeholder="Password"
+                name="password"
+                value={password}
+                onChange={(e) => {
+                  this.handleChange(e);
+                }}
+              />
 
-            {error && (
-              <div className="LoginErrorDiv">
-                {error}
+              {error && (
+                <div className="LoginErrorDiv">
+                  {error}
+                </div>
+              )}
+
+              <div className="LoginLinkContainer">
+                <Link to="/forgot-password" className="LoginContentLink">Forgot your password?</Link>
               </div>
-            )}
 
-            <div className="LoginLinkContainer">
-              <Link to="/forgot-password" className="LoginContentLink">Forgot your password?</Link>
+              <PrimaryButton
+                label={loading ? <Spinner /> : 'login'}
+                onClick={this.handleSubmit}
+              />
+
+              <div className="LoginContentBottomLink LoginLinkContainer">
+                Not signed up? &nbsp;
+                <Link to="/register" className="LoginContentLink">Create an account.</Link>
+              </div>
             </div>
-
-            <PrimaryButton
-              label={loading ? <Spinner /> : 'login'}
-              onClick={this.handleSubmit}
-            />
-
-            <div className="LoginContentBottomLink LoginLinkContainer">
-              Not signed up? &nbsp;
-              <Link to="/register" className="LoginContentLink">Create an account.</Link>
-            </div>
-
-          </div>
+          </form>
         </div>
 
         <div className="LoginPageFooter">
@@ -191,6 +201,10 @@ const mapStateToProps = (state) => (
 
 const mapDispatchToProps = {
   saveUser
+};
+
+LoginPage.propTypes = {
+  saveUser: PropTypes.func.isRequired
 };
 
 export default connect(
