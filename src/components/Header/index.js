@@ -9,6 +9,7 @@ import './Header.css';
 
 const Header = (props) => {
   const [hidden, setHidden] = useState(false);
+  const dropdownRef = useRef(null);
   const { user, match } = props;
 
   const toggleHidden = () => {
@@ -35,6 +36,22 @@ const Header = (props) => {
     const h = hash % 360;
     return `hsl(${h}, 30%, 80%)`; // syntax: hsl(h, s%, l%)
   };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setHidden(false);
+    }
+  };
+
+  // componentWillMount & componentWillUnmount
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // returned function will be called on component unmount
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <header className="Header">
@@ -82,6 +99,7 @@ const Header = (props) => {
               className="DropDownArrow"
               onClick={toggleHidden}
               role="presentation"
+              ref={dropdownRef}
             >
               <img src={DownArrow} alt="down_arrow" />
             </div>
