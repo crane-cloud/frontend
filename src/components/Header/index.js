@@ -85,11 +85,7 @@ const Header = (props) => {
                     {user.data.name.charAt(0).toUpperCase()}
                   </div>
                 </div>
-                <div
-                  className="UserNames"
-                  onClick={toggleHidden}
-                  role="presentation"
-                >
+                <div className="UserNames">
                   {user.data.name}
                 </div>
               </>
