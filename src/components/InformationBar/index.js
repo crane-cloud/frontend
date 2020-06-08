@@ -1,5 +1,5 @@
 import React from 'react';
-import CreateButton from '../ButtonComponent';
+import RoundAddButton from '../RoundAddButton';
 import './InformationBar.css';
 
 const InformationBar = ({ header, showBtn, btnAction }) => (
@@ -7,8 +7,8 @@ const InformationBar = ({ header, showBtn, btnAction }) => (
     {showBtn ? (
       <div className="InformationBarWithButton">
         <div className="InfoHeader">{header}</div>
-        <div className="CreateButton">
-          <CreateButton onClick={btnAction} />
+        <div className="RoundAddButtonWrap">
+          <RoundAddButton onClick={btnAction} />
         </div>
       </div>
     ) : (
