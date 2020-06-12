@@ -264,29 +264,29 @@ class ProjectCard extends React.Component {
           <div className="ProjectDeleteModel">
             <Modal showModal={openDeleteAlert}>
               <div className="DeleteProjectModel">
-                <div className="DeleteDescription">
-                  Sure you want to delete project
-                  <span>
-                    <b>
-                      {' '}
-                      {name}
-                      {' '}
-                    </b>
-                  </span>
-                  ?
-                  <DeleteWarning />
-                </div>
-                <div className="DeleteProjectModelResponses Extended">
-                  <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
-                  <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={(e) => this.handleDeleteProject(e, cardID)} />
+                <div className="DeleteProjectModalUpperSection">
+                  <div className="DeleteDescription">
+                    Are you sure you want to delete &nbsp;
+                    <span>{name}</span>
+                      &nbsp;
+                    ?
+                    <DeleteWarning />
+                  </div>
                 </div>
 
-                {(isFailed && message) && (
-                  <Feedback
-                    message={message}
-                    type="error"
-                  />
-                )}
+                <div className="DeleteProjectModalLowerSection">
+                  <div className="DeleteProjectModelButtons">
+                    <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
+                    <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} className="DeleteBtn" onClick={(e) => this.handleDeleteProject(e, cardID)} />
+                  </div>
+
+                  {(isFailed && message) && (
+                    <Feedback
+                      message={message}
+                      type="error"
+                    />
+                  )}
+                </div>
               </div>
 
             </Modal>
