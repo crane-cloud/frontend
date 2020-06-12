@@ -93,30 +93,34 @@ const AppsCard = (props) => {
         <div className="AppDeleteModel">
           <Modal showModal={openDeleteAlert}>
             <div className="DeleteAppModel">
-              <div className="DeleteDescription">
-                Are you sure you want to delete app
-                <span>
-                  <b>
-                    {' '}
-                    {name}
-                    {' '}
-                  </b>
-                </span>
-                ?
-              </div>
-              <DeleteWarning />
-
-              <div className="DeleteAppModelResponses">
-                <PrimaryButton label="cancel" className="CancelBtn" onClick={hideDeleteAlert} />
-                <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} onClick={() => handleDeleteApp(appId)} />
+              <div className="DeleteModalUpperSection">
+                <div className="DeleteDescription">
+                  Are you sure you want to delete app
+                  <span>
+                    <b>
+                      {' '}
+                      {name}
+                      {' '}
+                    </b>
+                  </span>
+                  ?
+                </div>
+                <DeleteWarning />
               </div>
 
-              {message && (
-                <Feedback
-                  type={isFailed ? 'error' : 'success'}
-                  message={message}
-                />
-              )}
+              <div className="DeleteModalLowerSection">
+                <div className="DeleteAppModelButtons">
+                  <PrimaryButton label="cancel" className="CancelBtn" onClick={hideDeleteAlert} />
+                  <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} className="DeleteBtn" onClick={() => handleDeleteApp(appId)} />
+                </div>
+
+                {true && (
+                  <Feedback
+                    type="error"
+                    message="Holla holla holla, we making noise"
+                  />
+                )}
+              </div>
             </div>
           </Modal>
         </div>

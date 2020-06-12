@@ -119,8 +119,7 @@
 }
 
 .DeleteDescription{
-    cursor: pointer;
-    padding-bottom: 3rem;
+    cursor: default;
 }
 
 .DeleteProjectModelResponses{
