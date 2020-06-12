@@ -95,14 +95,9 @@ const AppsCard = (props) => {
             <div className="DeleteAppModel">
               <div className="DeleteModalUpperSection">
                 <div className="DeleteDescription">
-                  Are you sure you want to delete app
-                  <span>
-                    <b>
-                      {' '}
-                      {name}
-                      {' '}
-                    </b>
-                  </span>
+                  Are you sure you want to delete &nbsp;
+                  <span>{name}</span>
+                    &nbsp;
                   ?
                 </div>
                 <DeleteWarning />

@@ -96,12 +96,11 @@
 
 .ProjectDeleteModel{
     position: fixed;
-    display: hidden!important;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 99999;
+    z-index: 2;
     background-color: rgba(0,0,0,0.5)
 }
 
@@ -110,52 +109,41 @@
 }
 
 .ProjectDeleteModel .ModalChildWrap{
-    width: 20rem;
-    height: unset;
-    min-height: 10rem !important;
-    z-index: 9999;
-    background-color: #f1f1f1;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 3;
+}
+
+.DeleteProjectModel {
+  display: grid;
+  gap: 3rem;
+}
+
+.DeleteProjectModalLowerSection {
+  display: grid;
+  gap: 1rem;
 }
 
 .DeleteDescription{
     cursor: default;
 }
 
-.DeleteProjectModelResponses{
-    display: grid;
-    height: 100%;
-    grid-gap: 1rem;
-    gap: 1rem;
-    grid-template-columns: repeat(2, auto);
-    align-items: center;
-    width: 100%;
+.DeleteDescription span {
+  font-weight: bold;
+  color: #f7b21f;
 }
 
-.DeleteProjectModelResponses {
-  padding-bottom: 1rem;
+.DeleteProjectModelButtons {
+  display: flex;
+  justify-content: space-between;
 }
 
-.DeleteProjectModelResponses button{
-    display: inline;
+.DeleteProjectModelButtons .DeleteBtn{
+    background-color: #ff0000;
+    outline: 2px solid #ff0000;
 }
-
-.DeleteErrorDiv{
-    color: #f00;
-}
-
-.DeleteSuccessDiv{
-    color: green;
-}
-
-.DeleteProjectModelResponses .undefined{
-    background-color: #f00;
-    outline: 2px solid #f00;
-}
-.DeleteProjectModelResponses .undefined:hover{
+.DeleteProjectModelButtons .DeleteBtn:hover{
     background-color: #fff;
-    outline: 2px solid #f00;
-    color: #f00;
+    outline: 2px solid #ff0000;
+    color: #ff0000;
 }
 
 
@@ -265,13 +253,7 @@
     justify-content: space-between;
 }
 
-.AddedWidth{
-    width: 25rem !important;
-}
 .ProjectDeleteModel .ModalChildWrap{
-    width: unset;
-}
-
-b{
-    color: #F7B217;
+    min-width: 21rem;
+    max-width: 25rem;
 }

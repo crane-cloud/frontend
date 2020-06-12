@@ -185,7 +185,7 @@
   outline: 2px solid #ff0000;
 }
 .DeleteAppModelButtons .DeleteBtn:hover {
-  background-color: inherit;
+  background-color: #fff;
   outline: 2px solid #ff0000;
   color: #ff0000;
 }
