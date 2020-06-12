@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PrimaryButton from '../PrimaryButton';
@@ -14,6 +14,7 @@ import './AppsCard.css';
 const AppsCard = (props) => {
   const [openDeleteAlert, setDeleteAlert] = useState(false);
   const [openDropDown, setDropDown] = useState(false);
+  const dropdownRef = useRef(null);
 
   const {
     clearState, name, status, url, appId, isDeleted, isDeleting, isFailed, message, hasDeleted
@@ -48,6 +49,23 @@ const AppsCard = (props) => {
     }
   };
 
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropDown(false);
+    }
+  };
+
+  // componentWillMount & componentWillUnmount
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // returned function will be called on component unmount
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+
   useEffect(() => (
     hideDeleteAlert()
   ), [isDeleted]); // eslint-disable-line
@@ -66,6 +84,7 @@ const AppsCard = (props) => {
                     className="AppDropDown"
                     onClick={toggleDropDown}
                     role="presentation"
+                    ref={dropdownRef}
                   >
                     <img src={DotsImg} alt="three dots" className="DropDownImg" />
                     {openDropDown && (
