@@ -114,10 +114,10 @@ const AppsCard = (props) => {
                   <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} className="DeleteBtn" onClick={() => handleDeleteApp(appId)} />
                 </div>
 
-                {true && (
+                {message && (
                   <Feedback
-                    type="error"
-                    message="Holla holla holla, we making noise"
+                    type={isFailed ? 'error' : 'success'}
+                    message={message}
                   />
                 )}
               </div>
