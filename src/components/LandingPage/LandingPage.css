@@ -47,10 +47,3 @@
     display: none;
   }
 }
-
-/* weird media query to fix fullscreen misbehavior */
-@media only screen and (min-height: 700px) {
-  .LandingPage {
-    height: 100vh;
-  }
-}
