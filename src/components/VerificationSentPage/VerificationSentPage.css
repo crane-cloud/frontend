@@ -6,6 +6,10 @@
   flex: 1;
 }
 
+.VerificationPageHeader {
+  flex: 1;
+}
+
 .VerificationPageMain {
   flex: 1;
   display: grid;
