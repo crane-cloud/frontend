@@ -22,6 +22,12 @@ body {
   font-family: proxima-nova, sans-serif;
 }
 
+div#root {
+  min-height: 100vh;
+  display: flex;
+  flex-flow: column;
+}
+
 textarea, input, select, button {
   font-family: inherit;
   font-size: inherit;
