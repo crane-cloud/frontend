@@ -86,6 +86,10 @@ export default class RegisterPage extends Component {
       this.setState({
         error: 'Please enter all fields'
       });
+    } else if (!name.trim()) {
+      this.setState({
+        error: 'Please provide a valid username'
+      });
     } else if (this.validateEmail(email) === false) {
       this.setState({
         loading: false,
