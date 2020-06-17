@@ -22,13 +22,25 @@ body {
   font-family: proxima-nova, sans-serif;
 }
 
-textarea, input, select, button {
+div#root {
+  min-height: 100vh;
+  display: flex;
+  flex-flow: column;
+}
+
+textarea,
+input,
+select,
+button {
   font-family: inherit;
   font-size: inherit;
   margin: 0;
 }
 
-textarea:focus, input:focus, select:focus, button:focus {
+textarea:focus,
+input:focus,
+select:focus,
+button:focus {
   outline: none;
 }
 
@@ -111,7 +123,7 @@ input[type="password"] {
 }
 
 .FailedToRetrieveMsg p {
-  box-shadow: .5rem .5rem rgba(0, 138, 193, 0.2);
+  box-shadow: 0.5rem 0.5rem rgba(0, 138, 193, 0.2);
   border-radius: 25px;
   padding: 5rem;
 }
@@ -124,9 +136,8 @@ input[type="password"] {
 
 /*- ////////////////////////////////// */
 
-
 /*- ///// TABLE STYLING ///////// */
-.ResourcesTable{
+.ResourcesTable {
   padding-top: 2rem;
 }
 
@@ -158,11 +169,11 @@ body::-webkit-scrollbar-thumb:hover {
 
 .ResourcesTable table th {
   padding: 1rem;
-  color: #008AC1;
+  color: #008ac1;
   text-align: center;
 }
 
-.ResourcesTable table th:first-child, 
+.ResourcesTable table th:first-child,
 .ResourcesTable table td:first-child {
   text-align: left;
   padding-left: 2rem;
@@ -175,7 +186,7 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .ResourcesTable table td {
-  padding: .8rem 1rem;
+  padding: 0.8rem 1rem;
   font-weight: normal;
 }
 
@@ -189,17 +200,16 @@ body::-webkit-scrollbar-thumb:hover {
   margin-top: 4rem;
 }
 
-.ResourcesTable table tr:hover{
+.ResourcesTable table tr:hover {
   background-color: #e0e0e0;
   cursor: pointer;
 }
-
 
 /*- ////////////////////////////////// */
 
 /* Other */
 
-.NoContentDiv{
+.NoContentDiv {
   margin: auto;
   margin-top: 10.5rem;
   font-style: normal;
@@ -210,33 +220,29 @@ body::-webkit-scrollbar-thumb:hover {
   cursor: pointer;
 }
 
-
-
-
-
 /* //// ADMIN DASHBOARD PAGE STYLING  //// */
 
-.MainPage{
+.MainPage {
   /* Divided into two rows */
   margin: 0;
-  background: #F1F1F1;
+  background: #f1f1f1;
   height: 100vh;
   display: grid;
   grid-template-rows: 80px 4fr;
   overflow-x: hidden;
 }
-.TopBarSection{
+.TopBarSection {
   background-color: black;
 }
-.MainSection{
+.MainSection {
   /* divided into two columns */
-  background-color: #F1F1F1;
+  background-color: #f1f1f1;
   display: grid;
   grid-template-columns: 1.3fr 6fr;
   overflow: hidden;
 }
 
-.SideBarSection{
+.SideBarSection {
   overflow: hidden;
   overflow-y: scroll;
 }
@@ -246,21 +252,19 @@ body::-webkit-scrollbar-thumb:hover {
   min-width: fit-content;
 }
 
-
-.SideBarSection{
+.SideBarSection {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-.MainContentSection{
+.MainContentSection {
   /* divided into two rows */
   display: grid;
   grid-template-rows: 80px 4fr;
   overflow: hidden;
-  
 }
 
-.ContentSection{
+.ContentSection {
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -273,47 +277,45 @@ body::-webkit-scrollbar-thumb:hover {
 }
 .ContentSection::-webkit-scrollbar-thumb {
   border-radius: 25px;
-  background: #008AC1;
+  background: #008ac1;
 }
 .ContentSection::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-
 
 /*- /////////--- STYLING FOR FEEDBACK ---//////////// */
 .ErrorOnWhite {
   color: rgb(0, 0, 0, 0.8);
   background-color: rgb(214, 59, 59, 0.5);
   text-align: center;
-  padding: .7rem 0;
+  padding: 0.7rem 0;
 }
 
 .SuccessOnWhite {
   color: rgba(0, 0, 0, 0.8);
   background-color: rgb(0, 128, 0, 0.5);
   text-align: center;
-  padding: .7rem 0;
+  padding: 0.7rem 0;
 }
 
 /* //////////////////////////////////////////// */
 
-
 /* //////////--- PAGE STYLES ---//////////// */
 
-.Page{
+.Page {
   margin: 0;
-  background: #F1F1F1;
+  background: #f1f1f1;
   min-height: 100vh;
   display: grid;
   grid-template-rows: 150px 3fr 100px;
   overflow-x: hidden;
 }
 
-.TopRow{
+.TopRow {
   width: 100%;
 }
 
-.MainRow{
+.MainRow {
   width: 100%;
 }
 

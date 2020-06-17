@@ -3,6 +3,11 @@
   color: #ffffff;
   display: flex;
   flex-direction: column;
+  flex: 1;
+}
+
+.VerificationPageHeader {
+  flex: 1;
 }
 
 .VerificationPageMain {
@@ -10,11 +15,11 @@
   display: grid;
   grid-template-columns: 1fr;
   justify-items: center;
+  align-items: center;
 }
 
 .VerificationPageContent {
   padding: 2rem;
-  /* margin: 1rem; */
 }
 
 .VerificationPageContent h2 {
@@ -31,11 +36,6 @@
 }
 
 
-.VerificationPageFooter {
-  position: relative;
-  margin-top: 5rem;
-}
-
 .ResendLinkForm .ResendFormInputs {
   display: grid;
   grid-template-columns: 1fr;
@@ -44,11 +44,4 @@
 
 .ResendLinkForm .ResendFormInputs .LoginErrorDiv {
   width: 25rem;
-}
-
-/* weird media query to fix fullscreen misbehavior */
-@media only screen and (min-height: 642px) {
-  .VerificationPageContainer {
-    height: 100vh;
-  }
 }
