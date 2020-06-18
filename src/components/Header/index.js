@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Logo from '../Logo';
 import { ReactComponent as DownArrow } from '../../assets/images/downarrow.svg';
+import Avatar from '../Avatar';
 import removeUser from '../../redux/actions/removeUser';
 import './Header.css';
 
@@ -25,16 +26,6 @@ const Header = (props) => {
     window.location.href = '/';
     localStorage.removeItem('state');
     localStorage.removeItem('token');
-  };
-
-  const nameStringToHslColor = (name) => {
-    let hash = 0;
-    let i = 0;
-    for (i; i < name.length; i += 1) {
-      hash = name.charCodeAt(i) + ((hash << 5) - hash); // eslint-disable-line no-bitwise
-    }
-    const h = hash % 360;
-    return `hsl(${h}, 30%, 80%)`; // syntax: hsl(h, s%, l%)
   };
 
   const handleClickOutside = (event) => {
@@ -78,12 +69,7 @@ const Header = (props) => {
               <>
 
                 <div className="ProfileIconWrap">
-                  <div
-                    className="UserAvatar"
-                    style={{ backgroundColor: nameStringToHslColor(user.data.name), color: '#555' }}
-                  >
-                    {user.data.name.charAt(0).toUpperCase()}
-                  </div>
+                  <Avatar name={user.data.name} />
                 </div>
                 <div className="UserNames">
                   {user.data.name}
