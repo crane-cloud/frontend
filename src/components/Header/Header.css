@@ -66,11 +66,13 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   justify-content: center; /* vertical */
 }
 
-.DropDownArrow img {
-  width: 1rem;
+.DropdownArrowSvg {
+  width: 2rem;
+  height: 2rem;
+  fill: white;
 }
 
-.DropDownArrow:hover {
+.DropdownArrowSvg:hover {
   transition: 0.5s;
   transform: scale(1.2);
 }
