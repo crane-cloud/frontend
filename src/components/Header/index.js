@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Logo from '../Logo';
 import { ReactComponent as DownArrow } from '../../assets/images/downarrow.svg';
-import Avatar from '../Avatar';
 import removeUser from '../../redux/actions/removeUser';
 import './Header.css';
 
@@ -67,10 +66,6 @@ const Header = (props) => {
               <Link to={`/users/${user.data.id}/projects`} className="HeaderLinkBackToConsole TurnLight">dashboard</Link>
             ) : (
               <>
-
-                <div className="ProfileIconWrap">
-                  <Avatar name={user.data.name} />
-                </div>
                 <div className="UserNames">
                   {user.data.name}
                 </div>
