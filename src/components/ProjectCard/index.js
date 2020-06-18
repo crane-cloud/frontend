@@ -343,7 +343,7 @@ class ProjectCard extends React.Component {
 
                 <div className="ModalFormButtons">
                   <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideUpdateForm} />
-                  <PrimaryButton label={isUpdating ? <Spinner /> : 'Proceed'} onClick={this.handleSubmit} />
+                  <PrimaryButton label={isUpdating ? <Spinner /> : 'update'} onClick={this.handleSubmit} />
                 </div>
 
               </div>
