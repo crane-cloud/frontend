@@ -1,0 +1,11 @@
+.UserAvatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 24px;
+  display: flex;
+  align-items: center; /* horizontal */
+  justify-content: center; /* vertical */
+}
