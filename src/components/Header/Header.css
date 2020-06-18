@@ -47,11 +47,17 @@ div.HeaderLinksWrap.LoggedIn .OnHeader {
   align-items: center;
 }
 
+div.DropDownGrid {
+  display: flex;
+  flex-direction: column;
+}
+
 div.HeaderLinksWrap.LoggedIn .BelowHeader {
   background-color: #f9f9f9;
   width: 13rem;
   position: absolute;
   top: 100%;
+  right: 0;
 }
 
 .UserAvatar {
