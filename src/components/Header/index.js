@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Logo from '../Logo';
-import DownArrow from '../../assets/images/downarrow.svg';
+import { ReactComponent as DownArrow } from '../../assets/images/downarrow.svg';
 import removeUser from '../../redux/actions/removeUser';
 import './Header.css';
 
@@ -91,14 +91,11 @@ const Header = (props) => {
               </>
             )}
 
-            <div
-              className="DropDownArrow"
+            <DownArrow
               onClick={toggleHidden}
-              role="presentation"
               ref={dropdownRef}
-            >
-              <img src={DownArrow} alt="down_arrow" />
-            </div>
+              className="DropdownArrowSvg"
+            />
           </div>
 
           {hidden && (
