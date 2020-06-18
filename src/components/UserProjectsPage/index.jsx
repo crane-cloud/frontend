@@ -247,7 +247,7 @@ class UserProjectsPage extends React.Component {
             )}
             <div className="ModalFormButtons">
               <PrimaryButton label="Cancel" className="CancelBtn" onClick={this.hideForm} />
-              <PrimaryButton label={isAdding ? <Spinner /> : 'Proceed'} onClick={this.handleSubmit} />
+              <PrimaryButton label={isAdding ? <Spinner /> : 'add'} onClick={this.handleSubmit} />
             </div>
 
             {message && (

@@ -630,7 +630,7 @@ class AppsPage extends React.Component {
 
             <div className="ModalFormButtons AddAddButtons">
               <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
-              <PrimaryButton label={isCreating ? <Spinner /> : 'proceed'} onClick={this.handleSubmit} />
+              <PrimaryButton label={isCreating ? <Spinner /> : 'deploy'} onClick={this.handleSubmit} />
             </div>
 
             {message && (
