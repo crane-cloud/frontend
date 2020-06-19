@@ -68,7 +68,7 @@ class DeploymentsPage extends Component {
               <InformationBar header="Deployments" showBtn={false} />
             </div>
             <div className="ContentSection">
-              <div className="ResourcesTable">
+              <div className={isFetchingDeployments ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
                 <table>
                   <thead className="uppercase">
                     <tr>

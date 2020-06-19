@@ -34,7 +34,7 @@ class PvcsListPage extends React.Component {
               <InformationBar header="Volume Claims" showBtn={false} />
             </div>
             <div className="ContentSection">
-              <div className="ResourcesTable">
+              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
                 <table>
                   <thead>
                     <tr>

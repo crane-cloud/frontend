@@ -60,7 +60,7 @@ class NodesList extends Component {
               <InformationBar header="Nodes" showBtn={false} />
             </div>
             <div className="ContentSection">
-              <div className="ResourcesTable">
+              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
                 <table className="Nodes table">
                   <thead>
                     <tr>

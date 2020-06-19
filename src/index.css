@@ -137,8 +137,12 @@ input[type="password"] {
 /*- ////////////////////////////////// */
 
 /*- ///// TABLE STYLING ///////// */
-.ResourcesTable {
-  padding-top: 2rem;
+div.ResourcesTable {
+  padding-top: 1rem;
+}
+
+div.ResourcesTable.LoadingResourcesTable {
+  flex-grow: 1;
 }
 
 .ResourcesTable table thead {
@@ -165,6 +169,7 @@ body::-webkit-scrollbar-thumb:hover {
   text-align: center;
   border-collapse: collapse;
   width: 100%;
+  height: 100%;
 }
 
 .ResourcesTable table th {
@@ -190,12 +195,23 @@ body::-webkit-scrollbar-thumb:hover {
   font-weight: normal;
 }
 
-.TableLoading {
+div.TableLoading {
   display: flex;
   height: 100%;
   justify-self: center;
   justify-content: center;
   align-items: center;
+}
+
+tr.TableLoading {
+  position: relative;
+}
+
+tr.TableLoading td {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .ResourcesTable table tr:hover {
@@ -263,6 +279,8 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .ContentSection {
+  display: flex;
+  flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
 }
