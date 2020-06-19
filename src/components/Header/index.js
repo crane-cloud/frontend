@@ -79,9 +79,6 @@ const Header = (props) => {
             {hidden && (
             <div ref={dropdownRef} className="BelowHeader">
               <div className="DropDownContent">
-                <div className="DropDownLink">Profile</div>
-                <div className="DropDownLink">Account</div>
-                <div className="DropDownLink">Settings</div>
                 <div className="DropDownLink" role="presentation" onClick={logout}>Logout</div>
               </div>
             </div>
