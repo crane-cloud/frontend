@@ -43,6 +43,10 @@ header.Header {
   display: flex;
 }
 
+.HeaderLinksWrap {
+  display: flex;
+}
+
 div.HeaderLinksWrap.LoggedIn .OnHeader {
   display: grid;
   gap: 1rem;
