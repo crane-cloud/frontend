@@ -34,7 +34,7 @@ class StorageClassList extends Component {
               <InformationBar header="Storage Classes" showBtn={false} />
             </div>
             <div className="ContentSection">
-              <div className="ResourcesTable">
+              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
                 <table className="StorageClassesTable">
                   <thead>
                     <tr>

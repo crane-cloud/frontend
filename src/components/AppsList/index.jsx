@@ -45,7 +45,7 @@ class AppsList extends Component {
   render() {
     const { apps, isRetrieved, isRetrieving } = this.props;
     return (
-      <div className="AppsList">
+      <>
         {
           isRetrieving ? (
             <div className="TableLoading">
@@ -83,8 +83,7 @@ class AppsList extends Component {
             Failed to retrieve Apps.
           </div>
         )}
-
-      </div>
+      </>
     );
   }
 }

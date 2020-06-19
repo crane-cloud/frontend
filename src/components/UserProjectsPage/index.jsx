@@ -156,45 +156,42 @@ class UserProjectsPage extends React.Component {
           <InformationBar header="Projects" showBtn btnAction={this.showForm} />
         </div>
         <div className="MainRow">
-          <div className="ProjectList">
-            {
-              isRetrieving ? (
-                <div className="TableLoading">
-                  <div className="SpinnerWrapper">
-                    <Spinner size="big" />
+          {
+            isRetrieving ? (
+              <div className="TableLoading">
+                <div className="SpinnerWrapper">
+                  <Spinner size="big" />
+                </div>
+              </div>
+            ) : (
+              <div className="ProjectList">
+                {(isFetched && projects !== undefined && (
+                  (projects.map((project) => (
+                    <div key={project.id} className="ProjectCardItem">
+                      <ProjectCard
+                        name={project.name}
+                        description={project.description}
+                        cardID={project.id}
+                        icon={crane}
+                      />
+                    </div>
+                  ))))
+                )}
+                {(isFetched && projects.length === 0) && (
+                  <div className="NoContentDiv">
+                    You haven’t created any projects yet.
+                    Click the create button to get started.
                   </div>
-                </div>
-              ) : (
-                <div className="ProjectList">
-                  {(isFetched && projects !== undefined && (
-                    (projects.map((project) => (
-                      <div key={project.id} className="ProjectCardItem">
-                        <ProjectCard
-                          name={project.name}
-                          description={project.description}
-                          cardID={project.id}
-                          icon={crane}
-                        />
-                      </div>
-                    ))))
-                  )}
-                  {(isFetched && projects.length === 0) && (
-                    <div className="NoContentDiv">
-                      You haven’t created any projects yet.
-                      Click the create button to get started.
-                    </div>
-                  )}
-                  {(!isRetrieving && !isFetched) && (
-                    <div className="NoContentDiv">
-                      Oops! Something went wrong!
-                      Failed to retrieve Projects.
-                    </div>
-                  )}
-
-                </div>
-              )
-            }
-          </div>
+                )}
+                {(!isRetrieving && !isFetched) && (
+                  <div className="NoContentDiv">
+                    Oops! Something went wrong!
+                    Failed to retrieve Projects.
+                  </div>
+                )}
+              </div>
+            )
+          }
         </div>
         <div className="FooterRow">
           <p>

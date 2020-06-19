@@ -92,7 +92,7 @@ class PodsList extends Component {
               <InformationBar header="Pods" showBtn={false} />
             </div>
             <div className="ContentSection">
-              <div className="ResourcesTable">
+              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
                 <table className="PodsTable">
                   <thead>
                     <tr>

@@ -48,7 +48,7 @@ class ServicesListPage extends React.Component {
               <InformationBar header="Services" showBtn={false} />
             </div>
             <div className="ContentSection">
-              <div className="ResourcesTable">
+              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
                 <table>
                   <thead>
                     <tr>
