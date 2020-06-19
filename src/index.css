@@ -191,13 +191,11 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .TableLoading {
-  position: relative;
-}
-
-.SpinnerWrapper {
-  position: absolute;
-  width: 100%;
-  margin-top: 4rem;
+  display: flex;
+  height: 100%;
+  justify-self: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .ResourcesTable table tr:hover {
@@ -316,7 +314,8 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .MainRow {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .FooterRow {
