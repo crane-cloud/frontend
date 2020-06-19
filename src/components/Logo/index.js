@@ -5,7 +5,7 @@ import './Logo.css';
 
 const Logo = () => {
   return (
-    <Link to="/">
+    <Link to="/" className="LogoWrapper">
       <div className="Logo">
         <LogoIcon className="LogoIcon"  />
         <div className="LogoType">Crane Cloud</div>
