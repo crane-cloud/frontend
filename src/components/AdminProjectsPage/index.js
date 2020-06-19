@@ -47,7 +47,7 @@ class AdminProjectsPage extends React.Component {
               <InformationBar header="Projects" showBtn={false} />
             </div>
             <div className="ContentSection">
-              <div className="ResourcesTable">
+              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
                 <table>
                   <thead className="uppercase">
                     <tr>

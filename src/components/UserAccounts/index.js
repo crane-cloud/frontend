@@ -33,7 +33,7 @@ class UserAccounts extends Component {
               <InformationBar header="User Accounts" showBtn={false} />
             </div>
             <div className="ContentSection">
-              <div className="ResourcesTable">
+              <div className={isFetching ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
                 <table className="UsersTable">
                   <thead>
                     <tr>

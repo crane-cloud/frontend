@@ -5,6 +5,10 @@
   align-items: center;
 }
 
+.LogoWrapper {
+  display: flex;
+}
+
 .LogoIcon {
   width: 4rem;
   height: auto;

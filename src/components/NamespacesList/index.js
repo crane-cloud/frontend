@@ -35,7 +35,7 @@ class NamespacesListPage extends React.Component {
               <InformationBar header="Namespaces" showBtn={false} />
             </div>
             <div className="ContentSection">
-              <div className="ResourcesTable">
+              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
                 <table className="NamespacesTable">
                   <thead>
                     <tr>

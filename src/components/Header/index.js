@@ -27,16 +27,6 @@ const Header = (props) => {
     localStorage.removeItem('token');
   };
 
-  const nameStringToHslColor = (name) => {
-    let hash = 0;
-    let i = 0;
-    for (i; i < name.length; i += 1) {
-      hash = name.charCodeAt(i) + ((hash << 5) - hash); // eslint-disable-line no-bitwise
-    }
-    const h = hash % 360;
-    return `hsl(${h}, 30%, 80%)`; // syntax: hsl(h, s%, l%)
-  };
-
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setHidden(false);
@@ -71,47 +61,29 @@ const Header = (props) => {
 
       {user.accessToken && (
         <div className="HeaderLinksWrap LoggedIn">
-          <div className="OnHeader">
+          <div className="OnHeader" onClick={toggleHidden}>
             {match.path === '/' ? (
               <Link to={`/users/${user.data.id}/projects`} className="HeaderLinkBackToConsole TurnLight">dashboard</Link>
             ) : (
               <>
-
-                <div className="ProfileIconWrap">
-                  <div
-                    className="UserAvatar"
-                    style={{ backgroundColor: nameStringToHslColor(user.data.name), color: '#555' }}
-                  >
-                    {user.data.name.charAt(0).toUpperCase()}
-                  </div>
-                </div>
                 <div className="UserNames">
                   {user.data.name}
                 </div>
               </>
             )}
 
-            <div className="DropDownGrid" ref={dropdownRef}>
-              <DownArrow
-                onClick={toggleHidden}
-                ref={dropdownRef}
-                className="DropdownArrowSvg"
-              />
-
-              {hidden && (
-                <div className="BelowHeader">
-                  <div className="DropDownContent">
-                    <div className="DropDownLink">Profile</div>
-                    <div className="DropDownLink">Account</div>
-                    <div className="DropDownLink">Settings</div>
-                    <div className="DropDownLink" role="presentation" onClick={logout}>Logout</div>
-                  </div>
-                </div>
-              )}
-
+            <DownArrow
+              ref={dropdownRef}
+              className="DropdownArrowSvg"
+            />
+            {hidden && (
+            <div ref={dropdownRef} className="BelowHeader">
+              <div className="DropDownContent">
+                <div className="DropDownLink" role="presentation" onClick={logout}>Logout</div>
+              </div>
             </div>
+          )}
           </div>
-
         </div>
       )}
 
