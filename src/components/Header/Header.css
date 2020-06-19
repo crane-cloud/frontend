@@ -3,7 +3,6 @@ header.Header {
   color: #ffffff;
   display: flex;
   justify-content: space-between;
-  align-items: center;
   height: 5rem;
   padding: 0 3rem;
   position: relative;
@@ -40,29 +39,38 @@ header.Header {
   border: 0;
 }
 
+.LoggedIn {
+  display: flex;
+}
+
 div.HeaderLinksWrap.LoggedIn .OnHeader {
   display: grid;
   gap: 1rem;
   grid-auto-flow: column;
   align-items: center;
+  position: relative;
+}
+
+.OnHeader:hover .UserNames {
+  color: #F7B21F;
+}
+
+.OnHeader:hover svg {
+  fill: #F7B21F;
 }
 
 div.HeaderLinksWrap.LoggedIn .BelowHeader {
   background-color: #f9f9f9;
-  width: 13rem;
   position: absolute;
   top: 100%;
+  left: 0;
+  right: 0;
 }
 
 .DropdownArrowSvg {
   width: 2rem;
   height: 2rem;
   fill: white;
-}
-
-.DropdownArrowSvg:hover {
-  transition: 0.5s;
-  transform: scale(1.2);
 }
 
 .UserNames {
@@ -77,7 +85,6 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   display: flex;
   flex-direction: column;
   z-index: 1;
-  position: relative;
   box-shadow: 0 4px 4px 0 rgba(117, 117, 117, 0.2);
 }
 

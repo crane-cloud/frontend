@@ -61,7 +61,7 @@ const Header = (props) => {
 
       {user.accessToken && (
         <div className="HeaderLinksWrap LoggedIn">
-          <div className="OnHeader">
+          <div className="OnHeader" onClick={toggleHidden}>
             {match.path === '/' ? (
               <Link to={`/users/${user.data.id}/projects`} className="HeaderLinkBackToConsole TurnLight">dashboard</Link>
             ) : (
@@ -73,13 +73,10 @@ const Header = (props) => {
             )}
 
             <DownArrow
-              onClick={toggleHidden}
               ref={dropdownRef}
               className="DropdownArrowSvg"
             />
-          </div>
-
-          {hidden && (
+            {hidden && (
             <div ref={dropdownRef} className="BelowHeader">
               <div className="DropDownContent">
                 <div className="DropDownLink">Profile</div>
@@ -89,6 +86,7 @@ const Header = (props) => {
               </div>
             </div>
           )}
+          </div>
         </div>
       )}
 

@@ -1,10 +1,13 @@
 .InformationBar {
   background: #F8F7E5;
-  min-height: 3.5rem;
-  padding: 10px;
+  height: 5rem;
+  padding: 0 3rem;
+  display: flex;
+  align-items: center;
 }
 
 .InformationBarWithButton {
+  flex: 1;
   display: flex;
   justify-content: space-between;
 }
@@ -12,33 +15,6 @@
 .InfoHeader{
   display: flex;
   align-items: center;
-  font-family: 'Roboto', sans-serif;
-  font-style: normal;
   font-weight: bold;
-  font-size: 24px;
-  text-align: right;
-  margin-left: 30px;
-  cursor: pointer;
-}
-
-.LeftHeader{
-  float: right;
-  font-family: 'Roboto', sans-serif;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 24px;
-  text-align: right;
-  margin-right: 20px;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.RoundAddButtonWrap{
-  float: right;
-  margin-right: 20px;
-}
-
-.InformationBar::after{
-  clear: float;
-  clear: both;
+  font-size: 1.5rem;
 }
