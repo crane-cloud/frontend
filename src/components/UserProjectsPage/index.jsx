@@ -211,7 +211,7 @@ class UserProjectsPage extends React.Component {
             <div className="ModalFormInputs">
               <Select
                 required
-                placeholder="Select a cluster"
+                placeholder="Choose a Region"
                 options={clusters}
                 onChange={this.handleSelectChange}
               />
