@@ -51,7 +51,7 @@ const Header = (props) => {
         <div className="HeaderLinksWrap">
           {match.path !== '/admin-login' && (
             <div className="HeaderLinks bold uppercase">
-              <Link to="#" className="HeaderLinkDocs">Docs</Link>
+              <a href="http://staging-docs.cranecloud.io/" className="HeaderLinkDocs">Docs</a>
               <Link to="/login" className="HeaderLinkLogin TurnLight">Login</Link>
             </div>
           )}
