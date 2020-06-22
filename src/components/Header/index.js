@@ -51,9 +51,8 @@ const Header = (props) => {
         <div className="HeaderLinksWrap">
           {match.path !== '/admin-login' && (
             <div className="HeaderLinks bold uppercase">
-              <Link to="#" className="HeaderLinkPricing">pricing</Link>
-              <Link to="#" className="HeaderLinkDocs">docs</Link>
-              <Link to="/login" className="HeaderLinkLogin TurnLight">login</Link>
+              <Link to="#" className="HeaderLinkDocs">Docs</Link>
+              <Link to="/login" className="HeaderLinkLogin TurnLight">Login</Link>
             </div>
           )}
         </div>
