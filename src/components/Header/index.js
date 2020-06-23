@@ -53,7 +53,7 @@ const Header = (props) => {
         <div className="HeaderLinksWrap">
           {match.path !== '/admin-login' && (
             <div className="HeaderLinks bold uppercase">
-              <a href={`${DOCS_URL}`} className="HeaderLinkDocs">Docs</a>
+              <a href={`${DOCS_URL}`} className="HeaderLinkDocs" rel="noopener noreferrer" target="_blank">Docs</a>
               <Link to="/login" className="HeaderLinkLogin TurnLight">Login</Link>
             </div>
           )}
