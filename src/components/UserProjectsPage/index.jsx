@@ -13,7 +13,7 @@ import BlackInputText from '../BlackInputText';
 import TextArea from '../TextArea';
 import ProjectCard from '../ProjectCard';
 import Spinner from '../Spinner';
-import crane from '../../assets/images/plant.svg';
+import crane from '../../assets/images/default-project-image.svg';
 import Feedback from '../Feedback';
 import Select from '../Select';
 
