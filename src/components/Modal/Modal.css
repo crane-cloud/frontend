@@ -29,12 +29,13 @@
 
 .ModalForm {
   display: grid;
-  gap: 1rem;
+  gap: 2rem;
 }
 
-.ModalFormHeading {
+.ModalFormHeading h2 {
+  margin: 0;
+  padding: 0;
   font-weight: bold;
-  margin-bottom: 1rem;  
 }
 
 .ModalForm .ModalFormInputs {
@@ -52,7 +53,6 @@
 }
 
 .ModalForm .ModalFormButtons {
-  margin-top: 1rem;
   display: flex;
   justify-content: space-between;
 }

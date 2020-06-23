@@ -10,7 +10,7 @@
 }
 
 .SelectElementValue {
-  padding: 1rem;
+  padding: .8rem;
   display: flex;
   justify-content: space-between;
 }

@@ -230,13 +230,12 @@
 
 .ModalUpdateForm {
     display: grid;
-    gap: 1rem;
+    gap: 2rem;
 }
 
 .ModalUpdateForm .ModalFormInputs {
     display: grid;
     gap: 1rem;
-    padding-bottom: 1rem;
 }
   
 .ModalUpdateForm .ModalFormInputs .InputText {
