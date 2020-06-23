@@ -6,6 +6,7 @@ import Logo from '../Logo';
 import { ReactComponent as DownArrow } from '../../assets/images/downarrow.svg';
 import removeUser from '../../redux/actions/removeUser';
 import './Header.css';
+import { DOCS_URL } from '../../config';
 
 const Header = (props) => {
   const [hidden, setHidden] = useState(false);
@@ -47,13 +48,13 @@ const Header = (props) => {
     <header className="Header">
       <Logo />
 
+      
       {!user.accessToken && (
         <div className="HeaderLinksWrap">
           {match.path !== '/admin-login' && (
             <div className="HeaderLinks bold uppercase">
-              <Link to="#" className="HeaderLinkPricing">pricing</Link>
-              <Link to="#" className="HeaderLinkDocs">docs</Link>
-              <Link to="/login" className="HeaderLinkLogin TurnLight">login</Link>
+              <a href={`${DOCS_URL}`} className="HeaderLinkDocs">Docs</a>
+              <Link to="/login" className="HeaderLinkLogin TurnLight">Login</Link>
             </div>
           )}
         </div>
