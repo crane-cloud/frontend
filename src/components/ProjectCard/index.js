@@ -301,10 +301,6 @@ class ProjectCard extends React.Component {
                   <div className="HeadingWithTooltip">
                     <h2>
                       Update your project
-                      <b>
-                        {' '}
-                        {name}
-                      </b>
                     </h2>
                     <div className="UpdateToolTip">
                       <Tooltip
