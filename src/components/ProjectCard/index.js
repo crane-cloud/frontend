@@ -266,7 +266,7 @@ class ProjectCard extends React.Component {
               <div className="DeleteProjectModel">
                 <div className="DeleteProjectModalUpperSection">
                   <div className="DeleteDescription">
-                    Are you sure you want to delete &nbsp;
+                    Are you sure you want to delete&nbsp;
                     <span>{name}</span>
                       &nbsp;
                     ?
