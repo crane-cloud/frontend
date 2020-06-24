@@ -302,12 +302,6 @@ class ProjectCard extends React.Component {
                     <h2>
                       Update your project
                     </h2>
-                    <div className="UpdateToolTip">
-                      <Tooltip
-                        showIcon
-                        message="You can update either project name or description or both."
-                      />
-                    </div>
                   </div>
                 </div>
                 <div className="ModalFormInputs">
