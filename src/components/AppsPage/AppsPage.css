@@ -50,10 +50,6 @@
   grid-template-columns: 1fr 1fr;
 }
 
-.ModalFormInputs .ModalFormInputsEnvVars {
-height: 200px; /* I've had to limit this height for now */
-}
-
 .EnvVarsInputGroup .EnvVarsAddBtn {
   position: relative;
   display: flex;
