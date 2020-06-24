@@ -78,12 +78,15 @@ const Header = (props) => {
               className="DropdownArrowSvg"
             />
             {hidden && (
-            <div ref={dropdownRef} className="BelowHeader">
-              <div className="DropDownContent">
-                <div className="DropDownLink" role="presentation" onClick={logout}>Logout</div>
+              <div ref={dropdownRef} className="BelowHeader">
+                <div className="DropDownContent">
+                  <div className="DropDownLink">
+                    <a href={`${DOCS_URL}`} rel="noopener noreferrer" target="_blank">Docs</a>
+                  </div> 
+                  <div className="DropDownLink" role="presentation" onClick={logout}>Logout</div>
+                </div>
               </div>
-            </div>
-          )}
+            )}
           </div>
         </div>
       )}
