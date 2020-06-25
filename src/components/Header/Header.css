@@ -121,7 +121,7 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   background-color: #f1f1f1;
 }
 
-.DropDownLink {
+.DropDownLink, .DropDownLink:visited {
   color: #000;
   text-decoration: none;
 }
