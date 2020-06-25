@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import PrimaryButton from '../PrimaryButton';
-import DotsImg from '../../assets/images/3dots.svg';
+import { ReactComponent as DotsImg } from '../../assets/images/more-verticle.svg';
 import deleteProject, { clearDeleteProjectState } from '../../redux/actions/deleteProject';
 import updateProject from '../../redux/actions/updateProject';
 import Spinner from '../Spinner';
@@ -215,47 +215,36 @@ class ProjectCard extends React.Component {
             <div className="ProjectImageDiv" style={{ backgroundImage: `url(${icon})` }} />
           </Link>
           <div className="BottomContainer">
-            <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps` }} key={cardID}>
-              <div className="ProjectsCardName">{name}</div>
-            </Link>
-            <div className="ProjectsCardDesc">
-              <table className="ProjectTab">
-                <tbody>
-                  <tr>
-                    <td className="ProjectName">{description}</td>
-                    <td className="OtherData">
-                      <div className="DropDownData">
-                        <div
-                          className="ProjectDropDown"
-                          onClick={this.toggleDropDown}
-                          role="presentation"
-                          ref={this.container}
-                        >
-                          <div className="DropDownIcon">
-                            <img src={DotsImg} alt="three dots" className="DropDownImg" />
-                          </div>
-                          {openDropDown && (
-                            <div className="ProjectDropDownContent">
-                              <div
-                                onClick={this.showUpdateForm}
-                                role="presentation"
-                              >
-                                Update
-                              </div>
-                              <div
-                                onClick={this.showDeleteAlert}
-                                role="presentation"
-                              >
-                                Delete
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div className="ProjectInfoSection">
+              <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps` }} key={cardID}>
+                <div className="ProjectsCardName">{name}</div>
+              </Link>
+              <div className="ProjectName">{description}</div>
+            </div>
+            <div
+              className="ProjectDropDown"
+              onClick={this.toggleDropDown}
+              role="presentation"
+              ref={this.container}
+            >
+              <DotsImg className="DropDownImg" />
+
+              {openDropDown && (
+                <div className="ProjectDropDownContent">
+                  <div
+                    onClick={this.showUpdateForm}
+                    role="presentation"
+                  >
+                    Update
+                  </div>
+                  <div
+                    onClick={this.showDeleteAlert}
+                    role="presentation"
+                  >
+                    Delete
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -301,17 +290,7 @@ class ProjectCard extends React.Component {
                   <div className="HeadingWithTooltip">
                     <h2>
                       Update your project
-                      <b>
-                        {' '}
-                        {name}
-                      </b>
                     </h2>
-                    <div className="UpdateToolTip">
-                      <Tooltip
-                        showIcon
-                        message="You can update either project name or description or both."
-                      />
-                    </div>
                   </div>
                 </div>
                 <div className="ModalFormInputs">

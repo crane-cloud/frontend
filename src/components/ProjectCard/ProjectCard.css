@@ -1,115 +1,66 @@
 .ProjectsCard {
-    width: 15rem;
-    min-height: 17rem;
+  width: 15rem;
+  min-height: 17rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
 }
-  
+
 .ProjectsCard:hover {
-    transition: 0.5s;
-    box-shadow: 0 2px 4px 0px rgba(0,0,0,0.3);
-    margin: 0;
+  transition: 0.5s;
+  box-shadow: 0 2px 4px 0px rgba(0, 0, 0, 0.3);
+  margin: 0;
 }
-.ProjectImageDiv{
-    margin: 0;
-    width: 100%;
-    height: 9.375rem;
-    background-color: #008ac1;
-    background-repeat: no-repeat;
-    background-position: center;
+.ProjectImageDiv {
+  margin: 0;
+  width: 100%;
+  height: 9.375rem;
+  background-color: #008ac1;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .BottomContainer {
-    padding: 0.625rem;
-    height: 5rem;
+  padding: 1rem 0.7rem;
+  height: 5rem;
+  display: flex;
 }
 
-.ProjectsCardName{
-    width: 100%;
-    color: black;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 1.5rem;
-    padding-top: 0.3125rem;
-}
-.ProjectsCardName:hover{
-    opacity: 0.8;
-}
-.ProjectsCardDesc{
-    width: 100%;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 1rem;
-    color: #000000;
-    padding-top: 0.625rem;
-
+.ProjectsCardName {
+  width: 100%;
+  color: #000;
+  font-size: 1.5rem;
 }
 
-.ProjectDropDown {
-    position: relative;
-    display: inline-block;
-    z-index: 0;
-    left: 99%;
-}
-  
-.ProjectDropDownContent {
-    display: block;
-    position: absolute ;
-    background-color: #f1f1f1;
-    min-width: 6.875rem;
-    right: 0;
-    box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-  
-.ProjectDropDownContent div {
-    color: black;
-    padding: 0.5rem 1rem;
-    text-decoration: none;
-    display: block;
-    font-size: 0.8125rem;
-    text-align :left;
+.ProjectsCardName:hover {
+  opacity: 0.8;
 }
 
-.ProjectDropDownContent div::first-letter {
-    text-transform: uppercase;
+.ProjectDropDownContent div:hover {
+  background-color: #ddd;
 }
 
-  
-.ProjectDropDownContent div:hover {background-color: #ddd;}
-
-.ProjectDropDown:hover .DropDownImg {
-    transition: 0.5s;
-    opacity: 0.8;
-    transform: scale(1.02);
-}
 
 .HeadingWithTooltip {
-    display: inline;
+  display: inline;
 }
-
-.UpdateToolTip{
-    width: 2rem;
-    padding-top: 1.75rem;
-}
-
 
 /*///////////// Delete Model //////////////////*/
 
-.ProjectDeleteModel{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-    background-color: rgba(0,0,0,0.5)
+.ProjectDeleteModel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
-.ProjectDeleteModel .ModalParentWrap{
-    background-color: inherit;
+.ProjectDeleteModel .ModalParentWrap {
+  background-color: inherit;
 }
 
-.ProjectDeleteModel .ModalChildWrap{
-    z-index: 3;
+.ProjectDeleteModel .ModalChildWrap {
+  z-index: 3;
 }
 
 .DeleteProjectModel {
@@ -122,15 +73,15 @@
   gap: 1rem;
 }
 
-.DeleteDescription{
-    cursor: default;
+.DeleteDescription {
+  cursor: default;
 }
 
 .DeleteDescription span {
-  padding: .2rem .4rem;
+  padding: 0.2rem 0.4rem;
   margin: 0;
   font-size: 90%;
-  background-color: rgba(27,31,35,.1);
+  background-color: rgba(27, 31, 35, 0.1);
   border-radius: 3px;
 }
 
@@ -139,123 +90,79 @@
   justify-content: space-between;
 }
 
-.DeleteProjectModelButtons .DeleteBtn{
-    background-color: #ff0000;
-    outline: 2px solid #ff0000;
+.DeleteProjectModelButtons .DeleteBtn {
+  background-color: #ff0000;
+  outline: 2px solid #ff0000;
 }
-.DeleteProjectModelButtons .DeleteBtn:hover{
-    background-color: #fff;
-    outline: 2px solid #ff0000;
-    color: #ff0000;
+.DeleteProjectModelButtons .DeleteBtn:hover {
+  background-color: #fff;
+  outline: 2px solid #ff0000;
+  color: #ff0000;
 }
-
 
 /* ////////// DropDown CSS ////////// */
 
+.ProjectInfoSection {
+  flex-grow: 1;
+}
+
 .ProjectDropDown {
-    position: relative;
-    display: inline-block;
-    z-index: 0;
-    left: 99%;
-}
-.ProjectDropDown .DropDownIcon{
-    cursor: pointer;
+  position: relative;
 }
 
-.ProjectDropDown .DropDownIcon:hover {
-    opacity: 0.9;
-    transform: scale(1.04);
-    transition: 0.4s;
+.DropDownImg {
+  fill: #aaa;
+  position: absolute;
+  right: 0;
+  cursor: pointer;
 }
 
-  
 .ProjectDropDownContent {
-    display: block;
-    position: absolute ;
-    background-color: #f1f1f1;
-    min-width: 6.875rem;
-    right: 0;
-    box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+  position: absolute;
+  top: 1.5rem;
+  right: .5rem;
+  background-color: #f1f1f1;
+  min-width: 6.875rem;
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
-  
+
 .ProjectDropDownContent div {
-    color: black;
-    padding: 0.5rem 1rem;
-    text-decoration: none;
-    display: block;
-    font-size: 0.8125rem;
-    text-align :left;
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
 }
 
-.ProjectDropDownContent div::first-letter {
-    text-transform: uppercase;
-}
-
-  
-.ProjectDropDownContent div:hover {background-color: #ddd;}
-
-.ProjectDropDown:hover .DropDownImg {
-    transition: 0.5s;
-    opacity: 0.8;
-    transform: scale(1.02);
-}
-.DropDownData{
-    display: grid;
-    grid-gap: 0.5rem;
-    grid-template-columns: repeat(2, auto);
-    align-items: center;
-    height: 100%;
-    width: 2rem;
-}
-.OtherData{
-    display: grid;
-    justify-content: end;
-}
-.DropDownData img{
-    height: 1.2rem;
-    justify-self: center;
-}
-
-.ProjectTab{
-    width: 100%;
-}
-
-.ProjectTab tr td:last-child {
-    text-align: right;
-}
-
-.ProjectTab tr td:first-child {
-    text-align: left;
+.ProjectDropDownContent div:hover {
+  background-color: #ddd;
 }
 
 /* ////////// Update Model ////////// */
 
 .ModalUpdateForm {
-    display: grid;
-    gap: 2rem;
+  display: grid;
+  gap: 2rem;
 }
 
 .ModalUpdateForm .ModalFormInputs {
-    display: grid;
-    gap: 1rem;
-}
-  
-.ModalUpdateForm .ModalFormInputs .InputText {
-    border: 2px solid #000000;
-    color: #000;
-}
-  
-.ModalUpdateForm .ModalFormInputs .InputText::placeholder {
-    color: #000;
-}
-  
-.ModalUpdateForm .ModalFormButtons {
-    display: flex;
-    justify-content: space-between;
+  display: grid;
+  gap: 1rem;
 }
 
-.ProjectDeleteModel .ModalChildWrap{
-    min-width: 21rem;
-    max-width: 25rem;
+.ModalUpdateForm .ModalFormInputs .InputText {
+  border: 2px solid #000000;
+  color: #000;
+}
+
+.ModalUpdateForm .ModalFormInputs .InputText::placeholder {
+  color: #000;
+}
+
+.ModalUpdateForm .ModalFormButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ProjectDeleteModel .ModalChildWrap {
+  min-width: 21rem;
+  max-width: 25rem;
 }
