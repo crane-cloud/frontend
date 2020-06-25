@@ -10,7 +10,6 @@ import Spinner from '../Spinner';
 import TextArea from '../TextArea';
 import Feedback from '../Feedback';
 import DeleteWarning from '../DeleteWarning';
-import Tooltip from '../Tooltip';
 import BlackInputText from '../BlackInputText';
 import Modal from '../Modal';
 import './ProjectCard.css';
