@@ -7,11 +7,6 @@
     width: 100%;
 }
 
-.ProjectCardItem{
-    margin: 25px 25px;
-    color: black;
-}
-
 .ProjectList .CardImageDiv{
     background-size: unset!important;
 }
