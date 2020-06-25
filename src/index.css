@@ -328,8 +328,8 @@ tr.TableLoading td {
   background: #f1f1f1;
   min-height: 100vh;
   display: grid;
-  grid-template-rows: 150px 3fr 100px;
-  overflow-x: hidden;
+  grid-template-rows: auto 1fr auto;
+  overflow: hidden;
 }
 
 .TopRow {
@@ -339,18 +339,12 @@ tr.TableLoading td {
 .MainRow {
   display: flex;
   flex-direction: column;
+  padding: 3rem;
 }
 
 .FooterRow {
-  width: 100%;
-  bottom: 0;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 14px;
-  color: #06222f;
-  margin: 30px;
-  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 1rem 3rem;
 }
 
 /* //////////////////////////////////////////// */

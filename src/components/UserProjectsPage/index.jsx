@@ -194,11 +194,11 @@ class UserProjectsPage extends React.Component {
           }
         </div>
         <div className="FooterRow">
-          <p>
+          <div>
             Copyright © 2020 Crane Cloud.
             <br />
             All Rights Reserved.
-          </p>
+          </div>
         </div>
 
         {/* Modal for creating a new project
