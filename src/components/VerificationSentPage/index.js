@@ -113,7 +113,8 @@ class VerificationSentPage extends React.Component {
           })
           .catch((err) => {
             this.setState({
-              loading: false
+              loading: false,
+              error: 'Email not yet registered.'
             });
           });
       }
