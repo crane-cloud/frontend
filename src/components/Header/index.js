@@ -80,9 +80,7 @@ const Header = (props) => {
             {hidden && (
               <div ref={dropdownRef} className="BelowHeader">
                 <div className="DropDownContent">
-                  <div className="DropDownLink">
-                    <a href={`${DOCS_URL}`} rel="noopener noreferrer" target="_blank">Docs</a>
-                  </div>
+                  <a href={`${DOCS_URL}`} className="DropDownLink" rel="noopener noreferrer" target="_blank">Docs</a>
                   <div className="DropDownLink" role="presentation" onClick={logout}>Logout</div>
                 </div>
               </div>
