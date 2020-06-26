@@ -1,38 +1,30 @@
-
-.ProjectList{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    flex-direction: row;
-    width: 100%;
-}
-
-.ProjectList .CardImageDiv{
-    background-size: unset!important;
+.ProjectList {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
 }
 
 .ProjectFormErrorDiv {
-    background-color: rgba(255, 255, 255, 0.5);
-    color: rgb(214, 59, 59);
-    text-align: center;
-    padding: 1rem 0;
-    height: 1rem;
-    }
-    
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #d63b3b;
+  text-align: center;
+  padding: 1rem 0;
+  height: 1rem;
+}
 
-.ClusterDrop{
+.ClusterDrop {
   width: 25rem;
-  border: 2px solid black;
+  border: 2px solid #000000;
   box-sizing: border-box;
   font-size: inherit;
   padding: 1rem;
 }
 
-.ClusterNameOption{
-    padding: 2rem 1.5rem;
-    color: #000;
-    background-color: #F9F9F9;
-    font-weight: bold;
+.ClusterNameOption {
+  padding: 2rem 1.5rem;
+  color: #000;
+  background-color: #f9f9f9;
+  font-weight: bold;
 }
 
 .ModalFormInputs input::placeholder {

@@ -1,10 +1,10 @@
 .ProjectList{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    flex-direction: row;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  flex-direction: row;
 }
 
 .ProjectList .CardImageDiv{
-    background-size: unset!important;
+  background-size: unset!important;
 }
