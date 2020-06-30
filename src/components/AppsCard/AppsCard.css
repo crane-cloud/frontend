@@ -191,3 +191,8 @@
   outline: 2px solid #ff0000;
   color: #ff0000;
 }
+
+.AppDeleteModel .ModalChildWrap {
+  min-width: 21rem;
+  max-width: 25rem;
+}
