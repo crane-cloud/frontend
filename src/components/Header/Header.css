@@ -72,7 +72,7 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   background-color: #f9f9f9;
   position: absolute;
   top: 100%;
-  left: 0;
+  width: 10rem;
   right: 0;
 }
 
