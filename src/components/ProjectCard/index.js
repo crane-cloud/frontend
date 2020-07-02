@@ -208,7 +208,7 @@ class ProjectCard extends React.Component {
     } = this.state;
 
     return (
-      <div>
+      <>
         <div className="ProjectsCard">
           <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps` }} key={cardID}>
             <div className="ProjectImageDiv" style={{ backgroundImage: `url(${icon})` }} />
@@ -329,7 +329,7 @@ class ProjectCard extends React.Component {
           </div>
         ))}
 
-      </div>
+      </>
 
     );
   }

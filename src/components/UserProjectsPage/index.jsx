@@ -167,14 +167,13 @@ class UserProjectsPage extends React.Component {
               <div className="ProjectList">
                 {(isFetched && projects !== undefined && (
                   (projects.map((project) => (
-                    <div key={project.id} className="ProjectCardItem">
-                      <ProjectCard
-                        name={project.name}
-                        description={project.description}
-                        cardID={project.id}
-                        icon={crane}
-                      />
-                    </div>
+                    <ProjectCard
+                      key={project.id}
+                      name={project.name}
+                      description={project.description}
+                      cardID={project.id}
+                      icon={crane}
+                    />
                   ))))
                 )}
                 {(isFetched && projects.length === 0) && (
