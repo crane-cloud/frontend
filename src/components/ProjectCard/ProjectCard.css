@@ -20,16 +20,30 @@
   padding: 1rem 0.7rem;
   height: 5rem;
   display: flex;
+  flex-direction: column;
 }
 
 .ProjectsCardName {
-  width: 100%;
+  width: 12rem;
+  flex-grow: 1;
   color: #000;
+  text-overflow: ellipsis;
   font-size: 1.5rem;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .ProjectsCardName:hover {
   opacity: 0.8;
+}
+
+.ProjectInfoSection {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ProjectDropDown {
+  position: relative;
 }
 
 .ProjectDropDownContent div:hover {
@@ -99,14 +113,6 @@
 }
 
 /* ////////// DropDown CSS ////////// */
-
-.ProjectInfoSection {
-  flex-grow: 1;
-}
-
-.ProjectDropDown {
-  position: relative;
-}
 
 .DropDownImg {
   fill: #aaa;
