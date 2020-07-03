@@ -223,33 +223,33 @@ class ProjectCard extends React.Component {
               <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps` }} key={cardID}>
                 <div className="ProjectsCardName">{name}</div>
               </Link>
-              <div className="ProjectName">{description}</div>
-            </div>
-            <div
-              className="ProjectDropDown"
-              onClick={this.toggleDropDown}
-              role="presentation"
-              ref={this.container}
-            >
-              <DotsImg className="DropDownImg" />
+              <div
+                className="ProjectDropDown"
+                onClick={this.toggleDropDown}
+                role="presentation"
+                ref={this.container}
+              >
+                <DotsImg className="DropDownImg" />
 
-              {openDropDown && (
-                <div className="ProjectDropDownContent">
-                  <div
-                    onClick={this.showUpdateForm}
-                    role="presentation"
-                  >
-                    Update
+                {openDropDown && (
+                  <div className="ProjectDropDownContent">
+                    <div
+                      onClick={this.showUpdateForm}
+                      role="presentation"
+                    >
+                      Update
+                    </div>
+                    <div
+                      onClick={this.showDeleteAlert}
+                      role="presentation"
+                    >
+                      Delete
+                    </div>
                   </div>
-                  <div
-                    onClick={this.showDeleteAlert}
-                    role="presentation"
-                  >
-                    Delete
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
+            <div className="ProjectName">{description}</div>
           </div>
         </div>
 
