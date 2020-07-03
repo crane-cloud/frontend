@@ -8,6 +8,7 @@
   box-shadow: 0 2px 4px 0px rgba(0, 0, 0, 0.3);
   margin: 0;
 }
+
 .ProjectImageDiv {
   margin: 0;
   width: 100%;
@@ -101,6 +102,8 @@
 /* ////////// DropDown CSS ////////// */
 
 .ProjectInfoSection {
+  overflow: hidden;
+  text-overflow: ellipsis;
   flex-grow: 1;
 }
 

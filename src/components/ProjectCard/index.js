@@ -218,7 +218,7 @@ class ProjectCard extends React.Component {
               <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps` }} key={cardID}>
                 <div className="ProjectsCardName">{name}</div>
               </Link>
-              <div className="ProjectName">{description}</div>
+              <div className="ProjectDescription">{description}</div>
             </div>
             <div
               className="ProjectDropDown"
