@@ -19,6 +19,7 @@ import Tooltip from '../Tooltip';
 import Tabs from '../Tabs';
 // import { ReactComponent as DockerLogo } from '../../assets/images/docker-logo.svg';
 import './AppsPage.css';
+import Select from '../Select';
 
 class AppsPage extends React.Component {
   constructor(props) {
@@ -581,6 +582,13 @@ class AppsPage extends React.Component {
                     <Tabs>
                       <div index={1}/* label={<DockerLogo />} */>
                         <div className="DatabaseSupportInputs">
+                          <Select
+                            required
+                            placeholder="Database Flavor"
+                            // options={}
+                            onChange={this.handleSelectChange}
+                          />
+
                           <BlackInputText
                             required
                             placeholder="Database Name"
