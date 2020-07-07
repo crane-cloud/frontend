@@ -45,6 +45,7 @@ class AppsPage extends React.Component {
         error: ''
       },
       dbCredentials: {
+        db_flavor: '',
         dbName: '',
         dbUser: '',
         dbPassword: '',
@@ -196,6 +197,10 @@ class AppsPage extends React.Component {
     });
   }
 
+  handleDBFlavorSelectChange(selected){
+    this.setState({ db_flavor: selected.value });
+  }
+
   handleSubmit() {
     const {
       name,
@@ -335,7 +340,7 @@ class AppsPage extends React.Component {
       { name: 'MariaDB', value: 'mariadb', id: '2' },
       { name: 'PostgreSQL', value: 'postgres', id: '3' }
     ];
-    
+
     return (
       <div className="Page">
         <div className="TopRow">
@@ -592,7 +597,7 @@ class AppsPage extends React.Component {
                             required
                             placeholder="Database Flavor"
                             options={DBoptions}
-                            onChange={this.handleSelectChange}
+                            onChange={this.handleDBFlavorSelectChange}
                           />
 
                           <BlackInputText
