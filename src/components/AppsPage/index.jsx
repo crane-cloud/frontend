@@ -330,6 +330,12 @@ class AppsPage extends React.Component {
 
     const userId = data.id;
 
+    const DBoptions = [
+      { name: 'MySQL', value: 'mysql', id: '1' },
+      { name: 'MariaDB', value: 'mariadb', id: '2' },
+      { name: 'PostgreSQL', value: 'postgres', id: '3' }
+    ];
+    
     return (
       <div className="Page">
         <div className="TopRow">
@@ -585,7 +591,7 @@ class AppsPage extends React.Component {
                           <Select
                             required
                             placeholder="Database Flavor"
-                            // options={}
+                            options={DBoptions}
                             onChange={this.handleSelectChange}
                           />
 
