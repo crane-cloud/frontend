@@ -293,7 +293,6 @@ class AppsPage extends React.Component {
           db_user: dbUser,
           db_password: dbPassword
         };
-        console.log(appInfo);
       }
       createApp(appInfo, match.params.projectID);
     }
