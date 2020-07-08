@@ -360,7 +360,7 @@ class AppsPage extends React.Component {
 
         {/* Modal for creating a new app
         Its triggered by the value of state.openModal */}
-        <Modal showModal={openModal}>
+        <Modal showModal={openModal} onClickAway={this.hideForm}>
           <div className="ModalForm AddAppModal">
             <div className="ModalFormHeading">
               <h2>Deploy an app</h2>
