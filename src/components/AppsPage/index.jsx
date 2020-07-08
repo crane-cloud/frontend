@@ -36,6 +36,7 @@ class AppsPage extends React.Component {
       entryCommand: '',
       port: '',
       needDb: false,
+      db_flavor: '',
       isPrivateImage: false,
       dockerCredentials: {
         username: '',
@@ -45,7 +46,6 @@ class AppsPage extends React.Component {
         error: ''
       },
       dbCredentials: {
-        db_flavor: '',
         dbName: '',
         dbUser: '',
         dbPassword: '',
@@ -66,6 +66,7 @@ class AppsPage extends React.Component {
     this.togglePrivateImage = this.togglePrivateImage.bind(this);
     this.handleDockerCredentialsChange = this.handleDockerCredentialsChange.bind(this);
     this.handleDbCredentialsChange = this.handleDbCredentialsChange.bind(this);
+    this.handleDBFlavorSelectChange = this.handleDBFlavorSelectChange.bind(this);
   }
 
   componentDidMount() {
@@ -197,7 +198,7 @@ class AppsPage extends React.Component {
     });
   }
 
-  handleDBFlavorSelectChange(selected){
+  handleDBFlavorSelectChange(selected) {
     this.setState({ db_flavor: selected.value });
   }
 
@@ -210,6 +211,7 @@ class AppsPage extends React.Component {
       port,
       needDb,
       isPrivateImage,
+      db_flavor,
       dockerCredentials: {
         username,
         email,
@@ -264,6 +266,7 @@ class AppsPage extends React.Component {
         env_vars: envVars,
         image: uri,
         name,
+        db_flavor,
         need_db: needDb,
         project_id: match.params.projectID,
         private_image: isPrivateImage
