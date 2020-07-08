@@ -6,7 +6,7 @@ const Modal = ({ showModal, children }) => (
   (showModal && (
     <div className="ModalParentWrap">
       <div className="ModalChildWrap">
-        <div className="ModalContentSection">
+        <div className="ModalContent">
           {children}
         </div>
       </div>
