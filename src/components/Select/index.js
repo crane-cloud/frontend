@@ -27,7 +27,7 @@ const Select = ({
     <div className="SelectWrapper">
       <div className="SelectElementMain" onClick={toggleOptions} role="presentation">
         <div className={`SelectElementValue ${selected.startsWith(placeholder) && 'SelectElementPlaceholder'}`}>
-          {selected}
+          {showOptions ? placeholder : selected}
           <div className={`SelectArrow ${showOptions && 'SelectArrowShowOptions'}`}>
             <DownArrow />
           </div>
