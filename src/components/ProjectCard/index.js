@@ -254,7 +254,7 @@ class ProjectCard extends React.Component {
 
         {(openDeleteAlert && (
           <div className="ProjectDeleteModel">
-            <Modal showModal={openDeleteAlert}>
+            <Modal showModal={openDeleteAlert} onClickAway={this.hideDeleteAlert}>
               <div className="DeleteProjectModel">
                 <div className="DeleteProjectModalUpperSection">
                   <div className="DeleteDescription">
@@ -287,7 +287,7 @@ class ProjectCard extends React.Component {
 
         {(openUpdateModal && (
           <div className="ProjectDeleteModel">
-            <Modal showModal={openUpdateModal}>
+            <Modal showModal={openUpdateModal} onClickAway={this.hideUpdateForm}>
               <div className="ModalUpdateForm">
                 <div className="ModalFormHeading">
                   <div className="HeadingWithTooltip">

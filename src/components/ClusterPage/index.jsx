@@ -122,7 +122,7 @@ class ClusterPage extends React.Component {
 
         {/* Modal for creating a new project
         Its triggered by the value of state.openModal */}
-        <Modal showModal={openModal}>
+        <Modal showModal={openModal} onClickAway={this.hideForm}>
           <div className="ModalForm">
             <div className="ModalFormHeading">
               <h2>Add a cluster</h2>
