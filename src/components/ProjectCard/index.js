@@ -146,10 +146,9 @@ class ProjectCard extends React.Component {
             this.setState({
               error: 'name may only contain letters and a hypen -'
             });
-          }
-          else if (projectName.length > 22) {
+          } else if (projectName.length > 22) {
             this.setState({
-              error: 'Project Name is too long.'
+              error: 'project name cannot exceed 22 characters'
             });
           } else {
             const newProject = { name: projectName };
@@ -249,7 +248,7 @@ class ProjectCard extends React.Component {
                 )}
               </div>
             </div>
-            <div className="ProjectName">{description}</div>
+            <div className="ProjectDescription">{description}</div>
           </div>
         </div>
 

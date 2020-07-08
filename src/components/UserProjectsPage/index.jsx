@@ -121,7 +121,7 @@ class UserProjectsPage extends React.Component {
       });
     } else if (projectName.length > 22) {
       this.setState({
-        error: 'Project Name is too long.'
+        error: 'project name cannot exceed 22 characters'
       });
     } else {
       const newProject = {
