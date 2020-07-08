@@ -41,7 +41,7 @@ const Select = ({
   }, []);
 
   return (
-    <div className="SelectWrapper">
+    <div ref={openSelectRef} className="SelectWrapper">
       <div className="SelectElementMain" onClick={toggleOptions} role="presentation">
         <div className={`SelectElementValue ${selected.startsWith(placeholder) && 'SelectElementPlaceholder'}`}>
           {selected}
@@ -51,7 +51,7 @@ const Select = ({
         </div>
       </div>
       {showOptions && (
-        <div ref={openSelectRef} className="SelectOptionsWrapper">
+        <div className="SelectOptionsWrapper">
           {options.map((option) => (
             <div
               key={option.id}
