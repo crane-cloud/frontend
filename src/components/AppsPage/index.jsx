@@ -299,8 +299,7 @@ class AppsPage extends React.Component {
         };
       }
 
-      // createApp(appInfo, match.params.projectID);
-      console.log(appInfo, match.params.projectID);
+      createApp(appInfo, match.params.projectID);
     }
   }
 
