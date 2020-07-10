@@ -105,7 +105,7 @@ const AppsCard = (props) => {
       {
         (openDeleteAlert && (
           <div className="AppDeleteModel">
-            <Modal showModal={openDeleteAlert}>
+            <Modal showModal={openDeleteAlert} onClickAway={hideDeleteAlert}>
               <div className="DeleteAppModel">
                 <div className="DeleteModalUpperSection">
                   <div className="DeleteDescription">
