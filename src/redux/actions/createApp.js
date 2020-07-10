@@ -30,6 +30,7 @@ const clearState = () => ({
 });
 
 const createApp = (appInfo, projectID) => (dispatch) => {
+
   dispatch(startCreatingApp());
 
   axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
