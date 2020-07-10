@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { ReactComponent as DownArrow } from '../../assets/images/down-arrow-black.svg';
 import './Select.css';
@@ -12,6 +12,7 @@ const Select = ({
 }) => {
   const [showOptions, setShowOptions] = useState(false);
   const [selected, setValue] = useState(`${placeholder}${required ? ' *' : ''}`);
+  const openSelectRef = useRef(null);
 
   const toggleOptions = () => {
     setShowOptions(!showOptions);
@@ -23,8 +24,24 @@ const Select = ({
     onChange(selectedOption);
   };
 
+  const handleClickOutside = (event) => {
+    if (openSelectRef.current && !openSelectRef.current.contains(event.target)) {
+      setShowOptions(false);
+    }
+  };
+
+  // componentWillMount & componentWillUnmount
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // returned function will be called on component unmount
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="SelectWrapper">
+    <div ref={openSelectRef} className="SelectWrapper">
       <div className="SelectElementMain" onClick={toggleOptions} role="presentation">
         <div className={`SelectElementValue ${selected.startsWith(placeholder) && 'SelectElementPlaceholder'}`}>
           {selected}
