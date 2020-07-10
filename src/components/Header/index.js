@@ -62,7 +62,12 @@ const Header = (props) => {
 
       {user.accessToken && (
         <div className="HeaderLinksWrap LoggedIn">
-          <div className="OnHeader" onClick={toggleHidden}>
+          <div
+            ref={dropdownRef}
+            className="OnHeader"
+            onClick={toggleHidden}
+            role="presentation"
+          >
             {match.path === '/' ? (
               <Link to={`/users/${user.data.id}/projects`} className="HeaderLinkBackToConsole TurnLight">dashboard</Link>
             ) : (
@@ -74,11 +79,10 @@ const Header = (props) => {
             )}
 
             <DownArrow
-              ref={dropdownRef}
               className="DropdownArrowSvg"
             />
             {hidden && (
-              <div ref={dropdownRef} className="BelowHeader">
+              <div className="BelowHeader">
                 <div className="DropDownContent">
                   <a href={`${DOCS_URL}`} className="DropDownLink" rel="noopener noreferrer" target="_blank">Docs</a>
                   <div className="DropDownLink" role="presentation" onClick={logout}>Logout</div>
