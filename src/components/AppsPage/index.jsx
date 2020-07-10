@@ -18,7 +18,6 @@ import Checkbox from '../Checkbox';
 import Tooltip from '../Tooltip';
 import Tabs from '../Tabs';
 import Select from '../Select';
-// import { ReactComponent as DockerLogo } from '../../assets/images/docker-logo.svg';
 import './AppsPage.css';
 
 class AppsPage extends React.Component {
