@@ -128,6 +128,15 @@ class AppsPage extends React.Component {
     }
   }
 
+  handleDBFlavorSelectChange(selected) {
+    this.setState((prevState) => ({
+      dbCredentials: {
+        ...prevState.dbCredentials,
+        dbFlavor: selected.value
+      }
+    }));
+  }
+
   handleDbCredentialsChange({ target, target: { value } }) {
     const { dbCredentials } = this.state;
     this.setState((prevState) => ({
@@ -201,10 +210,6 @@ class AppsPage extends React.Component {
 
   handleSelectReplicas(selected) {
     this.setState({ replicas: selected.id });
-  }
-
-  handleDBFlavorSelectChange(selected) {
-    this.setState({ dbFlavor: selected.value });
   }
 
   handleSubmit() {
