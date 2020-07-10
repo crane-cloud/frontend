@@ -17,6 +17,7 @@ import Feedback from '../Feedback';
 import Checkbox from '../Checkbox';
 import Tooltip from '../Tooltip';
 import Tabs from '../Tabs';
+import Select from '../Select';
 // import { ReactComponent as DockerLogo } from '../../assets/images/docker-logo.svg';
 import './AppsPage.css';
 import Select from '../Select';
@@ -50,7 +51,8 @@ class AppsPage extends React.Component {
         dbUser: '',
         dbPassword: '',
         error: ''
-      }
+      },
+      replicas: 0
     };
 
     this.state = this.initialState;
@@ -66,6 +68,7 @@ class AppsPage extends React.Component {
     this.togglePrivateImage = this.togglePrivateImage.bind(this);
     this.handleDockerCredentialsChange = this.handleDockerCredentialsChange.bind(this);
     this.handleDbCredentialsChange = this.handleDbCredentialsChange.bind(this);
+    this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
     this.handleDBFlavorSelectChange = this.handleDBFlavorSelectChange.bind(this);
   }
 
@@ -198,6 +201,10 @@ class AppsPage extends React.Component {
     });
   }
 
+  handleSelectReplicas(selected) {
+    this.setState({ replicas: selected.id });
+  }
+
   handleDBFlavorSelectChange(selected) {
     this.setState({ dbFlavor: selected.value });
   }
@@ -222,7 +229,8 @@ class AppsPage extends React.Component {
         dbName,
         dbUser,
         dbPassword
-      }
+      },
+      replicas
     } = this.state;
     const {
       createApp,
@@ -233,6 +241,10 @@ class AppsPage extends React.Component {
       // if user tries to submit empty email/password
       this.setState({
         error: 'app name & image uri are required'
+      });
+    } else if (replicas === 0) {
+      this.setState({
+        error: 'please specify number of replicas'
       });
     } else if (this.validateAppName(name) === false) {
       this.setState({
@@ -268,7 +280,8 @@ class AppsPage extends React.Component {
         name,
         need_db: needDb,
         project_id: match.params.projectID,
-        private_image: isPrivateImage
+        private_image: isPrivateImage,
+        replicas
       };
 
       if (port) {
@@ -337,6 +350,13 @@ class AppsPage extends React.Component {
 
     const userId = data.id;
 
+    const replicaOptions = [
+      { id: 1, name: '1' },
+      { id: 2, name: '2' },
+      { id: 3, name: '3' },
+      { id: 4, name: '4' }
+    ];
+
     const DBoptions = [
       { name: 'MySQL', value: 'mysql', id: '1' },
       { name: 'MariaDB', value: 'mariadb', id: '2' },
@@ -393,6 +413,16 @@ class AppsPage extends React.Component {
                     this.handleChange(e);
                   }}
                 />
+
+                <div className="ReplicasSelect">
+                  <Select
+                    required
+                    placeholder="Number of Replicas"
+                    options={replicaOptions}
+                    onChange={this.handleSelectReplicas}
+                  />
+                </div>
+
                 <BlackInputText
                   required
                   placeholder="Image Uri"

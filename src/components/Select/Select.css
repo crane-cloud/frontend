@@ -6,7 +6,7 @@
 }
 
 .SelectElementMain {
-  border: 2px solid black;
+  border: 2px solid #000000;
 }
 
 .SelectElementValue {
@@ -16,14 +16,14 @@
 }
 
 .SelectElementValue.SelectElementPlaceholder {
-  color: gray;
+  color: #808080;
 }
 
 .SelectOptionsWrapper {
-  background-color: white;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
-  z-index: 1;
+  z-index: 3;
   box-shadow: 0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12);
 }
 

@@ -43,8 +43,8 @@ const Select = ({
   return (
     <div ref={openSelectRef} className="SelectWrapper">
       <div className="SelectElementMain" onClick={toggleOptions} role="presentation">
-        <div className={`SelectElementValue ${selected.startsWith(placeholder) && 'SelectElementPlaceholder'}`}>
-          {selected}
+        <div className={`SelectElementValue ${(selected.startsWith(placeholder) || showOptions) && 'SelectElementPlaceholder'}`}>
+          {showOptions ? `${placeholder} ${required && '*'}` : selected}
           <div className={`SelectArrow ${showOptions && 'SelectArrowShowOptions'}`}>
             <DownArrow />
           </div>
@@ -72,7 +72,10 @@ Select.propTypes = {
   required: PropTypes.bool,
   placeholder: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ]).isRequired,
     name: PropTypes.string.isRequired
   })).isRequired,
   onChange: PropTypes.func.isRequired
