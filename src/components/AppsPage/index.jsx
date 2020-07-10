@@ -20,6 +20,7 @@ import Tabs from '../Tabs';
 import Select from '../Select';
 // import { ReactComponent as DockerLogo } from '../../assets/images/docker-logo.svg';
 import './AppsPage.css';
+import Select from '../Select';
 
 class AppsPage extends React.Component {
   constructor(props) {
@@ -45,6 +46,7 @@ class AppsPage extends React.Component {
         error: ''
       },
       dbCredentials: {
+        dbFlavor: '',
         dbName: '',
         dbUser: '',
         dbPassword: '',
@@ -67,6 +69,7 @@ class AppsPage extends React.Component {
     this.handleDockerCredentialsChange = this.handleDockerCredentialsChange.bind(this);
     this.handleDbCredentialsChange = this.handleDbCredentialsChange.bind(this);
     this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
+    this.handleDBFlavorSelectChange = this.handleDBFlavorSelectChange.bind(this);
   }
 
   componentDidMount() {
@@ -202,6 +205,10 @@ class AppsPage extends React.Component {
     this.setState({ replicas: selected.id });
   }
 
+  handleDBFlavorSelectChange(selected) {
+    this.setState({ dbFlavor: selected.value });
+  }
+
   handleSubmit() {
     const {
       name,
@@ -218,6 +225,7 @@ class AppsPage extends React.Component {
         server
       },
       dbCredentials: {
+        dbFlavor,
         dbName,
         dbUser,
         dbPassword
@@ -293,12 +301,12 @@ class AppsPage extends React.Component {
       if (needDb) {
         appInfo = {
           ...appInfo,
+          db_flavor: dbFlavor,
           dn_name: dbName,
           db_user: dbUser,
           db_password: dbPassword
         };
       }
-
       createApp(appInfo, match.params.projectID);
     }
   }
@@ -347,6 +355,12 @@ class AppsPage extends React.Component {
       { id: 2, name: '2' },
       { id: 3, name: '3' },
       { id: 4, name: '4' }
+    ];
+
+    const DBoptions = [
+      { name: 'MySQL', value: 'mysql', id: '1' },
+      { name: 'MariaDB', value: 'mariadb', id: '2' },
+      { name: 'PostgreSQL', value: 'postgres', id: '3' }
     ];
 
     return (
@@ -611,6 +625,13 @@ class AppsPage extends React.Component {
                     <Tabs>
                       <div index={1}/* label={<DockerLogo />} */>
                         <div className="DatabaseSupportInputs">
+                          <Select
+                            required
+                            placeholder="Database Flavor"
+                            options={DBoptions}
+                            onChange={this.handleDBFlavorSelectChange}
+                          />
+
                           <BlackInputText
                             required
                             placeholder="Database Name"

@@ -214,14 +214,14 @@ class UserProjectsPage extends React.Component {
             <div className="ModalFormInputs">
               <Select
                 required
-                placeholder="Choose a Region"
+                placeholder="Choose a location"
                 options={clusters}
                 onChange={this.handleSelectChange}
               />
 
               <BlackInputText
                 required
-                placeholder="Project Name"
+                placeholder="Project name"
                 name="projectName"
                 value={projectName}
                 onChange={(e) => {
@@ -230,7 +230,7 @@ class UserProjectsPage extends React.Component {
               />
 
               <TextArea
-                placeholder="Project Description"
+                placeholder="Project description"
                 name="projectDescription"
                 value={projectDescription}
                 onChange={(e) => {
