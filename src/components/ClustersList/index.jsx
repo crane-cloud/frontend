@@ -54,12 +54,12 @@ class ClustersList extends Component {
           )
         }
         {(isRetrieved && clusters.length === 0) && (
-          <div className="NoContentDiv">
+          <div className="NoResourcesMessage">
             <p>No Clusters Available</p>
           </div>
         )}
         {(!isRetrieving && !isRetrieved) && (
-          <div className="NoContentDiv">
+          <div className="NoResourcesMessage">
             <p>
               Oops! Something went wrong!
 

@@ -56,12 +56,12 @@ class ClusterResourcesPage extends React.Component {
                 </div>
               )}
               {(isRetrieved && resourceCount.length === 0) && (
-                <div className="NoContentDiv">
+                <div className="NoResourcesMessage">
                   <p>No Cluster Resources available</p>
                 </div>
               )}
               {(!isRetrieving && !isRetrieved) && (
-                <div className="NoContentDiv">
+                <div className="NoResourcesMessage">
                   <p>
                     Oops! Something went wrong!
                     Failed to retrieve Cluster Resources.

@@ -181,13 +181,13 @@ class UserProjectsPage extends React.Component {
                   ))))
                 )}
                 {(isFetched && projects.length === 0) && (
-                  <div className="NoContentDiv">
+                  <div className="NoResourcesMessage">
                     You haven’t created any projects yet.
                     Click the create button to get started.
                   </div>
                 )}
                 {(!isRetrieving && !isFetched) && (
-                  <div className="NoContentDiv">
+                  <div className="NoResourcesMessage">
                     Oops! Something went wrong!
                     Failed to retrieve Projects.
                   </div>

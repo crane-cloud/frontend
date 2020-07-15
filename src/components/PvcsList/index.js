@@ -72,12 +72,12 @@ class PvcsListPage extends React.Component {
                 </table>
 
                 {(isFetched && pvcs.length === 0) && (
-                  <div className="NoContentDiv">
+                  <div className="NoResourcesMessage">
                     <p>No Volume Claims Available</p>
                   </div>
                 )}
                 {(!isRetrieving && !isFetched) && (
-                  <div className="NoContentDiv">
+                  <div className="NoResourcesMessage">
                     <p>
                       Oops! Something went wrong!
 

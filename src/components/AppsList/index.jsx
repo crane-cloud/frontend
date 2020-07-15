@@ -72,13 +72,13 @@ class AppsList extends Component {
 
         }
         {(isRetrieved && apps.apps.length === 0) && (
-          <div className="NoContentDiv">
+          <div className="NoResourcesMessage">
             You haven’t created any Apps yet.
             Click the create button to get started.
           </div>
         )}
         {(!isRetrieving && !isRetrieved) && (
-          <div className="NoContentDiv">
+          <div className="NoResourcesMessage">
             Oops! Something went wrong!
             Failed to retrieve Apps.
           </div>

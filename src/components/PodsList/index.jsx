@@ -128,12 +128,12 @@ class PodsList extends Component {
                   }
                 </table>
                 {(isFetched && pods.pods.length === 0) && (
-                  <div className="NoContentDiv">
+                  <div className="NoResourcesMessage">
                     <p>No Pods Available</p>
                   </div>
                 )}
                 {(!isRetrieving && !isFetched) && (
-                  <div className="NoContentDiv">
+                  <div className="NoResourcesMessage">
                     <p>
                       Oops! Something went wrong!
 

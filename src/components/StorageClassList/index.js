@@ -70,12 +70,12 @@ class StorageClassList extends Component {
                   }
                 </table>
                 {(isFetched && storageClasses.storage_classes.length === 0) && (
-                  <div className="NoContentDiv">
+                  <div className="NoResourcesMessage">
                     <p>No Storage Classes Available</p>
                   </div>
                 )}
                 {(!isRetrieving && !isFetched) && (
-                  <div className="NoContentDiv">
+                  <div className="NoResourcesMessage">
                     <p>
                       Oops! Something went wrong!
 

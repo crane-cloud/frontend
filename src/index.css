@@ -228,15 +228,11 @@ tr.TableLoading td {
 
 /* Other */
 
-.NoContentDiv {
-  margin: auto;
-  margin-top: 10.5rem;
-  font-style: normal;
-  font-weight: normal;
+.NoResourcesMessage {
   font-size: 16px;
-  line-height: 19px;
   text-align: center;
-  cursor: pointer;
+  justify-self: center;
+  align-self: center;
 }
 
 /* //// ADMIN DASHBOARD PAGE STYLING  //// */
