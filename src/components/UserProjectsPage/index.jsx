@@ -168,33 +168,33 @@ class UserProjectsPage extends React.Component {
                 </div>
               </div>
             ) : (
-              <div className="ProjectList">
-                {(isFetched && projects !== undefined && (
-                  (projects.map((project) => (
-                    <ProjectCard
-                      key={project.id}
-                      name={project.name}
-                      description={project.description}
-                      cardID={project.id}
-                      icon={crane}
-                    />
-                  ))))
-                )}
-                {(isFetched && projects.length === 0) && (
-                  <div className="NoResourcesMessage">
-                    You haven’t created any projects yet.
-                    Click the create button to get started.
-                  </div>
-                )}
-                {(!isRetrieving && !isFetched) && (
-                  <div className="NoResourcesMessage">
-                    Oops! Something went wrong!
-                    Failed to retrieve Projects.
-                  </div>
-                )}
-              </div>
-            )
+                <div className="ProjectList">
+                  {(isFetched && projects !== undefined && (
+                    (projects.map((project) => (
+                      <ProjectCard
+                        key={project.id}
+                        name={project.name}
+                        description={project.description}
+                        cardID={project.id}
+                        icon={crane}
+                      />
+                    ))))
+                  )}
+                </div>
+              )
           }
+          {(isFetched && projects.length === 0) && (
+            <div className="NoResourcesMessage">
+              You haven’t created any projects yet.
+              Click the create button to get started.
+            </div>
+          )}
+          {(!isRetrieving && !isFetched) && (
+            <div className="NoResourcesMessage">
+              Oops! Something went wrong!
+              Failed to retrieve Projects.
+            </div>
+          )}
         </div>
         <div className="FooterRow">
           <div>

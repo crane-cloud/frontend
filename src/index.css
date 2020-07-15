@@ -229,10 +229,12 @@ tr.TableLoading td {
 /* Other */
 
 .NoResourcesMessage {
+  flex-grow: 1;
+  display: flex;
   font-size: 16px;
   text-align: center;
-  justify-self: center;
-  align-self: center;
+  justify-content: center;
+  align-items: center;
 }
 
 /* //// ADMIN DASHBOARD PAGE STYLING  //// */
