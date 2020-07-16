@@ -115,12 +115,12 @@ class DeploymentsPage extends Component {
                   )}
                 </table>
                 {(isFetched && deployments.length === 0) && (
-                  <div className="NoContentDiv">
+                  <div className="NoResourcesMessage">
                     <p>No deployments available</p>
                   </div>
                 )}
                 {(!isFetchingDeployments && !isFetched) && (
-                  <div className="NoContentDiv">
+                  <div className="NoResourcesMessage">
                     <p>
                       Oops! Something went wrong!
                       Failed to retrieve deployments.

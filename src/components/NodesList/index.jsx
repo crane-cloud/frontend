@@ -101,12 +101,12 @@ class NodesList extends Component {
                 </table>
 
                 {(isFetched && nodes.nodes.length === 0) && (
-                  <div className="NoContentDiv">
+                  <div className="NoResourcesMessage">
                     <p>No Nodes Available</p>
                   </div>
                 )}
                 {(!isRetrieving && !isFetched) && (
-                  <div className="NoContentDiv">
+                  <div className="NoResourcesMessage">
                     <p>
                       Oops! Something went wrong!
                       Failed to retrieve Nodes.

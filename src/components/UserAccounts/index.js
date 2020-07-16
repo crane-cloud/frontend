@@ -69,12 +69,12 @@ class UserAccounts extends Component {
                   }
                 </table>
                 {(isFetched && users.length === 0) && (
-                  <div className="NoContentDiv">
+                  <div className="NoResourcesMessage">
                     <p>No Users Available</p>
                   </div>
                 )}
                 {(!isFetching && !isFetched) && (
-                  <div className="NoContentDiv">
+                  <div className="NoResourcesMessage">
                     <p>
                       Oops! Something went wrong!
 

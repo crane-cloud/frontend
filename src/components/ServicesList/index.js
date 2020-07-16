@@ -87,12 +87,12 @@ class ServicesListPage extends React.Component {
                 </table>
 
                 {(isFetched && services.length === 0) && (
-                  <div className="NoContentDiv">
+                  <div className="NoResourcesMessage">
                     <p>No Services Available</p>
                   </div>
                 )}
                 {(!isRetrieving && !isFetched) && (
-                  <div className="NoContentDiv">
+                  <div className="NoResourcesMessage">
                     <p>
                       Oops! Something went wrong!
 

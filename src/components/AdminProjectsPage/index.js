@@ -82,12 +82,12 @@ class AdminProjectsPage extends React.Component {
                   )}
                 </table>
                 {(isRetrieved && projects.length === 0) && (
-                  <div className="NoContentDiv">
+                  <div className="NoResourcesMessage">
                     <p>No projects available</p>
                   </div>
                 )}
                 {(!isRetrieving && !isRetrieved) && (
-                  <div className="NoContentDiv">
+                  <div className="NoResourcesMessage">
                     <p>
                       Oops! Something went wrong!
                       Failed to retrieve projects.
