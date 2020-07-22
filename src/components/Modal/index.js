@@ -6,29 +6,29 @@ const Modal = ({ showModal, children, onClickAway }) => {
   const [show, setShow] = useState(showModal);
   const modalRef = useRef(null);
 
-  const toggleShowModal = () => {
-    setShow(showModal);
-  };
-
-  const handleClickOutsideModal = (event) => {
-    if (modalRef.current && !modalRef.current.contains(event.target)) {
-      onClickAway();
-    }
-  };
-
   // componentWillMount & componentWillUnmount
   useEffect(() => {
+    const handleClickOutsideModal = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        onClickAway();
+      }
+    };
+
     document.addEventListener('mousedown', handleClickOutsideModal);
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutsideModal);
     };
-  }, []);
+  }, [onClickAway]);
 
   // componentDidUpdate
-  useEffect(() => (
+  useEffect(() => {
+    const toggleShowModal = () => {
+      setShow(showModal);
+    };
+
     toggleShowModal()
-  ), [showModal]);
+  }, [showModal]);
 
   return (
     (show && (
