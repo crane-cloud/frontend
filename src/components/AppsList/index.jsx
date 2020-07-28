@@ -44,7 +44,7 @@ class AppsList extends Component {
 
   render() {
     const { apps, isRetrieved, isRetrieving } = this.props;
-    console.log(apps.apps);
+    // console.log(apps.apps);
     return (
       <>
         {
@@ -61,7 +61,7 @@ class AppsList extends Component {
                   <div key={app.id} className="AppCardItem">
                     <AppsCard
                       name={app.name}
-                      status
+                      appStatus={app.app_running_status}
                       url={app.url}
                       appId={app.id}
                       hasDeleted={this.renderAfterDelete}

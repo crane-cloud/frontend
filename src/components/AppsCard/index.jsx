@@ -6,7 +6,7 @@ import DotsImg from '../../assets/images/3dots.svg';
 import deleteApp, { clearState } from '../../redux/actions/deleteApp';
 import Spinner from '../Spinner';
 import Modal from '../Modal';
-import Status from '../Status';
+import AppStatus from '../AppStatus';
 import Feedback from '../Feedback';
 import DeleteWarning from '../DeleteWarning';
 import './AppsCard.css';
@@ -17,7 +17,7 @@ const AppsCard = (props) => {
   const dropdownRef = useRef(null);
 
   const {
-    clearState, name, status, url, appId, isDeleted, isDeleting, isFailed, message, hasDeleted
+    clearState, name, appStatus, url, appId, isDeleted, isDeleting, isFailed, message, hasDeleted
   } = props;
 
   const toggleDropDown = () => {
@@ -69,14 +69,13 @@ const AppsCard = (props) => {
   useEffect(() => (
     hideDeleteAlert()
   ), [isDeleted]); // eslint-disable-line
-
   return (
     <div className="AppCard">
       <div className="AppCardHeader">
         <div className="AppNameSection">{name}</div>
         <div className="AppIconsSection">
           <div className="StatusData">
-            <Status status={status} />
+            <AppStatus appStatus={appStatus} />
           </div>
           <div
             className="AppDropDown"
@@ -145,7 +144,7 @@ AppsCard.propTypes = {
   isDeleting: PropTypes.bool,
   isFailed: PropTypes.bool,
   name: PropTypes.string.isRequired,
-  status: PropTypes.bool.isRequired, // this is static
+  appStatus: PropTypes.string.isRequired, // this is static
   url: PropTypes.string.isRequired,
   appId: PropTypes.string.isRequired,
   deleteApp: PropTypes.func.isRequired,
