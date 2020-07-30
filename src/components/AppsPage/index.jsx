@@ -16,6 +16,7 @@ import Spinner from '../Spinner';
 import Feedback from '../Feedback';
 import Checkbox from '../Checkbox';
 import Tooltip from '../Tooltip';
+import SideNav from '../SideNav';
 import Tabs from '../Tabs';
 import Select from '../Select';
 import './AppsPage.css';
@@ -368,7 +369,7 @@ class AppsPage extends React.Component {
 
     return (
       <div className="Page">
-        <div className="TopRow">
+        {/* <div className="TopRow">
           <Header />
           <InformationBar
             header={(
@@ -383,9 +384,21 @@ class AppsPage extends React.Component {
             showBtn
             btnAction={this.showForm}
           />
-        </div>
-        <div className="MainRow">
-          <AppsList params={params} newAppCreated={isCreated} />
+        </div> */}
+        <div className="TopBarSection"><Header /></div>
+        <div className="MainSection">
+          <div className="SideBarSection">
+            <SideNav />
+          </div>
+          <div className="MainContentSection">
+            <div className="InformationBarSection">
+              <InformationBar header="Overview" showBtn={false} />
+
+            </div>
+            <div className="ContentSection">
+              <AppsList params={params} newAppCreated={isCreated} />
+            </div>
+          </div>
         </div>
         <div className="FooterRow">
           <p>
