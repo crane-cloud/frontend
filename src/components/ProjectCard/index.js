@@ -384,7 +384,6 @@ ProjectCard.propTypes = {
   data: PropTypes.shape({
     id: PropTypes.string.isRequired
   }).isRequired,
-  icon: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired
 };
 
