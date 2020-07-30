@@ -400,13 +400,6 @@ class AppsPage extends React.Component {
             </div>
           </div>
         </div>
-        <div className="FooterRow">
-          <p>
-            Copyright © 2020 Crane Cloud.
-            <br />
-            All Rights Reserved.
-          </p>
-        </div>
 
         {/* Modal for creating a new app
         Its triggered by the value of state.openModal */}
