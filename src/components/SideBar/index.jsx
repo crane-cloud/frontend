@@ -2,6 +2,7 @@ import React from 'react';
 import './SideBar.css';
 import { NavLink, Link } from 'react-router-dom';
 import BackButton from '../../assets/images/backButton.svg';
+import {ReactComponent as Settings }from '../../assets/images/settings.svg';
 
 
 const SideBar = (props) => {
@@ -33,6 +34,7 @@ const SideBar = (props) => {
         <NavLink to={{ pathname: `${BASE_URL}/services` }} className="SubListItem">Storage</NavLink>
         <NavLink to={{ pathname: `${BASE_URL}/services` }} className="SubListItem">Network</NavLink>
       </div>
+      <Settings className="ListItem"/>
 
       <div className="SideFooter StickBottom">
         Copyright © 2020 Crane Cloud.
