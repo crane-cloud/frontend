@@ -5,10 +5,10 @@ import BackButton from '../../assets/images/backButton.svg';
 
 
 const SideBar = (props) => {
-  const { clusterId } = props;
-  const { clusterName } = props;
+  const { projectId } = props;
+  const { projectName } = props;
 
-  const BASE_URL = `/clusters/${clusterId}`;
+  const BASE_URL = `/projects/${projectId}`;
   return (
     <div className="SideBar">
       <div className="ClusterName StickTop">
@@ -16,33 +16,22 @@ const SideBar = (props) => {
           <img src={BackButton} alt="Back Button" />
           <span>&nbsp; &nbsp; &nbsp;</span>
         </Link>
-        <Link to={{ pathname: `${BASE_URL}/resources` }} className="CName">{ clusterName }</Link>
+        <Link to={{ pathname: `${BASE_URL}/resources` }} className="CName">{ projectName }</Link>
       </div>
 
-      <Link to={{ pathname: `${BASE_URL}/resources` }} className="ListItem">Infrastructure</Link>
+      <Link to={{ pathname: `${BASE_URL}/resources` }} className="ListItem">Apps</Link>
       <div>
-        <NavLink to={{ pathname: `${BASE_URL}/nodes` }} activeClassName="active" className="SubListItem">Nodes</NavLink>
-        <NavLink to={{ pathname: `${BASE_URL}/volumes` }} className="SubListItem">Volumes</NavLink>
-        <NavLink to={{ pathname: `${BASE_URL}/pvcs` }} className="SubListItem">Volume Claims</NavLink>
-        <NavLink to={{ pathname: `${BASE_URL}/storage-classes` }} className="SubListItem">Storage Classes</NavLink>
-        <NavLink to={{ pathname: `${BASE_URL}/namespaces` }} className="SubListItem">Namespaces</NavLink>
+        <NavLink to={{ pathname: `${BASE_URL}/nodes` }} activeClassName="active" className="SubListItem">All</NavLink>
+        <NavLink to={{ pathname: `${BASE_URL}/volumes` }} className="SubListItem"></NavLink>
+        
       </div>
-      <Link to={{ pathname: `${BASE_URL}/pods` }} className="ListItem">Pods</Link>
+      <Link to={{ pathname: `${BASE_URL}/pods` }} className="ListItem">Metrics</Link>
       <div>
-        <NavLink to={{ pathname: `${BASE_URL}/pods` }} activeClassName="active" className="SubListItem">Pods</NavLink>
-        <Link to="#" className="SubListItem">Ingresses</Link>
-        <NavLink to={{ pathname: `${BASE_URL}/services` }} className="SubListItem">Services</NavLink>
-      </div>
-      <Link to={{ pathname: `${BASE_URL}/deployments` }} className="ListItem">Controllers</Link>
-      <div>
-        <NavLink to={{ pathname: `${BASE_URL}/deployments` }} className="SubListItem">Deployments</NavLink>
-        <NavLink to={{ pathname: `${BASE_URL}/jobs` }} className="SubListItem">Jobs</NavLink>
-      </div>
-      <Link to={{ pathname: `${BASE_URL}/accounts` }} className="ListItem">Users</Link>
-      <div>
-        <NavLink to={{ pathname: `${BASE_URL}/accounts` }} className="SubListItem">Accounts</NavLink>
-        <NavLink to={{ pathname: `${BASE_URL}/projects` }} className="SubListItem">Projects</NavLink>
-
+        <NavLink to={{ pathname: `${BASE_URL}/pods` }} activeClassName="active" className="SubListItem">All</NavLink>
+        <Link to="#" className="SubListItem">CPU</Link>
+        <NavLink to={{ pathname: `${BASE_URL}/services` }} className="SubListItem">Memory</NavLink>
+        <NavLink to={{ pathname: `${BASE_URL}/services` }} className="SubListItem">Storage</NavLink>
+        <NavLink to={{ pathname: `${BASE_URL}/services` }} className="SubListItem">Network</NavLink>
       </div>
 
       <div className="SideFooter StickBottom">

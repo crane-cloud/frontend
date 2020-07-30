@@ -16,7 +16,7 @@ import Spinner from '../Spinner';
 import Feedback from '../Feedback';
 import Checkbox from '../Checkbox';
 import Tooltip from '../Tooltip';
-import SideNav from '../SideNav';
+import SideBar from '../SideBar';
 import Tabs from '../Tabs';
 import Select from '../Select';
 import './AppsPage.css';
@@ -388,7 +388,7 @@ class AppsPage extends React.Component {
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideNav />
+            <SideBar />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
