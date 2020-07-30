@@ -13,7 +13,7 @@ import DeleteWarning from '../DeleteWarning';
 import BlackInputText from '../BlackInputText';
 import Modal from '../Modal';
 import './ProjectCard.css';
-import Chart from '../Chart';
+import LineChartComponent from '../LineChart';
 
 const sampleData = [
   { name: 'Sample Metric 1', uv: 250 },
@@ -245,7 +245,7 @@ class ProjectCard extends React.Component {
         <div className="ProjectsCard">
           <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps` }} key={cardID}>
             <div className="ProjectImageDiv">
-              <Chart data={shuffle(sampleData)} />
+              <LineChartComponent data={shuffle(sampleData)} />
             </div>
           </Link>
           <div className="BottomContainer">

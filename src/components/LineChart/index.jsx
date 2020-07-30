@@ -1,10 +1,10 @@
 import React from 'react';
 import { LineChart, Line, ResponsiveContainer } from 'recharts';
-import './Chart.css'
+import './LineChart.css'
 
-const Chart = ({ data }) => {
+const LineChartComponent = ({ data }) => {
   return (
-    <div className="ChartContainer">
+    <div className="LineChartContainer">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data}>
           <Line dot={false} strokeWidth="2px" dataKey="uv" stroke="#008AC1" />
@@ -14,4 +14,4 @@ const Chart = ({ data }) => {
   )
 }
 
-export default Chart;
+export default LineChartComponent;
