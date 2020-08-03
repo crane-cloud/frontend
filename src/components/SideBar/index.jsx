@@ -6,33 +6,33 @@ import {ReactComponent as Settings }from '../../assets/images/settings.svg';
 
 
 const SideBar = (props) => {
-  const { projectId } = props;
+  const { projectId, userId } = props;
   const { projectName } = props;
 
-  const BASE_URL = `/projects/${projectId}`;
+  // const BASE_URL = `/projects/${projectId}`;
   return (
     <div className="SideBar">
       <div className="ClusterName StickTop">
-        <Link to={{ pathname: '/clusters' }}>
+      <Link to={{ pathname: `/users/${userId}/projects/` }}>
           <img src={BackButton} alt="Back Button" />
           <span>&nbsp; &nbsp; &nbsp;</span>
         </Link>
-        <Link to={{ pathname: `${BASE_URL}/resources` }} className="CName">{ projectName }</Link>
+        <Link to={{ pathname: `/users/${userId}/projects/` }} className="CName">{ projectName }</Link>
       </div>
 
-      <Link to={{ pathname: `${BASE_URL}/resources` }} className="ListItem">Apps</Link>
+      <Link to="#" className="ListItem">Apps</Link>
       <div>
-        <NavLink to={{ pathname: `${BASE_URL}/nodes` }} activeClassName="active" className="SubListItem">All</NavLink>
-        <NavLink to={{ pathname: `${BASE_URL}/volumes` }} className="SubListItem"></NavLink>
+        <NavLink to="#" activeClassName="active" className="SubListItem">All</NavLink>
+        <NavLink to="#" className="SubListItem"></NavLink>
         
       </div>
-      <Link to={{ pathname: `${BASE_URL}/pods` }} className="ListItem">Metrics</Link>
+      <Link to="#" className="ListItem">Metrics</Link>
       <div>
-        <NavLink to={{ pathname: `${BASE_URL}/pods` }} activeClassName="active" className="SubListItem">All</NavLink>
+        <NavLink to="#" activeClassName="active" className="SubListItem">All</NavLink>
         <Link to="#" className="SubListItem">CPU</Link>
-        <NavLink to={{ pathname: `${BASE_URL}/services` }} className="SubListItem">Memory</NavLink>
-        <NavLink to={{ pathname: `${BASE_URL}/services` }} className="SubListItem">Storage</NavLink>
-        <NavLink to={{ pathname: `${BASE_URL}/services` }} className="SubListItem">Network</NavLink>
+        <NavLink to="#" className="SubListItem">Memory</NavLink>
+        <NavLink to="#" className="SubListItem">Storage</NavLink>
+        <NavLink to="#" className="SubListItem">Network</NavLink>
       </div>
       <Settings className="ListItem"/>
 

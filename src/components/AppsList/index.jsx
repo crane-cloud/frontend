@@ -44,6 +44,7 @@ class AppsList extends Component {
 
   render() {
     const { apps, isRetrieved, isRetrieving } = this.props;
+    console.log(apps);
     return (
       <>
         {

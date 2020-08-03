@@ -366,34 +366,26 @@ class AppsPage extends React.Component {
       { name: 'MariaDB', value: 'mariadb', id: '2' },
       { name: 'PostgreSQL', value: 'postgres', id: '3' }
     ];
-
+    console.log(params);
+    console.log("Derek....");
+    console.log(data);
     return (
       <div className="Page">
         {/* <div className="TopRow">
           <Header />
-          <InformationBar
-            header={(
-              <Link to={{ pathname: `/users/${userId}/projects/` }}>
-                <div className="BackDiv">
-                  <img src={BackButton} alt="Back Button" />
-                  {' '}
-                  <p>&nbsp; Apps</p>
-                </div>
-              </Link>
-            )}
-            showBtn
-            btnAction={this.showForm}
-          />
+          
         </div> */}
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideBar />
+            <SideBar userId={userId} />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
-              <InformationBar header="Overview" showBtn={false} />
-
+              <InformationBar
+                showBtn
+                btnAction={this.showForm}
+              />
             </div>
             <div className="ContentSection">
               <AppsList params={params} newAppCreated={isCreated} />
