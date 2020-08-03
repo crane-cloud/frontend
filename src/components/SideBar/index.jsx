@@ -21,19 +21,23 @@ const SideBar = (props) => {
       </div>
 
       <Link to="#" className="ListItem">Apps</Link>
-      <div>
-        <Link to="#" activeClassName="active" className="SubBarListItem">All</Link>
-        
-      </div>
+      
       <Link to="#" className="ListItem">Metrics</Link>
       <div>
-        <Link to="#" activeClassName="active" className="SubBarListItem">All</Link>
         <Link to="#" className="SubBarListItem">CPU</Link>
         <Link to="#" className="SubBarListItem">Memory</Link>
         <Link to="#" className="SubBarListItem">Storage</Link>
         <Link to="#" className="SubBarListItem">Network</Link>
       </div>
-      <Settings className="ListItem"/>
+      
+      <div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <Settings className="ListItem"/>
+        
+      </div>
 
       <div className="SideFooter StickBottom">
         Copyright © 2020 Crane Cloud.
