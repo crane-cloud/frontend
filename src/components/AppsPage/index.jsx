@@ -365,19 +365,14 @@ class AppsPage extends React.Component {
       { name: 'MariaDB', value: 'mariadb', id: '2' },
       { name: 'PostgreSQL', value: 'postgres', id: '3' }
     ];
-    console.log(params);
-    console.log("Derek....");
-    console.log(data);
+    const { projectData } = this.props.location;
+    
     return (
       <div className="Page">
-        {/* <div className="TopRow">
-          <Header />
-          
-        </div> */}
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideBar userId={userId} />
+            <SideBar userId={userId} projectName={projectData} />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">

@@ -6,8 +6,7 @@ import {ReactComponent as Settings }from '../../assets/images/settings.svg';
 
 
 const SideBar = (props) => {
-  const { projectId, userId } = props;
-  const { projectName } = props;
+  const { projectName, userId } = props;
 
   // const BASE_URL = `/projects/${projectId}`;
   return (
@@ -36,7 +35,6 @@ const SideBar = (props) => {
         <br />
         <br />
         <Settings className="ListItem"/>
-        
       </div>
 
       <div className="SideFooter StickBottom">
