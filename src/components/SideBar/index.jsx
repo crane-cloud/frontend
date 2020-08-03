@@ -1,6 +1,6 @@
 import React from 'react';
 import './SideBar.css';
-import { NavLink, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import BackButton from '../../assets/images/backButton.svg';
 import {ReactComponent as Settings }from '../../assets/images/settings.svg';
 
