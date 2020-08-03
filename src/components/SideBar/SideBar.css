@@ -1,0 +1,115 @@
+.SideBar {
+    width: 100%;
+    height: 100%;
+    background: #06222F;
+    mix-blend-mode: normal;
+    margin-left: 0px;
+    overflow-x: hidden;
+}
+
+.ProjectName {
+    height: 1.8rem;
+    z-index: 2;
+    background-color: #06222F;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+    color: #fff;
+    margin-top: 15px;
+    cursor: pointer;
+    padding: 25px 18px 20px 18px;
+    text-transform: uppercase;
+    box-shadow: 10px 5px 9px 0 rgba(90, 88, 88, 0.2);
+
+}
+
+.StickTop {
+    position: sticky;
+    bottom: 0;
+}
+
+
+.ProjectName a {
+    color: #fff;
+}
+
+.ProjectName .CName:hover {
+    text-decoration: underline;
+}
+
+.ProjectName a img {
+    display: inline;
+    height: 13px;
+}
+
+.ProjectName a img:hover {
+    transition: 0.2s;
+    transform: scale(1.5);
+}
+
+
+.SideBar::-webkit-scrollbar {
+    display: none;
+}
+
+.active {
+    color: #06222F !important;
+    background-color: #99D2E9;
+    padding-left: 20px;
+}
+
+.ListItem {
+    height: 21px;
+    background-color: #06222F;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+    color: #F7B21F;
+    margin-top: 20px;
+    cursor: pointer;
+    padding-left: 18px;
+    text-transform: uppercase;
+    display: block;
+}
+
+.SubBarListItem {
+    height: 21px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    color: #99D2E9;
+    padding: 8px 0px 8px 20px;
+    cursor: pointer;
+    display: block;
+}
+
+.List {
+    height: max-content;
+    overflow: auto;
+}
+
+.SideFooter {
+    height: 30px;
+    font-size: 12px;
+    line-height: 14px;
+    bottom: 0;
+    color: #008AC1;
+    padding: 18px 0 20px 18px;
+    cursor: pointer;
+    background-color: #06222F;
+}
+
+.SideFooter:hover {
+    color: rgb(131, 182, 202);
+}
+
+.ListItem:hover {
+    text-shadow: 0 0 .5px rgb(255, 194, 62);
+}
+
+.SubBarListItem:hover {
+    background-color: rgb(13, 60, 82);
+    color: rgb(164, 228, 253);
+}
