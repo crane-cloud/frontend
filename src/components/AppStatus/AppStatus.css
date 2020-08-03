@@ -1,0 +1,23 @@
+.StatusWrapper {
+    width: 100%;
+    display: grid;
+    justify-content: center;
+}
+.StatusSignal {
+    border-radius: 50%;
+    width: 0.8rem;
+    height: 0.8rem;
+}
+    
+.StatusRunning {
+  background-color: #98a058;
+}
+    
+.StatusFailed {
+  background-color: #ff0000;
+}
+
+.StatusOther {
+  background-color: #F7B21F;
+}
+  
