@@ -7,7 +7,7 @@
     overflow-x: hidden;
 }
 
-.ClusterName{
+.ProjectName {
     height: 1.8rem;
     z-index: 2;
     background-color: #06222F;
@@ -23,26 +23,26 @@
 
 }
 
-.StickTop{
+.StickTop {
     position: sticky;
     top: 0;
 }
 
 
-.ClusterName a{
+.ProjectName a {
     color: #fff;
 }
 
-.ClusterName .CName:hover{
-    text-decoration: underline; 
+.ProjectName .CName:hover {
+    text-decoration: underline;
 }
 
-.ClusterName a img{
+.ProjectName a img {
     display: inline;
     height: 13px;
 }
 
-.ClusterName a img:hover{
+.ProjectName a img:hover {
     transition: 0.2s;
     transform: scale(1.5);
 }
@@ -50,13 +50,15 @@
 
 .SideBar::-webkit-scrollbar {
     display: none;
-  }
-.active{
-    color: #06222F !important;
-    background-color: #99D2E9; 
-    padding-left: 20px; 
 }
-.ListItem{
+
+.active {
+    color: #06222F !important;
+    background-color: #99D2E9;
+    padding-left: 20px;
+}
+
+.ListItem {
     height: 21px;
     background-color: #06222F;
     font-style: normal;
@@ -71,7 +73,7 @@
     display: block;
 }
 
-.SubListItem{
+.SubBarListItem {
     height: 21px;
     font-style: normal;
     font-weight: normal;
@@ -83,11 +85,12 @@
     display: block;
 }
 
-.List{
+.List {
     height: max-content;
     overflow: auto;
 }
-.SideFooter{
+
+.SideFooter {
     height: 30px;
     font-size: 12px;
     line-height: 14px;
@@ -97,13 +100,16 @@
     cursor: pointer;
     background-color: #06222F;
 }
-.SideFooter:hover{
+
+.SideFooter:hover {
     color: rgb(131, 182, 202);
 }
-.ListItem:hover{
+
+.ListItem:hover {
     text-shadow: 0 0 .5px rgb(255, 194, 62);
 }
-.SubListItem:hover{
+
+.SubBarListItem:hover {
     background-color: rgb(13, 60, 82);
     color: rgb(164, 228, 253);
 }

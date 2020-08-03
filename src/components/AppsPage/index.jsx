@@ -50,7 +50,7 @@ class AppsPage extends React.Component {
         dbPassword: '',
         error: ''
       },
-      replicas: 0
+      replicas: 1
     };
 
     this.state = this.initialState;
@@ -416,8 +416,7 @@ class AppsPage extends React.Component {
 
                 <div className="ReplicasSelect">
                   <Select
-                    required
-                    placeholder="Number of Replicas"
+                    placeholder="Number of Replicas - defaults to 1"
                     options={replicaOptions}
                     onChange={this.handleSelectReplicas}
                   />

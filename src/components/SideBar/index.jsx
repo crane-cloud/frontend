@@ -22,17 +22,16 @@ const SideBar = (props) => {
 
       <Link to="#" className="ListItem">Apps</Link>
       <div>
-        <NavLink to="#" activeClassName="active" className="SubListItem">All</NavLink>
-        <NavLink to="#" className="SubListItem"></NavLink>
+        <Link to="#" activeClassName="active" className="SubBarListItem">All</Link>
         
       </div>
       <Link to="#" className="ListItem">Metrics</Link>
       <div>
-        <NavLink to="#" activeClassName="active" className="SubListItem">All</NavLink>
-        <Link to="#" className="SubListItem">CPU</Link>
-        <NavLink to="#" className="SubListItem">Memory</NavLink>
-        <NavLink to="#" className="SubListItem">Storage</NavLink>
-        <NavLink to="#" className="SubListItem">Network</NavLink>
+        <Link to="#" activeClassName="active" className="SubBarListItem">All</Link>
+        <Link to="#" className="SubBarListItem">CPU</Link>
+        <Link to="#" className="SubBarListItem">Memory</Link>
+        <Link to="#" className="SubBarListItem">Storage</Link>
+        <Link to="#" className="SubBarListItem">Network</Link>
       </div>
       <Settings className="ListItem"/>
 

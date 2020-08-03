@@ -44,7 +44,7 @@ const Select = ({
     <div ref={openSelectRef} className="SelectWrapper">
       <div className="SelectElementMain" onClick={toggleOptions} role="presentation">
         <div className={`SelectElementValue ${(selected.startsWith(placeholder) || showOptions) && 'SelectElementPlaceholder'}`}>
-          {showOptions ? `${placeholder} ${required && '*'}` : selected}
+          {showOptions ? `${placeholder} ${required ? '*' : ''}` : selected}
           <div className={`SelectArrow ${showOptions && 'SelectArrowShowOptions'}`}>
             <DownArrow />
           </div>
