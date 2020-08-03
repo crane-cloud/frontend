@@ -8,7 +8,6 @@ import PrimaryButton from '../PrimaryButton';
 import BlackInputText from '../BlackInputText';
 import Modal from '../Modal';
 import RemoveIcon from '../../assets/images/remove.svg';
-import BackButton from '../../assets/images/backButton.svg';
 import InformationBar from '../InformationBar';
 import AppsList from '../AppsList';
 import Header from '../Header';
