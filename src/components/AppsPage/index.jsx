@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
@@ -8,7 +8,6 @@ import PrimaryButton from '../PrimaryButton';
 import BlackInputText from '../BlackInputText';
 import Modal from '../Modal';
 import RemoveIcon from '../../assets/images/remove.svg';
-import BackButton from '../../assets/images/backButton.svg';
 import InformationBar from '../InformationBar';
 import AppsList from '../AppsList';
 import Header from '../Header';
@@ -16,6 +15,7 @@ import Spinner from '../Spinner';
 import Feedback from '../Feedback';
 import Checkbox from '../Checkbox';
 import Tooltip from '../Tooltip';
+import SideBar from '../SideBar';
 import Tabs from '../Tabs';
 import Select from '../Select';
 import './AppsPage.css';
@@ -365,34 +365,26 @@ class AppsPage extends React.Component {
       { name: 'MariaDB', value: 'mariadb', id: '2' },
       { name: 'PostgreSQL', value: 'postgres', id: '3' }
     ];
-
+    const { projectData } = this.props.location;
+    
     return (
       <div className="Page">
-        <div className="TopRow">
-          <Header />
-          <InformationBar
-            header={(
-              <Link to={{ pathname: `/users/${userId}/projects/` }}>
-                <div className="BackDiv">
-                  <img src={BackButton} alt="Back Button" />
-                  {' '}
-                  <p>&nbsp; Apps</p>
-                </div>
-              </Link>
-            )}
-            showBtn
-            btnAction={this.showForm}
-          />
-        </div>
-        <div className="MainRow">
-          <AppsList params={params} newAppCreated={isCreated} />
-        </div>
-        <div className="FooterRow">
-          <p>
-            Copyright © 2020 Crane Cloud.
-            <br />
-            All Rights Reserved.
-          </p>
+        <div className="TopBarSection"><Header /></div>
+        <div className="MainSection">
+          <div className="SideBarSection">
+            <SideBar userId={userId} projectName={projectData} />
+          </div>
+          <div className="MainContentSection">
+            <div className="InformationBarSection">
+              <InformationBar
+                showBtn
+                btnAction={this.showForm}
+              />
+            </div>
+            <div className="ContentSection">
+              <AppsList params={params} newAppCreated={isCreated} />
+            </div>
+          </div>
         </div>
 
         {/* Modal for creating a new app
