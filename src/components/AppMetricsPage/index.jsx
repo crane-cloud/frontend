@@ -45,7 +45,7 @@ class AppMetricsPage extends React.Component {
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideBar userId={userId} projectName={projectData} />
+            {/* <SideBar userId={userId} projectName={projectData} /> */}
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
@@ -55,7 +55,7 @@ class AppMetricsPage extends React.Component {
               />
             </div>
             <div className="ContentSection">
-              <AppsList params={params} newAppCreated={isCreated} />
+              {/* <AppsList params={params} newAppCreated={isCreated} /> */}
             </div>
           </div>
         </div>

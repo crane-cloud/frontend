@@ -74,9 +74,9 @@ const AppsCard = (props) => {
     <div className="AppCard">
       <div className="AppCardHeader">
         <div className="AppNameSection">
-          <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps` }} key={cardID}>
+          {/* <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps/${appID}/metrics` }} key={cardID}> */}
             {name}
-          </Link>
+          {/* </Link> */}
         </div>
         <div className="AppIconsSection">
           <div className="StatusData">
