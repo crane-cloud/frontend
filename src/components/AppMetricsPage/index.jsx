@@ -25,21 +25,10 @@ class AppMetricsPage extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-    const { clearState } = this.props;
-    clearState();
-  }
-
-  componentDidUpdate(prevProps) {
-    const { isCreated } = this.props;
-
-    if (isCreated !== prevProps.isCreated) {
-      this.hideForm();
-    }
-  }
-
   render() {
-    
+    const { otherAppData } = this.props.location;
+    const {projectID} = this.props.match.params;
+    console.log(projectID);
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
@@ -69,12 +58,7 @@ class AppMetricsPage extends React.Component {
 }
 
 AppMetricsPage.propTypes = {
-  isCreated: PropTypes.bool.isRequired,
-  isCreating: PropTypes.bool.isRequired,
   message: PropTypes.string.isRequired,
-  clearState: PropTypes.func.isRequired,
-  createApp: PropTypes.func.isRequired,
-  errorCode: PropTypes.number,
   match: PropTypes.shape({
     params: PropTypes.shape({
       projectID: PropTypes.string.isRequired

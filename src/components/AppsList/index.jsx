@@ -43,8 +43,7 @@ class AppsList extends Component {
   }
 
   render() {
-    const { apps, isRetrieved, isRetrieving } = this.props;
-    
+    const { apps, isRetrieved, isRetrieving, params } = this.props;
     return (
       <>
         {
@@ -64,6 +63,7 @@ class AppsList extends Component {
                       appStatus={app.app_running_status}
                       url={app.url}
                       appId={app.id}
+                      otherData={params}
                       hasDeleted={this.renderAfterDelete}
                     />
                   </div>
