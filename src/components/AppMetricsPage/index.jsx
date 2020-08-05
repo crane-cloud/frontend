@@ -39,7 +39,7 @@ class AppMetricsPage extends React.Component {
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideBar userId={userID} projectName="Derek" />
+            <SideBar userId={userID} projectName={appName} />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
