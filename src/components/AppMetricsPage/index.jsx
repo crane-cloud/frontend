@@ -29,10 +29,10 @@ class AppMetricsPage extends React.Component {
 
   render() {
     // const { otherAppData } = this.props.location;
-    const { appName, appUrl, liveAppstatus }  = this.props.location;
+    const { appName, appUrl, liveAppStatus }  = this.props.location;
     const {projectID, userID} = this.props.match.params;
     console.log(appName);
-    console.log(liveAppstatus);
+    console.log(liveAppStatus);
     console.log(appUrl)
     return (
       <div className="Page">
