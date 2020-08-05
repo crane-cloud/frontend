@@ -7,7 +7,7 @@ const InformationBar = ({ header, status, showBtn, btnAction }) => (
   <div className="InformationBar">
     {status ? (
       <div className="InformationBarWithButton">
-      <div className="InfoHeader">{header}</div>
+      <div className="AppUrl"><a target="_blank" rel="noopener noreferrer" href={header}>{header}</a></div>
       <div className="RoundAddButtonWrap">
         <AppStatus appStatus={status}/>
       </div>

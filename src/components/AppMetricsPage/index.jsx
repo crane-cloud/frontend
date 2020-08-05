@@ -31,9 +31,7 @@ class AppMetricsPage extends React.Component {
     // const { otherAppData } = this.props.location;
     const { appName, appUrl, liveAppStatus }  = this.props.location;
     const {projectID, userID} = this.props.match.params;
-    console.log(appName);
-    console.log(liveAppStatus);
-    console.log(appUrl)
+    
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
@@ -44,8 +42,8 @@ class AppMetricsPage extends React.Component {
           <div className="MainContentSection">
             <div className="InformationBarSection">
               <InformationBar
-                showBtn
-                btnAction={this.showForm}
+                header={appUrl}
+                status={liveAppStatus}
               />
             </div>
             <div className="ContentSection">
