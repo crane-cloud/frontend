@@ -21,20 +21,25 @@ import Select from '../Select';
 import './AppMetricsPage.css';
 
 class AppMetricsPage extends React.Component {
-  constructor(props) {
-    super(props);
+  static propTypes = {
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
   }
 
   render() {
-    const { otherAppData } = this.props.location;
-    const {projectID} = this.props.match.params;
-    console.log(projectID);
+    // const { otherAppData } = this.props.location;
+    const { appName, appUrl, liveAppstatus }  = this.props.location;
+    const {projectID, userID} = this.props.match.params;
+    console.log(appName);
+    console.log(liveAppstatus);
+    console.log(appUrl)
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
-            {/* <SideBar userId={userId} projectName={projectData} /> */}
+            <SideBar userId={userID} projectName="Derek" />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
