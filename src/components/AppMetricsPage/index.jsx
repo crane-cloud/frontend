@@ -36,15 +36,9 @@ class AppMetricsPage extends React.Component {
 }
 
 AppMetricsPage.propTypes = {
-  message: PropTypes.string.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       projectID: PropTypes.string.isRequired
-    }).isRequired
-  }).isRequired,
-  user: PropTypes.shape({
-    data: PropTypes.shape({
-      id: PropTypes.string.isRequired
     }).isRequired
   }).isRequired
 };

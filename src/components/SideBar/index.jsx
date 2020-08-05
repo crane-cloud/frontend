@@ -6,17 +6,29 @@ import {ReactComponent as Settings }from '../../assets/images/settings.svg';
 
 
 const SideBar = (props) => {
-  const { projectName, userId } = props;
+  const { projectName, userId, projectID } = props;
 
   // const BASE_URL = `/projects/${projectId}`;
   return (
     <div className="SideBar">
       <div className="ClusterName StickTop">
-      <Link to={{ pathname: `/users/${userId}/projects/` }}>
-          <img src={BackButton} alt="Back Button" />
-          <span>&nbsp; &nbsp; &nbsp;</span>
-        </Link>
-        <Link to={{ pathname: `/users/${userId}/projects/` }} className="CName">{ projectName }</Link>
+      {projectID ? (
+        <div>
+          <Link to={{ pathname: `/users/${userId}/projects/${projectID}/apps` }}>
+            <img src={BackButton} alt="Back Button" />
+            <span>&nbsp; &nbsp; &nbsp;</span>
+          </Link>
+          <Link to={{ pathname: `/users/${userId}/projects/${projectID}/apps` }} className="CName">{ projectName }</Link>
+        </div>
+      ): (
+        <div>
+          <Link to={{ pathname: `/users/${userId}/projects/` }}>
+            <img src={BackButton} alt="Back Button" />
+            <span>&nbsp; &nbsp; &nbsp;</span>
+          </Link>
+          <Link to={{ pathname: `/users/${userId}/projects/` }} className="CName">{ projectName }</Link>
+        </div>
+      )}
       </div>
 
       <Link to="#" className="ListItem">Apps</Link>
