@@ -8,7 +8,6 @@ import {ReactComponent as Settings }from '../../assets/images/settings.svg';
 const SideBar = (props) => {
   const { projectName, userId, projectID } = props;
 
-  // const BASE_URL = `/projects/${projectId}`;
   return (
     <div className="SideBar">
       <div className="ClusterName StickTop">
