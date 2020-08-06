@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PrimaryButton from '../PrimaryButton';
@@ -17,7 +18,8 @@ const AppsCard = (props) => {
   const dropdownRef = useRef(null);
 
   const {
-    clearState, name, appStatus, url, appId, isDeleted, isDeleting, isFailed, message, hasDeleted
+    clearState, name, appStatus, url, appId, otherData,
+    isDeleted, isDeleting, isFailed, message, hasDeleted
   } = props;
 
   const toggleDropDown = () => {
@@ -69,10 +71,15 @@ const AppsCard = (props) => {
   useEffect(() => (
     hideDeleteAlert()
   ), [isDeleted]); // eslint-disable-line
+  
   return (
     <div className="AppCard">
       <div className="AppCardHeader">
-        <div className="AppNameSection">{name}</div>
+        <div className="AppNameSection">
+          <Link to={{ pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`, appName: name, liveAppStatus: appStatus, appUrl: url }} key={otherData.projectID}>
+            {name}
+          </Link>
+        </div>
         <div className="AppIconsSection">
           <div className="StatusData">
             <AppStatus appStatus={appStatus} />

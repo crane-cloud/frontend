@@ -28,6 +28,8 @@ import VerificationSentPage from './components/VerificationSentPage';
 import AdminLoginPage from './components/AdminLoginPage';
 import AppsPage from './components/AppsPage';
 import UsersAccounts from './components/UserAccounts';
+import AppMetricsPage from './components/AppMetricsPage';
+
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) => (
@@ -53,7 +55,8 @@ const Routes = () => (
       <Route path="/reset_password/:token" component={CreateNewPassword} />
       {/* projects */}
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects" component={UserProjectsPage} />
-      <ProtectedRoute isAllowed={hasToken} path="/users/:userID/projects/:projectID/apps" component={AppsPage} />
+      <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/apps" component={AppsPage} />
+      <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/apps/:appID/metrics" component={AppMetricsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/clusters/:clusterID/accounts" component={UsersAccounts} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/projects" component={AdminProjectsPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/resources" component={ClusterResourcesPage} />
