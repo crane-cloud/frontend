@@ -84,63 +84,8 @@ const AppsCard = (props) => {
           <div className="StatusData">
             <AppStatus appStatus={appStatus} />
           </div>
-          <div
-            className="AppDropDown"
-            onClick={toggleDropDown}
-            role="presentation"
-            ref={dropdownRef}
-          >
-            <img src={DotsImg} alt="three dots" className="DropDownImg" />
-            {openDropDown && (
-              <div className="AppDropDownContent">
-                {/* <div>Update</div> */}
-                <div
-                  onClick={showDeleteAlert}
-                  role="presentation"
-                >
-                  Delete
-                </div>
-              </div>
-            )}
-          </div>
         </div>
       </div>
-      <div className="AppUrlText">Url :</div>
-      <div className="AppUrl"><a target="_blank" rel="noopener noreferrer" href={url}>{url}</a></div>
-
-      {
-        (openDeleteAlert && (
-          <div className="AppDeleteModel">
-            <Modal showModal={openDeleteAlert} onClickAway={hideDeleteAlert}>
-              <div className="DeleteAppModel">
-                <div className="DeleteModalUpperSection">
-                  <div className="DeleteDescription">
-                    Are you sure you want to delete&nbsp;
-                    <span>{name}</span>
-                      &nbsp;
-                    ?
-                  </div>
-                  <DeleteWarning />
-                </div>
-
-                <div className="DeleteModalLowerSection">
-                  <div className="DeleteAppModelButtons">
-                    <PrimaryButton label="cancel" className="CancelBtn" onClick={hideDeleteAlert} />
-                    <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} className="DeleteBtn" onClick={() => handleDeleteApp(appId)} />
-                  </div>
-
-                  {message && (
-                    <Feedback
-                      type={isFailed ? 'error' : 'success'}
-                      message={message}
-                    />
-                  )}
-                </div>
-              </div>
-            </Modal>
-          </div>
-        ))
-      }
     </div>
   );
 };
