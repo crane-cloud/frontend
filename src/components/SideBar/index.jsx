@@ -10,49 +10,35 @@ const SideBar = (props) => {
 
   return (
     <div className="SideBar">
-      <div className="ClusterName StickTop">
-        {projectID ? (
+      <div className="SideBarTopSection">
+        <Link to={{ pathname: `/users/${userId}/projects/` }}>
+          <img src={BackButton} alt="Back Button" />
+          <span>&nbsp; &nbsp; &nbsp;</span>
+        </Link>
+        <Link to={{ pathname: `/users/${userId}/projects/` }} className="ProjectName">{ projectName }</Link>
+      </div>
+
+      <div className="SideBarBottomSection">
+        <div className="SideBarLinks">
+          <Link to="#" className="ListItem">Metrics</Link>
           <div>
-            <Link to={{ pathname: `/users/${userId}/projects/${projectID}/apps` }}>
-              <img src={BackButton} alt="Back Button" />
-              <span>&nbsp; &nbsp; &nbsp;</span>
-            </Link>
-            <Link to={{ pathname: `/users/${userId}/projects/${projectID}/apps` }} className="CName">{ projectName }</Link>
+            <Link to="#" className="SubBarListItem">All</Link>
+            <Link to="#" className="SubBarListItem">CPU</Link>
+            <Link to="#" className="SubBarListItem">Memory</Link>
+            <Link to="#" className="SubBarListItem">Storage</Link>
+            <Link to="#" className="SubBarListItem">Network</Link>
           </div>
-        ) : (
-          <div>
-            <Link to={{ pathname: `/users/${userId}/projects/` }}>
-              <img src={BackButton} alt="Back Button" />
-              <span>&nbsp; &nbsp; &nbsp;</span>
-            </Link>
-            <Link to={{ pathname: `/users/${userId}/projects/` }} className="CName">{ projectName }</Link>
+        </div>
+
+        <div className="SideBarFooterSection">
+          <Settings className="ListItem" />
+          <div className="SideFooter StickBottom">
+            Copyright © 2020 Crane Cloud.
+            <br />
+            {' '}
+            All Rights Reserved.
           </div>
-        )}
-      </div>
-
-      <Link to="#" className="ListItem">Apps</Link>
-
-      <Link to="#" className="ListItem">Metrics</Link>
-      <div>
-        <Link to="#" className="SubBarListItem">CPU</Link>
-        <Link to="#" className="SubBarListItem">Memory</Link>
-        <Link to="#" className="SubBarListItem">Storage</Link>
-        <Link to="#" className="SubBarListItem">Network</Link>
-      </div>
-
-      <div>
-        <br />
-        <br />
-        <br />
-        <br />
-        <Settings className="ListItem" />
-      </div>
-
-      <div className="SideFooter StickBottom">
-        Copyright © 2020 Crane Cloud.
-        <br />
-        {' '}
-        All Rights Reserved.
+        </div>
       </div>
     </div>
   );
