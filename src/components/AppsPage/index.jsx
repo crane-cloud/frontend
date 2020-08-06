@@ -68,6 +68,7 @@ class AppsPage extends React.Component {
     this.handleDbCredentialsChange = this.handleDbCredentialsChange.bind(this);
     this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
     this.handleDBFlavorSelectChange = this.handleDBFlavorSelectChange.bind(this);
+    this.getProjectName = this.getProjectName.bind(this);
   }
 
   componentDidMount() {
@@ -81,6 +82,11 @@ class AppsPage extends React.Component {
     if (isCreated !== prevProps.isCreated) {
       this.hideForm();
     }
+  }
+
+  getProjectName(projects, id) {
+    const project = projects.find((project) => project.id === id);
+    return project.name;
   }
 
   showForm() {
@@ -348,7 +354,8 @@ class AppsPage extends React.Component {
       isCreating,
       isCreated,
       message,
-      errorCode
+      errorCode,
+      projects
     } = this.props;
 
     const userId = data.id;
@@ -365,14 +372,13 @@ class AppsPage extends React.Component {
       { name: 'MariaDB', value: 'mariadb', id: '2' },
       { name: 'PostgreSQL', value: 'postgres', id: '3' }
     ];
-    const { projectData } = this.props.location;
-    
+
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideBar userId={userId} projectName={projectData} />
+            <SideBar userId={userId} projectName={this.getProjectName(projects, params.projectID)} />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
@@ -708,23 +714,26 @@ AppsPage.propTypes = {
     data: PropTypes.shape({
       id: PropTypes.string.isRequired
     }).isRequired
-  }).isRequired
+  }).isRequired,
+  projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 AppsPage.defaultProps = {
   errorCode: null
 };
 
-const mapStateToProps = ({ user, createNewApp }) => {
+const mapStateToProps = ({ user, createNewApp, userProjectsReducer }) => {
   const {
     message, isCreated, isCreating, errorCode
   } = createNewApp;
+  const { projects } = userProjectsReducer;
   return {
     user,
     isCreated,
     isCreating,
     errorCode,
-    message
+    message,
+    projects
   };
 };
 
