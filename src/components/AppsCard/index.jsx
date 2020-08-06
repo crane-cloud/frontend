@@ -47,6 +47,7 @@ const AppsCard = (props) => {
               pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`, appName: name, liveAppStatus: appStatus, appUrl: url
             }}
             key={otherData.projectID}
+            className="AppName"
           >
             {name}
           </Link>
@@ -57,8 +58,11 @@ const AppsCard = (props) => {
           </div>
         </div>
       </div>
-      <div className="AppGraphSummary">
-        <LineChartComponent data={shuffle(sampleData)} />
+      <div className="AppCardBottomSection">
+        <div className="AppGraphSummaryLabel">Memory (1d)</div>
+        <div className="AppGraphSummary">
+          <LineChartComponent data={shuffle(sampleData)} />
+        </div>
       </div>
     </div>
   );
