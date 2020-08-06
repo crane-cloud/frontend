@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './SideBar.css';
 import { Link } from 'react-router-dom';
 import BackButton from '../../assets/images/backButton.svg';
@@ -6,7 +7,7 @@ import { ReactComponent as Settings } from '../../assets/images/settings.svg';
 
 
 const SideBar = (props) => {
-  const { projectName, userId, projectID } = props;
+  const { projectName, userId } = props;
 
   return (
     <div className="SideBar">
@@ -44,5 +45,9 @@ const SideBar = (props) => {
   );
 };
 
+SideBar.propTypes = {
+  projectName: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired
+};
 
 export default SideBar;
