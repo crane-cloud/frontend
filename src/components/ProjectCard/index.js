@@ -13,6 +13,35 @@ import DeleteWarning from '../DeleteWarning';
 import BlackInputText from '../BlackInputText';
 import Modal from '../Modal';
 import './ProjectCard.css';
+import LineChartComponent from '../LineChart';
+
+const sampleData = [
+  { name: 'Sample Metric 1', uv: 250 },
+  { name: 'Sample Metric 2', uv: 270 },
+  { name: 'Sample Metric 2', uv: 10 },
+  { name: 'Sample Metric 2', uv: 100 },
+  { name: 'Sample Metric 2', uv: 70 },
+  { name: 'Sample Metric 2', uv: 150 },
+  { name: 'Sample Metric 2', uv: 60 },
+  { name: 'Sample Metric 2', uv: 100 },
+  { name: 'Sample Metric 2', uv: 190 },
+  { name: 'Sample Metric 2', uv: 290 },
+  { name: 'Sample Metric 2', uv: 150 },
+  { name: 'Sample Metric 2', uv: 100 },
+  { name: 'Sample Metric 2', uv: 130 },
+  { name: 'Sample Metric 2', uv: 0 },
+  { name: 'Sample Metric 2', uv: 270 },
+  { name: 'Sample Metric 2', uv: 280 },
+  { name: 'Sample Metric 2', uv: 300 },
+  { name: 'Sample Metric 2', uv: 100 },
+  { name: 'Sample Metric 2', uv: 170 },
+  { name: 'Sample Metric 2', uv: 290 },
+];
+
+// this function is meant to shuffle the dummy data array
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
 
 class ProjectCard extends React.Component {
   constructor(props) {
@@ -199,7 +228,7 @@ class ProjectCard extends React.Component {
 
   render() {
     const {
-      name, isDeleting, data, description, icon, cardID, isUpdating, message, isFailed
+      name, isDeleting, data, description, cardID, isUpdating, message, isFailed
     } = this.props;
     const userId = data.id;
     const {
@@ -215,7 +244,9 @@ class ProjectCard extends React.Component {
       <>
         <div className="ProjectsCard">
           <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps` }} key={cardID}>
-            <div className="ProjectImageDiv" style={{ backgroundImage: `url(${icon})` }} />
+            <div className="ProjectImageDiv">
+              <LineChartComponent data={shuffle(sampleData)} />
+            </div>
           </Link>
           <div className="BottomContainer">
             <div className="ProjectInfoSection">
@@ -353,7 +384,6 @@ ProjectCard.propTypes = {
   data: PropTypes.shape({
     id: PropTypes.string.isRequired
   }).isRequired,
-  icon: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired
 };
 

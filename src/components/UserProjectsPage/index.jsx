@@ -13,10 +13,8 @@ import BlackInputText from '../BlackInputText';
 import TextArea from '../TextArea';
 import ProjectCard from '../ProjectCard';
 import Spinner from '../Spinner';
-import crane from '../../assets/images/default-project-image.svg';
 import Feedback from '../Feedback';
 import Select from '../Select';
-
 
 class UserProjectsPage extends React.Component {
   constructor(props) {
@@ -176,7 +174,6 @@ class UserProjectsPage extends React.Component {
                         name={project.name}
                         description={project.description}
                         cardID={project.id}
-                        icon={crane}
                       />
                     ))))
                   )}
