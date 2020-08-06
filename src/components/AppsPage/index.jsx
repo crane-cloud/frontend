@@ -383,6 +383,7 @@ class AppsPage extends React.Component {
           <div className="MainContentSection">
             <div className="InformationBarSection">
               <InformationBar
+                header="Apps"
                 showBtn
                 btnAction={this.showForm}
               />
