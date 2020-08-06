@@ -1,4 +1,6 @@
 .AppCard {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   width: 20rem;
   margin: auto;
@@ -25,6 +27,10 @@
 
 .AppIconsSection img {
   height: 1.2rem;
+}
+
+.AppGraphSummary {
+  flex-grow: 1;
 }
 
 .AppUrlText {
