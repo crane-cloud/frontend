@@ -1,0 +1,22 @@
+.MetricsCardContainer {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.CardHeaderSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.MetricsCardContainer hr {
+  margin: 0;
+}
+
+.CardBodySection {
+  height: 10rem;
+  flex-grow: 1;
+  padding: 1rem;
+}
