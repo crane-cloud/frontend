@@ -117,9 +117,9 @@ class UserProjectsPage extends React.Component {
       this.setState({
         error: 'name may only contain letters and a hypen -'
       });
-    } else if (projectName.length > 22) {
+    } else if (projectName.length > 18) {
       this.setState({
-        error: 'project name cannot exceed 22 characters'
+        error: 'project name may not exceed 18 characters'
       });
     } else {
       const newProject = {
