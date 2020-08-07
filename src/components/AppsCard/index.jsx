@@ -39,32 +39,32 @@ const AppsCard = (props) => {
   } = props;
 
   return (
-    <div className="AppCard">
-      <div className="AppCardHeader">
-        <div className="AppNameSection">
-          <Link
-            to={{
-              pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`, appName: name, liveAppStatus: appStatus, appUrl: url
-            }}
-            key={otherData.projectID}
-            className="AppName"
-          >
+    <Link
+      to={{
+        pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`, appName: name, liveAppStatus: appStatus, appUrl: url
+      }}
+      key={otherData.projectID}
+      className="AppName"
+    >
+      <div className="AppCard">
+        <div className="AppCardHeader">
+          <div className="AppNameSection">
             {name}
-          </Link>
+          </div>
+          <div className="AppIconsSection">
+            <div className="StatusData">
+              <AppStatus appStatus={appStatus} />
+            </div>
+          </div>
         </div>
-        <div className="AppIconsSection">
-          <div className="StatusData">
-            <AppStatus appStatus={appStatus} />
+        <div className="AppCardBottomSection">
+          <div className="AppGraphSummaryLabel">Memory (1d)</div>
+          <div className="AppGraphSummary">
+            <LineChartComponent data={shuffle(sampleData)} />
           </div>
         </div>
       </div>
-      <div className="AppCardBottomSection">
-        <div className="AppGraphSummaryLabel">Memory (1d)</div>
-        <div className="AppGraphSummary">
-          <LineChartComponent data={shuffle(sampleData)} />
-        </div>
-      </div>
-    </div>
+    </Link>
   );
 };
 
