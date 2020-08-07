@@ -1,0 +1,18 @@
+.MetricsCardContainer {
+  background-color: #ffffff;
+}
+
+.CardHeaderSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.MetricsCardContainer hr {
+  margin: 0;
+}
+
+.CardBodySection {
+  padding: 1rem;
+}

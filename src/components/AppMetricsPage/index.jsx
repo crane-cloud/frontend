@@ -4,6 +4,7 @@ import InformationBar from '../InformationBar';
 import Header from '../Header';
 import SideBar from '../SideBar';
 import MetricsCard from '../MetricsCard';
+import { ReactComponent as MetricIcon } from '../../assets/images/resource-icon.svg';
 import './AppMetricsPage.css';
 
 class AppMetricsPage extends React.Component {
@@ -31,7 +32,7 @@ class AppMetricsPage extends React.Component {
               />
             </div>
             <div className="ContentSection">
-              <MetricsCard />
+              <MetricsCard icon={<MetricIcon />} title="CPU" />
             </div>
           </div>
         </div>

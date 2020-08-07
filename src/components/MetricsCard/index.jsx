@@ -12,6 +12,7 @@ const MetricsCard = ({ title, icon }) => {
           {icon}
         </div>
       </div>
+      <hr />
       <div className="CardBodySection">
         body
       </div>
