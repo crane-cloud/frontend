@@ -1,5 +1,7 @@
 .MetricsCardContainer {
   background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
 }
 
 .CardHeaderSection {
@@ -14,5 +16,7 @@
 }
 
 .CardBodySection {
+  height: 10rem;
+  flex-grow: 1;
   padding: 1rem;
 }

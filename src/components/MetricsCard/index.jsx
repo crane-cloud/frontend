@@ -1,7 +1,7 @@
 import React from 'react';
 import './MetricsCard.css';
 
-const MetricsCard = ({ title, icon }) => {
+const MetricsCard = ({ title, icon, children }) => {
   return (
     <div className="MetricsCardContainer">
       <div className="CardHeaderSection">
@@ -14,7 +14,7 @@ const MetricsCard = ({ title, icon }) => {
       </div>
       <hr />
       <div className="CardBodySection">
-        body
+        {children}
       </div>
     </div>
   );
