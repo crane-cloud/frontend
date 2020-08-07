@@ -251,10 +251,6 @@ class AppsPage extends React.Component {
       this.setState({
         error: 'app name & image uri are required'
       });
-    } else if (replicas === 0) {
-      this.setState({
-        error: 'please specify number of replicas'
-      });
     } else if (this.validateAppName(name) === false) {
       this.setState({
         error: 'name should start with a letter'
@@ -262,6 +258,10 @@ class AppsPage extends React.Component {
     } else if (this.validateAppName(name) === 'false_convention') {
       this.setState({
         error: 'name may only contain letters,numbers,dot and a hypen -'
+      });
+    } else if (name.length > 18) {
+      this.setState({
+        error: 'name may not exceed 18 characters'
       });
     } else if (port && !(/^[0-9]*$/.test(port))) { // validate port and ensure its a number
       this.setState({
