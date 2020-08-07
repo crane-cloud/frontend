@@ -1,4 +1,6 @@
 .AppCard {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   width: 20rem;
   margin: auto;
@@ -6,12 +8,12 @@
   color: #000000;
   border: 1px solid rgba(0, 0, 0, 0.125);
   height: 12.5rem;
-  cursor: default;
+  /* cursor: default; */
 }
 
 .AppCardHeader {
   font-size: 1.125rem;
-  padding: 0.75rem 0.25rem 0.75rem 1.25rem;
+  padding: 0.75rem 1.25rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   display: flex;
   justify-content: space-between;
@@ -20,14 +22,29 @@
 .AppIconsSection {
   position: relative;
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(2, 1fr);
-  justify-content: center;
   align-items: center;
 }
 
 .AppIconsSection img {
   height: 1.2rem;
+}
+
+.AppCardBottomSection {
+  padding: 0 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  cursor: pointer;
+}
+
+.AppGraphSummaryLabel {
+  padding-top: 2px;
+  color: #CCCCCC;
+  font-size: 14px;
+}
+
+.AppGraphSummary {
+  flex-grow: 1;
 }
 
 .AppUrlText {
@@ -56,6 +73,11 @@
   color: #008ac1;
 }
 
+.AppName {
+  color: #000000;
+  cursor: pointer;
+}
+
 .AppNameSection:hover {
   opacity: 0.7;
 }
@@ -69,106 +91,4 @@
 .AppUrl:hover {
   transition: 0.5s;
   transform: scale(1.02);
-}
-
-/*/////////////// Drop down ////////////*/
-
-.AppDropDown {
-  position: relative;
-  display: grid;
-  grid-auto-flow: row;
-  align-items: center;
-  height: 100%;
-  z-index: 0;
-}
-
-.AppDropDownContent {
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 7rem;
-  top: 100%;
-  right: 0;
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
-
-.AppDropDownContent div {
-  color: black;
-  padding: 0.5rem 1rem;
-  text-decoration: none;
-  display: block;
-  font-size: 13px;
-  text-align: left;
-}
-
-.AppDropDownContent div::first-letter {
-  text-transform: uppercase;
-}
-
-.AppDropDownContent div:hover {
-  background-color: #ddd;
-}
-
-.AppDropDown:hover .DropDownImg {
-  transition: 0.5s;
-  opacity: 0.8;
-  transform: scale(1.02);
-}
-
-/*///////////// Delete Model //////////////////*/
-
-.AppDeleteModel {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.AppDeleteModel .ModalParentWrap {
-  background-color: inherit;
-}
-
-.AppDeleteModel .ModalChildWrap {
-  z-index: 3;
-}
-
-.DeleteAppModel {
-  display: grid;
-  gap: 3rem;
-}
-
-.DeleteModalLowerSection {
-  display: grid;
-  gap: 1rem;
-}
-
-.DeleteDescription span {
-  padding: 0.2rem 0.4rem;
-  margin: 0;
-  font-size: 90%;
-  background-color: rgba(27, 31, 35, 0.1);
-  border-radius: 3px;
-}
-
-.DeleteAppModelButtons {
-  display: flex;
-  justify-content: space-between;
-}
-
-.DeleteAppModelButtons .DeleteBtn {
-  background-color: #ff0000;
-  outline: 2px solid #ff0000;
-}
-.DeleteAppModelButtons .DeleteBtn:hover {
-  background-color: #fff;
-  outline: 2px solid #ff0000;
-  color: #ff0000;
-}
-
-.AppDeleteModel .ModalChildWrap {
-  min-width: 21rem;
-  max-width: 25rem;
 }

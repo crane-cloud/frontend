@@ -1,185 +1,83 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import PrimaryButton from '../PrimaryButton';
-import DotsImg from '../../assets/images/3dots.svg';
-import deleteApp, { clearState } from '../../redux/actions/deleteApp';
-import Spinner from '../Spinner';
-import Modal from '../Modal';
 import AppStatus from '../AppStatus';
-import Feedback from '../Feedback';
-import DeleteWarning from '../DeleteWarning';
+import LineChartComponent from '../LineChart';
 import './AppsCard.css';
 
-const AppsCard = (props) => {
-  const [openDeleteAlert, setDeleteAlert] = useState(false);
-  const [openDropDown, setDropDown] = useState(false);
-  const dropdownRef = useRef(null);
+const sampleData = [
+  { name: 'Sample Metric 1', uv: 250 },
+  { name: 'Sample Metric 2', uv: 270 },
+  { name: 'Sample Metric 2', uv: 10 },
+  { name: 'Sample Metric 2', uv: 100 },
+  { name: 'Sample Metric 2', uv: 70 },
+  { name: 'Sample Metric 2', uv: 150 },
+  { name: 'Sample Metric 2', uv: 60 },
+  { name: 'Sample Metric 2', uv: 100 },
+  { name: 'Sample Metric 2', uv: 190 },
+  { name: 'Sample Metric 2', uv: 290 },
+  { name: 'Sample Metric 2', uv: 150 },
+  { name: 'Sample Metric 2', uv: 100 },
+  { name: 'Sample Metric 2', uv: 130 },
+  { name: 'Sample Metric 2', uv: 0 },
+  { name: 'Sample Metric 2', uv: 270 },
+  { name: 'Sample Metric 2', uv: 280 },
+  { name: 'Sample Metric 2', uv: 300 },
+  { name: 'Sample Metric 2', uv: 100 },
+  { name: 'Sample Metric 2', uv: 170 },
+  { name: 'Sample Metric 2', uv: 290 },
+];
 
+// this function is meant to shuffle the dummy data array
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
+const AppsCard = (props) => {
   const {
-    clearState, name, appStatus, url, appId, otherData,
-    isDeleted, isDeleting, isFailed, message, hasDeleted
+    name, appStatus, url, appId, otherData
   } = props;
 
-  const toggleDropDown = () => {
-    if (openDropDown) {
-      setDropDown(false);
-    } else {
-      setDropDown(true);
-    }
-  };
-
-  const handleDeleteApp = (appId) => {
-    const {
-      deleteApp
-    } = props;
-
-    deleteApp(appId);
-  };
-
-
-  const showDeleteAlert = () => {
-    setDeleteAlert(true);
-  };
-
-  const hideDeleteAlert = () => {
-    clearState();
-    setDeleteAlert(false);
-    if (isDeleted) {
-      hasDeleted();
-    }
-  };
-
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setDropDown(false);
-    }
-  };
-
-  // componentWillMount & componentWillUnmount
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-
-    // returned function will be called on component unmount
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
-
-  useEffect(() => (
-    hideDeleteAlert()
-  ), [isDeleted]); // eslint-disable-line
-  
   return (
-    <div className="AppCard">
-      <div className="AppCardHeader">
-        <div className="AppNameSection">
-          <Link to={{ pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`, appName: name, liveAppStatus: appStatus, appUrl: url }} key={otherData.projectID}>
+    <Link
+      to={{
+        pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`, appName: name, liveAppStatus: appStatus, appUrl: url
+      }}
+      key={otherData.projectID}
+      className="AppName"
+    >
+      <div className="AppCard">
+        <div className="AppCardHeader">
+          <div className="AppNameSection">
             {name}
-          </Link>
-        </div>
-        <div className="AppIconsSection">
-          <div className="StatusData">
-            <AppStatus appStatus={appStatus} />
           </div>
-          <div
-            className="AppDropDown"
-            onClick={toggleDropDown}
-            role="presentation"
-            ref={dropdownRef}
-          >
-            <img src={DotsImg} alt="three dots" className="DropDownImg" />
-            {openDropDown && (
-              <div className="AppDropDownContent">
-                {/* <div>Update</div> */}
-                <div
-                  onClick={showDeleteAlert}
-                  role="presentation"
-                >
-                  Delete
-                </div>
-              </div>
-            )}
+          <div className="AppIconsSection">
+            <div className="StatusData">
+              <AppStatus appStatus={appStatus} />
+            </div>
+          </div>
+        </div>
+        <div className="AppCardBottomSection">
+          <div className="AppGraphSummaryLabel">Memory (1d)</div>
+          <div className="AppGraphSummary">
+            <LineChartComponent data={shuffle(sampleData)} />
           </div>
         </div>
       </div>
-      <div className="AppUrlText">Url :</div>
-      <div className="AppUrl"><a target="_blank" rel="noopener noreferrer" href={url}>{url}</a></div>
-
-      {
-        (openDeleteAlert && (
-          <div className="AppDeleteModel">
-            <Modal showModal={openDeleteAlert} onClickAway={hideDeleteAlert}>
-              <div className="DeleteAppModel">
-                <div className="DeleteModalUpperSection">
-                  <div className="DeleteDescription">
-                    Are you sure you want to delete&nbsp;
-                    <span>{name}</span>
-                      &nbsp;
-                    ?
-                  </div>
-                  <DeleteWarning />
-                </div>
-
-                <div className="DeleteModalLowerSection">
-                  <div className="DeleteAppModelButtons">
-                    <PrimaryButton label="cancel" className="CancelBtn" onClick={hideDeleteAlert} />
-                    <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} className="DeleteBtn" onClick={() => handleDeleteApp(appId)} />
-                  </div>
-
-                  {message && (
-                    <Feedback
-                      type={isFailed ? 'error' : 'success'}
-                      message={message}
-                    />
-                  )}
-                </div>
-              </div>
-            </Modal>
-          </div>
-        ))
-      }
-    </div>
+    </Link>
   );
 };
 
 // inititate props
 AppsCard.propTypes = {
-  isDeleted: PropTypes.bool,
-  isDeleting: PropTypes.bool,
-  isFailed: PropTypes.bool,
   name: PropTypes.string.isRequired,
   appStatus: PropTypes.string.isRequired, // this is static
   url: PropTypes.string.isRequired,
   appId: PropTypes.string.isRequired,
-  deleteApp: PropTypes.func.isRequired,
-  hasDeleted: PropTypes.func.isRequired,
-  clearState: PropTypes.func.isRequired,
-  message: PropTypes.string.isRequired
+  otherData: PropTypes.shape({
+    userID: PropTypes.string.isRequired,
+    projectID: PropTypes.string.isRequired
+  }).isRequired
 };
 
-// assigning defaults
-AppsCard.defaultProps = {
-  isDeleted: false,
-  isDeleting: false,
-  isFailed: false
-};
-
-
-const mapStateToProps = (state) => {
-  const {
-    isDeleting, isDeleted, isFailed, message
-  } = state.deleteAppReducer;
-  return {
-    isDeleting, isDeleted, isFailed, message
-  };
-};
-
-
-const mapDispatchToProps = {
-  deleteApp, clearState
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AppsCard);
+export default AppsCard;
