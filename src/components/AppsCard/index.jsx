@@ -41,8 +41,8 @@ const AppsCard = (props) => {
   return (
     <Link
       to={{
-        pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`, appName: name, liveAppStatus: appStatus, appUrl: url
-      }}
+        pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`, state: { appName: name, liveAppStatus: appStatus, appUrl: url
+      }}}
       key={otherData.projectID}
       className="AppName"
     >
