@@ -7,16 +7,28 @@ import { ReactComponent as Settings } from '../../assets/images/settings.svg';
 
 
 const SideBar = (props) => {
-  const { projectName, userId } = props;
+  const { projectName, userId, projectID } = props;
 
   return (
     <div className="SideBar">
       <div className="SideBarTopSection">
-        <Link to={{ pathname: `/users/${userId}/projects/` }}>
-          <img src={BackButton} alt="Back Button" />
-          <span>&nbsp; &nbsp; &nbsp;</span>
-        </Link>
-        <Link to={{ pathname: `/users/${userId}/projects/` }} className="ProjectName">{ projectName }</Link>
+        { projectID ? (
+          <div>
+            <Link to={{ pathname: `/users/${userId}/projects/${projectID}` }}>
+              <img src={BackButton} alt="Back Button" />
+              <span>&nbsp; &nbsp; &nbsp;</span>
+            </Link>
+            <Link to={{ pathname: `/users/${userId}/projects/` }} className="ProjectName">{ projectName }</Link>
+          </div>
+        ): (
+          <div>
+            <Link to={{ pathname: `/users/${userId}/projects/` }}>
+              <img src={BackButton} alt="Back Button" />
+              <span>&nbsp; &nbsp; &nbsp;</span>
+            </Link>
+            <Link to={{ pathname: `/users/${userId}/projects/` }} className="ProjectName">{ projectName }</Link>
+          </div>
+        )}
       </div>
 
       <div className="SideBarBottomSection">
