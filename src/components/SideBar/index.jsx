@@ -11,7 +11,7 @@ const SideBar = (props) => {
 
   return (
     <div className="SideBar">
-      <div className="">
+      <div>
         { projectID ? (
           <div className="SideBarTopSection">
             <Link to={{ pathname: `/users/${userId}/projects/${projectID}/apps` }}>
