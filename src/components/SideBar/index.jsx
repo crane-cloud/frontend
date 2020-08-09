@@ -14,11 +14,11 @@ const SideBar = (props) => {
       <div className="SideBarTopSection">
         { projectID ? (
           <div>
-            <Link to={{ pathname: `/users/${userId}/projects/${projectID}` }}>
+            <Link to={{ pathname: `/users/${userId}/projects/${projectID}/apps` }}>
               <img src={BackButton} alt="Back Button" />
               <span>&nbsp; &nbsp; &nbsp;</span>
             </Link>
-            <Link to={{ pathname: `/users/${userId}/projects/` }} className="ProjectName">{ projectName }</Link>
+            <Link to={{ pathname: `/users/${userId}/projects/${projectID}/apps` }} className="ProjectName">{ projectName }</Link>
           </div>
         ): (
           <div>
