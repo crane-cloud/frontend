@@ -37,10 +37,7 @@ function shuffle(array) {
 }
 
 class AppMetricsPage extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {};
-  // }
+
   state = {
     appRelatedInfo: this.props.location.state
   };
@@ -55,11 +52,9 @@ class AppMetricsPage extends React.Component {
   }
 
   render() {
-    // const { appName, appUrl, liveAppStatus } = this.props.location;
     const { appName, appUrl, liveAppStatus } = this.state.appRelatedInfo;
     const { projectID, userID } = this.props.match.params;
-    // console.log(this.props.location.state);
-    console.log(this.state.appRelatedInfo);
+    
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
