@@ -228,17 +228,9 @@ class ProjectCard extends React.Component {
 
   render() {
     const {
-      name, isDeleting, data, description, cardID, isUpdating, message, isFailed
+      name, data, description, cardID, isUpdating, message, isFailed
     } = this.props;
     const userId = data.id;
-    const {
-      openDeleteAlert,
-      openDropDown,
-      projectName,
-      projectDescription,
-      openUpdateModal,
-      error
-    } = this.state;
 
     return (
       <>
@@ -253,7 +245,7 @@ class ProjectCard extends React.Component {
               <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps`, projectData: name }} key={cardID}>
                 <div className="ProjectsCardName">{name}</div>
               </Link>
-              <div
+              {/* <div
                 className="ProjectDropDown"
                 onClick={this.toggleDropDown}
                 role="presentation"
@@ -277,13 +269,13 @@ class ProjectCard extends React.Component {
                     </div>
                   </div>
                 )}
-              </div>
+              </div> */}
             </div>
             <div className="ProjectDescription">{description}</div>
           </div>
         </div>
 
-        {(openDeleteAlert && (
+        {/* {(openDeleteAlert && (
           <div className="ProjectDeleteModel">
             <Modal showModal={openDeleteAlert} onClickAway={this.hideDeleteAlert}>
               <div className="DeleteProjectModel">
@@ -314,9 +306,9 @@ class ProjectCard extends React.Component {
 
             </Modal>
           </div>
-        ))}
+        ))} */}
 
-        {(openUpdateModal && (
+        {/* {(openUpdateModal && (
           <div className="ProjectDeleteModel">
             <Modal showModal={openUpdateModal} onClickAway={this.hideUpdateForm}>
               <div className="ModalUpdateForm">
@@ -362,7 +354,7 @@ class ProjectCard extends React.Component {
               </div>
             </Modal>
           </div>
-        ))}
+        ))} */}
 
       </>
 
