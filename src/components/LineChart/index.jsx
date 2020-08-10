@@ -1,6 +1,6 @@
 import React from 'react';
 import { LineChart, Line, ResponsiveContainer } from 'recharts';
-import './LineChart.css'
+import './LineChart.css';
 
 const LineChartComponent = ({ data }) => {
   return (
@@ -11,7 +11,7 @@ const LineChartComponent = ({ data }) => {
         </LineChart>
       </ResponsiveContainer>
     </div>
-  )
-}
+  );
+};
 
 export default LineChartComponent;
