@@ -29,6 +29,7 @@ import AdminLoginPage from './components/AdminLoginPage';
 import AppsPage from './components/AppsPage';
 import UsersAccounts from './components/UserAccounts';
 import AppMetricsPage from './components/AppMetricsPage';
+import SampleGraph from './components/LineChart/Sample';
 
 
 // Protected route should have token. If not, login.
@@ -70,6 +71,7 @@ const Routes = () => (
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/jobs" component={JobsListPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/deployments" component={DeploymentsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/clusters" component={ClusterPage} />
+      <Route path="/graph" component={SampleGraph} />
     </Switch>
   </Router>
 );
