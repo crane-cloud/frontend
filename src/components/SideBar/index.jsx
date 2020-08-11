@@ -7,7 +7,7 @@ import { ReactComponent as Settings } from '../../assets/images/settings.svg';
 
 
 const SideBar = (props) => {
-  const { projectName, userId } = props;
+  const { projectName, userId, projectID } = props;
 
   return (
     <div className="SideBar">
