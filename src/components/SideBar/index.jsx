@@ -32,7 +32,10 @@ const SideBar = (props) => {
         </div>
 
         <div className="SideBarFooterSection">
-          <Settings className="ListItem" />
+          
+          <Link to={{pathname: `users/${userId}/projects/${projectID}/settings`}} className="">
+            <Settings className="ListItem" />
+          </Link>
           <div className="SideFooter StickBottom">
             Copyright © 2020 Crane Cloud.
             <br />
