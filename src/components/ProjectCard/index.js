@@ -243,7 +243,7 @@ class ProjectCard extends React.Component {
     return (
       <>
         <div className="ProjectsCard">
-          <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps`, projectData: name }} key={cardID}>
+          <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps`, projectData: name, projectDesc: projectDescription }} key={cardID}>
             <div className="ProjectImageDiv">
               <LineChartComponent data={shuffle(sampleData)} />
             </div>

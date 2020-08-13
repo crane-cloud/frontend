@@ -171,14 +171,14 @@ class ProjectSettingsPage extends React.Component {
       isFailed
     } = this.props;
     const userId = params.userId;
-    const { projectName } = this.props.location.state;
+    const { projectName, projectDesc } = this.props.location.state;
     const {
       openDeleteAlert,
       // projectName,
       projectDescription,
       error
     } = this.state;
-
+    console.log(this.props);
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
@@ -207,7 +207,7 @@ class ProjectSettingsPage extends React.Component {
                     <TextArea
                       placeholder="Description"
                       name="projectDescription"
-                      value={projectDescription}
+                      value={projectDesc}
                       onChange={(e) => {
                         this.handleChange(e);
                       }}
@@ -218,10 +218,9 @@ class ProjectSettingsPage extends React.Component {
                 </form>
                 
               </div>
-              <div>
+              <div className="DeleteButtonDiv">
                 <PrimaryButton label="Delete Project" className="DeleteBtn" onClick={(e) => this.handleDeleteProject(e, cardID)} />
               </div>
-                <p>I gott this, Greatest Coder Ever!</p>
                 {(openDeleteAlert && (
                   <div className="ProjectDeleteModel">
                     <Modal showModal={openDeleteAlert} onClickAway={this.hideDeleteAlert}>

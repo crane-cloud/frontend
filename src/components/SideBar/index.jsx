@@ -7,7 +7,7 @@ import { ReactComponent as Settings } from '../../assets/images/settings.svg';
 
 
 const SideBar = (props) => {
-  const { projectName, userId, projectID } = props;
+  const { projectName, userId, projectID, projectDesc } = props;
 
   return (
     <div className="SideBar">
@@ -45,7 +45,11 @@ const SideBar = (props) => {
 
         <div className="SideBarFooterSection">
           
-          <Link to={{pathname: `/users/${userId}/projects/${projectID}/settings`, state: { projectName: projectName, projectID: projectID, userId: userId }}} >
+          <Link to={{pathname: `/users/${userId}/projects/${projectID}/settings`,
+            state: { projectName: projectName,
+              projectID: projectID,
+              userId: userId,
+              projectDesc: projectDesc }}} >
             <Settings className="ListItem" />
           </Link>
           <div className="SideFooter StickBottom">
