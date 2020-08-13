@@ -21,7 +21,7 @@ const InformationBar = ({ header, status, showBtn, btnAction }) => (
           </div>
         </div>
       ) : (
-        <div className="LeftHeader">{header}</div>
+        <div className="InfoHeader">{header}</div>
       ))
       }
   </div>
