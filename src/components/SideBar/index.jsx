@@ -45,7 +45,7 @@ const SideBar = (props) => {
 
         <div className="SideBarFooterSection">
           
-          <Link to={{pathname: `/users/${userId}/projects/${projectID}/settings`}} className="">
+          <Link to={{pathname: `/users/${userId}/projects/${projectID}/settings`, state: { projectName: projectName, projectID: projectID, userId: userId }}} >
             <Settings className="ListItem" />
           </Link>
           <div className="SideFooter StickBottom">

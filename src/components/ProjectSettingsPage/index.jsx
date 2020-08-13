@@ -171,19 +171,20 @@ class ProjectSettingsPage extends React.Component {
       isFailed
     } = this.props;
     const userId = params.userId;
+    const { projectName } = this.props.location.state;
     const {
       openDeleteAlert,
-      projectName,
+      // projectName,
       projectDescription,
       error
     } = this.state;
-    console.log(this.props);
+
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideBar userId={userId} projectID={params.projectID} />
+            <SideBar projectName={projectName} userId={userId} projectID={params.projectID} />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
@@ -192,6 +193,34 @@ class ProjectSettingsPage extends React.Component {
               />
             </div>
             <div className="ContentSection">
+              <div>
+                <form>
+                  <div className="UpdateForm">
+                    <BlackInputText
+                      placeholder="Project Name"
+                      name="projectName"
+                      value={projectName}
+                      onChange={(e) => {
+                        this.handleChange(e);
+                      }}
+                    />
+                    <TextArea
+                      placeholder="Description"
+                      name="projectDescription"
+                      value={projectDescription}
+                      onChange={(e) => {
+                        this.handleChange(e);
+                      }}
+                    />
+
+                    <PrimaryButton label="Update Project" className="" onClick={(e) => this.handleDeleteProject(e, cardID)} />
+                  </div>
+                </form>
+                
+              </div>
+              <div>
+                <PrimaryButton label="Delete Project" className="DeleteBtn" onClick={(e) => this.handleDeleteProject(e, cardID)} />
+              </div>
                 <p>I gott this, Greatest Coder Ever!</p>
                 {(openDeleteAlert && (
                   <div className="ProjectDeleteModel">
