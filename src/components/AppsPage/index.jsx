@@ -373,6 +373,7 @@ class AppsPage extends React.Component {
       { name: 'PostgreSQL', value: 'postgres', id: '3' }
     ];
     const {projectDesc} = this.props.location;
+    
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
@@ -380,9 +381,10 @@ class AppsPage extends React.Component {
           <div className="SideBarSection">
             <SideBar
               userId={userId}
-              projectName={this.getProjectName(projects, params.projectID)}
+              name={this.getProjectName(projects, params.projectID)}
               projectID={params.projectID}
-              projectDesc={projectDesc}
+              description={projectDesc}
+              pageRoute={this.props.location.pathname}
               />
           </div>
           <div className="MainContentSection">

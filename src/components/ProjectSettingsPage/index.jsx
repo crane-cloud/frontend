@@ -18,13 +18,14 @@ import './ProjectSettingsPage.css';
 class ProjectSettingsPage extends React.Component {
   constructor(props) {
     super(props);
-    const { name, description } = props;
+    const { name, description } = props.location.state;
+    
     this.state = {
       openUpdateModal: false,
       openDeleteAlert: false,
       openDropDown: false,
-      projectName: name ? props.name : '',
-      projectDescription: description ? props.description : '',
+      projectName: name ? name : '',
+      projectDescription: description ? description : '',
       error: ''
     };
 
@@ -170,21 +171,23 @@ class ProjectSettingsPage extends React.Component {
       // message,
       isFailed
     } = this.props;
-    const userId = params.userId;
-    const { projectName, projectDesc } = this.props.location.state;
+    const { userID } = params;
+    // const { projectName, projectDesc } = this.props.location.state;
     const {
       openDeleteAlert,
-      // projectName,
+      projectName,
       projectDescription,
       error
     } = this.state;
-    console.log(this.props);
+    console.log(this.props.location.state);
+    console.log(projectName);
+    console.log(projectDescription);
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideBar projectName={projectName} userId={userId} projectID={params.projectID} />
+            <SideBar name={name} userId={userID} projectID={params.projectID} description={projectDescription} pageRoute={this.props.location.pathname} />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
@@ -207,13 +210,13 @@ class ProjectSettingsPage extends React.Component {
                     <TextArea
                       placeholder="Description"
                       name="projectDescription"
-                      value={projectDesc}
+                      value={projectDescription}
                       onChange={(e) => {
                         this.handleChange(e);
                       }}
                     />
 
-                    <PrimaryButton label="Update Project" className="" onClick={(e) => this.handleDeleteProject(e, cardID)} />
+                    <PrimaryButton label={isUpdating ? <Spinner /> : 'update project'} onClick={this.handleSubmit} />
                   </div>
                 </form>
                 
@@ -264,6 +267,14 @@ class ProjectSettingsPage extends React.Component {
 }
 
 ProjectSettingsPage.propTypes = {
+  // isFailed: PropTypes.bool,
+  // clearDeleteProjectState: PropTypes.func.isRequired,
+  updateProject: PropTypes.func.isRequired,
+  // deleteProject: PropTypes.func.isRequired,
+  // cardID: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  isUpdating: PropTypes.bool,
+  description: PropTypes.string,
   // data: PropTypes.shape({
   //   id: PropTypes.string.isRequired
   // }).isRequired,
@@ -276,15 +287,19 @@ ProjectSettingsPage.defaultProps = {
   // message: '',
   // isUpdated: false,
   // isDeleted: false,
+  name: '',
+  description: '',
+  isUpdating: false
 };
 
 const mapStateToProps = (state) => {
   // const { data } = state.user;
   // const { isDeleted } = state.deleteProjectReducer;
-  // const { isUpdated } = state.updateProjectReducer;
+  const { isUpdated, isUpdating } = state.updateProjectReducer;
   return {
     // data,
-    // isUpdated,
+    isUpdated,
+    isUpdating
     // message,
     // isDeleted
   };
