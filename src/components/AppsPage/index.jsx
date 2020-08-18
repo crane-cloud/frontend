@@ -350,15 +350,12 @@ class AppsPage extends React.Component {
 
     const {
       match: { params },
-      user: { data },
       isCreating,
       isCreated,
       message,
       errorCode,
       projects
     } = this.props;
-
-    const userId = data.id;
 
     const replicaOptions = [
       { id: 1, name: '1' },
@@ -373,6 +370,11 @@ class AppsPage extends React.Component {
       { name: 'PostgreSQL', value: 'postgres', id: '3' }
     ];
     const {projectDesc} = this.props.location;
+    const projectDetails = {
+      name: this.getProjectName(projects, params.projectID),
+      description: projectDesc
+    }
+    localStorage.setItem('project', JSON.stringify(projectDetails));
     
     return (
       <div className="Page">
@@ -380,9 +382,8 @@ class AppsPage extends React.Component {
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
-              userId={userId}
+              params={params}
               name={this.getProjectName(projects, params.projectID)}
-              projectID={params.projectID}
               description={projectDesc}
               pageRoute={this.props.location.pathname}
               />
@@ -718,11 +719,6 @@ AppsPage.propTypes = {
       projectID: PropTypes.string.isRequired
     }).isRequired
   }).isRequired,
-  user: PropTypes.shape({
-    data: PropTypes.shape({
-      id: PropTypes.string.isRequired
-    }).isRequired
-  }).isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
@@ -730,13 +726,12 @@ AppsPage.defaultProps = {
   errorCode: null
 };
 
-const mapStateToProps = ({ user, createNewApp, userProjectsReducer }) => {
+const mapStateToProps = ({ createNewApp, userProjectsReducer }) => {
   const {
     message, isCreated, isCreating, errorCode
   } = createNewApp;
   const { projects } = userProjectsReducer;
   return {
-    user,
     isCreated,
     isCreating,
     errorCode,

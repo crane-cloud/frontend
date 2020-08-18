@@ -19,13 +19,14 @@ class ProjectSettingsPage extends React.Component {
   constructor(props) {
     super(props);
     const { name, description } = props.location.state;
-    
+    const currentName = name;
+    const currentDesccription = description;
     this.state = {
       openUpdateModal: false,
       openDeleteAlert: false,
       openDropDown: false,
-      projectName: name ? name : '',
-      projectDescription: description ? description : '',
+      projectName: currentName ? currentName : '',
+      projectDescription: currentDesccription ? currentDesccription : '',
       error: ''
     };
 
@@ -89,9 +90,8 @@ class ProjectSettingsPage extends React.Component {
 
   handleSubmit() {
     const { projectName, projectDescription } = this.state;
-    const {
-      updateProject, cardID, name, description
-    } = this.props;
+    const { updateProject, cardID } = this.props;
+    const { name, description } = this.props.location.state;
 
     if (projectName !== name || projectDescription !== description) {
       if (!projectName || !projectDescription) {
@@ -162,32 +162,35 @@ class ProjectSettingsPage extends React.Component {
   render() {
     const {
       match: { params },
-      name,
+      // name,
       isDeleting,
       // data,
-      description,
+      // description,
       cardID,
       isUpdating,
       // message,
       isFailed
     } = this.props;
-    const { userID } = params;
-    // const { projectName, projectDesc } = this.props.location.state;
+    const { name, description } = this.props.location.state;
     const {
       openDeleteAlert,
       projectName,
       projectDescription,
       error
     } = this.state;
-    console.log(this.props.location.state);
-    console.log(projectName);
-    console.log(projectDescription);
+    console.log(this.props);
+    console.log(description);
+    
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideBar name={name} userId={userID} projectID={params.projectID} description={projectDescription} pageRoute={this.props.location.pathname} />
+            <SideBar
+              name={name}
+              params={params}
+              description={description}
+              pageRoute={this.props.location.pathname} />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
@@ -231,7 +234,7 @@ class ProjectSettingsPage extends React.Component {
                         <div className="DeleteProjectModalUpperSection">
                           <div className="DeleteDescription">
                             Are you sure you want to delete&nbsp;
-                            <span>{name}</span>
+                            <span>{projectName}</span>
                               &nbsp;
                             ?
                             <DeleteWarning />
