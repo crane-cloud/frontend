@@ -18,15 +18,13 @@ import './ProjectSettingsPage.css';
 class ProjectSettingsPage extends React.Component {
   constructor(props) {
     super(props);
-    const { name, description } = props.location.state;
-    const currentName = name;
-    const currentDesccription = description;
+    const projectInfo = JSON.parse(localStorage.getItem('project'));
     this.state = {
       openUpdateModal: false,
       openDeleteAlert: false,
       openDropDown: false,
-      projectName: currentName ? currentName : '',
-      projectDescription: currentDesccription ? currentDesccription : '',
+      projectName: projectInfo.name ? projectInfo.name : '',
+      projectDescription: projectInfo.description ? projectInfo.description : '',
       error: ''
     };
 
@@ -91,7 +89,9 @@ class ProjectSettingsPage extends React.Component {
   handleSubmit() {
     const { projectName, projectDescription } = this.state;
     const { updateProject, cardID } = this.props;
-    const { name, description } = this.props.location.state;
+    const projectInfo = JSON.parse(localStorage.getItem('project'));
+    const name = projectInfo.name;
+    const description = projectInfo.description;
 
     if (projectName !== name || projectDescription !== description) {
       if (!projectName || !projectDescription) {
@@ -171,15 +171,15 @@ class ProjectSettingsPage extends React.Component {
       // message,
       isFailed
     } = this.props;
-    const { name, description } = this.props.location.state;
+    const projectInfo = JSON.parse(localStorage.getItem('project'));
+    const name = projectInfo.name;
+    const description = projectInfo.description;
     const {
       openDeleteAlert,
       projectName,
       projectDescription,
       error
     } = this.state;
-    console.log(this.props);
-    console.log(description);
     
     return (
       <div className="Page">

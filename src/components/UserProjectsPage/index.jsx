@@ -38,6 +38,7 @@ class UserProjectsPage extends React.Component {
   }
 
   componentDidMount() {
+    localStorage.removeItem('project');
     const { getClustersList, getUserProjects, data } = this.props;
     getUserProjects(data.id);
     getClustersList();
