@@ -88,11 +88,12 @@ class ProjectSettingsPage extends React.Component {
 
   handleSubmit() {
     const { projectName, projectDescription } = this.state;
-    const { updateProject, cardID } = this.props;
+    const { match: { params: { projectID }} } = this.props;
+    // const { updateProject } = this.props;
     const projectInfo = JSON.parse(localStorage.getItem('project'));
     const name = projectInfo.name;
     const description = projectInfo.description;
-
+    
     if (projectName !== name || projectDescription !== description) {
       if (!projectName || !projectDescription) {
         this.setState({
@@ -114,13 +115,13 @@ class ProjectSettingsPage extends React.Component {
             });
           } else {
             const newProject = { name: projectName };
-            updateProject(cardID, newProject);
+            updateProject(projectID, newProject);
           }
         }
 
         if (projectName === name && projectDescription !== description) {
           const newProject = { description: projectDescription };
-          updateProject(cardID, newProject);
+          updateProject(projectID, newProject);
         }
 
         if (projectName !== name && projectDescription !== description) {
@@ -134,7 +135,7 @@ class ProjectSettingsPage extends React.Component {
             });
           } else {
             const newProject = { name: projectName, description: projectDescription };
-            updateProject(cardID, newProject);
+            updateProject(projectID, newProject);
           }
         }
       }
@@ -166,9 +167,8 @@ class ProjectSettingsPage extends React.Component {
       isDeleting,
       // data,
       // description,
-      cardID,
       isUpdating,
-      // message,
+      message,
       isFailed
     } = this.props;
     const projectInfo = JSON.parse(localStorage.getItem('project'));
@@ -180,7 +180,7 @@ class ProjectSettingsPage extends React.Component {
       projectDescription,
       error
     } = this.state;
-    
+    console.log(params);
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
@@ -218,6 +218,12 @@ class ProjectSettingsPage extends React.Component {
                         this.handleChange(e);
                       }}
                     />
+                    {error && (
+                      <Feedback
+                        type="error"
+                        message={error}
+                      />
+                    )}
 
                     <PrimaryButton label={isUpdating ? <Spinner /> : 'update project'} onClick={this.handleSubmit} />
                   </div>
@@ -225,7 +231,7 @@ class ProjectSettingsPage extends React.Component {
                 
               </div>
               <div className="DeleteButtonDiv">
-                <PrimaryButton label="Delete Project" className="DeleteBtn" onClick={(e) => this.handleDeleteProject(e, cardID)} />
+                <PrimaryButton label="Delete Project" className="DeleteBtn" onClick={this.showDeleteAlert} />
               </div>
                 {(openDeleteAlert && (
                   <div className="ProjectDeleteModel">
@@ -244,15 +250,15 @@ class ProjectSettingsPage extends React.Component {
                         <div className="DeleteProjectModalLowerSection">
                           <div className="DeleteProjectModelButtons">
                             <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
-                            <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} className="DeleteBtn" onClick={(e) => this.handleDeleteProject(e, cardID)} />
+                            <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} className="DeleteBtn" onClick={(e) => this.handleDeleteProject(e, params.projectID)} />
                           </div>
 
-                          {/* {(isFailed && message) && (
+                          {(isFailed && message) && (
                             <Feedback
                               message={message}
                               type="error"
                             />
-                          )} */}
+                          )}
                         </div>
                       </div>
 
@@ -270,42 +276,45 @@ class ProjectSettingsPage extends React.Component {
 }
 
 ProjectSettingsPage.propTypes = {
-  // isFailed: PropTypes.bool,
-  // clearDeleteProjectState: PropTypes.func.isRequired,
+  isFailed: PropTypes.bool,
+  clearDeleteProjectState: PropTypes.func.isRequired,
   updateProject: PropTypes.func.isRequired,
-  // deleteProject: PropTypes.func.isRequired,
-  // cardID: PropTypes.string.isRequired,
+  deleteProject: PropTypes.func.isRequired,
   name: PropTypes.string,
   isUpdating: PropTypes.bool,
   description: PropTypes.string,
-  // data: PropTypes.shape({
-  //   id: PropTypes.string.isRequired
-  // }).isRequired,
-  // message: PropTypes.string,
-  // isUpdated: PropTypes.bool,
-  // isDeleted: PropTypes.bool
+  message: PropTypes.string,
+  isUpdated: PropTypes.bool,
+  isDeleted: PropTypes.bool
 };
 
 ProjectSettingsPage.defaultProps = {
-  // message: '',
-  // isUpdated: false,
-  // isDeleted: false,
+  message: '',
+  isUpdated: false,
+  isDeleted: false,
   name: '',
   description: '',
   isUpdating: false
 };
 
 const mapStateToProps = (state) => {
-  // const { data } = state.user;
-  // const { isDeleted } = state.deleteProjectReducer;
+  const { isDeleting, isDeleted, isFailed, clearDeleteProjectState, message} = state.deleteProjectReducer;
+  
   const { isUpdated, isUpdating } = state.updateProjectReducer;
   return {
     // data,
     isUpdated,
-    isUpdating
-    // message,
-    // isDeleted
+    isUpdating,
+    message,
+    isDeleting,
+    isFailed,
+    isDeleted,
+    clearDeleteProjectState
   };
 };
 
-export default ProjectSettingsPage;
+const mapDispatchToProps = {
+  deleteProject, updateProject, clearDeleteProjectState
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectSettingsPage);

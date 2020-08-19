@@ -13,8 +13,7 @@ const SideBar = (props) => {
     exact: true,
     strict: true
   }));
-  console.log(name);
-  console.log(description);
+  
   return (
     <div className="SideBar">
       <div>
