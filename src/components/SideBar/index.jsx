@@ -23,7 +23,6 @@ const SideBar = (props) => {
         <div className="SideBarLinks">
           <Link to="#" className="ListItem">Metrics</Link>
           <div>
-            <Link to="#" className="SubBarListItem">All</Link>
             <Link to="#" className="SubBarListItem">CPU</Link>
             <Link to="#" className="SubBarListItem">Memory</Link>
             <Link to="#" className="SubBarListItem">Storage</Link>
