@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
 import PrimaryButton from '../PrimaryButton';
@@ -37,6 +38,7 @@ class ProjectSettingsPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateProjectName = this.validateProjectName.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
+    this.renderRedirect = this.renderRedirect.bind(this);
   }
   
   componentDidMount() {
@@ -49,6 +51,7 @@ class ProjectSettingsPage extends React.Component {
     if (isDeleted !== prevProps.isDeleted) {
       this.hideDeleteAlert();
     }
+    return <Redirect to={`users/${this.props.match.params.userID}/projects`} />
   }
 
   componentWillUnmount() {
@@ -159,6 +162,13 @@ class ProjectSettingsPage extends React.Component {
     clearDeleteProjectState();
     this.setState({ openDeleteAlert: false });
   }
+  renderRedirect = () => {
+    const { isDeleted } = this.props;
+    const { userID } = this.props.match;
+    if (isDeleted) {
+      return <Redirect to={`/users/${userID}/projects`} />
+    }
+  }
 
   render() {
     const {
@@ -183,6 +193,7 @@ class ProjectSettingsPage extends React.Component {
     console.log(params);
     return (
       <div className="Page">
+        {this.renderRedirect()}
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
