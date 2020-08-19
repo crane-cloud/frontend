@@ -34,17 +34,6 @@ function shuffle(array) {
 }
 
 class ProjectCard extends React.Component {
-  constructor(props) {
-    super(props);
-    const { name, description } = props;
-    this.state = {
-      projectName: name ? props.name : '',
-      projectDescription: description ? props.description : '',
-      error: ''
-    };
-
-    this.container = React.createRef();
-  }
 
   render() {
     const {
