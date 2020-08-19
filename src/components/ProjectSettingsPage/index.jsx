@@ -20,16 +20,17 @@ class ProjectSettingsPage extends React.Component {
   constructor(props) {
     super(props);
     const projectInfo = JSON.parse(localStorage.getItem('project'));
+    const { name, description} = projectInfo;
+
     this.state = {
       openUpdateModal: false,
       openDeleteAlert: false,
       openDropDown: false,
-      projectName: projectInfo.name ? projectInfo.name : '',
-      projectDescription: projectInfo.description ? projectInfo.description : '',
+      projectName: name ? name : '',
+      projectDescription: description ? description: '',
       error: ''
     };
 
-    this.container = React.createRef();
 
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
     this.showDeleteAlert = this.showDeleteAlert.bind(this);
@@ -37,12 +38,7 @@ class ProjectSettingsPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateProjectName = this.validateProjectName.bind(this);
-    this.handleClickOutside = this.handleClickOutside.bind(this);
     this.renderRedirect = this.renderRedirect.bind(this);
-  }
-  
-  componentDidMount() {
-    document.addEventListener('mousedown', this.handleClickOutside);
   }
 
   componentDidUpdate(prevProps) {
@@ -50,19 +46,6 @@ class ProjectSettingsPage extends React.Component {
 
     if (isDeleted !== prevProps.isDeleted) {
       this.hideDeleteAlert();
-    }
-    return <Redirect to={`users/${this.props.match.params.userID}/projects`} />
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickOutside);
-  }
-
-  handleClickOutside(event) {
-    if (this.container.current && !this.container.current.contains(event.target)) {
-      this.setState({
-        openDropDown: false
-      });
     }
   }
 
@@ -91,12 +74,8 @@ class ProjectSettingsPage extends React.Component {
 
   handleSubmit() {
     const { projectName, projectDescription } = this.state;
-    const { match: { params: { projectID }} } = this.props;
-    // const { updateProject } = this.props;
-    const projectInfo = JSON.parse(localStorage.getItem('project'));
-    const name = projectInfo.name;
-    const description = projectInfo.description;
-    
+    const { updateProject, name, description, match: { params: { projectID }} } = this.props;
+
     if (projectName !== name || projectDescription !== description) {
       if (!projectName || !projectDescription) {
         this.setState({
@@ -163,9 +142,9 @@ class ProjectSettingsPage extends React.Component {
     this.setState({ openDeleteAlert: false });
   }
   renderRedirect = () => {
-    const { isDeleted } = this.props;
-    const { userID } = this.props.match;
-    if (isDeleted) {
+    const { isDeleted, isUpdated } = this.props;
+    const { userID } = this.props.match.params;
+    if (isDeleted || isUpdated) {
       return <Redirect to={`/users/${userID}/projects`} />
     }
   }
@@ -173,13 +152,11 @@ class ProjectSettingsPage extends React.Component {
   render() {
     const {
       match: { params },
-      // name,
       isDeleting,
-      // data,
-      // description,
       isUpdating,
       message,
-      isFailed
+      isFailed,
+      isUpdated
     } = this.props;
     const projectInfo = JSON.parse(localStorage.getItem('project'));
     const name = projectInfo.name;
@@ -190,10 +167,10 @@ class ProjectSettingsPage extends React.Component {
       projectDescription,
       error
     } = this.state;
-    console.log(params);
+
     return (
       <div className="Page">
-        {this.renderRedirect()}
+        { isUpdated ? (this.renderRedirect() ) : ( null )}
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
@@ -211,7 +188,7 @@ class ProjectSettingsPage extends React.Component {
             </div>
             <div className="ContentSection">
               <div>
-                <form>
+                <div onSubmit={(e) => {this.handleSubmit(); e.preventDefault();}}>
                   <div className="UpdateForm">
                     <BlackInputText
                       placeholder="Project Name"
@@ -238,8 +215,9 @@ class ProjectSettingsPage extends React.Component {
 
                     <PrimaryButton label={isUpdating ? <Spinner /> : 'update project'} onClick={this.handleSubmit} />
                   </div>
-                </form>
-                
+                </div>
+              
+               
               </div>
               <div className="DeleteButtonDiv">
                 <PrimaryButton label="Delete Project" className="DeleteBtn" onClick={this.showDeleteAlert} />
@@ -313,7 +291,6 @@ const mapStateToProps = (state) => {
   
   const { isUpdated, isUpdating } = state.updateProjectReducer;
   return {
-    // data,
     isUpdated,
     isUpdating,
     message,

@@ -61,8 +61,10 @@ class AppMetricsPage extends React.Component {
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar 
-              projectName={appName}
-              params={params} />
+              name={appName}
+              params={params}
+              pageRoute={this.props.location.pathname}
+              />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">

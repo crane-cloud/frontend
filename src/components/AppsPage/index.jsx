@@ -382,8 +382,8 @@ class AppsPage extends React.Component {
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
-              params={params}
               name={this.getProjectName(projects, params.projectID)}
+              params={params}
               description={projectDesc}
               pageRoute={this.props.location.pathname}
               />
