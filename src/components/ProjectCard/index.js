@@ -33,37 +33,33 @@ function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
 }
 
-class ProjectCard extends React.Component {
+const ProjectCard = (props) => {
+  const {
+    name, data, description, cardID
+  } = props;
 
-  render() {
-    const {
-      name, data, description, cardID
-    } = this.props;
-    const userId = data.id;
+  const userId = data.id;
 
-    return (
-      <>
-        <div className="ProjectsCard">
-          <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps`, projectData: name }} key={cardID}>
-            <div className="ProjectImageDiv">
-              <LineChartComponent data={shuffle(sampleData)} />
-            </div>
-          </Link>
-          <div className="BottomContainer">
-            <div className="ProjectInfoSection">
-              <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps`, projectData: name }} key={cardID}>
-                <div className="ProjectsCardName">{name}</div>
-              </Link>
-            </div>
-            <div className="ProjectDescription">{description}</div>
+  return (
+    <>
+      <div className="ProjectsCard">
+        <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps`, projectData: name }} key={cardID}>
+          <div className="ProjectImageDiv">
+            <LineChartComponent data={shuffle(sampleData)} />
           </div>
+        </Link>
+        <div className="BottomContainer">
+          <div className="ProjectInfoSection">
+            <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps`, projectData: name }} key={cardID}>
+              <div className="ProjectsCardName">{name}</div>
+            </Link>
+          </div>
+          <div className="ProjectDescription">{description}</div>
         </div>
-
-      </>
-
-    );
-  }
-}
+      </div>
+    </>
+  );
+};
 
 ProjectCard.propTypes = {
   cardID: PropTypes.string.isRequired,
