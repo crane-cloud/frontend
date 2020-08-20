@@ -17,31 +17,29 @@ const LineChartComponent = ({
   data,
   yLabel,
   xLabel
-}) => {
-  return (
-    <div className="LineChartContainer">
-      <ResponsiveContainer width="100%" height="100%">
-        {!forPreview ? (
-          <LineChart data={data}>
-            <CartesianGrid strokeDasharray="3" />
-            <XAxis dataKey="name">
-              <Label className="ChartLabel" value={xLabel} position="centerBottom" dy={12} />
-            </XAxis>
-            <YAxis dataKey="memory(bytes)">
-              <Label className="ChartLabel" value={yLabel} angle={270} position="insideLeft" dy={-10} />
-            </YAxis>
-            <Tooltip />
-            <Line dot strokeWidth="2px" dataKey="memory(bytes)" stroke="#008AC1" />
-          </LineChart>
-        ) : (
-          <LineChart>
-            <Line dot strokeWidth="2px" dataKey="memory(bytes)" stroke="#008AC1" />
-          </LineChart>
-        )}
-      </ResponsiveContainer>
-    </div>
-  );
-};
+}) => (
+  <div className="LineChartContainer">
+    <ResponsiveContainer width="100%" height="100%">
+      {!forPreview ? (
+        <LineChart data={data}>
+          <CartesianGrid strokeDasharray="3" />
+          <XAxis dataKey="name">
+            <Label className="ChartLabel" value={xLabel} position="centerBottom" dy={12} />
+          </XAxis>
+          <YAxis dataKey="memory(bytes)">
+            <Label className="ChartLabel" value={yLabel} angle={270} position="insideLeft" dy={-10} />
+          </YAxis>
+          <Tooltip />
+          <Line dot strokeWidth="2px" dataKey="memory(bytes)" stroke="#008AC1" />
+        </LineChart>
+      ) : (
+        <LineChart>
+          <Line dot strokeWidth="2px" dataKey="memory(bytes)" stroke="#008AC1" />
+        </LineChart>
+      )}
+    </ResponsiveContainer>
+  </div>
+);
 
 LineChartComponent.propTypes = {
   forPreview: PropTypes.bool,
