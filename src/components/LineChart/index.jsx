@@ -13,7 +13,7 @@ import {
 import './LineChart.css';
 
 const LineChartComponent = ({
-  forPreview,
+  preview,
   data,
   yLabel,
   xLabel,
@@ -23,7 +23,11 @@ const LineChartComponent = ({
 }) => (
   <div className="LineChartContainer">
     <ResponsiveContainer width="100%" height="100%">
-      {!forPreview ? (
+      {preview ? (
+        <LineChart data={data}>
+          <Line dot={false} strokeWidth="2px" dataKey={lineDataKey} stroke="#008AC1" />
+        </LineChart>
+      ) : (
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3" />
           <XAxis dataKey={xDataKey}>
@@ -35,17 +39,13 @@ const LineChartComponent = ({
           <Tooltip />
           <Line dot strokeWidth="2px" dataKey={lineDataKey} stroke="#008AC1" />
         </LineChart>
-      ) : (
-        <LineChart>
-          <Line dot strokeWidth="2px" dataKey={lineDataKey} stroke="#008AC1" />
-        </LineChart>
       )}
     </ResponsiveContainer>
   </div>
 );
 
 LineChartComponent.propTypes = {
-  forPreview: PropTypes.bool,
+  preview: PropTypes.bool,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   yLabel: PropTypes.string,
   xLabel: PropTypes.string,
@@ -55,7 +55,7 @@ LineChartComponent.propTypes = {
 };
 
 LineChartComponent.defaultProps = {
-  forPreview: false,
+  preview: false,
   xLabel: '',
   yLabel: '',
   xDataKey: '',
