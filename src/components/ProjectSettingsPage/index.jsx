@@ -145,7 +145,7 @@ class ProjectSettingsPage extends React.Component {
     const { isDeleted, isUpdated } = this.props;
     const { userID } = this.props.match.params;
     if (isDeleted || isUpdated) {
-      return <Redirect to={`/users/${userID}/projects`} />
+      return <Redirect to={`/users/${userID}/projects`} noThrow/>
     }
   }
 
