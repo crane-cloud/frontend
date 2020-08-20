@@ -45,7 +45,7 @@ const SampleGraph = () => (
   }}
   >
     <div style={{ height: '500px', width: '700px' }}>
-      <LineChartComponent forPreview={false} xLabel="July" yLabel="RAM(MBs)" data={sampleData} />
+      <LineChartComponent xLabel="July" yLabel="RAM(MBs)" data={sampleData} />
     </div>
   </div>
 );

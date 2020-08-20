@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   LineChart,
   Line,
@@ -24,7 +25,7 @@ const LineChartComponent = ({
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3" />
             <XAxis dataKey="name">
-              <Label className="ChartLabel" value={xLabel} position="insideBottomCenter" dy={12} />
+              <Label className="ChartLabel" value={xLabel} position="centerBottom" dy={12} />
             </XAxis>
             <YAxis dataKey="memory(bytes)">
               <Label className="ChartLabel" value={yLabel} angle={270} position="insideLeft" dy={-10} />
@@ -40,6 +41,19 @@ const LineChartComponent = ({
       </ResponsiveContainer>
     </div>
   );
+};
+
+LineChartComponent.propTypes = {
+  forPreview: PropTypes.bool,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  yLabel: PropTypes.string,
+  xLabel: PropTypes.string
+};
+
+LineChartComponent.defaultProps = {
+  forPreview: false,
+  xLabel: '',
+  yLabel: ''
 };
 
 export default LineChartComponent;
