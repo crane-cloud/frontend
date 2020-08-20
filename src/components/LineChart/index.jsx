@@ -16,25 +16,28 @@ const LineChartComponent = ({
   forPreview,
   data,
   yLabel,
-  xLabel
+  xLabel,
+  xDataKey,
+  yDataKey,
+  lineDataKey
 }) => (
   <div className="LineChartContainer">
     <ResponsiveContainer width="100%" height="100%">
       {!forPreview ? (
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3" />
-          <XAxis dataKey="name">
+          <XAxis dataKey={xDataKey}>
             <Label className="ChartLabel" value={xLabel} position="centerBottom" dy={12} />
           </XAxis>
-          <YAxis dataKey="memory(bytes)">
+          <YAxis dataKey={yDataKey}>
             <Label className="ChartLabel" value={yLabel} angle={270} position="insideLeft" dy={-10} />
           </YAxis>
           <Tooltip />
-          <Line dot strokeWidth="2px" dataKey="memory(bytes)" stroke="#008AC1" />
+          <Line dot strokeWidth="2px" dataKey={lineDataKey} stroke="#008AC1" />
         </LineChart>
       ) : (
         <LineChart>
-          <Line dot strokeWidth="2px" dataKey="memory(bytes)" stroke="#008AC1" />
+          <Line dot strokeWidth="2px" dataKey={lineDataKey} stroke="#008AC1" />
         </LineChart>
       )}
     </ResponsiveContainer>
@@ -45,13 +48,19 @@ LineChartComponent.propTypes = {
   forPreview: PropTypes.bool,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   yLabel: PropTypes.string,
-  xLabel: PropTypes.string
+  xLabel: PropTypes.string,
+  xDataKey: PropTypes.string,
+  yDataKey: PropTypes.string,
+  lineDataKey: PropTypes.string
 };
 
 LineChartComponent.defaultProps = {
   forPreview: false,
   xLabel: '',
-  yLabel: ''
+  yLabel: '',
+  xDataKey: '',
+  yDataKey: '',
+  lineDataKey: ''
 };
 
 export default LineChartComponent;

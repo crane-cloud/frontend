@@ -45,7 +45,14 @@ const SampleGraph = () => (
   }}
   >
     <div style={{ height: '500px', width: '700px' }}>
-      <LineChartComponent xLabel="Time" yLabel="RAM(MBs)" data={sampleData} />
+      <LineChartComponent
+        xLabel="Time"
+        yLabel="RAM(MBs)"
+        data={sampleData}
+        xDataKey="name"
+        yDataKey="memory(bytes)"
+        lineDataKey="memory(bytes)"
+      />
     </div>
   </div>
 );
