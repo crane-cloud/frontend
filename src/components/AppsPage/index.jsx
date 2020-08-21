@@ -69,6 +69,7 @@ class AppsPage extends React.Component {
     this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
     this.handleDBFlavorSelectChange = this.handleDBFlavorSelectChange.bind(this);
     this.getProjectName = this.getProjectName.bind(this);
+    this.getProjectDescription = this.getProjectDescription.bind(this);
   }
 
   componentDidMount() {
@@ -87,6 +88,11 @@ class AppsPage extends React.Component {
   getProjectName(projects, id) {
     const project = projects.find((project) => project.id === id);
     return project.name;
+  }
+
+  getProjectDescription(projects, id) {
+    const project = projects.find((project) => project.id === id);
+    return project.description;
   }
 
   showForm() {
@@ -369,10 +375,10 @@ class AppsPage extends React.Component {
       { name: 'MariaDB', value: 'mariadb', id: '2' },
       { name: 'PostgreSQL', value: 'postgres', id: '3' }
     ];
-    const {projectDesc} = this.props.location;
+
     const projectDetails = {
       name: this.getProjectName(projects, params.projectID),
-      description: projectDesc
+      description: this.getProjectDescription(projects, params.projectID)
     }
     localStorage.setItem('project', JSON.stringify(projectDetails));
     
@@ -384,7 +390,7 @@ class AppsPage extends React.Component {
             <SideBar
               name={this.getProjectName(projects, params.projectID)}
               params={params}
-              description={projectDesc}
+              description={this.getProjectName(projects, params.projectID)}
               pageRoute={this.props.location.pathname}
               />
           </div>
