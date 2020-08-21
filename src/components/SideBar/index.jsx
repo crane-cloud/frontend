@@ -1,32 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './SideBar.css';
-import { Link } from 'react-router-dom';
+import { Link, matchPath } from 'react-router-dom';
 import BackButton from '../../assets/images/backButton.svg';
 import { ReactComponent as Settings } from '../../assets/images/settings.svg';
 
 
 const SideBar = (props) => {
-  const { projectName, userId, projectID } = props;
-
+  const { name, params, pageRoute } = props;
+  const pageLocation = (matchPath(pageRoute, {
+    path: "/users/:userID/projects/:projectID/apps",
+    exact: true,
+    strict: true
+  }));
+  const { userID, projectID } = params;
   return (
     <div className="SideBar">
       <div>
-        { projectID ? (
+        { pageLocation ? (
           <div className="SideBarTopSection">
-            <Link to={{ pathname: `/users/${userId}/projects/${projectID}/apps` }}>
-              <img src={BackButton} alt="Back Button" />
-              <span>&nbsp; &nbsp; &nbsp;</span>
-            </Link>
-            <Link to={{ pathname: `/users/${userId}/projects/${projectID}/apps` }} className="ProjectName">{ projectName }</Link>
-          </div>
+          <Link to={{ pathname: `/users/${userID}/projects/` }}>
+            <img src={BackButton} alt="Back Button" />
+            <span>&nbsp; &nbsp; &nbsp;</span>
+          </Link>
+          <Link to={{ pathname: `/users/${userID}/projects/` }} className="ProjectName">{ name }</Link>
+        </div>
         ): (
           <div className="SideBarTopSection">
-            <Link to={{ pathname: `/users/${userId}/projects/` }}>
+            <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}>
               <img src={BackButton} alt="Back Button" />
               <span>&nbsp; &nbsp; &nbsp;</span>
             </Link>
-            <Link to={{ pathname: `/users/${userId}/projects/` }} className="ProjectName">{ projectName }</Link>
+            <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }} className="ProjectName">{ name }</Link>
           </div>
         )}
       </div>
@@ -43,7 +48,10 @@ const SideBar = (props) => {
         </div>
 
         <div className="SideBarFooterSection">
-          <Settings className="ListItem" />
+          
+          <Link to={{pathname: `/users/${userID}/projects/${projectID}/settings`}} >
+            <Settings className="ListItem" />
+          </Link>
           <div className="SideFooter StickBottom">
             Copyright © 2020 Crane Cloud.
             <br />
@@ -57,8 +65,7 @@ const SideBar = (props) => {
 };
 
 SideBar.propTypes = {
-  projectName: PropTypes.string.isRequired,
-  userId: PropTypes.string.isRequired
+  name: PropTypes.string.isRequired
 };
 
 export default SideBar;

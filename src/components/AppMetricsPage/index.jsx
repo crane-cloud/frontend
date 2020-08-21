@@ -53,14 +53,18 @@ class AppMetricsPage extends React.Component {
 
   render() {
     const { appName, appUrl, liveAppStatus } = this.state.appRelatedInfo;
-    const { projectID, userID } = this.props.match.params;
+    const { params } = this.props.match;
     
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideBar userId={userID} projectName={appName} projectID={projectID} />
+            <SideBar 
+              name={appName}
+              params={params}
+              pageRoute={this.props.location.pathname}
+              />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">

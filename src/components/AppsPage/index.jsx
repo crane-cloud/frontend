@@ -350,15 +350,12 @@ class AppsPage extends React.Component {
 
     const {
       match: { params },
-      user: { data },
       isCreating,
       isCreated,
       message,
       errorCode,
       projects
     } = this.props;
-
-    const userId = data.id;
 
     const replicaOptions = [
       { id: 1, name: '1' },
@@ -372,13 +369,24 @@ class AppsPage extends React.Component {
       { name: 'MariaDB', value: 'mariadb', id: '2' },
       { name: 'PostgreSQL', value: 'postgres', id: '3' }
     ];
-
+    const {projectDesc} = this.props.location;
+    const projectDetails = {
+      name: this.getProjectName(projects, params.projectID),
+      description: projectDesc
+    }
+    localStorage.setItem('project', JSON.stringify(projectDetails));
+    
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideBar userId={userId} projectName={this.getProjectName(projects, params.projectID)} />
+            <SideBar
+              name={this.getProjectName(projects, params.projectID)}
+              params={params}
+              description={projectDesc}
+              pageRoute={this.props.location.pathname}
+              />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
@@ -711,11 +719,6 @@ AppsPage.propTypes = {
       projectID: PropTypes.string.isRequired
     }).isRequired
   }).isRequired,
-  user: PropTypes.shape({
-    data: PropTypes.shape({
-      id: PropTypes.string.isRequired
-    }).isRequired
-  }).isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
@@ -723,13 +726,12 @@ AppsPage.defaultProps = {
   errorCode: null
 };
 
-const mapStateToProps = ({ user, createNewApp, userProjectsReducer }) => {
+const mapStateToProps = ({ createNewApp, userProjectsReducer }) => {
   const {
     message, isCreated, isCreating, errorCode
   } = createNewApp;
   const { projects } = userProjectsReducer;
   return {
-    user,
     isCreated,
     isCreating,
     errorCode,

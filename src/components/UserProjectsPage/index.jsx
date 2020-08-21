@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import './UserProjectsPage.css';
 import addProject, { clearAddProjectState } from '../../redux/actions/addProject';
+import { clearUpdateProjectState } from '../../redux/actions/updateProject';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
 import PrimaryButton from '../PrimaryButton';
@@ -38,14 +39,22 @@ class UserProjectsPage extends React.Component {
   }
 
   componentDidMount() {
-    const { getClustersList, getUserProjects, data } = this.props;
+    localStorage.removeItem('project');
+    const { getClustersList, getUserProjects, data, clearUpdateProjectState } = this.props;
     getUserProjects(data.id);
     getClustersList();
+    clearUpdateProjectState();
   }
 
   componentDidUpdate(prevProps) {
     const {
-      isAdded, getClustersList, getUserProjects, data, isDeleted, isUpdated
+      isAdded,
+      getClustersList,
+      getUserProjects,
+      data,
+      isDeleted,
+      isUpdated,
+      clearUpdateProjectState
     } = this.props;
 
     if (isDeleted !== prevProps.isDeleted) {
@@ -54,6 +63,7 @@ class UserProjectsPage extends React.Component {
     }
 
     if (isUpdated !== prevProps.isUpdated) {
+      clearUpdateProjectState();
       getUserProjects(data.id);
       getClustersList();
     }
@@ -302,7 +312,7 @@ const mapStateToProps = (state) => {
   const { clusters } = state.clustersReducer;
   const { isDeleted } = state.deleteProjectReducer;
   const { isRetrieving, projects, isFetched } = state.userProjectsReducer;
-  const { isUpdated } = state.updateProjectReducer;
+  const { isUpdated, clearUpdateProjectState } = state.updateProjectReducer;
   return {
     isAdded,
     data,
@@ -314,12 +324,17 @@ const mapStateToProps = (state) => {
     isAdding,
     message,
     isDeleted,
-    errorCode
+    errorCode,
+    clearUpdateProjectState
   };
 };
 
 const mapDispatchToProps = {
-  getUserProjects, addProject, getClustersList, clearAddProjectState
+  getUserProjects,
+  addProject,
+  getClustersList,
+  clearAddProjectState,
+  clearUpdateProjectState
 };
 
 export default connect(
