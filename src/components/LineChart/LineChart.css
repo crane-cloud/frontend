@@ -5,3 +5,8 @@
   justify-content: center;
   align-items: center;
 }
+
+.ChartLabel {
+  font-weight: 500;
+  text-anchor: middle;
+}

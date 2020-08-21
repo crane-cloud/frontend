@@ -39,13 +39,13 @@ const ProjectCard = (props) => {
   } = props;
 
   const userId = data.id;
-
+  
   return (
     <>
       <div className="ProjectsCard">
         <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps`, projectData: name }} key={cardID}>
           <div className="ProjectImageDiv">
-            <LineChartComponent data={shuffle(sampleData)} />
+            <LineChartComponent lineDataKey="uv" preview data={shuffle(sampleData)} />
           </div>
         </Link>
         <div className="BottomContainer">

@@ -72,10 +72,10 @@ class AppMetricsPage extends React.Component {
             <div className="ContentSection">
               <div className="TopCardsSection">
                 <MetricsCard icon={<MetricIcon />} title="CPU">
-                  <LineChartComponent data={shuffle(sampleData)} />
+                  <LineChartComponent preview lineDataKey="uv" data={shuffle(sampleData)} />
                 </MetricsCard>
                 <MetricsCard icon={<MetricIcon />} title="Memory">
-                  <LineChartComponent data={shuffle(sampleData)} />
+                  <LineChartComponent preview lineDataKey="uv" data={shuffle(sampleData)} />
                 </MetricsCard>
               </div>
             </div>
