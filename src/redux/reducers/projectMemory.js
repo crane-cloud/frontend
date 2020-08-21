@@ -5,17 +5,17 @@ import {
 } from '../actions/actionTypes';
 
 const initialState = {
-  data: {},
+  metrics: [],
   isFetching: false,
   message: ''
 };
 
-const ProjectMemoryReducer = (state = initialState, action) => {
+const projectMemoryReducer = (state = initialState, action) => {
   switch (action.type) {
   case FETCH_PROJECT_MEMORY_SUCCESS:
     return {
       ...state,
-      data: action.payload,
+      metrics: action.payload,
       isFetching: false,
       message: 'Fetched project memory metrics'
     };
@@ -39,4 +39,4 @@ const ProjectMemoryReducer = (state = initialState, action) => {
     return state;
   }
 };
-export default ProjectMemoryReducer;
+export default projectMemoryReducer;

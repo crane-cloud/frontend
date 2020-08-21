@@ -22,6 +22,7 @@ import deleteAppReducer from './deleteApp';
 import userDetailReducer from './userDetails';
 import usersListReducer from './usersList';
 import updateProjectReducer from './updateProject';
+import projectMemoryReducer from './projectMemory';
 
 
 export default combineReducers({
@@ -48,4 +49,5 @@ export default combineReducers({
   userDetailReducer,
   usersListReducer,
   updateProjectReducer,
+  projectMemoryReducer
 });

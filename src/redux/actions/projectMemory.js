@@ -13,7 +13,7 @@ const startFetchingMemoryMetrics = () => ({
 const getMemoryMetricsSuccess = (response) => (
   {
     type: FETCH_PROJECT_MEMORY_SUCCESS,
-    payload: response.data.data,
+    payload: response.data.data.values,
   });
 
 export const getMemoryMetricsFailed = (error) => ({
@@ -29,7 +29,7 @@ const getProjectMemory = (projectID, params) => (dispatch) => {
 
   axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
 
-  return axios.post(`${API_BASE_URL}/projects/${projectID}/metrics/memory`, params)
+  return axios.post(`${API_BASE_URL}projects/${projectID}/metrics/memory`, params)
     .then((response) => dispatch(getMemoryMetricsSuccess(response)))
     .catch((error) => {
       dispatch(getMemoryMetricsFailed(error));
