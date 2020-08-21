@@ -9,7 +9,6 @@ import getProjectMemory from '../../redux/actions/projectMemory';
 class ProjectCard extends React.Component {
   componentDidMount() {
     const { cardID, getProjectMemory } = this.props;
-    console.log(cardID);
     getProjectMemory(cardID, {});
   }
 
