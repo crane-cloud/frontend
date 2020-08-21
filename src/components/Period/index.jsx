@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './Period.css';
 
 class Period extends React.Component {
@@ -43,5 +44,9 @@ class Period extends React.Component {
     );
   }
 }
+
+Period.propTypes = {
+  onChange: PropTypes.func.isRequired
+};
 
 export default Period;
