@@ -16,3 +16,7 @@
   align-items: center;
   cursor: pointer;
 }
+
+.PeriodButtonActive {
+  background-color: #F7B21F;
+}
