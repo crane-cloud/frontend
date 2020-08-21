@@ -7,31 +7,31 @@ import { ReactComponent as Settings } from '../../assets/images/settings.svg';
 
 
 const SideBar = (props) => {
-  const { name, params, description, pageRoute } = props;
+  const { name, params, pageRoute } = props;
   const pageLocation = (matchPath(pageRoute, {
     path: "/users/:userID/projects/:projectID/apps",
     exact: true,
     strict: true
   }));
-  
+  const { userID, projectID } = params;
   return (
     <div className="SideBar">
       <div>
         { pageLocation ? (
           <div className="SideBarTopSection">
-          <Link to={{ pathname: `/users/${params.userID}/projects/` }}>
+          <Link to={{ pathname: `/users/${userID}/projects/` }}>
             <img src={BackButton} alt="Back Button" />
             <span>&nbsp; &nbsp; &nbsp;</span>
           </Link>
-          <Link to={{ pathname: `/users/${params.userID}/projects/` }} className="ProjectName">{ name }</Link>
+          <Link to={{ pathname: `/users/${userID}/projects/` }} className="ProjectName">{ name }</Link>
         </div>
         ): (
           <div className="SideBarTopSection">
-            <Link to={{ pathname: `/users/${params.userID}/projects/${params.projectID}/apps` }}>
+            <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}>
               <img src={BackButton} alt="Back Button" />
               <span>&nbsp; &nbsp; &nbsp;</span>
             </Link>
-            <Link to={{ pathname: `/users/${params.userID}/projects/${params.projectID}/apps` }} className="ProjectName">{ name }</Link>
+            <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }} className="ProjectName">{ name }</Link>
           </div>
         )}
       </div>
@@ -50,11 +50,7 @@ const SideBar = (props) => {
 
         <div className="SideBarFooterSection">
           
-          <Link to={{pathname: `/users/${params.userID}/projects/${params.projectID}/settings`,
-            state: { name: name,
-              projectID: params.projectID,
-              userId: params.userID,
-              description: description }}} >
+          <Link to={{pathname: `/users/${userID}/projects/${projectID}/settings`}} >
             <Settings className="ListItem" />
           </Link>
           <div className="SideFooter StickBottom">

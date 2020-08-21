@@ -153,6 +153,7 @@ class ProjectSettingsPage extends React.Component {
     const {
       match: { params },
       isDeleting,
+      isDeleted,
       isUpdating,
       message,
       isFailed,
@@ -170,7 +171,7 @@ class ProjectSettingsPage extends React.Component {
 
     return (
       <div className="Page">
-        { isUpdated ? (this.renderRedirect() ) : ( null )}
+        { (isUpdated || isDeleted) ? (this.renderRedirect() ) : ( null )}
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
