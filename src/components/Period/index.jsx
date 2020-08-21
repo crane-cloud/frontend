@@ -1,13 +1,46 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Period.css';
 
-const Period = () => {
-  // const 
-  return (
-    <div>
-      
-    </div>
-  );
-};
+class Period extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      period: '1d'
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentDidMount() {
+    const { onChange } = this.props;
+    const { period } = this.state;
+    onChange(period);
+  }
+
+  componentDidUpdate() {
+    const { onChange } = this.props;
+    const { period } = this.state;
+    onChange(period);
+  }
+
+  handleChange({ target }) {
+    this.setState({ period: target.getAttribute('value') });
+  }
+
+
+  render() {
+    return (
+      <div className="PeriodButtonsContainer">
+        <div className="PeriodButton" name="1hour" value="1h" role="presentation" onClick={(e) => this.handleChange(e)}>1h</div>
+        <div className="PeriodButton" name="1day" value="1d" role="presentation" onClick={(e) => this.handleChange(e)}>1d</div>
+        <div className="PeriodButton" name="7days" value="7d" role="presentation" onClick={(e) => this.handleChange(e)}>7d</div>
+        <div className="PeriodButton" name="1month" value="1m" role="presentation" onClick={(e) => this.handleChange(e)}>1m</div>
+        <div className="PeriodButton" name="3months" value="3m" role="presentation" onClick={(e) => this.handleChange(e)}>3m</div>
+        <div className="PeriodButton" name="1year" value="1y" role="presentation" onClick={(e) => this.handleChange(e)}>1y</div>
+        <div className="PeriodButton" name="all" value="all" role="presentation" onClick={(e) => this.handleChange(e)}>all</div>
+      </div>
+    );
+  }
+}
 
 export default Period;
