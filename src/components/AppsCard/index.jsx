@@ -60,7 +60,7 @@ const AppsCard = (props) => {
         <div className="AppCardBottomSection">
           <div className="AppGraphSummaryLabel">Memory (1d)</div>
           <div className="AppGraphSummary">
-            <LineChartComponent data={shuffle(sampleData)} />
+            <LineChartComponent lineDataKey="uv" preview data={shuffle(sampleData)} />
           </div>
         </div>
       </div>

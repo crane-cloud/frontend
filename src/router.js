@@ -31,7 +31,6 @@ import UsersAccounts from './components/UserAccounts';
 import AppMetricsPage from './components/AppMetricsPage';
 import ProjectSettingsPage from './components/ProjectSettingsPage';
 
-
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) => (
   isAllowed
