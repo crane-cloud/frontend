@@ -28,32 +28,39 @@ class AppSettingsPage extends React.Component {
     this.renderRedirect = this.renderRedirect.bind(this);
   }
 
-  handleDeleteApp(appId){
+  componentDidUpdate(prevProps) {
+    const { isDeleted } = this.props;
+
+    if (isDeleted !== prevProps.isDeleted) {
+      this.hideDeleteAlert();
+    }
+  }
+
+  handleDeleteApp(e, appId){
     const {
       deleteApp
     } = this.props;
-
+    e.preventDefault();
     deleteApp(appId);
   };
 
 
   showDeleteAlert(){
-    // setDeleteAlert(true);
+    this.setState({ openDeleteAlert: true });
   };
 
   hideDeleteAlert(){
-    const {isDeleted} = this.props;
+    const { clearState } = this.props;
     clearState();
-    // setDeleteAlert(false);
-    if (isDeleted) {
-      // hasDeleted();
-    }
+    this.setState({ openDeleteAlert: false });
+
   };
+
   renderRedirect = () => {
-    const { isDeleted, isUpdated } = this.props;
-    const { userID } = this.props.match.params;
-    if (isDeleted || isUpdated) {
-      return <Redirect to={`/users/${userID}/projects`} noThrow/>
+    const { isDeleted } = this.props;
+    const { userID, projectID } = this.props.match.params;
+    if (isDeleted) {
+      return <Redirect to={`/users/${userID}/projects/${projectID}/apps`} noThrow/>
     }
   }
 
@@ -66,14 +73,14 @@ class AppSettingsPage extends React.Component {
       isFailed
     } = this.props;
     const {
-      openDeleteAlert,
-      error
+      openDeleteAlert
     } = this.state;
     const { name } = this.props.location;
-    console.log(this.props);
+    const { appID }  = params;
+    
     return (
       <div className="Page">
-        { isDeleted ? (this.renderRedirect() ) : ( null )}
+        { isDeleted ? (this.renderRedirect() ) : ( null ) }
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
@@ -90,13 +97,12 @@ class AppSettingsPage extends React.Component {
               />
             </div>
             <div className="ContentSection">
-                  Derek The Greatest
               <div className="DeleteButtonDiv">
                 <PrimaryButton label="Delete App" className="DeleteBtn" onClick={this.showDeleteAlert} />
               </div>
               {(openDeleteAlert && (
                 <div className="AppDeleteModel">
-                  <Modal showModal={openDeleteAlert}>
+                  <Modal showModal={openDeleteAlert} onClickAway={this.hideDeleteAlert}>
                     <div className="DeleteAppModel">
                       <div className="DeleteModalUpperSection">
                         <div className="DeleteDescription">
@@ -111,7 +117,7 @@ class AppSettingsPage extends React.Component {
                       <div className="DeleteModalLowerSection">
                         <div className="DeleteAppModelButtons">
                           <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
-                          <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} className="DeleteBtn" onClick={(e) => this.handleDeleteApp(e, params.projectID)} />
+                          <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} className="DeleteBtn" onClick={(e) => this.handleDeleteApp(e, appID)} />
                         </div>
 
                         {message && (
@@ -137,21 +143,14 @@ class AppSettingsPage extends React.Component {
 
 AppSettingsPage.propTypes = {
   isDeleted: PropTypes.bool,
-  isDeleting: PropTypes.bool,
   isFailed: PropTypes.bool,
-  name: PropTypes.string.isRequired,
-  status: PropTypes.bool.isRequired, // this is static
-  url: PropTypes.string.isRequired,
-  appId: PropTypes.string.isRequired,
   deleteApp: PropTypes.func.isRequired,
-  hasDeleted: PropTypes.func.isRequired,
   clearState: PropTypes.func.isRequired,
   message: PropTypes.string.isRequired
 };
 
 AppSettingsPage.defaultProps = {
   isDeleted: false,
-  isDeleting: false,
   isFailed: false
 };
 

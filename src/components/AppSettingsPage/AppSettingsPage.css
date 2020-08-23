@@ -44,9 +44,14 @@
 .DeleteAppModelButtons .DeleteBtn {
   background-color: #ff0000;
   outline: 2px solid #ff0000;
+  transform: scaleX(0.9);
 }
 .DeleteAppModelButtons .DeleteBtn:hover {
   background-color: #fff;
   outline: 2px solid #ff0000;
   color: #ff0000;
 }
+
+/* .Primary-Btn .CancelBtn{
+  transform: scaleX(0.9);
+} */
