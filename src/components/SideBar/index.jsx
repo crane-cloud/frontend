@@ -10,7 +10,7 @@ const SideBar = (props) => {
   const { name, params, pageRoute } = props;
 
   const isAppPage = (matchPath(pageRoute, {
-    path: "/users/:userID/projects/:projectID/apps/:appID/settings",
+    path: "/users/:userID/projects/:projectID/apps/:appID/metrics",
     exact: true,
     strict: true
   }));
@@ -67,7 +67,7 @@ const SideBar = (props) => {
         <div className="SideBarFooterSection">
           {isAppPage ? (
             <div>
-              <Link to={{pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/settings`}} >
+              <Link to={{pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/settings`, name : name}} >
                 <Settings className="ListItem" />
               </Link>
             </div>

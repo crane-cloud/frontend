@@ -70,7 +70,7 @@ class AppSettingsPage extends React.Component {
       error
     } = this.state;
     const { name } = this.props.location;
-
+    console.log(this.props);
     return (
       <div className="Page">
         { isDeleted ? (this.renderRedirect() ) : ( null )}
