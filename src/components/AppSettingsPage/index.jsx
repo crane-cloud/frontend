@@ -22,7 +22,7 @@ class AppSettingsPage extends React.Component {
     };
 
 
-    this.handleDeleteProject = this.handleDeleteProject.bind(this);
+    this.handleDeleteApp = this.handleDeleteApp.bind(this);
     this.showDeleteAlert = this.showDeleteAlert.bind(this);
     this.hideDeleteAlert = this.hideDeleteAlert.bind(this);
     this.renderRedirect = this.renderRedirect.bind(this);
