@@ -13,6 +13,7 @@ const SideBar = (props) => {
     exact: true,
     strict: true
   }));
+  
   const { userID, projectID } = params;
   return (
     <div className="SideBar">

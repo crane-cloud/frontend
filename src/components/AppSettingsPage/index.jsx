@@ -2,26 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import deleteApp, { clearState } from '../../redux/actions/deleteApp';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
 import PrimaryButton from '../PrimaryButton';
-import deleteProject, { clearDeleteProjectState } from '../../redux/actions/deleteProject';
-import updateProject from '../../redux/actions/updateProject';
 import Spinner from '../Spinner';
 import Modal from '../Modal';
 import SideBar from '../SideBar';
-import TextArea from '../TextArea';
 import Feedback from '../Feedback';
 import DeleteWarning from '../DeleteWarning';
-import BlackInputText from '../BlackInputText';
 import './AppSettingsPage.css';
 
 class AppSettingsPage extends React.Component {
   constructor(props) {
     super(props);
-    const projectInfo = JSON.parse(localStorage.getItem('project'));
-    const { name, description} = projectInfo;
-
     this.state = {
       openDeleteAlert: false,
       error: ''
@@ -31,37 +25,29 @@ class AppSettingsPage extends React.Component {
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
     this.showDeleteAlert = this.showDeleteAlert.bind(this);
     this.hideDeleteAlert = this.hideDeleteAlert.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.validateProjectName = this.validateProjectName.bind(this);
     this.renderRedirect = this.renderRedirect.bind(this);
   }
 
-  componentDidUpdate(prevProps) {
-    const { isDeleted } = this.props;
+  handleDeleteApp(appId){
+    const {
+      deleteApp
+    } = props;
 
-    if (isDeleted !== prevProps.isDeleted) {
-      this.hideDeleteAlert();
+    deleteApp(appId);
+  };
+
+
+  showDeleteAlert(){
+    setDeleteAlert(true);
+  };
+
+  hideDeleteAlert(){
+    clearState();
+    setDeleteAlert(false);
+    if (isDeleted) {
+      hasDeleted();
     }
-  }
-
-
-  handleDeleteProject(e, projectID) {
-    const { deleteProject } = this.props;
-    e.preventDefault();
-    deleteProject(projectID);
-  }
-
-
-  showDeleteAlert() {
-    this.setState({ openDeleteAlert: true });
-  }
-
-  hideDeleteAlert() {
-    const { clearDeleteProjectState } = this.props;
-    clearDeleteProjectState();
-    this.setState({ openDeleteAlert: false });
-  }
+  };
   renderRedirect = () => {
     const { isDeleted, isUpdated } = this.props;
     const { userID } = this.props.match.params;
@@ -78,11 +64,8 @@ class AppSettingsPage extends React.Component {
       message,
       isFailed
     } = this.props;
-    const projectInfo = JSON.parse(localStorage.getItem('project'));
-    const name = projectInfo.name;
     const {
       openDeleteAlert,
-      projectName,
       error
     } = this.state;
 
@@ -105,42 +88,41 @@ class AppSettingsPage extends React.Component {
               />
             </div>
             <div className="ContentSection">
-                  
+                  Derek The Greatest
               <div className="DeleteButtonDiv">
                 <PrimaryButton label="Delete App" className="DeleteBtn" onClick={this.showDeleteAlert} />
               </div>
-                {(openDeleteAlert && (
-                  <div className="ProjectDeleteModel">
-                    <Modal showModal={openDeleteAlert} onClickAway={this.hideDeleteAlert}>
-                      <div className="DeleteProjectModel">
-                        <div className="DeleteProjectModalUpperSection">
-                          <div className="DeleteDescription">
-                            Are you sure you want to delete&nbsp;
-                            <span>{projectName}</span>
-                              &nbsp;
-                            ?
-                            <DeleteWarning />
-                          </div>
+              {(openDeleteAlert && (
+                <div className="AppDeleteModel">
+                  <Modal showModal={openDeleteAlert}>
+                    <div className="DeleteAppModel">
+                      <div className="DeleteModalUpperSection">
+                        <div className="DeleteDescription">
+                          Are you sure you want to delete&nbsp;
+                          <span>{name}</span>
+                            &nbsp;
+                          ?
                         </div>
-
-                        <div className="DeleteProjectModalLowerSection">
-                          <div className="DeleteProjectModelButtons">
-                            <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
-                            <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} className="DeleteBtn" onClick={(e) => this.handleDeleteProject(e, params.projectID)} />
-                          </div>
-
-                          {(isFailed && message) && (
-                            <Feedback
-                              message={message}
-                              type="error"
-                            />
-                          )}
-                        </div>
+                        <DeleteWarning />
                       </div>
 
-                    </Modal>
-                  </div>
-                ))}
+                      <div className="DeleteModalLowerSection">
+                        <div className="DeleteAppModelButtons">
+                          <PrimaryButton label="cancel" className="CancelBtn" onClick={hideDeleteAlert} />
+                          <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} className="DeleteBtn" onClick={() => handleDeleteApp(appId)} />
+                        </div>
+
+                        {message && (
+                          <Feedback
+                            type={isFailed ? 'error' : 'success'}
+                            message={message}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -152,36 +134,36 @@ class AppSettingsPage extends React.Component {
 }
 
 AppSettingsPage.propTypes = {
+  isDeleted: PropTypes.bool,
+  isDeleting: PropTypes.bool,
   isFailed: PropTypes.bool,
-  clearDeleteProjectState: PropTypes.func.isRequired,
-  deleteProject: PropTypes.func.isRequired,
-  name: PropTypes.string,
-  message: PropTypes.string,
-  isDeleted: PropTypes.bool
+  name: PropTypes.string.isRequired,
+  status: PropTypes.bool.isRequired, // this is static
+  url: PropTypes.string.isRequired,
+  appId: PropTypes.string.isRequired,
+  deleteApp: PropTypes.func.isRequired,
+  hasDeleted: PropTypes.func.isRequired,
+  clearState: PropTypes.func.isRequired,
+  message: PropTypes.string.isRequired
 };
 
 AppSettingsPage.defaultProps = {
-  message: '',
-  isUpdated: false,
   isDeleted: false,
-  name: '',
-  description: '',
-  isUpdating: false
+  isDeleting: false,
+  isFailed: false
 };
 
 const mapStateToProps = (state) => {
-  const { isDeleting, isDeleted, isFailed, clearDeleteProjectState, message} = state.deleteProjectReducer;
-  
+  const {
+    isDeleting, isDeleted, isFailed, message
+  } = state.deleteAppReducer;
   return {
-    message,
-    isDeleting,
-    isFailed,
-    isDeleted,
-    clearDeleteProjectState
+    isDeleting, isDeleted, isFailed, message
   };
 };
 
-const mapDispatchToProps = { clearDeleteProjectState
+const mapDispatchToProps = {
+  deleteApp, clearState
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppSettingsPage);
