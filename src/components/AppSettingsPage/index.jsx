@@ -31,21 +31,22 @@ class AppSettingsPage extends React.Component {
   handleDeleteApp(appId){
     const {
       deleteApp
-    } = props;
+    } = this.props;
 
     deleteApp(appId);
   };
 
 
   showDeleteAlert(){
-    setDeleteAlert(true);
+    // setDeleteAlert(true);
   };
 
   hideDeleteAlert(){
+    const {isDeleted} = this.props;
     clearState();
-    setDeleteAlert(false);
+    // setDeleteAlert(false);
     if (isDeleted) {
-      hasDeleted();
+      // hasDeleted();
     }
   };
   renderRedirect = () => {
@@ -68,6 +69,7 @@ class AppSettingsPage extends React.Component {
       openDeleteAlert,
       error
     } = this.state;
+    const { name } = this.props.location;
 
     return (
       <div className="Page">
@@ -78,7 +80,7 @@ class AppSettingsPage extends React.Component {
             <SideBar
               name={name}
               params={params}
-              description={description}
+              // description={description}
               pageRoute={this.props.location.pathname} />
           </div>
           <div className="MainContentSection">
@@ -108,8 +110,8 @@ class AppSettingsPage extends React.Component {
 
                       <div className="DeleteModalLowerSection">
                         <div className="DeleteAppModelButtons">
-                          <PrimaryButton label="cancel" className="CancelBtn" onClick={hideDeleteAlert} />
-                          <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} className="DeleteBtn" onClick={() => handleDeleteApp(appId)} />
+                          <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
+                          <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} className="DeleteBtn" onClick={(e) => this.handleDeleteApp(e, params.projectID)} />
                         </div>
 
                         {message && (
