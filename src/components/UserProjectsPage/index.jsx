@@ -158,7 +158,7 @@ class UserProjectsPage extends React.Component {
       errorCode,
       isFetched,
       isAdded,
-      isAdding
+      isAdding,
     } = this.props;
 
     return (
@@ -176,19 +176,19 @@ class UserProjectsPage extends React.Component {
                 </div>
               </div>
             ) : (
-                <div className="ProjectList">
-                  {(isFetched && projects !== undefined && (
-                    (projects.map((project) => (
-                      <ProjectCard
-                        key={project.id}
-                        name={project.name}
-                        description={project.description}
-                        cardID={project.id}
-                      />
-                    ))))
-                  )}
-                </div>
-              )
+              <div className="ProjectList">
+                {(isFetched && projects !== undefined && (
+                  (projects.map((project) => (
+                    <ProjectCard
+                      key={project.id}
+                      name={project.name}
+                      description={project.description}
+                      cardID={project.id}
+                    />
+                  ))))
+                )}
+              </div>
+            )
           }
           {(isFetched && projects.length === 0) && (
             <div className="NoResourcesMessage">
@@ -325,7 +325,7 @@ const mapStateToProps = (state) => {
     message,
     isDeleted,
     errorCode,
-    clearUpdateProjectState
+    clearUpdateProjectState,
   };
 };
 

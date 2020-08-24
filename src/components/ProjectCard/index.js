@@ -12,31 +12,32 @@ class ProjectCard extends React.Component {
     getProjectMemory(cardID, {});
   }
 
-  componentDidUpdate(prevProps) {
-    const { cardID, getProjectMemory } = this.props;
-    if (prevProps.cardID !== cardID) {
-      getProjectMemory(cardID, {});
-    }
-  }
-
   translateTimestamp(timestamp) {
     const timestampMillisecond = timestamp * 1000; // convert timestamp to milliseconds
     const dateObject = new Date(timestampMillisecond); // create a date object out of milliseconds
     return dateObject.toLocaleString();
   }
 
-  formatMetrics(metricsArray) {
-    console.log(metricsArray);
+  formatMetrics(projectID) {
+    const { metrics } = this.props;
+    const found = metrics.find((metric) => metric.project === projectID);
     const memoryData = [];
-    metricsArray.forEach((metric) => {
-      const newMetricObject = {
-        time: this.translateTimestamp(metric.timestamp),
-        memory: metric.value
-      };
 
-      memoryData.push(newMetricObject);
-    });
+    if (found !== undefined) {
+      if (found.metrics.length > 0) {
+        found.metrics.forEach((metric) => {
+          const newMetricObject = {
+            time: this.translateTimestamp(metric.timestamp),
+            memory: metric.value
+          };
 
+          memoryData.push(newMetricObject);
+        });
+      } else {
+        memoryData.push({ time: 0, memory: 0 });
+        memoryData.push({ time: 0, memory: 0 });
+      }
+    }
     return memoryData;
   }
 
@@ -45,13 +46,12 @@ class ProjectCard extends React.Component {
       name,
       data,
       description,
-      cardID,
-      metrics
+      cardID
     } = this.props;
-    const formattedMetrics = this.formatMetrics(metrics);
-    const userId = data.id;
 
-    console.log(cardID, metrics);
+    const formattedMetrics = this.formatMetrics(cardID);
+
+    const userId = data.id;
 
     return (
       <>
@@ -82,7 +82,8 @@ ProjectCard.propTypes = {
   data: PropTypes.shape({
     id: PropTypes.string.isRequired
   }).isRequired,
-  getProjectMemory: PropTypes.func.isRequired
+  getProjectMemory: PropTypes.func.isRequired,
+  metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
 
 ProjectCard.defaultProps = {
@@ -92,12 +93,12 @@ ProjectCard.defaultProps = {
 
 const mapStateToProps = (state) => {
   const { data } = state.user;
-  const { isFetching, metrics, message } = state.projectMemoryReducer;
+  const { isFetching, metrics, message: metricsMessage } = state.projectMemoryReducer;
   return {
     data,
     isFetching,
     metrics,
-    message
+    metricsMessage
   };
 };
 

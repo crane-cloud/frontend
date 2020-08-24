@@ -1,8 +1,7 @@
 import {
   FETCH_PROJECT_MEMORY_SUCCESS,
   FETCH_PROJECT_MEMORY_FAILED,
-  IS_FETCHING_PROJECT_MEMORY,
-  CLEAR_PROJECT_MEMORY_METRICS
+  IS_FETCHING_PROJECT_MEMORY
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -13,32 +12,30 @@ const initialState = {
 
 const projectMemoryReducer = (state = initialState, action) => {
   switch (action.type) {
-  case CLEAR_PROJECT_MEMORY_METRICS:
-    return {
-      metrics: [],
-      isFetching: false,
-      message: ''
-    };
-
   case FETCH_PROJECT_MEMORY_SUCCESS:
     return {
-      metrics: action.payload,
+      ...state,
+      metrics: [...state.metrics,
+        { project: action.payload.project, metrics: action.payload.metrics }
+      ],
       isFetching: false,
       message: 'Fetched project memory metrics'
     };
 
   case FETCH_PROJECT_MEMORY_FAILED:
     return {
-      metrics: [],
+      ...state,
+      metrics: [...state.metrics,
+        { project: action.payload.project, metrics: action.payload.metrics }
+      ],
       isFetching: false,
       message: 'Error fetching project memory metrics'
     };
 
   case IS_FETCHING_PROJECT_MEMORY:
     return {
-      metrics: [],
+      ...state,
       isFetching: true,
-      message: ''
     };
 
   default:
