@@ -4,7 +4,12 @@ import {
   FETCH_PROJECT_MEMORY_SUCCESS,
   FETCH_PROJECT_MEMORY_FAILED,
   IS_FETCHING_PROJECT_MEMORY,
+  CLEAR_PROJECT_MEMORY_METRICS
 } from './actionTypes';
+
+const clearMemoryMetrics = () => ({
+  type: CLEAR_PROJECT_MEMORY_METRICS,
+});
 
 const startFetchingMemoryMetrics = () => ({
   type: IS_FETCHING_PROJECT_MEMORY,
@@ -25,6 +30,8 @@ export const getMemoryMetricsFailed = (error) => ({
 });
 
 const getProjectMemory = (projectID, params) => (dispatch) => {
+  dispatch(clearMemoryMetrics());
+
   dispatch(startFetchingMemoryMetrics());
 
   axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;

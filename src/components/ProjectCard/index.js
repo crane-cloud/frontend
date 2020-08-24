@@ -12,6 +12,13 @@ class ProjectCard extends React.Component {
     getProjectMemory(cardID, {});
   }
 
+  componentDidUpdate(prevProps) {
+    const { cardID, getProjectMemory } = this.props;
+    if (prevProps.cardID !== cardID) {
+      getProjectMemory(cardID, {});
+    }
+  }
+
   translateTimestamp(timestamp) {
     const timestampMillisecond = timestamp * 1000; // convert timestamp to milliseconds
     const dateObject = new Date(timestampMillisecond); // create a date object out of milliseconds
@@ -19,6 +26,7 @@ class ProjectCard extends React.Component {
   }
 
   formatMetrics(metricsArray) {
+    console.log(metricsArray);
     const memoryData = [];
     metricsArray.forEach((metric) => {
       const newMetricObject = {
@@ -42,6 +50,8 @@ class ProjectCard extends React.Component {
     } = this.props;
     const formattedMetrics = this.formatMetrics(metrics);
     const userId = data.id;
+
+    console.log(cardID, metrics);
 
     return (
       <>
