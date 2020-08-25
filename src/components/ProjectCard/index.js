@@ -4,62 +4,76 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './ProjectCard.css';
 import LineChartComponent from '../LineChart';
+import getProjectMemory from '../../redux/actions/projectMemory';
 
-const sampleData = [
-  { name: 'Sample Metric 1', uv: 250 },
-  { name: 'Sample Metric 2', uv: 270 },
-  { name: 'Sample Metric 2', uv: 10 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 70 },
-  { name: 'Sample Metric 2', uv: 150 },
-  { name: 'Sample Metric 2', uv: 60 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 190 },
-  { name: 'Sample Metric 2', uv: 290 },
-  { name: 'Sample Metric 2', uv: 150 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 130 },
-  { name: 'Sample Metric 2', uv: 0 },
-  { name: 'Sample Metric 2', uv: 270 },
-  { name: 'Sample Metric 2', uv: 280 },
-  { name: 'Sample Metric 2', uv: 300 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 170 },
-  { name: 'Sample Metric 2', uv: 290 },
-];
+class ProjectCard extends React.Component {
+  componentDidMount() {
+    const { cardID, getProjectMemory } = this.props;
+    getProjectMemory(cardID, {});
+  }
 
-// this function is meant to shuffle the dummy data array
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
+  translateTimestamp(timestamp) {
+    const timestampMillisecond = timestamp * 1000; // convert timestamp to milliseconds
+    const dateObject = new Date(timestampMillisecond); // create a date object out of milliseconds
+    return dateObject.toLocaleString();
+  }
 
-const ProjectCard = (props) => {
-  const {
-    name, data, description, cardID
-  } = props;
+  formatMetrics(projectID) {
+    const { metrics } = this.props;
+    const found = metrics.find((metric) => metric.project === projectID);
+    const memoryData = [];
 
-  const userId = data.id;
-  
-  return (
-    <>
-      <div className="ProjectsCard">
-        <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps`, projectData: name }} key={cardID}>
-          <div className="ProjectImageDiv">
-            <LineChartComponent lineDataKey="uv" preview data={shuffle(sampleData)} />
+    if (found !== undefined) {
+      if (found.metrics.length > 0) {
+        found.metrics.forEach((metric) => {
+          const newMetricObject = {
+            time: this.translateTimestamp(metric.timestamp),
+            memory: metric.value
+          };
+
+          memoryData.push(newMetricObject);
+        });
+      } else {
+        memoryData.push({ time: 0, memory: 0 });
+        memoryData.push({ time: 0, memory: 0 });
+      }
+    }
+    return memoryData;
+  }
+
+  render() {
+    const {
+      name,
+      data,
+      description,
+      cardID
+    } = this.props;
+
+    const formattedMetrics = this.formatMetrics(cardID);
+
+    const userId = data.id;
+
+    return (
+      <>
+        <div className="ProjectsCard">
+          <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps`, projectData: name }} key={cardID}>
+            <div className="ProjectImageDiv">
+              <LineChartComponent lineDataKey="memory" preview data={formattedMetrics} />
+            </div>
+          </Link>
+          <div className="BottomContainer">
+            <div className="ProjectInfoSection">
+              <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps`, projectData: name }} key={cardID}>
+                <div className="ProjectsCardName">{name}</div>
+              </Link>
+            </div>
+            <div className="ProjectDescription">{description}</div>
           </div>
-        </Link>
-        <div className="BottomContainer">
-          <div className="ProjectInfoSection">
-            <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps`, projectData: name }} key={cardID}>
-              <div className="ProjectsCardName">{name}</div>
-            </Link>
-          </div>
-          <div className="ProjectDescription">{description}</div>
         </div>
-      </div>
-    </>
-  );
-};
+      </>
+    );
+  }
+}
 
 ProjectCard.propTypes = {
   cardID: PropTypes.string.isRequired,
@@ -67,7 +81,9 @@ ProjectCard.propTypes = {
   description: PropTypes.string,
   data: PropTypes.shape({
     id: PropTypes.string.isRequired
-  }).isRequired
+  }).isRequired,
+  getProjectMemory: PropTypes.func.isRequired,
+  metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
 
 ProjectCard.defaultProps = {
@@ -77,9 +93,17 @@ ProjectCard.defaultProps = {
 
 const mapStateToProps = (state) => {
   const { data } = state.user;
+  const { isFetching, metrics, message: metricsMessage } = state.projectMemoryReducer;
   return {
     data,
+    isFetching,
+    metrics,
+    metricsMessage
   };
 };
 
-export default connect(mapStateToProps)(ProjectCard);
+const mapDispatchToProps = {
+  getProjectMemory
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectCard);
