@@ -7,6 +7,7 @@ import Spinner from '../Spinner';
 import SideBar from '../SideBar';
 import './ProjectMemoryPage.css';
 import getProjectMemory from '../../redux/actions/projectMemory';
+import { clearProjectMemory } from '../../redux/actions/projectMemory';
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
 import LineChartComponent from '../LineChart';
@@ -47,16 +48,19 @@ class ProjectMemoryPage extends React.Component {
   }
 
   componentDidMount() {
-    const { match: { params }, getProjectMemory } = this.props;
+    const { match: { params }, getProjectMemory, clearProjectMemory } = this.props;
     const { projectID } = params;
+    clearProjectMemory();
     getProjectMemory(projectID, {});
   }
 
   render() {
     const {
-      match: { params }
+      match: { params },
+      metrics
     } = this.props;
 
+    console.log(metrics);
     const { name } = this.props.location;
     const { appID } = params;
 
@@ -108,7 +112,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  getProjectMemory
+  getProjectMemory,
+  clearProjectMemory
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectMemoryPage);
