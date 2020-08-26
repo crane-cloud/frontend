@@ -363,6 +363,8 @@ class AppsPage extends React.Component {
       projects
     } = this.props;
 
+    const { projectID, userID } = params;
+
     const replicaOptions = [
       { id: 1, name: '1' },
       { id: 2, name: '2' },
@@ -393,11 +395,11 @@ class AppsPage extends React.Component {
               params={params}
               description={this.getProjectName(projects, params.projectID)}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${params.userID}/projects/${params.projectID}/metrics/`}
-              cpuLink={`/users/${params.userID}/projects/${params.projectID}/cpu/`}
-              memoryLink={`/users/${params.userID}/projects/${params.projectID}/memory/`}
-              storageLink={`/users/${params.userID}/projects/${params.projectID}/storage/`}
-              networLink={`/users/${params.userID}/projects/${params.projectID}/network/`}
+              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics/`}
+              cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
+              memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
+              storageLink={`/users/${userID}/projects/${projectID}/storage/`}
+              networLink={`/users/${userID}/projects/${projectID}/network/`}
             />
           </div>
           <div className="MainContentSection">
