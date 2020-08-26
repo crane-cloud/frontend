@@ -6,8 +6,7 @@ import Header from '../Header';
 import Spinner from '../Spinner';
 import SideBar from '../SideBar';
 import './ProjectMemoryPage.css';
-import getProjectMemory from '../../redux/actions/projectMemory';
-import { clearProjectMemory } from '../../redux/actions/projectMemory';
+import getProjectMemory, { clearProjectMemory } from '../../redux/actions/projectMemory';
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
 import LineChartComponent from '../LineChart';
@@ -22,6 +21,7 @@ class ProjectMemoryPage extends React.Component {
     };
 
     this.getCurrentTimeStamp = this.getCurrentTimeStamp.bind(this);
+    this.getProjectName = this.getProjectName.bind(this);
   }
 
   componentDidMount() {
@@ -29,6 +29,11 @@ class ProjectMemoryPage extends React.Component {
     const { projectID } = params;
     clearProjectMemory();
     getProjectMemory(projectID, {});
+  }
+
+  getProjectName(id) {
+    const { projects } = this.props;
+    return projects.find((project) => project.id === id).name;
   }
 
   getCurrentTimeStamp() {
@@ -70,16 +75,13 @@ class ProjectMemoryPage extends React.Component {
 
     const formattedMetrics = this.formatMetrics(projectID);
 
-    const { name } = this.props.location;
-    const { appID } = params;
-
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
-              name={name}
+              name={this.getProjectName(projectID)}
               params={params}
               pageRoute={this.props.location.pathname} />
           </div>
@@ -102,24 +104,29 @@ class ProjectMemoryPage extends React.Component {
             </div>
           </div>
         </div>
-
-
       </div>
     );
   }
 }
 
 ProjectMemoryPage.propTypes = {
-
-};
-
-ProjectMemoryPage.defaultProps = {
-
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      projectID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  getProjectMemory: PropTypes.func.isRequired,
+  clearProjectMemory: PropTypes.func.isRequired,
+  projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
 
 const mapStateToProps = (state) => {
   const { isFetching, metrics, message: metricsMessage } = state.projectMemoryReducer;
+  const { projects } = state.userProjectsReducer;
   return {
+    projects,
     isFetching,
     metrics,
     metricsMessage
