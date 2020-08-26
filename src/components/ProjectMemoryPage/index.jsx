@@ -100,7 +100,7 @@ class ProjectMemoryPage extends React.Component {
             <div className="ContentSection">
               {isFetching ? (
                 <div className="ContentSectionSpinner">
-                  <Spinner />
+                  <Spinner size="big" />
                 </div>
               ) : (
                 <MetricsCard className="MetricsCardGraph" title={<PeriodSelector onChange={() => { }} />}>
