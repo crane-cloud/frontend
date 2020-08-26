@@ -83,7 +83,13 @@ class ProjectMemoryPage extends React.Component {
             <SideBar
               name={this.getProjectName(projectID)}
               params={params}
-              pageRoute={this.props.location.pathname} />
+              pageRoute={this.props.location.pathname}
+              allMetricsLink={`/users/${params.userID}/projects/${params.projectID}/metrics/`}
+              cpuLink={`/users/${params.userID}/projects/${params.projectID}/cpu/`}
+              memoryLink={`/users/${params.userID}/projects/${params.projectID}/memory/`}
+              storageLink={`/users/${params.userID}/projects/${params.projectID}/storage/`}
+              networLink={`/users/${params.userID}/projects/${params.projectID}/network/`}
+            />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
@@ -112,7 +118,8 @@ class ProjectMemoryPage extends React.Component {
 ProjectMemoryPage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      projectID: PropTypes.string.isRequired
+      projectID: PropTypes.string.isRequired,
+      userID: PropTypes.string.isRequired,
     }).isRequired
   }).isRequired,
   isFetching: PropTypes.bool.isRequired,
