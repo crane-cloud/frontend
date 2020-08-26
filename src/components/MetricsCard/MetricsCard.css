@@ -16,7 +16,7 @@
 }
 
 .CardBodySection {
-  height: 10rem;
+  min-height: 10rem;
   flex-grow: 1;
   padding: 1rem;
 }

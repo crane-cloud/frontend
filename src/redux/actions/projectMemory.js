@@ -3,7 +3,8 @@ import { API_BASE_URL } from '../../config';
 import {
   FETCH_PROJECT_MEMORY_SUCCESS,
   FETCH_PROJECT_MEMORY_FAILED,
-  IS_FETCHING_PROJECT_MEMORY
+  IS_FETCHING_PROJECT_MEMORY,
+  CLEAR_PROJECT_MEMORY
 } from './actionTypes';
 
 const startFetchingMemoryMetrics = () => ({
@@ -19,13 +20,17 @@ const getMemoryMetricsSuccess = (ID, response) => (
     },
   });
 
-export const getMemoryMetricsFailed = (ID, error) => ({
+const getMemoryMetricsFailed = (ID, error) => ({
   type: FETCH_PROJECT_MEMORY_FAILED,
   payload: {
     project: ID,
     metrics: [],
     error: error.status,
   },
+});
+
+const clearProjectMemory = () => ({
+  type: CLEAR_PROJECT_MEMORY
 });
 
 const getProjectMemory = (projectID, params) => (dispatch) => {
@@ -43,3 +48,4 @@ const getProjectMemory = (projectID, params) => (dispatch) => {
 
 
 export default getProjectMemory;
+export { clearProjectMemory };

@@ -1,9 +1,14 @@
 import React from 'react';
 import './MetricsCard.css';
 
-const MetricsCard = ({ title, icon, children }) => {
+const MetricsCard = ({
+  className,
+  title,
+  icon,
+  children
+}) => {
   return (
-    <div className="MetricsCardContainer">
+    <div className={`MetricsCardContainer ${className}`}>
       <div className="CardHeaderSection">
         <div className="CardTitle">
           {title}
