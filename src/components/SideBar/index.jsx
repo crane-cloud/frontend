@@ -27,11 +27,11 @@ const SideBar = (props) => {
       <div>
         { isAppPage ? (
             <div className="SideBarTopSection">
-              <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/metrics` }}>
+              <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}>
                 <img src={BackButton} alt="Back Button" />
                 <span>&nbsp; &nbsp; &nbsp;</span>
               </Link>
-              <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/metrics` }} className="ProjectName">{ name }</Link>
+              <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }} className="ProjectName">{ name }</Link>
             </div>
           ): ( pageLocation ? (
                 <div className="SideBarTopSection">
