@@ -54,6 +54,8 @@ class AppMetricsPage extends React.Component {
   render() {
     const { appName, appUrl, liveAppStatus } = this.state.appRelatedInfo;
     const { params } = this.props.match;
+    const { projectID, userID, appID } = params;
+    console.log(params)
     
     return (
       <div className="Page">
@@ -64,6 +66,11 @@ class AppMetricsPage extends React.Component {
               name={appName}
               params={params}
               pageRoute={this.props.location.pathname}
+              allMetricsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/metrics/`}
+              cpuLink={`/users/${userID}/projects/${projectID}/apps/${appID}/cpu/`}
+              memoryLink={`/users/${userID}/projects/${projectID}/apps/${appID}/memory/`}
+              storageLink={`/users/${userID}/projects/${projectID}/apps/${appID}/storage/`}
+              networLink={`/users/${userID}/projects/${projectID}/apps/${appID}/network/`}
               />
           </div>
           <div className="MainContentSection">
