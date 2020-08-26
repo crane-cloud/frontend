@@ -23,7 +23,6 @@ class Period extends React.Component {
     const { period } = this.state;
     return (
       <div className="PeriodButtonsContainer">
-        <div className={`${period === '1h' && 'PeriodButtonActive'} PeriodButton`} name="1hour" value="1h" role="presentation" onClick={this.handleChange}>1h</div>
         <div className={`${period === '1d' && 'PeriodButtonActive'} PeriodButton`} name="1day" value="1d" role="presentation" onClick={this.handleChange}>1d</div>
         <div className={`${period === '7d' && 'PeriodButtonActive'} PeriodButton`} name="7days" value="7d" role="presentation" onClick={this.handleChange}>7d</div>
         <div className={`${period === '1m' && 'PeriodButtonActive'} PeriodButton`} name="1month" value="1m" role="presentation" onClick={this.handleChange}>1m</div>
