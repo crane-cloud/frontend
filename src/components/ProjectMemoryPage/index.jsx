@@ -12,39 +12,16 @@ import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
 import LineChartComponent from '../LineChart';
 
-const sampleData = [
-  { name: 'Sample Metric 1', uv: 250 },
-  { name: 'Sample Metric 2', uv: 270 },
-  { name: 'Sample Metric 2', uv: 10 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 70 },
-  { name: 'Sample Metric 2', uv: 150 },
-  { name: 'Sample Metric 2', uv: 60 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 190 },
-  { name: 'Sample Metric 2', uv: 290 },
-  { name: 'Sample Metric 2', uv: 150 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 130 },
-  { name: 'Sample Metric 2', uv: 0 },
-  { name: 'Sample Metric 2', uv: 270 },
-  { name: 'Sample Metric 2', uv: 280 },
-  { name: 'Sample Metric 2', uv: 300 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 170 },
-  { name: 'Sample Metric 2', uv: 290 },
-];
-
-// this function is meant to shuffle the dummy data array
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
-
 class ProjectMemoryPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      start: this.getCurrentTimeStamp(),
+      end: 0,
+      step: 0
     };
+
+    this.getCurrentTimeStamp = this.getCurrentTimeStamp.bind(this);
   }
 
   componentDidMount() {
@@ -54,13 +31,45 @@ class ProjectMemoryPage extends React.Component {
     getProjectMemory(projectID, {});
   }
 
-  render() {
-    const {
-      match: { params },
-      metrics
-    } = this.props;
+  getCurrentTimeStamp() {
+    return new Date().getTime();
+  }
 
-    console.log(metrics);
+  translateTimestamp(timestamp) {
+    const timestampMillisecond = timestamp * 1000; // convert timestamp to milliseconds
+    const dateObject = new Date(timestampMillisecond); // create a date object out of milliseconds
+    return dateObject.toLocaleString();
+  }
+
+  formatMetrics(projectID) {
+    const { metrics } = this.props;
+    const found = metrics.find((metric) => metric.project === projectID);
+    const memoryData = [];
+
+    if (found !== undefined) {
+      if (found.metrics.length > 0) {
+        found.metrics.forEach((metric) => {
+          const newMetricObject = {
+            time: this.translateTimestamp(metric.timestamp),
+            memory: metric.value
+          };
+
+          memoryData.push(newMetricObject);
+        });
+      } else {
+        memoryData.push({ time: 0, memory: 0 });
+        memoryData.push({ time: 0, memory: 0 });
+      }
+    }
+    return memoryData;
+  }
+
+  render() {
+    const { match: { params }, isFetching } = this.props;
+    const { projectID } = params;
+
+    const formattedMetrics = this.formatMetrics(projectID);
+
     const { name } = this.props.location;
     const { appID } = params;
 
@@ -81,9 +90,15 @@ class ProjectMemoryPage extends React.Component {
               />
             </div>
             <div className="ContentSection">
-              <MetricsCard className="MetricsCardGraph" title={<PeriodSelector onChange={() => {}} />}>
-                <LineChartComponent yLabel="Memory(bytes)" xLabel="Time" lineDataKey="uv" data={shuffle(sampleData)} />
-              </MetricsCard>
+              {isFetching ? (
+                <div className="ContentSectionSpinner">
+                  <Spinner />
+                </div>
+              ) : (
+                <MetricsCard className="MetricsCardGraph" title={<PeriodSelector onChange={() => { }} />}>
+                  <LineChartComponent yLabel="Memory(bytes)" xLabel="Time" lineDataKey="memory" data={formattedMetrics} />
+                </MetricsCard>
+              )}
             </div>
           </div>
         </div>
