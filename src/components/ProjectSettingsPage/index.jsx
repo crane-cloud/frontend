@@ -169,6 +169,8 @@ class ProjectSettingsPage extends React.Component {
       projectDescription
     } = this.state;
 
+    const { projectID, userID } = params;
+
     return (
       <div className="Page">
         { (isUpdated || isDeleted) ? (this.renderRedirect() ) : ( null )}
@@ -179,7 +181,13 @@ class ProjectSettingsPage extends React.Component {
               name={name}
               params={params}
               description={description}
-              pageRoute={this.props.location.pathname} />
+              pageRoute={this.props.location.pathname}
+              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics/`}
+              cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
+              memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
+              storageLink={`/users/${userID}/projects/${projectID}/storage/`}
+              networLink={`/users/${userID}/projects/${projectID}/network/`}
+            />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">

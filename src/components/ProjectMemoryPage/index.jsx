@@ -71,7 +71,7 @@ class ProjectMemoryPage extends React.Component {
 
   render() {
     const { match: { params }, isFetching } = this.props;
-    const { projectID } = params;
+    const { projectID, userID } = params;
 
     const formattedMetrics = this.formatMetrics(projectID);
 
@@ -83,7 +83,13 @@ class ProjectMemoryPage extends React.Component {
             <SideBar
               name={this.getProjectName(projectID)}
               params={params}
-              pageRoute={this.props.location.pathname} />
+              pageRoute={this.props.location.pathname}
+              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics/`}
+              cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
+              memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
+              storageLink={`/users/${userID}/projects/${projectID}/storage/`}
+              networLink={`/users/${userID}/projects/${projectID}/network/`}
+            />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
@@ -94,7 +100,7 @@ class ProjectMemoryPage extends React.Component {
             <div className="ContentSection">
               {isFetching ? (
                 <div className="ContentSectionSpinner">
-                  <Spinner />
+                  <Spinner size="big" />
                 </div>
               ) : (
                 <MetricsCard className="MetricsCardGraph" title={<PeriodSelector onChange={() => { }} />}>
@@ -112,7 +118,8 @@ class ProjectMemoryPage extends React.Component {
 ProjectMemoryPage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      projectID: PropTypes.string.isRequired
+      projectID: PropTypes.string.isRequired,
+      userID: PropTypes.string.isRequired,
     }).isRequired
   }).isRequired,
   isFetching: PropTypes.bool.isRequired,
