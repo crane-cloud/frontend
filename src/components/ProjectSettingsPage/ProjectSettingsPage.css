@@ -95,3 +95,7 @@
 .ContentSection{
     justify-content: space-between;
 }
+
+.ErrorOnWhite{
+  width: 25rem;
+}

@@ -6,7 +6,7 @@ import InformationBar from '../InformationBar';
 import Header from '../Header';
 import PrimaryButton from '../PrimaryButton';
 import deleteProject, { clearDeleteProjectState } from '../../redux/actions/deleteProject';
-import updateProject from '../../redux/actions/updateProject';
+import updateProject, { clearUpdateProjectState } from '../../redux/actions/updateProject';
 import Spinner from '../Spinner';
 import Modal from '../Modal';
 import SideBar from '../SideBar';
@@ -43,7 +43,7 @@ class ProjectSettingsPage extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { isDeleted } = this.props;
-
+    
     if (isDeleted !== prevProps.isDeleted) {
       this.hideDeleteAlert();
     }
@@ -157,7 +157,8 @@ class ProjectSettingsPage extends React.Component {
       isUpdating,
       message,
       isFailed,
-      isUpdated
+      isUpdated,
+      errorMessage
     } = this.props;
     const projectInfo = JSON.parse(localStorage.getItem('project'));
     const name = projectInfo.name;
@@ -165,8 +166,7 @@ class ProjectSettingsPage extends React.Component {
     const {
       openDeleteAlert,
       projectName,
-      projectDescription,
-      error
+      projectDescription
     } = this.state;
 
     return (
@@ -207,10 +207,10 @@ class ProjectSettingsPage extends React.Component {
                         this.handleChange(e);
                       }}
                     />
-                    {error && (
+                    {errorMessage && (
                       <Feedback
                         type="error"
-                        message={error}
+                        message="You cant update only the description."
                       />
                     )}
 
@@ -290,7 +290,7 @@ ProjectSettingsPage.defaultProps = {
 const mapStateToProps = (state) => {
   const { isDeleting, isDeleted, isFailed, clearDeleteProjectState, message} = state.deleteProjectReducer;
   
-  const { isUpdated, isUpdating } = state.updateProjectReducer;
+  const { isUpdated, isUpdating, errorMessage, clearUpdateProjectState } = state.updateProjectReducer;
   return {
     isUpdated,
     isUpdating,
@@ -298,12 +298,14 @@ const mapStateToProps = (state) => {
     isDeleting,
     isFailed,
     isDeleted,
-    clearDeleteProjectState
+    errorMessage,
+    clearDeleteProjectState,
+    clearUpdateProjectState
   };
 };
 
 const mapDispatchToProps = {
-  deleteProject, updateProject, clearDeleteProjectState
+  deleteProject, updateProject, clearDeleteProjectState, clearUpdateProjectState
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectSettingsPage);
