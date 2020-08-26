@@ -379,9 +379,10 @@ class AppsPage extends React.Component {
     const projectDetails = {
       name: this.getProjectName(projects, params.projectID),
       description: this.getProjectDescription(projects, params.projectID)
-    }
+    };
+
     localStorage.setItem('project', JSON.stringify(projectDetails));
-    
+
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
@@ -392,7 +393,12 @@ class AppsPage extends React.Component {
               params={params}
               description={this.getProjectName(projects, params.projectID)}
               pageRoute={this.props.location.pathname}
-              />
+              allMetricsLink={`/users/${params.userID}/projects/${params.projectID}/metrics/`}
+              cpuLink={`/users/${params.userID}/projects/${params.projectID}/cpu/`}
+              memoryLink={`/users/${params.userID}/projects/${params.projectID}/memory/`}
+              storageLink={`/users/${params.userID}/projects/${params.projectID}/storage/`}
+              networLink={`/users/${params.userID}/projects/${params.projectID}/network/`}
+            />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
@@ -722,7 +728,8 @@ AppsPage.propTypes = {
   errorCode: PropTypes.number,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      projectID: PropTypes.string.isRequired
+      projectID: PropTypes.string.isRequired,
+      userID: PropTypes.string.isRequired,
     }).isRequired
   }).isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,

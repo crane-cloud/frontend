@@ -102,7 +102,7 @@ const SideBar = (props) => {
 
 SideBar.propTypes = {
   name: PropTypes.string.isRequired,
-  params: PropTypes.string.isRequired,
+  params: PropTypes.shape({}).isRequired,
   pageRoute: PropTypes.string.isRequired,
   cpuLink: PropTypes.string.isRequired,
   memoryLink: PropTypes.string.isRequired,
