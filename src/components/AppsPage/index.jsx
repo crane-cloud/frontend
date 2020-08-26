@@ -363,6 +363,8 @@ class AppsPage extends React.Component {
       projects
     } = this.props;
 
+    const { projectID, userID } = params;
+
     const replicaOptions = [
       { id: 1, name: '1' },
       { id: 2, name: '2' },
@@ -379,9 +381,10 @@ class AppsPage extends React.Component {
     const projectDetails = {
       name: this.getProjectName(projects, params.projectID),
       description: this.getProjectDescription(projects, params.projectID)
-    }
+    };
+
     localStorage.setItem('project', JSON.stringify(projectDetails));
-    
+
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
@@ -392,7 +395,12 @@ class AppsPage extends React.Component {
               params={params}
               description={this.getProjectName(projects, params.projectID)}
               pageRoute={this.props.location.pathname}
-              />
+              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics/`}
+              cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
+              memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
+              storageLink={`/users/${userID}/projects/${projectID}/storage/`}
+              networLink={`/users/${userID}/projects/${projectID}/network/`}
+            />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
@@ -722,7 +730,8 @@ AppsPage.propTypes = {
   errorCode: PropTypes.number,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      projectID: PropTypes.string.isRequired
+      projectID: PropTypes.string.isRequired,
+      userID: PropTypes.string.isRequired,
     }).isRequired
   }).isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,

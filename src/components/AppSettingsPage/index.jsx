@@ -76,7 +76,7 @@ class AppSettingsPage extends React.Component {
       openDeleteAlert
     } = this.state;
     const { name } = this.props.location;
-    const { appID }  = params;
+    const { projectID, userID, appID } = params;
     
     return (
       <div className="Page">
@@ -88,7 +88,13 @@ class AppSettingsPage extends React.Component {
               name={name}
               params={params}
               // description={description}
-              pageRoute={this.props.location.pathname} />
+              pageRoute={this.props.location.pathname}
+              allMetricsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/metrics/`}
+              cpuLink={`/users/${userID}/projects/${projectID}/apps/${appID}/cpu/`}
+              memoryLink={`/users/${userID}/projects/${projectID}/apps/${appID}/memory/`}
+              storageLink={`/users/${userID}/projects/${projectID}/apps/${appID}/storage/`}
+              networLink={`/users/${userID}/projects/${projectID}/apps/${appID}/network/`}
+            />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
