@@ -55,7 +55,6 @@ class AppMetricsPage extends React.Component {
     const { appName, appUrl, liveAppStatus } = this.state.appRelatedInfo;
     const { params } = this.props.match;
     const { projectID, userID, appID } = params;
-    console.log(params)
     
     return (
       <div className="Page">
