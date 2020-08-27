@@ -19,4 +19,5 @@
   min-height: 10rem;
   flex-grow: 1;
   padding: 1rem;
+  display: flex;
 }

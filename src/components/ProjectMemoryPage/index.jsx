@@ -15,13 +15,19 @@ class ProjectMemoryPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      start: this.getCurrentTimeStamp(),
-      end: 0,
-      step: 0
+      time: {
+        start: 0,
+        end: this.getCurrentTimeStamp(),
+        step: ''
+      }
     };
 
     this.getCurrentTimeStamp = this.getCurrentTimeStamp.bind(this);
     this.getProjectName = this.getProjectName.bind(this);
+    this.handlePeriodChange = this.handlePeriodChange.bind(this);
+    this.subtractTime = this.subtractTime.bind(this);
+    this.fetchMemory = this.fetchMemory.bind(this);
+    this.bytesToMegabytes = this.bytesToMegabytes.bind(this);
   }
 
   componentDidMount() {
@@ -37,13 +43,17 @@ class ProjectMemoryPage extends React.Component {
   }
 
   getCurrentTimeStamp() {
-    return new Date().getTime();
+    return new Date().getTime() / 1000;
   }
 
   translateTimestamp(timestamp) {
     const timestampMillisecond = timestamp * 1000; // convert timestamp to milliseconds
     const dateObject = new Date(timestampMillisecond); // create a date object out of milliseconds
     return dateObject.toLocaleString();
+  }
+
+  bytesToMegabytes(bytes) {
+    return bytes / 1000000;
   }
 
   formatMetrics(projectID) {
@@ -56,7 +66,7 @@ class ProjectMemoryPage extends React.Component {
         found.metrics.forEach((metric) => {
           const newMetricObject = {
             time: this.translateTimestamp(metric.timestamp),
-            memory: metric.value
+            memory: this.bytesToMegabytes(metric.value)
           };
 
           memoryData.push(newMetricObject);
@@ -67,6 +77,60 @@ class ProjectMemoryPage extends React.Component {
       }
     }
     return memoryData;
+  }
+
+  async handlePeriodChange(period) {
+    let days;
+    let step;
+    if (period === '1d') {
+      days = 1;
+      step = '2h';
+    } else if (period === '7d') {
+      days = 7;
+      step = '1d';
+    } else if (period === '1m') {
+      days = 30;
+      step = '1d';
+    } else if (period === '3m') {
+      days = 90;
+      step = '7d';
+    } else if (period === '1y') {
+      days = 365;
+      step = '1m';
+    }
+
+    const startTimeStamp = await this.subtractTime(this.getCurrentTimeStamp(), days);
+
+    this.setState((prevState) => ({
+      time: {
+        ...prevState.time,
+        start: startTimeStamp,
+        step,
+      }
+    }));
+
+    this.fetchMemory(period);
+  }
+
+  // this function gets the 'end' timestamp
+  subtractTime(endTimestamp, days) {
+    return new Date(endTimestamp - (days * 24 * 60 * 60)).getTime();
+  }
+
+  fetchMemory(period) {
+    const { time } = this.state;
+    const { match: { params }, getProjectMemory, clearProjectMemory } = this.props;
+    const { projectID } = params;
+
+    console.log(time);
+
+    clearProjectMemory();
+
+    if (period === '1d') {
+      getProjectMemory(projectID, {});
+    } else {
+      getProjectMemory(projectID, time);
+    }
   }
 
   render() {
@@ -98,15 +162,18 @@ class ProjectMemoryPage extends React.Component {
               />
             </div>
             <div className="ContentSection">
-              {isFetching ? (
-                <div className="ContentSectionSpinner">
-                  <Spinner size="big" />
-                </div>
-              ) : (
-                <MetricsCard className="MetricsCardGraph" title={<PeriodSelector onChange={() => { }} />}>
-                  <LineChartComponent yLabel="Memory(bytes)" xLabel="Time" lineDataKey="memory" data={formattedMetrics} />
-                </MetricsCard>
-              )}
+              <MetricsCard
+                className="MetricsCardGraph"
+                title={<PeriodSelector onChange={this.handlePeriodChange} />}
+              >
+                {isFetching ? (
+                  <div className="ContentSectionSpinner">
+                    <Spinner />
+                  </div>
+                ) : (
+                  <LineChartComponent yLabel="Memory(MBs)" xLabel="Time" lineDataKey="memory" data={formattedMetrics} />
+                )}
+              </MetricsCard>
             </div>
           </div>
         </div>
