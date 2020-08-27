@@ -26,8 +26,8 @@ class ProjectNetworkPage extends React.Component {
     this.getProjectName = this.getProjectName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
     this.subtractTime = this.subtractTime.bind(this);
-    this.fetchMemory = this.fetchMemory.bind(this);
-    this.bytesToMegabytes = this.bytesToMegabytes.bind(this);
+    this.fetchNetwork = this.fetchNetwork.bind(this);
+    // this.bytesToMegabytes = this.bytesToMegabytes.bind(this);
   }
 
   componentDidMount() {
@@ -52,9 +52,9 @@ class ProjectNetworkPage extends React.Component {
     return dateObject.toLocaleString();
   }
 
-  bytesToMegabytes(bytes) {
-    return bytes / 1000000;
-  }
+//   bytesToMegabytes(bytes) {
+//     return bytes / 1000000;
+//   }
 
   formatMetrics(projectID) {
     const { metrics } = this.props;
@@ -66,7 +66,7 @@ class ProjectNetworkPage extends React.Component {
         found.metrics.forEach((metric) => {
           const newMetricObject = {
             time: this.translateTimestamp(metric.timestamp),
-            network: this.bytesToMegabytes(metric.value)
+            network: metric.value
           };
 
           networkData.push(newMetricObject);
@@ -109,7 +109,7 @@ class ProjectNetworkPage extends React.Component {
       }
     }));
 
-    this.fetchMemory(period);
+    this.fetchNetwork(period);
   }
 
   // this function gets the 'end' timestamp
@@ -117,12 +117,10 @@ class ProjectNetworkPage extends React.Component {
     return new Date(endTimestamp - (days * 24 * 60 * 60)).getTime();
   }
 
-  fetchMemory(period) {
+  fetchNetwork(period) {
     const { time } = this.state;
     const { match: { params }, getProjectNetwork, clearProjectNetwork } = this.props;
     const { projectID } = params;
-
-    console.log(time);
 
     clearProjectNetwork();
 
@@ -171,7 +169,7 @@ class ProjectNetworkPage extends React.Component {
                     <Spinner />
                   </div>
                 ) : (
-                  <LineChartComponent yLabel="Network(MBs)" xLabel="Time" lineDataKey="network" data={formattedMetrics} />
+                  <LineChartComponent yLabel="Network (KBs)" xLabel="Time" lineDataKey="network" data={formattedMetrics} />
                 )}
               </MetricsCard>
             </div>
