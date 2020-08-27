@@ -6,7 +6,7 @@ import Header from '../Header';
 import Spinner from '../Spinner';
 import SideBar from '../SideBar';
 import './ProjectNetworkPage.css';
-import getProjectNetwork, { clearProjectNetwork } from '../../redux/actions/projectMemory';
+import getProjectNetwork, { clearProjectNetwork } from '../../redux/actions/projectNetwork';
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
 import LineChartComponent from '../LineChart';
@@ -197,7 +197,7 @@ ProjectNetworkPage.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const { isFetching, metrics, message: metricsMessage } = state.projectMemoryReducer;
+  const { isFetching, metrics, message: metricsMessage } = state.projectNetworkReducer;
   const { projects } = state.userProjectsReducer;
   return {
     projects,
