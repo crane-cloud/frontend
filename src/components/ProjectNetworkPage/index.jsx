@@ -27,7 +27,6 @@ class ProjectNetworkPage extends React.Component {
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
     this.subtractTime = this.subtractTime.bind(this);
     this.fetchNetwork = this.fetchNetwork.bind(this);
-    // this.bytesToMegabytes = this.bytesToMegabytes.bind(this);
   }
 
   componentDidMount() {
@@ -51,10 +50,6 @@ class ProjectNetworkPage extends React.Component {
     const dateObject = new Date(timestampMillisecond); // create a date object out of milliseconds
     return dateObject.toLocaleString();
   }
-
-//   bytesToMegabytes(bytes) {
-//     return bytes / 1000000;
-//   }
 
   formatMetrics(projectID) {
     const { metrics } = this.props;
