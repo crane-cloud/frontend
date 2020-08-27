@@ -52,6 +52,6 @@ export default combineReducers({
   usersListReducer,
   updateProjectReducer,
   projectMemoryReducer,
-  projectCPUReducer
+  projectCPUReducer,
   projectNetworkReducer
 });
