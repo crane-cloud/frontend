@@ -186,7 +186,7 @@ class ProjectSettingsPage extends React.Component {
               cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
               memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
               storageLink={`/users/${userID}/projects/${projectID}/storage/`}
-              networLink={`/users/${userID}/projects/${projectID}/network/`}
+              networkLink={`/users/${userID}/projects/${projectID}/network/`}
             />
           </div>
           <div className="MainContentSection">

@@ -150,15 +150,15 @@ class ProjectNetworkPage extends React.Component {
               pageRoute={this.props.location.pathname}
               allMetricsLink={`/users/${userID}/projects/${projectID}/metrics/`}
               cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
-              networkLink={`/users/${userID}/projects/${projectID}/network/`}
+              memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
               storageLink={`/users/${userID}/projects/${projectID}/storage/`}
-              networLink={`/users/${userID}/projects/${projectID}/network/`}
+              networkLink={`/users/${userID}/projects/${projectID}/network/`}
             />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
               <InformationBar
-                header="Memory"
+                header="Network"
               />
             </div>
             <div className="ContentSection">
@@ -171,7 +171,7 @@ class ProjectNetworkPage extends React.Component {
                     <Spinner />
                   </div>
                 ) : (
-                  <LineChartComponent yLabel="Memory(MBs)" xLabel="Time" lineDataKey="network" data={formattedMetrics} />
+                  <LineChartComponent yLabel="Network(MBs)" xLabel="Time" lineDataKey="network" data={formattedMetrics} />
                 )}
               </MetricsCard>
             </div>
