@@ -26,8 +26,7 @@ class ProjectCPUPage extends React.Component {
     this.getProjectName = this.getProjectName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
     this.subtractTime = this.subtractTime.bind(this);
-    this.fetchMemory = this.fetchMemory.bind(this);
-    this.bytesToMegabytes = this.bytesToMegabytes.bind(this);
+    this.fetchCPU = this.fetchCPU.bind(this);
   }
 
   componentDidMount() {
@@ -52,31 +51,27 @@ class ProjectCPUPage extends React.Component {
     return dateObject.toLocaleString();
   }
 
-  bytesToMegabytes(bytes) {
-    return bytes / 1000000;
-  }
-
   formatMetrics(projectID) {
     const { metrics } = this.props;
     const found = metrics.find((metric) => metric.project === projectID);
-    const memoryData = [];
+    const cpuData = [];
 
     if (found !== undefined) {
       if (found.metrics.length > 0) {
         found.metrics.forEach((metric) => {
           const newMetricObject = {
             time: this.translateTimestamp(metric.timestamp),
-            memory: this.bytesToMegabytes(metric.value)
+            cpu: metric.value * 10 // multiplying by 10 fot graph plotting
           };
 
-          memoryData.push(newMetricObject);
+          cpuData.push(newMetricObject);
         });
       } else {
-        memoryData.push({ time: 0, memory: 0 });
-        memoryData.push({ time: 0, memory: 0 });
+        cpuData.push({ time: 0, cpu: 0 });
+        cpuData.push({ time: 0, cpu: 0 });
       }
     }
-    return memoryData;
+    return cpuData;
   }
 
   async handlePeriodChange(period) {
@@ -109,7 +104,7 @@ class ProjectCPUPage extends React.Component {
       }
     }));
 
-    this.fetchMemory(period);
+    this.fetchCPU(period);
   }
 
   // this function gets the 'end' timestamp
@@ -117,7 +112,7 @@ class ProjectCPUPage extends React.Component {
     return new Date(endTimestamp - (days * 24 * 60 * 60)).getTime();
   }
 
-  fetchMemory(period) {
+  fetchCPU(period) {
     const { time } = this.state;
     const { match: { params }, getProjectCPU, clearProjectCPU } = this.props;
     const { projectID } = params;
@@ -158,7 +153,7 @@ class ProjectCPUPage extends React.Component {
           <div className="MainContentSection">
             <div className="InformationBarSection">
               <InformationBar
-                header="Memory"
+                header="CPU"
               />
             </div>
             <div className="ContentSection">
@@ -171,7 +166,7 @@ class ProjectCPUPage extends React.Component {
                     <Spinner />
                   </div>
                 ) : (
-                  <LineChartComponent yLabel="Memory(MBs)" xLabel="Time" lineDataKey="memory" data={formattedMetrics} />
+                  <LineChartComponent yLabel="CPU(cores)" xLabel="Time" lineDataKey="cpu" data={formattedMetrics} />
                 )}
               </MetricsCard>
             </div>
