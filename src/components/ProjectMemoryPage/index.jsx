@@ -109,7 +109,7 @@ class ProjectMemoryPage extends React.Component {
       }
     }));
 
-    this.fetchMemory(period);
+    this.fetchMemory();
   }
 
   // this function gets the 'end' timestamp
@@ -117,20 +117,13 @@ class ProjectMemoryPage extends React.Component {
     return new Date(endTimestamp - (days * 24 * 60 * 60)).getTime();
   }
 
-  fetchMemory(period) {
+  fetchMemory() {
     const { time } = this.state;
     const { match: { params }, getProjectMemory, clearProjectMemory } = this.props;
     const { projectID } = params;
 
-    console.log(time);
-
     clearProjectMemory();
-
-    if (period === '1d') {
-      getProjectMemory(projectID, {});
-    } else {
-      getProjectMemory(projectID, time);
-    }
+    getProjectMemory(projectID, time);
   }
 
   render() {
