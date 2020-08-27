@@ -23,6 +23,7 @@ import userDetailReducer from './userDetails';
 import usersListReducer from './usersList';
 import updateProjectReducer from './updateProject';
 import projectMemoryReducer from './projectMemory';
+import projectNetworkReducer from './projectNetwork';
 
 
 export default combineReducers({
@@ -49,5 +50,6 @@ export default combineReducers({
   userDetailReducer,
   usersListReducer,
   updateProjectReducer,
-  projectMemoryReducer
+  projectMemoryReducer,
+  projectNetworkReducer
 });

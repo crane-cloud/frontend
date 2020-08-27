@@ -93,7 +93,7 @@ class AppSettingsPage extends React.Component {
               cpuLink={`/users/${userID}/projects/${projectID}/apps/${appID}/cpu/`}
               memoryLink={`/users/${userID}/projects/${projectID}/apps/${appID}/memory/`}
               storageLink={`/users/${userID}/projects/${projectID}/apps/${appID}/storage/`}
-              networLink={`/users/${userID}/projects/${projectID}/apps/${appID}/network/`}
+              networkLink={`/users/${userID}/projects/${projectID}/apps/${appID}/network/`}
             />
           </div>
           <div className="MainContentSection">

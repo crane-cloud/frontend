@@ -5,13 +5,13 @@ import InformationBar from '../InformationBar';
 import Header from '../Header';
 import Spinner from '../Spinner';
 import SideBar from '../SideBar';
-import './ProjectMemoryPage.css';
-import getProjectMemory, { clearProjectMemory } from '../../redux/actions/projectMemory';
+import './ProjectNetworkPage.css';
+import getProjectNetwork, { clearProjectNetwork } from '../../redux/actions/projectNetwork';
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
 import LineChartComponent from '../LineChart';
 
-class ProjectMemoryPage extends React.Component {
+class ProjectNetworkPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,15 +26,14 @@ class ProjectMemoryPage extends React.Component {
     this.getProjectName = this.getProjectName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
     this.subtractTime = this.subtractTime.bind(this);
-    this.fetchMemory = this.fetchMemory.bind(this);
-    this.bytesToMegabytes = this.bytesToMegabytes.bind(this);
+    this.fetchNetwork = this.fetchNetwork.bind(this);
   }
 
   componentDidMount() {
-    const { match: { params }, getProjectMemory, clearProjectMemory } = this.props;
+    const { match: { params }, getProjectNetwork, clearProjectNetwork } = this.props;
     const { projectID } = params;
-    clearProjectMemory();
-    getProjectMemory(projectID, {});
+    clearProjectNetwork();
+    getProjectNetwork(projectID, {});
   }
 
   getProjectName(id) {
@@ -52,31 +51,27 @@ class ProjectMemoryPage extends React.Component {
     return dateObject.toLocaleString();
   }
 
-  bytesToMegabytes(bytes) {
-    return bytes / 1000000;
-  }
-
   formatMetrics(projectID) {
     const { metrics } = this.props;
     const found = metrics.find((metric) => metric.project === projectID);
-    const memoryData = [];
+    const networkData = [];
 
     if (found !== undefined) {
       if (found.metrics.length > 0) {
         found.metrics.forEach((metric) => {
           const newMetricObject = {
             time: this.translateTimestamp(metric.timestamp),
-            memory: this.bytesToMegabytes(metric.value)
+            network: metric.value
           };
 
-          memoryData.push(newMetricObject);
+          networkData.push(newMetricObject);
         });
       } else {
-        memoryData.push({ time: 0, memory: 0 });
-        memoryData.push({ time: 0, memory: 0 });
+        networkData.push({ time: 0, network: 0 });
+        networkData.push({ time: 0, network: 0 });
       }
     }
-    return memoryData;
+    return networkData;
   }
 
   async handlePeriodChange(period) {
@@ -109,7 +104,7 @@ class ProjectMemoryPage extends React.Component {
       }
     }));
 
-    this.fetchMemory(period);
+    this.fetchNetwork(period);
   }
 
   // this function gets the 'end' timestamp
@@ -117,19 +112,17 @@ class ProjectMemoryPage extends React.Component {
     return new Date(endTimestamp - (days * 24 * 60 * 60)).getTime();
   }
 
-  fetchMemory(period) {
+  fetchNetwork(period) {
     const { time } = this.state;
-    const { match: { params }, getProjectMemory, clearProjectMemory } = this.props;
+    const { match: { params }, getProjectNetwork, clearProjectNetwork } = this.props;
     const { projectID } = params;
 
-    console.log(time);
-
-    clearProjectMemory();
+    clearProjectNetwork();
 
     if (period === '1d') {
-      getProjectMemory(projectID, {});
+      getProjectNetwork(projectID, {});
     } else {
-      getProjectMemory(projectID, time);
+      getProjectNetwork(projectID, time);
     }
   }
 
@@ -158,7 +151,7 @@ class ProjectMemoryPage extends React.Component {
           <div className="MainContentSection">
             <div className="InformationBarSection">
               <InformationBar
-                header="Memory"
+                header="Network"
               />
             </div>
             <div className="ContentSection">
@@ -171,7 +164,7 @@ class ProjectMemoryPage extends React.Component {
                     <Spinner />
                   </div>
                 ) : (
-                  <LineChartComponent yLabel="Memory(MBs)" xLabel="Time" lineDataKey="memory" data={formattedMetrics} />
+                  <LineChartComponent yLabel="Network (KBs)" xLabel="Time" lineDataKey="network" data={formattedMetrics} />
                 )}
               </MetricsCard>
             </div>
@@ -182,7 +175,7 @@ class ProjectMemoryPage extends React.Component {
   }
 }
 
-ProjectMemoryPage.propTypes = {
+ProjectNetworkPage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       projectID: PropTypes.string.isRequired,
@@ -191,13 +184,13 @@ ProjectMemoryPage.propTypes = {
   }).isRequired,
   isFetching: PropTypes.bool.isRequired,
   metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  getProjectMemory: PropTypes.func.isRequired,
-  clearProjectMemory: PropTypes.func.isRequired,
+  getProjectNetwork: PropTypes.func.isRequired,
+  clearProjectNetwork: PropTypes.func.isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
 
 const mapStateToProps = (state) => {
-  const { isFetching, metrics, message: metricsMessage } = state.projectMemoryReducer;
+  const { isFetching, metrics, message: metricsMessage } = state.projectNetworkReducer;
   const { projects } = state.userProjectsReducer;
   return {
     projects,
@@ -208,8 +201,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  getProjectMemory,
-  clearProjectMemory
+  getProjectNetwork,
+  clearProjectNetwork
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectMemoryPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectNetworkPage);
