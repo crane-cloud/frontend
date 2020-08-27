@@ -32,6 +32,7 @@ import AppMetricsPage from './components/AppMetricsPage';
 import ProjectSettingsPage from './components/ProjectSettingsPage';
 import AppSettingsPage from './components/AppSettingsPage';
 import ProjectMemoryPage from './components/ProjectMemoryPage';
+import ProjectCPUPage from './components/ProjectCPUPage';
 import ProjectNetworkPage from './components/ProjectNetworkPage';
 
 // Protected route should have token. If not, login.
@@ -62,6 +63,7 @@ const Routes = () => (
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/apps/:appID/metrics" component={AppMetricsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/apps/:appID/settings" component={AppSettingsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/memory/" component={ProjectMemoryPage} />
+      <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/cpu/" component={ProjectCPUPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/network/" component={ProjectNetworkPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/settings" component={ProjectSettingsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/clusters/:clusterID/accounts" component={UsersAccounts} />
