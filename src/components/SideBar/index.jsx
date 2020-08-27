@@ -14,7 +14,7 @@ const SideBar = (props) => {
     cpuLink,
     memoryLink,
     storageLink,
-    networLink,
+    networkLink,
     allMetricsLink
   } = props;
 
@@ -65,12 +65,13 @@ const SideBar = (props) => {
 
       <div className="SideBarBottomSection">
         <div className="SideBarLinks">
+        <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }} className="ListItem">Apps</Link>
           <Link to={allMetricsLink} className="ListItem">Metrics</Link>
           <div>
             <Link to={cpuLink} className="SubBarListItem">CPU</Link>
             <Link to={memoryLink} className="SubBarListItem">Memory</Link>
             <Link to={storageLink} className="SubBarListItem">Storage</Link>
-            <Link to={networLink} className="SubBarListItem">Network</Link>
+            <Link to={networkLink} className="SubBarListItem">Network</Link>
           </div>
         </div>
 
@@ -108,7 +109,7 @@ SideBar.propTypes = {
   cpuLink: PropTypes.string.isRequired,
   memoryLink: PropTypes.string.isRequired,
   storageLink: PropTypes.string.isRequired,
-  networLink: PropTypes.string.isRequired,
+  networkLink: PropTypes.string.isRequired,
   allMetricsLink: PropTypes.string.isRequired
 };
 
