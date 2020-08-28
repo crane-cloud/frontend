@@ -104,7 +104,7 @@ class ProjectCPUPage extends React.Component {
       }
     }));
 
-    this.fetchCPU(period);
+    this.fetchCPU();
   }
 
   // this function gets the 'end' timestamp
@@ -112,20 +112,13 @@ class ProjectCPUPage extends React.Component {
     return new Date(endTimestamp - (days * 24 * 60 * 60)).getTime();
   }
 
-  fetchCPU(period) {
+  fetchCPU() {
     const { time } = this.state;
     const { match: { params }, getProjectCPU, clearProjectCPU } = this.props;
     const { projectID } = params;
 
-    console.log(time);
-
     clearProjectCPU();
-
-    if (period === '1d') {
-      getProjectCPU(projectID, {});
-    } else {
-      getProjectCPU(projectID, time);
-    }
+    getProjectCPU(projectID, time);
   }
 
   render() {

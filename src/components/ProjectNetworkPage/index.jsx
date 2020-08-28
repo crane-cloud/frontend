@@ -104,7 +104,7 @@ class ProjectNetworkPage extends React.Component {
       }
     }));
 
-    this.fetchNetwork(period);
+    this.fetchNetwork();
   }
 
   // this function gets the 'end' timestamp
@@ -112,18 +112,13 @@ class ProjectNetworkPage extends React.Component {
     return new Date(endTimestamp - (days * 24 * 60 * 60)).getTime();
   }
 
-  fetchNetwork(period) {
+  fetchNetwork() {
     const { time } = this.state;
     const { match: { params }, getProjectNetwork, clearProjectNetwork } = this.props;
     const { projectID } = params;
 
     clearProjectNetwork();
-
-    if (period === '1d') {
-      getProjectNetwork(projectID, {});
-    } else {
-      getProjectNetwork(projectID, time);
-    }
+    getProjectNetwork(projectID, time);
   }
 
   render() {
