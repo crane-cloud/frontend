@@ -136,7 +136,7 @@ class ProjectCPUPage extends React.Component {
               name={this.getProjectName(projectID)}
               params={params}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics/`}
+              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
               cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
               memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
               storageLink={`/users/${userID}/projects/${projectID}/storage/`}

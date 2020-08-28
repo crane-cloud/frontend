@@ -182,7 +182,7 @@ class ProjectSettingsPage extends React.Component {
               params={params}
               description={description}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics/`}
+              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
               cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
               memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
               storageLink={`/users/${userID}/projects/${projectID}/storage/`}
