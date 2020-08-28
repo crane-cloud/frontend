@@ -35,9 +35,9 @@ class ProjectMetricsPage extends React.Component {
     return projects.find((project) => project.id === id).name;
   }
 
-  getProjectDescription(projects, id) {
-    const project = projects.find((project) => project.id === id);
-    return project.description;
+  getProjectDescription(id) {
+    const { projects } = this.props;
+    return projects.find((project) => project.id === id).description;
   }
 
   render() {

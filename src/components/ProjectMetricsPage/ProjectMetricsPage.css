@@ -4,6 +4,7 @@
 
 .TopCardsSection {
   display: grid;
-  grid-auto-flow: column;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: auto auto;
   gap: 1rem;
 }
