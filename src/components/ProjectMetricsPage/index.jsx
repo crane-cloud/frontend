@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from 'react-redux';
 import getProjectCPU, { clearProjectCPU } from '../../redux/actions/projectCPU';
 import PeriodSelector from '../Period';
+import getProjectMemory from '../../redux/actions/projectMemory';
 import LineChartComponent from '../LineChart';
 import InformationBar from "../InformationBar";
 import Header from "../Header";
@@ -21,13 +22,44 @@ class ProjectMetricsPage extends React.Component {
 
   componentDidMount() {
     const {
-      match: { params },
-      getProjectCPU,
-      clearProjectCPU,
-    } = this.props;
+        match: { params },
+        getProjectCPU,
+        clearProjectCPU,
+      } = this.props;
     const { projectID } = params;
+    const { getProjectMemory } = this.props;
+    getProjectMemory(projectID, {});
     clearProjectCPU();
     getProjectCPU(projectID, {});
+  }
+
+  translateTimestamp(timestamp) {
+    const timestampMillisecond = timestamp * 1000; // convert timestamp to milliseconds
+    const dateObject = new Date(timestampMillisecond); // create a date object out of milliseconds
+    return dateObject.toLocaleString();
+  }
+
+  formatMetrics(projectID) {
+    const { metrics } = this.props;
+    const found = metrics.find((metric) => metric.project === projectID);
+    const memoryData = [];
+
+    if (found !== undefined) {
+      if (found.metrics.length > 0) {
+        found.metrics.forEach((metric) => {
+          const newMetricObject = {
+            time: this.translateTimestamp(metric.timestamp),
+            memory: metric.value
+          };
+
+          memoryData.push(newMetricObject);
+        });
+      } else {
+        memoryData.push({ time: 0, memory: 0 });
+        memoryData.push({ time: 0, memory: 0 });
+      }
+    }
+    return memoryData;
   }
 
   getProjectName(id) {
@@ -48,11 +80,12 @@ class ProjectMetricsPage extends React.Component {
 
     const { projectID, userID } = params;
     const projectDetails = {
-      name: this.getProjectName(params.projectID),
-      description: this.getProjectDescription( params.projectID),
+      name: this.getProjectName(projectID),
+      description: this.getProjectDescription( projectID),
     };
 
     localStorage.setItem("project", JSON.stringify(projectDetails));
+    const formattedMetrics = this.formatMetrics(projectID);
 
     return (
       <div className="Page">
@@ -80,12 +113,12 @@ class ProjectMetricsPage extends React.Component {
             <div className="ContentSection">
               <div className="TopCardsSection">
                 <MetricsCard icon={<MetricIcon />} title="CPU">
+                  <LineChartComponent preview lineDataKey="uv" data={formattedMetrics}/>
+                </MetricsCard>
+                <MetricsCard icon={<MetricIcon />} title="MEMORY">
                   <LineChartComponent preview lineDataKey="uv" />
                 </MetricsCard>
-                <MetricsCard icon={<MetricIcon />} title="Memory">
-                  <LineChartComponent preview lineDataKey="uv" />
-                </MetricsCard>
-                <MetricsCard icon={<MetricIcon />} title="Memory">
+                <MetricsCard icon={<MetricIcon />} title="NETWORK">
                   <LineChartComponent preview lineDataKey="uv" />
                 </MetricsCard>
               </div>
@@ -112,6 +145,11 @@ ProjectMetricsPage.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+  const { 
+    isFetching,
+    metrics,
+    message: metricsMessage
+  } = state.projectMemoryReducer;
   const {
     isFetching,
     metrics,
@@ -129,6 +167,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   getProjectCPU,
   clearProjectCPU,
+  getProjectMemory
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectMetricsPage);
