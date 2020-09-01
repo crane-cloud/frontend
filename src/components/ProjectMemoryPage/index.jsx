@@ -56,14 +56,18 @@ class ProjectMemoryPage extends React.Component {
     return bytes / 1000000;
   }
 
+  // formatMemoryMetrics(projectID, memoryMetrics);
+  // formatMetrics(projectID, cpuMetrics);
+  // formatMetrics(projectID, storageMetrics);
+
   formatMetrics(projectID) {
-    const { metrics } = this.props;
-    const found = metrics.find((metric) => metric.project === projectID);
+    const { memoryMetrics } = this.props;
+    const found = memoryMetrics.find((metric) => metric.project === projectID);
     const memoryData = [];
 
     if (found !== undefined) {
-      if (found.metrics.length > 0) {
-        found.metrics.forEach((metric) => {
+      if (found.memoryMetrics.length > 0) {
+        found.memoryMetrics.forEach((metric) => {
           const newMetricObject = {
             time: this.translateTimestamp(metric.timestamp),
             memory: this.bytesToMegabytes(metric.value)
@@ -183,19 +187,19 @@ ProjectMemoryPage.propTypes = {
     }).isRequired
   }).isRequired,
   isFetching: PropTypes.bool.isRequired,
-  metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  memoryMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getProjectMemory: PropTypes.func.isRequired,
   clearProjectMemory: PropTypes.func.isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
 
 const mapStateToProps = (state) => {
-  const { isFetching, metrics, message: metricsMessage } = state.projectMemoryReducer;
+  const { isFetching, memoryMetrics, message: metricsMessage } = state.projectMemoryReducer;
   const { projects } = state.userProjectsReducer;
   return {
     projects,
     isFetching,
-    metrics,
+    memoryMetrics,
     metricsMessage
   };
 };

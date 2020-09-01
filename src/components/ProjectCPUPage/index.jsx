@@ -52,13 +52,13 @@ class ProjectCPUPage extends React.Component {
   }
 
   formatMetrics(projectID) {
-    const { metrics } = this.props;
-    const found = metrics.find((metric) => metric.project === projectID);
+    const { cpuMetrics } = this.props;
+    const found = cpuMetrics.find((metric) => metric.project === projectID);
     const cpuData = [];
 
     if (found !== undefined) {
-      if (found.metrics.length > 0) {
-        found.metrics.forEach((metric) => {
+      if (found.cpuMetrics.length > 0) {
+        found.cpuMetrics.forEach((metric) => {
           const newMetricObject = {
             time: this.translateTimestamp(metric.timestamp),
             cpu: metric.value * 10 // multiplying by 10 fot graph plotting
@@ -178,19 +178,19 @@ ProjectCPUPage.propTypes = {
     }).isRequired
   }).isRequired,
   isFetching: PropTypes.bool.isRequired,
-  metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  cpuMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getProjectCPU: PropTypes.func.isRequired,
   clearProjectCPU: PropTypes.func.isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
 
 const mapStateToProps = (state) => {
-  const { isFetching, metrics, message: metricsMessage } = state.projectCPUReducer;
+  const { isFetching, cpuMetrics, message: metricsMessage } = state.projectCPUReducer;
   const { projects } = state.userProjectsReducer;
   return {
     projects,
     isFetching,
-    metrics,
+    cpuMetrics,
     metricsMessage
   };
 };

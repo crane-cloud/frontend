@@ -138,7 +138,7 @@ ProjectMetricsPage.propTypes = {
     }).isRequired,
   }).isRequired,
   isFetching: PropTypes.bool.isRequired,
-  metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  // metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getProjectCPU: PropTypes.func.isRequired,
   clearProjectCPU: PropTypes.func.isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -146,21 +146,24 @@ ProjectMetricsPage.propTypes = {
 
 const mapStateToProps = (state) => {
   const { 
-    isFetching,
-    metrics,
-    message: metricsMessage
+    isFetchingMemory,
+    memoryMetrics,
+    memoryMessage: metricsMessage
   } = state.projectMemoryReducer;
   const {
-    isFetching,
-    metrics,
-    message: metricsMessage,
+    isFetchingCPU,
+    cpuMetrics,
+    cpuMessage: metricsMessage,
   } = state.projectCPUReducer;
   const { projects } = state.userProjectsReducer;
   return {
     projects,
-    isFetching,
-    metrics,
-    metricsMessage,
+    isFetchingMemory,
+    isFetchingCPU,
+    memoryMetrics,
+    cpuMetrics,
+    memoryMessage,
+    cpuMessage
   };
 };
 
