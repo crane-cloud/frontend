@@ -24,8 +24,8 @@ class ProjectCard extends React.Component {
     const memoryData = [];
 
     if (found !== undefined) {
-      if (found.memoryMetrics.length > 0) {
-        found.memoryMetrics.forEach((metric) => {
+      if (found.metrics.length > 0) {
+        found.metrics.forEach((metric) => {
           const newMetricObject = {
             time: this.translateTimestamp(metric.timestamp),
             memory: metric.value
@@ -52,7 +52,7 @@ class ProjectCard extends React.Component {
     const formattedMetrics = this.formatMetrics(cardID);
 
     const userId = data.id;
-
+    console.log(this.props);
     return (
       <>
         <div className="ProjectsCard">
@@ -93,12 +93,12 @@ ProjectCard.defaultProps = {
 
 const mapStateToProps = (state) => {
   const { data } = state.user;
-  const { isFetching, memoryMetrics, message: metricsMessage } = state.projectMemoryReducer;
+  const { isFetchingMemory, memoryMetrics, memoryMessage } = state.projectMemoryReducer;
   return {
     data,
-    isFetching,
+    isFetchingMemory,
     memoryMetrics,
-    metricsMessage
+    memoryMessage
   };
 };
 

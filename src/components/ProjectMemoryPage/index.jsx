@@ -56,18 +56,14 @@ class ProjectMemoryPage extends React.Component {
     return bytes / 1000000;
   }
 
-  // formatMemoryMetrics(projectID, memoryMetrics);
-  // formatMetrics(projectID, cpuMetrics);
-  // formatMetrics(projectID, storageMetrics);
-
   formatMetrics(projectID) {
     const { memoryMetrics } = this.props;
     const found = memoryMetrics.find((metric) => metric.project === projectID);
     const memoryData = [];
 
     if (found !== undefined) {
-      if (found.memoryMetrics.length > 0) {
-        found.memoryMetrics.forEach((metric) => {
+      if (found.metrics.length > 0) {
+        found.metrics.forEach((metric) => {
           const newMetricObject = {
             time: this.translateTimestamp(metric.timestamp),
             memory: this.bytesToMegabytes(metric.value)

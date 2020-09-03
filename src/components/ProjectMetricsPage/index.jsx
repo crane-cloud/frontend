@@ -148,12 +148,12 @@ const mapStateToProps = (state) => {
   const { 
     isFetchingMemory,
     memoryMetrics,
-    memoryMessage: metricsMessage
+    memoryMessage
   } = state.projectMemoryReducer;
   const {
     isFetchingCPU,
     cpuMetrics,
-    cpuMessage: metricsMessage,
+    cpuMessage,
   } = state.projectCPUReducer;
   const { projects } = state.userProjectsReducer;
   return {
