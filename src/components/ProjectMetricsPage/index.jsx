@@ -108,13 +108,13 @@ class ProjectMetricsPage extends React.Component {
             </div>
             <div className="ContentSection">
               <div className="TopCardsSection">
-                <MetricsCard icon={<MetricIcon />} title="CPU" className="MetricsHeight">
+                <MetricsCard icon={<MetricIcon />} title="CPU" className="CardDimensions">
                   <LineChartComponent lineDataKey="cpu" preview data={formattedCPUMetrics}/>
                 </MetricsCard>
-                <MetricsCard icon={<MetricIcon />} title="MEMORY" className="MetricsHeight">
+                <MetricsCard icon={<MetricIcon />} title="MEMORY" className="CardDimensions">
                   <LineChartComponent lineDataKey="memory" preview data={formattedMemoryMetrics}/>
                 </MetricsCard>
-                <MetricsCard icon={<MetricIcon />} title="NETWORK" className="MetricsHeight">
+                <MetricsCard icon={<MetricIcon />} title="NETWORK" className="CardDimensions">
                   <LineChartComponent lineDataKey="network" preview data={formattedNetworkMetrics} />
                 </MetricsCard>
               </div>

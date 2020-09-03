@@ -9,6 +9,7 @@
   gap: 1rem;
 } 
 
-.MetricsHeight{
+.CardDimensions{
   height: 100%;
+  width: 100%;
 }
