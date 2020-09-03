@@ -57,8 +57,8 @@ class ProjectCPUPage extends React.Component {
     const cpuData = [];
 
     if (found !== undefined) {
-      if (found.cpuMetrics.length > 0) {
-        found.cpuMetrics.forEach((metric) => {
+      if (found.metrics.length > 0) {
+        found.metrics.forEach((metric) => {
           const newMetricObject = {
             time: this.translateTimestamp(metric.timestamp),
             cpu: metric.value * 10 // multiplying by 10 fot graph plotting
@@ -122,7 +122,7 @@ class ProjectCPUPage extends React.Component {
   }
 
   render() {
-    const { match: { params }, isFetching } = this.props;
+    const { match: { params }, isFetchingCPU } = this.props;
     const { projectID, userID } = params;
 
     const formattedMetrics = this.formatMetrics(projectID);
@@ -154,7 +154,7 @@ class ProjectCPUPage extends React.Component {
                 className="MetricsCardGraph"
                 title={<PeriodSelector onChange={this.handlePeriodChange} />}
               >
-                {isFetching ? (
+                {isFetchingCPU ? (
                   <div className="ContentSectionSpinner">
                     <Spinner />
                   </div>
@@ -177,7 +177,7 @@ ProjectCPUPage.propTypes = {
       userID: PropTypes.string.isRequired,
     }).isRequired
   }).isRequired,
-  isFetching: PropTypes.bool.isRequired,
+  isFetchingCPU: PropTypes.bool.isRequired,
   cpuMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getProjectCPU: PropTypes.func.isRequired,
   clearProjectCPU: PropTypes.func.isRequired,
@@ -185,13 +185,13 @@ ProjectCPUPage.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const { isFetching, cpuMetrics, message: metricsMessage } = state.projectCPUReducer;
+  const { isFetchingCPU, cpuMetrics, cpuMessage } = state.projectCPUReducer;
   const { projects } = state.userProjectsReducer;
   return {
     projects,
-    isFetching,
+    isFetchingCPU,
     cpuMetrics,
-    metricsMessage
+    cpuMessage
   };
 };
 

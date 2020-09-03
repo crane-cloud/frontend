@@ -13,8 +13,8 @@ export const formatMemoryMetrics = (projectID, memoryMetrics) => {
     const memoryData = [];
 
     if (found !== undefined) {
-      if (found.memoryMetrics.length > 0) {
-        found.memoryMetrics.forEach((metric) => {
+      if (found.metrics.length > 0) {
+        found.metrics.forEach((metric) => {
           const newMetricObject = {
             time: translateTimestamp(metric.timestamp),
             memory: bytesToMegabytes(metric.value)
@@ -35,8 +35,8 @@ export const formatCPUMetrics = (projectID, cpuMetrics) => {
     const cpuData = [];
 
     if (found !== undefined) {
-      if (found.cpuMetrics.length > 0) {
-        found.cpuMetrics.forEach((metric) => {
+      if (found.metrics.length > 0) {
+        found.metrics.forEach((metric) => {
           const newMetricObject = {
             time: translateTimestamp(metric.timestamp),
             cpu: bytesToMegabytes(metric.value)
@@ -57,8 +57,8 @@ export const formatStorageMetrics = (projectID, storageMetrics) => {
     const storageData = [];
 
     if (found !== undefined) {
-      if (found.storageMetrics.length > 0) {
-        found.storageMetrics.forEach((metric) => {
+      if (found.metrics.length > 0) {
+        found.metrics.forEach((metric) => {
           const newMetricObject = {
             time: translateTimestamp(metric.timestamp),
             storage: bytesToMegabytes(metric.value)
@@ -79,8 +79,8 @@ export const formatNetworkMetrics = (projectID, networkMetrics) => {
     const networkData = [];
 
     if (found !== undefined) {
-      if (found.networkMetrics.length > 0) {
-        found.networkMetrics.forEach((metric) => {
+      if (found.metrics.length > 0) {
+        found.metrics.forEach((metric) => {
           const newMetricObject = {
             time: translateTimestamp(metric.timestamp),
             network: metric.value

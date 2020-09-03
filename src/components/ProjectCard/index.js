@@ -52,7 +52,7 @@ class ProjectCard extends React.Component {
     const formattedMetrics = this.formatMetrics(cardID);
 
     const userId = data.id;
-    console.log(this.props);
+    console.log(formattedMetrics);
     return (
       <>
         <div className="ProjectsCard">

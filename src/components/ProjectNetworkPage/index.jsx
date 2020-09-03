@@ -52,8 +52,8 @@ class ProjectNetworkPage extends React.Component {
   }
 
   formatMetrics(projectID) {
-    const { metrics } = this.props;
-    const found = metrics.find((metric) => metric.project === projectID);
+    const { networkMetrics } = this.props;
+    const found = networkMetrics.find((metric) => metric.project === projectID);
     const networkData = [];
 
     if (found !== undefined) {
@@ -122,7 +122,7 @@ class ProjectNetworkPage extends React.Component {
   }
 
   render() {
-    const { match: { params }, isFetching } = this.props;
+    const { match: { params }, isFetchingNetwork } = this.props;
     const { projectID, userID } = params;
 
     const formattedMetrics = this.formatMetrics(projectID);
@@ -154,7 +154,7 @@ class ProjectNetworkPage extends React.Component {
                 className="MetricsCardGraph"
                 title={<PeriodSelector onChange={this.handlePeriodChange} />}
               >
-                {isFetching ? (
+                {isFetchingNetwork ? (
                   <div className="ContentSectionSpinner">
                     <Spinner />
                   </div>
@@ -177,21 +177,21 @@ ProjectNetworkPage.propTypes = {
       userID: PropTypes.string.isRequired,
     }).isRequired
   }).isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  isFetchingNetwork: PropTypes.bool.isRequired,
+  networkMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getProjectNetwork: PropTypes.func.isRequired,
   clearProjectNetwork: PropTypes.func.isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
 
 const mapStateToProps = (state) => {
-  const { isFetching, metrics, message: metricsMessage } = state.projectNetworkReducer;
+  const { isFetchingNetwork, networkMetrics, networkMessage } = state.projectNetworkReducer;
   const { projects } = state.userProjectsReducer;
   return {
     projects,
-    isFetching,
-    metrics,
-    metricsMessage
+    isFetchingNetwork,
+    networkMetrics,
+    networkMessage
   };
 };
 
