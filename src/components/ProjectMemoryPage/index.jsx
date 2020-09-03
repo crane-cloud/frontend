@@ -182,7 +182,7 @@ ProjectMemoryPage.propTypes = {
       userID: PropTypes.string.isRequired,
     }).isRequired
   }).isRequired,
-  isFetching: PropTypes.bool.isRequired,
+  isFetchingMemory: PropTypes.bool.isRequired,
   memoryMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getProjectMemory: PropTypes.func.isRequired,
   clearProjectMemory: PropTypes.func.isRequired,
@@ -190,13 +190,13 @@ ProjectMemoryPage.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const { isFetching, memoryMetrics, message: metricsMessage } = state.projectMemoryReducer;
+  const { isFetching, memoryMetrics, memoryMessage } = state.projectMemoryReducer;
   const { projects } = state.userProjectsReducer;
   return {
     projects,
     isFetching,
     memoryMetrics,
-    metricsMessage
+    memoryMessage
   };
 };
 
