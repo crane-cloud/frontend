@@ -37,10 +37,10 @@ class AppMemoryPage extends React.Component {
     getAppMemory(appID, {});
   }
 
-//   getAppName(id) {
-//     const { projects } = this.props;
-//     return projects.find((project) => project.id === id).name;
-//   }
+  getAppName(id) {
+    const { apps } = this.props;
+    return apps.apps.find((app) => app.id === id).name;
+  }
 
   getCurrentTimeStamp() {
     return new Date().getTime() / 1000;
@@ -58,7 +58,7 @@ class AppMemoryPage extends React.Component {
 
   formatMetrics(appID) {
     const { metrics } = this.props;
-    const found = metrics.find((metric) => metric.project === appID);
+    const found = metrics.find((metric) => metric.app === appID);
     const memoryData = [];
 
     if (found !== undefined) {
@@ -131,7 +131,7 @@ class AppMemoryPage extends React.Component {
     const { projectID, appID, userID } = params;
 
     const formattedMetrics = this.formatMetrics(appID);
-
+    console.log(this.props);
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
@@ -186,14 +186,14 @@ AppMemoryPage.propTypes = {
   metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getAppMemory: PropTypes.func.isRequired,
   clearAppMemory: PropTypes.func.isRequired,
-  projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired
+  apps: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
 
 const mapStateToProps = (state) => {
-  const { isFetching, metrics, message: metricsMessage } = state.projectMemoryReducer;
-  const { projects } = state.userAppsReducer;
+  const { isFetching, metrics, message: metricsMessage } = state.appMemoryReducer;
+  const { apps } = state.appsListReducer;
   return {
-    projects,
+    apps,
     isFetching,
     metrics,
     metricsMessage
