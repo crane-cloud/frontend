@@ -8,7 +8,7 @@ import {
 const initialState = {
   isUpdated: false,
   isUpdating: false,
-  message: '',
+  errorMessage: '',
   errorCode: null
 };
 
@@ -21,7 +21,7 @@ const updateProjectReducer = (state = initialState, action) => {
       isFailed: false,
       isUpdated: true,
       isUpdating: false,
-      message: 'Project Updated SuccessFully',
+      errorMessage: 'Project Updated SuccessFully',
       errorCode: null
     };
   }
@@ -40,7 +40,7 @@ const updateProjectReducer = (state = initialState, action) => {
       isUpdated: false,
       isUpdating: false,
       errorCode: action.payload.errorCode,
-      message: 'Failed to update Project'
+      errorMessage: 'Failed to update Project'
     };
 
   case CLEAR_UPDATE_PROJECT_STATE:
@@ -50,7 +50,7 @@ const updateProjectReducer = (state = initialState, action) => {
       isUpdated: false,
       isUpdating: false,
       errorCode: null,
-      message: ''
+      errorMessage: ''
     };
 
   default:
