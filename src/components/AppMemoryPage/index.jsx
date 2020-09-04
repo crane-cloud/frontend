@@ -120,10 +120,10 @@ class AppMemoryPage extends React.Component {
   fetchMemory() {
     const { time } = this.state;
     const { match: { params }, getAppMemory, clearAppMemory } = this.props;
-    const { appID } = params;
+    const { projectID, appID } = params;
 
     clearAppMemory();
-    getAppMemory(appID, time);
+    getAppMemory(projectID, appID, time);
   }
 
   render() {
