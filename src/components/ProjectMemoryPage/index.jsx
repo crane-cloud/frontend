@@ -127,7 +127,7 @@ class ProjectMemoryPage extends React.Component {
   }
 
   render() {
-    const { match: { params }, isFetching } = this.props;
+    const { match: { params }, isFetchingMemory } = this.props;
     const { projectID, userID } = params;
 
     const formattedMetrics = this.formatMetrics(projectID);
@@ -159,7 +159,7 @@ class ProjectMemoryPage extends React.Component {
                 className="MetricsCardGraph"
                 title={<PeriodSelector onChange={this.handlePeriodChange} />}
               >
-                {isFetching ? (
+                {isFetchingMemory ? (
                   <div className="ContentSectionSpinner">
                     <Spinner />
                   </div>
@@ -190,11 +190,11 @@ ProjectMemoryPage.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const { isFetching, memoryMetrics, memoryMessage } = state.projectMemoryReducer;
+  const { isFetchingMemory, memoryMetrics, memoryMessage } = state.projectMemoryReducer;
   const { projects } = state.userProjectsReducer;
   return {
     projects,
-    isFetching,
+    isFetchingMemory,
     memoryMetrics,
     memoryMessage
   };
