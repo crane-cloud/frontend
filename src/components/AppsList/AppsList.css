@@ -1,11 +1,5 @@
 .AppList{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    flex-direction: row;
-}
-
-.AppCardItem{
-    margin: 20px 20px;
-    color: black;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1rem;
 }
