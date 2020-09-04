@@ -21,3 +21,7 @@
   padding: 1rem;
   display: flex;
 }
+
+.MetricsCardContainer:hover {
+  outline: 1px solid #f7b21f;
+}
