@@ -1,14 +1,11 @@
 .AppCard {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  width: 20rem;
-  margin: auto;
   background: #fff;
   color: #000000;
   border: 1px solid rgba(0, 0, 0, 0.125);
   height: 12.5rem;
-  /* cursor: default; */
 }
 
 .AppCardHeader {
@@ -73,9 +70,15 @@
   color: #008ac1;
 }
 
+.AppCardItem {
+  display: flex;
+}
+
 .AppName {
   color: #000000;
   cursor: pointer;
+  flex: 1;
+  display: flex;
 }
 
 .AppNameSection:hover {
