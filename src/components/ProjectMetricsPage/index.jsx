@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from 'react-redux';
 import getProjectCPU, { clearProjectCPU } from '../../redux/actions/projectCPU';
 import getProjectMemory from '../../redux/actions/projectMemory';
+import getProjectNetwork from '../../redux/actions/projectNetwork';
 import LineChartComponent from '../LineChart';
 import InformationBar from "../InformationBar";
 import Header from "../Header";
@@ -30,10 +31,11 @@ class ProjectMetricsPage extends React.Component {
         clearProjectCPU,
       } = this.props;
     const { projectID } = params;
-    const { getProjectMemory } = this.props;
+    const { getProjectMemory, getProjectNetwork } = this.props;
     getProjectMemory(projectID, {});
     clearProjectCPU();
     getProjectCPU(projectID, {});
+    getProjectNetwork(projectID, {});
   }
 
   getProjectName(id) {
@@ -107,7 +109,7 @@ class ProjectMetricsPage extends React.Component {
               <InformationBar header="Project Metrics" />
             </div>
             <div className="ContentSection">
-              <div className="TopCardsSection">
+              <div className="MetricCardsSection">
                 <MetricsCard icon={<MetricIcon />} title="CPU" className="CardDimensions">
                   <LineChartComponent lineDataKey="cpu" preview data={formattedCPUMetrics}/>
                 </MetricsCard>
@@ -172,7 +174,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   getProjectCPU,
   clearProjectCPU,
-  getProjectMemory
+  getProjectMemory,
+  getProjectNetwork
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectMetricsPage);
