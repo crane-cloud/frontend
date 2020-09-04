@@ -128,7 +128,7 @@ class AppMemoryPage extends React.Component {
 
   render() {
     const { match: { params }, isFetching } = this.props;
-    const { appID, userID } = params;
+    const { projectID, appID, userID } = params;
 
     const formattedMetrics = this.formatMetrics(appID);
 
@@ -141,11 +141,11 @@ class AppMemoryPage extends React.Component {
               name={this.getAppName(appID)}
               params={params}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${appID}/metrics/`}
-              cpuLink={`/users/${userID}/projects/${appID}/cpu/`}
-              memoryLink={`/users/${userID}/projects/${appID}/memory/`}
-              storageLink={`/users/${userID}/projects/${appID}/storage/`}
-              networkLink={`/users/${userID}/projects/${appID}/network/`}
+              allMetricsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/metrics/`}
+              cpuLink={`/users/${userID}/projects/${projectID}/apps/${appID}/cpu/`}
+              memoryLink={`/users/${userID}/projects/${projectID}/apps/${appID}/memory/`}
+              storageLink={`/users/${userID}/projects/${projectID}/apps/${appID}/storage/`}
+              networkLink={`/users/${userID}/projects/${projectID}/apps/${appID}/network/`}
             />
           </div>
           <div className="MainContentSection">
