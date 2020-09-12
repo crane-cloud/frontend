@@ -1,4 +1,5 @@
 import React from 'react';
+import ToggleButton from '../ToggleButton';
 import './LogsFrame.css';
 
 const LogsFrame = ({ title }) => {
@@ -6,9 +7,9 @@ const LogsFrame = ({ title }) => {
     <div className="LogsFrameContainer">
       <div className="LogsHeaderSection">
         <div className="LogsTitle">{title}</div>
-        <div>button</div>
+        <ToggleButton />
       </div>
-      {/* <hr /> */}
+
       <div className="LogsBodySection">
         Logs here
       </div>
