@@ -34,7 +34,7 @@ import AppSettingsPage from './components/AppSettingsPage';
 import ProjectMemoryPage from './components/ProjectMemoryPage';
 import ProjectCPUPage from './components/ProjectCPUPage';
 import ProjectNetworkPage from './components/ProjectNetworkPage';
-import Sample from './components/LogsDisplay/Sample';
+import Sample from './components/LogsFrame/Sample';
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) => (
