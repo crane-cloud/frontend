@@ -21,6 +21,9 @@
 .LogsBodySection {
   padding: .5rem 1rem;
   word-wrap: break-word;
+  font-family: monaco;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 /* Dark mode */

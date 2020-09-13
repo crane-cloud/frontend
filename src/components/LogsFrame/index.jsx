@@ -19,7 +19,9 @@ const LogsFrame = ({ title, data }) => {
       <div className={`LogsBodySection ${dark && 'Dark'}`}>
         {(data.length ? (
           <div className="LogsAvailable">
-            {data.map((logs) => `${logs}\n`)}
+            {data.map((logs) => (
+              <div key={data.indexOf(logs)}>{`> ${logs}`}</div>
+            ))}
           </div>
         ) : (
           <div className="LogsEmpty">
