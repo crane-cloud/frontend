@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { ReactComponent as Light } from '../../assets/images/light.svg';
 import { ReactComponent as Dark } from '../../assets/images/dark.svg';
 import './ToggleButton.css';
@@ -20,6 +21,10 @@ const ToggleButton = ({ onClick }) => {
       </div>
     </div>
   );
+};
+
+ToggleButton.propTypes = {
+  onClick: PropTypes.func.isRequired
 };
 
 export default ToggleButton;

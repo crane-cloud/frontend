@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import ToggleButton from '../ToggleButton';
 import './LogsFrame.css';
 
@@ -31,6 +32,11 @@ const LogsFrame = ({ title, data }) => {
       </div>
     </div>
   );
+};
+
+LogsFrame.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.string).isRequired,
+  title: PropTypes.string.isRequired
 };
 
 export default LogsFrame;
