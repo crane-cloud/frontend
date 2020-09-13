@@ -10,7 +10,7 @@ const logs = [
 const Sample = () => {
   return (
     <div style={{ margin: '50px 100px', width: '100%', height: '100vh' }}>
-      <Logs data={[]} title="App logs" />
+      <Logs data={logs} title="App logs" />
     </div>
   );
 };

@@ -26,7 +26,7 @@ const LogsFrame = ({ title, data }) => {
           </div>
         ) : (
           <div className="LogsEmpty">
-            No logs available
+            <div>No logs available</div>
           </div>
         ))}
       </div>

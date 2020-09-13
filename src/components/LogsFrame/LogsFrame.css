@@ -4,6 +4,8 @@
   /* height: 100%; */
   height: 500px;
   width: 500px;
+  display: flex;
+  flex-direction: column;
 }
 
 .LogsHeaderSection {
@@ -24,6 +26,17 @@
   font-family: monaco;
   font-size: 13px;
   line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.LogsEmpty {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Dark mode */
