@@ -16,9 +16,23 @@
 
 .LogsTitle {
   font-weight: bold;
-  color: #000000;
 }
 
 .LogsBodySection {
   padding: .5rem 1rem;
+  word-wrap: break-word;
+}
+
+/* Dark mode */
+
+.LogsFrameContainer.Dark {
+  background-color: #283237;
+}
+
+.LogsHeaderSection.Dark {
+  color: #ffffff;
+}
+
+.LogsBodySection.Dark {
+  color: #99D2E9;
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import Logs from './index';
 
 const logs = [
-  'create mode 100644 src/components/LogsDisplay/LogsDisplay.css',
+  'create mode 100644 src/components/LogsDisplay/Sample.jscomponents/LogsDisplay/LogsDisplay.css',
   'create mode 100644 src/components/LogsDisplay/Sample.js',
   'create mode 100644 src/components/LogsDisplay/index.jsx'
 ];
