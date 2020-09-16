@@ -20,7 +20,6 @@ class ProjectCard extends React.Component {
 
   formatMetrics(projectID) {
     const { metrics } = this.props;
-    console.log(this.props);
     const found = metrics.find((metric) => metric.project === projectID);
     const memoryData = [];
 

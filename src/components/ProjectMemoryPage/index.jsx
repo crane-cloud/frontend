@@ -131,7 +131,7 @@ class ProjectMemoryPage extends React.Component {
     const { projectID, userID } = params;
 
     const formattedMetrics = this.formatMetrics(projectID);
-
+    
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>

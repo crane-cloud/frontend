@@ -7,11 +7,11 @@ import {
   CLEAR_APP_MEMORY
 } from './actionTypes';
 
-const startFetchingMemoryMetrics = () => ({
+const startFetchingAppMemoryMetrics = () => ({
   type: IS_FETCHING_APP_MEMORY,
 });
 
-const getMemoryMetricsSuccess = (ID, response) => (
+const getAppMemoryMetricsSuccess = (ID, response) => (
   {
     type: FETCH_APP_MEMORY_SUCCESS,
     payload: {
@@ -20,7 +20,7 @@ const getMemoryMetricsSuccess = (ID, response) => (
     },
   });
 
-const getMemoryMetricsFailed = (ID, error) => ({
+const getAppMemoryMetricsFailed = (ID, error) => ({
   type: FETCH_APP_MEMORY_FAILED,
   payload: {
     app: ID,
@@ -34,15 +34,15 @@ const clearAppMemory = () => ({
 });
 
 const getAppMemory = (projectID, appID, params) => (dispatch) => {
-  dispatch(startFetchingMemoryMetrics());
+  dispatch(startFetchingAppMemoryMetrics());
 
   axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
   return axios.post(`${API_BASE_URL}/projects/${projectID}/apps/${appID}/metrics/memory`, params)
-    .then((response) => console.log(response)
-      // dispatch(getMemoryMetricsSuccess(appID, response));
-    )
+    .then((response) => {
+      dispatch(getAppMemoryMetricsSuccess(appID, response));
+    })
     .catch((error) => {
-      dispatch(getMemoryMetricsFailed(appID, error));
+      dispatch(getAppMemoryMetricsFailed(appID, error));
     });
 };
 

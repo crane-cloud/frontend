@@ -32,9 +32,10 @@ class AppMemoryPage extends React.Component {
 
   componentDidMount() {
     const { match: { params }, getAppMemory, clearAppMemory } = this.props;
-    const { appID } = params;
+    const { projectID, appID } = params;
+
     clearAppMemory();
-    getAppMemory(appID, {});
+    getAppMemory(projectID, appID, {});
   }
 
   getAppName(id) {
@@ -116,7 +117,7 @@ class AppMemoryPage extends React.Component {
   subtractTime(endTimestamp, days) {
     return new Date(endTimestamp - (days * 24 * 60 * 60)).getTime();
   }
-
+  
   fetchMemory() {
     const { time } = this.state;
     const { match: { params }, getAppMemory, clearAppMemory } = this.props;
@@ -131,7 +132,7 @@ class AppMemoryPage extends React.Component {
     const { projectID, appID, userID } = params;
 
     const formattedMetrics = this.formatMetrics(appID);
-    console.log(this.props);
+    
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
@@ -185,8 +186,7 @@ AppMemoryPage.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getAppMemory: PropTypes.func.isRequired,
-  clearAppMemory: PropTypes.func.isRequired,
-  apps: PropTypes.arrayOf(PropTypes.shape({})).isRequired
+  clearAppMemory: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => {
