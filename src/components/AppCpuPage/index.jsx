@@ -6,7 +6,7 @@ import Header from '../Header'
 import Spinner from '../Spinner';
 import SideBar from '../SideBar';
 import './AppCpuPage.css';
-import getAppCpu, { clearAppCpu } from '../../redux/actions/appCpu';
+import getAppCPU, { clearAppCPU } from '../../redux/actions/appCPU';
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
 import LineChartComponent from '../LineChart';
@@ -30,10 +30,10 @@ class AppCpuPage extends React.Component {
   }
 
   componentDidMount() {
-    const { match: { params }, getAppCpu, clearAppCpu } = this.props;
+    const { match: { params }, getAppCPU, clearAppCPU } = this.props;
     const { projectID, appID } = params;
-    clearAppCpu();
-    getAppCpu(projectID, appID, {});
+    clearAppCPU();
+    getAppCPU(projectID, appID, {});
   }
 
   getAppName(id) {
@@ -111,11 +111,11 @@ class AppCpuPage extends React.Component {
 
   fetchCpu() {
     const { time } = this.state;
-    const { match: { params }, getAppCpu, clearAppCpu } = this.props;
+    const { match: { params }, getAppCPU, clearAppCPU } = this.props;
     const { projectID, appID } = params;
 
-    clearAppCpu();
-    getAppCpu(projectID, appID, time);
+    clearAppCPU();
+    getAppCPU(projectID, appID, time);
   }
   render() {
     const { match: { params }, isFetching } = this.props;
@@ -133,7 +133,7 @@ class AppCpuPage extends React.Component {
               params={params}
               pageRoute={this.props.location.pathname}
               allMetricsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/metrics/`}
-              cpuLink={`/users/${userID}/projects/${projectID}/apps/${appID}/cpu/`}
+              cpuLink={`/users/${userID}/projects/${projectID}/apps/${appID}/cpu`}
               memoryLink={`/users/${userID}/projects/${projectID}/apps/${appID}/memory/`}
               storageLink={`/users/${userID}/projects/${projectID}/apps/${appID}/storage/`}
               networkLink={`/users/${userID}/projects/${projectID}/apps/${appID}/network/`}
@@ -155,7 +155,7 @@ class AppCpuPage extends React.Component {
                     <Spinner />
                   </div>
                 ) : (
-                  <LineChartComponent yLabel="Cpu(MBs)" xLabel="Time" lineDataKey="memory" data={formattedMetrics} />
+                  <LineChartComponent yLabel="CPU(cores)" xLabel="Time" lineDataKey="cpu" data={formattedMetrics} />
                 )} 
               </MetricsCard>
             </div>
@@ -175,8 +175,8 @@ AppCpuPage.propTypes = {
   }).isRequired,
   isFetching: PropTypes.bool.isRequired,
   metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  getAppCpu: PropTypes.func.isRequired,
-  clearAppCpu: PropTypes.func.isRequired,
+  getAppCPU: PropTypes.func.isRequired,
+  clearAppCPU: PropTypes.func.isRequired,
   apps: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
 
@@ -187,7 +187,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  getAppCpu, clearAppCpu
+  getAppCPU, clearAppCPU
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppCpuPage);
