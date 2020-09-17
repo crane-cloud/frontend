@@ -5,13 +5,13 @@ import InformationBar from '../InformationBar';
 import Header from '../Header';
 import Spinner from '../Spinner';
 import SideBar from '../SideBar';
-import './ProjectMemoryPage.css';
-import getProjectMemory, { clearProjectMemory } from '../../redux/actions/projectMemory';
+import './AppMemoryPage.css';
+import getAppMemory, { clearAppMemory } from '../../redux/actions/appMemory';
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
 import LineChartComponent from '../LineChart';
 
-class ProjectMemoryPage extends React.Component {
+class AppMemoryPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,7 +23,7 @@ class ProjectMemoryPage extends React.Component {
     };
 
     this.getCurrentTimeStamp = this.getCurrentTimeStamp.bind(this);
-    this.getProjectName = this.getProjectName.bind(this);
+    this.getAppName = this.getAppName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
     this.subtractTime = this.subtractTime.bind(this);
     this.fetchMemory = this.fetchMemory.bind(this);
@@ -31,15 +31,16 @@ class ProjectMemoryPage extends React.Component {
   }
 
   componentDidMount() {
-    const { match: { params }, getProjectMemory, clearProjectMemory } = this.props;
-    const { projectID } = params;
-    clearProjectMemory();
-    getProjectMemory(projectID, {});
+    const { match: { params }, getAppMemory, clearAppMemory } = this.props;
+    const { projectID, appID } = params;
+
+    clearAppMemory();
+    getAppMemory(projectID, appID, {});
   }
 
-  getProjectName(id) {
-    const { projects } = this.props;
-    return projects.find((project) => project.id === id).name;
+  getAppName(id) {
+    const { apps } = this.props;
+    return apps.apps.find((app) => app.id === id).name;
   }
 
   getCurrentTimeStamp() {
@@ -56,9 +57,9 @@ class ProjectMemoryPage extends React.Component {
     return bytes / 1000000;
   }
 
-  formatMetrics(projectID) {
-    const { memoryMetrics } = this.props;
-    const found = memoryMetrics.find((metric) => metric.project === projectID);
+  formatMetrics(appID) {
+    const { metrics } = this.props;
+    const found = metrics.find((metric) => metric.app === appID);
     const memoryData = [];
 
     if (found !== undefined) {
@@ -116,21 +117,21 @@ class ProjectMemoryPage extends React.Component {
   subtractTime(endTimestamp, days) {
     return new Date(endTimestamp - (days * 24 * 60 * 60)).getTime();
   }
-
+  
   fetchMemory() {
     const { time } = this.state;
-    const { match: { params }, getProjectMemory, clearProjectMemory } = this.props;
-    const { projectID } = params;
+    const { match: { params }, getAppMemory, clearAppMemory } = this.props;
+    const { projectID, appID } = params;
 
-    clearProjectMemory();
-    getProjectMemory(projectID, time);
+    clearAppMemory();
+    getAppMemory(projectID, appID, time);
   }
 
   render() {
-    const { match: { params }, isFetchingMemory } = this.props;
-    const { projectID, userID } = params;
+    const { match: { params }, isFetching } = this.props;
+    const { projectID, appID, userID } = params;
 
-    const formattedMetrics = this.formatMetrics(projectID);
+    const formattedMetrics = this.formatMetrics(appID);
     
     return (
       <div className="Page">
@@ -138,14 +139,14 @@ class ProjectMemoryPage extends React.Component {
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
-              name={this.getProjectName(projectID)}
+              name={this.getAppName(appID)}
               params={params}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
-              cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
-              memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
-              storageLink={`/users/${userID}/projects/${projectID}/storage/`}
-              networkLink={`/users/${userID}/projects/${projectID}/network/`}
+              allMetricsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/metrics/`}
+              cpuLink={`/users/${userID}/projects/${projectID}/apps/${appID}/cpu/`}
+              memoryLink={`/users/${userID}/projects/${projectID}/apps/${appID}/memory/`}
+              storageLink={`/users/${userID}/projects/${projectID}/apps/${appID}/storage/`}
+              networkLink={`/users/${userID}/projects/${projectID}/apps/${appID}/network/`}
             />
           </div>
           <div className="MainContentSection">
@@ -159,7 +160,7 @@ class ProjectMemoryPage extends React.Component {
                 className="MetricsCardGraph"
                 title={<PeriodSelector onChange={this.handlePeriodChange} />}
               >
-                {isFetchingMemory ? (
+                {isFetching ? (
                   <div className="ContentSectionSpinner">
                     <Spinner />
                   </div>
@@ -175,34 +176,33 @@ class ProjectMemoryPage extends React.Component {
   }
 }
 
-ProjectMemoryPage.propTypes = {
+AppMemoryPage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      projectID: PropTypes.string.isRequired,
+      appID: PropTypes.string.isRequired,
       userID: PropTypes.string.isRequired,
     }).isRequired
   }).isRequired,
-  isFetchingMemory: PropTypes.bool.isRequired,
-  memoryMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  getProjectMemory: PropTypes.func.isRequired,
-  clearProjectMemory: PropTypes.func.isRequired,
-  projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired
+  isFetching: PropTypes.bool.isRequired,
+  metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  getAppMemory: PropTypes.func.isRequired,
+  clearAppMemory: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => {
-  const { isFetchingMemory, memoryMetrics, memoryMessage } = state.projectMemoryReducer;
-  const { projects } = state.userProjectsReducer;
+  const { isFetching, metrics, message: metricsMessage } = state.appMemoryReducer;
+  const { apps } = state.appsListReducer;
   return {
-    projects,
-    isFetchingMemory,
-    memoryMetrics,
-    memoryMessage
+    apps,
+    isFetching,
+    metrics,
+    metricsMessage
   };
 };
 
 const mapDispatchToProps = {
-  getProjectMemory,
-  clearProjectMemory
+  getAppMemory,
+  clearAppMemory
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectMemoryPage);
+export default connect(mapStateToProps, mapDispatchToProps)(AppMemoryPage);
