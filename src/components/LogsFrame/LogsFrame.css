@@ -1,0 +1,51 @@
+.LogsFrameContainer {
+  border: 1px solid #000000;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.LogsHeaderSection {
+  padding: .5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #000000;
+}
+
+.LogsTitle {
+  font-weight: bold;
+}
+
+.LogsBodySection {
+  padding: .5rem 1rem;
+  word-wrap: break-word;
+  font-family: monaco;
+  font-size: 13px;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.LogsEmpty {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Dark mode */
+
+.LogsFrameContainer.Dark {
+  background-color: #283237;
+}
+
+.LogsHeaderSection.Dark {
+  color: #ffffff;
+}
+
+.LogsBodySection.Dark {
+  color: #99D2E9;
+}
