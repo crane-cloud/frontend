@@ -2,6 +2,7 @@
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
+  border: 1px solid #cccccc;
 }
 
 .CardHeaderSection {
@@ -9,10 +10,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-}
-
-.MetricsCardContainer hr {
-  margin: 0;
+  border-bottom: 1px solid #cccccc;
 }
 
 .CardBodySection {
@@ -20,4 +18,8 @@
   flex-grow: 1;
   padding: 1rem;
   display: flex;
+}
+
+.MetricsCardContainer:hover {
+  border: 1px solid #f7b21f;
 }

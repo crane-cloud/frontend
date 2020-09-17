@@ -57,8 +57,8 @@ class ProjectMemoryPage extends React.Component {
   }
 
   formatMetrics(projectID) {
-    const { metrics } = this.props;
-    const found = metrics.find((metric) => metric.project === projectID);
+    const { memoryMetrics } = this.props;
+    const found = memoryMetrics.find((metric) => metric.project === projectID);
     const memoryData = [];
 
     if (found !== undefined) {
@@ -127,7 +127,7 @@ class ProjectMemoryPage extends React.Component {
   }
 
   render() {
-    const { match: { params }, isFetching } = this.props;
+    const { match: { params }, isFetchingMemory } = this.props;
     const { projectID, userID } = params;
 
     const formattedMetrics = this.formatMetrics(projectID);
@@ -141,7 +141,7 @@ class ProjectMemoryPage extends React.Component {
               name={this.getProjectName(projectID)}
               params={params}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics/`}
+              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
               cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
               memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
               storageLink={`/users/${userID}/projects/${projectID}/storage/`}
@@ -159,7 +159,7 @@ class ProjectMemoryPage extends React.Component {
                 className="MetricsCardGraph"
                 title={<PeriodSelector onChange={this.handlePeriodChange} />}
               >
-                {isFetching ? (
+                {isFetchingMemory ? (
                   <div className="ContentSectionSpinner">
                     <Spinner />
                   </div>
@@ -182,21 +182,21 @@ ProjectMemoryPage.propTypes = {
       userID: PropTypes.string.isRequired,
     }).isRequired
   }).isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  isFetchingMemory: PropTypes.bool.isRequired,
+  memoryMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getProjectMemory: PropTypes.func.isRequired,
   clearProjectMemory: PropTypes.func.isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
 
 const mapStateToProps = (state) => {
-  const { isFetching, metrics, message: metricsMessage } = state.projectMemoryReducer;
+  const { isFetchingMemory, memoryMetrics, memoryMessage } = state.projectMemoryReducer;
   const { projects } = state.userProjectsReducer;
   return {
     projects,
-    isFetching,
-    metrics,
-    metricsMessage
+    isFetchingMemory,
+    memoryMetrics,
+    memoryMessage
   };
 };
 
