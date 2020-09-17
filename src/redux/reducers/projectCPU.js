@@ -6,9 +6,9 @@ import {
 } from '../actions/actionTypes';
 
 const initialState = {
-  metrics: [],
-  isFetching: false,
-  message: ''
+  cpuMetrics: [],
+  isFetchingCPU: false,
+  cpuMessage: ''
 };
 
 const projectCPUReducer = (state = initialState, action) => {
@@ -16,35 +16,35 @@ const projectCPUReducer = (state = initialState, action) => {
   case FETCH_PROJECT_CPU_SUCCESS:
     return {
       ...state,
-      metrics: [...state.metrics,
+      cpuMetrics: [...state.cpuMetrics,
         { project: action.payload.project, metrics: action.payload.metrics }
       ],
-      isFetching: false,
-      message: 'Fetched project CPU metrics'
+      isFetchingCPU: false,
+      cpuMessage: 'Fetched project CPU metrics'
     };
 
   case FETCH_PROJECT_CPU_FAILED:
     return {
       ...state,
-      metrics: [...state.metrics,
+      cpuMetrics: [...state.cpuMetrics,
         { project: action.payload.project, metrics: action.payload.metrics }
       ],
-      isFetching: false,
-      message: 'Error fetching project CPU metrics'
+      isFetchingCPU: false,
+      cpuMessage: 'Error fetching project CPU metrics'
     };
 
   case IS_FETCHING_PROJECT_CPU:
     return {
       ...state,
-      isFetching: true,
+      isFetchingCPU: true,
     };
 
   case CLEAR_PROJECT_CPU:
     return {
       ...state,
-      metrics: [],
-      isFetching: false,
-      message: ''
+      cpuMetrics: [],
+      isFetchingCPU: false,
+      cpuMessage: ''
     };
 
   default:

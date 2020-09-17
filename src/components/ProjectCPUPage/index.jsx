@@ -52,8 +52,8 @@ class ProjectCPUPage extends React.Component {
   }
 
   formatMetrics(projectID) {
-    const { metrics } = this.props;
-    const found = metrics.find((metric) => metric.project === projectID);
+    const { cpuMetrics } = this.props;
+    const found = cpuMetrics.find((metric) => metric.project === projectID);
     const cpuData = [];
 
     if (found !== undefined) {
@@ -122,7 +122,7 @@ class ProjectCPUPage extends React.Component {
   }
 
   render() {
-    const { match: { params }, isFetching } = this.props;
+    const { match: { params }, isFetchingCPU } = this.props;
     const { projectID, userID } = params;
 
     const formattedMetrics = this.formatMetrics(projectID);
@@ -136,7 +136,7 @@ class ProjectCPUPage extends React.Component {
               name={this.getProjectName(projectID)}
               params={params}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics/`}
+              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
               cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
               memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
               storageLink={`/users/${userID}/projects/${projectID}/storage/`}
@@ -154,7 +154,7 @@ class ProjectCPUPage extends React.Component {
                 className="MetricsCardGraph"
                 title={<PeriodSelector onChange={this.handlePeriodChange} />}
               >
-                {isFetching ? (
+                {isFetchingCPU ? (
                   <div className="ContentSectionSpinner">
                     <Spinner />
                   </div>
@@ -177,21 +177,21 @@ ProjectCPUPage.propTypes = {
       userID: PropTypes.string.isRequired,
     }).isRequired
   }).isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  isFetchingCPU: PropTypes.bool.isRequired,
+  cpuMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getProjectCPU: PropTypes.func.isRequired,
   clearProjectCPU: PropTypes.func.isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
 
 const mapStateToProps = (state) => {
-  const { isFetching, metrics, message: metricsMessage } = state.projectCPUReducer;
+  const { isFetchingCPU, cpuMetrics, cpuMessage } = state.projectCPUReducer;
   const { projects } = state.userProjectsReducer;
   return {
     projects,
-    isFetching,
-    metrics,
-    metricsMessage
+    isFetchingCPU,
+    cpuMetrics,
+    cpuMessage
   };
 };
 

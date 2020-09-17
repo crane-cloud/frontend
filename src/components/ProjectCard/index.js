@@ -19,8 +19,8 @@ class ProjectCard extends React.Component {
   }
 
   formatMetrics(projectID) {
-    const { metrics } = this.props;
-    const found = metrics.find((metric) => metric.project === projectID);
+    const { memoryMetrics } = this.props;
+    const found = memoryMetrics.find((metric) => metric.project === projectID);
     const memoryData = [];
 
     if (found !== undefined) {
@@ -52,7 +52,7 @@ class ProjectCard extends React.Component {
     const formattedMetrics = this.formatMetrics(cardID);
 
     const userId = data.id;
-
+    
     return (
       <>
         <div className="ProjectsCard">
@@ -83,7 +83,7 @@ ProjectCard.propTypes = {
     id: PropTypes.string.isRequired
   }).isRequired,
   getProjectMemory: PropTypes.func.isRequired,
-  metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired
+  memoryMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
 
 ProjectCard.defaultProps = {
@@ -93,12 +93,12 @@ ProjectCard.defaultProps = {
 
 const mapStateToProps = (state) => {
   const { data } = state.user;
-  const { isFetching, metrics, message: metricsMessage } = state.projectMemoryReducer;
+  const { isFetchingMemory, memoryMetrics, memoryMessage } = state.projectMemoryReducer;
   return {
     data,
-    isFetching,
-    metrics,
-    metricsMessage
+    isFetchingMemory,
+    memoryMetrics,
+    memoryMessage
   };
 };
 
