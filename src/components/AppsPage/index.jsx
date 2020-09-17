@@ -395,7 +395,7 @@ class AppsPage extends React.Component {
               params={params}
               description={this.getProjectName(projects, params.projectID)}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics/`}
+              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
               cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
               memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
               storageLink={`/users/${userID}/projects/${projectID}/storage/`}
