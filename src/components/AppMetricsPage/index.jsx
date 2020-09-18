@@ -7,6 +7,7 @@ import MetricsCard from '../MetricsCard';
 import { ReactComponent as MetricIcon } from '../../assets/images/resource-icon.svg';
 import './AppMetricsPage.css';
 import LineChartComponent from '../LineChart';
+import LogsFrame from '../LogsFrame';
 
 const sampleData = [
   { name: 'Sample Metric 1', uv: 250 },
@@ -37,10 +38,14 @@ function shuffle(array) {
 }
 
 class AppMetricsPage extends React.Component {
+  constructor(props) {
+    super(props);
 
-  state = {
-    appRelatedInfo: this.props.location.state
-  };
+    this.state = {
+      appRelatedInfo: this.props.location.state,
+      logs: []
+    };
+  }
 
   static getDerivedStateFromProps(props, state) {
     if (props.location.state !== state.appRelatedInfo) {
@@ -55,13 +60,13 @@ class AppMetricsPage extends React.Component {
     const { appName, appUrl, liveAppStatus } = this.state.appRelatedInfo;
     const { params } = this.props.match;
     const { projectID, userID, appID } = params;
-    
+
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideBar 
+            <SideBar
               name={appName}
               params={params}
               pageRoute={this.props.location.pathname}
@@ -70,7 +75,7 @@ class AppMetricsPage extends React.Component {
               memoryLink={`/users/${userID}/projects/${projectID}/apps/${appID}/memory/`}
               storageLink={`/users/${userID}/projects/${projectID}/apps/${appID}/storage/`}
               networkLink={`/users/${userID}/projects/${projectID}/apps/${appID}/network/`}
-              />
+            />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
@@ -87,6 +92,9 @@ class AppMetricsPage extends React.Component {
                 <MetricsCard icon={<MetricIcon />} title="Memory">
                   <LineChartComponent preview lineDataKey="uv" data={shuffle(sampleData)} />
                 </MetricsCard>
+              </div>
+              <div className="LogsSection">
+                <LogsFrame data={this.state.logs} title={`${appName} logs`} />
               </div>
             </div>
           </div>
