@@ -1,12 +1,14 @@
 
 import {
-  GET_APP_LOGS_SUCCESS, GET_APPS_LOGS_FAIL, START_GETTING_APP_LOGS
+  GET_APP_LOGS_SUCCESS,
+  GET_APPS_LOGS_FAIL,
+  START_GETTING_APP_LOGS
 } from '../actions/actionTypes';
 
 const initialState = {
   logs: [],
-  isRetrieved: false,
-  isRetrieving: false
+  retrievedLogs: false,
+  retrieveingLogs: false
 };
 
 const appLogsReducer = (state = initialState, action) => {
@@ -15,22 +17,24 @@ const appLogsReducer = (state = initialState, action) => {
     return {
       ...state,
       logs: action.payload,
-      isRetrieving: false,
-      isRetrieved: true
+      retrieveingLogs: false,
+      retrievedLogs: true
     };
 
   case START_GETTING_APP_LOGS:
     return {
       ...state,
-      isRetrieved: false,
-      isRetrieving: true,
+      logs: [],
+      retrievedLogs: false,
+      retrieveingLogs: true,
     };
 
   case GET_APPS_LOGS_FAIL:
     return {
       ...state,
-      isRetrieving: false,
-      isRetrieved: false,
+      logs: [],
+      retrieveingLogs: false,
+      retrievedLogs: false,
     };
 
   default:

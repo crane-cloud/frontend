@@ -4,16 +4,16 @@ import { API_BASE_URL } from '../../config';
 
 import { GET_APP_LOGS_SUCCESS, GET_APPS_LOGS_FAIL, START_GETTING_APP_LOGS } from './actionTypes';
 
-export const startFetchingLogs = () => ({
+const startFetchingLogs = () => ({
   type: START_GETTING_APP_LOGS,
 });
 
-export const getLogsSuccess = (response) => ({
+const getLogsSuccess = (response) => ({
   type: GET_APP_LOGS_SUCCESS,
-  payload: response.data.data,
+  payload: response.data.data.pods_logs,
 });
 
-export const getLogsFail = (error) => ({
+const getLogsFail = (error) => ({
   type: GET_APPS_LOGS_FAIL,
   payload: {
     status: false,
@@ -21,14 +21,14 @@ export const getLogsFail = (error) => ({
   },
 });
 
-const getAppLogs = (params) => (dispatch) => {
-  const { projectID, appID } = params;
+const getAppLogs = (IDs, params) => (dispatch) => {
+  const { projectID, appID } = IDs;
   dispatch(startFetchingLogs());
 
-  return axios.get(`${API_BASE_URL}/projects/${projectID}/apps/${appID}/logs`,
-
+  return axios.post(`${API_BASE_URL}/projects/${projectID}/apps/${appID}/logs`,
     {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      params
     })
     .then((response) => dispatch(getLogsSuccess(response)))
     .catch((error) => {

@@ -1,4 +1,6 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
@@ -8,6 +10,8 @@ import { ReactComponent as MetricIcon } from '../../assets/images/resource-icon.
 import './AppMetricsPage.css';
 import LineChartComponent from '../LineChart';
 import LogsFrame from '../LogsFrame';
+import getAppLogs from '../../redux/actions/getAppLogs';
+import Spinner from '../Spinner';
 
 const sampleData = [
   { name: 'Sample Metric 1', uv: 250 },
@@ -42,9 +46,15 @@ class AppMetricsPage extends React.Component {
     super(props);
 
     this.state = {
-      appRelatedInfo: this.props.location.state,
-      logs: []
+      appRelatedInfo: this.props.location.state
     };
+  }
+
+  componentDidMount() {
+    const { getAppLogs, match: { params } } = this.props;
+    const { projectID, appID } = params;
+
+    getAppLogs({ projectID, appID }, {});
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -60,6 +70,9 @@ class AppMetricsPage extends React.Component {
     const { appName, appUrl, liveAppStatus } = this.state.appRelatedInfo;
     const { params } = this.props.match;
     const { projectID, userID, appID } = params;
+    const { logs, retrieveingLogs } = this.props;
+
+    console.log(logs);
 
     return (
       <div className="Page">
@@ -94,7 +107,11 @@ class AppMetricsPage extends React.Component {
                 </MetricsCard>
               </div>
               <div className="LogsSection">
-                <LogsFrame data={this.state.logs} title={`${appName} logs`} />
+                {retrieveingLogs ? (
+                  <Spinner />
+                ) : (
+                  <LogsFrame data={[]} title={`${appName} logs`} />
+                )}
               </div>
             </div>
           </div>
@@ -104,6 +121,23 @@ class AppMetricsPage extends React.Component {
   }
 }
 
+
+const mapStateToProps = ({ appLogsReducer }) => {
+  const {
+    logs, retrievedLogs, retrieveingLogs
+  } = appLogsReducer;
+
+  return {
+    logs,
+    retrievedLogs,
+    retrieveingLogs
+  };
+};
+
+const mapDispatchToProps = {
+  getAppLogs
+};
+
 AppMetricsPage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
@@ -112,4 +146,4 @@ AppMetricsPage.propTypes = {
   }).isRequired
 };
 
-export default AppMetricsPage;
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AppMetricsPage));

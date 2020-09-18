@@ -1,5 +1,7 @@
 .ContentSection {
     padding: 2rem;
+    display: grid;
+    gap: 1rem;
 }
 
 .TopCardsSection {
