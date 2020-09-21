@@ -25,6 +25,7 @@ import updateProjectReducer from './updateProject';
 import projectMemoryReducer from './projectMemory';
 import projectCPUReducer from './projectCPU';
 import projectNetworkReducer from './projectNetwork';
+import appNetworkReducer from './appNetwork';
 import appCpuReducer from './appCpu';
 import appMemoryReducer from './appMemoryReducer';
 
@@ -56,6 +57,7 @@ export default combineReducers({
   projectMemoryReducer,
   projectCPUReducer,
   projectNetworkReducer,
+  appNetworkReducer,
   appCpuReducer,
   appMemoryReducer
 });
