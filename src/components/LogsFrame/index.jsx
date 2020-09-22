@@ -28,7 +28,7 @@ const LogsFrame = ({ loading, title, data }) => {
             {(data.length ? (
               <div className="LogsAvailable">
                 {data.map((logs) => (
-                  <span>{logs}</span>
+                  <span key={logs.indexOf(logs)}>{logs}</span>
                 ))}
               </div>
             ) : (

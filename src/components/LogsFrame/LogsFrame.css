@@ -55,6 +55,7 @@
 
 .LogsHeaderSection.Dark {
   color: #ffffff;
+  border-bottom: 1px solid #000000;
 }
 
 .LogsBodySection.Dark {
