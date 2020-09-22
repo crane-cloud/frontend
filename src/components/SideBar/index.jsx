@@ -106,6 +106,10 @@ const SideBar = (props) => {
   );
 };
 
+SideBar.defaultProps = {
+  appLogsLink: ''
+};
+
 SideBar.propTypes = {
   name: PropTypes.string.isRequired,
   params: PropTypes.shape({}).isRequired,
@@ -115,7 +119,7 @@ SideBar.propTypes = {
   storageLink: PropTypes.string.isRequired,
   networkLink: PropTypes.string.isRequired,
   allMetricsLink: PropTypes.string.isRequired,
-  appLogsLink: PropTypes.string.isRequired
+  appLogsLink: PropTypes.string
 };
 
 export default SideBar;

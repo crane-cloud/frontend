@@ -22,7 +22,7 @@ class AppLogsPage extends React.Component {
     const found = apps.apps.find((app) => app.id === id);
     const info = {
       name: found.name,
-      status: found.status,
+      status: found.app_running_status,
       url: found.url
     };
 
@@ -30,7 +30,7 @@ class AppLogsPage extends React.Component {
   }
 
   render() {
-    const { params } = this.props.match;
+    const { match: { params } } = this.props;
     const { projectID, userID, appID } = params;
     const { logs, retrieveingLogs } = this.props;
     const appInfo = this.getAppInfo(appID);
@@ -70,6 +70,22 @@ class AppLogsPage extends React.Component {
     );
   }
 }
+
+AppLogsPage.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      appID: PropTypes.string.isRequired,
+      projectID: PropTypes.string.isRequired,
+      userID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired,
+  getAppLogs: PropTypes.func.isRequired,
+  apps: PropTypes.shape({
+    apps: PropTypes.arrayOf(PropTypes.object)
+  }).isRequired,
+  logs: PropTypes.arrayOf(PropTypes.string).isRequired,
+  retrieveingLogs: PropTypes.bool.isRequired
+};
 
 const mapStateToProps = (state) => {
   const { apps } = state.appsListReducer;
