@@ -1,4 +1,6 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
@@ -7,6 +9,8 @@ import MetricsCard from '../MetricsCard';
 import { ReactComponent as MetricIcon } from '../../assets/images/resource-icon.svg';
 import './AppMetricsPage.css';
 import LineChartComponent from '../LineChart';
+import LogsFrame from '../LogsFrame';
+import getAppLogs from '../../redux/actions/getAppLogs';
 
 const sampleData = [
   { name: 'Sample Metric 1', uv: 250 },
@@ -37,10 +41,20 @@ function shuffle(array) {
 }
 
 class AppMetricsPage extends React.Component {
+  constructor(props) {
+    super(props);
 
-  state = {
-    appRelatedInfo: this.props.location.state
-  };
+    this.state = {
+      appRelatedInfo: this.props.location.state
+    };
+  }
+
+  componentDidMount() {
+    const { getAppLogs, match: { params } } = this.props;
+    const { projectID, appID } = params;
+
+    getAppLogs({ projectID, appID }, { timestamps: true });
+  }
 
   static getDerivedStateFromProps(props, state) {
     if (props.location.state !== state.appRelatedInfo) {
@@ -55,13 +69,14 @@ class AppMetricsPage extends React.Component {
     const { appName, appUrl, liveAppStatus } = this.state.appRelatedInfo;
     const { params } = this.props.match;
     const { projectID, userID, appID } = params;
-    
+    const { logs, retrieveingLogs } = this.props;
+
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideBar 
+            <SideBar
               name={appName}
               params={params}
               pageRoute={this.props.location.pathname}
@@ -70,7 +85,8 @@ class AppMetricsPage extends React.Component {
               memoryLink={`/users/${userID}/projects/${projectID}/apps/${appID}/memory/`}
               storageLink={`/users/${userID}/projects/${projectID}/apps/${appID}/storage/`}
               networkLink={`/users/${userID}/projects/${projectID}/apps/${appID}/network/`}
-              />
+              appLogsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/logs/`}
+            />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
@@ -88,6 +104,9 @@ class AppMetricsPage extends React.Component {
                   <LineChartComponent preview lineDataKey="uv" data={shuffle(sampleData)} />
                 </MetricsCard>
               </div>
+              <div className="LogsSection">
+                <LogsFrame loading={retrieveingLogs} data={logs} title={`${appName} logs`} />
+              </div>
             </div>
           </div>
         </div>
@@ -96,12 +115,30 @@ class AppMetricsPage extends React.Component {
   }
 }
 
+
+const mapStateToProps = ({ appLogsReducer }) => {
+  const {
+    logs, retrievedLogs, retrieveingLogs
+  } = appLogsReducer;
+
+  return {
+    logs,
+    retrievedLogs,
+    retrieveingLogs
+  };
+};
+
+const mapDispatchToProps = {
+  getAppLogs
+};
+
 AppMetricsPage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       projectID: PropTypes.string.isRequired
     }).isRequired
-  }).isRequired
+  }).isRequired,
+  logs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default AppMetricsPage;
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AppMetricsPage));

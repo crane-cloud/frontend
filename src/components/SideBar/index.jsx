@@ -15,13 +15,18 @@ const SideBar = (props) => {
     memoryLink,
     storageLink,
     networkLink,
-    allMetricsLink
+    allMetricsLink,
+    appLogsLink
   } = props;
 
   const isAppPage = (matchPath(pageRoute, {
     path: '/users/:userID/projects/:projectID/apps/:appID/metrics',
     exact: true,
     strict: true
+  }));
+
+  const isAppLogsPage = (matchPath(pageRoute, {
+    path: '/users/:userID/projects/:projectID/apps/:appID/logs',
   }));
 
   const pageLocation = (matchPath(pageRoute, {
@@ -72,6 +77,9 @@ const SideBar = (props) => {
             <Link to={memoryLink} className="SubBarListItem">Memory</Link>
             <Link to={storageLink} className="SubBarListItem">Storage</Link>
             <Link to={networkLink} className="SubBarListItem">Network</Link>
+            {(isAppLogsPage || isAppPage) && (
+              <Link to={appLogsLink} className="SubBarListItem">Logs</Link>
+            )}
           </div>
         </div>
 
@@ -102,6 +110,10 @@ const SideBar = (props) => {
   );
 };
 
+SideBar.defaultProps = {
+  appLogsLink: ''
+};
+
 SideBar.propTypes = {
   name: PropTypes.string.isRequired,
   params: PropTypes.shape({}).isRequired,
@@ -110,7 +122,8 @@ SideBar.propTypes = {
   memoryLink: PropTypes.string.isRequired,
   storageLink: PropTypes.string.isRequired,
   networkLink: PropTypes.string.isRequired,
-  allMetricsLink: PropTypes.string.isRequired
+  allMetricsLink: PropTypes.string.isRequired,
+  appLogsLink: PropTypes.string
 };
 
 export default SideBar;
