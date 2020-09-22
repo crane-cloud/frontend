@@ -5,50 +5,11 @@ import PropTypes from 'prop-types';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
 import SideBar from '../SideBar';
-import MetricsCard from '../MetricsCard';
-import { ReactComponent as MetricIcon } from '../../assets/images/resource-icon.svg';
 import './AppLogsPage.css';
-import LineChartComponent from '../LineChart';
 import LogsFrame from '../LogsFrame';
 import getAppLogs from '../../redux/actions/getAppLogs';
 
-const sampleData = [
-  { name: 'Sample Metric 1', uv: 250 },
-  { name: 'Sample Metric 2', uv: 270 },
-  { name: 'Sample Metric 2', uv: 10 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 70 },
-  { name: 'Sample Metric 2', uv: 150 },
-  { name: 'Sample Metric 2', uv: 60 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 190 },
-  { name: 'Sample Metric 2', uv: 290 },
-  { name: 'Sample Metric 2', uv: 150 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 130 },
-  { name: 'Sample Metric 2', uv: 0 },
-  { name: 'Sample Metric 2', uv: 270 },
-  { name: 'Sample Metric 2', uv: 280 },
-  { name: 'Sample Metric 2', uv: 300 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 170 },
-  { name: 'Sample Metric 2', uv: 290 },
-];
-
-// this function is meant to shuffle the dummy data array
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
-
 class AppLogsPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      appRelatedInfo: this.props.location.state
-    };
-  }
-
   componentDidMount() {
     const { getAppLogs, match: { params } } = this.props;
     const { projectID, appID } = params;
@@ -56,20 +17,23 @@ class AppLogsPage extends React.Component {
     getAppLogs({ projectID, appID }, { timestamps: true });
   }
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.location.state !== state.appRelatedInfo) {
-      return {
-        appRelatedInfo: props.location.state
-      };
-    }
-    return null;
+  getAppInfo(id) {
+    const { apps } = this.props;
+    const found = apps.apps.find((app) => app.id === id);
+    const info = {
+      name: found.name,
+      status: found.status,
+      url: found.url
+    };
+
+    return info;
   }
 
   render() {
-    const { appName, appUrl, liveAppStatus } = this.state.appRelatedInfo;
     const { params } = this.props.match;
     const { projectID, userID, appID } = params;
     const { logs, retrieveingLogs } = this.props;
+    const appInfo = this.getAppInfo(appID);
 
     return (
       <div className="Page">
@@ -77,7 +41,7 @@ class AppLogsPage extends React.Component {
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
-              name={appName}
+              name={appInfo.name}
               params={params}
               pageRoute={this.props.location.pathname}
               allMetricsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/metrics/`}
@@ -91,21 +55,13 @@ class AppLogsPage extends React.Component {
           <div className="MainContentSection">
             <div className="InformationBarSection">
               <InformationBar
-                header={appUrl}
-                status={liveAppStatus}
+                header={appInfo.url}
+                status={appInfo.status}
               />
             </div>
             <div className="ContentSection">
-              <div className="TopCardsSection">
-                <MetricsCard icon={<MetricIcon />} title="CPU">
-                  <LineChartComponent preview lineDataKey="uv" data={shuffle(sampleData)} />
-                </MetricsCard>
-                <MetricsCard icon={<MetricIcon />} title="Memory">
-                  <LineChartComponent preview lineDataKey="uv" data={shuffle(sampleData)} />
-                </MetricsCard>
-              </div>
               <div className="LogsSection">
-                <LogsFrame loading={retrieveingLogs} data={logs} title={`${appName} logs`} />
+                <LogsFrame loading={retrieveingLogs} data={logs} title={`${appInfo.name} logs`} />
               </div>
             </div>
           </div>
@@ -115,4 +71,22 @@ class AppLogsPage extends React.Component {
   }
 }
 
-export default connect()(withRouter(AppLogsPage));
+const mapStateToProps = (state) => {
+  const { apps } = state.appsListReducer;
+  const {
+    logs, retrievedLogs, retrieveingLogs
+  } = state.appLogsReducer;
+
+  return {
+    apps,
+    logs,
+    retrievedLogs,
+    retrieveingLogs
+  };
+};
+
+const mapDispatchToProps = {
+  getAppLogs
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AppLogsPage));
