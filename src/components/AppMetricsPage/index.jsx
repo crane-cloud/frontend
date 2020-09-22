@@ -104,9 +104,7 @@ class AppMetricsPage extends React.Component {
                 </MetricsCard>
               </div>
               <div className="LogsSection">
-                {logs.map((appLogs) => (
-                  <LogsFrame key={logs.indexOf(logs)} loading={retrieveingLogs} data={appLogs} title={`${appName} logs`} />
-                ))}
+                <LogsFrame loading={retrieveingLogs} data={logs} title={`${appName} logs`} />
               </div>
             </div>
           </div>
@@ -138,7 +136,8 @@ AppMetricsPage.propTypes = {
     params: PropTypes.shape({
       projectID: PropTypes.string.isRequired
     }).isRequired
-  }).isRequired
+  }).isRequired,
+  logs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AppMetricsPage));

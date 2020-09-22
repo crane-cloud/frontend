@@ -19,15 +19,17 @@ const LogsFrame = ({ loading, title, data }) => {
       </div>
 
       <div className={`LogsBodySection ${dark && 'Dark'}`}>
-        {loading ? (
-          <Spinner />
+        {true ? (
+          <div className="LogsSpinner">
+            <Spinner />
+          </div>
         ) : (
           <>
-            {(data !== '' ? (
+            {(data.length ? (
               <div className="LogsAvailable">
-                <span>
-                  {data}
-                </span>
+                {data.map((logs) => (
+                  <span>{logs}</span>
+                ))}
               </div>
             ) : (
               <div className="LogsEmpty">
