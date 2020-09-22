@@ -19,7 +19,7 @@ const LogsFrame = ({ loading, title, data }) => {
       </div>
 
       <div className={`LogsBodySection ${dark && 'Dark'}`}>
-        {true ? (
+        {loading ? (
           <div className="LogsSpinner">
             <Spinner />
           </div>
