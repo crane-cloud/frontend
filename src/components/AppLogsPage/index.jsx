@@ -7,7 +7,7 @@ import Header from '../Header';
 import SideBar from '../SideBar';
 import MetricsCard from '../MetricsCard';
 import { ReactComponent as MetricIcon } from '../../assets/images/resource-icon.svg';
-import './AppMetricsPage.css';
+import './AppLogsPage.css';
 import LineChartComponent from '../LineChart';
 import LogsFrame from '../LogsFrame';
 import getAppLogs from '../../redux/actions/getAppLogs';
@@ -40,7 +40,7 @@ function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
 }
 
-class AppMetricsPage extends React.Component {
+class AppLogsPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -115,30 +115,4 @@ class AppMetricsPage extends React.Component {
   }
 }
 
-
-const mapStateToProps = ({ appLogsReducer }) => {
-  const {
-    logs, retrievedLogs, retrieveingLogs
-  } = appLogsReducer;
-
-  return {
-    logs,
-    retrievedLogs,
-    retrieveingLogs
-  };
-};
-
-const mapDispatchToProps = {
-  getAppLogs
-};
-
-AppMetricsPage.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      projectID: PropTypes.string.isRequired
-    }).isRequired
-  }).isRequired,
-  logs: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AppMetricsPage));
+export default connect()(withRouter(AppLogsPage));
