@@ -11,7 +11,6 @@ import './AppMetricsPage.css';
 import LineChartComponent from '../LineChart';
 import LogsFrame from '../LogsFrame';
 import getAppLogs from '../../redux/actions/getAppLogs';
-import Spinner from '../Spinner';
 
 const sampleData = [
   { name: 'Sample Metric 1', uv: 250 },
@@ -54,7 +53,7 @@ class AppMetricsPage extends React.Component {
     const { getAppLogs, match: { params } } = this.props;
     const { projectID, appID } = params;
 
-    getAppLogs({ projectID, appID }, {});
+    getAppLogs({ projectID, appID }, { timestamps: true });
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -71,8 +70,6 @@ class AppMetricsPage extends React.Component {
     const { params } = this.props.match;
     const { projectID, userID, appID } = params;
     const { logs, retrieveingLogs } = this.props;
-
-    console.log(logs);
 
     return (
       <div className="Page">
@@ -107,11 +104,9 @@ class AppMetricsPage extends React.Component {
                 </MetricsCard>
               </div>
               <div className="LogsSection">
-                {retrieveingLogs ? (
-                  <Spinner />
-                ) : (
-                  <LogsFrame data={[]} title={`${appName} logs`} />
-                )}
+                {logs.map((appLogs) => (
+                  <LogsFrame key={logs.indexOf(logs)} loading={retrieveingLogs} data={appLogs} title={`${appName} logs`} />
+                ))}
               </div>
             </div>
           </div>

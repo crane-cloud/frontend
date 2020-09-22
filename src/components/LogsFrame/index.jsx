@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ToggleButton from '../ToggleButton';
+import Spinner from '../Spinner';
 import './LogsFrame.css';
 
-const LogsFrame = ({ title, data }) => {
+const LogsFrame = ({ loading, title, data }) => {
   const [dark, setDarkMode] = useState(false);
 
   const changeMode = () => {
@@ -18,17 +19,23 @@ const LogsFrame = ({ title, data }) => {
       </div>
 
       <div className={`LogsBodySection ${dark && 'Dark'}`}>
-        {(data.length ? (
-          <div className="LogsAvailable">
-            {data.map((logs) => (
-              <div key={data.indexOf(logs)}>{`> ${logs}`}</div>
-            ))}
-          </div>
+        {loading ? (
+          <Spinner />
         ) : (
-          <div className="LogsEmpty">
-            <div>No logs available</div>
-          </div>
-        ))}
+          <>
+            {(data !== '' ? (
+              <div className="LogsAvailable">
+                <span>
+                  {data}
+                </span>
+              </div>
+            ) : (
+              <div className="LogsEmpty">
+                <div>No logs available</div>
+              </div>
+            ))}
+          </>
+        )}
       </div>
     </div>
   );

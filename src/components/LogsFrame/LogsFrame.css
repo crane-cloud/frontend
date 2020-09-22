@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   min-height: 400px; /* *** */
+  background-color: #ffffff;
 }
 
 .LogsHeaderSection {
@@ -27,6 +28,10 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+}
+
+.LogsAvailable span {
+  white-space: pre-wrap;
 }
 
 .LogsEmpty {
