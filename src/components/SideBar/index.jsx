@@ -25,6 +25,10 @@ const SideBar = (props) => {
     strict: true
   }));
 
+  const isAppLogsPage = (matchPath(pageRoute, {
+    path: '/users/:userID/projects/:projectID/apps/:appID/logs',
+  }));
+
   const pageLocation = (matchPath(pageRoute, {
     path: '/users/:userID/projects/:projectID/apps',
     exact: true,
@@ -73,7 +77,7 @@ const SideBar = (props) => {
             <Link to={memoryLink} className="SubBarListItem">Memory</Link>
             <Link to={storageLink} className="SubBarListItem">Storage</Link>
             <Link to={networkLink} className="SubBarListItem">Network</Link>
-            {isAppPage && (
+            {(isAppLogsPage || isAppPage) && (
               <Link to={appLogsLink} className="SubBarListItem">Logs</Link>
             )}
           </div>
