@@ -1,0 +1,38 @@
+.CalendarWrapper {
+  border: 1px solid #cccccc;
+  max-width: 300px;
+  height: 300px;
+}
+
+.CalendarMonth {
+  padding: 1rem 1rem .5rem;
+  display: flex;
+  justify-content: space-between;
+  background-color: #F8F7E5;
+}
+
+
+.CalendarWeekDays {
+  color: #555555;
+  display: grid;
+  grid-auto-flow: column;
+  text-align: center;
+  padding: .5rem 0;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.CalendarDays {
+  display: grid;
+  grid-auto-flow: column;
+
+}
+
+.DisableTextSelect {
+  -webkit-touch-callout: none;
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
