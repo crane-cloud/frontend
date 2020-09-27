@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import './PvsListPage.css';
-import NavBar from '../NavBar';
+import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
-import { BigSpinner } from '../SpinnerComponent';
-import getPvs from '../../redux/actions/PvsActions';
+import Spinner from '../Spinner';
+import getPvs from '../../redux/actions/pvs';
 import Status from '../Status';
 
 class PvsListPage extends React.Component {
@@ -18,22 +17,23 @@ class PvsListPage extends React.Component {
   }
 
   render() {
-    const { pvs, isRetrieving } = this.props;
+    const { pvs, isRetrieving, isFetched } = this.props;
     const clusterName = localStorage.getItem('clusterName');
+    const { match: { params } } = this.props;
 
     return (
-      <div>
-        <NavBar />
+      <div className="MainPage">
+        <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
-          <div className="SiteSideNav">
-            <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
+          <div className="SideBarSection">
+            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
           </div>
-          <div className="Content">
-            <div className="UpperBar">
+          <div className="MainContentSection">
+            <div className="InformationBarSection">
               <InformationBar header="Volumes" showBtn={false} />
             </div>
-            <div className="LowerBar">
-              <div className="ResourcesTable">
+            <div className="ContentSection">
+              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
                 <table>
                   <thead>
                     <tr>
@@ -46,35 +46,47 @@ class PvsListPage extends React.Component {
                   </thead>
                   {
                     isRetrieving ? (
-                      <tr className="TableLoading">
-                        <div className="SpinnerWrapper">
-                          <BigSpinner />
-                        </div>
-                      </tr>
+                      <tbody>
+                        <tr className="TableLoading">
+                          <td>
+                            <div className="SpinnerWrapper">
+                              <Spinner size="big" />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
                     ) : (
                       <tbody>
-                        {pvs.length !== 0 ? (
+                        {(isFetched && pvs !== undefined) && (
                           pvs.map((pv) => (
-                            <tr>
+                            <tr key={pvs.indexOf(pv)}>
                               <td>{pv.metadata.name}</td>
                               <td>{pv.spec.accessModes[0]}</td>
                               <td>{pv.spec.persistentVolumeReclaimPolicy}</td>
                               <td><Status status={pv.status.phase} /></td>
                               <td>{pv.spec.capacity.storage}</td>
                             </tr>
-
-                          )))
-                          : (
-                            <tr>
-                              <div className="EmptyList">
-                                <h3>No Volumes Available</h3>
-                              </div>
-                            </tr>
-                          )}
+                          ))
+                        )}
                       </tbody>
                     )
                   }
                 </table>
+
+                {(isFetched && pvs.length === 0) && (
+                  <div className="NoResourcesMessage">
+                    <p>No Volumes Available</p>
+                  </div>
+                )}
+                {(!isRetrieving && !isFetched) && (
+                  <div className="NoResourcesMessage">
+                    <p>
+                      Oops! Something went wrong!
+
+                      Failed to retrieve Volumes.
+                    </p>
+                  </div>
+                )}
 
               </div>
             </div>
@@ -85,24 +97,33 @@ class PvsListPage extends React.Component {
   }
 }
 
+
 PvsListPage.propTypes = {
-  pvs: PropTypes.object,
+  getPvs: PropTypes.func.isRequired,
+  pvs: PropTypes.arrayOf(PropTypes.object),
   isRetrieving: PropTypes.bool,
+  isFetched: PropTypes.bool,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
 };
 
 PvsListPage.defaultProps = {
   pvs: [],
   isRetrieving: false,
+  isFetched: false
 };
 
-export const mapStateToProps = (state) => {
-  const { isRetrieving, pvs } = state.PvsReducer;
-  return { isRetrieving, pvs };
+const mapStateToProps = (state) => {
+  const { isRetrieving, pvs, isFetched } = state.pvsReducer;
+  return { isRetrieving, pvs, isFetched };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getPvs
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

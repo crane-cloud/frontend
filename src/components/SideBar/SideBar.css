@@ -1,0 +1,95 @@
+.SideBar {
+    width: 100%;
+    height: 100%;
+    background: #06222F;
+    mix-blend-mode: normal;
+    margin-left: 0px;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.SideBarTopSection {
+    padding: 2rem 1rem;
+    display: grid;
+    grid-auto-flow: column;
+}
+
+.ProjectName {
+    background-color: #06222F;
+    font-weight: bold;
+    font-size: large;
+    color: #fff;
+    cursor: pointer;
+}
+
+.SideBarBottomSection {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.SideBarLinks {
+    flex-grow: 1;
+}
+
+.SideBar::-webkit-scrollbar {
+    display: none;
+}
+
+.ListItem {
+    height: 21px;
+    background-color: #06222F;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+    color: #F7B21F;
+    margin-top: 20px;
+    cursor: pointer;
+    padding-left: 18px;
+    text-transform: uppercase;
+    display: block;
+}
+
+.SubBarListItem {
+    height: 21px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    color: #99D2E9;
+    padding: 8px 0px 8px 20px;
+    cursor: pointer;
+    display: block;
+}
+
+.List {
+    height: max-content;
+    overflow: auto;
+}
+/* 
+.SideFooter {
+    height: 30px;
+    font-size: 12px;
+    line-height: 14px;
+    bottom: 0;
+    color: #008AC1;
+    padding: 18px 0 20px 18px;
+    cursor: pointer;
+    background-color: #06222F;
+}
+
+.SideFooter:hover {
+    color: rgb(131, 182, 202);
+} */
+
+.ListItem:hover {
+    text-shadow: 0 0 .5px rgb(255, 194, 62);
+}
+
+.SubBarListItem:hover {
+    background-color: rgb(13, 60, 82);
+    color: rgb(164, 228, 253);
+}

@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import './PvcsList.css';
-import NavBar from '../NavBar';
+import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
-import getPvcs from '../../redux/actions/PvcsActions';
+import getPvcs from '../../redux/actions/pvcs';
 import Status from '../Status';
 import tellAge from '../../helpers/ageUtility';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 
 class PvcsListPage extends React.Component {
   componentDidMount() {
@@ -19,22 +18,23 @@ class PvcsListPage extends React.Component {
   }
 
   render() {
-    const { pvcs, isRetrieving } = this.props;
+    const { pvcs, isRetrieving, isFetched } = this.props;
     const clusterName = localStorage.getItem('clusterName');
+    const { match: { params } } = this.props;
 
     return (
-      <div>
-        <NavBar />
+      <div className="MainPage">
+        <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
-          <div className="SiteSideNav">
-            <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
+          <div className="SideBarSection">
+            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
           </div>
-          <div className="Content">
-            <div className="UpperBar">
-              <InformationBar header="Pvcs" showBtn={false} />
+          <div className="MainContentSection">
+            <div className="InformationBarSection">
+              <InformationBar header="Volume Claims" showBtn={false} />
             </div>
-            <div className="LowerBar">
-              <div className="ResourcesTable">
+            <div className="ContentSection">
+              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
                 <table>
                   <thead>
                     <tr>
@@ -45,33 +45,46 @@ class PvcsListPage extends React.Component {
                   </thead>
                   {
                     isRetrieving ? (
-                      <tr className="TableLoading">
-                        <div className="SpinnerWrapper">
-                          <BigSpinner />
-                        </div>
-                      </tr>
+                      <tbody>
+                        <tr className="TableLoading">
+                          <td>
+                            <div className="SpinnerWrapper">
+                              <Spinner size="big" />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
                     ) : (
                       <tbody>
-                        {pvcs.length !== 0 ? (
+                        {(isFetched && pvcs !== undefined) && (
                           pvcs.map((pvc) => (
-                            <tr>
+                            <tr key={pvcs.indexOf(pvc)}>
                               <td>{pvc.metadata.name}</td>
                               <td><Status status={pvc.status.phase} /></td>
                               <td>{tellAge(pvc.metadata.creationTimestamp)}</td>
                             </tr>
 
-                          )))
-                          : (
-                            <tr>
-                              <div className="EmptyList">
-                                <h3>No Pvcs Available</h3>
-                              </div>
-                            </tr>
-                          )}
+                          ))
+                        )}
                       </tbody>
                     )
                   }
                 </table>
+
+                {(isFetched && pvcs.length === 0) && (
+                  <div className="NoResourcesMessage">
+                    <p>No Volume Claims Available</p>
+                  </div>
+                )}
+                {(!isRetrieving && !isFetched) && (
+                  <div className="NoResourcesMessage">
+                    <p>
+                      Oops! Something went wrong!
+
+                      Failed to retrieve Volume Claims.
+                    </p>
+                  </div>
+                )}
 
               </div>
             </div>
@@ -83,23 +96,31 @@ class PvcsListPage extends React.Component {
 }
 
 PvcsListPage.propTypes = {
-  pvcs: PropTypes.object,
+  getPvcs: PropTypes.func.isRequired,
+  pvcs: PropTypes.arrayOf(PropTypes.object),
   isRetrieving: PropTypes.bool,
+  isFetched: PropTypes.bool,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
 };
 
 PvcsListPage.defaultProps = {
   pvcs: [],
   isRetrieving: false,
+  isFetched: false,
 };
 
-export const mapStateToProps = (state) => {
-  const { isRetrieving, pvcs } = state.PvcsReducer;
-  return { isRetrieving, pvcs };
+const mapStateToProps = (state) => {
+  const { isRetrieving, pvcs, isFetched } = state.pvcsReducer;
+  return { isRetrieving, pvcs, isFetched };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getPvcs
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

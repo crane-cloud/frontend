@@ -1,42 +1,51 @@
-body{
-    margin: 0;
-}
 @font-face {
-  font-family: Roboto;
-  src: url("./assets/fonts/Roboto-Regular.ttf") format("truetype");
+  font-family: proxima-nova;
+  src: url("./assets/fonts/proxima-nova-regular.otf") format("truetype");
 }
 
 @font-face {
-  font-family: Roboto;
-  font-weight: 200;
-  src: url("./assets/fonts/Roboto-Light.ttf") format("truetype");
+  font-family: proxima-nova;
+  font-weight: 100;
+  src: url("./assets/fonts/proxima-nova-thin.otf") format("truetype");
 }
 
 @font-face {
-  font-family: Roboto;
-  font-weight: 500;
-  src: url("./assets/fonts/Roboto-Medium.ttf") format("truetype");
+  font-family: proxima-nova;
+  font-weight: 600;
+  src: url("./assets/fonts/proxima-nova-bold.otf") format("truetype");
 }
 
 @font-face {
-  font-family: Roboto;
-  font-weight: 900;
-  src: url("./assets/fonts/Roboto-Black.ttf") format("truetype");
+  font-family: monaco;
+  src: url("./assets/fonts/monaco.ttf") format("truetype");
 }
 
 body {
   margin: 0;
+  padding: 0;
   color: #000;
-  font-family: "Roboto", Arial, Helvetica, sans-serif;
+  font-family: proxima-nova, sans-serif;
 }
 
-textarea, input, select, button {
+div#root {
+  min-height: 100vh;
+  display: flex;
+  flex-flow: column;
+}
+
+textarea,
+input,
+select,
+button {
   font-family: inherit;
   font-size: inherit;
   margin: 0;
 }
 
-textarea:focus, input:focus, select:focus, button:focus {
+textarea:focus,
+input:focus,
+select:focus,
+button:focus {
   outline: none;
 }
 
@@ -88,3 +97,257 @@ input[type="tel"],
 input[type="password"] {
   box-sizing: border-box;
 }
+
+/*- ///// GENERAL DASHBOARD STYLING ///////// */
+.DashboardContainer {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.DashboardMainContainer {
+  margin-top: 80px; /* Height of the hedaer */
+  display: flex;
+  flex-direction: row;
+}
+
+.DashboardSideNav {
+  min-width: 250px;
+}
+
+.DashboardContentWrap {
+  flex: 1;
+  background: #f1f1f1;
+}
+
+.FailedToRetrieveMsg {
+  text-align: center;
+  color: #555;
+  display: flex;
+  justify-content: center;
+}
+
+.FailedToRetrieveMsg p {
+  box-shadow: 0.5rem 0.5rem rgba(0, 138, 193, 0.2);
+  border-radius: 25px;
+  padding: 5rem;
+}
+
+.DashboardHeaderContainer {
+  position: fixed;
+  width: 100%;
+  z-index: 5;
+}
+
+/*- ////////////////////////////////// */
+
+/*- ///// TABLE STYLING ///////// */
+div.ResourcesTable {
+  padding-top: 1rem;
+}
+
+div.ResourcesTable.LoadingResourcesTable {
+  flex-grow: 1;
+}
+
+.ResourcesTable table thead {
+  text-transform: uppercase;
+}
+
+body::-webkit-scrollbar {
+  width: 4px;
+  height: 0px;
+}
+body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+body::-webkit-scrollbar-thumb {
+  background: #888;
+}
+body::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.ResourcesTable table {
+  position: relative;
+  table-layout: fixed;
+  text-align: center;
+  border-collapse: collapse;
+  width: 100%;
+  height: 100%;
+}
+
+.ResourcesTable table th {
+  padding: 1rem;
+  color: #008ac1;
+  text-align: center;
+}
+
+.ResourcesTable table th:first-child,
+.ResourcesTable table td:first-child {
+  text-align: left;
+  padding-left: 2rem;
+}
+
+.ResourcesTable table th:last-child,
+.ResourcesTable table td:last-child {
+  text-align: right;
+  padding-right: 2rem;
+}
+
+.ResourcesTable table td {
+  padding: 0.8rem 1rem;
+  font-weight: normal;
+}
+
+div.TableLoading {
+  display: flex;
+  height: 100%;
+  justify-self: center;
+  justify-content: center;
+  align-items: center;
+}
+
+tr.TableLoading {
+  position: relative;
+}
+
+tr.TableLoading td {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ResourcesTable table tr.TableLoading:hover, .ResourcesTable table thead tr:hover {
+  cursor: default;
+  background-color: inherit;
+}
+
+.ResourcesTable table tr:hover {
+  background-color: #e0e0e0;
+  cursor: pointer;
+}
+
+/*- ////////////////////////////////// */
+
+/* Other */
+
+.NoResourcesMessage {
+  flex-grow: 1;
+  display: flex;
+  font-size: 16px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+/* //// ADMIN DASHBOARD PAGE STYLING  //// */
+
+.MainPage {
+  /* Divided into two rows */
+  margin: 0;
+  background: #f1f1f1;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 80px 4fr;
+  overflow-x: hidden;
+}
+.TopBarSection {
+  background-color: black;
+}
+.MainSection {
+  /* divided into two columns */
+  background-color: #f1f1f1;
+  display: grid;
+  grid-template-columns: 1.3fr 6fr;
+  overflow: hidden;
+}
+
+.SideBarSection {
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.SideBarSection::-webkit-scrollbar {
+  display: none;
+  min-width: fit-content;
+}
+
+.SideBarSection {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.MainContentSection {
+  /* divided into two rows */
+  display: grid;
+  grid-template-rows: 80px 4fr;
+  overflow: hidden;
+}
+
+.ContentSection {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.ContentSection::-webkit-scrollbar {
+  width: 10px;
+  height: 0px;
+}
+.ContentSection::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.ContentSection::-webkit-scrollbar-thumb {
+  border-radius: 25px;
+  background: #008ac1;
+}
+.ContentSection::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/*- /////////--- STYLING FOR FEEDBACK ---//////////// */
+.ErrorOnWhite {
+  color: rgb(0, 0, 0, 0.8);
+  background-color: rgb(214, 59, 59, 0.5);
+  text-align: center;
+  padding: 0.7rem 0;
+}
+
+.SuccessOnWhite {
+  color: rgba(0, 0, 0, 0.8);
+  background-color: rgb(0, 128, 0, 0.5);
+  text-align: center;
+  padding: 0.7rem 0;
+}
+
+/* //////////////////////////////////////////// */
+
+/* //////////--- PAGE STYLES ---//////////// */
+
+.Page {
+  margin: 0;
+  background: #f1f1f1;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  overflow: hidden;
+}
+
+.TopRow {
+  width: 100%;
+}
+
+.MainRow {
+  display: flex;
+  flex-direction: column;
+  padding: 3rem;
+}
+
+.FooterRow {
+  font-size: 0.8rem;
+  padding: 1rem 3rem;
+}
+
+/* //////////////////////////////////////////// */

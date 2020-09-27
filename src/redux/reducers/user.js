@@ -1,16 +1,23 @@
-import { SAVE_USER } from '../actions/actionTypes';
+import { SAVE_USER, REMOVE_USER } from '../actions/actionTypes';
 
-const user = ( user = { accessToken: false, data: {} }, action) => {
+const user = (user = { accessToken: '', data: {} }, action) => {
   switch (action.type) {
-  case SAVE_USER: {
-    const { access_token, ...restOfProperties } = action.user;
+  case SAVE_USER:
     return {
-      accessToken: access_token,
+      accessToken: action.payload.access_token,
       data: {
-        ...restOfProperties
+        name: action.payload.username,
+        email: action.payload.email,
+        verified: action.payload.verified,
+        id: action.payload.id
       }
     };
-  }
+
+  case REMOVE_USER:
+    return {
+      accessToken: false,
+      data: {}
+    };
 
   default:
     return user;

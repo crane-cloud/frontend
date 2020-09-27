@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import getNodesList from '../../redux/actions/nodeClusterActions';
+import getNodesList from '../../redux/actions/nodeCluster';
 import tellAge from '../../helpers/ageUtility';
 import './NodesList.css';
-import NavBar from '../NavBar';
+import Header from '../Header';
 import Status from '../Status';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 
@@ -47,58 +46,74 @@ class NodesList extends Component {
   render() {
     const { nodes, isFetched, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
+    const { match: { params } } = this.props;
 
     return (
-      <div>
-        <NavBar />
+      <div className="MainPage">
+        <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
-          <div className="SiteSideNav">
-            <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
+          <div className="SideBarSection">
+            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
           </div>
-          <div className="Content">
-            <div className="UpperBar">
+          <div className="MainContentSection">
+            <div className="InformationBarSection">
               <InformationBar header="Nodes" showBtn={false} />
             </div>
-            <div className="LowerBar" />
-
-            <div className="ResourcesTable">
-              <table className="Nodes table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Roles</th>
-                    <th>Age</th>
-                    <th>Version</th>
-                  </tr>
-                </thead>
-                {
-                  isRetrieving ? (
-                    <tr className="TableLoading">
-                      <div className="SpinnerWrapper">
-                        <BigSpinner />
-                      </div>
+            <div className="ContentSection">
+              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
+                <table className="Nodes table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Status</th>
+                      <th>Roles</th>
+                      <th>Age</th>
+                      <th>Version</th>
                     </tr>
-                  ) : (
-                    <tbody>
-                      {isFetched ? (nodes.nodes.map((node) => (
-                        <tr>
-                          <td>{node.metadata.name}</td>
-                          <td><Status status={this.nodeStatus(node.status.conditions)} /></td>
-                          <td>{ this.getRoles(node) }</td>
-                          <td>{tellAge(node.metadata.creationTimestamp)}</td>
-                          <td>{node.status.nodeInfo.kubeProxyVersion}</td>
+                  </thead>
+                  {
+                    isRetrieving ? (
+                      <tbody>
+                        <tr className="TableLoading">
+                          <td>
+                            <div className="SpinnerWrapper">
+                              <Spinner size="big" />
+                            </div>
+                          </td>
                         </tr>
-                      )))
-                        : (
-                          <div className="EmptyList">
-                            <h3>No Nodes Available</h3>
-                          </div>
+                      </tbody>
+                    ) : (
+                      <tbody>
+                        {(isFetched && nodes.nodes !== undefined) && (
+                          (nodes.nodes.map((node) => (
+                            <tr key={nodes.nodes.indexOf(node)}>
+                              <td>{node.metadata.name}</td>
+                              <td><Status status={this.nodeStatus(node.status.conditions)} /></td>
+                              <td>{ this.getRoles(node) }</td>
+                              <td>{tellAge(node.metadata.creationTimestamp)}</td>
+                              <td>{node.status.nodeInfo.kubeProxyVersion}</td>
+                            </tr>
+                          )))
                         )}
-                    </tbody>
-                  )
-                }
-              </table>
+                      </tbody>
+                    )
+                  }
+                </table>
+
+                {(isFetched && nodes.nodes.length === 0) && (
+                  <div className="NoResourcesMessage">
+                    <p>No Nodes Available</p>
+                  </div>
+                )}
+                {(!isRetrieving && !isFetched) && (
+                  <div className="NoResourcesMessage">
+                    <p>
+                      Oops! Something went wrong!
+                      Failed to retrieve Nodes.
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -109,27 +124,34 @@ class NodesList extends Component {
 
 // inititate props
 NodesList.propTypes = {
-  nodes: PropTypes.object,
+  nodes: PropTypes.shape({
+    nodes: PropTypes.arrayOf(PropTypes.object)
+  }),
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
-  getNodesList: PropTypes.func
+  getNodesList: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
 };
 
 // assigning defaults
 NodesList.defaultProps = {
-  nodes: [],
+  nodes: {},
   isRetrieving: false,
   isFetched: false,
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { isRetrieving, nodes, isFetched } = state.nodesReducer;
   return { isRetrieving, nodes, isFetched };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getNodesList
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

@@ -1,21 +1,127 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Logo from '../Logo';
+import { ReactComponent as DownArrow } from '../../assets/images/downarrow.svg';
+import removeUser from '../../redux/actions/removeUser';
 import './Header.css';
+import { DOCS_URL } from '../../config';
 
-const Header = () => (
-  <header className="Header">
-    <div>
+const Header = (props) => {
+  const [hidden, setHidden] = useState(false);
+  const dropdownRef = useRef(null);
+  const { user, match } = props;
+
+  const toggleHidden = () => {
+    if (hidden) {
+      setHidden(false);
+    } else {
+      setHidden(true);
+    }
+  };
+
+  const logout = () => {
+    props.removeUser();
+    window.location.href = '/';
+    localStorage.removeItem('state');
+    localStorage.removeItem('token');
+  };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setHidden(false);
+    }
+  };
+
+  // componentWillMount & componentWillUnmount
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // returned function will be called on component unmount
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <header className="Header">
       <Logo />
-    </div>
-    <div className="HeaderLinksWrap">
-      <div className="HeaderLinks bold uppercase">
-        <Link to="#" className="HeaderLinkPricing">pricing</Link>
-        <Link to="#" className="HeaderLinkDocs">docs</Link>
-        <Link to="/login" className="HeaderLinkLogin">login</Link>
-      </div>
-    </div>
-  </header>
-);
 
-export default Header;
+
+      {!user.accessToken && (
+        <div className="HeaderLinksWrap">
+          {match.path !== '/admin-login' && (
+            <div className="HeaderLinks bold uppercase">
+              <a href={`${DOCS_URL}`} className="HeaderLinkDocs" rel="noopener noreferrer" target="_blank">Docs</a>
+              <Link to="/login" className="HeaderLinkLogin TurnLight">Login</Link>
+            </div>
+          )}
+        </div>
+      )}
+
+      {user.accessToken && (
+        <div className="HeaderLinksWrap LoggedIn">
+          <div
+            ref={dropdownRef}
+            className="OnHeader"
+            onClick={toggleHidden}
+            role="presentation"
+          >
+            {match.path === '/' ? (
+              <Link to={`/users/${user.data.id}/projects`} className="HeaderLinkBackToConsole TurnLight">dashboard</Link>
+            ) : (
+              <>
+                <div className="UserNames">
+                  {user.data.name}
+                </div>
+              </>
+            )}
+
+            <DownArrow
+              className="DropdownArrowSvg"
+            />
+            {hidden && (
+              <div className="BelowHeader">
+                <div className="DropDownContent">
+                  <a href={`${DOCS_URL}`} className="DropDownLink" rel="noopener noreferrer" target="_blank">Docs</a>
+                  <div className="DropDownLink" role="presentation" onClick={logout}>Logout</div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+    </header>
+  );
+};
+
+Header.propTypes = {
+  removeUser: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    accessToken: PropTypes.string.isRequired,
+    data: PropTypes.shape({
+      id: PropTypes.string,
+      name: PropTypes.string
+    }).isRequired,
+  }),
+  match: PropTypes.shape({
+    path: PropTypes.string.isRequired
+  }).isRequired,
+};
+
+Header.defaultProps = {
+  user: {}
+};
+
+const mapStateToProps = (state) => {
+  const { user } = state;
+  return { user };
+};
+
+const mapDispatchToProps = {
+  removeUser
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));

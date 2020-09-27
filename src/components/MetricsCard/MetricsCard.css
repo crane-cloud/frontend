@@ -1,0 +1,25 @@
+.MetricsCardContainer {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #cccccc;
+}
+
+.CardHeaderSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #cccccc;
+}
+
+.CardBodySection {
+  min-height: 10rem;
+  flex-grow: 1;
+  padding: 1rem;
+  display: flex;
+}
+
+.MetricsCardContainer:hover {
+  border: 1px solid #f7b21f;
+}

@@ -4,28 +4,50 @@
     background: #06222F;
     mix-blend-mode: normal;
     margin-left: 0px;
-    padding-top: 10px;
-    overflow-y: scroll;
     overflow-x: hidden;
-    min-height: 132vh;
 }
 
 .ClusterName{
-    height: 21px;
-    font-family: Roboto, sans-serif;
-    font-style: normal;
+    height: 1.8rem;
+    z-index: 2;
+    background-color: #06222F;
     font-weight: bold;
     font-size: 16px;
     line-height: 19px;
     color: #fff;
-    margin-top: 20px;
+    margin-top: 15px;
     cursor: pointer;
-    padding: 18px;
+    padding: 25px 18px 20px 18px;
     text-transform: uppercase;
+    box-shadow: 10px 5px 9px 0 rgba(90, 88, 88, 0.2);
+
 }
+
+.StickTop{
+    position: sticky;
+    top: 0;
+}
+
+
 .ClusterName a{
     color: #fff;
 }
+
+.ClusterName .CName:hover{
+    text-decoration: underline; 
+}
+
+.ClusterName a img{
+    display: inline;
+    height: 13px;
+}
+
+.ClusterName a img:hover{
+    transition: 0.2s;
+    transform: scale(1.5);
+}
+
+
 .SideNav::-webkit-scrollbar {
     display: none;
   }
@@ -36,7 +58,7 @@
 }
 .ListItem{
     height: 21px;
-    font-family: Roboto, sans-serif;
+    background-color: #06222F;
     font-style: normal;
     font-weight: bold;
     font-size: 16px;
@@ -51,7 +73,6 @@
 
 .SubListItem{
     height: 21px;
-    font-family: Roboto,sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -68,9 +89,6 @@
 }
 .SideFooter{
     height: 30px;
-    font-family: Roboto, sans-serif;
-    font-style: normal;
-    font-weight: normal;
     font-size: 12px;
     line-height: 14px;
     bottom: 0;

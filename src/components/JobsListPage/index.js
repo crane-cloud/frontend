@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import './JobsListPage.css';
-import NavBar from '../NavBar';
+import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
-import getJobs from '../../redux/actions/JobsActions';
+import getJobs from '../../redux/actions/jobs';
 import Status from '../Status';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import tellAge from '../../helpers/ageUtility';
 
 class JobsListPage extends React.Component {
@@ -19,61 +18,76 @@ class JobsListPage extends React.Component {
   }
 
   render() {
-    const { jobs, isRetrieving } = this.props;
+    const {
+      jobs, isRetrieving, isFetched
+    } = this.props;
     const clusterName = localStorage.getItem('clusterName');
+    const { match: { params } } = this.props;
 
     return (
-      <div>
-        <NavBar />
+      <div className="MainPage">
+        <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
-          <div className="SiteSideNav">
-            <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
+          <div className="SideBarSection">
+            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
           </div>
-          <div className="Content">
-            <div className="UpperBar">
+          <div className="MainContentSection">
+            <div className="InformationBarSection">
               <InformationBar header="Jobs" showBtn={false} />
             </div>
-            <div className="LowerBar">
-              <div className="ResourcesTable">
+            <div className="ContentSection">
+              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
                 <table>
-                  <tr>
-                    <th>Name</th>
-                    <th>Duration</th>
-                    <th>Status</th>
-                    <th>Age</th>
-                  </tr>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Duration</th>
+                      <th>Status</th>
+                      <th>Age</th>
+                    </tr>
+                  </thead>
                   {
                     isRetrieving ? (
-                      <tr className="TableLoading">
-                        <div className="SpinnerWrapper">
-                          <BigSpinner />
-                        </div>
-                      </tr>
+                      <tbody>
+                        <tr className="TableLoading">
+                          <td>
+                            <div className="SpinnerWrapper">
+                              <Spinner size="big" />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
                     ) : (
                       <tbody>
                         {
-                          jobs.length !== 0 ? (
+                          (isFetched && jobs !== undefined) && (
                             jobs.map((job) => (
-                              <tr>
+                              <tr key={jobs.indexOf(job)}>
                                 <td>{job.metadata.name}</td>
                                 <td>{`${Math.floor((Date.parse(job.status.completionTime) - Date.parse(job.status.startTime)) / 1000)} seconds`}</td>
                                 <td><Status status={job.status.succeeded} /></td>
                                 <td>{tellAge(job.metadata.creationTimestamp)}</td>
                               </tr>
                             )))
-                            : (
-                              <tr>
-                                <div className="EmptyList">
-                                  <h3>No Jobs Available</h3>
-                                </div>
-                              </tr>
-                            )
                         }
                       </tbody>
                     )
                   }
                 </table>
+                {(isFetched && jobs.length === 0) && (
+                  <div className="NoResourcesMessage">
+                    <p>No Jobs Available</p>
+                  </div>
+                )}
+                {(!isRetrieving && !isFetched) && (
+                  <div className="NoResourcesMessage">
+                    <p>
+                      Oops! Something went wrong!
 
+                      Failed to retrieve Jobs.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -84,23 +98,35 @@ class JobsListPage extends React.Component {
 }
 
 JobsListPage.propTypes = {
-  jobs: PropTypes.object,
+  jobs: PropTypes.arrayOf(PropTypes.object),
+  isFetched: PropTypes.bool,
   isRetrieving: PropTypes.bool,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired,
+  getJobs: PropTypes.func.isRequired
 };
 
 JobsListPage.defaultProps = {
   jobs: [],
   isRetrieving: false,
+  isFetched: false,
 };
 
-export const mapStateToProps = (state) => {
-  const { isRetrieving, jobs } = state.JobsReducer;
-  return { isRetrieving, jobs };
+const mapStateToProps = (state) => {
+  const {
+    isRetrieving, jobs, isFetched
+  } = state.jobsReducer;
+  return {
+    isRetrieving, jobs, isFetched
+  };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getJobs
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

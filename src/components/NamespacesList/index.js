@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import './NamespacesList.css';
-import NavBar from '../NavBar';
+import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
-import getNamespaces from '../../redux/actions/NamespacesActions';
+import getNamespaces from '../../redux/actions/namespaces';
 import Status from '../Status';
 import tellAge from '../../helpers/ageUtility';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 
 
 class NamespacesListPage extends React.Component {
@@ -20,22 +19,23 @@ class NamespacesListPage extends React.Component {
   }
 
   render() {
-    const { namespacesList, isRetrieving } = this.props;
+    const { namespacesList, isRetrieving, isRetrieved } = this.props;
     const clusterName = localStorage.getItem('clusterName');
+    const { match: { params } } = this.props;
 
     return (
-      <div>
-        <NavBar />
+      <div className="MainPage">
+        <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
-          <div className="SiteSideNav">
-            <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
+          <div className="SideBarSection">
+            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
           </div>
-          <div className="Content">
-            <div className="UpperBar">
+          <div className="MainContentSection">
+            <div className="InformationBarSection">
               <InformationBar header="Namespaces" showBtn={false} />
             </div>
-            <div className="LowerBar">
-              <div className="ResourcesTable">
+            <div className="ContentSection">
+              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
                 <table className="NamespacesTable">
                   <thead>
                     <tr>
@@ -46,32 +46,44 @@ class NamespacesListPage extends React.Component {
                   </thead>
                   {
                     isRetrieving ? (
-                      <tr className="TableLoading">
-                        <div className="SpinnerWrapper">
-                          <BigSpinner />
-                        </div>
-                      </tr>
+                      <tbody>
+                        <tr className="TableLoading">
+                          <td>
+                            <div className="SpinnerWrapper">
+                              <Spinner size="big" />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
                     ) : (
                       <tbody>
-                        {namespacesList.length !== 0 ? (
+                        {isRetrieved && namespacesList.length !== 0 && (
                           namespacesList.map((namespace) => (
-                            <tr>
+                            <tr key={namespacesList.indexOf(namespace)}>
                               <td>{namespace.metadata.name}</td>
                               <td className="StatusColumn"><Status status={namespace.status.phase} /></td>
                               <td>{tellAge(namespace.metadata.creationTimestamp)}</td>
                             </tr>
 
-                          )))
-                          : (
-                            <div className="EmptyList">
-                              <h3>No Namespaces Available</h3>
-                            </div>
-                          )}
+                          )))}
                       </tbody>
                     )
                   }
                 </table>
+                {(isRetrieved && namespacesList.length === 0) && (
+                  <div className="NoResourcesMessage">
+                    <p>No namespaces available</p>
+                  </div>
+                )}
+                {(!isRetrieving && !isRetrieved) && (
+                  <div className="NoResourcesMessage">
+                    <p>
+                      Oops! Something went wrong!
 
+                      Failed to retrieve namespaces.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -82,25 +94,35 @@ class NamespacesListPage extends React.Component {
 }
 
 NamespacesListPage.propTypes = {
-  namespacesList: PropTypes.object,
+  getNamespaces: PropTypes.func.isRequired,
+  namespacesList: PropTypes.arrayOf(PropTypes.object),
   isRetrieving: PropTypes.bool,
-  clusterName: PropTypes.string,
+  isRetrieved: PropTypes.bool,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
 };
 
 NamespacesListPage.defaultProps = {
   namespacesList: [],
   isRetrieving: false,
-  clusterName: '',
+  isRetrieved: false,
 };
 
-export const mapStateToProps = (state) => {
-  const { isRetrieving, namespacesList, clusterName } = state.NamespacesListReducer;
-  return { isRetrieving, namespacesList, clusterName };
+const mapStateToProps = (state) => {
+  const {
+    isRetrieved, isRetrieving, namespacesList, clusterName
+  } = state.namespacesListReducer;
+  return {
+    isRetrieved, isRetrieving, namespacesList, clusterName
+  };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getNamespaces
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

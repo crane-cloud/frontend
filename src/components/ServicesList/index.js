@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import './ServicesList.css';
-import NavBar from '../NavBar';
+import Header from '../Header';
 import InformationBar from '../InformationBar';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import SideNav from '../SideNav';
-import getServices from '../../redux/actions/ServicesActions';
+import getServices from '../../redux/actions/services';
 
 class ServicesListPage extends React.Component {
   componentDidMount() {
@@ -33,22 +32,23 @@ class ServicesListPage extends React.Component {
   }
 
   render() {
-    const { services, isRetrieving } = this.props;
+    const { services, isRetrieving, isFetched } = this.props;
     const clusterName = localStorage.getItem('clusterName');
+    const { match: { params } } = this.props;
 
     return (
-      <div>
-        <NavBar />
+      <div className="MainPage">
+        <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
-          <div className="SiteSideNav">
-            <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
+          <div className="SideBarSection">
+            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
           </div>
-          <div className="Content">
-            <div className="UpperBar">
+          <div className="MainContentSection">
+            <div className="InformationBarSection">
               <InformationBar header="Services" showBtn={false} />
             </div>
-            <div className="LowerBar">
-              <div className="ResourcesTable">
+            <div className="ContentSection">
+              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
                 <table>
                   <thead>
                     <tr>
@@ -60,34 +60,47 @@ class ServicesListPage extends React.Component {
                   </thead>
                   {
                     isRetrieving ? (
-                      <tr className="TableLoading">
-                        <div className="SpinnerWrapper">
-                          <BigSpinner />
-                        </div>
-                      </tr>
+                      <tbody>
+                        <tr className="TableLoading">
+                          <td>
+                            <div className="SpinnerWrapper">
+                              <Spinner size="big" />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
                     ) : (
                       <tbody>
-                        {services.length !== 0 ? (
+                        {(isFetched && services !== undefined) && (
                           services.map((service) => (
-                            <tr>
+                            <tr key={services.indexOf(service)}>
                               <td>{service.metadata.name}</td>
                               <td>{service.spec.type}</td>
                               <td>{service.spec.clusterIP}</td>
                               <td>{this.showPorts(service.spec.ports)}</td>
                             </tr>
-
-                          )))
-                          : (
-                            <tr>
-                              <div className="EmptyList">
-                                <h3>No Services Available</h3>
-                              </div>
-                            </tr>
-                          )}
+                          ))
+                        )}
                       </tbody>
                     )
                   }
                 </table>
+
+                {(isFetched && services.length === 0) && (
+                  <div className="NoResourcesMessage">
+                    <p>No Services Available</p>
+                  </div>
+                )}
+                {(!isRetrieving && !isFetched) && (
+                  <div className="NoResourcesMessage">
+                    <p>
+                      Oops! Something went wrong!
+
+                      Failed to retrieve Services.
+                    </p>
+                  </div>
+                )}
+
 
               </div>
             </div>
@@ -99,23 +112,31 @@ class ServicesListPage extends React.Component {
 }
 
 ServicesListPage.propTypes = {
-  services: PropTypes.object,
+  getServices: PropTypes.func.isRequired,
+  services: PropTypes.arrayOf(PropTypes.object),
+  isFetched: PropTypes.bool,
   isRetrieving: PropTypes.bool,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
 };
 
 ServicesListPage.defaultProps = {
   services: [],
   isRetrieving: false,
+  isFetched: false,
 };
 
-export const mapStateToProps = (state) => {
-  const { isRetrieving, services } = state.ServicesReducer;
-  return { isRetrieving, services };
+const mapStateToProps = (state) => {
+  const { isRetrieving, services, isFetched } = state.servicesReducer;
+  return { isRetrieving, services, isFetched };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getServices
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

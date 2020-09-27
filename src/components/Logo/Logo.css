@@ -1,4 +1,25 @@
-.HeaderLogo {
-  margin: 3rem;
-  width: 50%;
+.Logo {
+  display: grid;
+  grid-gap: 1rem;
+  grid-auto-flow: column;
+  align-items: center;
+}
+
+.LogoWrapper {
+  display: flex;
+}
+
+.LogoIcon {
+  width: 4rem;
+  height: auto;
+}
+
+.LogoIcon .solid {
+  fill: #fff;
+}
+
+.LogoType {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.5rem;
 }

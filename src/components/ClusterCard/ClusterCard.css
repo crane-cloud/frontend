@@ -24,17 +24,11 @@
 
 .ClusterCardName{
     width: 100%;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
     font-size: 24px;
     padding-top: 5px;
 }
 .ClusterCardDesc{
     width: 100%;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
     font-size: 16px;
     color: #000000;
     padding-top: 10px;

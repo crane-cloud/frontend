@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import getPodsList from '../../redux/actions/podsActions';
+import getPodsList from '../../redux/actions/pods';
 import tellAge from '../../helpers/ageUtility';
 import './PodsList.css';
-import NavBar from '../NavBar';
+import Header from '../Header';
 import Status from '../Status';
-import { BigSpinner } from '../SpinnerComponent';
+import Spinner from '../Spinner';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 import ProgressBar from '../ProgressBar';
@@ -61,34 +60,39 @@ class PodsList extends Component {
           return 0;
         }
       );
-      return <ProgressBar
-      percentage={this.calculatePercentage(ready, count)}
-      fractionLabel={this.displayFraction(ready, count)}
-    />;
+      return (
+        <ProgressBar
+          percentage={this.calculatePercentage(ready, count)}
+          fractionLabel={this.displayFraction(ready, count)}
+        />
+      );
     }
-    return <ProgressBar
-    percentage={this.calculatePercentage(0, 0)}
-    fractionLabel={this.displayFraction(0, 0)}
-  />;;
+    return (
+      <ProgressBar
+        percentage={this.calculatePercentage(0, 0)}
+        fractionLabel={this.displayFraction(0, 0)}
+      />
+    );
   }
 
   render() {
     const { pods, isFetched, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
-    return (
+    const { match: { params } } = this.props;
 
-      <div>
-        <NavBar />
+    return (
+      <div className="MainPage">
+        <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
-          <div className="SiteSideNav">
-            <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
+          <div className="SideBarSection">
+            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
           </div>
-          <div className="Content">
-            <div className="UpperBar">
+          <div className="MainContentSection">
+            <div className="InformationBarSection">
               <InformationBar header="Pods" showBtn={false} />
             </div>
-            <div className="LowerBar">
-              <div className="ResourcesTable">
+            <div className="ContentSection">
+              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
                 <table className="PodsTable">
                   <thead>
                     <tr>
@@ -100,32 +104,43 @@ class PodsList extends Component {
                   </thead>
                   {
                     isRetrieving ? (
-                      <tr className="TableLoading">
-                        <div className="SpinnerWrapper">
-                          <BigSpinner />
-                        </div>
-                      </tr>
+                      <tbody>
+                        <tr className="TableLoading">
+                          <td>
+                            <div className="SpinnerWrapper">
+                              <Spinner size="big" />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
                     ) : (
                       <tbody>
-                        {isFetched && pods.pods !== undefined ? (pods.pods.map((pod) => (
-                          <tr>
+                        {isFetched && pods.pods !== undefined && (pods.pods.map((pod) => (
+                          <tr key={pods.pods.indexOf(pod)}>
                             <td>{pod.metadata.name}</td>
                             <td>{this.podReady(pod.status.containerStatuses)}</td>
                             <td><Status status={this.podStatus(pod.status.conditions)} /></td>
                             <td>{tellAge(pod.metadata.creationTimestamp)}</td>
                           </tr>
-                        )))
-                          : (
-                            <tr>
-                              <div className="EmptyList">
-                                <h3>No Pods Available</h3>
-                              </div>
-                            </tr>
-                          )}
+                        )))}
                       </tbody>
                     )
                   }
                 </table>
+                {(isFetched && pods.pods.length === 0) && (
+                  <div className="NoResourcesMessage">
+                    <p>No Pods Available</p>
+                  </div>
+                )}
+                {(!isRetrieving && !isFetched) && (
+                  <div className="NoResourcesMessage">
+                    <p>
+                      Oops! Something went wrong!
+
+                      Failed to retrieve Pods.
+                    </p>
+                  </div>
+                )}
 
               </div>
             </div>
@@ -139,27 +154,34 @@ class PodsList extends Component {
 
 // inititate props
 PodsList.propTypes = {
-  pods: PropTypes.object,
+  pods: PropTypes.shape({
+    pods: PropTypes.arrayOf(PropTypes.object)
+  }),
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
-  getPodsList: PropTypes.func
+  getPodsList: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
 };
 
 // assigning defaults
 PodsList.defaultProps = {
-  pods: [],
+  pods: {},
   isRetrieving: false,
   isFetched: false,
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { isRetrieving, pods, isFetched } = state.podsReducer;
   return { isRetrieving, pods, isFetched };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getPodsList
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

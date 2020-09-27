@@ -1,43 +1,30 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './Checkbox.css';
-import { ReactComponent as Checkmark } from '../../assets/images/check.svg';
+import { ReactComponent as WhiteCheckmark } from '../../assets/images/white-check-mark.svg';
+import { ReactComponent as BlackCheckmark } from '../../assets/images/black-check-mark.svg';
 
-class Checkbox extends React.Component {
-  constructor(props) {
-    super(props);
+const Checkbox = ({ isChecked, onClick, isBlack }) => (
+  <div className="Checkbox">
+    <input
+      type="checkbox"
+      onChange={onClick}
+      checked={isChecked}
+    />
+    <div className={`CheckMarkWrapper Checked-${isChecked} ${isBlack && 'CheckMarkWrapperBlack'}`}>
+      {isBlack ? <BlackCheckmark /> : <WhiteCheckmark />}
+    </div>
+  </div>
+);
 
-    this.state = {
-      checked: false
-    };
+Checkbox.propTypes = {
+  isChecked: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
+  isBlack: PropTypes.bool
+};
 
-    this.toggleCheckmark = this.toggleCheckmark.bind(this);
-  }
-
-  toggleCheckmark() {
-    this.setState({
-      checked: !this.state.checked
-    });
-  }
-
-  render() {
-    return (
-      <div
-        className="Checkbox"
-        onClick={() => {
-          this.props.onClick(this.state.checked);
-        }}
-      >
-        <input
-          type="checkbox"
-          onChange={this.toggleCheckmark}
-          checked={this.state.checked}
-        />
-        <div className={`CheckMarkWrapper Checked-${this.state.checked}`}>
-          <Checkmark />
-        </div>
-      </div>
-    );
-  }
-}
+Checkbox.defaultProps = {
+  isBlack: false
+};
 
 export default Checkbox;

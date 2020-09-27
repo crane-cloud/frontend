@@ -1,0 +1,97 @@
+.AppCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  height: 12.5rem;
+}
+
+.AppCardHeader {
+  font-size: 1.125rem;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  display: flex;
+  justify-content: space-between;
+}
+
+.AppIconsSection {
+  position: relative;
+  display: grid;
+  align-items: center;
+}
+
+.AppIconsSection img {
+  height: 1.2rem;
+}
+
+.AppCardBottomSection {
+  padding: 0 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  cursor: pointer;
+}
+
+.AppGraphSummaryLabel {
+  padding-top: 2px;
+  color: #CCCCCC;
+  font-size: 14px;
+}
+
+.AppGraphSummary {
+  flex-grow: 1;
+}
+
+.AppUrlText {
+  flex: 1 1 auto;
+  padding: 0.5rem 1.25rem;
+  font-size: 16px;
+  font-weight: normal;
+  box-sizing: border-box;
+  margin-top: 1.5rem;
+}
+.AppUrl {
+  flex: 1 1 auto;
+  padding: 0.5rem 1.25rem;
+  cursor: pointer;
+  font-size: 14px;
+  padding-top: 0px;
+}
+
+.AppCard .AppCardHeader::first-letter {
+  text-transform: uppercase;
+}
+
+.AppUrl a {
+  text-decoration: underline;
+  font-size: 1rem;
+  color: #008ac1;
+}
+
+.AppCardItem {
+  display: flex;
+}
+
+.AppName {
+  color: #000000;
+  cursor: pointer;
+  flex: 1;
+  display: flex;
+}
+
+.AppNameSection:hover {
+  opacity: 0.7;
+}
+
+.AppCard:hover {
+  border: 1px solid #f7b21f;
+  box-shadow: 0 1px 2px 0 #f7b21f;
+  transition: 0.5s;
+}
+
+.AppUrl:hover {
+  transition: 0.5s;
+  transform: scale(1.02);
+}

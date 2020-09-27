@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import getStorageClassList from '../../redux/actions/StorageClassesActions';
+import getStorageClassList from '../../redux/actions/storageClasses';
 import tellAge from '../../helpers/ageUtility';
 import './StorageClassList.css';
-import NavBar from '../NavBar';
-import { BigSpinner } from '../SpinnerComponent';
+import Header from '../Header';
+import Spinner from '../Spinner';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
 
@@ -21,51 +20,69 @@ class StorageClassList extends Component {
   render() {
     const { storageClasses, isFetched, isRetrieving } = this.props;
     const clusterName = localStorage.getItem('clusterName');
-    return (
+    const { match: { params } } = this.props;
 
-      <div>
-        <NavBar />
+    return (
+      <div className="MainPage">
+        <div className="TopBarSection"><Header /></div>
         <div className="MainSection">
-          <div className="SiteSideNav">
-            <SideNav clusterName={clusterName} clusterId={this.props.match.params.clusterID} />
+          <div className="SideBarSection">
+            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
           </div>
-          <div className="Content">
-            <div className="UpperBar">
+          <div className="MainContentSection">
+            <div className="InformationBarSection">
               <InformationBar header="Storage Classes" showBtn={false} />
             </div>
-            <div className="LowerBar">
-              <div className="ResourcesTable">
+            <div className="ContentSection">
+              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
                 <table className="StorageClassesTable">
-                  <tr>
-                    <th>Name</th>
-                    <th>Provisioner</th>
-                    <th>Age</th>
-                  </tr>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Provisioner</th>
+                      <th>Age</th>
+                    </tr>
+                  </thead>
                   {
                     isRetrieving ? (
-                      <tr className="TableLoading">
-                        <div className="SpinnerWrapper">
-                          <BigSpinner />
-                        </div>
-                      </tr>
+                      <tbody>
+                        <tr className="TableLoading">
+                          <td>
+                            <div className="SpinnerWrapper">
+                              <Spinner size="big" />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
                     ) : (
                       <tbody>
-                        {isFetched && storageClasses.storage_classes !== undefined
-                          ? (storageClasses.storage_classes.map((storageClass) => (
-                            <tr>
+                        {isFetched && storageClasses.storage_classes !== undefined && (
+                          (storageClasses.storage_classes.map((storageClass) => (
+                            <tr key={storageClasses.storage_classes.indexOf(storageClass)}>
                               <td>{storageClass.metadata.name}</td>
                               <td>{storageClass.provisioner}</td>
                               <td>{tellAge(storageClass.metadata.creationTimestamp)}</td>
                             </tr>
-                          ))) : (
-                            <div className="EmptyList">
-                              <h3>No Storage Classes Available</h3>
-                            </div>
-                          )}
+                          )))
+                        )}
                       </tbody>
                     )
                   }
                 </table>
+                {(isFetched && storageClasses.storage_classes.length === 0) && (
+                  <div className="NoResourcesMessage">
+                    <p>No Storage Classes Available</p>
+                  </div>
+                )}
+                {(!isRetrieving && !isFetched) && (
+                  <div className="NoResourcesMessage">
+                    <p>
+                      Oops! Something went wrong!
+
+                      Failed to retrieve Storage Classes.
+                    </p>
+                  </div>
+                )}
 
               </div>
             </div>
@@ -79,27 +96,34 @@ class StorageClassList extends Component {
 
 // inititate props
 StorageClassList.propTypes = {
-  storageClasses: PropTypes.arrayOf(PropTypes.object),
+  storageClasses: PropTypes.shape({
+    storage_classes: PropTypes.arrayOf(PropTypes.object)
+  }),
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
-  getStorageClassList: PropTypes.func.isRequired
+  getStorageClassList: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      clusterID: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
 };
 
 // assigning defaults
 StorageClassList.defaultProps = {
-  storageClasses: [],
+  storageClasses: {},
   isRetrieving: false,
   isFetched: false,
 };
 
-export const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   const { isRetrieving, storageClasses, isFetched } = state.storageClassesReducer;
   return { isRetrieving, storageClasses, isFetched };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = {
   getStorageClassList
-}, dispatch);
+};
 
 export default connect(
   mapStateToProps,

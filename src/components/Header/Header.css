@@ -1,26 +1,34 @@
 header.Header {
+  background-color: #008ac1;
+  color: #ffffff;
   display: flex;
   justify-content: space-between;
+  height: 5rem;
+  padding: 0 3rem;
+  position: relative;
 }
 
 .HeaderLinks {
-  padding-top: 2rem;
-}
-
-.HeaderLinksWrap {
-  margin: 1rem 3rem auto 0;
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 1rem;
+  align-items: center;
 }
 
 .HeaderLinks a {
   font-size: 0.9em;
-  color: white;
-  padding: 1rem;
+  color: #fff;
 }
 
 .HeaderLinks a.HeaderLinkLogin {
-  border: 2px solid #ffffff;
+  border: 2px solid #fff;
   padding: 1rem 3rem;
-  margin-left: 2rem;
+}
+
+.TurnLight:hover {
+  transition: 0.4s;
+  background-color: #f1f1f1;
+  color: #000 !important;
 }
 
 /* remove focus from logo link - mozilla */
@@ -31,8 +39,106 @@ header.Header {
   border: 0;
 }
 
+.LoggedIn {
+  display: flex;
+}
+
+.HeaderLinksWrap {
+  display: flex;
+}
+
+div.HeaderLinksWrap.LoggedIn .OnHeader {
+  display: grid;
+  gap: 1rem;
+  grid-auto-flow: column;
+  align-items: center;
+  position: relative;
+}
+
+.OnHeader:hover .UserNames {
+  color: #F7B21F;
+}
+
+.OnHeader:hover svg {
+  fill: #F7B21F;
+}
+
+div.DropDownGrid {
+  display: flex;
+  flex-direction: column;
+}
+
+div.HeaderLinksWrap.LoggedIn .BelowHeader {
+  background-color: #f9f9f9;
+  position: absolute;
+  top: 100%;
+  width: 10rem;
+  right: 0;
+}
+
+.DropdownArrowSvg {
+  width: 2rem;
+  height: 2rem;
+  fill: white;
+}
+
+.UserNames {
+  font-weight: bold;
+  color: #fff;
+  cursor: default;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
+.DropDownContent {
+  color: #000;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+  box-shadow: 0 4px 4px 0 rgba(117, 117, 117, 0.2);
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
+.DropDownLink {
+  cursor: pointer;
+  padding: 1rem 1.5rem;
+}
+
+.DropDownLink:hover,
+.DropDownLink:active {
+  background-color: #f1f1f1;
+}
+
+.DropDownLink, .DropDownLink:visited {
+  color: #000;
+  text-decoration: none;
+}
+
+.OnHeader a.HeaderLinkBackToConsole {
+  text-transform: uppercase;
+  border: 2px solid #ffffff;
+  padding: 1rem 3rem;
+  /* margin-left: 2rem; */
+  font-size: 0.9em;
+  color: white;
+  padding: 1rem;
+}
+
 @media only screen and (max-width: 640px) {
-  .HeaderLinkPricing,.HeaderLinkDocs {
+  .HeaderLinkPricing,
+  .HeaderLinkDocs {
     display: none;
   }
 }

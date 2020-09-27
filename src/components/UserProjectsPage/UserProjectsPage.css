@@ -1,0 +1,33 @@
+.ProjectList {
+  display: grid;
+  gap: 1rem;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+}
+
+.ProjectFormErrorDiv {
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #d63b3b;
+  text-align: center;
+  padding: 1rem 0;
+  height: 1rem;
+}
+
+.ClusterDrop {
+  width: 25rem;
+  border: 2px solid #000000;
+  box-sizing: border-box;
+  font-size: inherit;
+  padding: 1rem;
+}
+
+.ClusterNameOption {
+  padding: 2rem 1.5rem;
+  color: #000;
+  background-color: #f9f9f9;
+  font-weight: bold;
+}
+
+.ModalFormInputs input::placeholder {
+  color: #808080;
+}
