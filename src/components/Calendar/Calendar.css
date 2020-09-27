@@ -21,21 +21,3 @@
   font-weight: bold;
   border-bottom: 1px solid #cccccc;
 }
-
-.CalendarDays {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-}
-
-.DayGridItem {
-  border-bottom: 1px solid #cccccc;
-  border-right: 1px solid #cccccc;
-  border-left: 1px solid #cccccc;
-  padding: .5rem;
-  display: flex;
-  justify-content: center;
-}
-
-.DayGridItem:last-child {
-  border-right: 2px solid #cccccc;
-}

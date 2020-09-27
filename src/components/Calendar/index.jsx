@@ -17,7 +17,7 @@ class Calendar extends React.Component {
     super(props);
 
     this.state = {
-      daysGrid: [],
+      weeks: [],
       month: currentMonth,
       year: currentYear
     };
@@ -76,8 +76,12 @@ class Calendar extends React.Component {
 
   renderDays(month, year) {
     const days = [];
+    const weeks = [];
+    let weekCount = 0;
+    let dayCount = 0;
     const firstDay = this.getFirstDay(month, year);
     const maxDays = this.daysInMonth(month, year) + firstDay;
+    const numberOfTrailingBoxes = 35 - maxDays;
 
     for (let i = 0; i < maxDays; i += 1) {
       if (i < firstDay) {
@@ -91,11 +95,30 @@ class Calendar extends React.Component {
       }
     }
 
-    this.setState({ daysGrid: days });
+    for (let i = 0; i < numberOfTrailingBoxes; i += 1) {
+      days.push(
+        <div>-</div>
+      );
+    }
+
+    let limit = 7;
+    while (weekCount < 5) {
+      const singleWeek = [];
+
+      for (dayCount; dayCount < limit; dayCount += 1) {
+        singleWeek.push(days[dayCount]);
+      }
+
+      weeks.push(singleWeek);
+      limit += 7;
+      weekCount += 1;
+    }
+
+    this.setState({ weeks });
   }
 
   render() {
-    const { month, year, daysGrid } = this.state;
+    const { month, year, weeks } = this.state;
 
     return (
       <div className="CalendarWrapper DisableTextSelect">
@@ -114,9 +137,13 @@ class Calendar extends React.Component {
           <div className="WeekDay">sat</div>
         </div>
         <div className="CalendarDays">
-          {daysGrid.map((day) => (
-            <div className="DayGridItem">
-              {day}
+          {weeks.map((days) => (
+            <div className="CalendarSingleWeek">
+              {days.map((day) => (
+                <div className="DayGridItem">
+                  {day}
+                </div>
+              ))}
             </div>
           ))}
         </div>
