@@ -10,6 +10,7 @@ import getProjectCPU, { clearProjectCPU } from '../../redux/actions/projectCPU';
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
 import LineChartComponent from '../LineChart';
+import { formatCPUMetrics } from '../../helpers/formatMetrics';
 
 class ProjectCPUPage extends React.Component {
   constructor(props) {
@@ -43,35 +44,6 @@ class ProjectCPUPage extends React.Component {
 
   getCurrentTimeStamp() {
     return new Date().getTime() / 1000;
-  }
-
-  translateTimestamp(timestamp) {
-    const timestampMillisecond = timestamp * 1000; // convert timestamp to milliseconds
-    const dateObject = new Date(timestampMillisecond); // create a date object out of milliseconds
-    return dateObject.toLocaleString();
-  }
-
-  formatMetrics(projectID) {
-    const { cpuMetrics } = this.props;
-    const found = cpuMetrics.find((metric) => metric.project === projectID);
-    const cpuData = [];
-
-    if (found !== undefined) {
-      if (found.metrics.length > 0) {
-        found.metrics.forEach((metric) => {
-          const newMetricObject = {
-            time: this.translateTimestamp(metric.timestamp),
-            cpu: metric.value * 10 // multiplying by 10 fot graph plotting
-          };
-
-          cpuData.push(newMetricObject);
-        });
-      } else {
-        cpuData.push({ time: 0, cpu: 0 });
-        cpuData.push({ time: 0, cpu: 0 });
-      }
-    }
-    return cpuData;
   }
 
   async handlePeriodChange(period) {
@@ -117,15 +89,16 @@ class ProjectCPUPage extends React.Component {
     const { match: { params }, getProjectCPU, clearProjectCPU } = this.props;
     const { projectID } = params;
 
-    clearProjectCPU();
-    getProjectCPU(projectID, time);
+    const { cpuMetrics } = this.props;
+    const results = formatCPUMetrics(projectID, cpuMetrics);
+    return results;
   }
 
   render() {
     const { match: { params }, isFetchingCPU } = this.props;
     const { projectID, userID } = params;
 
-    const formattedMetrics = this.formatMetrics(projectID);
+    const formattedMetrics = this.fetchCPU();
 
     return (
       <div className="Page">
