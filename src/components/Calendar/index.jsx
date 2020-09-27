@@ -86,7 +86,7 @@ class Calendar extends React.Component {
     for (let i = 0; i < maxDays; i += 1) {
       if (i < firstDay) {
         days.push(
-          <div>-</div>
+          <div />
         );
       } else {
         days.push(
@@ -97,7 +97,7 @@ class Calendar extends React.Component {
 
     for (let i = 0; i < numberOfTrailingBoxes; i += 1) {
       days.push(
-        <div>-</div>
+        <div />
       );
     }
 
@@ -127,7 +127,7 @@ class Calendar extends React.Component {
           {`${monthNames[month]} ${year}`}
           <div className="CalendarArrow" role="presentation" onClick={this.nextMonth}><RightArrow /></div>
         </div>
-        <div className="CalendarWeekDays">
+        <div className="CalendarDayNames">
           <div className="WeekDay">sun</div>
           <div className="WeekDay">mon</div>
           <div className="WeekDay">tue</div>
@@ -136,11 +136,11 @@ class Calendar extends React.Component {
           <div className="WeekDay">fri</div>
           <div className="WeekDay">sat</div>
         </div>
-        <div className="CalendarDays">
+        <div className="CalendarWeeks">
           {weeks.map((days) => (
-            <div className="CalendarSingleWeek">
+            <div className="CalendarWeekDays">
               {days.map((day) => (
-                <div className="DayGridItem">
+                <div className="CalendarSingleDay">
                   {day}
                 </div>
               ))}
