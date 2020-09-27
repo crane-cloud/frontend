@@ -89,16 +89,15 @@ class ProjectCPUPage extends React.Component {
     const { match: { params }, getProjectCPU, clearProjectCPU } = this.props;
     const { projectID } = params;
 
-    const { cpuMetrics } = this.props;
-    const results = formatCPUMetrics(projectID, cpuMetrics);
-    return results;
+    clearProjectCPU();
+    getProjectCPU(projectID, time);
   }
 
   render() {
-    const { match: { params }, isFetchingCPU } = this.props;
+    const { match: { params }, isFetchingCPU, cpuMetrics } = this.props;
     const { projectID, userID } = params;
 
-    const formattedMetrics = this.fetchCPU();
+    const formattedMetrics = formatCPUMetrics(projectID, cpuMetrics);
 
     return (
       <div className="Page">
