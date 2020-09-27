@@ -12,6 +12,11 @@ export const getCurrentTimeStamp = () => {
   return new Date().getTime() / 1000;
 }
 
+// this function gets the 'end' timestamp
+export const subtractTime = (endTimestamp, days) => {
+  return new Date(endTimestamp - (days * 24 * 60 * 60)).getTime();
+}
+
 export const formatMemoryMetrics = (projectID, memoryMetrics) => {
     const found = memoryMetrics.find((metric) => metric.project === projectID);
     const memoryData = [];
