@@ -10,6 +10,7 @@ import getProjectNetwork, { clearProjectNetwork } from '../../redux/actions/proj
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
 import LineChartComponent from '../LineChart';
+import { formatNetworkMetrics } from '../../helpers/formatMetrics';
 
 class ProjectNetworkPage extends React.Component {
   constructor(props) {
@@ -43,12 +44,6 @@ class ProjectNetworkPage extends React.Component {
 
   getCurrentTimeStamp() {
     return new Date().getTime() / 1000;
-  }
-
-  translateTimestamp(timestamp) {
-    const timestampMillisecond = timestamp * 1000; // convert timestamp to milliseconds
-    const dateObject = new Date(timestampMillisecond); // create a date object out of milliseconds
-    return dateObject.toLocaleString();
   }
 
   formatMetrics(projectID) {
