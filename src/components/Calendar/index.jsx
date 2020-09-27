@@ -21,13 +21,18 @@ class Calendar extends React.Component {
       weeks: [],
       month: currentMonth,
       year: currentYear,
-      selected: today
+      selected: {
+        day: today,
+        month: currentMonth,
+        year: currentYear
+      }
     };
 
     this.prevMonth = this.prevMonth.bind(this);
     this.nextMonth = this.nextMonth.bind(this);
     this.daysInMonth = this.daysInMonth.bind(this);
     this.renderDays = this.renderDays.bind(this);
+    this.handleSelected = this.handleSelected.bind(this);
   }
 
   componentDidMount() {
@@ -42,6 +47,7 @@ class Calendar extends React.Component {
     return new Date(year, month + 1, 0).getDate();
   }
 
+  // this function sets state for next month
   prevMonth() {
     const { month, year } = this.state;
     let monthCopy = month;
@@ -59,6 +65,7 @@ class Calendar extends React.Component {
     this.renderDays(monthCopy, yearCopy);
   }
 
+  // this function sets state for previous month
   nextMonth() {
     const { month, year } = this.state;
     let monthCopy = month;
@@ -74,6 +81,22 @@ class Calendar extends React.Component {
     }
 
     this.renderDays(monthCopy, yearCopy);
+  }
+
+  // this function sets selected to the clicked date
+  handleSelected(day) {
+    const { year, month } = this.state;
+
+    if (day) { // only work when day is not undefined aka dont work for empty boxes
+      this.setState((prevState) => ({
+        selected: {
+          ...prevState.selected,
+          year,
+          month,
+          day
+        }
+      }));
+    }
   }
 
   renderDays(month, year) {
@@ -151,7 +174,10 @@ class Calendar extends React.Component {
                   key={days.indexOf(day)}
                   className={`
                   CalendarSingleDay 
-                  ${(year === currentYear && month === currentMonth && day.props.children === selected) && 'Today'}`}
+                  ${(year === selected.year && month === selected.month && day.props.children === selected.day) && 'Today'}
+                  `}
+                  onClick={() => this.handleSelected(day.props.children)}
+                  role="presentation"
                 >
                   {day}
                 </div>
