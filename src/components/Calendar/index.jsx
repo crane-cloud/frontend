@@ -9,6 +9,7 @@ const monthNames = [
   'September', 'October', 'November', 'December'
 ];
 
+const today = new Date().getDate();
 const currentMonth = new Date().getMonth();
 const currentYear = new Date().getFullYear();
 
@@ -19,7 +20,8 @@ class Calendar extends React.Component {
     this.state = {
       weeks: [],
       month: currentMonth,
-      year: currentYear
+      year: currentYear,
+      selected: today
     };
 
     this.prevMonth = this.prevMonth.bind(this);
@@ -86,18 +88,18 @@ class Calendar extends React.Component {
     for (let i = 0; i < maxDays; i += 1) {
       if (i < firstDay) {
         days.push(
-          <div />
+          <div key={i} />
         );
       } else {
         days.push(
-          <div>{(i - firstDay) + 1}</div>
+          <div key={i}>{(i - firstDay) + 1}</div>
         );
       }
     }
 
     for (let i = 0; i < numberOfTrailingBoxes; i += 1) {
       days.push(
-        <div />
+        <div key={i} />
       );
     }
 
@@ -118,7 +120,12 @@ class Calendar extends React.Component {
   }
 
   render() {
-    const { month, year, weeks } = this.state;
+    const {
+      month,
+      year,
+      weeks,
+      selected
+    } = this.state;
 
     return (
       <div className="CalendarWrapper DisableTextSelect">
@@ -138,9 +145,14 @@ class Calendar extends React.Component {
         </div>
         <div className="CalendarWeeks">
           {weeks.map((days) => (
-            <div className="CalendarWeekDays">
+            <div key={weeks.indexOf(days)} className="CalendarWeekDays">
               {days.map((day) => (
-                <div className="CalendarSingleDay">
+                <div
+                  key={days.indexOf(day)}
+                  className={`
+                  CalendarSingleDay 
+                  ${(year === currentYear && month === currentMonth && day.props.children === selected) && 'Today'}`}
+                >
                   {day}
                 </div>
               ))}

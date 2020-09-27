@@ -34,6 +34,7 @@
 }
 
 .CalendarSingleDay {
+  cursor: pointer;
   display: flex;
   justify-content: center;
   padding: .5rem;
@@ -42,4 +43,12 @@
 
 .CalendarSingleDay:first-child {
   border-left: none;
+}
+
+.CalendarSingleDay:hover {
+  background-color: #F8F7E5; 
+}
+
+.CalendarSingleDay.Today {
+  background-color: #F7B21F;
 }
