@@ -8,6 +8,10 @@ const bytesToMegabytes = (bytes) => {
     return bytes / 1000000;
 }
 
+export const getCurrentTimeStamp = () => {
+  return new Date().getTime() / 1000;
+}
+
 export const formatMemoryMetrics = (projectID, memoryMetrics) => {
     const found = memoryMetrics.find((metric) => metric.project === projectID);
     const memoryData = [];

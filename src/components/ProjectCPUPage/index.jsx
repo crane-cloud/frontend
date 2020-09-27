@@ -10,7 +10,7 @@ import getProjectCPU, { clearProjectCPU } from '../../redux/actions/projectCPU';
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
 import LineChartComponent from '../LineChart';
-import { formatCPUMetrics } from '../../helpers/formatMetrics';
+import { formatCPUMetrics, getCurrentTimeStamp } from '../../helpers/formatMetrics';
 
 class ProjectCPUPage extends React.Component {
   constructor(props) {
@@ -18,12 +18,11 @@ class ProjectCPUPage extends React.Component {
     this.state = {
       time: {
         start: 0,
-        end: this.getCurrentTimeStamp(),
+        end: getCurrentTimeStamp(),
         step: ''
       }
     };
 
-    this.getCurrentTimeStamp = this.getCurrentTimeStamp.bind(this);
     this.getProjectName = this.getProjectName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
     this.subtractTime = this.subtractTime.bind(this);
@@ -40,10 +39,6 @@ class ProjectCPUPage extends React.Component {
   getProjectName(id) {
     const { projects } = this.props;
     return projects.find((project) => project.id === id).name;
-  }
-
-  getCurrentTimeStamp() {
-    return new Date().getTime() / 1000;
   }
 
   async handlePeriodChange(period) {
@@ -66,7 +61,7 @@ class ProjectCPUPage extends React.Component {
       step = '1m';
     }
 
-    const startTimeStamp = await this.subtractTime(this.getCurrentTimeStamp(), days);
+    const startTimeStamp = await this.subtractTime(getCurrentTimeStamp(), days);
 
     this.setState((prevState) => ({
       time: {

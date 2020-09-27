@@ -46,29 +46,6 @@ class ProjectNetworkPage extends React.Component {
     return new Date().getTime() / 1000;
   }
 
-  formatMetrics(projectID) {
-    const { networkMetrics } = this.props;
-    const found = networkMetrics.find((metric) => metric.project === projectID);
-    const networkData = [];
-
-    if (found !== undefined) {
-      if (found.metrics.length > 0) {
-        found.metrics.forEach((metric) => {
-          const newMetricObject = {
-            time: this.translateTimestamp(metric.timestamp),
-            network: metric.value
-          };
-
-          networkData.push(newMetricObject);
-        });
-      } else {
-        networkData.push({ time: 0, network: 0 });
-        networkData.push({ time: 0, network: 0 });
-      }
-    }
-    return networkData;
-  }
-
   async handlePeriodChange(period) {
     let days;
     let step;
@@ -117,10 +94,10 @@ class ProjectNetworkPage extends React.Component {
   }
 
   render() {
-    const { match: { params }, isFetchingNetwork } = this.props;
+    const { match: { params }, isFetchingNetwork, networkMetrics } = this.props;
     const { projectID, userID } = params;
 
-    const formattedMetrics = this.formatMetrics(projectID);
+    const formattedMetrics = formatNetworkMetrics(projectID, networkMetrics);
 
     return (
       <div className="Page">
