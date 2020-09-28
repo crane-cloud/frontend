@@ -63,8 +63,8 @@ class AppNetworkPage extends React.Component {
   }
 
   formatMetrics(appID) {
-    const { metrics } = this.props;
-    const found = metrics.find((metric) => metric.app === appID);
+    const { appNetworkMetrics } = this.props;
+    const found = appNetworkMetrics.find((metric) => metric.app === appID);
     const memoryData = [];
 
     if (found !== undefined) {
@@ -142,7 +142,7 @@ class AppNetworkPage extends React.Component {
   render() {
     const {
       match: { params },
-      isFetching,
+      isFetchingAppNetwork,
     } = this.props;
     const { projectID, appID, userID } = params;
 
@@ -175,7 +175,7 @@ class AppNetworkPage extends React.Component {
                 className="MetricsCardGraph"
                 title={<PeriodSelector onChange={this.handlePeriodChange} />}
               >
-                {isFetching ? (
+                {isFetchingAppNetwork ? (
                   <div className="ContentSectionSpinner">
                     <Spinner />
                   </div>
@@ -203,23 +203,23 @@ AppNetworkPage.propTypes = {
       userID: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  isFetchingAppNetwork: PropTypes.bool.isRequired,
+  appNetworkMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getAppNetwork: PropTypes.func.isRequired,
   clearAppNetwork: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
   const {
-    isFetching,
-    metrics,
+    isFetchingAppNetwork,
+    appNetworkMetrics,
     appNetworkMessage,
   } = state.appNetworkReducer;
   const { apps } = state.appsListReducer;
   return {
     apps,
-    isFetching,
-    metrics,
+    isFetchingAppNetwork,
+    appNetworkMetrics,
     appNetworkMessage,
   };
 };
