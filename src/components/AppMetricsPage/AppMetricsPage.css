@@ -4,8 +4,13 @@
     gap: 1rem;
 }
 
-.TopCardsSection {
+.MetricsCardsSection {
     display: grid;
-    grid-auto-flow: column;
-    gap: 1rem;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1rem;
+    padding-bottom: 1rem;
+}
+
+.CardSizeDimensions{
+    /* min-height: 107px; */
 }

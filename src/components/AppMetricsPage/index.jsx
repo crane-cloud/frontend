@@ -96,11 +96,17 @@ class AppMetricsPage extends React.Component {
               />
             </div>
             <div className="ContentSection">
-              <div className="TopCardsSection">
-                <MetricsCard icon={<MetricIcon />} title="CPU">
+              <div className="MetricsCardsSection">
+                <MetricsCard icon={<MetricIcon />} title="Memory" className="">
                   <LineChartComponent preview lineDataKey="uv" data={shuffle(sampleData)} />
                 </MetricsCard>
-                <MetricsCard icon={<MetricIcon />} title="Memory">
+                <MetricsCard icon={<MetricIcon />} title="CPU" className="">
+                  <LineChartComponent preview lineDataKey="uv" data={shuffle(sampleData)} />
+                </MetricsCard>
+                <MetricsCard icon={<MetricIcon />} title="Storage" className="">
+                  <LineChartComponent preview lineDataKey="uv" data={shuffle(sampleData)} />
+                </MetricsCard>
+                <MetricsCard icon={<MetricIcon />} title="Network" className="">
                   <LineChartComponent preview lineDataKey="uv" data={shuffle(sampleData)} />
                 </MetricsCard>
               </div>
