@@ -10,7 +10,7 @@ import getProjectMemory, { clearProjectMemory } from '../../redux/actions/projec
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
 import LineChartComponent from '../LineChart';
-import { formatMemoryMetrics } from '../../helpers/formatMetrics';
+import { formatMemoryMetrics, getCurrentTimeStamp, subtractTime } from '../../helpers/formatMetrics';
 
 class ProjectMemoryPage extends React.Component {
   constructor(props) {
@@ -18,15 +18,13 @@ class ProjectMemoryPage extends React.Component {
     this.state = {
       time: {
         start: 0,
-        end: this.getCurrentTimeStamp(),
+        end: getCurrentTimeStamp(),
         step: ''
       }
     };
 
-    this.getCurrentTimeStamp = this.getCurrentTimeStamp.bind(this);
     this.getProjectName = this.getProjectName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
-    this.subtractTime = this.subtractTime.bind(this);
     this.fetchMemory = this.fetchMemory.bind(this);
   }
 
@@ -40,10 +38,6 @@ class ProjectMemoryPage extends React.Component {
   getProjectName(id) {
     const { projects } = this.props;
     return projects.find((project) => project.id === id).name;
-  }
-
-  getCurrentTimeStamp() {
-    return new Date().getTime() / 1000;
   }
 
   async handlePeriodChange(period) {
@@ -66,7 +60,7 @@ class ProjectMemoryPage extends React.Component {
       step = '1m';
     }
 
-    const startTimeStamp = await this.subtractTime(this.getCurrentTimeStamp(), days);
+    const startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
 
     this.setState((prevState) => ({
       time: {
@@ -77,11 +71,6 @@ class ProjectMemoryPage extends React.Component {
     }));
 
     this.fetchMemory();
-  }
-
-  // this function gets the 'end' timestamp
-  subtractTime(endTimestamp, days) {
-    return new Date(endTimestamp - (days * 24 * 60 * 60)).getTime();
   }
 
   fetchMemory() {
