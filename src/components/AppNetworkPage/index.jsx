@@ -10,6 +10,7 @@ import getAppNetwork, { clearAppNetwork } from "../../redux/actions/appNetwork";
 import MetricsCard from "../MetricsCard";
 import PeriodSelector from "../Period";
 import LineChartComponent from "../LineChart";
+import { formatAppNetworkMetrics, getCurrentTimeStamp, subtractTime } from '../../helpers/formatMetrics';
 
 class AppNetworkPage extends React.Component {
   constructor(props) {
@@ -212,14 +213,14 @@ const mapStateToProps = (state) => {
   const {
     isFetching,
     metrics,
-    message: metricsMessage,
+    appNetworkMessage,
   } = state.appNetworkReducer;
   const { apps } = state.appsListReducer;
   return {
     apps,
     isFetching,
     metrics,
-    metricsMessage,
+    appNetworkMessage,
   };
 };
 
