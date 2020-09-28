@@ -61,8 +61,8 @@ export const formatCPUMetrics = (projectID, cpuMetrics) => {
     return cpuData;
 }
 
-export const formatAppNetworkMetrics = (appID, networkMetrics) => {
-    const found = networkMetrics.find((metric) => metric.app === appID);
+export const formatNetworkMetrics = (projectID, networkMetrics) => {
+    const found = networkMetrics.find((metric) => metric.project === projectID);
     const networkData = [];
 
     if (found !== undefined) {
@@ -127,8 +127,8 @@ export const formatAppCPUMetrics = (appID, cpuMetrics) => {
   return cpuData;
 }
 
-export const formatNetworkMetrics = (projectID, networkMetrics) => {
-  const found = networkMetrics.find((metric) => metric.project === projectID);
+export const formatAppNetworkMetrics = (appID, networkMetrics) => {
+  const found = networkMetrics.find((metric) => metric.app === appID);
   const networkData = [];
 
   if (found !== undefined) {

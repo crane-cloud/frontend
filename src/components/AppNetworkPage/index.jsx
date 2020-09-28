@@ -18,17 +18,14 @@ class AppNetworkPage extends React.Component {
     this.state = {
       time: {
         start: 0,
-        end: this.getCurrentTimeStamp(),
+        end: getCurrentTimeStamp(),
         step: "",
       },
     };
 
-    this.getCurrentTimeStamp = this.getCurrentTimeStamp.bind(this);
     this.getAppName = this.getAppName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
-    this.subtractTime = this.subtractTime.bind(this);
-    this.fetchNetwork = this.fetchNetwork.bind(this);
-    this.bytesToMegabytes = this.bytesToMegabytes.bind(this);
+    this.fetchAppNetwork = this.fetchAppNetwork.bind(this);
   }
 
   componentDidMount() {
@@ -46,43 +43,6 @@ class AppNetworkPage extends React.Component {
   getAppName(id) {
     const { apps } = this.props;
     return apps.apps.find((app) => app.id === id).name;
-  }
-
-  getCurrentTimeStamp() {
-    return new Date().getTime() / 1000;
-  }
-
-  translateTimestamp(timestamp) {
-    const timestampMillisecond = timestamp * 1000; // convert timestamp to milliseconds
-    const dateObject = new Date(timestampMillisecond); // create a date object out of milliseconds
-    return dateObject.toLocaleString();
-  }
-
-  bytesToMegabytes(bytes) {
-    return bytes / 1000000;
-  }
-
-  formatMetrics(appID) {
-    const { appNetworkMetrics } = this.props;
-    const found = appNetworkMetrics.find((metric) => metric.app === appID);
-    const memoryData = [];
-
-    if (found !== undefined) {
-      if (found.metrics.length > 0) {
-        found.metrics.forEach((metric) => {
-          const newMetricObject = {
-            time: this.translateTimestamp(metric.timestamp),
-            memory: this.bytesToMegabytes(metric.value),
-          };
-
-          memoryData.push(newMetricObject);
-        });
-      } else {
-        memoryData.push({ time: 0, memory: 0 });
-        memoryData.push({ time: 0, memory: 0 });
-      }
-    }
-    return memoryData;
   }
 
   async handlePeriodChange(period) {
@@ -105,10 +65,7 @@ class AppNetworkPage extends React.Component {
       step = "1m";
     }
 
-    const startTimeStamp = await this.subtractTime(
-      this.getCurrentTimeStamp(),
-      days
-    );
+    const startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
 
     this.setState((prevState) => ({
       time: {
@@ -118,15 +75,10 @@ class AppNetworkPage extends React.Component {
       },
     }));
 
-    this.fetchNetwork();
+    this.fetchAppNetwork();
   }
 
-  // this function gets the 'end' timestamp
-  subtractTime(endTimestamp, days) {
-    return new Date(endTimestamp - days * 24 * 60 * 60).getTime();
-  }
-
-  fetchNetwork() {
+  fetchAppNetwork() {
     const { time } = this.state;
     const {
       match: { params },
@@ -143,11 +95,12 @@ class AppNetworkPage extends React.Component {
     const {
       match: { params },
       isFetchingAppNetwork,
+      appNetworkMetrics
     } = this.props;
     const { projectID, appID, userID } = params;
 
-    const formattedMetrics = this.formatMetrics(appID);
-
+    const formattedMetrics = formatAppNetworkMetrics(appID, appNetworkMetrics);
+    
     return (
       <div className="Page">
         <div className="TopBarSection">
@@ -183,7 +136,7 @@ class AppNetworkPage extends React.Component {
                   <LineChartComponent
                     yLabel="Network(MBs)"
                     xLabel="Time"
-                    lineDataKey="memory"
+                    lineDataKey="network"
                     data={formattedMetrics}
                   />
                 )}
