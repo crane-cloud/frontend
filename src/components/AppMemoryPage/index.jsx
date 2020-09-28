@@ -58,8 +58,8 @@ class AppMemoryPage extends React.Component {
   }
 
   formatMetrics(appID) {
-    const { metrics } = this.props;
-    const found = metrics.find((metric) => metric.app === appID);
+    const { appMemoryMetrics } = this.props;
+    const found = appMemoryMetrics.find((metric) => metric.app === appID);
     const memoryData = [];
 
     if (found !== undefined) {
@@ -128,7 +128,7 @@ class AppMemoryPage extends React.Component {
   }
 
   render() {
-    const { match: { params }, isFetching } = this.props;
+    const { match: { params }, isFetchingAppMemory } = this.props;
     const { projectID, appID, userID } = params;
 
     const formattedMetrics = this.formatMetrics(appID);
@@ -161,7 +161,7 @@ class AppMemoryPage extends React.Component {
                 className="MetricsCardGraph"
                 title={<PeriodSelector onChange={this.handlePeriodChange} />}
               >
-                {isFetching ? (
+                {isFetchingAppMemory ? (
                   <div className="ContentSectionSpinner">
                     <Spinner />
                   </div>
@@ -184,20 +184,20 @@ AppMemoryPage.propTypes = {
       userID: PropTypes.string.isRequired,
     }).isRequired
   }).isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  isFetchingAppMemory: PropTypes.bool.isRequired,
+  appMemoryMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getAppMemory: PropTypes.func.isRequired,
   clearAppMemory: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => {
-  const { isFetching, metrics, message: metricsMessage } = state.appMemoryReducer;
+  const { isFetchingAppMemory, appMemoryMetrics, appMemoryMessage } = state.appMemoryReducer;
   const { apps } = state.appsListReducer;
   return {
     apps,
-    isFetching,
-    metrics,
-    metricsMessage
+    isFetchingAppMemory,
+    appMemoryMetrics,
+    appMemoryMessage
   };
 };
 

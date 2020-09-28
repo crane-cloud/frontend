@@ -6,7 +6,7 @@ import {
 } from '../actions/actionTypes';
 
 const initialState = {
-  appMetrics: [],
+  cpuMetrics: [],
   isFetchingCPU: false,
   cpuMessage: ''
 };

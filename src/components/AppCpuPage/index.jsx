@@ -40,35 +40,6 @@ class AppCpuPage extends React.Component {
     return apps.apps.find((app) => app.id === id).name;
   }
 
-  // translateTimestamp(timestamp) {
-  //   const timestampMillisecond = timestamp * 1000; // convert timestamp to milliseconds
-  //   const dateObject = new Date(timestampMillisecond); // create a date object out of milliseconds
-  //   return dateObject.toLocaleString();
-  // }
-
-  // formatMetrics(appID) {
-  //   const { cpuMetrics } = this.props;
-  //   const found = cpuMetrics.find((metric) => cpuMetrics.app === appID);
-  //   const cpuData = [];
-
-  //   if (found !== undefined) {
-  //     if (found.metrics.length > 0) {
-  //       found.metrics.forEach((metric) => {
-  //         const newMetricObject = {
-  //           time: this.translateTimestamp(metric.timestamp),
-  //           cpu: metric.value * 10 // multiplying by 10 fot graph plotting
-  //         };
-
-  //         cpuData.push(newMetricObject);
-  //       });
-  //     } else {
-  //       cpuData.push({ time: 0, cpu: 0 });
-  //       cpuData.push({ time: 0, cpu: 0 });
-  //     }
-  //   }
-  //   return cpuData;
-  // }
-
   async handlePeriodChange(period) {
     let days;
     let step;
