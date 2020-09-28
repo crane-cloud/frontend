@@ -10,7 +10,7 @@ import getProjectNetwork, { clearProjectNetwork } from '../../redux/actions/proj
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
 import LineChartComponent from '../LineChart';
-import { formatNetworkMetrics } from '../../helpers/formatMetrics';
+import { formatNetworkMetrics, getCurrentTimeStamp, subtractTime } from '../../helpers/formatMetrics';
 
 class ProjectNetworkPage extends React.Component {
   constructor(props) {
@@ -18,15 +18,13 @@ class ProjectNetworkPage extends React.Component {
     this.state = {
       time: {
         start: 0,
-        end: this.getCurrentTimeStamp(),
+        end: getCurrentTimeStamp(),
         step: ''
       }
     };
 
-    this.getCurrentTimeStamp = this.getCurrentTimeStamp.bind(this);
     this.getProjectName = this.getProjectName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
-    this.subtractTime = this.subtractTime.bind(this);
     this.fetchNetwork = this.fetchNetwork.bind(this);
   }
 
@@ -40,10 +38,6 @@ class ProjectNetworkPage extends React.Component {
   getProjectName(id) {
     const { projects } = this.props;
     return projects.find((project) => project.id === id).name;
-  }
-
-  getCurrentTimeStamp() {
-    return new Date().getTime() / 1000;
   }
 
   async handlePeriodChange(period) {
@@ -66,7 +60,7 @@ class ProjectNetworkPage extends React.Component {
       step = '1m';
     }
 
-    const startTimeStamp = await this.subtractTime(this.getCurrentTimeStamp(), days);
+    const startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
 
     this.setState((prevState) => ({
       time: {
@@ -77,11 +71,6 @@ class ProjectNetworkPage extends React.Component {
     }));
 
     this.fetchNetwork();
-  }
-
-  // this function gets the 'end' timestamp
-  subtractTime(endTimestamp, days) {
-    return new Date(endTimestamp - (days * 24 * 60 * 60)).getTime();
   }
 
   fetchNetwork() {
