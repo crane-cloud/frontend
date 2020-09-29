@@ -12,34 +12,6 @@ import LineChartComponent from '../LineChart';
 import LogsFrame from '../LogsFrame';
 import getAppLogs from '../../redux/actions/getAppLogs';
 
-const sampleData = [
-  { name: 'Sample Metric 1', uv: 250 },
-  { name: 'Sample Metric 2', uv: 270 },
-  { name: 'Sample Metric 2', uv: 10 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 70 },
-  { name: 'Sample Metric 2', uv: 150 },
-  { name: 'Sample Metric 2', uv: 60 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 190 },
-  { name: 'Sample Metric 2', uv: 290 },
-  { name: 'Sample Metric 2', uv: 150 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 130 },
-  { name: 'Sample Metric 2', uv: 0 },
-  { name: 'Sample Metric 2', uv: 270 },
-  { name: 'Sample Metric 2', uv: 280 },
-  { name: 'Sample Metric 2', uv: 300 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 170 },
-  { name: 'Sample Metric 2', uv: 290 },
-];
-
-// this function is meant to shuffle the dummy data array
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
-
 class AppMetricsPage extends React.Component {
   constructor(props) {
     super(props);
@@ -47,6 +19,7 @@ class AppMetricsPage extends React.Component {
     this.state = {
       appRelatedInfo: this.props.location.state
     };
+
   }
 
   componentDidMount() {
@@ -98,16 +71,16 @@ class AppMetricsPage extends React.Component {
             <div className="ContentSection">
               <div className="MetricsCardsSection">
                 <MetricsCard icon={<MetricIcon />} title="Memory" className="CardSizeDimensions">
-                  <LineChartComponent preview lineDataKey="uv" data={shuffle(sampleData)} />
+                  <LineChartComponent preview lineDataKey="uv"  />
                 </MetricsCard>
                 <MetricsCard icon={<MetricIcon />} title="CPU" className="CardSizeDimensions">
-                  <LineChartComponent preview lineDataKey="uv" data={shuffle(sampleData)} />
+                  <LineChartComponent preview lineDataKey="uv"  />
                 </MetricsCard>
                 <MetricsCard icon={<MetricIcon />} title="Storage" className="CardSizeDimensions">
-                  <LineChartComponent preview lineDataKey="uv" data={shuffle(sampleData)} />
+                  <LineChartComponent preview lineDataKey="uv"  />
                 </MetricsCard>
                 <MetricsCard icon={<MetricIcon />} title="Network" className="CardSizeDimensions">
-                  <LineChartComponent preview lineDataKey="uv" data={shuffle(sampleData)} />
+                  <LineChartComponent preview lineDataKey="uv"  />
                 </MetricsCard>
               </div>
               <div className="LogsSection">
@@ -122,12 +95,19 @@ class AppMetricsPage extends React.Component {
 }
 
 
-const mapStateToProps = ({ appLogsReducer }) => {
+const mapStateToProps = ({ appLogsReducer, appMemoryReducer }) => {
   const {
     logs, retrievedLogs, retrieveingLogs
   } = appLogsReducer;
 
+  const { 
+    isFetchingAppMemory, appMemoryMetrics, appMemoryMessage
+  } = appMemoryReducer;
+
   return {
+    isFetchingAppMemory,
+    appMemoryMetrics,
+    appMemoryMessage,
     logs,
     retrievedLogs,
     retrieveingLogs
