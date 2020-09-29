@@ -12,5 +12,7 @@
 }
 
 .CardSizeDimensions{
-    /* min-height: 107px; */
+    min-width: 15rem;
+    display: flex;
+    min-height: 9rem;
 }
