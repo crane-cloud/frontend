@@ -1,0 +1,54 @@
+.CalendarWrapper {
+  user-select: none;
+  border: 1px solid #cccccc;
+  border-bottom: none;
+  max-width: 300px;
+}
+
+.CalendarMonth {
+  padding: 1rem 1rem .5rem;
+  display: flex;
+  justify-content: space-between;
+  background-color: #F8F7E5;
+}
+
+.CalendarDayNames {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  justify-content: center;
+  color: #555555;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-bottom: 1px solid #cccccc;
+}
+
+.WeekDay {
+  padding: .5rem 0 .2rem;
+  text-align: center;
+}
+
+.CalendarWeekDays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid #cccccc;
+}
+
+.CalendarSingleDay {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  padding: .5rem;
+  border-left: 1px solid #cccccc;
+}
+
+.CalendarSingleDay:first-child {
+  border-left: none;
+}
+
+.CalendarSingleDay:hover {
+  background-color: #F8F7E5; 
+}
+
+.CalendarSingleDay.Today {
+  background-color: #F7B21F;
+}

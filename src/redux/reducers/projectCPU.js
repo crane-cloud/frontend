@@ -17,7 +17,10 @@ const projectCPUReducer = (state = initialState, action) => {
     return {
       ...state,
       cpuMetrics: [...state.cpuMetrics,
-        { project: action.payload.project, metrics: action.payload.metrics }
+        { 
+          project: action.payload.project,
+          metrics: action.payload.metrics
+        }
       ],
       isFetchingCPU: false,
       cpuMessage: 'Fetched project CPU metrics'
@@ -27,7 +30,10 @@ const projectCPUReducer = (state = initialState, action) => {
     return {
       ...state,
       cpuMetrics: [...state.cpuMetrics,
-        { project: action.payload.project, metrics: action.payload.metrics }
+        { 
+          project: action.payload.project,
+          metrics: action.payload.metrics
+        }
       ],
       isFetchingCPU: false,
       cpuMessage: 'Error fetching project CPU metrics'

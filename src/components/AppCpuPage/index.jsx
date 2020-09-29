@@ -10,6 +10,7 @@ import getAppCPU, { clearAppCPU } from '../../redux/actions/appCPU';
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
 import LineChartComponent from '../LineChart';
+import { formatAppCPUMetrics, getCurrentTimeStamp, subtractTime } from '../../helpers/formatMetrics';
 
 class AppCpuPage extends React.Component {
   constructor(props) {
@@ -17,15 +18,13 @@ class AppCpuPage extends React.Component {
     this.state = {
       time: {
         start: 0,
-        end: this.getCurrentTimeStamp(),
+        end: getCurrentTimeStamp(),
         step: '' 
       } 
     };
 
-    this.getCurrentTimeStamp = this.getCurrentTimeStamp.bind(this);
     this.getAppName = this.getAppName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
-    this.subtractTime = this.subtractTime.bind(this);
     this.fetchCpu = this.fetchCpu.bind(this);
   }
 
@@ -39,39 +38,6 @@ class AppCpuPage extends React.Component {
   getAppName(id) {
     const { apps } = this.props;
     return apps.apps.find((app) => app.id === id).name;
-  }
-
-  getCurrentTimeStamp() {
-    return new Date().getTime() / 1000;
-  }
-
-  translateTimestamp(timestamp) {
-    const timestampMillisecond = timestamp * 1000; // convert timestamp to milliseconds
-    const dateObject = new Date(timestampMillisecond); // create a date object out of milliseconds
-    return dateObject.toLocaleString();
-  }
-
-  formatMetrics(appID) {
-    const { metrics } = this.props;
-    const found = metrics.find((metric) => metric.app === appID);
-    const cpuData = [];
-
-    if (found !== undefined) {
-      if (found.metrics.length > 0) {
-        found.metrics.forEach((metric) => {
-          const newMetricObject = {
-            time: this.translateTimestamp(metric.timestamp),
-            cpu: metric.value * 10 // multiplying by 10 fot graph plotting
-          };
-
-          cpuData.push(newMetricObject);
-        });
-      } else {
-        cpuData.push({ time: 0, cpu: 0 });
-        cpuData.push({ time: 0, cpu: 0 });
-      }
-    }
-    return cpuData;
   }
 
   async handlePeriodChange(period) {
@@ -91,7 +57,7 @@ class AppCpuPage extends React.Component {
       days = 365; step = '1m';
     }
 
-    const startTimeStamp = await this.subtractTime(this.getCurrentTimeStamp(), days);
+    const startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
 
     this.setState((prevState) => ({
       time: {
@@ -104,11 +70,6 @@ class AppCpuPage extends React.Component {
     this.fetchCpu();
   }
 
-  // this function gets the 'end' timestamp
-  subtractTime(endTimestamp, days) {
-    return new Date(endTimestamp - (days * 24 * 60 * 60)).getTime();
-  }
-
   fetchCpu() {
     const { time } = this.state;
     const { match: { params }, getAppCPU, clearAppCPU } = this.props;
@@ -117,11 +78,12 @@ class AppCpuPage extends React.Component {
     clearAppCPU();
     getAppCPU(projectID, appID, time);
   }
+  
   render() {
-    const { match: { params }, isFetching } = this.props;
+    const { match: { params }, isFetchingCPU, cpuMetrics } = this.props;
     const { projectID, appID, userID } = params;
 
-    const formattedMetrics = this.formatMetrics(appID);
+    const formattedMetrics = formatAppCPUMetrics(appID, cpuMetrics);
 
     return (
       <div className="Page">
@@ -150,7 +112,7 @@ class AppCpuPage extends React.Component {
                 className="MetricsCardGraph"
                 title={<PeriodSelector onChange={this.handlePeriodChange} />} >
 
-                {isFetching ? (
+                {isFetchingCPU ? (
                   <div className="ContentSectionSpinner">
                     <Spinner />
                   </div>
@@ -173,17 +135,17 @@ AppCpuPage.propTypes = {
       userID: PropTypes.string.isRequired,
     }).isRequired
   }).isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  isFetchingCPU: PropTypes.bool.isRequired,
+  cpuMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getAppCPU: PropTypes.func.isRequired,
   clearAppCPU: PropTypes.func.isRequired,
   apps: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
 
 const mapStateToProps = (state) => {
-  const { isFetching, metrics, message: metricsMessage } = state.appCpuReducer;
+  const { isFetchingCPU, cpuMetrics, cpuMessage } = state.appCpuReducer;
   const { apps } = state.appsListReducer;
-  return { apps, isFetching, metrics, metricsMessage };
+  return { apps, isFetchingCPU, cpuMetrics, cpuMessage };
 };
 
 const mapDispatchToProps = {

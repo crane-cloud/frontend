@@ -10,6 +10,7 @@ import getProjectNetwork, { clearProjectNetwork } from '../../redux/actions/proj
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
 import LineChartComponent from '../LineChart';
+import { formatNetworkMetrics, getCurrentTimeStamp, subtractTime } from '../../helpers/formatMetrics';
 
 class ProjectNetworkPage extends React.Component {
   constructor(props) {
@@ -17,15 +18,13 @@ class ProjectNetworkPage extends React.Component {
     this.state = {
       time: {
         start: 0,
-        end: this.getCurrentTimeStamp(),
+        end: getCurrentTimeStamp(),
         step: ''
       }
     };
 
-    this.getCurrentTimeStamp = this.getCurrentTimeStamp.bind(this);
     this.getProjectName = this.getProjectName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
-    this.subtractTime = this.subtractTime.bind(this);
     this.fetchNetwork = this.fetchNetwork.bind(this);
   }
 
@@ -39,39 +38,6 @@ class ProjectNetworkPage extends React.Component {
   getProjectName(id) {
     const { projects } = this.props;
     return projects.find((project) => project.id === id).name;
-  }
-
-  getCurrentTimeStamp() {
-    return new Date().getTime() / 1000;
-  }
-
-  translateTimestamp(timestamp) {
-    const timestampMillisecond = timestamp * 1000; // convert timestamp to milliseconds
-    const dateObject = new Date(timestampMillisecond); // create a date object out of milliseconds
-    return dateObject.toLocaleString();
-  }
-
-  formatMetrics(projectID) {
-    const { networkMetrics } = this.props;
-    const found = networkMetrics.find((metric) => metric.project === projectID);
-    const networkData = [];
-
-    if (found !== undefined) {
-      if (found.metrics.length > 0) {
-        found.metrics.forEach((metric) => {
-          const newMetricObject = {
-            time: this.translateTimestamp(metric.timestamp),
-            network: metric.value
-          };
-
-          networkData.push(newMetricObject);
-        });
-      } else {
-        networkData.push({ time: 0, network: 0 });
-        networkData.push({ time: 0, network: 0 });
-      }
-    }
-    return networkData;
   }
 
   async handlePeriodChange(period) {
@@ -94,7 +60,7 @@ class ProjectNetworkPage extends React.Component {
       step = '1m';
     }
 
-    const startTimeStamp = await this.subtractTime(this.getCurrentTimeStamp(), days);
+    const startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
 
     this.setState((prevState) => ({
       time: {
@@ -107,11 +73,6 @@ class ProjectNetworkPage extends React.Component {
     this.fetchNetwork();
   }
 
-  // this function gets the 'end' timestamp
-  subtractTime(endTimestamp, days) {
-    return new Date(endTimestamp - (days * 24 * 60 * 60)).getTime();
-  }
-
   fetchNetwork() {
     const { time } = this.state;
     const { match: { params }, getProjectNetwork, clearProjectNetwork } = this.props;
@@ -122,10 +83,10 @@ class ProjectNetworkPage extends React.Component {
   }
 
   render() {
-    const { match: { params }, isFetchingNetwork } = this.props;
+    const { match: { params }, isFetchingNetwork, networkMetrics } = this.props;
     const { projectID, userID } = params;
 
-    const formattedMetrics = this.formatMetrics(projectID);
+    const formattedMetrics = formatNetworkMetrics(projectID, networkMetrics);
 
     return (
       <div className="Page">
