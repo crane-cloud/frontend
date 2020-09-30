@@ -9,7 +9,7 @@ const style = {
 const Sample = () => {
   return (
     <div style={style}>
-      <DateInput position="left" />
+      <DateInput label="To" position="left" />
     </div>
   );
 };

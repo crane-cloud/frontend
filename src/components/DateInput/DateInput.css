@@ -1,6 +1,17 @@
 .DateInputContainer {
-  display: grid;
+  display: inline-block;
   position: relative;
+}
+
+.DateInputWrapper {
+  display: flex;
+}
+
+.DateInputLabel {
+  padding-right: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .DateInputDisplay {
@@ -20,5 +31,5 @@
 }
 
 .DateInputCalendar.PositionLeft {
-  left: -8rem;
+  right: 0;
 }

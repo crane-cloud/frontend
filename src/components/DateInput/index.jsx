@@ -10,14 +10,14 @@ const DateInput = ({ position, label }) => {
     <div className="DateInputContainer">
       <div className="DateInputWrapper">
         <div className="DateInputLabel">
-
+          {label}
         </div>
         <div className="DateInputDisplay">
-            Jul 22, 2020
+          Jul 22, 2020
         </div>
-      </div>
-      <div className={`DateInputCalendar ${position === 'left' && 'PositionLeft'}`}>
-        {showCalendar && <Calendar />}
+        <div className={`DateInputCalendar ${position === 'left' && 'PositionLeft'}`}>
+          {showCalendar && <Calendar />}
+        </div>
       </div>
     </div>
   );
