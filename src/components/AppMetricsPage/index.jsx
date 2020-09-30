@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+// import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import InformationBar from '../InformationBar';
@@ -11,6 +11,8 @@ import './AppMetricsPage.css';
 import LineChartComponent from '../LineChart';
 import LogsFrame from '../LogsFrame';
 import getAppLogs from '../../redux/actions/getAppLogs';
+import getAppMemory, { clearAppMemory } from '../../redux/actions/appMemory';
+import { formatAppMemoryMetrics } from '../../helpers/formatMetrics';
 
 class AppMetricsPage extends React.Component {
   constructor(props) {
@@ -20,13 +22,23 @@ class AppMetricsPage extends React.Component {
       appRelatedInfo: this.props.location.state
     };
 
+    // this.getAppMemoryMetrics = this.getAppMemoryMetrics.bind(this);
+    // this.getAppCPUMetrics = this.getAppCPUMetrics.bind(this);
+    // this.getAppNetworkMetrics = this.getAppNetworkMetrics.bind(this);
+
   }
 
   componentDidMount() {
-    const { getAppLogs, match: { params } } = this.props;
+    const {
+      clearAppMemory,
+      getAppMemory,
+      getAppLogs,
+      match: { params } } = this.props;
     const { projectID, appID } = params;
 
     getAppLogs({ projectID, appID }, { timestamps: true });
+    clearAppMemory();
+    getAppMemory(projectID, appID, {});
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -38,12 +50,23 @@ class AppMetricsPage extends React.Component {
     return null;
   }
 
+  // getAppMemoryMetrics(){
+  //   const { appID } = this.props.match.params;
+  //   const { appMemoryMetrics } = this.props;
+  //   const results = formatAppMemoryMetrics(appID, appMemoryMetrics);
+  //   return results;
+  // }
+// 
   render() {
     const { appName, appUrl, liveAppStatus } = this.state.appRelatedInfo;
     const { params } = this.props.match;
     const { projectID, userID, appID } = params;
     const { logs, retrieveingLogs } = this.props;
 
+    // const formattedMemoryMetrics = this.getAppMemoryMetrics();
+    // const formattedCPUMetrics = this.getCPUMetrics();
+    // const formattedNetworkMetrics = this.getNetworkMetrics();
+    // console.log(this.props);
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
@@ -71,7 +94,7 @@ class AppMetricsPage extends React.Component {
             <div className="ContentSection">
               <div className="MetricsCardsSection">
                 <MetricsCard icon={<MetricIcon />} title="Memory" className="CardSizeDimensions">
-                  <LineChartComponent preview lineDataKey="uv"  />
+                  <LineChartComponent lineDataKey="memory" preview />
                 </MetricsCard>
                 <MetricsCard icon={<MetricIcon />} title="CPU" className="CardSizeDimensions">
                   <LineChartComponent preview lineDataKey="uv"  />
@@ -95,26 +118,29 @@ class AppMetricsPage extends React.Component {
 }
 
 
-const mapStateToProps = ({ appLogsReducer, appMemoryReducer }) => {
+const mapStateToProps = (state) => {
   const {
     logs, retrievedLogs, retrieveingLogs
-  } = appLogsReducer;
+  } = state.appLogsReducer;
 
   const { 
-    isFetchingAppMemory, appMemoryMetrics, appMemoryMessage
-  } = appMemoryReducer;
+    isFetchingAppMemory, appMemoryMetrics, metrics, appMemoryMessage
+  } = state.appMemoryReducer;
 
-  return {
-    isFetchingAppMemory,
-    appMemoryMetrics,
-    appMemoryMessage,
-    logs,
-    retrievedLogs,
-    retrieveingLogs
-  };
+  // return {
+  //   isFetchingAppMemory,
+  //   appMemoryMetrics,
+  //   appMemoryMessage,
+  //   logs,
+  //   retrievedLogs,
+  //   retrieveingLogs
+  // };
+  console.log(metrics);
 };
 
 const mapDispatchToProps = {
+  getAppMemory,
+  clearAppMemory,
   getAppLogs
 };
 
@@ -127,4 +153,4 @@ AppMetricsPage.propTypes = {
   logs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AppMetricsPage));
+export default connect(mapStateToProps, mapDispatchToProps)(AppMetricsPage);
