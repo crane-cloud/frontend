@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Calendar from '../Calendar';
+
 import './DateInput.css';
 
-const DateInput = () => {
+const DateInput = ({ position, label }) => {
   const [showCalendar, setShowCalendar] = useState(true);
 
   return (
@@ -15,7 +16,7 @@ const DateInput = () => {
             Jul 22, 2020
         </div>
       </div>
-      <div className="DateInputCalendar">
+      <div className={`DateInputCalendar ${position === 'left' && 'PositionLeft'}`}>
         {showCalendar && <Calendar />}
       </div>
     </div>
