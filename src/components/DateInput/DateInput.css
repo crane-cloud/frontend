@@ -1,0 +1,24 @@
+.DateInputContainer {
+  display: grid;
+  position: relative;
+}
+
+.DateInputDisplay {
+  border: 2px solid #cccccc;
+  width: 6rem;
+  height: 1rem;
+  padding: 0.2rem 1rem;
+  color: #555555;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.DateInputCalendar {
+  position: absolute;
+  top: 2rem;
+}
+
+.DateInputCalendar.PositionLeft {
+  left: -8rem;
+}

@@ -2,7 +2,8 @@ import React from 'react';
 import DateInput from './index';
 
 const style = {
-
+  margin: '300px',
+  width: '500px'
 };
 
 const Sample = () => {

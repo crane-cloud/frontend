@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Calendar from '../Calendar';
+import './DateInput.css';
 
 const DateInput = () => {
+  const [showCalendar, setShowCalendar] = useState(true);
+
   return (
     <div className="DateInputContainer">
       <div className="DateInputWrapper">
@@ -8,11 +12,11 @@ const DateInput = () => {
 
         </div>
         <div className="DateInputDisplay">
-
+            Jul 22, 2020
         </div>
       </div>
       <div className="DateInputCalendar">
-        {/* <Calendar /> */}
+        {showCalendar && <Calendar />}
       </div>
     </div>
   );
