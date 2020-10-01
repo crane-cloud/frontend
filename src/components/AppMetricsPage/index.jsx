@@ -12,7 +12,8 @@ import LineChartComponent from '../LineChart';
 import LogsFrame from '../LogsFrame';
 import getAppLogs from '../../redux/actions/getAppLogs';
 import getAppMemory, { clearAppMemory } from '../../redux/actions/appMemory';
-import { formatAppMemoryMetrics } from '../../helpers/formatMetrics';
+import getAppCPU, { clearAppCPU }from '../../redux/actions/appCPU';
+import { formatAppMemoryMetrics, formatAppCPUMetrics } from '../../helpers/formatMetrics';
 
 class AppMetricsPage extends React.Component {
   constructor(props) {
@@ -36,7 +37,10 @@ class AppMetricsPage extends React.Component {
 
     getAppLogs({ projectID, appID }, { timestamps: true });
     clearAppMemory();
+    getAppCPU(projectID, appID, {});
     getAppMemory(projectID, appID, {});
+    // clearAppCPU();
+    
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -55,6 +59,13 @@ class AppMetricsPage extends React.Component {
     return results;
   }
 
+  // getAppCPUMetrics(){
+  //   const { appID } = this.props.match.params;
+  //   const { appCPUMetrics } = this.props;
+  //   const results = formatAppCPUMetrics(appID, appCPUMetrics);
+  //   return results;
+  // }
+
   render() {
     const { appName, appUrl, liveAppStatus } = this.state.appRelatedInfo;
     const { params } = this.props.match;
@@ -62,8 +73,9 @@ class AppMetricsPage extends React.Component {
     const { logs, retrieveingLogs } = this.props;
 
     const formattedMemoryMetrics = this.getAppMemoryMetrics();
-    // const formattedCPUMetrics = this.getCPUMetrics();
+    // const formattedCPUMetrics = this.getAppCPUMetrics();
     // const formattedNetworkMetrics = this.getNetworkMetrics();
+    
     
     return (
       <div className="Page">
@@ -95,7 +107,7 @@ class AppMetricsPage extends React.Component {
                   <LineChartComponent lineDataKey="memory" preview data={formattedMemoryMetrics}/>
                 </MetricsCard>
                 <MetricsCard icon={<MetricIcon />} title="CPU" className="CardSizeDimensions">
-                  <LineChartComponent preview lineDataKey="uv"  />
+                  <LineChartComponent lineDataKey="uv" preview />
                 </MetricsCard>
                 <MetricsCard icon={<MetricIcon />} title="Storage" className="CardSizeDimensions">
                   <LineChartComponent preview lineDataKey="uv"  />
@@ -125,13 +137,21 @@ const mapStateToProps = (state) => {
     isFetchingAppMemory, appMemoryMetrics, appMemoryMessage
   } = state.appMemoryReducer;
 
+  const {
+    isFetchingCPU, appCPUMetrics, metrics, cpuMessage
+  } = state.appCpuReducer;
+
+  console.log(metrics);
   return {
     isFetchingAppMemory,
     appMemoryMetrics,
     appMemoryMessage,
     logs,
     retrievedLogs,
-    retrieveingLogs
+    retrieveingLogs,
+    isFetchingCPU,
+    appCPUMetrics,
+    cpuMessage
   };
 
 };
@@ -139,7 +159,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   getAppMemory,
   clearAppMemory,
-  getAppLogs
+  getAppLogs,
+  getAppCPU
 };
 
 AppMetricsPage.propTypes = {
