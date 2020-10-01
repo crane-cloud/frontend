@@ -33,14 +33,7 @@ class Calendar extends React.Component {
   }
 
   componentDidMount() {
-    const { onChange } = this.props;
     this.renderDays(currentMonth, currentYear);
-
-    onChange({
-      day: today,
-      month: currentMonth,
-      year: currentYear
-    });
   }
 
   getFirstDay(month, year) {

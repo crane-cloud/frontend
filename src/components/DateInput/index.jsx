@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Calendar from '../Calendar';
 import {
@@ -13,6 +13,7 @@ import './DateInput.css';
 const DateInput = ({ position, label }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [date, setDate] = useState(null);
+  const dropdownRef = useRef(null);
 
   const getDate = (date) => setDate(date);
 
@@ -20,13 +21,28 @@ const DateInput = ({ position, label }) => {
 
   const displayCalendar = () => setShowCalendar(!showCalendar);
 
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setShowCalendar(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // returned function will be called on component unmount
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="DateInputContainer">
-      <div className="DateInputWrapper" role="presentation" onClick={displayCalendar}>
+    <div ref={dropdownRef} className="DateInputContainer">
+      <div className="DateInputWrapper">
         <div className="DateInputLabel">
           {label}
         </div>
-        <div className="DateInputDisplay">
+        <div className="DateInputDisplay" role="presentation" onClick={displayCalendar}>
           {date ? (
             `${trimMonthName(monthNames[date.month])} ${date.day}, ${date.year}`
           ) : (
