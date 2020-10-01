@@ -2,17 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ReactComponent as LeftArrow } from '../../assets/images/left-arrow.svg';
 import { ReactComponent as RightArrow } from '../../assets/images/right-arrow.svg';
+import {
+  monthNames,
+  today,
+  currentMonth,
+  currentYear
+} from '../../helpers/dateConstants';
 import './Calendar.css';
-
-const monthNames = [
-  'January', 'February', 'March', 'April',
-  'May', 'June', 'July', 'August',
-  'September', 'October', 'November', 'December'
-];
-
-const today = new Date().getDate();
-const currentMonth = new Date().getMonth();
-const currentYear = new Date().getFullYear();
 
 class Calendar extends React.Component {
   constructor(props) {
