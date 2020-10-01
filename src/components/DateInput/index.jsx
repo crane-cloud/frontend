@@ -15,7 +15,10 @@ const DateInput = ({ position, label }) => {
   const [date, setDate] = useState(null);
   const dropdownRef = useRef(null);
 
-  const getDate = (date) => setDate(date);
+  const getDate = (date) => {
+    setDate(date);
+    setShowCalendar(false);
+  };
 
   const trimMonthName = (month) => month.substring(0, 3);
 
