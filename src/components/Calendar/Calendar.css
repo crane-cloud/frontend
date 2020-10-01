@@ -2,7 +2,8 @@
   user-select: none;
   border: 1px solid #cccccc;
   border-bottom: none;
-  max-width: 300px;
+  width: 300px;
+  background-color: #ffffff;
 }
 
 .CalendarMonth {

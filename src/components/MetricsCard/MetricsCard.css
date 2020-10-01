@@ -13,6 +13,10 @@
   border-bottom: 1px solid #cccccc;
 }
 
+.CardTitle {
+  width: 100%;
+}
+
 .CardBodySection {
   min-height: 10rem;
   flex-grow: 1;

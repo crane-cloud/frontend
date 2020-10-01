@@ -15,7 +15,10 @@ const DateInput = ({ position, label }) => {
   const [date, setDate] = useState(null);
   const dropdownRef = useRef(null);
 
-  const getDate = (date) => setDate(date);
+  const getDate = (date) => {
+    setDate(date);
+    setShowCalendar(false);
+  };
 
   const trimMonthName = (month) => month.substring(0, 3);
 
@@ -42,7 +45,11 @@ const DateInput = ({ position, label }) => {
         <div className="DateInputLabel">
           {label}
         </div>
-        <div className="DateInputDisplay" role="presentation" onClick={displayCalendar}>
+        <div
+          className={`DateInputDisplay ${showCalendar && 'DisplayActive'}`}
+          role="presentation"
+          onClick={displayCalendar}
+        >
           {date ? (
             `${trimMonthName(monthNames[date.month])} ${date.day}, ${date.year}`
           ) : (
