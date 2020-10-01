@@ -39,7 +39,6 @@ import AppMemoryPage from './components/AppMemoryPage';
 import ProjectMetricsPage from './components/ProjectMetricsPage';
 import AppLogsPage from './components/AppLogsPage';
 import AppNetworkPage from './components/AppNetworkPage';
-import Sample from './components/DateInput/Sample';
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) => (
@@ -90,7 +89,6 @@ const Routes = () => (
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/jobs" component={JobsListPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/deployments" component={DeploymentsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/clusters" component={ClusterPage} />
-      <ProtectedRoute isAllowed path="/date" component={Sample} />
     </Switch>
   </Router>
 );
