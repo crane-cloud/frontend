@@ -94,13 +94,13 @@ class Calendar extends React.Component {
           day
         }
       }));
-    }
 
-    onChange({
-      day,
-      month,
-      year
-    });
+      onChange({
+        day,
+        month,
+        year
+      });
+    }
   }
 
   renderDays(month, year) {
