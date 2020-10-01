@@ -14,5 +14,10 @@
 .CardSizeDimensions{
     min-width: 15rem;
     display: flex;
-    min-height: 9rem;
+    /* we dont set values the height
+       is a pre-requiste for the line
+       component, try removing or editing
+       it and you will see why it matters.
+    */
+    height: 15rem; 
 }

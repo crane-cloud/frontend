@@ -49,8 +49,8 @@ const appMemoryReducer = (state = initialState, action) => {
       return {
         ...state,
         appMemoryMetrics: [],
-          isFetchingAppMemory: false,
-          appMemoryMessage: ''
+        isFetchingAppMemory: false,
+        appMemoryMessage: ''
       };
 
     default:
