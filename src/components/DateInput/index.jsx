@@ -16,6 +16,8 @@ const DateInput = ({ position, label }) => {
 
   const getDate = (date) => setDate(date);
 
+  const trimMonthName = (month) => month.substring(0, 3);
+
   return (
     <div className="DateInputContainer">
       <div className="DateInputWrapper">
@@ -24,9 +26,9 @@ const DateInput = ({ position, label }) => {
         </div>
         <div className="DateInputDisplay">
           {date ? (
-            `${date.month}, ${date.day}, ${date.year}`
+            `${trimMonthName(monthNames[date.month])} ${date.day}, ${date.year}`
           ) : (
-            `${currentMonth}, ${today}, ${currentYear}`
+            `${trimMonthName(monthNames[currentMonth])} ${today}, ${currentYear}`
           )}
         </div>
         <div className={`DateInputCalendar ${position === 'left' && 'PositionLeft'}`}>
