@@ -93,6 +93,7 @@ class Calendar extends React.Component {
 
   // this function sets selected to the clicked date
   handleSelected(day) {
+    const { onChange } = this.props;
     const { year, month } = this.state;
 
     if (day) { // only work when day is not undefined aka dont work for empty boxes
@@ -105,6 +106,12 @@ class Calendar extends React.Component {
         }
       }));
     }
+
+    onChange({
+      day,
+      month,
+      year
+    });
   }
 
   renderDays(month, year) {
