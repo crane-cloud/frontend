@@ -1,4 +1,10 @@
-.PeriodButtonsContainer {
+.PeriodContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.PeriodButtonsSection {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: max-content;
@@ -19,4 +25,11 @@
 
 .PeriodButtonActive {
   background-color: #F7B21F;
+}
+
+.DateInputsSection {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 1rem;
+  align-items: center;
 }
