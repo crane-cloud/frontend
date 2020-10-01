@@ -28,6 +28,10 @@
   align-items: center;
 }
 
+.DisplayActive {
+  border: 2px solid #F7B21F;
+}
+
 .DateInputCalendar {
   position: absolute;
   top: 2rem;

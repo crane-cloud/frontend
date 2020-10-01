@@ -42,7 +42,11 @@ const DateInput = ({ position, label }) => {
         <div className="DateInputLabel">
           {label}
         </div>
-        <div className="DateInputDisplay" role="presentation" onClick={displayCalendar}>
+        <div
+          className={`DateInputDisplay ${showCalendar && 'DisplayActive'}`}
+          role="presentation"
+          onClick={displayCalendar}
+        >
           {date ? (
             `${trimMonthName(monthNames[date.month])} ${date.day}, ${date.year}`
           ) : (
