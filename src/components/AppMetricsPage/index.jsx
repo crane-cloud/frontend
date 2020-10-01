@@ -127,15 +127,15 @@ const mapStateToProps = (state) => {
     isFetchingAppMemory, appMemoryMetrics, metrics, appMemoryMessage
   } = state.appMemoryReducer;
 
-  // return {
-  //   isFetchingAppMemory,
-  //   appMemoryMetrics,
-  //   appMemoryMessage,
-  //   logs,
-  //   retrievedLogs,
-  //   retrieveingLogs
-  // };
-  console.log(metrics);
+  return {
+    isFetchingAppMemory,
+    appMemoryMetrics,
+    appMemoryMessage,
+    logs,
+    retrievedLogs,
+    retrieveingLogs
+  };
+
 };
 
 const mapDispatchToProps = {
