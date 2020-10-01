@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ReactComponent as LeftArrow } from '../../assets/images/left-arrow.svg';
 import { ReactComponent as RightArrow } from '../../assets/images/right-arrow.svg';
 import './Calendar.css';
@@ -36,7 +37,14 @@ class Calendar extends React.Component {
   }
 
   componentDidMount() {
+    const { onChange } = this.props;
     this.renderDays(currentMonth, currentYear);
+
+    onChange({
+      day: today,
+      month: currentMonth,
+      year: currentYear
+    });
   }
 
   getFirstDay(month, year) {
@@ -189,5 +197,9 @@ class Calendar extends React.Component {
     );
   }
 }
+
+Calendar.propTypes = {
+  onChange: PropTypes.func.isRequired
+};
 
 export default Calendar;
