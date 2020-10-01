@@ -1,17 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ReactComponent as LeftArrow } from '../../assets/images/left-arrow.svg';
 import { ReactComponent as RightArrow } from '../../assets/images/right-arrow.svg';
+import {
+  monthNames,
+  today,
+  currentMonth,
+  currentYear
+} from '../../helpers/dateConstants';
 import './Calendar.css';
-
-const monthNames = [
-  'January', 'February', 'March', 'April',
-  'May', 'June', 'July', 'August',
-  'September', 'October', 'November', 'December'
-];
-
-const today = new Date().getDate();
-const currentMonth = new Date().getMonth();
-const currentYear = new Date().getFullYear();
 
 class Calendar extends React.Component {
   constructor(props) {
@@ -85,6 +82,7 @@ class Calendar extends React.Component {
 
   // this function sets selected to the clicked date
   handleSelected(day) {
+    const { onChange } = this.props;
     const { year, month } = this.state;
 
     if (day) { // only work when day is not undefined aka dont work for empty boxes
@@ -96,6 +94,12 @@ class Calendar extends React.Component {
           day
         }
       }));
+
+      onChange({
+        day,
+        month,
+        year
+      });
     }
   }
 
@@ -189,5 +193,9 @@ class Calendar extends React.Component {
     );
   }
 }
+
+Calendar.propTypes = {
+  onChange: PropTypes.func.isRequired
+};
 
 export default Calendar;
