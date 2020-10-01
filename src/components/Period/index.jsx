@@ -33,8 +33,8 @@ class Period extends React.Component {
           <div className={`${period === 'all' && 'PeriodButtonActive'} PeriodButton`} name="all" value="all" role="presentation" onClick={this.handleChange}>all</div>
         </div>
         <div className="DateInputsSection">
-          <DateInput label="From" />
-          <DateInput label="To" />
+          <DateInput label="From" position="left" />
+          <DateInput label="To" position="left" />
         </div>
       </div>
     );
