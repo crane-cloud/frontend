@@ -5,9 +5,11 @@
 
 .DateInputWrapper {
   display: flex;
+  cursor: default;
 }
 
 .DateInputLabel {
+  user-select: none;
   padding-right: 0.5rem;
   display: flex;
   justify-content: center;

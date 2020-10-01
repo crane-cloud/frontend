@@ -11,16 +11,18 @@ import './DateInput.css';
 
 
 const DateInput = ({ position, label }) => {
-  const [showCalendar, setShowCalendar] = useState(true);
+  const [showCalendar, setShowCalendar] = useState(false);
   const [date, setDate] = useState(null);
 
   const getDate = (date) => setDate(date);
 
   const trimMonthName = (month) => month.substring(0, 3);
 
+  const displayCalendar = () => setShowCalendar(!showCalendar);
+
   return (
     <div className="DateInputContainer">
-      <div className="DateInputWrapper">
+      <div className="DateInputWrapper" role="presentation" onClick={displayCalendar}>
         <div className="DateInputLabel">
           {label}
         </div>
@@ -31,9 +33,11 @@ const DateInput = ({ position, label }) => {
             `${trimMonthName(monthNames[currentMonth])} ${today}, ${currentYear}`
           )}
         </div>
-        <div className={`DateInputCalendar ${position === 'left' && 'PositionLeft'}`}>
-          {showCalendar && <Calendar onChange={getDate} />}
-        </div>
+        {showCalendar && (
+          <div className={`DateInputCalendar ${position === 'left' && 'PositionLeft'}`}>
+            <Calendar onChange={getDate} />
+          </div>
+        )}
       </div>
     </div>
   );
