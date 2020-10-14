@@ -6,7 +6,7 @@ import AppStatus from '../AppStatus';
 import LineChartComponent from '../LineChart';
 import './AppsCard.css';
 import getAppMemory, { clearAppMemory } from '../../redux/actions/appMemory';
-import { formatAppMemoryMetrics } from '../../helpers/formatMetrics';
+import { formatAppMemoryMetrics, formatMemoryMetrics } from '../../helpers/formatMetrics';
 
 
 class AppsCard extends React.Component {
@@ -17,54 +17,57 @@ class AppsCard extends React.Component {
   }
 
   componentDidMount() {
-    const { getAppMemory } = this.props;
-    const { projectID, appID } = this.props.otherData;
+    const { getAppMemory, appId } = this.props;
+    const { projectID } = this.props.otherData;
 
     clearAppMemory();
-    getAppMemory(projectID, appID, {});
+    getAppMemory(projectID, appId, {});
   }
 
   getAppMemoryMetrics(){
-    const { appID } = this.props;
+    const { appId } = this.props;
     const { appMemoryMetrics } = this.props;
-    const results = formatAppMemoryMetrics(appID, appMemoryMetrics);
+    const results = formatAppMemoryMetrics(appId, appMemoryMetrics);
     return results;
   }
 
   render(){
     const {
-      name, appStatus, url, appId, otherData
+      name, appStatus, url, appId, otherData, appMemoryMetrics, appID
     } = this.props;
     
     const formattedMemoryMetrics = this.getAppMemoryMetrics();
-    console.log(this.props);
+
+    console.log(formattedMemoryMetrics);
     return (
-      <Link
-        to={{
-          pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`, state: { appName: name, liveAppStatus: appStatus, appUrl: url
-        }}}
-        key={otherData.projectID}
-        className="AppName"
-      >
-        <div className="AppCard">
-          <div className="AppCardHeader">
-            <div className="AppNameSection">
-              {name}
+      <>
+        <Link
+          to={{
+            pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`, state: { appName: name, liveAppStatus: appStatus, appUrl: url
+          }}}
+          key={otherData.projectID}
+          className="AppName"
+        >
+          <div className="AppCard">
+            <div className="AppCardHeader">
+              <div className="AppNameSection">
+                {name}
+              </div>
+              <div className="AppIconsSection">
+                <div className="StatusData">
+                  <AppStatus appStatus={appStatus} />
+                </div>
+              </div>
             </div>
-            <div className="AppIconsSection">
-              <div className="StatusData">
-                <AppStatus appStatus={appStatus} />
+            <div className="AppCardBottomSection">
+              <div className="AppGraphSummaryLabel">Memory (1d)</div>
+              <div className="AppGraphSummary">
+                <LineChartComponent lineDataKey="memory" preview  data={formattedMemoryMetrics}/>
               </div>
             </div>
           </div>
-          <div className="AppCardBottomSection">
-            <div className="AppGraphSummaryLabel">Memory (1d)</div>
-            <div className="AppGraphSummary">
-              <LineChartComponent lineDataKey="uv" preview  />
-            </div>
-          </div>
-        </div>
-      </Link>
+        </Link>
+      </>
     );
   }
 }
