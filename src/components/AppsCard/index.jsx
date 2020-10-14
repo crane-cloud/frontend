@@ -6,6 +6,7 @@ import AppStatus from '../AppStatus';
 import LineChartComponent from '../LineChart';
 import './AppsCard.css';
 import getAppMemory, { clearAppMemory } from '../../redux/actions/appMemory';
+import { formatAppMemoryMetrics } from '../../helpers/formatMetrics';
 
 
 class AppsCard extends React.Component {
@@ -29,11 +30,13 @@ class AppsCard extends React.Component {
     const results = formatAppMemoryMetrics(appID, appMemoryMetrics);
     return results;
   }
-  // const {
-  //   name, appStatus, url, appId, otherData
-  // } = props;
 
   render(){
+    const {
+      name, appStatus, url, appId, otherData
+    } = this.props;
+    const formattedMemoryMetrics = this.getAppMemoryMetrics();
+    
     return (
       <Link
         to={{
