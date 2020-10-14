@@ -1,0 +1,40 @@
+.TimeInputContainer {
+  font-weight: bold;
+}
+
+.TimeInputWrapper {
+  border: 2px solid #000000;
+  width: 7rem;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding: 2px 4px;
+}
+
+.TimeInput {
+  width: 1.2rem;
+  text-align: center;
+  border: none;
+}
+
+/* Remove the arrows on input element */
+/* Chrome, Safari, Edge, Opera */
+.TimeInput::-webkit-outer-spin-button,
+.TimeInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.TimeInput[type=number] {
+  -moz-appearance: textfield;
+}
+
+.TimeInput::selection {
+  background-color: #cccccc;
+}
+
+.DayNightInput {
+  text-transform: uppercase;
+  width: 1.5rem;
+}
