@@ -82,12 +82,11 @@ class AppMetricsPage extends React.Component {
     const { appName, appUrl, liveAppStatus } = this.state.appRelatedInfo;
     const { params } = this.props.match;
     const { projectID, userID, appID } = params;
-    const { logs, retrieveingLogs, appNetworkMetrics } = this.props;
+    const { logs, retrieveingLogs } = this.props;
 
     const formattedMemoryMetrics = this.getAppMemoryMetrics();
     const formattedCPUMetrics = this.getAppCPUMetrics();
     const formattedNetworkMetrics = this.getAppNetworkMetrics();
-    console.log(formattedNetworkMetrics);
     
     return (
       <div className="Page">
