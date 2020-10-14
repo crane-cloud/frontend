@@ -14,13 +14,20 @@ class AppsCard extends React.Component {
 
     this.getAppMemoryMetrics = this.getAppMemoryMetrics.bind(this);
   }
-  
+
   componentDidMount() {
     const { getAppMemory, match } = this.props;
     const { projectID, appID } = match.params;
 
     clearAppMemory();
     getAppMemory(projectID, appID, {});
+  }
+
+  getAppMemoryMetrics(){
+    const { appID } = this.props.match.params;
+    const { appMemoryMetrics } = this.props;
+    const results = formatAppMemoryMetrics(appID, appMemoryMetrics);
+    return results;
   }
   // const {
   //   name, appStatus, url, appId, otherData
