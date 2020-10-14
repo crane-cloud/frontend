@@ -13,7 +13,8 @@ import LogsFrame from '../LogsFrame';
 import getAppLogs from '../../redux/actions/getAppLogs';
 import getAppMemory, { clearAppMemory } from '../../redux/actions/appMemory';
 import getAppCPU, { clearAppCPU }from '../../redux/actions/appCPU';
-import { formatAppMemoryMetrics, formatAppCPUMetrics } from '../../helpers/formatMetrics';
+import { formatAppMemoryMetrics, formatAppCPUMetrics, formatAppNetworkMetrics } from '../../helpers/formatMetrics';
+import getAppNetwork from '../../redux/actions/appNetwork';
 
 class AppMetricsPage extends React.Component {
   constructor(props) {
@@ -24,21 +25,25 @@ class AppMetricsPage extends React.Component {
     };
 
     this.getAppMemoryMetrics = this.getAppMemoryMetrics.bind(this);
-    // this.getAppCPUMetrics = this.getAppCPUMetrics.bind(this);
-    // this.getAppNetworkMetrics = this.getAppNetworkMetrics.bind(this);
+    this.getAppCPUMetrics = this.getAppCPUMetrics.bind(this);
+    this.getAppNetworkMetrics = this.getAppNetworkMetrics.bind(this);
 
   }
 
   componentDidMount() {
     const {
       getAppLogs,
+      getAppMemory,
+      getAppCPU,
+      getAppNetwork,
       match: { params } } = this.props;
     const { projectID, appID } = params;
 
     getAppLogs({ projectID, appID }, { timestamps: true });
     clearAppMemory();
-    getAppCPU(projectID, appID, {});
     getAppMemory(projectID, appID, {});
+    getAppCPU(projectID, appID, {});
+    getAppNetwork(projectID, appID, {})
     // clearAppCPU();
     
   }
@@ -59,23 +64,30 @@ class AppMetricsPage extends React.Component {
     return results;
   }
 
-  // getAppCPUMetrics(){
-  //   const { appID } = this.props.match.params;
-  //   const { appCPUMetrics } = this.props;
-  //   const results = formatAppCPUMetrics(appID, appCPUMetrics);
-  //   return results;
-  // }
+  getAppCPUMetrics(){
+    const { appID } = this.props.match.params;
+    const { appCPUMetrics } = this.props;
+    const results = formatAppCPUMetrics(appID, appCPUMetrics);
+    return results;
+  }
+
+  getAppNetworkMetrics(){
+    const { appID } = this.props.match.params;
+    const { appNetworkMetrics } = this.props;
+    const results = formatAppNetworkMetrics(appID, appNetworkMetrics);
+    return results;
+  }
 
   render() {
     const { appName, appUrl, liveAppStatus } = this.state.appRelatedInfo;
     const { params } = this.props.match;
     const { projectID, userID, appID } = params;
-    const { logs, retrieveingLogs } = this.props;
+    const { logs, retrieveingLogs, appNetworkMetrics } = this.props;
 
     const formattedMemoryMetrics = this.getAppMemoryMetrics();
-    // const formattedCPUMetrics = this.getAppCPUMetrics();
-    // const formattedNetworkMetrics = this.getNetworkMetrics();
-    
+    const formattedCPUMetrics = this.getAppCPUMetrics();
+    const formattedNetworkMetrics = this.getAppNetworkMetrics();
+    console.log(formattedNetworkMetrics);
     
     return (
       <div className="Page">
@@ -107,13 +119,10 @@ class AppMetricsPage extends React.Component {
                   <LineChartComponent lineDataKey="memory" preview data={formattedMemoryMetrics}/>
                 </MetricsCard>
                 <MetricsCard icon={<MetricIcon />} title="CPU" className="CardSizeDimensions">
-                  <LineChartComponent lineDataKey="uv" preview />
-                </MetricsCard>
-                <MetricsCard icon={<MetricIcon />} title="Storage" className="CardSizeDimensions">
-                  <LineChartComponent preview lineDataKey="uv"  />
+                  <LineChartComponent lineDataKey="cpu" preview data={formattedCPUMetrics}/>
                 </MetricsCard>
                 <MetricsCard icon={<MetricIcon />} title="Network" className="CardSizeDimensions">
-                  <LineChartComponent preview lineDataKey="uv"  />
+                  <LineChartComponent lineDataKey="network" preview data={formattedNetworkMetrics} />
                 </MetricsCard>
               </div>
               <div className="LogsSection">
@@ -138,10 +147,13 @@ const mapStateToProps = (state) => {
   } = state.appMemoryReducer;
 
   const {
-    isFetchingCPU, appCPUMetrics, metrics, cpuMessage
+    isFetchingCPU, appCPUMetrics, cpuMessage
   } = state.appCpuReducer;
 
-  console.log(metrics);
+  const {
+    appNetworkMetrics, isFetchingAppNetwork, appNetworkMessage
+  } = state.appNetworkReducer;
+
   return {
     isFetchingAppMemory,
     appMemoryMetrics,
@@ -151,7 +163,10 @@ const mapStateToProps = (state) => {
     retrieveingLogs,
     isFetchingCPU,
     appCPUMetrics,
-    cpuMessage
+    cpuMessage,
+    appNetworkMetrics,
+    isFetchingAppNetwork,
+    appNetworkMessage
   };
 
 };
@@ -160,7 +175,8 @@ const mapDispatchToProps = {
   getAppMemory,
   clearAppMemory,
   getAppLogs,
-  getAppCPU
+  getAppCPU,
+  getAppNetwork,
 };
 
 AppMetricsPage.propTypes = {

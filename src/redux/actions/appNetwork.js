@@ -13,11 +13,12 @@ const startFetchingAppNetworkMetrics = () => ({
   type: IS_FETCHING_APP_NETWORK,
 });
 
-const getAppNetworkMetricsSuccess = (ID, response) => ({
-  type: FETCH_APP_NETWORK_SUCCESS,
-  payload: {
-    app: ID,
-    metrics: response.data.data.values
+const getAppNetworkMetricsSuccess = (ID, response) => (
+  {
+    type: FETCH_APP_NETWORK_SUCCESS,
+    payload: {
+      app: ID,
+      metrics: response.data.data.values
   },
 });
 
@@ -49,6 +50,4 @@ const getAppNetwork = (projectID, appID, params) => (dispatch) => {
 
 
 export default getAppNetwork;
-export {
-  clearAppNetwork
-};
+export { clearAppNetwork };
