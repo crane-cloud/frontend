@@ -12,7 +12,7 @@ import LineChartComponent from '../LineChart';
 import LogsFrame from '../LogsFrame';
 import getAppLogs from '../../redux/actions/getAppLogs';
 import getAppMemory, { clearAppMemory } from '../../redux/actions/appMemory';
-import getAppCPU, { clearAppCPU }from '../../redux/actions/appCPU';
+import getAppCPU from '../../redux/actions/appCPU';
 import { formatAppMemoryMetrics, formatAppCPUMetrics, formatAppNetworkMetrics } from '../../helpers/formatMetrics';
 import getAppNetwork from '../../redux/actions/appNetwork';
 
@@ -44,7 +44,6 @@ class AppMetricsPage extends React.Component {
     getAppMemory(projectID, appID, {});
     getAppCPU(projectID, appID, {});
     getAppNetwork(projectID, appID, {})
-    // clearAppCPU();
     
   }
 
