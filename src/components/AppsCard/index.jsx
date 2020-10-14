@@ -1,12 +1,21 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AppStatus from '../AppStatus';
 import LineChartComponent from '../LineChart';
 import './AppsCard.css';
+import getAppMemory from '../../redux/actions/appMemory';
 
 
-const AppsCard = (props) => {
+class AppsCard extends React.Component {
+  componentDidMount() {
+    const { cardID, getAppMemory, match } = this.props;
+    const { projectID, appID } = match.params;
+
+    clearAppMemory();
+    getAppMemory(projectID, appID, {});
+  }
   const {
     name, appStatus, url, appId, otherData
   } = props;
@@ -53,4 +62,22 @@ AppsCard.propTypes = {
   }).isRequired
 };
 
-export default AppsCard;
+const mapStateToProps = (state) => {
+  const { data } = state.user;
+  const { 
+    appMemoryMetrics,
+    isFetchingAppMemory,
+    appMemoryMessage } = state.appMemoryReducer;
+  return {
+    data,
+    appMemoryMetrics,
+    isFetchingAppMemory,
+    appMemoryMessage
+  };
+};
+
+const mapDispatchToProps = {
+  getAppMemory
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppsCard);
