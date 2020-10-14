@@ -17,15 +17,15 @@ class AppsCard extends React.Component {
   }
 
   componentDidMount() {
-    const { getAppMemory, match } = this.props;
-    const { projectID, appID } = match.params;
+    const { getAppMemory } = this.props;
+    const { projectID, appID } = this.props.otherData;
 
     clearAppMemory();
     getAppMemory(projectID, appID, {});
   }
 
   getAppMemoryMetrics(){
-    const { appID } = this.props.match.params;
+    const { appID } = this.props;
     const { appMemoryMetrics } = this.props;
     const results = formatAppMemoryMetrics(appID, appMemoryMetrics);
     return results;
@@ -35,8 +35,9 @@ class AppsCard extends React.Component {
     const {
       name, appStatus, url, appId, otherData
     } = this.props;
-    const formattedMemoryMetrics = this.getAppMemoryMetrics();
     
+    const formattedMemoryMetrics = this.getAppMemoryMetrics();
+    console.log(this.props);
     return (
       <Link
         to={{
