@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import './TimeInput.css';
 
+const maxHours = 12;
+const maxMinutes = 59;
+
 const TimeInput = () => {
   const [ampm, setAmPm] = useState('am');
   const [hours, setHour] = useState(0);
@@ -17,11 +20,21 @@ const TimeInput = () => {
   const handleFocus = ({ target }) => target.select();
 
   const changeHour = ({ target }) => {
-    setHour(target.value);
+    const newVal = target.value;
+    if (newVal > maxHours) {
+      setHour(maxHours);
+    } else {
+      setHour(target.value);
+    }
   };
 
   const changeMinutes = ({ target }) => {
-    setMinutes(target.value);
+    const newVal = target.value;
+    if (newVal > maxMinutes) {
+      setMinutes(maxMinutes);
+    } else {
+      setMinutes(target.value);
+    }
   };
 
   const formatTime = (timeValue) => {
@@ -50,10 +63,10 @@ const TimeInput = () => {
           onChange={changeHour}
           onFocus={handleFocus}
           min="0"
-          max="12"
+          max={maxHours}
           maxLength="2"
         />
-      &nbsp;:&nbsp;
+        :
         <input
           className="TimeInput"
           type="number"
@@ -61,7 +74,7 @@ const TimeInput = () => {
           onChange={changeMinutes}
           onFocus={handleFocus}
           min="0"
-          max="59"
+          max={maxMinutes}
           maxLength="2"
         />
       &nbsp;
@@ -70,7 +83,6 @@ const TimeInput = () => {
           value={ampm}
           onFocus={handleFocus}
           onChange={setTimeOfDay}
-          // onKeyDown={setTimeOfDay}
         />
       </div>
     </div>
