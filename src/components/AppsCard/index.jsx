@@ -5,50 +5,58 @@ import PropTypes from 'prop-types';
 import AppStatus from '../AppStatus';
 import LineChartComponent from '../LineChart';
 import './AppsCard.css';
-import getAppMemory from '../../redux/actions/appMemory';
+import getAppMemory, { clearAppMemory } from '../../redux/actions/appMemory';
 
 
 class AppsCard extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.getAppMemoryMetrics = this.getAppMemoryMetrics.bind(this);
+  }
+  
   componentDidMount() {
-    const { cardID, getAppMemory, match } = this.props;
+    const { getAppMemory, match } = this.props;
     const { projectID, appID } = match.params;
 
     clearAppMemory();
     getAppMemory(projectID, appID, {});
   }
-  const {
-    name, appStatus, url, appId, otherData
-  } = props;
+  // const {
+  //   name, appStatus, url, appId, otherData
+  // } = props;
 
-  return (
-    <Link
-      to={{
-        pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`, state: { appName: name, liveAppStatus: appStatus, appUrl: url
-      }}}
-      key={otherData.projectID}
-      className="AppName"
-    >
-      <div className="AppCard">
-        <div className="AppCardHeader">
-          <div className="AppNameSection">
-            {name}
+  render(){
+    return (
+      <Link
+        to={{
+          pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`, state: { appName: name, liveAppStatus: appStatus, appUrl: url
+        }}}
+        key={otherData.projectID}
+        className="AppName"
+      >
+        <div className="AppCard">
+          <div className="AppCardHeader">
+            <div className="AppNameSection">
+              {name}
+            </div>
+            <div className="AppIconsSection">
+              <div className="StatusData">
+                <AppStatus appStatus={appStatus} />
+              </div>
+            </div>
           </div>
-          <div className="AppIconsSection">
-            <div className="StatusData">
-              <AppStatus appStatus={appStatus} />
+          <div className="AppCardBottomSection">
+            <div className="AppGraphSummaryLabel">Memory (1d)</div>
+            <div className="AppGraphSummary">
+              <LineChartComponent lineDataKey="uv" preview  />
             </div>
           </div>
         </div>
-        <div className="AppCardBottomSection">
-          <div className="AppGraphSummaryLabel">Memory (1d)</div>
-          <div className="AppGraphSummary">
-            <LineChartComponent lineDataKey="uv" preview  />
-          </div>
-        </div>
-      </div>
-    </Link>
-  );
-};
+      </Link>
+    );
+  }
+}
 
 // inititate props
 AppsCard.propTypes = {
