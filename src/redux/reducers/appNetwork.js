@@ -49,8 +49,8 @@ const appNetworkReducer = (state = initialState, action) => {
       return {
         ...state,
         appNetworkMetrics: [],
-          isFetchingAppNetwork: false,
-          appNetworkMessage: ''
+        isFetchingAppNetwork: false,
+        appNetworkMessage: ''
       };
 
     default:

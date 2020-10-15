@@ -80,10 +80,10 @@ class AppCpuPage extends React.Component {
   }
   
   render() {
-    const { match: { params }, isFetchingCPU, cpuMetrics } = this.props;
+    const { match: { params }, isFetchingCPU, appCPUMetrics } = this.props;
     const { projectID, appID, userID } = params;
 
-    const formattedMetrics = formatAppCPUMetrics(appID, cpuMetrics);
+    const formattedMetrics = formatAppCPUMetrics(appID, appCPUMetrics);
 
     return (
       <div className="Page">
@@ -136,16 +136,16 @@ AppCpuPage.propTypes = {
     }).isRequired
   }).isRequired,
   isFetchingCPU: PropTypes.bool.isRequired,
-  cpuMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  appCPUMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getAppCPU: PropTypes.func.isRequired,
   clearAppCPU: PropTypes.func.isRequired,
   apps: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
 
 const mapStateToProps = (state) => {
-  const { isFetchingCPU, cpuMetrics, cpuMessage } = state.appCpuReducer;
+  const { isFetchingCPU, appCPUMetrics, cpuMessage } = state.appCpuReducer;
   const { apps } = state.appsListReducer;
-  return { apps, isFetchingCPU, cpuMetrics, cpuMessage };
+  return { apps, isFetchingCPU, appCPUMetrics, cpuMessage };
 };
 
 const mapDispatchToProps = {

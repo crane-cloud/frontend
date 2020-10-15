@@ -6,7 +6,7 @@ import {
 } from '../actions/actionTypes';
 
 const initialState = {
-  cpuMetrics: [],
+  appCPUMetrics: [],
   isFetchingCPU: false,
   cpuMessage: ''
 };
@@ -16,7 +16,7 @@ const appCpuReducer = (state = initialState, action) => {
     case FETCH_APP_CPU_SUCCESS:
       return {
         ...state,
-        cpuMetrics: [...state.cpuMetrics,
+        appCPUMetrics: [...state.appCPUMetrics,
             {
               app: action.payload.app,
               metrics: action.payload.metrics
@@ -29,7 +29,7 @@ const appCpuReducer = (state = initialState, action) => {
     case FETCH_APP_CPU_FAILED:
       return {
         ...state,
-        cpuMetrics: [...state.cpuMetrics,
+        appCPUMetrics: [...state.appCPUMetrics,
             {
               app: action.payload.app,
               metrics: action.payload.metrics
@@ -48,9 +48,9 @@ const appCpuReducer = (state = initialState, action) => {
     case CLEAR_APP_CPU:
       return {
         ...state,
-        cpuMetrics: [],
-          isFetchingCPU: false,
-          cpuMessage: ''
+        appCPUMetrics: [],
+        isFetchingCPU: false,
+        cpuMessage: ''
       };
 
     default:
