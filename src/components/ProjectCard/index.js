@@ -37,8 +37,6 @@ class ProjectCard extends React.Component {
     const formattedMetrics = this.getProjectMemoryMetrics();
 
     const userId = data.id;
-
-    console.log(this.props);
     
     return (
       <>
