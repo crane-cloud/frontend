@@ -122,7 +122,7 @@ class AppMemoryPage extends React.Component {
                     <Spinner />
                   </div>
                 ) : (
-                  <LineChartComponent yLabel="Memory(MBs)" xLabel="Time" lineDataKey="memory" data={formattedMetrics} />
+                  <LineChartComponent yLabel="Memory(MBs)" xLabel="Time" xDataKey="time" lineDataKey="memory" data={formattedMetrics} />
                 )}
               </MetricsCard>
             </div>

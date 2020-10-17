@@ -120,7 +120,7 @@ class ProjectNetworkPage extends React.Component {
                     <Spinner />
                   </div>
                 ) : (
-                  <LineChartComponent yLabel="Network (KBs)" xLabel="Time" lineDataKey="network" data={formattedMetrics} />
+                  <LineChartComponent yLabel="Network (KBs)" xLabel="Time" xDataKey="time" lineDataKey="network" data={formattedMetrics} />
                 )}
               </MetricsCard>
             </div>

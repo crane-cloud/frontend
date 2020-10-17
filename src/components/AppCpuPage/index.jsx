@@ -117,7 +117,7 @@ class AppCpuPage extends React.Component {
                     <Spinner />
                   </div>
                 ) : (
-                  <LineChartComponent yLabel="CPU(cores)" xLabel="Time" lineDataKey="cpu" data={formattedMetrics} />
+                  <LineChartComponent yLabel="CPU(cores)" xLabel="Time" xDataKey="time" lineDataKey="cpu" data={formattedMetrics} />
                 )} 
               </MetricsCard>
             </div>

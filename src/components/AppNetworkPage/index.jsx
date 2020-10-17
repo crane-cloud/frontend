@@ -136,6 +136,7 @@ class AppNetworkPage extends React.Component {
                   <LineChartComponent
                     yLabel="Network(MBs)"
                     xLabel="Time"
+                    xDataKey="time"
                     lineDataKey="network"
                     data={formattedMetrics}
                   />
