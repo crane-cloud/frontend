@@ -33,7 +33,7 @@ class AppMemoryPage extends React.Component {
     const { projectID, appID } = params;
 
     clearAppMemory();
-    getAppMemory(projectID, appID, {});
+    getAppMemory(projectID, appID, { step: '2h' });
   }
 
   getAppName(id) {

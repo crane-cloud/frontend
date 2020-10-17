@@ -32,7 +32,7 @@ class ProjectCPUPage extends React.Component {
     const { match: { params }, getProjectCPU, clearProjectCPU } = this.props;
     const { projectID } = params;
     clearProjectCPU();
-    getProjectCPU(projectID, {});
+    getProjectCPU(projectID, { step: '2h' });
   }
 
   getProjectName(id) {

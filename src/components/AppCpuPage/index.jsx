@@ -32,7 +32,7 @@ class AppCpuPage extends React.Component {
     const { match: { params }, getAppCPU, clearAppCPU } = this.props;
     const { projectID, appID } = params;
     clearAppCPU();
-    getAppCPU(projectID, appID, {});
+    getAppCPU(projectID, appID, { step: '2h' });
   }
 
   getAppName(id) {

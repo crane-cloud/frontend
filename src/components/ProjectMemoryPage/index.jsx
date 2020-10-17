@@ -32,7 +32,7 @@ class ProjectMemoryPage extends React.Component {
     const { match: { params }, getProjectMemory, clearProjectMemory } = this.props;
     const { projectID } = params;
     clearProjectMemory();
-    getProjectMemory(projectID, {});
+    getProjectMemory(projectID, { step: '2h' });
   }
 
   getProjectName(id) {

@@ -32,7 +32,7 @@ class ProjectNetworkPage extends React.Component {
     const { match: { params }, getProjectNetwork, clearProjectNetwork } = this.props;
     const { projectID } = params;
     clearProjectNetwork();
-    getProjectNetwork(projectID, {});
+    getProjectNetwork(projectID, { step: '2h' });
   }
 
   getProjectName(id) {

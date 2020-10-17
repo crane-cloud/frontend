@@ -37,7 +37,7 @@ class AppNetworkPage extends React.Component {
     const { projectID, appID } = params;
 
     clearAppNetwork();
-    getAppNetwork(projectID, appID, {});
+    getAppNetwork(projectID, appID, { step: '2h' });
   }
 
   getAppName(id) {
