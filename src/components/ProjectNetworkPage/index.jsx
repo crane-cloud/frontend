@@ -19,9 +19,9 @@ class ProjectNetworkPage extends React.Component {
       time: {
         start: 0,
         end: getCurrentTimeStamp(),
-        step: '',
-        period: '1d'
-      }
+        step: ''
+      },
+      period: '1d'
     };
 
     this.getProjectName = this.getProjectName.bind(this);
@@ -52,7 +52,7 @@ class ProjectNetworkPage extends React.Component {
       step = '1d';
     } else if (period === '1m') {
       days = 30;
-      step = '1d';
+      step = '7d';
     } else if (period === '3m') {
       days = 90;
       step = '7d';
@@ -82,6 +82,7 @@ class ProjectNetworkPage extends React.Component {
     const { projectID } = params;
 
     clearProjectNetwork();
+
     getProjectNetwork(projectID, time);
   }
 

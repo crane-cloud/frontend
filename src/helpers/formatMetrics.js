@@ -1,12 +1,46 @@
-const translateTimestamp = (timestamp) => {
+import { dayNames, monthNames } from './dateConstants';
+
+const timestampToDate = (timestamp) => {
   const timestampMillisecond = timestamp * 1000; // convert timestamp to milliseconds
   const dateObject = new Date(timestampMillisecond); // create a date object out of milliseconds
-  return dateObject.toLocaleString();
+  return dateObject;
+};
+
+const formatTime = (timeValue) => {
+  const timeString = timeValue.toString();
+
+  if (timeString.length < 2) {
+    return `0${timeString}`;
+  }
+
+  return timeString;
+};
+
+const getTimeString = (date, period) => {
+  if (period === '7d') {
+    return `${dayNames[date.getDay()].substring(0, 3)}'${date.getDate()}`;
+  }
+
+  if (period === '1m') {
+    return `${dayNames[date.getDay()].substring(0, 3)}'${date.getDate()}`;
+  }
+
+  if (period === '3m') {
+    return `${monthNames[date.getMonth()].substring(0, 3)}`;
+  }
+
+  if (period === '1y') {
+    return `${monthNames[date.getMonth()].substring(0, 3)}`;
+  }
+
+  return `${formatTime(date.getHours())}:${formatTime(date.getMinutes())}`;
 };
 
 const bytesToMegabytes = (bytes) => bytes / 1000000;
 
-export const getCurrentTimeStamp = () => +new Date();
+export const getCurrentTimeStamp = () => {
+  return new Date().getTime() / 1000;
+};
 
 // this function gets the 'end' timestamp
 export const subtractTime = (endTimestamp, days) => new Date(
@@ -21,7 +55,7 @@ export const formatMemoryMetrics = (projectID, memoryMetrics) => {
     if (found.metrics.length > 0) {
       found.metrics.forEach((metric) => {
         const newMetricObject = {
-          time: translateTimestamp(metric.timestamp),
+          time: timestampToDate(metric.timestamp),
           memory: bytesToMegabytes(metric.value)
         };
 
@@ -43,7 +77,7 @@ export const formatCPUMetrics = (projectID, cpuMetrics) => {
     if (found.metrics.length > 0) {
       found.metrics.forEach((metric) => {
         const newMetricObject = {
-          time: translateTimestamp(metric.timestamp),
+          time: timestampToDate(metric.timestamp),
           cpu: metric.value * 10
         };
 
@@ -65,7 +99,7 @@ export const formatNetworkMetrics = (projectID, networkMetrics, period) => {
     if (found.metrics.length > 0) {
       found.metrics.forEach((metric) => {
         const newMetricObject = {
-          time: translateTimestamp(metric.timestamp),
+          time: getTimeString(timestampToDate(metric.timestamp), period),
           network: metric.value
         };
 
@@ -87,7 +121,7 @@ export const formatAppMemoryMetrics = (appID, memoryMetrics) => {
     if (found.metrics.length > 0) {
       found.metrics.forEach((metric) => {
         const newMetricObject = {
-          time: translateTimestamp(metric.timestamp),
+          time: timestampToDate(metric.timestamp),
           memory: bytesToMegabytes(metric.value)
         };
 
@@ -109,7 +143,7 @@ export const formatAppCPUMetrics = (appID, cpuMetrics) => {
     if (found.metrics.length > 0) {
       found.metrics.forEach((metric) => {
         const newMetricObject = {
-          time: translateTimestamp(metric.timestamp),
+          time: timestampToDate(metric.timestamp),
           cpu: metric.value * 10
         };
 
@@ -131,7 +165,7 @@ export const formatAppNetworkMetrics = (appID, networkMetrics) => {
     if (found.metrics.length > 0) {
       found.metrics.forEach((metric) => {
         const newMetricObject = {
-          time: translateTimestamp(metric.timestamp),
+          time: timestampToDate(metric.timestamp),
           network: metric.value
         };
 
