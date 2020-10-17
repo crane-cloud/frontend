@@ -91,7 +91,7 @@ export const formatCPUMetrics = (projectID, cpuMetrics) => {
   return cpuData;
 };
 
-export const formatNetworkMetrics = (projectID, networkMetrics, period) => {
+export const formatNetworkMetrics = (projectID, networkMetrics, period = '1d') => { // this is a shortcut for when function is called and period is undefined
   const found = networkMetrics.find((metric) => metric.project === projectID);
   const networkData = [];
 
