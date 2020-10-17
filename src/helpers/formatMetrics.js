@@ -9,7 +9,7 @@ const bytesToMegabytes = (bytes) => {
 }
 
 export const getCurrentTimeStamp = () => {
-  return new Date().getTime() / 1000;
+  return +new Date();
 }
 
 // this function gets the 'end' timestamp
