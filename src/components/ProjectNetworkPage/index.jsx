@@ -19,7 +19,8 @@ class ProjectNetworkPage extends React.Component {
       time: {
         start: 0,
         end: getCurrentTimeStamp(),
-        step: ''
+        step: '',
+        period: '1d'
       }
     };
 
@@ -59,6 +60,8 @@ class ProjectNetworkPage extends React.Component {
       days = 365;
       step = '1m';
     }
+
+    this.setState({ period }); // this period state will be used to format x-axis values accordingly
 
     const startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
 
