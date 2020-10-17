@@ -88,8 +88,9 @@ class ProjectNetworkPage extends React.Component {
   render() {
     const { match: { params }, isFetchingNetwork, networkMetrics } = this.props;
     const { projectID, userID } = params;
+    const { period } = this.state;
 
-    const formattedMetrics = formatNetworkMetrics(projectID, networkMetrics);
+    const formattedMetrics = formatNetworkMetrics(projectID, networkMetrics, period);
 
     return (
       <div className="Page">
