@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Calendar from '../Calendar';
+import TimeInput from '../TimeInput';
 import {
   monthNames,
   today,
@@ -18,6 +19,7 @@ const DateInput = ({ position, label }) => {
   const getDate = (date) => {
     setDate(date);
     setShowCalendar(false);
+    console.log(date);
   };
 
   const trimMonthName = (month) => month.substring(0, 3);
@@ -56,8 +58,11 @@ const DateInput = ({ position, label }) => {
             `${trimMonthName(monthNames[currentMonth])} ${today}, ${currentYear}`
           )}
         </div>
-        {showCalendar && (
+        {true && (
           <div className={`DateInputCalendar ${position === 'left' && 'PositionLeft'}`}>
+            <div className="TimeSection">
+              <TimeInput />
+            </div>
             <Calendar onChange={getDate} />
           </div>
         )}
