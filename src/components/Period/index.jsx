@@ -11,6 +11,8 @@ class Period extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleFromDate = this.handleFromDate.bind(this);
+    this.handleToDate = this.handleToDate.bind(this);
   }
 
   handleChange({ target }) {
@@ -19,6 +21,13 @@ class Period extends React.Component {
     onChange(target.getAttribute('value'));
   }
 
+  handleFromDate(fromTS) {
+    console.log(fromTS);
+  }
+
+  handleToDate(toTS) {
+    console.log(toTS);
+  }
 
   render() {
     const { period } = this.state;
@@ -33,8 +42,8 @@ class Period extends React.Component {
           <div className={`${period === 'all' && 'PeriodButtonActive'} PeriodButton`} name="all" value="all" role="presentation" onClick={this.handleChange}>all</div>
         </div>
         <div className="DateInputsSection">
-          <DateInput label="From" position="left" />
-          <DateInput label="To" position="left" />
+          <DateInput label="From" position="left" handleChange={this.handleFromDate} />
+          <DateInput label="To" position="left" handleChange={this.handleToDate} />
         </div>
       </div>
     );

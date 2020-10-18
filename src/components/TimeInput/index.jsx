@@ -1,43 +1,61 @@
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import './TimeInput.css';
 
 const maxHours = 12;
 const maxMinutes = 59;
 
-const TimeInput = () => {
-  const [ampm, setAmPm] = useState('am');
-  const [hours, setHour] = useState(0);
-  const [minutes, setMinutes] = useState(0);
+class TimeInput extends React.Component {
+  constructor(props) {
+    super(props);
 
-  const setTimeOfDay = () => {
+    this.state = {
+      ampm: 'am',
+      time: {
+        hour: 12,
+        minutes: 0
+      }
+    };
+
+    this.setTimeOfDay = this.setTimeOfDay.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
+    this.formatTime = this.formatTime.bind(this);
+    this.changeHour = this.changeHour.bind(this);
+    this.changeMinutes = this.changeMinutes.bind(this);
+    this.format24HourClock = this.format24HourClock.bind(this);
+  }
+
+  componentDidMount() {
+    const { onChange } = this.props;
+    const { ampm, time } = this.state;
+
+    onChange(this.format24HourClock(time.hour, time.minutes, ampm));
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState !== this.state) {
+      const { onChange } = this.props;
+      const { ampm, time } = this.state;
+
+      onChange(this.format24HourClock(time.hour, time.minutes, ampm));
+    }
+  }
+
+  setTimeOfDay() {
+    const { ampm } = this.state;
+
     if (ampm === 'am') {
-      setAmPm('pm');
+      this.setState({ ampm: 'pm' });
     } else {
-      setAmPm('am');
+      this.setState({ ampm: 'am' });
     }
-  };
+  }
 
-  const handleFocus = ({ target }) => target.select();
+  handleFocus({ target }) {
+    target.select();
+  }
 
-  const changeHour = ({ target }) => {
-    const newVal = target.value;
-    if (newVal > maxHours) {
-      setHour(maxHours);
-    } else {
-      setHour(target.value);
-    }
-  };
-
-  const changeMinutes = ({ target }) => {
-    const newVal = target.value;
-    if (newVal > maxMinutes) {
-      setMinutes(maxMinutes);
-    } else {
-      setMinutes(target.value);
-    }
-  };
-
-  const formatTime = (timeValue) => {
+  formatTime(timeValue) {
     const formattedTime = timeValue.toString();
     const timeLength = formattedTime.length;
 
@@ -50,43 +68,104 @@ const TimeInput = () => {
     }
 
     return formattedTime;
-  };
+  }
 
-  return (
-    <div className="TimeInputContainer">
-      Time
-      <div className="TimeInputWrapper">
-        <input
-          className="TimeInput"
-          type="number"
-          value={formatTime(hours)}
-          onChange={changeHour}
-          onFocus={handleFocus}
-          min="0"
-          max={maxHours}
-          maxLength="2"
-        />
-        :
-        <input
-          className="TimeInput"
-          type="number"
-          value={formatTime(minutes)}
-          onChange={changeMinutes}
-          onFocus={handleFocus}
-          min="0"
-          max={maxMinutes}
-          maxLength="2"
-        />
+  changeHour({ target }) {
+    if (target.value > maxHours) {
+      this.setState((prevState) => ({
+        time: {
+          ...prevState.time,
+          hour: maxHours
+        }
+      }));
+    } else {
+      this.setState((prevState) => ({
+        time: {
+          ...prevState.time,
+          hour: parseInt(target.value, 10)
+        }
+      }));
+    }
+  }
+
+  changeMinutes({ target }) {
+    if (target.value > maxMinutes) {
+      this.setState((prevState) => ({
+        time: {
+          ...prevState.time,
+          minutes: maxMinutes
+        }
+      }));
+    } else {
+      this.setState((prevState) => ({
+        time: {
+          ...prevState.time,
+          minutes: parseInt(target.value, 10)
+        }
+      }));
+    }
+  }
+
+  format24HourClock(hours, minutes, timeOfDay) {
+    let time = {
+      h: hours,
+      m: minutes
+    };
+
+    if (timeOfDay === 'am' && hours === 12) {
+      time = { ...time, h: 0 };
+    }
+
+    if (timeOfDay === 'pm' && hours !== 12) {
+      time = { ...time, h: (hours + 12) };
+    }
+
+    return time;
+  }
+
+  render() {
+    const { ampm, time } = this.state;
+
+    return (
+      <div className="TimeInputContainer">
+        Time
+        <div className="TimeInputWrapper">
+          <input
+            className="TimeInput"
+            type="number"
+            value={this.formatTime(time.hour)}
+            onChange={this.changeHour}
+            onFocus={this.handleFocus}
+            min="1"
+            max={maxHours}
+            maxLength="2"
+          />
+          :
+          <input
+            className="TimeInput"
+            type="number"
+            value={this.formatTime(time.minutes)}
+            onChange={this.changeMinutes}
+            onFocus={this.handleFocus}
+            min="0"
+            max={maxMinutes}
+            maxLength="2"
+          />
       &nbsp;
-        <input
-          className="TimeInput DayNightInput"
-          value={ampm}
-          onFocus={handleFocus}
-          onChange={setTimeOfDay}
-        />
+          <input
+            className="TimeInput DayNightInput"
+            value={ampm}
+            onFocus={this.handleFocus}
+            onChange={this.setTimeOfDay}
+          />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+}
+
+TimeInput.propTypes = {
+  onChange: PropTypes.func.isRequired
 };
 
 export default TimeInput;
