@@ -113,7 +113,7 @@ export const formatNetworkMetrics = (projectID, networkMetrics, period = '1d') =
   return networkData;
 };
 
-export const formatAppMemoryMetrics = (appID, memoryMetrics) => {
+export const formatAppMemoryMetrics = (appID, memoryMetrics, period = '1d') => {
   const found = memoryMetrics.find((metric) => metric.app === appID);
   const memoryData = [];
 
@@ -121,7 +121,7 @@ export const formatAppMemoryMetrics = (appID, memoryMetrics) => {
     if (found.metrics.length > 0) {
       found.metrics.forEach((metric) => {
         const newMetricObject = {
-          time: timestampToDate(metric.timestamp),
+          time: getTimeString(timestampToDate(metric.timestamp), period),
           memory: bytesToMegabytes(metric.value)
         };
 
@@ -135,7 +135,7 @@ export const formatAppMemoryMetrics = (appID, memoryMetrics) => {
   return memoryData;
 };
 
-export const formatAppCPUMetrics = (appID, cpuMetrics) => {
+export const formatAppCPUMetrics = (appID, cpuMetrics, period = '1d') => {
   const found = cpuMetrics.find((metric) => metric.app === appID);
   const cpuData = [];
 
@@ -143,7 +143,7 @@ export const formatAppCPUMetrics = (appID, cpuMetrics) => {
     if (found.metrics.length > 0) {
       found.metrics.forEach((metric) => {
         const newMetricObject = {
-          time: timestampToDate(metric.timestamp),
+          time: getTimeString(timestampToDate(metric.timestamp), period),
           cpu: metric.value * 10
         };
 
@@ -157,7 +157,7 @@ export const formatAppCPUMetrics = (appID, cpuMetrics) => {
   return cpuData;
 };
 
-export const formatAppNetworkMetrics = (appID, networkMetrics) => {
+export const formatAppNetworkMetrics = (appID, networkMetrics, period = '1d') => {
   const found = networkMetrics.find((metric) => metric.app === appID);
   const networkData = [];
 
@@ -165,7 +165,7 @@ export const formatAppNetworkMetrics = (appID, networkMetrics) => {
     if (found.metrics.length > 0) {
       found.metrics.forEach((metric) => {
         const newMetricObject = {
-          time: timestampToDate(metric.timestamp),
+          time: getTimeString(timestampToDate(metric.timestamp), period),
           network: metric.value
         };
 

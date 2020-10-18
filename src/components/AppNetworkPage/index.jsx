@@ -21,6 +21,7 @@ class AppNetworkPage extends React.Component {
         end: getCurrentTimeStamp(),
         step: "",
       },
+      period: '1d'
     };
 
     this.getAppName = this.getAppName.bind(this);
@@ -65,6 +66,8 @@ class AppNetworkPage extends React.Component {
       step = "1m";
     }
 
+    this.setState({ period }); // this period state will be used to format x-axis values accordingly
+
     const startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
 
     this.setState((prevState) => ({
@@ -98,9 +101,10 @@ class AppNetworkPage extends React.Component {
       appNetworkMetrics
     } = this.props;
     const { projectID, appID, userID } = params;
+    const { period } = this.state;
 
-    const formattedMetrics = formatAppNetworkMetrics(appID, appNetworkMetrics);
-    
+    const formattedMetrics = formatAppNetworkMetrics(appID, appNetworkMetrics, period);
+
     return (
       <div className="Page">
         <div className="TopBarSection">
