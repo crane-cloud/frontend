@@ -20,7 +20,8 @@ class ProjectMemoryPage extends React.Component {
         start: 0,
         end: getCurrentTimeStamp(),
         step: ''
-      }
+      },
+      period: '1d'
     };
 
     this.getProjectName = this.getProjectName.bind(this);
@@ -60,6 +61,8 @@ class ProjectMemoryPage extends React.Component {
       step = '1m';
     }
 
+    this.setState({ period }); // this period state will be used to format x-axis values accordingly
+
     const startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
 
     this.setState((prevState) => ({
@@ -85,9 +88,10 @@ class ProjectMemoryPage extends React.Component {
   render() {
     const { match: { params }, isFetchingMemory, memoryMetrics } = this.props;
     const { projectID, userID } = params;
+    const { period } = this.state;
 
-    const formattedMetrics = formatMemoryMetrics(projectID, memoryMetrics);
-    
+    const formattedMetrics = formatMemoryMetrics(projectID, memoryMetrics, period);
+
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>

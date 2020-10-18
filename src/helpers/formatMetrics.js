@@ -47,7 +47,7 @@ export const subtractTime = (endTimestamp, days) => new Date(
   endTimestamp - (days * 24 * 60 * 60)
 ).getTime();
 
-export const formatMemoryMetrics = (projectID, memoryMetrics) => {
+export const formatMemoryMetrics = (projectID, memoryMetrics, period = '1d') => {
   const found = memoryMetrics.find((metric) => metric.project === projectID);
   const memoryData = [];
 
@@ -55,7 +55,7 @@ export const formatMemoryMetrics = (projectID, memoryMetrics) => {
     if (found.metrics.length > 0) {
       found.metrics.forEach((metric) => {
         const newMetricObject = {
-          time: timestampToDate(metric.timestamp),
+          time: getTimeString(timestampToDate(metric.timestamp), period),
           memory: bytesToMegabytes(metric.value)
         };
 
@@ -69,7 +69,7 @@ export const formatMemoryMetrics = (projectID, memoryMetrics) => {
   return memoryData;
 };
 
-export const formatCPUMetrics = (projectID, cpuMetrics) => {
+export const formatCPUMetrics = (projectID, cpuMetrics, period = '1d') => {
   const found = cpuMetrics.find((metric) => metric.project === projectID);
   const cpuData = [];
 
@@ -77,7 +77,7 @@ export const formatCPUMetrics = (projectID, cpuMetrics) => {
     if (found.metrics.length > 0) {
       found.metrics.forEach((metric) => {
         const newMetricObject = {
-          time: timestampToDate(metric.timestamp),
+          time: getTimeString(timestampToDate(metric.timestamp), period),
           cpu: metric.value * 10
         };
 
