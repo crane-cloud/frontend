@@ -20,7 +20,8 @@ class ProjectCPUPage extends React.Component {
         start: 0,
         end: getCurrentTimeStamp(),
         step: ''
-      }
+      },
+      period: '1d'
     };
 
     this.getProjectName = this.getProjectName.bind(this);
@@ -32,7 +33,7 @@ class ProjectCPUPage extends React.Component {
     const { match: { params }, getProjectCPU, clearProjectCPU } = this.props;
     const { projectID } = params;
     clearProjectCPU();
-    getProjectCPU(projectID, {});
+    getProjectCPU(projectID, { step: '2h' });
   }
 
   getProjectName(id) {
@@ -60,6 +61,8 @@ class ProjectCPUPage extends React.Component {
       step = '1m';
     }
 
+    this.setState({ period }); // this period state will be used to format x-axis values accordingly
+
     const startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
 
     this.setState((prevState) => ({
@@ -85,8 +88,9 @@ class ProjectCPUPage extends React.Component {
   render() {
     const { match: { params }, isFetchingCPU, cpuMetrics } = this.props;
     const { projectID, userID } = params;
+    const { period } = this.state;
 
-    const formattedMetrics = formatCPUMetrics(projectID, cpuMetrics);
+    const formattedMetrics = formatCPUMetrics(projectID, cpuMetrics, period);
 
     return (
       <div className="Page">
@@ -120,7 +124,7 @@ class ProjectCPUPage extends React.Component {
                     <Spinner />
                   </div>
                 ) : (
-                  <LineChartComponent yLabel="CPU(cores)" xLabel="Time" lineDataKey="cpu" data={formattedMetrics} />
+                  <LineChartComponent yLabel="CPU(cores)" xLabel="Time" xDataKey="time" lineDataKey="cpu" data={formattedMetrics} />
                 )}
               </MetricsCard>
             </div>

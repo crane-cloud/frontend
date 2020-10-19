@@ -20,7 +20,8 @@ class ProjectNetworkPage extends React.Component {
         start: 0,
         end: getCurrentTimeStamp(),
         step: ''
-      }
+      },
+      period: '1d'
     };
 
     this.getProjectName = this.getProjectName.bind(this);
@@ -32,7 +33,7 @@ class ProjectNetworkPage extends React.Component {
     const { match: { params }, getProjectNetwork, clearProjectNetwork } = this.props;
     const { projectID } = params;
     clearProjectNetwork();
-    getProjectNetwork(projectID, {});
+    getProjectNetwork(projectID, { step: '2h' });
   }
 
   getProjectName(id) {
@@ -51,7 +52,7 @@ class ProjectNetworkPage extends React.Component {
       step = '1d';
     } else if (period === '1m') {
       days = 30;
-      step = '1d';
+      step = '7d';
     } else if (period === '3m') {
       days = 90;
       step = '7d';
@@ -59,6 +60,8 @@ class ProjectNetworkPage extends React.Component {
       days = 365;
       step = '1m';
     }
+
+    this.setState({ period }); // this period state will be used to format x-axis values accordingly
 
     const startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
 
@@ -79,14 +82,16 @@ class ProjectNetworkPage extends React.Component {
     const { projectID } = params;
 
     clearProjectNetwork();
+
     getProjectNetwork(projectID, time);
   }
 
   render() {
     const { match: { params }, isFetchingNetwork, networkMetrics } = this.props;
     const { projectID, userID } = params;
+    const { period } = this.state;
 
-    const formattedMetrics = formatNetworkMetrics(projectID, networkMetrics);
+    const formattedMetrics = formatNetworkMetrics(projectID, networkMetrics, period);
 
     return (
       <div className="Page">
@@ -120,7 +125,7 @@ class ProjectNetworkPage extends React.Component {
                     <Spinner />
                   </div>
                 ) : (
-                  <LineChartComponent yLabel="Network (KBs)" xLabel="Time" lineDataKey="network" data={formattedMetrics} />
+                  <LineChartComponent yLabel="Network (KBs)" xLabel="Time" xDataKey="time" lineDataKey="network" data={formattedMetrics} />
                 )}
               </MetricsCard>
             </div>

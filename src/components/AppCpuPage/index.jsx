@@ -19,8 +19,9 @@ class AppCpuPage extends React.Component {
       time: {
         start: 0,
         end: getCurrentTimeStamp(),
-        step: '' 
-      } 
+        step: ''
+      },
+      period: '1d'
     };
 
     this.getAppName = this.getAppName.bind(this);
@@ -32,7 +33,7 @@ class AppCpuPage extends React.Component {
     const { match: { params }, getAppCPU, clearAppCPU } = this.props;
     const { projectID, appID } = params;
     clearAppCPU();
-    getAppCPU(projectID, appID, {});
+    getAppCPU(projectID, appID, { step: '2h' });
   }
 
   getAppName(id) {
@@ -57,6 +58,8 @@ class AppCpuPage extends React.Component {
       days = 365; step = '1m';
     }
 
+    this.setState({ period }); // this period state will be used to format x-axis values accordingly
+
     const startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
 
     this.setState((prevState) => ({
@@ -78,12 +81,13 @@ class AppCpuPage extends React.Component {
     clearAppCPU();
     getAppCPU(projectID, appID, time);
   }
-  
+
   render() {
     const { match: { params }, isFetchingCPU, appCPUMetrics } = this.props;
     const { projectID, appID, userID } = params;
+    const { period } = this.state;
 
-    const formattedMetrics = formatAppCPUMetrics(appID, appCPUMetrics);
+    const formattedMetrics = formatAppCPUMetrics(appID, appCPUMetrics, period);
 
     return (
       <div className="Page">
@@ -117,7 +121,7 @@ class AppCpuPage extends React.Component {
                     <Spinner />
                   </div>
                 ) : (
-                  <LineChartComponent yLabel="CPU(cores)" xLabel="Time" lineDataKey="cpu" data={formattedMetrics} />
+                  <LineChartComponent yLabel="CPU(cores)" xLabel="Time" xDataKey="time" lineDataKey="cpu" data={formattedMetrics} />
                 )} 
               </MetricsCard>
             </div>
