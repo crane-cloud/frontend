@@ -33,6 +33,11 @@
 }
 
 .DateInputCalendar {
+  background-color: #ffffff;
+  border: 1px solid #CCCCCC;
+  padding: 1rem;
+  display: grid;
+  gap: 1rem;
   position: absolute;
   top: 2rem;
 }
