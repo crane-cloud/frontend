@@ -27,6 +27,7 @@ class AppCpuPage extends React.Component {
     this.getAppName = this.getAppName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
     this.fetchCpu = this.fetchCpu.bind(this);
+    this.getDateCreated = this.getDateCreated.bind(this);
   }
 
   componentDidMount() {
@@ -41,9 +42,17 @@ class AppCpuPage extends React.Component {
     return apps.apps.find((app) => app.id === id).name;
   }
 
+  getDateCreated() {
+    const { match: { params }, apps } = this.props;
+    const { appID } = params;
+    return apps.apps.find((app) => app.id === appID).date_created;
+  }
+
   async handlePeriodChange(period) {
     let days;
     let step;
+    let startTimeStamp;
+
     if (period === '1d') {
       days = 1;
       step = '2h';
@@ -60,7 +69,11 @@ class AppCpuPage extends React.Component {
 
     this.setState({ period }); // this period state will be used to format x-axis values accordingly
 
-    const startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
+    if (period === 'all') {
+      startTimeStamp = await Date.parse(this.getDateCreated());
+    } else {
+      startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
+    }
 
     this.setState((prevState) => ({
       time: {
