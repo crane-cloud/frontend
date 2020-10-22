@@ -95,8 +95,6 @@ class ProjectMemoryPage extends React.Component {
     const { match: { params }, getProjectMemory, clearProjectMemory } = this.props;
     const { projectID } = params;
 
-    console.log(time)
-
     clearProjectMemory();
     getProjectMemory(projectID, time);
   }
