@@ -27,6 +27,7 @@ class ProjectCPUPage extends React.Component {
     this.getProjectName = this.getProjectName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
     this.fetchCPU = this.fetchCPU.bind(this);
+    this.getDateCreated = this.getDateCreated.bind(this);
   }
 
   componentDidMount() {
@@ -41,9 +42,17 @@ class ProjectCPUPage extends React.Component {
     return projects.find((project) => project.id === id).name;
   }
 
+  getDateCreated() {
+    const { match: { params }, projects } = this.props;
+    const { projectID } = params;
+    return projects.find((project) => project.id === projectID).date_created;
+  }
+
   async handlePeriodChange(period) {
     let days;
     let step;
+    let startTimeStamp;
+
     if (period === '1d') {
       days = 1;
       step = '2h';
@@ -63,7 +72,12 @@ class ProjectCPUPage extends React.Component {
 
     this.setState({ period }); // this period state will be used to format x-axis values accordingly
 
-    const startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
+    if (period === 'all') {
+      startTimeStamp = await Date.parse(this.getDateCreated());
+      step = '1d'; // TODO: make dynamic depending on the all-time metrics
+    } else {
+      startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
+    }
 
     this.setState((prevState) => ({
       time: {

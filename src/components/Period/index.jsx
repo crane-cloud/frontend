@@ -22,11 +22,11 @@ class Period extends React.Component {
   }
 
   handleFromDate(fromTS) {
-    console.log(fromTS);
+    // console.log(fromTS);
   }
 
   handleToDate(toTS) {
-    console.log(toTS);
+    // console.log(toTS);
   }
 
   render() {
