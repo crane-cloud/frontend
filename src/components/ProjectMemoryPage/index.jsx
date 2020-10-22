@@ -74,6 +74,7 @@ class ProjectMemoryPage extends React.Component {
 
     if (period === 'all') {
       startTimeStamp = await Date.parse(this.getDateCreated());
+      step = '1d'; // TODO: make dynamic depending on the all-time metrics
     } else {
       startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
     }
@@ -93,6 +94,8 @@ class ProjectMemoryPage extends React.Component {
     const { time } = this.state;
     const { match: { params }, getProjectMemory, clearProjectMemory } = this.props;
     const { projectID } = params;
+
+    console.log(time)
 
     clearProjectMemory();
     getProjectMemory(projectID, time);

@@ -71,6 +71,7 @@ class AppCpuPage extends React.Component {
 
     if (period === 'all') {
       startTimeStamp = await Date.parse(this.getDateCreated());
+      step = '1d'; // TODO: make dynamic depending on the all-time metrics
     } else {
       startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
     }
