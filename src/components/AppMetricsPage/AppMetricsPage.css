@@ -4,8 +4,21 @@
     gap: 1rem;
 }
 
-.TopCardsSection {
+.MetricsCardsSection {
     display: grid;
-    grid-auto-flow: column;
-    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1rem;
+    padding-bottom: 1rem;
+
+}
+
+.CardSizeDimensions{
+    min-width: 15rem;
+    display: flex;
+    /* we dont set values the height
+       is a pre-requiste for the line
+       component, try removing or editing
+       it and you will see why it matters.
+    */
+    height: 18rem; 
 }

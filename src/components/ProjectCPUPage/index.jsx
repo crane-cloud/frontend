@@ -10,6 +10,7 @@ import getProjectCPU, { clearProjectCPU } from '../../redux/actions/projectCPU';
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
 import LineChartComponent from '../LineChart';
+import { formatCPUMetrics, getCurrentTimeStamp, subtractTime } from '../../helpers/formatMetrics';
 
 class ProjectCPUPage extends React.Component {
   constructor(props) {
@@ -17,23 +18,23 @@ class ProjectCPUPage extends React.Component {
     this.state = {
       time: {
         start: 0,
-        end: this.getCurrentTimeStamp(),
+        end: getCurrentTimeStamp(),
         step: ''
-      }
+      },
+      period: '1d'
     };
 
-    this.getCurrentTimeStamp = this.getCurrentTimeStamp.bind(this);
     this.getProjectName = this.getProjectName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
-    this.subtractTime = this.subtractTime.bind(this);
     this.fetchCPU = this.fetchCPU.bind(this);
+    this.getDateCreated = this.getDateCreated.bind(this);
   }
 
   componentDidMount() {
     const { match: { params }, getProjectCPU, clearProjectCPU } = this.props;
     const { projectID } = params;
     clearProjectCPU();
-    getProjectCPU(projectID, {});
+    getProjectCPU(projectID, { step: '2h' });
   }
 
   getProjectName(id) {
@@ -41,42 +42,17 @@ class ProjectCPUPage extends React.Component {
     return projects.find((project) => project.id === id).name;
   }
 
-  getCurrentTimeStamp() {
-    return new Date().getTime() / 1000;
-  }
-
-  translateTimestamp(timestamp) {
-    const timestampMillisecond = timestamp * 1000; // convert timestamp to milliseconds
-    const dateObject = new Date(timestampMillisecond); // create a date object out of milliseconds
-    return dateObject.toLocaleString();
-  }
-
-  formatMetrics(projectID) {
-    const { cpuMetrics } = this.props;
-    const found = cpuMetrics.find((metric) => metric.project === projectID);
-    const cpuData = [];
-
-    if (found !== undefined) {
-      if (found.metrics.length > 0) {
-        found.metrics.forEach((metric) => {
-          const newMetricObject = {
-            time: this.translateTimestamp(metric.timestamp),
-            cpu: metric.value * 10 // multiplying by 10 fot graph plotting
-          };
-
-          cpuData.push(newMetricObject);
-        });
-      } else {
-        cpuData.push({ time: 0, cpu: 0 });
-        cpuData.push({ time: 0, cpu: 0 });
-      }
-    }
-    return cpuData;
+  getDateCreated() {
+    const { match: { params }, projects } = this.props;
+    const { projectID } = params;
+    return projects.find((project) => project.id === projectID).date_created;
   }
 
   async handlePeriodChange(period) {
     let days;
     let step;
+    let startTimeStamp;
+
     if (period === '1d') {
       days = 1;
       step = '2h';
@@ -94,7 +70,14 @@ class ProjectCPUPage extends React.Component {
       step = '1m';
     }
 
-    const startTimeStamp = await this.subtractTime(this.getCurrentTimeStamp(), days);
+    this.setState({ period }); // this period state will be used to format x-axis values accordingly
+
+    if (period === 'all') {
+      startTimeStamp = await Date.parse(this.getDateCreated());
+      step = '1d'; // TODO: make dynamic depending on the all-time metrics
+    } else {
+      startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
+    }
 
     this.setState((prevState) => ({
       time: {
@@ -107,11 +90,6 @@ class ProjectCPUPage extends React.Component {
     this.fetchCPU();
   }
 
-  // this function gets the 'end' timestamp
-  subtractTime(endTimestamp, days) {
-    return new Date(endTimestamp - (days * 24 * 60 * 60)).getTime();
-  }
-
   fetchCPU() {
     const { time } = this.state;
     const { match: { params }, getProjectCPU, clearProjectCPU } = this.props;
@@ -122,10 +100,11 @@ class ProjectCPUPage extends React.Component {
   }
 
   render() {
-    const { match: { params }, isFetchingCPU } = this.props;
+    const { match: { params }, isFetchingCPU, cpuMetrics } = this.props;
     const { projectID, userID } = params;
+    const { period } = this.state;
 
-    const formattedMetrics = this.formatMetrics(projectID);
+    const formattedMetrics = formatCPUMetrics(projectID, cpuMetrics, period);
 
     return (
       <div className="Page">
@@ -159,7 +138,7 @@ class ProjectCPUPage extends React.Component {
                     <Spinner />
                   </div>
                 ) : (
-                  <LineChartComponent yLabel="CPU(cores)" xLabel="Time" lineDataKey="cpu" data={formattedMetrics} />
+                  <LineChartComponent yLabel="CPU(cores)" xLabel="Time" xDataKey="time" lineDataKey="cpu" data={formattedMetrics} />
                 )}
               </MetricsCard>
             </div>

@@ -10,6 +10,7 @@ import getAppCPU, { clearAppCPU } from '../../redux/actions/appCPU';
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
 import LineChartComponent from '../LineChart';
+import { formatAppCPUMetrics, getCurrentTimeStamp, subtractTime } from '../../helpers/formatMetrics';
 
 class AppCpuPage extends React.Component {
   constructor(props) {
@@ -17,23 +18,23 @@ class AppCpuPage extends React.Component {
     this.state = {
       time: {
         start: 0,
-        end: this.getCurrentTimeStamp(),
-        step: '' 
-      } 
+        end: getCurrentTimeStamp(),
+        step: ''
+      },
+      period: '1d'
     };
 
-    this.getCurrentTimeStamp = this.getCurrentTimeStamp.bind(this);
     this.getAppName = this.getAppName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
-    this.subtractTime = this.subtractTime.bind(this);
     this.fetchCpu = this.fetchCpu.bind(this);
+    this.getDateCreated = this.getDateCreated.bind(this);
   }
 
   componentDidMount() {
     const { match: { params }, getAppCPU, clearAppCPU } = this.props;
     const { projectID, appID } = params;
     clearAppCPU();
-    getAppCPU(projectID, appID, {});
+    getAppCPU(projectID, appID, { step: '2h' });
   }
 
   getAppName(id) {
@@ -41,42 +42,17 @@ class AppCpuPage extends React.Component {
     return apps.apps.find((app) => app.id === id).name;
   }
 
-  getCurrentTimeStamp() {
-    return new Date().getTime() / 1000;
-  }
-
-  translateTimestamp(timestamp) {
-    const timestampMillisecond = timestamp * 1000; // convert timestamp to milliseconds
-    const dateObject = new Date(timestampMillisecond); // create a date object out of milliseconds
-    return dateObject.toLocaleString();
-  }
-
-  formatMetrics(appID) {
-    const { metrics } = this.props;
-    const found = metrics.find((metric) => metric.app === appID);
-    const cpuData = [];
-
-    if (found !== undefined) {
-      if (found.metrics.length > 0) {
-        found.metrics.forEach((metric) => {
-          const newMetricObject = {
-            time: this.translateTimestamp(metric.timestamp),
-            cpu: metric.value * 10 // multiplying by 10 fot graph plotting
-          };
-
-          cpuData.push(newMetricObject);
-        });
-      } else {
-        cpuData.push({ time: 0, cpu: 0 });
-        cpuData.push({ time: 0, cpu: 0 });
-      }
-    }
-    return cpuData;
+  getDateCreated() {
+    const { match: { params }, apps } = this.props;
+    const { appID } = params;
+    return apps.apps.find((app) => app.id === appID).date_created;
   }
 
   async handlePeriodChange(period) {
     let days;
     let step;
+    let startTimeStamp;
+
     if (period === '1d') {
       days = 1;
       step = '2h';
@@ -91,7 +67,14 @@ class AppCpuPage extends React.Component {
       days = 365; step = '1m';
     }
 
-    const startTimeStamp = await this.subtractTime(this.getCurrentTimeStamp(), days);
+    this.setState({ period }); // this period state will be used to format x-axis values accordingly
+
+    if (period === 'all') {
+      startTimeStamp = await Date.parse(this.getDateCreated());
+      step = '1d'; // TODO: make dynamic depending on the all-time metrics
+    } else {
+      startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
+    }
 
     this.setState((prevState) => ({
       time: {
@@ -104,11 +87,6 @@ class AppCpuPage extends React.Component {
     this.fetchCpu();
   }
 
-  // this function gets the 'end' timestamp
-  subtractTime(endTimestamp, days) {
-    return new Date(endTimestamp - (days * 24 * 60 * 60)).getTime();
-  }
-
   fetchCpu() {
     const { time } = this.state;
     const { match: { params }, getAppCPU, clearAppCPU } = this.props;
@@ -117,11 +95,13 @@ class AppCpuPage extends React.Component {
     clearAppCPU();
     getAppCPU(projectID, appID, time);
   }
-  render() {
-    const { match: { params }, isFetching } = this.props;
-    const { projectID, appID, userID } = params;
 
-    const formattedMetrics = this.formatMetrics(appID);
+  render() {
+    const { match: { params }, isFetchingCPU, appCPUMetrics } = this.props;
+    const { projectID, appID, userID } = params;
+    const { period } = this.state;
+
+    const formattedMetrics = formatAppCPUMetrics(appID, appCPUMetrics, period);
 
     return (
       <div className="Page">
@@ -150,12 +130,12 @@ class AppCpuPage extends React.Component {
                 className="MetricsCardGraph"
                 title={<PeriodSelector onChange={this.handlePeriodChange} />} >
 
-                {isFetching ? (
+                {isFetchingCPU ? (
                   <div className="ContentSectionSpinner">
                     <Spinner />
                   </div>
                 ) : (
-                  <LineChartComponent yLabel="CPU(cores)" xLabel="Time" lineDataKey="cpu" data={formattedMetrics} />
+                  <LineChartComponent yLabel="CPU(cores)" xLabel="Time" xDataKey="time" lineDataKey="cpu" data={formattedMetrics} />
                 )} 
               </MetricsCard>
             </div>
@@ -173,17 +153,17 @@ AppCpuPage.propTypes = {
       userID: PropTypes.string.isRequired,
     }).isRequired
   }).isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  metrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  isFetchingCPU: PropTypes.bool.isRequired,
+  appCPUMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getAppCPU: PropTypes.func.isRequired,
   clearAppCPU: PropTypes.func.isRequired,
   apps: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
 
 const mapStateToProps = (state) => {
-  const { isFetching, metrics, message: metricsMessage } = state.appCpuReducer;
+  const { isFetchingCPU, appCPUMetrics, cpuMessage } = state.appCpuReducer;
   const { apps } = state.appsListReducer;
-  return { apps, isFetching, metrics, metricsMessage };
+  return { apps, isFetchingCPU, appCPUMetrics, cpuMessage };
 };
 
 const mapDispatchToProps = {

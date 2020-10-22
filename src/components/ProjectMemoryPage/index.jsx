@@ -10,6 +10,7 @@ import getProjectMemory, { clearProjectMemory } from '../../redux/actions/projec
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
 import LineChartComponent from '../LineChart';
+import { formatMemoryMetrics, getCurrentTimeStamp, subtractTime } from '../../helpers/formatMetrics';
 
 class ProjectMemoryPage extends React.Component {
   constructor(props) {
@@ -17,24 +18,23 @@ class ProjectMemoryPage extends React.Component {
     this.state = {
       time: {
         start: 0,
-        end: this.getCurrentTimeStamp(),
+        end: getCurrentTimeStamp(),
         step: ''
-      }
+      },
+      period: '1d'
     };
 
-    this.getCurrentTimeStamp = this.getCurrentTimeStamp.bind(this);
     this.getProjectName = this.getProjectName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
-    this.subtractTime = this.subtractTime.bind(this);
     this.fetchMemory = this.fetchMemory.bind(this);
-    this.bytesToMegabytes = this.bytesToMegabytes.bind(this);
+    this.getDateCreated = this.getDateCreated.bind(this);
   }
 
   componentDidMount() {
     const { match: { params }, getProjectMemory, clearProjectMemory } = this.props;
     const { projectID } = params;
     clearProjectMemory();
-    getProjectMemory(projectID, {});
+    getProjectMemory(projectID, { step: '2h' });
   }
 
   getProjectName(id) {
@@ -42,46 +42,17 @@ class ProjectMemoryPage extends React.Component {
     return projects.find((project) => project.id === id).name;
   }
 
-  getCurrentTimeStamp() {
-    return new Date().getTime() / 1000;
-  }
-
-  translateTimestamp(timestamp) {
-    const timestampMillisecond = timestamp * 1000; // convert timestamp to milliseconds
-    const dateObject = new Date(timestampMillisecond); // create a date object out of milliseconds
-    return dateObject.toLocaleString();
-  }
-
-  bytesToMegabytes(bytes) {
-    return bytes / 1000000;
-  }
-
-  formatMetrics(projectID) {
-    const { memoryMetrics } = this.props;
-    const found = memoryMetrics.find((metric) => metric.project === projectID);
-    const memoryData = [];
-
-    if (found !== undefined) {
-      if (found.metrics.length > 0) {
-        found.metrics.forEach((metric) => {
-          const newMetricObject = {
-            time: this.translateTimestamp(metric.timestamp),
-            memory: this.bytesToMegabytes(metric.value)
-          };
-
-          memoryData.push(newMetricObject);
-        });
-      } else {
-        memoryData.push({ time: 0, memory: 0 });
-        memoryData.push({ time: 0, memory: 0 });
-      }
-    }
-    return memoryData;
+  getDateCreated() {
+    const { match: { params }, projects } = this.props;
+    const { projectID } = params;
+    return projects.find((project) => project.id === projectID).date_created;
   }
 
   async handlePeriodChange(period) {
     let days;
     let step;
+    let startTimeStamp;
+
     if (period === '1d') {
       days = 1;
       step = '2h';
@@ -99,7 +70,14 @@ class ProjectMemoryPage extends React.Component {
       step = '1m';
     }
 
-    const startTimeStamp = await this.subtractTime(this.getCurrentTimeStamp(), days);
+    this.setState({ period }); // this period state will be used to format x-axis values accordingly
+
+    if (period === 'all') {
+      startTimeStamp = await Date.parse(this.getDateCreated());
+      step = '1d'; // TODO: make dynamic depending on the all-time metrics
+    } else {
+      startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
+    }
 
     this.setState((prevState) => ({
       time: {
@@ -112,11 +90,6 @@ class ProjectMemoryPage extends React.Component {
     this.fetchMemory();
   }
 
-  // this function gets the 'end' timestamp
-  subtractTime(endTimestamp, days) {
-    return new Date(endTimestamp - (days * 24 * 60 * 60)).getTime();
-  }
-
   fetchMemory() {
     const { time } = this.state;
     const { match: { params }, getProjectMemory, clearProjectMemory } = this.props;
@@ -127,11 +100,12 @@ class ProjectMemoryPage extends React.Component {
   }
 
   render() {
-    const { match: { params }, isFetchingMemory } = this.props;
+    const { match: { params }, isFetchingMemory, memoryMetrics } = this.props;
     const { projectID, userID } = params;
+    const { period } = this.state;
 
-    const formattedMetrics = this.formatMetrics(projectID);
-    
+    const formattedMetrics = formatMemoryMetrics(projectID, memoryMetrics, period);
+
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
@@ -164,7 +138,7 @@ class ProjectMemoryPage extends React.Component {
                     <Spinner />
                   </div>
                 ) : (
-                  <LineChartComponent yLabel="Memory(MBs)" xLabel="Time" lineDataKey="memory" data={formattedMetrics} />
+                  <LineChartComponent yLabel="Memory(MBs)" xLabel="Time" xDataKey="time" lineDataKey="memory" data={formattedMetrics} />
                 )}
               </MetricsCard>
             </div>

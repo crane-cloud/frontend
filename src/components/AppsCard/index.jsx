@@ -1,72 +1,75 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AppStatus from '../AppStatus';
 import LineChartComponent from '../LineChart';
 import './AppsCard.css';
+import getAppMemory, { clearAppMemory } from '../../redux/actions/appMemory';
+import { formatAppMemoryMetrics } from '../../helpers/formatMetrics';
 
-const sampleData = [
-  { name: 'Sample Metric 1', uv: 250 },
-  { name: 'Sample Metric 2', uv: 270 },
-  { name: 'Sample Metric 2', uv: 10 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 70 },
-  { name: 'Sample Metric 2', uv: 150 },
-  { name: 'Sample Metric 2', uv: 60 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 190 },
-  { name: 'Sample Metric 2', uv: 290 },
-  { name: 'Sample Metric 2', uv: 150 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 130 },
-  { name: 'Sample Metric 2', uv: 0 },
-  { name: 'Sample Metric 2', uv: 270 },
-  { name: 'Sample Metric 2', uv: 280 },
-  { name: 'Sample Metric 2', uv: 300 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 170 },
-  { name: 'Sample Metric 2', uv: 290 },
-];
 
-// this function is meant to shuffle the dummy data array
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
+class AppsCard extends React.Component {
+  constructor(props) {
+    super(props);
 
-const AppsCard = (props) => {
-  const {
-    name, appStatus, url, appId, otherData
-  } = props;
+    this.getAppMemoryMetrics = this.getAppMemoryMetrics.bind(this);
+  }
 
-  return (
-    <Link
-      to={{
-        pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`, state: { appName: name, liveAppStatus: appStatus, appUrl: url
-      }}}
-      key={otherData.projectID}
-      className="AppName"
-    >
-      <div className="AppCard">
-        <div className="AppCardHeader">
-          <div className="AppNameSection">
-            {name}
-          </div>
-          <div className="AppIconsSection">
-            <div className="StatusData">
-              <AppStatus appStatus={appStatus} />
+  componentDidMount() {
+    const { getAppMemory, appId } = this.props;
+    const { projectID } = this.props.otherData;
+
+    clearAppMemory();
+    getAppMemory(projectID, appId, {});
+  }
+
+  getAppMemoryMetrics(){
+    const { appId } = this.props;
+    const { appMemoryMetrics } = this.props;
+    const results = formatAppMemoryMetrics(appId, appMemoryMetrics);
+    return results;
+  }
+
+  render(){
+    const {
+      name, appStatus, url, appId, otherData
+    } = this.props;
+    
+    const formattedMemoryMetrics = this.getAppMemoryMetrics();
+
+    return (
+      <>
+        <Link
+          to={{
+            pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`, state: { appName: name, liveAppStatus: appStatus, appUrl: url
+          }}}
+          key={otherData.projectID}
+          className="AppName"
+        >
+          <div className="AppCard">
+            <div className="AppCardHeader">
+              <div className="AppNameSection">
+                {name}
+              </div>
+              <div className="AppIconsSection">
+                <div className="StatusData">
+                  <AppStatus appStatus={appStatus} />
+                </div>
+              </div>
+            </div>
+            <div className="AppCardBottomSection">
+              <div className="AppGraphSummaryLabel">Memory (1d)</div>
+              <div className="AppGraphSummary">
+                <LineChartComponent lineDataKey="memory" preview  data={formattedMemoryMetrics}/>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="AppCardBottomSection">
-          <div className="AppGraphSummaryLabel">Memory (1d)</div>
-          <div className="AppGraphSummary">
-            <LineChartComponent lineDataKey="uv" preview data={shuffle(sampleData)} />
-          </div>
-        </div>
-      </div>
-    </Link>
-  );
-};
+        </Link>
+      </>
+    );
+  }
+}
 
 // inititate props
 AppsCard.propTypes = {
@@ -80,4 +83,22 @@ AppsCard.propTypes = {
   }).isRequired
 };
 
-export default AppsCard;
+const mapStateToProps = (state) => {
+  const { data } = state.user;
+  const { 
+    appMemoryMetrics,
+    isFetchingAppMemory,
+    appMemoryMessage } = state.appMemoryReducer;
+  return {
+    data,
+    appMemoryMetrics,
+    isFetchingAppMemory,
+    appMemoryMessage
+  };
+};
+
+const mapDispatchToProps = {
+  getAppMemory
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppsCard);

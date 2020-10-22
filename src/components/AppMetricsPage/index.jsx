@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+// import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import InformationBar from '../InformationBar';
@@ -11,34 +11,10 @@ import './AppMetricsPage.css';
 import LineChartComponent from '../LineChart';
 import LogsFrame from '../LogsFrame';
 import getAppLogs from '../../redux/actions/getAppLogs';
-
-const sampleData = [
-  { name: 'Sample Metric 1', uv: 250 },
-  { name: 'Sample Metric 2', uv: 270 },
-  { name: 'Sample Metric 2', uv: 10 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 70 },
-  { name: 'Sample Metric 2', uv: 150 },
-  { name: 'Sample Metric 2', uv: 60 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 190 },
-  { name: 'Sample Metric 2', uv: 290 },
-  { name: 'Sample Metric 2', uv: 150 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 130 },
-  { name: 'Sample Metric 2', uv: 0 },
-  { name: 'Sample Metric 2', uv: 270 },
-  { name: 'Sample Metric 2', uv: 280 },
-  { name: 'Sample Metric 2', uv: 300 },
-  { name: 'Sample Metric 2', uv: 100 },
-  { name: 'Sample Metric 2', uv: 170 },
-  { name: 'Sample Metric 2', uv: 290 },
-];
-
-// this function is meant to shuffle the dummy data array
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
+import getAppMemory, { clearAppMemory } from '../../redux/actions/appMemory';
+import getAppCPU from '../../redux/actions/appCPU';
+import { formatAppMemoryMetrics, formatAppCPUMetrics, formatAppNetworkMetrics } from '../../helpers/formatMetrics';
+import getAppNetwork from '../../redux/actions/appNetwork';
 
 class AppMetricsPage extends React.Component {
   constructor(props) {
@@ -47,13 +23,28 @@ class AppMetricsPage extends React.Component {
     this.state = {
       appRelatedInfo: this.props.location.state
     };
+
+    this.getAppMemoryMetrics = this.getAppMemoryMetrics.bind(this);
+    this.getAppCPUMetrics = this.getAppCPUMetrics.bind(this);
+    this.getAppNetworkMetrics = this.getAppNetworkMetrics.bind(this);
+
   }
 
   componentDidMount() {
-    const { getAppLogs, match: { params } } = this.props;
+    const {
+      getAppLogs,
+      getAppMemory,
+      getAppCPU,
+      getAppNetwork,
+      match: { params } } = this.props;
     const { projectID, appID } = params;
 
     getAppLogs({ projectID, appID }, { timestamps: true });
+    clearAppMemory();
+    getAppMemory(projectID, appID, {});
+    getAppCPU(projectID, appID, {});
+    getAppNetwork(projectID, appID, {})
+    
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -65,12 +56,37 @@ class AppMetricsPage extends React.Component {
     return null;
   }
 
+  getAppMemoryMetrics(){
+    const { appID } = this.props.match.params;
+    const { appMemoryMetrics } = this.props;
+    const results = formatAppMemoryMetrics(appID, appMemoryMetrics);
+    return results;
+  }
+
+  getAppCPUMetrics(){
+    const { appID } = this.props.match.params;
+    const { appCPUMetrics } = this.props;
+    const results = formatAppCPUMetrics(appID, appCPUMetrics);
+    return results;
+  }
+
+  getAppNetworkMetrics(){
+    const { appID } = this.props.match.params;
+    const { appNetworkMetrics } = this.props;
+    const results = formatAppNetworkMetrics(appID, appNetworkMetrics);
+    return results;
+  }
+
   render() {
     const { appName, appUrl, liveAppStatus } = this.state.appRelatedInfo;
     const { params } = this.props.match;
     const { projectID, userID, appID } = params;
     const { logs, retrieveingLogs } = this.props;
 
+    const formattedMemoryMetrics = this.getAppMemoryMetrics();
+    const formattedCPUMetrics = this.getAppCPUMetrics();
+    const formattedNetworkMetrics = this.getAppNetworkMetrics();
+    
     return (
       <div className="Page">
         <div className="TopBarSection"><Header /></div>
@@ -96,12 +112,15 @@ class AppMetricsPage extends React.Component {
               />
             </div>
             <div className="ContentSection">
-              <div className="TopCardsSection">
-                <MetricsCard icon={<MetricIcon />} title="CPU">
-                  <LineChartComponent preview lineDataKey="uv" data={shuffle(sampleData)} />
+              <div className="MetricsCardsSection">
+                <MetricsCard icon={<MetricIcon />} title="Memory" className="CardSizeDimensions">
+                  <LineChartComponent lineDataKey="memory" preview data={formattedMemoryMetrics}/>
                 </MetricsCard>
-                <MetricsCard icon={<MetricIcon />} title="Memory">
-                  <LineChartComponent preview lineDataKey="uv" data={shuffle(sampleData)} />
+                <MetricsCard icon={<MetricIcon />} title="CPU" className="CardSizeDimensions">
+                  <LineChartComponent lineDataKey="cpu" preview data={formattedCPUMetrics}/>
+                </MetricsCard>
+                <MetricsCard icon={<MetricIcon />} title="Network" className="CardSizeDimensions">
+                  <LineChartComponent lineDataKey="network" preview data={formattedNetworkMetrics} />
                 </MetricsCard>
               </div>
               <div className="LogsSection">
@@ -116,20 +135,46 @@ class AppMetricsPage extends React.Component {
 }
 
 
-const mapStateToProps = ({ appLogsReducer }) => {
+const mapStateToProps = (state) => {
   const {
     logs, retrievedLogs, retrieveingLogs
-  } = appLogsReducer;
+  } = state.appLogsReducer;
+
+  const { 
+    isFetchingAppMemory, appMemoryMetrics, appMemoryMessage
+  } = state.appMemoryReducer;
+
+  const {
+    isFetchingCPU, appCPUMetrics, cpuMessage
+  } = state.appCpuReducer;
+
+  const {
+    appNetworkMetrics, isFetchingAppNetwork, appNetworkMessage
+  } = state.appNetworkReducer;
 
   return {
+    isFetchingAppMemory,
+    appMemoryMetrics,
+    appMemoryMessage,
     logs,
     retrievedLogs,
-    retrieveingLogs
+    retrieveingLogs,
+    isFetchingCPU,
+    appCPUMetrics,
+    cpuMessage,
+    appNetworkMetrics,
+    isFetchingAppNetwork,
+    appNetworkMessage
   };
+
 };
 
 const mapDispatchToProps = {
-  getAppLogs
+  getAppMemory,
+  clearAppMemory,
+  getAppLogs,
+  getAppCPU,
+  getAppNetwork,
 };
 
 AppMetricsPage.propTypes = {
@@ -141,4 +186,4 @@ AppMetricsPage.propTypes = {
   logs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AppMetricsPage));
+export default connect(mapStateToProps, mapDispatchToProps)(AppMetricsPage);

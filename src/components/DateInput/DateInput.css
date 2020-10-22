@@ -1,0 +1,47 @@
+.DateInputContainer {
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+}
+
+.DateInputWrapper {
+  display: flex;
+  cursor: default;
+}
+
+.DateInputLabel {
+  user-select: none;
+  padding-right: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.DateInputDisplay {
+  border: 2px solid #cccccc;
+  width: 6rem;
+  height: 1rem;
+  padding: 0.2rem 1rem;
+  color: #555555;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.DisplayActive {
+  border: 2px solid #F7B21F;
+}
+
+.DateInputCalendar {
+  background-color: #ffffff;
+  border: 1px solid #CCCCCC;
+  padding: 1rem;
+  display: grid;
+  gap: 1rem;
+  position: absolute;
+  top: 2rem;
+}
+
+.DateInputCalendar.PositionLeft {
+  right: 0;
+}

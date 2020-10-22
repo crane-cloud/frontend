@@ -5,40 +5,25 @@ import PropTypes from 'prop-types';
 import './ProjectCard.css';
 import LineChartComponent from '../LineChart';
 import getProjectMemory from '../../redux/actions/projectMemory';
+import { formatMemoryMetrics } from '../../helpers/formatMetrics';
 
 class ProjectCard extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.getProjectMemoryMetrics = this.getProjectMemoryMetrics.bind(this);
+  }
+
   componentDidMount() {
     const { cardID, getProjectMemory } = this.props;
     getProjectMemory(cardID, {});
   }
 
-  translateTimestamp(timestamp) {
-    const timestampMillisecond = timestamp * 1000; // convert timestamp to milliseconds
-    const dateObject = new Date(timestampMillisecond); // create a date object out of milliseconds
-    return dateObject.toLocaleString();
-  }
-
-  formatMetrics(projectID) {
+  getProjectMemoryMetrics(){
+    const { cardID } = this.props;
     const { memoryMetrics } = this.props;
-    const found = memoryMetrics.find((metric) => metric.project === projectID);
-    const memoryData = [];
-
-    if (found !== undefined) {
-      if (found.metrics.length > 0) {
-        found.metrics.forEach((metric) => {
-          const newMetricObject = {
-            time: this.translateTimestamp(metric.timestamp),
-            memory: metric.value
-          };
-
-          memoryData.push(newMetricObject);
-        });
-      } else {
-        memoryData.push({ time: 0, memory: 0 });
-        memoryData.push({ time: 0, memory: 0 });
-      }
-    }
-    return memoryData;
+    const results = formatMemoryMetrics(cardID, memoryMetrics);
+    return results;
   }
 
   render() {
@@ -49,7 +34,7 @@ class ProjectCard extends React.Component {
       cardID
     } = this.props;
 
-    const formattedMetrics = this.formatMetrics(cardID);
+    const formattedMetrics = this.getProjectMemoryMetrics();
 
     const userId = data.id;
     
