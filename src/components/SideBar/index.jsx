@@ -13,7 +13,7 @@ const SideBar = (props) => {
     pageRoute,
     cpuLink,
     memoryLink,
-    storageLink,
+    // storageLink,
     networkLink,
     allMetricsLink,
     appLogsLink
@@ -75,7 +75,7 @@ const SideBar = (props) => {
           <div>
             <Link to={cpuLink} className="SubBarListItem">CPU</Link>
             <Link to={memoryLink} className="SubBarListItem">Memory</Link>
-            <Link to={storageLink} className="SubBarListItem">Storage</Link>
+            {/* <Link to={storageLink} className="SubBarListItem">Storage</Link> */}
             <Link to={networkLink} className="SubBarListItem">Network</Link>
             {(isAppLogsPage || isAppPage) && (
               <Link to={appLogsLink} className="SubBarListItem">Logs</Link>
