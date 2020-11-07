@@ -136,6 +136,14 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   padding: 1rem;
 }
 
+.StripBorder {
+  text-transform: uppercase;
+  padding: 1rem 3rem;
+  font-size: 0.9em;
+  color: white;
+  padding: 1rem;
+}
+
 @media only screen and (max-width: 640px) {
   .HeaderLinkPricing,
   .HeaderLinkDocs {
