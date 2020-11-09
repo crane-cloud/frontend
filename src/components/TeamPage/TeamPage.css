@@ -1,3 +1,6 @@
+.TeamPageContainer{
+  background-color: #f1f1f1;
+}
 .TeamImagesRow {
   display: flex;
   flex-wrap: wrap;

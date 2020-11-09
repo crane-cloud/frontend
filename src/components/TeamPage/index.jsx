@@ -14,58 +14,84 @@ class TeamPage extends React.Component {
             {/* <img className="TeamMemberImage" alt="" />
             <img className="TeamMemberImage" alt="" /> */}
             <MemberCard
-              name="Derrick Mukisa"
-              title="DevOps Engineer"
+              name="Engineer Bainomugisha"
+              title="Team Lead"
               
             />
             <MemberCard
-              name="Derrick Mukisa"
-              title="DevOps Engineer"
+              name="Mwotil Alex"
+              title="Product Manager"
+              
+            />
+
+            <MemberCard
+              name="Aminah Zawedde"
+              title="Senior Researcher"
+              
+            />
+
+            <MemberCard
+              name="Dora Bampangana"
+              title="Project Administrator"
               
             />
             <MemberCard
-              name="Derrick Mukisa"
-              title="DevOps Engineer"
+              name="Dorothy Ankunda"
+              title="Business Development Lead"
+              
+            />
+
+            <MemberCard
+              name="Asiimwe Innocent"
+              title="Senior Engineer"
               
             />
             <MemberCard
-              name="Derrick Mukisa"
-              title="DevOps Engineer"
+              name="Collin Wagaba"
+              title="Tech Lead"
               
             />
             <MemberCard
-              name="Derrick Mukisa"
-              title="DevOps Engineer"
+              name="Steve Araka"
+              title="Software Engineer"
               
             />
             <MemberCard
-              name="Derrick Mukisa"
-              title="DevOps Engineer"
+              name="Derrick Sekidde"
+              title="Software Engineer"
               
             />
             <MemberCard
-              name="Derrick Mukisa"
-              title="DevOps Engineer"
+              name="Mubangizi Allan"
+              title="Software Engineer"
               
             />
             <MemberCard
-              name="Derrick Mukisa"
-              title="DevOps Engineer"
+              name="Mutegeki Henry"
+              title="Software Engineer"
               
             />
             <MemberCard
-              name="Derrick Mukisa"
-              title="DevOps Engineer"
+              name="Ssekamatte James"
+              title="Researcher"
               
             />
+
             <MemberCard
-              name="Derrick Mukisa"
-              title="DevOps Engineer"
+              name="Nagitta Mary Magdalene"
+              title="Software Engineer Intern"
               
             />
+
             <MemberCard
-              name="Derrick Mukisa"
-              title="DevOps Engineer"
+              name="Kamasu Paul"
+              title="Software Engineer Intern"
+              
+            />
+
+            <MemberCard
+              name="Semakula Rajab"
+              title="Software Engineer Intern"
               
             />
         </div>

@@ -26,13 +26,15 @@
 .BottomContainer {
   padding: 10px;
   height: 80px;
+  background-color: #f1f1f1;
 }
 
 .MemberCardName {
   width: 100%;
-  font-size: 24px;
+  font-size: 20px;
   padding-top: 5px;
   text-align: center;
+  font-weight: bold;
 }
 .MemberCardDesc {
   width: 100%;
