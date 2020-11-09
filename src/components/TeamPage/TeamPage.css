@@ -1,0 +1,16 @@
+.TeamImagesRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.TeamMemberImage{
+  height: 210px;
+  width: 210px;
+}
+img .TeamMemberImage{
+  border-radius: 50%;
+}
