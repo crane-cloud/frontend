@@ -3,11 +3,6 @@
   padding: 16px 8px 16px 0;
 }
 
-/* .MemberCard:hover {
-  transition: 0.5s;
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-  transform: scale(0.95);
-} */
 .CardImageDiv {
   margin: 0;
   width: 100%;
