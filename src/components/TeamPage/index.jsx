@@ -101,7 +101,7 @@ class TeamPage extends React.Component {
             />
 
             <MemberCard
-              name="Semakula Rajab"
+              name="Ssemakula Rajab"
               title="Software Engineer Intern"
               icon={Rajab}
             />
