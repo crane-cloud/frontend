@@ -29,7 +29,7 @@ class TeamPage extends React.Component {
               icon={Engineer}
             />
             <MemberCard
-              name="Mwotil Alex"
+              name="Alex Mwotil"
               title="Product Manager"
               icon={Alex}
             />
@@ -52,7 +52,7 @@ class TeamPage extends React.Component {
             />
 
             <MemberCard
-              name="Asiimwe Innocent"
+              name="Innocent Asiimwe"
               title="Senior Engineer"
               
             />
@@ -73,35 +73,35 @@ class TeamPage extends React.Component {
               icon={Greatest}
             />
             <MemberCard
-              name="Mubangizi Allan"
+              name="Allan Mubangizi"
               title="Software Engineer"
               icon={Allan}
             />
             <MemberCard
-              name="Mutegeki Henry"
+              name="Henry Mutegeki"
               title="Software Engineer"
               icon={Henry}
             />
             <MemberCard
-              name="Ssekamatte James"
+              name="James Ssekamatte"
               title="Researcher"
               
             />
 
             <MemberCard
-              name="Nagitta Mary Magdalene"
+              name="Mary Magdalene Naggita"
               title="Software Engineer Intern"
               icon={Mary}
             />
 
             <MemberCard
-              name="Kamasu Paul"
+              name="Paul Kamasu"
               title="Software Engineer Intern"
               icon={Paul}
             />
 
             <MemberCard
-              name="Ssemakula Rajab"
+              name="Rajab Ssemakula"
               title="Software Engineer Intern"
               icon={Rajab}
             />
