@@ -15,6 +15,7 @@ import Colin from "../../assets/images/Colin.png";
 import Mary from "../../assets/images/Mary.png";
 import Rajab from "../../assets/images/Rajab.png";
 import Dora from "../../assets/images/Dora.jpeg";
+import Inno from "../../assets/images/Inno.jpg";
 
 const members = [
   {id: 1, name:"Engineer Bainomugisha", title:"Team Lead", icon: Engineer},
@@ -22,13 +23,13 @@ const members = [
   {id: 3, name:"Aminah Zawedde", title:"Senior Researcher", icon: Aminah},
   {id: 4, name:"Dora Bampangana", title:"Project Administrator", icon: Dora},
   {id: 5, name:"Dorothy Ankunda", title:"Business Development Lead", icon: Dorothy},
-  {id: 6, name:"Innocent Asiimwe", title:"Senior Engineer" },
+  {id: 6, name:"Innocent Asiimwe", title:"Senior Engineer", icon: Inno },
   {id: 7, name:"Colin Wagaba", title:"Tech Lead", icon: Colin},
   {id: 8, name:"Steve Araka", title:"Software Engineer", icon: Steve},
   {id: 9, name:"Derrick Sekidde", title:"Software Engineer", icon: Greatest},
   {id: 10, name:"Allan Mubangizi", title:"Software Engineer", icon: Allan},
   {id: 11, name:"Henry Mutegeki", title:"Software Engineer", icon: Henry},
-  {id: 12, name:"James Ssekamatte", title:"Researcher" },
+  // {id: 12, name:"James Ssekamatte", title:"Researcher" },
   {id: 13, name:"Mary Magdalene Naggita", title:"Software Engineer Intern", icon: Mary},
   {id: 14, name:"Paul Kamasu", title:"Software Engineer Intern", icon: Paul},
   {id: 15, name:"Rajab Ssemakula", title:"Software Engineer Intern", icon: Rajab},
