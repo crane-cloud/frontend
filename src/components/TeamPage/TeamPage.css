@@ -15,6 +15,12 @@
   height: 210px;
   width: 210px;
 }
+
 img .TeamMemberImage{
   border-radius: 50%;
+}
+
+footer.TeamFooter {
+  text-align: center;
+  cursor: pointer;
 }
