@@ -1,0 +1,26 @@
+.TeamPageContainer{
+  background-color: #f1f1f1;
+}
+.TeamImagesRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-evenly;
+  padding: 2.5rem 0rem;
+}
+
+.TeamMemberImage{
+  height: 210px;
+  width: 210px;
+}
+
+img .TeamMemberImage{
+  border-radius: 50%;
+}
+
+footer.TeamFooter {
+  text-align: center;
+  cursor: pointer;
+}

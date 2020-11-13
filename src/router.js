@@ -39,6 +39,7 @@ import AppMemoryPage from './components/AppMemoryPage';
 import ProjectMetricsPage from './components/ProjectMetricsPage';
 import AppLogsPage from './components/AppLogsPage';
 import AppNetworkPage from './components/AppNetworkPage';
+import TeamPage from './components/TeamPage';
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) => (
@@ -62,6 +63,7 @@ const Routes = () => (
       <Route path="/new-password" component={CreateNewPassword} />
       <Route path="/verify/:token" component={VerificationSentPage} />
       <Route path="/reset_password/:token" component={CreateNewPassword} />
+      <Route path="/team" component={TeamPage} />
       {/* projects */}
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects" component={UserProjectsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/apps" component={AppsPage} />
