@@ -18,21 +18,21 @@ import Dora from "../../assets/images/Dora.jpeg";
 import Inno from "../../assets/images/Inno.jpg";
 
 const members = [
-  {id: 1, name:"Engineer Bainomugisha", title:"Team Lead", icon: Engineer},
-  {id: 2, name:"Alex Mwotil", title:"Product Manager", icon: Alex},
+  {id: 1, name:"Engineer Bainomugisha", title:"Project Lead", icon: Engineer},
+  {id: 2, name:"Alex Mwotil", title:"Project Manager", icon: Alex},
   {id: 3, name:"Aminah Zawedde", title:"Senior Researcher", icon: Aminah},
   {id: 4, name:"Dora Bampangana", title:"Project Administrator", icon: Dora},
   {id: 5, name:"Dorothy Ankunda", title:"Business Development Lead", icon: Dorothy},
-  {id: 6, name:"Innocent Asiimwe", title:"Senior Engineer", icon: Inno },
-  {id: 7, name:"Colin Wagaba", title:"Tech Lead", icon: Colin},
-  {id: 8, name:"Steve Araka", title:"Software Engineer", icon: Steve},
-  {id: 9, name:"Derrick Sekidde", title:"Software Engineer", icon: Greatest},
-  {id: 10, name:"Allan Mubangizi", title:"Software Engineer", icon: Allan},
-  {id: 11, name:"Henry Mutegeki", title:"Software Engineer", icon: Henry},
+  {id: 6, name:"Innocent Asiimwe", title:"DevOps Engineer", icon: Inno },
+  {id: 7, name:"Colin Wagaba", title:"DevOps Engineer", icon: Colin},
+  {id: 8, name:"Steve Araka", title:"DevOps Engineer", icon: Steve},
+  {id: 9, name:"Derrick Sekidde", title:"DevOps Engineer", icon: Greatest},
+  {id: 10, name:"Allan Mubangizi", title:"Student Developer", icon: Allan},
+  {id: 11, name:"Henry Mutegeki", title:"Student Developer", icon: Henry},
   // {id: 12, name:"James Ssekamatte", title:"Researcher" },
-  {id: 13, name:"Mary Magdalene Naggita", title:"Software Engineer Intern", icon: Mary},
-  {id: 14, name:"Paul Kamasu", title:"Software Engineer Intern", icon: Paul},
-  {id: 15, name:"Rajab Ssemakula", title:"Software Engineer Intern", icon: Rajab},
+  {id: 13, name:"Mary Magdalene Naggita", title:"Intern", icon: Mary},
+  {id: 14, name:"Paul Kamasu", title:"Intern", icon: Paul},
+  {id: 15, name:"Rajab Ssemakula", title:"Intern", icon: Rajab},
 ];
 
 class TeamPage extends React.Component {
