@@ -14,8 +14,9 @@ import Paul from "../../assets/images/Paul.png";
 import Colin from "../../assets/images/Colin.png";
 import Mary from "../../assets/images/Mary.png";
 import Rajab from "../../assets/images/Rajab.png";
-import Dora from "../../assets/images/Dora.jpeg";
+import Dora from "../../assets/images/Dora.jpg";
 import Inno from "../../assets/images/Inno.jpg";
+import James from '../../assets/images/James.jpg';
 
 const members = [
   {id: 1, name:"Engineer Bainomugisha", title:"Project Lead", icon: Engineer},
@@ -29,7 +30,7 @@ const members = [
   {id: 9, name:"Derrick Sekidde", title:"DevOps Engineer", icon: Greatest},
   {id: 10, name:"Allan Mubangizi", title:"Student Developer", icon: Allan},
   {id: 11, name:"Henry Mutegeki", title:"Student Developer", icon: Henry},
-  // {id: 12, name:"James Ssekamatte", title:"Researcher" },
+  {id: 12, name:"James Ssekamatte", title:"Researcher", icon: James },
   {id: 13, name:"Mary Magdalene Naggita", title:"Intern", icon: Mary},
   {id: 14, name:"Paul Kamasu", title:"Intern", icon: Paul},
   {id: 15, name:"Rajab Ssemakula", title:"Intern", icon: Rajab},
