@@ -112,7 +112,7 @@ class AppMemoryPage extends React.Component {
     }
 
     if (type === 'to') {
-      this.fetchAppNetwork();
+      this.fetchMemory();
     }
   }
 
@@ -158,7 +158,7 @@ class AppMemoryPage extends React.Component {
             <div className="ContentSection">
               <MetricsCard
                 className="MetricsCardGraph"
-                title={<PeriodSelector onPeriodChange={this.handlePeriodChange} />}
+                title={<PeriodSelector onPeriodChange={this.handlePeriodChange} onCalendarChange={this.handleCalendarChange} />}
               >
                 {isFetchingAppMemory ? (
                   <div className="ContentSectionSpinner">
