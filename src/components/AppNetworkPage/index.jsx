@@ -26,6 +26,7 @@ class AppNetworkPage extends React.Component {
 
     this.getAppName = this.getAppName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
+    this.handleCalendarChange = this.handleCalendarChange.bind(this);
     this.fetchAppNetwork = this.fetchAppNetwork.bind(this);
     this.getDateCreated = this.getDateCreated.bind(this);
   }
@@ -95,6 +96,30 @@ class AppNetworkPage extends React.Component {
     this.fetchAppNetwork();
   }
 
+  handleCalendarChange(type, timestamp) {
+    if (type === 'from') {
+      this.setState((prevState) => ({
+        time: {
+          ...prevState.time,
+          start: timestamp,
+        },
+      }));
+    }
+
+    if (type === 'to') {
+      this.setState((prevState) => ({
+        time: {
+          ...prevState.time,
+          end: timestamp,
+        },
+      }));
+    }
+
+    if (type === 'to') {
+      this.fetchAppNetwork();
+    }
+  }
+
   fetchAppNetwork() {
     const { time } = this.state;
     const {
@@ -104,8 +129,12 @@ class AppNetworkPage extends React.Component {
     } = this.props;
     const { projectID, appID } = params;
 
-    clearAppNetwork();
-    getAppNetwork(projectID, appID, time);
+    if (time.end > time.start) {
+      clearAppNetwork();
+      getAppNetwork(projectID, appID, time);
+    } else {
+      //! show ERROR, cant have end timestamp greater than start timestamp
+    }
   }
 
   render() {
@@ -144,7 +173,7 @@ class AppNetworkPage extends React.Component {
             <div className="ContentSection">
               <MetricsCard
                 className="MetricsCardGraph"
-                title={<PeriodSelector onPeriodChange={this.handlePeriodChange} />}
+                title={<PeriodSelector onPeriodChange={this.handlePeriodChange} onCalendarChange={this.handleCalendarChange} />}
               >
                 {isFetchingAppNetwork ? (
                   <div className="ContentSectionSpinner">

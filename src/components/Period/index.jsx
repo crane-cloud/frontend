@@ -22,11 +22,13 @@ class Period extends React.Component {
   }
 
   handleFromDate(fromTS) {
-    // console.log(fromTS);
+    const { onCalendarChange } = this.props;
+    onCalendarChange('from', fromTS);
   }
 
   handleToDate(toTS) {
-    // console.log(toTS);
+    const { onCalendarChange } = this.props;
+    onCalendarChange('to', toTS);
   }
 
   render() {
@@ -51,7 +53,8 @@ class Period extends React.Component {
 }
 
 Period.propTypes = {
-  onPeriodChange: PropTypes.func.isRequired
+  onPeriodChange: PropTypes.func.isRequired,
+  onCalendarChange: PropTypes.func.isRequired
 };
 
 export default Period;
