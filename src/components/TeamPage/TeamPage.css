@@ -5,7 +5,10 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   width: 100%;
-  padding: 2.5rem 0rem 0rem 2.5rem;
+  justify-items: center;
+  align-items: center;
+  padding: 2.5rem 0rem;
+  row-gap: 1rem;
 }
 
 img .TeamMemberImage{
