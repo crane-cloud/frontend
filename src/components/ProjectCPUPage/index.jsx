@@ -131,7 +131,7 @@ class ProjectCPUPage extends React.Component {
             <div className="ContentSection">
               <MetricsCard
                 className="MetricsCardGraph"
-                title={<PeriodSelector onChange={this.handlePeriodChange} />}
+                title={<PeriodSelector onPeriodChange={this.handlePeriodChange} />}
               >
                 {isFetchingCPU ? (
                   <div className="ContentSectionSpinner">

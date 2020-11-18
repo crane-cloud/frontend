@@ -16,9 +16,9 @@ class Period extends React.Component {
   }
 
   handleChange({ target }) {
-    const { onChange } = this.props;
+    const { onPeriodChange } = this.props;
     this.setState({ period: target.getAttribute('value') });
-    onChange(target.getAttribute('value'));
+    onPeriodChange(target.getAttribute('value'));
   }
 
   handleFromDate(fromTS) {
@@ -51,7 +51,7 @@ class Period extends React.Component {
 }
 
 Period.propTypes = {
-  onChange: PropTypes.func.isRequired
+  onPeriodChange: PropTypes.func.isRequired
 };
 
 export default Period;
