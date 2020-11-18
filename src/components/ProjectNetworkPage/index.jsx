@@ -26,6 +26,7 @@ class ProjectNetworkPage extends React.Component {
 
     this.getProjectName = this.getProjectName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
+    this.handleCalendarChange = this.handleCalendarChange.bind(this);
     this.fetchNetwork = this.fetchNetwork.bind(this);
     this.getDateCreated = this.getDateCreated.bind(this);
   }
@@ -90,6 +91,30 @@ class ProjectNetworkPage extends React.Component {
     this.fetchNetwork();
   }
 
+  handleCalendarChange(type, timestamp) {
+    if (type === 'from') {
+      this.setState((prevState) => ({
+        time: {
+          ...prevState.time,
+          start: timestamp,
+        },
+      }));
+    }
+
+    if (type === 'to') {
+      this.setState((prevState) => ({
+        time: {
+          ...prevState.time,
+          end: timestamp,
+        },
+      }));
+    }
+
+    if (type === 'to') {
+      this.fetchNetwork();
+    }
+  }
+
   fetchNetwork() {
     const { time } = this.state;
     const { match: { params }, getProjectNetwork, clearProjectNetwork } = this.props;
@@ -132,7 +157,7 @@ class ProjectNetworkPage extends React.Component {
             <div className="ContentSection">
               <MetricsCard
                 className="MetricsCardGraph"
-                title={<PeriodSelector onPeriodChange={this.handlePeriodChange} />}
+                title={<PeriodSelector onPeriodChange={this.handlePeriodChange} onCalendarChange={this.handleCalendarChange} />}
               >
                 {isFetchingNetwork ? (
                   <div className="ContentSectionSpinner">

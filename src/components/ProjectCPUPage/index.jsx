@@ -26,6 +26,7 @@ class ProjectCPUPage extends React.Component {
 
     this.getProjectName = this.getProjectName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
+    this.handleCalendarChange = this.handleCalendarChange.bind(this);
     this.fetchCPU = this.fetchCPU.bind(this);
     this.getDateCreated = this.getDateCreated.bind(this);
   }
@@ -88,6 +89,30 @@ class ProjectCPUPage extends React.Component {
     }));
 
     this.fetchCPU();
+  }
+
+  handleCalendarChange(type, timestamp) {
+    if (type === 'from') {
+      this.setState((prevState) => ({
+        time: {
+          ...prevState.time,
+          start: timestamp,
+        },
+      }));
+    }
+
+    if (type === 'to') {
+      this.setState((prevState) => ({
+        time: {
+          ...prevState.time,
+          end: timestamp,
+        },
+      }));
+    }
+
+    if (type === 'to') {
+      this.fetchAppNetwork();
+    }
   }
 
   fetchCPU() {
