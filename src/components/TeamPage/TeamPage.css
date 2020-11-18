@@ -2,18 +2,14 @@
   background-color: #f1f1f1;
 }
 .TeamImagesRow {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  /* flex-wrap: wrap;
   align-items: flex-start;
-  flex-direction: row;
+  flex-direction: row; */
   width: 100%;
-  justify-content: space-evenly;
-  padding: 2.5rem 0rem;
-}
-
-.TeamMemberImage{
-  height: 210px;
-  width: 210px;
+  /* justify-content: space-evenly; */
+  padding: 2.5rem 0rem 0rem 2rem;
 }
 
 img .TeamMemberImage{
