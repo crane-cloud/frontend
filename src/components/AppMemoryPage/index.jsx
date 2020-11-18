@@ -26,6 +26,7 @@ class AppMemoryPage extends React.Component {
 
     this.getAppName = this.getAppName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
+    this.handleCalendarChange = this.handleCalendarChange.bind(this);
     this.fetchMemory = this.fetchMemory.bind(this);
     this.getDateCreated = this.getDateCreated.bind(this);
   }
@@ -89,6 +90,30 @@ class AppMemoryPage extends React.Component {
     }));
 
     this.fetchMemory();
+  }
+
+  handleCalendarChange(type, timestamp) {
+    if (type === 'from') {
+      this.setState((prevState) => ({
+        time: {
+          ...prevState.time,
+          start: timestamp,
+        },
+      }));
+    }
+
+    if (type === 'to') {
+      this.setState((prevState) => ({
+        time: {
+          ...prevState.time,
+          end: timestamp,
+        },
+      }));
+    }
+
+    if (type === 'to') {
+      this.fetchAppNetwork();
+    }
   }
 
   fetchMemory() {
