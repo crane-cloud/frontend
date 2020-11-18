@@ -111,7 +111,7 @@ class ProjectCPUPage extends React.Component {
     }
 
     if (type === 'to') {
-      this.fetchAppNetwork();
+      this.fetchCPU();
     }
   }
 
@@ -156,7 +156,7 @@ class ProjectCPUPage extends React.Component {
             <div className="ContentSection">
               <MetricsCard
                 className="MetricsCardGraph"
-                title={<PeriodSelector onPeriodChange={this.handlePeriodChange} />}
+                title={<PeriodSelector onPeriodChange={this.handlePeriodChange} onCalendarChange={this.handleCalendarChange} />}
               >
                 {isFetchingCPU ? (
                   <div className="ContentSectionSpinner">
