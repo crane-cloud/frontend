@@ -26,6 +26,7 @@ class AppCpuPage extends React.Component {
 
     this.getAppName = this.getAppName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
+    this.handleCalendarChange = this.handleCalendarChange.bind(this);
     this.fetchCpu = this.fetchCpu.bind(this);
     this.getDateCreated = this.getDateCreated.bind(this);
   }
@@ -85,6 +86,30 @@ class AppCpuPage extends React.Component {
     }));
 
     this.fetchCpu();
+  }
+
+  handleCalendarChange(type, timestamp) {
+    if (type === 'from') {
+      this.setState((prevState) => ({
+        time: {
+          ...prevState.time,
+          start: timestamp,
+        },
+      }));
+    }
+
+    if (type === 'to') {
+      this.setState((prevState) => ({
+        time: {
+          ...prevState.time,
+          end: timestamp,
+        },
+      }));
+    }
+
+    if (type === 'to') {
+      this.fetchAppNetwork();
+    }
   }
 
   fetchCpu() {
