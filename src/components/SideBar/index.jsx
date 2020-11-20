@@ -24,10 +24,6 @@ const SideBar = (props) => {
     strict: true
   }));
 
-  // const isAppLogsPage = (matchPath(pageRoute, {
-  //   path: '/users/:userID/projects/:projectID/apps/:appID/logs',
-  // }));
-
   const isAppMetricsPage = matchPath(pageRoute, {
     path: '/users/:userID/projects/:projectID/apps/:appID/',
     exact: false,
@@ -85,7 +81,6 @@ const SideBar = (props) => {
             {(isAppMetricsPage) && (
               <Link to={appLogsLink} className="SubBarListItem">Logs</Link>
             )}
-            {/* <Link to={appLogsLink} className="SubBarListItem">Logs</Link> */}
           </div>
         </div>
 
