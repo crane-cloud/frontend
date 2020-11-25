@@ -90,7 +90,7 @@ class AppMetricsPage extends React.Component {
   }
 
   render() {
-    const { appName, appUrl, liveAppStatus } = this.state.appRelatedInfo;
+    // const { appName, appUrl, liveAppStatus } = this.state.appRelatedInfo;
     const { params } = this.props.match;
     const { projectID, userID, appID } = params;
     const { logs, retrieveingLogs } = this.props;
@@ -137,7 +137,7 @@ class AppMetricsPage extends React.Component {
                 </MetricsCard>
               </div>
               <div className="LogsSection">
-                <LogsFrame loading={retrieveingLogs} data={logs} title={`${appName} logs`} />
+                <LogsFrame loading={retrieveingLogs} data={logs} title={`${appInfo.name} logs`} />
               </div>
             </div>
           </div>
