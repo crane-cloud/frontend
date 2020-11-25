@@ -20,10 +20,6 @@ class AppMetricsPage extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      appRelatedInfo: this.props.location.state
-    };
-
     this.getAppMemoryMetrics = this.getAppMemoryMetrics.bind(this);
     this.getAppCPUMetrics = this.getAppCPUMetrics.bind(this);
     this.getAppNetworkMetrics = this.getAppNetworkMetrics.bind(this);
@@ -59,15 +55,6 @@ class AppMetricsPage extends React.Component {
     
   }
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.location.state !== state.appRelatedInfo) {
-      return {
-        appRelatedInfo: props.location.state
-      };
-    }
-    return null;
-  }
-
   getAppMemoryMetrics(){
     const { appID } = this.props.match.params;
     const { appMemoryMetrics } = this.props;
@@ -90,7 +77,6 @@ class AppMetricsPage extends React.Component {
   }
 
   render() {
-    // const { appName, appUrl, liveAppStatus } = this.state.appRelatedInfo;
     const { params } = this.props.match;
     const { projectID, userID, appID } = params;
     const { logs, retrieveingLogs } = this.props;
