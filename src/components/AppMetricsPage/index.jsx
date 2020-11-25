@@ -86,7 +86,6 @@ class AppMetricsPage extends React.Component {
     const formattedMemoryMetrics = this.getAppMemoryMetrics();
     const formattedCPUMetrics = this.getAppCPUMetrics();
     const formattedNetworkMetrics = this.getAppNetworkMetrics();
-    console.log(logs);
     
     return (
       <div className="Page">
