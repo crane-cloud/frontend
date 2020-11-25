@@ -30,6 +30,18 @@ class AppMetricsPage extends React.Component {
 
   }
 
+  getAppInfo(id) {
+    const { apps } = this.props;
+    const found = apps.apps.find((app) => app.id === id);
+    const info = {
+      name: found.name,
+      status: found.app_running_status,
+      url: found.url
+    };
+
+    return info;
+  }
+
   componentDidMount() {
     const {
       getAppLogs,
@@ -86,6 +98,7 @@ class AppMetricsPage extends React.Component {
     const formattedMemoryMetrics = this.getAppMemoryMetrics();
     const formattedCPUMetrics = this.getAppCPUMetrics();
     const formattedNetworkMetrics = this.getAppNetworkMetrics();
+    const appInfo = this.getAppInfo(appID);
     
     return (
       <div className="Page">
@@ -93,7 +106,7 @@ class AppMetricsPage extends React.Component {
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
-              name={appName}
+              name={appInfo.name}
               params={params}
               pageRoute={this.props.location.pathname}
               allMetricsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/metrics/`}
@@ -107,8 +120,8 @@ class AppMetricsPage extends React.Component {
           <div className="MainContentSection">
             <div className="InformationBarSection">
               <InformationBar
-                header={appUrl}
-                status={liveAppStatus}
+                header={appInfo.url}
+                status={appInfo.status}
               />
             </div>
             <div className="ContentSection">
@@ -152,6 +165,8 @@ const mapStateToProps = (state) => {
     appNetworkMetrics, isFetchingAppNetwork, appNetworkMessage
   } = state.appNetworkReducer;
 
+  const { apps } = state.appsListReducer;
+
   return {
     isFetchingAppMemory,
     appMemoryMetrics,
@@ -164,7 +179,8 @@ const mapStateToProps = (state) => {
     cpuMessage,
     appNetworkMetrics,
     isFetchingAppNetwork,
-    appNetworkMessage
+    appNetworkMessage,
+    apps
   };
 
 };
