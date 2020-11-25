@@ -5,7 +5,6 @@ import { Link, matchPath } from 'react-router-dom';
 import BackButton from '../../assets/images/backButton.svg';
 import { ReactComponent as Settings } from '../../assets/images/settings.svg';
 
-
 const SideBar = (props) => {
   const {
     name,
@@ -25,9 +24,11 @@ const SideBar = (props) => {
     strict: true
   }));
 
-  const isAppLogsPage = (matchPath(pageRoute, {
-    path: '/users/:userID/projects/:projectID/apps/:appID/logs',
-  }));
+  const isAppMetricsPage = matchPath(pageRoute, {
+    path: '/users/:userID/projects/:projectID/apps/:appID/',
+    exact: false,
+    strict: true
+  })
 
   const pageLocation = (matchPath(pageRoute, {
     path: '/users/:userID/projects/:projectID/apps',
@@ -36,7 +37,7 @@ const SideBar = (props) => {
   }));
 
   const { userID, projectID, appID } = params;
-
+  
   return (
     <div className="SideBar">
       <div>
@@ -77,7 +78,7 @@ const SideBar = (props) => {
             <Link to={memoryLink} className="SubBarListItem">Memory</Link>
             {/* <Link to={storageLink} className="SubBarListItem">Storage</Link> */}
             <Link to={networkLink} className="SubBarListItem">Network</Link>
-            {(isAppLogsPage || isAppPage) && (
+            {(isAppMetricsPage) && (
               <Link to={appLogsLink} className="SubBarListItem">Logs</Link>
             )}
           </div>
