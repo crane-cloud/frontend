@@ -33,7 +33,7 @@ class AppsCard extends React.Component {
 
   render(){
     const {
-      name, appStatus, url, appId, otherData
+      name, appStatus, appId, otherData
     } = this.props;
     
     const formattedMemoryMetrics = this.getAppMemoryMetrics();
@@ -42,8 +42,8 @@ class AppsCard extends React.Component {
       <>
         <Link
           to={{
-            pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`, state: { appName: name, liveAppStatus: appStatus, appUrl: url
-          }}}
+            pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`
+          }}
           key={otherData.projectID}
           className="AppName"
         >
