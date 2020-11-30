@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './SideBar.css';
-import { Link, matchPath } from 'react-router-dom';
+import { Link, NavLink, matchPath } from 'react-router-dom';
 import BackButton from '../../assets/images/backButton.svg';
 import { ReactComponent as Settings } from '../../assets/images/settings.svg';
 
@@ -74,12 +74,12 @@ const SideBar = (props) => {
         <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }} className="ListItem">Apps</Link>
           <Link to={allMetricsLink} className="ListItem">Metrics</Link>
           <div>
-            <Link to={cpuLink} className="SubBarListItem">CPU</Link>
-            <Link to={memoryLink} className="SubBarListItem">Memory</Link>
+            <NavLink to={cpuLink} className="SubBarListItem" >CPU</NavLink>
+            <NavLink to={memoryLink} className="SubBarListItem">Memory</NavLink>
             {/* <Link to={storageLink} className="SubBarListItem">Storage</Link> */}
-            <Link to={networkLink} className="SubBarListItem">Network</Link>
+            <NavLink to={networkLink} className="SubBarListItem">Network</NavLink>
             {(isAppMetricsPage) && (
-              <Link to={appLogsLink} className="SubBarListItem">Logs</Link>
+              <NavLink to={appLogsLink} className="SubBarListItem">Logs</NavLink>
             )}
           </div>
         </div>
