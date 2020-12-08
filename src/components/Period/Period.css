@@ -34,7 +34,7 @@
   align-items: center;
 }
 
-@media (max-width: 941px) { 
+@media (max-width: 940px) { 
   .PeriodContainer {
     display: flex;
     flex-direction: column;
