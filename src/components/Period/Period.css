@@ -33,3 +33,14 @@
   gap: 1rem;
   align-items: center;
 }
+
+@media (max-width: 941px) { 
+  .PeriodContainer {
+    display: flex;
+    flex-direction: column;
+  }
+  .DateInputsSection {
+    order: 2;
+    padding: 10px;
+  }
+}
