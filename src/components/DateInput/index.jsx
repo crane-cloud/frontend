@@ -120,7 +120,10 @@ DateInput.defaultProps = {
 DateInput.propTypes = {
   label: PropTypes.string,
   position: PropTypes.string,
-  handleChange: PropTypes.func.isRequired
+  handleChange: PropTypes.func.isRequired,
+  showCalendar: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired
 };
 
 export default DateInput;
