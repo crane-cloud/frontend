@@ -1,54 +1,119 @@
-import React from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef
+} from 'react';
 import PropTypes from 'prop-types';
 import DateInput from '../DateInput';
+import PrimaryButton from '../PrimaryButton';
 import './Period.css';
 
-class Period extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      period: '1d'
-    };
+const Period = (props) => {
+  const [showModal, setShowModal] = useState(false);
+  const [period, setPeriod] = useState('1d');
+  const [showFromCalendar, setShowFromCalendar] = useState(true);
+  const [showToCalendar, setShowToCalendar] = useState(false);
+  const openModalRef = useRef(null);
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleFromDate = this.handleFromDate.bind(this);
-    this.handleToDate = this.handleToDate.bind(this);
-  }
+  const switchCalendars = ({ target }) => {
+    const calendar = target.getAttribute('value');
 
-  handleChange({ target }) {
-    const { onChange } = this.props;
-    this.setState({ period: target.getAttribute('value') });
+    if (calendar === 'from' && !showFromCalendar) {
+      setShowFromCalendar(true);
+      setShowToCalendar(false);
+    }
+
+    if (calendar === 'to' && !showToCalendar) {
+      setShowToCalendar(true);
+      setShowFromCalendar(false);
+    }
+  };
+
+  const displayCalendar = ({ target }) => {
+    setShowModal(!showModal);
+    setPeriod(target.getAttribute('value'));
+  };
+
+  const handleClickOutside = (event) => {
+    if (openModalRef.current && !openModalRef.current.contains(event.target)) {
+      setShowModal(false);
+    }
+  };
+
+  const handleChange = ({ target }) => {
+    const { onChange } = props;
+    setPeriod(target.getAttribute('value'));
     onChange(target.getAttribute('value'));
-  }
+  };
 
-  handleFromDate(fromTS) {
-    // console.log(fromTS);
-  }
+  const handleFromDate = (fromTS) => {
+    console.log(fromTS);
+  };
 
-  handleToDate(toTS) {
-    // console.log(toTS);
-  }
+  const handleToDate = (toTS) => {
+    console.log(toTS);
+  };
 
-  render() {
-    const { period } = this.state;
-    return (
-      <div className="PeriodContainer">
-        <div className="PeriodButtonsSection">
-          <div className={`${period === '1d' && 'PeriodButtonActive'} PeriodButton`} name="1day" value="1d" role="presentation" onClick={this.handleChange}>1d</div>
-          <div className={`${period === '7d' && 'PeriodButtonActive'} PeriodButton`} name="7days" value="7d" role="presentation" onClick={this.handleChange}>7d</div>
-          <div className={`${period === '1m' && 'PeriodButtonActive'} PeriodButton`} name="1month" value="1m" role="presentation" onClick={this.handleChange}>1m</div>
-          <div className={`${period === '3m' && 'PeriodButtonActive'} PeriodButton`} name="3months" value="3m" role="presentation" onClick={this.handleChange}>3m</div>
-          <div className={`${period === '1y' && 'PeriodButtonActive'} PeriodButton`} name="1year" value="1y" role="presentation" onClick={this.handleChange}>1y</div>
-          <div className={`${period === 'all' && 'PeriodButtonActive'} PeriodButton`} name="all" value="all" role="presentation" onClick={this.handleChange}>all</div>
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // returned function will be called on component unmount
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <div className="PeriodContainer">
+      <div className="PeriodButtonsSection">
+        <div className={`${period === '1d' && 'PeriodButtonActive'} PeriodButton`} name="1day" value="1d" role="presentation" onClick={handleChange}>1d</div>
+        <div className={`${period === '7d' && 'PeriodButtonActive'} PeriodButton`} name="7days" value="7d" role="presentation" onClick={handleChange}>7d</div>
+        <div className={`${period === '1m' && 'PeriodButtonActive'} PeriodButton`} name="1month" value="1m" role="presentation" onClick={handleChange}>1m</div>
+        <div className={`${period === '3m' && 'PeriodButtonActive'} PeriodButton`} name="3months" value="3m" role="presentation" onClick={handleChange}>3m</div>
+        <div className={`${period === '1y' && 'PeriodButtonActive'} PeriodButton`} name="1year" value="1y" role="presentation" onClick={handleChange}>1y</div>
+        <div className={`${period === 'all' && 'PeriodButtonActive'} PeriodButton`} name="all" value="all" role="presentation" onClick={handleChange}>all</div>
+        <div
+          className={`${period === 'custom' && 'PeriodButtonActive'} PeriodButton PeriodButtonCustom`}
+          name="custom"
+          value="custom"
+          role="presentation"
+          onClick={displayCalendar}
+          ref={openModalRef}
+        >
+          custom
         </div>
-        <div className="DateInputsSection">
-          <DateInput label="From" position="left" handleChange={this.handleFromDate} />
-          <DateInput label="To" position="left" handleChange={this.handleToDate} />
-        </div>
+        {showModal && (
+          <div ref={openModalRef} className="CalendarModal">
+            <div className="DateInputsSection">
+              <DateInput
+                label="From"
+                position="from"
+                handleChange={handleFromDate}
+                showCalendar={showFromCalendar}
+                onClick={switchCalendars}
+                value="from"
+              />
+              <DateInput
+                label="To"
+                position="to"
+                handleChange={handleToDate}
+                showCalendar={showToCalendar}
+                onClick={switchCalendars}
+                value="to"
+              />
+            </div>
+            <div className="CalendarModalButtonsSection">
+              <div className="CalendarModalButtons">
+                <PrimaryButton label="Cancel" className="CancelBtn ModalBtn" onClick={() => setShowModal(false)} />
+                <PrimaryButton label="proceed" className="ModalBtn" onClick={() => console.log('hello')} />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 Period.propTypes = {
   onChange: PropTypes.func.isRequired
