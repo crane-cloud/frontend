@@ -80,6 +80,6 @@
 }
 
 .SubBarListItem:hover {
-    background-color: rgb(13, 60, 82);
-    color: rgb(164, 228, 253);
+    color: rgb(13, 60, 82);
+    background-color: rgb(164, 228, 253);
 }
