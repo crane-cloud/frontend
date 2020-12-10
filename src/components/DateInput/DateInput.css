@@ -7,7 +7,6 @@
 .DateInputWrapper {
   display: flex;
   cursor: default;
-  width: 100%;
 }
 
 .DateInputLabel {
@@ -45,4 +44,13 @@
   z-index: 3;
   left: 0;
   width: 95%;
+}
+
+.CalendarModalButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ModalBtn {
+  max-height: 2rem;
 }

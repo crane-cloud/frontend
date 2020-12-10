@@ -48,7 +48,7 @@ class ProjectCPUPage extends React.Component {
     return projects.find((project) => project.id === projectID).date_created;
   }
 
-  async handlePeriodChange(period) {
+  async handlePeriodChange(period, customTime = {}) {
     let days;
     let step;
     let startTimeStamp;

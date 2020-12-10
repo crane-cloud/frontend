@@ -52,20 +52,3 @@
   right: -18rem;
   z-index: 3;
 }
-
-.CalendarModalButtonsSection {
-  height: 25rem;
-  position: relative;
-}
-
-.CalendarModalButtons {
-  position: absolute;
-  bottom: 0;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.ModalBtn {
-  max-height: 2rem;
-}

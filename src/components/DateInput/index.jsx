@@ -6,6 +6,7 @@ import React, {
 import PropTypes from 'prop-types';
 import Calendar from '../Calendar';
 import TimeInput from '../TimeInput';
+import PrimaryButton from '../PrimaryButton';
 import {
   monthNames,
   today,
@@ -22,9 +23,10 @@ const DateInput = ({
   label,
   showCalendar,
   onClick,
-  value
+  value,
+  onCancel,
+  onSubmit
 }) => {
-  // const dropdownRef = useRef(null);
   const [date, setDate] = useState({
     day: today,
     month: currentMonth,
@@ -81,8 +83,7 @@ const DateInput = ({
   }, [createTimestamp]);
 
   return (
-    <div
-      className="DateInputContainer">
+    <div className="DateInputContainer">
       <div className="DateInputWrapper">
         <div className="DateInputLabel">
           {label}
@@ -99,15 +100,19 @@ const DateInput = ({
             `${trimMonthName(monthNames[currentMonth])} ${today}, ${currentYear}`
           )}
         </div>
-        {showCalendar && (
-          <div className={`DateInputCalendar ${position}`}>
-            <div className="TimeSection">
-              <TimeInput onChange={getTime} />
-            </div>
-            <Calendar onChange={getDate} />
-          </div>
-        )}
       </div>
+      {showCalendar && (
+        <div className={`DateInputCalendar ${position}`}>
+          <div className="TimeSection">
+            <TimeInput onChange={getTime} />
+          </div>
+          <Calendar onChange={getDate} />
+          <div className="CalendarModalButtons">
+            <PrimaryButton label="Cancel" className="CancelBtn ModalBtn" onClick={onCancel} />
+            <PrimaryButton label="proceed" className="ModalBtn" onClick={onSubmit} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
