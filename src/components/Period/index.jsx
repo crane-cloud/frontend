@@ -63,8 +63,8 @@ const Period = (props) => {
   const handleSubmit = () => {
     const { onChange } = props;
     const customTime = {
-      to: toTimeStamp,
-      start: fromTimeStamp
+      start: toTimeStamp,
+      end: fromTimeStamp
     };
 
     onChange('custom', customTime);
