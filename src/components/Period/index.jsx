@@ -5,7 +5,6 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import DateInput from '../DateInput';
-import PrimaryButton from '../PrimaryButton';
 import './Period.css';
 
 const Period = (props) => {
@@ -13,7 +12,10 @@ const Period = (props) => {
   const [period, setPeriod] = useState('1d');
   const [showFromCalendar, setShowFromCalendar] = useState(true);
   const [showToCalendar, setShowToCalendar] = useState(false);
+  const [toTimeStamp, setToTimeStamp] = useState(0);
+  const [fromTimeStamp, setFromTimeStamp] = useState(0);
   const openModalRef = useRef(null);
+
 
   const switchCalendars = ({ target }) => {
     const calendar = target.getAttribute('value');
@@ -34,6 +36,10 @@ const Period = (props) => {
     setPeriod(target.getAttribute('value'));
   };
 
+  const closeCalendar = () => {
+    setShowModal(false);
+  };
+
   const handleClickOutside = (event) => {
     if (openModalRef.current && !openModalRef.current.contains(event.target)) {
       setShowModal(false);
@@ -47,11 +53,21 @@ const Period = (props) => {
   };
 
   const handleFromDate = (fromTS) => {
-    console.log(fromTS);
+    setFromTimeStamp(fromTS);
   };
 
   const handleToDate = (toTS) => {
-    console.log(toTS);
+    setToTimeStamp(toTS);
+  };
+
+  const handleSubmit = () => {
+    const { onChange } = props;
+    const customTime = {
+      to: toTimeStamp,
+      start: fromTimeStamp
+    };
+
+    onChange('custom', customTime);
   };
 
   useEffect(() => {
@@ -91,6 +107,8 @@ const Period = (props) => {
                 handleChange={handleFromDate}
                 showCalendar={showFromCalendar}
                 onClick={switchCalendars}
+                onCancel={closeCalendar}
+                onSubmit={handleSubmit}
                 value="from"
               />
               <DateInput
@@ -99,14 +117,10 @@ const Period = (props) => {
                 handleChange={handleToDate}
                 showCalendar={showToCalendar}
                 onClick={switchCalendars}
+                onCancel={closeCalendar}
+                onSubmit={handleSubmit}
                 value="to"
               />
-            </div>
-            <div className="CalendarModalButtonsSection">
-              <div className="CalendarModalButtons">
-                <PrimaryButton label="Cancel" className="CancelBtn ModalBtn" onClick={() => setShowModal(false)} />
-                <PrimaryButton label="proceed" className="ModalBtn" onClick={() => console.log('hello')} />
-              </div>
             </div>
           </div>
         )}
