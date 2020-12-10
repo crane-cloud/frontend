@@ -70,7 +70,7 @@
     overflow: auto;
 }
 .active{
-    color: #06222F !important;
+    color: #06222F;
     background-color: #99D2E9; 
     padding-left: 20px; 
 }
