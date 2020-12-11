@@ -95,7 +95,9 @@ class ProjectCPUPage extends React.Component {
       }
     }));
 
-    this.fetchCPU();
+    if (endTimeStamp > startTimeStamp) {
+      this.fetchCPU();
+    }
   }
 
   fetchCPU() {
