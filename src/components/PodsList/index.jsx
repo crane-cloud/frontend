@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getPodsList from '../../redux/actions/pods';
 import tellAge from '../../helpers/ageUtility';
-import './PodsList.css';
 import Header from '../Header';
 import Status from '../Status';
 import Spinner from '../Spinner';

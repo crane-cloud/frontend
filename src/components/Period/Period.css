@@ -9,7 +9,7 @@
   grid-auto-flow: column;
   grid-auto-columns: max-content;
   gap: .5rem;
-  padding: 10px;
+  padding: 0.625rem;
 }
 
 .PeriodButton {

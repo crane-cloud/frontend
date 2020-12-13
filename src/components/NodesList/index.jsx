@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getNodesList from '../../redux/actions/nodeCluster';
 import tellAge from '../../helpers/ageUtility';
-import './NodesList.css';
 import Header from '../Header';
 import Status from '../Status';
 import Spinner from '../Spinner';
