@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import './JobsListPage.css';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideNav from '../SideNav';
