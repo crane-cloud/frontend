@@ -1,23 +1,21 @@
 .Logo{
-    width: 300px;
-    padding: 0px 0px;
+    width: 18.75rem;
+    padding: 0rem 0rem;
 }
 .Brand img{
     vertical-align: middle;
     border-style: none;
     box-sizing: none;
-    width: 200px;
+    width: 12.5rem;
     display: inline;
 
 }
 .Brand {
     position: absolute;
-    /* float: left; */
-    line-height: 65px;
+    line-height: 4.063rem;
     text-transform: uppercase;
     font-size: 1.4em;
     display: inline-block;
     font-size: 22px;
-    /* width: 200px; */
     background-color: #008ac1;
 }
