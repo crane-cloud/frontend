@@ -3,7 +3,7 @@
     height: 100%;
     background: #06222F;
     mix-blend-mode: normal;
-    margin-left: 0px;
+    margin-left: 0rem;
     overflow-x: hidden;
 }
 
@@ -15,7 +15,7 @@
     font-size: 16px;
     line-height: 1.188rem;
     color: #fff;
-    margin-top: 15px;
+    margin-top: 0.938rem;
     cursor: pointer;
     padding: 1.563rem 1.125rem 1.25rem 1.125rem;
     text-transform: uppercase;
@@ -88,9 +88,9 @@
     overflow: auto;
 }
 .SideFooter{
-    height: 30px;
+    height: 1.875rem;
     font-size: 12px;
-    line-height: 14px;
+    line-height: 0.875rem;
     bottom: 0;
     color: #008AC1;
     padding: 1.125rem 0rem 1.25rem 1.125rem;
