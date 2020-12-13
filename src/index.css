@@ -106,13 +106,13 @@ input[type="password"] {
 }
 
 .DashboardMainContainer {
-  margin-top: 80px; /* Height of the hedaer */
+  margin-top: 5rem; /* Height of the hedaer */
   display: flex;
   flex-direction: row;
 }
 
 .DashboardSideNav {
-  min-width: 250px;
+  min-width: 15.625rem;
 }
 
 .DashboardContentWrap {
@@ -129,7 +129,7 @@ input[type="password"] {
 
 .FailedToRetrieveMsg p {
   box-shadow: 0.5rem 0.5rem rgba(0, 138, 193, 0.2);
-  border-radius: 25px;
+  border-radius: 1.563rem;
   padding: 5rem;
 }
 
@@ -155,8 +155,8 @@ div.ResourcesTable.LoadingResourcesTable {
 }
 
 body::-webkit-scrollbar {
-  width: 4px;
-  height: 0px;
+  width: 0.25rem;
+  height: 0rem;
 }
 body::-webkit-scrollbar-track {
   background: #f1f1f1;
@@ -236,7 +236,7 @@ tr.TableLoading td {
 .NoResourcesMessage {
   flex-grow: 1;
   display: flex;
-  font-size: 16px;
+  font-size: 1rem;
   text-align: center;
   justify-content: center;
   align-items: center;
@@ -250,7 +250,7 @@ tr.TableLoading td {
   background: #f1f1f1;
   height: 100vh;
   display: grid;
-  grid-template-rows: 80px 4fr;
+  grid-template-rows: 5rem 4fr;
   overflow-x: hidden;
 }
 .TopBarSection {
@@ -282,7 +282,7 @@ tr.TableLoading td {
 .MainContentSection {
   /* divided into two rows */
   display: grid;
-  grid-template-rows: 80px 4fr;
+  grid-template-rows: 5rem 4fr;
   overflow: hidden;
 }
 
@@ -293,14 +293,14 @@ tr.TableLoading td {
   overflow-y: auto;
 }
 .ContentSection::-webkit-scrollbar {
-  width: 10px;
-  height: 0px;
+  width: 0.625rem;
+  height: 0rem;
 }
 .ContentSection::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 .ContentSection::-webkit-scrollbar-thumb {
-  border-radius: 25px;
+  border-radius: 1.563rem;
   background: #008ac1;
 }
 .ContentSection::-webkit-scrollbar-thumb:hover {

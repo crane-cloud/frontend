@@ -116,7 +116,6 @@ margin: auto;
 }
 
 .EnvVarsTable table td img:hover {
-  /* cursor: pointer; */
   filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(180deg) brightness(119%) contrast(5%);
 }
 

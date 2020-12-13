@@ -35,7 +35,7 @@
 }
 
 .AppGraphSummaryLabel {
-  padding-top: 2px;
+  padding-top: 0.125rem;
   color: #CCCCCC;
   font-size: 14px;
 }
@@ -57,7 +57,7 @@
   padding: 0.5rem 1.25rem;
   cursor: pointer;
   font-size: 14px;
-  padding-top: 0px;
+  padding-top: 0rem;
 }
 
 .AppCard .AppCardHeader::first-letter {
