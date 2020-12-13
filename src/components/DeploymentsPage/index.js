@@ -10,7 +10,6 @@ import Status from '../Status';
 import ProgressBar from '../ProgressBar';
 import Spinner from '../Spinner';
 import tellAge from '../../helpers/ageUtility';
-import './DeploymentsPage.css';
 
 class DeploymentsPage extends Component {
   constructor(props) {

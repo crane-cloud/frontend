@@ -3,7 +3,7 @@
 .ClusterContainer{
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    grid-gap: 15px;
+    grid-gap: 0.938rem;
     padding: 2rem 1.4rem;
 }
 
@@ -14,7 +14,7 @@
 }
 
 .ClusterItem{
-    min-width: 199px;
+    min-width: 12.438rem;
     margin: 15px 15px;
     text-align: center;
 }

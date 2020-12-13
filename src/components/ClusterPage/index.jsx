@@ -11,7 +11,6 @@ import ClustersList from '../ClustersList';
 import Header from '../Header';
 import addCluster, { clearAddClusterState } from '../../redux/actions/addCluster';
 import Feedback from '../Feedback';
-import './ClusterPage.css';
 
 class ClusterPage extends React.Component {
   constructor(props) {
