@@ -1,11 +1,11 @@
 .MemberCard {
-  width: 190px;
+  width: 11.875rem;
 }
 
 .MemberImageDiv {
   margin: 0;
   width: 100%;
-  height: 190px;
+  height: 11.875rem;
   background-color: #C4C4C4;
   background-repeat: no-repeat;
   background-position: center;
@@ -18,15 +18,15 @@
 }
 
 .BottomContainer {
-  padding: 10px;
-  height: 80px;
+  padding: 0.625rem;
+  height: 5rem;
   background-color: #f1f1f1;
 }
 
 .MemberCardName {
   width: 100%;
   font-size: 20px;
-  padding-top: 5px;
+  padding-top: 0.313rem;
   text-align: center;
   font-weight: bold;
 }
@@ -34,6 +34,6 @@
   width: 100%;
   font-size: 16px;
   color: #000000;
-  padding-top: 5px;
+  padding-top: 0.313rem;
   text-align: center;
 }
