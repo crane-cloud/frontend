@@ -11,7 +11,6 @@ import InputPassword from '../InputPassword';
 import PrimaryButton from '../PrimaryButton';
 import Spinner from '../Spinner';
 import { API_BASE_URL } from '../../config';
-import '../LoginPage/LoginPage.css';
 
 class AdminLoginPage extends React.Component {
   constructor() {

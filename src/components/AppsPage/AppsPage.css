@@ -143,18 +143,18 @@ table-layout: fixed;
 }
 
 .ModalForm.AddAppModal .ModalFormInputs {
-  padding-right: 10px;
+  padding-right: 0.625rem;
   flex: 1 0 auto;
   overflow-y: auto;
 }
 
 .ModalForm.AddAppModal .ModalFormButtons.AddAddButtons {
-  flex: 0 1 40px;
+  flex: 0 1 2.5rem;
 }
 
 .ModalForm.AddAppModal .ModalFormInputs::-webkit-scrollbar {
-  width: 4px;
-  height: 0px;
+  width: 0.25rem;
+  height: 0rem;
 }
 .ModalForm.AddAppModal .ModalFormInputs::-webkit-scrollbar-track {
   background: #f1f1f1;

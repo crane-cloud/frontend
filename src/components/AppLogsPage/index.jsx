@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
 import SideBar from '../SideBar';
-import './AppLogsPage.css';
 import LogsFrame from '../LogsFrame';
 import getAppLogs from '../../redux/actions/getAppLogs';
 
