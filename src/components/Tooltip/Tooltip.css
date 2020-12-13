@@ -32,10 +32,10 @@
 [tooltip-message]:before {
   position: absolute;
   bottom: 150%;
-  margin-bottom: 5px;
-  margin-left: -80px;
-  padding: 7px;
-  width: 200px;
+  margin-bottom: 0.313rem;
+  margin-left: -5rem;
+  padding: 0.438rem;
+  width: 12.5rem;
   background-color: #000;
   background-color: hsla(0, 0%, 20%, 0.9);
   color: #fff;
@@ -50,7 +50,7 @@
   position: absolute;
   bottom: 150%;
   left: 50%;
-  margin-left: -5px;
+  margin-left: -0.313rem;
   width: 0;
   border-top: 5px solid #000;
   border-top: 5px solid hsla(0, 0%, 20%, 0.9);

@@ -11,7 +11,7 @@
   height: 100%;
   border-radius: 25px;
   background-color: #EEEEEE;
-  padding: 0 2px;
+  padding: 0 0.125rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -27,9 +27,9 @@
 }
 
 .ToggleButtonSlider.ToggleOn {
-  left: 2px;
+  left: 0.125rem;
 }
 
 .ToggleButtonSlider.ToggleOff {
-  right: 2px;
+  right: 0.125rem;
 }
