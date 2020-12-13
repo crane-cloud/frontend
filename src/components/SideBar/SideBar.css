@@ -3,7 +3,7 @@
     height: 100%;
     background: #06222F;
     mix-blend-mode: normal;
-    margin-left: 0px;
+    margin-left: 0rem;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
@@ -39,26 +39,26 @@
 }
 
 .ListItem {
-    height: 21px;
+    height: 1.313rem;
     background-color: #06222F;
     font-style: normal;
     font-weight: bold;
     font-size: 16px;
-    line-height: 19px;
+    line-height: 1.188rem;
     color: #F7B21F;
-    margin-top: 20px;
+    margin-top: 1.25rem;
     cursor: pointer;
-    padding-left: 18px;
+    padding-left: 1.125rem;
     text-transform: uppercase;
     display: block;
 }
 
 .SubBarListItem {
-    height: 21px;
+    height: 1.313rem;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
-    line-height: 19px;
+    line-height: 1.188rem;
     color: #99D2E9;
     padding: 8px 0px 8px 20px;
     cursor: pointer;
@@ -70,9 +70,9 @@
     overflow: auto;
 }
 .active{
-    color: #06222F !important;
+    color: #06222F;
     background-color: #99D2E9; 
-    padding-left: 20px; 
+    padding-left: 1.25rem; 
 }
 
 .ListItem:hover {
