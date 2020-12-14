@@ -53,10 +53,11 @@ class AppNetworkPage extends React.Component {
     return apps.apps.find((app) => app.id === appID).date_created;
   }
 
-  async handlePeriodChange(period) {
+  async handlePeriodChange(period, customTime = null) {
     let days;
     let step;
     let startTimeStamp;
+    let endTimeStamp = getCurrentTimeStamp();
 
     if (period === "1d") {
       days = 1;
@@ -80,6 +81,9 @@ class AppNetworkPage extends React.Component {
     if (period === 'all') {
       startTimeStamp = await Date.parse(this.getDateCreated());
       step = '1d'; // TODO: make dynamic depending on the all-time metrics
+    } else if (period === 'custom' && customTime !== null) {
+      startTimeStamp = customTime.start;
+      endTimeStamp = customTime.end;
     } else {
       startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
     }
@@ -87,12 +91,15 @@ class AppNetworkPage extends React.Component {
     this.setState((prevState) => ({
       time: {
         ...prevState.time,
+        end: endTimeStamp,
         start: startTimeStamp,
         step,
-      },
+      }
     }));
 
-    this.fetchAppNetwork();
+    if (endTimeStamp > startTimeStamp) {
+      this.fetchAppNetwork();
+    }
   }
 
   fetchAppNetwork() {
