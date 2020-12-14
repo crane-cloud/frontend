@@ -63,11 +63,12 @@ const Period = (props) => {
   const handleSubmit = () => {
     const { onChange } = props;
     const customTime = {
-      start: toTimeStamp,
-      end: fromTimeStamp
+      start: fromTimeStamp,
+      end: toTimeStamp
     };
 
     onChange('custom', customTime);
+    closeCalendar();
   };
 
   useEffect(() => {
