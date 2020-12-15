@@ -5,7 +5,6 @@ import InformationBar from '../InformationBar';
 import Header from '../Header';
 import Spinner from '../Spinner';
 import SideBar from '../SideBar';
-import './ProjectMemoryPage.css';
 import getProjectMemory, { clearProjectMemory } from '../../redux/actions/projectMemory';
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
