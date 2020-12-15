@@ -5,7 +5,6 @@ import InformationBar from '../InformationBar';
 import Header from '../Header'
 import Spinner from '../Spinner';
 import SideBar from '../SideBar';
-import './AppCpuPage.css';
 import getAppCPU, { clearAppCPU } from '../../redux/actions/appCPU';
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';

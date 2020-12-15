@@ -5,7 +5,6 @@ import InformationBar from '../InformationBar';
 import Header from '../Header';
 import Spinner from '../Spinner';
 import SideBar from '../SideBar';
-import './AppMemoryPage.css';
 import getAppMemory, { clearAppMemory } from '../../redux/actions/appMemory';
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
