@@ -22,7 +22,7 @@ const LineChartComponent = ({
   lineDataKey
 }) => (
   <div className="LineChartContainer">
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer className="GraphSection" width="100%" height="100%">
       {preview ? (
         <LineChart data={data}>
           <Line dot={false} strokeWidth="2px" dataKey={lineDataKey} stroke="#008AC1" />
@@ -42,8 +42,8 @@ const LineChartComponent = ({
               <Line dot strokeWidth="2px" dataKey={lineDataKey} stroke="#008AC1" />
             </LineChart>
           ) : (
-            <div className="LogsEmpty">
-              <div>No logs available</div>
+            <div className="NoGraphData">
+              Graph Data Unavailable
             </div>
           )}
         </>
