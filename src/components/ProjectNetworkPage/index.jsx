@@ -5,7 +5,6 @@ import InformationBar from '../InformationBar';
 import Header from '../Header';
 import Spinner from '../Spinner';
 import SideBar from '../SideBar';
-import './ProjectNetworkPage.css';
 import getProjectNetwork, { clearProjectNetwork } from '../../redux/actions/projectNetwork';
 import MetricsCard from '../MetricsCard';
 import PeriodSelector from '../Period';
