@@ -28,17 +28,25 @@ const LineChartComponent = ({
           <Line dot={false} strokeWidth="2px" dataKey={lineDataKey} stroke="#008AC1" />
         </LineChart>
       ) : (
-        <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3" />
-          <XAxis dataKey={xDataKey}>
-            <Label className="ChartLabel" value={xLabel} position="centerBottom" dy={12} />
-          </XAxis>
-          <YAxis dataKey={yDataKey}>
-            <Label className="ChartLabel" value={yLabel} angle={270} position="insideLeft" dy={-10} />
-          </YAxis>
-          <Tooltip />
-          <Line dot strokeWidth="2px" dataKey={lineDataKey} stroke="#008AC1" />
-        </LineChart>
+        <>
+          {data.length > 0 ? (
+            <LineChart data={data}>
+              <CartesianGrid strokeDasharray="3" />
+              <XAxis dataKey={xDataKey}>
+                <Label className="ChartLabel" value={xLabel} position="centerBottom" dy={12} />
+              </XAxis>
+              <YAxis dataKey={yDataKey}>
+                <Label className="ChartLabel" value={yLabel} angle={270} position="insideLeft" dy={-10} />
+              </YAxis>
+              <Tooltip />
+              <Line dot strokeWidth="2px" dataKey={lineDataKey} stroke="#008AC1" />
+            </LineChart>
+          ) : (
+            <div className="LogsEmpty">
+              <div>No logs available</div>
+            </div>
+          )}
+        </>
       )}
     </ResponsiveContainer>
   </div>
