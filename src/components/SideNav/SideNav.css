@@ -50,12 +50,8 @@
 
 .SideNav::-webkit-scrollbar {
     display: none;
-  }
-.active{
-    color: #06222F !important;
-    background-color: #99D2E9; 
-    padding-left: 1.25rem; 
 }
+
 .ListItem{
     height: 1.313rem;
     background-color: #06222F;
