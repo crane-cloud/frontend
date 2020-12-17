@@ -22,23 +22,31 @@ const LineChartComponent = ({
   lineDataKey
 }) => (
   <div className="LineChartContainer">
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer className="GraphSection" width="100%" height="100%">
       {preview ? (
         <LineChart data={data}>
           <Line dot={false} strokeWidth="2px" dataKey={lineDataKey} stroke="#008AC1" />
         </LineChart>
       ) : (
-        <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3" />
-          <XAxis dataKey={xDataKey}>
-            <Label className="ChartLabel" value={xLabel} position="centerBottom" dy={12} />
-          </XAxis>
-          <YAxis dataKey={yDataKey}>
-            <Label className="ChartLabel" value={yLabel} angle={270} position="insideLeft" dy={-10} />
-          </YAxis>
-          <Tooltip />
-          <Line dot strokeWidth="2px" dataKey={lineDataKey} stroke="#008AC1" />
-        </LineChart>
+        <>
+          {data.length > 0 ? (
+            <LineChart data={data}>
+              <CartesianGrid strokeDasharray="3" />
+              <XAxis dataKey={xDataKey}>
+                <Label className="ChartLabel" value={xLabel} position="centerBottom" dy={12} />
+              </XAxis>
+              <YAxis dataKey={yDataKey}>
+                <Label className="ChartLabel" value={yLabel} angle={270} position="insideLeft" dy={-10} />
+              </YAxis>
+              <Tooltip />
+              <Line dot strokeWidth="2px" dataKey={lineDataKey} stroke="#008AC1" />
+            </LineChart>
+          ) : (
+            <div className="NoGraphData">
+              Graph Data Unavailable
+            </div>
+          )}
+        </>
       )}
     </ResponsiveContainer>
   </div>

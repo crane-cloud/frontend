@@ -51,21 +51,17 @@ export const formatMemoryMetrics = (projectID, memoryMetrics, period = '1d') => 
   const found = memoryMetrics.find((metric) => metric.project === projectID);
   const memoryData = [];
 
-  if (found !== undefined) {
-    if (found.metrics.length > 0) {
-      found.metrics.forEach((metric) => {
-        const newMetricObject = {
-          time: getTimeString(timestampToDate(metric.timestamp), period),
-          memory: bytesToMegabytes(metric.value)
-        };
+  if (found !== undefined && found.metrics.length > 0) {
+    found.metrics.forEach((metric) => {
+      const newMetricObject = {
+        time: getTimeString(timestampToDate(metric.timestamp), period),
+        memory: bytesToMegabytes(metric.value)
+      };
 
-        memoryData.push(newMetricObject);
-      });
-    } else {
-      memoryData.push({ time: 0, memory: 0 });
-      memoryData.push({ time: 0, memory: 0 });
-    }
+      memoryData.push(newMetricObject);
+    });
   }
+
   return memoryData;
 };
 
@@ -73,21 +69,16 @@ export const formatCPUMetrics = (projectID, cpuMetrics, period = '1d') => {
   const found = cpuMetrics.find((metric) => metric.project === projectID);
   const cpuData = [];
 
-  if (found !== undefined) {
-    if (found.metrics.length > 0) {
-      found.metrics.forEach((metric) => {
-        const newMetricObject = {
-          time: getTimeString(timestampToDate(metric.timestamp), period),
-          cpu: metric.value * 10
-        };
-
-        cpuData.push(newMetricObject);
-      });
-    } else {
-      cpuData.push({ time: 0, cpu: 0 });
-      cpuData.push({ time: 0, cpu: 0 });
-    }
+  if (found !== undefined && found.metrics.length > 0) {
+    found.metrics.forEach((metric) => {
+      const newMetricObject = {
+        time: getTimeString(timestampToDate(metric.timestamp), period),
+        cpu: metric.value * 10
+      };
+      cpuData.push(newMetricObject);
+    });
   }
+
   return cpuData;
 };
 
@@ -95,21 +86,17 @@ export const formatNetworkMetrics = (projectID, networkMetrics, period = '1d') =
   const found = networkMetrics.find((metric) => metric.project === projectID);
   const networkData = [];
 
-  if (found !== undefined) {
-    if (found.metrics.length > 0) {
-      found.metrics.forEach((metric) => {
-        const newMetricObject = {
-          time: getTimeString(timestampToDate(metric.timestamp), period),
-          network: metric.value
-        };
+  if (found !== undefined && found.metrics.length > 0) {
+    found.metrics.forEach((metric) => {
+      const newMetricObject = {
+        time: getTimeString(timestampToDate(metric.timestamp), period),
+        network: metric.value
+      };
 
-        networkData.push(newMetricObject);
-      });
-    } else {
-      networkData.push({ time: 0, network: 0 });
-      networkData.push({ time: 0, network: 0 });
-    }
+      networkData.push(newMetricObject);
+    });
   }
+
   return networkData;
 };
 
@@ -117,21 +104,17 @@ export const formatAppMemoryMetrics = (appID, memoryMetrics, period = '1d') => {
   const found = memoryMetrics.find((metric) => metric.app === appID);
   const memoryData = [];
 
-  if (found !== undefined) {
-    if (found.metrics.length > 0) {
-      found.metrics.forEach((metric) => {
-        const newMetricObject = {
-          time: getTimeString(timestampToDate(metric.timestamp), period),
-          memory: bytesToMegabytes(metric.value)
-        };
+  if (found !== undefined && found.metrics.length > 0) {
+    found.metrics.forEach((metric) => {
+      const newMetricObject = {
+        time: getTimeString(timestampToDate(metric.timestamp), period),
+        memory: bytesToMegabytes(metric.value)
+      };
 
-        memoryData.push(newMetricObject);
-      });
-    } else {
-      memoryData.push({ time: 0, memory: 0 });
-      memoryData.push({ time: 0, memory: 0 });
-    }
+      memoryData.push(newMetricObject);
+    });
   }
+
   return memoryData;
 };
 
@@ -139,21 +122,16 @@ export const formatAppCPUMetrics = (appID, cpuMetrics, period = '1d') => {
   const found = cpuMetrics.find((metric) => metric.app === appID);
   const cpuData = [];
 
-  if (found !== undefined) {
-    if (found.metrics.length > 0) {
-      found.metrics.forEach((metric) => {
-        const newMetricObject = {
-          time: getTimeString(timestampToDate(metric.timestamp), period),
-          cpu: metric.value * 10
-        };
-
-        cpuData.push(newMetricObject);
-      });
-    } else {
-      cpuData.push({ time: 0, cpu: 0 });
-      cpuData.push({ time: 0, cpu: 0 });
-    }
+  if (found !== undefined && found.metrics.length > 0) {
+    found.metrics.forEach((metric) => {
+      const newMetricObject = {
+        time: getTimeString(timestampToDate(metric.timestamp), period),
+        cpu: metric.value * 10
+      };
+      cpuData.push(newMetricObject);
+    });
   }
+
   return cpuData;
 };
 
@@ -161,20 +139,15 @@ export const formatAppNetworkMetrics = (appID, networkMetrics, period = '1d') =>
   const found = networkMetrics.find((metric) => metric.app === appID);
   const networkData = [];
 
-  if (found !== undefined) {
-    if (found.metrics.length > 0) {
-      found.metrics.forEach((metric) => {
-        const newMetricObject = {
-          time: getTimeString(timestampToDate(metric.timestamp), period),
-          network: metric.value
-        };
-
-        networkData.push(newMetricObject);
-      });
-    } else {
-      networkData.push({ time: 0, network: 0 });
-      networkData.push({ time: 0, network: 0 });
-    }
+  if (found !== undefined && found.metrics.length > 0) {
+    found.metrics.forEach((metric) => {
+      const newMetricObject = {
+        time: getTimeString(timestampToDate(metric.timestamp), period),
+        network: metric.value
+      };
+      networkData.push(newMetricObject);
+    });
   }
+
   return networkData;
 };
