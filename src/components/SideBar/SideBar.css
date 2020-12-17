@@ -69,17 +69,13 @@
     height: max-content;
     overflow: auto;
 }
-.active{
-    color: #06222F !important;
-    background-color: #99D2E9; 
-    padding-left: 20px; 
-}
 
 .ListItem:hover {
     text-shadow: 0 0 .5px rgb(255, 194, 62);
 }
 
-.SubBarListItem:hover {
-    background-color: rgb(13, 60, 82);
-    color: rgb(164, 228, 253);
+.SubBarListItem:hover, .active {
+    color: #06222F;
+    background-color: #99D2E9;
+    padding-left: 20px; 
 }

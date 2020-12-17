@@ -1,5 +1,6 @@
 .TimeInputContainer {
   font-weight: bold;
+  text-transform: capitalize;
 }
 
 .TimeInputWrapper {

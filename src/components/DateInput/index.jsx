@@ -1,12 +1,12 @@
 import React, {
   useState,
   useEffect,
-  useCallback,
-  useRef
+  useCallback
 } from 'react';
 import PropTypes from 'prop-types';
 import Calendar from '../Calendar';
 import TimeInput from '../TimeInput';
+import PrimaryButton from '../PrimaryButton';
 import {
   monthNames,
   today,
@@ -17,9 +17,16 @@ import {
 } from '../../helpers/dateConstants';
 import './DateInput.css';
 
-const DateInput = ({ handleChange, position, label }) => {
-  const [showCalendar, setShowCalendar] = useState(false);
-  const dropdownRef = useRef(null);
+const DateInput = ({
+  handleChange,
+  position,
+  label,
+  showCalendar,
+  onClick,
+  value,
+  onCancel,
+  onSubmit
+}) => {
   const [date, setDate] = useState({
     day: today,
     month: currentMonth,
@@ -47,8 +54,10 @@ const DateInput = ({ handleChange, position, label }) => {
     const timeString = `${formatString(hour)}:${formatString(mins)}`;
     const timeStamp = Date.parse(`${dateString}T${timeString}`);
 
-    handleChange(timeStamp);
-  }, [date, time, handleChange]);
+    if (showCalendar) { // only call active parent
+      handleChange(timeStamp);
+    }
+  }, [date, time, showCalendar, handleChange]);
 
   const getDate = ({ day, month, year }) => {
     setDate({
@@ -69,37 +78,21 @@ const DateInput = ({ handleChange, position, label }) => {
 
   const trimMonthName = (month) => month.substring(0, 3);
 
-  const displayCalendar = () => setShowCalendar(!showCalendar);
-
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setShowCalendar(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-
-    // returned function will be called on component unmount
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   useEffect(() => {
     createTimestamp();
   }, [createTimestamp]);
 
   return (
-    <div ref={dropdownRef} className="DateInputContainer">
+    <div className="DateInputContainer">
       <div className="DateInputWrapper">
         <div className="DateInputLabel">
           {label}
         </div>
         <div
           className={`DateInputDisplay ${showCalendar && 'DisplayActive'}`}
+          value={value}
+          onClick={onClick}
           role="presentation"
-          onClick={displayCalendar}
         >
           {date ? (
             `${trimMonthName(monthNames[date.month])} ${date.day}, ${date.year}`
@@ -107,15 +100,19 @@ const DateInput = ({ handleChange, position, label }) => {
             `${trimMonthName(monthNames[currentMonth])} ${today}, ${currentYear}`
           )}
         </div>
-        {showCalendar && (
-          <div className={`DateInputCalendar ${position === 'left' && 'PositionLeft'}`}>
-            <div className="TimeSection">
-              <TimeInput onChange={getTime} />
-            </div>
-            <Calendar onChange={getDate} />
-          </div>
-        )}
       </div>
+      {showCalendar && (
+        <div className={`DateInputCalendar ${position}`}>
+          <div className="TimeSection">
+            <TimeInput onChange={getTime} />
+          </div>
+          <Calendar onChange={getDate} />
+          <div className="CalendarModalButtons">
+            <PrimaryButton label="Cancel" className="CancelBtn ModalBtn" onClick={onCancel} />
+            <PrimaryButton label="proceed" className="ModalBtn" onClick={onSubmit} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -128,7 +125,10 @@ DateInput.defaultProps = {
 DateInput.propTypes = {
   label: PropTypes.string,
   position: PropTypes.string,
-  handleChange: PropTypes.func.isRequired
+  handleChange: PropTypes.func.isRequired,
+  showCalendar: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired
 };
 
 export default DateInput;
