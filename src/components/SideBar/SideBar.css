@@ -69,14 +69,6 @@
     height: max-content;
     overflow: auto;
 }
-<<<<<<< HEAD
-.active{
-    color: #06222F;
-    background-color: #99D2E9; 
-    padding-left: 1.25rem; 
-}
-=======
->>>>>>> f0f469b835dbf25bdff62956fb32302459a01b27
 
 .ListItem:hover {
     text-shadow: 0 0 .5px rgb(255, 194, 62);
