@@ -1,0 +1,21 @@
+.ErrorPageContainer{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    text-align: center;
+}
+
+.ErrorPageDigit{
+    color: #F7B21F;
+    font-weight: 700;
+    font-size: 200px;
+    line-height: 234.38px;
+}
+
+.ErrorPageButton{
+    margin: 0 auto;
+}
