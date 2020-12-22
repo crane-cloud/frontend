@@ -10,12 +10,12 @@ const WrongUrl = () => {
             <Header />
             <div>
                 <div className="ErrorPageContainer">
-                    <div>
+                    <div className="ErrorPageFirstDiv">
                         <div className="ErrorPageDigit">404</div>
                     </div>
-                    <div>
-                        <div>PAGE NOT FOUND.</div>
-                        <div>Sorry, the page you are looking for does not exist.</div>
+                    <div className="ErrorPageText">
+                        <div className="ErrorPageTextFirst">PAGE NOT FOUND.</div>
+                        <div className="ErrorPageTextSecond">Sorry, the page you are looking for does not exist.</div>
                     </div>
                     <div className="ErrorPageButton">
                         <Link to="/"><PrimaryButton label="Home" /></Link>

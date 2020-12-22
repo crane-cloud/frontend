@@ -7,13 +7,31 @@
     grid-template-columns: 1fr;
     gap: 1rem;
     text-align: center;
+    font-weight: 700;
 }
-
+.ErrorPageFirstDiv{
+    padding-top: 3rem;
+}
 .ErrorPageDigit{
     color: #F7B21F;
-    font-weight: 700;
-    font-size: 200px;
-    line-height: 234.38px;
+    font-size: 12.5rem;
+    line-height: 14rem;
+}
+
+.ErrorPageText{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    text-align: center;
+}
+
+.ErrorPageTextFirst{
+    font-size: 32px;
+    line-height: 37.5px;
+}
+
+.ErrorPageTextSecond{
+    font-weight: 400;
 }
 
 .ErrorPageButton{
