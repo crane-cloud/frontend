@@ -14,7 +14,7 @@ const WrongUrl = () => {
                         <div className="ErrorPageDigit">404</div>
                     </div>
                     <div className="ErrorPageText">
-                        <div className="ErrorPageTextFirst">PAGE NOT FOUND.</div>
+                        <div className="ErrorPageTextFirst">PAGE NOT FOUND</div>
                         <div className="ErrorPageTextSecond">Sorry, the page you are looking for does not exist.</div>
                     </div>
                     <div className="ErrorPageButton">
