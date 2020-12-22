@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Header';
 import PrimaryButton from '../PrimaryButton';
-import './404page.css';
+import './PageNotFound.css';
 
 const PageNotFound = () => {
   return (
