@@ -1,13 +1,11 @@
-.ErrorPageContainer{
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    text-align: center;
+.ErrorPageConent {
     font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
-.ErrorPageFirstDiv{
-    padding-top: 3rem;
-}
+
 .ErrorPageDigit{
     color: #F7B21F;
     font-size: 12.5rem;
@@ -17,7 +15,7 @@
 .ErrorPageText{
     display: grid;
     grid-template-columns: 1fr;
-    gap: 0.5rem;
+    gap: 1rem;
     text-align: center;
 }
 
@@ -32,5 +30,6 @@
 }
 
 .ErrorPageButton{
-    margin: 0 auto;
+    display: flex;
+    justify-content: center;
 }
