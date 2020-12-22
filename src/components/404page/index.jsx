@@ -4,7 +4,7 @@ import Header from '../Header';
 import PrimaryButton from '../PrimaryButton';
 import './404page.css';
 
-const WrongUrl = () => {
+const PageNotFound = () => {
   return (
     <div>
       <Header />
@@ -26,4 +26,4 @@ const WrongUrl = () => {
   );
 };
 
-export default WrongUrl;
+export default PageNotFound;
