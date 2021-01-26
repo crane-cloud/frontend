@@ -15,4 +15,4 @@
 *  Run  `Yarn start` to start the application.
 
 ## Deployment
-* The Deployed app is [here.](http://crane-mak-w1.cranecloud.io:32667)
+* The Deployed app is [here.](http://cranecloud.io)
