@@ -46,7 +46,7 @@ const SideNav = (props) => {
       </div>
 
       <div className="SideFooter StickBottom">
-        Copyright © 2020 Crane Cloud.
+        Copyright © 2021 Crane Cloud.
         <br />
         {' '}
         All Rights Reserved.

@@ -4,7 +4,7 @@ import './LandingFooter.css';
 const LandingFooter = () => (
   <footer className="LandingFooter">
     <p className="LandingFooterCopyright">
-      Copyright © 2020 Crane Cloud. All Rights Reserved.
+      Copyright © 2021 Crane Cloud. All Rights Reserved.
     </p>
   </footer>
 );

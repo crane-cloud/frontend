@@ -55,7 +55,7 @@ class TeamPage extends React.Component {
         <div className="TeamPageFooter">
           <footer className="TeamFooter">
             <p className="TeamFooterCopyright">
-              Copyright © 2020 Crane Cloud. All Rights Reserved.
+              Copyright © 2021 Crane Cloud. All Rights Reserved.
             </p>
           </footer>
         </div>
