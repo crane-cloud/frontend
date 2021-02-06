@@ -26,6 +26,7 @@ const Header = (props) => {
     window.location.href = '/';
     localStorage.removeItem('state');
     localStorage.removeItem('token');
+    localStorage.removeItem('project');
   };
 
   const handleClickOutside = (event) => {
@@ -49,7 +50,7 @@ const Header = (props) => {
       <Logo />
 
 
-      {!user.accessToken && (
+      {(!user.accessToken || user.accessToken === '') && (
         <div className="HeaderLinksWrap">
           {match.path !== '/admin-login' && (
             <div className="HeaderLinks bold uppercase">

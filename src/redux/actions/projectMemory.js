@@ -1,5 +1,6 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+// import axios from 'axios';
+// import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
 import {
   FETCH_PROJECT_MEMORY_SUCCESS,
   FETCH_PROJECT_MEMORY_FAILED,
@@ -36,12 +37,25 @@ const clearProjectMemory = () => ({
 const getProjectMemory = (projectID, params) => (dispatch) => {
   dispatch(startFetchingMemoryMetrics());
 
-  axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-  return axios.post(`${API_BASE_URL}/projects/${projectID}/metrics/memory`, params)
+  // axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+  return axios.post(`/projects/${projectID}/metrics/memory`, params)
     .then((response) => {
       dispatch(getMemoryMetricsSuccess(projectID, response));
     })
     .catch((error) => {
+      // if (error.response.status === 401) {
+      //   //function to logout user and redirect user to login
+        
+      //   removeUser();
+      //   localStorage.removeItem('state');
+      //   localStorage.removeItem('token');
+      //   localStorage.removeItem('project');
+        
+      //   window.location.href = '/login';
+      //   // Go to login
+      //   // browserHistory.push('/login')
+      //   // console.log(error.response);
+      // }
       dispatch(getMemoryMetricsFailed(projectID, error));
     });
 };

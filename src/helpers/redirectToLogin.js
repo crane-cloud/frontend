@@ -1,7 +1,13 @@
 // This function clears out the current user state and token
-const redirectToLogin = () => {
+import removeUser from '../redux/actions/removeUser';
+
+const redirectToLogin = (dispatch) => {
+    
+    dispatch(removeUser());
     localStorage.removeItem('state');
     localStorage.removeItem('token');
+    localStorage.removeItem('project');
+        
     window.location.href = '/login';
 };
 

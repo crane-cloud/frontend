@@ -4,6 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import saveUser from '../../redux/actions/saveUser';
+import removeUser from '../../redux/actions/removeUser';
 import Header from '../Header';
 import LandingFooter from '../LandingFooter';
 import InputText from '../InputText';
@@ -33,6 +34,8 @@ class LoginPage extends React.Component {
     // so that when a person logs in they dont encounter
     // the previous state which wasnt cleared
     localStorage.removeItem('state');
+    localStorage.removeItem('project');
+    removeUser();
   }
 
   handleChange(e) {
@@ -200,11 +203,12 @@ const mapStateToProps = (state) => (
 );
 
 const mapDispatchToProps = {
-  saveUser
+  saveUser, removeUser
 };
 
 LoginPage.propTypes = {
-  saveUser: PropTypes.func.isRequired
+  saveUser: PropTypes.func.isRequired,
+  removeUser: PropTypes.func.isRequired
 };
 
 export default connect(
