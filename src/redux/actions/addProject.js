@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
+import redirectToLogin from '../../helpers/redirectToLogin';
 import {
   START_ADDING_PROJECT,
   CLEAR_ADD_PROJECT_STATE,
@@ -33,12 +33,14 @@ const clearAddProjectState = () => ({
 const addProject = (projectData) => (dispatch) => {
   dispatch(startPostingProject());
 
-  return axios.post(`${API_BASE_URL}/projects`, projectData,
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+  return axios.post(`/projects`, projectData)
     .then((response) => dispatch(addProjectSuccess(response)))
     .catch((error) => {
+      if (error.response.status === 401) {
+        // function to logout user and redirect user to login
+        
+        redirectToLogin(dispatch);
+      }
       dispatch(addProjectFail(error));
     });
 };

@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
+import redirectToLogin from '../../helpers/redirectToLogin';
 import {
   FETCH_APP_CPU_SUCCESS,
   FETCH_APP_CPU_FAILED,
@@ -36,12 +36,16 @@ const clearAppCPU = () => ({
 const getAppCPU = (projectID, appID, params) => (dispatch) => {
   dispatch(startFetchingCPUMetrics());
 
-  axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-  return axios.post(`${API_BASE_URL}/projects/${projectID}/apps/${appID}/metrics/cpu`, params)
+  return axios.post(`/projects/${projectID}/apps/${appID}/metrics/cpu`, params)
     .then((response) => {
       dispatch(getAppCPUMetricsSuccess(appID, response));
     })
     .catch((error) => {
+      if (error.response.status === 401) {
+        // function to logout user and redirect user to login
+        
+        redirectToLogin(dispatch);
+      }
       dispatch(getAppCPUMetricsFailed(appID, error));
     });
 };

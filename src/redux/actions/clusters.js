@@ -28,13 +28,12 @@ const getClustersList = () => (dispatch) => {
     
     .then((response) => dispatch(getClustersSuccess(response)))
     .catch((error) => {
-      // if (error.response.status === 401) {
-      //   //function to logout user and redirect user to login
-      //   redirectToLogin(dispatch);
-      // }
+      if (error.response.status === 401) {
+        //function to logout user and redirect user to login
+        redirectToLogin(dispatch);
+      }
       dispatch(getClustersFail(error));
     });
 };
-
 
 export default getClustersList;
