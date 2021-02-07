@@ -9,10 +9,5 @@ const instance = axios.create({
 });
 
 instance.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-instance.interceptors.response.use(response => {
-   return response;
-}, error => {
-   return error;
-});
 
 export default instance;
