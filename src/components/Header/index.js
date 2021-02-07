@@ -105,7 +105,10 @@ const Header = (props) => {
 Header.propTypes = {
   removeUser: PropTypes.func.isRequired,
   user: PropTypes.shape({
-    accessToken: PropTypes.string.isRequired,
+    accessToken: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.bool
+    ]),
     data: PropTypes.shape({
       id: PropTypes.string,
       name: PropTypes.string
