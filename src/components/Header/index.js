@@ -22,11 +22,11 @@ const Header = (props) => {
   };
 
   const logout = () => {
-    props.removeUser();
-    window.location.href = '/';
     localStorage.removeItem('state');
     localStorage.removeItem('token');
     localStorage.removeItem('project');
+    props.removeUser();
+    window.location.href = '/';
   };
 
   const handleClickOutside = (event) => {

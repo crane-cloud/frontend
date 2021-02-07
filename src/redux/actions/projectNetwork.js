@@ -1,5 +1,4 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
 import {
   FETCH_PROJECT_NETWORK_SUCCESS,
   FETCH_PROJECT_NETWORK_FAILED,
@@ -41,10 +40,6 @@ const getProjectNetwork = (projectID, params) => (dispatch) => {
       dispatch(getNetworkMetricsSuccess(projectID, response));
     })
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login 
-        redirectToLogin(dispatch);
-      }
       dispatch(getNetworkMetricsFailed(projectID, error));
     });
 };

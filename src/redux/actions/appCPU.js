@@ -1,5 +1,4 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
 import {
   FETCH_APP_CPU_SUCCESS,
   FETCH_APP_CPU_FAILED,
@@ -41,11 +40,6 @@ const getAppCPU = (projectID, appID, params) => (dispatch) => {
       dispatch(getAppCPUMetricsSuccess(appID, response));
     })
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login
-        
-        redirectToLogin(dispatch);
-      }
       dispatch(getAppCPUMetricsFailed(appID, error));
     });
 };

@@ -1,5 +1,4 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
 import {
   FETCH_PROJECT_MEMORY_SUCCESS,
   FETCH_PROJECT_MEMORY_FAILED,
@@ -41,10 +40,6 @@ const getProjectMemory = (projectID, params) => (dispatch) => {
       dispatch(getMemoryMetricsSuccess(projectID, response));
     })
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login
-        redirectToLogin(dispatch);
-      }
       dispatch(getMemoryMetricsFailed(projectID, error));
     });
 };
