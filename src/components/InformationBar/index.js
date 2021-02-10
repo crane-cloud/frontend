@@ -1,6 +1,5 @@
 import React from 'react';
 import RoundAddButton from '../RoundAddButton';
-import CancelButton from '../CancelButton';
 import AppStatus from '../AppStatus';
 import './InformationBar.css';
 
