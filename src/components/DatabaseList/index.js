@@ -4,16 +4,16 @@ import React from "react";
 import Header from "../Header";
 import InformationBar from "../InformationBar";
 import SideNav from "../SideNav";
-// import Status from "../Status";
-// import tellAge from "../../helpers/ageUtility";
+import Status from "../Status";
 import Spinner from "../Spinner";
 
-
+var databases = [];
 
 class DatabaseList extends React.Component {
 
   render() {
-
+    const isRetrieving = false;
+    const isFetched = true;
     return (
       <div className="MainPage">
         <div className="TopBarSection">
@@ -21,7 +21,7 @@ class DatabaseList extends React.Component {
         </div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
+            <SideNav />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
@@ -38,7 +38,9 @@ class DatabaseList extends React.Component {
                 <table>
                   <thead>
                     <tr>
+                      <th>Url</th>
                       <th>Name</th>
+                      <th>Size</th>
                       <th>Status</th>
                       <th>Age</th>
                     </tr>
@@ -59,11 +61,13 @@ class DatabaseList extends React.Component {
                         databases !== undefined &&
                         databases.map((database) => (
                           <tr key={databases.indexOf(database)}>
-                            <td>{database.metadata.name}</td>
+                            <td>{database.url}</td>
+                            <td>{database.name}</td>
+                            <td>{database.size}</td>
                             <td>
-                              <Status status={database.status.phase} />
+                              <Status status={database.status} />
                             </td>
-                            <td>{tellAge(database.metadata.creationTimestamp)}</td>
+                            <td>{database.age}</td>
                           </tr>
                         ))}
                     </tbody>
@@ -72,14 +76,13 @@ class DatabaseList extends React.Component {
 
                 {isFetched && databases.length === 0 && (
                   <div className="NoResourcesMessage">
-                    <p>No Volume Claims Available</p>
+                    <p>No Databases Available</p>
                   </div>
                 )}
                 {!isRetrieving && !isFetched && (
                   <div className="NoResourcesMessage">
                     <p>
-                      Oops! Something went wrong! Failed to retrieve Volume
-                      Claims.
+                      Oops! Something went wrong! Failed to retrieve Databases.
                     </p>
                   </div>
                 )}
