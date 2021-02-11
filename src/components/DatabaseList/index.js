@@ -1,13 +1,33 @@
 import React from "react";
-// import PropTypes from "prop-types";
-// import { connect } from "react-redux";
 import Header from "../Header";
 import InformationBar from "../InformationBar";
-import SideNav from "../SideNav";
+// import SideNav from "../SideNav";
 import Status from "../Status";
 import Spinner from "../Spinner";
 
-var databases = [];
+var databases = [
+    {
+        "url": "africakla1.cranecloud.io",
+        "name": "AirQo-users",
+        "size": 0.1,
+        "status": true,
+        "time": "28 seconds ago"
+    },
+    {
+        "url": "africa2.cranecloud.io",
+        "name": "AirQo-devices",
+        "size": 32,
+        "status": false,
+        "time": "4 days ago"
+    },
+    {
+        "url": "defaultafrica.cranecloud.io",
+        "name": "VotingApp-db",
+        "size": 5,
+        "status": true,
+        "time": "5 minutes ago"
+    },
+];
 
 class DatabaseList extends React.Component {
 
@@ -21,11 +41,11 @@ class DatabaseList extends React.Component {
         </div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideNav />
+            {/* <SideNav /> */}
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
-              <InformationBar header="Databases" showBtn={false} />
+              <InformationBar header="Databases" showBtn={true} />
             </div>
             <div className="ContentSection">
               <div
@@ -67,7 +87,7 @@ class DatabaseList extends React.Component {
                             <td>
                               <Status status={database.status} />
                             </td>
-                            <td>{database.age}</td>
+                            <td>{database.time}</td>
                           </tr>
                         ))}
                     </tbody>
