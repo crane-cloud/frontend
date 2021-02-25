@@ -1,6 +1,5 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
-
+import axios from '../../axios';
+import redirectToLogin from '../../helpers/redirectToLogin';
 import { GET_STORAGE_CLASS_SUCCESS, GET_STORAGE_CLASS_FAIL, START_GETTING_STORAGE_CLASS } from './actionTypes';
 
 export const startFetchingStorageClass = () => ({
@@ -23,12 +22,14 @@ export const getStorageClassFail = (error) => ({
 const getStorageClassList = (clusterId) => (dispatch) => {
   dispatch(startFetchingStorageClass());
 
-  return axios.get(`${API_BASE_URL}/clusters/${clusterId}/storage_classes`,
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+  return axios.get(`/clusters/${clusterId}/storage_classes`)
     .then((response) => dispatch(getStorageClassSuccess(response)))
     .catch((error) => {
+      if (error.response.status === 401) {
+        // function to logout user and redirect user to login
+        
+        redirectToLogin(dispatch);
+      }
       dispatch(getStorageClassFail(error));
     });
 };

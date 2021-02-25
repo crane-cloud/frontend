@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
+import redirectToLogin from '../../helpers/redirectToLogin';
 import {
   DELETE_APP_SUCCESS, DELETE_APP_FAIL, START_DELETING_APP, CLEAR_DELETE_APP_STATE
 } from './actionTypes';
@@ -28,11 +28,13 @@ const clearState = () => ({
 const deleteApp = (appID) => (dispatch) => {
   dispatch(startDeletingApp());
 
-  axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-
-  return axios.delete(`${API_BASE_URL}/apps/${appID}`)
+  return axios.delete(`/apps/${appID}`)
     .then((response) => dispatch(deleteAppSuccess(response)))
     .catch((error) => {
+      if (error.response.status === 401) {
+        // function to logout user and redirect user to login        
+        redirectToLogin(dispatch);
+      }
       dispatch(deleteAppFail(error));
     });
 };

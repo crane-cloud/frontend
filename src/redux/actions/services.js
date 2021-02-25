@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
+import redirectToLogin from '../../helpers/redirectToLogin';
 import { IS_FETCHING, FETCH_SERVICES_SUCCESS, FETCH_SERVICES_FAILED } from './actionTypes';
 
 export const startTheFetch = () => ({
@@ -22,12 +22,14 @@ export const getServicesFailed = (error) => ({
 
 const getServices = (clusterId) => (dispatch) => {
   dispatch(startTheFetch());
-  return axios.get(`${API_BASE_URL}/clusters/${clusterId}/services`,
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+  return axios.get(`/clusters/${clusterId}/services`)
     .then((response) => dispatch(getServicesSuccess(response)))
     .catch((error) => {
+      if (error.response.status === 401) {
+        // function to logout user and redirect user to login
+        
+        redirectToLogin(dispatch);
+      }
       dispatch(getServicesFailed(error));
     });
 };
