@@ -1,5 +1,6 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
+import redirectToLogin from '../../helpers/redirectToLogin';
+
 import { IS_FETCHING, FETCH_USER_PROJECTS_SUCCESS, FETCH_USER_PROJECTS_FAILED } from './actionTypes';
 
 export const startTheFetch = () => ({
@@ -22,12 +23,15 @@ export const getUserProjectsFailed = (error) => ({
 
 const getUserProjects = (userID) => (dispatch) => {
   dispatch(startTheFetch());
-  return axios.get(`${API_BASE_URL}/users/${userID}/projects`,
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+  return axios.get(`/users/${userID}/projects`)
+    
     .then((response) => dispatch(getUserProjectsSuccess(response)))
     .catch((error) => {
+      if (error.response.status === 401) {
+        // function to logout user and redirect user to login 
+        redirectToLogin(dispatch);
+      }
+      
       dispatch(getUserProjectsFailed(error));
     });
 };

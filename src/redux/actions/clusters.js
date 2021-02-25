@@ -1,6 +1,6 @@
 
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
+import redirectToLogin from '../../helpers/redirectToLogin';
 
 import { GET_CLUSTERS, GET_CLUSTERS_FAIL, START_GETTING_CLUSTERS } from './actionTypes';
 
@@ -24,15 +24,16 @@ export const getClustersFail = (error) => ({
 const getClustersList = () => (dispatch) => {
   dispatch(startFetchingClusters());
 
-  return axios.get(`${API_BASE_URL}/clusters`,
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+  return axios.get(`/clusters`,)
+    
     .then((response) => dispatch(getClustersSuccess(response)))
     .catch((error) => {
+      if (error.response.status === 401) {
+        //function to logout user and redirect user to login
+        redirectToLogin(dispatch);
+      }
       dispatch(getClustersFail(error));
     });
 };
-
 
 export default getClustersList;

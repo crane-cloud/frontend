@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
 import {
   FETCH_PROJECT_NETWORK_SUCCESS,
   FETCH_PROJECT_NETWORK_FAILED,
@@ -36,8 +35,7 @@ const clearProjectNetwork = () => ({
 const getProjectNetwork = (projectID, params) => (dispatch) => {
   dispatch(startFetchingNetworkMetrics());
 
-  axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-  return axios.post(`${API_BASE_URL}/projects/${projectID}/metrics/network`, params)
+  return axios.post(`/projects/${projectID}/metrics/network`, params)
     .then((response) => {
       dispatch(getNetworkMetricsSuccess(projectID, response));
     })

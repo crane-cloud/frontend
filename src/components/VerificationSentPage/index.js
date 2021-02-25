@@ -37,6 +37,7 @@ class VerificationSentPage extends React.Component {
     // so that when a person doesnt access the panel of another
     // from the previous state which wasnt cleared
     localStorage.removeItem('state');
+    localStorage.removeItem('project');
 
     axios
       .get(`${API_BASE_URL}/users/verify/${token}`)

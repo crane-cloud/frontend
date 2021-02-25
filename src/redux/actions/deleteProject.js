@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
+import redirectToLogin from '../../helpers/redirectToLogin';
 import { DELETE_PROJECT_SUCCESS, DELETE_PROJECT_FAIL, START_DELETING_PROJECT, CLEAR_DELETE_PROJECT_STATE } from './actionTypes';
 
 const startDeletingProject = () => ({
@@ -26,11 +26,13 @@ const clearDeleteProjectState = () => ({
 const deleteProject = (ProjectID) => (dispatch) => {
   dispatch(startDeletingProject());
 
-  axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-
-  return axios.delete(`${API_BASE_URL}/projects/${ProjectID}`)
+  return axios.delete(`/projects/${ProjectID}`)
     .then((response) => dispatch(deleteProjectSuccess(response)))
     .catch((error) => {
+      if (error.response.status === 401) {
+        // function to logout user and redirect user to login
+        redirectToLogin(dispatch);
+      }
       dispatch(deleteProjectFail(error));
     });
 };

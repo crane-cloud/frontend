@@ -22,10 +22,11 @@ const Header = (props) => {
   };
 
   const logout = () => {
-    props.removeUser();
-    window.location.href = '/';
     localStorage.removeItem('state');
     localStorage.removeItem('token');
+    localStorage.removeItem('project');
+    props.removeUser();
+    window.location.href = '/';
   };
 
   const handleClickOutside = (event) => {
@@ -49,7 +50,7 @@ const Header = (props) => {
       <Logo />
 
 
-      {!user.accessToken && (
+      {(!user.accessToken || user.accessToken === '') && (
         <div className="HeaderLinksWrap">
           {match.path !== '/admin-login' && (
             <div className="HeaderLinks bold uppercase">
@@ -104,7 +105,10 @@ const Header = (props) => {
 Header.propTypes = {
   removeUser: PropTypes.func.isRequired,
   user: PropTypes.shape({
-    accessToken: PropTypes.string.isRequired,
+    accessToken: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.bool
+    ]),
     data: PropTypes.shape({
       id: PropTypes.string,
       name: PropTypes.string
