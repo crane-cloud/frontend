@@ -6,6 +6,7 @@
   background: #ff9595;
   box-sizing: border-box;
   padding: 0 2rem;
+  top: 10.098rem;
 }
 
 .MainModalSection {
@@ -20,7 +21,6 @@
 }
 
 .ConnectionButton {
-  /* max-width: 100%; */
   max-height: 100%;
   background-color: transparent;
   border-color: transparent;
@@ -30,6 +30,7 @@
   width: 2.375rem;
   
 }
+
 .ConnectionButton:hover{
   border-color: transparent;
 }
