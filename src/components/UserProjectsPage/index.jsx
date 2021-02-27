@@ -16,6 +16,7 @@ import ProjectCard from '../ProjectCard';
 import Spinner from '../Spinner';
 import Feedback from '../Feedback';
 import Select from '../Select';
+import ConnectionComponent from '../ConnectionComponent';
 
 class UserProjectsPage extends React.Component {
   constructor(props) {
@@ -168,6 +169,7 @@ class UserProjectsPage extends React.Component {
           <InformationBar header="Projects" showBtn btnAction={this.showForm} />
         </div>
         <div className="MainRow">
+          <ConnectionComponent show />
           {
             isRetrieving ? (
               <div className="TableLoading">
