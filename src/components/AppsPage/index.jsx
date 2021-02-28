@@ -19,6 +19,7 @@ import SideBar from '../SideBar';
 import Tabs from '../Tabs';
 import Select from '../Select';
 import './AppsPage.css';
+import ConnectionComponent from '../ConnectionComponent';
 
 class AppsPage extends React.Component {
   constructor(props) {
@@ -411,6 +412,7 @@ class AppsPage extends React.Component {
               />
             </div>
             <div className="ContentSection">
+              <ConnectionComponent />
               <AppsList params={params} newAppCreated={isCreated} />
             </div>
           </div>

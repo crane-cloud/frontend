@@ -1,7 +1,8 @@
 .ConnectModal {
   position: absolute;
-  left: 0;
-  width: 100%;
+  right: 0;
+  width: 82.19%;
+  margin-left: 17.81%;
   height: 35px;
   background: #ff9595;
   box-sizing: border-box;
