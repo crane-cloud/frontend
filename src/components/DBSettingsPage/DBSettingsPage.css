@@ -1,0 +1,67 @@
+
+.ContentSection {
+  justify-content: space-between;
+  padding-left: 3rem;
+}
+
+.ErrorOnWhite {
+  width: 25rem;
+}
+
+.DatabaseDetail{
+  width: 100%;
+}
+
+.DBButtons{
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+.ResetBtn{
+  background-color: #F7B21F;
+  float: left;
+}
+
+.DBDeleteBtn{
+  background-color: #FF9595;
+  outline: 2px solid #FF9595;
+  color: #fff;
+  float: left;
+}
+
+.DBDeleteBtn:hover{
+  background-color: transparent;
+  outline: 2px solid #FF9595;
+  color: #FF9595;
+}
+.rowDiv{
+  display: grid;
+  /* grid-template-columns: 25% 75%; */
+}
+
+.DBDetailRow{
+  width: 100%;
+  padding-bottom: 1rem;
+}
+.DBDetailRow:after{
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.buttonText{
+  padding: 1rem 0 0 1rem;
+  float: left;
+}
+
+.DBThead{
+  width: 15%;
+  float: left;
+  font-weight: bold;
+}
+
+.DBTDetail{
+  width: 80%;
+  float: left;
+}

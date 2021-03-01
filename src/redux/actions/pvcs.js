@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
+import redirectToLogin from '../../helpers/redirectToLogin';
 import { IS_FETCHING, FETCH_PVCS_SUCCESS, FETCH_PVCS_FAILED } from './actionTypes';
 
 export const startTheFetch = () => ({
@@ -22,12 +22,13 @@ export const getPvcsFailed = (error) => ({
 
 const getPvcs = (clusterId) => (dispatch) => {
   dispatch(startTheFetch());
-  return axios.get(`${API_BASE_URL}/clusters/${clusterId}/pvcs`,
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+  return axios.get(`/clusters/${clusterId}/pvcs`)
     .then((response) => dispatch(getPvcsSuccess(response)))
     .catch((error) => {
+      if (error.response.status === 401) {
+        // function to logout user and redirect user to login
+        redirectToLogin(dispatch);
+      }
       dispatch(getPvcsFailed(error));
     });
 };

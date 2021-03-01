@@ -1,7 +1,5 @@
-
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
-
+import axios from '../../axios';
+import redirectToLogin from '../../helpers/redirectToLogin';
 import { GET_APPS_SUCCESS, GET_APPS_FAIL, START_GETTING_APPS } from './actionTypes';
 
 export const startFetchingApps = () => ({
@@ -24,16 +22,18 @@ export const getAppsFail = (error) => ({
 const getAppsList = (projectID) => (dispatch) => {
   dispatch(startFetchingApps());
 
-  return axios.get(`${API_BASE_URL}/projects/${projectID}/apps`,
+  return axios.get(`/projects/${projectID}/apps`,)
 
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
     .then((response) => dispatch(getAppsSuccess(response)))
     .catch((error) => {
+      if (error.response.status === 401) {
+        // function to logout user and redirect user to login
+        
+        redirectToLogin(dispatch);
+      }
+
       dispatch(getAppsFail(error));
     });
 };
-
 
 export default getAppsList;

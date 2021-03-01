@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
 import {
   FETCH_PROJECT_MEMORY_SUCCESS,
   FETCH_PROJECT_MEMORY_FAILED,
@@ -36,8 +35,7 @@ const clearProjectMemory = () => ({
 const getProjectMemory = (projectID, params) => (dispatch) => {
   dispatch(startFetchingMemoryMetrics());
 
-  axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-  return axios.post(`${API_BASE_URL}/projects/${projectID}/metrics/memory`, params)
+  return axios.post(`/projects/${projectID}/metrics/memory`, params)
     .then((response) => {
       dispatch(getMemoryMetricsSuccess(projectID, response));
     })

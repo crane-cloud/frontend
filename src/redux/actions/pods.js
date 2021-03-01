@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
+import redirectToLogin from '../../helpers/redirectToLogin';
 
 import { GET_PODS_SUCCESS, GET_PODS_FAIL, START_GETTING_PODS } from './actionTypes';
 
@@ -23,12 +23,13 @@ export const getPodsFail = (error) => ({
 const getPodsList = (clusterId) => (dispatch) => {
   dispatch(startFetchingPods());
 
-  return axios.get(`${API_BASE_URL}/clusters/${clusterId}/pods`,
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+  return axios.get(`/clusters/${clusterId}/pods`)
     .then((response) => dispatch(getPodsSuccess(response)))
     .catch((error) => {
+      if (error.response.status === 401) {
+        // function to logout user and redirect user to login
+        redirectToLogin(dispatch);
+      }
       dispatch(getPodsFail(error));
     });
 };

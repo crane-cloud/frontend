@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
+import redirectToLogin from '../../helpers/redirectToLogin';
 import {
   CREATE_APP_SUCCESS,
   CLEAR_ADD_APP_STATE,
@@ -33,11 +33,14 @@ const createApp = (appInfo, projectID) => (dispatch) => {
 
   dispatch(startCreatingApp());
 
-  axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-
-  return axios.post(`${API_BASE_URL}/projects/${projectID}/apps`, appInfo)
+  return axios.post(`/projects/${projectID}/apps`, appInfo)
     .then((response) => dispatch(createAppSuccess(response)))
     .catch((error) => {
+      if (error.response.status === 401) {
+        // function to logout user and redirect user to login
+        
+        redirectToLogin(dispatch);
+      }
       dispatch(createAppFail(error));
     });
 };

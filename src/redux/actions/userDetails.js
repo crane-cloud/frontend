@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
+import redirectToLogin from '../../helpers/redirectToLogin';
 import { GET_USER_DETAIL_SUCCESS, GET_USER_DETAIL_FAIL, START_GETTING_USER_DETAIL } from './actionTypes';
 
 export const startGettingUserDetail = () => ({
@@ -22,12 +22,14 @@ export const getUserDetailFail = (error) => ({
 
 const getUserDetail = (userID) => (dispatch) => {
   dispatch(startGettingUserDetail());
-  return axios.get(`${API_BASE_URL}/users/${userID}`,
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+  return axios.get(`/users/${userID}`)
     .then((response) => dispatch(getUserDetailSuccess(response)))
     .catch((error) => {
+      if (error.response.status === 401) {
+        // function to logout user and redirect user to login
+        
+        redirectToLogin(dispatch);
+      }
       dispatch(getUserDetailFail(error));
     });
 };
