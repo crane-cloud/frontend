@@ -1,5 +1,5 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
+// import redirectToLogin from '../../helpers/redirectToLogin';
 
 import { IS_FETCHING, FETCH_USER_PROJECTS_SUCCESS, FETCH_USER_PROJECTS_FAILED } from './actionTypes';
 
@@ -27,10 +27,10 @@ const getUserProjects = (userID) => (dispatch) => {
     
     .then((response) => dispatch(getUserProjectsSuccess(response)))
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login 
-        redirectToLogin(dispatch);
-      }
+      // if (error.response.status === 401) {
+      //   // function to logout user and redirect user to login 
+      //   redirectToLogin(dispatch);
+      // }
       
       dispatch(getUserProjectsFailed(error));
     });
