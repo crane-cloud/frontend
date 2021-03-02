@@ -1,5 +1,4 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
 import {
   START_UPDATING_PROJECT,
   CLEAR_UPDATE_PROJECT_STATE,
@@ -36,11 +35,6 @@ const updateProject = (projectID, projectData) => (dispatch) => {
   return axios.patch(`/projects/${projectID}`, projectData)
     .then((response) => dispatch(updateProjectSuccess(response)))
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login
-        
-        redirectToLogin(dispatch);
-      }
       dispatch(updateProjectFail(error));
     });
 };
