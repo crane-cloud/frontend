@@ -1,0 +1,17 @@
+.DatabaseForm{
+    width: 40%;
+    padding-top: 2rem;
+    height: 100%;
+}
+.SelectWrapper{
+    width: 60%;
+}
+.SelectOptionsWrapper{
+    border: 2px solid #000;
+}
+
+.DBFormElements{
+    display: grid;
+    /* justify-content: space-between; */
+    width: 60%;
+}
