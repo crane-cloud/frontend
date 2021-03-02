@@ -1,5 +1,4 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
 import { GET_RESOURCES_COUNT, GET_RESOURCES_COUNT_FAILED, START_GETTING_RESOURCES_COUNT } from './actionTypes';
 
 export const startFetchingResources = () => ({
@@ -26,11 +25,6 @@ const getClusterResourcesCount = (params) => (dispatch) => {
   return axios.get(`/clusters/${params.clusterID}`)
     .then((response) => dispatch(getResourcesSuccess(response)))
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login
-        
-        redirectToLogin(dispatch);
-      }
       dispatch(getResourcesFail(error));
     });
 };

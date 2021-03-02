@@ -1,5 +1,4 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
 import { GET_APPS_SUCCESS, GET_APPS_FAIL, START_GETTING_APPS } from './actionTypes';
 
 export const startFetchingApps = () => ({
@@ -26,12 +25,6 @@ const getAppsList = (projectID) => (dispatch) => {
 
     .then((response) => dispatch(getAppsSuccess(response)))
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login
-        
-        redirectToLogin(dispatch);
-      }
-
       dispatch(getAppsFail(error));
     });
 };

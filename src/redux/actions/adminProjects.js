@@ -1,5 +1,4 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
 import { IS_FETCHING, FETCH_ADMIN_PROJECTS_SUCCESS, FETCH_ADMIN_PROJECTS_FAILED } from './actionTypes';
 
 export const startTheFetch = () => ({
@@ -25,11 +24,6 @@ const getAdminProjects = () => (dispatch) => {
   return axios.get(`/projects`)
     .then((response) => dispatch(getAdminProjectsSuccess(response)))
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login
-        
-        redirectToLogin(dispatch);
-      }
       dispatch(getAdminProjectsFailed(error));
     });
 };
