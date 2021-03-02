@@ -47,6 +47,7 @@ const CreateDatabase = () => (
                   options={flavours}
                 //   onChange={this.handleSelectChange}
                 />
+                <div />
                 <div className="DBButtons">
                   <div className="DBDetailRow">
                     <PrimaryButton
