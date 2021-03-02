@@ -1,36 +1,36 @@
-import React from "react";
-import Header from "../Header";
-import InformationBar from "../InformationBar";
+import React from 'react';
+import Header from '../Header';
+import InformationBar from '../InformationBar';
 // import SideNav from "../SideNav";
-import Status from "../Status";
-import Spinner from "../Spinner";
+import Status from '../Status';
+import Spinner from '../Spinner';
+import './DatabaseList.css';
 
-var databases = [
-    {
-        "url": "africakla1.cranecloud.io",
-        "name": "AirQo-users",
-        "size": 0.1,
-        "status": true,
-        "time": "28 seconds ago"
-    },
-    {
-        "url": "africa2.cranecloud.io",
-        "name": "AirQo-devices",
-        "size": 32,
-        "status": false,
-        "time": "4 days ago"
-    },
-    {
-        "url": "defaultafrica.cranecloud.io",
-        "name": "VotingApp-db",
-        "size": 5,
-        "status": true,
-        "time": "5 minutes ago"
-    },
+const databases = [
+  {
+    type: 'PostgreSQL',
+    name: 'AirQo-users',
+    size: 0.1,
+    status: true,
+    time: '28 seconds ago'
+  },
+  {
+    type: 'MYSQL',
+    name: 'AirQo-devices',
+    size: 32,
+    status: false,
+    time: '4 days ago'
+  },
+  {
+    type: 'PostgreSQL',
+    name: 'VotingApp-db',
+    size: 5,
+    status: true,
+    time: '5 minutes ago'
+  },
 ];
 
 class DatabaseList extends React.Component {
-
   render() {
     const isRetrieving = false;
     const isFetched = true;
@@ -45,56 +45,56 @@ class DatabaseList extends React.Component {
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
-              <InformationBar header="Databases" showBtn={true} />
+              <InformationBar header="Databases" showBtn />
             </div>
             <div className="ContentSection">
               <div
                 className={
                   isRetrieving
-                    ? "ResourcesTable LoadingResourcesTable"
-                    : "ResourcesTable"
+                    ? 'ResourcesTable LoadingResourcesTable'
+                    : 'ResourcesTable'
                 }
               >
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Url</th>
-                      <th>Name</th>
-                      <th>Size</th>
-                      <th>Status</th>
-                      <th>Age</th>
-                    </tr>
-                  </thead>
+                <div className="DatabaseTable">
+                  <div className="DatabaseTableHead">
+                    <div className="DatabaseTableRow">
+                      <div className="DatabaseTableHeadCell">Name</div>
+                      <div className="DatabaseTableHeadCell">Type</div>
+                      <div className="DatabaseTableHeadCell">Size</div>
+                      <div className="DatabaseTableHeadCell">Status</div>
+                      <div className="DatabaseTableHeadCell">Age</div>
+                    </div>
+                  </div>
                   {isRetrieving ? (
-                    <tbody>
-                      <tr className="TableLoading">
-                        <td>
+                    <div className="DatabaseTableBody">
+                      <div className="TableLoading DatabaseTableRow">
+                        <div className="DatabaseTableCell">
                           <div className="SpinnerWrapper">
                             <Spinner size="big" />
                           </div>
-                        </td>
-                      </tr>
-                    </tbody>
+                        </div>
+                      </div>
+                    </div>
                   ) : (
-                    <tbody>
-                      {isFetched &&
-                        databases !== undefined &&
-                        databases.map((database) => (
-                          <tr key={databases.indexOf(database)}>
-                            <td>{database.url}</td>
-                            <td>{database.name}</td>
-                            <td>{database.size}</td>
-                            <td>
+                    <div className='DatabaseTableBody'>
+                      {isFetched
+                        && databases !== undefined
+                        && databases.map((database) => (
+                          <div className="DatabaseTableRow" key={databases.indexOf(database)}>
+                            <div className="DatabaseTableCell">{database.name}</div>
+                            <div className="DatabaseTableCell">{database.type}</div>
+                            <div className="DatabaseTableCell">{database.size}</div>
+                            <div className="DatabaseTableCell">
                               <Status status={database.status} />
-                            </td>
-                            <td>{database.time}</td>
-                          </tr>
+                            </div>
+                            <div className="DatabaseTableCell">{database.time}</div>
+                          </div>
                         ))}
-                    </tbody>
+                    </div>
                   )}
-                </table>
+                </div>
 
-                {isFetched && databases.length === 0 && (
+                {isFetched && databases.lengdiv === 0 && (
                   <div className="NoResourcesMessage">
                     <p>No Databases Available</p>
                   </div>
@@ -102,7 +102,7 @@ class DatabaseList extends React.Component {
                 {!isRetrieving && !isFetched && (
                   <div className="NoResourcesMessage">
                     <p>
-                      Oops! Something went wrong! Failed to retrieve Databases.
+                      Oops! Somediving went wrong! Failed to retrieve Databases.
                     </p>
                   </div>
                 )}
