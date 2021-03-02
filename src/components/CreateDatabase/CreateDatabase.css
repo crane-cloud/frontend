@@ -13,6 +13,4 @@
 .DBFormElements{
     display: grid;
     grid-template-rows: 1fr 1fr 1fr;
-    /* justify-content: space-between; */
-    /* width: 60%; */
 }

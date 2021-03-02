@@ -1,9 +1,6 @@
 import React from 'react';
-// import { Redirect } from 'react-router-dom';
 import Header from '../Header';
 import PrimaryButton from '../PrimaryButton';
-// import Spinner from '../Spinner';
-// import Modal from '../Modal';
 import SideNav from '../SideNav';
 import Select from '../Select';
 import CancelButton from '../CancelButton';
@@ -17,7 +14,6 @@ const flavours = [
 ];
 const CreateDatabase = () => (
   <div className="Page">
-    {/* {isUpdated || isDeleted ? this.renderRedirect() : null} */}
     <div className="TopBarSection">
       <Header />
     </div>
