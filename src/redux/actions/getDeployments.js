@@ -1,5 +1,4 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
 import {
   GET_DEPLOYMENTS_SUCCESS,
   GET_DEPLOYMENTS_FAIL,
@@ -30,10 +29,6 @@ const getDeployments = (clusterID) => (dispatch) => {
   axios.get(`/clusters/${clusterID}/deployments`)
     .then((response) => dispatch(getDeploymentsSuccess(response)))
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login 
-        redirectToLogin(dispatch);
-      }
       dispatch(getDeploymentsFail(error));
     });
 };

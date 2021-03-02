@@ -1,5 +1,4 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
 
 import { GET_PODS_SUCCESS, GET_PODS_FAIL, START_GETTING_PODS } from './actionTypes';
 
@@ -26,10 +25,6 @@ const getPodsList = (clusterId) => (dispatch) => {
   return axios.get(`/clusters/${clusterId}/pods`)
     .then((response) => dispatch(getPodsSuccess(response)))
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login
-        redirectToLogin(dispatch);
-      }
       dispatch(getPodsFail(error));
     });
 };

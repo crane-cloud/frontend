@@ -1,5 +1,4 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
 import { IS_FETCHING, FETCH_NAMESPACES_SUCCESS, FETCH_NAMESPACES_FAILED } from './actionTypes';
 
 export const initiateFetch = () => ({
@@ -25,10 +24,6 @@ const getNamespaces = (params) => (dispatch) => {
   return axios.get(`/clusters/${params.clusterID}/namespaces`)
     .then((response) => dispatch(getNamespacesSuccess(response)))
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login 
-        redirectToLogin(dispatch);
-      }
       dispatch(getNamespacesFailed(error));
     });
 };
