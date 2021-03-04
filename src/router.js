@@ -67,7 +67,6 @@ const Routes = () => (
       <Route path="/verify/:token" component={VerificationSentPage} />
       <Route path="/reset_password/:token" component={CreateNewPassword} />
       <Route path="/team" component={TeamPage} />
-      <Route path="/database" component={DatabaseList} />
       <Route path="/database/settings" component={DBSettingsPage} />
       {/* projects */}
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects" component={UserProjectsPage} />
@@ -78,6 +77,7 @@ const Routes = () => (
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/apps/:appID/metrics" component={AppMetricsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/apps/:appID/settings" component={AppSettingsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/apps/:appID/logs" component={AppLogsPage} />
+      <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/databases" component={DatabaseList} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/memory/" component={ProjectMemoryPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/cpu/" component={ProjectCPUPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/metrics" component={ProjectMetricsPage} />

@@ -37,7 +37,7 @@ const SideBar = (props) => {
   }));
 
   const { userID, projectID, appID } = params;
-  
+
   return (
     <div className="SideBar">
       <div>
@@ -126,7 +126,7 @@ SideBar.propTypes = {
   pageRoute: PropTypes.string.isRequired,
   cpuLink: PropTypes.string.isRequired,
   memoryLink: PropTypes.string.isRequired,
-  storageLink: PropTypes.string.isRequired,
+  databaseLink: PropTypes.string.isRequired,
   networkLink: PropTypes.string.isRequired,
   allMetricsLink: PropTypes.string.isRequired,
   appLogsLink: PropTypes.string

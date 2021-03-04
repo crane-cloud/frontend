@@ -1,10 +1,14 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideBar from '../SideBar';
 import Status from '../Status';
 import Spinner from '../Spinner';
 import './DatabaseList.css';
+
 
 const databases = [
   {
@@ -31,9 +35,25 @@ const databases = [
 ];
 
 class DatabaseList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.getProjectName = this.getProjectName.bind(this);
+  }
+
+  getProjectName(projects, id) {
+    const project = projects.find((project) => project.id === id);
+    return project.name;
+  }
+
   render() {
     const isRetrieving = false;
     const isFetched = true;
+    const {
+      match: { params },
+      projects
+    } = this.props;
+
+    const { projectID, userID } = params;
     return (
       <div className="MainPage">
         <div className="TopBarSection">
@@ -41,7 +61,17 @@ class DatabaseList extends React.Component {
         </div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideBar />
+            <SideBar
+              name={this.getProjectName(projects, params.projectID)}
+              params={params}
+              description={this.getProjectName(projects, params.projectID)}
+              pageRoute={this.props.location.pathname}
+              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
+              cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
+              memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
+              databaseLink={`/users/${userID}/projects/${projectID}/databases`}
+              networkLink={`/users/${userID}/projects/${projectID}/network/`}
+            />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
@@ -76,7 +106,7 @@ class DatabaseList extends React.Component {
                       </div>
                     </div>
                   ) : (
-                    <div className='DatabaseTableBody'>
+                    <div className="DatabaseTableBody">
                       {isFetched
                         && databases !== undefined
                         && databases.map((database) => (
@@ -115,4 +145,31 @@ class DatabaseList extends React.Component {
   }
 }
 
-export default DatabaseList;
+DatabaseList.propTypes = {
+  isCreated: PropTypes.bool.isRequired,
+  isCreating: PropTypes.bool.isRequired,
+  message: PropTypes.string.isRequired,
+  clearState: PropTypes.func.isRequired,
+  createApp: PropTypes.func.isRequired,
+  errorCode: PropTypes.number,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      projectID: PropTypes.string.isRequired,
+      userID: PropTypes.string.isRequired,
+    }).isRequired
+  }).isRequired,
+  projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+};
+
+DatabaseList.defaultProps = {
+  errorCode: null
+};
+
+const mapStateToProps = ({ userProjectsReducer }) => {
+  const { projects } = userProjectsReducer;
+  return {
+    projects
+  };
+};
+
+export default connect(mapStateToProps)(withRouter(DatabaseList));
