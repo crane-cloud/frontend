@@ -12,7 +12,7 @@ const SideBar = (props) => {
     pageRoute,
     cpuLink,
     memoryLink,
-    // storageLink,
+    databaseLink,
     networkLink,
     allMetricsLink,
     appLogsLink
@@ -41,8 +41,8 @@ const SideBar = (props) => {
   return (
     <div className="SideBar">
       <div>
-      { isAppPage ? (
-            <div className="SideBarTopSection">
+        { isAppPage ? (
+        <div className="SideBarTopSection">
               <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}>
                 <img src={BackButton} alt="Back Button" />
                 <span>&nbsp; &nbsp; &nbsp;</span>
@@ -50,7 +50,7 @@ const SideBar = (props) => {
               <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }} className="ProjectName">{ name }</Link>
             </div>
           ): ( pageLocation ? (
-                <div className="SideBarTopSection">
+            <div className="SideBarTopSection">
                   <Link to={{ pathname: `/users/${userID}/projects/` }}>
                     <img src={BackButton} alt="Back Button" />
                     <span>&nbsp; &nbsp; &nbsp;</span>
@@ -58,7 +58,7 @@ const SideBar = (props) => {
                   <Link to={{ pathname: `/users/${userID}/projects/` }} className="ProjectName">{ name }</Link>
                 </div>
               ): (
-                  <div className="SideBarTopSection">
+                <div className="SideBarTopSection">
                     <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}>
                       <img src={BackButton} alt="Back Button" />
                       <span>&nbsp; &nbsp; &nbsp;</span>
@@ -72,10 +72,10 @@ const SideBar = (props) => {
 
       <div className="SideBarBottomSection">
         <div className="SideBarLinks">
-        <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }} className="ListItem">Apps</Link>
-          <Link to={allMetricsLink} className="ListItem">SERVICES</Link>
+          <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }} className="ListItem">Apps</Link>
+          <Link to="/services" className="ListItem DisabledLink">SERVICES</Link>
           <div>
-            <NavLink to='' className="SubBarListItem" >Databases</NavLink>
+            <NavLink to={databaseLink} className="SubBarListItem">Databases</NavLink>
           </div>
           <Link to={allMetricsLink} className="ListItem">METRICS</Link>
           <div>

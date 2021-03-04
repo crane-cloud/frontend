@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
-// import SideNav from "../SideNav";
+import SideBar from '../SideBar';
 import Status from '../Status';
 import Spinner from '../Spinner';
 import './DatabaseList.css';
@@ -41,7 +41,7 @@ class DatabaseList extends React.Component {
         </div>
         <div className="MainSection">
           <div className="SideBarSection">
-            {/* <SideNav /> */}
+            <SideBar />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
