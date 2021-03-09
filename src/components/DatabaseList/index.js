@@ -6,32 +6,8 @@ import InformationBar from '../InformationBar';
 import SideBar from '../SideBar';
 import Spinner from '../Spinner';
 import getProjectDatabases from '../../redux/actions/databaseList';
+import tellAge from '../../helpers/ageUtility';
 import './DatabaseList.css';
-
-
-const databasesList = [
-  {
-    type: 'PostgreSQL',
-    name: 'AirQo-users',
-    size: 0.1,
-    status: true,
-    time: '28 seconds ago'
-  },
-  {
-    type: 'MYSQL',
-    name: 'AirQo-devices',
-    size: 32,
-    status: false,
-    time: '4 days ago'
-  },
-  {
-    type: 'PostgreSQL',
-    name: 'VotingApp-db',
-    size: 5,
-    status: true,
-    time: '5 minutes ago'
-  },
-];
 
 class DatabaseList extends React.Component {
   constructor(props) {
@@ -40,8 +16,8 @@ class DatabaseList extends React.Component {
   }
 
   componentDidMount() {
-    const { getProjectDatabases } = this.props;
-    getProjectDatabases();
+    const { getProjectDatabases, match: { params: { projectID }} } = this.props;
+    getProjectDatabases(projectID);
   }
 
   getProjectName(projects, id) {
@@ -50,15 +26,16 @@ class DatabaseList extends React.Component {
   }
 
   render() {
-    const isRetrieving = false;
-    const isFetched = true;
     const {
       match: { params },
       projects,
-      databases
+      databases,
+      isFetchingDatabases,
+      databasesFetched
     } = this.props;
 
     const { projectID, userID } = params;
+    console.log(databases);
     return (
       <div className="MainPage">
         <div className="TopBarSection">
@@ -83,62 +60,46 @@ class DatabaseList extends React.Component {
               <InformationBar header="Databases" showBtn />
             </div>
             <div className="ContentSection">
-              <div
-                className={
-                  isRetrieving
-                    ? 'ResourcesTable LoadingResourcesTable'
-                    : 'ResourcesTable'
-                }
-              >
-                <div className="DatabaseTable">
-                  <div className="DatabaseTableHead">
-                    <div className="DatabaseTableRow">
-                      <div className="DatabaseTableHeadCell">Name</div>
-                      <div className="DatabaseTableHeadCell">Type</div>
-                      <div className="DatabaseTableHeadCell">Size</div>
-                      <div className="DatabaseTableHeadCell">Status</div>
-                      <div className="DatabaseTableHeadCell">Age</div>
-                    </div>
+              <div className="DatabaseTable">
+                <div className="DatabaseTableHead">
+                  <div className="DatabaseTableRow">
+                    <div className="DatabaseTableHeadCell">User</div>
+                    <div className="DatabaseTableHeadCell">Name</div>
+                    <div className="DatabaseTableHeadCell">Host</div>
+                    <div className="DatabaseTableHeadCell">Age</div>
                   </div>
-                  {isRetrieving ? (
-                    <div className="DatabaseTableBody">
-                      <div className="TableLoading DatabaseTableRow">
-                        <div className="DatabaseTableCell">
-                          <div className="SpinnerWrapper">
-                            <Spinner size="big" />
-                          </div>
+                </div>
+                {isFetchingDatabases ? (
+                  <div className="DatabaseTableBody">
+                    <div className="TableLoading DatabaseTableRow">
+                      <div className="DatabaseTableCell">
+                        <div className="SpinnerWrapper">
+                          <Spinner size="big" />
                         </div>
                       </div>
                     </div>
-                  ) : (
-                    <div className="DatabaseTableBody">
-                      {isFetched
-                        && databasesList !== undefined
-                        && databasesList.map((database) => (
-                          <div className="DatabaseTableRow" key={databasesList.indexOf(database)}>
-                            <div className="DatabaseTableCell">{database.user}</div>
-                            <div className="DatabaseTableCell">{database.name}</div>
-                            <div className="DatabaseTableCell">{database.host}</div>
-                            <div className="DatabaseTableCell">{database.time}</div>
-                          </div>
-                        ))}
-                    </div>
-                  )}
-                </div>
-
-                {(isFetched && databases.length === 0) && (
-                  <div className="NoResourcesMessage">
-                    <p>No Databases Available</p>
                   </div>
-                )}
-                {!isRetrieving && !isFetched && (
-                  <div className="NoResourcesMessage">
-                    <p>
-                      Oops! Somediving went wrong! Failed to retrieve Databases.
-                    </p>
+                ) : (
+                  <div className="DatabaseTableBody">
+                    {(databasesFetched && databases !== undefined && (
+                      (databases.map((database) => (
+                        <div className="DatabaseTableRow" key={databases.indexOf(database)}>
+                          <div className="DatabaseTableCell">{database.user}</div>
+                          <div className="DatabaseTableCell">{database.name}</div>
+                          <div className="DatabaseTableCell">{database.host}</div>
+                          <div className="DatabaseTableCell">{tellAge(database.date_created)}</div>
+                        </div>
+                      ))))
+                    )}
                   </div>
                 )}
               </div>
+
+              {(databasesFetched && databases.length === 0) && (
+                <div className="NoResourcesMessage">
+                  <p>No Databases Available</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -148,12 +109,7 @@ class DatabaseList extends React.Component {
 }
 
 DatabaseList.propTypes = {
-  isCreated: PropTypes.bool.isRequired,
-  isCreating: PropTypes.bool.isRequired,
-  message: PropTypes.string.isRequired,
-  clearState: PropTypes.func.isRequired,
-  createApp: PropTypes.func.isRequired,
-  errorCode: PropTypes.number,
+  databases: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       projectID: PropTypes.string.isRequired,
@@ -163,16 +119,18 @@ DatabaseList.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
-DatabaseList.defaultProps = {
-  errorCode: null
-};
+// DatabaseList.defaultProps = {
+//   databases: [],
+// };
 
 const mapStateToProps = (state) => {
   const { projects } = state.userProjectsReducer;
-  const { databases } = state.projectDatabasesReducer;
+  const { databases, databasesFetched, isFetchingDatabases } = state.projectDatabasesReducer;
   return {
     projects,
     databases,
+    databasesFetched,
+    isFetchingDatabases
   };
 };
 

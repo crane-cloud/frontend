@@ -16,10 +16,10 @@ const getDatabasesSuccess = (response) => (
     payload: response.data.data.databases,
   });
 
-const getDatabasesFailed = (ID, error) => ({
+const getDatabasesFailed = (error) => ({
   type: FETCH_PROJECT_DATABASES_FAILED,
   payload: {
-    databases: [],
+    status: false,
     error: error.status,
   },
 });
