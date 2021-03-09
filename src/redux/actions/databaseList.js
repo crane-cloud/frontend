@@ -10,19 +10,15 @@ const startFetchingDatabases = () => ({
   type: IS_FETCHING_PROJECT_DATABASES,
 });
 
-const getDatabasesSuccess = (ID, response) => (
+const getDatabasesSuccess = (response) => (
   {
     type: FETCH_PROJECT_DATABASES_SUCCESS,
-    payload: {
-      project: ID,
-      databases: response.data.data
-    },
+    payload: response.data.data.databases,
   });
 
 const getDatabasesFailed = (ID, error) => ({
   type: FETCH_PROJECT_DATABASES_FAILED,
   payload: {
-    project: ID,
     databases: [],
     error: error.status,
   },
@@ -32,15 +28,15 @@ const clearProjectDatabases = () => ({
   type: CLEAR_PROJECT_DATABASES
 });
 
-const getProjectDatabases = (projectID, params) => (dispatch) => {
+const getProjectDatabases = (projectID) => (dispatch) => {
   dispatch(startFetchingDatabases());
 
-  return axios.post(`/projects/${projectID}/databases`, params)
+  return axios.get(`/projects/${projectID}/databases`)
     .then((response) => {
-      dispatch(getDatabasesSuccess(projectID, response));
+      dispatch(getDatabasesSuccess(response));
     })
     .catch((error) => {
-      dispatch(getDatabasesFailed(projectID, error));
+      dispatch(getDatabasesFailed(error));
     });
 };
 

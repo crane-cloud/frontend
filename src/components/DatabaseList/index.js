@@ -1,5 +1,4 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../Header';
@@ -7,10 +6,11 @@ import InformationBar from '../InformationBar';
 import SideBar from '../SideBar';
 import Status from '../Status';
 import Spinner from '../Spinner';
+import getProjectDatabases from '../../redux/actions/databaseList';
 import './DatabaseList.css';
 
 
-const databases = [
+const databasesList = [
   {
     type: 'PostgreSQL',
     name: 'AirQo-users',
@@ -40,6 +40,11 @@ class DatabaseList extends React.Component {
     this.getProjectName = this.getProjectName.bind(this);
   }
 
+  componentDidMount() {
+    const { getProjectDatabases } = this.props;
+    getProjectDatabases();
+  }
+
   getProjectName(projects, id) {
     const project = projects.find((project) => project.id === id);
     return project.name;
@@ -50,7 +55,8 @@ class DatabaseList extends React.Component {
     const isFetched = true;
     const {
       match: { params },
-      projects
+      projects,
+      databases
     } = this.props;
 
     const { projectID, userID } = params;
@@ -108,9 +114,9 @@ class DatabaseList extends React.Component {
                   ) : (
                     <div className="DatabaseTableBody">
                       {isFetched
-                        && databases !== undefined
-                        && databases.map((database) => (
-                          <div className="DatabaseTableRow" key={databases.indexOf(database)}>
+                        && databasesList !== undefined
+                        && databasesList.map((database) => (
+                          <div className="DatabaseTableRow" key={databasesList.indexOf(database)}>
                             <div className="DatabaseTableCell">{database.name}</div>
                             <div className="DatabaseTableCell">{database.type}</div>
                             <div className="DatabaseTableCell">{database.size}</div>
@@ -124,7 +130,7 @@ class DatabaseList extends React.Component {
                   )}
                 </div>
 
-                {isFetched && databases.lengdiv === 0 && (
+                {(isFetched && databases.length === 0) && (
                   <div className="NoResourcesMessage">
                     <p>No Databases Available</p>
                   </div>
@@ -165,11 +171,17 @@ DatabaseList.defaultProps = {
   errorCode: null
 };
 
-const mapStateToProps = ({ userProjectsReducer }) => {
-  const { projects } = userProjectsReducer;
+const mapStateToProps = (state) => {
+  const { projects } = state.userProjectsReducer;
+  const { databases } = state.projectDatabasesReducer;
   return {
-    projects
+    projects,
+    databases,
   };
 };
 
-export default connect(mapStateToProps)(withRouter(DatabaseList));
+const mapDispatchToProps = {
+  getProjectDatabases
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DatabaseList);
