@@ -1,81 +1,86 @@
 .SideBar {
-    width: 100%;
-    height: 100%;
-    background: #06222F;
-    mix-blend-mode: normal;
-    margin-left: 0px;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: #06222f;
+  mix-blend-mode: normal;
+  margin-left: 0px;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .SideBarTopSection {
-    padding: 2rem 1rem;
-    display: grid;
-    grid-auto-flow: column;
+  padding: 2rem 1rem;
+  display: grid;
+  grid-auto-flow: column;
 }
 
 .ProjectName {
-    background-color: #06222F;
-    font-weight: bold;
-    font-size: large;
-    color: #fff;
-    cursor: pointer;
+  background-color: #06222f;
+  font-weight: bold;
+  font-size: large;
+  color: #fff;
+  cursor: pointer;
 }
 
 .SideBarBottomSection {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .SideBarLinks {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .SideBar::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .ListItem {
-    height: 21px;
-    background-color: #06222F;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 19px;
-    color: #F7B21F;
-    margin-top: 20px;
-    cursor: pointer;
-    padding-left: 18px;
-    text-transform: uppercase;
-    display: block;
+  height: 21px;
+  background-color: #06222f;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 19px;
+  color: #f7b21f;
+  margin-top: 20px;
+  cursor: pointer;
+  padding-left: 18px;
+  text-transform: uppercase;
+  display: block;
 }
 
 .SubBarListItem {
-    height: 21px;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 19px;
-    color: #99D2E9;
-    padding: 8px 0px 8px 20px;
-    cursor: pointer;
-    display: block;
+  height: 21px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  color: #99d2e9;
+  padding: 8px 0px 8px 20px;
+  cursor: pointer;
+  display: block;
 }
 
 .List {
-    height: max-content;
-    overflow: auto;
+  height: max-content;
+  overflow: auto;
 }
 
 .ListItem:hover {
-    text-shadow: 0 0 .5px rgb(255, 194, 62);
+  text-shadow: 0 0 0.5px rgb(255, 194, 62);
 }
 
-.SubBarListItem:hover, .active {
-    color: #06222F;
-    background-color: #99D2E9;
-    padding-left: 20px; 
+.SubBarListItem:hover,
+.active {
+  color: #06222f;
+  background-color: #99d2e9;
+  padding-left: 20px;
+}
+
+.DisabledLink {
+  pointer-events: none;
 }
