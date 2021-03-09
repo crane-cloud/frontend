@@ -16,7 +16,7 @@ class DatabaseList extends React.Component {
   }
 
   componentDidMount() {
-    const { getProjectDatabases, match: { params: { projectID }} } = this.props;
+    const { getProjectDatabases, match: { params: { projectID } } } = this.props;
     getProjectDatabases(projectID);
   }
 
@@ -35,7 +35,6 @@ class DatabaseList extends React.Component {
     } = this.props;
 
     const { projectID, userID } = params;
-    console.log(databases);
     return (
       <div className="MainPage">
         <div className="TopBarSection">
@@ -109,7 +108,7 @@ class DatabaseList extends React.Component {
 }
 
 DatabaseList.propTypes = {
-  databases: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  databases: PropTypes.arrayOf(PropTypes.shape({})),
   match: PropTypes.shape({
     params: PropTypes.shape({
       projectID: PropTypes.string.isRequired,
@@ -117,11 +116,16 @@ DatabaseList.propTypes = {
     }).isRequired
   }).isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  getProjectDatabases: PropTypes.func.isRequired,
+  isFetchingDatabases: PropTypes.bool,
+  databasesFetched: PropTypes.bool,
 };
 
-// DatabaseList.defaultProps = {
-//   databases: [],
-// };
+DatabaseList.defaultProps = {
+  databases: [],
+  isFetchingDatabases: false,
+  databasesFetched: false,
+};
 
 const mapStateToProps = (state) => {
   const { projects } = state.userProjectsReducer;
