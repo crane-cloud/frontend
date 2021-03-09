@@ -60,38 +60,38 @@ class DatabaseList extends React.Component {
             </div>
             <div className="ContentSection">
               <div className="DatabaseTable">
-                <div className="DatabaseTableHead">
-                  <div className="DatabaseTableRow">
-                    <div className="DatabaseTableHeadCell">User</div>
-                    <div className="DatabaseTableHeadCell">Name</div>
-                    <div className="DatabaseTableHeadCell">Host</div>
-                    <div className="DatabaseTableHeadCell">Age</div>
-                  </div>
+                <div className="DatabaseTableRow">
+                  <div className="DatabaseTableHeadCell DatabaseTableHead">User</div>
+                  <div className="DatabaseTableHeadCell DatabaseTableHead">Name</div>
+                  <div className="DatabaseTableHeadCell DatabaseTableHead">Host</div>
+                  <div className="DatabaseTableHeadCell DatabaseTableHead">Age</div>
                 </div>
-                {isFetchingDatabases ? (
-                  <div className="DatabaseTableBody">
-                    <div className="TableLoading DatabaseTableRow">
-                      <div className="DatabaseTableCell">
-                        <div className="SpinnerWrapper">
-                          <Spinner size="big" />
+                <div>
+                  {isFetchingDatabases ? (
+                    <div className="DatabaseTableBody">
+                      <div className="TableLoading DatabaseTableRow">
+                        <div className="DatabaseTableCell">
+                          <div className="SpinnerWrapper">
+                            <Spinner size="big" />
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ) : (
-                  <div className="DatabaseTableBody">
-                    {(databasesFetched && databases !== undefined && (
-                      (databases.map((database) => (
-                        <div className="DatabaseTableRow" key={databases.indexOf(database)}>
-                          <div className="DatabaseTableCell">{database.user}</div>
-                          <div className="DatabaseTableCell">{database.name}</div>
-                          <div className="DatabaseTableCell">{database.host}</div>
-                          <div className="DatabaseTableCell">{tellAge(database.date_created)}</div>
-                        </div>
-                      ))))
-                    )}
-                  </div>
-                )}
+                  ) : (
+                    <div className="DatabaseTableBody">
+                      {(databasesFetched && databases !== undefined && (
+                        (databases.map((database) => (
+                          <div className="DatabaseTableRow" key={databases.indexOf(database)}>
+                            <div className="DatabaseTableCell">{database.user}</div>
+                            <div className="DatabaseTableCell">{database.name}</div>
+                            <div className="DatabaseTableCell">{database.host}</div>
+                            <div className="DatabaseTableCell">{tellAge(database.date_created)}</div>
+                          </div>
+                        ))))
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
 
               {(databasesFetched && databases.length === 0) && (

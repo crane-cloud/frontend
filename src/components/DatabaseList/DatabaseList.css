@@ -1,54 +1,34 @@
-.DatabaseTable{
-    box-sizing: border-box;
-    display: table;
-    text-indent: initial;
-    position: relative;
-    table-layout: fixed;
-    text-align: center;
-    border-collapse: collapse;
-    width: 100%;
-    height: 100%;
-}
-
 .DatabaseTableHead{
     text-transform: uppercase;
-    vertical-align: middle;
-    display: table-header-group;
-}
-
-.DatabaseTableBody{
-    display: table-row-group;
-    vertical-align: middle;
+    padding: 1rem;
+    color: #008ac1;
 }
 
 .DatabaseTableRow{
-    display: table-row;
-    vertical-align: inherit;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 1rem 0rem;
 }
 
-.DatabaseTableHeadCell{
-    display: table-cell;
-    font: bold;
-    padding: 1rem;
-    color: #008ac1;
-    vertical-align: inherit;
+.DatabaseTableCell:nth-last-child(2){
     text-align: center;
 }
 
+.DatabaseTableHeadCell{
+    text-align: center; 
+}
+
 .DatabaseTableCell{
-    display: table-cell;
     font-weight: normal;
-    padding: 0.8rem 1rem;
+    padding: 0.8rem 1rem; 
 }
 
 .DatabaseTableHeadCell:first-child,
 .DatabaseTableCell:first-child{
     text-align: left;
-    padding-left: 2rem;
 }
 
 .DatabaseTableHeadCell:last-child,
 .DatabaseTableCell:last-child{
     text-align: right;
-    padding-left: 2rem;
 }
