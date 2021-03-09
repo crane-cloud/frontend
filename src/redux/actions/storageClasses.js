@@ -1,5 +1,4 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
 import { GET_STORAGE_CLASS_SUCCESS, GET_STORAGE_CLASS_FAIL, START_GETTING_STORAGE_CLASS } from './actionTypes';
 
 export const startFetchingStorageClass = () => ({
@@ -25,11 +24,6 @@ const getStorageClassList = (clusterId) => (dispatch) => {
   return axios.get(`/clusters/${clusterId}/storage_classes`)
     .then((response) => dispatch(getStorageClassSuccess(response)))
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login
-        
-        redirectToLogin(dispatch);
-      }
       dispatch(getStorageClassFail(error));
     });
 };

@@ -1,6 +1,7 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
-import { DELETE_PROJECT_SUCCESS, DELETE_PROJECT_FAIL, START_DELETING_PROJECT, CLEAR_DELETE_PROJECT_STATE } from './actionTypes';
+import {
+  DELETE_PROJECT_SUCCESS, DELETE_PROJECT_FAIL, START_DELETING_PROJECT, CLEAR_DELETE_PROJECT_STATE 
+} from './actionTypes';
 
 const startDeletingProject = () => ({
   type: START_DELETING_PROJECT,
@@ -29,10 +30,6 @@ const deleteProject = (ProjectID) => (dispatch) => {
   return axios.delete(`/projects/${ProjectID}`)
     .then((response) => dispatch(deleteProjectSuccess(response)))
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login
-        redirectToLogin(dispatch);
-      }
       dispatch(deleteProjectFail(error));
     });
 };

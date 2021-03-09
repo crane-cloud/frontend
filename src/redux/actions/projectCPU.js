@@ -40,7 +40,6 @@ const getProjectCPU = (projectID, params) => (dispatch) => {
       dispatch(getCPUMetricsSuccess(projectID, response));
     })
     .catch((error) => {
-      
       dispatch(getCPUMetricsFailed(projectID, error));
     });
 };

@@ -1,5 +1,4 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
 import { IS_FETCHING, FETCH_JOBS_SUCCESS, FETCH_JOBS_FAILED } from './actionTypes';
 
 export const startTheFetch = () => ({
@@ -25,10 +24,6 @@ const getJobs = (clusterId) => (dispatch) => {
   return axios.get(`/clusters/${clusterId}/jobs`)
     .then((response) => dispatch(getJobsSuccess(response)))
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login 
-        redirectToLogin(dispatch);
-      }
       dispatch(getJobsFailed(error));
     });
 };

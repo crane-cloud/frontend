@@ -1,7 +1,5 @@
 
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
-
 import { GET_APP_LOGS_SUCCESS, GET_APPS_LOGS_FAIL, START_GETTING_APP_LOGS } from './actionTypes';
 
 const startFetchingLogs = () => ({
@@ -31,10 +29,6 @@ const getAppLogs = (IDs, params) => (dispatch) => {
     })
     .then((response) => dispatch(getLogsSuccess(response)))
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login   
-        redirectToLogin(dispatch);
-      }
       dispatch(getLogsFail(error));
     });
 };

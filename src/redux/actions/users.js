@@ -1,5 +1,4 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
 import { GET_USERS_SUCCESS, GET_USERS_FAIL, START_GETTING_USERS } from './actionTypes';
 
 export const startGettingUsers = () => ({
@@ -26,11 +25,6 @@ const getUsersList = () => async (dispatch) => {
     const response = await axios.get(`/users`);
     return dispatch(getUsersSuccess(response));
   } catch (error) {
-    if (error.response.status === 401) {
-      // function to logout user and redirect user to login
-      
-      redirectToLogin(dispatch);
-    }
     dispatch(getUsersFail(error));
   }
 };

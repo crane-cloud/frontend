@@ -1,5 +1,4 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
 import { IS_FETCHING, FETCH_PVCS_SUCCESS, FETCH_PVCS_FAILED } from './actionTypes';
 
 export const startTheFetch = () => ({
@@ -25,10 +24,6 @@ const getPvcs = (clusterId) => (dispatch) => {
   return axios.get(`/clusters/${clusterId}/pvcs`)
     .then((response) => dispatch(getPvcsSuccess(response)))
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login
-        redirectToLogin(dispatch);
-      }
       dispatch(getPvcsFailed(error));
     });
 };

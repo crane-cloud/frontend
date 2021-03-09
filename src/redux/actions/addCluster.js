@@ -1,5 +1,4 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
 import {
   START_ADDING_CLUSTER, ADD_CLUSTER_SUCCESS, ADD_CLUSTERS_FAIL, CLEAR_ADD_CLUSTER_STATE
 } from './actionTypes';
@@ -31,11 +30,6 @@ const addCluster = (clusterData) => (dispatch) => {
   return axios.post(`/clusters`, clusterData)
     .then((response) => dispatch(addClusterSuccess(response)))
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login
-        
-        redirectToLogin(dispatch);
-      }
       dispatch(addClusterFail(error));
     });
 };

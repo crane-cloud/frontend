@@ -1,5 +1,4 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
 import {
   START_ADDING_PROJECT,
   CLEAR_ADD_PROJECT_STATE,
@@ -36,11 +35,6 @@ const addProject = (projectData) => (dispatch) => {
   return axios.post(`/projects`, projectData)
     .then((response) => dispatch(addProjectSuccess(response)))
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login
-        
-        redirectToLogin(dispatch);
-      }
       dispatch(addProjectFail(error));
     });
 };

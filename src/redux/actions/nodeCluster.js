@@ -1,5 +1,4 @@
 import axios from '../../axios';
-import redirectToLogin from '../../helpers/redirectToLogin';
 
 import { GET_NODES_SUCCESS, GET_NODES_FAIL, START_GETTING_NODES } from './actionTypes';
 
@@ -26,10 +25,6 @@ const getNodesList = (clusterID) => (dispatch) => {
   return axios.get(`/clusters/${clusterID}/nodes`)
     .then((response) => dispatch(getNodesSuccess(response)))
     .catch((error) => {
-      if (error.response.status === 401) {
-        // function to logout user and redirect user to login  
-        redirectToLogin(dispatch);
-      }
       dispatch(getNodesFail(error));
     });
 };
