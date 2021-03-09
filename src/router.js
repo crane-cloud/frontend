@@ -43,6 +43,7 @@ import TeamPage from './components/TeamPage';
 import PageNotFound from './components/PageNotFound';
 import DatabaseList from './components/DatabaseList';
 import DBSettingsPage from './components/DBSettingsPage';
+import CreateDatabase from './components/CreateDatabase';
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) => (
@@ -67,6 +68,7 @@ const Routes = () => (
       <Route path="/verify/:token" component={VerificationSentPage} />
       <Route path="/reset_password/:token" component={CreateNewPassword} />
       <Route path="/team" component={TeamPage} />
+      <Route path="/create" component={CreateDatabase} />
       <Route path="/database" component={DatabaseList} />
       <Route path="/database/settings" component={DBSettingsPage} />
       {/* projects */}
