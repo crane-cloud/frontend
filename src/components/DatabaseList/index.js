@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideBar from '../SideBar';
-import Status from '../Status';
 import Spinner from '../Spinner';
 import getProjectDatabases from '../../redux/actions/databaseList';
 import './DatabaseList.css';
@@ -117,12 +116,9 @@ class DatabaseList extends React.Component {
                         && databasesList !== undefined
                         && databasesList.map((database) => (
                           <div className="DatabaseTableRow" key={databasesList.indexOf(database)}>
+                            <div className="DatabaseTableCell">{database.user}</div>
                             <div className="DatabaseTableCell">{database.name}</div>
-                            <div className="DatabaseTableCell">{database.type}</div>
-                            <div className="DatabaseTableCell">{database.size}</div>
-                            <div className="DatabaseTableCell">
-                              <Status status={database.status} />
-                            </div>
+                            <div className="DatabaseTableCell">{database.host}</div>
                             <div className="DatabaseTableCell">{database.time}</div>
                           </div>
                         ))}

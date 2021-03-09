@@ -8,7 +8,8 @@ import {
 const initialState = {
   databases: [],
   isFetchingDatabases: false,
-  databasesMessage: ''
+  databasesFetched: false,
+  databasesMessage: 'Databases Not Available'
 };
 
 const projectDatabasesReducer = (state = initialState, action) => {
@@ -16,27 +17,25 @@ const projectDatabasesReducer = (state = initialState, action) => {
   case FETCH_PROJECT_DATABASES_SUCCESS:
     return {
       ...state,
-      databasesMetrics: [...state.databases,
-        { project: action.payload.project, databases: action.payload.databases }
-      ],
+      databases: action.payload,
       isFetchingDatabases: false,
+      databasesFetched: true,
       databasesMessage: 'Fetched project databases'
-    };
-
-  case FETCH_PROJECT_DATABASES_FAILED:
-    return {
-      ...state,
-      databases: [...state.databases,
-        { project: action.payload.project, databases: action.payload.databases }
-      ],
-      isFetchingDatabases: false,
-      databasesMessage: 'Error fetching project databases'
     };
 
   case IS_FETCHING_PROJECT_DATABASES:
     return {
       ...state,
+      databasesFetched: false,
       isFetchingDatabases: true,
+    };
+
+  case FETCH_PROJECT_DATABASES_FAILED:
+    return {
+      ...state,
+      isFetchingDatabases: false,
+      databasesFetched: false,
+      databasesMessage: 'Error fetching project databases'
     };
 
   case CLEAR_PROJECT_DATABASES:
@@ -44,6 +43,7 @@ const projectDatabasesReducer = (state = initialState, action) => {
       ...state,
       databases: [],
       isFetchingDatabases: false,
+      databasesFetched: false,
       databasesMessage: ''
     };
 
