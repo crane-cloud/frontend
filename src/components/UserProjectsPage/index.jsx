@@ -39,8 +39,9 @@ class UserProjectsPage extends React.Component {
   }
 
   componentDidMount() {
-    
-    const { getClustersList, getUserProjects, data, clearUpdateProjectState } = this.props;
+    const {
+      getClustersList, getUserProjects, data, clearUpdateProjectState
+    } = this.props;
     getUserProjects(data.id);
     getClustersList();
     clearUpdateProjectState();

@@ -31,3 +31,8 @@
 .ModalFormInputs input::placeholder {
   color: #808080;
 }
+
+.MainRow > .ConnectModal{
+  width: 100%;
+  margin-left: 0;
+}

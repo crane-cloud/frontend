@@ -1,0 +1,45 @@
+.ConnectModal {
+  position: absolute;
+  right: 0;
+  width: 82.19%;
+  margin-left: 17.81%;
+  height: 35px;
+  background: #ff9595;
+  box-sizing: border-box;
+  padding: 0 2rem;
+  top: 10.098rem;
+}
+
+.MainModalSection {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  color: #fff;
+  font-size: 12px;
+}
+
+.ConnectionButton {
+  max-height: 100%;
+  background-color: transparent;
+  border-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.375rem;
+  
+}
+
+.ConnectionButton:hover{
+  border-color: transparent;
+}
+
+.display-block {
+  display: block;
+}
+
+.display-none {
+  display: none;
+}
