@@ -65,3 +65,8 @@
   width: 80%;
   float: left;
 }
+
+.DeleteDatabaseModel{
+  display: grid;
+  gap: 1rem;
+}

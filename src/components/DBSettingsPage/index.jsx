@@ -5,12 +5,13 @@ import { Redirect, withRouter } from 'react-router-dom';
 import InformationBar from '../InformationBar';
 import Header from '../Header';
 import PrimaryButton from '../PrimaryButton';
-// import Spinner from '../Spinner';
-// import Modal from '../Modal';
+import Spinner from '../Spinner';
+import Modal from '../Modal';
 import SideBar from '../SideBar';
-// import Feedback from '../Feedback';
-// import DeleteWarning from '../DeleteWarning';
+import Feedback from '../Feedback';
+import DeleteWarning from '../DeleteWarning';
 import tellAge from '../../helpers/ageUtility';
+import deleteDatabase, { clearDeleteDatabaseState } from '../../redux/actions/deleteDatabase';
 import './DBSettingsPage.css';
 
 class DBSettingsPage extends React.Component {
@@ -44,10 +45,10 @@ class DBSettingsPage extends React.Component {
     return info;
   }
 
-  handleDeleteDatabase(e, databaseID) {
+  handleDeleteDatabase(e, projectID, databaseID) {
     const { deleteDatabase } = this.props;
     e.preventDefault();
-    deleteDatabase(databaseID);
+    deleteDatabase(projectID, databaseID);
   }
 
 
@@ -72,6 +73,9 @@ class DBSettingsPage extends React.Component {
   render() {
     const { userID, projectID, databaseID } = this.props.match.params;
     const dbInfo = this.getDatabaseInfo(databaseID);
+    const {
+      openDeleteAlert
+    } = this.state;
     return (
       <div className="Page">
         <div className="TopBarSection">
@@ -140,9 +144,42 @@ class DBSettingsPage extends React.Component {
                   <PrimaryButton
                     label="Delete Database"
                     className="DBDeleteBtn"
+                    onClick={this.showDeleteAlert}
                   />
                   <div className="buttonText">Destroys the entire database, deleting all tables and data.</div>
                 </div>
+                {(openDeleteAlert && (
+                  <div className="ProjectDeleteModel">
+                    <Modal showModal={openDeleteAlert} onClickAway={this.hideDeleteAlert}>
+                      <div className="DeleteDatabaseModel">
+                        <div className="DeleteProjectModalUpperSection">
+                          <div className="DeleteDescription">
+                            Are you sure you want to delete this Database &nbsp;
+                            <span>{dbInfo.name}</span>
+                              &nbsp;
+                            ?
+                            <DeleteWarning />
+                          </div>
+                        </div>
+
+                        <div className="DeleteProjectModalLowerSection">
+                          <div className="DeleteProjectModelButtons">
+                            <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
+                            <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} className="DeleteBtn" onClick={(e) => this.handleDeleteDatabase(e, projectID, databaseID)} />
+                          </div>
+
+                          {(isFailed && message) && (
+                            <Feedback
+                              message={message}
+                              type="error"
+                            />
+                          )}
+                        </div>
+                      </div>
+
+                    </Modal>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -154,13 +191,18 @@ class DBSettingsPage extends React.Component {
 
 const mapStateToProps = (state) => {
   const { databases } = state.projectDatabasesReducer;
+  const { isDeleted, isDeleting, isFailed, message } = state.deleteDatabaseReducer;
   return {
-    databases
+    databases,
+    isDeleted,
+    isFailed,
+    isDeleting,
+    message
   };
 };
 
 const mapDispatchToProps = {
-
+  deleteDatabase, clearDeleteDatabaseState
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(DBSettingsPage));

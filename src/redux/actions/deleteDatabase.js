@@ -23,7 +23,7 @@ const deleteDatabaseFail = (error) => ({
   },
 });
 
-const clearState = () => ({
+const clearDatabaseState = () => ({
   type: CLEAR_DELETE_DATABASE_STATE
 });
 
@@ -38,4 +38,4 @@ const deleteDatabase = (projectID, databaseID) => (dispatch) => {
 };
 
 export default deleteDatabase;
-export { clearState };
+export { clearDatabaseState };
