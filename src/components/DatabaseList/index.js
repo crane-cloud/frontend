@@ -105,7 +105,15 @@ class DatabaseList extends React.Component {
 
               {(databasesFetched && databases.length === 0) && (
                 <div className="NoResourcesMessage">
-                  <p>No Databases Available</p>
+                  You haven’t created any databases yet.
+                  Click the create button to get started.
+                </div>
+              )}
+
+              {(!isFetchingDatabases && !databasesFetched) && (
+                <div className="NoResourcesMessage">
+                  Oops! Something went wrong!
+                  Failed to retrieve Databases.
                 </div>
               )}
             </div>
