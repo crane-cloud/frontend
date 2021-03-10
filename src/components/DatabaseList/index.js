@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
@@ -81,12 +82,20 @@ class DatabaseList extends React.Component {
                     <div className="DatabaseTableBody">
                       {(databasesFetched && databases !== undefined && (
                         (databases.map((database) => (
-                          <div className="DatabaseTableRow" key={databases.indexOf(database)}>
-                            <div className="DatabaseTableCell">{database.user}</div>
-                            <div className="DatabaseTableCell">{database.name}</div>
-                            <div className="DatabaseTableCell">{database.host}</div>
-                            <div className="DatabaseTableCell">{tellAge(database.date_created)}</div>
-                          </div>
+                          <Link
+                            to={{
+                              pathname: `/users/${userID}/projects/${projectID}/databases/${database.id}/settings`
+                            }}
+                            key={projectID}
+                            className="DatabaseRow"
+                          >
+                            <div className="DatabaseTableRow" key={databases.indexOf(database)}>
+                              <div className="DatabaseTableCell">{database.user}</div>
+                              <div className="DatabaseTableCell">{database.name}</div>
+                              <div className="DatabaseTableCell">{database.host}</div>
+                              <div className="DatabaseTableCell">{tellAge(database.date_created)}</div>
+                            </div>
+                          </Link>
                         ))))
                       )}
                     </div>

@@ -69,10 +69,10 @@ const Routes = () => (
       <Route path="/reset_password/:token" component={CreateNewPassword} />
       <Route path="/team" component={TeamPage} />
       <Route path="/create" component={CreateDatabase} />
-      <Route path="/database/settings" component={DBSettingsPage} />
       {/* projects */}
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects" component={UserProjectsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/databases" component={DatabaseList} />
+      <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/databases/:databaseID/settings" component={DBSettingsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/apps" component={AppsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/apps/:appID/network" component={AppNetworkPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/apps/:appID/cpu" component={AppCpuPage} />

@@ -32,3 +32,9 @@
 .DatabaseTableCell:last-child{
     text-align: right;
 }
+.DatabaseRow{
+  color: #000000;
+  cursor: pointer;
+  /* flex: 1;
+  display: flex; */
+}
