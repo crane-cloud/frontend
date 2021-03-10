@@ -86,7 +86,7 @@ class DatabaseList extends React.Component {
                             to={{
                               pathname: `/users/${userID}/projects/${projectID}/databases/${database.id}/settings`
                             }}
-                            key={projectID}
+                            key={database.id}
                             className="DatabaseRow"
                           >
                             <div className="DatabaseTableRow" key={databases.indexOf(database)}>
