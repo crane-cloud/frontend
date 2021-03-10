@@ -14,6 +14,21 @@ import tellAge from '../../helpers/ageUtility';
 import './DBSettingsPage.css';
 
 class DBSettingsPage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      openDeleteAlert:false,
+      openResetAlert: false,
+      error: ''
+    };
+
+    this.handleDeleteDatabase = this.handleDeleteDatabase.bind(this);
+    this.showDeleteAlert = this.showDeleteAlert.bind(this);
+    this.hideDeleteAlert = this.hideDeleteAlert.bind(this);
+    this.renderRedirect = this.renderRedirect.bind(this);
+  }
+
   getDatabaseInfo(id) {
     const { databases } = this.props;
     const found = databases.find((database) => database.id === id);
@@ -29,6 +44,31 @@ class DBSettingsPage extends React.Component {
     return info;
   }
 
+  handleDeleteDatabase(e, databaseID) {
+    const { deleteDatabase } = this.props;
+    e.preventDefault();
+    deleteDatabase(databaseID);
+  }
+
+
+  showDeleteAlert() {
+    this.setState({ openDeleteAlert: true });
+  }
+
+  hideDeleteAlert() {
+    const { clearDeleteDatabaseState } = this.props;
+    clearDeleteDatabaseState();
+    this.setState({ openDeleteAlert: false });
+  }
+
+  renderRedirect = () => {
+    const { isDeleted, isReset } = this.props;
+    const { userID, projectID } = this.props.match.params;
+    if (isDeleted || isReset) {
+      return <Redirect to={`/users/${userID}/projects/${projectID}/databases`} noThrow/>
+    }
+  }
+  
   render() {
     const { userID, projectID, databaseID } = this.props.match.params;
     const dbInfo = this.getDatabaseInfo(databaseID);
