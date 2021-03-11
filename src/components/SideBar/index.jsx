@@ -73,7 +73,7 @@ const SideBar = (props) => {
       <div className="SideBarBottomSection">
         <div className="SideBarLinks">
           <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }} className="ListItem">Apps</Link>
-          <Link to="/services" className="ListItem DisabledLink">SERVICES</Link>
+          <Link to="/" className="ListItem DisabledLink">SERVICES</Link>
           <div>
             <NavLink to={databaseLink} className="SubBarListItem">Databases</NavLink>
           </div>
