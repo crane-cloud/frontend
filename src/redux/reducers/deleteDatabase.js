@@ -6,10 +6,10 @@ import {
 } from '../actions/actionTypes';
 
 const initialState = {
-  isDeleted: false,
-  isDeleting: false,
-  isFailed: false,
-  message: '',
+  databaseDeleted: false,
+  deletingDatabase: false,
+  databaseDeleteFailed: false,
+  dbDeleteMessage: '',
 };
 
 const deleteDatabaseReducer = (state = initialState, action) => {
@@ -17,37 +17,37 @@ const deleteDatabaseReducer = (state = initialState, action) => {
   case START_DELETING_DATABASE:
     return {
       ...state,
-      isDeleting: true,
-      isDeleted: false,
-      isFailed: false,
-      message: ''
+      deletingDatabase: true,
+      databaseDeleted: false,
+      databaseDeleteFailed: false,
+      dbDeleteMessage: ''
     };
 
   case DELETE_DATABASE_SUCCESS:
     return {
       ...state,
-      isDeleting: false,
-      isDeleted: true,
-      isFailed: false,
-      message: 'Database Deleted Successfully'
+      deletingDatabase: false,
+      DatabaseDeleted: true,
+      databaseDeleteFailed: false,
+      dbDeleteMessage: 'Database Deleted Successfully'
     };
 
   case DELETE_DATABASE_FAIL:
     return {
       ...state,
-      isDeleting: false,
-      isDeleted: false,
-      isFailed: true,
-      message: 'Failed to delete app. Please retry'
+      deletingDatabase: false,
+      databaseDeleted: false,
+      databaseDeleteFailed: true,
+      dbDeleteMessage: 'Failed to delete database. Please retry'
     };
 
   case CLEAR_DELETE_DATABASE_STATE:
     return {
       ...state,
-      isDeleted: false,
-      isDeleting: false,
-      isFailed: false,
-      message: ''
+      databaseDeleted: false,
+      deletingDatabase: false,
+      databaseDeleteFailed: false,
+      dbDeleteMessage: ''
     };
 
   default:
