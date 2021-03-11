@@ -5,6 +5,7 @@ import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideBar from '../SideBar';
 import Spinner from '../Spinner';
+import CreateDatabase from '../CreateDatabase';
 import getProjectDatabases from '../../redux/actions/databaseList';
 import tellAge from '../../helpers/ageUtility';
 import './DatabaseList.css';
