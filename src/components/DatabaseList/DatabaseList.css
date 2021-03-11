@@ -35,6 +35,8 @@
 .DatabaseRow{
   color: #000000;
   cursor: pointer;
-  /* flex: 1;
-  display: flex; */
+}
+
+.DatabaseRow:hover{
+    color: #F7B21F;
 }

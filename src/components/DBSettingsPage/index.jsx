@@ -35,7 +35,7 @@ class DBSettingsPage extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { dbDeleteMessage, resetMessage, isReset } = this.props;
+    const { dbDeleteMessage, isReset } = this.props;
     
     if (dbDeleteMessage !== prevProps.dbDeleteMessage) {
       this.hideDeleteAlert();
@@ -96,7 +96,7 @@ class DBSettingsPage extends React.Component {
   }
 
   renderRedirect = () => {
-    const { dbDeleteMessage, isReset } = this.props;
+    const { dbDeleteMessage } = this.props;
     const { userID, projectID } = this.props.match.params;
     if (dbDeleteMessage === 'Database Deleted Successfully') {
       this.hideDeleteAlert();
@@ -106,7 +106,6 @@ class DBSettingsPage extends React.Component {
   
   render() {
     const {
-      databaseDeleted,
       dbDeleteMessage,
       deletingDatabase,
       databaseDeleteFailed,
@@ -124,7 +123,7 @@ class DBSettingsPage extends React.Component {
     console.log(dbDeleteMessage);
     return (
       <div className="Page">
-        {(dbDeleteMessage === 'Database Deleted Successfully') ? (this.renderRedirect() ) : ( null )}
+        {((dbDeleteMessage === 'Database Deleted Successfully')||(isReset)) ? (this.renderRedirect() ) : ( null )}
         <div className="TopBarSection">
           <Header />
         </div>
