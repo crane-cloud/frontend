@@ -128,7 +128,7 @@ class ProjectCPUPage extends React.Component {
               allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
               cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
               memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
-              storageLink={`/users/${userID}/projects/${projectID}/storage/`}
+              databaseLink={`/users/${userID}/projects/${projectID}/databases`}
               networkLink={`/users/${userID}/projects/${projectID}/network/`}
             />
           </div>
