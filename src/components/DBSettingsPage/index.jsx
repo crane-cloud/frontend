@@ -120,7 +120,7 @@ class DBSettingsPage extends React.Component {
       openDeleteAlert,
       openResetAlert
     } = this.state;
-    console.log(dbDeleteMessage);
+
     return (
       <div className="Page">
         {((dbDeleteMessage === 'Database Deleted Successfully')||(isReset)) ? (this.renderRedirect() ) : ( null )}
@@ -274,7 +274,18 @@ DBSettingsPage.propTypes = {
   clearDeleteDatabaseState: PropTypes.func,
   databaseDeleted: PropTypes.bool,
   deletingDatabase: PropTypes.bool,
-  dbDeleteMessage: PropTypes.string
+  dbDeleteMessage: PropTypes.string,
+  isReset: PropTypes.bool,
+  isReseting: PropTypes.bool,
+  resetFailed: PropTypes.bool,
+  resetMessage: PropTypes.string
+};
+
+DBSettingsPage.defaultProps = {
+  dbDeleteMessage: '',
+  databaseDeleteFailed: false,
+  deletingDatabase: false,
+  databaseDeleted: false
 };
 
 const mapStateToProps = (state) => {
