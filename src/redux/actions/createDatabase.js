@@ -24,7 +24,7 @@ const createDatabaseFail = (error) => ({
   },
 });
 
-const clearState = () => ({
+const clearDatabaseCreateState = () => ({
   type: CLEAR_ADD_DATABASE_STATE
 });
 
@@ -41,4 +41,4 @@ const createDatabase = (databaseInfo, projectID) => (dispatch) => {
 
 
 export default createDatabase;
-export { clearState };
+export { clearDatabaseCreateState };

@@ -5,7 +5,7 @@ import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideBar from '../SideBar';
 import Spinner from '../Spinner';
-import CreateDatabase from '../CreateDatabase';
+import CreateDatabase, { clearDatabaseCreateState } from '../CreateDatabase';
 import getProjectDatabases from '../../redux/actions/databaseList';
 import tellAge from '../../helpers/ageUtility';
 import './DatabaseList.css';
@@ -13,7 +13,14 @@ import './DatabaseList.css';
 class DatabaseList extends React.Component {
   constructor(props) {
     super(props);
+    this.initialState = {
+      openCreateComponent: false
+    };
+    this.state = this.initialState;
     this.getProjectName = this.getProjectName.bind(this);
+    this.showCreateComponent = this.showCreateComponent.bind(this);
+    this.callbackCreateComponent = this.callbackCreateComponent.bind(this);
+    // this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -21,10 +28,40 @@ class DatabaseList extends React.Component {
     getProjectDatabases(projectID);
   }
 
+  componentDidUpdate(prevProps) {
+    const { isCreated } = this.props;
+
+    if (isCreated !== prevProps.isCreated) {
+      this.hideForm();
+    }
+  }
+
+  // componentDidUpdate(prevProps) {
+  //   const { isCreated } = this.props;
+
+  //   if (isCreated !== prevProps.isCreated) {
+  //     this.hideForm();
+  //   }
+  // }
+
   getProjectName(projects, id) {
     const project = projects.find((project) => project.id === id);
     return project.name;
   }
+
+  showCreateComponent() {
+    this.setState({ openCreateComponent: true });
+  }
+
+  // hideCreateComponent() {
+  //   const { clearDatabaseCreateState } = this.props;
+  //   clearDatabaseCreateState();
+  //   this.setState(this.initialState);
+  // }
+  callbackCreateComponent() {
+    this.setState({ openCreateComponent: false });
+  }
+
 
   render() {
     const {
@@ -34,6 +71,7 @@ class DatabaseList extends React.Component {
       isFetchingDatabases,
       databasesFetched
     } = this.props;
+    const { openCreateComponent } = this.state;
 
     const { projectID, userID } = params;
     return (
@@ -55,53 +93,59 @@ class DatabaseList extends React.Component {
               networkLink={`/users/${userID}/projects/${projectID}/network/`}
             />
           </div>
-          <div className="MainContentSection">
-            <div className="InformationBarSection">
-              <InformationBar header="Databases" showBtn />
-            </div>
-            <div className="ContentSection">
-              <div className="DatabaseTable">
-                <div className="DatabaseTableRow">
-                  <div className="DatabaseTableHeadCell DatabaseTableHead">User</div>
-                  <div className="DatabaseTableHeadCell DatabaseTableHead">Name</div>
-                  <div className="DatabaseTableHeadCell DatabaseTableHead">Host</div>
-                  <div className="DatabaseTableHeadCell DatabaseTableHead">Age</div>
-                </div>
-                <div>
-                  {isFetchingDatabases ? (
-                    <div className="DatabaseTableBody">
-                      <div className="TableLoading DatabaseTableRow">
-                        <div className="DatabaseTableCell">
-                          <div className="SpinnerWrapper">
-                            <Spinner size="big" />
+          {openCreateComponent ? (<CreateDatabase closeComponent={this.callbackCreateComponent} />) : (
+            <div className="MainContentSection">
+              <div className="InformationBarSection">
+                <InformationBar
+                  header="Databases"
+                  showBtn
+                  btnAction={this.showCreateComponent}
+                />
+              </div>
+              <div className="ContentSection">
+                <div className="DatabaseTable">
+                  <div className="DatabaseTableRow">
+                    <div className="DatabaseTableHeadCell DatabaseTableHead">User</div>
+                    <div className="DatabaseTableHeadCell DatabaseTableHead">Name</div>
+                    <div className="DatabaseTableHeadCell DatabaseTableHead">Host</div>
+                    <div className="DatabaseTableHeadCell DatabaseTableHead">Age</div>
+                  </div>
+                  <div>
+                    {isFetchingDatabases ? (
+                      <div className="DatabaseTableBody">
+                        <div className="TableLoading DatabaseTableRow">
+                          <div className="DatabaseTableCell">
+                            <div className="SpinnerWrapper">
+                              <Spinner size="big" />
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="DatabaseTableBody">
-                      {(databasesFetched && databases !== undefined && (
-                        (databases.map((database) => (
-                          <div className="DatabaseTableRow" key={databases.indexOf(database)}>
-                            <div className="DatabaseTableCell">{database.user}</div>
-                            <div className="DatabaseTableCell">{database.name}</div>
-                            <div className="DatabaseTableCell">{database.host}</div>
-                            <div className="DatabaseTableCell">{tellAge(database.date_created)}</div>
-                          </div>
-                        ))))
-                      )}
-                    </div>
-                  )}
+                    ) : (
+                      <div className="DatabaseTableBody">
+                        {(databasesFetched && databases !== undefined && (
+                          (databases.map((database) => (
+                            <div className="DatabaseTableRow" key={databases.indexOf(database)}>
+                              <div className="DatabaseTableCell">{database.user}</div>
+                              <div className="DatabaseTableCell">{database.name}</div>
+                              <div className="DatabaseTableCell">{database.host}</div>
+                              <div className="DatabaseTableCell">{tellAge(database.date_created)}</div>
+                            </div>
+                          ))))
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
 
-              {(databasesFetched && databases.length === 0) && (
-                <div className="NoResourcesMessage">
-                  <p>No Databases Available</p>
-                </div>
-              )}
+                {(databasesFetched && databases.length === 0) && (
+                  <div className="NoResourcesMessage">
+                    <p>No Databases Available</p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     );
