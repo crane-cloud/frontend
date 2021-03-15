@@ -5,7 +5,7 @@ import Header from '../Header';
 import InformationBar from '../InformationBar';
 import SideBar from '../SideBar';
 import Spinner from '../Spinner';
-import CreateDatabase, { clearDatabaseCreateState } from '../CreateDatabase';
+import CreateDatabase from '../CreateDatabase';
 import getProjectDatabases from '../../redux/actions/databaseList';
 import tellAge from '../../helpers/ageUtility';
 import './DatabaseList.css';
@@ -29,10 +29,11 @@ class DatabaseList extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { isCreated } = this.props;
+    const { isCreated, getProjectDatabases, projectID } = this.props;
 
     if (isCreated !== prevProps.isCreated) {
-      this.hideForm();
+      getProjectDatabases(projectID);
+      this.callbackCreateComponent();
     }
   }
 
@@ -53,11 +54,6 @@ class DatabaseList extends React.Component {
     this.setState({ openCreateComponent: true });
   }
 
-  // hideCreateComponent() {
-  //   const { clearDatabaseCreateState } = this.props;
-  //   clearDatabaseCreateState();
-  //   this.setState(this.initialState);
-  // }
   callbackCreateComponent() {
     this.setState({ openCreateComponent: false });
   }
@@ -93,7 +89,7 @@ class DatabaseList extends React.Component {
               networkLink={`/users/${userID}/projects/${projectID}/network/`}
             />
           </div>
-          {openCreateComponent ? (<CreateDatabase closeComponent={this.callbackCreateComponent} />) : (
+          {openCreateComponent ? (<CreateDatabase closeComponent={this.callbackCreateComponent} projectID={projectID} />) : (
             <div className="MainContentSection">
               <div className="InformationBarSection">
                 <InformationBar
