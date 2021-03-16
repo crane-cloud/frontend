@@ -21,7 +21,7 @@ const createDatabaseReducer = (state = initialState, action) => {
       database: action.payload,
       isCreating: false,
       isCreated: true,
-      message: 'Success! Your database has been deployed.',
+      message: 'Success! Your database has been created.',
       errorCode: null
     };
 

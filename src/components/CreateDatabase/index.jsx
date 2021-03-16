@@ -25,12 +25,19 @@ class CreateDatabase extends React.Component {
 
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.renderRedirect = this.renderRedirect.bind(this);
   }
 
   componentDidMount() {
     const { clearDatabaseCreateState } = this.props;
     clearDatabaseCreateState();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { isCreated, params: { userID, projectID } } = this.props;
+
+    if (isCreated !== prevProps.isCreated) {
+      return <Redirect to={`/users/${userID}/projects/${projectID}/databases`} noThrow />;
+    }
   }
 
   handleSelectChange(selected) {
@@ -39,8 +46,8 @@ class CreateDatabase extends React.Component {
 
   handleSubmit() {
     const { databaseFlavour } = this.state;
-    const { createDatabase, projectID } = this.props;
-    if(!databaseFlavour) {
+    const { createDatabase, params: { projectID } } = this.props;
+    if (!databaseFlavour) {
       this.setState({
         error: 'Select a database flavour'
       });
@@ -49,21 +56,22 @@ class CreateDatabase extends React.Component {
     }
   }
 
-  renderRedirect = () => {
-    const { isCreated } = this.props;
-    const { userID, projectID } = this.props.match.params;
-    if (isCreated) {
-      return <Redirect to={`/users/${userID}/projects/${projectID}/databases`} noThrow/>
-    }
-  }
-
   render() {
-    const { isCreating, isCreated, message } = this.props;
+    const {
+      isCreating,
+      isCreated,
+      message,
+      params: {
+        userID,
+        projectID
+      }
+    } = this.props;
     const { error } = this.state;
-
+    if (isCreated) {
+      return <Redirect to={`/users/${userID}/projects/${projectID}/databases`} noThrow />;
+    }
     return (
       <div>
-        { isCreated ? (this.renderRedirect() ) : ( null ) }
         <div className="MainContentSection">
           <div className="InformationBarSection">
             <div className="InformationBar">
@@ -120,16 +128,17 @@ class CreateDatabase extends React.Component {
   }
 }
 CreateDatabase.propTypes = {
-  // clearDeleteProjectState: PropTypes.func.isRequired,
   isCreating: PropTypes.bool,
   isCreated: PropTypes.bool,
-  message: PropTypes.string
+  message: PropTypes.string,
+  params: PropTypes.shape({})
 };
 
 CreateDatabase.defaultProps = {
   message: '',
   isCreated: false,
-  isCreating: false
+  isCreating: false,
+  params: {}
 };
 
 const mapStateToProps = (state) => {

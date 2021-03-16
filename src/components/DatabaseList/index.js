@@ -20,7 +20,6 @@ class DatabaseList extends React.Component {
     this.getProjectName = this.getProjectName.bind(this);
     this.showCreateComponent = this.showCreateComponent.bind(this);
     this.callbackCreateComponent = this.callbackCreateComponent.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -29,21 +28,13 @@ class DatabaseList extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { isCreated, getProjectDatabases, projectID } = this.props;
+    const { isCreated, getProjectDatabases, match: { params: { projectID } } } = this.props;
 
     if (isCreated !== prevProps.isCreated) {
       getProjectDatabases(projectID);
       this.callbackCreateComponent();
     }
   }
-
-  // componentDidUpdate(prevProps) {
-  //   const { isCreated } = this.props;
-
-  //   if (isCreated !== prevProps.isCreated) {
-  //     this.hideForm();
-  //   }
-  // }
 
   getProjectName(projects, id) {
     const project = projects.find((project) => project.id === id);
@@ -89,7 +80,7 @@ class DatabaseList extends React.Component {
               networkLink={`/users/${userID}/projects/${projectID}/network/`}
             />
           </div>
-          {openCreateComponent ? (<CreateDatabase closeComponent={this.callbackCreateComponent} projectID={projectID} />) : (
+          {openCreateComponent ? (<CreateDatabase closeComponent={this.callbackCreateComponent} params={params} />) : (
             <div className="MainContentSection">
               <div className="InformationBarSection">
                 <InformationBar
@@ -160,6 +151,7 @@ DatabaseList.propTypes = {
   getProjectDatabases: PropTypes.func.isRequired,
   isFetchingDatabases: PropTypes.bool,
   databasesFetched: PropTypes.bool,
+  isCreated: PropTypes.bool.isRequired
 };
 
 DatabaseList.defaultProps = {
@@ -171,9 +163,11 @@ DatabaseList.defaultProps = {
 const mapStateToProps = (state) => {
   const { projects } = state.userProjectsReducer;
   const { databases, databasesFetched, isFetchingDatabases } = state.projectDatabasesReducer;
+  const { isCreated } = state.createDatabaseReducer;
   return {
     projects,
     databases,
+    isCreated,
     databasesFetched,
     isFetchingDatabases
   };
