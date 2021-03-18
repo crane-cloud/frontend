@@ -189,7 +189,7 @@ class DBSettingsPage extends React.Component {
                 </div>
                 {(resetMessage !== '') && (
                   <Feedback
-                    message={resetMessage !== '' ? resetMessage : (null)}
+                    message={resetMessage !== '' ? 'Database has been successfully reset.' : (null)}
                     type={isReset ? 'success' : 'error'}
                   />
                 )}
