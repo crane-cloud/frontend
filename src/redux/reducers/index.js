@@ -32,6 +32,7 @@ import appLogsReducer from './getAppLogs';
 import projectDatabasesReducer from './databaseList';
 import deleteDatabaseReducer from './deleteDatabase';
 import resetDatabaseReducer from './resetDatabase';
+import createDatabaseReducer from './createDatabase';
 
 
 export default combineReducers({
@@ -67,5 +68,6 @@ export default combineReducers({
   appMemoryReducer,
   projectDatabasesReducer,
   deleteDatabaseReducer,
-  resetDatabaseReducer
+  resetDatabaseReducer,
+  createDatabaseReducer
 });
