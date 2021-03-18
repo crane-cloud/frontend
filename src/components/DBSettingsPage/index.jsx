@@ -33,6 +33,10 @@ class DBSettingsPage extends React.Component {
     this.hideResetAlert = this.hideResetAlert.bind(this);
     this.renderRedirect = this.renderRedirect.bind(this);
   }
+  componentDidMount(){
+    const { clearDatabaseResetState } = this.props;
+    clearDatabaseResetState();
+  }
 
   componentDidUpdate(prevProps) {
     const { dbDeleteMessage, isReset } = this.props;
@@ -90,8 +94,6 @@ class DBSettingsPage extends React.Component {
   }
 
   hideResetAlert() {
-    const { clearDatabaseResetState } = this.props;
-    clearDatabaseResetState();
     this.setState({ openResetAlert: false });
   }
 
@@ -112,7 +114,6 @@ class DBSettingsPage extends React.Component {
       isReset,
       isReseting,
       resetMessage,
-      resetFailed
     } = this.props;
     const { userID, projectID, databaseID } = this.props.match.params;
     const dbInfo = this.getDatabaseInfo(databaseID);
@@ -120,10 +121,9 @@ class DBSettingsPage extends React.Component {
       openDeleteAlert,
       openResetAlert
     } = this.state;
-
     return (
       <div className="Page">
-        {((dbDeleteMessage === 'Database Deleted Successfully')||(isReset)) ? (this.renderRedirect() ) : ( null )}
+        {(dbDeleteMessage === 'Database Deleted Successfully') ? (this.renderRedirect() ) : ( null )}
         <div className="TopBarSection">
           <Header />
         </div>
@@ -187,6 +187,12 @@ class DBSettingsPage extends React.Component {
                   />
                   <div className="buttonText">Deletes all tables and data, but the database remains.</div>
                 </div>
+                {(resetMessage !== '') && (
+                  <Feedback
+                    message={resetMessage !== '' ? resetMessage : (null)}
+                    type={isReset ? 'success' : 'error'}
+                  />
+                )}
                 <div className="DBDetailRow">
                   <PrimaryButton
                     label="Delete Database"
@@ -248,12 +254,6 @@ class DBSettingsPage extends React.Component {
                             <PrimaryButton label={isReseting ? <Spinner /> : 'Reset'} className="DBDeleteBtn" onClick={(e) => this.handleResetDatabase(e, projectID, databaseID)} />
                           </div>
 
-                          {(resetFailed && resetMessage) && (
-                            <Feedback
-                              message={resetMessage}
-                              type="error"
-                            />
-                          )}
                         </div>
                       </div>
 
