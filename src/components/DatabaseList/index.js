@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../Header';
 import InformationBar from '../InformationBar';
@@ -112,24 +113,40 @@ class DatabaseList extends React.Component {
                       <div className="DatabaseTableBody">
                         {(databasesFetched && databases !== undefined && (
                           (databases.map((database) => (
-                            <div className="DatabaseTableRow" key={databases.indexOf(database)}>
-                              <div className="DatabaseTableCell">{database.user}</div>
-                              <div className="DatabaseTableCell">{database.name}</div>
-                              <div className="DatabaseTableCell">{database.host}</div>
-                              <div className="DatabaseTableCell">{tellAge(database.date_created)}</div>
-                            </div>
+                            <Link
+                              to={{
+                                pathname: `/users/${userID}/projects/${projectID}/databases/${database.id}/settings`
+                              }}
+                              key={database.id}
+                              className="DatabaseRow"
+                            >
+                              <div className="DatabaseTableRow" key={databases.indexOf(database)}>
+                                <div className="DatabaseTableCell">{database.user}</div>
+                                <div className="DatabaseTableCell">{database.name}</div>
+                                <div className="DatabaseTableCell">{database.host}</div>
+                                <div className="DatabaseTableCell">{tellAge(database.date_created)}</div>
+                              </div>
+                            </Link>
                           ))))
                         )}
                       </div>
                     )}
                   </div>
-                </div>
 
-                {(databasesFetched && databases.length === 0) && (
-                  <div className="NoResourcesMessage">
-                    <p>No Databases Available</p>
-                  </div>
-                )}
+                  {(databasesFetched && databases.length === 0) && (
+                    <div className="NoResourcesMessage">
+                      You haven’t created any databases yet.
+                      Click the create button to get started.
+                    </div>
+                  )}
+
+                  {(!isFetchingDatabases && !databasesFetched) && (
+                    <div className="NoResourcesMessage">
+                      Oops! Something went wrong!
+                      Failed to retrieve Databases.
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )}

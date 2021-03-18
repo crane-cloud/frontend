@@ -32,3 +32,11 @@
 .DatabaseTableCell:last-child{
     text-align: right;
 }
+.DatabaseRow{
+  color: #000000;
+  cursor: pointer;
+}
+
+.DatabaseRow:hover{
+    color: #F7B21F;
+}
