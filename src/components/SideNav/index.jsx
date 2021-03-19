@@ -46,13 +46,8 @@ const SideNav = (props) => {
       </div>
 
       <div className="SideFooter StickBottom">
-        Copyright &copy;
-        {' '}
-        {new Date().getFullYear()}
-        {' '}
-        Crane Cloud.
+        Copyright {new Date().getFullYear()} Crane Cloud.
         <br />
-        {' '}
         All Rights Reserved.
       </div>
     </div>

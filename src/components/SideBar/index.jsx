@@ -105,13 +105,7 @@ const SideBar = (props) => {
           )}
 
           <div className="SideFooter StickBottom">
-            Copyright &copy;
-            {' '}
-            {new Date().getFullYear()}
-            {' '}
-            Crane Cloud.
-            {' '}
-            All Rights Reserved.
+            Copyright {new Date().getFullYear()} Crane Cloud. All Rights Reserved.
           </div>
         </div>
       </div>

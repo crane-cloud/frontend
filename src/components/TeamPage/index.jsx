@@ -53,11 +53,7 @@ const TeamPage = () => (
     <div className="TeamPageFooter">
       <footer className="TeamFooter">
         <p className="TeamFooterCopyright">
-          Copyright &copy;
-          {' '}
-          {new Date().getFullYear()}
-          {' '}
-          Crane Cloud. All Rights Reserved.
+          Copyright {new Date().getFullYear()} Crane Cloud. All Rights Reserved.
         </p>
       </footer>
     </div>

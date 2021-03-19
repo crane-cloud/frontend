@@ -118,11 +118,7 @@ class ClusterPage extends React.Component {
         </div>
         <div className="FooterRow">
           <p>
-            Copyright &copy;
-            {' '}
-            {new Date().getFullYear()}
-            {' '}
-            Crane Cloud. All Rights Reserved.
+            Copyright {new Date().getFullYear()} Crane Cloud. All Rights Reserved.
           </p>
         </div>
 
