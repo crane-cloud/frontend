@@ -58,6 +58,7 @@ class DBSettingsPage extends React.Component {
       user: found.user,
       host: found.host,
       dbID: found.id,
+      port:found.port,
       password: found.password,
       age: tellAge(found.date_created)
     };
@@ -171,6 +172,10 @@ class DBSettingsPage extends React.Component {
                   <div className="DBDetailRow">
                     <div className="DBThead">Host</div>
                     <div className="DBTDetail">{dbInfo.host}</div>
+                  </div>
+                  <div className="DBDetailRow">
+                    <div className="DBThead">Port</div>
+                    <div className="DBTDetail">{dbInfo.port}</div>
                   </div>
                   <div className="DBDetailRow">
                     <div className="DBThead">Created</div>
