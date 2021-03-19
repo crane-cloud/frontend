@@ -4,7 +4,7 @@ import './LandingFooter.css';
 const LandingFooter = () => (
   <footer className="LandingFooter">
     <p className="LandingFooterCopyright">
-      Copyright ©
+      Copyright &copy;
       {' '}
       {new Date().getFullYear()}
       {' '}

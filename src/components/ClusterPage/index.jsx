@@ -118,7 +118,7 @@ class ClusterPage extends React.Component {
         </div>
         <div className="FooterRow">
           <p>
-            Copyright ©
+            Copyright &copy;
             {' '}
             {new Date().getFullYear()}
             {' '}

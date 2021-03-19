@@ -46,7 +46,7 @@ const SideNav = (props) => {
       </div>
 
       <div className="SideFooter StickBottom">
-        Copyright ©
+        Copyright &copy;
         {' '}
         {new Date().getFullYear()}
         {' '}

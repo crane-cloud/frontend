@@ -206,7 +206,7 @@ class UserProjectsPage extends React.Component {
         </div>
         <div className="FooterRow">
           <div>
-            Copyright ©
+            Copyright &copy;
             {' '}
             {new Date().getFullYear()}
             {' '}

@@ -53,7 +53,7 @@ const TeamPage = () => (
     <div className="TeamPageFooter">
       <footer className="TeamFooter">
         <p className="TeamFooterCopyright">
-          Copyright ©
+          Copyright &copy;
           {' '}
           {new Date().getFullYear()}
           {' '}

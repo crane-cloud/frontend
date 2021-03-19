@@ -105,7 +105,7 @@ const SideBar = (props) => {
           )}
 
           <div className="SideFooter StickBottom">
-            Copyright ©
+            Copyright &copy;
             {' '}
             {new Date().getFullYear()}
             {' '}
