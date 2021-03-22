@@ -153,10 +153,6 @@ class DBSettingsPage extends React.Component {
                     <div className="DBTDetail">MYSQL</div>
                   </div>
                   <div className="DBDetailRow">
-                    <div className="DBThead">ID</div>
-                    <div className="DBTDetail">{dbInfo.dbID}</div>
-                  </div>
-                  <div className="DBDetailRow">
                     <div className="DBThead">Name</div>
                     <div className="DBTDetail">{dbInfo.name}</div>
                   </div>
@@ -175,6 +171,10 @@ class DBSettingsPage extends React.Component {
                   <div className="DBDetailRow">
                     <div className="DBThead">Created</div>
                     <div className="DBTDetail">{dbInfo.age}</div>
+                  </div>
+                  <div className="DBDetailRow">
+                    <div className="DBThead">URI</div>
+                    <div className="DBTDetail">{`mysql://${dbInfo.user}:${dbInfo.password}@${dbInfo.host}:${dbInfo.port}/${dbInfo.name}`}</div>
                   </div>
                 </div>
               </div>
@@ -202,9 +202,7 @@ class DBSettingsPage extends React.Component {
                         <div className="DeleteProjectModalUpperSection">
                           <div className="DeleteDescription">
                             Are you sure you want to delete this Database &nbsp;
-                            <span>{dbInfo.name}</span>
-                              &nbsp;
-                            ?
+                            <span>{dbInfo.name} ?</span>
                             <DeleteWarning />
                           </div>
                         </div>
@@ -235,9 +233,7 @@ class DBSettingsPage extends React.Component {
                         <div className="DeleteProjectModalUpperSection">
                           <div className="DeleteDescription">
                             Are you sure you want to reset this Database &nbsp;
-                            <span>{dbInfo.name}</span>
-                              &nbsp;
-                            ?
+                            <span>{dbInfo.name} ?</span>
                             <DeleteWarning />
                           </div>
                         </div>
@@ -245,7 +241,7 @@ class DBSettingsPage extends React.Component {
                         <div className="DeleteProjectModalLowerSection">
                           <div className="DeleteProjectModelButtons">
                             <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideResetAlert} />
-                            <PrimaryButton label={isReseting ? <Spinner /> : 'Reset'} className="DBDeleteBtn" onClick={(e) => this.handleResetDatabase(e, projectID, databaseID)} />
+                            <PrimaryButton label={isReseting ? <Spinner /> : 'Reset'} className="ResetBtn" onClick={(e) => this.handleResetDatabase(e, projectID, databaseID)} />
                           </div>
 
                           {(resetFailed && resetMessage) && (
