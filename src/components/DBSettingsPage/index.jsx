@@ -22,7 +22,8 @@ class DBSettingsPage extends React.Component {
     this.state = {
       openDeleteAlert:false,
       openResetAlert: false,
-      error: ''
+      error: '',
+      hidden: true
     };
 
     this.handleDeleteDatabase = this.handleDeleteDatabase.bind(this);
@@ -32,6 +33,7 @@ class DBSettingsPage extends React.Component {
     this.showResetAlert = this.showResetAlert.bind(this);
     this.hideResetAlert = this.hideResetAlert.bind(this);
     this.renderRedirect = this.renderRedirect.bind(this);
+    this.togglePassword = this.togglePassword.bind(this);
   }
   componentDidMount(){
     const { clearDatabaseResetState } = this.props;
@@ -106,6 +108,10 @@ class DBSettingsPage extends React.Component {
       return <Redirect to={`/users/${userID}/projects/${projectID}/databases`} noThrow/>
     }
   }
+
+  togglePassword(){
+    this.setState({ hidden: !this.state.hidden });
+  }
   
   render() {
     const {
@@ -120,7 +126,8 @@ class DBSettingsPage extends React.Component {
     const dbInfo = this.getDatabaseInfo(databaseID);
     const {
       openDeleteAlert,
-      openResetAlert
+      openResetAlert,
+      hidden
     } = this.state;
     return (
       <div className="Page">
@@ -161,9 +168,18 @@ class DBSettingsPage extends React.Component {
                     <div className="DBThead">User</div>
                     <div className="DBTDetail">{dbInfo.user}</div>
                   </div>
-                  <div className="DBDetailRow">
-                    <div className="DBThead">Password</div>
-                    <div className="DBTDetail">{dbInfo.password}</div>
+                  <div className="DBPasswordRow">
+                    <div className="DBColumn1 DBThead">Password</div>
+                    <div className="DBColumn">
+                      {hidden? '***************************': dbInfo.password}
+                    </div>
+                    <div className="DBColumn">
+                      <PrimaryButton
+                        label={hidden ? 'Show Password': 'Hide Password'}
+                        className="ResetBtn PasswordButton"
+                        onClick={this.togglePassword}
+                      />
+                    </div>
                   </div>
                   <div className="DBDetailRow">
                     <div className="DBThead">Host</div>
@@ -211,7 +227,7 @@ class DBSettingsPage extends React.Component {
                     <Modal showModal={openDeleteAlert} onClickAway={this.hideDeleteAlert}>
                       <div className="DeleteDatabaseModel">
                         <div className="DeleteProjectModalUpperSection">
-                          <div className="DeleteDescription">
+                          <div className="InnerModalDescription">
                             Are you sure you want to delete this Database &nbsp;
                             <span>{dbInfo.name} ?</span>
                             <DeleteWarning />
@@ -242,7 +258,7 @@ class DBSettingsPage extends React.Component {
                     <Modal showModal={openResetAlert} onClickAway={this.hideResetAlert}>
                       <div className="DeleteDatabaseModel">
                         <div className="DeleteProjectModalUpperSection">
-                          <div className="DeleteDescription">
+                          <div className="InnerModalDescription">
                             Are you sure you want to reset this Database &nbsp;
                             <span>{dbInfo.name} ?</span>
                             <DeleteWarning />
