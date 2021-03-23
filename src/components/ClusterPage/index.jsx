@@ -117,7 +117,9 @@ class ClusterPage extends React.Component {
           <ClustersList newClusterAdded={isAdded} />
         </div>
         <div className="FooterRow">
-          <p>Copyright © 2020 Crane Cloud. All Rights Reserved.</p>
+          <p>
+            Copyright {new Date().getFullYear()} Crane Cloud. All Rights Reserved.
+          </p>
         </div>
 
         {/* Modal for creating a new project

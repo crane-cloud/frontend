@@ -206,7 +206,7 @@ class UserProjectsPage extends React.Component {
         </div>
         <div className="FooterRow">
           <div>
-            Copyright © 2020 Crane Cloud.
+            Copyright {new Date().getFullYear()} Crane Cloud.
             <br />
             All Rights Reserved.
           </div>
