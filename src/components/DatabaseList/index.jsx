@@ -93,7 +93,7 @@ class DatabaseList extends React.Component {
               <div className="ContentSection">
                 <div className="DatabaseTable">
                   <div className="DatabaseTableRow">
-                    <div className="DatabaseTableHeadCell DatabaseTableHead">User</div>
+                    <div className="DatabaseTableHeadCell DatabaseTableHead">Type</div>
                     <div className="DatabaseTableHeadCell DatabaseTableHead">Name</div>
                     <div className="DatabaseTableHeadCell DatabaseTableHead">Host</div>
                     <div className="DatabaseTableHeadCell DatabaseTableHead">Age</div>
@@ -121,7 +121,7 @@ class DatabaseList extends React.Component {
                               className="DatabaseRow"
                             >
                               <div className="DatabaseTableRow" key={databases.indexOf(database)}>
-                                <div className="DatabaseTableCell">{database.user}</div>
+                                <div className="DatabaseTableCell">MYSQL</div>
                                 <div className="DatabaseTableCell">{database.name}</div>
                                 <div className="DatabaseTableCell">{database.host}</div>
                                 <div className="DatabaseTableCell">{tellAge(database.date_created)}</div>

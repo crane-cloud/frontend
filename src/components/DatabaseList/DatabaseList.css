@@ -20,7 +20,8 @@
 
 .DatabaseTableCell{
     font-weight: normal;
-    padding: 0.2rem 1rem; 
+    padding: 0.2rem 1rem;
+    text-align: center;
 }
 
 .DatabaseTableHeadCell:first-child,
