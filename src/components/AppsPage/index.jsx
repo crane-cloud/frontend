@@ -542,16 +542,6 @@ class AppsPage extends React.Component {
               </div>
             </div>
 
-            <div className="DbSupportSection">
-              <div className="HeadingWithTooltip">
-                <h4>Database Support</h4>
-                <Tooltip
-                  showIcon
-                  message="Does your application need a database?"
-                />
-              </div>
-            </div>
-
             {/* //- /////////////////////////////////// -// */}
 
             <div className="ModalFormButtons AddAddButtons">
