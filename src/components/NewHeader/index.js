@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Logo from '../Logo';
 import NewLogo from '../NewLogo';
 import { ReactComponent as DownArrow } from '../../assets/images/downarrow.svg';
 import removeUser from '../../redux/actions/removeUser';
