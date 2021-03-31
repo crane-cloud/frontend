@@ -1,17 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ReactComponent as LogoIcon } from '../../assets/images/logo.svg';
-import './Logo.css';
+import { ReactComponent as NewLogoIcon } from '../../assets/images/NewLogo.svg';
+import './NewLogo.css';
 
-const Logo = () => {
+const NewLogo = () => {
   return (
     <Link to="/" className="LogoWrapper">
       <div className="Logo">
-        <LogoIcon className="LogoIcon" />
+        <NewLogoIcon className="NewLogoIcon" />
         <div className="LogoType">Crane Cloud</div>
       </div>
     </Link>
   );
 };
 
-export default Logo;
+export default NewLogo;
