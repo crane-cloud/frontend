@@ -22,8 +22,12 @@ const LandingFooter = () => (
               Made in Uganda.
             </p>
             <div className="SocialsIcons">
-              <TwitterIcon />
-              <FacebookIcon />
+              <a href="https://twitter.com/cranecloud_io" target="_blank" rel="noopener noreferrer">
+                <TwitterIcon />
+              </a>
+              <a href="https://www.facebook.com/CraneCloud.io" target="_blank" rel="noopener noreferrer">
+                <FacebookIcon />
+              </a>
             </div>
           </div>
           <div></div>
@@ -58,11 +62,7 @@ const LandingFooter = () => (
           </ul>
         </div>
         <div className="FooterChildTwo">
-          {/* <h5 className="CountryOfOrigin">Community</h5>
-          <ul className="FooterList">
-            <li className="CountryOfOrigin">Contribute</li>
-            <li className="CountryOfOrigin">Blog</li>
-          </ul> */}
+          
         </div>
       </div>
     </div>
