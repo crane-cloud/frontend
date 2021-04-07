@@ -70,5 +70,7 @@ li.CountryOfOrigin a:visited{
 .SocialsIcons{
   display: flex;
   flex-direction: row;
-  justify-content: left;
+  justify-content: start;
+  height: 2rem;
+  overflow-x: hidden;
 }
