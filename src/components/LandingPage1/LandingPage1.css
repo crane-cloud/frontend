@@ -42,6 +42,17 @@
   width: 80%;
 }
 
+h1.LandingPageMainContentTitle{
+  color: black;
+}
+.LandingPageInfrastructurePic path{
+  fill:#99D2E9;
+}
+
+.ButtonSpacing{
+  width: 12.7rem;
+}
+
 @media only screen and (max-width: 640px) {
   .LandingPageMainContentImg {
     display: none;

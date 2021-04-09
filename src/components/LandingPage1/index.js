@@ -5,6 +5,7 @@ import PrimaryButton from '../PrimaryButton';
 import Header from '../Header';
 import LandingFooter from '../LandingFooter';
 import { ReactComponent as InfrastrucurePic } from '../../assets/images/infrastructure.svg';
+import { ReactComponent as RightArrow } from '../../assets/images/rightArrow.svg';
 import './LandingPage1.css';
 
 const LandingPage1 = (props) => {
@@ -18,15 +19,19 @@ const LandingPage1 = (props) => {
       <div className="LandingPageMainContent">
         <div className="LandingPageMainContentInfo">
           <div>
-            <h1 className="uppercase extra-bold">managed cloud service</h1>
-            <h3 className="bold">Automated application deployment, scaling and management.</h3>
-            {
-              user ? (
-                <Link to={`/users/${user.data.id}/projects`}><PrimaryButton label="get started" /></Link>
-              ) : (
-                <Link to="/register"><PrimaryButton label="get started" /></Link>
-              )
-            }
+            <h1 className="LandingPageMainContentTitle">Simplified Cloud Hosting</h1>
+            <h3 className="bold">
+              Crane Cloud is an open source multicloud service layer for highly
+              available cloud-based services in Africa. Crane Cloud provides
+              compute, network and storage services without lock-in.
+            </h3>
+            <Link to="/register">
+              <button className="Primary-Btn uppercase ButtonSpacing">
+                Start Free Trial
+                &nbsp; &nbsp;
+                <RightArrow />
+              </button>
+            </Link>
 
           </div>
         </div>
