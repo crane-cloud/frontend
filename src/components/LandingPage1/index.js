@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
-import PrimaryButton from '../PrimaryButton';
 import Header from '../Header';
 import LandingFooter from '../LandingFooter';
 import { ReactComponent as InfrastrucurePic } from '../../assets/images/infrastructure.svg';
@@ -16,27 +15,57 @@ const LandingPage1 = (props) => {
   return (
     <div className="LandingPageMain">
       <Header />
-      <div className="LandingPageMainContent">
-        <div className="LandingPageMainContentInfo">
-          <div>
-            <h1 className="LandingPageMainContentTitle">Simplified Cloud Hosting</h1>
-            <h3 className="bold">
-              Crane Cloud is an open source multicloud service layer for highly
-              available cloud-based services in Africa. Crane Cloud provides
-              compute, network and storage services without lock-in.
-            </h3>
-            <Link to="/register">
-              <button className="Primary-Btn uppercase ButtonSpacing">
-                Start Free Trial
-                &nbsp; &nbsp;
-                <RightArrow />
-              </button>
-            </Link>
+      <div className="LandingPageMainContainer">
+        <div className="LandingPageMainContent">
+          <div className="LandingPageMainContentInfo">
+            <div>
+              <h1 className="LandingPageMainContentTitle">Simplified Cloud Hosting</h1>
+              <h3 className="bold">
+                Crane Cloud is an open source multicloud service layer for highly
+                available cloud-based services in Africa. Crane Cloud provides
+                compute, network and storage services without lock-in.
+              </h3>
+              <Link to="/register">
+                <button className="Primary-Btn uppercase ButtonSpacing">
+                  Start Free Trial
+                  &nbsp; &nbsp;
+                  <RightArrow />
+                </button>
+              </Link>
 
+            </div>
+          </div>
+          <div className="LandingPageMainContentImg">
+            <InfrastrucurePic className="LandingPageInfrastructurePic" />
           </div>
         </div>
-        <div className="LandingPageMainContentImg">
-          <InfrastrucurePic className="LandingPageInfrastructurePic" />
+        <div className="LandingPageWhySection">
+          <div className="LandingPageWhySectionTitle">
+            <h2>Why Crane Cloud</h2>
+          </div>
+          <div className="WhySectionContent">
+            <div className="DataCenterImage"></div>
+            <div className="WhySectionContainer">
+              <div className="WhySectionChildContainer">
+                <div className="WhySectionItem InfraOne">
+                  <h6 className="WhySectionCardTitle">Infrastructure</h6>
+                  <p>Fast, agile, and resilient infrastructure.</p>
+                </div>
+                <div className="WhySectionItem CosTwo">
+                  <h6 className="WhySectionCardTitle">Cost</h6>
+                  <p>Reduce costs and save money by getting billed only what you utilize.</p>
+                </div>
+                <div className="WhySectionItem SecThree">
+                  <h6 className="WhySectionCardTitle">Security</h6>
+                  <p>Images are automatically scanned for vulnerabilities, and deployed with a free SSL certificate.</p>
+                </div>
+                <div className="WhySectionItem SuppoFour">
+                  <h6 className="WhySectionCardTitle">Support</h6>
+                  <p>Create a ticket, chat, or call a specialist regarding any queries.</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div className="LandingPageFooter">
