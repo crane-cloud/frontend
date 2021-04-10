@@ -50,12 +50,13 @@ h1.LandingPageMainContentTitle{
 }
 
 .ButtonSpacing{
-  width: 12.7rem;
+  min-width: 12.7rem;
 }
 
 .LandingPageMainContainer{
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .LandingPageWhySection{
@@ -70,6 +71,7 @@ h1.LandingPageMainContentTitle{
 
 .WhySectionContent{
   display: flex;
+  padding: 0 0 0.5rem;
 }
 
 .DataCenterImage{
@@ -112,8 +114,49 @@ h1.LandingPageMainContentTitle{
 }
 .WhySectionCardTitle{
   font-size: medium;
-  margin-top: 0.5rem;
+  margin: 0.5rem 0 0.5rem 0;
 }
+
+.PageBannerSection{
+  background-color: #F7B21F;
+  color: #F8F7E5;
+  display: flex;
+  width: 100%;
+  padding: 0 0 0 2rem;
+  overflow: hidden;
+}
+
+.LeftPageBannerSection{
+  flex: 6;
+  margin: auto;
+}
+
+.RightPageBannerSection{
+  flex: 1;
+  overflow: hidden;
+  margin: auto;
+}
+.BannerParagraph{
+  color: #000000;
+}
+.BannerButton{
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  padding: 0.5rem 2rem;
+}
+.LeftPageBannerInner{
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+
+.SolutionsSection{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 0.5rem;
+}
+
 @media only screen and (max-width: 640px) {
   .LandingPageMainContentImg {
     display: none;

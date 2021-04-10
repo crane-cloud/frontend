@@ -32,7 +32,6 @@ const LandingPage1 = (props) => {
                   <RightArrow />
                 </button>
               </Link>
-
             </div>
           </div>
           <div className="LandingPageMainContentImg">
@@ -63,6 +62,64 @@ const LandingPage1 = (props) => {
                   <h6 className="WhySectionCardTitle">Support</h6>
                   <p>Create a ticket, chat, or call a specialist regarding any queries.</p>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="PageBannerSection">
+          <div className="LeftPageBannerSection">
+            <div className="LeftPageBannerInner">
+              <h2>Migrate to the cloud</h2>
+              <p className="BannerParagraph">Governments and institutions are urged to begin digital transformation.</p>
+            </div>
+          </div>
+          <div className="RightPageBannerSection">
+            <div className="BannerButtonContainer">
+              <button className="BannerButton">
+                Learn More
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="LandingPageWhySection">
+          <div className="LandingPageWhySectionTitle">
+            <h2>Explore Crane Cloud Solutions</h2>
+          </div>
+          <div className="SolutionsSection">
+            <div>
+              <div></div>
+              <div>
+                <h3>Containers</h3>
+              </div>
+            </div>
+            <div>
+              <div></div>
+              <div>
+                <h3>Orcherstration</h3>
+              </div>
+            </div>
+            <div>
+              <div></div>
+              <div>
+                <h3>Databases</h3>
+              </div>
+            </div>
+            <div>
+              <div></div>
+              <div>
+                <h3>Registry</h3>
+              </div>
+            </div>
+            <div>
+              <div></div>
+              <div>
+                <h3>MultiCloud</h3>
+              </div>
+            </div>
+            <div>
+              <div></div>
+              <div>
+                <h3>Monitoring</h3>
               </div>
             </div>
           </div>
