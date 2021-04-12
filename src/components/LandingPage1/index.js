@@ -9,7 +9,7 @@ import { ReactComponent as Databases } from '../../assets/images/databases.svg';
 import { ReactComponent as Monitoring } from '../../assets/images/monitoring.svg';
 import { ReactComponent as Container } from '../../assets/images/container.svg';
 import { ReactComponent as Orch } from '../../assets/images/orcherstration.svg';
-import { ReactComponent as Rectangle } from '../../assets/images/Rectangle.svg';
+import { ReactComponent as Registry } from '../../assets/images/registry.svg';
 import { ReactComponent as Cloud } from '../../assets/images/multicloud.svg';
 import './LandingPage1.css';
 
@@ -135,7 +135,7 @@ const LandingPage1 = (props) => {
             <div className="SolutionsContainer">
               <div className="SolutionsIcon">
                 <div>
-                  <Rectangle />
+                  <Registry />
                 </div>
               </div>
               <div className="SolutionsContent">
