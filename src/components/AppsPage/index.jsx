@@ -207,15 +207,15 @@ class AppsPage extends React.Component {
       });
     } else if (this.validateAppName(name) === false) {
       this.setState({
-        error: 'name should start with a letter'
+        error: 'Name should start with a letter'
       });
     } else if (this.validateAppName(name) === 'false_convention') {
       this.setState({
-        error: 'name may only contain letters,numbers,dot and a hypen -'
+        error: 'Name may only contain letters,numbers,dot and a hypen -'
       });
-    } else if (name.length > 18) {
+    } else if (name.length > 22) {
       this.setState({
-        error: 'name may not exceed 18 characters'
+        error: 'Name may not exceed 22 characters'
       });
     } else if (port && !(/^[0-9]*$/.test(port))) { // validate port and ensure its a number
       this.setState({
