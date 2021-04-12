@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
-import Header from '../Header';
+import NewHeader from '../NewHeader';
 import LandingFooter from '../LandingFooter';
 import { ReactComponent as InfrastrucurePic } from '../../assets/images/infrastructure.svg';
 import { ReactComponent as RightArrow } from '../../assets/images/rightArrow.svg';
@@ -20,7 +20,7 @@ const LandingPage1 = (props) => {
   }
   return (
     <div className="LandingPageMain">
-      <Header />
+      <NewHeader />
       <div className="LandingPageMainContainer">
         <div className="LandingPageMainContent">
           <div className="LandingPageMainContentInfo">
