@@ -28,10 +28,10 @@ const LandingFooter = () => (
                 <TwitterIcon />
               </a>
               <a href="https://www.facebook.com/CraneCloud.io" target="_blank" rel="noopener noreferrer">
-                <FacebookIcon />
+                <LinkedinIcon />
               </a>
               <a href="https://www.facebook.com/CraneCloud.io" target="_blank" rel="noopener noreferrer">
-                <LinkedinIcon />
+                <FacebookIcon />
               </a>
               <a href="https://medium.com/cranecloud" target="_blank" rel="noopener noreferrer">
                 <MediumIcon />

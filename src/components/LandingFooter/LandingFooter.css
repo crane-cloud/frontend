@@ -69,6 +69,6 @@ li.CountryOfOrigin a:visited{
 
 .SocialsIcons{
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 40%;
+  grid-template-columns: 1fr 1fr 1fr 1fr 50%;
   place-items: center;
 }
