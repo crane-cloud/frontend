@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import saveUser from '../../redux/actions/saveUser';
 import removeUser from '../../redux/actions/removeUser';
-import Header from '../Header';
+import NewHeader from '../NewHeader';
 import LandingFooter from '../LandingFooter';
 import InputText from '../InputText';
 import InputPassword from '../InputPassword';
@@ -137,7 +137,7 @@ class LoginPage extends React.Component {
 
     return (
       <div className="LoginPageContainer">
-        <Header />
+        <NewHeader />
         <div className="LoginContent">
           <div className="LoginContentHeading">
 
