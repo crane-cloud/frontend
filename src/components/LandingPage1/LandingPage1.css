@@ -154,9 +154,21 @@ h1.LandingPageMainContentTitle{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
+.SolutionsContainer{
+  display: flex;
+}
+
+.SolutionsIcon{
+  flex: 1;
+  padding-top: 1.3rem;
+}
+
+.SolutionsContent{
+  flex: 5;
+}
 @media only screen and (max-width: 640px) {
   .LandingPageMainContentImg {
     display: none;
