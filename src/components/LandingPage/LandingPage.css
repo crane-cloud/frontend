@@ -17,7 +17,7 @@
   display: flex;
   flex-direction: row;
   align-self: center;
-  padding: 0 4rem;
+  padding: 3rem 2rem 4rem;
 }
 
 .LandingPageMainContentInfo {
@@ -40,6 +40,134 @@
   line-height: 37px;
   font-size: 32px;
   width: 80%;
+}
+
+h1.LandingPageMainContentTitle{
+  color: black;
+}
+.LandingPageInfrastructurePic path{
+  fill:#99D2E9;
+}
+
+.ButtonSpacing{
+  min-width: 12.7rem;
+}
+
+.LandingPageMainContainer{
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.LandingPageWhySection{
+  background-color: #ffffff;
+  padding: 2rem;
+}
+
+.WhySectionContainer{
+  flex: 3;
+
+}
+
+.WhySectionContent{
+  display: flex;
+  padding: 0 0 0.5rem;
+}
+
+.DataCenterImage{
+  flex: 2;
+  background: url(../../assets/images/datacenter.png);
+  background-position: center;
+  background-size: cover;
+}
+
+.WhySectionChildContainer{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0.5rem;
+  padding: 0 0 0 0.5rem;
+}
+
+.WhySectionItem{
+  padding: 0.5rem;
+}
+
+.InfraOne{
+  background-color: #06222F;
+  color: #008AC1;
+}
+
+.CosTwo{
+  background-color: #F8F7E5;
+  color: #D2741D;
+}
+
+.SecThree{
+  background-color: #D2741D;
+  color: #F8F7E5;
+}
+
+.SuppoFour{
+  background-color: #008AC1;
+  color: #99D2E9;
+}
+.WhySectionCardTitle{
+  font-size: medium;
+  margin: 0.5rem 0 0.5rem 0;
+}
+
+.PageBannerSection{
+  background-color: #F7B21F;
+  color: #F8F7E5;
+  display: flex;
+  width: 100%;
+  padding: 0 0 0 2rem;
+  overflow: hidden;
+}
+
+.LeftPageBannerSection{
+  flex: 6;
+  margin: auto;
+}
+
+.RightPageBannerSection{
+  flex: 1;
+  overflow: hidden;
+  margin: auto;
+}
+.BannerParagraph{
+  color: #000000;
+}
+.BannerButton{
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  padding: 0.5rem 2rem;
+}
+.LeftPageBannerInner{
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+
+.SolutionsSection{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 1rem;
+}
+
+.SolutionsContainer{
+  display: flex;
+}
+
+.SolutionsIcon{
+  flex: 1;
+  padding-top: 1.3rem;
+}
+
+.SolutionsContent{
+  flex: 5;
 }
 
 @media only screen and (max-width: 640px) {
