@@ -4,6 +4,8 @@ import { DOCS_URL } from '../../config';
 import './LandingFooter.css';
 import { ReactComponent as TwitterIcon } from '../../assets/images/twitter.svg';
 import { ReactComponent as FacebookIcon } from '../../assets/images/facebook.svg';
+import { ReactComponent as LinkedinIcon } from '../../assets/images/Linkedin.svg';
+import { ReactComponent as MediumIcon } from '../../assets/images/medium.svg';
 
 const LandingFooter = () => (
   <footer className="LandingFooter">
@@ -27,6 +29,12 @@ const LandingFooter = () => (
               </a>
               <a href="https://www.facebook.com/CraneCloud.io" target="_blank" rel="noopener noreferrer">
                 <FacebookIcon />
+              </a>
+              <a href="https://www.facebook.com/CraneCloud.io" target="_blank" rel="noopener noreferrer">
+                <LinkedinIcon />
+              </a>
+              <a href="https://medium.com/cranecloud" target="_blank" rel="noopener noreferrer">
+                <MediumIcon />
               </a>
             </div>
           </div>

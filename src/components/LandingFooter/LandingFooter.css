@@ -68,9 +68,7 @@ li.CountryOfOrigin a:visited{
 }
 
 .SocialsIcons{
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  height: 2rem;
-  overflow-x: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 40%;
+  place-items: center;
 }
