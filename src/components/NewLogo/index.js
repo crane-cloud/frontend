@@ -8,7 +8,7 @@ const NewLogo = () => {
     <Link to="/" className="LogoWrapper">
       <div className="Logo">
         <NewLogoIcon className="NewLogoIcon" />
-        <div className="LogoType">Crane Cloud</div>
+        <div className="BrandLogoType">Crane Cloud</div>
       </div>
     </Link>
   );
