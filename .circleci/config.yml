@@ -48,7 +48,7 @@ deploy_to_kubernetes: &deploy_to_kubernetes
     name: update deployment image
     command: |
       export IMG_TAG=$(echo $CIRCLE_SHA1 | cut -c -7)
-      ./kubectl set image deployment/cranecloud-frontend cranecloud-frontend=gcr.io/$GCP_PROJECT_ID/cranecloud-frontend:$IMG_TAG --record -n cranecloud
+      ./kubectl set image deployment/cranecloud-frontend cranecloud-frontend=gcr.io/$GCP_PROJECT_ID/cranecloud-frontend:$IMG_TAG --record -n $namespace
 
 jobs:
   build_and_deploy_staging:
@@ -58,6 +58,7 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: /root/crane-cloud
           cluster: staging-cluster
           REACT_APP_API_BASE_URL: https://staging-api.cranecloud.io
+          namespace: cranecloud
     working_directory: ~/crane-cloud
     steps:
       - checkout
@@ -77,8 +78,9 @@ jobs:
       - image: google/cloud-sdk
         environment:
           GOOGLE_APPLICATION_CREDENTIALS: /root/crane-cloud
-          cluster: production-cluster
+          cluster: staging-cluster
           REACT_APP_API_BASE_URL: https://api.cranecloud.io
+          namespace: cranecloud-prod
     working_directory: ~/crane-cloud
     steps:
       - checkout
