@@ -1,6 +1,7 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
-import { DELETE_PROJECT_SUCCESS, DELETE_PROJECT_FAIL, START_DELETING_PROJECT, CLEAR_DELETE_PROJECT_STATE } from './actionTypes';
+import axios from '../../axios';
+import {
+  DELETE_PROJECT_SUCCESS, DELETE_PROJECT_FAIL, START_DELETING_PROJECT, CLEAR_DELETE_PROJECT_STATE 
+} from './actionTypes';
 
 const startDeletingProject = () => ({
   type: START_DELETING_PROJECT,
@@ -26,9 +27,7 @@ const clearDeleteProjectState = () => ({
 const deleteProject = (ProjectID) => (dispatch) => {
   dispatch(startDeletingProject());
 
-  axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-
-  return axios.delete(`${API_BASE_URL}/projects/${ProjectID}`)
+  return axios.delete(`/projects/${ProjectID}`)
     .then((response) => dispatch(deleteProjectSuccess(response)))
     .catch((error) => {
       dispatch(deleteProjectFail(error));

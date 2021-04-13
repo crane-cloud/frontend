@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
 import {
   GET_DEPLOYMENTS_SUCCESS,
   GET_DEPLOYMENTS_FAIL,
@@ -27,12 +26,11 @@ const getDeploymentsFail = (error) => ({
 const getDeployments = (clusterID) => (dispatch) => {
   dispatch(startGettingDeployments());
 
-  axios.get(`${API_BASE_URL}/clusters/${clusterID}/deployments`,
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+  axios.get(`/clusters/${clusterID}/deployments`)
     .then((response) => dispatch(getDeploymentsSuccess(response)))
-    .catch((error) => dispatch(getDeploymentsFail(error)));
+    .catch((error) => {
+      dispatch(getDeploymentsFail(error));
+    });
 };
 
 export default getDeployments;

@@ -48,10 +48,11 @@ class ProjectMemoryPage extends React.Component {
     return projects.find((project) => project.id === projectID).date_created;
   }
 
-  async handlePeriodChange(period) {
+  async handlePeriodChange(period, customTime = null) {
     let days;
     let step;
     let startTimeStamp;
+    let endTimeStamp = getCurrentTimeStamp();
 
     if (period === '1d') {
       days = 1;
@@ -68,6 +69,8 @@ class ProjectMemoryPage extends React.Component {
     } else if (period === '1y') {
       days = 365;
       step = '1m';
+    } else if (period === 'custom') {
+      step = '1d';
     }
 
     this.setState({ period }); // this period state will be used to format x-axis values accordingly
@@ -75,6 +78,9 @@ class ProjectMemoryPage extends React.Component {
     if (period === 'all') {
       startTimeStamp = await Date.parse(this.getDateCreated());
       step = '1d'; // TODO: make dynamic depending on the all-time metrics
+    } else if (period === 'custom' && customTime !== null) {
+      startTimeStamp = customTime.start;
+      endTimeStamp = customTime.end;
     } else {
       startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
     }
@@ -82,12 +88,15 @@ class ProjectMemoryPage extends React.Component {
     this.setState((prevState) => ({
       time: {
         ...prevState.time,
+        end: endTimeStamp,
         start: startTimeStamp,
         step,
       }
     }));
 
-    this.fetchMemory();
+    if (endTimeStamp > startTimeStamp) {
+      this.fetchMemory();
+    }
   }
 
   fetchMemory() {
@@ -118,7 +127,7 @@ class ProjectMemoryPage extends React.Component {
               allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
               cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
               memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
-              storageLink={`/users/${userID}/projects/${projectID}/storage/`}
+              databaseLink={`/users/${userID}/projects/${projectID}/databases`}
               networkLink={`/users/${userID}/projects/${projectID}/network/`}
             />
           </div>

@@ -1,0 +1,21 @@
+.TeamPageContainer{
+  background-color: #f1f1f1;
+}
+.TeamImagesRow {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  width: 100%;
+  justify-items: center;
+  align-items: center;
+  padding: 2.5rem 0rem;
+  row-gap: 1rem;
+}
+
+img .TeamMemberImage{
+  border-radius: 50%;
+}
+
+footer.TeamFooter {
+  text-align: center;
+  cursor: pointer;
+}

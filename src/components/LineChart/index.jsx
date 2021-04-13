@@ -20,14 +20,20 @@ const LineChartComponent = ({
   xDataKey,
   yDataKey,
   lineDataKey
-}) => (
-  <div className="LineChartContainer">
-    <ResponsiveContainer width="100%" height="100%">
-      {preview ? (
+}) => {
+  if (preview) {
+    return (
+      <ResponsiveContainer className="GraphSection" width="100%" height="100%">
         <LineChart data={data}>
           <Line dot={false} strokeWidth="2px" dataKey={lineDataKey} stroke="#008AC1" />
         </LineChart>
-      ) : (
+      </ResponsiveContainer>
+    );
+  }
+
+  return (
+    <ResponsiveContainer className="GraphSection" width="100%" height="100%">
+      {data.length > 0 ? (
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3" />
           <XAxis dataKey={xDataKey}>
@@ -39,10 +45,14 @@ const LineChartComponent = ({
           <Tooltip />
           <Line dot strokeWidth="2px" dataKey={lineDataKey} stroke="#008AC1" />
         </LineChart>
+      ) : (
+        <div className="NoGraphData">
+          Graph Data Unavailable
+        </div>
       )}
     </ResponsiveContainer>
-  </div>
-);
+  );
+};
 
 LineChartComponent.propTypes = {
   preview: PropTypes.bool,

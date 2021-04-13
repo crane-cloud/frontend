@@ -1,5 +1,74 @@
 footer.LandingFooter {
-  color: white;
+  color: #555555;
   text-align: center;
   cursor: pointer;
+  overflow-x: hidden;
+  background-color: #f1f1f1;
+}
+.FooterRow{
+  width: 100%;
+  padding: 3rem 1rem 0 1rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.FooterParent{
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -1rem;
+}
+
+.FooterParent .FooterChildOne{
+  flex: 0 0 33%;
+  max-width: 33%;
+  width: 100%;
+  position: relative;
+  /* padding: 0 1rem; */
+}
+
+.FooterChildTwo{
+  -webkit-box-flex: 0;
+  flex: 0 0 16.666%;
+  max-width: 16.666%;
+  /* padding: 0 1rem; */
+  text-align: left;
+}
+
+.FooterLogoName{
+  font-size: 1.5rem;
+  color: #008AC1;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.CountryOfOrigin{
+  text-align: left;
+}
+.FooterList{
+  padding-left: 0;
+}
+.FooterList li{
+  list-style: none;
+  text-align: left;
+}
+
+.CenteredDiv{
+  padding-left: 2rem;
+}
+.LogoBrandName{
+  text-align: left;
+}
+
+li.CountryOfOrigin{
+  padding: 0.5rem 0;
+}
+
+li.CountryOfOrigin a:visited{
+  color:#555555;
+}
+
+.SocialsIcons{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 50%;
+  place-items: center;
 }

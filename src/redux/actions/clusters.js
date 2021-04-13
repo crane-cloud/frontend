@@ -1,7 +1,5 @@
 
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
-
+import axios from '../../axios';
 import { GET_CLUSTERS, GET_CLUSTERS_FAIL, START_GETTING_CLUSTERS } from './actionTypes';
 
 export const startFetchingClusters = () => ({
@@ -24,15 +22,12 @@ export const getClustersFail = (error) => ({
 const getClustersList = () => (dispatch) => {
   dispatch(startFetchingClusters());
 
-  return axios.get(`${API_BASE_URL}/clusters`,
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+  return axios.get('/clusters',)
+
     .then((response) => dispatch(getClustersSuccess(response)))
     .catch((error) => {
       dispatch(getClustersFail(error));
     });
 };
-
 
 export default getClustersList;

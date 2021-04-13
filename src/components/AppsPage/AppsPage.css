@@ -219,3 +219,8 @@ table-layout: fixed;
   display: grid;
   gap: 1rem;
 }
+
+.ConnectModal{
+  width: 82.19%;
+  margin-left: 17.81%;
+}

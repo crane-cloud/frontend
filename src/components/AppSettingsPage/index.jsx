@@ -92,7 +92,7 @@ class AppSettingsPage extends React.Component {
               allMetricsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/metrics/`}
               cpuLink={`/users/${userID}/projects/${projectID}/apps/${appID}/cpu/`}
               memoryLink={`/users/${userID}/projects/${projectID}/apps/${appID}/memory/`}
-              storageLink={`/users/${userID}/projects/${projectID}/apps/${appID}/storage/`}
+              databaseLink={`/users/${userID}/projects/${projectID}/databases`}
               networkLink={`/users/${userID}/projects/${projectID}/apps/${appID}/network/`}
               appLogsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/logs/`}
             />

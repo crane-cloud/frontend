@@ -1,0 +1,35 @@
+.ErrorPageConent {
+    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.ErrorPageDigit{
+    color: #F7B21F;
+    font-size: 12.5rem;
+    line-height: 14rem;
+}
+
+.ErrorPageText{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: .5rem;
+    text-align: center;
+}
+
+.ErrorPageTextFirst{
+    font-size: 2rem;
+    line-height: 2.344rem;
+}
+
+.ErrorPageTextSecond{
+    font-weight: 400;
+    line-height: 1.172rem;
+}
+
+.ErrorPageButton{
+    display: flex;
+    justify-content: center;
+}

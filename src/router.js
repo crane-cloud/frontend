@@ -39,6 +39,11 @@ import AppMemoryPage from './components/AppMemoryPage';
 import ProjectMetricsPage from './components/ProjectMetricsPage';
 import AppLogsPage from './components/AppLogsPage';
 import AppNetworkPage from './components/AppNetworkPage';
+import TeamPage from './components/TeamPage';
+import PageNotFound from './components/PageNotFound';
+import DatabaseList from './components/DatabaseList';
+import DBSettingsPage from './components/DBSettingsPage';
+import CreateDatabase from './components/CreateDatabase';
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) => (
@@ -62,8 +67,12 @@ const Routes = () => (
       <Route path="/new-password" component={CreateNewPassword} />
       <Route path="/verify/:token" component={VerificationSentPage} />
       <Route path="/reset_password/:token" component={CreateNewPassword} />
+      <Route path="/team" component={TeamPage} />
+      <Route path="/create" component={CreateDatabase} />
       {/* projects */}
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects" component={UserProjectsPage} />
+      <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/databases" component={DatabaseList} />
+      <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/databases/:databaseID/settings" component={DBSettingsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/apps" component={AppsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/apps/:appID/network" component={AppNetworkPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/apps/:appID/cpu" component={AppCpuPage} />
@@ -71,6 +80,7 @@ const Routes = () => (
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/apps/:appID/metrics" component={AppMetricsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/apps/:appID/settings" component={AppSettingsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/apps/:appID/logs" component={AppLogsPage} />
+      <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/databases" component={DatabaseList} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/memory/" component={ProjectMemoryPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/cpu/" component={ProjectCPUPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/users/:userID/projects/:projectID/metrics" component={ProjectMetricsPage} />
@@ -89,6 +99,7 @@ const Routes = () => (
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/jobs" component={JobsListPage} />
       <ProtectedRoute isAllowed={hasToken} path="/clusters/:clusterID/deployments" component={DeploymentsPage} />
       <ProtectedRoute isAllowed={hasToken} exact path="/clusters" component={ClusterPage} />
+      <Route path="*" component={PageNotFound} />
     </Switch>
   </Router>
 );

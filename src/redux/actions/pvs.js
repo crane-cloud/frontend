@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
 import { IS_FETCHING, FETCH_PVS_SUCCESS, FETCH_PVS_FAILED } from './actionTypes';
 
 export const startTheFetch = () => ({
@@ -22,10 +21,7 @@ export const getPvsFailed = (error) => ({
 
 const getPvs = (clusterId) => (dispatch) => {
   dispatch(startTheFetch());
-  return axios.get(`${API_BASE_URL}/clusters/${clusterId}/pvs`,
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+  return axios.get(`/clusters/${clusterId}/pvs`)
     .then((response) => dispatch(getPvsSuccess(response)))
     .catch((error) => {
       dispatch(getPvsFailed(error));

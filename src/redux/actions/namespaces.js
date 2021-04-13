@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
 import { IS_FETCHING, FETCH_NAMESPACES_SUCCESS, FETCH_NAMESPACES_FAILED } from './actionTypes';
 
 export const initiateFetch = () => ({
@@ -22,10 +21,7 @@ export const getNamespacesFailed = (error) => ({
 
 const getNamespaces = (params) => (dispatch) => {
   dispatch(initiateFetch());
-  return axios.get(`${API_BASE_URL}/clusters/${params.clusterID}/namespaces`,
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+  return axios.get(`/clusters/${params.clusterID}/namespaces`)
     .then((response) => dispatch(getNamespacesSuccess(response)))
     .catch((error) => {
       dispatch(getNamespacesFailed(error));

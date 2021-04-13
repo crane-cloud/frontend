@@ -4,7 +4,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import saveUser from '../../redux/actions/saveUser';
-import Header from '../Header';
+import removeUser from '../../redux/actions/removeUser';
+import NewHeader from '../NewHeader';
 import LandingFooter from '../LandingFooter';
 import InputText from '../InputText';
 import InputPassword from '../InputPassword';
@@ -136,7 +137,7 @@ class LoginPage extends React.Component {
 
     return (
       <div className="LoginPageContainer">
-        <Header />
+        <NewHeader />
         <div className="LoginContent">
           <div className="LoginContentHeading">
 
@@ -200,11 +201,12 @@ const mapStateToProps = (state) => (
 );
 
 const mapDispatchToProps = {
-  saveUser
+  saveUser, removeUser
 };
 
 LoginPage.propTypes = {
-  saveUser: PropTypes.func.isRequired
+  saveUser: PropTypes.func.isRequired,
+  removeUser: PropTypes.func.isRequired
 };
 
 export default connect(

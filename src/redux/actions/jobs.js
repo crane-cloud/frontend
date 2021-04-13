@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
 import { IS_FETCHING, FETCH_JOBS_SUCCESS, FETCH_JOBS_FAILED } from './actionTypes';
 
 export const startTheFetch = () => ({
@@ -22,10 +21,7 @@ export const getJobsFailed = (error) => ({
 
 const getJobs = (clusterId) => (dispatch) => {
   dispatch(startTheFetch());
-  return axios.get(`${API_BASE_URL}/clusters/${clusterId}/jobs`,
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+  return axios.get(`/clusters/${clusterId}/jobs`)
     .then((response) => dispatch(getJobsSuccess(response)))
     .catch((error) => {
       dispatch(getJobsFailed(error));

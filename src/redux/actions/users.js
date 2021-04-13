@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
 import { GET_USERS_SUCCESS, GET_USERS_FAIL, START_GETTING_USERS } from './actionTypes';
 
 export const startGettingUsers = () => ({
@@ -23,9 +22,7 @@ export const getUsersFail = (error) => ({
 const getUsersList = () => async (dispatch) => {
   dispatch(startGettingUsers());
   try {
-    const response = await axios.get(`${API_BASE_URL}/users`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    });
+    const response = await axios.get(`/users`);
     return dispatch(getUsersSuccess(response));
   } catch (error) {
     dispatch(getUsersFail(error));

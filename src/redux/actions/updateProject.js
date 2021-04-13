@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
 import {
   START_UPDATING_PROJECT,
   CLEAR_UPDATE_PROJECT_STATE,
@@ -33,10 +32,7 @@ const clearUpdateProjectState = () => ({
 const updateProject = (projectID, projectData) => (dispatch) => {
   dispatch(startUpdatingProject());
 
-  return axios.patch(`${API_BASE_URL}/projects/${projectID}`, projectData,
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+  return axios.patch(`/projects/${projectID}`, projectData)
     .then((response) => dispatch(updateProjectSuccess(response)))
     .catch((error) => {
       dispatch(updateProjectFail(error));

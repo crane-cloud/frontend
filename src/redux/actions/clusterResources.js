@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config';
+import axios from '../../axios';
 import { GET_RESOURCES_COUNT, GET_RESOURCES_COUNT_FAILED, START_GETTING_RESOURCES_COUNT } from './actionTypes';
 
 export const startFetchingResources = () => ({
@@ -23,10 +22,7 @@ export const getResourcesFail = (error) => ({
 
 const getClusterResourcesCount = (params) => (dispatch) => {
   dispatch(startFetchingResources());
-  return axios.get(`${API_BASE_URL}/clusters/${params.clusterID}`,
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+  return axios.get(`/clusters/${params.clusterID}`)
     .then((response) => dispatch(getResourcesSuccess(response)))
     .catch((error) => {
       dispatch(getResourcesFail(error));

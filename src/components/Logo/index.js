@@ -7,7 +7,7 @@ const Logo = () => {
   return (
     <Link to="/" className="LogoWrapper">
       <div className="Logo">
-        <LogoIcon className="LogoIcon"  />
+        <LogoIcon className="LogoIcon" />
         <div className="LogoType">Crane Cloud</div>
       </div>
     </Link>

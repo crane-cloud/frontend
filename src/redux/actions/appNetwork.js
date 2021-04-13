@@ -1,7 +1,4 @@
-import axios from 'axios';
-import {
-  API_BASE_URL
-} from '../../config';
+import axios from '../../axios';
 import {
   FETCH_APP_NETWORK_SUCCESS,
   FETCH_APP_NETWORK_FAILED,
@@ -38,8 +35,7 @@ const clearAppNetwork = () => ({
 const getAppNetwork = (projectID, appID, params) => (dispatch) => {
   dispatch(startFetchingAppNetworkMetrics());
 
-  axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-  return axios.post(`${API_BASE_URL}/projects/${projectID}/apps/${appID}/metrics/network`, params)
+  return axios.post(`/projects/${projectID}/apps/${appID}/metrics/network`, params)
     .then((response) => {
       dispatch(getAppNetworkMetricsSuccess(appID, response));
     })

@@ -39,8 +39,9 @@ class UserProjectsPage extends React.Component {
   }
 
   componentDidMount() {
-    localStorage.removeItem('project');
-    const { getClustersList, getUserProjects, data, clearUpdateProjectState } = this.props;
+    const {
+      getClustersList, getUserProjects, data, clearUpdateProjectState
+    } = this.props;
     getUserProjects(data.id);
     getClustersList();
     clearUpdateProjectState();
@@ -205,7 +206,7 @@ class UserProjectsPage extends React.Component {
         </div>
         <div className="FooterRow">
           <div>
-            Copyright © 2020 Crane Cloud.
+            Copyright {new Date().getFullYear()} Crane Cloud.
             <br />
             All Rights Reserved.
           </div>
