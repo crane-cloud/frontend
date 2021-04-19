@@ -53,7 +53,7 @@ const NewHeader = (props) => {
       {(!user.accessToken || user.accessToken === '') && (
         <div className="HeaderLinksWrap">
           {match.path !== '/admin-login' && (
-            <div className="HeaderLink bold uppercase">
+            <div className="HeaderLink bold">
               <a href={`${DOCS_URL}`} className="HeaderLinkDocs" rel="noopener noreferrer" target="_blank">Docs</a>
               <a href={`${BLOG_URL}`} className="HeaderLinkDocs" rel="noopener noreferrer" target="_blank">Blog</a>
               <Link to="/login" className="HeaderLinkLogin TurnLight">Login</Link>
