@@ -52,7 +52,7 @@ const LandingPage = (props) => {
             <div className="DataCenterImage"></div>
             <div className="WhySectionContainer">
               <div className="WhySectionChildContainer">
-                <div className="WhySectionItem InfraOne">
+                <div className="WhySectionItem CosTwo">
                   <h6 className="WhySectionCardTitle">Infrastructure</h6>
                   <p>Fast, agile, and resilient infrastructure.</p>
                 </div>
@@ -60,11 +60,11 @@ const LandingPage = (props) => {
                   <h6 className="WhySectionCardTitle">Cost</h6>
                   <p>Reduce costs and save money by getting billed only what you utilize.</p>
                 </div>
-                <div className="WhySectionItem SecThree">
+                <div className="WhySectionItem CosTwo">
                   <h6 className="WhySectionCardTitle">Security</h6>
                   <p>Images are automatically scanned for vulnerabilities, and deployed with a free SSL certificate.</p>
                 </div>
-                <div className="WhySectionItem SuppoFour">
+                <div className="WhySectionItem CosTwo">
                   <h6 className="WhySectionCardTitle">Support</h6>
                   <p>Create a ticket, chat, or call a specialist regarding any queries.</p>
                 </div>

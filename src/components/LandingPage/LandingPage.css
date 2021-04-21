@@ -93,25 +93,15 @@ h1.LandingPageMainContentTitle{
   padding: 0.5rem;
 }
 
-.InfraOne{
-  background-color: #06222F;
-  color: #008AC1;
-}
-
 .CosTwo{
-  background-color: #F8F7E5;
-  color: #D2741D;
+  background-color: #F1F1F1;
+  color: #555555;
 }
 
-.SecThree{
-  background-color: #D2741D;
-  color: #F8F7E5;
+.CosTwo:hover{
+  background-color: #CCCCCC;
 }
 
-.SuppoFour{
-  background-color: #008AC1;
-  color: #99D2E9;
-}
 .WhySectionCardTitle{
   font-size: medium;
   margin: 0.5rem 0 0.5rem 0;
