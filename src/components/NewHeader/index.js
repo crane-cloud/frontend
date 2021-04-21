@@ -3,7 +3,6 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import NewLogo from '../NewLogo';
-import { ReactComponent as DownArrow } from '../../assets/images/downarrow.svg';
 import removeUser from '../../redux/actions/removeUser';
 import './NewHeader.css';
 import { DOCS_URL, BLOG_URL } from '../../config';
@@ -19,14 +18,6 @@ const NewHeader = (props) => {
     } else {
       setHidden(true);
     }
-  };
-
-  const logout = () => {
-    localStorage.removeItem('state');
-    localStorage.removeItem('token');
-    localStorage.removeItem('project');
-    props.removeUser();
-    window.location.href = '/';
   };
 
   const handleClickOutside = (event) => {
@@ -76,25 +67,8 @@ const NewHeader = (props) => {
                 <a href={`${BLOG_URL}`} className="HeaderLinkDocs" rel="noopener noreferrer" target="_blank">Blog</a>
                 <Link to={`/users/${user.data.id}/projects`} className="HeaderLinkBack">dashboard</Link>
               </>
-            ) : (
-              <>
-                <div className="UserName">
-                  {user.data.name}
-                </div>
-              </>
-            )}
+            ) : (null)}
 
-            <DownArrow
-              className="DropDownArrowSvg"
-            />
-            {hidden && (
-              <div className="BelowHeader">
-                <div className="DropDownContent">
-                  <a href={`${DOCS_URL}`} className="DropDownLink" rel="noopener noreferrer" target="_blank">Docs</a>
-                  <div className="DropDownLink" role="presentation" onClick={logout}>Logout</div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       )}
