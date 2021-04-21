@@ -25,11 +25,10 @@ const LandingPage = (props) => {
         <div className="LandingPageMainContent">
           <div className="LandingPageMainContentInfo">
             <div>
-              <h1 className="LandingPageMainContentTitle">Simplified Cloud Hosting</h1>
+              <h1 className="LandingPageMainContentTitle">Managed Cloud Services</h1>
               <h3 className="bold">
-                Crane Cloud is an open source multicloud service layer for highly
-                available cloud-based services in Africa. Crane Cloud provides
-                compute, network and storage services without lock-in.
+                Crane Cloud is an open source multi-cloud software platform for
+                cloud-native application deployment and management.
               </h3>
               <Link to="/register">
                 <button className="Primary-Btn uppercase ButtonSpacing">
