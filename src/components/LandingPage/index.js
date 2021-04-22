@@ -28,7 +28,7 @@ const LandingPage = (props) => {
               <h1 className="LandingPageMainContentTitle">Managed Cloud Services</h1>
               <h3 className="bold">
                 Crane Cloud is an open source multi-cloud software platform for
-                cloud-native application deployment and management.
+                cloud native application deployment and management.
               </h3>
               <Link to="/register">
                 <button className="Primary-Btn uppercase ButtonSpacing">
