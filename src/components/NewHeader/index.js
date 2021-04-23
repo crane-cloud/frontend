@@ -54,22 +54,20 @@ const NewHeader = (props) => {
       )}
 
       {user.accessToken && (
-        <div className="HeaderLinksWrap LoggedIn">
-          <div
-            ref={dropdownRef}
-            className="OnHead"
-            onClick={toggleHidden}
-            role="presentation"
-          >
-            {match.path === '/' || match.path === '/team' ? (
-              <>
-                <a href={`${DOCS_URL}`} className="HeaderLinkDocs" rel="noopener noreferrer" target="_blank">Docs</a>
-                <a href={`${BLOG_URL}`} className="HeaderLinkDocs" rel="noopener noreferrer" target="_blank">Blog</a>
-                <Link to={`/users/${user.data.id}/projects`} className="HeaderLinkBack">dashboard</Link>
-              </>
-            ) : (null)}
+        <div
+          ref={dropdownRef}
+          className="HeaderLink"
+          onClick={toggleHidden}
+          role="presentation"
+        >
+          {match.path === '/' || match.path === '/team' ? (
+            <>
+              <a href={`${DOCS_URL}`} className="HeaderLinkDocs" rel="noopener noreferrer" target="_blank">Docs</a>
+              <a href={`${BLOG_URL}`} className="HeaderLinkDocs" rel="noopener noreferrer" target="_blank">Blog</a>
+              <Link to={`/users/${user.data.id}/projects`} className="HeaderLinkDocs">Dashboard</Link>
+            </>
+          ) : (null)}
 
-          </div>
         </div>
       )}
 
