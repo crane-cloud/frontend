@@ -43,8 +43,12 @@ footer.LandingFooter {
   margin-top: 0;
 }
 
-.CountryOfOrigin{
+.TextDivSpacing{
   text-align: left;
+}
+
+.TextDivSpacing a{
+  color: #555555;
 }
 .FooterList{
   padding-left: 0;
@@ -61,11 +65,12 @@ footer.LandingFooter {
   text-align: left;
 }
 
-li.CountryOfOrigin{
+li.TextDivSpacing{
   padding: 0.5rem 0;
+  color: #555555;
 }
 
-li.CountryOfOrigin a:visited{
+li.TextDivSpacing a:visited{
   color:#555555;
 }
 
