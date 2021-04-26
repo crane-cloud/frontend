@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import Header from '../Header';
-import LandingFooter from '../LandingFooter';
 import InputPassword from '../InputPassword';
 import PrimaryButton from '../PrimaryButton';
 import Spinner from '../Spinner';
@@ -150,11 +149,6 @@ export default class CreateNewPassword extends React.Component {
             </div>
           </div>
         )}
-
-
-        <div className="PasswordResetPageFooter">
-          <LandingFooter />
-        </div>
       </div>
     );
   }
