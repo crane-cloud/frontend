@@ -31,9 +31,8 @@ const LandingPage = (props) => {
               cloud-native application deployment and management.
             </h3>
             <Link to="/register">
-              <button className="Primary-Btn uppercase ButtonSpacing">
-                Start Free Trial
-                &nbsp; &nbsp;
+              <button className="FreeTrialButton">
+                <div>Start Free Trial</div>
                 <RightArrow />
               </button>
             </Link>
@@ -76,13 +75,6 @@ const LandingPage = (props) => {
             <div className="LeftPageBannerInner">
               <h2>Migrate to the cloud</h2>
               <p className="BannerParagraph">Governments and institutions are urged to begin digital transformation.</p>
-            </div>
-          </div>
-          <div className="RightPageBannerSection">
-            <div className="BannerButtonContainer">
-              <button className="BannerButton">
-                Learn More
-              </button>
             </div>
           </div>
         </div>
