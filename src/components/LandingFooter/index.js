@@ -44,7 +44,7 @@ const LandingFooter = () => (
         <div className="FooterChild2">
           <div className="FooterContent">
             <div className="FooterChildTwo">
-              <h5 className="TextDivSpacing FooterLogoName">Company</h5>
+              <div className="TextDivSpacing FooterLogoName">Company</div>
               <ul className="FooterList">
                 <li className="TextDivSpacing">
                   <Link to="/team">Team</Link>
@@ -53,7 +53,7 @@ const LandingFooter = () => (
               </ul>
             </div>
             <div className="FooterChildTwo">
-              <h5 className="TextDivSpacing FooterLogoName">Resources</h5>
+              <div className="TextDivSpacing FooterLogoName">Resources</div>
               <ul className="FooterList">
                 <li className="TextDivSpacing">
                   <a href="https://docs.cranecloud.io/quickstart/quickstart/" rel="noopener noreferrer" target="_blank">Quick Start Guide</a>
@@ -64,7 +64,7 @@ const LandingFooter = () => (
               </ul>
             </div>
             <div className="FooterChildTwo">
-              <h5 className="TextDivSpacing FooterLogoName">Community</h5>
+              <div className="TextDivSpacing FooterLogoName">Community</div>
               <ul className="FooterList">
                 <li className="TextDivSpacing">Contribute</li>
                 <li className="TextDivSpacing">

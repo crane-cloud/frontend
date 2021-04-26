@@ -1,15 +1,7 @@
 footer.LandingFooter {
   color: #555555;
   text-align: center;
-  cursor: pointer;
-  overflow-x: hidden;
   background-color: #f1f1f1;
-}
-.FooterRow{
-  width: 100%;
-  padding: 3rem 1rem 0 1rem;
-  margin-right: auto;
-  margin-left: auto;
 }
 
 .FooterParent{
@@ -30,13 +22,10 @@ footer.LandingFooter {
 
 .FooterContent{
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-}
-.FooterChildTwo{
+  grid-auto-flow: column;
 }
 
 .FooterLogoName{
-  font-size: 1.5rem;
   color: #008AC1;
   font-weight: 600;
   margin-bottom: 0.3rem;
