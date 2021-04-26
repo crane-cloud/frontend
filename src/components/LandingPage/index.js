@@ -24,20 +24,20 @@ const LandingPage = (props) => {
       <div className="LandingPageMainContainer">
         <div className="LandingPageMainContent">
           <div className="LandingPageMainContentInfo">
-            <div>
-              <h1 className="LandingPageMainContentTitle">Managed Cloud Services</h1>
-              <h3 className="bold">
-                Crane Cloud is an open source multi-cloud software platform for
-                cloud-native application deployment and management.
-              </h3>
-              <Link to="/register">
-                <button className="Primary-Btn uppercase ButtonSpacing">
-                  Start Free Trial
-                  &nbsp; &nbsp;
-                  <RightArrow />
-                </button>
-              </Link>
-            </div>
+
+            <h1 className="LandingPageMainContentTitle">Managed Cloud Services</h1>
+            <h3 className="bold">
+              Crane Cloud is an open source multi-cloud software platform for
+              cloud-native application deployment and management.
+            </h3>
+            <Link to="/register">
+              <button className="Primary-Btn uppercase ButtonSpacing">
+                Start Free Trial
+                &nbsp; &nbsp;
+                <RightArrow />
+              </button>
+            </Link>
+
           </div>
           <div className="LandingPageMainContentImg">
             <InfrastrucurePic className="LandingPageInfrastructurePic" />
@@ -52,19 +52,19 @@ const LandingPage = (props) => {
             <div className="WhySectionContainer">
               <div className="WhySectionChildContainer">
                 <div className="WhySectionItem CosTwo">
-                  <h6 className="WhySectionCardTitle">Infrastructure</h6>
+                  <div className="WhySectionCardTitle">Infrastructure</div>
                   <p>Fast, agile, and resilient infrastructure.</p>
                 </div>
                 <div className="WhySectionItem CosTwo">
-                  <h6 className="WhySectionCardTitle">Cost</h6>
+                  <div className="WhySectionCardTitle">Cost</div>
                   <p>Reduce costs and save money by getting billed only what you utilize.</p>
                 </div>
                 <div className="WhySectionItem CosTwo">
-                  <h6 className="WhySectionCardTitle">Security</h6>
+                  <div className="WhySectionCardTitle">Security</div>
                   <p>Images are automatically scanned for vulnerabilities, and deployed with a free SSL certificate.</p>
                 </div>
                 <div className="WhySectionItem CosTwo">
-                  <h6 className="WhySectionCardTitle">Support</h6>
+                  <div className="WhySectionCardTitle">Support</div>
                   <p>Create a ticket, chat, or call a specialist regarding any queries.</p>
                 </div>
               </div>

@@ -105,6 +105,8 @@ h1.LandingPageMainContentTitle{
 .WhySectionCardTitle{
   font-size: medium;
   margin: 0.5rem 0 0.5rem 0;
+  line-height: 2rem;
+  font-weight: bold;
 }
 
 .PageBannerSection{
