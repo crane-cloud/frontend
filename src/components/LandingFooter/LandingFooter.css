@@ -14,31 +14,33 @@ footer.LandingFooter {
 
 .FooterParent{
   display: flex;
-  flex-wrap: wrap;
-  margin: 0 -1rem;
 }
 
 .FooterParent .FooterChildOne{
-  flex: 0 0 33%;
-  max-width: 33%;
-  width: 100%;
-  position: relative;
-  /* padding: 0 1rem; */
+  display: flex;
+  flex-direction: column;
 }
 
+.FooterParent .FooterChild1{
+  flex: 1;
+}
+.FooterParent .FooterChild2{
+  flex: 2;
+}
+
+.FooterContent{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
 .FooterChildTwo{
-  -webkit-box-flex: 0;
-  flex: 0 0 16.666%;
-  max-width: 16.666%;
-  /* padding: 0 1rem; */
-  text-align: left;
 }
 
 .FooterLogoName{
   font-size: 1.5rem;
   color: #008AC1;
   font-weight: 600;
-  margin-bottom: 1rem;
+  margin-bottom: 0.3rem;
+  margin-top: 0;
 }
 
 .CountryOfOrigin{
@@ -70,5 +72,10 @@ li.CountryOfOrigin a:visited{
 .SocialsIcons{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 50%;
-  place-items: center;
+  align-items: center;
+}
+
+.SocialsIcons a{
+  display: flex;
+  align-items: center;
 }

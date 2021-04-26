@@ -213,9 +213,9 @@ class AppsPage extends React.Component {
       this.setState({
         error: 'Name may only contain letters,numbers,dot and a hypen -'
       });
-    } else if (name.length > 22) {
+    } else if (name.length > 27) {
       this.setState({
-        error: 'Name may not exceed 22 characters'
+        error: 'Name may not exceed 27 characters'
       });
     } else if (port && !(/^[0-9]*$/.test(port))) { // validate port and ensure its a number
       this.setState({
