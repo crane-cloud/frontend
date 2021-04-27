@@ -66,8 +66,8 @@ h1.LandingPageMainContentTitle{
 .FreeTrialButton:hover{
   background: none;
   color: #F7B21F;
-
 }
+
 .FreeTrialButton:hover   path{
   fill: #F7B21F;
 }
@@ -85,7 +85,6 @@ h1.LandingPageMainContentTitle{
 
 .WhySectionContainer{
   flex: 3;
-
 }
 
 .WhySectionContent{
@@ -95,7 +94,7 @@ h1.LandingPageMainContentTitle{
 
 .DataCenterImage{
   flex: 2;
-  background: url(../../assets/images/datacenter.png);
+  background: url(../../assets/images/server_image.jpg);
   background-position: center;
   background-size: cover;
 }
