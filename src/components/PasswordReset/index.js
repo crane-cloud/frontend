@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Header from '../Header';
-import LandingFooter from '../LandingFooter';
 import InputText from '../InputText';
 import PrimaryButton from '../PrimaryButton';
 import Spinner from '../Spinner';
@@ -147,9 +146,6 @@ export default class PasswordReset extends React.Component {
             </div>
           </div>
         )}
-        <div className="PasswordResetPageFooter">
-          <LandingFooter />
-        </div>
       </div>
     );
   }

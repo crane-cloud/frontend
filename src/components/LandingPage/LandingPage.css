@@ -43,14 +43,33 @@
 }
 
 h1.LandingPageMainContentTitle{
-  color: black;
+  color: #ffffff;
 }
 .LandingPageInfrastructurePic path{
   fill:#99D2E9;
 }
+.FreeTrialButton{
+  background-color: #F7B21F;
+  color: white;
+  padding: 0.7rem;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  outline: 2px solid #F7B21F;
+  display: grid;
+  grid-auto-flow: column;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+}
 
-.ButtonSpacing{
-  min-width: 12.7rem;
+.FreeTrialButton:hover{
+  background: none;
+  color: #F7B21F;
+}
+
+.FreeTrialButton:hover   path{
+  fill: #F7B21F;
 }
 
 .LandingPageMainContainer{
@@ -64,57 +83,45 @@ h1.LandingPageMainContentTitle{
   padding: 2rem;
 }
 
-.WhySectionContainer{
-  flex: 3;
-
-}
-
 .WhySectionContent{
-  display: flex;
-  padding: 0 0 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: .5rem;
 }
 
 .DataCenterImage{
-  flex: 2;
-  background: url(../../assets/images/datacenter.png);
-  background-position: center;
-  background-size: cover;
+  overflow: hidden;
 }
 
+.DataCenterImage img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .WhySectionChildContainer{
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 0.5rem;
-  padding: 0 0 0 0.5rem;
 }
 
 .WhySectionItem{
   padding: 0.5rem;
 }
 
-.InfraOne{
-  background-color: #06222F;
-  color: #008AC1;
-}
-
 .CosTwo{
-  background-color: #F8F7E5;
-  color: #D2741D;
+  background-color: #F1F1F1;
+  color: #555555;
 }
 
-.SecThree{
-  background-color: #D2741D;
-  color: #F8F7E5;
+.CosTwo:hover{
+  background-color: #CCCCCC;
 }
 
-.SuppoFour{
-  background-color: #008AC1;
-  color: #99D2E9;
-}
 .WhySectionCardTitle{
   font-size: medium;
-  margin: 0.5rem 0 0.5rem 0;
+  line-height: 2rem;
+  font-weight: bold;
 }
 
 .PageBannerSection{

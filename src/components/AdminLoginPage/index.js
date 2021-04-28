@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import saveUser from '../../redux/actions/saveUser';
 import Header from '../Header';
-import LandingFooter from '../LandingFooter';
 import InputText from '../InputText';
 import InputPassword from '../InputPassword';
 import PrimaryButton from '../PrimaryButton';
@@ -125,10 +124,6 @@ class AdminLoginPage extends React.Component {
 
             </div>
           </form>
-        </div>
-
-        <div className="LoginPageFooter">
-          <LandingFooter />
         </div>
       </div>
     );

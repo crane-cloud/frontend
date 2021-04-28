@@ -21,7 +21,7 @@ const LandingFooter = () => (
               <p className="LandingFooterCopyright LogoBrandName">
               Copyright {new Date().getFullYear()} Crane Cloud, Ltd
               </p>
-              <p className="CountryOfOrigin">
+              <p className="TextDivSpacing">
               Made in Uganda
               </p>
             </div>
@@ -44,30 +44,30 @@ const LandingFooter = () => (
         <div className="FooterChild2">
           <div className="FooterContent">
             <div className="FooterChildTwo">
-              <h5 className="CountryOfOrigin FooterLogoName">Company</h5>
+              <div className="TextDivSpacing FooterLogoName">Company</div>
               <ul className="FooterList">
-                <li className="CountryOfOrigin">
+                <li className="TextDivSpacing">
                   <Link to="/team">Team</Link>
                 </li>
-                <li className="CountryOfOrigin">Terms and Privacy</li>
+                <li className="TextDivSpacing">Terms and Privacy</li>
               </ul>
             </div>
             <div className="FooterChildTwo">
-              <h5 className="CountryOfOrigin FooterLogoName">Resources</h5>
+              <div className="TextDivSpacing FooterLogoName">Resources</div>
               <ul className="FooterList">
-                <li className="CountryOfOrigin">
+                <li className="TextDivSpacing">
                   <a href="https://docs.cranecloud.io/quickstart/quickstart/" rel="noopener noreferrer" target="_blank">Quick Start Guide</a>
                 </li>
-                <li className="CountryOfOrigin">
+                <li className="TextDivSpacing">
                   <a href={`${DOCS_URL}`} rel="noopener noreferrer" target="_blank">Docs</a>
                 </li>
               </ul>
             </div>
             <div className="FooterChildTwo">
-              <h5 className="CountryOfOrigin FooterLogoName">Community</h5>
+              <div className="TextDivSpacing FooterLogoName">Community</div>
               <ul className="FooterList">
-                <li className="CountryOfOrigin">Contribute</li>
-                <li className="CountryOfOrigin">
+                <li className="TextDivSpacing">Contribute</li>
+                <li className="TextDivSpacing">
                   <a href="https://medium.com/cranecloud" rel="noopener noreferrer" target="_blank">Blog</a>
                 </li>
               </ul>

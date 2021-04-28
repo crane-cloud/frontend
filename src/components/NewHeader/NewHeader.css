@@ -1,28 +1,20 @@
 header.NewHeader {
   background-color: #ffffff;
-  color: #000000;
   display: flex;
   justify-content: space-between;
   height: 5rem;
-  padding: 0 0 0 3rem;
-  position: relative;
+  padding: 0 3rem;
 }
 
 .HeaderLink {
   display: grid;
   grid-auto-flow: column;
-  align-items: center;
-  justify-content: center;
-  overflow-y: hidden;
 }
 
 .HeaderLink a {
-  font-size: 0.9em;
-  color: #000;
-  padding: 1rem 3rem;
-  display: grid;
-  align-content: center;
-  height: 100%;
+  padding: 0 3rem;
+  display: flex;
+  align-items: center;
 }
 
 .HeaderLink a:hover{
@@ -39,20 +31,10 @@ header.NewHeader {
   border: 0;
 }
 
-.LoggedIn {
-  display: flex;
-}
-
-.HeaderLinksWrap {
-  display: flex;
-}
-
 .OnHead {
   display: grid;
   grid-auto-flow: column;
   align-items: center;
-  justify-content: center;
-  overflow-y: hidden;
 }
 
 .OnHead:hover .UserNames {
@@ -126,36 +108,12 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   color: #000;
   text-decoration: none;
 }
-
-.HeaderLinkBack {
-  text-transform: uppercase;
-  padding: 1rem 3rem;
-  /* margin-left: 2rem; */
-  font-size: 0.9em;
-  padding: 1rem 3rem;
-  height: 100%;
-  display: grid;
-  align-content: center;
-}
 .HeaderLinkBack:hover{
   background-color: #F7B21F;
 }
-
-.StripBorder {
-  text-transform: uppercase;
-  padding: 1rem 3rem;
-  font-size: 0.9em;
-  color: white;
-  padding: 1rem;
-}
-
 a.HeaderLinkDocs{
-  display: grid;
-  align-content: center;
-  padding: 1rem 3rem;
-  height: 100%;
+  color: #000;
 }
-
 a.HeaderLinkDocs:hover{
   background-color: #F7B21F;
 }

@@ -24,21 +24,19 @@ const LandingPage = (props) => {
       <div className="LandingPageMainContainer">
         <div className="LandingPageMainContent">
           <div className="LandingPageMainContentInfo">
-            <div>
-              <h1 className="LandingPageMainContentTitle">Simplified Cloud Hosting</h1>
-              <h3 className="bold">
-                Crane Cloud is an open source multicloud service layer for highly
-                available cloud-based services in Africa. Crane Cloud provides
-                compute, network and storage services without lock-in.
-              </h3>
-              <Link to="/register">
-                <button className="Primary-Btn uppercase ButtonSpacing">
-                  Start Free Trial
-                  &nbsp; &nbsp;
-                  <RightArrow />
-                </button>
-              </Link>
-            </div>
+
+            <h1 className="LandingPageMainContentTitle">Managed Cloud Services</h1>
+            <h3 className="bold">
+              Crane Cloud is an open source multi-cloud software platform for
+              cloud-native application deployment and management.
+            </h3>
+            <Link to="/register">
+              <button className="FreeTrialButton">
+                <div>Start Free Trial</div>
+                <RightArrow />
+              </button>
+            </Link>
+
           </div>
           <div className="LandingPageMainContentImg">
             <InfrastrucurePic className="LandingPageInfrastructurePic" />
@@ -49,27 +47,32 @@ const LandingPage = (props) => {
             <h2>Why Crane Cloud</h2>
           </div>
           <div className="WhySectionContent">
-            <div className="DataCenterImage"></div>
-            <div className="WhySectionContainer">
-              <div className="WhySectionChildContainer">
-                <div className="WhySectionItem InfraOne">
-                  <h6 className="WhySectionCardTitle">Infrastructure</h6>
-                  <p>Fast, agile, and resilient infrastructure.</p>
-                </div>
-                <div className="WhySectionItem CosTwo">
-                  <h6 className="WhySectionCardTitle">Cost</h6>
-                  <p>Reduce costs and save money by getting billed only what you utilize.</p>
-                </div>
-                <div className="WhySectionItem SecThree">
-                  <h6 className="WhySectionCardTitle">Security</h6>
-                  <p>Images are automatically scanned for vulnerabilities, and deployed with a free SSL certificate.</p>
-                </div>
-                <div className="WhySectionItem SuppoFour">
-                  <h6 className="WhySectionCardTitle">Support</h6>
-                  <p>Create a ticket, chat, or call a specialist regarding any queries.</p>
+            <div className="DataCenterImage">
+              <img alt="data-center" src={require('../../assets/images/server_image.jpg')} />
+
+            </div>
+
+            <div className="WhySectionChildContainer">
+              <div className="WhySectionItem CosTwo">
+                <div className="WhySectionCardTitle">Infrastructure</div>
+                <div>Fast, agile, and resilient infrastructure.</div>
+              </div>
+              <div className="WhySectionItem CosTwo">
+                <div className="WhySectionCardTitle">Cost</div>
+                <div>Reduce costs and save money by getting billed only what you utilize.</div>
+              </div>
+              <div className="WhySectionItem CosTwo">
+                <div className="WhySectionCardTitle">Security</div>
+                <div>
+                  Images are automatically scanned for vulnerabilities, and deployed with a free SSL certificate.
                 </div>
               </div>
+              <div className="WhySectionItem CosTwo">
+                <div className="WhySectionCardTitle">Support</div>
+                <div>Create a ticket, chat, or call a specialist regarding any queries.</div>
+              </div>
             </div>
+
           </div>
         </div>
         <div className="PageBannerSection">
@@ -77,13 +80,6 @@ const LandingPage = (props) => {
             <div className="LeftPageBannerInner">
               <h2>Migrate to the cloud</h2>
               <p className="BannerParagraph">Governments and institutions are urged to begin digital transformation.</p>
-            </div>
-          </div>
-          <div className="RightPageBannerSection">
-            <div className="BannerButtonContainer">
-              <button className="BannerButton">
-                Learn More
-              </button>
             </div>
           </div>
         </div>

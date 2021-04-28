@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import saveUser from '../../redux/actions/saveUser';
 import Header from '../Header';
-import LandingFooter from '../LandingFooter';
 import InputText from '../InputText';
 import PrimaryButton from '../PrimaryButton';
 import Spinner from '../Spinner';
@@ -198,9 +197,6 @@ class VerificationSentPage extends React.Component {
               </div>
             )}
           </div>
-        </div>
-        <div className="VerificationPageFooter">
-          <LandingFooter />
         </div>
       </div>
     );

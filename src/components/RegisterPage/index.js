@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../Header';
-import LandingFooter from '../LandingFooter';
 import InputText from '../InputText';
 import InputPassword from '../InputPassword';
 import PrimaryButton from '../PrimaryButton';
@@ -220,11 +219,6 @@ export default class RegisterPage extends Component {
               </div>
             </div>
           )}
-        </div>
-
-
-        <div className="RegisterPageFooter">
-          <LandingFooter />
         </div>
       </div>
     );
