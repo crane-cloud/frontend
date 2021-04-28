@@ -83,28 +83,22 @@ h1.LandingPageMainContentTitle{
   padding: 2rem;
 }
 
-.WhySectionContainer{
-  flex: 3;
-}
-
 .WhySectionContent{
-  display: flex;
-  padding: 0 0 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: .5rem;
 }
 
-.DataCenterImage{
-  flex: 2;
-  background: url(../../assets/images/server_image.jpg);
-  background-position: center;
-  background-size: cover;
+.DataCenterImage img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-
 .WhySectionChildContainer{
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 0.5rem;
-  padding: 0 0 0 0.5rem;
 }
 
 .WhySectionItem{

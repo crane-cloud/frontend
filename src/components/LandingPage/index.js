@@ -47,7 +47,10 @@ const LandingPage = (props) => {
             <h2>Why Crane Cloud</h2>
           </div>
           <div className="WhySectionContent">
-            <div className="DataCenterImage"></div>
+            <div className="DataCenterImage">
+              <img alt="data-center" src={require('../../assets/images/server_image.jpg')} /> 
+
+            </div>
             <div className="WhySectionContainer">
               <div className="WhySectionChildContainer">
                 <div className="WhySectionItem CosTwo">
