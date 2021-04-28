@@ -48,31 +48,31 @@ const LandingPage = (props) => {
           </div>
           <div className="WhySectionContent">
             <div className="DataCenterImage">
-              <img alt="data-center" src={require('../../assets/images/server_image.jpg')} /> 
+              <img alt="data-center" src={require('../../assets/images/server_image.jpg')} />
 
             </div>
-            <div className="WhySectionContainer">
-              <div className="WhySectionChildContainer">
-                <div className="WhySectionItem CosTwo">
-                  <div className="WhySectionCardTitle">Infrastructure</div>
-                  <div>Fast, agile, and resilient infrastructure.</div>
-                </div>
-                <div className="WhySectionItem CosTwo">
-                  <div className="WhySectionCardTitle">Cost</div>
-                  <div>Reduce costs and save money by getting billed only what you utilize.</div>
-                </div>
-                <div className="WhySectionItem CosTwo">
-                  <div className="WhySectionCardTitle">Security</div>
-                  <div>
-                    Images are automatically scanned for vulnerabilities, and deployed with a free SSL certificate.
-                  </div>
-                </div>
-                <div className="WhySectionItem CosTwo">
-                  <div className="WhySectionCardTitle">Support</div>
-                  <div>Create a ticket, chat, or call a specialist regarding any queries.</div>
+
+            <div className="WhySectionChildContainer">
+              <div className="WhySectionItem CosTwo">
+                <div className="WhySectionCardTitle">Infrastructure</div>
+                <div>Fast, agile, and resilient infrastructure.</div>
+              </div>
+              <div className="WhySectionItem CosTwo">
+                <div className="WhySectionCardTitle">Cost</div>
+                <div>Reduce costs and save money by getting billed only what you utilize.</div>
+              </div>
+              <div className="WhySectionItem CosTwo">
+                <div className="WhySectionCardTitle">Security</div>
+                <div>
+                  Images are automatically scanned for vulnerabilities, and deployed with a free SSL certificate.
                 </div>
               </div>
+              <div className="WhySectionItem CosTwo">
+                <div className="WhySectionCardTitle">Support</div>
+                <div>Create a ticket, chat, or call a specialist regarding any queries.</div>
+              </div>
             </div>
+
           </div>
         </div>
         <div className="PageBannerSection">
