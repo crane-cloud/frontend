@@ -55,19 +55,21 @@ const LandingPage = (props) => {
               <div className="WhySectionChildContainer">
                 <div className="WhySectionItem CosTwo">
                   <div className="WhySectionCardTitle">Infrastructure</div>
-                  <p>Fast, agile, and resilient infrastructure.</p>
+                  <div>Fast, agile, and resilient infrastructure.</div>
                 </div>
                 <div className="WhySectionItem CosTwo">
                   <div className="WhySectionCardTitle">Cost</div>
-                  <p>Reduce costs and save money by getting billed only what you utilize.</p>
+                  <div>Reduce costs and save money by getting billed only what you utilize.</div>
                 </div>
                 <div className="WhySectionItem CosTwo">
                   <div className="WhySectionCardTitle">Security</div>
-                  <p>Images are automatically scanned for vulnerabilities, and deployed with a free SSL certificate.</p>
+                  <div>
+                    Images are automatically scanned for vulnerabilities, and deployed with a free SSL certificate.
+                  </div>
                 </div>
                 <div className="WhySectionItem CosTwo">
                   <div className="WhySectionCardTitle">Support</div>
-                  <p>Create a ticket, chat, or call a specialist regarding any queries.</p>
+                  <div>Create a ticket, chat, or call a specialist regarding any queries.</div>
                 </div>
               </div>
             </div>

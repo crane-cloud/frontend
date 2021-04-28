@@ -87,6 +87,11 @@ h1.LandingPageMainContentTitle{
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: .5rem;
+  height: 30vh;
+}
+
+.DataCenterImage{
+  overflow: hidden;
 }
 
 .DataCenterImage img{
@@ -116,7 +121,6 @@ h1.LandingPageMainContentTitle{
 
 .WhySectionCardTitle{
   font-size: medium;
-  margin: 0.5rem 0 0.5rem 0;
   line-height: 2rem;
   font-weight: bold;
 }
