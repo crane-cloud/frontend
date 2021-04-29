@@ -95,3 +95,39 @@
   font-size: small;
   height: 1.9rem;
 }
+
+.DBInstructions{
+  padding: 1rem 0.5rem;
+  background: #ffffff;
+  border: 1px solid #CCCCCC;
+  display: grid;
+  gap: 1rem;
+}
+
+.DBInfoTop{
+
+}
+
+.DBInfoBottom{
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+
+}
+
+.DBAccessInfo{
+  background: #f1f1f1;
+  padding: .2rem;
+  font-family: "monaco";
+}
+
+.DBAccessCopy{
+
+}
+
+.MysqlArticle{
+  color: #F7B21F;
+}
+
+.MysqlArticle:hover{
+  text-decoration: underline;
+}

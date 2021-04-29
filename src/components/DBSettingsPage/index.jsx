@@ -193,10 +193,15 @@ class DBSettingsPage extends React.Component {
                     <div className="DBThead">Created</div>
                     <div className="DBTDetail">{dbInfo.age}</div>
                   </div>
-                  <div className="DBDetailRow">
-                    <div className="DBThead">URI</div>
-                    <div className="DBTDetail">{`mysql://${dbInfo.user}:${dbInfo.password}@${dbInfo.host}:${dbInfo.port}/${dbInfo.name}`}</div>
-                  </div>
+                </div>
+              </div>
+              <div className="DBInstructions">
+                <div className="DBInfoTop">
+                  <div>Connecting to the database. Read <a href="https://medium.com/cranecloud" rel="noopener noreferrer" target="_blank" className="MysqlArticle">this article</a>, for a more comprehensive guide.</div>
+                </div>
+                <div className="DBInfoBottom">
+                  <div className="DBAccessInfo">{`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}</div>
+                  <div className="DBAccessCopy"></div>
                 </div>
               </div>
               <div className="DBButtons">
