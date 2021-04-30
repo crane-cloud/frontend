@@ -46,16 +46,21 @@
   padding-bottom: 1rem;
   align-items: center;
 }
-.buttonText{
-  padding: 1rem 0 0 1rem;
-  float: left;
+
+.DBDetailRow:hover{
+  color: #F7B21F;
 }
 
 .DBThead{
   font-weight: bold;
 }
 
-.DBTDetail{
+.DBPassword{
+  display: grid;
+  grid-auto-flow: column;
+  gap: .8rem;
+  padding: 0 0.8rem;
+  align-items: center;
 }
 
 .DeleteDatabaseModel{
@@ -106,9 +111,19 @@
 }
 
 .DBIcon{
+  display: none;
+}
+.DBDetailRow:hover .DBIcon{
   display: grid;
   grid-auto-flow: column;
   gap: .8rem;
   padding: 0 0.8rem;
+  align-items: center;
+}
+
+.DBButtonRow{
+  display: grid;
+  grid-template-columns: 20% auto;
+  grid-auto-flow: column;
   align-items: center;
 }

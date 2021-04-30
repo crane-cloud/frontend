@@ -231,7 +231,7 @@ class DBSettingsPage extends React.Component {
                     <div className="DBColumn">
                       {hidden? '***************************': dbInfo.password}
                     </div>
-                    <div className="DBIcon">
+                    <div className="DBPassword">
                       <div onClick={this.togglePassword}>{hidden ?<Open /> :<Closed />}</div>
                     </div>
                   </div>
@@ -264,7 +264,7 @@ class DBSettingsPage extends React.Component {
                 <div className="DBInfoBottom">
                   <div className="DBAccessInfo">{`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}</div>
                   <div className="DBAccessCopy">
-                  <div className="DBIcon">
+                  <div className="DBPassword">
                       <CopyText onClick={this.uriOnClick}/>
                       {uriChecked ? <Checked /> : null}
                     </div>
@@ -272,7 +272,7 @@ class DBSettingsPage extends React.Component {
                 </div>
               </div>
               <div className="DBButtons">
-                <div className="DBDetailRow">
+                <div className="DBButtonRow">
                   <PrimaryButton
                     label="Reset Database"
                     className="ResetBtn"
@@ -286,7 +286,7 @@ class DBSettingsPage extends React.Component {
                     type={isReset ? 'success' : 'error'}
                   />
                 )}
-                <div className="DBDetailRow">
+                <div className="DBButtonRow">
                   <PrimaryButton
                     label="Delete Database"
                     className="DBDeleteBtn"
