@@ -40,29 +40,27 @@
 }
 
 .DBDetailRow{
-  width: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 15% 25% 10% auto;
   padding-bottom: 1rem;
-}
-.DBDetailRow:after{
-  content: "";
-  display: table;
-  clear: both;
+  align-items: center;
 }
 
-.buttonText{
-  padding: 1rem 0 0 1rem;
-  float: left;
+.DBDetailRow:hover{
+  color: #F7B21F;
 }
 
 .DBThead{
-  width: 15%;
-  float: left;
   font-weight: bold;
 }
 
-.DBTDetail{
-  width: 80%;
-  float: left;
+.DBPassword{
+  display: grid;
+  grid-auto-flow: column;
+  gap: .8rem;
+  padding: 0 0.8rem;
+  align-items: center;
 }
 
 .DeleteDatabaseModel{
@@ -75,23 +73,57 @@
   gap: 0.5rem;
 }
 
-.DBPasswordRow:after{
-  content: "";
-  display: table;
-  clear: both;
-}
-
-.DBColumn{
-  float: left;
-  width: 35%;
-}
-
-.DBColumn1{
-  float: left;
-  width: 15%;
-}
-
 .PasswordButton{
   font-size: small;
   height: 1.9rem;
+}
+
+.DBInstructions{
+  padding: 1rem 0.5rem;
+  background: #ffffff;
+  border: 1px solid #CCCCCC;
+  display: grid;
+  gap: 1rem;
+}
+
+.DBInfoBottom{
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+
+}
+
+.DBAccessInfo{
+  background: #f1f1f1;
+  padding: .2rem;
+  font-family: "monaco";
+}
+
+.DBAccessCopy{
+  width: fit-content;
+}
+
+.MysqlArticle{
+  color: #F7B21F;
+}
+
+.MysqlArticle:hover{
+  text-decoration: underline;
+}
+
+.DBIcon{
+  display: none;
+}
+.DBDetailRow:hover .DBIcon{
+  display: grid;
+  grid-auto-flow: column;
+  gap: .8rem;
+  padding: 0 0.8rem;
+  align-items: center;
+}
+
+.DBButtonRow{
+  display: grid;
+  grid-template-columns: 20% auto;
+  grid-auto-flow: column;
+  align-items: center;
 }
