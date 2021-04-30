@@ -11,7 +11,8 @@ import createDatabase, { clearDatabaseCreateState } from '../../redux/actions/cr
 import './CreateDatabase.css';
 
 const flavours = [
-  { name: 'MYSQL', id: 1, value: 'MYSQL' }
+  { name: 'MYSQL', id: 1, value: 'mysql' },
+  { name: 'POSTGRESQL', id: 2, value: 'postgres' }
 ];
 
 class CreateDatabase extends React.Component {
@@ -52,7 +53,11 @@ class CreateDatabase extends React.Component {
         error: 'Select a database flavour'
       });
     } else {
-      createDatabase({}, projectID);
+      const newDBType = {
+        database_flavour_name: databaseFlavour
+      };
+      console.log(databaseFlavour);
+      createDatabase(newDBType, projectID);
     }
   }
 
