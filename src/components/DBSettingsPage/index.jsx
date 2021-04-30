@@ -13,6 +13,10 @@ import DeleteWarning from '../DeleteWarning';
 import tellAge from '../../helpers/ageUtility';
 import deleteDatabase, { clearDeleteDatabaseState } from '../../redux/actions/deleteDatabase';
 import resetDatabase, { clearDatabaseResetState } from '../../redux/actions/resetDatabase';
+import { ReactComponent as CopyText } from '../../assets/images/copy.svg';
+import { ReactComponent as Checked } from '../../assets/images/checked.svg';
+import { ReactComponent as Open } from '../../assets/images/open.svg';
+import { ReactComponent as Closed } from '../../assets/images/close.svg';
 import './DBSettingsPage.css';
 
 class DBSettingsPage extends React.Component {
@@ -23,7 +27,12 @@ class DBSettingsPage extends React.Component {
       openDeleteAlert:false,
       openResetAlert: false,
       error: '',
-      hidden: true
+      hidden: true,
+      nameChecked: false,
+      portChecked: false,
+      userChecked: false,
+      hostChecked: false,
+      uriChecked: false
     };
 
     this.handleDeleteDatabase = this.handleDeleteDatabase.bind(this);
@@ -34,6 +43,11 @@ class DBSettingsPage extends React.Component {
     this.hideResetAlert = this.hideResetAlert.bind(this);
     this.renderRedirect = this.renderRedirect.bind(this);
     this.togglePassword = this.togglePassword.bind(this);
+    this.nameOnClick = this.nameOnClick.bind(this);
+    this.portOnClick = this.portOnClick.bind(this);
+    this.userOnClick = this.userOnClick.bind(this);
+    this.hostOnClick = this.hostOnClick.bind(this);
+    this.uriOnClick = this.uriOnClick.bind(this);
   }
   componentDidMount(){
     const { clearDatabaseResetState } = this.props;
@@ -112,6 +126,37 @@ class DBSettingsPage extends React.Component {
   togglePassword(){
     this.setState({ hidden: !this.state.hidden });
   }
+
+  nameOnClick(){
+    const { databaseID } = this.props.match.params;
+    const dbInfo = this.getDatabaseInfo(databaseID);
+    navigator.clipboard.writeText(dbInfo.name);
+    this.setState({nameChecked: true});
+  }
+  portOnClick(){
+    const { databaseID } = this.props.match.params;
+    const dbInfo = this.getDatabaseInfo(databaseID);
+    navigator.clipboard.writeText(dbInfo.port);
+    this.setState({portChecked: true});
+  }
+  hostOnClick(){
+    const { databaseID } = this.props.match.params;
+    const dbInfo = this.getDatabaseInfo(databaseID);
+    navigator.clipboard.writeText(dbInfo.host);
+    this.setState({hostChecked: true});
+  }
+  userOnClick(){
+    const { databaseID } = this.props.match.params;
+    const dbInfo = this.getDatabaseInfo(databaseID);
+    navigator.clipboard.writeText(dbInfo.user);
+    this.setState({userChecked: true});
+  }
+  uriOnClick(){
+    const { databaseID } = this.props.match.params;
+    const dbInfo = this.getDatabaseInfo(databaseID);
+    navigator.clipboard.writeText(`${`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}`);
+    this.setState({uriChecked: true});
+  }
   
   render() {
     const {
@@ -127,7 +172,12 @@ class DBSettingsPage extends React.Component {
     const {
       openDeleteAlert,
       openResetAlert,
-      hidden
+      hidden,
+      nameChecked,
+      portChecked,
+      hostChecked,
+      userChecked,
+      uriChecked
     } = this.state;
     return (
       <div className="Page">
@@ -163,31 +213,43 @@ class DBSettingsPage extends React.Component {
                   <div className="DBDetailRow">
                     <div className="DBThead">Name</div>
                     <div className="DBTDetail">{dbInfo.name}</div>
+                    <div className="DBIcon">
+                      <CopyText onClick={this.nameOnClick}/>
+                      {nameChecked ? <Checked /> : null}
+                    </div>
                   </div>
                   <div className="DBDetailRow">
                     <div className="DBThead">User</div>
                     <div className="DBTDetail">{dbInfo.user}</div>
+                    <div className="DBIcon">
+                      <CopyText onClick={this.userOnClick}/>
+                      {userChecked ? <Checked /> : null}
+                    </div>
                   </div>
-                  <div className="DBPasswordRow">
+                  <div className="DBDetailRow">
                     <div className="DBColumn1 DBThead">Password</div>
                     <div className="DBColumn">
                       {hidden? '***************************': dbInfo.password}
                     </div>
-                    <div className="DBColumn">
-                      <PrimaryButton
-                        label={hidden ? 'Show Password': 'Hide Password'}
-                        className="ResetBtn PasswordButton"
-                        onClick={this.togglePassword}
-                      />
+                    <div className="DBIcon">
+                      <div onClick={this.togglePassword}>{hidden ?<Open /> :<Closed />}</div>
                     </div>
                   </div>
                   <div className="DBDetailRow">
                     <div className="DBThead">Host</div>
                     <div className="DBTDetail">{dbInfo.host}</div>
+                    <div className="DBIcon">
+                      <CopyText onClick={this.hostOnClick}/>
+                      {hostChecked ? <Checked /> : null}
+                    </div>
                   </div>
                   <div className="DBDetailRow">
                     <div className="DBThead">Port</div>
                     <div className="DBTDetail">{dbInfo.port}</div>
+                    <div className="DBIcon">
+                      <CopyText onClick={this.portOnClick}/>
+                      {portChecked ? <Checked /> : null}
+                    </div>
                   </div>
                   <div className="DBDetailRow">
                     <div className="DBThead">Created</div>
@@ -201,7 +263,12 @@ class DBSettingsPage extends React.Component {
                 </div>
                 <div className="DBInfoBottom">
                   <div className="DBAccessInfo">{`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}</div>
-                  <div className="DBAccessCopy"></div>
+                  <div className="DBAccessCopy">
+                  <div className="DBIcon">
+                      <CopyText onClick={this.uriOnClick}/>
+                      {uriChecked ? <Checked /> : null}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="DBButtons">
