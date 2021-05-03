@@ -70,6 +70,7 @@ class DBSettingsPage extends React.Component {
     const { databases } = this.props;
     const found = databases.find((database) => database.id === id);
     const info = {
+      flavor: found.database_flavour_name,
       name: found.name,
       user: found.user,
       host: found.host,
@@ -208,7 +209,7 @@ class DBSettingsPage extends React.Component {
 
                   <div className="DBDetailRow">
                     <div className="DBThead">Type</div>
-                    <div className="DBTDetail">MYSQL</div>
+                    <div className="DBTDetail uppercase">{dbInfo.flavor}</div>
                   </div>
                   <div className="DBDetailRow">
                     <div className="DBThead">Name</div>

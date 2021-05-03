@@ -56,7 +56,6 @@ class CreateDatabase extends React.Component {
       const newDBType = {
         database_flavour_name: databaseFlavour
       };
-      console.log(databaseFlavour);
       createDatabase(newDBType, projectID);
     }
   }
