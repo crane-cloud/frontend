@@ -11,7 +11,7 @@ import { ReactComponent as Container } from '../../assets/images/container.svg';
 import { ReactComponent as Orch } from '../../assets/images/orcherstration.svg';
 import { ReactComponent as Registry } from '../../assets/images/registry.svg';
 import { ReactComponent as Cloud } from '../../assets/images/multicloud.svg';
-import './LandingPage.css';
+import Styles from './LandingPage.module.css';
 
 const LandingPage = (props) => {
   let { user } = props;
@@ -19,56 +19,56 @@ const LandingPage = (props) => {
     user = false;
   }
   return (
-    <div className="LandingPageMain">
+    <div className={Styles.LandingPageMain}>
       <NewHeader />
-      <div className="LandingPageMainContainer">
-        <div className="LandingPageMainContent">
-          <div className="LandingPageMainContentInfo">
+      <div className={Styles.LandingPageMainContainer}>
+        <div className={Styles.LandingPageMainContent}>
+          <div className={Styles.LandingPageMainContentInfo}>
 
-            <h1 className="LandingPageMainContentTitle">Managed Cloud Services</h1>
-            <h3 className="bold">
+            <h1 className={Styles.LandingPageMainContentTitle}>Managed Cloud Services</h1>
+            <div className="bold">
               Crane Cloud is an open source multi-cloud software platform for
               cloud-native application deployment and management.
-            </h3>
+            </div>
             <Link to="/register">
-              <button className="FreeTrialButton">
+              <button className={Styles.FreeTrialButton}>
                 <div>Start Free Trial</div>
                 <RightArrow />
               </button>
             </Link>
 
           </div>
-          <div className="LandingPageMainContentImg">
-            <InfrastrucurePic className="LandingPageInfrastructurePic" />
+          <div className={Styles.LandingPageMainContentImg}>
+            <InfrastrucurePic className={Styles.LandingPageInfrastructurePic} />
           </div>
         </div>
-        <div className="LandingPageWhySection">
-          <div className="LandingPageWhySectionTitle">
+        <div className={Styles.LandingPageWhySection}>
+          <div className={Styles.LandingPageWhySectionTitle}>
             <h2>Why Crane Cloud</h2>
           </div>
-          <div className="WhySectionContent">
-            <div className="DataCenterImage">
+          <div className={Styles.WhySectionContent}>
+            <div className={Styles.DataCenterImage}>
               <img alt="data-center" src={require('../../assets/images/server_image.jpg')} />
 
             </div>
 
-            <div className="WhySectionChildContainer">
-              <div className="WhySectionItem CosTwo">
-                <div className="WhySectionCardTitle">Infrastructure</div>
+            <div className={Styles.WhySectionChildContainer}>
+              <div className={'{Styles.WhySectionItem} {Styles.CosTwo}'}>
+                <div className={Styles.WhySectionCardTitle}>Infrastructure</div>
                 <div>Fast, agile, and resilient infrastructure.</div>
               </div>
-              <div className="WhySectionItem CosTwo">
-                <div className="WhySectionCardTitle">Cost</div>
+              <div className={'{Styles.WhySectionItem} {Styles.CosTwo}'}>
+                <div className={Styles.WhySectionCardTitle}>Cost</div>
                 <div>Reduce costs and save money by getting billed only what you utilize.</div>
               </div>
-              <div className="WhySectionItem CosTwo">
-                <div className="WhySectionCardTitle">Security</div>
+              <div className={'{Styles.WhySectionItem} {Styles.CosTwo}'}>
+                <div className={Styles.WhySectionCardTitle}>Security</div>
                 <div>
                   Images are automatically scanned for vulnerabilities, and deployed with a free SSL certificate.
                 </div>
               </div>
-              <div className="WhySectionItem CosTwo">
-                <div className="WhySectionCardTitle">Support</div>
+              <div className={'{Styles.WhySectionItem} {Styles.CosTwo}'}>
+                <div className={Styles.WhySectionCardTitle}>Support</div>
                 <div>Create a ticket, chat, or call a specialist regarding any queries.</div>
               </div>
             </div>
