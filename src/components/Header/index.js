@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Logo from '../Logo';
 import { ReactComponent as DownArrow } from '../../assets/images/downarrow.svg';
 import removeUser from '../../redux/actions/removeUser';
-import './Header.css';
+import Styles from './Header.module.css';
 import { DOCS_URL } from '../../config';
 
 const Header = (props) => {
@@ -46,51 +46,51 @@ const Header = (props) => {
   }, []);
 
   return (
-    <header className="Header">
+    <header className={Styles.Header}>
       <Logo />
 
 
       {(!user.accessToken || user.accessToken === '') && (
-        <div className="HeaderLinksWrap">
+        <div className={Styles.HeaderLinksWrap}>
           {match.path !== '/admin-login' && (
-            <div className="HeaderLinks bold uppercase">
-              <Link to="/team" className="HeaderLinkDocs">Team</Link>
-              <a href={`${DOCS_URL}`} className="HeaderLinkDocs" rel="noopener noreferrer" target="_blank">Docs</a>
-              <Link to="/login" className="HeaderLinkLogin TurnLight">Login</Link>
+            <div className={Styles.HeaderLinks}>
+              <Link to="/team" className={Styles.HeaderLinkDocs}>Team</Link>
+              <a href={`${DOCS_URL}`} className={Styles.HeaderLinkDocs} rel="noopener noreferrer" target="_blank">Docs</a>
+              <Link to="/login" className={`${Styles.HeaderLinkLogin} ${Styles.TurnLight}`}>Login</Link>
             </div>
           )}
         </div>
       )}
 
       {user.accessToken && (
-        <div className="HeaderLinksWrap LoggedIn">
+        <div className={`{Styles.HeaderLinksWrap} {Styles.LoggedIn}`}>
           <div
             ref={dropdownRef}
-            className="OnHeader"
+            className={Styles.OnHeader}
             onClick={toggleHidden}
             role="presentation"
           >
             {match.path === '/' || match.path === '/team'? (
               <>
-                <Link to="/team" className="StripBorder">Team</Link>
-                <Link to={`/users/${user.data.id}/projects`} className="HeaderLinkBackToConsole TurnLight">dashboard</Link>
+                <Link to="/team" className={Styles.StripBorder}>Team</Link>
+                <Link to={`/users/${user.data.id}/projects`} className={`${Styles.HeaderLinkBackToConsole} ${Styles.TurnLight}`}>dashboard</Link>
               </>
             ) : (
               <>
-                <div className="UserNames">
+                <div className={Styles.UserNames}>
                   {user.data.name}
                 </div>
               </>
             )}
 
             <DownArrow
-              className="DropdownArrowSvg"
+              className={Styles.DropdownArrowSvg}
             />
             {hidden && (
-              <div className="BelowHeader">
-                <div className="DropDownContent">
-                  <a href={`${DOCS_URL}`} className="DropDownLink" rel="noopener noreferrer" target="_blank">Docs</a>
-                  <div className="DropDownLink" role="presentation" onClick={logout}>Logout</div>
+              <div className={Styles.BelowHeader}>
+                <div className={Styles.DropDownContent}>
+                  <a href={`${DOCS_URL}`} className={Styles.DropDownLink} rel="noopener noreferrer" target="_blank">Docs</a>
+                  <div className={Styles.DropDownLink} role="presentation" onClick={logout}>Logout</div>
                 </div>
               </div>
             )}
