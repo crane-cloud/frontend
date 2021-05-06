@@ -15,6 +15,7 @@
   display: flex;
   justify-content: space-between;
   padding: 3rem 2rem 4rem;
+  background: #008ac1;
 }
 
 .LandingPageMainContentInfo {
@@ -30,6 +31,7 @@
 .LandingParagraph {
   color: #ffffff;
   width: 80%;
+  line-height: 2rem;
 }
 
 .LandingPageMainContentTitle{
