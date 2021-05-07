@@ -50,6 +50,9 @@ div.DropDownGrid {
   display: flex;
   flex-direction: column;
 }
+.HeaderLinksWrap{
+  display: flex;
+}
 
 div.HeaderLinksWrap.LoggedIn .BelowHeader {
   background-color: #f9f9f9;
