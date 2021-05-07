@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, withRouter} from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import NewHeader from '../NewHeader';
 import LandingFooter from '../LandingFooter';
@@ -11,7 +11,7 @@ import { ReactComponent as Container } from '../../assets/images/container.svg';
 import { ReactComponent as Orch } from '../../assets/images/orcherstration.svg';
 import { ReactComponent as Registry } from '../../assets/images/registry.svg';
 import { ReactComponent as Cloud } from '../../assets/images/multicloud.svg';
-import './LandingPage.css';
+import styles from './LandingPage.module.css';
 
 const LandingPage = (props) => {
   let { user } = props;
@@ -19,80 +19,80 @@ const LandingPage = (props) => {
     user = false;
   }
   return (
-    <div className="LandingPageMain">
+    <div className={styles.LandingPageMain}>
       <NewHeader />
-      <div className="LandingPageMainContainer">
-        <div className="LandingPageMainContent">
-          <div className="LandingPageMainContentInfo">
+      <div className={styles.LandingPageMainContainer}>
+        <div className={styles.LandingPageMainContent}>
+          <div className={styles.LandingPageMainContentInfo}>
 
-            <h1 className="LandingPageMainContentTitle">Managed Cloud Services</h1>
-            <h3 className="bold">
+            <div className={styles.LandingPageMainContentTitle}>Managed Cloud Services</div>
+            <div className={styles.LandingParagraph}>
               Crane Cloud is an open source multi-cloud software platform for
               cloud-native application deployment and management.
-            </h3>
+            </div>
             <Link to="/register">
-              <button className="FreeTrialButton">
+              <button className={styles.FreeTrialButton}>
                 <div>Start Free Trial</div>
                 <RightArrow />
               </button>
             </Link>
 
           </div>
-          <div className="LandingPageMainContentImg">
-            <InfrastrucurePic className="LandingPageInfrastructurePic" />
+          <div className={styles.LandingPageMainContentImg}>
+            <InfrastrucurePic className={styles.LandingPageInfrastructurePic} />
           </div>
         </div>
-        <div className="LandingPageWhySection">
-          <div className="LandingPageWhySectionTitle">
+        <div className={styles.LandingPageWhySection}>
+          <div className={styles.LandingPageWhySectionTitle}>
             <h2>Why Crane Cloud</h2>
           </div>
-          <div className="WhySectionContent">
-            <div className="DataCenterImage">
+          <div className={styles.WhySectionContent}>
+            <div className={styles.DataCenterImage}>
               <img alt="data-center" src={require('../../assets/images/server_image.jpg')} />
 
             </div>
 
-            <div className="WhySectionChildContainer">
-              <div className="WhySectionItem CosTwo">
-                <div className="WhySectionCardTitle">Infrastructure</div>
+            <div className={styles.WhySectionChildContainer}>
+              <div className={styles.WhySectionItem}>
+                <div className={styles.WhySectionCardTitle}>Infrastructure</div>
                 <div>Fast, agile, and resilient infrastructure.</div>
               </div>
-              <div className="WhySectionItem CosTwo">
-                <div className="WhySectionCardTitle">Cost</div>
+              <div className={styles.WhySectionItem}>
+                <div className={styles.WhySectionCardTitle}>Cost</div>
                 <div>Reduce costs and save money by getting billed only what you utilize.</div>
               </div>
-              <div className="WhySectionItem CosTwo">
-                <div className="WhySectionCardTitle">Security</div>
+              <div className={styles.WhySectionItem}>
+                <div className={styles.WhySectionCardTitle}>Security</div>
                 <div>
                   Images are automatically scanned for vulnerabilities, and deployed with a free SSL certificate.
                 </div>
               </div>
-              <div className="WhySectionItem CosTwo">
-                <div className="WhySectionCardTitle">Support</div>
+              <div className={styles.WhySectionItem}>
+                <div className={styles.WhySectionCardTitle}>Support</div>
                 <div>Create a ticket, chat, or call a specialist regarding any queries.</div>
               </div>
             </div>
 
           </div>
         </div>
-        <div className="PageBannerSection">
-          <div className="LeftPageBannerSection">
-            <div className="LeftPageBannerInner">
+        <div className={styles.PageBannerSection}>
+          <div className={styles.LeftPageBannerSection}>
+            <div className={styles.LeftPageBannerInner}>
               <h2>Migrate to the cloud</h2>
-              <p className="BannerParagraph">Governments and institutions are urged to begin digital transformation.</p>
+              <p className={styles.BannerParagraph}>Governments and institutions are urged to begin digital transformation.</p>
             </div>
           </div>
         </div>
-        <div className="LandingPageWhySection">
-          <div className="LandingPageWhySectionTitle">
+        <div className={styles.LandingPageWhySection}>
+          <div className={styles.LandingPageWhySectionTitle}>
             <h2>Explore Crane Cloud Solutions</h2>
           </div>
-          <div className="SolutionsSection">
-            <div className="SolutionsContainer">
-              <div className="SolutionsIcon">
+          <div className={styles.SolutionsSection}>
+            <div className={styles.SolutionsContainer}>
+              <div className={styles.SolutionsIcon}>
                 <Container />
               </div>
-              <div className="SolutionsContent">
+              <div className={styles.SolutionsContent}>
                 <h3>Containers</h3>
                 <div>
                   Quickly deploy modern, cloud-native applications
@@ -102,11 +102,11 @@ const LandingPage = (props) => {
                 </div>
               </div>
             </div>
-            <div className="SolutionsContainer">
-              <div className="SolutionsIcon">
+            <div className={styles.SolutionsContainer}>
+              <div className={styles.SolutionsIcon}>
                 <Orch />
               </div>
-              <div className="SolutionsContent">
+              <div className={styles.SolutionsContent}>
                 <h3>Orcherstration</h3>
                 <div>
                   We use Kubernetes to automate application rollouts,
@@ -115,11 +115,11 @@ const LandingPage = (props) => {
                 </div>
               </div>
             </div>
-            <div className="SolutionsContainer">
-              <div className="SolutionsIcon">
+            <div className={styles.SolutionsContainer}>
+              <div className={styles.SolutionsIcon}>
                 <Databases />
               </div>
-              <div className="SolutionsContent">
+              <div className={styles.SolutionsContent}>
                 <h3>Databases</h3>
                 <div>
                   Create, migrate, and manage data with secure,
@@ -128,24 +128,24 @@ const LandingPage = (props) => {
                 </div>
               </div>
             </div>
-            <div className="SolutionsContainer">
-              <div className="SolutionsIcon">
+            <div className={styles.SolutionsContainer}>
+              <div className={styles.SolutionsIcon}>
                 <div>
                   <Registry />
                 </div>
               </div>
-              <div className="SolutionsContent">
+              <div className={styles.SolutionsContent}>
                 <h3>Registry</h3>
                 <div>
                   Store and distribute Docker images in a secure, private repository.
                 </div>
               </div>
             </div>
-            <div className="SolutionsContainer">
-              <div className="SolutionsIcon">
+            <div className={styles.SolutionsContainer}>
+              <div className={styles.SolutionsIcon}>
                 <Cloud />
               </div>
-              <div className="SolutionsContent">
+              <div className={styles.SolutionsContent}>
                 <h3>MultiCloud</h3>
                 <div>
                   Enjoy the flexibility of moving workloads between
@@ -153,11 +153,11 @@ const LandingPage = (props) => {
                 </div>
               </div>
             </div>
-            <div className="SolutionsContainer">
-              <div className="SolutionsIcon">
+            <div className={styles.SolutionsContainer}>
+              <div className={styles.SolutionsIcon}>
                 <Monitoring />
               </div>
-              <div className="SolutionsContent">
+              <div className={styles.SolutionsContent}>
                 <h3>Monitoring</h3>
                 <div>
                   Analyze metrics and logs about your applications.
@@ -168,7 +168,7 @@ const LandingPage = (props) => {
           </div>
         </div>
       </div>
-      <div className="LandingPageFooter">
+      <div className={styles.LandingPageFooter}>
         <LandingFooter />
       </div>
     </div>

@@ -70,7 +70,7 @@ const Header = (props) => {
             onClick={toggleHidden}
             role="presentation"
           >
-            {match.path === '/' || match.path === '/team'? (
+            {match.path === '/' || match.path === '/team' ? (
               <>
                 <Link to="/team" className={styles.StripBorder}>Team</Link>
                 <Link to={`/users/${user.data.id}/projects`} className={`${styles.HeaderLinkBackToConsole} ${styles.TurnLight}`}>dashboard</Link>

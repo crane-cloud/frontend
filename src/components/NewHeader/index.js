@@ -47,7 +47,7 @@ const NewHeader = (props) => {
             <div className="HeaderLink bold">
               <a href={`${DOCS_URL}`} className="HeaderLinkDocs" rel="noopener noreferrer" target="_blank">Docs</a>
               <a href={`${BLOG_URL}`} className="HeaderLinkDocs" rel="noopener noreferrer" target="_blank">Blog</a>
-              <Link to="/login" className="HeaderLinkLogin TurnLight">Login</Link>
+              <Link to="/login" className="HeaderLinkDocs">Login</Link>
             </div>
           )}
         </div>
