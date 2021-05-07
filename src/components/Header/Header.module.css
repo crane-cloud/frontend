@@ -37,19 +37,23 @@
 .LogoLink::-moz-focus-inner {
   border: 0;
 }
+
 .LoggedIn {
   display: flex;
 }
+
 .HeaderLinksWrap {
   display: flex;
 }
-.HeaderLinksWrap .LoggedIn .OnHeader {
+
+/* .HeaderLinksWrap .LoggedIn .OnHeader {
   display: grid;
   gap: 1rem;
   grid-auto-flow: column;
   align-items: center;
   position: relative;
-}
+} */
+
 .OnHeader:hover .UserNames {
   color: #f7b21f;
 }
