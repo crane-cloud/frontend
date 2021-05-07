@@ -32,7 +32,8 @@ class DBSettingsPage extends React.Component {
       portChecked: false,
       userChecked: false,
       hostChecked: false,
-      uriChecked: false
+      uriChecked: false,
+      passwordChecked: false
     };
 
     this.handleDeleteDatabase = this.handleDeleteDatabase.bind(this);
@@ -48,6 +49,7 @@ class DBSettingsPage extends React.Component {
     this.userOnClick = this.userOnClick.bind(this);
     this.hostOnClick = this.hostOnClick.bind(this);
     this.uriOnClick = this.uriOnClick.bind(this);
+    this.passwordOnClick = this.passwordOnClick.bind(this);
   }
   componentDidMount(){
     const { clearDatabaseResetState } = this.props;
@@ -158,6 +160,13 @@ class DBSettingsPage extends React.Component {
     navigator.clipboard.writeText(`${`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}`);
     this.setState({uriChecked: true});
   }
+
+  passwordOnClick(){
+    const { databaseID } = this.props.match.params;
+    const dbInfo = this.getDatabaseInfo(databaseID);
+    navigator.clipboard.writeText(dbInfo.password);
+    this.setState({passwordChecked: true});
+  }
   
   render() {
     const {
@@ -178,7 +187,8 @@ class DBSettingsPage extends React.Component {
       portChecked,
       hostChecked,
       userChecked,
-      uriChecked
+      uriChecked,
+      passwordChecked
     } = this.state;
     return (
       <div className="Page">
@@ -231,6 +241,10 @@ class DBSettingsPage extends React.Component {
                     <div className="DBColumn1 DBThead">Password</div>
                     <div className="DBColumn">
                       {hidden? '***************************': dbInfo.password}
+                    </div>
+                    <div className="DBIcon">
+                      <CopyText onClick={this.passwordOnClick}/>
+                      {passwordChecked ? <Checked /> : null}
                     </div>
                     <div className="DBPassword">
                       <div onClick={this.togglePassword}>{hidden ?<Open /> :<Closed />}</div>
