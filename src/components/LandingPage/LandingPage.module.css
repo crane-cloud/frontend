@@ -14,7 +14,7 @@
 .LandingPageMainContent {
   display: flex;
   justify-content: space-between;
-  padding: 3rem 2rem 4rem;
+  padding: 3rem;
   background: #008ac1;
 }
 
@@ -74,7 +74,7 @@
 
 .LandingPageWhySection{
   background-color: #ffffff;
-  padding: 2rem;
+  padding: 3rem;
 }
 
 .WhySectionContent{
@@ -115,9 +115,7 @@
   background-color: #F7B21F;
   color: #F8F7E5;
   display: flex;
-  width: 100%;
-  padding: 0 0 0 2rem;
-  overflow: hidden;
+  padding: 0 3rem;
 }
 
 .LeftPageBannerSection{
