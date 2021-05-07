@@ -1,5 +1,4 @@
 .LandingPage {
-  /* height: 100%; */
   background: #008ac1;
   flex-grow: 1;
   display: flex;
@@ -13,11 +12,10 @@
 }
 
 .LandingPageMainContent {
-  flex-grow: 1;
   display: flex;
-  flex-direction: row;
-  align-self: center;
-  padding: 3rem 2rem 4rem;
+  justify-content: space-between;
+  padding: 3rem;
+  background: #008ac1;
 }
 
 .LandingPageMainContentInfo {
@@ -30,20 +28,16 @@
   align-items: center;
 }
 
-.LandingPageMainContentInfo h1 {
-  font-size: 32px;
-  color: #f7b21f;
-}
-
-.LandingPageMainContentInfo h3 {
+.LandingParagraph {
   color: #ffffff;
-  line-height: 37px;
-  font-size: 32px;
   width: 80%;
+  line-height: 2rem;
 }
 
-h1.LandingPageMainContentTitle{
+.LandingPageMainContentTitle{
   color: #ffffff;
+  font-size: 32px;
+  font-weight: bold;
 }
 .LandingPageInfrastructurePic path{
   fill:#99D2E9;
@@ -80,7 +74,7 @@ h1.LandingPageMainContentTitle{
 
 .LandingPageWhySection{
   background-color: #ffffff;
-  padding: 2rem;
+  padding: 3rem;
 }
 
 .WhySectionContent{
@@ -107,15 +101,8 @@ h1.LandingPageMainContentTitle{
 
 .WhySectionItem{
   padding: 0.5rem;
-}
-
-.CosTwo{
   background-color: #F1F1F1;
   color: #555555;
-}
-
-.CosTwo:hover{
-  background-color: #CCCCCC;
 }
 
 .WhySectionCardTitle{
@@ -128,9 +115,7 @@ h1.LandingPageMainContentTitle{
   background-color: #F7B21F;
   color: #F8F7E5;
   display: flex;
-  width: 100%;
-  padding: 0 0 0 2rem;
-  overflow: hidden;
+  padding: 0 3rem;
 }
 
 .LeftPageBannerSection{
