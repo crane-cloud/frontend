@@ -38,21 +38,17 @@
   border: 0;
 }
 
-.LoggedIn {
-  display: flex;
-}
-
 .HeaderLinksWrap {
   display: flex;
 }
 
-/* .HeaderLinksWrap .LoggedIn .OnHeader {
+.OnHeader {
   display: grid;
   gap: 1rem;
   grid-auto-flow: column;
   align-items: center;
   position: relative;
-} */
+}
 
 .OnHeader:hover .UserNames {
   color: #f7b21f;
@@ -61,7 +57,7 @@
   fill: #f7b21f;
 }
 
-.HeaderLinksWrap .LoggedIn .BelowHeader {
+.BelowHeader {
   background-color: #f9f9f9;
   position: absolute;
   top: 100%;

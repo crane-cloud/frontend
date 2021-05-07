@@ -63,7 +63,7 @@ const Header = (props) => {
       )}
 
       {user.accessToken && (
-        <div className={`${styles.HeaderLinksWrap} ${styles.LoggedIn}`}>
+        <div className={styles.HeaderLinksWrap}>
           <div
             ref={dropdownRef}
             className={styles.OnHeader}
