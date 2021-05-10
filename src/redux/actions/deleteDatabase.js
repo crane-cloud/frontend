@@ -1,10 +1,10 @@
-import axios from '../../axios';
+import axios from "../../axios";
 import {
   DELETE_DATABASE_SUCCESS,
   DELETE_DATABASE_FAIL,
   START_DELETING_DATABASE,
-  CLEAR_DELETE_DATABASE_STATE
-} from './actionTypes';
+  CLEAR_DELETE_DATABASE_STATE,
+} from "./actionTypes";
 
 const startDeletingDatabase = () => ({
   type: START_DELETING_DATABASE,
@@ -24,13 +24,14 @@ const deleteDatabaseFail = (error) => ({
 });
 
 const clearDeleteDatabaseState = () => ({
-  type: CLEAR_DELETE_DATABASE_STATE
+  type: CLEAR_DELETE_DATABASE_STATE,
 });
 
 const deleteDatabase = (projectID, databaseID) => (dispatch) => {
   dispatch(startDeletingDatabase());
 
-  return axios.delete(`/projects/${projectID}/databases/${databaseID}`)
+  return axios
+    .delete(`/projects/${projectID}/databases/${databaseID}`)
     .then((response) => dispatch(deleteDatabaseSuccess(response)))
     .catch((error) => {
       dispatch(deleteDatabaseFail(error));

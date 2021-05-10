@@ -1,20 +1,20 @@
-import React from 'react';
-import './ProgressBar.css';
+import React from "react";
+import "./ProgressBar.css";
 
 const ProgressBar = ({ percentage, fractionLabel }) => {
   const percantageNotValid = isNaN(percentage);
   let fillColor;
-  if(percantageNotValid) {
-    fillColor = 'Quarter1';
+  if (percantageNotValid) {
+    fillColor = "Quarter1";
   } else {
     if (percentage < 25) {
-      fillColor = 'Quarter1';
+      fillColor = "Quarter1";
     } else if (percentage >= 25 && percentage < 50) {
-      fillColor = 'Quarter2';
+      fillColor = "Quarter2";
     } else if (percentage >= 50 && percentage < 75) {
-      fillColor = 'Quarter3';
+      fillColor = "Quarter3";
     } else {
-      fillColor = 'Quarter4';
+      fillColor = "Quarter4";
     }
   }
 
@@ -23,7 +23,7 @@ const ProgressBar = ({ percentage, fractionLabel }) => {
       <div className="ProgressBar">
         <div
           className={`ProgressBarFiller ProgressBarFill${fillColor}`}
-          style={{ width: `${percentage === 0 ? '100' : percentage}%` }}
+          style={{ width: `${percentage === 0 ? "100" : percentage}%` }}
         >
           {fractionLabel ? `${fractionLabel}` : `${percentage}%`}
         </div>

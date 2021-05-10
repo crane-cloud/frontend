@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Header from '../Header';
-import PrimaryButton from '../PrimaryButton';
-import './PageNotFound.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import Header from "../Header";
+import PrimaryButton from "../PrimaryButton";
+import "./PageNotFound.css";
 
 const PageNotFound = () => {
   return (
@@ -12,9 +12,13 @@ const PageNotFound = () => {
         <div className="ErrorPageDigit">404</div>
         <div className="ErrorPageText">
           <div className="ErrorPageTextFirst">PAGE NOT FOUND</div>
-          <div className="ErrorPageTextSecond">Sorry, the page you are looking for does not exist.</div>
+          <div className="ErrorPageTextSecond">
+            Sorry, the page you are looking for does not exist.
+          </div>
           <div className="ErrorPageButton">
-            <Link to="/"><PrimaryButton label="Home" /></Link>
+            <Link to="/">
+              <PrimaryButton label="Home" />
+            </Link>
           </div>
         </div>
       </div>

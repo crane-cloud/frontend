@@ -6,7 +6,6 @@ defaults: &defaults
         GOOGLE_APPLICATION_CREDENTIALS: /root/crane-cloud
   working_directory: ~/crane-cloud
 
-
 attach_workspace: &attach_workspace
   attach_workspace:
     at: ~/crane-cloud
@@ -107,4 +106,3 @@ workflows:
           filters:
             branches:
               only: master
-      

@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 // import Tab from './Tab';
-import './Tabs.css';
+import "./Tabs.css";
 
 const Tabs = ({ children }) => {
   // this funtion is to check for single child
   // since single child comes as an object, if found,
   // Change it to array
-  if (Object.prototype.toString.call(children) !== '[object Array]') {
+  if (Object.prototype.toString.call(children) !== "[object Array]") {
     const childrenArray = [];
     children = [...childrenArray, children];
   }
 
-  const [activeTab/* , setActiveTab */] = useState(children[0].props.index);
+  const [activeTab /* , setActiveTab */] = useState(children[0].props.index);
 
   // const onClickTabItem = (tabIndex) => setActiveTab(tabIndex);
 
@@ -48,8 +48,8 @@ const Tabs = ({ children }) => {
 Tabs.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.instanceOf(Array),
-    PropTypes.instanceOf(Object)
-  ]).isRequired
+    PropTypes.instanceOf(Object),
+  ]).isRequired,
 };
 
 export default Tabs;

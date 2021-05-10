@@ -34,22 +34,22 @@
   line-height: 2rem;
 }
 
-.LandingPageMainContentTitle{
+.LandingPageMainContentTitle {
   color: #ffffff;
   font-size: 32px;
   font-weight: bold;
 }
-.LandingPageInfrastructurePic path{
-  fill:#99D2E9;
+.LandingPageInfrastructurePic path {
+  fill: #99d2e9;
 }
-.FreeTrialButton{
-  background-color: #F7B21F;
+.FreeTrialButton {
+  background-color: #f7b21f;
   color: white;
   padding: 0.7rem;
   font-weight: bold;
   text-align: center;
   border: none;
-  outline: 2px solid #F7B21F;
+  outline: 2px solid #f7b21f;
   display: grid;
   grid-auto-flow: column;
   gap: 1.5rem;
@@ -57,108 +57,108 @@
   justify-content: space-between;
 }
 
-.FreeTrialButton:hover{
+.FreeTrialButton:hover {
   background: none;
-  color: #F7B21F;
+  color: #f7b21f;
 }
 
-.FreeTrialButton:hover   path{
-  fill: #F7B21F;
+.FreeTrialButton:hover path {
+  fill: #f7b21f;
 }
 
-.LandingPageMainContainer{
+.LandingPageMainContainer {
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
-.LandingPageWhySection{
+.LandingPageWhySection {
   background-color: #ffffff;
   padding: 3rem;
 }
 
-.WhySectionContent{
+.WhySectionContent {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
-.DataCenterImage{
+.DataCenterImage {
   overflow: hidden;
 }
 
-.DataCenterImage img{
+.DataCenterImage img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.WhySectionChildContainer{
+.WhySectionChildContainer {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 0.5rem;
 }
 
-.WhySectionItem{
+.WhySectionItem {
   padding: 0.5rem;
-  background-color: #F1F1F1;
+  background-color: #f1f1f1;
   color: #555555;
 }
 
-.WhySectionCardTitle{
+.WhySectionCardTitle {
   font-size: medium;
   line-height: 2rem;
   font-weight: bold;
 }
 
-.PageBannerSection{
-  background-color: #F7B21F;
-  color: #F8F7E5;
+.PageBannerSection {
+  background-color: #f7b21f;
+  color: #f8f7e5;
   display: flex;
   padding: 0 3rem;
 }
 
-.LeftPageBannerSection{
+.LeftPageBannerSection {
   flex: 6;
   margin: auto;
 }
 
-.RightPageBannerSection{
+.RightPageBannerSection {
   flex: 1;
   overflow: hidden;
   margin: auto;
 }
-.BannerParagraph{
+.BannerParagraph {
   color: #000000;
 }
-.BannerButton{
+.BannerButton {
   background-color: #ffffff;
   color: #000000;
   border: none;
   padding: 0.5rem 2rem;
 }
-.LeftPageBannerInner{
+.LeftPageBannerInner {
   display: grid;
   grid-template-rows: 1fr 1fr;
 }
 
-.SolutionsSection{
+.SolutionsSection {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 1rem;
 }
 
-.SolutionsContainer{
+.SolutionsContainer {
   display: flex;
 }
 
-.SolutionsIcon{
+.SolutionsIcon {
   flex: 1;
   padding-top: 1.3rem;
 }
 
-.SolutionsContent{
+.SolutionsContent {
   flex: 5;
 }
 

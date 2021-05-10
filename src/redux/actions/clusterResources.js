@@ -1,16 +1,19 @@
-import axios from '../../axios';
-import { GET_RESOURCES_COUNT, GET_RESOURCES_COUNT_FAILED, START_GETTING_RESOURCES_COUNT } from './actionTypes';
+import axios from "../../axios";
+import {
+  GET_RESOURCES_COUNT,
+  GET_RESOURCES_COUNT_FAILED,
+  START_GETTING_RESOURCES_COUNT,
+} from "./actionTypes";
 
 export const startFetchingResources = () => ({
   type: START_GETTING_RESOURCES_COUNT,
 });
 
-export const getResourcesSuccess = (response) => (
-  {
-    type: GET_RESOURCES_COUNT,
-    payload: response.data.data.resource_count,
-    clusterName: response.data.data.cluster.name,
-  });
+export const getResourcesSuccess = (response) => ({
+  type: GET_RESOURCES_COUNT,
+  payload: response.data.data.resource_count,
+  clusterName: response.data.data.cluster.name,
+});
 
 export const getResourcesFail = (error) => ({
   type: GET_RESOURCES_COUNT_FAILED,
@@ -22,7 +25,8 @@ export const getResourcesFail = (error) => ({
 
 const getClusterResourcesCount = (params) => (dispatch) => {
   dispatch(startFetchingResources());
-  return axios.get(`/clusters/${params.clusterID}`)
+  return axios
+    .get(`/clusters/${params.clusterID}`)
     .then((response) => dispatch(getResourcesSuccess(response)))
     .catch((error) => {
       dispatch(getResourcesFail(error));

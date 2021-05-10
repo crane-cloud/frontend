@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import './Avatar.css';
+import React from "react";
+import PropTypes from "prop-types";
+import "./Avatar.css";
 
 const Avatar = ({ name }) => {
   const nameStringToHslColor = (name) => {
@@ -16,13 +16,12 @@ const Avatar = ({ name }) => {
   return (
     <div
       className="UserAvatar"
-      style={{ backgroundColor: nameStringToHslColor(name), color: '#555' }}
+      style={{ backgroundColor: nameStringToHslColor(name), color: "#555" }}
     >
       {name.charAt(0).toUpperCase()}
     </div>
   );
 };
-
 
 Avatar.propTypes = {
   name: PropTypes.string.isRequired,

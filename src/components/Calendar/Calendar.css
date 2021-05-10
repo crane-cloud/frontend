@@ -6,10 +6,10 @@
 }
 
 .CalendarMonth {
-  padding: 1rem 1rem .5rem;
+  padding: 1rem 1rem 0.5rem;
   display: flex;
   justify-content: space-between;
-  background-color: #F8F7E5;
+  background-color: #f8f7e5;
 }
 
 .CalendarDayNames {
@@ -23,7 +23,7 @@
 }
 
 .WeekDay {
-  padding: .5rem 0 .2rem;
+  padding: 0.5rem 0 0.2rem;
   text-align: center;
 }
 
@@ -37,7 +37,7 @@
   cursor: pointer;
   display: flex;
   justify-content: center;
-  padding: .5rem;
+  padding: 0.5rem;
   border-left: 1px solid #cccccc;
 }
 
@@ -46,9 +46,9 @@
 }
 
 .CalendarSingleDay:hover {
-  background-color: #F8F7E5; 
+  background-color: #f8f7e5;
 }
 
 .CalendarSingleDay.Today {
-  background-color: #F7B21F;
+  background-color: #f7b21f;
 }

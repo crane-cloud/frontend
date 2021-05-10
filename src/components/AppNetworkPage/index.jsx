@@ -10,7 +10,11 @@ import getAppNetwork, { clearAppNetwork } from "../../redux/actions/appNetwork";
 import MetricsCard from "../MetricsCard";
 import PeriodSelector from "../Period";
 import LineChartComponent from "../LineChart";
-import { formatAppNetworkMetrics, getCurrentTimeStamp, subtractTime } from '../../helpers/formatMetrics';
+import {
+  formatAppNetworkMetrics,
+  getCurrentTimeStamp,
+  subtractTime,
+} from "../../helpers/formatMetrics";
 
 class AppNetworkPage extends React.Component {
   constructor(props) {
@@ -21,7 +25,7 @@ class AppNetworkPage extends React.Component {
         end: getCurrentTimeStamp(),
         step: "",
       },
-      period: '1d'
+      period: "1d",
     };
 
     this.getAppName = this.getAppName.bind(this);
@@ -39,7 +43,7 @@ class AppNetworkPage extends React.Component {
     const { projectID, appID } = params;
 
     clearAppNetwork();
-    getAppNetwork(projectID, appID, { step: '2h' });
+    getAppNetwork(projectID, appID, { step: "2h" });
   }
 
   getAppName(id) {
@@ -48,7 +52,10 @@ class AppNetworkPage extends React.Component {
   }
 
   getDateCreated() {
-    const { match: { params }, apps } = this.props;
+    const {
+      match: { params },
+      apps,
+    } = this.props;
     const { appID } = params;
     return apps.apps.find((app) => app.id === appID).date_created;
   }
@@ -78,10 +85,10 @@ class AppNetworkPage extends React.Component {
 
     this.setState({ period }); // this period state will be used to format x-axis values accordingly
 
-    if (period === 'all') {
+    if (period === "all") {
       startTimeStamp = await Date.parse(this.getDateCreated());
-      step = '1d'; // TODO: make dynamic depending on the all-time metrics
-    } else if (period === 'custom' && customTime !== null) {
+      step = "1d"; // TODO: make dynamic depending on the all-time metrics
+    } else if (period === "custom" && customTime !== null) {
       startTimeStamp = customTime.start;
       endTimeStamp = customTime.end;
     } else {
@@ -94,7 +101,7 @@ class AppNetworkPage extends React.Component {
         end: endTimeStamp,
         start: startTimeStamp,
         step,
-      }
+      },
     }));
 
     if (endTimeStamp > startTimeStamp) {
@@ -119,12 +126,16 @@ class AppNetworkPage extends React.Component {
     const {
       match: { params },
       isFetchingAppNetwork,
-      appNetworkMetrics
+      appNetworkMetrics,
     } = this.props;
     const { projectID, appID, userID } = params;
     const { period } = this.state;
 
-    const formattedMetrics = formatAppNetworkMetrics(appID, appNetworkMetrics, period);
+    const formattedMetrics = formatAppNetworkMetrics(
+      appID,
+      appNetworkMetrics,
+      period
+    );
 
     return (
       <div className="Page">
@@ -190,11 +201,8 @@ AppNetworkPage.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const {
-    isFetchingAppNetwork,
-    appNetworkMetrics,
-    appNetworkMessage,
-  } = state.appNetworkReducer;
+  const { isFetchingAppNetwork, appNetworkMetrics, appNetworkMessage } =
+    state.appNetworkReducer;
   const { apps } = state.appsListReducer;
   return {
     apps,

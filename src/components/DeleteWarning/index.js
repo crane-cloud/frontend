@@ -1,5 +1,5 @@
-import React from 'react';
-import './DeleteWarning.css';
+import React from "react";
+import "./DeleteWarning.css";
 
 const DeleteWarning = () => (
   <div className="DeleteWarning">

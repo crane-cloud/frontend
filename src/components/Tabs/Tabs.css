@@ -7,7 +7,7 @@
 
 .TabHeadingList {
   margin-top: 0;
-  background-color: #F1F1F1;
+  background-color: #f1f1f1;
   display: flex;
   justify-content: space-between;
   padding-left: 0;
@@ -24,7 +24,7 @@
   display: inline-block;
   list-style: none;
   margin-bottom: -1px;
-  padding: .5rem 2rem;
+  padding: 0.5rem 2rem;
 }
 
 .TabHeadingListItemActive {

@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import Logo from '../Logo';
-import { ReactComponent as DownArrow } from '../../assets/images/downarrow.svg';
-import removeUser from '../../redux/actions/removeUser';
-import styles from './Header.module.css';
-import { DOCS_URL } from '../../config';
+import React, { useState, useEffect, useRef } from "react";
+import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import Logo from "../Logo";
+import { ReactComponent as DownArrow } from "../../assets/images/downarrow.svg";
+import removeUser from "../../redux/actions/removeUser";
+import styles from "./Header.module.css";
+import { DOCS_URL } from "../../config";
 
 const Header = (props) => {
   const [hidden, setHidden] = useState(false);
@@ -22,11 +22,11 @@ const Header = (props) => {
   };
 
   const logout = () => {
-    localStorage.removeItem('state');
-    localStorage.removeItem('token');
-    localStorage.removeItem('project');
+    localStorage.removeItem("state");
+    localStorage.removeItem("token");
+    localStorage.removeItem("project");
     props.removeUser();
-    window.location.href = '/';
+    window.location.href = "/";
   };
 
   const handleClickOutside = (event) => {
@@ -37,11 +37,11 @@ const Header = (props) => {
 
   // componentWillMount & componentWillUnmount
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     // returned function will be called on component unmount
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -49,14 +49,27 @@ const Header = (props) => {
     <header className={styles.Header}>
       <Logo />
 
-
-      {(!user.accessToken || user.accessToken === '') && (
+      {(!user.accessToken || user.accessToken === "") && (
         <div className={styles.HeaderLinksWrap}>
-          {match.path !== '/admin-login' && (
+          {match.path !== "/admin-login" && (
             <div className={styles.HeaderLinks}>
-              <Link to="/team" className={styles.HeaderLinkDocs}>Team</Link>
-              <a href={`${DOCS_URL}`} className={styles.HeaderLinkDocs} rel="noopener noreferrer" target="_blank">Docs</a>
-              <Link to="/login" className={`${styles.HeaderLinkLogin} ${styles.TurnLight}`}>Login</Link>
+              <Link to="/team" className={styles.HeaderLinkDocs}>
+                Team
+              </Link>
+              <a
+                href={`${DOCS_URL}`}
+                className={styles.HeaderLinkDocs}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Docs
+              </a>
+              <Link
+                to="/login"
+                className={`${styles.HeaderLinkLogin} ${styles.TurnLight}`}
+              >
+                Login
+              </Link>
             </div>
           )}
         </div>
@@ -70,34 +83,49 @@ const Header = (props) => {
             onClick={toggleHidden}
             role="presentation"
           >
-            {match.path === '/' || match.path === '/team' ? (
+            {match.path === "/" || match.path === "/team" ? (
               <>
-                <Link to="/team" className={styles.StripBorder}>Team</Link>
-                <Link to={`/users/${user.data.id}/projects`} className={`${styles.HeaderLinkBackToConsole} ${styles.TurnLight}`}>dashboard</Link>
+                <Link to="/team" className={styles.StripBorder}>
+                  Team
+                </Link>
+                <Link
+                  to={`/users/${user.data.id}/projects`}
+                  className={`${styles.HeaderLinkBackToConsole} ${styles.TurnLight}`}
+                >
+                  dashboard
+                </Link>
               </>
             ) : (
               <>
-                <div className={styles.UserNames}>
-                  {user.data.name}
-                </div>
+                <div className={styles.UserNames}>{user.data.name}</div>
               </>
             )}
 
-            <DownArrow
-              className={styles.DropdownArrowSvg}
-            />
+            <DownArrow className={styles.DropdownArrowSvg} />
             {hidden && (
               <div className={styles.BelowHeader}>
                 <div className={styles.DropDownContent}>
-                  <a href={`${DOCS_URL}`} className={styles.DropDownLink} rel="noopener noreferrer" target="_blank">Docs</a>
-                  <div className={styles.DropDownLink} role="presentation" onClick={logout}>Logout</div>
+                  <a
+                    href={`${DOCS_URL}`}
+                    className={styles.DropDownLink}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Docs
+                  </a>
+                  <div
+                    className={styles.DropDownLink}
+                    role="presentation"
+                    onClick={logout}
+                  >
+                    Logout
+                  </div>
                 </div>
               </div>
             )}
           </div>
         </div>
       )}
-
     </header>
   );
 };
@@ -105,22 +133,19 @@ const Header = (props) => {
 Header.propTypes = {
   removeUser: PropTypes.func.isRequired,
   user: PropTypes.shape({
-    accessToken: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.bool
-    ]),
+    accessToken: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     data: PropTypes.shape({
       id: PropTypes.string,
-      name: PropTypes.string
+      name: PropTypes.string,
     }).isRequired,
   }),
   match: PropTypes.shape({
-    path: PropTypes.string.isRequired
+    path: PropTypes.string.isRequired,
   }).isRequired,
 };
 
 Header.defaultProps = {
-  user: {}
+  user: {},
 };
 
 const mapStateToProps = (state) => {
@@ -129,7 +154,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  removeUser
+  removeUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));

@@ -1,39 +1,43 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Redirect, withRouter } from 'react-router-dom';
-import InformationBar from '../InformationBar';
-import Header from '../Header';
-import PrimaryButton from '../PrimaryButton';
-import Spinner from '../Spinner';
-import Modal from '../Modal';
-import SideBar from '../SideBar';
-import Feedback from '../Feedback';
-import DeleteWarning from '../DeleteWarning';
-import tellAge from '../../helpers/ageUtility';
-import deleteDatabase, { clearDeleteDatabaseState } from '../../redux/actions/deleteDatabase';
-import resetDatabase, { clearDatabaseResetState } from '../../redux/actions/resetDatabase';
-import { ReactComponent as CopyText } from '../../assets/images/copy.svg';
-import { ReactComponent as Checked } from '../../assets/images/checked.svg';
-import { ReactComponent as Open } from '../../assets/images/open.svg';
-import { ReactComponent as Closed } from '../../assets/images/close.svg';
-import './DBSettingsPage.css';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Redirect, withRouter } from "react-router-dom";
+import InformationBar from "../InformationBar";
+import Header from "../Header";
+import PrimaryButton from "../PrimaryButton";
+import Spinner from "../Spinner";
+import Modal from "../Modal";
+import SideBar from "../SideBar";
+import Feedback from "../Feedback";
+import DeleteWarning from "../DeleteWarning";
+import tellAge from "../../helpers/ageUtility";
+import deleteDatabase, {
+  clearDeleteDatabaseState,
+} from "../../redux/actions/deleteDatabase";
+import resetDatabase, {
+  clearDatabaseResetState,
+} from "../../redux/actions/resetDatabase";
+import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
+import { ReactComponent as Checked } from "../../assets/images/checked.svg";
+import { ReactComponent as Open } from "../../assets/images/open.svg";
+import { ReactComponent as Closed } from "../../assets/images/close.svg";
+import "./DBSettingsPage.css";
 
 class DBSettingsPage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      openDeleteAlert:false,
+      openDeleteAlert: false,
       openResetAlert: false,
-      error: '',
+      error: "",
       hidden: true,
       nameChecked: false,
       portChecked: false,
       userChecked: false,
       hostChecked: false,
       uriChecked: false,
-      passwordChecked: false
+      passwordChecked: false,
     };
 
     this.handleDeleteDatabase = this.handleDeleteDatabase.bind(this);
@@ -51,14 +55,14 @@ class DBSettingsPage extends React.Component {
     this.uriOnClick = this.uriOnClick.bind(this);
     this.passwordOnClick = this.passwordOnClick.bind(this);
   }
-  componentDidMount(){
+  componentDidMount() {
     const { clearDatabaseResetState } = this.props;
     clearDatabaseResetState();
   }
 
   componentDidUpdate(prevProps) {
     const { dbDeleteMessage, isReset } = this.props;
-    
+
     if (dbDeleteMessage !== prevProps.dbDeleteMessage) {
       this.hideDeleteAlert();
     }
@@ -77,9 +81,9 @@ class DBSettingsPage extends React.Component {
       user: found.user,
       host: found.host,
       dbID: found.id,
-      port:found.port,
+      port: found.port,
       password: found.password,
-      age: tellAge(found.date_created)
+      age: tellAge(found.date_created),
     };
 
     return info;
@@ -90,7 +94,6 @@ class DBSettingsPage extends React.Component {
     e.preventDefault();
     deleteDatabase(projectID, databaseID);
   }
-
 
   showDeleteAlert() {
     this.setState({ openDeleteAlert: true });
@@ -108,7 +111,6 @@ class DBSettingsPage extends React.Component {
     resetDatabase(projectID, databaseID);
   }
 
-
   showResetAlert() {
     this.setState({ openResetAlert: true });
   }
@@ -120,54 +122,61 @@ class DBSettingsPage extends React.Component {
   renderRedirect = () => {
     const { dbDeleteMessage } = this.props;
     const { userID, projectID } = this.props.match.params;
-    if (dbDeleteMessage === 'Database Deleted Successfully') {
+    if (dbDeleteMessage === "Database Deleted Successfully") {
       this.hideDeleteAlert();
-      return <Redirect to={`/users/${userID}/projects/${projectID}/databases`} noThrow/>
+      return (
+        <Redirect
+          to={`/users/${userID}/projects/${projectID}/databases`}
+          noThrow
+        />
+      );
     }
-  }
+  };
 
-  togglePassword(){
+  togglePassword() {
     this.setState({ hidden: !this.state.hidden });
   }
 
-  nameOnClick(){
+  nameOnClick() {
     const { databaseID } = this.props.match.params;
     const dbInfo = this.getDatabaseInfo(databaseID);
     navigator.clipboard.writeText(dbInfo.name);
-    this.setState({nameChecked: true});
+    this.setState({ nameChecked: true });
   }
-  portOnClick(){
+  portOnClick() {
     const { databaseID } = this.props.match.params;
     const dbInfo = this.getDatabaseInfo(databaseID);
     navigator.clipboard.writeText(dbInfo.port);
-    this.setState({portChecked: true});
+    this.setState({ portChecked: true });
   }
-  hostOnClick(){
+  hostOnClick() {
     const { databaseID } = this.props.match.params;
     const dbInfo = this.getDatabaseInfo(databaseID);
     navigator.clipboard.writeText(dbInfo.host);
-    this.setState({hostChecked: true});
+    this.setState({ hostChecked: true });
   }
-  userOnClick(){
+  userOnClick() {
     const { databaseID } = this.props.match.params;
     const dbInfo = this.getDatabaseInfo(databaseID);
     navigator.clipboard.writeText(dbInfo.user);
-    this.setState({userChecked: true});
+    this.setState({ userChecked: true });
   }
-  uriOnClick(){
+  uriOnClick() {
     const { databaseID } = this.props.match.params;
     const dbInfo = this.getDatabaseInfo(databaseID);
-    navigator.clipboard.writeText(`${`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}`);
-    this.setState({uriChecked: true});
+    navigator.clipboard.writeText(
+      `${`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}`
+    );
+    this.setState({ uriChecked: true });
   }
 
-  passwordOnClick(){
+  passwordOnClick() {
     const { databaseID } = this.props.match.params;
     const dbInfo = this.getDatabaseInfo(databaseID);
     navigator.clipboard.writeText(dbInfo.password);
-    this.setState({passwordChecked: true});
+    this.setState({ passwordChecked: true });
   }
-  
+
   render() {
     const {
       dbDeleteMessage,
@@ -188,11 +197,13 @@ class DBSettingsPage extends React.Component {
       hostChecked,
       userChecked,
       uriChecked,
-      passwordChecked
+      passwordChecked,
     } = this.state;
     return (
       <div className="Page">
-        {(dbDeleteMessage === 'Database Deleted Successfully') ? (this.renderRedirect() ) : ( null )}
+        {dbDeleteMessage === "Database Deleted Successfully"
+          ? this.renderRedirect()
+          : null}
         <div className="TopBarSection">
           <Header />
         </div>
@@ -216,7 +227,6 @@ class DBSettingsPage extends React.Component {
             <div className="ContentSection">
               <div>
                 <div className="DatabaseDetail">
-
                   <div className="DBDetailRow">
                     <div className="DBThead">Type</div>
                     <div className="DBTDetail uppercase">{dbInfo.flavor}</div>
@@ -225,7 +235,7 @@ class DBSettingsPage extends React.Component {
                     <div className="DBThead">Name</div>
                     <div className="DBTDetail">{dbInfo.name}</div>
                     <div className="DBIcon">
-                      <CopyText onClick={this.nameOnClick}/>
+                      <CopyText onClick={this.nameOnClick} />
                       {nameChecked ? <Checked /> : null}
                     </div>
                   </div>
@@ -233,28 +243,30 @@ class DBSettingsPage extends React.Component {
                     <div className="DBThead">User</div>
                     <div className="DBTDetail">{dbInfo.user}</div>
                     <div className="DBIcon">
-                      <CopyText onClick={this.userOnClick}/>
+                      <CopyText onClick={this.userOnClick} />
                       {userChecked ? <Checked /> : null}
                     </div>
                   </div>
                   <div className="DBDetailRow">
                     <div className="DBColumn1 DBThead">Password</div>
                     <div className="DBColumn">
-                      {hidden? '***************************': dbInfo.password}
+                      {hidden ? "***************************" : dbInfo.password}
                     </div>
                     <div className="DBIcon">
-                      <CopyText onClick={this.passwordOnClick}/>
+                      <CopyText onClick={this.passwordOnClick} />
                       {passwordChecked ? <Checked /> : null}
                     </div>
                     <div className="DBPassword">
-                      <div onClick={this.togglePassword}>{hidden ?<Open /> :<Closed />}</div>
+                      <div onClick={this.togglePassword}>
+                        {hidden ? <Open /> : <Closed />}
+                      </div>
                     </div>
                   </div>
                   <div className="DBDetailRow">
                     <div className="DBThead">Host</div>
                     <div className="DBTDetail">{dbInfo.host}</div>
                     <div className="DBIcon">
-                      <CopyText onClick={this.hostOnClick}/>
+                      <CopyText onClick={this.hostOnClick} />
                       {hostChecked ? <Checked /> : null}
                     </div>
                   </div>
@@ -262,7 +274,7 @@ class DBSettingsPage extends React.Component {
                     <div className="DBThead">Port</div>
                     <div className="DBTDetail">{dbInfo.port}</div>
                     <div className="DBIcon">
-                      <CopyText onClick={this.portOnClick}/>
+                      <CopyText onClick={this.portOnClick} />
                       {portChecked ? <Checked /> : null}
                     </div>
                   </div>
@@ -274,13 +286,24 @@ class DBSettingsPage extends React.Component {
               </div>
               <div className="DBInstructions">
                 <div className="DBInfoTop">
-                  <div>Connecting to the database. Read <a href="https://medium.com/cranecloud/connecting-to-a-remote-mysql-database-a6b3cc15c40b" rel="noopener noreferrer" target="_blank" className="MysqlArticle">this article</a>, for a more comprehensive guide.</div>
+                  <div>
+                    Connecting to the database. Read{" "}
+                    <a
+                      href="https://medium.com/cranecloud/connecting-to-a-remote-mysql-database-a6b3cc15c40b"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      className="MysqlArticle"
+                    >
+                      this article
+                    </a>
+                    , for a more comprehensive guide.
+                  </div>
                 </div>
                 <div className="DBInfoBottom">
                   <div className="DBAccessInfo">{`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}</div>
                   <div className="DBAccessCopy">
-                  <div className="DBPassword">
-                      <CopyText onClick={this.uriOnClick}/>
+                    <div className="DBPassword">
+                      <CopyText onClick={this.uriOnClick} />
                       {uriChecked ? <Checked /> : null}
                     </div>
                   </div>
@@ -293,12 +316,18 @@ class DBSettingsPage extends React.Component {
                     className="ResetBtn"
                     onClick={this.showResetAlert}
                   />
-                  <div className="buttonText">Deletes all tables and data, but the database remains.</div>
+                  <div className="buttonText">
+                    Deletes all tables and data, but the database remains.
+                  </div>
                 </div>
-                {(resetMessage !== '') && (
+                {resetMessage !== "" && (
                   <Feedback
-                    message={resetMessage !== '' ? 'Database has been successfully reset.' : (null)}
-                    type={isReset ? 'success' : 'error'}
+                    message={
+                      resetMessage !== ""
+                        ? "Database has been successfully reset."
+                        : null
+                    }
+                    type={isReset ? "success" : "error"}
                   />
                 )}
                 <div className="DBButtonRow">
@@ -307,11 +336,16 @@ class DBSettingsPage extends React.Component {
                     className="DBDeleteBtn"
                     onClick={this.showDeleteAlert}
                   />
-                  <div className="buttonText">Destroys the entire database, deleting all tables and data.</div>
+                  <div className="buttonText">
+                    Destroys the entire database, deleting all tables and data.
+                  </div>
                 </div>
-                {(openDeleteAlert && (
+                {openDeleteAlert && (
                   <div className="ProjectDeleteModel">
-                    <Modal showModal={openDeleteAlert} onClickAway={this.hideDeleteAlert}>
+                    <Modal
+                      showModal={openDeleteAlert}
+                      onClickAway={this.hideDeleteAlert}
+                    >
                       <div className="DeleteDatabaseModel">
                         <div className="DeleteProjectModalUpperSection">
                           <div className="InnerModalDescription">
@@ -323,26 +357,39 @@ class DBSettingsPage extends React.Component {
 
                         <div className="DeleteProjectModalLowerSection">
                           <div className="DeleteProjectModelButtons">
-                            <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
-                            <PrimaryButton label={deletingDatabase ? <Spinner /> : 'Delete'} className="DeleteBtn" onClick={(e) => this.handleDeleteDatabase(e, projectID, databaseID)} />
+                            <PrimaryButton
+                              label="cancel"
+                              className="CancelBtn"
+                              onClick={this.hideDeleteAlert}
+                            />
+                            <PrimaryButton
+                              label={deletingDatabase ? <Spinner /> : "Delete"}
+                              className="DeleteBtn"
+                              onClick={(e) =>
+                                this.handleDeleteDatabase(
+                                  e,
+                                  projectID,
+                                  databaseID
+                                )
+                              }
+                            />
                           </div>
 
-                          {(databaseDeleteFailed && dbDeleteMessage) && (
-                            <Feedback
-                              message={dbDeleteMessage}
-                              type="error"
-                            />
+                          {databaseDeleteFailed && dbDeleteMessage && (
+                            <Feedback message={dbDeleteMessage} type="error" />
                           )}
                         </div>
                       </div>
-
                     </Modal>
                   </div>
-                ))}
+                )}
 
-                {(openResetAlert && (
+                {openResetAlert && (
                   <div className="ProjectDeleteModel">
-                    <Modal showModal={openResetAlert} onClickAway={this.hideResetAlert}>
+                    <Modal
+                      showModal={openResetAlert}
+                      onClickAway={this.hideResetAlert}
+                    >
                       <div className="DeleteDatabaseModel">
                         <div className="DeleteProjectModalUpperSection">
                           <div className="InnerModalDescription">
@@ -354,16 +401,28 @@ class DBSettingsPage extends React.Component {
 
                         <div className="DeleteProjectModalLowerSection">
                           <div className="DeleteProjectModelButtons">
-                            <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideResetAlert} />
-                            <PrimaryButton label={isReseting ? <Spinner /> : 'Reset'} className="ResetBtn" onClick={(e) => this.handleResetDatabase(e, projectID, databaseID)} />
+                            <PrimaryButton
+                              label="cancel"
+                              className="CancelBtn"
+                              onClick={this.hideResetAlert}
+                            />
+                            <PrimaryButton
+                              label={isReseting ? <Spinner /> : "Reset"}
+                              className="ResetBtn"
+                              onClick={(e) =>
+                                this.handleResetDatabase(
+                                  e,
+                                  projectID,
+                                  databaseID
+                                )
+                              }
+                            />
                           </div>
-
                         </div>
                       </div>
-
                     </Modal>
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>
@@ -382,29 +441,31 @@ DBSettingsPage.propTypes = {
   isReset: PropTypes.bool,
   isReseting: PropTypes.bool,
   resetFailed: PropTypes.bool,
-  resetMessage: PropTypes.string
+  resetMessage: PropTypes.string,
 };
 
 DBSettingsPage.defaultProps = {
-  dbDeleteMessage: '',
+  dbDeleteMessage: "",
   databaseDeleteFailed: false,
   deletingDatabase: false,
-  databaseDeleted: false
+  databaseDeleted: false,
 };
 
 const mapStateToProps = (state) => {
   const { databases } = state.projectDatabasesReducer;
-  const { databaseDeleted,
+  const {
+    databaseDeleted,
     deletingDatabase,
     databaseDeleteFailed,
     dbDeleteMessage,
-    clearDeleteDatabaseState
+    clearDeleteDatabaseState,
   } = state.deleteDatabaseReducer;
-  const { isReset,
+  const {
+    isReset,
     isReseting,
     resetFailed,
     resetMessage,
-    clearDatabaseResetState
+    clearDatabaseResetState,
   } = state.resetDatabaseReducer;
   return {
     databases,
@@ -417,7 +478,7 @@ const mapStateToProps = (state) => {
     isReseting,
     resetFailed,
     resetMessage,
-    clearDatabaseResetState
+    clearDatabaseResetState,
   };
 };
 
@@ -425,7 +486,10 @@ const mapDispatchToProps = {
   deleteDatabase,
   clearDeleteDatabaseState,
   resetDatabase,
-  clearDatabaseResetState
+  clearDatabaseResetState,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(DBSettingsPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(DBSettingsPage));

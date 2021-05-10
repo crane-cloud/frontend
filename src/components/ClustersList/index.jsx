@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import getClustersList from '../../redux/actions/clusters';
-import ClusterCard from '../ClusterCard';
-import Spinner from '../Spinner';
-import './ClustersList.css';
-import crane from '../../assets/images/craneLogo.png';
-
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import getClustersList from "../../redux/actions/clusters";
+import ClusterCard from "../ClusterCard";
+import Spinner from "../Spinner";
+import "./ClustersList.css";
+import crane from "../../assets/images/craneLogo.png";
 
 class ClustersList extends Component {
   componentDidMount() {
@@ -28,48 +27,43 @@ class ClustersList extends Component {
 
     return (
       <div className="ClusterList">
-        {
-          isRetrieving ? (
-            <div className="TableLoading">
-              <div className="SpinnerWrapper">
-                <Spinner size="big" />
-              </div>
+        {isRetrieving ? (
+          <div className="TableLoading">
+            <div className="SpinnerWrapper">
+              <Spinner size="big" />
             </div>
-          ) : (
-            <div>
-              {(isRetrieved && clusters !== undefined) && (
-                clusters.map((cluster) => (
-                  <Link to={{ pathname: `/clusters/${cluster.id}/resources` }} key={cluster.id}>
-                    <div key={cluster.id} className="ClusterCardItem">
-                      <ClusterCard
-                        name={cluster.name}
-                        description={cluster.description}
-                        icon={crane}
-                      />
-                    </div>
-                  </Link>
-                ))
-              )}
-            </div>
-          )
-        }
-        {(isRetrieved && clusters.length === 0) && (
+          </div>
+        ) : (
+          <div>
+            {isRetrieved &&
+              clusters !== undefined &&
+              clusters.map((cluster) => (
+                <Link
+                  to={{ pathname: `/clusters/${cluster.id}/resources` }}
+                  key={cluster.id}
+                >
+                  <div key={cluster.id} className="ClusterCardItem">
+                    <ClusterCard
+                      name={cluster.name}
+                      description={cluster.description}
+                      icon={crane}
+                    />
+                  </div>
+                </Link>
+              ))}
+          </div>
+        )}
+        {isRetrieved && clusters.length === 0 && (
           <div className="NoResourcesMessage">
             <p>No Clusters Available</p>
           </div>
         )}
-        {(!isRetrieving && !isRetrieved) && (
+        {!isRetrieving && !isRetrieved && (
           <div className="NoResourcesMessage">
-            <p>
-              Oops! Something went wrong!
-
-              Failed to retrieve Clusters.
-            </p>
+            <p>Oops! Something went wrong! Failed to retrieve Clusters.</p>
           </div>
         )}
-
       </div>
-
     );
   }
 }
@@ -80,14 +74,14 @@ ClustersList.propTypes = {
   getClustersList: PropTypes.func.isRequired,
   newClusterAdded: PropTypes.bool.isRequired,
   isRetrieved: PropTypes.bool,
-  isRetrieving: PropTypes.bool
+  isRetrieving: PropTypes.bool,
 };
 
 // assigning defaults
 ClustersList.defaultProps = {
   clusters: [],
   isRetrieved: false,
-  isRetrieving: true
+  isRetrieving: true,
 };
 
 const mapStateToProps = (state) => {
@@ -96,10 +90,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  getClustersList
+  getClustersList,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ClustersList);
+export default connect(mapStateToProps, mapDispatchToProps)(ClustersList);

@@ -1,15 +1,18 @@
-import axios from '../../axios';
-import { IS_FETCHING, FETCH_PVCS_SUCCESS, FETCH_PVCS_FAILED } from './actionTypes';
+import axios from "../../axios";
+import {
+  IS_FETCHING,
+  FETCH_PVCS_SUCCESS,
+  FETCH_PVCS_FAILED,
+} from "./actionTypes";
 
 export const startTheFetch = () => ({
   type: IS_FETCHING,
 });
 
-export const getPvcsSuccess = (response) => (
-  {
-    type: FETCH_PVCS_SUCCESS,
-    payload: response.data.data.pvcs,
-  });
+export const getPvcsSuccess = (response) => ({
+  type: FETCH_PVCS_SUCCESS,
+  payload: response.data.data.pvcs,
+});
 
 export const getPvcsFailed = (error) => ({
   type: FETCH_PVCS_FAILED,
@@ -21,7 +24,8 @@ export const getPvcsFailed = (error) => ({
 
 const getPvcs = (clusterId) => (dispatch) => {
   dispatch(startTheFetch());
-  return axios.get(`/clusters/${clusterId}/pvcs`)
+  return axios
+    .get(`/clusters/${clusterId}/pvcs`)
     .then((response) => dispatch(getPvcsSuccess(response)))
     .catch((error) => {
       dispatch(getPvcsFailed(error));

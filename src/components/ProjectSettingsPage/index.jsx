@@ -1,36 +1,39 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import InformationBar from '../InformationBar';
-import Header from '../Header';
-import PrimaryButton from '../PrimaryButton';
-import deleteProject, { clearDeleteProjectState } from '../../redux/actions/deleteProject';
-import updateProject, { clearUpdateProjectState } from '../../redux/actions/updateProject';
-import Spinner from '../Spinner';
-import Modal from '../Modal';
-import SideBar from '../SideBar';
-import TextArea from '../TextArea';
-import Feedback from '../Feedback';
-import DeleteWarning from '../DeleteWarning';
-import BlackInputText from '../BlackInputText';
-import './ProjectSettingsPage.css';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import InformationBar from "../InformationBar";
+import Header from "../Header";
+import PrimaryButton from "../PrimaryButton";
+import deleteProject, {
+  clearDeleteProjectState,
+} from "../../redux/actions/deleteProject";
+import updateProject, {
+  clearUpdateProjectState,
+} from "../../redux/actions/updateProject";
+import Spinner from "../Spinner";
+import Modal from "../Modal";
+import SideBar from "../SideBar";
+import TextArea from "../TextArea";
+import Feedback from "../Feedback";
+import DeleteWarning from "../DeleteWarning";
+import BlackInputText from "../BlackInputText";
+import "./ProjectSettingsPage.css";
 
 class ProjectSettingsPage extends React.Component {
   constructor(props) {
     super(props);
-    const projectInfo = JSON.parse(localStorage.getItem('project'));
-    const { name, description} = projectInfo;
+    const projectInfo = JSON.parse(localStorage.getItem("project"));
+    const { name, description } = projectInfo;
 
     this.state = {
       openUpdateModal: false,
       openDeleteAlert: false,
       openDropDown: false,
-      projectName: name ? name : '',
-      projectDescription: description ? description: '',
-      error: ''
+      projectName: name ? name : "",
+      projectDescription: description ? description : "",
+      error: "",
     };
-
 
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
     this.showDeleteAlert = this.showDeleteAlert.bind(this);
@@ -43,7 +46,7 @@ class ProjectSettingsPage extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { isDeleted } = this.props;
-    
+
     if (isDeleted !== prevProps.isDeleted) {
       this.hideDeleteAlert();
     }
@@ -52,7 +55,7 @@ class ProjectSettingsPage extends React.Component {
   validateProjectName(name) {
     if (/^[a-z]/i.test(name)) {
       if (name.match(/[^-a-zA-Z]/)) {
-        return 'false_convention';
+        return "false_convention";
       }
       return true;
     }
@@ -62,38 +65,47 @@ class ProjectSettingsPage extends React.Component {
   handleChange(e) {
     const { error } = this.state;
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
 
     if (error) {
       this.setState({
-        error: ''
+        error: "",
       });
     }
   }
 
   handleSubmit() {
     const { projectName, projectDescription } = this.state;
-    const { updateProject, name, description, match: { params: { projectID }} } = this.props;
+    const {
+      updateProject,
+      name,
+      description,
+      match: {
+        params: { projectID },
+      },
+    } = this.props;
 
     if (projectName !== name || projectDescription !== description) {
       if (!projectName || !projectDescription) {
         this.setState({
-          error: 'please provide either a new name or description'
+          error: "please provide either a new name or description",
         });
       } else {
         if (projectName !== name && projectDescription === description) {
           if (!this.validateProjectName(projectName)) {
             this.setState({
-              error: 'name should start with a letter'
+              error: "name should start with a letter",
             });
-          } else if (this.validateProjectName(projectName) === 'false_convention') {
+          } else if (
+            this.validateProjectName(projectName) === "false_convention"
+          ) {
             this.setState({
-              error: 'name may only contain letters and a hypen -'
+              error: "name may only contain letters and a hypen -",
             });
           } else if (projectName.length > 22) {
             this.setState({
-              error: 'project name cannot exceed 22 characters'
+              error: "project name cannot exceed 22 characters",
             });
           } else {
             const newProject = { name: projectName };
@@ -109,14 +121,19 @@ class ProjectSettingsPage extends React.Component {
         if (projectName !== name && projectDescription !== description) {
           if (!this.validateProjectName(projectName)) {
             this.setState({
-              error: 'name should start with a letter'
+              error: "name should start with a letter",
             });
-          } else if (this.validateProjectName(projectName) === 'false_convention') {
+          } else if (
+            this.validateProjectName(projectName) === "false_convention"
+          ) {
             this.setState({
-              error: 'name may only contain letters and a hypen -'
+              error: "name may only contain letters and a hypen -",
             });
           } else {
-            const newProject = { name: projectName, description: projectDescription };
+            const newProject = {
+              name: projectName,
+              description: projectDescription,
+            };
             updateProject(projectID, newProject);
           }
         }
@@ -124,13 +141,11 @@ class ProjectSettingsPage extends React.Component {
     }
   }
 
-
   handleDeleteProject(e, projectID) {
     const { deleteProject } = this.props;
     e.preventDefault();
     deleteProject(projectID);
   }
-
 
   showDeleteAlert() {
     this.setState({ openDeleteAlert: true });
@@ -145,9 +160,9 @@ class ProjectSettingsPage extends React.Component {
     const { isDeleted, isUpdated } = this.props;
     const { userID } = this.props.match.params;
     if (isDeleted || isUpdated) {
-      return <Redirect to={`/users/${userID}/projects`} noThrow/>
+      return <Redirect to={`/users/${userID}/projects`} noThrow />;
     }
-  }
+  };
 
   render() {
     const {
@@ -158,23 +173,21 @@ class ProjectSettingsPage extends React.Component {
       message,
       isFailed,
       isUpdated,
-      errorMessage
+      errorMessage,
     } = this.props;
-    const projectInfo = JSON.parse(localStorage.getItem('project'));
+    const projectInfo = JSON.parse(localStorage.getItem("project"));
     const name = projectInfo.name;
     const description = projectInfo.description;
-    const {
-      openDeleteAlert,
-      projectName,
-      projectDescription
-    } = this.state;
+    const { openDeleteAlert, projectName, projectDescription } = this.state;
 
     const { projectID, userID } = params;
 
     return (
       <div className="Page">
-        { (isUpdated || isDeleted) ? (this.renderRedirect() ) : ( null )}
-        <div className="TopBarSection"><Header /></div>
+        {isUpdated || isDeleted ? this.renderRedirect() : null}
+        <div className="TopBarSection">
+          <Header />
+        </div>
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
@@ -191,13 +204,16 @@ class ProjectSettingsPage extends React.Component {
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
-              <InformationBar
-                header="Settings"
-              />
+              <InformationBar header="Settings" />
             </div>
             <div className="ContentSection">
               <div>
-                <div onSubmit={(e) => {this.handleSubmit(); e.preventDefault();}}>
+                <div
+                  onSubmit={(e) => {
+                    this.handleSubmit();
+                    e.preventDefault();
+                  }}
+                >
                   <div className="UpdateForm">
                     <BlackInputText
                       placeholder="Project Name"
@@ -222,52 +238,63 @@ class ProjectSettingsPage extends React.Component {
                       />
                     )}
 
-                    <PrimaryButton label={isUpdating ? <Spinner /> : 'update project'} onClick={this.handleSubmit} />
+                    <PrimaryButton
+                      label={isUpdating ? <Spinner /> : "update project"}
+                      onClick={this.handleSubmit}
+                    />
                   </div>
                 </div>
-              
-               
               </div>
               <div className="DeleteButtonDiv">
-                <PrimaryButton label="Delete Project" className="DeleteBtn" onClick={this.showDeleteAlert} />
+                <PrimaryButton
+                  label="Delete Project"
+                  className="DeleteBtn"
+                  onClick={this.showDeleteAlert}
+                />
               </div>
-                {(openDeleteAlert && (
-                  <div className="ProjectDeleteModel">
-                    <Modal showModal={openDeleteAlert} onClickAway={this.hideDeleteAlert}>
-                      <div className="DeleteProjectModel">
-                        <div className="DeleteProjectModalUpperSection">
-                          <div className="DeleteDescription">
-                            Are you sure you want to delete&nbsp;
-                            <span>{projectName}</span>
-                              &nbsp;
-                            ?
-                            <DeleteWarning />
-                          </div>
-                        </div>
-
-                        <div className="DeleteProjectModalLowerSection">
-                          <div className="DeleteProjectModelButtons">
-                            <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideDeleteAlert} />
-                            <PrimaryButton label={isDeleting ? <Spinner /> : 'Delete'} className="DeleteBtn" onClick={(e) => this.handleDeleteProject(e, params.projectID)} />
-                          </div>
-
-                          {(isFailed && message) && (
-                            <Feedback
-                              message={message}
-                              type="error"
-                            />
-                          )}
+              {openDeleteAlert && (
+                <div className="ProjectDeleteModel">
+                  <Modal
+                    showModal={openDeleteAlert}
+                    onClickAway={this.hideDeleteAlert}
+                  >
+                    <div className="DeleteProjectModel">
+                      <div className="DeleteProjectModalUpperSection">
+                        <div className="DeleteDescription">
+                          Are you sure you want to delete&nbsp;
+                          <span>{projectName}</span>
+                          &nbsp; ?
+                          <DeleteWarning />
                         </div>
                       </div>
 
-                    </Modal>
-                  </div>
-                ))}
+                      <div className="DeleteProjectModalLowerSection">
+                        <div className="DeleteProjectModelButtons">
+                          <PrimaryButton
+                            label="cancel"
+                            className="CancelBtn"
+                            onClick={this.hideDeleteAlert}
+                          />
+                          <PrimaryButton
+                            label={isDeleting ? <Spinner /> : "Delete"}
+                            className="DeleteBtn"
+                            onClick={(e) =>
+                              this.handleDeleteProject(e, params.projectID)
+                            }
+                          />
+                        </div>
+
+                        {isFailed && message && (
+                          <Feedback message={message} type="error" />
+                        )}
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+              )}
             </div>
           </div>
         </div>
-
-
       </div>
     );
   }
@@ -283,22 +310,24 @@ ProjectSettingsPage.propTypes = {
   description: PropTypes.string,
   message: PropTypes.string,
   isUpdated: PropTypes.bool,
-  isDeleted: PropTypes.bool
+  isDeleted: PropTypes.bool,
 };
 
 ProjectSettingsPage.defaultProps = {
-  message: '',
+  message: "",
   isUpdated: false,
   isDeleted: false,
-  name: '',
-  description: '',
-  isUpdating: false
+  name: "",
+  description: "",
+  isUpdating: false,
 };
 
 const mapStateToProps = (state) => {
-  const { isDeleting, isDeleted, isFailed, clearDeleteProjectState, message} = state.deleteProjectReducer;
-  
-  const { isUpdated, isUpdating, errorMessage, clearUpdateProjectState } = state.updateProjectReducer;
+  const { isDeleting, isDeleted, isFailed, clearDeleteProjectState, message } =
+    state.deleteProjectReducer;
+
+  const { isUpdated, isUpdating, errorMessage, clearUpdateProjectState } =
+    state.updateProjectReducer;
   return {
     isUpdated,
     isUpdating,
@@ -308,12 +337,18 @@ const mapStateToProps = (state) => {
     isDeleted,
     errorMessage,
     clearDeleteProjectState,
-    clearUpdateProjectState
+    clearUpdateProjectState,
   };
 };
 
 const mapDispatchToProps = {
-  deleteProject, updateProject, clearDeleteProjectState, clearUpdateProjectState
+  deleteProject,
+  updateProject,
+  clearDeleteProjectState,
+  clearUpdateProjectState,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectSettingsPage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProjectSettingsPage);

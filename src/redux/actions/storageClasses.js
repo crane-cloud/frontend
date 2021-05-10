@@ -1,5 +1,9 @@
-import axios from '../../axios';
-import { GET_STORAGE_CLASS_SUCCESS, GET_STORAGE_CLASS_FAIL, START_GETTING_STORAGE_CLASS } from './actionTypes';
+import axios from "../../axios";
+import {
+  GET_STORAGE_CLASS_SUCCESS,
+  GET_STORAGE_CLASS_FAIL,
+  START_GETTING_STORAGE_CLASS,
+} from "./actionTypes";
 
 export const startFetchingStorageClass = () => ({
   type: START_GETTING_STORAGE_CLASS,
@@ -21,7 +25,8 @@ export const getStorageClassFail = (error) => ({
 const getStorageClassList = (clusterId) => (dispatch) => {
   dispatch(startFetchingStorageClass());
 
-  return axios.get(`/clusters/${clusterId}/storage_classes`)
+  return axios
+    .get(`/clusters/${clusterId}/storage_classes`)
     .then((response) => dispatch(getStorageClassSuccess(response)))
     .catch((error) => {
       dispatch(getStorageClassFail(error));

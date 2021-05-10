@@ -1,13 +1,13 @@
-.BlackInputText{
-    width: 25rem;
-    border: 2px solid #000;
-    box-sizing: border-box;
-    background-color: transparent;
-    color: #000;
-    font-size: inherit;
-    padding: 1rem;
-  }
+.BlackInputText {
+  width: 25rem;
+  border: 2px solid #000;
+  box-sizing: border-box;
+  background-color: transparent;
+  color: #000;
+  font-size: inherit;
+  padding: 1rem;
+}
 
-  .BlackInputText::placeholder {
-    color: #808080;
-  }
+.BlackInputText::placeholder {
+  color: #808080;
+}

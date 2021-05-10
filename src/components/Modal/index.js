@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
-import PropTypes from 'prop-types';
-import './Modal.css';
+import React, { useEffect, useState, useRef } from "react";
+import PropTypes from "prop-types";
+import "./Modal.css";
 
 const Modal = ({ showModal, children, onClickAway }) => {
   const [show, setShow] = useState(showModal);
@@ -14,10 +14,10 @@ const Modal = ({ showModal, children, onClickAway }) => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutsideModal);
+    document.addEventListener("mousedown", handleClickOutsideModal);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutsideModal);
+      document.removeEventListener("mousedown", handleClickOutsideModal);
     };
   }, [onClickAway]);
 
@@ -27,26 +27,24 @@ const Modal = ({ showModal, children, onClickAway }) => {
       setShow(showModal);
     };
 
-    toggleShowModal()
+    toggleShowModal();
   }, [showModal]);
 
   return (
-    (show && (
+    show && (
       <div className="ModalParentWrap">
         <div ref={modalRef} className="ModalChildWrap">
-          <div className="ModalContent">
-            {children}
-          </div>
+          <div className="ModalContent">{children}</div>
         </div>
       </div>
-    ))
+    )
   );
 };
 
 Modal.propTypes = {
   showModal: PropTypes.bool.isRequired,
   children: PropTypes.node.isRequired,
-  onClickAway: PropTypes.func.isRequired
+  onClickAway: PropTypes.func.isRequired,
 };
 
 export default Modal;

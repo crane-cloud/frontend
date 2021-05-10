@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import './InputPassword.css';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import "./InputPassword.css";
 
 const InputPassword = (props) => {
-  const [inputBackground, setBackground] = useState('InitialBackground');
-  const {
-    name, value, placeholder, onChange, required
-  } = props;
+  const [inputBackground, setBackground] = useState("InitialBackground");
+  const { name, value, placeholder, onChange, required } = props;
 
   const changeBackground = () => {
     if (value) {
-      setBackground('WhiteBackground');
+      setBackground("WhiteBackground");
     } else {
-      setBackground('InitialBackground');
+      setBackground("InitialBackground");
     }
   };
 
@@ -22,7 +20,7 @@ const InputPassword = (props) => {
     <input
       className={`InputPassword ${inputBackground}`}
       type="password"
-      placeholder={`${placeholder}${required ? ' *' : ''}`}
+      placeholder={`${placeholder}${required ? " *" : ""}`}
       name={name}
       value={value}
       onChange={(e) => {
@@ -37,12 +35,12 @@ InputPassword.propTypes = {
   value: PropTypes.string,
   placeholder: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  required: PropTypes.bool
+  required: PropTypes.bool,
 };
 
 InputPassword.defaultProps = {
-  value: '',
-  required: false
+  value: "",
+  required: false,
 };
 
 export default InputPassword;

@@ -1,19 +1,23 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import InformationBar from '../InformationBar';
-import Header from '../Header';
-import SideBar from '../SideBar';
-import MetricsCard from '../MetricsCard';
-import { ReactComponent as MetricIcon } from '../../assets/images/resource-icon.svg';
-import './AppMetricsPage.css';
-import LineChartComponent from '../LineChart';
-import LogsFrame from '../LogsFrame';
-import getAppLogs from '../../redux/actions/getAppLogs';
-import getAppMemory, { clearAppMemory } from '../../redux/actions/appMemory';
-import getAppCPU from '../../redux/actions/appCPU';
-import { formatAppMemoryMetrics, formatAppCPUMetrics, formatAppNetworkMetrics } from '../../helpers/formatMetrics';
-import getAppNetwork from '../../redux/actions/appNetwork';
+import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import InformationBar from "../InformationBar";
+import Header from "../Header";
+import SideBar from "../SideBar";
+import MetricsCard from "../MetricsCard";
+import { ReactComponent as MetricIcon } from "../../assets/images/resource-icon.svg";
+import "./AppMetricsPage.css";
+import LineChartComponent from "../LineChart";
+import LogsFrame from "../LogsFrame";
+import getAppLogs from "../../redux/actions/getAppLogs";
+import getAppMemory, { clearAppMemory } from "../../redux/actions/appMemory";
+import getAppCPU from "../../redux/actions/appCPU";
+import {
+  formatAppMemoryMetrics,
+  formatAppCPUMetrics,
+  formatAppNetworkMetrics,
+} from "../../helpers/formatMetrics";
+import getAppNetwork from "../../redux/actions/appNetwork";
 
 class AppMetricsPage extends React.Component {
   constructor(props) {
@@ -22,7 +26,6 @@ class AppMetricsPage extends React.Component {
     this.getAppMemoryMetrics = this.getAppMemoryMetrics.bind(this);
     this.getAppCPUMetrics = this.getAppCPUMetrics.bind(this);
     this.getAppNetworkMetrics = this.getAppNetworkMetrics.bind(this);
-
   }
 
   getAppInfo(id) {
@@ -31,7 +34,7 @@ class AppMetricsPage extends React.Component {
     const info = {
       name: found.name,
       status: found.app_running_status,
-      url: found.url
+      url: found.url,
     };
 
     return info;
@@ -43,32 +46,32 @@ class AppMetricsPage extends React.Component {
       getAppMemory,
       getAppCPU,
       getAppNetwork,
-      match: { params } } = this.props;
+      match: { params },
+    } = this.props;
     const { projectID, appID } = params;
 
     getAppLogs({ projectID, appID }, { timestamps: true });
     clearAppMemory();
     getAppMemory(projectID, appID, {});
     getAppCPU(projectID, appID, {});
-    getAppNetwork(projectID, appID, {})
-    
+    getAppNetwork(projectID, appID, {});
   }
 
-  getAppMemoryMetrics(){
+  getAppMemoryMetrics() {
     const { appID } = this.props.match.params;
     const { appMemoryMetrics } = this.props;
     const results = formatAppMemoryMetrics(appID, appMemoryMetrics);
     return results;
   }
 
-  getAppCPUMetrics(){
+  getAppCPUMetrics() {
     const { appID } = this.props.match.params;
     const { appCPUMetrics } = this.props;
     const results = formatAppCPUMetrics(appID, appCPUMetrics);
     return results;
   }
 
-  getAppNetworkMetrics(){
+  getAppNetworkMetrics() {
     const { appID } = this.props.match.params;
     const { appNetworkMetrics } = this.props;
     const results = formatAppNetworkMetrics(appID, appNetworkMetrics);
@@ -84,10 +87,12 @@ class AppMetricsPage extends React.Component {
     const formattedCPUMetrics = this.getAppCPUMetrics();
     const formattedNetworkMetrics = this.getAppNetworkMetrics();
     const appInfo = this.getAppInfo(appID);
-    
+
     return (
       <div className="Page">
-        <div className="TopBarSection"><Header /></div>
+        <div className="TopBarSection">
+          <Header />
+        </div>
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
@@ -104,25 +109,50 @@ class AppMetricsPage extends React.Component {
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
-              <InformationBar
-                header={appInfo.url}
-                status={appInfo.status}
-              />
+              <InformationBar header={appInfo.url} status={appInfo.status} />
             </div>
             <div className="ContentSection">
               <div className="MetricsCardsSection">
-                <MetricsCard icon={<MetricIcon />} title="Memory" className="CardSizeDimensions">
-                  <LineChartComponent lineDataKey="memory" preview data={formattedMemoryMetrics}/>
+                <MetricsCard
+                  icon={<MetricIcon />}
+                  title="Memory"
+                  className="CardSizeDimensions"
+                >
+                  <LineChartComponent
+                    lineDataKey="memory"
+                    preview
+                    data={formattedMemoryMetrics}
+                  />
                 </MetricsCard>
-                <MetricsCard icon={<MetricIcon />} title="CPU" className="CardSizeDimensions">
-                  <LineChartComponent lineDataKey="cpu" preview data={formattedCPUMetrics}/>
+                <MetricsCard
+                  icon={<MetricIcon />}
+                  title="CPU"
+                  className="CardSizeDimensions"
+                >
+                  <LineChartComponent
+                    lineDataKey="cpu"
+                    preview
+                    data={formattedCPUMetrics}
+                  />
                 </MetricsCard>
-                <MetricsCard icon={<MetricIcon />} title="Network" className="CardSizeDimensions">
-                  <LineChartComponent lineDataKey="network" preview data={formattedNetworkMetrics} />
+                <MetricsCard
+                  icon={<MetricIcon />}
+                  title="Network"
+                  className="CardSizeDimensions"
+                >
+                  <LineChartComponent
+                    lineDataKey="network"
+                    preview
+                    data={formattedNetworkMetrics}
+                  />
                 </MetricsCard>
               </div>
               <div className="LogsSection">
-                <LogsFrame loading={retrieveingLogs} data={logs} title={`${appInfo.name} logs`} />
+                <LogsFrame
+                  loading={retrieveingLogs}
+                  data={logs}
+                  title={`${appInfo.name} logs`}
+                />
               </div>
             </div>
           </div>
@@ -132,23 +162,16 @@ class AppMetricsPage extends React.Component {
   }
 }
 
-
 const mapStateToProps = (state) => {
-  const {
-    logs, retrievedLogs, retrieveingLogs
-  } = state.appLogsReducer;
+  const { logs, retrievedLogs, retrieveingLogs } = state.appLogsReducer;
 
-  const { 
-    isFetchingAppMemory, appMemoryMetrics, appMemoryMessage
-  } = state.appMemoryReducer;
+  const { isFetchingAppMemory, appMemoryMetrics, appMemoryMessage } =
+    state.appMemoryReducer;
 
-  const {
-    isFetchingCPU, appCPUMetrics, cpuMessage
-  } = state.appCpuReducer;
+  const { isFetchingCPU, appCPUMetrics, cpuMessage } = state.appCpuReducer;
 
-  const {
-    appNetworkMetrics, isFetchingAppNetwork, appNetworkMessage
-  } = state.appNetworkReducer;
+  const { appNetworkMetrics, isFetchingAppNetwork, appNetworkMessage } =
+    state.appNetworkReducer;
 
   const { apps } = state.appsListReducer;
 
@@ -165,9 +188,8 @@ const mapStateToProps = (state) => {
     appNetworkMetrics,
     isFetchingAppNetwork,
     appNetworkMessage,
-    apps
+    apps,
   };
-
 };
 
 const mapDispatchToProps = {
@@ -181,8 +203,8 @@ const mapDispatchToProps = {
 AppMetricsPage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      projectID: PropTypes.string.isRequired
-    }).isRequired
+      projectID: PropTypes.string.isRequired,
+    }).isRequired,
   }).isRequired,
   logs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

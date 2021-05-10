@@ -1,13 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import './AdminProjectsPage.css';
-import InformationBar from '../InformationBar';
-import Header from '../Header';
-import SideNav from '../SideNav';
-import getAdminProjects from '../../redux/actions/adminProjects';
-import getUsersList from '../../redux/actions/users';
-import Spinner from '../Spinner';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import "./AdminProjectsPage.css";
+import InformationBar from "../InformationBar";
+import Header from "../Header";
+import SideNav from "../SideNav";
+import getAdminProjects from "../../redux/actions/adminProjects";
+import getUsersList from "../../redux/actions/users";
+import Spinner from "../Spinner";
 
 class AdminProjectsPage extends React.Component {
   componentDidMount() {
@@ -17,7 +17,7 @@ class AdminProjectsPage extends React.Component {
   }
 
   getUserName(userId) {
-    let username = '';
+    let username = "";
     const { users, isFetched } = this.props;
     if (isFetched) {
       users.map((user) => {
@@ -32,12 +32,16 @@ class AdminProjectsPage extends React.Component {
 
   render() {
     const { projects, isRetrieving, isRetrieved } = this.props;
-    const clusterName = localStorage.getItem('clusterName');
-    const { match: { params } } = this.props;
+    const clusterName = localStorage.getItem("clusterName");
+    const {
+      match: { params },
+    } = this.props;
 
     return (
       <div className="MainPage">
-        <div className="TopBarSection"><Header /></div>
+        <div className="TopBarSection">
+          <Header />
+        </div>
         <div className="MainSection">
           <div className="SideBarSection">
             <SideNav clusterName={clusterName} clusterId={params.clusterID} />
@@ -47,7 +51,13 @@ class AdminProjectsPage extends React.Component {
               <InformationBar header="Projects" showBtn={false} />
             </div>
             <div className="ContentSection">
-              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
+              <div
+                className={
+                  isRetrieving
+                    ? "ResourcesTable LoadingResourcesTable"
+                    : "ResourcesTable"
+                }
+              >
                 <table>
                   <thead className="uppercase">
                     <tr>
@@ -68,29 +78,27 @@ class AdminProjectsPage extends React.Component {
                     </tbody>
                   ) : (
                     <tbody>
-                      {(projects !== 0 && projects !== undefined) && (
+                      {projects !== 0 &&
+                        projects !== undefined &&
                         projects.map((project) => (
                           <tr key={projects.indexOf(project)}>
                             <td>{project.name}</td>
-                            <td>
-                              { this.getUserName(project.owner_id)}
-                            </td>
+                            <td>{this.getUserName(project.owner_id)}</td>
                             <td>{project.description}</td>
                           </tr>
-                        )))}
+                        ))}
                     </tbody>
                   )}
                 </table>
-                {(isRetrieved && projects.length === 0) && (
+                {isRetrieved && projects.length === 0 && (
                   <div className="NoResourcesMessage">
                     <p>No projects available</p>
                   </div>
                 )}
-                {(!isRetrieving && !isRetrieved) && (
+                {!isRetrieving && !isRetrieved && (
                   <div className="NoResourcesMessage">
                     <p>
-                      Oops! Something went wrong!
-                      Failed to retrieve projects.
+                      Oops! Something went wrong! Failed to retrieve projects.
                     </p>
                   </div>
                 )}
@@ -103,7 +111,6 @@ class AdminProjectsPage extends React.Component {
   }
 }
 
-
 AdminProjectsPage.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.object),
   isRetrieved: PropTypes.bool,
@@ -114,9 +121,9 @@ AdminProjectsPage.propTypes = {
   getUsersList: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      clusterID: PropTypes.string.isRequired
-    }).isRequired
-  }).isRequired
+      clusterID: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 AdminProjectsPage.defaultProps = {
@@ -124,23 +131,24 @@ AdminProjectsPage.defaultProps = {
   isRetrieved: false,
   isRetrieving: false,
   users: [],
-  isFetched: false
+  isFetched: false,
 };
-
 
 const mapStateToProps = (state) => {
   const { isRetrieving, projects, isRetrieved } = state.adminProjectsReducer;
   const { users, isFetched } = state.usersListReducer;
   return {
-    isRetrieving, projects, isRetrieved, users, isFetched
+    isRetrieving,
+    projects,
+    isRetrieved,
+    users,
+    isFetched,
   };
 };
 
 const mapDispatchToProps = {
-  getAdminProjects, getUsersList
+  getAdminProjects,
+  getUsersList,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AdminProjectsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminProjectsPage);

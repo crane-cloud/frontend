@@ -1,5 +1,5 @@
 .InformationBar {
-  background: #F8F7E5;
+  background: #f8f7e5;
   height: 5rem;
   padding: 0 3rem;
   display: flex;
@@ -12,7 +12,7 @@
   justify-content: space-between;
 }
 
-.InfoHeader{
+.InfoHeader {
   display: flex;
   align-items: center;
   font-weight: bold;

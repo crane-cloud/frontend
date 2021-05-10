@@ -1,31 +1,36 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import './NamespacesList.css';
-import Header from '../Header';
-import InformationBar from '../InformationBar';
-import SideNav from '../SideNav';
-import getNamespaces from '../../redux/actions/namespaces';
-import Status from '../Status';
-import tellAge from '../../helpers/ageUtility';
-import Spinner from '../Spinner';
-
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import "./NamespacesList.css";
+import Header from "../Header";
+import InformationBar from "../InformationBar";
+import SideNav from "../SideNav";
+import getNamespaces from "../../redux/actions/namespaces";
+import Status from "../Status";
+import tellAge from "../../helpers/ageUtility";
+import Spinner from "../Spinner";
 
 class NamespacesListPage extends React.Component {
   componentDidMount() {
     const { getNamespaces } = this.props;
-    const { match: { params } } = this.props;
+    const {
+      match: { params },
+    } = this.props;
     getNamespaces(params);
   }
 
   render() {
     const { namespacesList, isRetrieving, isRetrieved } = this.props;
-    const clusterName = localStorage.getItem('clusterName');
-    const { match: { params } } = this.props;
+    const clusterName = localStorage.getItem("clusterName");
+    const {
+      match: { params },
+    } = this.props;
 
     return (
       <div className="MainPage">
-        <div className="TopBarSection"><Header /></div>
+        <div className="TopBarSection">
+          <Header />
+        </div>
         <div className="MainSection">
           <div className="SideBarSection">
             <SideNav clusterName={clusterName} clusterId={params.clusterID} />
@@ -35,7 +40,13 @@ class NamespacesListPage extends React.Component {
               <InformationBar header="Namespaces" showBtn={false} />
             </div>
             <div className="ContentSection">
-              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
+              <div
+                className={
+                  isRetrieving
+                    ? "ResourcesTable LoadingResourcesTable"
+                    : "ResourcesTable"
+                }
+              >
                 <table className="NamespacesTable">
                   <thead>
                     <tr>
@@ -44,43 +55,43 @@ class NamespacesListPage extends React.Component {
                       <th>Age</th>
                     </tr>
                   </thead>
-                  {
-                    isRetrieving ? (
-                      <tbody>
-                        <tr className="TableLoading">
-                          <td>
-                            <div className="SpinnerWrapper">
-                              <Spinner size="big" />
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    ) : (
-                      <tbody>
-                        {isRetrieved && namespacesList.length !== 0 && (
-                          namespacesList.map((namespace) => (
-                            <tr key={namespacesList.indexOf(namespace)}>
-                              <td>{namespace.metadata.name}</td>
-                              <td className="StatusColumn"><Status status={namespace.status.phase} /></td>
-                              <td>{tellAge(namespace.metadata.creationTimestamp)}</td>
-                            </tr>
-
-                          )))}
-                      </tbody>
-                    )
-                  }
+                  {isRetrieving ? (
+                    <tbody>
+                      <tr className="TableLoading">
+                        <td>
+                          <div className="SpinnerWrapper">
+                            <Spinner size="big" />
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  ) : (
+                    <tbody>
+                      {isRetrieved &&
+                        namespacesList.length !== 0 &&
+                        namespacesList.map((namespace) => (
+                          <tr key={namespacesList.indexOf(namespace)}>
+                            <td>{namespace.metadata.name}</td>
+                            <td className="StatusColumn">
+                              <Status status={namespace.status.phase} />
+                            </td>
+                            <td>
+                              {tellAge(namespace.metadata.creationTimestamp)}
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  )}
                 </table>
-                {(isRetrieved && namespacesList.length === 0) && (
+                {isRetrieved && namespacesList.length === 0 && (
                   <div className="NoResourcesMessage">
                     <p>No namespaces available</p>
                   </div>
                 )}
-                {(!isRetrieving && !isRetrieved) && (
+                {!isRetrieving && !isRetrieved && (
                   <div className="NoResourcesMessage">
                     <p>
-                      Oops! Something went wrong!
-
-                      Failed to retrieve namespaces.
+                      Oops! Something went wrong! Failed to retrieve namespaces.
                     </p>
                   </div>
                 )}
@@ -100,9 +111,9 @@ NamespacesListPage.propTypes = {
   isRetrieved: PropTypes.bool,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      clusterID: PropTypes.string.isRequired
-    }).isRequired
-  }).isRequired
+      clusterID: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 NamespacesListPage.defaultProps = {
@@ -112,19 +123,18 @@ NamespacesListPage.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const {
-    isRetrieved, isRetrieving, namespacesList, clusterName
-  } = state.namespacesListReducer;
+  const { isRetrieved, isRetrieving, namespacesList, clusterName } =
+    state.namespacesListReducer;
   return {
-    isRetrieved, isRetrieving, namespacesList, clusterName
+    isRetrieved,
+    isRetrieving,
+    namespacesList,
+    clusterName,
   };
 };
 
 const mapDispatchToProps = {
-  getNamespaces
+  getNamespaces,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NamespacesListPage);
+export default connect(mapStateToProps, mapDispatchToProps)(NamespacesListPage);

@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import './TimeInput.css';
+import React from "react";
+import PropTypes from "prop-types";
+import "./TimeInput.css";
 
 const maxHours = 12;
 const maxMinutes = 59;
@@ -10,11 +10,11 @@ class TimeInput extends React.Component {
     super(props);
 
     this.state = {
-      ampm: 'am',
+      ampm: "am",
       time: {
         hour: 12,
-        minutes: 0
-      }
+        minutes: 0,
+      },
     };
 
     this.setTimeOfDay = this.setTimeOfDay.bind(this);
@@ -44,10 +44,10 @@ class TimeInput extends React.Component {
   setTimeOfDay() {
     const { ampm } = this.state;
 
-    if (ampm === 'am') {
-      this.setState({ ampm: 'pm' });
+    if (ampm === "am") {
+      this.setState({ ampm: "pm" });
     } else {
-      this.setState({ ampm: 'am' });
+      this.setState({ ampm: "am" });
     }
   }
 
@@ -75,15 +75,15 @@ class TimeInput extends React.Component {
       this.setState((prevState) => ({
         time: {
           ...prevState.time,
-          hour: maxHours
-        }
+          hour: maxHours,
+        },
       }));
     } else {
       this.setState((prevState) => ({
         time: {
           ...prevState.time,
-          hour: parseInt(target.value, 10)
-        }
+          hour: parseInt(target.value, 10),
+        },
       }));
     }
   }
@@ -93,15 +93,15 @@ class TimeInput extends React.Component {
       this.setState((prevState) => ({
         time: {
           ...prevState.time,
-          minutes: maxMinutes
-        }
+          minutes: maxMinutes,
+        },
       }));
     } else {
       this.setState((prevState) => ({
         time: {
           ...prevState.time,
-          minutes: parseInt(target.value, 10)
-        }
+          minutes: parseInt(target.value, 10),
+        },
       }));
     }
   }
@@ -109,15 +109,15 @@ class TimeInput extends React.Component {
   format24HourClock(hours, minutes, timeOfDay) {
     let time = {
       h: hours,
-      m: minutes
+      m: minutes,
     };
 
-    if (timeOfDay === 'am' && hours === 12) {
+    if (timeOfDay === "am" && hours === 12) {
       time = { ...time, h: 0 };
     }
 
-    if (timeOfDay === 'pm' && hours !== 12) {
-      time = { ...time, h: (hours + 12) };
+    if (timeOfDay === "pm" && hours !== 12) {
+      time = { ...time, h: hours + 12 };
     }
 
     return time;
@@ -151,7 +151,7 @@ class TimeInput extends React.Component {
             max={maxMinutes}
             maxLength="2"
           />
-      &nbsp;
+          &nbsp;
           <input
             className="TimeInput DayNightInput"
             value={ampm}
@@ -165,7 +165,7 @@ class TimeInput extends React.Component {
 }
 
 TimeInput.propTypes = {
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
 };
 
 export default TimeInput;
