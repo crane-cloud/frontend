@@ -1,23 +1,22 @@
-import axios from '../../axios';
+import axios from "../../axios";
 import {
   FETCH_APP_CPU_SUCCESS,
   FETCH_APP_CPU_FAILED,
   IS_FETCHING_APP_CPU,
-  CLEAR_APP_CPU
-} from './actionTypes';
+  CLEAR_APP_CPU,
+} from "./actionTypes";
 
 const startFetchingCPUMetrics = () => ({
   type: IS_FETCHING_APP_CPU,
 });
 
-const getAppCPUMetricsSuccess = (ID, response) => (
-  {
-    type: FETCH_APP_CPU_SUCCESS,
-    payload: {
-      app: ID,
-      metrics: response.data.data.values
-    },
-  });
+const getAppCPUMetricsSuccess = (ID, response) => ({
+  type: FETCH_APP_CPU_SUCCESS,
+  payload: {
+    app: ID,
+    metrics: response.data.data.values,
+  },
+});
 
 const getAppCPUMetricsFailed = (ID, error) => ({
   type: FETCH_APP_CPU_FAILED,
@@ -29,13 +28,14 @@ const getAppCPUMetricsFailed = (ID, error) => ({
 });
 
 const clearAppCPU = () => ({
-  type: CLEAR_APP_CPU
+  type: CLEAR_APP_CPU,
 });
 
 const getAppCPU = (projectID, appID, params) => (dispatch) => {
   dispatch(startFetchingCPUMetrics());
 
-  return axios.post(`/projects/${projectID}/apps/${appID}/metrics/cpu`, params)
+  return axios
+    .post(`/projects/${projectID}/apps/${appID}/metrics/cpu`, params)
     .then((response) => {
       dispatch(getAppCPUMetricsSuccess(appID, response));
     })
@@ -43,7 +43,6 @@ const getAppCPU = (projectID, appID, params) => (dispatch) => {
       dispatch(getAppCPUMetricsFailed(appID, error));
     });
 };
-
 
 export default getAppCPU;
 export { clearAppCPU };

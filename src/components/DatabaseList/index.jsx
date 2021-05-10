@@ -1,21 +1,21 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import Header from '../Header';
-import InformationBar from '../InformationBar';
-import SideBar from '../SideBar';
-import Spinner from '../Spinner';
-import CreateDatabase from '../CreateDatabase';
-import getProjectDatabases from '../../redux/actions/databaseList';
-import tellAge from '../../helpers/ageUtility';
-import './DatabaseList.css';
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import Header from "../Header";
+import InformationBar from "../InformationBar";
+import SideBar from "../SideBar";
+import Spinner from "../Spinner";
+import CreateDatabase from "../CreateDatabase";
+import getProjectDatabases from "../../redux/actions/databaseList";
+import tellAge from "../../helpers/ageUtility";
+import "./DatabaseList.css";
 
 class DatabaseList extends React.Component {
   constructor(props) {
     super(props);
     this.initialState = {
-      openCreateComponent: false
+      openCreateComponent: false,
     };
     this.state = this.initialState;
     this.getProjectName = this.getProjectName.bind(this);
@@ -24,12 +24,23 @@ class DatabaseList extends React.Component {
   }
 
   componentDidMount() {
-    const { getProjectDatabases, match: { params: { projectID } } } = this.props;
+    const {
+      getProjectDatabases,
+      match: {
+        params: { projectID },
+      },
+    } = this.props;
     getProjectDatabases(projectID);
   }
 
   componentDidUpdate(prevProps) {
-    const { isCreated, getProjectDatabases, match: { params: { projectID } } } = this.props;
+    const {
+      isCreated,
+      getProjectDatabases,
+      match: {
+        params: { projectID },
+      },
+    } = this.props;
 
     if (isCreated !== prevProps.isCreated) {
       getProjectDatabases(projectID);
@@ -50,14 +61,13 @@ class DatabaseList extends React.Component {
     this.setState({ openCreateComponent: false });
   }
 
-
   render() {
     const {
       match: { params },
       projects,
       databases,
       isFetchingDatabases,
-      databasesFetched
+      databasesFetched,
     } = this.props;
     const { openCreateComponent } = this.state;
 
@@ -81,7 +91,12 @@ class DatabaseList extends React.Component {
               networkLink={`/users/${userID}/projects/${projectID}/network/`}
             />
           </div>
-          {openCreateComponent ? (<CreateDatabase closeComponent={this.callbackCreateComponent} params={params} />) : (
+          {openCreateComponent ? (
+            <CreateDatabase
+              closeComponent={this.callbackCreateComponent}
+              params={params}
+            />
+          ) : (
             <div className="MainContentSection">
               <div className="InformationBarSection">
                 <InformationBar
@@ -93,10 +108,18 @@ class DatabaseList extends React.Component {
               <div className="ContentSection">
                 <div className="DatabaseTable">
                   <div className="DatabaseTableRow">
-                    <div className="DatabaseTableHeadCell DatabaseTableHead">Type</div>
-                    <div className="DatabaseTableHeadCell DatabaseTableHead">Name</div>
-                    <div className="DatabaseTableHeadCell DatabaseTableHead">Host</div>
-                    <div className="DatabaseTableHeadCell DatabaseTableHead">Age</div>
+                    <div className="DatabaseTableHeadCell DatabaseTableHead">
+                      Type
+                    </div>
+                    <div className="DatabaseTableHeadCell DatabaseTableHead">
+                      Name
+                    </div>
+                    <div className="DatabaseTableHeadCell DatabaseTableHead">
+                      Host
+                    </div>
+                    <div className="DatabaseTableHeadCell DatabaseTableHead">
+                      Age
+                    </div>
                   </div>
                   <div>
                     {isFetchingDatabases ? (
@@ -111,39 +134,49 @@ class DatabaseList extends React.Component {
                       </div>
                     ) : (
                       <div className="DatabaseTableBody">
-                        {(databasesFetched && databases !== undefined && (
-                          (databases.map((database) => (
+                        {databasesFetched &&
+                          databases !== undefined &&
+                          databases.map((database) => (
                             <Link
                               to={{
-                                pathname: `/users/${userID}/projects/${projectID}/databases/${database.id}/settings`
+                                pathname: `/users/${userID}/projects/${projectID}/databases/${database.id}/settings`,
                               }}
                               key={database.id}
                               className="DatabaseRow"
                             >
-                              <div className="DatabaseTableRow" key={databases.indexOf(database)}>
-                                <div className="DatabaseTableCell uppercase">{database.database_flavour_name}</div>
-                                <div className="DatabaseTableCell">{database.name}</div>
-                                <div className="DatabaseTableCell">{database.host}</div>
-                                <div className="DatabaseTableCell">{tellAge(database.date_created)}</div>
+                              <div
+                                className="DatabaseTableRow"
+                                key={databases.indexOf(database)}
+                              >
+                                <div className="DatabaseTableCell uppercase">
+                                  {database.database_flavour_name}
+                                </div>
+                                <div className="DatabaseTableCell">
+                                  {database.name}
+                                </div>
+                                <div className="DatabaseTableCell">
+                                  {database.host}
+                                </div>
+                                <div className="DatabaseTableCell">
+                                  {tellAge(database.date_created)}
+                                </div>
                               </div>
                             </Link>
-                          ))))
-                        )}
+                          ))}
                       </div>
                     )}
                   </div>
 
-                  {(databasesFetched && databases.length === 0) && (
+                  {databasesFetched && databases.length === 0 && (
                     <div className="NoResourcesMessage">
-                      You haven’t created any databases yet.
-                      Click the create button to get started.
+                      You haven’t created any databases yet. Click the create
+                      button to get started.
                     </div>
                   )}
 
-                  {(!isFetchingDatabases && !databasesFetched) && (
+                  {!isFetchingDatabases && !databasesFetched && (
                     <div className="NoResourcesMessage">
-                      Oops! Something went wrong!
-                      Failed to retrieve Databases.
+                      Oops! Something went wrong! Failed to retrieve Databases.
                     </div>
                   )}
                 </div>
@@ -162,13 +195,13 @@ DatabaseList.propTypes = {
     params: PropTypes.shape({
       projectID: PropTypes.string.isRequired,
       userID: PropTypes.string.isRequired,
-    }).isRequired
+    }).isRequired,
   }).isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getProjectDatabases: PropTypes.func.isRequired,
   isFetchingDatabases: PropTypes.bool,
   databasesFetched: PropTypes.bool,
-  isCreated: PropTypes.bool.isRequired
+  isCreated: PropTypes.bool.isRequired,
 };
 
 DatabaseList.defaultProps = {
@@ -179,19 +212,20 @@ DatabaseList.defaultProps = {
 
 const mapStateToProps = (state) => {
   const { projects } = state.userProjectsReducer;
-  const { databases, databasesFetched, isFetchingDatabases } = state.projectDatabasesReducer;
+  const { databases, databasesFetched, isFetchingDatabases } =
+    state.projectDatabasesReducer;
   const { isCreated } = state.createDatabaseReducer;
   return {
     projects,
     databases,
     isCreated,
     databasesFetched,
-    isFetchingDatabases
+    isFetchingDatabases,
   };
 };
 
 const mapDispatchToProps = {
-  getProjectDatabases
+  getProjectDatabases,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DatabaseList);

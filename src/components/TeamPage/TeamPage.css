@@ -1,4 +1,4 @@
-.TeamPageContainer{
+.TeamPageContainer {
   background-color: #f1f1f1;
 }
 .TeamImagesRow {
@@ -11,7 +11,7 @@
   row-gap: 1rem;
 }
 
-img .TeamMemberImage{
+img .TeamMemberImage {
   border-radius: 50%;
 }
 

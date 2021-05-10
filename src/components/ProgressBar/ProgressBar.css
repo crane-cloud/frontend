@@ -9,29 +9,29 @@
   position: relative;
   height: 20px;
   width: 70%;
-  background-color: #DDDDDD;
+  background-color: #dddddd;
 }
 
 .ProgressBarFiller {
   height: 100%;
   border-radius: inherit;
-  transition: width .5s ease-in;
+  transition: width 0.5s ease-in;
   color: white;
   text-align: center;
 }
 
 .ProgressBarFillQuarter1 {
-  background-color: #FF0000;
+  background-color: #ff0000;
 }
 
 .ProgressBarFillQuarter2 {
-  background-color: #D2741D;
+  background-color: #d2741d;
 }
 
 .ProgressBarFillQuarter3 {
-  background-color: #F7B21F;
+  background-color: #f7b21f;
 }
 
 .ProgressBarFillQuarter4 {
-  background-color: #98A058;
+  background-color: #98a058;
 }

@@ -2,11 +2,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-left: .5rem;
+  padding-left: 0.5rem;
 }
 
 .TooltipPlaceholder {
-  color: #F7B21F;
+  color: #f7b21f;
   position: relative;
   overflow-y: unset;
   z-index: 2;
@@ -26,7 +26,6 @@
   opacity: 0;
   pointer-events: none;
 }
-
 
 /* Position tooltip above the element */
 [tooltip-message]:before {

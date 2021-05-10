@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import NewLogo from '../NewLogo';
-import removeUser from '../../redux/actions/removeUser';
-import './NewHeader.css';
-import { DOCS_URL, BLOG_URL } from '../../config';
+import React, { useState, useEffect, useRef } from "react";
+import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import NewLogo from "../NewLogo";
+import removeUser from "../../redux/actions/removeUser";
+import "./NewHeader.css";
+import { DOCS_URL, BLOG_URL } from "../../config";
 
 const NewHeader = (props) => {
   const [hidden, setHidden] = useState(false);
@@ -28,11 +28,11 @@ const NewHeader = (props) => {
 
   // componentWillMount & componentWillUnmount
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     // returned function will be called on component unmount
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -40,14 +40,29 @@ const NewHeader = (props) => {
     <header className="NewHeader">
       <NewLogo />
 
-
-      {(!user.accessToken || user.accessToken === '') && (
+      {(!user.accessToken || user.accessToken === "") && (
         <div className="HeaderLinksWrap">
-          {match.path !== '/admin-login' && (
+          {match.path !== "/admin-login" && (
             <div className="HeaderLink bold">
-              <a href={`${DOCS_URL}`} className="HeaderLinkDocs" rel="noopener noreferrer" target="_blank">Docs</a>
-              <a href={`${BLOG_URL}`} className="HeaderLinkDocs" rel="noopener noreferrer" target="_blank">Blog</a>
-              <Link to="/login" className="HeaderLinkDocs">Login</Link>
+              <a
+                href={`${DOCS_URL}`}
+                className="HeaderLinkDocs"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Docs
+              </a>
+              <a
+                href={`${BLOG_URL}`}
+                className="HeaderLinkDocs"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Blog
+              </a>
+              <Link to="/login" className="HeaderLinkDocs">
+                Login
+              </Link>
             </div>
           )}
         </div>
@@ -60,17 +75,34 @@ const NewHeader = (props) => {
           onClick={toggleHidden}
           role="presentation"
         >
-          {match.path === '/' || match.path === '/team' ? (
+          {match.path === "/" || match.path === "/team" ? (
             <>
-              <a href={`${DOCS_URL}`} className="HeaderLinkDocs" rel="noopener noreferrer" target="_blank">Docs</a>
-              <a href={`${BLOG_URL}`} className="HeaderLinkDocs" rel="noopener noreferrer" target="_blank">Blog</a>
-              <Link to={`/users/${user.data.id}/projects`} className="HeaderLinkDocs">Dashboard</Link>
+              <a
+                href={`${DOCS_URL}`}
+                className="HeaderLinkDocs"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Docs
+              </a>
+              <a
+                href={`${BLOG_URL}`}
+                className="HeaderLinkDocs"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Blog
+              </a>
+              <Link
+                to={`/users/${user.data.id}/projects`}
+                className="HeaderLinkDocs"
+              >
+                Dashboard
+              </Link>
             </>
-          ) : (null)}
-
+          ) : null}
         </div>
       )}
-
     </header>
   );
 };
@@ -78,22 +110,19 @@ const NewHeader = (props) => {
 NewHeader.propTypes = {
   removeUser: PropTypes.func.isRequired,
   user: PropTypes.shape({
-    accessToken: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.bool
-    ]),
+    accessToken: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     data: PropTypes.shape({
       id: PropTypes.string,
-      name: PropTypes.string
+      name: PropTypes.string,
     }).isRequired,
   }),
   match: PropTypes.shape({
-    path: PropTypes.string.isRequired
+    path: PropTypes.string.isRequired,
   }).isRequired,
 };
 
 NewHeader.defaultProps = {
-  user: {}
+  user: {},
 };
 
 const mapStateToProps = (state) => {
@@ -102,7 +131,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  removeUser
+  removeUser,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NewHeader));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(NewHeader));

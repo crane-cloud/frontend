@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { ReactComponent as LeftArrow } from '../../assets/images/left-arrow.svg';
-import { ReactComponent as RightArrow } from '../../assets/images/right-arrow.svg';
+import React from "react";
+import PropTypes from "prop-types";
+import { ReactComponent as LeftArrow } from "../../assets/images/left-arrow.svg";
+import { ReactComponent as RightArrow } from "../../assets/images/right-arrow.svg";
 import {
   monthNames,
   today,
   currentMonth,
-  currentYear
-} from '../../helpers/dateConstants';
-import './Calendar.css';
+  currentYear,
+} from "../../helpers/dateConstants";
+import "./Calendar.css";
 
 class Calendar extends React.Component {
   constructor(props) {
@@ -21,8 +21,8 @@ class Calendar extends React.Component {
       selected: {
         day: today,
         month: currentMonth,
-        year: currentYear
-      }
+        year: currentYear,
+      },
     };
 
     this.prevMonth = this.prevMonth.bind(this);
@@ -42,7 +42,7 @@ class Calendar extends React.Component {
   }
 
   getFirstDay(month, year) {
-    return (new Date(year, month, 1).getDay());
+    return new Date(year, month, 1).getDay();
   }
 
   daysInMonth(month, year) {
@@ -90,20 +90,21 @@ class Calendar extends React.Component {
     const { onChange } = this.props;
     const { year, month } = this.state;
 
-    if (day) { // only work when day is not undefined aka dont work for empty boxes
+    if (day) {
+      // only work when day is not undefined aka dont work for empty boxes
       this.setState((prevState) => ({
         selected: {
           ...prevState.selected,
           year,
           month,
-          day
-        }
+          day,
+        },
       }));
 
       onChange({
         day,
         month,
-        year
+        year,
       });
     }
   }
@@ -119,20 +120,14 @@ class Calendar extends React.Component {
 
     for (let i = 0; i < maxDays; i += 1) {
       if (i < firstDay) {
-        days.push(
-          <div key={i} />
-        );
+        days.push(<div key={i} />);
       } else {
-        days.push(
-          <div key={i}>{(i - firstDay) + 1}</div>
-        );
+        days.push(<div key={i}>{i - firstDay + 1}</div>);
       }
     }
 
     for (let i = 0; i < numberOfTrailingBoxes; i += 1) {
-      days.push(
-        <div key={i} />
-      );
+      days.push(<div key={i} />);
     }
 
     let limit = 7;
@@ -152,19 +147,26 @@ class Calendar extends React.Component {
   }
 
   render() {
-    const {
-      month,
-      year,
-      weeks,
-      selected
-    } = this.state;
+    const { month, year, weeks, selected } = this.state;
 
     return (
       <div className="CalendarWrapper DisableTextSelect">
         <div className="CalendarMonth">
-          <div className="CalendarArrow" role="presentation" onClick={this.prevMonth}><LeftArrow /></div>
+          <div
+            className="CalendarArrow"
+            role="presentation"
+            onClick={this.prevMonth}
+          >
+            <LeftArrow />
+          </div>
           {`${monthNames[month]} ${year}`}
-          <div className="CalendarArrow" role="presentation" onClick={this.nextMonth}><RightArrow /></div>
+          <div
+            className="CalendarArrow"
+            role="presentation"
+            onClick={this.nextMonth}
+          >
+            <RightArrow />
+          </div>
         </div>
         <div className="CalendarDayNames">
           <div className="WeekDay">sun</div>
@@ -183,7 +185,12 @@ class Calendar extends React.Component {
                   key={days.indexOf(day)}
                   className={`
                   CalendarSingleDay 
-                  ${(year === selected.year && month === selected.month && day.props.children === selected.day) && 'Today'}
+                  ${
+                    year === selected.year &&
+                    month === selected.month &&
+                    day.props.children === selected.day &&
+                    "Today"
+                  }
                   `}
                   onClick={() => this.handleSelected(day.props.children)}
                   role="presentation"
@@ -200,7 +207,7 @@ class Calendar extends React.Component {
 }
 
 Calendar.propTypes = {
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
 };
 
 export default Calendar;

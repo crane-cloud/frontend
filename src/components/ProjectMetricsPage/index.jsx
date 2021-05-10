@@ -1,17 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from 'react-redux';
-import getProjectCPU, { clearProjectCPU } from '../../redux/actions/projectCPU';
-import getProjectMemory from '../../redux/actions/projectMemory';
-import getProjectNetwork from '../../redux/actions/projectNetwork';
-import LineChartComponent from '../LineChart';
+import { connect } from "react-redux";
+import getProjectCPU, { clearProjectCPU } from "../../redux/actions/projectCPU";
+import getProjectMemory from "../../redux/actions/projectMemory";
+import getProjectNetwork from "../../redux/actions/projectNetwork";
+import LineChartComponent from "../LineChart";
 import InformationBar from "../InformationBar";
 import Header from "../Header";
 import SideBar from "../SideBar";
 import MetricsCard from "../MetricsCard";
 import { ReactComponent as MetricIcon } from "../../assets/images/resource-icon.svg";
 import "./ProjectMetricsPage.css";
-import {formatCPUMetrics, formatMemoryMetrics, formatNetworkMetrics} from '../../helpers/formatMetrics';
+import {
+  formatCPUMetrics,
+  formatMemoryMetrics,
+  formatNetworkMetrics,
+} from "../../helpers/formatMetrics";
 
 class ProjectMetricsPage extends React.Component {
   constructor(props) {
@@ -26,10 +30,10 @@ class ProjectMetricsPage extends React.Component {
 
   componentDidMount() {
     const {
-        match: { params },
-        getProjectCPU,
-        clearProjectCPU,
-      } = this.props;
+      match: { params },
+      getProjectCPU,
+      clearProjectCPU,
+    } = this.props;
     const { projectID } = params;
     const { getProjectMemory, getProjectNetwork } = this.props;
     getProjectMemory(projectID, {});
@@ -48,21 +52,21 @@ class ProjectMetricsPage extends React.Component {
     return projects.find((project) => project.id === id).description;
   }
 
-  getMemoryMetrics(){
+  getMemoryMetrics() {
     const { projectID } = this.props.match.params;
     const { memoryMetrics } = this.props;
     const results = formatMemoryMetrics(projectID, memoryMetrics);
     return results;
   }
 
-  getCPUMetrics(){
+  getCPUMetrics() {
     const { projectID } = this.props.match.params;
     const { cpuMetrics } = this.props;
     const results = formatCPUMetrics(projectID, cpuMetrics);
     return results;
   }
 
-  getNetworkMetrics(){
+  getNetworkMetrics() {
     const { projectID } = this.props.match.params;
     const { networkMetrics } = this.props;
     const results = formatNetworkMetrics(projectID, networkMetrics);
@@ -71,20 +75,20 @@ class ProjectMetricsPage extends React.Component {
 
   render() {
     const {
-      match: { params }
+      match: { params },
     } = this.props;
 
     const { projectID, userID } = params;
     const projectDetails = {
       name: this.getProjectName(projectID),
-      description: this.getProjectDescription( projectID),
+      description: this.getProjectDescription(projectID),
     };
 
     localStorage.setItem("project", JSON.stringify(projectDetails));
     const formattedMemoryMetrics = this.getMemoryMetrics();
     const formattedCPUMetrics = this.getCPUMetrics();
     const formattedNetworkMetrics = this.getNetworkMetrics();
-    
+
     return (
       <div className="Page">
         <div className="TopBarSection">
@@ -110,14 +114,38 @@ class ProjectMetricsPage extends React.Component {
             </div>
             <div className="ContentSection">
               <div className="MetricCardsSection">
-                <MetricsCard icon={<MetricIcon />} title="CPU" className="CardDimensions">
-                  <LineChartComponent lineDataKey="cpu" preview data={formattedCPUMetrics}/>
+                <MetricsCard
+                  icon={<MetricIcon />}
+                  title="CPU"
+                  className="CardDimensions"
+                >
+                  <LineChartComponent
+                    lineDataKey="cpu"
+                    preview
+                    data={formattedCPUMetrics}
+                  />
                 </MetricsCard>
-                <MetricsCard icon={<MetricIcon />} title="MEMORY" className="CardDimensions">
-                  <LineChartComponent lineDataKey="memory" preview data={formattedMemoryMetrics}/>
+                <MetricsCard
+                  icon={<MetricIcon />}
+                  title="MEMORY"
+                  className="CardDimensions"
+                >
+                  <LineChartComponent
+                    lineDataKey="memory"
+                    preview
+                    data={formattedMemoryMetrics}
+                  />
                 </MetricsCard>
-                <MetricsCard icon={<MetricIcon />} title="NETWORK" className="CardDimensions">
-                  <LineChartComponent lineDataKey="network" preview data={formattedNetworkMetrics} />
+                <MetricsCard
+                  icon={<MetricIcon />}
+                  title="NETWORK"
+                  className="CardDimensions"
+                >
+                  <LineChartComponent
+                    lineDataKey="network"
+                    preview
+                    data={formattedNetworkMetrics}
+                  />
                 </MetricsCard>
               </div>
             </div>
@@ -141,21 +169,11 @@ ProjectMetricsPage.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const { 
-    isFetchingMemory,
-    memoryMetrics,
-    memoryMessage
-  } = state.projectMemoryReducer;
-  const {
-    isFetchingCPU,
-    cpuMetrics,
-    cpuMessage,
-  } = state.projectCPUReducer;
-  const {
-    isFetchingNetwork,
-    networkMetrics,
-    networkMessage,
-  } = state.projectNetworkReducer;
+  const { isFetchingMemory, memoryMetrics, memoryMessage } =
+    state.projectMemoryReducer;
+  const { isFetchingCPU, cpuMetrics, cpuMessage } = state.projectCPUReducer;
+  const { isFetchingNetwork, networkMetrics, networkMessage } =
+    state.projectNetworkReducer;
   const { projects } = state.userProjectsReducer;
   return {
     projects,
@@ -167,7 +185,7 @@ const mapStateToProps = (state) => {
     cpuMessage,
     isFetchingNetwork,
     networkMetrics,
-    networkMessage
+    networkMessage,
   };
 };
 
@@ -175,7 +193,7 @@ const mapDispatchToProps = {
   getProjectCPU,
   clearProjectCPU,
   getProjectMemory,
-  getProjectNetwork
+  getProjectNetwork,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectMetricsPage);

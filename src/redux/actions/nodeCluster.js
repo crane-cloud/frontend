@@ -1,6 +1,10 @@
-import axios from '../../axios';
+import axios from "../../axios";
 
-import { GET_NODES_SUCCESS, GET_NODES_FAIL, START_GETTING_NODES } from './actionTypes';
+import {
+  GET_NODES_SUCCESS,
+  GET_NODES_FAIL,
+  START_GETTING_NODES,
+} from "./actionTypes";
 
 export const startFetchingNodes = () => ({
   type: START_GETTING_NODES,
@@ -22,7 +26,8 @@ export const getNodesFail = (error) => ({
 const getNodesList = (clusterID) => (dispatch) => {
   dispatch(startFetchingNodes());
 
-  return axios.get(`/clusters/${clusterID}/nodes`)
+  return axios
+    .get(`/clusters/${clusterID}/nodes`)
     .then((response) => dispatch(getNodesSuccess(response)))
     .catch((error) => {
       dispatch(getNodesFail(error));

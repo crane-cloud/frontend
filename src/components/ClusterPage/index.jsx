@@ -1,27 +1,29 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import InformationBar from '../InformationBar';
-import PrimaryButton from '../PrimaryButton';
-import Spinner from '../Spinner';
-import BlackInputText from '../BlackInputText';
-import Modal from '../Modal';
-import ClustersList from '../ClustersList';
-import Header from '../Header';
-import addCluster, { clearAddClusterState } from '../../redux/actions/addCluster';
-import Feedback from '../Feedback';
-import './ClusterPage.css';
+import React from "react";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import InformationBar from "../InformationBar";
+import PrimaryButton from "../PrimaryButton";
+import Spinner from "../Spinner";
+import BlackInputText from "../BlackInputText";
+import Modal from "../Modal";
+import ClustersList from "../ClustersList";
+import Header from "../Header";
+import addCluster, {
+  clearAddClusterState,
+} from "../../redux/actions/addCluster";
+import Feedback from "../Feedback";
+import "./ClusterPage.css";
 
 class ClusterPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      host: '',
-      token: '',
+      name: "",
+      host: "",
+      token: "",
       openModal: false,
-      error: ''
+      error: "",
     };
 
     this.showForm = this.showForm.bind(this);
@@ -45,17 +47,17 @@ class ClusterPage extends React.Component {
   hideForm() {
     const { clearAddClusterState } = this.props;
     clearAddClusterState();
-    this.setState({ openModal: false, error: '' });
+    this.setState({ openModal: false, error: "" });
   }
 
   handleChange(e) {
     const { error } = this.state;
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
     if (error) {
       this.setState({
-        error: ''
+        error: "",
       });
     }
   }
@@ -63,24 +65,19 @@ class ClusterPage extends React.Component {
   handleSubmit() {
     const { addCluster } = this.props;
 
-    const {
-      host,
-      name,
-      token,
-      description
-    } = this.state;
+    const { host, name, token, description } = this.state;
 
     // input validation
     if (!host || !name || !token || !description) {
       this.setState({
-        error: 'Please provide all the information'
+        error: "Please provide all the information",
       });
     } else {
       const cluster = {
         host,
         name,
         token,
-        description
+        description,
       };
 
       addCluster(cluster);
@@ -88,37 +85,35 @@ class ClusterPage extends React.Component {
   }
 
   render() {
-    const {
-      host,
-      token,
-      name,
-      description,
-      openModal,
-      error
-    } = this.state;
+    const { host, token, name, description, openModal, error } = this.state;
 
     const {
       user: { accessToken },
       creatingCluster,
       isAdded,
       isFailed,
-      message
+      message,
     } = this.props;
 
-    localStorage.setItem('token', accessToken);
+    localStorage.setItem("token", accessToken);
 
     return (
       <div className="Page">
         <div className="TopRow">
           <Header />
-          <InformationBar header="Select Infrastructure" showBtn btnAction={this.showForm} />
+          <InformationBar
+            header="Select Infrastructure"
+            showBtn
+            btnAction={this.showForm}
+          />
         </div>
         <div className="MainRow">
           <ClustersList newClusterAdded={isAdded} />
         </div>
         <div className="FooterRow">
           <p>
-            Copyright {new Date().getFullYear()} Crane Cloud. All Rights Reserved.
+            Copyright {new Date().getFullYear()} Crane Cloud. All Rights
+            Reserved.
           </p>
         </div>
 
@@ -168,25 +163,26 @@ class ClusterPage extends React.Component {
                   }}
                 />
 
-                {error && (
-                  <Feedback
-                    type="error"
-                    message={error}
-                  />
-                )}
+                {error && <Feedback type="error" message={error} />}
 
                 <div className="ModalFormButtons AddAddButtons">
-                  <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
-                  <PrimaryButton label={creatingCluster ? <Spinner /> : 'add'} onClick={this.handleSubmit} />
+                  <PrimaryButton
+                    label="cancel"
+                    className="CancelBtn"
+                    onClick={this.hideForm}
+                  />
+                  <PrimaryButton
+                    label={creatingCluster ? <Spinner /> : "add"}
+                    onClick={this.handleSubmit}
+                  />
                 </div>
 
                 {(isFailed || isAdded) && (
                   <Feedback
-                    type={isAdded ? 'success' : 'error'}
+                    type={isAdded ? "success" : "error"}
                     message={message}
                   />
                 )}
-
               </div>
             </div>
           </div>
@@ -198,24 +194,19 @@ class ClusterPage extends React.Component {
 
 ClusterPage.propTypes = {
   user: PropTypes.shape({
-    accessToken: PropTypes.string.isRequired
+    accessToken: PropTypes.string.isRequired,
   }).isRequired,
   addCluster: PropTypes.func.isRequired,
   clearAddClusterState: PropTypes.func.isRequired,
   isAdded: PropTypes.bool.isRequired,
   isFailed: PropTypes.bool.isRequired,
   creatingCluster: PropTypes.bool.isRequired,
-  message: PropTypes.string.isRequired
+  message: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = ({ user, addClusterReducer }) => {
-  const {
-    creatingCluster,
-    isAdded,
-    isFailed,
-    errorOccured,
-    message
-  } = addClusterReducer;
+  const { creatingCluster, isAdded, isFailed, errorOccured, message } =
+    addClusterReducer;
 
   return {
     user,
@@ -223,11 +214,10 @@ const mapStateToProps = ({ user, addClusterReducer }) => {
     isAdded,
     isFailed,
     errorOccured,
-    message
+    message,
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { addCluster, clearAddClusterState }
-)(withRouter(ClusterPage));
+export default connect(mapStateToProps, { addCluster, clearAddClusterState })(
+  withRouter(ClusterPage)
+);

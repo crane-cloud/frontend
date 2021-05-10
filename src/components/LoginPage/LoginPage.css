@@ -40,10 +40,8 @@ a.LoginContentLink {
   padding-top: 1rem;
 }
 
-
 @media only screen and (max-width: 640px) {
   .LoginContent {
     width: 90%;
   }
 }
-

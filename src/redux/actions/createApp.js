@@ -1,10 +1,10 @@
-import axios from '../../axios';
+import axios from "../../axios";
 import {
   CREATE_APP_SUCCESS,
   CLEAR_ADD_APP_STATE,
   CREATE_APP_FAIL,
-  START_CREATING_APP
-} from './actionTypes';
+  START_CREATING_APP,
+} from "./actionTypes";
 
 const startCreatingApp = () => ({
   type: START_CREATING_APP,
@@ -20,25 +20,24 @@ const createAppFail = (error) => ({
   payload: {
     status: false,
     error: error.status,
-    errorCode: error.response.status
+    errorCode: error.response.status,
   },
 });
 
 const clearState = () => ({
-  type: CLEAR_ADD_APP_STATE
+  type: CLEAR_ADD_APP_STATE,
 });
 
 const createApp = (appInfo, projectID) => (dispatch) => {
-
   dispatch(startCreatingApp());
 
-  return axios.post(`/projects/${projectID}/apps`, appInfo)
+  return axios
+    .post(`/projects/${projectID}/apps`, appInfo)
     .then((response) => dispatch(createAppSuccess(response)))
     .catch((error) => {
       dispatch(createAppFail(error));
     });
 };
-
 
 export default createApp;
 export { clearState };

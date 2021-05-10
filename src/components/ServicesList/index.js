@@ -1,25 +1,27 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import './ServicesList.css';
-import Header from '../Header';
-import InformationBar from '../InformationBar';
-import Spinner from '../Spinner';
-import SideNav from '../SideNav';
-import getServices from '../../redux/actions/services';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import "./ServicesList.css";
+import Header from "../Header";
+import InformationBar from "../InformationBar";
+import Spinner from "../Spinner";
+import SideNav from "../SideNav";
+import getServices from "../../redux/actions/services";
 
 class ServicesListPage extends React.Component {
   componentDidMount() {
     const { getServices } = this.props;
-    const { match: { params } } = this.props;
+    const {
+      match: { params },
+    } = this.props;
     getServices(params.clusterID);
   }
 
   showPorts(ports) {
-    let portValue = '';
+    let portValue = "";
     ports.map((port) => {
-      if (portValue !== '') {
-        portValue += ', ';
+      if (portValue !== "") {
+        portValue += ", ";
       }
       portValue += `${port.port}`;
       if (port.nodePort !== undefined) {
@@ -33,12 +35,16 @@ class ServicesListPage extends React.Component {
 
   render() {
     const { services, isRetrieving, isFetched } = this.props;
-    const clusterName = localStorage.getItem('clusterName');
-    const { match: { params } } = this.props;
+    const clusterName = localStorage.getItem("clusterName");
+    const {
+      match: { params },
+    } = this.props;
 
     return (
       <div className="MainPage">
-        <div className="TopBarSection"><Header /></div>
+        <div className="TopBarSection">
+          <Header />
+        </div>
         <div className="MainSection">
           <div className="SideBarSection">
             <SideNav clusterName={clusterName} clusterId={params.clusterID} />
@@ -48,7 +54,13 @@ class ServicesListPage extends React.Component {
               <InformationBar header="Services" showBtn={false} />
             </div>
             <div className="ContentSection">
-              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
+              <div
+                className={
+                  isRetrieving
+                    ? "ResourcesTable LoadingResourcesTable"
+                    : "ResourcesTable"
+                }
+              >
                 <table>
                   <thead>
                     <tr>
@@ -58,50 +70,44 @@ class ServicesListPage extends React.Component {
                       <th>Ports</th>
                     </tr>
                   </thead>
-                  {
-                    isRetrieving ? (
-                      <tbody>
-                        <tr className="TableLoading">
-                          <td>
-                            <div className="SpinnerWrapper">
-                              <Spinner size="big" />
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    ) : (
-                      <tbody>
-                        {(isFetched && services !== undefined) && (
-                          services.map((service) => (
-                            <tr key={services.indexOf(service)}>
-                              <td>{service.metadata.name}</td>
-                              <td>{service.spec.type}</td>
-                              <td>{service.spec.clusterIP}</td>
-                              <td>{this.showPorts(service.spec.ports)}</td>
-                            </tr>
-                          ))
-                        )}
-                      </tbody>
-                    )
-                  }
+                  {isRetrieving ? (
+                    <tbody>
+                      <tr className="TableLoading">
+                        <td>
+                          <div className="SpinnerWrapper">
+                            <Spinner size="big" />
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  ) : (
+                    <tbody>
+                      {isFetched &&
+                        services !== undefined &&
+                        services.map((service) => (
+                          <tr key={services.indexOf(service)}>
+                            <td>{service.metadata.name}</td>
+                            <td>{service.spec.type}</td>
+                            <td>{service.spec.clusterIP}</td>
+                            <td>{this.showPorts(service.spec.ports)}</td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  )}
                 </table>
 
-                {(isFetched && services.length === 0) && (
+                {isFetched && services.length === 0 && (
                   <div className="NoResourcesMessage">
                     <p>No Services Available</p>
                   </div>
                 )}
-                {(!isRetrieving && !isFetched) && (
+                {!isRetrieving && !isFetched && (
                   <div className="NoResourcesMessage">
                     <p>
-                      Oops! Something went wrong!
-
-                      Failed to retrieve Services.
+                      Oops! Something went wrong! Failed to retrieve Services.
                     </p>
                   </div>
                 )}
-
-
               </div>
             </div>
           </div>
@@ -118,9 +124,9 @@ ServicesListPage.propTypes = {
   isRetrieving: PropTypes.bool,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      clusterID: PropTypes.string.isRequired
-    }).isRequired
-  }).isRequired
+      clusterID: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 ServicesListPage.defaultProps = {
@@ -135,10 +141,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  getServices
+  getServices,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ServicesListPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ServicesListPage);

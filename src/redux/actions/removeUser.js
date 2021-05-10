@@ -1,7 +1,7 @@
-import { REMOVE_USER } from './actionTypes';
+import { REMOVE_USER } from "./actionTypes";
 
 const removeUser = () => ({
-  type: REMOVE_USER
+  type: REMOVE_USER,
 });
 
 export default removeUser;

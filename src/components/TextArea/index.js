@@ -1,17 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import './TextArea.css';
+import React from "react";
+import PropTypes from "prop-types";
+import "./TextArea.css";
 
 const TextArea = (props) => {
-  const {
-    name, value, placeholder, onChange, required
-  } = props;
+  const { name, value, placeholder, onChange, required } = props;
 
   return (
     <textarea
       className="TextArea"
       type="text"
-      placeholder={`${placeholder}${required ? ' *' : ''}`}
+      placeholder={`${placeholder}${required ? " *" : ""}`}
       rows="3"
       cols="50"
       name={name}
@@ -28,12 +26,12 @@ TextArea.propTypes = {
   value: PropTypes.string,
   placeholder: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  required: PropTypes.bool
+  required: PropTypes.bool,
 };
 
 TextArea.defaultProps = {
-  value: '',
-  required: false
+  value: "",
+  required: false,
 };
 
 export default TextArea;

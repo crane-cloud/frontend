@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import getDeployments from '../../redux/actions/getDeployments';
-import Header from '../Header';
-import SideNav from '../SideNav';
-import InformationBar from '../InformationBar';
-import Status from '../Status';
-import ProgressBar from '../ProgressBar';
-import Spinner from '../Spinner';
-import tellAge from '../../helpers/ageUtility';
-import './DeploymentsPage.css';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
+import getDeployments from "../../redux/actions/getDeployments";
+import Header from "../Header";
+import SideNav from "../SideNav";
+import InformationBar from "../InformationBar";
+import Status from "../Status";
+import ProgressBar from "../ProgressBar";
+import Spinner from "../Spinner";
+import tellAge from "../../helpers/ageUtility";
+import "./DeploymentsPage.css";
 
 class DeploymentsPage extends Component {
   constructor(props) {
@@ -34,31 +34,33 @@ class DeploymentsPage extends Component {
   }
 
   deploymentStatus(conditions) {
-    let status = '';
+    let status = "";
     conditions.map((condition) => {
-      if (condition.type === 'Available') {
+      if (condition.type === "Available") {
         status = condition.status;
       }
       return null;
     });
-    if (status === 'True') {
+    if (status === "True") {
       return true;
     }
     return false;
   }
 
   render() {
-    const clusterName = localStorage.getItem('clusterName');
+    const clusterName = localStorage.getItem("clusterName");
     const {
       match: { params },
       deployments,
       isFetchingDeployments,
-      isFetched
+      isFetched,
     } = this.props;
 
     return (
       <div className="MainPage">
-        <div className="TopBarSection"><Header /></div>
+        <div className="TopBarSection">
+          <Header />
+        </div>
         <div className="MainSection">
           <div className="SideBarSection">
             <SideNav clusterName={clusterName} clusterId={params.clusterID} />
@@ -68,7 +70,13 @@ class DeploymentsPage extends Component {
               <InformationBar header="Deployments" showBtn={false} />
             </div>
             <div className="ContentSection">
-              <div className={isFetchingDeployments ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
+              <div
+                className={
+                  isFetchingDeployments
+                    ? "ResourcesTable LoadingResourcesTable"
+                    : "ResourcesTable"
+                }
+              >
                 <table>
                   <thead className="uppercase">
                     <tr>
@@ -90,40 +98,64 @@ class DeploymentsPage extends Component {
                     </tbody>
                   ) : (
                     <tbody>
-                      {(isFetched && deployments !== undefined) && (
+                      {isFetched &&
+                        deployments !== undefined &&
                         deployments.map((deployment) => (
                           <tr key={deployments.indexOf(deployment)}>
                             <td>{deployment.metadata.name}</td>
                             <td>
-                              {Object.prototype.hasOwnProperty.call(deployment.status, 'readyReplicas') ? (
+                              {Object.prototype.hasOwnProperty.call(
+                                deployment.status,
+                                "readyReplicas"
+                              ) ? (
                                 <ProgressBar
-                                  percentage={this.calculatePercentage(deployment.status.readyReplicas, deployment.status.replicas)}
-                                  fractionLabel={this.displayFraction(deployment.status.readyReplicas, deployment.status.replicas)}
+                                  percentage={this.calculatePercentage(
+                                    deployment.status.readyReplicas,
+                                    deployment.status.replicas
+                                  )}
+                                  fractionLabel={this.displayFraction(
+                                    deployment.status.readyReplicas,
+                                    deployment.status.replicas
+                                  )}
                                 />
                               ) : (
                                 <ProgressBar
-                                  percentage={this.calculatePercentage(0, deployment.status.replicas)}
-                                  fractionLabel={this.displayFraction(0, deployment.status.replicas)}
+                                  percentage={this.calculatePercentage(
+                                    0,
+                                    deployment.status.replicas
+                                  )}
+                                  fractionLabel={this.displayFraction(
+                                    0,
+                                    deployment.status.replicas
+                                  )}
                                 />
                               )}
                             </td>
-                            <td><Status status={this.deploymentStatus(deployment.status.conditions)} /></td>
-                            <td>{tellAge(deployment.metadata.creationTimestamp)}</td>
+                            <td>
+                              <Status
+                                status={this.deploymentStatus(
+                                  deployment.status.conditions
+                                )}
+                              />
+                            </td>
+                            <td>
+                              {tellAge(deployment.metadata.creationTimestamp)}
+                            </td>
                           </tr>
-                        )))}
+                        ))}
                     </tbody>
                   )}
                 </table>
-                {(isFetched && deployments.length === 0) && (
+                {isFetched && deployments.length === 0 && (
                   <div className="NoResourcesMessage">
                     <p>No deployments available</p>
                   </div>
                 )}
-                {(!isFetchingDeployments && !isFetched) && (
+                {!isFetchingDeployments && !isFetched && (
                   <div className="NoResourcesMessage">
                     <p>
-                      Oops! Something went wrong!
-                      Failed to retrieve deployments.
+                      Oops! Something went wrong! Failed to retrieve
+                      deployments.
                     </p>
                   </div>
                 )}
@@ -143,24 +175,22 @@ DeploymentsPage.propTypes = {
   isFetched: PropTypes.bool,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      clusterID: PropTypes.string.isRequired
-    }).isRequired
-  }).isRequired
+      clusterID: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 DeploymentsPage.defaultProps = {
   isFetchingDeployments: false,
-  isFetched: false
+  isFetched: false,
 };
 
 const mapStateToProps = (state) => {
-  const {
-    deployments,
-    isFetchingDeployments,
-    isFetched
-  } = state.deployments;
+  const { deployments, isFetchingDeployments, isFetched } = state.deployments;
 
   return { deployments, isFetched, isFetchingDeployments };
 };
 
-export default connect(mapStateToProps, { getDeployments })(withRouter(DeploymentsPage));
+export default connect(mapStateToProps, { getDeployments })(
+  withRouter(DeploymentsPage)
+);

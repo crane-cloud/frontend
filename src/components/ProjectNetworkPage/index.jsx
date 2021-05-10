@@ -1,16 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import InformationBar from '../InformationBar';
-import Header from '../Header';
-import Spinner from '../Spinner';
-import SideBar from '../SideBar';
-import './ProjectNetworkPage.css';
-import getProjectNetwork, { clearProjectNetwork } from '../../redux/actions/projectNetwork';
-import MetricsCard from '../MetricsCard';
-import PeriodSelector from '../Period';
-import LineChartComponent from '../LineChart';
-import { formatNetworkMetrics, getCurrentTimeStamp, subtractTime } from '../../helpers/formatMetrics';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import InformationBar from "../InformationBar";
+import Header from "../Header";
+import Spinner from "../Spinner";
+import SideBar from "../SideBar";
+import "./ProjectNetworkPage.css";
+import getProjectNetwork, {
+  clearProjectNetwork,
+} from "../../redux/actions/projectNetwork";
+import MetricsCard from "../MetricsCard";
+import PeriodSelector from "../Period";
+import LineChartComponent from "../LineChart";
+import {
+  formatNetworkMetrics,
+  getCurrentTimeStamp,
+  subtractTime,
+} from "../../helpers/formatMetrics";
 
 class ProjectNetworkPage extends React.Component {
   constructor(props) {
@@ -19,9 +25,9 @@ class ProjectNetworkPage extends React.Component {
       time: {
         start: 0,
         end: getCurrentTimeStamp(),
-        step: ''
+        step: "",
       },
-      period: '1d'
+      period: "1d",
     };
 
     this.getProjectName = this.getProjectName.bind(this);
@@ -31,10 +37,14 @@ class ProjectNetworkPage extends React.Component {
   }
 
   componentDidMount() {
-    const { match: { params }, getProjectNetwork, clearProjectNetwork } = this.props;
+    const {
+      match: { params },
+      getProjectNetwork,
+      clearProjectNetwork,
+    } = this.props;
     const { projectID } = params;
     clearProjectNetwork();
-    getProjectNetwork(projectID, { step: '2h' });
+    getProjectNetwork(projectID, { step: "2h" });
   }
 
   getProjectName(id) {
@@ -43,7 +53,10 @@ class ProjectNetworkPage extends React.Component {
   }
 
   getDateCreated() {
-    const { match: { params }, projects } = this.props;
+    const {
+      match: { params },
+      projects,
+    } = this.props;
     const { projectID } = params;
     return projects.find((project) => project.id === projectID).date_created;
   }
@@ -54,31 +67,31 @@ class ProjectNetworkPage extends React.Component {
     let startTimeStamp;
     let endTimeStamp = getCurrentTimeStamp();
 
-    if (period === '1d') {
+    if (period === "1d") {
       days = 1;
-      step = '2h';
-    } else if (period === '7d') {
+      step = "2h";
+    } else if (period === "7d") {
       days = 7;
-      step = '1d';
-    } else if (period === '1m') {
+      step = "1d";
+    } else if (period === "1m") {
       days = 30;
-      step = '7d';
-    } else if (period === '3m') {
+      step = "7d";
+    } else if (period === "3m") {
       days = 90;
-      step = '7d';
-    } else if (period === '1y') {
+      step = "7d";
+    } else if (period === "1y") {
       days = 365;
-      step = '1m';
-    } else if (period === 'custom') {
-      step = '1d';
+      step = "1m";
+    } else if (period === "custom") {
+      step = "1d";
     }
 
     this.setState({ period }); // this period state will be used to format x-axis values accordingly
 
-    if (period === 'all') {
+    if (period === "all") {
       startTimeStamp = await Date.parse(this.getDateCreated());
-      step = '1d'; // TODO: make dynamic depending on the all-time metrics
-    } else if (period === 'custom' && customTime !== null) {
+      step = "1d"; // TODO: make dynamic depending on the all-time metrics
+    } else if (period === "custom" && customTime !== null) {
       startTimeStamp = customTime.start;
       endTimeStamp = customTime.end;
     } else {
@@ -91,7 +104,7 @@ class ProjectNetworkPage extends React.Component {
         end: endTimeStamp,
         start: startTimeStamp,
         step,
-      }
+      },
     }));
 
     if (endTimeStamp > startTimeStamp) {
@@ -101,7 +114,11 @@ class ProjectNetworkPage extends React.Component {
 
   fetchNetwork() {
     const { time } = this.state;
-    const { match: { params }, getProjectNetwork, clearProjectNetwork } = this.props;
+    const {
+      match: { params },
+      getProjectNetwork,
+      clearProjectNetwork,
+    } = this.props;
     const { projectID } = params;
 
     clearProjectNetwork();
@@ -110,15 +127,25 @@ class ProjectNetworkPage extends React.Component {
   }
 
   render() {
-    const { match: { params }, isFetchingNetwork, networkMetrics } = this.props;
+    const {
+      match: { params },
+      isFetchingNetwork,
+      networkMetrics,
+    } = this.props;
     const { projectID, userID } = params;
     const { period } = this.state;
 
-    const formattedMetrics = formatNetworkMetrics(projectID, networkMetrics, period);
+    const formattedMetrics = formatNetworkMetrics(
+      projectID,
+      networkMetrics,
+      period
+    );
 
     return (
       <div className="Page">
-        <div className="TopBarSection"><Header /></div>
+        <div className="TopBarSection">
+          <Header />
+        </div>
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
@@ -134,9 +161,7 @@ class ProjectNetworkPage extends React.Component {
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
-              <InformationBar
-                header="Network"
-              />
+              <InformationBar header="Network" />
             </div>
             <div className="ContentSection">
               <MetricsCard
@@ -148,7 +173,13 @@ class ProjectNetworkPage extends React.Component {
                     <Spinner />
                   </div>
                 ) : (
-                  <LineChartComponent yLabel="Network (KBs)" xLabel="Time" xDataKey="time" lineDataKey="network" data={formattedMetrics} />
+                  <LineChartComponent
+                    yLabel="Network (KBs)"
+                    xLabel="Time"
+                    xDataKey="time"
+                    lineDataKey="network"
+                    data={formattedMetrics}
+                  />
                 )}
               </MetricsCard>
             </div>
@@ -164,29 +195,30 @@ ProjectNetworkPage.propTypes = {
     params: PropTypes.shape({
       projectID: PropTypes.string.isRequired,
       userID: PropTypes.string.isRequired,
-    }).isRequired
+    }).isRequired,
   }).isRequired,
   isFetchingNetwork: PropTypes.bool.isRequired,
   networkMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getProjectNetwork: PropTypes.func.isRequired,
   clearProjectNetwork: PropTypes.func.isRequired,
-  projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired
+  projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 const mapStateToProps = (state) => {
-  const { isFetchingNetwork, networkMetrics, networkMessage } = state.projectNetworkReducer;
+  const { isFetchingNetwork, networkMetrics, networkMessage } =
+    state.projectNetworkReducer;
   const { projects } = state.userProjectsReducer;
   return {
     projects,
     isFetchingNetwork,
     networkMetrics,
-    networkMessage
+    networkMessage,
   };
 };
 
 const mapDispatchToProps = {
   getProjectNetwork,
-  clearProjectNetwork
+  clearProjectNetwork,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectNetworkPage);

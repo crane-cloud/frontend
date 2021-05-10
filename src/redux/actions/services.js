@@ -1,15 +1,18 @@
-import axios from '../../axios';
-import { IS_FETCHING, FETCH_SERVICES_SUCCESS, FETCH_SERVICES_FAILED } from './actionTypes';
+import axios from "../../axios";
+import {
+  IS_FETCHING,
+  FETCH_SERVICES_SUCCESS,
+  FETCH_SERVICES_FAILED,
+} from "./actionTypes";
 
 export const startTheFetch = () => ({
   type: IS_FETCHING,
 });
 
-export const getServicesSuccess = (response) => (
-  {
-    type: FETCH_SERVICES_SUCCESS,
-    payload: response.data.data.services,
-  });
+export const getServicesSuccess = (response) => ({
+  type: FETCH_SERVICES_SUCCESS,
+  payload: response.data.data.services,
+});
 
 export const getServicesFailed = (error) => ({
   type: FETCH_SERVICES_FAILED,
@@ -21,7 +24,8 @@ export const getServicesFailed = (error) => ({
 
 const getServices = (clusterId) => (dispatch) => {
   dispatch(startTheFetch());
-  return axios.get(`/clusters/${clusterId}/services`)
+  return axios
+    .get(`/clusters/${clusterId}/services`)
     .then((response) => dispatch(getServicesSuccess(response)))
     .catch((error) => {
       dispatch(getServicesFailed(error));

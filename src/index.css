@@ -219,7 +219,8 @@ tr.TableLoading td {
   transform: translate(-50%, -50%);
 }
 
-.ResourcesTable table tr.TableLoading:hover, .ResourcesTable table thead tr:hover {
+.ResourcesTable table tr.TableLoading:hover,
+.ResourcesTable table thead tr:hover {
   cursor: default;
   background-color: inherit;
 }

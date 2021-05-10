@@ -27,7 +27,7 @@
 }
 
 /* Firefox */
-.TimeInput[type=number] {
+.TimeInput[type="number"] {
   -moz-appearance: textfield;
 }
 

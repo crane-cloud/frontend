@@ -1,4 +1,4 @@
-.InputText{
+.InputText {
   width: 25rem;
   border: 2px solid #fff;
   box-sizing: border-box;
@@ -9,10 +9,10 @@
   color: #fff;
 }
 
-.WhiteBackground{
+.WhiteBackground {
   color: #000;
 }
-.InitialBackground{
+.InitialBackground {
   color: #fff;
   background-color: transparent;
 }

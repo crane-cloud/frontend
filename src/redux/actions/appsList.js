@@ -1,5 +1,9 @@
-import axios from '../../axios';
-import { GET_APPS_SUCCESS, GET_APPS_FAIL, START_GETTING_APPS } from './actionTypes';
+import axios from "../../axios";
+import {
+  GET_APPS_SUCCESS,
+  GET_APPS_FAIL,
+  START_GETTING_APPS,
+} from "./actionTypes";
 
 export const startFetchingApps = () => ({
   type: START_GETTING_APPS,
@@ -21,7 +25,8 @@ export const getAppsFail = (error) => ({
 const getAppsList = (projectID) => (dispatch) => {
   dispatch(startFetchingApps());
 
-  return axios.get(`/projects/${projectID}/apps`,)
+  return axios
+    .get(`/projects/${projectID}/apps`)
 
     .then((response) => dispatch(getAppsSuccess(response)))
     .catch((error) => {

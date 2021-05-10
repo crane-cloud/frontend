@@ -23,19 +23,19 @@ const tellAge = (utcTime) => {
     return `${Math.trunc(diff / SECOND_MILLIS)}seconds ago`;
   }
   if (diff < 2 * MINUTE_MILLIS) {
-    return '1 minute ago';
+    return "1 minute ago";
   }
   if (diff < 60 * MINUTE_MILLIS) {
     return `${Math.trunc(diff / MINUTE_MILLIS)} minutes ago`;
   }
   if (diff < 2 * HOUR_MILLIS) {
-    return '1 hour ago';
+    return "1 hour ago";
   }
   if (diff < 24 * HOUR_MILLIS) {
     return `${Math.trunc(diff / HOUR_MILLIS)} hours ago`;
   }
   if (diff < 2 * DAY_MILLIS) {
-    return '1 day ago';
+    return "1 day ago";
   }
   if (diff < 6 * MONTH_MILLIS) {
     return `${Math.trunc(diff / DAY_MILLIS)} days ago`;

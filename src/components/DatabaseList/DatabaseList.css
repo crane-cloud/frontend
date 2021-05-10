@@ -1,43 +1,43 @@
-.DatabaseTableHead{
-    text-transform: uppercase;
-    padding: 1rem;
-    color: #008ac1;
+.DatabaseTableHead {
+  text-transform: uppercase;
+  padding: 1rem;
+  color: #008ac1;
 }
 
-.DatabaseTableRow{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    padding: 1rem 0rem;
+.DatabaseTableRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  padding: 1rem 0rem;
 }
 
-.DatabaseTableCell:nth-last-child(2){
-    text-align: center;
+.DatabaseTableCell:nth-last-child(2) {
+  text-align: center;
 }
 
-.DatabaseTableHeadCell{
-    text-align: center; 
+.DatabaseTableHeadCell {
+  text-align: center;
 }
 
-.DatabaseTableCell{
-    font-weight: normal;
-    padding: 0.2rem 1rem;
-    text-align: center;
+.DatabaseTableCell {
+  font-weight: normal;
+  padding: 0.2rem 1rem;
+  text-align: center;
 }
 
 .DatabaseTableHeadCell:first-child,
-.DatabaseTableCell:first-child{
-    text-align: left;
+.DatabaseTableCell:first-child {
+  text-align: left;
 }
 
 .DatabaseTableHeadCell:last-child,
-.DatabaseTableCell:last-child{
-    text-align: right;
+.DatabaseTableCell:last-child {
+  text-align: right;
 }
-.DatabaseRow{
+.DatabaseRow {
   color: #000000;
   cursor: pointer;
 }
 
-.DatabaseRow:hover{
-    color: #F7B21F;
+.DatabaseRow:hover {
+  color: #f7b21f;
 }

@@ -17,12 +17,12 @@ header.NewHeader {
   align-items: center;
 }
 
-.HeaderLink a:hover{
-  background-color: #F7B21F;
+.HeaderLink a:hover {
+  background-color: #f7b21f;
 }
 
-.HeaderLink .active{
-  background-color: #F7B21F;
+.HeaderLink .active {
+  background-color: #f7b21f;
 }
 .LogoLink:focus {
   outline: none;
@@ -38,7 +38,7 @@ header.NewHeader {
 }
 
 .OnHead:hover .UserNames {
-  background-color: #F7B21F;
+  background-color: #f7b21f;
   color: #000000;
 }
 
@@ -50,7 +50,7 @@ div.DropDownGrid {
   display: flex;
   flex-direction: column;
 }
-.HeaderLinksWrap{
+.HeaderLinksWrap {
   display: flex;
 }
 
@@ -107,18 +107,19 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   background-color: #f1f1f1;
 }
 
-.DropDownLink, .DropDownLink:visited {
+.DropDownLink,
+.DropDownLink:visited {
   color: #000;
   text-decoration: none;
 }
-.HeaderLinkBack:hover{
-  background-color: #F7B21F;
+.HeaderLinkBack:hover {
+  background-color: #f7b21f;
 }
-a.HeaderLinkDocs{
+a.HeaderLinkDocs {
   color: #000;
 }
-a.HeaderLinkDocs:hover{
-  background-color: #F7B21F;
+a.HeaderLinkDocs:hover {
+  background-color: #f7b21f;
 }
 
 @media only screen and (max-width: 640px) {

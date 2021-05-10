@@ -10,7 +10,7 @@
   width: 100%;
   height: 100%;
   border-radius: 25px;
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
   padding: 0 2px;
   display: flex;
   align-items: center;
@@ -22,7 +22,7 @@
   position: absolute;
   width: 1.3rem;
   height: 1.3rem;
-  background-color: #CCCCCC;
+  background-color: #cccccc;
   border-radius: 50%;
 }
 

@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import getPodsList from '../../redux/actions/pods';
-import tellAge from '../../helpers/ageUtility';
-import './PodsList.css';
-import Header from '../Header';
-import Status from '../Status';
-import Spinner from '../Spinner';
-import InformationBar from '../InformationBar';
-import SideNav from '../SideNav';
-import ProgressBar from '../ProgressBar';
-
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import getPodsList from "../../redux/actions/pods";
+import tellAge from "../../helpers/ageUtility";
+import "./PodsList.css";
+import Header from "../Header";
+import Status from "../Status";
+import Spinner from "../Spinner";
+import InformationBar from "../InformationBar";
+import SideNav from "../SideNav";
+import ProgressBar from "../ProgressBar";
 
 class PodsList extends Component {
   constructor(props) {
@@ -22,19 +21,21 @@ class PodsList extends Component {
 
   componentDidMount() {
     const { getPodsList } = this.props;
-    const { match: { params } } = this.props;
+    const {
+      match: { params },
+    } = this.props;
     getPodsList(params.clusterID);
   }
 
   podStatus(conditions) {
-    let status = '';
+    let status = "";
     conditions.map((condition) => {
-      if (condition.type === 'Ready') {
+      if (condition.type === "Ready") {
         status = condition.status;
       }
       return null;
     });
-    if (status === 'True') {
+    if (status === "True") {
       return true;
     }
     return false;
@@ -49,17 +50,15 @@ class PodsList extends Component {
   }
 
   podReady(containerlist) {
-    if (typeof (containerlist) !== 'undefined') {
+    if (typeof containerlist !== "undefined") {
       const count = containerlist.length;
       let ready = 0;
-      containerlist.map(
-        (container) => {
-          if (container.ready) {
-            ready += 1;
-          }
-          return 0;
+      containerlist.map((container) => {
+        if (container.ready) {
+          ready += 1;
         }
-      );
+        return 0;
+      });
       return (
         <ProgressBar
           percentage={this.calculatePercentage(ready, count)}
@@ -77,12 +76,16 @@ class PodsList extends Component {
 
   render() {
     const { pods, isFetched, isRetrieving } = this.props;
-    const clusterName = localStorage.getItem('clusterName');
-    const { match: { params } } = this.props;
+    const clusterName = localStorage.getItem("clusterName");
+    const {
+      match: { params },
+    } = this.props;
 
     return (
       <div className="MainPage">
-        <div className="TopBarSection"><Header /></div>
+        <div className="TopBarSection">
+          <Header />
+        </div>
         <div className="MainSection">
           <div className="SideBarSection">
             <SideNav clusterName={clusterName} clusterId={params.clusterID} />
@@ -92,7 +95,13 @@ class PodsList extends Component {
               <InformationBar header="Pods" showBtn={false} />
             </div>
             <div className="ContentSection">
-              <div className={isRetrieving ? 'ResourcesTable LoadingResourcesTable' : 'ResourcesTable'}>
+              <div
+                className={
+                  isRetrieving
+                    ? "ResourcesTable LoadingResourcesTable"
+                    : "ResourcesTable"
+                }
+              >
                 <table className="PodsTable">
                   <thead>
                     <tr>
@@ -102,52 +111,52 @@ class PodsList extends Component {
                       <th>Age</th>
                     </tr>
                   </thead>
-                  {
-                    isRetrieving ? (
-                      <tbody>
-                        <tr className="TableLoading">
-                          <td>
-                            <div className="SpinnerWrapper">
-                              <Spinner size="big" />
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    ) : (
-                      <tbody>
-                        {isFetched && pods.pods !== undefined && (pods.pods.map((pod) => (
+                  {isRetrieving ? (
+                    <tbody>
+                      <tr className="TableLoading">
+                        <td>
+                          <div className="SpinnerWrapper">
+                            <Spinner size="big" />
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  ) : (
+                    <tbody>
+                      {isFetched &&
+                        pods.pods !== undefined &&
+                        pods.pods.map((pod) => (
                           <tr key={pods.pods.indexOf(pod)}>
                             <td>{pod.metadata.name}</td>
-                            <td>{this.podReady(pod.status.containerStatuses)}</td>
-                            <td><Status status={this.podStatus(pod.status.conditions)} /></td>
+                            <td>
+                              {this.podReady(pod.status.containerStatuses)}
+                            </td>
+                            <td>
+                              <Status
+                                status={this.podStatus(pod.status.conditions)}
+                              />
+                            </td>
                             <td>{tellAge(pod.metadata.creationTimestamp)}</td>
                           </tr>
-                        )))}
-                      </tbody>
-                    )
-                  }
+                        ))}
+                    </tbody>
+                  )}
                 </table>
-                {(isFetched && pods.pods.length === 0) && (
+                {isFetched && pods.pods.length === 0 && (
                   <div className="NoResourcesMessage">
                     <p>No Pods Available</p>
                   </div>
                 )}
-                {(!isRetrieving && !isFetched) && (
+                {!isRetrieving && !isFetched && (
                   <div className="NoResourcesMessage">
-                    <p>
-                      Oops! Something went wrong!
-
-                      Failed to retrieve Pods.
-                    </p>
+                    <p>Oops! Something went wrong! Failed to retrieve Pods.</p>
                   </div>
                 )}
-
               </div>
             </div>
           </div>
         </div>
       </div>
-
     );
   }
 }
@@ -155,16 +164,16 @@ class PodsList extends Component {
 // inititate props
 PodsList.propTypes = {
   pods: PropTypes.shape({
-    pods: PropTypes.arrayOf(PropTypes.object)
+    pods: PropTypes.arrayOf(PropTypes.object),
   }),
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
   getPodsList: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      clusterID: PropTypes.string.isRequired
-    }).isRequired
-  }).isRequired
+      clusterID: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 // assigning defaults
@@ -180,10 +189,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  getPodsList
+  getPodsList,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PodsList);
+export default connect(mapStateToProps, mapDispatchToProps)(PodsList);

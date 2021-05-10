@@ -2,7 +2,7 @@
   max-height: 3rem;
   width: 100%;
   display: grid;
-  gap: .3rem;
+  gap: 0.3rem;
 }
 
 .SelectElementMain {
@@ -10,7 +10,7 @@
 }
 
 .SelectElementValue {
-  padding: .8rem;
+  padding: 0.8rem;
   display: flex;
   justify-content: space-between;
 }
@@ -24,7 +24,8 @@
   display: flex;
   flex-direction: column;
   z-index: 3;
-  box-shadow: 0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12);
+  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
 .SelectOptionsWrapper .SelectOption {
@@ -34,7 +35,7 @@
 }
 
 .SelectOptionsWrapper .SelectOption:hover {
-  background-color: #EFEFEF;
+  background-color: #efefef;
   cursor: pointer;
 }
 

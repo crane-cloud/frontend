@@ -35,7 +35,6 @@
   flex-direction: column;
 }
 
-
 .ResendLinkForm .ResendFormInputs {
   display: grid;
   grid-template-columns: 1fr;

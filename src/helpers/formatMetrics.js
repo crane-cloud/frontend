@@ -1,4 +1,4 @@
-import { dayNames, monthNames } from './dateConstants';
+import { dayNames, monthNames } from "./dateConstants";
 
 const timestampToDate = (timestamp) => {
   const timestampMillisecond = timestamp * 1000; // convert timestamp to milliseconds
@@ -17,19 +17,19 @@ const formatTime = (timeValue) => {
 };
 
 const getTimeString = (date, period) => {
-  if (period === '7d') {
+  if (period === "7d") {
     return `${dayNames[date.getDay()].substring(0, 3)}'${date.getDate()}`;
   }
 
-  if (period === '1m') {
+  if (period === "1m") {
     return `${dayNames[date.getDay()].substring(0, 3)}'${date.getDate()}`;
   }
 
-  if (period === '3m') {
+  if (period === "3m") {
     return `${monthNames[date.getMonth()].substring(0, 3)}`;
   }
 
-  if (period === '1y') {
+  if (period === "1y") {
     return `${monthNames[date.getMonth()].substring(0, 3)}`;
   }
 
@@ -43,11 +43,14 @@ export const getCurrentTimeStamp = () => {
 };
 
 // this function gets the 'end' timestamp
-export const subtractTime = (endTimestamp, days) => new Date(
-  endTimestamp - (days * 24 * 60 * 60)
-).getTime();
+export const subtractTime = (endTimestamp, days) =>
+  new Date(endTimestamp - days * 24 * 60 * 60).getTime();
 
-export const formatMemoryMetrics = (projectID, memoryMetrics, period = '1d') => {
+export const formatMemoryMetrics = (
+  projectID,
+  memoryMetrics,
+  period = "1d"
+) => {
   const found = memoryMetrics.find((metric) => metric.project === projectID);
   const memoryData = [];
 
@@ -55,7 +58,7 @@ export const formatMemoryMetrics = (projectID, memoryMetrics, period = '1d') => 
     found.metrics.forEach((metric) => {
       const newMetricObject = {
         time: getTimeString(timestampToDate(metric.timestamp), period),
-        memory: bytesToMegabytes(metric.value)
+        memory: bytesToMegabytes(metric.value),
       };
 
       memoryData.push(newMetricObject);
@@ -65,7 +68,7 @@ export const formatMemoryMetrics = (projectID, memoryMetrics, period = '1d') => 
   return memoryData;
 };
 
-export const formatCPUMetrics = (projectID, cpuMetrics, period = '1d') => {
+export const formatCPUMetrics = (projectID, cpuMetrics, period = "1d") => {
   const found = cpuMetrics.find((metric) => metric.project === projectID);
   const cpuData = [];
 
@@ -73,7 +76,7 @@ export const formatCPUMetrics = (projectID, cpuMetrics, period = '1d') => {
     found.metrics.forEach((metric) => {
       const newMetricObject = {
         time: getTimeString(timestampToDate(metric.timestamp), period),
-        cpu: metric.value * 10
+        cpu: metric.value * 10,
       };
       cpuData.push(newMetricObject);
     });
@@ -82,7 +85,12 @@ export const formatCPUMetrics = (projectID, cpuMetrics, period = '1d') => {
   return cpuData;
 };
 
-export const formatNetworkMetrics = (projectID, networkMetrics, period = '1d') => { // this is a shortcut for when function is called and period is undefined
+export const formatNetworkMetrics = (
+  projectID,
+  networkMetrics,
+  period = "1d"
+) => {
+  // this is a shortcut for when function is called and period is undefined
   const found = networkMetrics.find((metric) => metric.project === projectID);
   const networkData = [];
 
@@ -90,7 +98,7 @@ export const formatNetworkMetrics = (projectID, networkMetrics, period = '1d') =
     found.metrics.forEach((metric) => {
       const newMetricObject = {
         time: getTimeString(timestampToDate(metric.timestamp), period),
-        network: metric.value
+        network: metric.value,
       };
 
       networkData.push(newMetricObject);
@@ -100,7 +108,7 @@ export const formatNetworkMetrics = (projectID, networkMetrics, period = '1d') =
   return networkData;
 };
 
-export const formatAppMemoryMetrics = (appID, memoryMetrics, period = '1d') => {
+export const formatAppMemoryMetrics = (appID, memoryMetrics, period = "1d") => {
   const found = memoryMetrics.find((metric) => metric.app === appID);
   const memoryData = [];
 
@@ -108,7 +116,7 @@ export const formatAppMemoryMetrics = (appID, memoryMetrics, period = '1d') => {
     found.metrics.forEach((metric) => {
       const newMetricObject = {
         time: getTimeString(timestampToDate(metric.timestamp), period),
-        memory: bytesToMegabytes(metric.value)
+        memory: bytesToMegabytes(metric.value),
       };
 
       memoryData.push(newMetricObject);
@@ -118,7 +126,7 @@ export const formatAppMemoryMetrics = (appID, memoryMetrics, period = '1d') => {
   return memoryData;
 };
 
-export const formatAppCPUMetrics = (appID, cpuMetrics, period = '1d') => {
+export const formatAppCPUMetrics = (appID, cpuMetrics, period = "1d") => {
   const found = cpuMetrics.find((metric) => metric.app === appID);
   const cpuData = [];
 
@@ -126,7 +134,7 @@ export const formatAppCPUMetrics = (appID, cpuMetrics, period = '1d') => {
     found.metrics.forEach((metric) => {
       const newMetricObject = {
         time: getTimeString(timestampToDate(metric.timestamp), period),
-        cpu: metric.value * 10
+        cpu: metric.value * 10,
       };
       cpuData.push(newMetricObject);
     });
@@ -135,7 +143,11 @@ export const formatAppCPUMetrics = (appID, cpuMetrics, period = '1d') => {
   return cpuData;
 };
 
-export const formatAppNetworkMetrics = (appID, networkMetrics, period = '1d') => {
+export const formatAppNetworkMetrics = (
+  appID,
+  networkMetrics,
+  period = "1d"
+) => {
   const found = networkMetrics.find((metric) => metric.app === appID);
   const networkData = [];
 
@@ -143,7 +155,7 @@ export const formatAppNetworkMetrics = (appID, networkMetrics, period = '1d') =>
     found.metrics.forEach((metric) => {
       const newMetricObject = {
         time: getTimeString(timestampToDate(metric.timestamp), period),
-        network: metric.value
+        network: metric.value,
       };
       networkData.push(newMetricObject);
     });
