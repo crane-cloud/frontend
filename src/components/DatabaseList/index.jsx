@@ -162,7 +162,7 @@ class DatabaseList extends React.Component {
                                   {database.host}
                                 </div>
                                 <div className="DatabaseTableCell">
-                                  {database.db_status}
+                                  <Status status={database.db_status} />
                                 </div>
                                 <div className="DatabaseTableCell">
                                   {tellAge(database.date_created)}
