@@ -6,6 +6,7 @@ import Header from "../Header";
 import InformationBar from "../InformationBar";
 import SideBar from "../SideBar";
 import Spinner from "../Spinner";
+import Status from "../Status";
 import CreateDatabase from "../CreateDatabase";
 import getProjectDatabases from "../../redux/actions/databaseList";
 import tellAge from "../../helpers/ageUtility";
@@ -118,6 +119,9 @@ class DatabaseList extends React.Component {
                       Host
                     </div>
                     <div className="DatabaseTableHeadCell DatabaseTableHead">
+                      Status
+                    </div>
+                    <div className="DatabaseTableHeadCell DatabaseTableHead">
                       Age
                     </div>
                   </div>
@@ -156,6 +160,9 @@ class DatabaseList extends React.Component {
                                 </div>
                                 <div className="DatabaseTableCell">
                                   {database.host}
+                                </div>
+                                <div className="DatabaseTableCell">
+                                  {database.db_status}
                                 </div>
                                 <div className="DatabaseTableCell">
                                   {tellAge(database.date_created)}
