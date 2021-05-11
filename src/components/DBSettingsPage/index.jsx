@@ -317,7 +317,7 @@ class DBSettingsPage extends React.Component {
                     <div>
                       Connecting to the database. Read{" "}
                       <a
-                        href="https://medium.com/cranecloud/connecting-to-a-remote-mysql-database-a6b3cc15c40b"
+                        href="https://medium.com/cranecloud/connecting-to-a-remote-postgresql-database-779637147abf"
                         rel="noopener noreferrer"
                         target="_blank"
                         className="MysqlArticle"
@@ -328,7 +328,7 @@ class DBSettingsPage extends React.Component {
                     </div>
                   </div>
                   <div className="DBInfoBottom">
-                    <div className="DBAccessInfo">{`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}</div>
+                    <div className="DBAccessInfo">{`psql -h ${dbInfo.host} -p ${dbInfo.port} -d ${dbInfo.name} -u ${dbInfo.user}`}</div>
                     <div className="DBAccessCopy">
                       <div className="DBPassword">
                         <CopyText onClick={this.uriOnClick} />
