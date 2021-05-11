@@ -284,31 +284,60 @@ class DBSettingsPage extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="DBInstructions">
-                <div className="DBInfoTop">
-                  <div>
-                    Connecting to the database. Read{" "}
-                    <a
-                      href="https://medium.com/cranecloud/connecting-to-a-remote-mysql-database-a6b3cc15c40b"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                      className="MysqlArticle"
-                    >
-                      this article
-                    </a>
-                    , for a more comprehensive guide.
+              
+              {(dbInfo.flavor === 'mysql') ? (
+                <div className="DBInstructions">
+                  <div className="DBInfoTop">
+                    <div>
+                      Connecting to the database. Read{" "}
+                      <a
+                        href="https://medium.com/cranecloud/connecting-to-a-remote-mysql-database-a6b3cc15c40b"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        className="MysqlArticle"
+                      >
+                        this article
+                      </a>
+                      , for a more comprehensive guide.
+                    </div>
                   </div>
-                </div>
-                <div className="DBInfoBottom">
-                  <div className="DBAccessInfo">{`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}</div>
-                  <div className="DBAccessCopy">
-                    <div className="DBPassword">
-                      <CopyText onClick={this.uriOnClick} />
-                      {uriChecked ? <Checked /> : null}
+                  <div className="DBInfoBottom">
+                    <div className="DBAccessInfo">{`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}</div>
+                    <div className="DBAccessCopy">
+                      <div className="DBPassword">
+                        <CopyText onClick={this.uriOnClick} />
+                        {uriChecked ? <Checked /> : null}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              ): (
+                <div className="DBInstructions">
+                  <div className="DBInfoTop">
+                    <div>
+                      Connecting to the database. Read{" "}
+                      <a
+                        href="https://medium.com/cranecloud/connecting-to-a-remote-mysql-database-a6b3cc15c40b"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        className="MysqlArticle"
+                      >
+                        this article
+                      </a>
+                      , for a more comprehensive guide.
+                    </div>
+                  </div>
+                  <div className="DBInfoBottom">
+                    <div className="DBAccessInfo">{`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}</div>
+                    <div className="DBAccessCopy">
+                      <div className="DBPassword">
+                        <CopyText onClick={this.uriOnClick} />
+                        {uriChecked ? <Checked /> : null}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="DBButtons">
                 <div className="DBButtonRow">
                   <PrimaryButton
