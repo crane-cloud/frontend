@@ -10,7 +10,7 @@ import Status from "../Status";
 import CreateDatabase from "../CreateDatabase";
 import getProjectDatabases from "../../redux/actions/databaseList";
 import tellAge from "../../helpers/ageUtility";
-import "./DatabaseList.css";
+import styles from "./DatabaseList.module.css";
 
 class DatabaseList extends React.Component {
   constructor(props) {
@@ -74,12 +74,12 @@ class DatabaseList extends React.Component {
 
     const { projectID, userID } = params;
     return (
-      <div className="MainPage">
-        <div className="TopBarSection">
+      <div className={styles.MainPage}>
+        <div className={styles.TopBarSection}>
           <Header />
         </div>
-        <div className="MainSection">
-          <div className="SideBarSection">
+        <div className={styles.MainSection}>
+          <div className={styles.SideBarSection}>
             <SideBar
               name={this.getProjectName(projects, params.projectID)}
               params={params}
@@ -98,46 +98,46 @@ class DatabaseList extends React.Component {
               params={params}
             />
           ) : (
-            <div className="MainContentSection">
-              <div className="InformationBarSection">
+            <div className={styles.MainContentSection}>
+              <div className={styles.InformationBarSection}>
                 <InformationBar
                   header="Databases"
                   showBtn
                   btnAction={this.showCreateComponent}
                 />
               </div>
-              <div className="ContentSection">
-                <div className="DatabaseTable">
-                  <div className="DatabaseTableRow">
-                    <div className="DatabaseTableHeadCell DatabaseTableHead">
+              <div className={styles.ContentSection}>
+                <div className={styles.DatabaseTable}>
+                  <div className={styles.DatabaseTableRow}>
+                    <div className={styles.DatabaseTableHead}>
                       Type
                     </div>
-                    <div className="DatabaseTableHeadCell DatabaseTableHead">
+                    <div className={styles.DatabaseTableHead}>
                       Name
                     </div>
-                    <div className="DatabaseTableHeadCell DatabaseTableHead">
+                    <div className={styles.DatabaseTableHead}>
                       Host
                     </div>
-                    <div className="DatabaseTableHeadCell DatabaseTableHead">
+                    <div className={styles.DatabaseTableHead}>
                       Status
                     </div>
-                    <div className="DatabaseTableHeadCell DatabaseTableHead">
+                    <div className={styles.DatabaseTableHead}>
                       Age
                     </div>
                   </div>
                   <div>
                     {isFetchingDatabases ? (
-                      <div className="DatabaseTableBody">
-                        <div className="TableLoading DatabaseTableRow">
-                          <div className="DatabaseTableCell">
-                            <div className="SpinnerWrapper">
+                      <div className={styles.DatabaseTableBody}>
+                        <div className={styles.DatabaseTableRow}>
+                          <div className={styles.DatabaseTableCell}>
+                            <div className={styles.SpinnerWrapper}>
                               <Spinner size="big" />
                             </div>
                           </div>
                         </div>
                       </div>
                     ) : (
-                      <div className="DatabaseTableBody">
+                      <div className={styles.DatabaseTableBody}>
                         {databasesFetched &&
                           databases !== undefined &&
                           databases.map((database) => (
@@ -146,25 +146,25 @@ class DatabaseList extends React.Component {
                                 pathname: `/users/${userID}/projects/${projectID}/databases/${database.id}/settings`,
                               }}
                               key={database.id}
-                              className="DatabaseRow"
+                              className={styles.DatabaseRow}
                             >
                               <div
-                                className="DatabaseTableRow"
+                                className={styles.DatabaseTableRow}
                                 key={databases.indexOf(database)}
                               >
-                                <div className="DatabaseTableCell uppercase">
+                                <div className={styles.DatabaseTableCell}>
                                   {database.database_flavour_name}
                                 </div>
-                                <div className="DatabaseTableCell">
+                                <div className={styles.DatabaseTableCell}>
                                   {database.name}
                                 </div>
-                                <div className="DatabaseTableCell">
+                                <div className={styles.DatabaseTableCell}>
                                   {database.host}
                                 </div>
-                                <div className="DatabaseTableCell">
+                                <div className={styles.DatabaseTableCell}>
                                   <Status status={database.db_status} />
                                 </div>
-                                <div className="DatabaseTableCell">
+                                <div className={styles.DatabaseTableCell}>
                                   {tellAge(database.date_created)}
                                 </div>
                               </div>
@@ -175,14 +175,14 @@ class DatabaseList extends React.Component {
                   </div>
 
                   {databasesFetched && databases.length === 0 && (
-                    <div className="NoResourcesMessage">
+                    <div className={styles.NoResourcesMessage}>
                       You haven’t created any databases yet. Click the create
                       button to get started.
                     </div>
                   )}
 
                   {!isFetchingDatabases && !databasesFetched && (
-                    <div className="NoResourcesMessage">
+                    <div className={styles.NoResourcesMessage}>
                       Oops! Something went wrong! Failed to retrieve Databases.
                     </div>
                   )}
