@@ -74,7 +74,7 @@
   display: grid;
   grid-auto-columns: 1fr;
   color: #000000;
-  cursor: pointer;
+  grid-template-columns: (5, minmax(0, 1fr));
 }
 .DatabaseTableRow:hover {
   color: #f7b21f;
@@ -85,6 +85,7 @@
   padding: 1rem 0;
   text-align: center;
   grid-row: 1;
+  overflow: hidden;
 }
 
 .DatabaseTableHead:first-child,
