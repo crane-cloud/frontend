@@ -67,22 +67,24 @@
   padding: 1rem;
   color: #008ac1;
   text-align: center;
+  grid-row: 1;
 }
 
 .DatabaseTableRow {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  padding: 1rem 0rem;
+  grid-auto-columns: 1fr;
+  color: #000000;
+  cursor: pointer;
 }
-
-.DatabaseTableCell:nth-last-child(2) {
-  /* text-align: center; */
+.DatabaseTableRow:hover {
+  color: #f7b21f;
 }
 
 .DatabaseTableCell {
   font-weight: normal;
-  padding: 0.2rem 1rem;
+  padding: 1rem 0;
   text-align: center;
+  grid-row: 1;
 }
 
 .DatabaseTableHead:first-child,
@@ -98,14 +100,7 @@
 .DatabaseTableCell:last-child {
   text-align: right;
 }
-.DatabaseRow {
-  color: #000000;
-  cursor: pointer;
-}
 
-.DatabaseRow:hover {
-  color: #f7b21f;
-}
 .NoResourcesMessage {
   flex-grow: 1;
   display: flex;

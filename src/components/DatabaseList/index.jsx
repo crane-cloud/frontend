@@ -146,28 +146,25 @@ class DatabaseList extends React.Component {
                                 pathname: `/users/${userID}/projects/${projectID}/databases/${database.id}/settings`,
                               }}
                               key={database.id}
-                              className={styles.DatabaseRow}
+                              className={styles.DatabaseTableRow}
                             >
-                              <div
-                                className={styles.DatabaseTableRow}
-                                key={databases.indexOf(database)}
-                              >
-                                <div className={styles.DatabaseTableCell}>
-                                  {database.database_flavour_name}
-                                </div>
-                                <div className={styles.DatabaseTableCell}>
-                                  {database.name}
-                                </div>
-                                <div className={styles.DatabaseTableCell}>
-                                  {database.host}
-                                </div>
-                                <div className={styles.DatabaseTableCell}>
-                                  <Status status={database.db_status} />
-                                </div>
-                                <div className={styles.DatabaseTableCell}>
-                                  {tellAge(database.date_created)}
-                                </div>
+                              
+                              <div className={styles.DatabaseTableCell}>
+                                {database.database_flavour_name}
                               </div>
+                              <div className={styles.DatabaseTableCell}>
+                                {database.name}
+                              </div>
+                              <div className={styles.DatabaseTableCell}>
+                                {database.host}
+                              </div>
+                              <div className={styles.DatabaseTableCell}>
+                                <Status status={database.db_status} />
+                              </div>
+                              <div className={styles.DatabaseTableCell}>
+                                {tellAge(database.date_created)}
+                              </div>
+                              
                             </Link>
                           ))}
                       </div>
