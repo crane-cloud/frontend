@@ -1,30 +1,29 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import Header from '../Header';
-import LandingFooter from '../LandingFooter';
-import InputText from '../InputText';
-import InputPassword from '../InputPassword';
-import PrimaryButton from '../PrimaryButton';
-import Spinner from '../Spinner';
-import Checkbox from '../Checkbox';
-import { API_BASE_URL } from '../../config';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import Header from "../Header";
+import InputText from "../InputText";
+import InputPassword from "../InputPassword";
+import PrimaryButton from "../PrimaryButton";
+import Spinner from "../Spinner";
+import Checkbox from "../Checkbox";
+import { API_BASE_URL } from "../../config";
 
-import './RegisterPage.css';
+import "./RegisterPage.css";
 
 export default class RegisterPage extends Component {
   constructor() {
     super();
 
     this.state = {
-      name: '',
-      email: '',
-      password: '',
-      passwordConfirm: '',
+      name: "",
+      email: "",
+      password: "",
+      passwordConfirm: "",
       hasAgreed: false,
       loading: false,
       registered: false,
-      error: ''
+      error: "",
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -36,12 +35,12 @@ export default class RegisterPage extends Component {
   toggleAgreed() {
     const { hasAgreed, error } = this.state;
     this.setState({
-      hasAgreed: !hasAgreed
+      hasAgreed: !hasAgreed,
     });
 
     if (error) {
       this.setState({
-        error: ''
+        error: "",
       });
     }
   }
@@ -49,81 +48,74 @@ export default class RegisterPage extends Component {
   handleOnChange(e) {
     const { error } = this.state;
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
 
     if (error) {
       this.setState({
-        error: ''
+        error: "",
       });
     }
   }
 
   validateEmail(email) {
-    // eslint-disable-next-line no-useless-escape
-    const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const emailRegEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegEx.test(String(email).toLowerCase());
   }
 
   handleSubmit(e) {
     e.preventDefault();
 
-    const {
-      name,
-      email,
-      password,
-      passwordConfirm,
-      hasAgreed
-    } = this.state;
+    const { name, email, password, passwordConfirm, hasAgreed } = this.state;
 
     const userData = {
       name,
       email,
-      password
+      password,
     };
 
     if (!email || !password || !name || !passwordConfirm) {
       this.setState({
-        error: 'Please enter all fields'
+        error: "Please enter all fields",
       });
     } else if (!name.trim()) {
       this.setState({
-        error: 'Please provide a valid username'
+        error: "Please provide a valid username",
       });
     } else if (this.validateEmail(email) === false) {
       this.setState({
         loading: false,
-        error: 'Please provide a valid email address'
+        error: "Please provide a valid email address",
       });
     } else if (password !== passwordConfirm) {
       this.setState({
         loading: false,
-        error: 'Passwords do not match'
+        error: "Passwords do not match",
       });
     } else if (!hasAgreed) {
       this.setState({
         loading: false,
-        error: 'Please agree to our Terms of Service'
+        error: "Please agree to our Terms of Service",
       });
     } else {
       this.setState({
-        loading: true
+        loading: true,
       });
 
       axios
         .post(`${API_BASE_URL}/users`, userData)
         .then((response) => {
-          if (response.data.status === 'success') {
+          if (response.data.status === "success") {
             this.setState({
               loading: false,
-              registered: true
+              registered: true,
             });
           }
         })
         .catch((error) => {
           this.setState({
             loading: false,
-            error: 'Email already in use by another account.'
+            error: "Email already in use by another account.",
           });
         });
     }
@@ -138,7 +130,7 @@ export default class RegisterPage extends Component {
       loading,
       registered,
       error,
-      hasAgreed
+      hasAgreed,
     } = this.state;
 
     return (
@@ -152,14 +144,12 @@ export default class RegisterPage extends Component {
               </div>
               <form onSubmit={this.handleSubmit}>
                 <div className="RegisterContentInputs">
-
                   <InputText
                     required
                     placeholder="Name"
                     name="name"
                     value={name}
                     onChange={this.handleOnChange}
-
                   />
                   <InputText
                     required
@@ -182,24 +172,21 @@ export default class RegisterPage extends Component {
                     value={passwordConfirm}
                     onChange={this.handleOnChange}
                   />
-                  {error && (
-                    <div className="RegisterErrorDiv">
-                      {error}
-                    </div>
-                  )}
-
+                  {error && <div className="RegisterErrorDiv">{error}</div>}
 
                   <div className="RegisterContentBottomLink RegisterLinkContainer RegisterCheckbox">
                     <Checkbox
                       onClick={this.toggleAgreed}
                       isChecked={hasAgreed}
                     />
-                  &nbsp; I agree to Crane Cloud&apos;s&nbsp;&nbsp;
-                    <Link to="/register" className="RegisterContentLink">Terms of service.</Link>
+                    &nbsp; I agree to Crane Cloud&apos;s&nbsp;&nbsp;
+                    <Link to="/register" className="RegisterContentLink">
+                      Terms of service.
+                    </Link>
                   </div>
 
                   <PrimaryButton
-                    label={loading ? <Spinner /> : 'Register'}
+                    label={loading ? <Spinner /> : "Register"}
                     onClick={this.handleSubmit}
                   />
                 </div>
@@ -215,16 +202,12 @@ export default class RegisterPage extends Component {
                   .
                   <br />
                   <br />
-                  The link will expire after 24 hours. Please use this link to activate and start using your account.
+                  The link will expire after 24 hours. Please use this link to
+                  activate and start using your account.
                 </p>
               </div>
             </div>
           )}
-        </div>
-
-
-        <div className="RegisterPageFooter">
-          <LandingFooter />
         </div>
       </div>
     );

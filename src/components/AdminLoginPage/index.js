@@ -1,26 +1,25 @@
-import React from 'react';
-import axios from 'axios';
-import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import saveUser from '../../redux/actions/saveUser';
-import Header from '../Header';
-import LandingFooter from '../LandingFooter';
-import InputText from '../InputText';
-import InputPassword from '../InputPassword';
-import PrimaryButton from '../PrimaryButton';
-import Spinner from '../Spinner';
-import { API_BASE_URL } from '../../config';
-import '../LoginPage/LoginPage.css';
+import React from "react";
+import axios from "axios";
+import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import saveUser from "../../redux/actions/saveUser";
+import Header from "../Header";
+import InputText from "../InputText";
+import InputPassword from "../InputPassword";
+import PrimaryButton from "../PrimaryButton";
+import Spinner from "../Spinner";
+import { API_BASE_URL } from "../../config";
+import "../LoginPage/LoginPage.css";
 
 class AdminLoginPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
       loading: false,
-      feedbackMessage: ''
+      feedbackMessage: "",
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -29,7 +28,7 @@ class AdminLoginPage extends React.Component {
 
   handleChange(e) {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
 
@@ -42,38 +41,38 @@ class AdminLoginPage extends React.Component {
 
     const adminCredentials = {
       email,
-      password
+      password,
     };
 
     this.setState({
-      loading: true
+      loading: true,
     });
 
     axios
       .post(`${API_BASE_URL}/users/admin_login`, adminCredentials)
       .then((res) => {
-        if (res.data.status === 'success') {
+        if (res.data.status === "success") {
           this.setState({
-            loading: false
+            loading: false,
           });
 
           // redirect to dashboard
           // save user data to store
           saveUser(res.data.data);
-          localStorage.setItem('token', res.data.data.access_token);
+          localStorage.setItem("token", res.data.data.access_token);
           this.setState(
             {
-              feedbackMessage: 'Login Successful'
+              feedbackMessage: "Login Successful",
             },
             () => {
-              window.location.href = '/clusters';
+              window.location.href = "/clusters";
             }
           );
         }
       })
       .catch((err) => {
         this.setState({
-          loading: false
+          loading: false,
         });
       });
   }
@@ -111,40 +110,37 @@ class AdminLoginPage extends React.Component {
               />
 
               <div className="LoginLinkContainer">
-                <Link to="/forgot-password" className="LoginContentLink">Forgot your password?</Link>
+                <Link to="/forgot-password" className="LoginContentLink">
+                  Forgot your password?
+                </Link>
               </div>
 
               <PrimaryButton
-                label={loading ? <Spinner /> : 'login'}
+                label={loading ? <Spinner /> : "login"}
                 onClick={this.handleSubmit}
               />
 
               <div className="LoginContentBottomLink LoginLinkContainer">
-                <Link to="/login" className="LoginContentLink">Go to user login.</Link>
+                <Link to="/login" className="LoginContentLink">
+                  Go to user login.
+                </Link>
               </div>
-
             </div>
           </form>
-        </div>
-
-        <div className="LoginPageFooter">
-          <LandingFooter />
         </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => (
-  { user: state.user }
-);
+const mapStateToProps = (state) => ({ user: state.user });
 
 const mapDispatchToProps = {
-  saveUser
+  saveUser,
 };
 
 AdminLoginPage.propTypes = {
-  saveUser: PropTypes.func.isRequired
+  saveUser: PropTypes.func.isRequired,
 };
 
 export default connect(

@@ -1,4 +1,3 @@
-
 .ContentSection {
   justify-content: space-between;
   padding-left: 3rem;
@@ -8,90 +7,121 @@
   width: 25rem;
 }
 
-.DatabaseDetail{
+.DatabaseDetail {
   width: 100%;
 }
 
-.DBButtons{
+.DBButtons {
   display: grid;
   grid-template-rows: 1fr 1fr;
   gap: 1rem;
   align-items: center;
 }
-.ResetBtn{
-  background-color: #F7B21F;
+.ResetBtn {
+  background-color: #f7b21f;
   float: left;
 }
 
-.DBDeleteBtn{
-  background-color: #FF9595;
-  outline: 2px solid #FF9595;
+.DBDeleteBtn {
+  background-color: #ff9595;
+  outline: 2px solid #ff9595;
   color: #fff;
   float: left;
 }
 
-.DBDeleteBtn:hover{
+.DBDeleteBtn:hover {
   background-color: transparent;
-  outline: 2px solid #FF9595;
-  color: #FF9595;
+  outline: 2px solid #ff9595;
+  color: #ff9595;
 }
-.rowDiv{
+.rowDiv {
   display: grid;
 }
 
-.DBDetailRow{
-  width: 100%;
+.DBDetailRow {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 15% 25% 10% auto;
   padding-bottom: 1rem;
-}
-.DBDetailRow:after{
-  content: "";
-  display: table;
-  clear: both;
+  align-items: center;
 }
 
-.buttonText{
-  padding: 1rem 0 0 1rem;
-  float: left;
+.DBDetailRow:hover {
+  color: #f7b21f;
 }
 
-.DBThead{
-  width: 15%;
-  float: left;
+.DBThead {
   font-weight: bold;
 }
 
-.DBTDetail{
-  width: 80%;
-  float: left;
+.DBPassword {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 0.8rem;
+  padding: 0 0.8rem;
+  align-items: center;
 }
 
-.DeleteDatabaseModel{
+.DeleteDatabaseModel {
   display: grid;
   gap: 1rem;
 }
 
-.InnerModalDescription{
+.InnerModalDescription {
   display: grid;
   gap: 0.5rem;
 }
 
-.DBPasswordRow:after{
-  content: "";
-  display: table;
-  clear: both;
-}
-
-.DBColumn{
-  float: left;
-  width: 35%;
-}
-
-.DBColumn1{
-  float: left;
-  width: 15%;
-}
-
-.PasswordButton{
+.PasswordButton {
   font-size: small;
   height: 1.9rem;
+}
+
+.DBInstructions {
+  padding: 1rem 0.5rem;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  display: grid;
+  gap: 1rem;
+}
+
+.DBInfoBottom {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+}
+
+.DBAccessInfo {
+  background: #f1f1f1;
+  padding: 0.2rem;
+  font-family: "monaco";
+}
+
+.DBAccessCopy {
+  width: fit-content;
+}
+
+.MysqlArticle {
+  color: #f7b21f;
+}
+
+.MysqlArticle:hover {
+  text-decoration: underline;
+}
+
+.DBIcon {
+  display: none;
+}
+.DBDetailRow:hover .DBIcon {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 0.8rem;
+  padding: 0 0.8rem;
+  align-items: center;
+}
+
+.DBButtonRow {
+  display: grid;
+  grid-template-columns: 20% auto;
+  grid-auto-flow: column;
+  align-items: center;
 }

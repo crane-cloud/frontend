@@ -1,11 +1,11 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import './ProjectCard.css';
-import LineChartComponent from '../LineChart';
-import getProjectMemory from '../../redux/actions/projectMemory';
-import { formatMemoryMetrics } from '../../helpers/formatMetrics';
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import "./ProjectCard.css";
+import LineChartComponent from "../LineChart";
+import getProjectMemory from "../../redux/actions/projectMemory";
+import { formatMemoryMetrics } from "../../helpers/formatMetrics";
 
 class ProjectCard extends React.Component {
   constructor(props) {
@@ -19,7 +19,7 @@ class ProjectCard extends React.Component {
     getProjectMemory(cardID, {});
   }
 
-  getProjectMemoryMetrics(){
+  getProjectMemoryMetrics() {
     const { cardID } = this.props;
     const { memoryMetrics } = this.props;
     const results = formatMemoryMetrics(cardID, memoryMetrics);
@@ -27,28 +27,39 @@ class ProjectCard extends React.Component {
   }
 
   render() {
-    const {
-      name,
-      data,
-      description,
-      cardID
-    } = this.props;
+    const { name, data, description, cardID } = this.props;
 
     const formattedMetrics = this.getProjectMemoryMetrics();
 
     const userId = data.id;
-    
+
     return (
       <>
         <div className="ProjectsCard">
-          <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps`, projectData: name }} key={cardID}>
+          <Link
+            to={{
+              pathname: `/users/${userId}/projects/${cardID}/apps`,
+              projectData: name,
+            }}
+            key={cardID}
+          >
             <div className="ProjectImageDiv">
-              <LineChartComponent lineDataKey="memory" preview data={formattedMetrics} />
+              <LineChartComponent
+                lineDataKey="memory"
+                preview
+                data={formattedMetrics}
+              />
             </div>
           </Link>
           <div className="BottomContainer">
             <div className="ProjectInfoSection">
-              <Link to={{ pathname: `/users/${userId}/projects/${cardID}/apps`, projectData: name }} key={cardID}>
+              <Link
+                to={{
+                  pathname: `/users/${userId}/projects/${cardID}/apps`,
+                  projectData: name,
+                }}
+                key={cardID}
+              >
                 <div className="ProjectsCardName">{name}</div>
               </Link>
             </div>
@@ -65,30 +76,31 @@ ProjectCard.propTypes = {
   name: PropTypes.string,
   description: PropTypes.string,
   data: PropTypes.shape({
-    id: PropTypes.string.isRequired
+    id: PropTypes.string.isRequired,
   }).isRequired,
   getProjectMemory: PropTypes.func.isRequired,
-  memoryMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired
+  memoryMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 ProjectCard.defaultProps = {
-  name: '',
-  description: ''
+  name: "",
+  description: "",
 };
 
 const mapStateToProps = (state) => {
   const { data } = state.user;
-  const { isFetchingMemory, memoryMetrics, memoryMessage } = state.projectMemoryReducer;
+  const { isFetchingMemory, memoryMetrics, memoryMessage } =
+    state.projectMemoryReducer;
   return {
     data,
     isFetchingMemory,
     memoryMetrics,
-    memoryMessage
+    memoryMessage,
   };
 };
 
 const mapDispatchToProps = {
-  getProjectMemory
+  getProjectMemory,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectCard);

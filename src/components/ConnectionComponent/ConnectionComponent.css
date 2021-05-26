@@ -29,10 +29,9 @@
   justify-content: center;
   align-items: center;
   width: 2.375rem;
-  
 }
 
-.ConnectionButton:hover{
+.ConnectionButton:hover {
   border-color: transparent;
 }
 

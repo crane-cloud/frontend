@@ -58,11 +58,12 @@ a.RegisterContentLink {
 }
 
 @media only screen and (max-width: 640px) {
-  .RegisterContent  {
+  .RegisterContent {
     width: 90%;
   }
 
-  .InputPassword, .InputText {
+  .InputPassword,
+  .InputText {
     width: 90%;
   }
 

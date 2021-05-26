@@ -2,13 +2,13 @@ import {
   FETCH_APP_MEMORY_SUCCESS,
   FETCH_APP_MEMORY_FAILED,
   IS_FETCHING_APP_MEMORY,
-  CLEAR_APP_MEMORY
-} from '../actions/actionTypes';
+  CLEAR_APP_MEMORY,
+} from "../actions/actionTypes";
 
 const initialState = {
   appMemoryMetrics: [],
   isFetchingAppMemory: false,
-  appMemoryMessage: ''
+  appMemoryMessage: "",
 };
 
 const appMemoryReducer = (state = initialState, action) => {
@@ -16,27 +16,29 @@ const appMemoryReducer = (state = initialState, action) => {
     case FETCH_APP_MEMORY_SUCCESS:
       return {
         ...state,
-        appMemoryMetrics: [...state.appMemoryMetrics,
-            {
-              app: action.payload.app,
-              metrics: action.payload.metrics
-            }
-          ],
-          isFetchingAppMemory: false,
-          appMemoryMessage: 'Fetched app memory metrics'
+        appMemoryMetrics: [
+          ...state.appMemoryMetrics,
+          {
+            app: action.payload.app,
+            metrics: action.payload.metrics,
+          },
+        ],
+        isFetchingAppMemory: false,
+        appMemoryMessage: "Fetched app memory metrics",
       };
 
     case FETCH_APP_MEMORY_FAILED:
       return {
         ...state,
-        appMemoryMetrics: [...state.appMemoryMetrics,
-            {
-              app: action.payload.app,
-              metrics: action.payload.metrics
-            }
-          ],
-          isFetchingAppMemory: false,
-          appMemoryMessage: 'Error fetching app memory metrics'
+        appMemoryMetrics: [
+          ...state.appMemoryMetrics,
+          {
+            app: action.payload.app,
+            metrics: action.payload.metrics,
+          },
+        ],
+        isFetchingAppMemory: false,
+        appMemoryMessage: "Error fetching app memory metrics",
       };
 
     case IS_FETCHING_APP_MEMORY:
@@ -50,7 +52,7 @@ const appMemoryReducer = (state = initialState, action) => {
         ...state,
         appMemoryMetrics: [],
         isFetchingAppMemory: false,
-        appMemoryMessage: ''
+        appMemoryMessage: "",
       };
 
     default:

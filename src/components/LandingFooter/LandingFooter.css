@@ -1,81 +1,75 @@
 footer.LandingFooter {
   color: #555555;
   text-align: center;
-  cursor: pointer;
-  overflow-x: hidden;
   background-color: #f1f1f1;
 }
-.FooterRow{
-  width: 100%;
-  padding: 3rem 1rem 0 1rem;
-  margin-right: auto;
-  margin-left: auto;
-}
 
-.FooterParent{
+.FooterParent {
   display: flex;
 }
 
-.FooterParent .FooterChildOne{
+.FooterParent .FooterChildOne {
   display: flex;
   flex-direction: column;
 }
 
-.FooterParent .FooterChild1{
+.FooterParent .FooterChild1 {
   flex: 1;
 }
-.FooterParent .FooterChild2{
+.FooterParent .FooterChild2 {
   flex: 2;
 }
 
-.FooterContent{
+.FooterContent {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-}
-.FooterChildTwo{
+  grid-auto-flow: column;
 }
 
-.FooterLogoName{
-  font-size: 1.5rem;
-  color: #008AC1;
+.FooterLogoName {
+  color: #008ac1;
   font-weight: 600;
   margin-bottom: 0.3rem;
   margin-top: 0;
 }
 
-.CountryOfOrigin{
+.TextDivSpacing {
   text-align: left;
 }
-.FooterList{
+
+.TextDivSpacing a {
+  color: #555555;
+}
+.FooterList {
   padding-left: 0;
 }
-.FooterList li{
+.FooterList li {
   list-style: none;
   text-align: left;
 }
 
-.CenteredDiv{
+.CenteredDiv {
   padding-left: 2rem;
 }
-.LogoBrandName{
+.LogoBrandName {
   text-align: left;
 }
 
-li.CountryOfOrigin{
+li.TextDivSpacing {
   padding: 0.5rem 0;
+  color: #555555;
 }
 
-li.CountryOfOrigin a:visited{
-  color:#555555;
+li.TextDivSpacing a:visited {
+  color: #555555;
 }
 
-.SocialsIcons{
+.SocialsIcons {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 50%;
   align-items: center;
 }
 
-.SocialsIcons a{
+.SocialsIcons a {
   display: flex;
   align-items: center;
 }

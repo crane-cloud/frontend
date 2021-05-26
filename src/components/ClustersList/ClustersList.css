@@ -1,12 +1,12 @@
-.ClusterList{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    flex-direction: row;
-    width: 100%;
+.ClusterList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  flex-direction: row;
+  width: 100%;
 }
 
-.ClusterCardItem{
-    margin: 25px 25px;
-    color: black;
+.ClusterCardItem {
+  margin: 25px 25px;
+  color: black;
 }

@@ -1,45 +1,44 @@
-
 import {
   GET_APPS_SUCCESS,
   GET_APPS_FAIL,
-  START_GETTING_APPS
-} from '../actions/actionTypes';
+  START_GETTING_APPS,
+} from "../actions/actionTypes";
 
 const initialState = {
   apps: {},
   isRetrieved: false,
   isRetrieving: false,
-  message: 'Apps Not Available'
+  message: "Apps Not Available",
 };
 
 const appsListReducer = (state = initialState, action) => {
   switch (action.type) {
-  case GET_APPS_SUCCESS:
-    return {
-      ...state,
-      apps: action.payload,
-      isRetrieving: false,
-      isRetrieved: true,
-      message: 'All Apps fetched'
-    };
+    case GET_APPS_SUCCESS:
+      return {
+        ...state,
+        apps: action.payload,
+        isRetrieving: false,
+        isRetrieved: true,
+        message: "All Apps fetched",
+      };
 
-  case START_GETTING_APPS:
-    return {
-      ...state,
-      isRetrieved: false,
-      isRetrieving: true,
-    };
+    case START_GETTING_APPS:
+      return {
+        ...state,
+        isRetrieved: false,
+        isRetrieving: true,
+      };
 
-  case GET_APPS_FAIL:
-    return {
-      ...state,
-      message: action.payload,
-      isRetrieving: false,
-      isRetrieved: false,
-    };
+    case GET_APPS_FAIL:
+      return {
+        ...state,
+        message: action.payload,
+        isRetrieving: false,
+        isRetrieved: false,
+      };
 
-  default:
-    return state;
+    default:
+      return state;
   }
 };
 export default appsListReducer;

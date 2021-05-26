@@ -1,21 +1,17 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback
-} from 'react';
-import PropTypes from 'prop-types';
-import Calendar from '../Calendar';
-import TimeInput from '../TimeInput';
-import PrimaryButton from '../PrimaryButton';
+import React, { useState, useEffect, useCallback } from "react";
+import PropTypes from "prop-types";
+import Calendar from "../Calendar";
+import TimeInput from "../TimeInput";
+import PrimaryButton from "../PrimaryButton";
 import {
   monthNames,
   today,
   currentMonth,
   currentYear,
   currentHour,
-  currentMinutes
-} from '../../helpers/dateConstants';
-import './DateInput.css';
+  currentMinutes,
+} from "../../helpers/dateConstants";
+import "./DateInput.css";
 
 const DateInput = ({
   handleChange,
@@ -25,19 +21,20 @@ const DateInput = ({
   onClick,
   value,
   onCancel,
-  onSubmit
+  onSubmit,
 }) => {
   const [date, setDate] = useState({
     day: today,
     month: currentMonth,
-    year: currentYear
+    year: currentYear,
   });
   const [time, setTime] = useState({
     hour: currentHour,
-    mins: currentMinutes
+    mins: currentMinutes,
   });
 
-  const formatString = (num) => { // appends a leading 0 in case of 1-length string
+  const formatString = (num) => {
+    // appends a leading 0 in case of 1-length string
     const numString = num.toString();
 
     if (numString.length < 2) {
@@ -50,11 +47,14 @@ const DateInput = ({
   const createTimestamp = useCallback(() => {
     const { year, month, day } = date;
     const { hour, mins } = time;
-    const dateString = `${year}-${formatString(month + 1)}-${formatString(day)}`;
+    const dateString = `${year}-${formatString(month + 1)}-${formatString(
+      day
+    )}`;
     const timeString = `${formatString(hour)}:${formatString(mins)}`;
     const timeStamp = Date.parse(`${dateString}T${timeString}`);
 
-    if (showCalendar) { // only call active parent
+    if (showCalendar) {
+      // only call active parent
       handleChange(timeStamp);
     }
   }, [date, time, showCalendar, handleChange]);
@@ -64,7 +64,7 @@ const DateInput = ({
       ...date,
       day,
       month,
-      year
+      year,
     });
   };
 
@@ -72,7 +72,7 @@ const DateInput = ({
     setTime({
       ...time,
       hour: h,
-      mins: m
+      mins: m,
     });
   };
 
@@ -85,20 +85,20 @@ const DateInput = ({
   return (
     <div className="DateInputContainer">
       <div className="DateInputWrapper">
-        <div className="DateInputLabel">
-          {label}
-        </div>
+        <div className="DateInputLabel">{label}</div>
         <div
-          className={`DateInputDisplay ${showCalendar && 'DisplayActive'}`}
+          className={`DateInputDisplay ${showCalendar && "DisplayActive"}`}
           value={value}
           onClick={onClick}
           role="presentation"
         >
-          {date ? (
-            `${trimMonthName(monthNames[date.month])} ${date.day}, ${date.year}`
-          ) : (
-            `${trimMonthName(monthNames[currentMonth])} ${today}, ${currentYear}`
-          )}
+          {date
+            ? `${trimMonthName(monthNames[date.month])} ${date.day}, ${
+                date.year
+              }`
+            : `${trimMonthName(
+                monthNames[currentMonth]
+              )} ${today}, ${currentYear}`}
         </div>
       </div>
       {showCalendar && (
@@ -108,8 +108,16 @@ const DateInput = ({
           </div>
           <Calendar onChange={getDate} />
           <div className="CalendarModalButtons">
-            <PrimaryButton label="Cancel" className="CancelBtn ModalBtn" onClick={onCancel} />
-            <PrimaryButton label="proceed" className="ModalBtn" onClick={onSubmit} />
+            <PrimaryButton
+              label="Cancel"
+              className="CancelBtn ModalBtn"
+              onClick={onCancel}
+            />
+            <PrimaryButton
+              label="proceed"
+              className="ModalBtn"
+              onClick={onSubmit}
+            />
           </div>
         </div>
       )}
@@ -118,8 +126,8 @@ const DateInput = ({
 };
 
 DateInput.defaultProps = {
-  label: '',
-  position: ''
+  label: "",
+  position: "",
 };
 
 DateInput.propTypes = {
@@ -128,7 +136,7 @@ DateInput.propTypes = {
   handleChange: PropTypes.func.isRequired,
   showCalendar: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired
+  value: PropTypes.string.isRequired,
 };
 
 export default DateInput;

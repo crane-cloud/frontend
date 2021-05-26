@@ -1,18 +1,17 @@
-import axios from '../../axios';
+import axios from "../../axios";
 import {
   GET_DEPLOYMENTS_SUCCESS,
   GET_DEPLOYMENTS_FAIL,
-  GETTING_DEPLOYMENTS
-} from './actionTypes';
-
+  GETTING_DEPLOYMENTS,
+} from "./actionTypes";
 
 const startGettingDeployments = () => ({
-  type: GETTING_DEPLOYMENTS
+  type: GETTING_DEPLOYMENTS,
 });
 
 const getDeploymentsSuccess = (response) => ({
   type: GET_DEPLOYMENTS_SUCCESS,
-  payload: response.data.data.deployments
+  payload: response.data.data.deployments,
 });
 
 const getDeploymentsFail = (error) => ({
@@ -20,13 +19,14 @@ const getDeploymentsFail = (error) => ({
   payload: {
     status: false,
     error: error.status,
-  }
+  },
 });
 
 const getDeployments = (clusterID) => (dispatch) => {
   dispatch(startGettingDeployments());
 
-  axios.get(`/clusters/${clusterID}/deployments`)
+  axios
+    .get(`/clusters/${clusterID}/deployments`)
     .then((response) => dispatch(getDeploymentsSuccess(response)))
     .catch((error) => {
       dispatch(getDeploymentsFail(error));

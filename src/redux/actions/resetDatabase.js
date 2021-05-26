@@ -1,10 +1,10 @@
-import axios from '../../axios';
+import axios from "../../axios";
 import {
   RESET_DATABASE_SUCCESS,
   RESET_DATABASE_FAIL,
   START_RESETING_DATABASE,
-  CLEAR_RESET_DATABASE_STATE
-} from './actionTypes';
+  CLEAR_RESET_DATABASE_STATE,
+} from "./actionTypes";
 
 const startResetingDatabase = () => ({
   type: START_RESETING_DATABASE,
@@ -24,13 +24,14 @@ const resetDatabaseFail = (error) => ({
 });
 
 const clearDatabaseResetState = () => ({
-  type: CLEAR_RESET_DATABASE_STATE
+  type: CLEAR_RESET_DATABASE_STATE,
 });
 
 const resetDatabase = (projectID, databaseID) => (dispatch) => {
   dispatch(startResetingDatabase());
 
-  return axios.post(`/projects/${projectID}/databases/${databaseID}/reset`)
+  return axios
+    .post(`/projects/${projectID}/databases/${databaseID}/reset`)
     .then((response) => dispatch(resetDatabaseSuccess(response)))
     .catch((error) => {
       dispatch(resetDatabaseFail(error));

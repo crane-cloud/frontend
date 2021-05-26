@@ -1,17 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import PrimaryButton from '../PrimaryButton';
-import Select from '../Select';
-import CancelButton from '../CancelButton';
-import Spinner from '../Spinner';
-import Feedback from '../Feedback';
-import createDatabase, { clearDatabaseCreateState } from '../../redux/actions/createDatabase';
-import './CreateDatabase.css';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import PrimaryButton from "../PrimaryButton";
+import Select from "../Select";
+import CancelButton from "../CancelButton";
+import Spinner from "../Spinner";
+import Feedback from "../Feedback";
+import createDatabase, {
+  clearDatabaseCreateState,
+} from "../../redux/actions/createDatabase";
+import "./CreateDatabase.css";
 
 const flavours = [
-  { name: 'MYSQL', id: 1, value: 'MYSQL' }
+  { name: "MYSQL", id: 1, value: "mysql" },
+  { name: "POSTGRESQL", id: 2, value: "postgres" },
 ];
 
 class CreateDatabase extends React.Component {
@@ -19,8 +22,8 @@ class CreateDatabase extends React.Component {
     super(props);
 
     this.state = {
-      databaseFlavour: '',
-      error: ''
+      databaseFlavour: "",
+      error: "",
     };
 
     this.handleSelectChange = this.handleSelectChange.bind(this);
@@ -33,10 +36,18 @@ class CreateDatabase extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { isCreated, params: { userID, projectID } } = this.props;
+    const {
+      isCreated,
+      params: { userID, projectID },
+    } = this.props;
 
     if (isCreated !== prevProps.isCreated) {
-      return <Redirect to={`/users/${userID}/projects/${projectID}/databases`} noThrow />;
+      return (
+        <Redirect
+          to={`/users/${userID}/projects/${projectID}/databases`}
+          noThrow
+        />
+      );
     }
   }
 
@@ -46,13 +57,19 @@ class CreateDatabase extends React.Component {
 
   handleSubmit() {
     const { databaseFlavour } = this.state;
-    const { createDatabase, params: { projectID } } = this.props;
+    const {
+      createDatabase,
+      params: { projectID },
+    } = this.props;
     if (!databaseFlavour) {
       this.setState({
-        error: 'Select a database flavour'
+        error: "Select a database flavour",
       });
     } else {
-      createDatabase({}, projectID);
+      const newDBType = {
+        database_flavour_name: databaseFlavour,
+      };
+      createDatabase(newDBType, projectID);
     }
   }
 
@@ -61,14 +78,16 @@ class CreateDatabase extends React.Component {
       isCreating,
       isCreated,
       message,
-      params: {
-        userID,
-        projectID
-      }
+      params: { userID, projectID },
     } = this.props;
     const { error } = this.state;
     if (isCreated) {
-      return <Redirect to={`/users/${userID}/projects/${projectID}/databases`} noThrow />;
+      return (
+        <Redirect
+          to={`/users/${userID}/projects/${projectID}/databases`}
+          noThrow
+        />
+      );
     }
     return (
       <div>
@@ -86,7 +105,6 @@ class CreateDatabase extends React.Component {
           <div className="ContentSection">
             <div>
               <div className="DatabaseForm">
-
                 <div className="DBFormElements">
                   <Select
                     required
@@ -96,17 +114,12 @@ class CreateDatabase extends React.Component {
                   />
                   <div />
                   <div>
-                    {error && (
-                      <Feedback
-                        type="error"
-                        message={error}
-                      />
-                    )}
+                    {error && <Feedback type="error" message={error} />}
                   </div>
                   <div className="DBButtons">
                     <div className="DBDetailRow">
                       <PrimaryButton
-                        label={isCreating ? <Spinner /> : 'Create'}
+                        label={isCreating ? <Spinner /> : "Create"}
                         className="CreateBtn"
                         onClick={this.handleSubmit}
                       />
@@ -116,8 +129,8 @@ class CreateDatabase extends React.Component {
               </div>
               {message && (
                 <Feedback
-                  message={message !== '' ? message : (null)}
-                  type={isCreated ? 'success' : 'error'}
+                  message={message !== "" ? message : null}
+                  type={isCreated ? "success" : "error"}
                 />
               )}
             </div>
@@ -131,20 +144,19 @@ CreateDatabase.propTypes = {
   isCreating: PropTypes.bool,
   isCreated: PropTypes.bool,
   message: PropTypes.string,
-  params: PropTypes.shape({})
+  params: PropTypes.shape({}),
 };
 
 CreateDatabase.defaultProps = {
-  message: '',
+  message: "",
   isCreated: false,
   isCreating: false,
-  params: {}
+  params: {},
 };
 
 const mapStateToProps = (state) => {
-  const {
-    isCreating, isCreated, clearDatabaseCreateState, message
-  } = state.createDatabaseReducer;
+  const { isCreating, isCreated, clearDatabaseCreateState, message } =
+    state.createDatabaseReducer;
 
   return {
     isCreating,
@@ -155,7 +167,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  createDatabase, clearDatabaseCreateState
+  createDatabase,
+  clearDatabaseCreateState,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateDatabase);

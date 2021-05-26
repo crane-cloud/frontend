@@ -1,11 +1,10 @@
-import axios from '../../axios';
+import axios from "../../axios";
 import {
   START_UPDATING_PROJECT,
   CLEAR_UPDATE_PROJECT_STATE,
   UPDATE_PROJECT_SUCCESS,
-  UPDATE_PROJECT_FAILED
-} from './actionTypes';
-
+  UPDATE_PROJECT_FAILED,
+} from "./actionTypes";
 
 const startUpdatingProject = () => ({
   type: START_UPDATING_PROJECT,
@@ -24,15 +23,15 @@ export const updateProjectFail = (error) => ({
   },
 });
 
-
 const clearUpdateProjectState = () => ({
-  type: CLEAR_UPDATE_PROJECT_STATE
+  type: CLEAR_UPDATE_PROJECT_STATE,
 });
 
 const updateProject = (projectID, projectData) => (dispatch) => {
   dispatch(startUpdatingProject());
 
-  return axios.patch(`/projects/${projectID}`, projectData)
+  return axios
+    .patch(`/projects/${projectID}`, projectData)
     .then((response) => dispatch(updateProjectSuccess(response)))
     .catch((error) => {
       dispatch(updateProjectFail(error));

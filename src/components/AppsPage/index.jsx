@@ -1,48 +1,48 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { v4 as uuidv4 } from 'uuid';
-import createApp, { clearState } from '../../redux/actions/createApp';
-import PrimaryButton from '../PrimaryButton';
-import BlackInputText from '../BlackInputText';
-import Modal from '../Modal';
-import RemoveIcon from '../../assets/images/remove.svg';
-import InformationBar from '../InformationBar';
-import AppsList from '../AppsList';
-import Header from '../Header';
-import Spinner from '../Spinner';
-import Feedback from '../Feedback';
-import Checkbox from '../Checkbox';
-import Tooltip from '../Tooltip';
-import SideBar from '../SideBar';
-import Tabs from '../Tabs';
-import Select from '../Select';
-import './AppsPage.css';
+import React from "react";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { v4 as uuidv4 } from "uuid";
+import createApp, { clearState } from "../../redux/actions/createApp";
+import PrimaryButton from "../PrimaryButton";
+import BlackInputText from "../BlackInputText";
+import Modal from "../Modal";
+import RemoveIcon from "../../assets/images/remove.svg";
+import InformationBar from "../InformationBar";
+import AppsList from "../AppsList";
+import Header from "../Header";
+import Spinner from "../Spinner";
+import Feedback from "../Feedback";
+import Checkbox from "../Checkbox";
+import Tooltip from "../Tooltip";
+import SideBar from "../SideBar";
+import Tabs from "../Tabs";
+import Select from "../Select";
+import "./AppsPage.css";
 
 class AppsPage extends React.Component {
   constructor(props) {
     super(props);
     this.initialState = {
-      name: '',
-      uri: '',
-      varName: '',
-      varValue: '',
+      name: "",
+      uri: "",
+      varName: "",
+      varValue: "",
       envVars: {},
       openModal: false, // add project modal is closed initially
-      error: '',
-      createFeedback: '',
-      entryCommand: '',
-      port: '',
+      error: "",
+      createFeedback: "",
+      entryCommand: "",
+      port: "",
       isPrivateImage: false,
       dockerCredentials: {
-        username: '',
-        email: '',
-        password: '',
-        server: '',
-        error: ''
+        username: "",
+        email: "",
+        password: "",
+        server: "",
+        error: "",
       },
-      replicas: 1
+      replicas: 1,
     };
 
     this.state = this.initialState;
@@ -55,7 +55,8 @@ class AppsPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateAppName = this.validateAppName.bind(this);
     this.togglePrivateImage = this.togglePrivateImage.bind(this);
-    this.handleDockerCredentialsChange = this.handleDockerCredentialsChange.bind(this);
+    this.handleDockerCredentialsChange =
+      this.handleDockerCredentialsChange.bind(this);
     this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
     this.getProjectName = this.getProjectName.bind(this);
     this.getProjectDescription = this.getProjectDescription.bind(this);
@@ -97,16 +98,16 @@ class AppsPage extends React.Component {
   handleChange(e) {
     const { error, createFeedback } = this.state;
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
     if (error) {
       this.setState({
-        error: ''
+        error: "",
       });
     }
     if (createFeedback) {
       this.setState({
-        createFeedback: ''
+        createFeedback: "",
       });
     }
   }
@@ -116,15 +117,15 @@ class AppsPage extends React.Component {
     this.setState((prevState) => ({
       dockerCredentials: {
         ...prevState.dockerCredentials,
-        [target.name]: value
-      }
+        [target.name]: value,
+      },
     }));
     if (dockerCredentials.error) {
       this.setState((prevState) => ({
         dockerCredentials: {
           ...prevState.dockerCredentials,
-          error: ''
-        }
+          error: "",
+        },
       }));
     }
   }
@@ -136,11 +137,12 @@ class AppsPage extends React.Component {
       this.setState((prevState) => ({
         envVars: {
           ...prevState.envVars,
-          [varName]: varValue
-        }
+          [varName]: varValue,
+        },
       }));
       this.setState({
-        varName: '', varValue: ''
+        varName: "",
+        varValue: "",
       });
     }
   }
@@ -161,7 +163,7 @@ class AppsPage extends React.Component {
   validateAppName(name) {
     if (/^[a-z]/i.test(name)) {
       if (name.match(/[^-a-zA-Z0-9.]/)) {
-        return 'false_convention';
+        return "false_convention";
       }
       return true;
     }
@@ -171,7 +173,7 @@ class AppsPage extends React.Component {
   togglePrivateImage() {
     const { isPrivateImage } = this.state;
     this.setState({
-      isPrivateImage: !isPrivateImage
+      isPrivateImage: !isPrivateImage,
     });
   }
 
@@ -187,46 +189,42 @@ class AppsPage extends React.Component {
       entryCommand,
       port,
       isPrivateImage,
-      dockerCredentials: {
-        username,
-        email,
-        password,
-        server
-      },
-      replicas
+      dockerCredentials: { username, email, password, server },
+      replicas,
     } = this.state;
-    const {
-      createApp,
-      match
-    } = this.props;
+    const { createApp, match } = this.props;
 
     if (!name || !uri) {
       // if user tries to submit empty email/password
       this.setState({
-        error: 'app name & image uri are required'
+        error: "app name & image uri are required",
       });
     } else if (this.validateAppName(name) === false) {
       this.setState({
-        error: 'Name should start with a letter'
+        error: "Name should start with a letter",
       });
-    } else if (this.validateAppName(name) === 'false_convention') {
+    } else if (this.validateAppName(name) === "false_convention") {
       this.setState({
-        error: 'Name may only contain letters,numbers,dot and a hypen -'
+        error: "Name may only contain letters,numbers,dot and a hypen -",
       });
     } else if (name.length > 27) {
       this.setState({
-        error: 'Name may not exceed 27 characters'
+        error: "Name may not exceed 27 characters",
       });
-    } else if (port && !(/^[0-9]*$/.test(port))) { // validate port and ensure its a number
+    } else if (port && !/^[0-9]*$/.test(port)) {
+      // validate port and ensure its a number
       this.setState({
-        error: 'Port should be an integer'
+        error: "Port should be an integer",
       });
-    } else if (isPrivateImage && (!email || !username || !password || !server)) {
+    } else if (
+      isPrivateImage &&
+      (!email || !username || !password || !server)
+    ) {
       this.setState((prevState) => ({
         dockerCredentials: {
           ...prevState.dockerCredentials,
-          error: 'please provide all the information above'
-        }
+          error: "please provide all the information above",
+        },
       }));
     } else {
       let appInfo = {
@@ -236,7 +234,7 @@ class AppsPage extends React.Component {
         name,
         project_id: match.params.projectID,
         private_image: isPrivateImage,
-        replicas
+        replicas,
       };
 
       if (port) {
@@ -249,7 +247,7 @@ class AppsPage extends React.Component {
           docker_email: email,
           docker_username: username,
           docker_password: password,
-          docker_server: server
+          docker_server: server,
         };
       }
 
@@ -270,12 +268,7 @@ class AppsPage extends React.Component {
       port,
       isPrivateImage,
       dockerCredentials,
-      dockerCredentials: {
-        username,
-        email,
-        password,
-        server,
-      },
+      dockerCredentials: { username, email, password, server },
     } = this.state;
 
     const {
@@ -284,28 +277,30 @@ class AppsPage extends React.Component {
       isCreated,
       message,
       errorCode,
-      projects
+      projects,
     } = this.props;
 
     const { projectID, userID } = params;
 
     const replicaOptions = [
-      { id: 1, name: '1' },
-      { id: 2, name: '2' },
-      { id: 3, name: '3' },
-      { id: 4, name: '4' }
+      { id: 1, name: "1" },
+      { id: 2, name: "2" },
+      { id: 3, name: "3" },
+      { id: 4, name: "4" },
     ];
 
     const projectDetails = {
       name: this.getProjectName(projects, params.projectID),
-      description: this.getProjectDescription(projects, params.projectID)
+      description: this.getProjectDescription(projects, params.projectID),
     };
 
-    localStorage.setItem('project', JSON.stringify(projectDetails));
+    localStorage.setItem("project", JSON.stringify(projectDetails));
 
     return (
       <div className="Page">
-        <div className="TopBarSection"><Header /></div>
+        <div className="TopBarSection">
+          <Header />
+        </div>
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
@@ -322,11 +317,7 @@ class AppsPage extends React.Component {
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
-              <InformationBar
-                header="Apps"
-                showBtn
-                btnAction={this.showForm}
-              />
+              <InformationBar header="Apps" showBtn btnAction={this.showForm} />
             </div>
             <div className="ContentSection">
               <AppsList params={params} newAppCreated={isCreated} />
@@ -386,7 +377,7 @@ class AppsPage extends React.Component {
                 {isPrivateImage && (
                   <div className="PrivateImageTabContainer">
                     <Tabs>
-                      <div index={1}/* label={<DockerLogo />} */>
+                      <div index={1} /* label={<DockerLogo />} */>
                         <div className="PrivateImageInputs">
                           <BlackInputText
                             required
@@ -429,7 +420,7 @@ class AppsPage extends React.Component {
                             }}
                           />
 
-                          {(dockerCredentials.error) && (
+                          {dockerCredentials.error && (
                             <Feedback
                               type="error"
                               message={dockerCredentials.error}
@@ -468,12 +459,7 @@ class AppsPage extends React.Component {
                   }}
                 />
 
-                {error && (
-                  <Feedback
-                    type="error"
-                    message={error}
-                  />
-                )}
+                {error && <Feedback type="error" message={error} />}
               </div>
               <div className="ModalFormInputsEnvVars">
                 <div className="HeadingWithTooltip">
@@ -483,7 +469,7 @@ class AppsPage extends React.Component {
                     message="These are are key/value pairs which define aspects of your app’s environment that can vary"
                   />
                 </div>
-                {(Object.keys(envVars).length > 0) && (
+                {Object.keys(envVars).length > 0 && (
                   <div className="EnvVarsTable">
                     <table>
                       <thead>
@@ -545,17 +531,27 @@ class AppsPage extends React.Component {
             {/* //- /////////////////////////////////// -// */}
 
             <div className="ModalFormButtons AddAddButtons">
-              <PrimaryButton label="cancel" className="CancelBtn" onClick={this.hideForm} />
-              <PrimaryButton label={isCreating ? <Spinner /> : 'deploy'} onClick={this.handleSubmit} />
+              <PrimaryButton
+                label="cancel"
+                className="CancelBtn"
+                onClick={this.hideForm}
+              />
+              <PrimaryButton
+                label={isCreating ? <Spinner /> : "deploy"}
+                onClick={this.handleSubmit}
+              />
             </div>
 
             {message && (
               <Feedback
-                message={errorCode === 409 ? 'Name already in use, please choose another and try again' : message}
-                type={(isCreated && errorCode !== 409) ? 'success' : 'error'}
+                message={
+                  errorCode === 409
+                    ? "Name already in use, please choose another and try again"
+                    : message
+                }
+                type={isCreated && errorCode !== 409 ? "success" : "error"}
               />
             )}
-
           </div>
         </Modal>
       </div>
@@ -574,31 +570,33 @@ AppsPage.propTypes = {
     params: PropTypes.shape({
       projectID: PropTypes.string.isRequired,
       userID: PropTypes.string.isRequired,
-    }).isRequired
+    }).isRequired,
   }).isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 AppsPage.defaultProps = {
-  errorCode: null
+  errorCode: null,
 };
 
 const mapStateToProps = ({ createNewApp, userProjectsReducer }) => {
-  const {
-    message, isCreated, isCreating, errorCode
-  } = createNewApp;
+  const { message, isCreated, isCreating, errorCode } = createNewApp;
   const { projects } = userProjectsReducer;
   return {
     isCreated,
     isCreating,
     errorCode,
     message,
-    projects
+    projects,
   };
 };
 
 const mapDispatchToProps = {
-  createApp, clearState
+  createApp,
+  clearState,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AppsPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(AppsPage));

@@ -1,4 +1,4 @@
-header.Header {
+.Header {
   background-color: #008ac1;
   color: #ffffff;
   display: flex;
@@ -7,30 +7,29 @@ header.Header {
   padding: 0 3rem;
   position: relative;
 }
-
 .HeaderLinks {
   display: grid;
   grid-auto-flow: column;
   grid-gap: 1rem;
   align-items: center;
+  text-transform: uppercase;
+  font-weight: 500;
 }
-
 .HeaderLinks a {
   font-size: 0.9em;
   color: #fff;
 }
-
-.HeaderLinks a.HeaderLinkLogin {
+.HeaderLinkLogin {
   border: 2px solid #fff;
   padding: 1rem 3rem;
+  font-size: 0.9em;
+  color: #fff;
 }
-
 .TurnLight:hover {
   transition: 0.4s;
   background-color: #f1f1f1;
   color: #000 !important;
 }
-
 /* remove focus from logo link - mozilla */
 .LogoLink:focus {
   outline: none;
@@ -39,15 +38,11 @@ header.Header {
   border: 0;
 }
 
-.LoggedIn {
-  display: flex;
-}
-
 .HeaderLinksWrap {
   display: flex;
 }
 
-div.HeaderLinksWrap.LoggedIn .OnHeader {
+.OnHeader {
   display: grid;
   gap: 1rem;
   grid-auto-flow: column;
@@ -56,32 +51,24 @@ div.HeaderLinksWrap.LoggedIn .OnHeader {
 }
 
 .OnHeader:hover .UserNames {
-  color: #F7B21F;
+  color: #f7b21f;
 }
-
 .OnHeader:hover svg {
-  fill: #F7B21F;
+  fill: #f7b21f;
 }
 
-div.DropDownGrid {
-  display: flex;
-  flex-direction: column;
-}
-
-div.HeaderLinksWrap.LoggedIn .BelowHeader {
+.BelowHeader {
   background-color: #f9f9f9;
   position: absolute;
   top: 100%;
   width: 10rem;
   right: 0;
 }
-
 .DropdownArrowSvg {
   width: 2rem;
   height: 2rem;
   fill: white;
 }
-
 .UserNames {
   font-weight: bold;
   color: #fff;
@@ -91,10 +78,8 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   -khtml-user-select: none; /* Konqueror HTML */
   -moz-user-select: none; /* Old versions of Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently
-                                    supported by Chrome, Edge, Opera and Firefox */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
-
 .DropDownContent {
   color: #000;
   background-color: #f9f9f9;
@@ -107,35 +92,29 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   -khtml-user-select: none; /* Konqueror HTML */
   -moz-user-select: none; /* Old versions of Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently
-                                    supported by Chrome, Edge, Opera and Firefox */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
-
 .DropDownLink {
   cursor: pointer;
   padding: 1rem 1.5rem;
 }
-
 .DropDownLink:hover,
 .DropDownLink:active {
   background-color: #f1f1f1;
 }
-
-.DropDownLink, .DropDownLink:visited {
+.DropDownLink,
+.DropDownLink:visited {
   color: #000;
   text-decoration: none;
 }
-
-.OnHeader a.HeaderLinkBackToConsole {
+a.HeaderLinkBackToConsole {
   text-transform: uppercase;
   border: 2px solid #ffffff;
-  padding: 1rem 3rem;
-  /* margin-left: 2rem; */
+  padding: 1rem 3rem; /* margin-left: 2rem; */
   font-size: 0.9em;
   color: white;
   padding: 1rem;
 }
-
 .StripBorder {
   text-transform: uppercase;
   padding: 1rem 3rem;
@@ -143,7 +122,6 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   color: white;
   padding: 1rem;
 }
-
 @media only screen and (max-width: 640px) {
   .HeaderLinkPricing,
   .HeaderLinkDocs {

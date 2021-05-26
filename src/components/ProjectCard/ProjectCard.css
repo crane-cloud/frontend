@@ -7,7 +7,7 @@
 .ProjectsCard:hover {
   transition: 0.5s;
   margin: 0;
-  border-color: #F7B21F;
+  border-color: #f7b21f;
 }
 
 .ProjectImageDiv {
@@ -21,7 +21,7 @@
   height: 5rem;
   display: flex;
   flex-direction: column;
-  background-color: #F8F7E5;
+  background-color: #f8f7e5;
 }
 
 .ProjectsCardName {
@@ -58,7 +58,6 @@
 .ProjectDropDownContent div:hover {
   background-color: #ddd;
 }
-
 
 .HeadingWithTooltip {
   display: inline;
@@ -133,7 +132,7 @@
 .ProjectDropDownContent {
   position: absolute;
   top: 1.5rem;
-  right: .5rem;
+  right: 0.5rem;
   background-color: #f1f1f1;
   min-width: 6.875rem;
   z-index: 1;

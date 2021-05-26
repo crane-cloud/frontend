@@ -154,20 +154,6 @@ div.ResourcesTable.LoadingResourcesTable {
   text-transform: uppercase;
 }
 
-body::-webkit-scrollbar {
-  width: 4px;
-  height: 0px;
-}
-body::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-body::-webkit-scrollbar-thumb {
-  background: #888;
-}
-body::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
 .ResourcesTable table {
   position: relative;
   table-layout: fixed;
@@ -219,7 +205,8 @@ tr.TableLoading td {
   transform: translate(-50%, -50%);
 }
 
-.ResourcesTable table tr.TableLoading:hover, .ResourcesTable table thead tr:hover {
+.ResourcesTable table tr.TableLoading:hover,
+.ResourcesTable table thead tr:hover {
   cursor: default;
   background-color: inherit;
 }
@@ -291,20 +278,6 @@ tr.TableLoading td {
   flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
-}
-.ContentSection::-webkit-scrollbar {
-  width: 10px;
-  height: 0px;
-}
-.ContentSection::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-.ContentSection::-webkit-scrollbar-thumb {
-  border-radius: 25px;
-  background: #008ac1;
-}
-.ContentSection::-webkit-scrollbar-thumb:hover {
-  background: #555;
 }
 
 /*- /////////--- STYLING FOR FEEDBACK ---//////////// */

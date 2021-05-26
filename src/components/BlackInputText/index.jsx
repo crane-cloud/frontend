@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import './BlackInputText.css';
+import React from "react";
+import PropTypes from "prop-types";
+import "./BlackInputText.css";
 
 const BlackInputText = ({
   onChange,
@@ -8,12 +8,12 @@ const BlackInputText = ({
   name,
   value,
   required,
-  type
+  type,
 }) => (
   <input
     className="BlackInputText"
     type={type}
-    placeholder={`${placeholder}${required ? ' *' : ''}`}
+    placeholder={`${placeholder}${required ? " *" : ""}`}
     name={name}
     value={value}
     onChange={(e) => {
@@ -28,13 +28,13 @@ BlackInputText.propTypes = {
   placeholder: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   required: PropTypes.bool,
-  type: PropTypes.string
+  type: PropTypes.string,
 };
 
 BlackInputText.defaultProps = {
-  value: '',
+  value: "",
   required: false,
-  type: 'text'
+  type: "text",
 };
 
 export default BlackInputText;

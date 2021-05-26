@@ -1,6 +1,6 @@
-import { SAVE_USER, REMOVE_USER } from '../actions/actionTypes';
+import { SAVE_USER, REMOVE_USER } from "../actions/actionTypes";
 
-const user = (user = { accessToken: '', data: {} }, action) => {
+const user = (user = { accessToken: "", data: {} }, action) => {
   switch (action.type) {
     case SAVE_USER:
       return {
@@ -9,14 +9,14 @@ const user = (user = { accessToken: '', data: {} }, action) => {
           name: action.payload.username,
           email: action.payload.email,
           verified: action.payload.verified,
-          id: action.payload.id
-        }
+          id: action.payload.id,
+        },
       };
 
     case REMOVE_USER:
       return {
         accessToken: false,
-        data: {}
+        data: {},
       };
 
     default:

@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import './SideBar.css';
-import { Link, NavLink, matchPath } from 'react-router-dom';
-import BackButton from '../../assets/images/backButton.svg';
-import { ReactComponent as Settings } from '../../assets/images/settings.svg';
+import React from "react";
+import PropTypes from "prop-types";
+import "./SideBar.css";
+import { Link, NavLink, matchPath } from "react-router-dom";
+import BackButton from "../../assets/images/backButton.svg";
+import { ReactComponent as Settings } from "../../assets/images/settings.svg";
 
 const SideBar = (props) => {
   const {
@@ -15,76 +15,133 @@ const SideBar = (props) => {
     databaseLink,
     networkLink,
     allMetricsLink,
-    appLogsLink
+    appLogsLink,
   } = props;
 
-  const isAppPage = (matchPath(pageRoute, {
-    path: '/users/:userID/projects/:projectID/apps/:appID/metrics',
+  const isAppPage = matchPath(pageRoute, {
+    path: "/users/:userID/projects/:projectID/apps/:appID/metrics",
     exact: true,
-    strict: true
-  }));
+    strict: true,
+  });
 
   const isAppMetricsPage = matchPath(pageRoute, {
-    path: '/users/:userID/projects/:projectID/apps/:appID/',
+    path: "/users/:userID/projects/:projectID/apps/:appID/",
     exact: false,
-    strict: true
-  })
+    strict: true,
+  });
 
-  const pageLocation = (matchPath(pageRoute, {
-    path: '/users/:userID/projects/:projectID/apps',
+  const pageLocation = matchPath(pageRoute, {
+    path: "/users/:userID/projects/:projectID/apps",
     exact: true,
-    strict: true
-  }));
+    strict: true,
+  });
+
+  const databaseLocation = matchPath(pageRoute, {
+    path: "/users/:userID/projects/:projectID/databases/:databaseID/settings",
+    exact: true,
+    strict: true,
+  });
 
   const { userID, projectID, appID } = params;
 
   return (
     <div className="SideBar">
       <div>
-        { isAppPage ? (
+        { databaseLocation ? (
           <div className="SideBarTopSection">
-            <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}>
+            <Link
+              to={{ pathname: `/users/${userID}/projects/${projectID}/databases` }}
+            >
               <img src={BackButton} alt="Back Button" />
               <span>&nbsp; &nbsp; &nbsp;</span>
             </Link>
-            <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }} className="ProjectName">{ name }</Link>
-          </div>
-        ): ( pageLocation ? (
-          <div className="SideBarTopSection">
-            <Link to={{ pathname: `/users/${userID}/projects/` }}>
-              <img src={BackButton} alt="Back Button" />
-              <span>&nbsp; &nbsp; &nbsp;</span>
+            <Link
+              to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}
+              className="ProjectName"
+            >
+              {name}
             </Link>
-            <Link to={{ pathname: `/users/${userID}/projects/` }} className="ProjectName">{ name }</Link>
           </div>
-        ): (
-          <div className="SideBarTopSection">
-            <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}>
-              <img src={BackButton} alt="Back Button" />
-              <span>&nbsp; &nbsp; &nbsp;</span>
-            </Link>
-            <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }} className="ProjectName">{ name }</Link>
-          </div>
-        )
-        )
-        }
+          ) : isAppPage ? (
+            <div className="SideBarTopSection">
+              <Link
+                to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}
+              >
+                <img src={BackButton} alt="Back Button" />
+                <span>&nbsp; &nbsp; &nbsp;</span>
+              </Link>
+              <Link
+                to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}
+                className="ProjectName"
+              >
+                {name}
+              </Link>
+            </div>
+          ) : pageLocation ? (
+            <div className="SideBarTopSection">
+              <Link to={{ pathname: `/users/${userID}/projects/` }}>
+                <img src={BackButton} alt="Back Button" />
+                <span>&nbsp; &nbsp; &nbsp;</span>
+              </Link>
+              <Link
+                to={{ pathname: `/users/${userID}/projects/` }}
+                className="ProjectName"
+              >
+                {name}
+              </Link>
+            </div>
+          ) : (
+            <div className="SideBarTopSection">
+              <Link
+                to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}
+              >
+                <img src={BackButton} alt="Back Button" />
+                <span>&nbsp; &nbsp; &nbsp;</span>
+              </Link>
+              <Link
+                to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}
+                className="ProjectName"
+              >
+                {name}
+              </Link>
+            </div>
+        )}
       </div>
 
       <div className="SideBarBottomSection">
         <div className="SideBarLinks">
-          <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }} className="ListItem">Apps</Link>
-          <Link to="/" className="ListItem DisabledLink">SERVICES</Link>
+          <Link
+            to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}
+            className="ListItem"
+          >
+            Apps
+          </Link>
+          <Link to="/" className="ListItem DisabledLink">
+            SERVICES
+          </Link>
           <div>
-            <NavLink to={databaseLink} className="SubBarListItem">Databases</NavLink>
+            <NavLink to={databaseLink} className="SubBarListItem">
+              Databases
+            </NavLink>
           </div>
-          <Link to={allMetricsLink} className="ListItem">METRICS</Link>
+          <Link to={allMetricsLink} className="ListItem">
+            METRICS
+          </Link>
           <div>
-            <NavLink to={cpuLink} className="SubBarListItem" >CPU</NavLink>
-            <NavLink to={memoryLink} className="SubBarListItem">Memory</NavLink>
+            <NavLink to={cpuLink} className="SubBarListItem">
+              CPU
+            </NavLink>
+            <NavLink to={memoryLink} className="SubBarListItem">
+              Memory
+            </NavLink>
             {/* <Link to={storageLink} className="SubBarListItem">Storage</Link> */}
-            <NavLink to={networkLink} className="SubBarListItem">Network</NavLink>
-            {(isAppMetricsPage) && (
-              <NavLink to={appLogsLink} className="SubBarListItem">Logs</NavLink>
+            <NavLink to={networkLink} className="SubBarListItem">
+              Network
+            </NavLink>
+            {isAppMetricsPage && (
+              <NavLink to={appLogsLink} className="SubBarListItem">
+                Logs
+              </NavLink>
             )}
           </div>
         </div>
@@ -92,20 +149,30 @@ const SideBar = (props) => {
         <div className="SideBarFooterSection">
           {isAppPage ? (
             <div>
-              <Link to={{ pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/settings`, name }}>
+              <Link
+                to={{
+                  pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/settings`,
+                  name,
+                }}
+              >
                 <Settings className="ListItem" />
               </Link>
             </div>
           ) : (
             <div>
-              <Link to={{ pathname: `/users/${userID}/projects/${projectID}/settings` }}>
+              <Link
+                to={{
+                  pathname: `/users/${userID}/projects/${projectID}/settings`,
+                }}
+              >
                 <Settings className="ListItem" />
               </Link>
             </div>
           )}
 
           <div className="SideFooter StickBottom">
-            Copyright {new Date().getFullYear()} Crane Cloud. All Rights Reserved.
+            Copyright {new Date().getFullYear()} Crane Cloud. All Rights
+            Reserved.
           </div>
         </div>
       </div>
@@ -114,7 +181,7 @@ const SideBar = (props) => {
 };
 
 SideBar.defaultProps = {
-  appLogsLink: ''
+  appLogsLink: "",
 };
 
 SideBar.propTypes = {
@@ -126,7 +193,7 @@ SideBar.propTypes = {
   databaseLink: PropTypes.string.isRequired,
   networkLink: PropTypes.string.isRequired,
   allMetricsLink: PropTypes.string.isRequired,
-  appLogsLink: PropTypes.string
+  appLogsLink: PropTypes.string,
 };
 
 export default SideBar;

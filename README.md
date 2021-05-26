@@ -1,18 +1,23 @@
 # Crane Cloud
-> Centralised location for all your files.
 
-## How to setup the project:
- #### Clone the repository
-  ` git clone https://github.com/crane-cloud/frontend.git`
+Automated application deployment, management, and scaling.
 
- * If `develop-new` is not up to date, `git checkout develop-new` for it is the default base branch for this project.
-   #### Install a package manager 
-    Either `npm` but we prefer `yarn`
- * Navigate to this page and get instructions on how to download `yarn` for your OS. `https://classic.yarnpkg.com/en/docs/install`
- * Navigate to the project root directory and to install dependencies run 
-     > `Yarn install`
+Crane Cloud is an open source multi-cloud software platform for cloud-native application deployment and management.
 
-*  Run  `Yarn start` to start the application.
+## Setup
 
-## Deployment
-* The Deployed app is [here.](http://crane-mak-w1.cranecloud.io:32667)
+1.  `git clone https://github.com/crane-cloud/frontend.git`.
+2.  `yarn`
+3.  `yarn start`
+
+## Tools
+
+1. `Prettier` for formatting/style. Configure your editor with plugin.
+2. `ESLint` for linting. No need for any config files. Only configure your editor with plugin. **Don't use ESLint for formatting.** Repo is configured with `react-app` so no other sharable-configs/extensions are necessary at this point.
+
+## Pull requests
+
+1. Push and open PR against `develop`.
+2. PR will be reviewed before changes are merged.
+
+**Contribution guide to be published some time in the future.**

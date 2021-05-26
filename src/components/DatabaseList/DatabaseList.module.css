@@ -1,0 +1,97 @@
+.MainPage {
+  /* Divided into two rows */
+  margin: 0;
+  background: #f1f1f1;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 80px 4fr;
+  overflow-x: hidden;
+}
+.TopBarSection {
+  background-color: black;
+}
+.MainSection {
+  /* divided into two columns */
+  background-color: #f1f1f1;
+  display: grid;
+  grid-template-columns: 1.3fr 6fr;
+  overflow: hidden;
+}
+
+.SideBarSection {
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.SideBarSection::-webkit-scrollbar {
+  display: none;
+  min-width: fit-content;
+}
+
+.SideBarSection {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.MainContentSection {
+  /* divided into two rows */
+  display: grid;
+  grid-template-rows: 80px 4fr;
+  overflow: hidden;
+}
+
+.ContentSection {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 2rem;
+}
+
+.DatabaseTableHead {
+  text-transform: uppercase;
+  padding: 1rem;
+  color: #008ac1;
+  text-align: center;
+  grid-row: 1;
+}
+
+.DatabaseTableRow {
+  display: grid;
+  color: #000000;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.DatabaseTableRow:hover {
+  color: #f7b21f;
+}
+
+.DatabaseTableCell {
+  font-weight: normal;
+  padding: 1rem 0;
+  text-align: center;
+  grid-row: 1;
+  overflow: hidden;
+}
+
+.DatabaseTableHead:first-child,
+.DatabaseTableCell:first-child {
+  text-align: left;
+}
+
+.DatabaseTableCell:first-child {
+  text-transform: uppercase;
+}
+
+.DatabaseTableHead:last-child,
+.DatabaseTableCell:last-child {
+  text-align: right;
+}
+
+.NoResourcesMessage {
+  flex-grow: 1;
+  display: flex;
+  font-size: 16px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}

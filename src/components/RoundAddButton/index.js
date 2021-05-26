@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { ReactComponent as ButtonPlus } from '../../assets/images/buttonplus.svg';
-import './RoundAddButton.css';
+import React from "react";
+import PropTypes from "prop-types";
+import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
+import "./RoundAddButton.css";
 
 const RoundAddButton = ({ onClick }) => (
   <button className="RoundAddButton" onClick={onClick}>
@@ -10,7 +10,7 @@ const RoundAddButton = ({ onClick }) => (
 );
 
 RoundAddButton.propTypes = {
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
 };
 
 export default RoundAddButton;

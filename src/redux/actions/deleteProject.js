@@ -1,7 +1,10 @@
-import axios from '../../axios';
+import axios from "../../axios";
 import {
-  DELETE_PROJECT_SUCCESS, DELETE_PROJECT_FAIL, START_DELETING_PROJECT, CLEAR_DELETE_PROJECT_STATE 
-} from './actionTypes';
+  DELETE_PROJECT_SUCCESS,
+  DELETE_PROJECT_FAIL,
+  START_DELETING_PROJECT,
+  CLEAR_DELETE_PROJECT_STATE,
+} from "./actionTypes";
 
 const startDeletingProject = () => ({
   type: START_DELETING_PROJECT,
@@ -21,13 +24,14 @@ const deleteProjectFail = (error) => ({
 });
 
 const clearDeleteProjectState = () => ({
-  type: CLEAR_DELETE_PROJECT_STATE
+  type: CLEAR_DELETE_PROJECT_STATE,
 });
 
 const deleteProject = (ProjectID) => (dispatch) => {
   dispatch(startDeletingProject());
 
-  return axios.delete(`/projects/${ProjectID}`)
+  return axios
+    .delete(`/projects/${ProjectID}`)
     .then((response) => dispatch(deleteProjectSuccess(response)))
     .catch((error) => {
       dispatch(deleteProjectFail(error));

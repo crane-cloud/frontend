@@ -1,109 +1,106 @@
 .SideNav {
-    width: 100%;
-    height: 100%;
-    background: #06222F;
-    mix-blend-mode: normal;
-    margin-left: 0px;
-    overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  background: #06222f;
+  mix-blend-mode: normal;
+  margin-left: 0px;
+  overflow-x: hidden;
 }
 
-.ClusterName{
-    height: 1.8rem;
-    z-index: 2;
-    background-color: #06222F;
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 19px;
-    color: #fff;
-    margin-top: 15px;
-    cursor: pointer;
-    padding: 25px 18px 20px 18px;
-    text-transform: uppercase;
-    box-shadow: 10px 5px 9px 0 rgba(90, 88, 88, 0.2);
-
+.ClusterName {
+  height: 1.8rem;
+  z-index: 2;
+  background-color: #06222f;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 19px;
+  color: #fff;
+  margin-top: 15px;
+  cursor: pointer;
+  padding: 25px 18px 20px 18px;
+  text-transform: uppercase;
+  box-shadow: 10px 5px 9px 0 rgba(90, 88, 88, 0.2);
 }
 
-.StickTop{
-    position: sticky;
-    top: 0;
+.StickTop {
+  position: sticky;
+  top: 0;
 }
 
-
-.ClusterName a{
-    color: #fff;
+.ClusterName a {
+  color: #fff;
 }
 
-.ClusterName .CName:hover{
-    text-decoration: underline; 
+.ClusterName .CName:hover {
+  text-decoration: underline;
 }
 
-.ClusterName a img{
-    display: inline;
-    height: 13px;
+.ClusterName a img {
+  display: inline;
+  height: 13px;
 }
 
-.ClusterName a img:hover{
-    transition: 0.2s;
-    transform: scale(1.5);
+.ClusterName a img:hover {
+  transition: 0.2s;
+  transform: scale(1.5);
 }
-
 
 .SideNav::-webkit-scrollbar {
-    display: none;
-  }
-.active{
-    color: #06222F !important;
-    background-color: #99D2E9; 
-    padding-left: 20px; 
+  display: none;
 }
-.ListItem{
-    height: 21px;
-    background-color: #06222F;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 19px;
-    color: #F7B21F;
-    margin-top: 20px;
-    cursor: pointer;
-    padding-left: 18px;
-    text-transform: uppercase;
-    display: block;
+.active {
+  color: #06222f !important;
+  background-color: #99d2e9;
+  padding-left: 20px;
 }
-
-.SubListItem{
-    height: 21px;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 19px;
-    color: #99D2E9;
-    padding: 8px 0px 8px 20px;
-    cursor: pointer;
-    display: block;
+.ListItem {
+  height: 21px;
+  background-color: #06222f;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 19px;
+  color: #f7b21f;
+  margin-top: 20px;
+  cursor: pointer;
+  padding-left: 18px;
+  text-transform: uppercase;
+  display: block;
 }
 
-.List{
-    height: max-content;
-    overflow: auto;
+.SubListItem {
+  height: 21px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  color: #99d2e9;
+  padding: 8px 0px 8px 20px;
+  cursor: pointer;
+  display: block;
 }
-.SideFooter{
-    height: 30px;
-    font-size: 12px;
-    line-height: 14px;
-    bottom: 0;
-    color: #008AC1;
-    padding: 18px 0 20px 18px;
-    cursor: pointer;
-    background-color: #06222F;
+
+.List {
+  height: max-content;
+  overflow: auto;
 }
-.SideFooter:hover{
-    color: rgb(131, 182, 202);
+.SideFooter {
+  height: 30px;
+  font-size: 12px;
+  line-height: 14px;
+  bottom: 0;
+  color: #008ac1;
+  padding: 18px 0 20px 18px;
+  cursor: pointer;
+  background-color: #06222f;
 }
-.ListItem:hover{
-    text-shadow: 0 0 .5px rgb(255, 194, 62);
+.SideFooter:hover {
+  color: rgb(131, 182, 202);
 }
-.SubListItem:hover{
-    background-color: rgb(13, 60, 82);
-    color: rgb(164, 228, 253);
+.ListItem:hover {
+  text-shadow: 0 0 0.5px rgb(255, 194, 62);
+}
+.SubListItem:hover {
+  background-color: rgb(13, 60, 82);
+  color: rgb(164, 228, 253);
 }

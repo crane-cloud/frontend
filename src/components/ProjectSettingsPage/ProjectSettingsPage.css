@@ -82,20 +82,20 @@
   max-width: 25rem;
 }
 
-.UpdateForm{
-    display: grid;
-    gap: 1rem;
-    padding: 1rem 1.3rem;
-    grid-template-rows: 2fr;
+.UpdateForm {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem 1.3rem;
+  grid-template-rows: 2fr;
 }
-.DeleteButtonDiv{
-    bottom: 0rem;
-    padding: 1.3rem;
+.DeleteButtonDiv {
+  bottom: 0rem;
+  padding: 1.3rem;
 }
-.ContentSection{
-    justify-content: space-between;
+.ContentSection {
+  justify-content: space-between;
 }
 
-.ErrorOnWhite{
+.ErrorOnWhite {
   width: 25rem;
 }

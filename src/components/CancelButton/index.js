@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { ReactComponent as ButtonCancel } from '../../assets/images/buttonCancel.svg';
-import './CancelButton.css';
+import React from "react";
+import PropTypes from "prop-types";
+import { ReactComponent as ButtonCancel } from "../../assets/images/buttonCancel.svg";
+import "./CancelButton.css";
 
 const CancelButton = ({ onClick }) => (
   <button className="CancelButton" onClick={onClick}>
@@ -10,7 +10,7 @@ const CancelButton = ({ onClick }) => (
 );
 
 CancelButton.propTypes = {
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
 };
 
 export default CancelButton;

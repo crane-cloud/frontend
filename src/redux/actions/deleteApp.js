@@ -1,7 +1,10 @@
-import axios from '../../axios';
+import axios from "../../axios";
 import {
-  DELETE_APP_SUCCESS, DELETE_APP_FAIL, START_DELETING_APP, CLEAR_DELETE_APP_STATE
-} from './actionTypes';
+  DELETE_APP_SUCCESS,
+  DELETE_APP_FAIL,
+  START_DELETING_APP,
+  CLEAR_DELETE_APP_STATE,
+} from "./actionTypes";
 
 const startDeletingApp = () => ({
   type: START_DELETING_APP,
@@ -21,13 +24,14 @@ const deleteAppFail = (error) => ({
 });
 
 const clearState = () => ({
-  type: CLEAR_DELETE_APP_STATE
+  type: CLEAR_DELETE_APP_STATE,
 });
 
 const deleteApp = (appID) => (dispatch) => {
   dispatch(startDeletingApp());
 
-  return axios.delete(`/apps/${appID}`)
+  return axios
+    .delete(`/apps/${appID}`)
     .then((response) => dispatch(deleteAppSuccess(response)))
     .catch((error) => {
       dispatch(deleteAppFail(error));
