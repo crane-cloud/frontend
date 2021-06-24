@@ -94,5 +94,8 @@
   text-align: center;
   justify-content: center;
   align-items: center;
-  padding-top: 15%;
+}
+
+.AlignSpin{
+  padding-top: 10%;
 }
