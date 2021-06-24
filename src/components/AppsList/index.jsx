@@ -50,7 +50,7 @@ class AppsList extends Component {
 
   render() {
     const { apps, isRetrieved, isRetrieving, params } = this.props;
-    console.log(apps);
+    
     return (
       <>
         {isRetrieving ? (
