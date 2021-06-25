@@ -127,13 +127,9 @@ class DatabaseList extends React.Component {
                   </div>
                   <div>
                     {isFetchingDatabases ? (
-                      <div className={styles.DatabaseTableBody}>
-                        <div className={styles.DatabaseTableRow}>
-                          <div className={styles.DatabaseTableCell}>
-                            <div className={styles.SpinnerWrapper}>
-                              <Spinner size="big" />
-                            </div>
-                          </div>
+                      <div className={styles.AlignSpin}>
+                        <div className={styles.SpinnerWrapper}>
+                          <Spinner size="big" />
                         </div>
                       </div>
                     ) : (
