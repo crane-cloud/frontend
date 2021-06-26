@@ -163,8 +163,27 @@
   flex: 5;
 }
 
+@media only screen and (max-width: 900px) {
+  .LandingPageMainContentImg {
+    display: none;
+  }
+
+  .WhySectionContent {
+    grid-template-columns: 1fr;
+  }
+
+  .SolutionsSection {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 @media only screen and (max-width: 640px) {
   .LandingPageMainContentImg {
     display: none;
+  }
+
+  .SolutionsSection {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
   }
 }
