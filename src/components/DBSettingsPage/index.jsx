@@ -338,7 +338,7 @@ class DBSettingsPage extends React.Component {
                     </div>
                   </div>
                   <div className="DBInfoBottom">
-                    <div className="DBAccessInfo">{`psql -h ${dbInfo.host} -p ${dbInfo.port} -d ${dbInfo.name} -u ${dbInfo.user} -W`}</div>
+                    <div className="DBAccessInfo">{`psql -h ${dbInfo.host} -p ${dbInfo.port} -d ${dbInfo.name} -U ${dbInfo.user} -W`}</div>
                     <div className="DBAccessCopy">
                       <div className="DBPassword">
                         <CopyText onClick={this.uriPOnClick} />
