@@ -28,9 +28,12 @@ body {
 }
 
 div#root {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-flow: column;
+}
+div#root::-webkit-scrollbar {
+  display: none;
 }
 
 textarea,
@@ -254,6 +257,7 @@ tr.TableLoading td {
 .SideBarSection {
   overflow: hidden;
   overflow-y: scroll;
+  height: calc(100vh - 5rem);
 }
 
 .SideBarSection::-webkit-scrollbar {
