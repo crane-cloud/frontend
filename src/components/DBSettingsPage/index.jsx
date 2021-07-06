@@ -53,7 +53,7 @@ class DBSettingsPage extends React.Component {
     this.userOnClick = this.userOnClick.bind(this);
     this.hostOnClick = this.hostOnClick.bind(this);
     this.uriOnClick = this.uriOnClick.bind(this);
-    this.uriPOnClick = this.uriPOnClick.bind(this);
+    this.uriCopyPostgresOnClick = this.uriCopyPostgresOnClick.bind(this);
     this.passwordOnClick = this.passwordOnClick.bind(this);
   }
   componentDidMount() {
@@ -171,7 +171,7 @@ class DBSettingsPage extends React.Component {
     this.setState({ uriChecked: true });
   }
 
-  uriPOnClick() {
+  uriCopyPostgresOnClick() {
     const { databaseID } = this.props.match.params;
     const dbInfo = this.getDatabaseInfo(databaseID);
     navigator.clipboard.writeText(
@@ -341,7 +341,7 @@ class DBSettingsPage extends React.Component {
                     <div className="DBAccessInfo">{`psql -h ${dbInfo.host} -p ${dbInfo.port} -d ${dbInfo.name} -U ${dbInfo.user} -W`}</div>
                     <div className="DBAccessCopy">
                       <div className="DBPassword">
-                        <CopyText onClick={this.uriPOnClick} />
+                        <CopyText onClick={this.uriCopyPostgresOnClick} />
                         {uriChecked ? <Checked /> : null}
                       </div>
                     </div>
