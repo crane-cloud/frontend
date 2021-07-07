@@ -10,7 +10,6 @@ import Modal from "../Modal";
 import SideBar from "../SideBar";
 import Feedback from "../Feedback";
 import DeleteWarning from "../DeleteWarning";
-import tellAge from "../../helpers/ageUtility";
 import deleteDatabase, {
   clearDeleteDatabaseState,
 } from "../../redux/actions/deleteDatabase";
@@ -84,7 +83,7 @@ class DBSettingsPage extends React.Component {
       dbID: found.id,
       port: found.port,
       password: found.password,
-      age: tellAge(found.date_created),
+      age: found.age,
     };
 
     return info;
