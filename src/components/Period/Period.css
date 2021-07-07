@@ -32,9 +32,10 @@
   position: relative;
   display: grid;
   grid-auto-flow: column;
-  gap: 1rem;
+  gap: .5rem;
   width: 100%;
   align-items: center;
+  justify-content: space-between;
 }
 
 .PeriodButtonCustom {
@@ -47,8 +48,9 @@
   border: 1px solid #cccccc;
   display: grid;
   gap: 1rem;
-  padding: 1rem;
+  padding: 1rem .5rem;
   top: 3rem;
   right: -18rem;
   z-index: 3;
+  width: 21rem;
 }
