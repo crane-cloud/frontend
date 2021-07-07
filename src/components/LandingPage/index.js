@@ -5,6 +5,7 @@ import NewHeader from "../NewHeader";
 import LandingFooter from "../LandingFooter";
 import { ReactComponent as InfrastrucurePic } from "../../assets/images/infrastructure.svg";
 import { ReactComponent as RightArrow } from "../../assets/images/rightArrow.svg";
+import { ReactComponent as RightArrowGray } from "../../assets/images/right-arrow-gray.svg";
 import { ReactComponent as Databases } from "../../assets/images/databases.svg";
 import { ReactComponent as Monitoring } from "../../assets/images/monitoring.svg";
 import { ReactComponent as Container } from "../../assets/images/container.svg";
@@ -42,55 +43,80 @@ const LandingPage = (props) => {
             <InfrastrucurePic className={styles.LandingPageInfrastructurePic} />
           </div>
         </div>
-        <div className={styles.LandingPageWhySection}>
-          <div className={styles.LandingPageWhySectionTitle}>
-            <h2>Why Crane Cloud</h2>
-          </div>
-          <div className={styles.WhySectionContent}>
-            <div className={styles.DataCenterImage}>
-              <img
-                alt="data-center"
-                src={require("../../assets/images/server_image.jpg")}
-              />
+        <div className={styles.LandingPageWhySectionWithBanner}>
+          <div className={styles.LandingPageWhySection}>
+            <div className={styles.LandingPageWhySectionTitle}>
+              <h2>Why Crane Cloud</h2>
             </div>
+            <div className={styles.WhySectionContent}>
+              <div className={styles.DataCenterImage}>
+                <img
+                  alt="data-center"
+                  src={require("../../assets/images/server_image.jpg")}
+                />
+              </div>
 
-            <div className={styles.WhySectionChildContainer}>
-              <div className={styles.WhySectionItem}>
-                <div className={styles.WhySectionCardTitle}>Infrastructure</div>
-                <div>Fast, agile, and resilient infrastructure.</div>
-              </div>
-              <div className={styles.WhySectionItem}>
-                <div className={styles.WhySectionCardTitle}>Cost</div>
-                <div>
-                  Reduce costs and save money by getting billed only what you
-                  utilize.
+              <div className={styles.WhySectionChildContainer}>
+                <div className={styles.WhySectionItem}>
+                  <div className={styles.WhySectionCardTitle}>Infrastructure</div>
+                  <div>Fast, agile, and resilient infrastructure.</div>
+                  <div className={styles.WhySectionAction}>
+                    <span>Learn More</span>
+                    <RightArrowGray />
+                  </div>
                 </div>
-              </div>
-              <div className={styles.WhySectionItem}>
-                <div className={styles.WhySectionCardTitle}>Security</div>
-                <div>
-                  Images are automatically scanned for vulnerabilities, and
-                  deployed with a free SSL certificate.
+                <div className={styles.WhySectionItem}>
+                  <div className={styles.WhySectionCardTitle}>Cost</div>
+                  <div>
+                    Reduce costs and save money by getting billed only what you
+                    utilize.
+                  </div>
+                  <div className={styles.WhySectionAction}>
+                    <span>See Pricing</span>
+                    <RightArrowGray />
+                  </div>
                 </div>
-              </div>
-              <div className={styles.WhySectionItem}>
-                <div className={styles.WhySectionCardTitle}>Support</div>
-                <div>
-                  Create a ticket, chat, or call a specialist regarding any
-                  queries.
+                <div className={styles.WhySectionItem}>
+                  <div className={styles.WhySectionCardTitle}>Security</div>
+                  <div>
+                    Images are automatically scanned for vulnerabilities, and
+                    deployed with a free SSL certificate.
+                  </div>
+                  <div className={styles.WhySectionAction}>
+                    <span>Get Started</span>
+                    <RightArrowGray />
+                  </div>
+                </div>
+                <div className={styles.WhySectionItem}>
+                  <div className={styles.WhySectionCardTitle}>Support</div>
+                  <div>
+                    Create a ticket, chat, or call a specialist regarding any
+                    queries.
+                  </div>
+                  <div className={styles.WhySectionAction}>
+                    <span>Contact Us</span>
+                    <RightArrowGray />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className={styles.PageBannerSection}>
-          <div className={styles.LeftPageBannerSection}>
-            <div className={styles.LeftPageBannerInner}>
-              <h2>Migrate to the cloud</h2>
-              <p className={styles.BannerParagraph}>
-                Governments and institutions are urged to begin digital
-                transformation.
-              </p>
+          <div className={styles.PageBannerSection}>
+            <div className={styles.LeftPageBannerSection}>
+              <div className={styles.LeftPageBannerInner}>
+                <div>
+                  <h2>Migrate to the cloud</h2>
+                  <p className={styles.BannerParagraph}>
+                    Governments and institutions are urged to begin digital
+                    transformation.
+                  </p>
+                </div>
+                <div className={styles.PageBannerLearnMoreContainer}>
+                  <button className={styles.PageBannerLearnMore}>
+                    Learn More
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
