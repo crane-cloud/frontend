@@ -5,7 +5,6 @@ import NewHeader from "../NewHeader";
 import LandingFooter from "../LandingFooter";
 import { ReactComponent as InfrastrucurePic } from "../../assets/images/infrastructure.svg";
 import { ReactComponent as RightArrow } from "../../assets/images/rightArrow.svg";
-import { ReactComponent as RightArrowGray } from "../../assets/images/right-arrow-gray.svg";
 import { ReactComponent as Databases } from "../../assets/images/databases.svg";
 import { ReactComponent as Monitoring } from "../../assets/images/monitoring.svg";
 import { ReactComponent as Container } from "../../assets/images/container.svg";
@@ -60,20 +59,12 @@ const LandingPage = (props) => {
                 <div className={styles.WhySectionItem}>
                   <div className={styles.WhySectionCardTitle}>Infrastructure</div>
                   <div>Fast, agile, and resilient infrastructure.</div>
-                  <div className={styles.WhySectionAction}>
-                    <span>Learn More</span>
-                    <RightArrowGray />
-                  </div>
                 </div>
                 <div className={styles.WhySectionItem}>
                   <div className={styles.WhySectionCardTitle}>Cost</div>
                   <div>
                     Reduce costs and save money by getting billed only what you
                     utilize.
-                  </div>
-                  <div className={styles.WhySectionAction}>
-                    <span>See Pricing</span>
-                    <RightArrowGray />
                   </div>
                 </div>
                 <div className={styles.WhySectionItem}>
@@ -82,20 +73,12 @@ const LandingPage = (props) => {
                     Images are automatically scanned for vulnerabilities, and
                     deployed with a free SSL certificate.
                   </div>
-                  <div className={styles.WhySectionAction}>
-                    <span>Get Started</span>
-                    <RightArrowGray />
-                  </div>
                 </div>
                 <div className={styles.WhySectionItem}>
                   <div className={styles.WhySectionCardTitle}>Support</div>
                   <div>
                     Create a ticket, chat, or call a specialist regarding any
                     queries.
-                  </div>
-                  <div className={styles.WhySectionAction}>
-                    <span>Contact Us</span>
-                    <RightArrowGray />
                   </div>
                 </div>
               </div>

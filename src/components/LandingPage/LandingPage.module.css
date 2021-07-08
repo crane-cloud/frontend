@@ -78,7 +78,7 @@
 
 .LandingPageWhySection {
   background-color: #ffffff;
-  padding: 3rem;
+  padding: 5rem;
 }
 
 .LandingPageWhySectionWithBanner{
@@ -88,7 +88,7 @@
 .WhySectionContent {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  gap: 0.5rem;
+  gap: 1.5rem;
 }
 
 .DataCenterImage {
@@ -104,7 +104,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .WhySectionItem {
@@ -114,10 +114,6 @@
   display: grid;
   grid-template-rows: max-content;
   gap: 0.5rem;
-}
-
-.WhySectionItem:hover {
-  background-color:#CBCBCB;
 }
 
 .WhySectionCardTitle {
@@ -194,7 +190,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 1rem;
+  gap: 4rem;
+  padding: 1rem 0 3rem 0;
 }
 
 .SolutionsContainer {
