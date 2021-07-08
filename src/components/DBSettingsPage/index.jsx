@@ -351,7 +351,7 @@ class DBSettingsPage extends React.Component {
                 <div className="DBButtonRow">
                   <PrimaryButton
                     label="Reset Database"
-                    className="ResetBtn"
+                    className="ResetBtn DB-Btn"
                     onClick={this.showResetAlert}
                   />
                   <div className="buttonText">
@@ -371,7 +371,7 @@ class DBSettingsPage extends React.Component {
                 <div className="DBButtonRow">
                   <PrimaryButton
                     label="Delete Database"
-                    className="DBDeleteBtn"
+                    className="DBDeleteBtn DB-Btn"
                     onClick={this.showDeleteAlert}
                   />
                   <div className="buttonText">
