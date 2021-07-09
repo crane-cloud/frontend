@@ -28,11 +28,9 @@ body {
 }
 
 div#root {
+  height: 100vh;
   display: flex;
   flex-flow: column;
-}
-div#root::-webkit-scrollbar {
-  display: none;
 }
 
 textarea,
@@ -305,7 +303,7 @@ tr.TableLoading td {
 .Page {
   margin: 0;
   background: #f1f1f1;
-  min-height: 100vh;
+  max-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
   overflow: hidden;
