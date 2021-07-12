@@ -124,4 +124,31 @@
   grid-template-columns: 20% auto;
   grid-auto-flow: column;
   align-items: center;
+  column-gap: 1rem;
+}
+
+@media only screen and (min-device-width: 641px) and (max-width: 900px) {
+  .DBDetailRow {
+    grid-template-columns: 18% 40% 10% auto;
+  }
+  .DBButtonRow{
+    grid-template-columns: 20% 80%;
+  }
+  .DB-Btn{
+    width: 100%;
+  }
+}
+
+@media only screen and (min-device-width: 480px) and (max-width: 640px) {
+  .DBDetailRow {
+    grid-template-columns: 20% 55% 15%;
+    column-gap: .3rem;
+  }
+  .DBButtonRow{
+    grid-template-columns: 20% 80%;
+  }
+
+  .DB-Btn{
+    width: 100%;
+  }
 }

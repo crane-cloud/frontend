@@ -9,7 +9,6 @@ import Spinner from "../Spinner";
 import Status from "../Status";
 import CreateDatabase from "../CreateDatabase";
 import getProjectDatabases from "../../redux/actions/databaseList";
-import tellAge from "../../helpers/ageUtility";
 import styles from "./DatabaseList.module.css";
 
 class DatabaseList extends React.Component {
@@ -158,7 +157,7 @@ class DatabaseList extends React.Component {
                                 <Status status={database.db_status} />
                               </div>
                               <div className={styles.DatabaseTableCell}>
-                                {tellAge(database.date_created)}
+                                {database.age}
                               </div>
                               
                             </Link>
