@@ -208,8 +208,8 @@ class UserProjectsPage extends React.Component {
         Its triggered by the value of state.openModal */}
         <Modal showModal={openModal} onClickAway={this.hideForm}>
           <div className={styles.ModalForm}>
-            <div className={styles.ModalFormHeading}>
-              <h2>Add a project</h2>
+            <div >
+              <h2 className={styles.ModalFormHeading}>Add a project</h2>
             </div>
             <div className={styles.ModalFormInputs}>
               <Select
