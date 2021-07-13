@@ -21,7 +21,7 @@ const updateProjectReducer = (state = initialState, action) => {
         isFailed: false,
         isUpdated: true,
         isUpdating: false,
-        errorMessage: "Project Updated SuccessFully",
+        errorMessage: "",
         errorCode: null,
       };
     }
