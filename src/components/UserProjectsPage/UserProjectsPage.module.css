@@ -1,7 +1,15 @@
-.ProjectList {
+.Page {
+  margin: 0;
+  background: #f1f1f1;
+  min-height: 100vh;
   display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+.ProjectList {
+  display: flex;
   gap: 1rem;
-  grid-template-columns: repeat(5, 1fr);
+  flex-wrap: wrap;
+  /* grid-template-columns: repeat(5, 1fr); */
 }
 
 .ProjectFormErrorDiv {
@@ -37,7 +45,7 @@
 }
 
 
-@media only screen and (max-width: 1100px) and (min-width: 901px) {
+/* @media only screen and (max-width: 1100px) and (min-width: 901px) {
   .ProjectList {
     grid-template-columns: repeat(4, 1fr);
   }
@@ -53,4 +61,4 @@
   .ProjectList {
     grid-template-columns: repeat(2, 1fr);
   }
-}
+} */

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import "./UserProjectsPage.css";
+import styles from "./UserProjectsPage.module.css";
 import addProject, {
   clearAddProjectState,
 } from "../../redux/actions/addProject";
