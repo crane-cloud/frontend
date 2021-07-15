@@ -10,7 +10,6 @@ import Modal from "../Modal";
 import SideBar from "../SideBar";
 import Feedback from "../Feedback";
 import DeleteWarning from "../DeleteWarning";
-import tellAge from "../../helpers/ageUtility";
 import deleteDatabase, {
   clearDeleteDatabaseState,
 } from "../../redux/actions/deleteDatabase";
@@ -53,6 +52,7 @@ class DBSettingsPage extends React.Component {
     this.userOnClick = this.userOnClick.bind(this);
     this.hostOnClick = this.hostOnClick.bind(this);
     this.uriOnClick = this.uriOnClick.bind(this);
+    this.uriCopyPostgresOnClick = this.uriCopyPostgresOnClick.bind(this);
     this.passwordOnClick = this.passwordOnClick.bind(this);
   }
   componentDidMount() {
@@ -83,7 +83,7 @@ class DBSettingsPage extends React.Component {
       dbID: found.id,
       port: found.port,
       password: found.password,
-      age: tellAge(found.date_created),
+      age: found.age,
     };
 
     return info;
@@ -166,6 +166,15 @@ class DBSettingsPage extends React.Component {
     const dbInfo = this.getDatabaseInfo(databaseID);
     navigator.clipboard.writeText(
       `${`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}`
+    );
+    this.setState({ uriChecked: true });
+  }
+
+  uriCopyPostgresOnClick() {
+    const { databaseID } = this.props.match.params;
+    const dbInfo = this.getDatabaseInfo(databaseID);
+    navigator.clipboard.writeText(
+      `${`psql -h ${dbInfo.host} -p ${dbInfo.port} -d ${dbInfo.name} -U ${dbInfo.user} -W`}`
     );
     this.setState({ uriChecked: true });
   }
@@ -328,10 +337,10 @@ class DBSettingsPage extends React.Component {
                     </div>
                   </div>
                   <div className="DBInfoBottom">
-                    <div className="DBAccessInfo">{`psql -h ${dbInfo.host} -p ${dbInfo.port} -d ${dbInfo.name} -u ${dbInfo.user}`}</div>
+                    <div className="DBAccessInfo">{`psql -h ${dbInfo.host} -p ${dbInfo.port} -d ${dbInfo.name} -U ${dbInfo.user} -W`}</div>
                     <div className="DBAccessCopy">
                       <div className="DBPassword">
-                        <CopyText onClick={this.uriOnClick} />
+                        <CopyText onClick={this.uriCopyPostgresOnClick} />
                         {uriChecked ? <Checked /> : null}
                       </div>
                     </div>
@@ -342,7 +351,7 @@ class DBSettingsPage extends React.Component {
                 <div className="DBButtonRow">
                   <PrimaryButton
                     label="Reset Database"
-                    className="ResetBtn"
+                    className="ResetBtn DB-Btn"
                     onClick={this.showResetAlert}
                   />
                   <div className="buttonText">
@@ -362,7 +371,7 @@ class DBSettingsPage extends React.Component {
                 <div className="DBButtonRow">
                   <PrimaryButton
                     label="Delete Database"
-                    className="DBDeleteBtn"
+                    className="DBDeleteBtn DB-Btn"
                     onClick={this.showDeleteAlert}
                   />
                   <div className="buttonText">

@@ -64,10 +64,13 @@ class ProjectSettingsPage extends React.Component {
 
   handleChange(e) {
     const { error } = this.state;
+    const { errorMessage, clearUpdateProjectState } = this.props;
     this.setState({
       [e.target.name]: e.target.value,
     });
-
+    if (errorMessage) {
+      clearUpdateProjectState();
+    }
     if (error) {
       this.setState({
         error: "",
@@ -178,7 +181,7 @@ class ProjectSettingsPage extends React.Component {
     const projectInfo = JSON.parse(localStorage.getItem("project"));
     const name = projectInfo.name;
     const description = projectInfo.description;
-    const { openDeleteAlert, projectName, projectDescription } = this.state;
+    const { openDeleteAlert, projectName, projectDescription, error } = this.state;
 
     const { projectID, userID } = params;
 
@@ -231,10 +234,10 @@ class ProjectSettingsPage extends React.Component {
                         this.handleChange(e);
                       }}
                     />
-                    {errorMessage && (
+                    {(errorMessage || error) && (
                       <Feedback
                         type="error"
-                        message="You cant update only the description."
+                        message={errorMessage ? "you cant update only the description" : error}
                       />
                     )}
 
