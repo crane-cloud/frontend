@@ -38,11 +38,11 @@
   padding: 0.5rem;
   display: grid;
   gap: 1rem;
-  position: absolute;
+  position: absolute; /*relative */
   top: 3rem;
   z-index: 3;
-  left: 0;
-  width: 95%;
+  left: -.5rem;
+  width: 21rem;
 }
 
 .CalendarModalButtons {
