@@ -94,11 +94,6 @@ const LandingPage = (props) => {
                     transformation.
                   </p>
                 </div>
-                <div className={styles.PageBannerLearnMoreContainer}>
-                  <button className={styles.PageBannerLearnMore}>
-                    Learn More
-                  </button>
-                </div>
               </div>
             </div>
           </div>
