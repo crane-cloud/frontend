@@ -79,7 +79,7 @@ class ProjectSettingsPage extends React.Component {
   }
 
   handleSubmit() {
-    var { projectName, projectDescription } = this.state;
+    const { projectName, projectDescription } = this.state;
     const {
       updateProject,
       name,
@@ -88,56 +88,54 @@ class ProjectSettingsPage extends React.Component {
         params: { projectID },
       },
     } = this.props;
-    projectName = projectName.trim();
-    projectDescription = projectDescription.trim();
 
-    if (projectName !== name || projectDescription !== description) {
-      if (!projectName || !projectDescription) {
+    if (projectName.trim() !== name || projectDescription.trim() !== description) {
+      if (!projectName.trim() || !projectDescription.trim()) {
         this.setState({
           error: "please provide either a new name or description",
         });
       } else {
-        if (projectName !== name && projectDescription === description) {
-          if (!this.validateProjectName(projectName)) {
+        if (projectName.trim() !== name && projectDescription.trim() === description) {
+          if (!this.validateProjectName(projectName.trim())) {
             this.setState({
               error: "name should start with a letter",
             });
           } else if (
-            this.validateProjectName(projectName) === "false_convention"
+            this.validateProjectName(projectName.trim()) === "false_convention"
           ) {
             this.setState({
               error: "name may only contain letters and a hypen -",
             });
-          } else if (projectName.length > 22) {
+          } else if (projectName.trim().length > 22) {
             this.setState({
               error: "project name cannot exceed 22 characters",
             });
           } else {
-            const newProject = { name: projectName };
+            const newProject = { name: projectName.trim() };
             updateProject(projectID, newProject);
           }
         }
 
-        if (projectName === name && projectDescription !== description) {
-          const newProject = { description: projectDescription };
+        if (projectName.trim() === name && projectDescription.trim() !== description) {
+          const newProject = { description: projectDescription.trim() };
           updateProject(projectID, newProject);
         }
 
-        if (projectName !== name && projectDescription !== description) {
-          if (!this.validateProjectName(projectName)) {
+        if (projectName.trim() !== name && projectDescription.trim() !== description) {
+          if (!this.validateProjectName(projectName.trim())) {
             this.setState({
               error: "name should start with a letter",
             });
           } else if (
-            this.validateProjectName(projectName) === "false_convention"
+            this.validateProjectName(projectName.trim()) === "false_convention"
           ) {
             this.setState({
               error: "name may only contain letters and a hypen -",
             });
           } else {
             const newProject = {
-              name: projectName,
-              description: projectDescription,
+              name: projectName.trim(),
+              description: projectDescription.trim(),
             };
             updateProject(projectID, newProject);
           }
