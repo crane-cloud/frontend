@@ -18,7 +18,7 @@ import TextArea from "../TextArea";
 import Feedback from "../Feedback";
 import DeleteWarning from "../DeleteWarning";
 import BlackInputText from "../BlackInputText";
-import "./ProjectSettingsPage.css";
+import styles from "./ProjectSettingsPage.module.css";
 
 class ProjectSettingsPage extends React.Component {
   constructor(props) {
@@ -79,7 +79,7 @@ class ProjectSettingsPage extends React.Component {
   }
 
   handleSubmit() {
-    const { projectName, projectDescription } = this.state;
+    var { projectName, projectDescription } = this.state;
     const {
       updateProject,
       name,
@@ -88,6 +88,8 @@ class ProjectSettingsPage extends React.Component {
         params: { projectID },
       },
     } = this.props;
+    projectName = projectName.trim();
+    projectDescription = projectDescription.trim();
 
     if (projectName !== name || projectDescription !== description) {
       if (!projectName || !projectDescription) {
@@ -186,13 +188,13 @@ class ProjectSettingsPage extends React.Component {
     const { projectID, userID } = params;
 
     return (
-      <div className="Page">
+      <div className={styles.Page} >
         {isUpdated || isDeleted ? this.renderRedirect() : null}
-        <div className="TopBarSection">
+        <div className={styles.TopBarSection}>
           <Header />
         </div>
-        <div className="MainSection">
-          <div className="SideBarSection">
+        <div className={styles.MainSection}>
+          <div className={styles.SideBarSection}>
             <SideBar
               name={name}
               params={params}
@@ -205,11 +207,11 @@ class ProjectSettingsPage extends React.Component {
               networkLink={`/users/${userID}/projects/${projectID}/network/`}
             />
           </div>
-          <div className="MainContentSection">
-            <div className="InformationBarSection">
+          <div className={styles.MainContentSection}>
+            <div className={styles.InformationBarSection}>
               <InformationBar header="Settings" />
             </div>
-            <div className="ContentSection">
+            <div className={styles.ContentSection}>
               <div>
                 <div
                   onSubmit={(e) => {
@@ -217,7 +219,7 @@ class ProjectSettingsPage extends React.Component {
                     e.preventDefault();
                   }}
                 >
-                  <div className="UpdateForm">
+                  <div className={styles.UpdateForm}>
                     <BlackInputText
                       placeholder="Project Name"
                       name="projectName"
@@ -248,22 +250,22 @@ class ProjectSettingsPage extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="DeleteButtonDiv">
+              <div className={styles.DeleteButtonDiv}>
                 <PrimaryButton
                   label="Delete Project"
-                  className="DeleteBtn"
+                  className={styles.DeleteBtn}
                   onClick={this.showDeleteAlert}
                 />
               </div>
               {openDeleteAlert && (
-                <div className="ProjectDeleteModel">
+                <div className={styles.ProjectDeleteModel}>
                   <Modal
                     showModal={openDeleteAlert}
                     onClickAway={this.hideDeleteAlert}
                   >
-                    <div className="DeleteProjectModel">
-                      <div className="DeleteProjectModalUpperSection">
-                        <div className="DeleteDescription">
+                    <div className={styles.DeleteProjectModel}>
+                      <div className={styles.DeleteProjectModalUpperSection}>
+                        <div className={styles.DeleteDescription}>
                           Are you sure you want to delete&nbsp;
                           <span>{projectName}</span>
                           &nbsp; ?
@@ -271,16 +273,16 @@ class ProjectSettingsPage extends React.Component {
                         </div>
                       </div>
 
-                      <div className="DeleteProjectModalLowerSection">
-                        <div className="DeleteProjectModelButtons">
+                      <div className={styles.DeleteProjectModalLowerSection}>
+                        <div className={styles.DeleteProjectModelButtons}>
                           <PrimaryButton
                             label="cancel"
-                            className="CancelBtn"
+                            className={styles.CancelBtn}
                             onClick={this.hideDeleteAlert}
                           />
                           <PrimaryButton
                             label={isDeleting ? <Spinner /> : "Delete"}
-                            className="DeleteBtn"
+                            className={styles.DeleteBtn}
                             onClick={(e) =>
                               this.handleDeleteProject(e, params.projectID)
                             }
