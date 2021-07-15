@@ -156,6 +156,7 @@ class UserProjectsPage extends React.Component {
       isAdded,
       isAdding,
     } = this.props;
+    const sortedProjects = projects.sort((a, b) => b.date_created > a.date_created ? 1: -1);
 
     return (
       <div className="Page">
@@ -173,8 +174,8 @@ class UserProjectsPage extends React.Component {
           ) : (
             <div className="ProjectList">
               {isFetched &&
-                projects !== undefined &&
-                projects.map((project) => (
+                sortedProjects !== undefined &&
+                sortedProjects.map((project) => (
                   <ProjectCard
                     key={project.id}
                     name={project.name}
