@@ -13,7 +13,7 @@
 .MainRow {
   display: flex;
   flex-direction: column;
-  padding: 3rem;
+  padding: 3rem 2rem;
 }
 
 .FooterRow {
@@ -41,7 +41,6 @@ div.TableLoading {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
-  /* grid-template-columns: repeat(5, 1fr); */
 }
 
 .ProjectFormErrorDiv {
@@ -124,21 +123,3 @@ div.TableLoading {
   display: flex;
   justify-content: space-between;
 }
-
-/* @media only screen and (max-width: 1100px) and (min-width: 901px) {
-  .ProjectList {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media only screen and (max-width: 900px) and (min-width: 481px) {
-  .ProjectList {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media only screen and (max-width: 480px) {
-  .ProjectList {
-    grid-template-columns: repeat(2, 1fr);
-  }
-} */
