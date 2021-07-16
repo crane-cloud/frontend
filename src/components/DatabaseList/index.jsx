@@ -169,7 +169,7 @@ class DatabaseList extends React.Component {
 
                   {databasesFetched && databases.length === 0 && (
                     <div className={styles.NoResourcesMessage}>
-                      You haven’t created any databases yet. Click the &nbsp; <ButtonPlus className="ButtonPlusSmall" /> &nbsp; button to create one.
+                      You haven’t created any databases yet. Click the &nbsp; <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp; button to create one.
 
                     </div>
                   )}

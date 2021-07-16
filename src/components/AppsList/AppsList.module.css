@@ -4,6 +4,16 @@
   grid-gap: 1rem;
 }
 
+.NoResourcesMessage {
+  flex-grow: 1;
+  display: flex;
+  font-size: 16px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+
 .ButtonPlusSmall{
   width: 1rem;
   height: 1rem;
