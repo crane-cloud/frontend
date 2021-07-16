@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Header from "../Header";
 import InformationBar from "../InformationBar";
+import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import SideBar from "../SideBar";
 import Spinner from "../Spinner";
 import Status from "../Status";
@@ -168,8 +169,8 @@ class DatabaseList extends React.Component {
 
                   {databasesFetched && databases.length === 0 && (
                     <div className={styles.NoResourcesMessage}>
-                      You haven’t created any databases yet. Click the create
-                      button to get started.
+                      You haven’t created any databases yet. Click the &nbsp; <ButtonPlus className="ButtonPlusSmall" /> &nbsp; button to create one.
+
                     </div>
                   )}
 

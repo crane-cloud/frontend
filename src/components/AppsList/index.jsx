@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import getAppsList from "../../redux/actions/appsList";
+import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import AppsCard from "../AppsCard";
 import Spinner from "../Spinner";
 import "./AppsList.css";
@@ -79,8 +80,7 @@ class AppsList extends Component {
         )}
         {isRetrieved && apps.apps.length === 0 && (
           <div className="NoResourcesMessage">
-            You haven’t created any Apps yet. Click the create button to get
-            started.
+            You haven’t created any apps yet. Click the &nbsp; <ButtonPlus className="ButtonPlusSmall" /> &nbsp; button to deploy an app.
           </div>
         )}
         {!isRetrieving && !isRetrieved && (

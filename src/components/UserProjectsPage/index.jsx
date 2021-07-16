@@ -7,6 +7,7 @@ import addProject, {
 } from "../../redux/actions/addProject";
 import { clearUpdateProjectState } from "../../redux/actions/updateProject";
 import InformationBar from "../InformationBar";
+import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import Header from "../Header";
 import PrimaryButton from "../PrimaryButton";
 import Modal from "../Modal";
@@ -186,8 +187,8 @@ class UserProjectsPage extends React.Component {
           )}
           {isFetched && projects.length === 0 && (
             <div className="NoResourcesMessage">
-              You haven’t created any projects yet. Click the create button to
-              get started.
+              You haven’t created any projects yet. Click the &nbsp; <ButtonPlus className="ButtonPlusSmall" /> &nbsp; button to add a project.
+
             </div>
           )}
           {!isRetrieving && !isFetched && (
