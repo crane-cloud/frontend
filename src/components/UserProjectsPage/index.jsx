@@ -187,7 +187,7 @@ class UserProjectsPage extends React.Component {
           )}
           {isFetched && projects.length === 0 && (
             <div className="NoResourcesMessage">
-              You haven’t created any projects yet. Click the &nbsp; <ButtonPlus className="ButtonPlusSmall" /> &nbsp; button to add a project.
+              You haven’t created any projects yet. Click the &nbsp; <ButtonPlus isSmall /> &nbsp; button to add a project.
 
             </div>
           )}

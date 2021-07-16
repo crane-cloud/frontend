@@ -36,6 +36,11 @@
   margin-left: 0;
 }
 
+.ButtonPlusSmall{
+  width: 1rem;
+  height: 1rem;
+}
+
 
 @media only screen and (max-width: 1100px) and (min-width: 901px) {
   .ProjectList {

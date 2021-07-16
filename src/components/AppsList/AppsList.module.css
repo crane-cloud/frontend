@@ -4,6 +4,11 @@
   grid-gap: 1rem;
 }
 
+.ButtonPlusSmall{
+  width: 1rem;
+  height: 1rem;
+}
+
 @media only screen and (max-width: 1100px) and (min-width: 901px) {
   .AppList {
     grid-template-columns: repeat(3, 1fr);
@@ -20,9 +25,4 @@
   .AppList {
     grid-template-columns: repeat(1, 1fr);
   }
-}
-
-.ButtonPlusSmall{
-  width: 1rem;
-  height: 1rem;
 }
