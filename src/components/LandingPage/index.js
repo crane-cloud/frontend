@@ -87,13 +87,11 @@ const LandingPage = (props) => {
           <div className={styles.PageBannerSection}>
             <div className={styles.LeftPageBannerSection}>
               <div className={styles.LeftPageBannerInner}>
-                <div>
                   <h2>Migrate to the cloud</h2>
                   <p className={styles.BannerParagraph}>
                     Governments and institutions are urged to begin digital
                     transformation.
                   </p>
-                </div>
               </div>
             </div>
           </div>

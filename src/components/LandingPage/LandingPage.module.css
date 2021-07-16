@@ -14,15 +14,16 @@
 .LandingPageMainContent {
   display: flex;
   justify-content: space-between;
-  padding: 3rem;
-  padding-top:10rem;
-  padding-bottom:10rem;
+  align-items: center;
+  padding: 0 3rem;
   background: #008ac1;
+  height: calc(100vh - 5rem);
 }
 
 .LandingPageMainContentInfo {
   display: grid;
   align-items: center;
+  grid-gap: 3rem;
 }
 
 .LandingPageMainContentImg {
@@ -81,10 +82,6 @@
   padding: 5rem;
 }
 
-.LandingPageWhySectionWithBanner{
-  padding-top: 1rem;
-}
-
 .WhySectionContent {
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -138,6 +135,7 @@
   color: #f8f7e5;
   display: flex;
   padding: 1rem 3rem;
+  height: calc(100vh - 29rem);
 }
 
 .LeftPageBannerSection {
@@ -162,13 +160,7 @@
 .LeftPageBannerInner {
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 1fr 1fr;
-}
-
-.PageBannerLearnMoreContainer{
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  grid-template-columns: auto;
 }
 
 .PageBannerLearnMore{
