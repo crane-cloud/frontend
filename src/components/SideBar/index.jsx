@@ -57,7 +57,7 @@ const SideBar = (props) => {
               <span>&nbsp; &nbsp; &nbsp;</span>
             </Link>
             <Link
-              to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}
+              to={{ pathname: `/users/${userID}/projects/${projectID}/databases` }}
               className={styles.ProjectName}
             >
               {name}
@@ -72,7 +72,7 @@ const SideBar = (props) => {
                 <span>&nbsp; &nbsp; &nbsp;</span>
               </Link>
               <Link
-                to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}
+                to={{ pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/metrics` }}
                 className={styles.ProjectName}
               >
                 {name}
@@ -100,7 +100,7 @@ const SideBar = (props) => {
                 <span>&nbsp; &nbsp; &nbsp;</span>
               </Link>
               <Link
-                to={{ pathname: `/users/${userID}/projects/` }}
+                to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}
                 className={styles.ProjectName}
               >
                 {name}
