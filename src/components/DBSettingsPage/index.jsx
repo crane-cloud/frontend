@@ -37,6 +37,7 @@ class DBSettingsPage extends React.Component {
       hostChecked: false,
       uriChecked: false,
       passwordChecked: false,
+      openUpdateModal: false,
     };
 
     this.handleDeleteDatabase = this.handleDeleteDatabase.bind(this);
@@ -54,6 +55,9 @@ class DBSettingsPage extends React.Component {
     this.uriOnClick = this.uriOnClick.bind(this);
     this.uriCopyPostgresOnClick = this.uriCopyPostgresOnClick.bind(this);
     this.passwordOnClick = this.passwordOnClick.bind(this);
+    this.updatePassword = this.updatePassword.bind(this);
+    this.showUpdateModal = this.showUpdateModal.bind(this);
+    this.hideUpdateModal = this.hideUpdateModal.bind(this);
   }
   componentDidMount() {
     const { clearDatabaseResetState } = this.props;
@@ -117,6 +121,23 @@ class DBSettingsPage extends React.Component {
 
   hideResetAlert() {
     this.setState({ openResetAlert: false });
+  }
+
+  // show update modal
+  showUpdateModal() {
+    this.setState({ openUpdateModal: true });
+  }
+
+  // hide update modal
+  hideUpdateModal() {
+    this.setState({ openUpdateModal: false });
+  }
+
+  // update password
+  updatePassword(e) {
+    const { updatePassword } = this.props;
+    e.preventDefault();
+    updatePassword(e.target.value);
   }
 
   renderRedirect = () => {
@@ -348,6 +369,59 @@ class DBSettingsPage extends React.Component {
                 </div>
               )}
               <div className="DBButtons">
+                <div className="DBButtonRow">
+                  <PrimaryButton
+                    label="Update Password"
+                    className="ResetBtn DB-Btn"
+                    onClick={this.showDeleteAlert}
+                  />
+                  <div className="buttonText">
+                    Changes or updates database password.
+                  </div>
+                </div>
+                {openDeleteAlert && (
+                  <div className="ProjectDeleteModel">
+                    <Modal
+                      showModal={openDeleteAlert}
+                      onClickAway={this.hideDeleteAlert}
+                    >
+                      <div className="DeleteDatabaseModel">
+                        <div className="DeleteProjectModalUpperSection">
+                          <div className="InnerModalDescription">
+                            Are you sure you want to delete this Database &nbsp;
+                            <span>{dbInfo.name} ?</span>
+                            <DeleteWarning />
+                          </div>
+                        </div>
+
+                        <div className="DeleteProjectModalLowerSection">
+                          <div className="DeleteProjectModelButtons">
+                            <PrimaryButton
+                              label="cancel"
+                              className="CancelBtn"
+                              onClick={this.hideDeleteAlert}
+                            />
+                            <PrimaryButton
+                              label={deletingDatabase ? <Spinner /> : "Delete"}
+                              className="DeleteBtn"
+                              onClick={(e) =>
+                                this.handleDeleteDatabase(
+                                  e,
+                                  projectID,
+                                  databaseID
+                                )
+                              }
+                            />
+                          </div>
+
+                          {databaseDeleteFailed && dbDeleteMessage && (
+                            <Feedback message={dbDeleteMessage} type="error" />
+                          )}
+                        </div>
+                      </div>
+                    </Modal>
+                  </div>
+                )}
                 <div className="DBButtonRow">
                   <PrimaryButton
                     label="Reset Database"
