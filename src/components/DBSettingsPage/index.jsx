@@ -17,7 +17,7 @@ import resetDatabase, {
   clearDatabaseResetState,
 } from "../../redux/actions/resetDatabase";
 import updateDatabasePassword, {
-  clearUpdateDatabaseState,
+  clearUpdateDatabasePasswordState,
 } from "../../redux/actions/updateDBPassword";
 import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
@@ -633,6 +633,15 @@ const mapStateToProps = (state) => {
     resetMessage,
     clearDatabaseResetState,
   } = state.resetDatabaseReducer;
+  const {
+    database,
+    updatingDBPassword,
+    updateDBPasswordFailed,
+    dbPasswordUpdated,
+    errorMessage,
+  }  = state.updateDatabasePasswordReducer;
+
+
   return {
     databases,
     databaseDeleted,
@@ -645,6 +654,11 @@ const mapStateToProps = (state) => {
     resetFailed,
     resetMessage,
     clearDatabaseResetState,
+    database,
+    updatingDBPassword,
+    updateDBPasswordFailed,
+    dbPasswordUpdated,
+    errorMessage,
   };
 };
 
@@ -653,6 +667,8 @@ const mapDispatchToProps = {
   clearDeleteDatabaseState,
   resetDatabase,
   clearDatabaseResetState,
+  updateDatabasePassword,
+  clearUpdateDatabaseState
 };
 
 export default connect(
