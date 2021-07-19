@@ -276,6 +276,7 @@ class DBSettingsPage extends React.Component {
         {dbDeleteMessage === "Database Deleted Successfully"
           ? this.renderRedirect()
           : null}
+        {dbPasswordUpdated ? this.renderUpdateRedirect() : null}
         <div className="TopBarSection">
           <Header />
         </div>
@@ -605,6 +606,7 @@ DBSettingsPage.propTypes = {
   isReseting: PropTypes.bool,
   resetFailed: PropTypes.bool,
   resetMessage: PropTypes.string,
+  dbPasswordUpdated: PropTypes.bool,
 };
 
 DBSettingsPage.defaultProps = {
@@ -612,6 +614,7 @@ DBSettingsPage.defaultProps = {
   databaseDeleteFailed: false,
   deletingDatabase: false,
   databaseDeleted: false,
+  dbPasswordUpdated: false,
 };
 
 const mapStateToProps = (state) => {
