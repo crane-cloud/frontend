@@ -20,6 +20,7 @@ import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
+import BlackInputText from "../BlackInputText";
 import "./DBSettingsPage.css";
 
 class DBSettingsPage extends React.Component {
@@ -38,6 +39,7 @@ class DBSettingsPage extends React.Component {
       uriChecked: false,
       passwordChecked: false,
       openUpdateModal: false,
+      newDatabasePassword: "",
     };
 
     this.handleDeleteDatabase = this.handleDeleteDatabase.bind(this);
@@ -55,9 +57,10 @@ class DBSettingsPage extends React.Component {
     this.uriOnClick = this.uriOnClick.bind(this);
     this.uriCopyPostgresOnClick = this.uriCopyPostgresOnClick.bind(this);
     this.passwordOnClick = this.passwordOnClick.bind(this);
-    this.updatePassword = this.updatePassword.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.showUpdateModal = this.showUpdateModal.bind(this);
     this.hideUpdateModal = this.hideUpdateModal.bind(this);
+    this.handleSubmitUpdate = this.handleSubmitUpdate.bind(this);
   }
   componentDidMount() {
     const { clearDatabaseResetState } = this.props;
@@ -133,11 +136,16 @@ class DBSettingsPage extends React.Component {
     this.setState({ openUpdateModal: false });
   }
 
-  // update password
-  updatePassword(e) {
-    const { updatePassword } = this.props;
-    e.preventDefault();
-    updatePassword(e.target.value);
+  // handle input onchange
+  handleChange(e) {
+    const { error } = this.state;
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+
+    if (error) {
+      this.setState({ error: "" });
+    }
   }
 
   renderRedirect = () => {
@@ -207,6 +215,19 @@ class DBSettingsPage extends React.Component {
     this.setState({ passwordChecked: true });
   }
 
+  // handle submit for update modal
+  handleSubmitUpdate() {
+    const { updateDatabase } = this.props;
+    const { newDatabasePassword } = this.state;
+    if (!newDatabasePassword || newDatabasePassword.length < 20) {
+      this.setState({
+        errorMessage: "Password must be at least 20 characters long.",
+      });
+    } else {
+      const newPassword = newDatabasePassword;
+      updateDatabase(newPassword);
+    }
+  }
   render() {
     const {
       dbDeleteMessage,
@@ -228,6 +249,8 @@ class DBSettingsPage extends React.Component {
       userChecked,
       uriChecked,
       passwordChecked,
+      openUpdateModal,
+      newDatabasePassword,
     } = this.state;
     return (
       <div className="Page">
@@ -373,24 +396,33 @@ class DBSettingsPage extends React.Component {
                   <PrimaryButton
                     label="Update Password"
                     className="ResetBtn DB-Btn"
-                    onClick={this.showDeleteAlert}
+                    onClick={this.showUpdateModal}
                   />
                   <div className="buttonText">
                     Changes or updates database password.
                   </div>
                 </div>
-                {openDeleteAlert && (
+                {openUpdateModal && (
                   <div className="ProjectDeleteModel">
                     <Modal
-                      showModal={openDeleteAlert}
-                      onClickAway={this.hideDeleteAlert}
+                      showModal={openUpdateModal}
+                      onClickAway={this.hideUpdateModal}
                     >
                       <div className="DeleteDatabaseModel">
                         <div className="DeleteProjectModalUpperSection">
+                          <div className="ModalFormHeading">
+                            <h2>Update database password</h2>
+                          </div>
                           <div className="InnerModalDescription">
-                            Are you sure you want to delete this Database &nbsp;
-                            <span>{dbInfo.name} ?</span>
-                            <DeleteWarning />
+                            <BlackInputText
+                              required
+                              placeholder="New database Password"
+                              name="newDatabasePassword"
+                              value={newDatabasePassword}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />
                           </div>
                         </div>
 
@@ -399,11 +431,11 @@ class DBSettingsPage extends React.Component {
                             <PrimaryButton
                               label="cancel"
                               className="CancelBtn"
-                              onClick={this.hideDeleteAlert}
+                              onClick={this.hideUpdateModal}
                             />
                             <PrimaryButton
-                              label={deletingDatabase ? <Spinner /> : "Delete"}
-                              className="DeleteBtn"
+                              label={deletingDatabase ? <Spinner /> : "Update"}
+                              className="ResetBtn"
                               onClick={(e) =>
                                 this.handleDeleteDatabase(
                                   e,
