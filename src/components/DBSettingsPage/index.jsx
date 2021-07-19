@@ -16,6 +16,9 @@ import deleteDatabase, {
 import resetDatabase, {
   clearDatabaseResetState,
 } from "../../redux/actions/resetDatabase";
+import updateDatabasePassword, {
+  clearUpdateDatabaseState,
+} from "../../redux/actions/updateDBPassword";
 import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
@@ -61,6 +64,7 @@ class DBSettingsPage extends React.Component {
     this.showUpdateModal = this.showUpdateModal.bind(this);
     this.hideUpdateModal = this.hideUpdateModal.bind(this);
     this.handleSubmitUpdate = this.handleSubmitUpdate.bind(this);
+    this.renderUpdateRedirect = this.renderUpdateRedirect.bind(this);
   }
   componentDidMount() {
     const { clearDatabaseResetState } = this.props;
@@ -162,6 +166,19 @@ class DBSettingsPage extends React.Component {
     }
   };
 
+  renderUpdateRedirect = () => {
+    const { isUpdated } = this.props;
+    const { userID, projectID, databaseID } = this.props.match.params;
+    if (isUpdated) {
+      return (
+        <Redirect
+          to={`/users/${userID}/projects/${projectID}/databases/${databaseID}/settings`}
+          noThrow
+        />
+      );
+    }
+  };
+
   togglePassword() {
     this.setState({ hidden: !this.state.hidden });
   }
@@ -217,15 +234,17 @@ class DBSettingsPage extends React.Component {
 
   // handle submit for update modal
   handleSubmitUpdate() {
-    const { updateDatabase } = this.props;
+    const { updateDatabasePassword } = this.props;
     const { newDatabasePassword } = this.state;
     if (!newDatabasePassword || newDatabasePassword.length < 20) {
       this.setState({
         errorMessage: "Password must be at least 20 characters long.",
       });
     } else {
-      const newPassword = newDatabasePassword;
-      updateDatabase(newPassword);
+      const newPassword = {
+        password: newDatabasePassword,
+      };
+      updateDatabasePassword(newPassword);
     }
   }
   render() {
@@ -337,8 +356,8 @@ class DBSettingsPage extends React.Component {
                   </div>
                 </div>
               </div>
-              
-              {(dbInfo.flavor === 'mysql') ? (
+
+              {dbInfo.flavor === "mysql" ? (
                 <div className="DBInstructions">
                   <div className="DBInfoTop">
                     <div>
@@ -364,7 +383,7 @@ class DBSettingsPage extends React.Component {
                     </div>
                   </div>
                 </div>
-              ): (
+              ) : (
                 <div className="DBInstructions">
                   <div className="DBInfoTop">
                     <div>
@@ -434,15 +453,15 @@ class DBSettingsPage extends React.Component {
                               onClick={this.hideUpdateModal}
                             />
                             <PrimaryButton
-                              label={deletingDatabase ? <Spinner /> : "Update"}
-                              className="ResetBtn"
-                              onClick={(e) =>
-                                this.handleDeleteDatabase(
-                                  e,
-                                  projectID,
-                                  databaseID
+                              label={
+                                updatingDatabasePassword ? (
+                                  <Spinner />
+                                ) : (
+                                  "Update"
                                 )
                               }
+                              className="ResetBtn"
+                              onClick={this.handleSubmitUpdate}
                             />
                           </div>
 
