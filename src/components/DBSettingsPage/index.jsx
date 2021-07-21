@@ -54,6 +54,7 @@ class DBSettingsPage extends React.Component {
     this.uriOnClick = this.uriOnClick.bind(this);
     this.uriCopyPostgresOnClick = this.uriCopyPostgresOnClick.bind(this);
     this.passwordOnClick = this.passwordOnClick.bind(this);
+    this.getProjectName = this.getProjectName.bind(this);
   }
   componentDidMount() {
     const { clearDatabaseResetState } = this.props;
@@ -186,6 +187,11 @@ class DBSettingsPage extends React.Component {
     this.setState({ passwordChecked: true });
   }
 
+  getProjectName(projects, id) {
+    const project = projects.find((project) => project.id === id);
+    return project.name;
+  }
+
   render() {
     const {
       dbDeleteMessage,
@@ -194,6 +200,7 @@ class DBSettingsPage extends React.Component {
       isReset,
       isReseting,
       resetMessage,
+      projects,
     } = this.props;
     const { userID, projectID, databaseID } = this.props.match.params;
     const dbInfo = this.getDatabaseInfo(databaseID);
@@ -219,7 +226,7 @@ class DBSettingsPage extends React.Component {
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
-              name={dbInfo.name}
+              name={this.getProjectName(projects, projectID)}
               params={this.props.match.params}
               pageRoute={this.props.location.pathname}
               allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
@@ -490,6 +497,7 @@ DBSettingsPage.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
+  const { projects } = state.userProjectsReducer;
   const { databases } = state.projectDatabasesReducer;
   const {
     databaseDeleted,
@@ -517,6 +525,7 @@ const mapStateToProps = (state) => {
     resetFailed,
     resetMessage,
     clearDatabaseResetState,
+    projects,
   };
 };
 
