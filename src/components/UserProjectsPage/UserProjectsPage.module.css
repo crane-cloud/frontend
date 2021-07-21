@@ -2,6 +2,7 @@
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(5, 1fr);
+  padding: 2rem;
 }
 
 .ProjectFormErrorDiv {
@@ -49,7 +50,6 @@
   width: 1rem;
   height: 1rem;
 }
-
 
 @media only screen and (max-width: 1100px) and (min-width: 901px) {
   .ProjectList {
