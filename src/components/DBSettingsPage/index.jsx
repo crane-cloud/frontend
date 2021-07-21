@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Redirect, withRouter } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import InformationBar from "../InformationBar";
 import Header from "../Header";
 import PrimaryButton from "../PrimaryButton";
@@ -19,6 +19,7 @@ import resetDatabase, {
 import updateDatabasePassword, {
   clearUpdateDatabasePasswordState,
 } from "../../redux/actions/updateDBPassword";
+import getProjectDatabases from "../../redux/actions/databaseList";
 import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
@@ -67,12 +68,17 @@ class DBSettingsPage extends React.Component {
     this.renderUpdateRedirect = this.renderUpdateRedirect.bind(this);
   }
   componentDidMount() {
-    const { clearDatabaseResetState } = this.props;
+    const {
+      clearDatabaseResetState,
+      getProjectDatabases,
+     } = this.props;
+    const { projectID } = this.props.match.params;
     clearDatabaseResetState();
+    getProjectDatabases(projectID);
   }
 
   componentDidUpdate(prevProps) {
-    const { dbDeleteMessage, isReset } = this.props;
+    const { dbDeleteMessage, isReset, dbPasswordUpdated } = this.props;
 
     if (dbDeleteMessage !== prevProps.dbDeleteMessage) {
       this.hideDeleteAlert();
@@ -80,6 +86,10 @@ class DBSettingsPage extends React.Component {
 
     if (isReset !== prevProps.isReset) {
       this.hideResetAlert();
+    }
+
+    if (dbPasswordUpdated !== prevProps.dbPasswordUpdated) {
+      this.hideUpdateModal();
     }
   }
 
@@ -137,7 +147,10 @@ class DBSettingsPage extends React.Component {
 
   // hide update modal
   hideUpdateModal() {
+    const { clearUpdateDatabasePasswordState } = this.props;
+    clearUpdateDatabasePasswordState();
     this.setState({ openUpdateModal: false });
+    this.setState({ newDatabasePassword: "" });
   }
 
   // handle input onchange
@@ -167,9 +180,10 @@ class DBSettingsPage extends React.Component {
   };
 
   renderUpdateRedirect = () => {
-    const { isUpdated } = this.props;
+    const { dpPasswordUpdated, getProjectDatabases } = this.props;
     const { userID, projectID, databaseID } = this.props.match.params;
-    if (isUpdated) {
+    getProjectDatabases(projectID);
+    if (dpPasswordUpdated) {
       return (
         <Redirect
           to={`/users/${userID}/projects/${projectID}/databases/${databaseID}/settings`}
@@ -234,17 +248,26 @@ class DBSettingsPage extends React.Component {
 
   // handle submit for update modal
   handleSubmitUpdate() {
-    const { updateDatabasePassword } = this.props;
+    
+    const {
+      updateDatabasePassword,
+      match: {
+        params: { projectID, databaseID },
+      },
+    } = this.props;
+
     const { newDatabasePassword } = this.state;
-    if (!newDatabasePassword || newDatabasePassword.length < 20) {
+    
+    if (!newDatabasePassword || newDatabasePassword.length > 31) {
       this.setState({
-        errorMessage: "Password must be at least 20 characters long.",
+        error: "Password must be at least 31 characters long.",
       });
     } else {
       const newPassword = {
         password: newDatabasePassword,
       };
-      updateDatabasePassword(newPassword);
+      
+      updateDatabasePassword(projectID, databaseID, newPassword);
     }
   }
   render() {
@@ -255,6 +278,9 @@ class DBSettingsPage extends React.Component {
       isReset,
       isReseting,
       resetMessage,
+      dbPasswordUpdated,
+      updatingDBPassword,
+      errorMessage
     } = this.props;
     const { userID, projectID, databaseID } = this.props.match.params;
     const dbInfo = this.getDatabaseInfo(databaseID);
@@ -270,6 +296,7 @@ class DBSettingsPage extends React.Component {
       passwordChecked,
       openUpdateModal,
       newDatabasePassword,
+      error,
     } = this.state;
     return (
       <div className="Page">
@@ -445,7 +472,12 @@ class DBSettingsPage extends React.Component {
                             />
                           </div>
                         </div>
-
+                        {(errorMessage || error) && (
+                          <Feedback
+                            type="error"
+                            message={errorMessage ? "Failed to update password" : error}
+                          />
+                        )}
                         <div className="DeleteProjectModalLowerSection">
                           <div className="DeleteProjectModelButtons">
                             <PrimaryButton
@@ -455,11 +487,7 @@ class DBSettingsPage extends React.Component {
                             />
                             <PrimaryButton
                               label={
-                                updatingDatabasePassword ? (
-                                  <Spinner />
-                                ) : (
-                                  "Update"
-                                )
+                                updatingDBPassword ? <Spinner /> : "Update"
                               }
                               className="ResetBtn"
                               onClick={this.handleSubmitUpdate}
@@ -607,6 +635,7 @@ DBSettingsPage.propTypes = {
   resetFailed: PropTypes.bool,
   resetMessage: PropTypes.string,
   dbPasswordUpdated: PropTypes.bool,
+  getProjectDatabases: PropTypes.func,
 };
 
 DBSettingsPage.defaultProps = {
@@ -639,8 +668,8 @@ const mapStateToProps = (state) => {
     updateDBPasswordFailed,
     dbPasswordUpdated,
     errorMessage,
-  }  = state.updateDatabasePasswordReducer;
-
+    clearUpdateDatabasePasswordState
+  } = state.updateDatabasePasswordReducer;
 
   return {
     databases,
@@ -659,6 +688,7 @@ const mapStateToProps = (state) => {
     updateDBPasswordFailed,
     dbPasswordUpdated,
     errorMessage,
+    clearUpdateDatabasePasswordState
   };
 };
 
@@ -668,10 +698,11 @@ const mapDispatchToProps = {
   resetDatabase,
   clearDatabaseResetState,
   updateDatabasePassword,
-  clearUpdateDatabaseState
+  clearUpdateDatabasePasswordState,
+  getProjectDatabases,
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(DBSettingsPage));
+)(DBSettingsPage);

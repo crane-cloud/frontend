@@ -40,7 +40,7 @@ const updateDatabasePasswordReducer = (state = initialState, action) => {
         dbPasswordUpdated: false,
         updatingDBPassword: false,
         errorCode: action.payload.errorCode,
-        errorMessage: "Failed to update DatabasePassword",
+        errorMessage: "Failed to update Database Password",
       };
 
     case CLEAR_UPDATE_DATABASE_PASSWORD_STATE:
