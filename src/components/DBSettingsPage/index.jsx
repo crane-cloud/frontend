@@ -44,6 +44,7 @@ class DBSettingsPage extends React.Component {
       passwordChecked: false,
       openUpdateModal: false,
       newDatabasePassword: "",
+      confirmNewDatabasePassword: "",
     };
 
     this.handleDeleteDatabase = this.handleDeleteDatabase.bind(this);
@@ -151,6 +152,7 @@ class DBSettingsPage extends React.Component {
     clearUpdateDatabasePasswordState();
     this.setState({ openUpdateModal: false });
     this.setState({ newDatabasePassword: "" });
+    this.setState({confirmNewDatabasePassword: "" });
   }
 
   // handle input onchange
@@ -256,11 +258,15 @@ class DBSettingsPage extends React.Component {
       },
     } = this.props;
 
-    const { newDatabasePassword } = this.state;
+    const { newDatabasePassword, confirmNewDatabasePassword } = this.state;
     
     if (!newDatabasePassword || newDatabasePassword.length > 31) {
       this.setState({
-        error: "Password must be at least 31 characters long.",
+        error: "Password shouldn't be more than 31 characters.",
+      });
+    } else if(newDatabasePassword !== confirmNewDatabasePassword) {
+      this.setState({
+        error: "The passwords do not match!",
       });
     } else {
       const newPassword = {
@@ -296,6 +302,7 @@ class DBSettingsPage extends React.Component {
       passwordChecked,
       openUpdateModal,
       newDatabasePassword,
+      confirmNewDatabasePassword,
       error,
     } = this.state;
     return (
@@ -466,6 +473,15 @@ class DBSettingsPage extends React.Component {
                               placeholder="New database Password"
                               name="newDatabasePassword"
                               value={newDatabasePassword}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />
+                            <BlackInputText
+                              required
+                              placeholder="Confirm New database Password"
+                              name="confirmNewDatabasePassword"
+                              value={confirmNewDatabasePassword}
                               onChange={(e) => {
                                 this.handleChange(e);
                               }}
