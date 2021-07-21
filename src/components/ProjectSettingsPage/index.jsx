@@ -88,8 +88,9 @@ class ProjectSettingsPage extends React.Component {
         params: { projectID },
       },
     } = this.props;
-    const trimprojectName = projectName.trim();
-    const trimprojectDescription = projectDescription.trim()
+    const trimmed = (input) => input.trim();
+    const trimprojectName = trimmed(projectName);
+    const trimprojectDescription = trimmed(projectDescription);
 
     if (trimprojectName !== name || trimprojectDescription !== description) {
       if (!trimprojectName || !trimprojectDescription) {
