@@ -209,11 +209,11 @@ class UserProjectsPage extends React.Component {
         {/* Modal for creating a new project
         Its triggered by the value of state.openModal */}
         <Modal showModal={openModal} onClickAway={this.hideForm}>
-          <div className={styles.ModalForm}>
-            <div className={styles.ModalFormHeading}>
+          <div className="ModalForm">
+            <div className="ModalFormHeading">
               <h2>Add a project</h2>
             </div>
-            <div className={styles.ModalFormInputs}>
+            <div className="ModalFormInputs">
               <Select
                 required
                 placeholder="Choose Datacenter location"
@@ -241,10 +241,10 @@ class UserProjectsPage extends React.Component {
               />
             </div>
             {error && <Feedback type="error" message={error} />}
-            <div className={styles.ModalFormButtons}>
+            <div className="ModalFormButtons">
               <PrimaryButton
                 label="Cancel"
-                className={styles.CancelBtn}
+                className="CancelBtn"
                 onClick={this.hideForm}
               />
               <PrimaryButton
