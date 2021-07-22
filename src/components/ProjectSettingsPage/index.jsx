@@ -66,7 +66,7 @@ class ProjectSettingsPage extends React.Component {
 
   handleChange(e) {
     const { error, projectName, openDeleteAlert } = this.state;
-    const { errorMessage, clearUpdateProjectState } = this.props;
+    const { errorMessage, clearUpdateProjectState,clearDeleteProjectState,isFailed,message  } = this.props;
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -77,6 +77,10 @@ class ProjectSettingsPage extends React.Component {
       this.setState({
         error: "",
       });
+    }
+    if(isFailed && message){
+      clearDeleteProjectState();
+     
     }
     if (e.target.value === projectName && openDeleteAlert) {
       this.setState({
