@@ -16,7 +16,7 @@ import Modal from "../Modal";
 import SideBar from "../SideBar";
 import TextArea from "../TextArea";
 import Feedback from "../Feedback";
-import DeleteWarning from "../DeleteWarning";
+//import DeleteWarning from "../DeleteWarning";
 import BlackInputText from "../BlackInputText";
 import styles from "./ProjectSettingsPage.module.css";
 
@@ -33,6 +33,8 @@ class ProjectSettingsPage extends React.Component {
       projectName: name ? name : "",
       projectDescription: description ? description : "",
       error: "",
+      Confirmprojectname:"",
+      disableDelete: true,
     };
 
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
@@ -63,7 +65,7 @@ class ProjectSettingsPage extends React.Component {
   }
 
   handleChange(e) {
-    const { error } = this.state;
+    const { error,projectName,openDeleteAlert } = this.state;
     const { errorMessage, clearUpdateProjectState } = this.props;
     this.setState({
       [e.target.name]: e.target.value,
@@ -74,6 +76,15 @@ class ProjectSettingsPage extends React.Component {
     if (error) {
       this.setState({
         error: "",
+      });
+    }
+    if( e.target.value===projectName && openDeleteAlert){
+      this.setState({
+        disableDelete: false,
+      });
+    } else if(e.target.value !== projectName && openDeleteAlert){
+      this.setState({
+        disableDelete: true,
       });
     }
   }
@@ -184,7 +195,7 @@ class ProjectSettingsPage extends React.Component {
     const projectInfo = JSON.parse(localStorage.getItem("project"));
     const name = projectInfo.name;
     const description = projectInfo.description;
-    const { openDeleteAlert, projectName, projectDescription, error } = this.state;
+    const { openDeleteAlert, projectName, projectDescription, error,Confirmprojectname,disableDelete } = this.state;
 
     const { projectID, userID } = params;
 
@@ -266,14 +277,36 @@ class ProjectSettingsPage extends React.Component {
                   >
                     <div className={styles.DeleteProjectModel}>
                       <div className={styles.DeleteProjectModalUpperSection}>
+                      <div className={styles.WarningContainer}>
                         <div className={styles.DeleteDescription}>
                           Are you sure you want to delete&nbsp;
                           <span>{projectName}</span>
-                          &nbsp; ?
-                          <DeleteWarning />
+                          &nbsp; ?   
                         </div>
+                        <div className={styles.DeleteSubDescription}>
+                          This will permanantly delete the project and all resourses it contains
+                          </div> 
+                          <div>
+                           <div className={styles.DeleteWarning}>
+                             Please type the name of your project to confirm deletion
+                            </div>
+                            <div className={styles.DeleteWarning}>
+                            <small>Note that this action is irreversible.</small>      
+                            </div>
+                          </div>
                       </div>
-
+                        <div className={styles.InnerModalDescription}>
+                            <BlackInputText
+                              required
+                              placeholder={projectName}
+                              name="Confirmprojectname"
+                              value={Confirmprojectname}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />                     
+                        </div>                       
+                      </div>
                       <div className={styles.DeleteProjectModalLowerSection}>
                         <div className={styles.DeleteProjectModelButtons}>
                           <PrimaryButton
@@ -283,7 +316,8 @@ class ProjectSettingsPage extends React.Component {
                           />
                           <PrimaryButton
                             label={isDeleting ? <Spinner /> : "Delete"}
-                            className={styles.DeleteBtn}
+                            className={disableDelete ? styles.InactiveDelete:styles.DeleteBtn  }
+                            disable ={disableDelete}
                             onClick={(e) =>
                               this.handleDeleteProject(e, params.projectID)
                             }
