@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Header from "../Header";
 import InformationBar from "../InformationBar";
+import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import SideBar from "../SideBar";
 import Spinner from "../Spinner";
 import Status from "../Status";
@@ -72,6 +73,8 @@ class DatabaseList extends React.Component {
     const { openCreateComponent } = this.state;
 
     const { projectID, userID } = params;
+    const sortedDbs = databases.sort((a, b) => b.date_created > a.date_created ? 1: -1);
+    
     return (
       <div className={styles.MainPage}>
         <div className={styles.TopBarSection}>
@@ -134,8 +137,8 @@ class DatabaseList extends React.Component {
                     ) : (
                       <div className={styles.DatabaseTableBody}>
                         {databasesFetched &&
-                          databases !== undefined &&
-                          databases.map((database) => (
+                          sortedDbs !== undefined &&
+                          sortedDbs.map((database) => (
                             <Link
                               to={{
                                 pathname: `/users/${userID}/projects/${projectID}/databases/${database.id}/settings`,
@@ -168,8 +171,8 @@ class DatabaseList extends React.Component {
 
                   {databasesFetched && databases.length === 0 && (
                     <div className={styles.NoResourcesMessage}>
-                      You haven’t created any databases yet. Click the create
-                      button to get started.
+                      You haven’t created any databases yet. Click the &nbsp; <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp; button to create one.
+
                     </div>
                   )}
 

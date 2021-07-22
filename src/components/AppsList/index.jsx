@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import getAppsList from "../../redux/actions/appsList";
+import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import AppsCard from "../AppsCard";
 import Spinner from "../Spinner";
-import "./AppsList.css";
+import styles from "./AppsList.module.css";
 
 class AppsList extends Component {
   constructor(props) {
@@ -50,20 +51,21 @@ class AppsList extends Component {
 
   render() {
     const { apps, isRetrieved, isRetrieving, params } = this.props;
+    const sortedApps = apps.apps.sort((a, b) => b.date_created < a.date_created ? 1: -1);
     
     return (
       <>
         {isRetrieving ? (
-          <div className="TableLoading">
-            <div className="SpinnerWrapper">
+          <div className={styles.TableLoading}>
+            <div className={styles.SpinnerWrapper}>
               <Spinner size="big" />
             </div>
           </div>
         ) : (
-          <div className="AppList">
+          <div className={styles.AppList}>
             {isRetrieved &&
-              apps.apps !== undefined &&
-              apps.apps.map((app) => (
+              sortedApps !== undefined &&
+              sortedApps.map((app) => (
                 <div key={app.id} className="AppCardItem">
                   <AppsCard
                     name={app.name}
@@ -78,13 +80,12 @@ class AppsList extends Component {
           </div>
         )}
         {isRetrieved && apps.apps.length === 0 && (
-          <div className="NoResourcesMessage">
-            You haven’t created any Apps yet. Click the create button to get
-            started.
+          <div className={styles.NoResourcesMessage}>
+            You haven’t created any apps yet. Click the &nbsp; <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp; button to deploy an app.
           </div>
         )}
         {!isRetrieving && !isRetrieved && (
-          <div className="NoResourcesMessage">
+          <div className={styles.NoResourcesMessage}>
             Oops! Something went wrong! Failed to retrieve Apps.
           </div>
         )}
