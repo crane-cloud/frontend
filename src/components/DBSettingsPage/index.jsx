@@ -67,6 +67,7 @@ class DBSettingsPage extends React.Component {
     this.hideUpdateModal = this.hideUpdateModal.bind(this);
     this.handleSubmitUpdate = this.handleSubmitUpdate.bind(this);
     this.renderUpdateRedirect = this.renderUpdateRedirect.bind(this);
+    this.validatePassword = this.validatePassword.bind(this);
   }
   componentDidMount() {
     const {
@@ -248,6 +249,14 @@ class DBSettingsPage extends React.Component {
     this.setState({ passwordChecked: true });
   }
 
+  // validate new password
+  validatePassword(password) {
+    if(password.match(/^[a-zA-Z0-9!@#%^&()_+-=[\]{};:,<>|~?]*$/)){
+      return false;
+    }
+    return true;
+  }
+
   // handle submit for update modal
   handleSubmitUpdate() {
     
@@ -260,13 +269,17 @@ class DBSettingsPage extends React.Component {
 
     const { newDatabasePassword, confirmNewDatabasePassword } = this.state;
     
-    if (!newDatabasePassword || newDatabasePassword.length > 31) {
+    if (!newDatabasePassword || newDatabasePassword.length > 32) {
       this.setState({
-        error: "Password shouldn't be more than 31 characters.",
+        error: "Password should be at most 32 characters.",
       });
     } else if(newDatabasePassword !== confirmNewDatabasePassword) {
       this.setState({
         error: "The passwords do not match!",
+      });
+    } else if (this.validatePassword(newDatabasePassword)) {
+      this.setState({
+        error: "Password can only contain letters, numbers and these characters. !#%&()+,-:;<=>?@[]^_{|}~ ",
       });
     } else {
       const newPassword = {
