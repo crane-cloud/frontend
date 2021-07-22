@@ -33,6 +33,7 @@ import projectDatabasesReducer from "./databaseList";
 import deleteDatabaseReducer from "./deleteDatabase";
 import resetDatabaseReducer from "./resetDatabase";
 import createDatabaseReducer from "./createDatabase";
+import updateDatabasePasswordReducer from "./updateDBPassword";
 
 export default combineReducers({
   clusterResourcesReducer,
@@ -69,4 +70,5 @@ export default combineReducers({
   deleteDatabaseReducer,
   resetDatabaseReducer,
   createDatabaseReducer,
+  updateDatabasePasswordReducer,
 });

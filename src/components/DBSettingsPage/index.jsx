@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Redirect, withRouter } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import InformationBar from "../InformationBar";
 import Header from "../Header";
 import PrimaryButton from "../PrimaryButton";
@@ -16,10 +16,15 @@ import deleteDatabase, {
 import resetDatabase, {
   clearDatabaseResetState,
 } from "../../redux/actions/resetDatabase";
+import updateDatabasePassword, {
+  clearUpdateDatabasePasswordState,
+} from "../../redux/actions/updateDBPassword";
+import getProjectDatabases from "../../redux/actions/databaseList";
 import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
+import BlackInputText from "../BlackInputText";
 import "./DBSettingsPage.css";
 
 class DBSettingsPage extends React.Component {
@@ -37,6 +42,9 @@ class DBSettingsPage extends React.Component {
       hostChecked: false,
       uriChecked: false,
       passwordChecked: false,
+      openUpdateModal: false,
+      newDatabasePassword: "",
+      confirmNewDatabasePassword: "",
     };
 
     this.handleDeleteDatabase = this.handleDeleteDatabase.bind(this);
@@ -54,15 +62,25 @@ class DBSettingsPage extends React.Component {
     this.uriOnClick = this.uriOnClick.bind(this);
     this.uriCopyPostgresOnClick = this.uriCopyPostgresOnClick.bind(this);
     this.passwordOnClick = this.passwordOnClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.showUpdateModal = this.showUpdateModal.bind(this);
+    this.hideUpdateModal = this.hideUpdateModal.bind(this);
+    this.handleSubmitUpdate = this.handleSubmitUpdate.bind(this);
+    this.renderUpdateRedirect = this.renderUpdateRedirect.bind(this);
     this.getProjectName = this.getProjectName.bind(this);
   }
   componentDidMount() {
-    const { clearDatabaseResetState } = this.props;
+    const {
+      clearDatabaseResetState,
+      getProjectDatabases,
+     } = this.props;
+    const { projectID } = this.props.match.params;
     clearDatabaseResetState();
+    getProjectDatabases(projectID);
   }
 
   componentDidUpdate(prevProps) {
-    const { dbDeleteMessage, isReset } = this.props;
+    const { dbDeleteMessage, isReset, dbPasswordUpdated } = this.props;
 
     if (dbDeleteMessage !== prevProps.dbDeleteMessage) {
       this.hideDeleteAlert();
@@ -70,6 +88,10 @@ class DBSettingsPage extends React.Component {
 
     if (isReset !== prevProps.isReset) {
       this.hideResetAlert();
+    }
+
+    if (dbPasswordUpdated !== prevProps.dbPasswordUpdated) {
+      this.hideUpdateModal();
     }
   }
 
@@ -120,6 +142,32 @@ class DBSettingsPage extends React.Component {
     this.setState({ openResetAlert: false });
   }
 
+  // show update modal
+  showUpdateModal() {
+    this.setState({ openUpdateModal: true });
+  }
+
+  // hide update modal
+  hideUpdateModal() {
+    const { clearUpdateDatabasePasswordState } = this.props;
+    clearUpdateDatabasePasswordState();
+    this.setState({ openUpdateModal: false });
+    this.setState({ newDatabasePassword: "" });
+    this.setState({confirmNewDatabasePassword: "" });
+  }
+
+  // handle input onchange
+  handleChange(e) {
+    const { error } = this.state;
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+
+    if (error) {
+      this.setState({ error: "" });
+    }
+  }
+
   renderRedirect = () => {
     const { dbDeleteMessage } = this.props;
     const { userID, projectID } = this.props.match.params;
@@ -128,6 +176,20 @@ class DBSettingsPage extends React.Component {
       return (
         <Redirect
           to={`/users/${userID}/projects/${projectID}/databases`}
+          noThrow
+        />
+      );
+    }
+  };
+
+  renderUpdateRedirect = () => {
+    const { dpPasswordUpdated, getProjectDatabases } = this.props;
+    const { userID, projectID, databaseID } = this.props.match.params;
+    getProjectDatabases(projectID);
+    if (dpPasswordUpdated) {
+      return (
+        <Redirect
+          to={`/users/${userID}/projects/${projectID}/databases/${databaseID}/settings`}
           noThrow
         />
       );
@@ -187,6 +249,38 @@ class DBSettingsPage extends React.Component {
     this.setState({ passwordChecked: true });
   }
 
+  // handle submit for update modal
+  handleSubmitUpdate() {
+    
+    const {
+      updateDatabasePassword,
+      match: {
+        params: { projectID, databaseID },
+      },
+    } = this.props;
+
+    const { newDatabasePassword, confirmNewDatabasePassword } = this.state;
+    
+    if (!newDatabasePassword || newDatabasePassword.length > 32) {
+      this.setState({
+        error: "Password should be at most 32 characters.",
+      });
+    } else if(newDatabasePassword !== confirmNewDatabasePassword) {
+      this.setState({
+        error: "The passwords do not match!",
+      });
+    } else if (newDatabasePassword.length < 8) {
+      this.setState({
+        error: "Password has to be more than 8 characters.",
+      });
+    } else {
+      const newPassword = {
+        password: newDatabasePassword,
+      };
+      
+      updateDatabasePassword(projectID, databaseID, newPassword);
+    }
+  }
   getProjectName(projects, id) {
     const project = projects.find((project) => project.id === id);
     return project.name;
@@ -200,6 +294,9 @@ class DBSettingsPage extends React.Component {
       isReset,
       isReseting,
       resetMessage,
+      dbPasswordUpdated,
+      updatingDBPassword,
+      errorMessage,
       projects,
     } = this.props;
     const { userID, projectID, databaseID } = this.props.match.params;
@@ -214,12 +311,17 @@ class DBSettingsPage extends React.Component {
       userChecked,
       uriChecked,
       passwordChecked,
+      openUpdateModal,
+      newDatabasePassword,
+      confirmNewDatabasePassword,
+      error,
     } = this.state;
     return (
       <div className="Page">
         {dbDeleteMessage === "Database Deleted Successfully"
           ? this.renderRedirect()
           : null}
+        {dbPasswordUpdated ? this.renderUpdateRedirect() : null}
         <div className="TopBarSection">
           <Header />
         </div>
@@ -300,8 +402,8 @@ class DBSettingsPage extends React.Component {
                   </div>
                 </div>
               </div>
-              
-              {(dbInfo.flavor === 'mysql') ? (
+
+              {dbInfo.flavor === "mysql" ? (
                 <div className="DBInstructions">
                   <div className="DBInfoTop">
                     <div>
@@ -327,7 +429,7 @@ class DBSettingsPage extends React.Component {
                     </div>
                   </div>
                 </div>
-              ): (
+              ) : (
                 <div className="DBInstructions">
                   <div className="DBInfoTop">
                     <div>
@@ -355,6 +457,78 @@ class DBSettingsPage extends React.Component {
                 </div>
               )}
               <div className="DBButtons">
+                <div className="DBButtonRow">
+                  <PrimaryButton
+                    label="Update Password"
+                    className="ResetBtn DB-Btn"
+                    onClick={this.showUpdateModal}
+                  />
+                  <div className="buttonText">
+                    Changes or updates database password.
+                  </div>
+                </div>
+                {openUpdateModal && (
+                  <div className="ProjectDeleteModel">
+                    <Modal
+                      showModal={openUpdateModal}
+                      onClickAway={this.hideUpdateModal}
+                    >
+                      <div className="DeleteDatabaseModel">
+                        <div className="DeleteProjectModalUpperSection">
+                          <div className="ModalFormHeading">
+                            <h2>Update database password</h2>
+                          </div>
+                          <div className="InnerModalDescription">
+                            <BlackInputText
+                              required
+                              placeholder="New database Password"
+                              name="newDatabasePassword"
+                              value={newDatabasePassword}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />
+                            <BlackInputText
+                              required
+                              placeholder="Confirm New database Password"
+                              name="confirmNewDatabasePassword"
+                              value={confirmNewDatabasePassword}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />
+                          </div>
+                        </div>
+                        {(errorMessage || error) && (
+                          <Feedback
+                            type="error"
+                            message={errorMessage ? "Failed to update password" : error}
+                          />
+                        )}
+                        <div className="DeleteProjectModalLowerSection">
+                          <div className="DeleteProjectModelButtons">
+                            <PrimaryButton
+                              label="cancel"
+                              className="CancelBtn"
+                              onClick={this.hideUpdateModal}
+                            />
+                            <PrimaryButton
+                              label={
+                                updatingDBPassword ? <Spinner /> : "Update"
+                              }
+                              className="ResetBtn"
+                              onClick={this.handleSubmitUpdate}
+                            />
+                          </div>
+
+                          {databaseDeleteFailed && dbDeleteMessage && (
+                            <Feedback message={dbDeleteMessage} type="error" />
+                          )}
+                        </div>
+                      </div>
+                    </Modal>
+                  </div>
+                )}
                 <div className="DBButtonRow">
                   <PrimaryButton
                     label="Reset Database"
@@ -487,6 +661,8 @@ DBSettingsPage.propTypes = {
   isReseting: PropTypes.bool,
   resetFailed: PropTypes.bool,
   resetMessage: PropTypes.string,
+  dbPasswordUpdated: PropTypes.bool,
+  getProjectDatabases: PropTypes.func,
 };
 
 DBSettingsPage.defaultProps = {
@@ -494,6 +670,7 @@ DBSettingsPage.defaultProps = {
   databaseDeleteFailed: false,
   deletingDatabase: false,
   databaseDeleted: false,
+  dbPasswordUpdated: false,
 };
 
 const mapStateToProps = (state) => {
@@ -513,6 +690,15 @@ const mapStateToProps = (state) => {
     resetMessage,
     clearDatabaseResetState,
   } = state.resetDatabaseReducer;
+  const {
+    database,
+    updatingDBPassword,
+    updateDBPasswordFailed,
+    dbPasswordUpdated,
+    errorMessage,
+    clearUpdateDatabasePasswordState
+  } = state.updateDatabasePasswordReducer;
+
   return {
     databases,
     databaseDeleted,
@@ -525,6 +711,12 @@ const mapStateToProps = (state) => {
     resetFailed,
     resetMessage,
     clearDatabaseResetState,
+    database,
+    updatingDBPassword,
+    updateDBPasswordFailed,
+    dbPasswordUpdated,
+    errorMessage,
+    clearUpdateDatabasePasswordState,
     projects,
   };
 };
@@ -534,9 +726,12 @@ const mapDispatchToProps = {
   clearDeleteDatabaseState,
   resetDatabase,
   clearDatabaseResetState,
+  updateDatabasePassword,
+  clearUpdateDatabasePasswordState,
+  getProjectDatabases,
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(DBSettingsPage));
+)(DBSettingsPage);
