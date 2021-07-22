@@ -67,6 +67,7 @@ class DBSettingsPage extends React.Component {
     this.hideUpdateModal = this.hideUpdateModal.bind(this);
     this.handleSubmitUpdate = this.handleSubmitUpdate.bind(this);
     this.renderUpdateRedirect = this.renderUpdateRedirect.bind(this);
+    this.getProjectName = this.getProjectName.bind(this);
   }
   componentDidMount() {
     const {
@@ -280,6 +281,11 @@ class DBSettingsPage extends React.Component {
       updateDatabasePassword(projectID, databaseID, newPassword);
     }
   }
+  getProjectName(projects, id) {
+    const project = projects.find((project) => project.id === id);
+    return project.name;
+  }
+
   render() {
     const {
       dbDeleteMessage,
@@ -290,7 +296,8 @@ class DBSettingsPage extends React.Component {
       resetMessage,
       dbPasswordUpdated,
       updatingDBPassword,
-      errorMessage
+      errorMessage,
+      projects,
     } = this.props;
     const { userID, projectID, databaseID } = this.props.match.params;
     const dbInfo = this.getDatabaseInfo(databaseID);
@@ -321,7 +328,7 @@ class DBSettingsPage extends React.Component {
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
-              name={dbInfo.name}
+              name={this.getProjectName(projects, projectID)}
               params={this.props.match.params}
               pageRoute={this.props.location.pathname}
               allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
@@ -667,6 +674,7 @@ DBSettingsPage.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
+  const { projects } = state.userProjectsReducer;
   const { databases } = state.projectDatabasesReducer;
   const {
     databaseDeleted,
@@ -708,7 +716,8 @@ const mapStateToProps = (state) => {
     updateDBPasswordFailed,
     dbPasswordUpdated,
     errorMessage,
-    clearUpdateDatabasePasswordState
+    clearUpdateDatabasePasswordState,
+    projects,
   };
 };
 
