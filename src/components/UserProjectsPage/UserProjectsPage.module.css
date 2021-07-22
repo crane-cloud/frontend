@@ -1,46 +1,8 @@
-.Page {
-  margin: 0;
-  background: #f1f1f1;
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-}
-
-.TopRow {
-  width: 100%;
-}
-
-.MainRow {
-  display: flex;
-  flex-direction: column;
-  padding: 3rem 2rem;
-}
-
-.FooterRow {
-  padding: 3rem;
-}
-
-div.TableLoading {
-  display: flex;
-  height: 100%;
-  justify-self: center;
-  justify-content: center;
-  align-items: center;
-}
-
-.NoResourcesMessage {
-  flex-grow: 1;
-  display: flex;
-  font-size: 16px;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-}
-
 .ProjectList {
-  display: flex;
+  display: grid;
   gap: 1rem;
-  flex-wrap: wrap;
+  grid-template-columns: repeat(5, 1fr);
+  padding: 2rem;
 }
 
 .ProjectFormErrorDiv {
@@ -75,51 +37,34 @@ div.TableLoading {
   margin-left: 0;
 }
 
-.ModalForm {
-  display: grid;
-  gap: 2rem;
-}
-
-
-.CancelBtn {
-  outline: 2px solid #000000;
-  color: #000000;
-  background-color: #ffffff;
-}
-
-.CancelBtn:hover {
-  color: #fff;
-  background-color: #000;
-  outline: 2px solid #000000;
-}
-
-.ModalFormButtons {
+.NoResourcesMessage {
+  flex-grow: 1;
   display: flex;
-  justify-content: space-between;
-  width: 100%;
+  font-size: 16px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
 }
 
-.ModalFormHeading {
-  margin: 0;
-  padding: 0;
-  font-weight: bold;
+.ButtonPlusSmall{
+  width: 1rem;
+  height: 1rem;
 }
 
-.ModalFormInputs {
-  display: grid;
-  gap: 1rem;
+@media only screen and (max-width: 1100px) and (min-width: 901px) {
+  .ProjectList {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
-.ModalFormInputs .InputText {
-  border: 2px solid #000000;
-  color: #000;
+@media only screen and (max-width: 900px) and (min-width: 481px) {
+  .ProjectList {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
-.ModalForm .ModalFormInputs .InputText::placeholder {
-  color: #000;
-}
-
-.ModalForm .ModalFormButtons {
-  display: flex;
-  justify-content: space-between;
+@media only screen and (max-width: 480px) {
+  .ProjectList {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

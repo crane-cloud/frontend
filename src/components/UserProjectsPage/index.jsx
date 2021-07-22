@@ -7,6 +7,7 @@ import addProject, {
 } from "../../redux/actions/addProject";
 import { clearUpdateProjectState } from "../../redux/actions/updateProject";
 import InformationBar from "../InformationBar";
+import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import Header from "../Header";
 import PrimaryButton from "../PrimaryButton";
 import Modal from "../Modal";
@@ -186,8 +187,8 @@ class UserProjectsPage extends React.Component {
           )}
           {isFetched && projects.length === 0 && (
             <div className={styles.NoResourcesMessage}>
-              You haven’t created any projects yet. Click the create button to
-              get started.
+              You haven’t created any projects yet. Click the &nbsp; <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp; button to add a project.
+
             </div>
           )}
           {!isRetrieving && !isFetched && (
@@ -208,8 +209,8 @@ class UserProjectsPage extends React.Component {
         Its triggered by the value of state.openModal */}
         <Modal showModal={openModal} onClickAway={this.hideForm}>
           <div className={styles.ModalForm}>
-            <div >
-              <h2 className={styles.ModalFormHeading}>Add a project</h2>
+            <div className={styles.ModalFormHeading}>
+              <h2>Add a project</h2>
             </div>
             <div className={styles.ModalFormInputs}>
               <Select
