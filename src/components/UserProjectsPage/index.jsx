@@ -1,12 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import "./UserProjectsPage.css";
+import styles from "./UserProjectsPage.module.css";
 import addProject, {
   clearAddProjectState,
 } from "../../redux/actions/addProject";
 import { clearUpdateProjectState } from "../../redux/actions/updateProject";
 import InformationBar from "../InformationBar";
+import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import Header from "../Header";
 import PrimaryButton from "../PrimaryButton";
 import Modal from "../Modal";
@@ -159,20 +160,20 @@ class UserProjectsPage extends React.Component {
     const sortedProjects = projects.sort((a, b) => b.date_created > a.date_created ? 1: -1);
 
     return (
-      <div className="Page">
-        <div className="TopRow">
+      <div className={styles.Page}>
+        <div className={styles.TopRow}>
           <Header />
           <InformationBar header="Projects" showBtn btnAction={this.showForm} />
         </div>
-        <div className="MainRow">
+        <div className={styles.MainRow}>
           {isRetrieving ? (
-            <div className="TableLoading">
-              <div className="SpinnerWrapper">
+            <div className={styles.TableLoading}>
+              <div className={styles.SpinnerWrapper}>
                 <Spinner size="big" />
               </div>
             </div>
           ) : (
-            <div className="ProjectList">
+            <div className={styles.ProjectList}>
               {isFetched &&
                 sortedProjects !== undefined &&
                 sortedProjects.map((project) => (
@@ -186,18 +187,18 @@ class UserProjectsPage extends React.Component {
             </div>
           )}
           {isFetched && projects.length === 0 && (
-            <div className="NoResourcesMessage">
-              You haven’t created any projects yet. Click the create button to
-              get started.
+            <div className={styles.NoResourcesMessage}>
+              You haven’t created any projects yet. Click the &nbsp; <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp; button to add a project.
+
             </div>
           )}
           {!isRetrieving && !isFetched && (
-            <div className="NoResourcesMessage">
+            <div className={styles.NoResourcesMessage}>
               Oops! Something went wrong! Failed to retrieve Projects.
             </div>
           )}
         </div>
-        <div className="FooterRow">
+        <div className={styles.FooterRow}>
           <div>
             Copyright {new Date().getFullYear()} Crane Cloud.
             <br />
@@ -208,11 +209,11 @@ class UserProjectsPage extends React.Component {
         {/* Modal for creating a new project
         Its triggered by the value of state.openModal */}
         <Modal showModal={openModal} onClickAway={this.hideForm}>
-          <div className="ModalForm">
-            <div className="ModalFormHeading">
+          <div className={styles.ModalForm}>
+            <div className={styles.ModalFormHeading}>
               <h2>Add a project</h2>
             </div>
-            <div className="ModalFormInputs">
+            <div className={styles.ModalFormInputs}>
               <Select
                 required
                 placeholder="Choose Datacenter location"
@@ -240,10 +241,10 @@ class UserProjectsPage extends React.Component {
               />
             </div>
             {error && <Feedback type="error" message={error} />}
-            <div className="ModalFormButtons">
+            <div className={styles.ModalFormButtons}>
               <PrimaryButton
                 label="Cancel"
-                className="CancelBtn"
+                className={styles.CancelBtn}
                 onClick={this.hideForm}
               />
               <PrimaryButton
