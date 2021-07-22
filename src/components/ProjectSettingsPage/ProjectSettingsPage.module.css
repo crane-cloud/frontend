@@ -168,7 +168,8 @@
 }
 .WarningContainer {
   display: grid;
-  gap: 1rem;
+  gap: 0.6rem;
+  width: 25rem;
 }
 .DeleteSubDescription {
   font-weight: 500;
