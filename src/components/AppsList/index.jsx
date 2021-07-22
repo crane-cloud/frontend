@@ -51,6 +51,7 @@ class AppsList extends Component {
 
   render() {
     const { apps, isRetrieved, isRetrieving, params } = this.props;
+    const sortedApps = apps.apps.sort((a, b) => b.date_created < a.date_created ? 1: -1);
     
     return (
       <>
@@ -63,9 +64,9 @@ class AppsList extends Component {
         ) : (
           <div className={styles.AppList}>
             {isRetrieved &&
-              apps.apps !== undefined &&
-              apps.apps.map((app) => (
-                <div key={app.id} className={styles.AppCardItem}>
+              sortedApps !== undefined &&
+              sortedApps.map((app) => (
+                <div key={app.id} className="AppCardItem">
                   <AppsCard
                     name={app.name}
                     appStatus={app.app_running_status}
