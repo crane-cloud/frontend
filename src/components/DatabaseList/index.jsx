@@ -73,6 +73,8 @@ class DatabaseList extends React.Component {
     const { openCreateComponent } = this.state;
 
     const { projectID, userID } = params;
+    const sortedDbs = databases.sort((a, b) => b.date_created > a.date_created ? 1: -1);
+    
     return (
       <div className={styles.MainPage}>
         <div className={styles.TopBarSection}>
@@ -135,8 +137,8 @@ class DatabaseList extends React.Component {
                     ) : (
                       <div className={styles.DatabaseTableBody}>
                         {databasesFetched &&
-                          databases !== undefined &&
-                          databases.map((database) => (
+                          sortedDbs !== undefined &&
+                          sortedDbs.map((database) => (
                             <Link
                               to={{
                                 pathname: `/users/${userID}/projects/${projectID}/databases/${database.id}/settings`,
