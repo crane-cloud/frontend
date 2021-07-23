@@ -33,6 +33,8 @@ class ProjectSettingsPage extends React.Component {
       projectName: name ? name : "",
       projectDescription: description ? description : "",
       error: "",
+      Confirmprojectname: "",
+      disableDelete: true,
     };
 
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
@@ -63,8 +65,8 @@ class ProjectSettingsPage extends React.Component {
   }
 
   handleChange(e) {
-    const { error } = this.state;
-    const { errorMessage, clearUpdateProjectState } = this.props;
+    const { error, projectName, openDeleteAlert } = this.state;
+    const { errorMessage, clearUpdateProjectState,clearDeleteProjectState,isFailed,message  } = this.props;
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -74,6 +76,19 @@ class ProjectSettingsPage extends React.Component {
     if (error) {
       this.setState({
         error: "",
+      });
+    }
+    if(isFailed && message){
+      clearDeleteProjectState();
+     
+    }
+    if (e.target.value === projectName && openDeleteAlert) {
+      this.setState({
+        disableDelete: false,
+      });
+    } else if (e.target.value !== projectName && openDeleteAlert) {
+      this.setState({
+        disableDelete: true,
       });
     }
   }
@@ -98,7 +113,10 @@ class ProjectSettingsPage extends React.Component {
           error: "please provide either a new name or description",
         });
       } else {
-        if (trimprojectName !== name && trimprojectDescription === description) {
+        if (
+          trimprojectName !== name &&
+          trimprojectDescription === description
+        ) {
           if (!this.validateProjectName(trimprojectName)) {
             this.setState({
               error: "name should start with a letter",
@@ -119,12 +137,18 @@ class ProjectSettingsPage extends React.Component {
           }
         }
 
-        if (trimprojectName === name && trimprojectDescription !== description) {
+        if (
+          trimprojectName === name &&
+          trimprojectDescription !== description
+        ) {
           const newProject = { description: trimprojectDescription };
           updateProject(projectID, newProject);
         }
 
-        if (trimprojectName !== name && trimprojectDescription !== description) {
+        if (
+          trimprojectName !== name &&
+          trimprojectDescription !== description
+        ) {
           if (!this.validateProjectName(trimprojectName)) {
             this.setState({
               error: "name should start with a letter",
@@ -184,12 +208,19 @@ class ProjectSettingsPage extends React.Component {
     const projectInfo = JSON.parse(localStorage.getItem("project"));
     const name = projectInfo.name;
     const description = projectInfo.description;
-    const { openDeleteAlert, projectName, projectDescription, error } = this.state;
+    const {
+      openDeleteAlert,
+      projectName,
+      projectDescription,
+      error,
+      Confirmprojectname,
+      disableDelete,
+    } = this.state;
 
     const { projectID, userID } = params;
 
     return (
-      <div className={styles.Page} >
+      <div className={styles.Page}>
         {isUpdated || isDeleted ? this.renderRedirect() : null}
         <div className={styles.TopBarSection}>
           <Header />
@@ -240,7 +271,11 @@ class ProjectSettingsPage extends React.Component {
                     {(errorMessage || error) && (
                       <Feedback
                         type="error"
-                        message={errorMessage ? "you cant update only the description" : error}
+                        message={
+                          errorMessage
+                            ? "you cant update only the description"
+                            : error
+                        }
                       />
                     )}
 
@@ -266,24 +301,48 @@ class ProjectSettingsPage extends React.Component {
                   >
                     <div className={styles.DeleteProjectModel}>
                       <div className={styles.DeleteProjectModalUpperSection}>
-                        <div className={styles.DeleteDescription}>
-                          Are you sure you want to delete&nbsp;
-                          <span>{projectName}</span>
-                          &nbsp; ?
-                          <DeleteWarning />
+                        <div className={styles.WarningContainer}>
+                          <div className={styles.DeleteDescription}>
+                            Are you sure you want to delete&nbsp;
+                            <span>{projectName}</span>
+                            &nbsp;?
+                          </div>
+                          <div className={styles.DeleteSubDescription}>
+                            This will permanantly delete the project and all
+                            resourses it contains.
+                          </div>
+                          <div>
+                            Please confirm by typing <b className={styles.DeleteWarning}>{projectName}</b> below.
+                          </div>
+                          <div className={styles.InnerModalDescription}>
+                            <BlackInputText
+                              required
+                              placeholder={projectName}
+                              name="Confirmprojectname"
+                              value={Confirmprojectname}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />
+                            <DeleteWarning textAlignment="Left"/>
+                          </div>
                         </div>
                       </div>
-
                       <div className={styles.DeleteProjectModalLowerSection}>
                         <div className={styles.DeleteProjectModelButtons}>
                           <PrimaryButton
                             label="cancel"
-                            className={styles.CancelBtn}
+                            className="CancelBtn"
                             onClick={this.hideDeleteAlert}
                           />
                           <PrimaryButton
                             label={isDeleting ? <Spinner /> : "Delete"}
-                            className={styles.DeleteBtn}
+                            className={
+                              disableDelete
+                                ? styles.InactiveDelete
+                                : styles.DeleteBtn
+                            }
+                            disable={disableDelete}
                             onClick={(e) =>
                               this.handleDeleteProject(e, params.projectID)
                             }
