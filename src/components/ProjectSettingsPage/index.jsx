@@ -314,7 +314,6 @@ class ProjectSettingsPage extends React.Component {
                           <div>
                             Please confirm by typing <b className={styles.DeleteWarning}>{projectName}</b> below.
                           </div>
-                          <DeleteWarning textAlignment="Left"/>
                           <div className={styles.InnerModalDescription}>
                             <BlackInputText
                               required
@@ -325,6 +324,7 @@ class ProjectSettingsPage extends React.Component {
                                 this.handleChange(e);
                               }}
                             />
+                            <DeleteWarning textAlignment="Left"/>
                           </div>
                         </div>
                       </div>
@@ -332,7 +332,7 @@ class ProjectSettingsPage extends React.Component {
                         <div className={styles.DeleteProjectModelButtons}>
                           <PrimaryButton
                             label="cancel"
-                            className={styles.CancelBtn}
+                            className="CancelBtn"
                             onClick={this.hideDeleteAlert}
                           />
                           <PrimaryButton
