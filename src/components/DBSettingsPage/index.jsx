@@ -405,7 +405,7 @@ class DBSettingsPage extends React.Component {
               </div>
 
               <div className="DBSections">
-                <div><strong>Connect to database</strong></div>
+                <div className="DBSectionTitle">Connect to database</div>
                 {dbInfo.flavor === "mysql" ? (
                   <div className="DBInstructions">
                     <div className="DBInfoTop">
@@ -463,7 +463,7 @@ class DBSettingsPage extends React.Component {
                 )}
               </div>
               <div className="DBSections">
-                <div><strong>More Options</strong></div>
+                <div className="DBSectionTitle">More Options</div>
                 <div className="DBInstructions">
                   <div className="DBButtonRow">
                     <div className="flexa">
@@ -490,6 +490,16 @@ class DBSettingsPage extends React.Component {
                         onClick={this.showResetAlert}
                       />
                     </div>
+                    {resetMessage !== "" && (
+                      <Feedback
+                        message={
+                          resetMessage !== ""
+                            ? "Database has been successfully reset."
+                            : null
+                        }
+                        type={isReset ? "success" : "error"}
+                      />
+                    )}
                     
                   </div>
                   <div className="DBButtonRow">
@@ -573,36 +583,6 @@ class DBSettingsPage extends React.Component {
                     </Modal>
                   </div>
                 )}
-                <div className="DBButtonRow">
-                  <PrimaryButton
-                    label="Reset Database"
-                    className="ResetBtn DB-Btn"
-                    onClick={this.showResetAlert}
-                  />
-                  <div className="buttonText">
-                    Deletes all tables and data, but the database remains.
-                  </div>
-                </div>
-                {resetMessage !== "" && (
-                  <Feedback
-                    message={
-                      resetMessage !== ""
-                        ? "Database has been successfully reset."
-                        : null
-                    }
-                    type={isReset ? "success" : "error"}
-                  />
-                )}
-                <div className="DBButtonRow">
-                  <PrimaryButton
-                    label="Delete Database"
-                    className="DBDeleteBtn DB-Btn"
-                    onClick={this.showDeleteAlert}
-                  />
-                  <div className="buttonText">
-                    Destroys the entire database, deleting all tables and data.
-                  </div>
-                </div>
                 {openDeleteAlert && (
                   <div className="ProjectDeleteModel">
                     <Modal
