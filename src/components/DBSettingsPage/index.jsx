@@ -410,7 +410,8 @@ class DBSettingsPage extends React.Component {
                   <div className="DBInstructions">
                     <div className="DBInfoTop">
                       <div>
-                        Connecting to the database. Read{" "}
+                        To connect to the database, copy and paste the command below into your terminal.
+                        Refer to {" "}
                         <a
                           href="https://medium.com/cranecloud/connecting-to-a-remote-mysql-database-a6b3cc15c40b"
                           rel="noopener noreferrer"
@@ -436,7 +437,8 @@ class DBSettingsPage extends React.Component {
                   <div className="DBInstructions">
                     <div className="DBInfoTop">
                       <div>
-                        Connecting to the database. Read{" "}
+                        To connect to the database, copy and paste the command below into your terminal.
+                        Refer to {" "}
                         <a
                           href="https://medium.com/cranecloud/connecting-to-a-remote-postgresql-database-779637147abf"
                           rel="noopener noreferrer"
@@ -471,8 +473,7 @@ class DBSettingsPage extends React.Component {
                     <div className="SectionButtons">
                       <SettingsButton
                         label="Change Password"
-                        className=""
-                        onClick=""
+                        onClick={this.showUpdateModal}
                       />
                     </div>
                     
@@ -486,7 +487,7 @@ class DBSettingsPage extends React.Component {
                       <SettingsButton
                         label="Reset this database"
                         className="Change-Btn"
-                        onClick=""
+                        onClick={this.showResetAlert}
                       />
                     </div>
                     
@@ -500,7 +501,7 @@ class DBSettingsPage extends React.Component {
                       <SettingsButton
                         label="Delete this database"
                         className="Change-Btn"
-                        onClick=""
+                        onClick={this.showDeleteAlert}
                       />
                     </div>
                     
@@ -510,16 +511,6 @@ class DBSettingsPage extends React.Component {
               </div>
               
               <div className="DBButtons">
-                <div className="DBButtonRow">
-                  <PrimaryButton
-                    label="Update Password"
-                    className="ResetBtn DB-Btn"
-                    onClick={this.showUpdateModal}
-                  />
-                  <div className="buttonText">
-                    Changes or updates database password.
-                  </div>
-                </div>
                 {openUpdateModal && (
                   <div className="ProjectDeleteModel">
                     <Modal
