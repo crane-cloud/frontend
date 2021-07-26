@@ -1,23 +1,23 @@
 .Settings-Btn {
   background-color: #ffffff;
-  width: 10.875rem;
+  width: 12rem;
   height: 1.875rem;
   color: #000;
-  font-size: 1rem;
-  font-weight: bold;
-  line-height: 19px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 18.75px;
   text-align: center;
   border: none;
-  outline: 2px solid #000;
+  outline: 1px solid #000;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
 }
 
-.Settings-Btn.CancelBtn {
-  outline: 2px solid #000000;
-  color: #000000;
+.Settings-Btn.Change-Btn {
+  outline: 1px solid #ff0000;
+  color: #ff0000;
   background-color: #ffffff;
 }
 
