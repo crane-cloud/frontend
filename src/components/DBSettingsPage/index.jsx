@@ -25,6 +25,7 @@ import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
 import BlackInputText from "../BlackInputText";
+import SettingsButton from "../SettingsButton";
 import "./DBSettingsPage.css";
 
 class DBSettingsPage extends React.Component {
@@ -467,18 +468,21 @@ class DBSettingsPage extends React.Component {
                       <div><strong>Change Password</strong></div>
                       <div>Changes or updates database password.</div>
                     </div>
+                    <SettingsButton />
                   </div>
                   <div className="DBButtonRow">
                     <div className="flexa">
                       <div><strong>Reset Database</strong></div>
                       <div>Delete all data inside this database and restore it to its initial state.</div>
                     </div>
+                    <SettingsButton />
                   </div>
                   <div className="DBButtonRow">
                     <div className="flexa">
                       <div><strong>Delete Database</strong></div>
                       <div>Destroy the entire database, deleting all tables and data inside it.</div>
                     </div>
+                    <SettingsButton />
                   </div>
                 </div>
                 
