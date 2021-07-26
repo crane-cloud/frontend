@@ -121,7 +121,7 @@
 
 .DBButtonRow {
   display: grid;
-  grid-template-columns: 20% auto;
+  grid-template-columns: auto 40%;
   grid-auto-flow: column;
   align-items: center;
   column-gap: 1rem;

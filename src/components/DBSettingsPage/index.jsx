@@ -403,59 +403,87 @@ class DBSettingsPage extends React.Component {
                 </div>
               </div>
 
-              {dbInfo.flavor === "mysql" ? (
-                <div className="DBInstructions">
-                  <div className="DBInfoTop">
-                    <div>
-                      Connecting to the database. Read{" "}
-                      <a
-                        href="https://medium.com/cranecloud/connecting-to-a-remote-mysql-database-a6b3cc15c40b"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        className="MysqlArticle"
-                      >
-                        this article
-                      </a>
-                      , for a more comprehensive guide.
+              <div className="DBSections">
+                <div><strong>Connect to database</strong></div>
+                {dbInfo.flavor === "mysql" ? (
+                  <div className="DBInstructions">
+                    <div className="DBInfoTop">
+                      <div>
+                        Connecting to the database. Read{" "}
+                        <a
+                          href="https://medium.com/cranecloud/connecting-to-a-remote-mysql-database-a6b3cc15c40b"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                          className="MysqlArticle"
+                        >
+                          this article
+                        </a>
+                        , for a more comprehensive guide.
+                      </div>
                     </div>
-                  </div>
-                  <div className="DBInfoBottom">
-                    <div className="DBAccessInfo">{`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}</div>
-                    <div className="DBAccessCopy">
-                      <div className="DBPassword">
-                        <CopyText onClick={this.uriOnClick} />
-                        {uriChecked ? <Checked /> : null}
+                    <div className="DBInfoBottom">
+                      <div className="DBAccessInfo">{`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}</div>
+                      <div className="DBAccessCopy">
+                        <div className="DBPassword">
+                          <CopyText onClick={this.uriOnClick} />
+                          {uriChecked ? <Checked /> : null}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ) : (
-                <div className="DBInstructions">
-                  <div className="DBInfoTop">
-                    <div>
-                      Connecting to the database. Read{" "}
-                      <a
-                        href="https://medium.com/cranecloud/connecting-to-a-remote-postgresql-database-779637147abf"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        className="MysqlArticle"
-                      >
-                        this article
-                      </a>
-                      , for a more comprehensive guide.
+                ) : (
+                  <div className="DBInstructions">
+                    <div className="DBInfoTop">
+                      <div>
+                        Connecting to the database. Read{" "}
+                        <a
+                          href="https://medium.com/cranecloud/connecting-to-a-remote-postgresql-database-779637147abf"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                          className="MysqlArticle"
+                        >
+                          this article
+                        </a>
+                        , for a more comprehensive guide.
+                      </div>
                     </div>
-                  </div>
-                  <div className="DBInfoBottom">
-                    <div className="DBAccessInfo">{`psql -h ${dbInfo.host} -p ${dbInfo.port} -d ${dbInfo.name} -U ${dbInfo.user} -W`}</div>
-                    <div className="DBAccessCopy">
-                      <div className="DBPassword">
-                        <CopyText onClick={this.uriCopyPostgresOnClick} />
-                        {uriChecked ? <Checked /> : null}
+                    <div className="DBInfoBottom">
+                      <div className="DBAccessInfo">{`psql -h ${dbInfo.host} -p ${dbInfo.port} -d ${dbInfo.name} -U ${dbInfo.user} -W`}</div>
+                      <div className="DBAccessCopy">
+                        <div className="DBPassword">
+                          <CopyText onClick={this.uriCopyPostgresOnClick} />
+                          {uriChecked ? <Checked /> : null}
+                        </div>
                       </div>
                     </div>
                   </div>
+                )}
+              </div>
+              <div className="DBSections">
+                <div><strong>More Options</strong></div>
+                <div className="DBInstructions">
+                  <div className="DBButtonRow">
+                    <div className="flexa">
+                      <div><strong>Change Password</strong></div>
+                      <div>Changes or updates database password.</div>
+                    </div>
+                  </div>
+                  <div className="DBButtonRow">
+                    <div className="flexa">
+                      <div><strong>Reset Database</strong></div>
+                      <div>Delete all data inside this database and restore it to its initial state.</div>
+                    </div>
+                  </div>
+                  <div className="DBButtonRow">
+                    <div className="flexa">
+                      <div><strong>Delete Database</strong></div>
+                      <div>Destroy the entire database, deleting all tables and data inside it.</div>
+                    </div>
+                  </div>
                 </div>
-              )}
+                
+              </div>
+              
               <div className="DBButtons">
                 <div className="DBButtonRow">
                   <PrimaryButton
