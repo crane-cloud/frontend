@@ -467,12 +467,12 @@ class DBSettingsPage extends React.Component {
                 <div className="DBInstructions">
                   <div className="DBButtonRow">
                     <div className="flexa">
-                      <div><strong>Change Password</strong></div>
-                      <div>Changes or updates database password.</div>
+                      <div><strong>Change password</strong></div>
+                      <div>Update the password of this database.</div>
                     </div>
                     <div className="SectionButtons">
                       <SettingsButton
-                        label="Change Password"
+                        label="Change password"
                         onClick={this.showUpdateModal}
                       />
                     </div>
@@ -480,7 +480,7 @@ class DBSettingsPage extends React.Component {
                   </div>
                   <div className="DBButtonRow">
                     <div className="flexa">
-                      <div><strong>Reset Database</strong></div>
+                      <div><strong>Reset database</strong></div>
                       <div>Delete all data inside this database and restore it to its initial state.</div>
                     </div>
                     <div className="SectionButtons">
@@ -504,8 +504,8 @@ class DBSettingsPage extends React.Component {
                   </div>
                   <div className="DBButtonRow">
                     <div className="flexa">
-                      <div><strong>Delete Database</strong></div>
-                      <div>Destroy the entire database, deleting all tables and data inside it.</div>
+                      <div><strong>Delete database</strong></div>
+                      <div>Destroy the entire database, delete all tables and data inside them.</div>
                     </div>
                     <div className="SectionButtons">
                       <SettingsButton

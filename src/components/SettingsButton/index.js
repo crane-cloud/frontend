@@ -6,7 +6,7 @@ const SettingsButton = (props) => {
   return (
     <button
       disabled={disable}
-      className={`Settings-Btn uppercase ${className}`}
+      className={`Settings-Btn ${className}`}
       onClick={props.onClick}
     >
       {label}
