@@ -310,9 +310,9 @@ class ProjectSettingsPage extends React.Component {
                           <div className={styles.DeleteSubDescription}>
                             This will permanantly delete the project and all
                             resourses it contains.
-                          </div>
-                          <div>
+                            <div>
                             Please confirm by typing <b className={styles.DeleteWarning}>{projectName}</b> below.
+                          </div>
                           </div>
                           <div className={styles.InnerModalDescription}>
                             <BlackInputText
