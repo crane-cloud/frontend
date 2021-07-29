@@ -1,0 +1,24 @@
+.Settings-Btn {
+  background-color: #ffffff;
+  width: 12rem;
+  height: 1.875rem;
+  color: #000;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 18.75px;
+  text-align: center;
+  border: none;
+  outline: 1px solid #7A7979;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.Settings-Btn.Change-Btn {
+  outline: 1px solid #ff0000;
+  color: #ff0000;
+  background-color: #ffffff;
+}
+
+

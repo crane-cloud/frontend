@@ -25,6 +25,7 @@ import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
 import BlackInputText from "../BlackInputText";
+import SettingsButton from "../SettingsButton";
 import "./DBSettingsPage.css";
 
 class DBSettingsPage extends React.Component {
@@ -403,70 +404,123 @@ class DBSettingsPage extends React.Component {
                 </div>
               </div>
 
-              {dbInfo.flavor === "mysql" ? (
-                <div className="DBInstructions">
-                  <div className="DBInfoTop">
-                    <div>
-                      Connecting to the database. Read{" "}
-                      <a
-                        href="https://medium.com/cranecloud/connecting-to-a-remote-mysql-database-a6b3cc15c40b"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        className="MysqlArticle"
-                      >
-                        this article
-                      </a>
-                      , for a more comprehensive guide.
+              <div className="DBSections">
+                <div className="DBSectionTitle">Connect to database</div>
+                {dbInfo.flavor === "mysql" ? (
+                  <div className="DBInstructions">
+                    <div className="DBInfoTop">
+                      <div>
+                        To connect to the database, copy and paste the command below into your terminal.
+                        Refer to {" "}
+                        <a
+                          href="https://medium.com/cranecloud/connecting-to-a-remote-mysql-database-a6b3cc15c40b"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                          className="MysqlArticle"
+                        >
+                          this article
+                        </a>
+                        , for a more comprehensive guide.
+                      </div>
                     </div>
-                  </div>
-                  <div className="DBInfoBottom">
-                    <div className="DBAccessInfo">{`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}</div>
-                    <div className="DBAccessCopy">
-                      <div className="DBPassword">
-                        <CopyText onClick={this.uriOnClick} />
-                        {uriChecked ? <Checked /> : null}
+                    <div className="DBInfoBottom">
+                      <div className="DBAccessInfo">{`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}</div>
+                      <div className="DBAccessCopy">
+                        <div className="DBPassword">
+                          <CopyText onClick={this.uriOnClick} />
+                          {uriChecked ? <Checked /> : null}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ) : (
-                <div className="DBInstructions">
-                  <div className="DBInfoTop">
-                    <div>
-                      Connecting to the database. Read{" "}
-                      <a
-                        href="https://medium.com/cranecloud/connecting-to-a-remote-postgresql-database-779637147abf"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        className="MysqlArticle"
-                      >
-                        this article
-                      </a>
-                      , for a more comprehensive guide.
+                ) : (
+                  <div className="DBInstructions">
+                    <div className="DBInfoTop">
+                      <div>
+                        To connect to the database, copy and paste the command below into your terminal.
+                        Refer to {" "}
+                        <a
+                          href="https://medium.com/cranecloud/connecting-to-a-remote-postgresql-database-779637147abf"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                          className="MysqlArticle"
+                        >
+                          this article
+                        </a>
+                        , for a more comprehensive guide.
+                      </div>
                     </div>
-                  </div>
-                  <div className="DBInfoBottom">
-                    <div className="DBAccessInfo">{`psql -h ${dbInfo.host} -p ${dbInfo.port} -d ${dbInfo.name} -U ${dbInfo.user} -W`}</div>
-                    <div className="DBAccessCopy">
-                      <div className="DBPassword">
-                        <CopyText onClick={this.uriCopyPostgresOnClick} />
-                        {uriChecked ? <Checked /> : null}
+                    <div className="DBInfoBottom">
+                      <div className="DBAccessInfo">{`psql -h ${dbInfo.host} -p ${dbInfo.port} -d ${dbInfo.name} -U ${dbInfo.user} -W`}</div>
+                      <div className="DBAccessCopy">
+                        <div className="DBPassword">
+                          <CopyText onClick={this.uriCopyPostgresOnClick} />
+                          {uriChecked ? <Checked /> : null}
+                        </div>
                       </div>
                     </div>
                   </div>
+                )}
+              </div>
+              <div className="DBSections">
+                <div className="DBSectionTitle">More Options</div>
+                <div className="DBInstructions">
+                  <div className="DBButtonRow">
+                    <div className="flexa">
+                      <div><strong>Change password</strong></div>
+                      <div>Update the password of this database.</div>
+                    </div>
+                    <div className="SectionButtons">
+                      <SettingsButton
+                        label="Change password"
+                        onClick={this.showUpdateModal}
+                      />
+                    </div>
+                    
+                  </div>
+                  <div className="DBButtonRow">
+                    <div className="flexa">
+                      <div><strong>Reset database</strong></div>
+                      <div>Delete all data inside this database and restore it to its initial state.</div>
+                    </div>
+                    <div className="SectionButtons">
+                      <SettingsButton
+                        label="Reset this database"
+                        className="Change-Btn"
+                        onClick={this.showResetAlert}
+                      />
+                    </div>
+                    {resetMessage !== "" && (
+                      <Feedback
+                        message={
+                          resetMessage !== ""
+                            ? "Database has been successfully reset."
+                            : null
+                        }
+                        type={isReset ? "success" : "error"}
+                      />
+                    )}
+                    
+                  </div>
+                  <div className="DBButtonRow">
+                    <div className="flexa">
+                      <div><strong>Delete database</strong></div>
+                      <div>Destroy the entire database, delete all tables and data inside them.</div>
+                    </div>
+                    <div className="SectionButtons">
+                      <SettingsButton
+                        label="Delete this database"
+                        className="Change-Btn"
+                        onClick={this.showDeleteAlert}
+                      />
+                    </div>
+                    
+                  </div>
                 </div>
-              )}
+                
+              </div>
+              
               <div className="DBButtons">
-                <div className="DBButtonRow">
-                  <PrimaryButton
-                    label="Update Password"
-                    className="ResetBtn DB-Btn"
-                    onClick={this.showUpdateModal}
-                  />
-                  <div className="buttonText">
-                    Changes or updates database password.
-                  </div>
-                </div>
                 {openUpdateModal && (
                   <div className="ProjectDeleteModel">
                     <Modal
@@ -529,36 +583,6 @@ class DBSettingsPage extends React.Component {
                     </Modal>
                   </div>
                 )}
-                <div className="DBButtonRow">
-                  <PrimaryButton
-                    label="Reset Database"
-                    className="ResetBtn DB-Btn"
-                    onClick={this.showResetAlert}
-                  />
-                  <div className="buttonText">
-                    Deletes all tables and data, but the database remains.
-                  </div>
-                </div>
-                {resetMessage !== "" && (
-                  <Feedback
-                    message={
-                      resetMessage !== ""
-                        ? "Database has been successfully reset."
-                        : null
-                    }
-                    type={isReset ? "success" : "error"}
-                  />
-                )}
-                <div className="DBButtonRow">
-                  <PrimaryButton
-                    label="Delete Database"
-                    className="DBDeleteBtn DB-Btn"
-                    onClick={this.showDeleteAlert}
-                  />
-                  <div className="buttonText">
-                    Destroys the entire database, deleting all tables and data.
-                  </div>
-                </div>
                 {openDeleteAlert && (
                   <div className="ProjectDeleteModel">
                     <Modal
