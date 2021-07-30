@@ -17,23 +17,37 @@
   gap: 1rem;
   align-items: center;
 }
-.ResetBtn {
-  background-color: #f7b21f;
-  float: left;
+
+.DatabaseName{
+  font-weight: bold;
 }
 
-.DBDeleteBtn {
-  background-color: #ff9595;
-  outline: 2px solid #ff9595;
+.ResetBtn {
+  background-color: #ff0000;
+  outline: none;
   color: #fff;
   float: left;
 }
 
-.DBDeleteBtn:hover {
-  background-color: transparent;
-  outline: 2px solid #ff9595;
-  color: #ff9595;
+.DBDeleteBtn {
+  background-color: #ff0000;
+  outline: none;
+  color: #fff;
+  float: left;
 }
+
+.ResetBtn:hover {
+  background-color: #fff;
+  outline: 2px solid #e02626;
+  color: #e02626;
+}
+
+.DBDeleteBtn:hover {
+  background-color: #fff;
+  outline: 2px solid #e02626;
+  color: #e02626;
+}
+
 .rowDiv {
   display: grid;
 }
