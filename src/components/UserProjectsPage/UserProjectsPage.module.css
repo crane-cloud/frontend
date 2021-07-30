@@ -37,13 +37,19 @@
   margin-left: 0;
 }
 
+.MainRow{
+  background-color: #f1f1f1;
+}
+
 .NoResourcesMessage {
   flex-grow: 1;
   display: flex;
   font-size: 16px;
+  height: 50vh;
   text-align: center;
   justify-content: center;
   align-items: center;
+  padding: 6rem;
 }
 
 .ButtonPlusSmall{
@@ -52,7 +58,8 @@
 }
 
 .FooterRow {
-  padding: 3rem;
+  padding: 1rem 3rem;
+  background-color: #f1f1f1;
 }
 
 @media only screen and (max-width: 1100px) and (min-width: 901px) {

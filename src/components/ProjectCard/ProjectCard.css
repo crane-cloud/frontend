@@ -1,7 +1,7 @@
 .ProjectsCard {
   background-color: #ffffff;
   width: 15rem;
-  border: 1px solid #f1f1f1;
+  border: 1px solid #f6fbe5;
 }
 
 .ProjectsCard:hover {
@@ -21,7 +21,8 @@
   height: 5rem;
   display: flex;
   flex-direction: column;
-  background-color: #f8f7e5;
+  background-color: #f6fbe5;
+  ;
 }
 
 .ProjectsCardName {
