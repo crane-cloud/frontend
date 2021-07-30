@@ -56,7 +56,7 @@ class AppsList extends Component {
     return (
       <>
         {isRetrieving ? (
-          <div className={styles.TableLoading}>
+          <div className={styles.NoResourcesMessage}>
             <div className={styles.SpinnerWrapper}>
               <Spinner size="big" />
             </div>
