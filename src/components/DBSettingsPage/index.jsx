@@ -592,8 +592,8 @@ class DBSettingsPage extends React.Component {
                       <div className="DeleteDatabaseModel">
                         <div className="DeleteProjectModalUpperSection">
                           <div className="InnerModalDescription">
-                            Are you sure you want to delete this Database &nbsp;
-                            <span>{dbInfo.name} ?</span>
+                            Are you sure you want to delete this database &nbsp;
+                            <span className="DatabaseName">{dbInfo.name} ?</span>
                             <DeleteWarning />
                           </div>
                         </div>
@@ -636,8 +636,8 @@ class DBSettingsPage extends React.Component {
                       <div className="DeleteDatabaseModel">
                         <div className="DeleteProjectModalUpperSection">
                           <div className="InnerModalDescription">
-                            Are you sure you want to reset this Database &nbsp;
-                            <span>{dbInfo.name} ?</span>
+                            Are you sure you want to reset this database &nbsp;
+                            <span className="DatabaseName">{dbInfo.name} ?</span>
                             <DeleteWarning />
                           </div>
                         </div>
