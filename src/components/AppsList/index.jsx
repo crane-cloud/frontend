@@ -49,14 +49,15 @@ class AppsList extends Component {
     });
   }
 
+
   render() {
     const { apps, isRetrieved, isRetrieving, params } = this.props;
-    const sortedApps = apps.apps.sort((a, b) => b.date_created < a.date_created ? 1: -1);
+    const sortedApps = apps?.apps.sort((a, b) => b.date_created < a.date_created ? 1: -1);
     
     return (
       <>
         {isRetrieving ? (
-          <div className={styles.TableLoading}>
+          <div className={styles.NoResourcesMessage}>
             <div className={styles.SpinnerWrapper}>
               <Spinner size="big" />
             </div>
@@ -64,7 +65,6 @@ class AppsList extends Component {
         ) : (
           <div className={styles.AppList}>
             {isRetrieved &&
-              sortedApps !== undefined &&
               sortedApps.map((app) => (
                 <div key={app.id} className="AppCardItem">
                   <AppsCard

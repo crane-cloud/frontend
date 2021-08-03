@@ -167,7 +167,7 @@ class UserProjectsPage extends React.Component {
         </div>
         <div className={styles.MainRow}>
           {isRetrieving ? (
-            <div className={styles.TableLoading}>
+            <div className={styles.NoResourcesMessage}>
               <div className={styles.SpinnerWrapper}>
                 <Spinner size="big" />
               </div>
@@ -200,9 +200,7 @@ class UserProjectsPage extends React.Component {
         </div>
         <div className={styles.FooterRow}>
           <div>
-            Copyright {new Date().getFullYear()} Crane Cloud.
-            <br />
-            All Rights Reserved.
+            Copyright {new Date().getFullYear()} Crane Cloud. All Rights Reserved.
           </div>
         </div>
 
