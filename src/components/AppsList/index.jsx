@@ -15,6 +15,7 @@ class AppsList extends Component {
     };
 
     this.renderAfterDelete = this.renderAfterDelete.bind(this);
+    this.sortedApps = this.sortedApps.bind(this);
   }
 
   componentDidMount() {
@@ -49,11 +50,16 @@ class AppsList extends Component {
     });
   }
 
+  sortedApps(){
+    const { apps } = this.props;
+    let temp = apps.apps
+    return temp.sort((a, b) => b.date_created < a.date_created ? 1: -1);
+  }
 
   render() {
     const { apps, isRetrieved, isRetrieving, params } = this.props;
-    const sortedApps = apps?.apps.sort((a, b) => b.date_created < a.date_created ? 1: -1);
-    
+    const allApps = apps.apps
+    const sortedApps = allApps.sort((a, b) => b.date_created < a.date_created ? 1: -1);
     return (
       <>
         {isRetrieving ? (
@@ -79,7 +85,7 @@ class AppsList extends Component {
               ))}
           </div>
         )}
-        {isRetrieved && apps.apps.length === 0 && (
+        {isRetrieved && sortedApps.length === 0 && (
           <div className={styles.NoResourcesMessage}>
             You haven’t created any apps yet. Click the &nbsp; <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp; button to deploy an app.
           </div>
