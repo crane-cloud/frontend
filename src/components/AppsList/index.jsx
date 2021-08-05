@@ -15,7 +15,6 @@ class AppsList extends Component {
     };
 
     this.renderAfterDelete = this.renderAfterDelete.bind(this);
-    this.sortedApps = this.sortedApps.bind(this);
   }
 
   componentDidMount() {
@@ -48,12 +47,6 @@ class AppsList extends Component {
     this.setState({
       rerender: !rerender,
     });
-  }
-
-  sortedApps(){
-    const { apps } = this.props;
-    let temp = apps.apps
-    return temp.sort((a, b) => b.date_created < a.date_created ? 1: -1);
   }
 
   render() {
