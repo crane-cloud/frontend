@@ -113,7 +113,7 @@ class CreateDatabase extends React.Component {
                     onChange={this.handleSelectChange}
                   />
                   <div />
-                  <div>
+                  <div className="CreateDBError">
                     {error && <Feedback type="error" message={error} />}
 
                     {message && (
@@ -122,7 +122,6 @@ class CreateDatabase extends React.Component {
                       type={isCreated ? "success" : "error"}
                       />
                     )}
-              
                   </div>
                   <div className="DBButtons">
                     <div className="DBDetailRow">
