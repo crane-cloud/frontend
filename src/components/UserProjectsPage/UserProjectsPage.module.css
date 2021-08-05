@@ -39,6 +39,7 @@
 
 .MainRow{
   background-color: #f1f1f1;
+  min-height: calc(100vh - 13rem);
 }
 
 .NoResourcesMessage {

@@ -74,7 +74,6 @@ class DatabaseList extends React.Component {
 
     const { projectID, userID } = params;
     const sortedDbs = databases.sort((a, b) => b.date_created > a.date_created ? 1: -1);
-    
     return (
       <div className={styles.MainPage}>
         <div className={styles.TopBarSection}>
