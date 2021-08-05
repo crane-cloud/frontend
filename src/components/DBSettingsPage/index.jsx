@@ -19,7 +19,7 @@ import resetDatabase, {
 import updateDatabasePassword, {
   clearUpdateDatabasePasswordState,
 } from "../../redux/actions/updateDBPassword";
-import getProjectDatabases from "../../redux/actions/databaseList";
+import getSingleDB from "../../redux/actions/getSingleDB"
 import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
@@ -72,12 +72,11 @@ class DBSettingsPage extends React.Component {
   }
   componentDidMount() {
     const {
-      clearDatabaseResetState,
-      getProjectDatabases,
+      getSingleDB,
      } = this.props;
-    const { projectID } = this.props.match.params;
+    const { projectID, databaseID } = this.props.match.params;
     clearDatabaseResetState();
-    getProjectDatabases(projectID);
+    getSingleDB(projectID, databaseID);
   }
 
   componentDidUpdate(prevProps) {
@@ -699,7 +698,7 @@ DBSettingsPage.defaultProps = {
 
 const mapStateToProps = (state) => {
   const { projects } = state.userProjectsReducer;
-  const { databases } = state.projectDatabasesReducer;
+  const { database, isRetrieving, isFetched } = state.singleDBReducer;
   const {
     databaseDeleted,
     deletingDatabase,
@@ -715,7 +714,6 @@ const mapStateToProps = (state) => {
     clearDatabaseResetState,
   } = state.resetDatabaseReducer;
   const {
-    database,
     updatingDBPassword,
     updateDBPasswordFailed,
     dbPasswordUpdated,
@@ -724,7 +722,6 @@ const mapStateToProps = (state) => {
   } = state.updateDatabasePasswordReducer;
 
   return {
-    databases,
     databaseDeleted,
     databaseDeleteFailed,
     deletingDatabase,
@@ -742,6 +739,8 @@ const mapStateToProps = (state) => {
     errorMessage,
     clearUpdateDatabasePasswordState,
     projects,
+    isRetrieving,
+    isFetched
   };
 };
 
@@ -752,7 +751,7 @@ const mapDispatchToProps = {
   clearDatabaseResetState,
   updateDatabasePassword,
   clearUpdateDatabasePasswordState,
-  getProjectDatabases,
+  getSingleDB,
 };
 
 export default connect(

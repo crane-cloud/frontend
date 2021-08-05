@@ -15,7 +15,7 @@ const singleDBReducer = (state = initialState, action) => {
     case SINGLE_DATABASE_SUCCESS:
       return {
         ...state,
-        jobs: action.payload,
+        database: action.payload,
         isRetrieving: false,
         isFetched: true,
         message: "Single DB fetched",
