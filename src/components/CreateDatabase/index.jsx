@@ -115,6 +115,14 @@ class CreateDatabase extends React.Component {
                   <div />
                   <div>
                     {error && <Feedback type="error" message={error} />}
+
+                    {message && (
+                      <Feedback
+                      message={message !== "" ? message : null}
+                      type={isCreated ? "success" : "error"}
+                      />
+                    )}
+              
                   </div>
                   <div className="DBButtons">
                     <div className="DBDetailRow">
@@ -127,12 +135,6 @@ class CreateDatabase extends React.Component {
                   </div>
                 </div>
               </div>
-              {message && (
-                <Feedback
-                  message={message !== "" ? message : null}
-                  type={isCreated ? "success" : "error"}
-                />
-              )}
             </div>
           </div>
         </div>

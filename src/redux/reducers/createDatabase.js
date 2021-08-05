@@ -41,7 +41,7 @@ const createDatabaseReducer = (state = initialState, action) => {
         database: null,
         isCreating: false,
         isCreated: false,
-        message: "Deployment failed. Please try again",
+        message: "Failed to create database. Please try again",
         errorCode: action.payload.errorCode,
       };
 
