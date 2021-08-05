@@ -11,7 +11,7 @@ export const startTheFetch = () => ({
 
 export const getSingleDBSuccess = (response) => ({
   type: SINGLE_DATABASE_SUCCESS,
-  payload: response.data.data,
+  payload: response.data.data.database,
 });
 
 export const getSingleDBFailed = (error) => ({

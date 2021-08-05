@@ -199,51 +199,44 @@ class DBSettingsPage extends React.Component {
   }
 
   nameOnClick() {
-    const { databaseID } = this.props.match.params;
-    const dbInfo = this.getDatabaseInfo(databaseID);
-    navigator.clipboard.writeText(dbInfo.name);
+    const { database } = this.props;
+    navigator.clipboard.writeText(database.name);
     this.setState({ nameChecked: true });
   }
   portOnClick() {
-    const { databaseID } = this.props.match.params;
-    const dbInfo = this.getDatabaseInfo(databaseID);
-    navigator.clipboard.writeText(dbInfo.port);
+    const { database } = this.props;
+    navigator.clipboard.writeText(database.port);
     this.setState({ portChecked: true });
   }
   hostOnClick() {
-    const { databaseID } = this.props.match.params;
-    const dbInfo = this.getDatabaseInfo(databaseID);
-    navigator.clipboard.writeText(dbInfo.host);
+    const { database } = this.props;
+    navigator.clipboard.writeText(database.host);
     this.setState({ hostChecked: true });
   }
   userOnClick() {
-    const { databaseID } = this.props.match.params;
-    const dbInfo = this.getDatabaseInfo(databaseID);
-    navigator.clipboard.writeText(dbInfo.user);
+    const { database } = this.props;
+    navigator.clipboard.writeText(database.user);
     this.setState({ userChecked: true });
   }
   uriOnClick() {
-    const { databaseID } = this.props.match.params;
-    const dbInfo = this.getDatabaseInfo(databaseID);
+    const { database } = this.props;
     navigator.clipboard.writeText(
-      `${`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}`
+      `${`mysql -u ${database.user} -p -P ${database.port} -h ${database.host} -D ${database.name}`}`
     );
     this.setState({ uriChecked: true });
   }
 
   uriCopyPostgresOnClick() {
-    const { databaseID } = this.props.match.params;
-    const dbInfo = this.getDatabaseInfo(databaseID);
+    const { database } = this.props;
     navigator.clipboard.writeText(
-      `${`psql -h ${dbInfo.host} -p ${dbInfo.port} -d ${dbInfo.name} -U ${dbInfo.user} -W`}`
+      `${`psql -h ${database.host} -p ${database.port} -d ${database.name} -U ${database.user} -W`}`
     );
     this.setState({ uriChecked: true });
   }
 
   passwordOnClick() {
-    const { databaseID } = this.props.match.params;
-    const dbInfo = this.getDatabaseInfo(databaseID);
-    navigator.clipboard.writeText(dbInfo.password);
+    const { database } = this.props;
+    navigator.clipboard.writeText(database.password);
     this.setState({ passwordChecked: true });
   }
 
@@ -299,7 +292,7 @@ class DBSettingsPage extends React.Component {
       isRetrieving,
     } = this.props;
     const { userID, projectID, databaseID } = this.props.match.params;
-    const dbInfo = this.getDatabaseInfo(databaseID);
+    // const dbInfo = this.getDatabaseInfo(databaseID);
     const {
       openDeleteAlert,
       openResetAlert,
@@ -356,12 +349,12 @@ class DBSettingsPage extends React.Component {
                       <div className="DBDetailRow">
                         <div className="DBThead">Type</div>
                         <div className="DBTDetail uppercase">
-                          {dbInfo.flavor}
+                          {database.flavor === 'mysql'?"MYSQL":"POSTGRESQL"}
                         </div>
                       </div>
                       <div className="DBDetailRow">
                         <div className="DBThead">Name</div>
-                        <div className="DBTDetail">{dbInfo.name}</div>
+                        <div className="DBTDetail">{database.name}</div>
                         <div className="DBIcon">
                           <CopyText onClick={this.nameOnClick} />
                           {nameChecked ? <Checked /> : null}
@@ -369,7 +362,7 @@ class DBSettingsPage extends React.Component {
                       </div>
                       <div className="DBDetailRow">
                         <div className="DBThead">User</div>
-                        <div className="DBTDetail">{dbInfo.user}</div>
+                        <div className="DBTDetail">{database.user}</div>
                         <div className="DBIcon">
                           <CopyText onClick={this.userOnClick} />
                           {userChecked ? <Checked /> : null}
@@ -380,7 +373,7 @@ class DBSettingsPage extends React.Component {
                         <div className="DBColumn">
                           {hidden
                             ? "***************************"
-                            : dbInfo.password}
+                            : database.password}
                         </div>
                         <div className="DBIcon">
                           <CopyText onClick={this.passwordOnClick} />
@@ -394,7 +387,7 @@ class DBSettingsPage extends React.Component {
                       </div>
                       <div className="DBDetailRow">
                         <div className="DBThead">Host</div>
-                        <div className="DBTDetail">{dbInfo.host}</div>
+                        <div className="DBTDetail">{database.host}</div>
                         <div className="DBIcon">
                           <CopyText onClick={this.hostOnClick} />
                           {hostChecked ? <Checked /> : null}
@@ -402,22 +395,26 @@ class DBSettingsPage extends React.Component {
                       </div>
                       <div className="DBDetailRow">
                         <div className="DBThead">Port</div>
-                        <div className="DBTDetail">{dbInfo.port}</div>
+                        <div className="DBTDetail">{database.port}</div>
                         <div className="DBIcon">
                           <CopyText onClick={this.portOnClick} />
                           {portChecked ? <Checked /> : null}
                         </div>
                       </div>
                       <div className="DBDetailRow">
+                        <div className="DBThead">Size</div>
+                        <div className="DBTDetail">{database.db_size}</div>
+                      </div>
+                      <div className="DBDetailRow">
                         <div className="DBThead">Created</div>
-                        <div className="DBTDetail">{dbInfo.age}</div>
+                        <div className="DBTDetail">{database.age}</div>
                       </div>
                     </div>
                   </div>
 
                   <div className="DBSections">
                     <div className="DBSectionTitle">Connect to database</div>
-                    {dbInfo.flavor === "mysql" ? (
+                    {database.flavor === "mysql" ? (
                       <div className="DBInstructions">
                         <div className="DBInfoTop">
                           <div>
@@ -435,7 +432,7 @@ class DBSettingsPage extends React.Component {
                           </div>
                         </div>
                         <div className="DBInfoBottom">
-                          <div className="DBAccessInfo">{`mysql -u ${dbInfo.user} -p -P ${dbInfo.port} -h ${dbInfo.host} -D ${dbInfo.name}`}</div>
+                          <div className="DBAccessInfo">{`mysql -u ${database.user} -p -P ${database.port} -h ${database.host} -D ${database.name}`}</div>
                           <div className="DBAccessCopy">
                             <div className="DBPassword">
                               <CopyText onClick={this.uriOnClick} />
@@ -462,7 +459,7 @@ class DBSettingsPage extends React.Component {
                           </div>
                         </div>
                         <div className="DBInfoBottom">
-                          <div className="DBAccessInfo">{`psql -h ${dbInfo.host} -p ${dbInfo.port} -d ${dbInfo.name} -U ${dbInfo.user} -W`}</div>
+                          <div className="DBAccessInfo">{`psql -h ${database.host} -p ${database.port} -d ${database.name} -U ${database.user} -W`}</div>
                           <div className="DBAccessCopy">
                             <div className="DBPassword">
                               <CopyText onClick={this.uriCopyPostgresOnClick} />
@@ -621,7 +618,7 @@ class DBSettingsPage extends React.Component {
                                 Are you sure you want to delete this database
                                 &nbsp;
                                 <span className="DatabaseName">
-                                  {dbInfo.name} ?
+                                  {database.name} ?
                                 </span>
                                 <DeleteWarning />
                               </div>
@@ -673,7 +670,7 @@ class DBSettingsPage extends React.Component {
                                 Are you sure you want to reset this database
                                 &nbsp;
                                 <span className="DatabaseName">
-                                  {dbInfo.name} ?
+                                  {database.name} ?
                                 </span>
                                 <DeleteWarning />
                               </div>
