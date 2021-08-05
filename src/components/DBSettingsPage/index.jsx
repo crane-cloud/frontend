@@ -181,9 +181,8 @@ class DBSettingsPage extends React.Component {
   };
 
   renderUpdateRedirect = () => {
-    const { dpPasswordUpdated, getProjectDatabases } = this.props;
+    const { dpPasswordUpdated } = this.props;
     const { userID, projectID, databaseID } = this.props.match.params;
-    getProjectDatabases(projectID);
     if (dpPasswordUpdated) {
       return (
         <Redirect
@@ -308,7 +307,6 @@ class DBSettingsPage extends React.Component {
       confirmNewDatabasePassword,
       error,
     } = this.state;
-    console.log(database);
     return (
       <div className="Page">
         {dbDeleteMessage === "Database Deleted Successfully"
