@@ -52,7 +52,7 @@ class AppsList extends Component {
   render() {
     const { apps, isRetrieved, isRetrieving, params } = this.props;
     const allApps = apps.apps
-    const sortedApps = allApps.sort((a, b) => b.date_created < a.date_created ? 1: -1);
+    const sortedApps = allApps?.sort((a, b) => b.date_created < a.date_created ? 1: -1);
     return (
       <>
         {isRetrieving ? (
