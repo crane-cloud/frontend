@@ -32,6 +32,7 @@ class LoginPage extends React.Component {
     // remove the current state from local storage
     // so that when a person logs in they dont encounter
     // the previous state which wasnt cleared
+    localStorage.setItem("state", {});
     localStorage.removeItem("state");
     this.props.removeUser();
   }
