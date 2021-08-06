@@ -1,6 +1,7 @@
 .ProjectsCard {
   background-color: #ffffff;
   width: 15rem;
+  height: min-content;
 }
 
 .ProjectsCard:hover {
