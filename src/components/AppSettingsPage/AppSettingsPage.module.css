@@ -1,0 +1,151 @@
+/*///////////// Delete Model //////////////////*/
+
+.AppDeleteModel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background-color: rgba(112, 49, 49, 0.5);
+}
+
+.AppDeleteModel .ModalParentWrap {
+  background-color: inherit;
+}
+
+.AppDeleteModel .ModalChildWrap {
+  z-index: 3;
+}
+
+.DeleteAppModel {
+  display: grid;
+  gap: 3rem;
+}
+
+.DeleteModalLowerSection {
+  display: grid;
+  gap: 1rem;
+}
+.DeleteDescription {
+  cursor: default;
+  font-weight: 700;
+}
+
+.DeleteDescription span {
+  padding: 0.2rem 0.4rem;
+  margin: 0;
+  font-weight: 700;
+  font-size: 90%;
+  background-color: rgba(27, 31, 35, 0.1);
+  border-radius: 3px;
+}
+
+.DeleteAppModelButtons {
+  display: flex;
+  justify-content: space-between;
+}
+.DeleteBtn {
+  background-color: #ff0000;
+  outline: 2px solid #ff0000;
+  transform: scaleX(0.9);
+}
+
+.DeleteBtn:hover {
+  background-color: #fff;
+  outline: 2px solid #ff0000;
+  color: #ff0000;
+}
+
+.DeleteAppModelButtons .DeleteBtn {
+  background-color: #ff0000;
+  outline: 2px solid #ff0000;
+  transform: scaleX(0.9);
+}
+.DeleteAppModelButtons .DeleteBtn:hover {
+  background-color: #fff;
+  outline: 2px solid #ff0000;
+  color: #ff0000;
+}
+
+.InactiveDelete {
+  background-color: #fff;
+  outline: #ff9595;
+  color: #ff9595;
+}
+.InactiveDelete:hover {
+  background-color: #fff;
+  outline: #ff9595;
+  color: #ff9595;
+}
+/* .Primary-Btn .CancelBtn{
+  transform: scaleX(0.9);
+} */
+.Page {
+  margin: 0;
+  background: #f1f1f1;
+  max-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  overflow: hidden;
+}
+.TopBarSection {
+  background-color: black;
+}
+.MainSection {
+  /* divided into two columns */
+  background-color: #f1f1f1;
+  display: grid;
+  grid-template-columns: 1.3fr 6fr;
+  overflow: hidden;
+}
+.SideBarSection {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.SideBarSection {
+  overflow: hidden;
+  overflow-y: scroll;
+  height: calc(100vh - 5rem);
+}
+
+.SideBarSection::-webkit-scrollbar {
+  display: none;
+  min-width: fit-content;
+}
+.MainContentSection {
+  /* divided into two rows */
+  display: grid;
+  grid-template-rows: 80px 4fr;
+  overflow: hidden;
+}
+.ContentSection {
+  justify-content: space-between;
+  padding-left: 3rem;
+  padding-top: 2rem;
+}
+.ContentSection {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.DeleteButtonDiv {
+  bottom: 0rem;
+  padding: 1.3rem;
+}
+.DeleteWarning {
+  color: #f00;
+}
+.InnerModalDescription {
+  display: grid;
+  gap: 0.5rem;
+}
+.DeleteSubDescription {
+  font-weight: 500;
+}
+.WarningContainer {
+  display: grid;
+  gap: 0.8rem;
+  width: 25rem;
+}
