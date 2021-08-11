@@ -17,23 +17,37 @@
   gap: 1rem;
   align-items: center;
 }
-.ResetBtn {
-  background-color: #f7b21f;
-  float: left;
+
+.DatabaseName{
+  font-weight: bold;
 }
 
-.DBDeleteBtn {
-  background-color: #ff9595;
-  outline: 2px solid #ff9595;
+.ResetBtn {
+  background-color: #ff0000;
+  outline: none;
   color: #fff;
   float: left;
 }
 
-.DBDeleteBtn:hover {
-  background-color: transparent;
-  outline: 2px solid #ff9595;
-  color: #ff9595;
+.DBDeleteBtn {
+  background-color: #ff0000;
+  outline: none;
+  color: #fff;
+  float: left;
 }
+
+.ResetBtn:hover {
+  background-color: #fff;
+  outline: 2px solid #e02626;
+  color: #e02626;
+}
+
+.DBDeleteBtn:hover {
+  background-color: #fff;
+  outline: 2px solid #e02626;
+  color: #e02626;
+}
+
 .rowDiv {
   display: grid;
 }
@@ -78,7 +92,7 @@
 }
 
 .DBInstructions {
-  padding: 1rem 0.5rem;
+  padding: 1rem 1rem;
   background: #ffffff;
   border: 1px solid #cccccc;
   display: grid;
@@ -121,12 +135,22 @@
 
 .DBButtonRow {
   display: grid;
-  grid-template-columns: 20% auto;
+  grid-template-columns: auto 40%;
   grid-auto-flow: column;
   align-items: center;
   column-gap: 1rem;
 }
 
+.SectionButtons{
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1rem;
+}
+
+.DBSectionTitle{
+  font-size: 18px;
+  font-weight: bold;
+}
 @media only screen and (min-device-width: 641px) and (max-width: 900px) {
   .DBDetailRow {
     grid-template-columns: 18% 40% 10% auto;

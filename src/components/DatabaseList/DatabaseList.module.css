@@ -92,11 +92,14 @@
   flex-grow: 1;
   display: flex;
   font-size: 16px;
+  height: 50vh;
   text-align: center;
   justify-content: center;
   align-items: center;
+  padding: 6rem;
 }
 
-.AlignSpin{
-  padding-top: 10%;
+.ButtonPlusSmall{
+  width: 1rem;
+  height: 1rem;
 }

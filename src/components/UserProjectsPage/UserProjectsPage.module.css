@@ -2,6 +2,7 @@
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(5, 1fr);
+  padding: 2rem;
 }
 
 .ProjectFormErrorDiv {
@@ -36,6 +37,31 @@
   margin-left: 0;
 }
 
+.MainRow{
+  background-color: #f1f1f1;
+  min-height: calc(100vh - 13rem);
+}
+
+.NoResourcesMessage {
+  flex-grow: 1;
+  display: flex;
+  font-size: 16px;
+  height: 50vh;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding: 6rem;
+}
+
+.ButtonPlusSmall{
+  width: 1rem;
+  height: 1rem;
+}
+
+.FooterRow {
+  padding: 1rem 3rem;
+  background-color: #f1f1f1;
+}
 
 @media only screen and (max-width: 1100px) and (min-width: 901px) {
   .ProjectList {

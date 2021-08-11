@@ -1,12 +1,12 @@
 import React from "react";
-import "./PrimaryButton.css";
+import "./SettingsButton.css";
 
-const PrimaryButton = (props) => {
+const SettingsButton = (props) => {
   const { label, className,disable } = props;
   return (
     <button
       disabled={disable}
-      className={`Primary-Btn uppercase ${className}`}
+      className={`Settings-Btn ${className}`}
       onClick={props.onClick}
     >
       {label}
@@ -14,4 +14,4 @@ const PrimaryButton = (props) => {
   );
 };
 
-export default PrimaryButton;
+export default SettingsButton;

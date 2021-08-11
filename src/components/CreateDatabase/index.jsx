@@ -113,8 +113,15 @@ class CreateDatabase extends React.Component {
                     onChange={this.handleSelectChange}
                   />
                   <div />
-                  <div>
+                  <div className="CreateDBError">
                     {error && <Feedback type="error" message={error} />}
+
+                    {message && (
+                      <Feedback
+                      message={message !== "" ? message : null}
+                      type={isCreated ? "success" : "error"}
+                      />
+                    )}
                   </div>
                   <div className="DBButtons">
                     <div className="DBDetailRow">
@@ -127,12 +134,6 @@ class CreateDatabase extends React.Component {
                   </div>
                 </div>
               </div>
-              {message && (
-                <Feedback
-                  message={message !== "" ? message : null}
-                  type={isCreated ? "success" : "error"}
-                />
-              )}
             </div>
           </div>
         </div>

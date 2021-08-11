@@ -18,7 +18,7 @@ import TextArea from "../TextArea";
 import Feedback from "../Feedback";
 import DeleteWarning from "../DeleteWarning";
 import BlackInputText from "../BlackInputText";
-import "./ProjectSettingsPage.css";
+import styles from "./ProjectSettingsPage.module.css";
 
 class ProjectSettingsPage extends React.Component {
   constructor(props) {
@@ -33,6 +33,8 @@ class ProjectSettingsPage extends React.Component {
       projectName: name ? name : "",
       projectDescription: description ? description : "",
       error: "",
+      Confirmprojectname: "",
+      disableDelete: true,
     };
 
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
@@ -63,14 +65,30 @@ class ProjectSettingsPage extends React.Component {
   }
 
   handleChange(e) {
-    const { error } = this.state;
+    const { error, projectName, openDeleteAlert } = this.state;
+    const { errorMessage, clearUpdateProjectState,clearDeleteProjectState,isFailed,message  } = this.props;
     this.setState({
       [e.target.name]: e.target.value,
     });
-
+    if (errorMessage) {
+      clearUpdateProjectState();
+    }
     if (error) {
       this.setState({
         error: "",
+      });
+    }
+    if(isFailed && message){
+      clearDeleteProjectState();
+     
+    }
+    if (e.target.value === projectName && openDeleteAlert) {
+      this.setState({
+        disableDelete: false,
+      });
+    } else if (e.target.value !== projectName && openDeleteAlert) {
+      this.setState({
+        disableDelete: true,
       });
     }
   }
@@ -85,54 +103,66 @@ class ProjectSettingsPage extends React.Component {
         params: { projectID },
       },
     } = this.props;
+    const trimmed = (input) => input.trim();
+    const trimprojectName = trimmed(projectName);
+    const trimprojectDescription = trimmed(projectDescription);
 
-    if (projectName !== name || projectDescription !== description) {
-      if (!projectName || !projectDescription) {
+    if (trimprojectName !== name || trimprojectDescription !== description) {
+      if (!trimprojectName || !trimprojectDescription) {
         this.setState({
           error: "please provide either a new name or description",
         });
       } else {
-        if (projectName !== name && projectDescription === description) {
-          if (!this.validateProjectName(projectName)) {
+        if (
+          trimprojectName !== name &&
+          trimprojectDescription === description
+        ) {
+          if (!this.validateProjectName(trimprojectName)) {
             this.setState({
               error: "name should start with a letter",
             });
           } else if (
-            this.validateProjectName(projectName) === "false_convention"
+            this.validateProjectName(trimprojectName) === "false_convention"
           ) {
             this.setState({
               error: "name may only contain letters and a hypen -",
             });
-          } else if (projectName.length > 22) {
+          } else if (trimprojectName.length > 22) {
             this.setState({
               error: "project name cannot exceed 22 characters",
             });
           } else {
-            const newProject = { name: projectName };
+            const newProject = { name: trimprojectName };
             updateProject(projectID, newProject);
           }
         }
 
-        if (projectName === name && projectDescription !== description) {
-          const newProject = { description: projectDescription };
+        if (
+          trimprojectName === name &&
+          trimprojectDescription !== description
+        ) {
+          const newProject = { description: trimprojectDescription };
           updateProject(projectID, newProject);
         }
 
-        if (projectName !== name && projectDescription !== description) {
-          if (!this.validateProjectName(projectName)) {
+        if (
+          trimprojectName !== name &&
+          trimprojectDescription !== description
+        ) {
+          if (!this.validateProjectName(trimprojectName)) {
             this.setState({
               error: "name should start with a letter",
             });
           } else if (
-            this.validateProjectName(projectName) === "false_convention"
+            this.validateProjectName(trimprojectName) === "false_convention"
           ) {
             this.setState({
               error: "name may only contain letters and a hypen -",
             });
           } else {
             const newProject = {
-              name: projectName,
-              description: projectDescription,
+              name: trimprojectName,
+              description: trimprojectDescription,
             };
             updateProject(projectID, newProject);
           }
@@ -178,18 +208,25 @@ class ProjectSettingsPage extends React.Component {
     const projectInfo = JSON.parse(localStorage.getItem("project"));
     const name = projectInfo.name;
     const description = projectInfo.description;
-    const { openDeleteAlert, projectName, projectDescription } = this.state;
+    const {
+      openDeleteAlert,
+      projectName,
+      projectDescription,
+      error,
+      Confirmprojectname,
+      disableDelete,
+    } = this.state;
 
     const { projectID, userID } = params;
 
     return (
-      <div className="Page">
+      <div className={styles.Page}>
         {isUpdated || isDeleted ? this.renderRedirect() : null}
-        <div className="TopBarSection">
+        <div className={styles.TopBarSection}>
           <Header />
         </div>
-        <div className="MainSection">
-          <div className="SideBarSection">
+        <div className={styles.MainSection}>
+          <div className={styles.SideBarSection}>
             <SideBar
               name={name}
               params={params}
@@ -202,11 +239,11 @@ class ProjectSettingsPage extends React.Component {
               networkLink={`/users/${userID}/projects/${projectID}/network/`}
             />
           </div>
-          <div className="MainContentSection">
-            <div className="InformationBarSection">
+          <div className={styles.MainContentSection}>
+            <div className={styles.InformationBarSection}>
               <InformationBar header="Settings" />
             </div>
-            <div className="ContentSection">
+            <div className={styles.ContentSection}>
               <div>
                 <div
                   onSubmit={(e) => {
@@ -214,7 +251,7 @@ class ProjectSettingsPage extends React.Component {
                     e.preventDefault();
                   }}
                 >
-                  <div className="UpdateForm">
+                  <div className={styles.UpdateForm}>
                     <BlackInputText
                       placeholder="Project Name"
                       name="projectName"
@@ -231,10 +268,14 @@ class ProjectSettingsPage extends React.Component {
                         this.handleChange(e);
                       }}
                     />
-                    {errorMessage && (
+                    {(errorMessage || error) && (
                       <Feedback
                         type="error"
-                        message="You cant update only the description."
+                        message={
+                          errorMessage
+                            ? "you cant update only the description"
+                            : error
+                        }
                       />
                     )}
 
@@ -245,31 +286,47 @@ class ProjectSettingsPage extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="DeleteButtonDiv">
+              <div className={styles.DeleteButtonDiv}>
                 <PrimaryButton
                   label="Delete Project"
-                  className="DeleteBtn"
+                  className={styles.DeleteBtn}
                   onClick={this.showDeleteAlert}
                 />
               </div>
               {openDeleteAlert && (
-                <div className="ProjectDeleteModel">
+                <div className={styles.ProjectDeleteModel}>
                   <Modal
                     showModal={openDeleteAlert}
                     onClickAway={this.hideDeleteAlert}
                   >
-                    <div className="DeleteProjectModel">
-                      <div className="DeleteProjectModalUpperSection">
-                        <div className="DeleteDescription">
-                          Are you sure you want to delete&nbsp;
-                          <span>{projectName}</span>
-                          &nbsp; ?
-                          <DeleteWarning />
+                    <div className={styles.DeleteProjectModel}>
+                      <div className={styles.DeleteProjectModalUpperSection}>
+                        <div className={styles.WarningContainer}>
+                          <div className={styles.DeleteDescription}>
+                            Are you sure you want to delete&nbsp;
+                            <span>{projectName}</span>
+                            &nbsp;?
+                          </div>
+                          <div className={styles.DeleteSubDescription}>
+                            This will permanently delete the project and all its resources.
+                            Please confirm by typing <b className={styles.DeleteWarning}>{projectName}</b> below.
+                          </div>
+                          <div className={styles.InnerModalDescription}>
+                            <BlackInputText
+                              required
+                              placeholder={projectName}
+                              name="Confirmprojectname"
+                              value={Confirmprojectname}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />
+                            <DeleteWarning textAlignment="Left"/>
+                          </div>
                         </div>
                       </div>
-
-                      <div className="DeleteProjectModalLowerSection">
-                        <div className="DeleteProjectModelButtons">
+                      <div className={styles.DeleteProjectModalLowerSection}>
+                        <div className={styles.DeleteProjectModelButtons}>
                           <PrimaryButton
                             label="cancel"
                             className="CancelBtn"
@@ -277,7 +334,12 @@ class ProjectSettingsPage extends React.Component {
                           />
                           <PrimaryButton
                             label={isDeleting ? <Spinner /> : "Delete"}
-                            className="DeleteBtn"
+                            className={
+                              disableDelete
+                                ? styles.InactiveDelete
+                                : styles.DeleteBtn
+                            }
+                            disable={disableDelete}
                             onClick={(e) =>
                               this.handleDeleteProject(e, params.projectID)
                             }

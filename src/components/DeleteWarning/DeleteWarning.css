@@ -2,3 +2,9 @@
   color: #f00;
   text-align: center;
 }
+.DeleteWarning.Left{
+  text-align: left;
+}
+.DeleteWarning.Right{
+  text-align: right;
+}

@@ -3,6 +3,11 @@
   padding-top: 2rem;
   height: 100%;
 }
+
+.CreateDBError{
+  padding-bottom: 1rem;
+}
+
 .SelectWrapper {
   width: 100%;
 }
