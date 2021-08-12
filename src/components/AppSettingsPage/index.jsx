@@ -143,7 +143,7 @@ class AppSettingsPage extends React.Component {
                             &nbsp;?
                           </div>
                           <div className={styles.DeleteSubDescription}>
-                            This will permanently delete the Application.
+                            This will permanently delete the application.
                             Please confirm by typing <b className={styles.DeleteWarning}>{name}</b> below.
                           </div>
                           <div className={styles.InnerModalDescription}>
