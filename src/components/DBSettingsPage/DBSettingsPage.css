@@ -147,10 +147,15 @@
   padding-right: 1rem;
 }
 
+.DBSections{
+  padding-top: 1rem;
+}
+
 .DBSectionTitle{
   font-size: 18px;
   font-weight: bold;
 }
+
 @media only screen and (min-device-width: 641px) and (max-width: 900px) {
   .DBDetailRow {
     grid-template-columns: 18% 40% 10% auto;
