@@ -1,3 +1,5 @@
+
+
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -11,7 +13,8 @@ import Modal from "../Modal";
 import SideBar from "../SideBar";
 import Feedback from "../Feedback";
 import DeleteWarning from "../DeleteWarning";
-import "./AppSettingsPage.css";
+import styles from  "./AppSettingsPage.module.css";
+import BlackInputText from "../BlackInputText";
 
 class AppSettingsPage extends React.Component {
   constructor(props) {
@@ -19,14 +22,33 @@ class AppSettingsPage extends React.Component {
     this.state = {
       openDeleteAlert: false,
       error: "",
+      disableDelete: true,
+      ConfirmAppname: "",
     };
 
     this.handleDeleteApp = this.handleDeleteApp.bind(this);
     this.showDeleteAlert = this.showDeleteAlert.bind(this);
     this.hideDeleteAlert = this.hideDeleteAlert.bind(this);
     this.renderRedirect = this.renderRedirect.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
+  handleChange(e) {
+    const { name } = this.props.location;
+    const {  openDeleteAlert} = this.state;
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+    if (e.target.value === name && openDeleteAlert) {
+      this.setState({
+        disableDelete: false,
+      });
+    } else if (e.target.value !== name && openDeleteAlert) {
+      this.setState({
+        disableDelete: true,
+      });
+    }
+  }
   componentDidUpdate(prevProps) {
     const { isDeleted } = this.props;
 
@@ -69,18 +91,18 @@ class AppSettingsPage extends React.Component {
       message,
       isFailed,
     } = this.props;
-    const { openDeleteAlert } = this.state;
+    const { openDeleteAlert,ConfirmAppname,disableDelete} = this.state;
     const { name } = this.props.location;
     const { projectID, userID, appID } = params;
 
     return (
-      <div className="Page">
+      <div className={styles.Page}>
         {isDeleted ? this.renderRedirect() : null}
-        <div className="TopBarSection">
+        <div className={styles.TopBarSection}>
           <Header />
         </div>
-        <div className="MainSection">
-          <div className="SideBarSection">
+        <div className={styles.MainSection}>
+          <div className={styles.SideBarSection}>
             <SideBar
               name={name}
               params={params}
@@ -94,36 +116,53 @@ class AppSettingsPage extends React.Component {
               appLogsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/logs/`}
             />
           </div>
-          <div className="MainContentSection">
-            <div className="InformationBarSection">
+          <div className={styles.MainContentSection}>
+            <div className={styles.InformationBarSection}>
               <InformationBar header="Settings" />
             </div>
-            <div className="ContentSection">
-              <div className="DeleteButtonDiv">
+            <div className={styles.ContentSection}>
+              <div className={styles.DeleteButtonDiv}>
                 <PrimaryButton
                   label="Delete App"
-                  className="DeleteBtn"
+                  className={styles.DeleteBtn}
                   onClick={this.showDeleteAlert}
                 />
               </div>
               {openDeleteAlert && (
-                <div className="AppDeleteModel">
+                <div className={styles.AppDeleteModel}>
                   <Modal
                     showModal={openDeleteAlert}
                     onClickAway={this.hideDeleteAlert}
                   >
-                    <div className="DeleteAppModel">
-                      <div className="DeleteModalUpperSection">
-                        <div className="DeleteDescription">
-                          Are you sure you want to delete&nbsp;
-                          <span>{name}</span>
-                          &nbsp; ?
+                    <div className={styles.DeleteAppModel}>
+                      <div className={styles.DeleteModalUpperSection}>
+                        <div className={styles.WarningContainer}>
+                          <div className={styles.DeleteDescription}>
+                            Are you sure you want to delete&nbsp;
+                            <span>{name}</span>
+                            &nbsp;?
+                          </div>
+                          <div className={styles.DeleteSubDescription}>
+                            This will permanently delete the application.
+                            Please confirm by typing <b className={styles.DeleteWarning}>{name}</b> below.
+                          </div>
+                          <div className={styles.InnerModalDescription}>
+                            <BlackInputText
+                              required
+                              placeholder={name}
+                              name="ConfirmAppname"
+                              value={ConfirmAppname}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />
+                            <DeleteWarning textAlignment="Left"/>
+                          </div>
                         </div>
-                        <DeleteWarning />
                       </div>
 
-                      <div className="DeleteModalLowerSection">
-                        <div className="DeleteAppModelButtons">
+                      <div className={styles.DeleteModalLowerSection}>
+                        <div className={styles.DeleteAppModelButtons}>
                           <PrimaryButton
                             label="cancel"
                             className="CancelBtn"
@@ -131,7 +170,12 @@ class AppSettingsPage extends React.Component {
                           />
                           <PrimaryButton
                             label={isDeleting ? <Spinner /> : "Delete"}
-                            className="DeleteBtn"
+                            className={
+                              disableDelete
+                                ? styles.InactiveDelete
+                                : styles.DeleteBtn
+                            }
+                            disable={disableDelete}
                             onClick={(e) => this.handleDeleteApp(e, appID)}
                           />
                         </div>
