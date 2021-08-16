@@ -93,23 +93,6 @@ class DBSettingsPage extends React.Component {
     }
   }
 
-  // getDatabaseInfo(id) {
-  //   const { databases } = this.props;
-  //   const found = databases.find((database) => database.id === id);
-  //   const info = {
-  //     flavor: found.database_flavour_name,
-  //     name: found.name,
-  //     user: found.user,
-  //     host: found.host,
-  //     dbID: found.id,
-  //     port: found.port,
-  //     password: found.password,
-  //     age: found.age,
-  //   };
-
-  //   return info;
-  // }
-
   handleDeleteDatabase(e, projectID, databaseID) {
     const { deleteDatabase } = this.props;
     e.preventDefault();
@@ -307,8 +290,6 @@ class DBSettingsPage extends React.Component {
       confirmNewDatabasePassword,
       error,
     } = this.state;
-    console.log(database);
-    console.log(database.database_flavour_name);
     return (
       <div className="Page">
         {dbDeleteMessage === "Database Deleted Successfully"
