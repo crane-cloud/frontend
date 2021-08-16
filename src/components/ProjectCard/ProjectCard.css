@@ -1,12 +1,13 @@
 .ProjectsCard {
   background-color: #ffffff;
+  border: 1px solid #f1f1f1;
   width: 15rem;
   height: min-content;
 }
 
 .ProjectsCard:hover {
   margin: 0;
-  border: 1px solid #f7b21f;
+  border-color: #f7b21f;
 }
 
 .ProjectImageDiv {
