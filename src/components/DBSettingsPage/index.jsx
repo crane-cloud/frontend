@@ -307,6 +307,8 @@ class DBSettingsPage extends React.Component {
       confirmNewDatabasePassword,
       error,
     } = this.state;
+    console.log(database);
+    console.log(database.database_flavour_name);
     return (
       <div className="Page">
         {dbDeleteMessage === "Database Deleted Successfully"
@@ -347,7 +349,7 @@ class DBSettingsPage extends React.Component {
                       <div className="DBDetailRow">
                         <div className="DBThead">Type</div>
                         <div className="DBTDetail uppercase">
-                          {database.flavor === 'mysql'?"MYSQL":"POSTGRESQL"}
+                          {database.database_flavour_name === "mysql"?"MYSQL":"POSTGRESQL"}
                         </div>
                       </div>
                       <div className="DBDetailRow">
@@ -412,7 +414,7 @@ class DBSettingsPage extends React.Component {
 
                   <div className="DBSections">
                     <div className="DBSectionTitle">Connect to database</div>
-                    {database.flavor === "mysql" ? (
+                    {database.database_flavour_name === "mysql" ? (
                       <div className="DBInstructions">
                         <div className="DBInfoTop">
                           <div>
