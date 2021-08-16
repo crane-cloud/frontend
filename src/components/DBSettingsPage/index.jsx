@@ -93,23 +93,6 @@ class DBSettingsPage extends React.Component {
     }
   }
 
-  // getDatabaseInfo(id) {
-  //   const { databases } = this.props;
-  //   const found = databases.find((database) => database.id === id);
-  //   const info = {
-  //     flavor: found.database_flavour_name,
-  //     name: found.name,
-  //     user: found.user,
-  //     host: found.host,
-  //     dbID: found.id,
-  //     port: found.port,
-  //     password: found.password,
-  //     age: found.age,
-  //   };
-
-  //   return info;
-  // }
-
   handleDeleteDatabase(e, projectID, databaseID) {
     const { deleteDatabase } = this.props;
     e.preventDefault();
@@ -347,7 +330,7 @@ class DBSettingsPage extends React.Component {
                       <div className="DBDetailRow">
                         <div className="DBThead">Type</div>
                         <div className="DBTDetail uppercase">
-                          {database.flavor === 'mysql'?"MYSQL":"POSTGRESQL"}
+                          {database.database_flavour_name === "mysql"?"MYSQL":"POSTGRESQL"}
                         </div>
                       </div>
                       <div className="DBDetailRow">
@@ -412,7 +395,7 @@ class DBSettingsPage extends React.Component {
 
                   <div className="DBSections">
                     <div className="DBSectionTitle">Connect to database</div>
-                    {database.flavor === "mysql" ? (
+                    {database.database_flavour_name === "mysql" ? (
                       <div className="DBInstructions">
                         <div className="DBInfoTop">
                           <div>
