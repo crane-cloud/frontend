@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import styles from "./ProjectCard.module.css";
+import "./ProjectCard.css";
 import LineChartComponent from "../LineChart";
 import getProjectMemory from "../../redux/actions/projectMemory";
 import { formatMemoryMetrics } from "../../helpers/formatMetrics";
@@ -35,7 +35,7 @@ class ProjectCard extends React.Component {
 
     return (
       <>
-        <div className={styles.ProjectsCard}>
+        <div className="ProjectsCard">
           <Link
             to={{
               pathname: `/users/${userId}/projects/${cardID}/apps`,
@@ -43,7 +43,7 @@ class ProjectCard extends React.Component {
             }}
             key={cardID}
           >
-            <div className={styles.ProjectImageDiv}>
+            <div className="ProjectImageDiv">
               <LineChartComponent
                 lineDataKey="memory"
                 preview
@@ -51,8 +51,8 @@ class ProjectCard extends React.Component {
               />
             </div>
           </Link>
-          <div className={styles.BottomContainer}>
-            <div className={styles.ProjectInfoSection}>
+          <div className="BottomContainer">
+            <div className="ProjectInfoSection">
               <Link
                 to={{
                   pathname: `/users/${userId}/projects/${cardID}/apps`,
@@ -60,10 +60,10 @@ class ProjectCard extends React.Component {
                 }}
                 key={cardID}
               >
-                <div className={styles.ProjectsCardName}>{name}</div>
+                <div className="ProjectsCardName">{name}</div>
               </Link>
             </div>
-            <div className={styles.ProjectDescription}>{description}</div>
+            <div className="ProjectDescription">{description}</div>
           </div>
         </div>
       </>
