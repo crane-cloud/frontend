@@ -18,6 +18,7 @@ import Tooltip from "../Tooltip";
 import SideBar from "../SideBar";
 import Tabs from "../Tabs";
 import Select from "../Select";
+import CreateApp from "../createApp";
 import "./AppsPage.css";
 
 class AppsPage extends React.Component {
@@ -315,6 +316,12 @@ class AppsPage extends React.Component {
               networkLink={`/users/${userID}/projects/${projectID}/network/`}
             />
           </div>
+          {openModal ? (
+            <CreateApp
+              closeComponent={this.hideForm}
+              params={params}
+            />
+          ) : (
           <div className="MainContentSection">
             <div className="InformationBarSection">
               <InformationBar header="Apps" showBtn btnAction={this.showForm} />
@@ -323,241 +330,247 @@ class AppsPage extends React.Component {
               <AppsList params={params} newAppCreated={isCreated} />
             </div>
           </div>
+          )}
         </div>
-
-        {/* Modal for creating a new app
-        Its triggered by the value of state.openModal */}
-        <Modal showModal={openModal} onClickAway={this.hideForm}>
-          <div className="ModalForm AddAppModal">
-            <div className="ModalFormHeading">
-              <h2>Deploy an app</h2>
-            </div>
-
-            {/* //- /////////////////////////////////// -// */}
-
-            <div className="ModalFormInputs">
-              <div className="ModalFormInputsBasic">
-                <BlackInputText
-                  required
-                  placeholder="Name"
-                  name="name"
-                  value={name}
-                  onChange={(e) => {
-                    this.handleChange(e);
-                  }}
-                />
-
-                <div className="ReplicasSelect">
-                  <Select
-                    placeholder="Number of Replicas - defaults to 1"
-                    options={replicaOptions}
-                    onChange={this.handleSelectReplicas}
-                  />
-                </div>
-
-                <BlackInputText
-                  required
-                  placeholder="Image Uri"
-                  name="uri"
-                  value={uri}
-                  onChange={(e) => {
-                    this.handleChange(e);
-                  }}
-                />
-
-                <div className="PrivateImageCheckField">
-                  <Checkbox
-                    isBlack
-                    onClick={this.togglePrivateImage}
-                    isChecked={isPrivateImage}
-                  />
-                  &nbsp; Private Image
-                </div>
-
-                {isPrivateImage && (
-                  <div className="PrivateImageTabContainer">
-                    <Tabs>
-                      <div index={1} /* label={<DockerLogo />} */>
-                        <div className="PrivateImageInputs">
-                          <BlackInputText
-                            required
-                            placeholder="Username"
-                            name="username"
-                            value={username}
-                            onChange={(e) => {
-                              this.handleDockerCredentialsChange(e);
-                            }}
-                          />
-
-                          <BlackInputText
-                            required
-                            placeholder="Email"
-                            name="email"
-                            value={email}
-                            onChange={(e) => {
-                              this.handleDockerCredentialsChange(e);
-                            }}
-                          />
-
-                          <BlackInputText
-                            required
-                            placeholder="Password"
-                            type="password"
-                            name="password"
-                            value={password}
-                            onChange={(e) => {
-                              this.handleDockerCredentialsChange(e);
-                            }}
-                          />
-
-                          <BlackInputText
-                            required
-                            placeholder="Server"
-                            name="server"
-                            value={server}
-                            onChange={(e) => {
-                              this.handleDockerCredentialsChange(e);
-                            }}
-                          />
-
-                          {dockerCredentials.error && (
-                            <Feedback
-                              type="error"
-                              message={dockerCredentials.error}
-                            />
-                          )}
-                        </div>
-                      </div>
-                    </Tabs>
-                  </div>
-                )}
-
-                <div className="InputFieldWithTooltip">
-                  <BlackInputText
-                    placeholder="Entry Command"
-                    name="entryCommand"
-                    value={entryCommand}
-                    onChange={(e) => {
-                      this.handleChange(e);
-                    }}
-                  />
-                  <div className="InputTooltipContainer">
-                    <Tooltip
-                      showIcon
-                      message="Entrypoint or command for your container"
-                      position="left"
-                    />
-                  </div>
-                </div>
-
-                <BlackInputText
-                  placeholder="Port (optional) - defaults to 80"
-                  name="port"
-                  value={port}
-                  onChange={(e) => {
-                    this.handleChange(e);
-                  }}
-                />
-
-                {error && <Feedback type="error" message={error} />}
-              </div>
-              <div className="ModalFormInputsEnvVars">
-                <div className="HeadingWithTooltip">
-                  <h4>Environment Variables</h4>
-                  <Tooltip
-                    showIcon
-                    message="These are are key/value pairs which define aspects of your app’s environment that can vary"
-                  />
-                </div>
-                {Object.keys(envVars).length > 0 && (
-                  <div className="EnvVarsTable">
-                    <table>
-                      <thead>
-                        <tr>
-                          <td>Name</td>
-                          <td>Value</td>
-                          <td>Remove</td>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {Object.keys(envVars).map((envVar, index) => (
-                          <tr key={uuidv4()}>
-                            <td>{Object.keys(envVars)[index]}</td>
-                            <td>{envVars[Object.keys(envVars)[index]]}</td>
-                            <td>
-                              <img
-                                src={RemoveIcon}
-                                alt="remove_ico"
-                                onClick={() => this.removeEnvVar(index)}
-                                role="presentation"
-                              />
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-                <div className="EnvVarsInputGroup">
-                  <div className="EnvVarsInputs">
-                    <BlackInputText
-                      placeholder="Name"
-                      name="varName"
-                      value={varName}
-                      onChange={(e) => {
-                        this.handleChange(e);
-                      }}
-                    />
-                    <BlackInputText
-                      placeholder="Value"
-                      name="varValue"
-                      value={varValue}
-                      onChange={(e) => {
-                        this.handleChange(e);
-                      }}
-                    />
-                  </div>
-                  <div className="EnvVarsAddBtn">
-                    <PrimaryButton
-                      label="add"
-                      onClick={this.addEnvVar}
-                      className="EnvVarAddBtn"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* //- /////////////////////////////////// -// */}
-
-            <div className="ModalFormButtons AddAddButtons">
-              <PrimaryButton
-                label="cancel"
-                className="CancelBtn"
-                onClick={this.hideForm}
-              />
-              <PrimaryButton
-                label={isCreating ? <Spinner /> : "deploy"}
-                onClick={this.handleSubmit}
-              />
-            </div>
-
-            {message && (
-              <Feedback
-                message={
-                  errorCode === 409
-                    ? "Name already in use, please choose another and try again"
-                    : message
-                }
-                type={isCreated && errorCode !== 409 ? "success" : "error"}
-              />
-            )}
-          </div>
-        </Modal>
       </div>
-    );
-  }
-}
+    );}}
+        
+
+        /* {Modal for creating a new app
+        Its triggered by the value of state.openModal */
+        // <Modal showModal={openModal} onClickAway={this.hideForm}>
+        //   <div className="ModalForm AddAppModal">
+        //     <div className="ModalFormHeading">
+        //       <h2>Deploy an app</h2>
+        //     </div>
+
+        //     {/* //- /////////////////////////////////// -// */}
+
+        //     <div className="ModalFormInputs">
+        //       <div className="ModalFormInputsBasic">
+        //         <BlackInputText
+        //           required
+        //           placeholder="Name"
+        //           name="name"
+        //           value={name}
+        //           onChange={(e) => {
+        //             this.handleChange(e);
+        //           }}
+        //         />
+
+        //         <div className="ReplicasSelect">
+        //           <Select
+        //             placeholder="Number of Replicas - defaults to 1"
+        //             options={replicaOptions}
+        //             onChange={this.handleSelectReplicas}
+        //           />
+        //         </div>
+
+        //         <BlackInputText
+        //           required
+        //           placeholder="Image Uri"
+        //           name="uri"
+        //           value={uri}
+        //           onChange={(e) => {
+        //             this.handleChange(e);
+        //           }}
+        //         />
+
+        //         <div className="PrivateImageCheckField">
+        //           <Checkbox
+        //             isBlack
+        //             onClick={this.togglePrivateImage}
+        //             isChecked={isPrivateImage}
+        //           />
+        //           &nbsp; Private Image
+        //         </div>
+
+        //         {isPrivateImage && (
+        //           <div className="PrivateImageTabContainer">
+        //             <Tabs>
+        //               <div index={1} /* label={<DockerLogo />} */>
+        //                 <div className="PrivateImageInputs">
+        //                   <BlackInputText
+        //                     required
+        //                     placeholder="Username"
+        //                     name="username"
+        //                     value={username}
+        //                     onChange={(e) => {
+        //                       this.handleDockerCredentialsChange(e);
+        //                     }}
+        //                   />
+
+        //                   <BlackInputText
+        //                     required
+        //                     placeholder="Email"
+        //                     name="email"
+        //                     value={email}
+        //                     onChange={(e) => {
+        //                       this.handleDockerCredentialsChange(e);
+        //                     }}
+        //                   />
+
+        //                   <BlackInputText
+        //                     required
+        //                     placeholder="Password"
+        //                     type="password"
+        //                     name="password"
+        //                     value={password}
+        //                     onChange={(e) => {
+        //                       this.handleDockerCredentialsChange(e);
+        //                     }}
+        //                   />
+
+        //                   <BlackInputText
+        //                     required
+        //                     placeholder="Server"
+        //                     name="server"
+        //                     value={server}
+        //                     onChange={(e) => {
+        //                       this.handleDockerCredentialsChange(e);
+        //                     }}
+        //                   />
+
+        //                   {dockerCredentials.error && (
+        //                     <Feedback
+        //                       type="error"
+        //                       message={dockerCredentials.error}
+        //                     />
+        //                   )}
+        //                 </div>
+        //               </div>
+        //             </Tabs>
+        //           </div>
+        //         )}
+
+        //         <div className="InputFieldWithTooltip">
+        //           <BlackInputText
+        //             placeholder="Entry Command"
+        //             name="entryCommand"
+        //             value={entryCommand}
+        //             onChange={(e) => {
+        //               this.handleChange(e);
+        //             }}
+        //           />
+        //           <div className="InputTooltipContainer">
+        //             <Tooltip
+        //               showIcon
+        //               message="Entrypoint or command for your container"
+        //               position="left"
+        //             />
+        //           </div>
+        //         </div>
+
+        //         <BlackInputText
+        //           placeholder="Port (optional) - defaults to 80"
+        //           name="port"
+        //           value={port}
+        //           onChange={(e) => {
+        //             this.handleChange(e);
+        //           }}
+        //         />
+
+        //         {error && <Feedback type="error" message={error} />}
+        //       </div>
+        //       <div className="ModalFormInputsEnvVars">
+        //         <div className="HeadingWithTooltip">
+        //           <h4>Environment Variables</h4>
+        //           <Tooltip
+        //             showIcon
+        //             message="These are are key/value pairs which define aspects of your app’s environment that can vary"
+        //           />
+        //         </div>
+        //         {Object.keys(envVars).length > 0 && (
+        //           <div className="EnvVarsTable">
+        //             <table>
+        //               <thead>
+        //                 <tr>
+        //                   <td>Name</td>
+        //                   <td>Value</td>
+        //                   <td>Remove</td>
+        //                 </tr>
+        //               </thead>
+        //               <tbody>
+        //                 {Object.keys(envVars).map((envVar, index) => (
+        //                   <tr key={uuidv4()}>
+        //                     <td>{Object.keys(envVars)[index]}</td>
+        //                     <td>{envVars[Object.keys(envVars)[index]]}</td>
+        //                     <td>
+        //                       <img
+        //                         src={RemoveIcon}
+        //                         alt="remove_ico"
+        //                         onClick={() => this.removeEnvVar(index)}
+        //                         role="presentation"
+        //                       />
+        //                     </td>
+        //                   </tr>
+        //                 ))}
+        //               </tbody>
+        //             </table>
+        //           </div>
+        //         )}
+        //         <div className="EnvVarsInputGroup">
+        //           <div className="EnvVarsInputs">
+        //             <BlackInputText
+        //               placeholder="Name"
+        //               name="varName"
+        //               value={varName}
+        //               onChange={(e) => {
+        //                 this.handleChange(e);
+        //               }}
+        //             />
+        //             <BlackInputText
+        //               placeholder="Value"
+        //               name="varValue"
+        //               value={varValue}
+        //               onChange={(e) => {
+        //                 this.handleChange(e);
+        //               }}
+        //             />
+        //           </div>
+        //           <div className="EnvVarsAddBtn">
+        //             <PrimaryButton
+        //               label="add"
+        //               onClick={this.addEnvVar}
+        //               className="EnvVarAddBtn"
+        //             />
+        //           </div>
+        //         </div>
+        //       </div>
+        //     </div>
+
+        //     {/* //- /////////////////////////////////// -// */}
+
+        //     <div className="ModalFormButtons AddAddButtons">
+        //       <PrimaryButton
+        //         label="cancel"
+        //         className="CancelBtn"
+        //         onClick={this.hideForm}
+        //       />
+        //       <PrimaryButton
+        //         label={isCreating ? <Spinner /> : "deploy"}
+        //         onClick={this.handleSubmit}
+        //       />
+        //     </div>
+
+        //     {message && (
+        //       <Feedback
+        //         message={
+        //           errorCode === 409
+                    // ? "Name already in use, please choose another and try again"
+        //             : message
+        //         }
+        //         type={isCreated && errorCode !== 409 ? "success" : "error"}
+        //       />
+        //     )}
+        //   </div>
+        // </Modal>
+//       )}
+//         </div>
+//       </div>
+//     );
+//   }
+// }
 
 AppsPage.propTypes = {
   isCreated: PropTypes.bool.isRequired,
@@ -580,13 +593,13 @@ AppsPage.defaultProps = {
 };
 
 const mapStateToProps = ({ createNewApp, userProjectsReducer }) => {
-  const { message, isCreated, isCreating, errorCode } = createNewApp;
+  // const { message, isCreated, isCreating, errorCode } = createNewApp;
   const { projects } = userProjectsReducer;
   return {
-    isCreated,
-    isCreating,
-    errorCode,
-    message,
+    // isCreated,
+    // isCreating,
+    // errorCode,
+    // message,
     projects,
   };
 };

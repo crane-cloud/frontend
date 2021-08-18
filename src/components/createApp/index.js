@@ -8,9 +8,9 @@ import CancelButton from "../CancelButton";
 import Spinner from "../Spinner";
 import Feedback from "../Feedback";
 import createApp, {
-  clearAppCreateState,
+  clearState,
 } from "../../redux/actions/createApp";
-import "./CreateApp.css";
+// import "./CreateApp.css";
 
 const flavours = [
   { name: "MYSQL", id: 1, value: "mysql" },
@@ -31,8 +31,8 @@ class CreateApp extends React.Component {
   }
 
   componentDidMount() {
-    const { clearAppCreateState } = this.props;
-    clearAppCreateState();
+    const { clearState } = this.props;
+    clearState();
   }
 
   componentDidUpdate(prevProps) {
@@ -156,7 +156,7 @@ CreateApp.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { isCreating, isCreated, clearAppCreateState, message } =
+  const { isCreating, isCreated, clearAppCreateState, message, errorCode } =
     state.createAppReducer;
 
   return {
@@ -164,12 +164,13 @@ const mapStateToProps = (state) => {
     message,
     isCreated,
     clearAppCreateState,
+    errorCode
   };
 };
 
 const mapDispatchToProps = {
   createApp,
-  clearAppCreateState,
+  clearState,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateApp);
