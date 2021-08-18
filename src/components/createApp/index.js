@@ -67,6 +67,7 @@ class CreateApp extends React.Component {
   componentDidMount() {
     const { clearState } = this.props;
     clearState();
+
   }
 
   componentDidUpdate(prevProps) {
@@ -79,19 +80,6 @@ class CreateApp extends React.Component {
       return (
         <Redirect to={`/users/${userID}/projects/${projectID}/Apps`} noThrow />
       );
-    }
-  }
-
-  componentDidMount() {
-    const { clearState } = this.props;
-    clearState();
-  }
-
-  componentDidUpdate(prevProps) {
-    const { isCreated } = this.props;
-
-    if (isCreated !== prevProps.isCreated) {
-      this.hideForm();
     }
   }
 
@@ -301,6 +289,12 @@ class CreateApp extends React.Component {
         <Redirect to={`/users/${userID}/projects/${projectID}/Apps`} noThrow />
       );
     }
+    const replicaOptions = [
+      { id: 1, name: "1" },
+      { id: 2, name: "2" },
+      { id: 3, name: "3" },
+      { id: 4, name: "4" },
+    ];
     return (
       <div>
         <div className="MainContentSection">
