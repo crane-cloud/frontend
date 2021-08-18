@@ -13,15 +13,9 @@ import Spinner from "../Spinner";
 import Feedback from "../Feedback";
 import Checkbox from "../Checkbox";
 import Tooltip from "../Tooltip";
-import SideBar from "../SideBar";
 import Tabs from "../Tabs";
 import createApp, { clearState } from "../../redux/actions/createApp";
-// import "./CreateApp.css";
-
-const flavours = [
-  { name: "MYSQL", id: 1, value: "mysql" },
-  { name: "POSTGRESQL", id: 2, value: "postgres" },
-];
+import styles from "./createApp.module.css";
 
 class CreateApp extends React.Component {
   constructor(props) {
@@ -297,22 +291,22 @@ class CreateApp extends React.Component {
     ];
     return (
       <div>
-        <div className="MainContentSection">
-          <div className="InformationBarSection">
-            <div className="InformationBar">
-              <div className="InformationBarWithButton">
-                <div className="InfoHeader">Create App</div>
-                <div className="RoundAddButtonWrap">
+        <div className={styles.MainContentSection}>
+          <div className={styles.InformationBarSection}>
+            <div className={styles.InformationBar}>
+              <div className={styles.InformationBarWithButton}>
+                <div className={styles.InfoHeader}>Create App</div>
+                <div className={styles.RoundAddButtonWrap}>
                   <CancelButton onClick={this.props.closeComponent} />
                 </div>
               </div>
             </div>
           </div>
-          <div className="ContentSection">
+          <div className={styles.ContentSection}>
             <div>
-              <div className="AppForm">
-                <div className="ModalFormInputs">
-                  <div className="ModalFormInputsBasic">
+              <div className={styles.AppForm}>
+                <div className={styles.ModalFormInputs}>
+                  <div className={styles.ModalFormInputsBasic}>
                     <BlackInputText
                       required
                       placeholder="Name"
@@ -323,7 +317,7 @@ class CreateApp extends React.Component {
                       }}
                     />
 
-                    <div className="ReplicasSelect">
+                    <div className={styles.ReplicasSelect}>
                       <Select
                         placeholder="Number of Replicas - defaults to 1"
                         options={replicaOptions}
@@ -341,7 +335,7 @@ class CreateApp extends React.Component {
                       }}
                     />
 
-                    <div className="PrivateImageCheckField">
+                    <div className={styles.PrivateImageCheckField}>
                       <Checkbox
                         isBlack
                         onClick={this.togglePrivateImage}
@@ -351,10 +345,10 @@ class CreateApp extends React.Component {
                     </div>
 
                     {isPrivateImage && (
-                      <div className="PrivateImageTabContainer">
+                      <div className={styles.PrivateImageTabContainer}>
                         <Tabs>
                           <div index={1} /* label={<DockerLogo />} */>
-                            <div className="PrivateImageInputs">
+                            <div className={styles.PrivateImageInputs}>
                               <BlackInputText
                                 required
                                 placeholder="Username"
@@ -408,7 +402,7 @@ class CreateApp extends React.Component {
                       </div>
                     )}
 
-                    <div className="InputFieldWithTooltip">
+                    <div className={styles.InputFieldWithTooltip}>
                       <BlackInputText
                         placeholder="Entry Command"
                         name="entryCommand"
@@ -417,7 +411,7 @@ class CreateApp extends React.Component {
                           this.handleChange(e);
                         }}
                       />
-                      <div className="InputTooltipContainer">
+                      <div className={styles.InputTooltipContainer}>
                         <Tooltip
                           showIcon
                           message="Entrypoint or command for your container"
@@ -437,8 +431,8 @@ class CreateApp extends React.Component {
 
                     {error && <Feedback type="error" message={error} />}
                   </div>
-                  <div className="ModalFormInputsEnvVars">
-                    <div className="HeadingWithTooltip">
+                  <div className={styles.ModalFormInputsEnvVars}>
+                    <div className={styles.HeadingWithTooltip}>
                       <h4>Environment Variables</h4>
                       <Tooltip
                         showIcon
@@ -446,7 +440,7 @@ class CreateApp extends React.Component {
                       />
                     </div>
                     {Object.keys(envVars).length > 0 && (
-                      <div className="EnvVarsTable">
+                      <div className={styles.EnvVarsTable}>
                         <table>
                           <thead>
                             <tr>
@@ -474,8 +468,8 @@ class CreateApp extends React.Component {
                         </table>
                       </div>
                     )}
-                    <div className="EnvVarsInputGroup">
-                      <div className="EnvVarsInputs">
+                    <div className={styles.EnvVarsInputGroup}>
+                      <div className={styles.EnvVarsInputs}>
                         <BlackInputText
                           placeholder="Name"
                           name="varName"
@@ -493,11 +487,11 @@ class CreateApp extends React.Component {
                           }}
                         />
                       </div>
-                      <div className="EnvVarsAddBtn">
+                      <div className={styles.EnvVarsAddBtn}>
                         <PrimaryButton
                           label="add"
                           onClick={this.addEnvVar}
-                          className="EnvVarAddBtn"
+                          className={styles.EnvVarAddBtn}
                         />
                       </div>
                     </div>
