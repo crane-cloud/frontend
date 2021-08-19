@@ -64,7 +64,9 @@ class ProjectSettingsPage extends React.Component {
     return false;
   }
   handleChange(e) {
-    const { error, projectName, openDeleteAlert } = this.state;
+    const { error, openDeleteAlert } = this.state;
+    const projectInfo = JSON.parse(localStorage.getItem("project"));
+    const { name } = projectInfo
     const {
       errorMessage,
       clearUpdateProjectState,
@@ -86,11 +88,11 @@ class ProjectSettingsPage extends React.Component {
     if (isFailed && message) {
       clearDeleteProjectState();
     }
-    if (e.target.value === projectName && openDeleteAlert) {
+    if (e.target.value === name && openDeleteAlert) {
       this.setState({
         disableDelete: false,
       });
-    } else if (e.target.value !== projectName && openDeleteAlert) {
+    } else if (e.target.value !== name && openDeleteAlert) {
       this.setState({
         disableDelete: true,
       });
@@ -304,21 +306,21 @@ class ProjectSettingsPage extends React.Component {
                         <div className={styles.WarningContainer}>
                           <div className={styles.DeleteDescription}>
                             Are you sure you want to delete&nbsp;
-                            <span>{projectName}</span>
+                            <span>{name}</span>
                             &nbsp;?
                           </div>
                           <div className={styles.DeleteSubDescription}>
                             This will permanently delete the project and all its
-                            resources. Please confirm by typing
+                            resources. Please confirm by typing &nbsp;
                             <b className={styles.DeleteWarning}>
-                              {projectName}
-                            </b>
+                              {name}
+                            </b> &nbsp;
                             below.
                           </div>
                           <div className={styles.InnerModalDescription}>
                             <BlackInputText
                               required
-                              placeholder={projectName}
+                              placeholder={name}
                               name="Confirmprojectname"
                               value={Confirmprojectname}
                               onChange={(e) => {
