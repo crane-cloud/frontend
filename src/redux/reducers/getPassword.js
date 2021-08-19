@@ -5,8 +5,8 @@ import {
 } from "../actions/actionTypes";
 const initialState = {
   password: [],
-  isRetrieving: false,
-  isFetched: false,
+  isRetrievingPassword: false,
+  passwordFetched: false,
   message: "Database Not Available",
 };
 
@@ -16,23 +16,23 @@ const passwordReducer = (state = initialState, action) => {
       return {
         ...state,
         password: action.payload,
-        isRetrieving: false,
-        isFetched: true,
+        isRetrievingPassword: false,
+        passwordFetched: true,
         message: "Password fetched",
       };
 
     case GETTING_PASSWORD:
       return {
         ...state,
-        isRetrieving: true,
+        isRetrievingPassword: true,
       };
 
     case PASSWORD_FAIL:
       return {
         ...state,
         message: action.payload,
-        isFetched: false,
-        isRetrieving: false,
+        passwordFetched: false,
+        isRetrievingPassword: false,
       };
 
     default:

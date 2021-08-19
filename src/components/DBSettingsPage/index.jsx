@@ -20,6 +20,7 @@ import updateDatabasePassword, {
   clearUpdateDatabasePasswordState,
 } from "../../redux/actions/updateDBPassword";
 import getSingleDB from "../../redux/actions/getSingleDB";
+import getPassword from "../../redux/actions/getPassword";
 import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
@@ -330,7 +331,9 @@ class DBSettingsPage extends React.Component {
                       <div className="DBDetailRow">
                         <div className="DBThead">Type</div>
                         <div className="DBTDetail uppercase">
-                          {database.database_flavour_name === "mysql"?"MYSQL":"POSTGRESQL"}
+                          {database.database_flavour_name === "mysql"
+                            ? "MYSQL"
+                            : "POSTGRESQL"}
                         </div>
                       </div>
                       <div className="DBDetailRow">
@@ -739,6 +742,8 @@ const mapStateToProps = (state) => {
     clearUpdateDatabasePasswordState,
   } = state.updateDatabasePasswordReducer;
 
+  const { password, isRetrievingPassword, passwordFetched } =
+    state.passwordReducer;
   return {
     databaseDeleted,
     databaseDeleteFailed,
@@ -759,6 +764,9 @@ const mapStateToProps = (state) => {
     projects,
     isRetrieving,
     isFetched,
+    password,
+    isRetrievingPassword,
+    passwordFetched,
   };
 };
 
@@ -770,6 +778,7 @@ const mapDispatchToProps = {
   updateDatabasePassword,
   clearUpdateDatabasePasswordState,
   getSingleDB,
+  getPassword,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DBSettingsPage);
