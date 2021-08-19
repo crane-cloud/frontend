@@ -2,13 +2,14 @@
   /* divided into two rows */
   display: grid;
   grid-template-rows: 80px 4fr;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .ContentSection {
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
-  overflow-y: auto;
+  /* overflow: scroll; */
+  height: 100vh;
+  /* overflow-y: auto; */
   padding: 2rem;
   /* display: grid; */
   gap: 1rem;
@@ -32,7 +33,6 @@
   transform: scale(1.2);
 }
 
-/*! ////////////////////////////////////////// */
 .ModalForm.AddAppModal .ModalFormHeading {
   margin-bottom: 0;
 }
@@ -43,7 +43,7 @@
 }
 
 .ModalFormInputsBasic input {
-  max-width: 25rem;
+  width: 60%;
 }
 
 .ModalFormInputsBasic input::placeholder {
@@ -52,7 +52,7 @@
 
 .EnvVarsInputGroup {
   width: 100%;
-  max-width: 25rem;
+  max-width: 60%;
   display: grid;
   grid-template-columns: 3fr 1fr;
   gap: 0.5rem;
@@ -60,7 +60,7 @@
 
 .EnvVarsInputGroup .EnvVarsInputs {
   width: 70%;
-  max-width: 25rem;
+  max-width: 60%;
   display: grid;
   gap: 0.5rem;
   grid-template-columns: 1fr 1fr;
@@ -95,6 +95,7 @@
 
 .ModalFormButtons {
   width: 100%;
+  flex: 0 1 40px;
 }
 
 .EnvVarsTable {
@@ -103,7 +104,7 @@
 }
 
 .EnvVarsTable table {
-  max-width: 25rem;
+  max-width: 60%;
   text-align: left;
 }
 
@@ -166,21 +167,17 @@
   overflow-y: auto;
 }
 
-.ModalForm.AddAppModal .ModalFormButtons.AddAddButtons {
-  flex: 0 1 40px;
-}
-
-.ModalForm.AddAppModal .ModalFormInputs::-webkit-scrollbar {
+.ModalFormInputs::-webkit-scrollbar {
   width: 4px;
   height: 0px;
 }
-.ModalForm.AddAppModal .ModalFormInputs::-webkit-scrollbar-track {
+.ModalFormInputs::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
-.ModalForm.AddAppModal .ModalFormInputs::-webkit-scrollbar-thumb {
+.ModalFormInputs::-webkit-scrollbar-thumb {
   background: #555;
 }
-.ModalForm.AddAppModal .ModalFormInputs::-webkit-scrollbar-thumb:hover {
+.ModalFormInputs::-webkit-scrollbar-thumb:hover {
   background: #000;
 }
 
@@ -206,14 +203,14 @@
 }
 
 .InputFieldWithTooltip {
-  max-width: 25rem; /* same as input field*/
+  /* width: 60%; same as input field */
   display: flex;
   position: relative;
 }
 
 .InputTooltipContainer {
   position: absolute;
-  right: 0;
+  right: 41%;
   padding-right: 0.5rem;
   height: 100%;
   display: flex;
@@ -222,7 +219,7 @@
 
 .DatabaseSupportTabContainer,
 .PrivateImageTabContainer {
-  max-width: 25rem; /* this is to correspond with the width of the input elements */
+  max-width: 60%; /* this is to correspond with the width of the input elements */
 }
 
 .PrivateImageInputs,
@@ -244,4 +241,29 @@
 .ConnectModal {
   width: 82.19%;
   margin-left: 17.81%;
+}
+
+.InformationBar {
+  background: #f8f7e5;
+  height: 5rem;
+  padding: 0 3rem;
+  display: flex;
+  align-items: center;
+}
+
+.InformationBarWithButton {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.InfoHeader {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.ReplicasSelect {
+  width: 60%!important;
 }
