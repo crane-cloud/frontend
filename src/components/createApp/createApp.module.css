@@ -208,6 +208,15 @@
   position: relative;
 }
 
+.InputTooltipContainerDB {
+  position: absolute;
+  right: 0%;
+  padding-right: 0.5rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
 .InputTooltipContainer {
   position: absolute;
   right: 41%;
@@ -230,7 +239,7 @@
 
 .PrivateImageInputs input,
 .DatabaseSupportInputs input {
-  width: auto;
+  width: -webkit-fill-available;
 }
 
 .DbCheckBoxInputGroup {

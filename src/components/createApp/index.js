@@ -387,20 +387,20 @@ class CreateApp extends React.Component {
                               this.handleDockerCredentialsChange(e);
                             }}
                           />
-                          <div>
+                          <div className={styles.InputFieldWithTooltip}>
                             <BlackInputText
                               required
-                              placeholder="Server"
+                              placeholder="Registry Server"
                               name="server"
                               value={server}
                               onChange={(e) => {
                                 this.handleDockerCredentialsChange(e);
                               }}
                             />
-                            <div className={styles.InputTooltipContainer}>
+                            <div className={styles.InputTooltipContainerDB}>
                               <Tooltip
                                 showIcon
-                                message="Entrypoint or command for your container"
+                                message="Registry server for example: docker.io or gcr.io"
                                 position="left"
                               />
                             </div>
