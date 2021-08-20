@@ -43,6 +43,7 @@ class ProjectSettingsPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateProjectName = this.validateProjectName.bind(this);
+    this.checkProjectName = this.checkProjectName.bind(this);
     this.renderRedirect = this.renderRedirect.bind(this);
   }
 
@@ -53,7 +54,6 @@ class ProjectSettingsPage extends React.Component {
       this.hideDeleteAlert();
     }
   }
-
   validateProjectName(name) {
     if (/^[a-z]/i.test(name)) {
       if (name.match(/[^-a-zA-Z]/)) {
@@ -63,10 +63,17 @@ class ProjectSettingsPage extends React.Component {
     }
     return false;
   }
-
   handleChange(e) {
-    const { error, projectName, openDeleteAlert } = this.state;
-    const { errorMessage, clearUpdateProjectState,clearDeleteProjectState,isFailed,message  } = this.props;
+    const { error, openDeleteAlert } = this.state;
+    const projectInfo = JSON.parse(localStorage.getItem("project"));
+    const { name } = projectInfo
+    const {
+      errorMessage,
+      clearUpdateProjectState,
+      clearDeleteProjectState,
+      isFailed,
+      message,
+    } = this.props;
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -78,15 +85,14 @@ class ProjectSettingsPage extends React.Component {
         error: "",
       });
     }
-    if(isFailed && message){
+    if (isFailed && message) {
       clearDeleteProjectState();
-     
     }
-    if (e.target.value === projectName && openDeleteAlert) {
+    if (e.target.value === name && openDeleteAlert) {
       this.setState({
         disableDelete: false,
       });
-    } else if (e.target.value !== projectName && openDeleteAlert) {
+    } else if (e.target.value !== name && openDeleteAlert) {
       this.setState({
         disableDelete: true,
       });
@@ -97,12 +103,13 @@ class ProjectSettingsPage extends React.Component {
     const { projectName, projectDescription } = this.state;
     const {
       updateProject,
-      name,
-      description,
       match: {
         params: { projectID },
       },
     } = this.props;
+    const projectInfo = JSON.parse(localStorage.getItem("project"));
+    const { name, description } = projectInfo;
+
     const trimmed = (input) => input.trim();
     const trimprojectName = trimmed(projectName);
     const trimprojectDescription = trimmed(projectDescription);
@@ -110,54 +117,36 @@ class ProjectSettingsPage extends React.Component {
     if (trimprojectName !== name || trimprojectDescription !== description) {
       if (!trimprojectName || !trimprojectDescription) {
         this.setState({
-          error: "please provide either a new name or description",
+          error: "all fields are required",
         });
       } else {
         if (
           trimprojectName !== name &&
           trimprojectDescription === description
         ) {
-          if (!this.validateProjectName(trimprojectName)) {
+          const nameCheckResult = this.checkProjectName(trimprojectName);
+          if (nameCheckResult !== "") {
             this.setState({
-              error: "name should start with a letter",
-            });
-          } else if (
-            this.validateProjectName(trimprojectName) === "false_convention"
-          ) {
-            this.setState({
-              error: "name may only contain letters and a hypen -",
-            });
-          } else if (trimprojectName.length > 22) {
-            this.setState({
-              error: "project name cannot exceed 22 characters",
+              error: nameCheckResult,
             });
           } else {
             const newProject = { name: trimprojectName };
             updateProject(projectID, newProject);
           }
-        }
-
-        if (
+        } else if (
           trimprojectName === name &&
           trimprojectDescription !== description
         ) {
           const newProject = { description: trimprojectDescription };
           updateProject(projectID, newProject);
-        }
-
-        if (
+        } else if (
           trimprojectName !== name &&
           trimprojectDescription !== description
         ) {
-          if (!this.validateProjectName(trimprojectName)) {
+          const nameCheckResult = this.checkProjectName(trimprojectName);
+          if (nameCheckResult !== "") {
             this.setState({
-              error: "name should start with a letter",
-            });
-          } else if (
-            this.validateProjectName(trimprojectName) === "false_convention"
-          ) {
-            this.setState({
-              error: "name may only contain letters and a hypen -",
+              error: nameCheckResult,
             });
           } else {
             const newProject = {
@@ -168,6 +157,10 @@ class ProjectSettingsPage extends React.Component {
           }
         }
       }
+    } else {
+      this.setState({
+        error: "please provide either a new name or description",
+      });
     }
   }
 
@@ -179,6 +172,17 @@ class ProjectSettingsPage extends React.Component {
 
   showDeleteAlert() {
     this.setState({ openDeleteAlert: true });
+  }
+  checkProjectName(name) {
+    if (!this.validateProjectName(name)) {
+      return "name should start with a letter";
+    } else if (this.validateProjectName(name) === "false_convention") {
+      return "name may only contain letters and a hypen -";
+    } else if (name.length > 22) {
+      return "project name cannot exceed 22 characters";
+    } else {
+      return "";
+    }
   }
 
   hideDeleteAlert() {
@@ -272,9 +276,7 @@ class ProjectSettingsPage extends React.Component {
                       <Feedback
                         type="error"
                         message={
-                          errorMessage
-                            ? "you cant update only the description"
-                            : error
+                          errorMessage ? "Failed to update Project" : error
                         }
                       />
                     )}
@@ -304,24 +306,28 @@ class ProjectSettingsPage extends React.Component {
                         <div className={styles.WarningContainer}>
                           <div className={styles.DeleteDescription}>
                             Are you sure you want to delete&nbsp;
-                            <span>{projectName}</span>
+                            <span>{name}</span>
                             &nbsp;?
                           </div>
                           <div className={styles.DeleteSubDescription}>
-                            This will permanently delete the project and all its resources.
-                            Please confirm by typing <b className={styles.DeleteWarning}>{projectName}</b> below.
+                            This will permanently delete the project and all its
+                            resources. Please confirm by typing &nbsp;
+                            <b className={styles.DeleteWarning}>
+                              {name}
+                            </b> &nbsp;
+                            below.
                           </div>
                           <div className={styles.InnerModalDescription}>
                             <BlackInputText
                               required
-                              placeholder={projectName}
+                              placeholder={name}
                               name="Confirmprojectname"
                               value={Confirmprojectname}
                               onChange={(e) => {
                                 this.handleChange(e);
                               }}
                             />
-                            <DeleteWarning textAlignment="Left"/>
+                            <DeleteWarning textAlignment="Left" />
                           </div>
                         </div>
                       </div>
