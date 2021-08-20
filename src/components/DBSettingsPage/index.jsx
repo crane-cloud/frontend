@@ -70,6 +70,7 @@ class DBSettingsPage extends React.Component {
     this.handleSubmitUpdate = this.handleSubmitUpdate.bind(this);
     this.renderUpdateRedirect = this.renderUpdateRedirect.bind(this);
     this.getProjectName = this.getProjectName.bind(this);
+    this.fetchPassword = this.fetchPassword.bind(this);
   }
   componentDidMount() {
     const { getSingleDB } = this.props;
@@ -223,6 +224,17 @@ class DBSettingsPage extends React.Component {
     this.setState({ passwordChecked: true });
   }
 
+  fetchPassword() {
+    const {
+      getPassword,
+      match: {
+        params: { projectID, databaseID },
+      },
+    } = this.props;
+
+    getPassword(projectID, databaseID);
+  }
+
   // handle submit for update modal
   handleSubmitUpdate() {
     const {
@@ -273,6 +285,7 @@ class DBSettingsPage extends React.Component {
       projects,
       database,
       isRetrieving,
+      password,
     } = this.props;
     const { userID, projectID, databaseID } = this.props.match.params;
     // const dbInfo = this.getDatabaseInfo(databaseID);
