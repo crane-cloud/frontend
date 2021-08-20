@@ -117,7 +117,7 @@ class ProjectSettingsPage extends React.Component {
     if (trimprojectName !== name || trimprojectDescription !== description) {
       if (!trimprojectName || !trimprojectDescription) {
         this.setState({
-          error: "all fields are required",
+          error: "Please provide either a new name or description",
         });
       } else {
         if (
@@ -159,7 +159,7 @@ class ProjectSettingsPage extends React.Component {
       }
     } else {
       this.setState({
-        error: "please provide either a new name or description",
+        error: "Please provide either a new name or description",
       });
     }
   }
@@ -175,11 +175,11 @@ class ProjectSettingsPage extends React.Component {
   }
   checkProjectName(name) {
     if (!this.validateProjectName(name)) {
-      return "name should start with a letter";
+      return "Name should start with a letter";
     } else if (this.validateProjectName(name) === "false_convention") {
-      return "name may only contain letters and a hypen -";
+      return "Name may only contain letters and a hypen -";
     } else if (name.length > 22) {
-      return "project name cannot exceed 22 characters";
+      return "Project name cannot exceed 22 characters";
     } else {
       return "";
     }
