@@ -55,7 +55,7 @@
 .DBDetailRow {
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: 15% 25% 10% auto;
+  grid-template-columns: 15% 37% 10% auto;
   padding-bottom: 1rem;
   align-items: center;
 }

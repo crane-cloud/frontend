@@ -180,6 +180,7 @@ class DBSettingsPage extends React.Component {
 
   togglePassword() {
     this.setState({ hidden: !this.state.hidden });
+    this.fetchPassword();
   }
 
   nameOnClick() {
@@ -286,6 +287,9 @@ class DBSettingsPage extends React.Component {
       database,
       isRetrieving,
       password,
+      isRetrievingPassword,
+      isFetchingPasswordFailed,
+      passwordFetched
     } = this.props;
     const { userID, projectID, databaseID } = this.props.match.params;
     // const dbInfo = this.getDatabaseInfo(databaseID);
@@ -304,6 +308,9 @@ class DBSettingsPage extends React.Component {
       confirmNewDatabasePassword,
       error,
     } = this.state;
+
+    console.log(isRetrievingPassword);
+    console.log(password);
     return (
       <div className="Page">
         {dbDeleteMessage === "Database Deleted Successfully"
@@ -368,9 +375,11 @@ class DBSettingsPage extends React.Component {
                       <div className="DBDetailRow">
                         <div className="DBColumn1 DBThead">Password</div>
                         <div className="DBColumn">
-                          {hidden
+                          {/* {hidden
                             ? "***************************"
-                            : database.password}
+                            : database.password} */}
+
+                          {(hidden) ? (isRetrievingPassword ? <Spinner /> : "***************************") : password}
                         </div>
                         <div className="DBIcon">
                           <CopyText onClick={this.passwordOnClick} />
@@ -378,7 +387,7 @@ class DBSettingsPage extends React.Component {
                         </div>
                         <div className="DBPassword">
                           <div onClick={this.togglePassword}>
-                            {hidden ? <Open /> : <Closed />}
+                            {hidden ? (isRetrievingPassword ? <Spinner /> : <Open />) : <Closed />}
                           </div>
                         </div>
                       </div>
