@@ -34,16 +34,21 @@ class AppSettingsPage extends React.Component {
   }
 
   handleChange(e) {
-    const { name } = this.props.location;
     const {  openDeleteAlert} = this.state;
+    const {
+      match: { params },
+    } = this.props;
+    const {appID } = params;
+
     this.setState({
       [e.target.name]: e.target.value,
     });
-    if (e.target.value === name && openDeleteAlert) {
+
+    if (  openDeleteAlert && e.target.value === this.getAppName(appID)) {
       this.setState({
         disableDelete: false,
       });
-    } else if (e.target.value !== name && openDeleteAlert) {
+    } else if ( openDeleteAlert && e.target.value !== this.getAppName(appID) ) {
       this.setState({
         disableDelete: true,
       });
@@ -55,6 +60,10 @@ class AppSettingsPage extends React.Component {
     if (isDeleted !== prevProps.isDeleted) {
       this.hideDeleteAlert();
     }
+  }
+  getAppName(id) {
+    const { apps } = this.props;
+    return apps.apps.find((app) => app.id === id).name;
   }
 
   handleDeleteApp(e, appId) {
@@ -92,8 +101,10 @@ class AppSettingsPage extends React.Component {
       isFailed,
     } = this.props;
     const { openDeleteAlert,ConfirmAppname,disableDelete} = this.state;
-    const { name } = this.props.location;
+    // project name from line 105 disappears on refreash, another source of the name was needed
+    //const { name } = this.props.location;
     const { projectID, userID, appID } = params;
+    const name = this.getAppName(appID);  
 
     return (
       <div className={styles.Page}>
@@ -210,11 +221,14 @@ AppSettingsPage.propTypes = {
 AppSettingsPage.defaultProps = {
   isDeleted: false,
   isFailed: false,
+  apps: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 const mapStateToProps = (state) => {
   const { isDeleting, isDeleted, isFailed, message } = state.deleteAppReducer;
+  const { apps } = state.appsListReducer;
   return {
+    apps,
     isDeleting,
     isDeleted,
     isFailed,
