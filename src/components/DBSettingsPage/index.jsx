@@ -308,9 +308,6 @@ class DBSettingsPage extends React.Component {
       confirmNewDatabasePassword,
       error,
     } = this.state;
-
-    console.log(isRetrievingPassword);
-    console.log(passwordFetched);
     return (
       <div className="Page">
         {dbDeleteMessage === "Database Deleted Successfully"
