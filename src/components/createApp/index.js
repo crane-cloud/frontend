@@ -304,6 +304,7 @@ class CreateApp extends React.Component {
           </div>
           <div className={styles.ContentSection}>
             <div className={styles.ModalFormInputs}>
+              <div className={styles.FormHeading}>Fields marked * are required</div>
               <div className={styles.ModalFormInputsBasic}>
                 <BlackInputText
                   required
@@ -521,11 +522,7 @@ class CreateApp extends React.Component {
                 </div>
               </div>
               <div className="ModalFormButtons">
-                <PrimaryButton
-                  label="cancel"
-                  className="CancelBtn"
-                  onClick={this.hideForm}
-                />
+                
                 <PrimaryButton
                   label={isCreating ? <Spinner /> : "deploy"}
                   onClick={this.handleSubmit}
