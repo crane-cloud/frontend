@@ -2,6 +2,7 @@ import {
   GETTING_PASSWORD,
   PASSWORD_FAIL,
   PASSWORD_SUCCESS,
+  CLEAR_FETCH_PASSWORD,
 } from "../actions/actionTypes";
 const initialState = {
   password: [],
@@ -33,6 +34,14 @@ const passwordReducer = (state = initialState, action) => {
         message: action.payload,
         passwordFetched: false,
         isRetrievingPassword: false,
+      };
+    
+    case CLEAR_FETCH_PASSWORD:
+      return {
+        ...state,
+        isRetrievingPassword: false,
+        passwordFetched: false,
+        message: "",
       };
 
     default:
