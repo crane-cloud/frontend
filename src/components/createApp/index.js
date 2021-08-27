@@ -27,7 +27,6 @@ class CreateApp extends React.Component {
       varName: "",
       varValue: "",
       envVars: {},
-      openModal: false, // add project modal is closed initially
       error: "",
       createFeedback: "",
       entryCommand: "",
@@ -193,7 +192,7 @@ class CreateApp extends React.Component {
       dockerCredentials: { username, email, password, server },
       replicas,
     } = this.state;
-    const { createApp, match } = this.props;
+    const { createApp, params } = this.props;
 
     if (!name || !uri) {
       // if user tries to submit empty email/password
@@ -233,7 +232,7 @@ class CreateApp extends React.Component {
         env_vars: envVars,
         image: uri,
         name,
-        project_id: match.params.projectID,
+        project_id: params.projectID,
         private_image: isPrivateImage,
         replicas,
       };
@@ -252,7 +251,7 @@ class CreateApp extends React.Component {
         };
       }
 
-      createApp(appInfo, match.params.projectID);
+      createApp(appInfo, params.projectID);
     }
   }
 
@@ -265,7 +264,6 @@ class CreateApp extends React.Component {
       params: { userID, projectID },
     } = this.props;
     const {
-      openModal,
       name,
       uri,
       varName,
@@ -289,6 +287,7 @@ class CreateApp extends React.Component {
       { id: 3, name: "3" },
       { id: 4, name: "4" },
     ];
+    console.log(this.props.params);
     return (
       <div>
         <div className={styles.MainContentSection}>
@@ -521,7 +520,7 @@ class CreateApp extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="ModalFormButtons">
+              <div className={styles.ModalFormButtons}>
                 
                 <PrimaryButton
                   label={isCreating ? <Spinner /> : "deploy"}
