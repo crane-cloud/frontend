@@ -3,6 +3,7 @@ import {
   GETTING_PASSWORD,
   PASSWORD_FAIL,
   PASSWORD_SUCCESS,
+  CLEAR_FETCH_PASSWORD,
 } from "./actionTypes";
 
 export const startTheFetch = () => ({
@@ -19,6 +20,10 @@ export const getPasswordFailed = (error) => ({
   payload: error.status,
 });
 
+const clearFetchDBPassword = () => ({
+  type: CLEAR_FETCH_PASSWORD,
+});
+
 const getPassword = (projectID, databaseID) => (dispatch) => {
   dispatch(startTheFetch());
   return axios
@@ -29,4 +34,5 @@ const getPassword = (projectID, databaseID) => (dispatch) => {
     });
 };
 
+export { clearFetchDBPassword };
 export default getPassword;
