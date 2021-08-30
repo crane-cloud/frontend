@@ -92,9 +92,10 @@
 
 .ModalFormButtons {
   width: 50%;
-  display: flex;
+  display: grid;
   justify-content: center;
   padding: 2rem ;
+  gap: 1rem;
 }
 
 .EnvVarsTable {
@@ -284,4 +285,8 @@
 .FormHeading{
   padding: .3rem 0rem;
   font-weight: 600;
+}
+
+.ErrorOnWhite{
+  width: 100%;
 }

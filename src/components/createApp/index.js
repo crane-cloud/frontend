@@ -303,7 +303,9 @@ class CreateApp extends React.Component {
           </div>
           <div className={styles.ContentSection}>
             <div className={styles.ModalFormInputs}>
-              <div className={styles.FormHeading}>Fields marked * are required</div>
+              <div className={styles.FormHeading}>
+                Fields marked * are required
+              </div>
               <div className={styles.ModalFormInputsBasic}>
                 <BlackInputText
                   required
@@ -521,23 +523,22 @@ class CreateApp extends React.Component {
                 </div>
               </div>
               <div className={styles.ModalFormButtons}>
-                
+                {message && (
+                  <Feedback
+                    message={
+                      errorCode === 409
+                        ? "Name already in use, please choose another and try again"
+                        : message
+                    }
+                    type={isCreated && errorCode !== 409 ? "success" : "error"}
+                  />
+                )}
+
                 <PrimaryButton
                   label={isCreating ? <Spinner /> : "deploy"}
                   onClick={this.handleSubmit}
                 />
               </div>
-
-              {message && (
-                <Feedback
-                  message={
-                    errorCode === 409
-                      ? "Name already in use, please choose another and try again"
-                      : message
-                  }
-                  type={isCreated && errorCode !== 409 ? "success" : "error"}
-                />
-              )}
             </div>
           </div>
         </div>
