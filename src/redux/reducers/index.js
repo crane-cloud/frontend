@@ -55,7 +55,7 @@ export default combineReducers({
   appsListReducer,
   userProjectsReducer,
   addProjectReducer,
-  createNewApp: createAppReducer,
+  createAppReducer,
   deleteAppReducer,
   deleteProjectReducer,
   userDetailReducer,
