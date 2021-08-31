@@ -45,7 +45,7 @@
   display: flex;
   justify-content: space-between;
 }
-.DeleteBtn {
+/*.DeleteBtn {
   background-color: #ff0000;
   outline: 2px solid #ff0000;
   transform: scaleX(0.9);
@@ -56,7 +56,7 @@
   outline: 2px solid #ff0000;
   color: #ff0000;
 }
-
+*/
 .DeleteAppModelButtons .DeleteBtn {
   background-color: #ff0000;
   outline: 2px solid #ff0000;
@@ -127,13 +127,13 @@
 .ContentSection {
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
+  /*overflow-x: hidden;*/
   overflow-y: auto;
 }
-.DeleteButtonDiv {
+/*.DeleteButtonDiv {
   bottom: 0rem;
   padding: 1.3rem;
-}
+}*/
 .DeleteWarning {
   color: #f00;
 }
@@ -148,4 +148,36 @@
   display: grid;
   gap: 0.8rem;
   width: 25rem;
+}
+
+.APPInstructions {
+  padding: 1rem 1rem;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  /*display: flex;*/
+  gap: 1rem;
+  width: 90%;
+}
+
+.APPButtonRow {
+  display: grid;
+  grid-template-columns: auto 40%;
+  grid-auto-flow: column;
+  align-items: center;
+  column-gap: 1rem;
+}
+
+.SectionButtons{
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1rem;
+}
+
+.APPSections{
+  padding-top: 1rem;
+}
+
+.APPSectionTitle{
+  font-size: 18px;
+  font-weight: bold;
 }

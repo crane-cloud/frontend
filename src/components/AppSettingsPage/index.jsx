@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -13,8 +11,9 @@ import Modal from "../Modal";
 import SideBar from "../SideBar";
 import Feedback from "../Feedback";
 import DeleteWarning from "../DeleteWarning";
-import styles from  "./AppSettingsPage.module.css";
+import styles from "./AppSettingsPage.module.css";
 import BlackInputText from "../BlackInputText";
+import SettingsButton from "../SettingsButton";
 
 class AppSettingsPage extends React.Component {
   constructor(props) {
@@ -34,21 +33,21 @@ class AppSettingsPage extends React.Component {
   }
 
   handleChange(e) {
-    const {  openDeleteAlert} = this.state;
+    const { openDeleteAlert } = this.state;
     const {
       match: { params },
     } = this.props;
-    const {appID } = params;
+    const { appID } = params;
 
     this.setState({
       [e.target.name]: e.target.value,
     });
 
-    if (  openDeleteAlert && e.target.value === this.getAppName(appID)) {
+    if (openDeleteAlert && e.target.value === this.getAppName(appID)) {
       this.setState({
         disableDelete: false,
       });
-    } else if ( openDeleteAlert && e.target.value !== this.getAppName(appID) ) {
+    } else if (openDeleteAlert && e.target.value !== this.getAppName(appID)) {
       this.setState({
         disableDelete: true,
       });
@@ -100,11 +99,11 @@ class AppSettingsPage extends React.Component {
       message,
       isFailed,
     } = this.props;
-    const { openDeleteAlert,ConfirmAppname,disableDelete} = this.state;
+    const { openDeleteAlert, ConfirmAppname, disableDelete } = this.state;
     // project name from line 105 disappears on refreash, another source of the name was needed
     //const { name } = this.props.location;
     const { projectID, userID, appID } = params;
-    const name = this.getAppName(appID);  
+    const name = this.getAppName(appID);
 
     return (
       <div className={styles.Page}>
@@ -132,12 +131,35 @@ class AppSettingsPage extends React.Component {
               <InformationBar header="Settings" />
             </div>
             <div className={styles.ContentSection}>
-              <div className={styles.DeleteButtonDiv}>
+              {/*<div className={styles.DeleteButtonDiv}>
                 <PrimaryButton
                   label="Delete App"
                   className={styles.DeleteBtn}
                   onClick={this.showDeleteAlert}
                 />
+              </div>*/}
+              <div className={styles.APPSections}>
+                <div className={styles.APPSectionTitle}>Manage application</div>
+                <div className={styles.APPInstructions}>
+                  <div className={styles.APPButtonRow}>
+                    <div className="flexa">
+                      <div>
+                        <strong>Delete application</strong>
+                      </div>
+                      <div>
+                        Take down your application, any application related data
+                        will be lost.
+                      </div>
+                    </div>
+                    <div className={styles.SectionButtons}>
+                      <SettingsButton
+                        label="Delete this application"
+                        className="Change-Btn"
+                        onClick={this.showDeleteAlert}
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
               {openDeleteAlert && (
                 <div className={styles.AppDeleteModel}>
@@ -154,8 +176,10 @@ class AppSettingsPage extends React.Component {
                             &nbsp;?
                           </div>
                           <div className={styles.DeleteSubDescription}>
-                            This will permanently delete the application.
-                            Please confirm by typing <b className={styles.DeleteWarning}>{name}</b> below.
+                            This will permanently delete the application. Please
+                            confirm by typing{" "}
+                            <b className={styles.DeleteWarning}>{name}</b>{" "}
+                            below.
                           </div>
                           <div className={styles.InnerModalDescription}>
                             <BlackInputText
@@ -167,7 +191,7 @@ class AppSettingsPage extends React.Component {
                                 this.handleChange(e);
                               }}
                             />
-                            <DeleteWarning textAlignment="Left"/>
+                            <DeleteWarning textAlignment="Left" />
                           </div>
                         </div>
                       </div>
