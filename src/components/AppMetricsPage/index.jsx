@@ -6,7 +6,7 @@ import Header from "../Header";
 import SideBar from "../SideBar";
 import MetricsCard from "../MetricsCard";
 import { ReactComponent as MetricIcon } from "../../assets/images/resource-icon.svg";
-import "./AppMetricsPage.css";
+import styles from "./AppMetricsPage.module.css";
 import LineChartComponent from "../LineChart";
 import LogsFrame from "../LogsFrame";
 import getAppLogs from "../../redux/actions/getAppLogs";
@@ -18,15 +18,24 @@ import {
   formatAppNetworkMetrics,
 } from "../../helpers/formatMetrics";
 import getAppNetwork from "../../redux/actions/appNetwork";
+import AppStatus from "../AppStatus";
+import { ReactComponent as CopyText } from "../../assets/images/copytextblue.svg";
+import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 
 class AppMetricsPage extends React.Component {
+
   constructor(props) {
     super(props);
+
+    this.state = {
+      urlChecked: false,
+    };
 
     this.getAppMemoryMetrics = this.getAppMemoryMetrics.bind(this);
     this.getAppCPUMetrics = this.getAppCPUMetrics.bind(this);
     this.getAppNetworkMetrics = this.getAppNetworkMetrics.bind(this);
-  }
+    this.copyUrl = this.copyUrl.bind(this);
+  };
 
   getAppInfo(id) {
     const { apps } = this.props;
@@ -35,10 +44,14 @@ class AppMetricsPage extends React.Component {
       name: found.name,
       status: found.app_running_status,
       url: found.url,
+      age: found.age,
+      alias: found.alias,
+      image: found.image,
+      port: found.port,
     };
 
     return info;
-  }
+  };
 
   componentDidMount() {
     const {
@@ -55,33 +68,43 @@ class AppMetricsPage extends React.Component {
     getAppMemory(projectID, appID, {});
     getAppCPU(projectID, appID, {});
     getAppNetwork(projectID, appID, {});
-  }
+  };
 
   getAppMemoryMetrics() {
     const { appID } = this.props.match.params;
     const { appMemoryMetrics } = this.props;
     const results = formatAppMemoryMetrics(appID, appMemoryMetrics);
     return results;
-  }
+  };
+
+  copyUrl () {
+    const { params } = this.props.match;
+    const {appID } = params;
+    const app =  this.getAppInfo(appID);
+    navigator.clipboard.writeText(app.url);
+    this.setState({urlChecked:true});
+
+  };
 
   getAppCPUMetrics() {
     const { appID } = this.props.match.params;
     const { appCPUMetrics } = this.props;
     const results = formatAppCPUMetrics(appID, appCPUMetrics);
     return results;
-  }
+  };
 
   getAppNetworkMetrics() {
     const { appID } = this.props.match.params;
     const { appNetworkMetrics } = this.props;
     const results = formatAppNetworkMetrics(appID, appNetworkMetrics);
     return results;
-  }
+  };
 
   render() {
     const { params } = this.props.match;
     const { projectID, userID, appID } = params;
     const { logs, retrieveingLogs } = this.props;
+    const { urlChecked } = this.state;
 
     const formattedMemoryMetrics = this.getAppMemoryMetrics();
     const formattedCPUMetrics = this.getAppCPUMetrics();
@@ -89,12 +112,12 @@ class AppMetricsPage extends React.Component {
     const appInfo = this.getAppInfo(appID);
 
     return (
-      <div className="Page">
-        <div className="TopBarSection">
+      <div className={styles.Page}>
+        <div className={styles.TopBarSection}>
           <Header />
         </div>
-        <div className="MainSection">
-          <div className="SideBarSection">
+        <div className={styles.MainSection}>
+          <div className={styles.SideBarSection}>
             <SideBar
               name={appInfo.name}
               params={params}
@@ -107,16 +130,87 @@ class AppMetricsPage extends React.Component {
               appLogsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/logs/`}
             />
           </div>
-          <div className="MainContentSection">
-            <div className="InformationBarSection">
-              <InformationBar header={appInfo.url} status={appInfo.status} />
+          <div className={styles.MainContentSection}>
+            <div className={styles.InformationBarSection}>
+              <InformationBar header={appInfo.name} viewAppLink={appInfo.url} />
             </div>
-            <div className="ContentSection">
-              <div className="MetricsCardsSection">
+            <div className={styles.ContentSection}>
+              <div
+                className={
+                  styles.SummaryCardContainer +
+                  " " +
+                  styles.SummaryCardDimentions
+                }
+              >
+                <div className={styles.CardHeaderSection}>
+                  <div className={styles.CardTitle}>App Summary</div>
+                </div>
+                <div className={styles.CardBodySection}>
+                  <div className={styles.InnerCard}>
+                    <div className={styles.InnerCardSections}>
+                      <div className={styles.InnerContentGrid}>
+                        <div className={styles.InnerTitlesStart}>APP NAME</div>
+                        <div className={styles.InnerContentName}>
+                          {appInfo.name}
+                        </div>
+                      </div>
+                      <div className={styles.InnerContentGrid}>
+                        <div className={styles.InnerTitlesStart}>LINK</div>
+                        <div className={styles.InnerContentLink}>
+                          <div className={styles.InnerContentLinkText}>
+                            {appInfo.url}
+                          </div>
+                          <div>
+                            <div className={styles.Icons}>
+                             <CopyText onClick={this.copyUrl} />
+                             {urlChecked===true ? <Checked /> : null}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className={styles.verticalLine}> </div>
+                    <div className={styles.InnerCardSections}>
+                      <div className={styles.InnerContentGrid}>
+                        <div className={styles.InnerTitlesMiddle}>
+                          APP STATUS
+                        </div>
+                        <div className={styles.InnerContentStatus}>
+                          <AppStatus appStatus={appInfo.status} />
+                          &nbsp;&nbsp;
+                          {appInfo.status === "running" ? "Ready" : "Down"}
+                        </div>
+                      </div>
+                      <div className={styles.InnerContentGrid}>
+                        <div className={styles.InnerTitlesMiddle}>AGE</div>
+                        <div className={styles.InnerContentAge}>
+                          {appInfo.age}
+                        </div>
+                      </div>
+                    </div>
+                    <div className={styles.verticalLine}> </div>
+                    <div className={styles.InnerCardSections}>
+                      <div className={styles.InnerContentGrid}>
+                        <div className={styles.InnerTitlesEnd}>ALIAS</div>
+                        <div className={styles.InnerContentEnd}>
+                          {appInfo.alias}
+                        </div>
+                      </div>
+                      <div className={styles.InnerContentGrid}>
+                        <div className={styles.InnerTitlesEnd}>PORT</div>
+                        <div className={styles.InnerContentEnd}>
+                          {appInfo.port}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.MetricsCardsSection}>
                 <MetricsCard
                   icon={<MetricIcon />}
                   title="Memory"
-                  className="CardSizeDimensions"
+                  className={styles.CardSizeDimensions}
                 >
                   <LineChartComponent
                     lineDataKey="memory"
@@ -127,7 +221,7 @@ class AppMetricsPage extends React.Component {
                 <MetricsCard
                   icon={<MetricIcon />}
                   title="CPU"
-                  className="CardSizeDimensions"
+                  className={styles.CardSizeDimensions}
                 >
                   <LineChartComponent
                     lineDataKey="cpu"
@@ -138,7 +232,7 @@ class AppMetricsPage extends React.Component {
                 <MetricsCard
                   icon={<MetricIcon />}
                   title="Network"
-                  className="CardSizeDimensions"
+                  className={styles.CardSizeDimensions}
                 >
                   <LineChartComponent
                     lineDataKey="network"
@@ -147,7 +241,7 @@ class AppMetricsPage extends React.Component {
                   />
                 </MetricsCard>
               </div>
-              <div className="LogsSection">
+              <div className={styles.LogsSection}>
                 <LogsFrame
                   loading={retrieveingLogs}
                   data={logs}
