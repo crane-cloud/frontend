@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter} from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import saveUser from "../../redux/actions/saveUser";
@@ -10,8 +10,9 @@ import InputText from "../InputText";
 import InputPassword from "../InputPassword";
 import PrimaryButton from "../PrimaryButton";
 import Spinner from "../Spinner";
-import { API_BASE_URL } from "../../config";
-import "./LoginPage.css";
+import { API_BASE_URL,GIT_REDIRECT_URL} from "../../config";
+import { ReactComponent as LogoIcon } from "../../assets/images/githublogo.svg";
+import  "./LoginPage.css";
 
 class LoginPage extends React.Component {
   constructor() {
@@ -21,20 +22,30 @@ class LoginPage extends React.Component {
       password: "",
       loading: false,
       error: "",
+      gitLoading: false,
+      feedbackMessage:"",
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
+    this.initiateGitHubLogin = this.initiateGitHubLogin.bind(this);
+    this.GitUserlogin = this.GitUserlogin.bind(this);
   }
 
   componentDidMount() {
     // remove the current state from local storage
     // so that when a person logs in they dont encounter
     // the previous state which wasnt cleared
+    const queryParams = new URLSearchParams(window.location.search);
+    const code = queryParams?.get('code');
     localStorage.setItem("state", {});
     localStorage.removeItem("state");
     this.props.removeUser();
+    if(code ){
+      this.initiateGitHubLogin(code);
+    }
+
   }
 
   handleChange(e) {
@@ -128,9 +139,30 @@ class LoginPage extends React.Component {
     }
   }
 
-  render() {
-    const { error, email, password, loading } = this.state;
+  initiateGitHubLogin = (code) =>{
+    const {gitLoading,feedbackMessage} = this.state;
+   if(!gitLoading && !feedbackMessage ){
+    this.setState({
+      gitLoading:true,
+      feedbackMessage:"Please wait",
+    });
+    this.GitUserlogin(code);
+  }
+  };
+   GitUserlogin = (code) =>{
+   // send to backend for github user user login
+   this.setState({
+    gitLoading:false,
+    feedbackMessage:"waiting for backend merger",
+  });
+   
+  }
 
+  render() {
+   
+    const { error, email, password, loading,gitLoading,feedbackMessage} = this.state;
+
+    
     return (
       <div className="LoginPageContainer">
         <Header />
@@ -170,17 +202,38 @@ class LoginPage extends React.Component {
 
               <PrimaryButton
                 label={loading ? <Spinner /> : "login"}
+                className="LoginButton" 
                 onClick={this.handleSubmit}
+              /> 
+            </div>
+          </form>
+          <div className="LowerLoginSection">
+          <div>
+                 <p className="LoginWith"><span>Or Login with</span></p>  
+               </div> 
+               <a
+                href={gitLoading ? 0 :`${GIT_REDIRECT_URL}`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >  
+                <PrimaryButton
+                label={gitLoading ? <Spinner /> : 
+                <div className="GitLoginBtn">
+                  <LogoIcon className="LogoIcon" />
+                  <div className="GitText">Github</div>
+                </div>}
+                className="GithubLoginBtn" 
+                disable= {gitLoading}
               />
-
+              </a>
+              { feedbackMessage && <div className="LoginFeedBackDiv">{feedbackMessage}</div>}
               <div className="LoginContentBottomLink LoginLinkContainer">
                 Not signed up? &nbsp;
                 <Link to="/register" className="LoginContentLink">
                   Create an account.
                 </Link>
               </div>
-            </div>
-          </form>
+         </div>        
         </div>
       </div>
     );
