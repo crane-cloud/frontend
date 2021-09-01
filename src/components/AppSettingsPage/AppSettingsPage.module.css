@@ -45,18 +45,7 @@
   display: flex;
   justify-content: space-between;
 }
-/*.DeleteBtn {
-  background-color: #ff0000;
-  outline: 2px solid #ff0000;
-  transform: scaleX(0.9);
-}
 
-.DeleteBtn:hover {
-  background-color: #fff;
-  outline: 2px solid #ff0000;
-  color: #ff0000;
-}
-*/
 .DeleteAppModelButtons .DeleteBtn {
   background-color: #ff0000;
   outline: 2px solid #ff0000;
@@ -78,9 +67,7 @@
   outline: #ff9595;
   color: #ff9595;
 }
-/* .Primary-Btn .CancelBtn{
-  transform: scaleX(0.9);
-} */
+
 .Page {
   margin: 0;
   background: #f1f1f1;
@@ -127,13 +114,9 @@
 .ContentSection {
   display: flex;
   flex-direction: column;
-  /*overflow-x: hidden;*/
   overflow-y: auto;
 }
-/*.DeleteButtonDiv {
-  bottom: 0rem;
-  padding: 1.3rem;
-}*/
+
 .DeleteWarning {
   color: #f00;
 }
@@ -154,7 +137,6 @@
   padding: 1rem 1rem;
   background: #ffffff;
   border: 1px solid #cccccc;
-  /*display: flex;*/
   gap: 1rem;
   width: 90%;
 }

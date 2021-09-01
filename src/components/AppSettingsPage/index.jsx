@@ -131,13 +131,6 @@ class AppSettingsPage extends React.Component {
               <InformationBar header="Settings" />
             </div>
             <div className={styles.ContentSection}>
-              {/*<div className={styles.DeleteButtonDiv}>
-                <PrimaryButton
-                  label="Delete App"
-                  className={styles.DeleteBtn}
-                  onClick={this.showDeleteAlert}
-                />
-              </div>*/}
               <div className={styles.APPSections}>
                 <div className={styles.APPSectionTitle}>Manage application</div>
                 <div className={styles.APPInstructions}>
