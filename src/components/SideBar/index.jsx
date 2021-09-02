@@ -154,26 +154,28 @@ const SideBar = (props) => {
             <NavLink to={networkLink} className={styles.SubBarListItem}>
               Network
             </NavLink>
-            {isAppMetricsPage && (
-              <NavLink to={appLogsLink} className={styles.SubBarListItem}>
-                Logs
-              </NavLink>
+            {(isAppMetricsPage || isAppPage) && (
+              <><><div>
+                <NavLink to={appLogsLink} className={styles.SubBarListItem}>
+                  Logs
+                </NavLink>
+              </div><Link to="/" className={`${styles.ListItem} ${styles.DisabledLink}`}>
+                  OTHERS
+                </Link></><div>
+                  <NavLink to={{
+                  pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/settings`,
+                  name,}} className={styles.SubBarListItem}>
+                    App Settings
+                  </NavLink>
+                </div></>
             )}
+
           </div>
         </div>
 
         <div className={styles.SideBarFooterSection}>
-          {isAppPage ? (
-            <div>
-              <Link
-                to={{
-                  pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/settings`,
-                  name,
-                }}
-              >
-                <Settings className={styles.ListItem} />
-              </Link>
-            </div>
+          {(isAppPage || isAppMetricsPage) ? (
+           null
           ) : (
             <div>
               <Link
