@@ -30,6 +30,7 @@ class LoginPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
     this.initiateGitHubLogin = this.initiateGitHubLogin.bind(this);
+    this.toGithubauth = this.toGithubauth.bind(this);
   }
 
   componentDidMount() {
@@ -47,6 +48,9 @@ class LoginPage extends React.Component {
 
   }
 
+  toGithubauth =()=> {
+    window.location.href = `${GIT_REDIRECT_URL}`;
+  }
   handleChange(e) {
     const { error } = this.state;
     this.setState({
@@ -231,11 +235,6 @@ class LoginPage extends React.Component {
           <div>
                  <p className="LoginWith"><span>Or Login with</span></p>  
                </div> 
-               <a
-                href={gitLoading ? 0 :`${GIT_REDIRECT_URL}`}
-                rel="noopener noreferrer"
-                target="_blank"
-              >  
                 <PrimaryButton
                 label={gitLoading ? <Spinner /> : 
                 <div className="GitLoginBtn">
@@ -244,8 +243,9 @@ class LoginPage extends React.Component {
                 </div>}
                 className="GithubLoginBtn" 
                 disable= {gitLoading}
+                onClick= {this.toGithubauth}
               />
-              </a>
+      
               { feedbackMessage && <div className="LoginFeedBackDiv">{feedbackMessage}</div>}
               <div className="LoginContentBottomLink LoginLinkContainer">
                 Not signed up? &nbsp;
