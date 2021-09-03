@@ -38,9 +38,9 @@ class LoginPage extends React.Component {
     // the previous state which wasnt cleared
     const queryParams = new URLSearchParams(window.location.search);
     const code = queryParams?.get('code');
-    localStorage.setItem("state", {});
-    localStorage.removeItem("state");
-    this.props.removeUser();
+    // localStorage.setItem("state", {});
+    // localStorage.removeItem("state");
+    // this.props.removeUser();
     if(code){
      this.initiateGitHubLogin(code);
     }
@@ -140,6 +140,7 @@ class LoginPage extends React.Component {
 
   initiateGitHubLogin = (code) =>{
     const {gitLoading,feedbackMessage} = this.state;
+    const { saveUser } = this.props;
    if(!gitLoading && !feedbackMessage ){
     const object = {
       code,
@@ -157,17 +158,14 @@ class LoginPage extends React.Component {
           if (res.data.status === "success") {
             saveUser(res.data.data);
             localStorage.setItem("token", res.data.data.access_token);
+
             this.setState(
               {
                 gitLoading:false,
                 feedbackMessage: "Login Successful",
-              },
-              () => {
-                window.location.href = `/users/${res.data.data.id}/projects`;
-              }
-            );
-          }else{
-            console.log(res);
+              });
+
+            window.location.href = `/users/${res.data.data.id}/projects`;       
           }
         })
         .catch((e) => {
@@ -177,7 +175,7 @@ class LoginPage extends React.Component {
             feedbackMessage:""
           });
         });
-  }
+    }
   };
  
   render() {
