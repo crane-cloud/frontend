@@ -30,7 +30,6 @@ class LoginPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
     this.initiateGitHubLogin = this.initiateGitHubLogin.bind(this);
-    this.GitUserlogin = this.GitUserlogin.bind(this);
   }
 
   componentDidMount() {
@@ -42,8 +41,8 @@ class LoginPage extends React.Component {
     localStorage.setItem("state", {});
     localStorage.removeItem("state");
     this.props.removeUser();
-    if(code ){
-      this.initiateGitHubLogin(code);
+    if(code){
+     this.initiateGitHubLogin(code);
     }
 
   }
@@ -142,43 +141,45 @@ class LoginPage extends React.Component {
   initiateGitHubLogin = (code) =>{
     const {gitLoading,feedbackMessage} = this.state;
    if(!gitLoading && !feedbackMessage ){
+    const object = {
+      code,
+    }
+    console.log(object);
     this.setState({
       gitLoading:true,
       feedbackMessage:"Please wait",
     });
-    this.GitUserlogin(code);
+
+  axios
+        .post(`${API_BASE_URL}/users/oauth`, object)
+        .then((res) => {
+          console.log(res);     
+          if (res.data.status === "success") {
+            saveUser(res.data.data);
+            localStorage.setItem("token", res.data.data.access_token);
+            this.setState(
+              {
+                gitLoading:false,
+                feedbackMessage: "Login Successful",
+              },
+              () => {
+                window.location.href = `/users/${res.data.data.id}/projects`;
+              }
+            );
+          }else{
+            console.log(res);
+          }
+        })
+        .catch((e) => {
+          this.setState({
+            gitLoading:false,
+            error:"Login failed",
+            feedbackMessage:""
+          });
+        });
   }
   };
-   GitUserlogin = (code) =>{
-   // send to backend for github user user login
-    const object = {
-      code
-    }
-    axios
-          .post(`${API_BASE_URL}/users/oauth`, object)
-          .then((res) => {
-            if (res.data.status === "success") {
-              saveUser(res.data.data);
-              localStorage.setItem("token", res.data.data.access_token);
-              this.setState(
-                {
-                  gitLoading:false,
-                  feedbackMessage: "Login Successful",
-                },
-                () => {
-                  window.location.href = `/users/${res.data.data.id}/projects`;
-                }
-              );
-            }
-          })
-          .catch((err) => {
-            this.setState({
-              gitLoading:false,
-              error:"Login failed"
-            });
-          });
-  };
-
+ 
   render() {
    
     const { error, email, password, loading,gitLoading,feedbackMessage} = this.state;
