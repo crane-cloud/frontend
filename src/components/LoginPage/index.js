@@ -151,12 +151,33 @@ class LoginPage extends React.Component {
   };
    GitUserlogin = (code) =>{
    // send to backend for github user user login
-   this.setState({
-    gitLoading:false,
-    feedbackMessage:"waiting for backend merger",
-  });
-   
-  }
+    const object = {
+      code
+    }
+    axios
+          .post(`${API_BASE_URL}/users/oauth`, object)
+          .then((res) => {
+            if (res.data.status === "success") {
+              saveUser(res.data.data);
+              localStorage.setItem("token", res.data.data.access_token);
+              this.setState(
+                {
+                  gitLoading:false,
+                  feedbackMessage: "Login Successful",
+                },
+                () => {
+                  window.location.href = `/users/${res.data.data.id}/projects`;
+                }
+              );
+            }
+          })
+          .catch((err) => {
+            this.setState({
+              gitLoading:false,
+              error:"Login failed"
+            });
+          });
+  };
 
   render() {
    
