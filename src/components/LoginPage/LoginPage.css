@@ -72,9 +72,8 @@ a.LoginContentLink {
 }
 
 .GithubLoginBtn:hover {
-  outline: 2px solid #000;
-  background-color: #000;
-  opacity: 60%;
+  outline: 2px solid #06222f;
+  background-color: #06222f;
 }
 .GitText {
   color: #fff;
