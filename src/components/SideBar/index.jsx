@@ -207,7 +207,7 @@ const SideBar = (props) => {
                   }}
                   className={styles.SubBarListItem}
                 >
-                  Project Settings
+                  Project settings
                 </NavLink>
               </div>
             </>
