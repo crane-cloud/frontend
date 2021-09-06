@@ -20,6 +20,12 @@
   grid-template-columns: 1fr;
   gap: 1rem;
 }
+.LowerLoginSection {
+  display: grid;
+  grid-template-columns: 1fr;
+  padding-top: 1rem;
+  gap: 0.5rem;
+}
 
 .LoginLinkContainer {
   display: inline-block;
@@ -35,11 +41,55 @@ a.LoginContentLink {
   text-align: center;
   padding: 1rem 0;
 }
+.LoginFeedBackDiv {
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #026d0a;
+  text-align: center;
+  padding: 1rem 0;
+}
 
 .LoginContentBottomLink {
   padding-top: 1rem;
 }
+.LoginButton {
+  width: 100%;
+}
+.GitLoginBtn {
+  display: grid;
+  grid-gap: 0.2rem;
+  grid-auto-flow: column;
+  align-items: center;
+}
+.LogoIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.GithubLoginBtn {
+  width: 100%;
+  color: #fff;
+  background-color: #000;
+  outline: 2px solid #000000;
+}
 
+.GithubLoginBtn:hover {
+  outline: 2px solid #000;
+  background-color: #000;
+  opacity: 60%;
+}
+.GitText {
+  color: #fff;
+  text-transform: capitalize;
+}
+.LoginWith {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #fff;
+  line-height: 0.1em;
+}
+.LoginWith span {
+  background-color: #008ac1;
+  padding: 0 1rem;
+}
 @media only screen and (max-width: 640px) {
   .LoginContent {
     width: 90%;
