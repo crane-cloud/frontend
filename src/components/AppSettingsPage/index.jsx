@@ -137,6 +137,20 @@ class AppSettingsPage extends React.Component {
                   <div className={styles.APPButtonRow}>
                     <div className="flexa">
                       <div>
+                        <strong>Update application</strong>
+                      </div>
+                      <div>Update the application particulars.</div>
+                    </div>
+                    <div className={styles.SectionButtons}>
+                      <SettingsButton
+                        label="Change password"
+                        onClick={this.showUpdateModal}
+                      />
+                    </div>
+                  </div>
+                  <div className={styles.APPButtonRow}>
+                    <div className="flexa">
+                      <div>
                         <strong>Delete application</strong>
                       </div>
                       <div>
