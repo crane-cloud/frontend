@@ -266,7 +266,7 @@ class ProjectSettingsPage extends React.Component {
                   <div className={styles.ProjectButtonRow}>
                     <div className="flexa">
                       <div>
-                        <strong>Update Project</strong>
+                        <strong>Update project</strong>
                       </div>
                       <div>Modify the project name and description</div>
                     </div>
