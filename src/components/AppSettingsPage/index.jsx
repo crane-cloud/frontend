@@ -14,6 +14,7 @@ import DeleteWarning from "../DeleteWarning";
 import styles from "./AppSettingsPage.module.css";
 import BlackInputText from "../BlackInputText";
 import SettingsButton from "../SettingsButton";
+import CreateApp from "../createApp";
 
 class AppSettingsPage extends React.Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class AppSettingsPage extends React.Component {
       error: "",
       disableDelete: true,
       ConfirmAppname: "",
+      updateModal: false,
     };
 
     this.handleDeleteApp = this.handleDeleteApp.bind(this);
@@ -30,6 +32,8 @@ class AppSettingsPage extends React.Component {
     this.hideDeleteAlert = this.hideDeleteAlert.bind(this);
     this.renderRedirect = this.renderRedirect.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.showUpdateModal = this.showUpdateModal.bind(this);
+    this.hideUpdateModal = this.hideUpdateModal.bind(this);
   }
 
   handleChange(e) {
@@ -91,6 +95,14 @@ class AppSettingsPage extends React.Component {
     }
   };
 
+  showUpdateModal() {
+    this.setState({ updateModal: true });
+  }
+
+  hideUpdateModal() {
+    this.setState({ updateModal: false });
+  }
+
   render() {
     const {
       match: { params },
@@ -126,115 +138,121 @@ class AppSettingsPage extends React.Component {
               appLogsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/logs/`}
             />
           </div>
-          <div className={styles.MainContentSection}>
-            <div className={styles.InformationBarSection}>
-              <InformationBar header="Settings" />
-            </div>
-            <div className={styles.ContentSection}>
-              <div className={styles.APPSections}>
-                <div className={styles.APPSectionTitle}>Manage application</div>
-                <div className={styles.APPInstructions}>
-                  <div className={styles.APPButtonRow}>
-                    <div className="flexa">
-                      <div>
-                        <strong>Update application</strong>
-                      </div>
-                      <div>Update the application particulars.</div>
-                    </div>
-                    <div className={styles.SectionButtons}>
-                      <SettingsButton
-                        label="Change password"
-                        onClick={this.showUpdateModal}
-                      />
-                    </div>
-                  </div>
-                  <div className={styles.APPButtonRow}>
-                    <div className="flexa">
-                      <div>
-                        <strong>Delete application</strong>
-                      </div>
-                      <div>
-                        Take down your application, any application related data
-                        will be lost.
-                      </div>
-                    </div>
-                    <div className={styles.SectionButtons}>
-                      <SettingsButton
-                        label="Delete this application"
-                        className="Change-Btn"
-                        onClick={this.showDeleteAlert}
-                      />
-                    </div>
-                  </div>
-                </div>
+          {this.state.updateModal ? (
+            <CreateApp closeComponent={this.hideForm} params={params} />
+          ) : (
+            <div className={styles.MainContentSection}>
+              <div className={styles.InformationBarSection}>
+                <InformationBar header="Settings" />
               </div>
-              {openDeleteAlert && (
-                <div className={styles.AppDeleteModel}>
-                  <Modal
-                    showModal={openDeleteAlert}
-                    onClickAway={this.hideDeleteAlert}
-                  >
-                    <div className={styles.DeleteAppModel}>
-                      <div className={styles.DeleteModalUpperSection}>
-                        <div className={styles.WarningContainer}>
-                          <div className={styles.DeleteDescription}>
-                            Are you sure you want to delete&nbsp;
-                            <span>{name}</span>
-                            &nbsp;?
-                          </div>
-                          <div className={styles.DeleteSubDescription}>
-                            This will permanently delete the application. Please
-                            confirm by typing{" "}
-                            <b className={styles.DeleteWarning}>{name}</b>{" "}
-                            below.
-                          </div>
-                          <div className={styles.InnerModalDescription}>
-                            <BlackInputText
-                              required
-                              placeholder={name}
-                              name="ConfirmAppname"
-                              value={ConfirmAppname}
-                              onChange={(e) => {
-                                this.handleChange(e);
-                              }}
-                            />
-                            <DeleteWarning textAlignment="Left" />
-                          </div>
+              <div className={styles.ContentSection}>
+                <div className={styles.APPSections}>
+                  <div className={styles.APPSectionTitle}>
+                    Manage application
+                  </div>
+                  <div className={styles.APPInstructions}>
+                    <div className={styles.APPButtonRow}>
+                      <div className="flexa">
+                        <div>
+                          <strong>Update application</strong>
                         </div>
+                        <div>Update the application particulars.</div>
                       </div>
-
-                      <div className={styles.DeleteModalLowerSection}>
-                        <div className={styles.DeleteAppModelButtons}>
-                          <PrimaryButton
-                            label="cancel"
-                            className="CancelBtn"
-                            onClick={this.hideDeleteAlert}
-                          />
-                          <PrimaryButton
-                            label={isDeleting ? <Spinner /> : "Delete"}
-                            className={
-                              disableDelete
-                                ? styles.InactiveDelete
-                                : styles.DeleteBtn
-                            }
-                            disable={disableDelete}
-                            onClick={(e) => this.handleDeleteApp(e, appID)}
-                          />
-                        </div>
-
-                        {message && (
-                          <Feedback
-                            type={isFailed ? "error" : "success"}
-                            message={message}
-                          />
-                        )}
+                      <div className={styles.SectionButtons}>
+                        <SettingsButton
+                          label="Update app"
+                          onClick={this.showUpdateModal}
+                        />
                       </div>
                     </div>
-                  </Modal>
+                    <div className={styles.APPButtonRow}>
+                      <div className="flexa">
+                        <div>
+                          <strong>Delete application</strong>
+                        </div>
+                        <div>
+                          Take down your application, any application related
+                          data will be lost.
+                        </div>
+                      </div>
+                      <div className={styles.SectionButtons}>
+                        <SettingsButton
+                          label="Delete this application"
+                          className="Change-Btn"
+                          onClick={this.showDeleteAlert}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              )}
+                {openDeleteAlert && (
+                  <div className={styles.AppDeleteModel}>
+                    <Modal
+                      showModal={openDeleteAlert}
+                      onClickAway={this.hideDeleteAlert}
+                    >
+                      <div className={styles.DeleteAppModel}>
+                        <div className={styles.DeleteModalUpperSection}>
+                          <div className={styles.WarningContainer}>
+                            <div className={styles.DeleteDescription}>
+                              Are you sure you want to delete&nbsp;
+                              <span>{name}</span>
+                              &nbsp;?
+                            </div>
+                            <div className={styles.DeleteSubDescription}>
+                              This will permanently delete the application.
+                              Please confirm by typing{" "}
+                              <b className={styles.DeleteWarning}>{name}</b>{" "}
+                              below.
+                            </div>
+                            <div className={styles.InnerModalDescription}>
+                              <BlackInputText
+                                required
+                                placeholder={name}
+                                name="ConfirmAppname"
+                                value={ConfirmAppname}
+                                onChange={(e) => {
+                                  this.handleChange(e);
+                                }}
+                              />
+                              <DeleteWarning textAlignment="Left" />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className={styles.DeleteModalLowerSection}>
+                          <div className={styles.DeleteAppModelButtons}>
+                            <PrimaryButton
+                              label="cancel"
+                              className="CancelBtn"
+                              onClick={this.hideDeleteAlert}
+                            />
+                            <PrimaryButton
+                              label={isDeleting ? <Spinner /> : "Delete"}
+                              className={
+                                disableDelete
+                                  ? styles.InactiveDelete
+                                  : styles.DeleteBtn
+                              }
+                              disable={disableDelete}
+                              onClick={(e) => this.handleDeleteApp(e, appID)}
+                            />
+                          </div>
+
+                          {message && (
+                            <Feedback
+                              type={isFailed ? "error" : "success"}
+                              message={message}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </Modal>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     );
