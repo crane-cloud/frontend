@@ -1,0 +1,292 @@
+.MainContentSection {
+  /* divided into two rows */
+  display: grid;
+  grid-template-rows: 80px 4fr;
+  /* overflow: hidden; */
+}
+.ContentSection {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 1rem 2rem 0rem 2rem;
+  gap: 1rem;
+  padding-left: 3rem;
+}
+
+.BackDiv img {
+  display: inline;
+}
+
+.BackDiv {
+  display: inline;
+  color: black;
+}
+
+.BackDiv p {
+  display: inline;
+}
+.BackDiv img:hover {
+  transition: 0.2s;
+  transform: scale(1.2);
+}
+
+.ModalForm.AddAppModal .ModalFormHeading {
+  margin-bottom: 0;
+}
+
+.ModalFormInputsBasic {
+  display: grid;
+  gap: 1rem;
+}
+
+.ModalFormInputsBasic input {
+  width: 60%;
+}
+
+.ModalFormInputsBasic input::placeholder {
+  color: gray;
+}
+
+.EnvVarsInputGroup {
+  width: 100%;
+  max-width: 60%;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 0.5rem;
+}
+
+.EnvVarsInputGroup .EnvVarsInputs {
+  width: 70%;
+  max-width: 60%;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+.EnvVarsInputGroup .EnvVarsAddBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn {
+  position: absolute;
+  max-width: 100%;
+  color: #fff;
+  background-color: #008ac1;
+  outline: 2px solid #008ac1;
+}
+
+.EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn:hover {
+  color: #008ac1;
+  background-color: #fff;
+}
+
+.EnvVarsInputGroup input {
+  max-width: 10rem;
+}
+
+.EnvVarsInputGroup input::placeholder {
+  color: grey;
+}
+
+.ModalFormButtons {
+  width: 50%;
+  display: grid;
+  justify-content: center;
+  padding: 2rem;
+  gap: 1rem;
+}
+
+.EnvVarsTable {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.EnvVarsTable table {
+  max-width: 60%;
+  text-align: left;
+}
+
+.EnvVarsTable table thead td {
+  font-weight: normal;
+  color: #555;
+}
+
+.EnvVarsTable table thead td:last-child {
+  width: 4rem;
+  text-align: right;
+}
+
+.EnvVarsTable table td:last-child {
+  width: 4rem;
+  display: block;
+  margin: auto;
+}
+
+.EnvVarsTable table td {
+  font-weight: normal;
+}
+
+.EnvVarsTable table td img {
+  margin: auto;
+}
+
+.EnvVarsTable table td img:hover {
+  /* cursor: pointer; */
+  filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(180deg)
+    brightness(119%) contrast(5%);
+}
+
+.EnvVarsTable thead,
+.EnvVarsTable tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+/*- //////////////////////////////////////////////////// */
+
+.ModalForm.AddAppModal {
+  display: grid;
+  gap: 2rem;
+  height: 100%;
+}
+
+.ModalForm.AddAppModal input {
+  height: 3.1rem;
+}
+
+.ModalForm.AddAppModal .ModalFormHeading {
+  flex: 0 1 auto;
+}
+
+.ModalForm.AddAppModal .ModalFormInputs {
+  padding-right: 10px;
+  flex: 1 0 auto;
+  overflow-y: auto;
+}
+
+.ModalFormInputs::-webkit-scrollbar {
+  width: 4px;
+  height: 0px;
+}
+.ModalFormInputs::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.ModalFormInputs::-webkit-scrollbar-thumb {
+  background: #555;
+}
+.ModalFormInputs::-webkit-scrollbar-thumb:hover {
+  background: #000;
+}
+
+.HeadingWithTooltip {
+  display: flex;
+}
+
+.DbSupportSection {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0%;
+  padding-bottom: 1rem;
+}
+
+.HeadingWithTooltip h4 {
+  margin: 0;
+  padding: 0.5rem 0;
+}
+
+.DbSupportCheckField,
+.PrivateImageCheckField {
+  display: flex;
+}
+
+.InputFieldWithTooltip {
+  /* width: 60%; same as input field */
+  display: flex;
+  position: relative;
+}
+
+.InputTooltipContainerDB {
+  position: absolute;
+  right: 0%;
+  padding-right: 0.5rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.InputTooltipContainer {
+  position: absolute;
+  right: 41%;
+  padding-right: 0.5rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.DatabaseSupportTabContainer,
+.PrivateImageTabContainer {
+  max-width: 60%; /* this is to correspond with the width of the input elements */
+}
+
+.PrivateImageInputs,
+.DatabaseSupportInputs {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.PrivateImageInputs input,
+.DatabaseSupportInputs input {
+  width: -webkit-fill-available;
+}
+
+.DbCheckBoxInputGroup {
+  display: grid;
+  gap: 1rem;
+}
+
+.ConnectModal {
+  width: 82.19%;
+  margin-left: 17.81%;
+}
+
+.InformationBar {
+  background: #f8f7e5;
+  height: 5rem;
+  padding: 0 3rem;
+  display: flex;
+  align-items: center;
+}
+
+.InformationBarWithButton {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.InfoHeader {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.ReplicasSelect {
+  width: 60% !important;
+}
+
+.ModalFormInputs {
+  height: calc(100vh - 12rem);
+  overflow: auto;
+}
+
+.FormHeading {
+  padding: 0.3rem 0rem;
+  font-weight: 600;
+}
+
+.ErrorOnWhite {
+  width: 100%;
+}

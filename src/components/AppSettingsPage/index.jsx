@@ -139,7 +139,7 @@ class AppSettingsPage extends React.Component {
             />
           </div>
           {this.state.updateModal ? (
-            <CreateApp closeComponent={this.hideForm} params={params} />
+            <CreateApp closeComponent={this.hideUpdateModal} params={params} />
           ) : (
             <div className={styles.MainContentSection}>
               <div className={styles.InformationBarSection}>
