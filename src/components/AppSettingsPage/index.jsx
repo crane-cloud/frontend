@@ -14,7 +14,8 @@ import DeleteWarning from "../DeleteWarning";
 import styles from "./AppSettingsPage.module.css";
 import BlackInputText from "../BlackInputText";
 import SettingsButton from "../SettingsButton";
-import CreateApp from "../createApp";
+// import CreateApp from "../createApp";
+import UpdateApp from "../updateApp";
 
 class AppSettingsPage extends React.Component {
   constructor(props) {
@@ -139,7 +140,7 @@ class AppSettingsPage extends React.Component {
             />
           </div>
           {this.state.updateModal ? (
-            <CreateApp closeComponent={this.hideUpdateModal} params={params} />
+            <UpdateApp closeComponent={this.hideUpdateModal} params={params} />
           ) : (
             <div className={styles.MainContentSection}>
               <div className={styles.InformationBarSection}>

@@ -294,7 +294,7 @@ class UpdateApp extends React.Component {
           <div className={styles.InformationBarSection}>
             <div className={styles.InformationBar}>
               <div className={styles.InformationBarWithButton}>
-                <div className={styles.InfoHeader}>Create App</div>
+                <div className={styles.InfoHeader}>Update App</div>
                 <div className={styles.RoundAddButtonWrap}>
                   <CancelButton onClick={this.props.closeComponent} />
                 </div>
