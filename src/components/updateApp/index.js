@@ -15,6 +15,7 @@ import Checkbox from "../Checkbox";
 import Tooltip from "../Tooltip";
 import Tabs from "../Tabs";
 import createApp, { clearState } from "../../redux/actions/createApp";
+import updateApp from "../../redux/actions/updateApp";
 import styles from "./updateApp.module.css";
 
 class UpdateApp extends React.Component {

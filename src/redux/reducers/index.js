@@ -36,6 +36,7 @@ import createDatabaseReducer from "./createDatabase";
 import updateDatabasePasswordReducer from "./updateDBPassword";
 import singleDBReducer from "./getSingleDB";
 import passwordReducer from "./getPassword";
+import updateAppReducer from "./updateApp";
 
 export default combineReducers({
   clusterResourcesReducer,
@@ -75,4 +76,5 @@ export default combineReducers({
   updateDatabasePasswordReducer,
   singleDBReducer,
   passwordReducer,
+  updateAppReducer
 });
