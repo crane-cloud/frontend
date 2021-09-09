@@ -108,8 +108,7 @@
 }
 .ContentSection {
   justify-content: space-between;
-  padding-left: 3rem;
-  padding-top: 2rem;
+  padding: 2rem 2rem 0rem;
 }
 .ContentSection {
   display: flex;
@@ -134,12 +133,14 @@
 }
 
 .APPInstructions {
-  padding: 1rem 1rem;
-  background: #ffffff;
-  border: 1px solid #cccccc;
-  gap: 1rem;
-  width: 90%;
   display: grid;
+  grid-template-columns: 30% auto;
+  /* padding: 1rem 1rem; */
+  /* background: #ffffff; */
+  /* border: 1px solid #cccccc; */
+  /* gap: 1rem;
+  width: 90%;
+  display: grid; */
 }
 
 .APPButtonRow {
@@ -157,10 +158,13 @@
 }
 
 .APPSections{
-  padding-top: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  /* padding-top: 1rem; */
 }
 
 .APPSectionTitle{
+  flex: 1;
   font-size: 18px;
   font-weight: bold;
 }

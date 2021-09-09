@@ -58,6 +58,14 @@ class AppSettingsPage extends React.Component {
       });
     }
   }
+  componentDidMount() {
+    const {
+      match: { params },
+      getSingleApp,
+    } = this.props;
+    const { appID } = params;
+    getSingleApp(appID);
+  }
   componentDidUpdate(prevProps) {
     const { isDeleted } = this.props;
 
@@ -117,7 +125,7 @@ class AppSettingsPage extends React.Component {
     //const { name } = this.props.location;
     const { projectID, userID, appID } = params;
     const name = this.getAppName(appID);
-
+    console.log(this.props);
     return (
       <div className={styles.Page}>
         {isDeleted ? this.renderRedirect() : null}
@@ -153,36 +161,49 @@ class AppSettingsPage extends React.Component {
                   </div>
                   <div className={styles.APPInstructions}>
                     <div className={styles.APPButtonRow}>
-                      <div className="flexa">
-                        <div>
-                          <strong>Update application</strong>
-                        </div>
-                        <div>Update the application particulars.</div>
-                      </div>
-                      <div className={styles.SectionButtons}>
-                        <SettingsButton
-                          label="Update app"
-                          onClick={this.showUpdateModal}
-                        />
-                      </div>
+                      <strong>Name</strong>
                     </div>
+                    <div className="flexa">
+                      My nicename
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.APPSections}>
+                  <div className={styles.APPSectionTitle}>
+                    Manage application
+                  </div>
+                  <div className={styles.APPInstructions}>
                     <div className={styles.APPButtonRow}>
-                      <div className="flexa">
-                        <div>
-                          <strong>Delete application</strong>
-                        </div>
-                        <div>
-                          Take down your application, any application related
-                          data will be lost.
-                        </div>
-                      </div>
-                      <div className={styles.SectionButtons}>
-                        <SettingsButton
-                          label="Delete this application"
-                          className="Change-Btn"
-                          onClick={this.showDeleteAlert}
-                        />
-                      </div>
+                      <strong>Name</strong>
+                    </div>
+                    <div className={styles.flexa}>
+                      My nicename
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.APPSections}>
+                  <div className={styles.APPSectionTitle}>
+                    Manage application
+                  </div>
+                  <div className={styles.APPInstructions}>
+                    <div className={styles.APPButtonRow}>
+                      <strong>Name</strong>
+                    </div>
+                    <div className="flexa">
+                      My nicename
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.APPSections}>
+                  <div className={styles.APPSectionTitle}>
+                    Manage application
+                  </div>
+                  <div className={styles.APPInstructions}>
+                    <div className={styles.APPButtonRow}>
+                      <strong>Name</strong>
+                    </div>
+                    <div className="flexa">
+                      My nicename
                     </div>
                   </div>
                 </div>
