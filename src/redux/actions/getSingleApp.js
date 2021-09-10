@@ -11,7 +11,7 @@ export const startTheFetch = () => ({
 
 export const getSingleAppSuccess = (response) => ({
   type: SINGLE_APP_SUCCESS,
-  payload: response.data.data.app,
+  payload: response.data.data.apps,
 });
 
 export const getSingleAppFailed = (error) => ({
@@ -22,10 +22,10 @@ export const getSingleAppFailed = (error) => ({
   },
 });
 
-const getSingleApp = (projectID, appID) => (dispatch) => {
+const getSingleApp = (appID) => (dispatch) => {
   dispatch(startTheFetch());
   return axios
-    .get(`/projects/${projectID}/databases/${appID}`)
+    .get(`/apps/${appID}`)
     .then((response) => dispatch(getSingleAppSuccess(response)))
     .catch((error) => {
       dispatch(getSingleAppFailed(error));

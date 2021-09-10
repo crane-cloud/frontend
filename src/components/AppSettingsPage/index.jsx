@@ -14,6 +14,8 @@ import DeleteWarning from "../DeleteWarning";
 import styles from "./AppSettingsPage.module.css";
 import BlackInputText from "../BlackInputText";
 import SettingsButton from "../SettingsButton";
+import getSingleApp from "../../redux/actions/getSingleApp";
+import updateApp from "../../redux/actions/updateApp";
 // import CreateApp from "../createApp";
 import UpdateApp from "../updateApp";
 
@@ -297,19 +299,23 @@ AppSettingsPage.defaultProps = {
 
 const mapStateToProps = (state) => {
   const { isDeleting, isDeleted, isFailed, message } = state.deleteAppReducer;
-  const { apps } = state.appsListReducer;
+  // const { apps } = state.appsListReducer;
+  const { app  } = state.singleAppReducer;
   return {
-    apps,
+    // apps,
     isDeleting,
     isDeleted,
     isFailed,
     message,
+    app,
   };
 };
 
 const mapDispatchToProps = {
   deleteApp,
   clearState,
+  getSingleApp,
+  UpdateApp
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppSettingsPage);
