@@ -12,6 +12,8 @@ import SideBar from "../SideBar";
 import Feedback from "../Feedback";
 import Checkbox from "../Checkbox";
 import Tooltip from "../Tooltip";
+import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
+import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import Select from "../Select";
 import DeleteWarning from "../DeleteWarning";
 import Status from "../Status";
@@ -34,6 +36,7 @@ class AppSettingsPage extends React.Component {
       ConfirmAppname: "",
       updateModal: false,
       newImage: "",
+      urlChecked: false,
       dockerCredentials: {
         username: "",
         email: "",
@@ -65,6 +68,7 @@ class AppSettingsPage extends React.Component {
     this.togglePrivateImage = this.togglePrivateImage.bind(this);
     this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.urlOnClick = this.urlOnClick.bind(this);
   }
 
   handleChange(e) {
@@ -193,6 +197,12 @@ class AppSettingsPage extends React.Component {
     this.setState({ replicas: selected.id });
   }
 
+  urlOnClick() {
+    const { app } = this.props;
+    navigator.clipboard.writeText(app.url);
+    this.setState({ urlChecked: true });
+  }
+
   handleSubmit() {
     const {
       name,
@@ -283,12 +293,14 @@ class AppSettingsPage extends React.Component {
       message,
       isFailed,
       app,
+      isUpdating,
     } = this.props;
     const {
       openDeleteAlert,
       ConfirmAppname,
       disableDelete,
       newImage,
+      urlChecked,
       newUri,
       varName,
       varValue,
@@ -471,7 +483,7 @@ class AppSettingsPage extends React.Component {
                   </div>
                   <div className={styles.APPButtonRow}>
                     <div className={styles.AppLabel}>Status</div>
-                    <div className={styles.flexa}>
+                    <div className={styles.ShowStatus}>
                       {app.status === "running" ? (
                         <div className={styles.StatusIcon}>
                           <Status status={app.status} />
@@ -487,61 +499,42 @@ class AppSettingsPage extends React.Component {
                   </div>
                   <div className={styles.APPButtonRow}>
                     <div className={styles.AppLabel}>Age</div>
-                    <div className={styles.flexa}>
-                      <BlackInputText
-                        required
-                        placeholder={app.image}
-                        name="newImage"
-                        value={newImage}
-                        onChange={(e) => {
-                          this.handleChange(e);
-                        }}
-                      />
-                    </div>
+                    <div className={styles.flexa}>{app.age}</div>
                   </div>
                   <div className={styles.APPButtonRow}>
                     <div className={styles.AppLabel}>Link</div>
-                    <div className={styles.flexa}>
-                      <BlackInputText
-                        required
-                        placeholder={app.image}
-                        name="newImage"
-                        value={newImage}
-                        onChange={(e) => {
-                          this.handleChange(e);
-                        }}
+                    <div className={styles.CopyDiv}>
+                      <div className="DBTDetail">{app.url}</div>
+                      <div className={styles.CopyUrl}>
+                        <CopyText onClick={this.urlOnClick} />
+                        {urlChecked ? <Checked /> : null}
+                      </div>
+                    </div>
+                  </div>
+                  <div className={styles.APPButton}>
+                    <div className={styles.UpperSection}>
+                      <PrimaryButton
+                        label={isUpdating ? <Spinner /> : "UPDATE"}
+                        onClick={this.handleSubmit}
                       />
                     </div>
                   </div>
                 </div>
               </div>
-              <hr />
-              <div className={styles.APPSections}>
-                <div className={styles.APPSectionTitle}>Manage application</div>
-                <div className={styles.APPInstructions}>
-                  <div className={styles.APPButtonRow}>
-                    <strong>Name</strong>
-                  </div>
-                  <div className={styles.flexa}>My nicename</div>
+              <hr className={styles.HorizontalLine} />
+              <div className={styles.AppDelete}>
+                <div className={styles.APPInstruct}>  
+                  <div className={styles.APPSectionDelete}>Delete application</div>
+                  <div>Deleting your app is irreversible.</div>
                 </div>
-              </div>
-              <div className={styles.APPSections}>
-                <div className={styles.APPSectionTitle}>Manage application</div>
-                <div className={styles.APPInstructions}>
-                  <div className={styles.APPButtonRow}>
-                    <strong>Name</strong>
-                  </div>
-                  <div className="flexa">My nicename</div>
+                <div className={styles.DeleteButtonDiv}>
+                  <PrimaryButton
+                    label="Delete App"
+                    className={styles.DeleteBtn}
+                    onClick={this.showDeleteAlert}
+                  />
                 </div>
-              </div>
-              <div className={styles.APPSections}>
-                <div className={styles.APPSectionTitle}>Manage application</div>
-                <div className={styles.APPInstructions}>
-                  <div className={styles.APPButtonRow}>
-                    <strong>Name</strong>
-                  </div>
-                  <div className="flexa">My nicename</div>
-                </div>
+                
               </div>
               {openDeleteAlert && (
                 <div className={styles.AppDeleteModel}>
@@ -634,6 +627,7 @@ const mapStateToProps = (state) => {
   const { isDeleting, isDeleted, isFailed, message } = state.deleteAppReducer;
   // const { apps } = state.appsListReducer;
   const { app } = state.singleAppReducer;
+  const { isUpdating, isUpdated } = state.updateAppReducer;
   return {
     // apps,
     isDeleting,
@@ -641,6 +635,8 @@ const mapStateToProps = (state) => {
     isFailed,
     message,
     app,
+    isUpdated,
+    isUpdating,
   };
 };
 

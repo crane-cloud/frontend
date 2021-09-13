@@ -141,6 +141,10 @@
   gap: 2rem;
 }
 
+.APPInstruct{
+  display: grid;
+}
+
 .APPButtonRow {
   display: grid;
   grid-template-columns: 20% auto;
@@ -149,46 +153,113 @@
   column-gap: 1rem;
 }
 
-.SectionButtons{
+.SectionButtons {
   display: flex;
   justify-content: flex-end;
   padding-right: 1rem;
 }
 
-.APPSections{
+.APPSections {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   /* padding-top: 1rem; */
 }
 
-.APPSectionTitle{
+.AppDelete{
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  padding: 2rem 0rem;
+}
+
+.APPSectionTitle {
   flex: 1;
   font-size: 18px;
   font-weight: 700;
-  color: #008AC1;
-  ;
+  color: #008ac1;
 }
 
-.flexa input{
+.APPSectionDelete {
+  flex: 1;
+  font-size: 18px;
+  font-weight: 700;
+  color: #ff0000;
+}
+
+.flexa input {
   border: 1px solid;
 }
 
-.AppLabel{
+.AppLabel {
   font-weight: 400;
 }
 
-.PrivateImageCheckField{
+.PrivateImageCheckField {
   display: grid;
   grid-template-columns: 20% auto;
   gap: 1rem;
 }
 
-.PrivateImageTabContainer{
+.PrivateImageTabContainer {
   border-left: 5px solid #e1e2e2;
   padding: 0rem 2rem;
-} 
+}
 
-.PrivateImageInputs{
+.PrivateImageInputs {
   display: grid;
   row-gap: 1rem;
+}
+
+.ShowStatus{
+  display: grid;
+  grid-template-columns: 30% auto;
+  justify-content: flex-start;
+}
+
+.StatusIcon {
+  display: grid;
+  justify-content: flex-start;
+  justify-items: flex-start;
+  gap: 2rem;
+  align-items: center;
+  grid-template-columns: 10% 15% auto;
+}
+
+.CopyUrl{
+  /* color: #008ac1; */
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.CopyDiv{
+  display: flex;
+}
+
+.UpperSection{
+  display: grid;
+  justify-content: end;
+}
+
+.HorizontalLine{
+  /* color: #CCCCCC; */
+  border: 0;
+  width: 100%;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);;
+}
+
+.APPButton{
+  padding-bottom: 2rem;
+}
+
+.DeleteBtn {
+  background-color: #ff0000;
+  outline: 2px solid #ff0000;
+}
+
+.DeleteBtn:hover {
+  background-color: #fff;
+  outline: 2px solid #ff0000;
+  color: #ff0000;
 }
