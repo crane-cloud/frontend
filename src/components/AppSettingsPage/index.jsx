@@ -12,8 +12,9 @@ import SideBar from "../SideBar";
 import Feedback from "../Feedback";
 import Checkbox from "../Checkbox";
 import Tooltip from "../Tooltip";
-import Tabs from "../Tabs";
+import Select from "../Select";
 import DeleteWarning from "../DeleteWarning";
+import Status from "../Status";
 import styles from "./AppSettingsPage.module.css";
 import BlackInputText from "../BlackInputText";
 import SettingsButton from "../SettingsButton";
@@ -25,6 +26,7 @@ import UpdateApp from "../updateApp";
 class AppSettingsPage extends React.Component {
   constructor(props) {
     super(props);
+    const { app } = this.props;
     this.state = {
       openDeleteAlert: false,
       error: "",
@@ -40,6 +42,13 @@ class AppSettingsPage extends React.Component {
         error: "",
       },
       isPrivateImage: false,
+      uri: app.uri ? app.uri : "",
+      varName: "",
+      varValue: "",
+      envVars: "",
+      entryCommand: "",
+      port: app.port ? app.port : "",
+      replicas: app.replicas ? app.replicas : 1,
     };
 
     this.handleDeleteApp = this.handleDeleteApp.bind(this);
@@ -49,8 +58,8 @@ class AppSettingsPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.showUpdateModal = this.showUpdateModal.bind(this);
     this.hideUpdateModal = this.hideUpdateModal.bind(this);
-    this.handleDockerCredentialsChange = this.handleDockerCredentialsChange.bind(
-      this);
+    this.handleDockerCredentialsChange =
+      this.handleDockerCredentialsChange.bind(this);
     this.addEnvVar = this.addEnvVar.bind(this);
     this.removeEnvVar = this.removeEnvVar.bind(this);
     this.togglePrivateImage = this.togglePrivateImage.bind(this);
@@ -294,6 +303,12 @@ class AppSettingsPage extends React.Component {
     // project name from line 105 disappears on refreash, another source of the name was needed
     //const { name } = this.props.location;
     const { projectID, userID, appID } = params;
+    const replicaOptions = [
+      { id: 1, name: "1" },
+      { id: 2, name: "2" },
+      { id: 3, name: "3" },
+      { id: 4, name: "4" },
+    ];
     // const name = this.getAppName(appID);
     console.log(this.props);
     return (
@@ -358,71 +373,149 @@ class AppSettingsPage extends React.Component {
 
                   {isPrivateImage && (
                     <div className={styles.PrivateImageTabContainer}>
-                      <Tabs>
-                        <div index={1} /* label={<DockerLogo />} */>
-                          <div className={styles.PrivateImageInputs}>
-                            <BlackInputText
-                              required
-                              placeholder="Username"
-                              name="username"
-                              value={username}
-                              onChange={(e) => {
-                                this.handleDockerCredentialsChange(e);
-                              }}
-                            />
-
-                            <BlackInputText
-                              required
-                              placeholder="Email"
-                              name="email"
-                              value={email}
-                              onChange={(e) => {
-                                this.handleDockerCredentialsChange(e);
-                              }}
-                            />
-
-                            <BlackInputText
-                              required
-                              placeholder="Password"
-                              type="password"
-                              name="password"
-                              value={password}
-                              onChange={(e) => {
-                                this.handleDockerCredentialsChange(e);
-                              }}
-                            />
-                            <div className={styles.InputFieldWithTooltip}>
+                      <div index={1} /* label={<DockerLogo />} */>
+                        <div className={styles.PrivateImageInputs}>
+                          <div className={styles.APPButtonRow}>
+                            <div className={styles.AppLabel}>Username</div>
+                            <div className={styles.flexa}>
                               <BlackInputText
                                 required
-                                placeholder="Registry Server"
-                                name="server"
-                                value={server}
+                                placeholder={
+                                  app.username ? app.username : "Username"
+                                }
+                                name="username"
+                                value={username}
                                 onChange={(e) => {
                                   this.handleDockerCredentialsChange(e);
                                 }}
                               />
-                              <div className={styles.InputTooltipContainerDB}>
-                                <Tooltip
-                                  showIcon
-                                  message="Registry server for example: docker.io or gcr.io"
-                                  position="left"
+                            </div>
+                          </div>
+                          <div className={styles.APPButtonRow}>
+                            <div className={styles.AppLabel}>Email</div>
+                            <div className={styles.flexa}>
+                              <BlackInputText
+                                required
+                                placeholder={app.email ? app.email : "Email"}
+                                name="email"
+                                value={email}
+                                onChange={(e) => {
+                                  this.handleDockerCredentialsChange(e);
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <div className={styles.APPButtonRow}>
+                            <div className={styles.AppLabel}>Password</div>
+                            <div className={styles.flexa}>
+                              <BlackInputText
+                                required
+                                placeholder={
+                                  app.password ? app.password : "Password"
+                                }
+                                name="password"
+                                value={password}
+                                onChange={(e) => {
+                                  this.handleDockerCredentialsChange(e);
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <div className={styles.APPButtonRow}>
+                            <div className={styles.AppLabel}>
+                              Registry Server
+                            </div>
+                            <div className={styles.flexa}>
+                              <div className={styles.InputFieldWithTooltip}>
+                                <BlackInputText
+                                  required
+                                  placeholder="Registry Server"
+                                  name="server"
+                                  value={server}
+                                  onChange={(e) => {
+                                    this.handleDockerCredentialsChange(e);
+                                  }}
                                 />
+                                {/* <div className={styles.InputTooltipContainerDB}>
+                                  <Tooltip
+                                    showIcon
+                                    message="Registry server for example: docker.io or gcr.io"
+                                    position="left"
+                                  />
+                                </div> */}
                               </div>
                             </div>
-
-                            {dockerCredentials.error && (
-                              <Feedback
-                                type="error"
-                                message={dockerCredentials.error}
-                              />
-                            )}
                           </div>
+
+                          {dockerCredentials.error && (
+                            <Feedback
+                              type="error"
+                              message={dockerCredentials.error}
+                            />
+                          )}
                         </div>
-                      </Tabs>
+                      </div>
                     </div>
                   )}
+                  <div className={styles.APPButtonRow}>
+                    <div className={styles.AppLabel}>Replicas</div>
+                    <div className={styles.flexa}>
+                      <div className={styles.ReplicasSelect}>
+                        <Select
+                          placeholder="Number of Replicas - defaults to 1"
+                          options={replicaOptions}
+                          onChange={this.handleSelectReplicas}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className={styles.APPButtonRow}>
+                    <div className={styles.AppLabel}>Status</div>
+                    <div className={styles.flexa}>
+                      {app.status === "running" ? (
+                        <div className={styles.StatusIcon}>
+                          <Status status={app.status} />
+                          <div>&nbsp;Ready</div>
+                        </div>
+                      ) : (
+                        <div className={styles.StatusIcon}>
+                          <Status status={app.status} />
+                          <div>&nbsp;Failing</div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className={styles.APPButtonRow}>
+                    <div className={styles.AppLabel}>Age</div>
+                    <div className={styles.flexa}>
+                      <BlackInputText
+                        required
+                        placeholder={app.image}
+                        name="newImage"
+                        value={newImage}
+                        onChange={(e) => {
+                          this.handleChange(e);
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className={styles.APPButtonRow}>
+                    <div className={styles.AppLabel}>Link</div>
+                    <div className={styles.flexa}>
+                      <BlackInputText
+                        required
+                        placeholder={app.image}
+                        name="newImage"
+                        value={newImage}
+                        onChange={(e) => {
+                          this.handleChange(e);
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
+              <hr />
               <div className={styles.APPSections}>
                 <div className={styles.APPSectionTitle}>Manage application</div>
                 <div className={styles.APPInstructions}>

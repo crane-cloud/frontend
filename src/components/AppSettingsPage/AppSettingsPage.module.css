@@ -157,7 +157,7 @@
 
 .APPSections{
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 2fr 1fr;
   /* padding-top: 1rem; */
 }
 
@@ -181,4 +181,14 @@
   display: grid;
   grid-template-columns: 20% auto;
   gap: 1rem;
+}
+
+.PrivateImageTabContainer{
+  border-left: 5px solid #e1e2e2;
+  padding: 0rem 2rem;
+} 
+
+.PrivateImageInputs{
+  display: grid;
+  row-gap: 1rem;
 }
