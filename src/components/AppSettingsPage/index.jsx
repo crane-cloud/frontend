@@ -11,7 +11,6 @@ import Modal from "../Modal";
 import SideBar from "../SideBar";
 import Feedback from "../Feedback";
 import Checkbox from "../Checkbox";
-import Tooltip from "../Tooltip";
 import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import Select from "../Select";
@@ -19,11 +18,8 @@ import DeleteWarning from "../DeleteWarning";
 import Status from "../Status";
 import styles from "./AppSettingsPage.module.css";
 import BlackInputText from "../BlackInputText";
-import SettingsButton from "../SettingsButton";
 import getSingleApp from "../../redux/actions/getSingleApp";
-import updateApp from "../../redux/actions/updateApp";
-// import CreateApp from "../createApp";
-import UpdateApp from "../updateApp";
+import updateApp, { clearUpdateAppState } from "../../redux/actions/updateApp";
 
 class AppSettingsPage extends React.Component {
   constructor(props) {
@@ -32,10 +28,12 @@ class AppSettingsPage extends React.Component {
     this.state = {
       openDeleteAlert: false,
       error: "",
+      portError: "",
+      commandError: "",
       disableDelete: true,
       ConfirmAppname: "",
       updateModal: false,
-      newImage: "",
+      newImage: app.image ? app.image : "",
       urlChecked: false,
       dockerCredentials: {
         username: "",
@@ -51,7 +49,7 @@ class AppSettingsPage extends React.Component {
       envVars: "",
       entryCommand: "",
       port: app.port ? app.port : "",
-      replicas: app.replicas ? app.replicas : 1,
+      replicas: app.replicas ? app.replicas : app.replicas,
     };
 
     this.handleDeleteApp = this.handleDeleteApp.bind(this);
@@ -69,24 +67,23 @@ class AppSettingsPage extends React.Component {
     this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.urlOnClick = this.urlOnClick.bind(this);
+    this.handlePortSubmit = this.handlePortSubmit.bind(this);
+    this.handleCommandSubmit = this.handleCommandSubmit.bind(this);
   }
 
   handleChange(e) {
     const { openDeleteAlert } = this.state;
-    const {
-      match: { params },
-    } = this.props;
-    const { appID } = params;
+    const { app } = this.props;
 
     this.setState({
       [e.target.name]: e.target.value,
     });
 
-    if (openDeleteAlert && e.target.value === this.getAppName(appID)) {
+    if (openDeleteAlert && e.target.value === app.name) {
       this.setState({
         disableDelete: false,
       });
-    } else if (openDeleteAlert && e.target.value !== this.getAppName(appID)) {
+    } else if (openDeleteAlert && e.target.value !== app.name) {
       this.setState({
         disableDelete: true,
       });
@@ -96,21 +93,34 @@ class AppSettingsPage extends React.Component {
     const {
       match: { params },
       getSingleApp,
+      clearState,
     } = this.props;
     const { appID } = params;
+    clearState();
     getSingleApp(appID);
   }
   componentDidUpdate(prevProps) {
-    const { isDeleted } = this.props;
+    const {
+      isDeleted,
+      isUpdated,
+      getSingleApp,
+      clearUpdateAppState,
+      match: { params },
+    } = this.props;
 
     if (isDeleted !== prevProps.isDeleted) {
       this.hideDeleteAlert();
     }
+
+    if(isUpdated !== prevProps.isUpdated) {
+      clearUpdateAppState();
+      getSingleApp(params.appID);
+    }
   }
-  // getAppName(id) {
-  //   const { apps } = this.props;
-  //   return apps.apps.find((app) => app.id === id).name;
-  // }
+  getAppName(id) {
+    const { apps } = this.props;
+    return apps.apps.find((app) => app.id === id).name;
+  }
 
   handleDeleteApp(e, appId) {
     const { deleteApp } = this.props;
@@ -129,9 +139,10 @@ class AppSettingsPage extends React.Component {
   }
 
   renderRedirect = () => {
-    const { isDeleted } = this.props;
+    const { isDeleted, clearState } = this.props;
     const { userID, projectID } = this.props.match.params;
     if (isDeleted) {
+      clearState();
       return (
         <Redirect to={`/users/${userID}/projects/${projectID}/apps`} noThrow />
       );
@@ -203,40 +214,50 @@ class AppSettingsPage extends React.Component {
     this.setState({ urlChecked: true });
   }
 
+  handlePortSubmit() {
+    const {
+      match: { params },
+      updateApp,
+    } = this.props;
+    const { appID } = params;
+    const { port } = this.state;
+    if (port && !/^[0-9]*$/.test(port)) {
+      // validate port and ensure its a number
+      this.setState({
+        portError: "Port should be an integer",
+      });
+    } else {
+      updateApp(appID, { port: parseInt(port, 10) });
+    }
+  }
+
+  handleCommandSubmit() {
+    const {
+      match: { params },
+      updateApp,
+    } = this.props;
+    const { appID } = params;
+    const { entryCommand } = this.state;
+    if (entryCommand && entryCommand.length > 0) {
+      updateApp(appID, { command: entryCommand });
+    } else {
+      this.setState({ commandError: "Please enter a command" });
+    }
+  }
+
   handleSubmit() {
     const {
-      name,
-      uri,
-      envVars,
-      entryCommand,
-      port,
       isPrivateImage,
       dockerCredentials: { username, email, password, server },
       replicas,
+      newImage,
     } = this.state;
-    const { createApp, params } = this.props;
+    const { updateApp, params, app } = this.props;
 
-    if (!name || !uri) {
+    if (!replicas && !newImage) {
       // if user tries to submit empty email/password
       this.setState({
-        error: "app name & image uri are required",
-      });
-    } else if (this.validateAppName(name) === false) {
-      this.setState({
-        error: "Name should start with a letter",
-      });
-    } else if (this.validateAppName(name) === "false_convention") {
-      this.setState({
-        error: "Name may only contain letters,numbers,dot and a hypen -",
-      });
-    } else if (name.length > 27) {
-      this.setState({
-        error: "Name may not exceed 27 characters",
-      });
-    } else if (port && !/^[0-9]*$/.test(port)) {
-      // validate port and ensure its a number
-      this.setState({
-        error: "Port should be an integer",
+        error: "app replicas & image uri are required",
       });
     } else if (
       isPrivateImage &&
@@ -249,21 +270,25 @@ class AppSettingsPage extends React.Component {
         },
       }));
     } else {
-      let appInfo = {
-        command: entryCommand,
-        env_vars: envVars,
-        image: uri,
-        name,
-        project_id: params.projectID,
-        private_image: isPrivateImage,
-        replicas,
-      };
+      if (!newImage && !isPrivateImage && replicas !== app.replicas) {
+        updateApp(params.appID, { replicas: replicas });
+      } else if (
+        newImage &&
+        newImage.length > 1 &&
+        !isPrivateImage &&
+        replicas === app.replicas
+      ) {
+        updateApp(params.appID, { image: newImage });
+      } else if (isPrivateImage && newImage) {
+        let appInfo = {
+          // command: entryCommand,
+          // env_vars: envVars,
+          image: newImage,
+          project_id: params.projectID,
+          private_image: isPrivateImage,
+          replicas,
+        };
 
-      if (port) {
-        appInfo = { ...appInfo, port: parseInt(port, 10) };
-      }
-
-      if (isPrivateImage) {
         appInfo = {
           ...appInfo,
           docker_email: email,
@@ -272,8 +297,6 @@ class AppSettingsPage extends React.Component {
           docker_server: server,
         };
       }
-
-      createApp(appInfo, params.projectID);
     }
   }
 
@@ -301,11 +324,13 @@ class AppSettingsPage extends React.Component {
       disableDelete,
       newImage,
       urlChecked,
-      newUri,
-      varName,
-      varValue,
-      envVars,
-      error,
+      // newUri,
+      // varName,
+      // varValue,
+      // envVars,
+      // error,
+      portError,
+      commandError,
       entryCommand,
       port,
       isPrivateImage,
@@ -321,8 +346,7 @@ class AppSettingsPage extends React.Component {
       { id: 3, name: "3" },
       { id: 4, name: "4" },
     ];
-    // const name = this.getAppName(appID);
-    console.log(this.props);
+    console.log(this.state);
     return (
       <div className={styles.Page}>
         {isDeleted ? this.renderRedirect() : null}
@@ -448,13 +472,6 @@ class AppSettingsPage extends React.Component {
                                     this.handleDockerCredentialsChange(e);
                                   }}
                                 />
-                                {/* <div className={styles.InputTooltipContainerDB}>
-                                  <Tooltip
-                                    showIcon
-                                    message="Registry server for example: docker.io or gcr.io"
-                                    position="left"
-                                  />
-                                </div> */}
                               </div>
                             </div>
                           </div>
@@ -522,9 +539,65 @@ class AppSettingsPage extends React.Component {
                 </div>
               </div>
               <hr className={styles.HorizontalLine} />
+              <div className={styles.APPSectionPort}>
+                <div className={styles.APPSectionTitle}>
+                  Port & Entry commands
+                </div>
+                <div className={styles.PortSection}>
+                  <div>Port</div>
+                  <input
+                    type="text"
+                    // required
+                    placeholder={app.port}
+                    name="port"
+                    value={port}
+                    className={styles.portInput}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                  <PrimaryButton
+                    label={isUpdating ? <Spinner /> : "UPDATE"}
+                    onClick={this.handlePortSubmit}
+                  />
+                </div>
+              </div>
+              <div className={styles.errorCenterDiv}>
+                {portError && <Feedback type="error" message={portError} />}
+              </div>
+              <hr className={styles.HorizontalHalfLine} />
+              <div className={styles.APPSectionPort}>
+                <div></div>
+                <div className={styles.commandInputSection}>
+                  <input
+                    type="text"
+                    // required
+                    placeholder="command"
+                    name="entryCommand"
+                    value={entryCommand}
+                    className={styles.portInput}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                  <PrimaryButton
+                    label={isUpdating ? <Spinner /> : "UPDATE"}
+                    onClick={this.handleCommandSubmit}
+                  />
+                </div>
+                <div></div>
+              </div>
+              <div className={styles.errorCenterDiv}>
+                {commandError && (
+                  <Feedback type="error" message={commandError} />
+                )}
+              </div>
+              <hr className={styles.HorizontalLine} />
               <div className={styles.AppDelete}>
-                <div className={styles.APPInstruct}>  
-                  <div className={styles.APPSectionDelete}>Delete application</div>
+                <div className={styles.APPInstruct}>
+                  <div className={styles.APPSectionDelete}>
+                    Delete application
+                  </div>
                   <div>Deleting your app is irreversible.</div>
                 </div>
                 <div className={styles.DeleteButtonDiv}>
@@ -534,7 +607,6 @@ class AppSettingsPage extends React.Component {
                     onClick={this.showDeleteAlert}
                   />
                 </div>
-                
               </div>
               {openDeleteAlert && (
                 <div className={styles.AppDeleteModel}>
@@ -644,7 +716,8 @@ const mapDispatchToProps = {
   deleteApp,
   clearState,
   getSingleApp,
-  UpdateApp,
+  updateApp,
+  clearUpdateAppState,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppSettingsPage);

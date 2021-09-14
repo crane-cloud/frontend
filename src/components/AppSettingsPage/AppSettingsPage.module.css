@@ -162,7 +162,13 @@
 .APPSections {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
-  /* padding-top: 1rem; */
+}
+
+.APPSectionPort {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  padding: 2rem 0rem 1rem 0rem;
 }
 
 .AppDelete{
@@ -241,9 +247,16 @@
 }
 
 .HorizontalLine{
-  /* color: #CCCCCC; */
   border: 0;
   width: 100%;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);;
+}
+
+.HorizontalHalfLine{
+  border: 0;
+  width: 35%;
   height: 0;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);;
@@ -262,4 +275,31 @@
   background-color: #fff;
   outline: 2px solid #ff0000;
   color: #ff0000;
+}
+
+.PortSection{
+  display: grid;
+  grid-template-columns: 18% auto 18%;
+  gap: 1rem;
+  align-items: center;
+}
+
+.portInput{
+  width: auto;
+  background: transparent;
+  border: 1px solid #000;
+  padding-left: 1rem;
+  height: 100%;
+}
+
+.commandInputSection{
+  display: grid;
+  grid-auto-flow: column;
+  gap: 1rem;
+}
+
+.errorCenterDiv{
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0rem;
 }

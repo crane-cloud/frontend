@@ -287,7 +287,6 @@ class CreateApp extends React.Component {
       { id: 3, name: "3" },
       { id: 4, name: "4" },
     ];
-    console.log(this.props.params);
     return (
       <div>
         <div className={styles.MainContentSection}>
