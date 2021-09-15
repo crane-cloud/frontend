@@ -15,7 +15,7 @@ import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import Select from "../Select";
 import DeleteWarning from "../DeleteWarning";
-import Status from "../Status";
+import AppStatus from "../AppStatus";
 import styles from "./AppSettingsPage.module.css";
 import BlackInputText from "../BlackInputText";
 import getSingleApp from "../../redux/actions/getSingleApp";
@@ -499,12 +499,12 @@ class AppSettingsPage extends React.Component {
                     <div className={styles.ShowStatus}>
                       {app.app_running_status === "running" ? (
                         <div className={styles.StatusIcon}>
-                          <Status status={app.app_running_status} />
+                          <AppStatus appStatus={app.app_running_status} />
                           <div>&nbsp;Ready</div>
                         </div>
                       ) : (
                         <div className={styles.StatusIcon}>
-                          <Status status={app.app_running_status} />
+                          <AppStatus appStatus={app.app_running_status} />
                           <div>&nbsp;Failing</div>
                         </div>
                       )}
@@ -566,7 +566,9 @@ class AppSettingsPage extends React.Component {
               </div>
               <hr className={styles.HorizontalHalfLine} />
               <div className={styles.errorCenterDiv}>
-                {errorMessage && <Feedback type="error" message={errorMessage} />}
+                {errorMessage && (
+                  <Feedback type="error" message={errorMessage} />
+                )}
               </div>
               <div className={styles.APPSectionPort}>
                 <div></div>
@@ -582,12 +584,13 @@ class AppSettingsPage extends React.Component {
                       this.handleChange(e);
                     }}
                   />
+                </div>
+                <div>
                   <PrimaryButton
                     label={isUpdating ? <Spinner /> : "UPDATE"}
                     onClick={this.handleCommandSubmit}
                   />
                 </div>
-                <div></div>
               </div>
               <div className={styles.errorCenterDiv}>
                 {commandError && (
