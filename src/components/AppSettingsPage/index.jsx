@@ -33,7 +33,7 @@ class AppSettingsPage extends React.Component {
       disableDelete: true,
       ConfirmAppname: "",
       updateModal: false,
-      newImage: app.image ? app.image : "",
+      newImage: "",
       urlChecked: false,
       dockerCredentials: {
         username: "",
@@ -49,7 +49,7 @@ class AppSettingsPage extends React.Component {
       envVars: "",
       entryCommand: "",
       port: app.port ? app.port : "",
-      replicas: app.replicas ? app.replicas : app.replicas,
+      replicas: "",
     };
 
     this.handleDeleteApp = this.handleDeleteApp.bind(this);
@@ -94,9 +94,11 @@ class AppSettingsPage extends React.Component {
       match: { params },
       getSingleApp,
       clearState,
+      clearUpdateAppState,
     } = this.props;
     const { appID } = params;
     clearState();
+    clearUpdateAppState();
     getSingleApp(appID);
   }
   componentDidUpdate(prevProps) {
@@ -112,7 +114,7 @@ class AppSettingsPage extends React.Component {
       this.hideDeleteAlert();
     }
 
-    if(isUpdated !== prevProps.isUpdated) {
+    if (isUpdated !== prevProps.isUpdated) {
       clearUpdateAppState();
       getSingleApp(params.appID);
     }
@@ -252,17 +254,13 @@ class AppSettingsPage extends React.Component {
       replicas,
       newImage,
     } = this.state;
-    const { updateApp, params, app } = this.props;
+    const {
+      updateApp,
+      match: { params },
+      app,
+    } = this.props;
 
-    if (!replicas && !newImage) {
-      // if user tries to submit empty email/password
-      this.setState({
-        error: "app replicas & image uri are required",
-      });
-    } else if (
-      isPrivateImage &&
-      (!email || !username || !password || !server)
-    ) {
+    if (isPrivateImage && (!email || !username || !password || !server)) {
       this.setState((prevState) => ({
         dockerCredentials: {
           ...prevState.dockerCredentials,
@@ -281,8 +279,6 @@ class AppSettingsPage extends React.Component {
         updateApp(params.appID, { image: newImage });
       } else if (isPrivateImage && newImage) {
         let appInfo = {
-          // command: entryCommand,
-          // env_vars: envVars,
           image: newImage,
           project_id: params.projectID,
           private_image: isPrivateImage,
@@ -296,6 +292,7 @@ class AppSettingsPage extends React.Component {
           docker_password: password,
           docker_server: server,
         };
+        updateApp(params.appID, appInfo);
       }
     }
   }
@@ -317,6 +314,7 @@ class AppSettingsPage extends React.Component {
       isFailed,
       app,
       isUpdating,
+      errorMessage,
     } = this.props;
     const {
       openDeleteAlert,
@@ -324,11 +322,7 @@ class AppSettingsPage extends React.Component {
       disableDelete,
       newImage,
       urlChecked,
-      // newUri,
-      // varName,
-      // varValue,
-      // envVars,
-      // error,
+      error,
       portError,
       commandError,
       entryCommand,
@@ -346,7 +340,9 @@ class AppSettingsPage extends React.Component {
       { id: 3, name: "3" },
       { id: 4, name: "4" },
     ];
-    console.log(this.state);
+
+    console.log(app);
+
     return (
       <div className={styles.Page}>
         {isDeleted ? this.renderRedirect() : null}
@@ -501,14 +497,14 @@ class AppSettingsPage extends React.Component {
                   <div className={styles.APPButtonRow}>
                     <div className={styles.AppLabel}>Status</div>
                     <div className={styles.ShowStatus}>
-                      {app.status === "running" ? (
+                      {app.app_running_status === "running" ? (
                         <div className={styles.StatusIcon}>
-                          <Status status={app.status} />
+                          <Status status={app.app_running_status} />
                           <div>&nbsp;Ready</div>
                         </div>
                       ) : (
                         <div className={styles.StatusIcon}>
-                          <Status status={app.status} />
+                          <Status status={app.app_running_status} />
                           <div>&nbsp;Failing</div>
                         </div>
                       )}
@@ -535,6 +531,9 @@ class AppSettingsPage extends React.Component {
                         onClick={this.handleSubmit}
                       />
                     </div>
+                  </div>
+                  <div className={styles.errorCenterDiv}>
+                    {error && <Feedback type="error" message={error} />}
                   </div>
                 </div>
               </div>
@@ -566,6 +565,9 @@ class AppSettingsPage extends React.Component {
                 {portError && <Feedback type="error" message={portError} />}
               </div>
               <hr className={styles.HorizontalHalfLine} />
+              <div className={styles.errorCenterDiv}>
+                {errorMessage && <Feedback type="error" message={errorMessage} />}
+              </div>
               <div className={styles.APPSectionPort}>
                 <div></div>
                 <div className={styles.commandInputSection}>
@@ -699,7 +701,7 @@ const mapStateToProps = (state) => {
   const { isDeleting, isDeleted, isFailed, message } = state.deleteAppReducer;
   // const { apps } = state.appsListReducer;
   const { app } = state.singleAppReducer;
-  const { isUpdating, isUpdated } = state.updateAppReducer;
+  const { isUpdating, isUpdated, errorMessage } = state.updateAppReducer;
   return {
     // apps,
     isDeleting,
@@ -709,6 +711,7 @@ const mapStateToProps = (state) => {
     app,
     isUpdated,
     isUpdating,
+    errorMessage,
   };
 };
 

@@ -134,10 +134,6 @@
 
 .APPInstructions {
   display: grid;
-  /* grid-template-columns: 30% auto; */
-  /* padding: 1rem 1rem; */
-  /* background: #ffffff; */
-  /* border: 1px solid #cccccc; */
   gap: 2rem;
 }
 
