@@ -284,7 +284,7 @@ class AppSettingsPage extends React.Component {
         private_image: isPrivateImage,
       };
 
-      if (replicas !== ""){
+      if (replicas === ""){
         appInfo = {
           ...appInfo,
           docker_email: email,
