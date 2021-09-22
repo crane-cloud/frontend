@@ -256,7 +256,8 @@ class AppSettingsPage extends React.Component {
     } = this.state;
     const {
       updateApp,
-      match: { params }
+      match: { params },
+      app
     } = this.props;
 
     if (!newImage && replicas === "") {
@@ -291,7 +292,7 @@ class AppSettingsPage extends React.Component {
           docker_username: username,
           docker_password: password,
           docker_server: server,
-          replicas: 1
+          replicas: app.replicas
         };
         updateApp(params.appID, appInfo);
       } else {
