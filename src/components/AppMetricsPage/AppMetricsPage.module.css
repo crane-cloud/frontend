@@ -163,6 +163,7 @@
 .InnerContentLink {
   display: grid;
   grid-template-columns: auto 20%;
+  column-gap: .3rem;
 }
 .Icons {
   display: grid;
