@@ -19,6 +19,7 @@ import Feedback from "../Feedback";
 import DeleteWarning from "../DeleteWarning";
 import BlackInputText from "../BlackInputText";
 import styles from "./ProjectSettingsPage.module.css";
+import SettingsButton from "../SettingsButton";
 
 class ProjectSettingsPage extends React.Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class ProjectSettingsPage extends React.Component {
     const { name, description } = projectInfo;
 
     this.state = {
-      openUpdateModal: false,
+      openUpdateAlert: false,
       openDeleteAlert: false,
       openDropDown: false,
       projectName: name ? name : "",
@@ -38,6 +39,8 @@ class ProjectSettingsPage extends React.Component {
     };
 
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
+    this.showUpdateAlert = this.showUpdateAlert.bind(this);
+    this.hideUpdateAlert = this.hideUpdateAlert.bind(this);
     this.showDeleteAlert = this.showDeleteAlert.bind(this);
     this.hideDeleteAlert = this.hideDeleteAlert.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -66,7 +69,7 @@ class ProjectSettingsPage extends React.Component {
   handleChange(e) {
     const { error, openDeleteAlert } = this.state;
     const projectInfo = JSON.parse(localStorage.getItem("project"));
-    const { name } = projectInfo
+    const { name } = projectInfo;
     const {
       errorMessage,
       clearUpdateProjectState,
@@ -170,6 +173,10 @@ class ProjectSettingsPage extends React.Component {
     deleteProject(projectID);
   }
 
+  showUpdateAlert() {
+    this.setState({ openUpdateAlert: true });
+  }
+
   showDeleteAlert() {
     this.setState({ openDeleteAlert: true });
   }
@@ -183,6 +190,10 @@ class ProjectSettingsPage extends React.Component {
     } else {
       return "";
     }
+  }
+
+  hideUpdateAlert() {
+    this.setState({ openUpdateAlert: false });
   }
 
   hideDeleteAlert() {
@@ -213,6 +224,7 @@ class ProjectSettingsPage extends React.Component {
     const name = projectInfo.name;
     const description = projectInfo.description;
     const {
+      openUpdateAlert,
       openDeleteAlert,
       projectName,
       projectDescription,
@@ -248,53 +260,109 @@ class ProjectSettingsPage extends React.Component {
               <InformationBar header="Settings" />
             </div>
             <div className={styles.ContentSection}>
-              <div>
-                <div
-                  onSubmit={(e) => {
-                    this.handleSubmit();
-                    e.preventDefault();
-                  }}
-                >
-                  <div className={styles.UpdateForm}>
-                    <BlackInputText
-                      placeholder="Project Name"
-                      name="projectName"
-                      value={projectName}
-                      onChange={(e) => {
-                        this.handleChange(e);
-                      }}
-                    />
-                    <TextArea
-                      placeholder="Description"
-                      name="projectDescription"
-                      value={projectDescription}
-                      onChange={(e) => {
-                        this.handleChange(e);
-                      }}
-                    />
-                    {(errorMessage || error) && (
-                      <Feedback
-                        type="error"
-                        message={
-                          errorMessage ? "Failed to update Project" : error
-                        }
+              <div className={styles.ProjectSections}>
+                <div className={styles.ProjectSectionTitle}>Manage project</div>
+                <div className={styles.ProjectInstructions}>
+                  <div className={styles.ProjectButtonRow}>
+                    <div className="flexa">
+                      <div>
+                        <strong>Update project</strong>
+                      </div>
+                      <div>Modify the project name and description</div>
+                    </div>
+                    <div className={styles.SectionButtons}>
+                      <SettingsButton
+                        label="Update this project"
+                        onClick={this.showUpdateAlert}
                       />
-                    )}
-
-                    <PrimaryButton
-                      label={isUpdating ? <Spinner /> : "update project"}
-                      onClick={this.handleSubmit}
-                    />
+                    </div>
+                  </div>
+                  <div className={styles.ProjectButtonRow}>
+                    <div className="flexa">
+                      <div>
+                        <strong>Delete project</strong>
+                      </div>
+                      <div>
+                        Take down your entire project, delete all apps under it.
+                      </div>
+                    </div>
+                    <div className={styles.SectionButtons}>
+                      <SettingsButton
+                        label="Delete this project"
+                        className="Change-Btn"
+                        onClick={this.showDeleteAlert}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className={styles.DeleteButtonDiv}>
-                <PrimaryButton
-                  label="Delete Project"
-                  className={styles.DeleteBtn}
-                  onClick={this.showDeleteAlert}
-                />
-              </div>
+
+              {openUpdateAlert && (
+                <div className={styles.ProjectDeleteModel}>
+                  <Modal
+                    showModal={openUpdateAlert}
+                    onClickAway={this.hideUpdateAlert}
+                  >
+                    <div>
+                      <div
+                        onSubmit={(e) => {
+                          this.handleSubmit();
+                          e.preventDefault();
+                        }}
+                      >
+                        <div className={styles.UpdateForm}>
+                          <div className={styles.DeleteDescription}>
+                            Project name
+                          </div>
+                          <BlackInputText
+                            placeholder="Project Name"
+                            name="projectName"
+                            value={projectName}
+                            onChange={(e) => {
+                              this.handleChange(e);
+                            }}
+                          />
+                          <div className={styles.DeleteDescription}>
+                            Project description
+                          </div>
+                          <TextArea
+                            placeholder="Description"
+                            name="projectDescription"
+                            value={projectDescription}
+                            onChange={(e) => {
+                              this.handleChange(e);
+                            }}
+                          />
+                          {(errorMessage || error) && (
+                            <Feedback
+                              type="error"
+                              message={
+                                errorMessage
+                                  ? "Failed to update Project"
+                                  : error
+                              }
+                            />
+                          )}
+                          <div className={styles.UpdateProjectModelButtons}>
+                            <PrimaryButton
+                              label={
+                                isUpdating ? <Spinner /> : "update project"
+                              }
+                              onClick={this.handleSubmit}
+                            />
+                            <PrimaryButton
+                              label="cancel"
+                              className="CancelBtn"
+                              onClick={this.hideUpdateAlert}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+              )}
+
               {openDeleteAlert && (
                 <div className={styles.ProjectDeleteModel}>
                   <Modal
@@ -312,10 +380,8 @@ class ProjectSettingsPage extends React.Component {
                           <div className={styles.DeleteSubDescription}>
                             This will permanently delete the project and all its
                             resources. Please confirm by typing &nbsp;
-                            <b className={styles.DeleteWarning}>
-                              {name}
-                            </b> &nbsp;
-                            below.
+                            <b className={styles.DeleteWarning}>{name}</b>{" "}
+                            &nbsp; below.
                           </div>
                           <div className={styles.InnerModalDescription}>
                             <BlackInputText
