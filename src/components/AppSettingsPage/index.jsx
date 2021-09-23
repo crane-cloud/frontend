@@ -252,15 +252,26 @@ class AppSettingsPage extends React.Component {
       isPrivateImage,
       dockerCredentials: { username, email, password, server },
       replicas,
-      newImage,
+      newImage
     } = this.state;
     const {
       updateApp,
       match: { params },
-      app,
+      app
     } = this.props;
 
-    if (isPrivateImage && (!email || !username || !password || !server)) {
+    if (!newImage && replicas === "") {
+      this.setState({
+        error: "No changes made",
+      });
+    } else if (newImage && !isPrivateImage && replicas === "") {
+      updateApp(params.appID, { image: newImage });
+    } else if (newImage && !isPrivateImage && replicas !== "") {
+      updateApp(params.appID, { image: newImage, replicas: replicas });
+    } else if (
+      isPrivateImage &&
+      (!email || !username || !password || !server)
+    ) {
       this.setState((prevState) => ({
         dockerCredentials: {
           ...prevState.dockerCredentials,
@@ -268,32 +279,35 @@ class AppSettingsPage extends React.Component {
         },
       }));
     } else {
-      if (!newImage && !isPrivateImage && replicas !== app.replicas) {
-        updateApp(params.appID, { replicas: replicas });
-      } else if (
-        newImage &&
-        newImage.length > 1 &&
-        !isPrivateImage &&
-        replicas === app.replicas
-      ) {
-        updateApp(params.appID, { image: newImage });
-      } else if (isPrivateImage && newImage) {
-        let appInfo = {
-          image: newImage,
-          project_id: params.projectID,
-          private_image: isPrivateImage,
-          replicas,
-        };
+      let appInfo = {
+        image: newImage,
+        project_id: params.projectID,
+        private_image: isPrivateImage,
+      };
 
+      if (replicas === ""){
         appInfo = {
           ...appInfo,
           docker_email: email,
           docker_username: username,
           docker_password: password,
           docker_server: server,
+          replicas: app.replicas
+        };
+        updateApp(params.appID, appInfo);
+      } else {
+        appInfo = {
+          ...appInfo,
+          docker_email: email,
+          docker_username: username,
+          docker_password: password,
+          docker_server: server,
+          replicas: replicas
         };
         updateApp(params.appID, appInfo);
       }
+
+      
     }
   }
 
