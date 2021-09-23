@@ -160,7 +160,7 @@ class AppMetricsPage extends React.Component {
                           <div className={styles.InnerContentLinkText}>
                             {appInfo.url}
                           </div>
-                          <div>
+                          <div className={styles.CopierDiv}>
                             <div className={styles.Icons}>
                              <CopyText onClick={this.copyUrl} />
                              {urlChecked===true ? <Checked /> : null}
@@ -177,8 +177,7 @@ class AppMetricsPage extends React.Component {
                         </div>
                         <div className={styles.InnerContentStatus}>
                           <AppStatus appStatus={appInfo.status} />
-                          &nbsp;&nbsp;
-                          {appInfo.status === "running" ? "Ready" : "Down"}
+                          <div>{appInfo.status === "running" ? "Ready" : "Down"}</div>
                         </div>
                       </div>
                       <div className={styles.InnerContentGrid}>
