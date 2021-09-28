@@ -345,15 +345,15 @@ class ProjectSettingsPage extends React.Component {
                           )}
                           <div className={styles.UpdateProjectModelButtons}>
                             <PrimaryButton
+                              label="cancel"
+                              className="CancelBtn"
+                              onClick={this.hideUpdateAlert}
+                            />
+                            <PrimaryButton
                               label={
                                 isUpdating ? <Spinner /> : "update project"
                               }
                               onClick={this.handleSubmit}
-                            />
-                            <PrimaryButton
-                              label="cancel"
-                              className="CancelBtn"
-                              onClick={this.hideUpdateAlert}
                             />
                           </div>
                         </div>

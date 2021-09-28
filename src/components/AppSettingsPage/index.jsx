@@ -355,8 +355,6 @@ class AppSettingsPage extends React.Component {
       { id: 4, name: "4" },
     ];
 
-    console.log(app);
-
     return (
       <div className={styles.Page}>
         {isDeleted ? this.renderRedirect() : null}
