@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import InformationBar from "../InformationBar";
 import Header from "../Header";
@@ -23,7 +24,6 @@ import { ReactComponent as CopyText } from "../../assets/images/copytextblue.svg
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 
 class AppMetricsPage extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -35,7 +35,7 @@ class AppMetricsPage extends React.Component {
     this.getAppCPUMetrics = this.getAppCPUMetrics.bind(this);
     this.getAppNetworkMetrics = this.getAppNetworkMetrics.bind(this);
     this.copyUrl = this.copyUrl.bind(this);
-  };
+  }
 
   getAppInfo(id) {
     const { apps } = this.props;
@@ -51,7 +51,7 @@ class AppMetricsPage extends React.Component {
     };
 
     return info;
-  };
+  }
 
   componentDidMount() {
     const {
@@ -68,37 +68,36 @@ class AppMetricsPage extends React.Component {
     getAppMemory(projectID, appID, {});
     getAppCPU(projectID, appID, {});
     getAppNetwork(projectID, appID, {});
-  };
+  }
 
   getAppMemoryMetrics() {
     const { appID } = this.props.match.params;
     const { appMemoryMetrics } = this.props;
     const results = formatAppMemoryMetrics(appID, appMemoryMetrics);
     return results;
-  };
+  }
 
-  copyUrl () {
+  copyUrl() {
     const { params } = this.props.match;
-    const {appID } = params;
-    const app =  this.getAppInfo(appID);
+    const { appID } = params;
+    const app = this.getAppInfo(appID);
     navigator.clipboard.writeText(app.url);
-    this.setState({urlChecked:true});
-
-  };
+    this.setState({ urlChecked: true });
+  }
 
   getAppCPUMetrics() {
     const { appID } = this.props.match.params;
     const { appCPUMetrics } = this.props;
     const results = formatAppCPUMetrics(appID, appCPUMetrics);
     return results;
-  };
+  }
 
   getAppNetworkMetrics() {
     const { appID } = this.props.match.params;
     const { appNetworkMetrics } = this.props;
     const results = formatAppNetworkMetrics(appID, appNetworkMetrics);
     return results;
-  };
+  }
 
   render() {
     const { params } = this.props.match;
@@ -162,8 +161,8 @@ class AppMetricsPage extends React.Component {
                           </div>
                           <div className={styles.CopierDiv}>
                             <div className={styles.Icons}>
-                             <CopyText onClick={this.copyUrl} />
-                             {urlChecked===true ? <Checked /> : null}
+                              <CopyText onClick={this.copyUrl} />
+                              {urlChecked === true ? <Checked /> : null}
                             </div>
                           </div>
                         </div>
@@ -177,7 +176,9 @@ class AppMetricsPage extends React.Component {
                         </div>
                         <div className={styles.InnerContentStatus}>
                           <AppStatus appStatus={appInfo.status} />
-                          <div>{appInfo.status === "running" ? "Ready" : "Down"}</div>
+                          <div>
+                            {appInfo.status === "running" ? "Ready" : "Down"}
+                          </div>
                         </div>
                       </div>
                       <div className={styles.InnerContentGrid}>
@@ -206,46 +207,70 @@ class AppMetricsPage extends React.Component {
                 </div>
               </div>
               <div className={styles.MetricsCardsSection}>
-                <MetricsCard
-                  icon={<MetricIcon />}
-                  title="Memory"
-                  className={styles.CardSizeDimensions}
+                <Link
+                  to={{
+                    pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/memory/`,
+                  }}
                 >
-                  <LineChartComponent
-                    lineDataKey="memory"
-                    preview
-                    data={formattedMemoryMetrics}
-                  />
-                </MetricsCard>
-                <MetricsCard
-                  icon={<MetricIcon />}
-                  title="CPU"
-                  className={styles.CardSizeDimensions}
+                  <MetricsCard
+                    icon={<MetricIcon />}
+                    title="Memory"
+                    className={styles.CardSizeDimensions}
+                  >
+                    <LineChartComponent
+                      lineDataKey="memory"
+                      preview
+                      data={formattedMemoryMetrics}
+                    />
+                  </MetricsCard>
+                </Link>
+                <Link
+                  to={{
+                    pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/cpu/`,
+                  }}
                 >
-                  <LineChartComponent
-                    lineDataKey="cpu"
-                    preview
-                    data={formattedCPUMetrics}
-                  />
-                </MetricsCard>
-                <MetricsCard
-                  icon={<MetricIcon />}
-                  title="Network"
-                  className={styles.CardSizeDimensions}
+                  <MetricsCard
+                    icon={<MetricIcon />}
+                    title="CPU"
+                    className={styles.CardSizeDimensions}
+                  >
+                    <LineChartComponent
+                      lineDataKey="cpu"
+                      preview
+                      data={formattedCPUMetrics}
+                    />
+                  </MetricsCard>
+                </Link>
+                <Link
+                  to={{
+                    pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/network/`,
+                  }}
                 >
-                  <LineChartComponent
-                    lineDataKey="network"
-                    preview
-                    data={formattedNetworkMetrics}
-                  />
-                </MetricsCard>
+                  <MetricsCard
+                    icon={<MetricIcon />}
+                    title="Network"
+                    className={styles.CardSizeDimensions}
+                  >
+                    <LineChartComponent
+                      lineDataKey="network"
+                      preview
+                      data={formattedNetworkMetrics}
+                    />
+                  </MetricsCard>
+                </Link>
               </div>
               <div className={styles.LogsSection}>
-                <LogsFrame
-                  loading={retrieveingLogs}
-                  data={logs}
-                  title={`${appInfo.name} logs`}
-                />
+                <Link
+                  to={{
+                    pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/logs/`,
+                  }}
+                >
+                  <LogsFrame
+                    loading={retrieveingLogs}
+                    data={logs}
+                    title={`${appInfo.name} logs`}
+                  />
+                </Link>
               </div>
             </div>
           </div>
