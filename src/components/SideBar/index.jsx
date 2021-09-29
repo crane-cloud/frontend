@@ -174,7 +174,7 @@ const SideBar = (props) => {
                     to="/"
                     className={`${styles.ListItem} ${styles.DisabledLink}`}
                   >
-                    OTHERS
+                    OTHER
                   </Link>
                 </>
                 <div>
