@@ -101,7 +101,7 @@ workflows:
       - build_and_deploy_staging:
           filters:
             branches:
-              only: fx-fix-github-client-id
+              only: develop
       - build_and_deploy_production:
           filters:
             branches:
