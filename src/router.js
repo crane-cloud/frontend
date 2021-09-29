@@ -46,6 +46,7 @@ import DBSettingsPage from "./components/DBSettingsPage";
 import CreateDatabase from "./components/CreateDatabase";
 import Terms from "./components/documents/terms";
 import Privacy from "./components/documents/privacy";
+import Databases from "./components/Databases";
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
@@ -197,6 +198,11 @@ const Routes = () => (
         isAllowed={hasToken}
         path="/clusters/:clusterID/nodes"
         component={ClusterNodes}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        path="/clusters/:clusterID/databases"
+        component={Databases}
       />
       <ProtectedRoute
         isAllowed={hasToken}

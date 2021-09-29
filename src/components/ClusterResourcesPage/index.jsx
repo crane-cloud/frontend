@@ -29,6 +29,7 @@ class ClusterResourcesPage extends React.Component {
       match: { params },
     } = this.props;
     localStorage.setItem("clusterName", clusterName);
+    console.log(resourceCount);
 
     return (
       <div className="MainPage">

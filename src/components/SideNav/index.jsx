@@ -19,7 +19,9 @@ const SideNav = (props) => {
           {clusterName}
         </Link>
       </div>
-
+      <Link to={{ pathname: `${BASE_URL}/databases` }} className="ListItem">
+        Databases
+      </Link>
       <Link to={{ pathname: `${BASE_URL}/resources` }} className="ListItem">
         Infrastructure
       </Link>
