@@ -44,7 +44,7 @@ const Databases = (props) => {
               </div>
             ) : (
               <>
-                {props.databasesFetched && props.databases.length !== undefined && (
+                {props.databasesFetched && props.databases !== undefined && (
                   <div className="ClusterContainer">
                     <ResourceCard
                       title="MYSQL"
@@ -58,7 +58,7 @@ const Databases = (props) => {
                 )}
               </>
             )}
-            {props.databasesFetched && props.databases.length === 0 && (
+            {props.databasesFetched && props.databases === 0 && (
               <div className="NoResourcesMessage">
                 <p>No Databases available</p>
               </div>
