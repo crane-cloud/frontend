@@ -22,9 +22,11 @@ const Header = (props) => {
   };
 
   const logout = () => {
+    localStorage.setItem("state", {});
     localStorage.removeItem("state");
     localStorage.removeItem("token");
     localStorage.removeItem("project");
+    localStorage.removeItem("clustername");
     props.removeUser();
     window.location.href = "/";
   };

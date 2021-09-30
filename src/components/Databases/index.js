@@ -1,6 +1,4 @@
-/* eslint-disable linebreak-style */
-import React from "react";
-import PropTypes from "prop-types";
+import React, {useState, useEffect} from "react";
 import { connect } from "react-redux";
 import "./Databases.css";
 import Header from "../Header";
@@ -10,106 +8,74 @@ import SideNav from "../SideNav";
 import ResourceCard from "../ResourceCard";
 import getDatabases from "../../redux/actions/getDatabases";
 
-class Databases extends React.Component {
-  componentDidMount() {
-    const { getDatabases } = this.props;
+const Databases = (props) => {
+  const [clusterName, setClusterName] = useState("");
+  const { getDatabases } = props;
+  useEffect(() =>
+  {
+    setClusterName(localStorage.getItem("clusterName"))
     getDatabases();
-  }
+  }, [getDatabases])
 
-  render() {
-    const {
-      databases,
-      isFetchingDatabases,
-      databasesFetched,
-      match: { params },
-    } = this.props;
-    let clusterName = localStorage.getItem("clusterName");
-
-    return (
-      <div className="MainPage">
-        <div className="TopBarSection">
-          <Header />
+  return (
+    <div className="MainPage">
+      <div className="TopBarSection">
+        <Header />
+      </div>
+      <div className="MainSection">
+        <div className="SideBarSection">
+          <SideNav clusterName={clusterName} clusterId={props.match.params.clusterID} />
         </div>
-        <div className="MainSection">
-          <div className="SideBarSection">
-            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
+        <div className="MainContentSection">
+          <div className="InformationBarSection">
+            {props.databases.length !== 0 ? (
+              <InformationBar
+                header={`Number of databases ${props.databases.total_database_count}`}
+                showBtn={false}
+              />
+            ) : (
+              <InformationBar header="Loading..." showBtn={false} />
+            )}
           </div>
-          <div className="MainContentSection">
-            <div className="InformationBarSection">
-              {databases !== 0 ? (
-                <InformationBar
-                  header={`Number of databases ${databases.total_database_count}`}
-                  showBtn={false}
-                />
-              ) : (
-                <InformationBar
-                  header="Loading..."
-                  showBtn={false}
-                />
-              )}
-            </div>
-            <div className="ContentSection">
-              {isFetchingDatabases ? (
-                <div className="ResourceSpinnerWrapper">
-                  <Spinner size="big" />
-                </div>
-              ) : (
-                <>
-                  {databasesFetched && databases !== undefined && (
-                    <div className="ClusterContainer">
-                      <ResourceCard
-                        title="MYSQL"
-                        count={databases.dbs_stats_per_flavour.mysql_db_count}
-                      />
-                      <ResourceCard
-                        title="POSTGRESQL"
-                        count={
-                          databases.dbs_stats_per_flavour.postgres_db_count
-                        }
-                      />
-                    </div>
-                  )}
-                </>
-              )}
-              {databasesFetched && databases.length === 0 && (
-                <div className="NoResourcesMessage">
-                  <p>No Databases available</p>
-                </div>
-              )}
-              {!isFetchingDatabases && !databasesFetched && (
-                <div className="NoResourcesMessage">
-                  <p>
-                    Oops! Something went wrong! Failed to retrieve databases
-                    information.
-                  </p>
-                </div>
-              )}
-            </div>
+          <div className="ContentSection">
+            {props.isFetchingDatabases ? (
+              <div className="ResourceSpinnerWrapper">
+                <Spinner size="big" />
+              </div>
+            ) : (
+              <>
+                {props.databasesFetched && props.databases.length !== undefined && (
+                  <div className="ClusterContainer">
+                    <ResourceCard
+                      title="MYSQL"
+                      count={props.databases.dbs_stats_per_flavour.mysql_db_count}
+                    />
+                    <ResourceCard
+                      title="POSTGRESQL"
+                      count={props.databases.dbs_stats_per_flavour.postgres_db_count}
+                    />
+                  </div>
+                )}
+              </>
+            )}
+            {props.databasesFetched && props.databases.length === 0 && (
+              <div className="NoResourcesMessage">
+                <p>No Databases available</p>
+              </div>
+            )}
+            {!props.isFetchingDatabases && !props.databasesFetched && (
+              <div className="NoResourcesMessage">
+                <p>
+                  Oops! Something went wrong! Failed to retrieve databases
+                  information.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
-    );
-  }
-}
-
-Databases.propTypes = {
-  databases: PropTypes.arrayOf(PropTypes.object),
-  isFetchingDatabases: PropTypes.bool,
-  databasesFetched: PropTypes.bool,
-  clusterName: PropTypes.string,
-  getDatabases: PropTypes.func.isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      clusterID: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-};
-
-Databases.defaultProps = {
-  databases: [],
-  isFetchingDatabases: false,
-  databasesFetched: false,
-  clusterName: "",
+    </div>
+  );
 };
 
 const mapStateToProps = (state) => {
