@@ -10,3 +10,12 @@
   margin: 25px 25px;
   color: black;
 }
+
+.NoResourcesMessage {
+  display: flex;
+  font-size: 16px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding: 7rem;
+}
