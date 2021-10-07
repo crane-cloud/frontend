@@ -1,0 +1,104 @@
+.ProjectForm {
+  width: 70%;
+  padding-top: 2rem;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 3fr 3fr;
+  grid-template-rows: auto;
+  grid-gap: 2rem;
+}
+
+.CreateProjectError {
+  padding-bottom: 1rem;
+}
+
+.SelectWrapper {
+  width: 100%;
+}
+.SelectOptionsWrapper {
+  border: 2px solid #000;
+}
+
+.FormElements {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+.ContentSection {
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+.InformationBar {
+  background: #f8f7e5;
+  height: 5rem;
+  padding: 0 3rem;
+  display: flex;
+  align-items: center;
+}
+
+.InformationBarWithButton {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.InfoHeader {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.Element {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 0.5fr 1fr;
+  grid-gap: 0.2rem;
+}
+.FormsSection {
+  padding: 2rem;
+}
+.LeftFormElements {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  max-width: 25rem;
+}
+.TextArea {
+  width: 25rem;
+  border: 2px solid black;
+  box-sizing: border-box;
+  font-size: inherit;
+}
+.TextArea::placeholder {
+  color: #808080;
+}
+
+.WhiteBackground {
+  color: #000;
+}
+.InitialBackground {
+  color: #fff;
+  background-color: transparent;
+}
+.CreateProjectError {
+  padding: 2rem;
+}
+
+/* make it unresizable */
+textarea {
+  resize: none;
+}
+.CreateButtons {
+  padding: 1rem 0rem;
+}
+.ElementTitle {
+  padding: 0.7rem 0rem 0rem;
+}
+.RightFormElements {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 25rem;
+}
