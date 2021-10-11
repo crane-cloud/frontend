@@ -137,7 +137,7 @@
   gap: 2rem;
 }
 
-.APPInstruct{
+.APPInstruct {
   display: grid;
 }
 
@@ -168,7 +168,7 @@
   gap: 1rem;
 }
 
-.AppDelete{
+.AppDelete {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   padding: 2rem 0rem;
@@ -212,7 +212,7 @@
   row-gap: 1rem;
 }
 
-.ShowStatus{
+.ShowStatus {
   display: grid;
   grid-template-columns: 30% auto;
   justify-content: flex-start;
@@ -227,36 +227,36 @@
   grid-template-columns: 10% 15% auto;
 }
 
-.CopyUrl{
+.CopyUrl {
   /* color: #008ac1; */
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.CopyDiv{
+.CopyDiv {
   display: flex;
 }
 
-.UpperSection{
+.UpperSection {
   display: grid;
   justify-content: end;
 }
 
-.HorizontalLine{
+.HorizontalLine {
   border: 0;
   width: 100%;
   height: 0;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.HorizontalHalfLine{
+.HorizontalHalfLine {
   border: 0;
-  width: 35%;
+  width: 15%;
   height: 0;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .DeleteBtn {
@@ -270,14 +270,21 @@
   color: #ff0000;
 }
 
-.PortSection{
+.PortSection {
   display: grid;
   grid-template-columns: 18% auto 18%;
   gap: 1rem;
   align-items: center;
 }
 
-.portInput{
+.varInput {
+  width: auto;
+  background: transparent;
+  border: 1px solid #000;
+  padding-left: 1rem;
+}
+
+.portInput {
   width: auto;
   background: transparent;
   border: 1px solid #000;
@@ -285,13 +292,67 @@
   height: 100%;
 }
 
-.commandInputSection{
+.commandInputSection {
   display: grid;
   height: 100%;
 }
 
-.errorCenterDiv{
+.errorCenterDiv {
   display: flex;
   justify-content: center;
   padding: 1rem 0rem;
+}
+
+.EnvVarsInputGroup {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 0.5rem;
+}
+
+.EnvVarsInputGroup .EnvVarsInputs {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+.EnvVarsInputGroup .EnvVarsAddBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn {
+  /* position: absolute;
+  max-width: 100%; */
+  color: #fff;
+  background-color: #008ac1;
+  outline: 1px solid #008ac1;
+}
+
+.EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn:hover {
+  color: #008ac1;
+  background-color: #fff;
+}
+
+/* .EnvVarsInputGroup input {
+  max-width: 10rem;
+}
+
+.EnvVarsInputGroup input::placeholder {
+  color: grey;
+} */
+
+.VarsRow{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: .3rem;
+}
+
+.varsTable{
+  width: 100%;
+}
+.TableRow{
+  display: flex;
+  justify-content: flex-end;
 }

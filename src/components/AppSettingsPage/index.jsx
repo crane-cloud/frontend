@@ -20,6 +20,8 @@ import styles from "./AppSettingsPage.module.css";
 import BlackInputText from "../BlackInputText";
 import getSingleApp from "../../redux/actions/getSingleApp";
 import updateApp, { clearUpdateAppState } from "../../redux/actions/updateApp";
+import RemoveIcon from "../../assets/images/remove.svg";
+import { v4 as uuidv4 } from "uuid";
 
 class AppSettingsPage extends React.Component {
   constructor(props) {
@@ -252,12 +254,12 @@ class AppSettingsPage extends React.Component {
       isPrivateImage,
       dockerCredentials: { username, email, password, server },
       replicas,
-      newImage
+      newImage,
     } = this.state;
     const {
       updateApp,
       match: { params },
-      app
+      app,
     } = this.props;
 
     if (!newImage && replicas === "") {
@@ -285,14 +287,14 @@ class AppSettingsPage extends React.Component {
         private_image: isPrivateImage,
       };
 
-      if (replicas === ""){
+      if (replicas === "") {
         appInfo = {
           ...appInfo,
           docker_email: email,
           docker_username: username,
           docker_password: password,
           docker_server: server,
-          replicas: app.replicas
+          replicas: app.replicas,
         };
         updateApp(params.appID, appInfo);
       } else {
@@ -302,12 +304,10 @@ class AppSettingsPage extends React.Component {
           docker_username: username,
           docker_password: password,
           docker_server: server,
-          replicas: replicas
+          replicas: replicas,
         };
         updateApp(params.appID, appInfo);
       }
-
-      
     }
   }
 
@@ -341,6 +341,9 @@ class AppSettingsPage extends React.Component {
       commandError,
       entryCommand,
       port,
+      varValue,
+      varName,
+      envVars,
       isPrivateImage,
       dockerCredentials,
       dockerCredentials: { username, email, password, server },
@@ -354,6 +357,7 @@ class AppSettingsPage extends React.Component {
       { id: 3, name: "3" },
       { id: 4, name: "4" },
     ];
+    console.log(this.props);
 
     return (
       <div className={styles.Page}>
@@ -549,6 +553,79 @@ class AppSettingsPage extends React.Component {
                   </div>
                 </div>
               </div>
+              <hr className={styles.HorizontalLine} />
+              <div className={styles.APPSectionPort}>
+                <div className={styles.APPSectionTitle}>Environment Vars</div>
+                <div className={styles.ModalFormInputsEnvVars}>
+                  {Object.keys(envVars).length > 0 && (
+                    <div className={styles.EnvVarsTable}>
+                      <table className={styles.varsTable}>
+                        <thead>
+                          <tr className={styles.VarsRow}>
+                            <div>Name</div>
+                            <div>Value</div>
+                            <div>Remove</div>
+                            <div></div>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {Object.keys(envVars).map((envVar, index) => (
+                            <tr key={uuidv4()} className={styles.VarsRow}>
+                              <td>{Object.keys(envVars)[index]}</td>
+                              <td>{envVars[Object.keys(envVars)[index]]}</td>
+                              <td>
+                                <img
+                                  src={RemoveIcon}
+                                  alt="remove_ico"
+                                  onClick={() => this.removeEnvVar(index)}
+                                  role="presentation"
+                                />
+                              </td>
+                            </tr>
+                          ))}
+                          <tr className={styles.TableRow}>
+                            <PrimaryButton
+                              label={isUpdating ? <Spinner /> : "UPDATE"}
+                              onClick={this.handlePortSubmit}
+                            />
+                          </tr>
+                        </tbody>
+                      </table>
+                      <hr className={styles.HorizontalHalfLine} />
+                    </div>
+                  )}
+                  <div className={styles.EnvVarsInputGroup}>
+                    <div className={styles.EnvVarsInputs}>
+                      <input
+                        placeholder="Name"
+                        name="varName"
+                        value={varName}
+                        className={styles.varInput}
+                        onChange={(e) => {
+                          this.handleChange(e);
+                        }}
+                      />
+                      <input
+                        placeholder="Value"
+                        name="varValue"
+                        value={varValue}
+                        className={styles.varInput}
+                        onChange={(e) => {
+                          this.handleChange(e);
+                        }}
+                      />
+                    </div>
+                    <div className={styles.EnvVarsAddBtn}>
+                      <PrimaryButton
+                        label="add"
+                        onClick={this.addEnvVar}
+                        className={styles.EnvVarAddBtn}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <hr className={styles.HorizontalLine} />
               <div className={styles.APPSectionPort}>
                 <div className={styles.APPSectionTitle}>
