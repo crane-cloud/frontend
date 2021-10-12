@@ -101,7 +101,7 @@
 
 .InnerCardGraphSection{
   justify-items: center;
-  padding-left: 9rem;
+  padding-left: 25rem;
   width: 80%;
 }
 
@@ -119,7 +119,8 @@
 
 .InnerTitlesRight{
   font-weight: bold;
-  padding: 0rem 3rem 3rem 9rem;
+  padding: 0rem 2rem 3rem 1rem;
+  align-items: center;
 }
 
 .InnerTitlesLeft{

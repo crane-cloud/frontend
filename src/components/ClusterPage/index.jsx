@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -14,6 +14,7 @@ import addCluster, {
 } from "../../redux/actions/addCluster";
 import Feedback from "../Feedback";
 import styles from "./ClusterPage.module.css";
+import getDatabases from "../../redux/actions/getDatabases";
 
 class ClusterPage extends React.Component {
   constructor(props) {
@@ -30,6 +31,13 @@ class ClusterPage extends React.Component {
     this.hideForm = this.hideForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    const { getDatabases } = this.props;
+    useEffect(() => {
+      getDatabases();
+    }, [getDatabases]);
   }
 
   componentDidUpdate(prevProps) {
@@ -132,9 +140,7 @@ class ClusterPage extends React.Component {
               <div className={styles.InnerCardGraphSection}>
                 <div className={styles.InnerContentGrid}>
                   <div className={styles.InnerTitlesRight}>Metrics</div>
-                  <div className={styles.InnerContentGraph}>
-                    {/*Graph will appear here*/}
-                  </div>
+                  <div className={styles.InnerContentGraph}></div>
                 </div>
               </div>
             </div>
@@ -156,34 +162,28 @@ class ClusterPage extends React.Component {
                 <div className={styles.DBStats}>
                   <div className={styles.In}>
                     <div className={styles.InnerTitlesStart}>Mysql</div>
-                    <div className={styles.ResourceDigit}>77</div>
+                    <div className={styles.ResourceDigit}>
+                      {
+                        this.props.databases.dbs_stats_per_flavour
+                          .mysql_db_count
+                      }
+                    </div>
                   </div>
                   <div className={styles.verticalLine}> </div>
                   <div className={styles.In}>
                     <div className={styles.InnerTitlesMiddle}>Postgresql</div>
-                    <div className={styles.ResourceDigit}>35</div>
+                    <div className={styles.ResourceDigit}>
+                      {
+                        this.props.databases.dbs_stats_per_flavour
+                          .postgres_db_count
+                      }
+                    </div>
                   </div>
                 </div>
               </div>
               <div className={styles.LeftDBSide}>
                 <div className={styles.TopTitle}>Metrics</div>
                 <div className={styles.MetricsGraph}></div>
-                {/* <div className={styles.InnerCard}>
-                  <div className={styles.InnerCardSection}>
-                    
-                  </div>
-                  
-                  <div className={styles.InnerCardSection}>
-                    
-                  </div>
-                  <div className={styles.verticalLine}> </div>
-                  <div className={styles.InnerCardSection}>
-                    <div className={styles.InnerContentGrid}>
-                      <div className={styles.InnerTitlesRight}>Metrics</div>
-                      <div className={styles.InnerContentEnd}></div>
-                    </div>
-                  </div>
-                </div> */}
               </div>
             </div>
           </div>
@@ -298,11 +298,16 @@ ClusterPage.propTypes = {
   message: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = ({ user, addClusterReducer }) => {
+const mapStateToProps = ({ user, addClusterReducer, state }) => {
+  const { isFetchingDatabases, databasesFetched, databases } =
+    state.databasesReducer;
   const { creatingCluster, isAdded, isFailed, errorOccured, message } =
     addClusterReducer;
 
   return {
+    isFetchingDatabases,
+    databasesFetched,
+    databases,
     user,
     creatingCluster,
     isAdded,
@@ -312,6 +317,11 @@ const mapStateToProps = ({ user, addClusterReducer }) => {
   };
 };
 
-export default connect(mapStateToProps, { addCluster, clearAddClusterState })(
-  withRouter(ClusterPage)
-);
+const mapDispatchToProps = {
+  getDatabases,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps, {
+  addCluster,
+  clearAddClusterState,
+})(withRouter(ClusterPage));
