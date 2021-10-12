@@ -150,28 +150,40 @@ class ClusterPage extends React.Component {
             <div className={styles.CardHeaderSection}>
               <div className={styles.CardTitle}>Databases</div>
             </div>
-            <div className={styles.CardBodySection}>
-              <div className={styles.InnerCard}>
-                <div className={styles.InnerCardSection}>
-                  <div className={styles.InnerContentGrid}>
+            <div className={styles.DBSection}>
+              <div className={styles.LeftDBSide}>
+                <div className={styles.TopTitle}>Count</div>
+                <div className={styles.DBStats}>
+                  <div className={styles.In}>
                     <div className={styles.InnerTitlesStart}>Mysql</div>
                     <div className={styles.ResourceDigit}>77</div>
                   </div>
-                </div>
-                <div className={styles.verticalLine}> </div>
-                <div className={styles.InnerCardSection}>
-                  <div className={styles.InnerContentGrid}>
+                  <div className={styles.verticalLine}> </div>
+                  <div className={styles.In}>
                     <div className={styles.InnerTitlesMiddle}>Postgresql</div>
                     <div className={styles.ResourceDigit}>35</div>
                   </div>
                 </div>
-                <div className={styles.verticalLine}> </div>
-                <div className={styles.InnerCardSection}>
-                  <div className={styles.InnerContentGrid}>
-                    <div className={styles.InnerTitlesRight}>Metrics</div>
-                    <div className={styles.InnerContentEnd}></div>
+              </div>
+              <div className={styles.LeftDBSide}>
+                <div className={styles.TopTitle}>Metrics</div>
+                <div className={styles.MetricsGraph}></div>
+                {/* <div className={styles.InnerCard}>
+                  <div className={styles.InnerCardSection}>
+                    
                   </div>
-                </div>
+                  
+                  <div className={styles.InnerCardSection}>
+                    
+                  </div>
+                  <div className={styles.verticalLine}> </div>
+                  <div className={styles.InnerCardSection}>
+                    <div className={styles.InnerContentGrid}>
+                      <div className={styles.InnerTitlesRight}>Metrics</div>
+                      <div className={styles.InnerContentEnd}></div>
+                    </div>
+                  </div>
+                </div> */}
               </div>
             </div>
           </div>

@@ -58,12 +58,31 @@
   justify-content: space-between;
 }
 
-.DBCardBodySection{
+.DBSection{
   min-height: 5rem;
-  flex-grow: 1;
-  padding: 1rem 0rem 1rem 3rem;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 30% auto;
+}
+
+.LeftDBSide{
+  display: grid;
+  grid-template-rows: 2.5rem auto;
+}
+
+.TopTitle{
+  font-weight: bold;
+  margin: auto;
+}
+
+.DBStats{
+  display: grid;
+  grid-template-columns: 49% auto 49%;
+  padding-bottom: 1rem;
+}
+
+.MetricsGraph{
+  border-left: 1px solid #cccccc;
+  padding-bottom: 1rem;
 }
 
 .InnerCardSection{
@@ -161,6 +180,7 @@
   font-weight: normal;
   box-sizing: border-box;
   padding-top: 4rem;
+  text-align: center;
 }
 .Card .CardHeader {
   font-weight: bold;
