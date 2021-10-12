@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { withRouter } from "react-router-dom";
+import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import InformationBar from "../InformationBar";
@@ -35,9 +34,7 @@ class ClusterPage extends React.Component {
 
   componentDidMount() {
     const { getDatabases } = this.props;
-    useEffect(() => {
-      getDatabases();
-    }, [getDatabases]);
+    getDatabases();
   }
 
   componentDidUpdate(prevProps) {
@@ -96,14 +93,16 @@ class ClusterPage extends React.Component {
     const { host, token, name, description, openModal, error } = this.state;
 
     const {
-      user: { accessToken },
+      // user: { accessToken },
       creatingCluster,
       isAdded,
       isFailed,
       message,
+      databases,
     } = this.props;
 
-    localStorage.setItem("token", accessToken);
+    // localStorage.setItem("token", accessToken);
+    console.log(this.props);
 
     return (
       <div className={styles.Page}>
@@ -163,20 +162,16 @@ class ClusterPage extends React.Component {
                   <div className={styles.In}>
                     <div className={styles.InnerTitlesStart}>Mysql</div>
                     <div className={styles.ResourceDigit}>
-                      {
-                        this.props.databases.dbs_stats_per_flavour
-                          .mysql_db_count
-                      }
+                      {databases &&
+                        databases.dbs_stats_per_flavour.mysql_db_count}
                     </div>
                   </div>
                   <div className={styles.verticalLine}> </div>
                   <div className={styles.In}>
                     <div className={styles.InnerTitlesMiddle}>Postgresql</div>
                     <div className={styles.ResourceDigit}>
-                      {
-                        this.props.databases.dbs_stats_per_flavour
-                          .postgres_db_count
-                      }
+                      {databases &&
+                        databases.dbs_stats_per_flavour.postgres_db_count}
                     </div>
                   </div>
                 </div>
@@ -298,11 +293,12 @@ ClusterPage.propTypes = {
   message: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = ({ user, addClusterReducer, state }) => {
+const mapStateToProps = (state) => {
   const { isFetchingDatabases, databasesFetched, databases } =
     state.databasesReducer;
   const { creatingCluster, isAdded, isFailed, errorOccured, message } =
-    addClusterReducer;
+    state.addClusterReducer;
+  const { user } = state.user;
 
   return {
     isFetchingDatabases,
@@ -319,9 +315,8 @@ const mapStateToProps = ({ user, addClusterReducer, state }) => {
 
 const mapDispatchToProps = {
   getDatabases,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps, {
   addCluster,
   clearAddClusterState,
-})(withRouter(ClusterPage));
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ClusterPage);
