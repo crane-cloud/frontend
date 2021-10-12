@@ -13,7 +13,7 @@ import addCluster, {
   clearAddClusterState,
 } from "../../redux/actions/addCluster";
 import Feedback from "../Feedback";
-import "./ClusterPage.css";
+import styles from "./ClusterPage.module.css";
 
 class ClusterPage extends React.Component {
   constructor(props) {
@@ -98,9 +98,91 @@ class ClusterPage extends React.Component {
     localStorage.setItem("token", accessToken);
 
     return (
-      <div className="Page">
+      <div className={styles.Page}>
         <div className="TopRow">
           <Header />
+          <InformationBar header="Overview" />
+        </div>
+
+        <div className={styles.ContentSection}>
+          <div
+            className={
+              styles.SummaryCardContainer + " " + styles.SummaryCardDimensions
+            }
+          >
+            <div className={styles.CardHeaderSection}>
+              <div className={styles.CardTitle}>Users</div>
+              <PrimaryButton
+                label="View accounts"
+                className={styles.ViewAccountsBtn}
+              />
+            </div>
+            <div className={styles.CardBodySection}>
+              <div className={styles.InnerCard}>
+                <div className={styles.InnerCardSection}>
+                  <div className={styles.InnerContentGrid}>
+                    <div className={styles.InnerTitlesLeft}>Count</div>
+                    <div className={styles.InnerContentCount}>
+                      <div className={styles.InnerContentCountValue}>5737</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.verticalLine}></div>
+              <div className={styles.InnerCardGraphSection}>
+                <div className={styles.InnerContentGrid}>
+                  <div className={styles.InnerTitlesRight}>Metrics</div>
+                  <div className={styles.InnerContentGraph}>
+                    {/*Graph will appear here*/}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.ContentSection}>
+          <div
+            className={
+              styles.SummaryCardContainer + " " + styles.SummaryCardDimentions
+            }
+          >
+            <div className={styles.CardHeaderSection}>
+              <div className={styles.CardTitle}>Databases</div>
+            </div>
+            <div className={styles.CardBodySection}>
+              <div className={styles.InnerCard}>
+                <div className={styles.InnerCardSection}>
+                  <div className={styles.InnerContentGrid}>
+                    <div className={styles.InnerTitlesStart}>Mysql</div>
+                    <div className={styles.ResourceDigit}>77</div>
+                  </div>
+                </div>
+                <div className={styles.verticalLine}> </div>
+                <div className={styles.InnerCardSection}>
+                  <div className={styles.InnerContentGrid}>
+                    <div className={styles.InnerTitlesMiddle}>Postgresql</div>
+                    <div className={styles.ResourceDigit}>35</div>
+                  </div>
+                </div>
+                <div className={styles.verticalLine}> </div>
+                <div className={styles.InnerCardSection}>
+                  <div className={styles.InnerContentGrid}>
+                    <div className={styles.InnerTitlesRight}>Metrics</div>
+                    <div className={styles.InnerContentEnd}></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.Card}>
+          <div className={styles.CardHeader}>Clusters</div>
+          <div className={styles.ResourceDigit}>10</div>
+        </div>
+
+        <div className="TopRow">
           <InformationBar
             header="Select Infrastructure"
             showBtn

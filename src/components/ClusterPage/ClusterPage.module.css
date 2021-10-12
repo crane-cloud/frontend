@@ -1,0 +1,239 @@
+.Page{
+  margin: 0;
+  background: #f1f1f1;
+}
+
+.ViewAccountsBtn{
+  text-transform: lowercase !important;
+  color: #008ac1;
+  background-color: #fff;
+  outline: 2px solid #008ac1;
+}
+
+.ViewAccountsBtn:hover{
+  background-color: #fff;
+  outline: 2px solid #008ac1;
+  color: #008ac1;
+}
+
+.ContentSection{
+  padding: 2rem;
+  display: grid;
+}
+
+.SummaryCardContainer{
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #cccccc;
+}
+
+.SummaryCardContainer:hover{
+  border: 1px solid #f7b21f;
+}
+
+.SummaryCardDimensions{
+  min-width: 100%;
+  display: flex;
+}
+
+.CardHeaderSection{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #cccccc;
+}
+
+.CardTitle{
+  width: 80%;
+  font-weight: bold;
+}
+
+.CardBodySection{
+  min-height: 10rem;
+  flex-grow: 1;
+  padding: 1rem 0rem 1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.DBCardBodySection{
+  min-height: 5rem;
+  flex-grow: 1;
+  padding: 1rem 0rem 1rem 3rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.InnerCardSection{
+  display: grid;
+  justify-items: center;
+  width: 20%;
+  padding-right: 9rem;
+}
+
+.DBInnerCardSection{
+  display: grid;
+  justify-items: center;
+  width: 20%;
+  padding-right: 9rem;
+}
+
+.InnerCardGraphSection{
+  justify-items: center;
+  padding-left: 9rem;
+  width: 80%;
+}
+
+.DBInnerCardGraphSection{
+  padding-right: 20rem;
+  column-width: 80%;
+}
+
+.InnerContentGrid{
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 0.9fr 0.9fr;
+  grid-gap: 3rem;
+}
+
+.InnerTitlesRight{
+  font-weight: bold;
+  padding: 0rem 3rem 3rem 9rem;
+}
+
+.InnerTitlesLeft{
+  font-weight: bold;
+  padding-left: 6rem;
+  text-align: center;
+}
+
+
+.DBInnerTitlesLeft{
+  padding: 0rem 0rem 2rem 11rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.InnerContentCount{
+  display: grid;
+  grid-template-columns: auto 20%;
+  column-gap: 4rem;
+}
+
+.InnerContentGraph{
+  display: grid;
+  padding-left: 1rem;
+}
+
+.InnerContentCountValue{
+  font-size: 32px;
+  font-weight: normal;
+  padding: 0rem 0rem 3rem 9rem;
+}
+
+.verticalLine{
+  border-left: 1px solid #cccccc;
+  height: 13rem;
+}
+
+.Card {
+  width: 100%;
+  max-width: 338px;
+  margin-left: 29px;
+  text-align: left;
+  margin-bottom: 1rem;
+  background: #fff;
+  position: relative;
+  color: #000000;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  height: 200px;
+}
+
+.ResourceDigit {
+  flex: 1 1 auto;
+  padding: 1.25rem;
+  font-size: 32px;
+  font-weight: normal;
+  box-sizing: border-box;
+  padding-top: 4rem;
+}
+.Card .CardHeader {
+  font-weight: bold;
+  border: none;
+  outline: 0;
+  padding: 12px;
+  text-transform: lowercase;
+  text-align: left;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+  padding: 1rem;
+  margin-bottom: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.Card .CardHeader::first-letter {
+  text-transform: uppercase;
+}
+
+.Card:hover {
+  opacity: 0.7;
+  border: 1px solid #f7b21f;
+}
+
+.FooterRow {
+  padding: 1rem 3rem;
+  background-color: #f1f1f1;
+}
+
+.ContentSection {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.InnerCard {
+  display: grid;
+  grid-template-columns: 7fr 1fr 7fr 1fr 7fr;
+  grid-template-rows: auto;
+  grid-gap: 1rem;
+  overflow-x: auto;
+}
+.InnerCardSections {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 0.2rem;
+}
+
+.InnerTitlesStart {
+  font-weight: bold;
+  text-align: center;
+  padding-top: 1rem;
+}
+.InnerTitlesMiddle {
+  font-weight: bold;
+  text-align: center;
+  padding-top: 1rem;
+}
+.InnerTitlesEnd {
+  font-weight: bold;
+  text-align: end;
+  padding-top: 1rem;
+}
+.InnerContentGrid {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 0.5fr 0.5fr;
+  grid-gap: 0.2rem;
+}
+.InnerContentEnd {
+  text-align: end;
+  padding-left: 9rem;
+}
