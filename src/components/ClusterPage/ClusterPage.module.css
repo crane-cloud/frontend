@@ -4,7 +4,7 @@
 }
 
 .ViewAccountsBtn{
-  text-transform: lowercase !important;
+  text-transform: capitalize !important;
   color: #008ac1;
   background-color: #fff;
   outline: 2px solid #008ac1;
@@ -17,7 +17,7 @@
 }
 
 .ContentSection{
-  padding: 2rem;
+  padding: 1rem 3rem;
   display: grid;
 }
 
@@ -58,15 +58,16 @@
   justify-content: space-between;
 }
 
-.DBSection{
+.DBSection, .UserSection{
   min-height: 5rem;
   display: grid;
   grid-template-columns: 30% auto;
 }
 
-.LeftDBSide{
+.LeftDBSide, .LeftUserSide{
   display: grid;
   grid-template-rows: 2.5rem auto;
+  padding-bottom: 1rem;
 }
 
 .TopTitle{
@@ -74,7 +75,7 @@
   margin: auto;
 }
 
-.DBStats{
+.DBStats, .UserStats{
   display: grid;
   grid-template-columns: 49% auto 49%;
   padding-bottom: 1rem;
@@ -85,72 +86,16 @@
   padding-bottom: 1rem;
 }
 
-.InnerCardSection{
-  display: grid;
-  justify-items: center;
-  width: 20%;
-  padding-right: 9rem;
-}
-
-.DBInnerCardSection{
-  display: grid;
-  justify-items: center;
-  width: 20%;
-  padding-right: 9rem;
-}
-
-.InnerCardGraphSection{
-  justify-items: center;
-  padding-left: 25rem;
-  width: 80%;
-}
-
-.DBInnerCardGraphSection{
-  padding-right: 20rem;
-  column-width: 80%;
-}
-
-.InnerContentGrid{
-  display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: 0.9fr 0.9fr;
-  grid-gap: 3rem;
-}
-
-.InnerTitlesRight{
-  font-weight: bold;
-  padding: 0rem 2rem 3rem 1rem;
-  align-items: center;
-}
-
-.InnerTitlesLeft{
-  font-weight: bold;
-  padding-left: 6rem;
-  text-align: center;
-}
-
-
-.DBInnerTitlesLeft{
-  padding: 0rem 0rem 2rem 11rem;
-  font-weight: bold;
-  text-align: center;
-}
-
-.InnerContentCount{
-  display: grid;
-  grid-template-columns: auto 20%;
-  column-gap: 4rem;
-}
-
-.InnerContentGraph{
-  display: grid;
-  padding-left: 1rem;
-}
-
-.InnerContentCountValue{
+.UserCount{
   font-size: 32px;
   font-weight: normal;
-  padding: 0rem 0rem 3rem 9rem;
+  padding: 3rem 1rem 3rem 9rem;
+}
+
+.InnerTitlesStart, .InnerTitlesMiddle, .CardTop {
+  font-weight: bold;
+  text-align: center;
+  padding-top: 1rem;
 }
 
 .verticalLine{
@@ -160,8 +105,8 @@
 
 .Card {
   width: 100%;
-  max-width: 338px;
-  margin-left: 29px;
+  max-width: 385px;
+  margin-left: 45px;
   text-align: left;
   margin-bottom: 1rem;
   background: #fff;
@@ -171,7 +116,7 @@
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
-  height: 200px;
+  height: 250px;
 }
 
 .ResourceDigit {
@@ -217,44 +162,4 @@
   flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
-}
-
-.InnerCard {
-  display: grid;
-  grid-template-columns: 7fr 1fr 7fr 1fr 7fr;
-  grid-template-rows: auto;
-  grid-gap: 1rem;
-  overflow-x: auto;
-}
-.InnerCardSections {
-  display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: 1fr 1fr;
-  grid-gap: 0.2rem;
-}
-
-.InnerTitlesStart {
-  font-weight: bold;
-  text-align: center;
-  padding-top: 1rem;
-}
-.InnerTitlesMiddle {
-  font-weight: bold;
-  text-align: center;
-  padding-top: 1rem;
-}
-.InnerTitlesEnd {
-  font-weight: bold;
-  text-align: end;
-  padding-top: 1rem;
-}
-.InnerContentGrid {
-  display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: 0.5fr 0.5fr;
-  grid-gap: 0.2rem;
-}
-.InnerContentEnd {
-  text-align: end;
-  padding-left: 9rem;
 }

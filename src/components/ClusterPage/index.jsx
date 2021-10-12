@@ -114,7 +114,7 @@ class ClusterPage extends React.Component {
         <div className={styles.ContentSection}>
           <div
             className={
-              styles.SummaryCardContainer + " " + styles.SummaryCardDimensions
+              styles.SummaryCardContainer + " " + styles.SummaryCardDimentions
             }
           >
             <div className={styles.CardHeaderSection}>
@@ -124,23 +124,19 @@ class ClusterPage extends React.Component {
                 className={styles.ViewAccountsBtn}
               />
             </div>
-            <div className={styles.CardBodySection}>
-              <div className={styles.InnerCard}>
-                <div className={styles.InnerCardSection}>
-                  <div className={styles.InnerContentGrid}>
-                    <div className={styles.InnerTitlesLeft}>Count</div>
-                    <div className={styles.InnerContentCount}>
-                      <div className={styles.InnerContentCountValue}>5737</div>
-                    </div>
+            <div className={styles.UserSection}>
+              <div className={styles.LeftUserSide}>
+                <div className={styles.TopTitle}>Count</div>
+                <div className={styles.UserStats}>
+                  <div className={styles.In}>
+                    <div className={styles.UserCount}>5737</div>
                   </div>
+                  
                 </div>
               </div>
-              <div className={styles.verticalLine}></div>
-              <div className={styles.InnerCardGraphSection}>
-                <div className={styles.InnerContentGrid}>
-                  <div className={styles.InnerTitlesRight}>Metrics</div>
-                  <div className={styles.InnerContentGraph}></div>
-                </div>
+              <div className={styles.LeftDBSide}>
+                <div className={styles.TopTitle}>Metrics</div>
+                <div className={styles.MetricsGraph}></div>
               </div>
             </div>
           </div>
@@ -166,7 +162,7 @@ class ClusterPage extends React.Component {
                         databases.dbs_stats_per_flavour.mysql_db_count}
                     </div>
                   </div>
-                  <div className={styles.verticalLine}> </div>
+                  <div className={styles.verticalLine}></div>
                   <div className={styles.In}>
                     <div className={styles.InnerTitlesMiddle}>Postgresql</div>
                     <div className={styles.ResourceDigit}>
@@ -182,10 +178,11 @@ class ClusterPage extends React.Component {
               </div>
             </div>
           </div>
-        </div>
+        </div><br />
 
         <div className={styles.Card}>
           <div className={styles.CardHeader}>Clusters</div>
+          <div className={styles.CardTop}>Count</div>
           <div className={styles.ResourceDigit}>10</div>
         </div>
 
