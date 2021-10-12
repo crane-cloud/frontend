@@ -71,6 +71,7 @@ class AppSettingsPage extends React.Component {
     this.urlOnClick = this.urlOnClick.bind(this);
     this.handlePortSubmit = this.handlePortSubmit.bind(this);
     this.handleCommandSubmit = this.handleCommandSubmit.bind(this);
+    this.handleEnvVarsSubmit = this.handleEnvVarsSubmit.bind(this);
   }
 
   handleChange(e) {
@@ -119,6 +120,7 @@ class AppSettingsPage extends React.Component {
     if (isUpdated !== prevProps.isUpdated) {
       clearUpdateAppState();
       getSingleApp(params.appID);
+      window.location.reload();
     }
   }
   getAppName(id) {
@@ -174,17 +176,21 @@ class AppSettingsPage extends React.Component {
   addEnvVar() {
     const { varName, varValue } = this.state;
 
-    if (varName && varValue) {
+    if (varName.trim() && varValue.trim()) {
       this.setState((prevState) => ({
         envVars: {
           ...prevState.envVars,
-          [varName]: varValue,
+          [varName.trim()]: varValue.trim(),
         },
       }));
       this.setState({
         varName: "",
         varValue: "",
       });
+    } else {
+      this.setState({
+        error: "Provide an environment variable key and value."
+      })
     }
   }
 
@@ -216,6 +222,16 @@ class AppSettingsPage extends React.Component {
     const { app } = this.props;
     navigator.clipboard.writeText(app.url);
     this.setState({ urlChecked: true });
+  }
+
+  handleEnvVarsSubmit() {
+    const {
+      match: { params },
+      updateApp,
+    } = this.props;
+    const { appID } = params;
+    const { envVars } = this.state;
+    updateApp(appID, { env_vars: envVars });
   }
 
   handlePortSubmit() {
@@ -357,7 +373,6 @@ class AppSettingsPage extends React.Component {
       { id: 3, name: "3" },
       { id: 4, name: "4" },
     ];
-    console.log(this.props);
 
     return (
       <div className={styles.Page}>
@@ -557,17 +572,40 @@ class AppSettingsPage extends React.Component {
               <div className={styles.APPSectionPort}>
                 <div className={styles.APPSectionTitle}>Environment Vars</div>
                 <div className={styles.ModalFormInputsEnvVars}>
+                  {app.env_vars && (
+                    <table className={styles.varsTable}>
+                      <thead>
+                        <tr className={styles.VarsRow}>
+                          <td>Name</td>
+                          <td>Value</td>
+                          <td>Remove</td>
+                          <td></td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {Object.keys(app.env_vars).map((envVar, index) => (
+                          <tr key={index} className={styles.VarsRow}>
+                            <td>{envVar}</td>
+                            <td>{app.env_vars[envVar]}</td>
+                            <td>
+                              
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
                   {Object.keys(envVars).length > 0 && (
                     <div className={styles.EnvVarsTable}>
                       <table className={styles.varsTable}>
-                        <thead>
+                        {!app.env_vars && (<thead>
                           <tr className={styles.VarsRow}>
-                            <div>Name</div>
-                            <div>Value</div>
-                            <div>Remove</div>
-                            <div></div>
+                            <td>Name</td>
+                            <td>Value</td>
+                            <td>Remove</td>
+                            <td></td>
                           </tr>
-                        </thead>
+                        </thead>)}
                         <tbody>
                           {Object.keys(envVars).map((envVar, index) => (
                             <tr key={uuidv4()} className={styles.VarsRow}>
@@ -583,14 +621,14 @@ class AppSettingsPage extends React.Component {
                               </td>
                             </tr>
                           ))}
-                          <tr className={styles.TableRow}>
-                            <PrimaryButton
-                              label={isUpdating ? <Spinner /> : "UPDATE"}
-                              onClick={this.handlePortSubmit}
-                            />
-                          </tr>
                         </tbody>
                       </table>
+                      <div className={styles.TableRow}>
+                        <PrimaryButton
+                          label={isUpdating ? <Spinner /> : "UPDATE"}
+                          onClick={this.handleEnvVarsSubmit}
+                        />
+                      </div>
                       <hr className={styles.HorizontalHalfLine} />
                     </div>
                   )}
