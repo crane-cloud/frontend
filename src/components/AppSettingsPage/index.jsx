@@ -52,6 +52,9 @@ class AppSettingsPage extends React.Component {
       entryCommand: "",
       port: app.port ? app.port : "",
       replicas: "",
+      updating_port:false,
+      updating_command:false,
+      updating_form:false,
     };
 
     this.handleDeleteApp = this.handleDeleteApp.bind(this);
@@ -110,8 +113,14 @@ class AppSettingsPage extends React.Component {
       isUpdated,
       getSingleApp,
       clearUpdateAppState,
+      isUpdating,
       match: { params },
     } = this.props;
+    const {
+      updating_command,
+      updating_form,
+      updating_port,
+    } = this.state;
 
     if (isDeleted !== prevProps.isDeleted) {
       this.hideDeleteAlert();
@@ -121,6 +130,17 @@ class AppSettingsPage extends React.Component {
       clearUpdateAppState();
       getSingleApp(params.appID);
       window.location.reload();
+    }
+    if (isUpdating !== prevProps.isUpdating) {
+      if(updating_command && !isUpdating){
+        this.setState({updating_command: false})
+      }
+      if(updating_port && !isUpdating ){
+        this.setState({updating_port: false})
+      }
+      if(updating_form && !isUpdating){
+        this.setState({updating_form: false})
+      }
     }
   }
   getAppName(id) {
@@ -247,6 +267,7 @@ class AppSettingsPage extends React.Component {
         portError: "Port should be an integer",
       });
     } else {
+      this.setState({updating_port: true})
       updateApp(appID, { port: parseInt(port, 10) });
     }
   }
@@ -259,6 +280,7 @@ class AppSettingsPage extends React.Component {
     const { appID } = params;
     const { entryCommand } = this.state;
     if (entryCommand && entryCommand.length > 0) {
+      this.setState({updating_command: true})
       updateApp(appID, { command: entryCommand });
     } else {
       this.setState({ commandError: "Please enter a command" });
@@ -283,8 +305,10 @@ class AppSettingsPage extends React.Component {
         error: "No changes made",
       });
     } else if (newImage && !isPrivateImage && replicas === "") {
+      this.setState({updating_form: true});
       updateApp(params.appID, { image: newImage });
     } else if (newImage && !isPrivateImage && replicas !== "") {
+      this.setState({updating_form: true});
       updateApp(params.appID, { image: newImage, replicas: replicas });
     } else if (
       isPrivateImage &&
@@ -298,7 +322,7 @@ class AppSettingsPage extends React.Component {
       }));
     } else {
       let appInfo = {
-        image: newImage,
+        image: app.image,
         project_id: params.projectID,
         private_image: isPrivateImage,
       };
@@ -312,6 +336,7 @@ class AppSettingsPage extends React.Component {
           docker_server: server,
           replicas: app.replicas,
         };
+        this.setState({updating_form: true});
         updateApp(params.appID, appInfo);
       } else {
         appInfo = {
@@ -322,6 +347,7 @@ class AppSettingsPage extends React.Component {
           docker_server: server,
           replicas: replicas,
         };
+        this.setState({updating_form: true});
         updateApp(params.appID, appInfo);
       }
     }
@@ -362,6 +388,9 @@ class AppSettingsPage extends React.Component {
       envVars,
       isPrivateImage,
       dockerCredentials,
+      updating_command,
+      updating_port,
+      updating_form,
       dockerCredentials: { username, email, password, server },
     } = this.state;
     // project name from line 105 disappears on refreash, another source of the name was needed
@@ -373,7 +402,7 @@ class AppSettingsPage extends React.Component {
       { id: 3, name: "3" },
       { id: 4, name: "4" },
     ];
-
+    console.log(app)
     return (
       <div className={styles.Page}>
         {isDeleted ? this.renderRedirect() : null}
@@ -518,7 +547,7 @@ class AppSettingsPage extends React.Component {
                     <div className={styles.flexa}>
                       <div className={styles.ReplicasSelect}>
                         <Select
-                          placeholder="Number of Replicas - defaults to 1"
+                          placeholder= {"App has "+ app.replicas + " replica(s)"}
                           options={replicaOptions}
                           onChange={this.handleSelectReplicas}
                         />
@@ -558,7 +587,9 @@ class AppSettingsPage extends React.Component {
                   <div className={styles.APPButton}>
                     <div className={styles.UpperSection}>
                       <PrimaryButton
-                        label={isUpdating ? <Spinner /> : "UPDATE"}
+                        label={(isUpdating && updating_form )? <Spinner /> : "UPDATE"}
+                        disable={isUpdating}
+                        className={(isUpdating) && styles.deactivatedBtn }
                         onClick={this.handleSubmit}
                       />
                     </div>
@@ -683,7 +714,9 @@ class AppSettingsPage extends React.Component {
                     }}
                   />
                   <PrimaryButton
-                    label={isUpdating ? <Spinner /> : "UPDATE"}
+                    label={(isUpdating && updating_port) ? <Spinner /> : "UPDATE"}
+                    disable={isUpdating}
+                    className={(isUpdating) && styles.deactivatedBtn }
                     onClick={this.handlePortSubmit}
                   />
                 </div>
@@ -695,6 +728,7 @@ class AppSettingsPage extends React.Component {
               <div className={styles.errorCenterDiv}>
                 {errorMessage && (
                   <Feedback type="error" message={errorMessage} />
+                  
                 )}
               </div>
               <div className={styles.APPSectionPort}>
@@ -714,7 +748,9 @@ class AppSettingsPage extends React.Component {
                 </div>
                 <div>
                   <PrimaryButton
-                    label={isUpdating ? <Spinner /> : "UPDATE"}
+                    label={(isUpdating && updating_command) ? <Spinner /> : "UPDATE"}
+                    disable={isUpdating}
+                    className={(isUpdating) && styles.deactivatedBtn }
                     onClick={this.handleCommandSubmit}
                   />
                 </div>

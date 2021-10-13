@@ -356,3 +356,8 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.deactivatedBtn {
+  background-color: transparent;
+  color: #f7b21f;
+}
