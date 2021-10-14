@@ -39,6 +39,8 @@ import passwordReducer from "./getPassword";
 import updateAppReducer from "./updateApp";
 import singleAppReducer from "./getSingleApp";
 import databasesReducer from "./getDatabases";
+import appsSummaryReducer from "./appsSummary";
+import usersSummaryReducer from "./usersSummary";
 
 export default combineReducers({
   clusterResourcesReducer,
@@ -81,4 +83,6 @@ export default combineReducers({
   updateAppReducer,
   singleAppReducer,
   databasesReducer,
+  appsSummaryReducer,
+  usersSummaryReducer,
 });

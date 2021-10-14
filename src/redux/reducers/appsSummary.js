@@ -11,7 +11,7 @@ const initialState = {
   errorCode: null,
 };
 
-const appsSummary = (state = initialState, action) => {
+const appsSummaryReducer = (state = initialState, action) => {
   switch (action.type) {
     case APPS_SUMMARY_SUCCESS: {
       return {
@@ -47,4 +47,4 @@ const appsSummary = (state = initialState, action) => {
   }
 };
 
-export default appsSummary;
+export default appsSummaryReducer;

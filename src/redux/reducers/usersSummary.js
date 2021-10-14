@@ -11,7 +11,7 @@ const initialState = {
   errorCode: null,
 };
 
-const usersSummary = (state = initialState, action) => {
+const usersSummaryReducer = (state = initialState, action) => {
   switch (action.type) {
     case USERS_SUMMARY_SUCCESS: {
       return {
@@ -47,4 +47,4 @@ const usersSummary = (state = initialState, action) => {
   }
 };
 
-export default usersSummary;
+export default usersSummaryReducer;
