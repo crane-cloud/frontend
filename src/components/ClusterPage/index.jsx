@@ -152,40 +152,46 @@ class ClusterPage extends React.Component {
               <div className={styles.LeftDBSide}>
                 <div className={styles.TopTitle}>Metrics</div>
                 <div className={styles.MetricsGraph}>
-                  <AreaChart
-                    width={600}
-                    height={300}
-                    syncId="anyId"
-                    data={this.props.usersSummary.graph_data}
-                  >
-                    <Line type="monotone" dataKey="value" stroke="#8884d8" />
-                    <CartesianGrid stroke="#ccc" />
-                    <XAxis dataKey="month" xAxisId={0} />
-                    <XAxis
-                      xAxisId={1}
-                      dx={10}
-                      label={{ value: "Time", angle: 0, position: "bottom" }}
-                      interval={12}
-                      dataKey="year"
-                      tickLine={false}
-                      tick={{ fontSize: 12, angle: 0 }}
-                    />
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <YAxis
-                      label={{
-                        value: "Number of Users",
-                        angle: 270,
-                        position: "middle",
-                      }}
-                    />
-                    <Tooltip />
-                    <Area
-                      type="monotone"
-                      dataKey="value"
-                      stroke="#82ca9d"
-                      fill="#82ca9d"
-                    />
-                  </AreaChart>
+                  {isFetchingUsersSummary ? (
+                    <div className="ContentSectionSpinner">
+                      <Spinner />
+                    </div>
+                  ) : (
+                    <AreaChart
+                      width={600}
+                      height={300}
+                      syncId="anyId"
+                      data={this.props.usersSummary.graph_data}
+                    >
+                      <Line type="monotone" dataKey="value" stroke="#8884d8" />
+                      <CartesianGrid stroke="#ccc" />
+                      <XAxis dataKey="month" xAxisId={0} />
+                      <XAxis
+                        xAxisId={1}
+                        dx={10}
+                        label={{ value: "Time", angle: 0, position: "bottom" }}
+                        interval={12}
+                        dataKey="year"
+                        tickLine={false}
+                        tick={{ fontSize: 12, angle: 0 }}
+                      />
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <YAxis
+                        label={{
+                          value: "Number of Users",
+                          angle: 270,
+                          position: "middle",
+                        }}
+                      />
+                      <Tooltip />
+                      <Area
+                        type="monotone"
+                        dataKey="value"
+                        stroke="#82ca9d"
+                        fill="#82ca9d"
+                      />
+                    </AreaChart>
+                  )}
                 </div>
               </div>
             </div>
@@ -225,40 +231,46 @@ class ClusterPage extends React.Component {
               <div className={styles.LeftDBSide}>
                 <div className={styles.TopTitle}>Metrics</div>
                 <div className={styles.MetricsGraph}>
-                  <AreaChart
-                    width={600}
-                    height={300}
-                    syncId="anyId"
-                    data={summary.graph_data}
-                  >
-                    <Line type="monotone" dataKey="value" stroke="#8884d8" />
-                    <CartesianGrid stroke="#ccc" />
-                    <XAxis dataKey="month" xAxisId={0} />
-                    <XAxis
-                      xAxisId={1}
-                      dx={10}
-                      label={{ value: "Time", angle: 0, position: "bottom" }}
-                      interval={12}
-                      dataKey="year"
-                      tickLine={false}
-                      tick={{ fontSize: 12, angle: 0 }}
-                    />
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <YAxis
-                      label={{
-                        value: "Number of Apps",
-                        angle: 270,
-                        position: "middle",
-                      }}
-                    />
-                    <Tooltip />
-                    <Area
-                      type="monotone"
-                      dataKey="value"
-                      stroke="#82ca9d"
-                      fill="#82ca9d"
-                    />
-                  </AreaChart>
+                  {isFetchingAppsSummary ? (
+                    <div className="ContentSectionSpinner">
+                      <Spinner />
+                    </div>
+                  ) : (
+                    <AreaChart
+                      width={600}
+                      height={300}
+                      syncId="anyId"
+                      data={summary.graph_data}
+                    >
+                      <Line type="monotone" dataKey="value" stroke="#8884d8" />
+                      <CartesianGrid stroke="#ccc" />
+                      <XAxis dataKey="month" xAxisId={0} />
+                      <XAxis
+                        xAxisId={1}
+                        dx={10}
+                        label={{ value: "Time", angle: 0, position: "bottom" }}
+                        interval={12}
+                        dataKey="year"
+                        tickLine={false}
+                        tick={{ fontSize: 12, angle: 0 }}
+                      />
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <YAxis
+                        label={{
+                          value: "Number of Apps",
+                          angle: 270,
+                          position: "middle",
+                        }}
+                      />
+                      <Tooltip />
+                      <Area
+                        type="monotone"
+                        dataKey="value"
+                        stroke="#82ca9d"
+                        fill="#82ca9d"
+                      />
+                    </AreaChart>
+                  )}
                 </div>
               </div>
             </div>
