@@ -11,9 +11,20 @@ import Header from "../Header";
 import addCluster, {
   clearAddClusterState,
 } from "../../redux/actions/addCluster";
+import userSummary from "../../redux/actions/usersSummary";
+import appSummary from "../../redux/actions/appsSummary";
 import Feedback from "../Feedback";
 import styles from "./ClusterPage.module.css";
 import getDatabases from "../../redux/actions/getDatabases";
+import {
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  AreaChart,
+  Tooltip,
+  Area,
+} from "recharts";
 
 class ClusterPage extends React.Component {
   constructor(props) {
@@ -33,8 +44,11 @@ class ClusterPage extends React.Component {
   }
 
   componentDidMount() {
-    const { getDatabases } = this.props;
+    const { getDatabases, userSummary, appSummary } = this.props;
     getDatabases();
+    let details = { start: "2020-01-01", end: "2021-10-10", set_by: "month" };
+    userSummary(details);
+    appSummary(details);
   }
 
   componentDidUpdate(prevProps) {
@@ -98,8 +112,12 @@ class ClusterPage extends React.Component {
       isFailed,
       message,
       databases,
+      usersSummary,
+      isFetchingUsersSummary,
+      isFetchingAppsSummary,
+      summary,
     } = this.props;
-
+    console.log(this.props);
     return (
       <div className={styles.Page}>
         <div className="TopRow">
@@ -123,16 +141,58 @@ class ClusterPage extends React.Component {
             <div className={styles.UserSection}>
               <div className={styles.LeftUserSide}>
                 <div className={styles.TopTitle}>Count</div>
-                <div className={styles.UserStats}>
-                  <div className={styles.In}>
-                    <div className={styles.UserCount}>5737</div>
+                <div>
+                  <div>
+                    <div className={styles.ResourceDigit}>
+                      {usersSummary && usersSummary.metadata?.total_users}
+                    </div>
                   </div>
-                  
                 </div>
               </div>
               <div className={styles.LeftDBSide}>
                 <div className={styles.TopTitle}>Metrics</div>
-                <div className={styles.MetricsGraph}></div>
+                <div className={styles.MetricsGraph}>
+                  {isFetchingUsersSummary ? (
+                    <div className="ContentSectionSpinner">
+                      <Spinner />
+                    </div>
+                  ) : (
+                    <AreaChart
+                      width={600}
+                      height={300}
+                      syncId="anyId"
+                      data={this.props.usersSummary.graph_data}
+                    >
+                      <Line type="monotone" dataKey="value" stroke="#8884d8" />
+                      <CartesianGrid stroke="#ccc" />
+                      <XAxis dataKey="month" xAxisId={0} />
+                      <XAxis
+                        xAxisId={1}
+                        dx={10}
+                        label={{ value: "Time", angle: 0, position: "bottom" }}
+                        interval={12}
+                        dataKey="year"
+                        tickLine={false}
+                        tick={{ fontSize: 12, angle: 0 }}
+                      />
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <YAxis
+                        label={{
+                          value: "Number of Users",
+                          angle: 270,
+                          position: "middle",
+                        }}
+                      />
+                      <Tooltip />
+                      <Area
+                        type="monotone"
+                        dataKey="value"
+                        stroke="#82ca9d"
+                        fill="#82ca9d"
+                      />
+                    </AreaChart>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -168,11 +228,53 @@ class ClusterPage extends React.Component {
               </div>
               <div className={styles.LeftDBSide}>
                 <div className={styles.TopTitle}>Metrics</div>
-                <div className={styles.MetricsGraph}></div>
+                <div className={styles.MetricsGraph}>
+                  {isFetchingAppsSummary ? (
+                    <div className="ContentSectionSpinner">
+                      <Spinner />
+                    </div>
+                  ) : (
+                    <AreaChart
+                      width={600}
+                      height={300}
+                      syncId="anyId"
+                      data={summary.graph_data}
+                    >
+                      <Line type="monotone" dataKey="value" stroke="#8884d8" />
+                      <CartesianGrid stroke="#ccc" />
+                      <XAxis dataKey="month" xAxisId={0} />
+                      <XAxis
+                        xAxisId={1}
+                        dx={10}
+                        label={{ value: "Time", angle: 0, position: "bottom" }}
+                        interval={12}
+                        dataKey="year"
+                        tickLine={false}
+                        tick={{ fontSize: 12, angle: 0 }}
+                      />
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <YAxis
+                        label={{
+                          value: "Number of Apps",
+                          angle: 270,
+                          position: "middle",
+                        }}
+                      />
+                      <Tooltip />
+                      <Area
+                        type="monotone"
+                        dataKey="value"
+                        stroke="#82ca9d"
+                        fill="#82ca9d"
+                      />
+                    </AreaChart>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div><br />
+        </div>
+        <br />
 
         <div className={styles.Card}>
           <div className={styles.CardHeader}>Clusters</div>
@@ -290,6 +392,10 @@ const mapStateToProps = (state) => {
   const { creatingCluster, isAdded, isFailed, errorOccured, message } =
     state.addClusterReducer;
   const { user } = state.user;
+  const { summary, FetchedAppsSummary, isFetchingAppsSummary } =
+    state.appsSummaryReducer;
+  const { usersSummary, FetchedUsersSummary, isFetchingUsersSummary } =
+    state.usersSummaryReducer;
 
   return {
     isFetchingDatabases,
@@ -301,6 +407,12 @@ const mapStateToProps = (state) => {
     isFailed,
     errorOccured,
     message,
+    summary,
+    FetchedAppsSummary,
+    isFetchingAppsSummary,
+    usersSummary,
+    FetchedUsersSummary,
+    isFetchingUsersSummary,
   };
 };
 
@@ -308,6 +420,8 @@ const mapDispatchToProps = {
   getDatabases,
   addCluster,
   clearAddClusterState,
+  appSummary,
+  userSummary,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClusterPage);
