@@ -117,7 +117,6 @@ class ClusterPage extends React.Component {
       isFetchingAppsSummary,
       summary,
     } = this.props;
-    console.log(this.props);
     return (
       <div className={styles.Page}>
         <div className="TopRow">
