@@ -154,14 +154,14 @@ class ClusterPage extends React.Component {
                   <div className={styles.In}>
                     <div className={styles.InnerTitlesStart}>Mysql</div>
                     <div className={styles.ResourceDigit}>
-                      {databases && databases.dbs_stats_per_flavour.mysql_db_count}
+                      {databases && databases?.dbs_stats_per_flavour?.mysql_db_count}
                     </div>
                   </div>
                   <div className={styles.verticalLine}></div>
                   <div className={styles.In}>
                     <div className={styles.InnerTitlesMiddle}>Postgresql</div>
                     <div className={styles.ResourceDigit}>
-                      {databases && databases.dbs_stats_per_flavour.postgres_db_count}
+                      {databases && databases.dbs_stats_per_flavour?.postgres_db_count}
                     </div>
                   </div>
                 </div>
