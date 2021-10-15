@@ -161,7 +161,7 @@ class ClusterPage extends React.Component {
                       width={600}
                       height={300}
                       syncId="anyId"
-                      data={this.props.usersSummary.graph_data}
+                      data={this.props.usersSummary?.graph_data}
                     >
                       <Line type="monotone" dataKey="value" stroke="#8884d8" />
                       <CartesianGrid stroke="#ccc" />
@@ -238,7 +238,7 @@ class ClusterPage extends React.Component {
                       width={600}
                       height={300}
                       syncId="anyId"
-                      data={summary.graph_data}
+                      data={summary?.graph_data}
                     >
                       <Line type="monotone" dataKey="value" stroke="#8884d8" />
                       <CartesianGrid stroke="#ccc" />
