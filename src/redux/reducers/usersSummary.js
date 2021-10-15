@@ -16,7 +16,7 @@ const usersSummaryReducer = (state = initialState, action) => {
     case USERS_SUMMARY_SUCCESS: {
       return {
         ...state,
-        summary: action.payload,
+        usersSummary: action.payload,
         summaryIsFailed: false,
         FetchedUsersSummary: true,
         isFetchingUsersSummary: false,

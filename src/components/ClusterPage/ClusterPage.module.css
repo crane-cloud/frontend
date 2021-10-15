@@ -51,7 +51,7 @@
 }
 
 .CardBodySection{
-  min-height: 10rem;
+  max-height: 10rem;
   flex-grow: 1;
   padding: 1rem 0rem 1rem 1rem;
   display: flex;
@@ -84,6 +84,8 @@
 .MetricsGraph{
   border-left: 1px solid #cccccc;
   padding-bottom: 1rem;
+  display: flex;
+  justify-content: center;
 }
 
 .UserCount{
@@ -162,4 +164,12 @@
   flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+.MetricsCardGraph{
+  max-height: 12rem;
+}
+.AllUsers{
+  display: flex;
+  margin: auto;
 }
