@@ -205,6 +205,10 @@ class ClusterPage extends React.Component {
           >
             <div className={styles.CardHeaderSection}>
               <div className={styles.CardTitle}>Apps</div>
+              <PrimaryButton
+                label="View apps"
+                className={styles.ViewAccountsBtn}
+              />
             </div>
             <div className={styles.DBSection}>
             <div className={styles.LeftUserSide}>
