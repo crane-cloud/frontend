@@ -204,23 +204,15 @@ class ClusterPage extends React.Component {
             }
           >
             <div className={styles.CardHeaderSection}>
-              <div className={styles.CardTitle}>Databases</div>
+              <div className={styles.CardTitle}>Apps</div>
             </div>
             <div className={styles.DBSection}>
-              <div className={styles.LeftDBSide}>
+            <div className={styles.LeftUserSide}>
                 <div className={styles.TopTitle}>Count</div>
-                <div className={styles.DBStats}>
-                  <div className={styles.In}>
-                    <div className={styles.InnerTitlesStart}>Mysql</div>
+                <div>
+                  <div>
                     <div className={styles.ResourceDigit}>
-                      {databases && databases?.dbs_stats_per_flavour?.mysql_db_count}
-                    </div>
-                  </div>
-                  <div className={styles.verticalLine}></div>
-                  <div className={styles.In}>
-                    <div className={styles.InnerTitlesMiddle}>Postgresql</div>
-                    <div className={styles.ResourceDigit}>
-                      {databases && databases.dbs_stats_per_flavour?.postgres_db_count}
+                      {usersSummary && summary.metadata?.total_apps}
                     </div>
                   </div>
                 </div>
@@ -274,6 +266,25 @@ class ClusterPage extends React.Component {
           </div>
         </div>
         <br />
+        <div className={styles.Card}>
+          <div className={styles.CardHeader}>Databases</div>
+          <div className={styles.DBStats}>
+            <div className={styles.In}>
+              <div className={styles.InnerTitlesStart}>Mysql</div>
+              <div className={styles.ResourceDigit}>
+                {databases && databases?.dbs_stats_per_flavour?.mysql_db_count}
+              </div>
+            </div>
+            <div className={styles.verticalLine}></div>
+            <div className={styles.In}>
+              <div className={styles.InnerTitlesMiddle}>Postgresql</div>
+              <div className={styles.ResourceDigit}>
+                {databases &&
+                  databases.dbs_stats_per_flavour?.postgres_db_count}
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div className={styles.Card}>
           <div className={styles.CardHeader}>Clusters</div>
