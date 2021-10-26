@@ -16,6 +16,7 @@ import appSummary from "../../redux/actions/appsSummary";
 import Feedback from "../Feedback";
 import styles from "./ClusterPage.module.css";
 import getDatabases from "../../redux/actions/getDatabases";
+import getClustersList from "../../redux/actions/clusters";
 import {
   Line,
   CartesianGrid,
@@ -44,11 +45,12 @@ class ClusterPage extends React.Component {
   }
 
   componentDidMount() {
-    const { getDatabases, userSummary, appSummary } = this.props;
+    const { getDatabases, getClustersList, userSummary, appSummary } = this.props;
     getDatabases();
     let details = { start: "2020-01-01", end: "2021-10-10", set_by: "month" };
     userSummary(details);
     appSummary(details);
+    getClustersList();
   }
 
   componentDidUpdate(prevProps) {
@@ -116,6 +118,7 @@ class ClusterPage extends React.Component {
       isFetchingUsersSummary,
       isFetchingAppsSummary,
       summary,
+      clusters: {metadata}
     } = this.props;
     return (
       <div className={styles.Page}>
@@ -293,7 +296,7 @@ class ClusterPage extends React.Component {
         <div className={styles.Card}>
           <div className={styles.CardHeader}>Clusters</div>
           <div className={styles.CardTop}>Count</div>
-          <div className={styles.ResourceDigit}>10</div>
+          <div className={styles.ResourceDigit}>{metadata.cluster_count}</div>
         </div>
 
         <div className="TopRow">
@@ -389,9 +392,6 @@ class ClusterPage extends React.Component {
 }
 
 ClusterPage.propTypes = {
-  user: PropTypes.shape({
-    accessToken: PropTypes.string.isRequired,
-  }).isRequired,
   addCluster: PropTypes.func.isRequired,
   clearAddClusterState: PropTypes.func.isRequired,
   isAdded: PropTypes.bool.isRequired,
@@ -410,6 +410,7 @@ const mapStateToProps = (state) => {
     state.appsSummaryReducer;
   const { usersSummary, FetchedUsersSummary, isFetchingUsersSummary } =
     state.usersSummaryReducer;
+  const { clusters } = state.clustersReducer;
 
   return {
     isFetchingDatabases,
@@ -427,6 +428,7 @@ const mapStateToProps = (state) => {
     usersSummary,
     FetchedUsersSummary,
     isFetchingUsersSummary,
+    clusters,
   };
 };
 
@@ -436,6 +438,7 @@ const mapDispatchToProps = {
   clearAddClusterState,
   appSummary,
   userSummary,
+  getClustersList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClusterPage);
