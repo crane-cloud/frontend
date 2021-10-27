@@ -223,23 +223,6 @@ class CreateProject extends React.Component {
                   />
                 </div>
                 <div className={styles.Element}>
-                  <div className={styles.ElementTitle}>Description</div>
-                  <textarea
-                     className={styles.TextArea}
-                     type="text"
-                     placeholder="Project description"
-                     rows="4"
-                     cols="50"
-                     name="projectDescription"
-                     value={projectDescription}
-                     onChange={(e) => {
-                      this.handleChange(e);
-                   }}
-                  />
-                </div>
-              </div>
-              <div className={styles.RightFormElements}>
-                <div className={styles.Element}>
                   <div className={styles.ElementTitle}>Type</div>
                   <Select
                     required
@@ -257,7 +240,23 @@ class CreateProject extends React.Component {
                    }}
                   />)}
                 </div>
+                <div className={styles.Element}>
+                  <div className={styles.ElementTitle}>Description</div>
+                  <textarea
+                     className={styles.TextArea}
+                     type="text"
+                     placeholder="Project description"
+                     rows="4"
+                     cols="50"
+                     name="projectDescription"
+                     value={projectDescription}
+                     onChange={(e) => {
+                      this.handleChange(e);
+                   }}
+                  />
+                </div>
               </div>
+             
             </div>
             <div className={styles.CreateButtons}>
               <div className={styles.InnerContent}>

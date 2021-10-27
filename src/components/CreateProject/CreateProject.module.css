@@ -1,9 +1,9 @@
 .ProjectForm {
-  width: 70%;
+  width: 60%;
   padding-top: 2rem;
   height: 100%;
   display: grid;
-  grid-template-columns: 3fr 3fr;
+  grid-template-columns: 1fr;
   grid-template-rows: auto;
   grid-gap: 2rem;
 }
@@ -50,11 +50,12 @@
   font-size: 1.5rem;
 }
 
-.Element {
+.Element input {
   display: grid;
-  grid-template-columns: auto;
+  grid-template-columns: 1fr;
   grid-template-rows: 0.5fr 1fr;
   grid-gap: 0.2rem;
+  width: 100%;
 }
 .FormsSection {
   padding: 2rem;
@@ -63,13 +64,13 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  max-width: 25rem;
 }
+
 .TextArea {
-  width: 25rem;
   border: 2px solid black;
   box-sizing: border-box;
   font-size: inherit;
+  width: 100%;
 }
 .TextArea::placeholder {
   color: #808080;
@@ -95,10 +96,4 @@ textarea {
 }
 .ElementTitle {
   padding: 0.7rem 0rem 0rem;
-}
-.RightFormElements {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 25rem;
 }
