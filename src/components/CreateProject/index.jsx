@@ -152,7 +152,7 @@ class CreateProject extends React.Component {
         name: projectName,
         owner_id: data.id,
         organisation: projectOrganisation,
-        type: type,
+        project_type: type,
       };
       addProject(newProject);
     }
@@ -214,7 +214,7 @@ class CreateProject extends React.Component {
                   <div className={styles.ElementTitle}>Organisation</div>
                   <BlackInputText
                     required
-                    placeholder="eg. cranecloud"
+                    placeholder="eg.Individual ,Makerere Universty..."
                     name="projectOrganisation"
                     value={projectOrganisation}
                     onChange={(e) => {
