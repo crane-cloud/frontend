@@ -16,12 +16,12 @@ import getClustersList from "../../redux/actions/clusters";
 import styles from "./CreateProject.module.css";
 
 const types = [
-  { name: "personal", id: 1, value: "Personal" },
-  { name: "student", id: 2, value: "Student" },
-  { name: "commercial", id: 3, value: "Commercial" },
-  { name: "charity", id: 4, value: "Charity" },
-  { name: "research", id: 5, value: "Research" },
-  { name: "others,please specify below", id: 6, value: "Others" },
+  { name: "Personal", id: 1, value: "Personal" },
+  { name: "Student", id: 2, value: "Student" },
+  { name: "Commercial", id: 3, value: "Commercial" },
+  { name: "Charity", id: 4, value: "Charity" },
+  { name: "Research", id: 5, value: "Research" },
+  { name: "Others, please specify below", id: 6, value: "Others" },
 ];
 
 class CreateProject extends React.Component {

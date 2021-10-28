@@ -5,6 +5,9 @@
 .CreateProjectError {
   padding-bottom: 1rem;
 }
+.MainContentSection {
+  padding-bottom: 1rem;
+}
 
 .SelectWrapper {
   width: 100%;
