@@ -1,11 +1,5 @@
 .ProjectForm {
   width: 60%;
-  padding-top: 2rem;
-  height: 100%;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto;
-  grid-gap: 2rem;
 }
 
 .CreateProjectError {
