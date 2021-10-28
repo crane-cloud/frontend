@@ -26,7 +26,7 @@
 .InformationBar {
   background: #f8f7e5;
   height: 5rem;
-  padding: 0 3rem;
+  padding: 0 1rem;
   display: flex;
   align-items: center;
 }
@@ -52,7 +52,7 @@
   width: 100%;
 }
 .FormsSection {
-  padding: 2rem;
+  padding: 1rem;
 }
 .LeftFormElements {
   display: flex;
@@ -78,7 +78,7 @@
   background-color: transparent;
 }
 .CreateProjectError {
-  padding: 2rem;
+  padding: 1rem;
 }
 
 /* make it unresizable */
