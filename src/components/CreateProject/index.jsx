@@ -262,7 +262,6 @@ class CreateProject extends React.Component {
               <div className={styles.InnerContent}>
                 <PrimaryButton
                   label={isAdding ? <Spinner /> : "Create"}
-                  className={styles.CreateBtn}
                   onClick={this.handleSubmit}
                 />
               </div>

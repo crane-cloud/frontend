@@ -1,19 +1,14 @@
 .ProjectForm {
-  width: 60%;
+  width: 100%;
 }
 
 .CreateProjectError {
   padding-bottom: 1rem;
-}
-.MainContentSection {
-  padding-bottom: 1rem;
+  align-self: center;
 }
 
-.SelectWrapper {
-  width: 100%;
-}
-.SelectOptionsWrapper {
-  border: 2px solid #000;
+.MainContentSection {
+  padding-bottom: 1rem;
 }
 
 .FormElements {
@@ -56,6 +51,8 @@
 }
 .FormsSection {
   padding: 1rem;
+  align-self: center;
+  width: 60%;
 }
 .LeftFormElements {
   display: flex;
@@ -94,4 +91,9 @@ textarea {
 }
 .ElementTitle {
   padding: 0.7rem 0rem 0rem;
+}
+.InnerContent {
+  display: grid;
+  justify-content: center;
+  gap: 1rem;
 }
