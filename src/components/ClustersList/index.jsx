@@ -85,7 +85,7 @@ ClustersList.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { isRetrieving, clusters, isRetrieved } = state.clustersReducer;
+  const { isRetrieving, clusters: { clusters}, isRetrieved } = state.clustersReducer;
   return { isRetrieving, clusters, isRetrieved };
 };
 
