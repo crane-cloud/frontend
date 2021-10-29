@@ -140,11 +140,9 @@ class UserProjectsPage extends React.Component {
 
 UserProjectsPage.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.shape({})),
-  clusters: PropTypes.arrayOf(PropTypes.object),
+  clusters: PropTypes.object,
   getClustersList: PropTypes.func.isRequired,
   getUserProjects: PropTypes.func.isRequired,
-  clearAddProjectState: PropTypes.func.isRequired,
-  addProject: PropTypes.func.isRequired,
   data: PropTypes.shape({
     id: PropTypes.string.isRequired,
   }).isRequired,
