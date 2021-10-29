@@ -2,43 +2,28 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import styles from "./UserProjectsPage.module.css";
-import addProject, {
-  clearAddProjectState,
-} from "../../redux/actions/addProject";
 import { clearUpdateProjectState } from "../../redux/actions/updateProject";
 import InformationBar from "../InformationBar";
 import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import Header from "../Header";
-import PrimaryButton from "../PrimaryButton";
-import Modal from "../Modal";
 import getClustersList from "../../redux/actions/clusters";
+import CreateProject from "../CreateProject";
 import getUserProjects from "../../redux/actions/projectsList";
-import BlackInputText from "../BlackInputText";
-import TextArea from "../TextArea";
 import ProjectCard from "../ProjectCard";
 import Spinner from "../Spinner";
-import Feedback from "../Feedback";
-import Select from "../Select";
+
 
 class UserProjectsPage extends React.Component {
   constructor(props) {
     super(props);
     this.initialState = {
-      openModal: false,
-      projectName: "",
-      clusterID: "",
-      projectDescription: "",
-      error: "",
+      openCreateComponent: false,
     };
 
     this.state = this.initialState;
 
-    this.showForm = this.showForm.bind(this);
-    this.hideForm = this.hideForm.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.validateProjectName = this.validateProjectName.bind(this);
-    this.handleSelectChange = this.handleSelectChange.bind(this);
+    this.openProjectCreateComponent = this.openProjectCreateComponent.bind(this);
+    this.callbackProjectCreateComponent = this.callbackProjectCreateComponent.bind(this);
   }
 
   componentDidMount() {
@@ -73,100 +58,43 @@ class UserProjectsPage extends React.Component {
 
     if (isAdded !== prevProps.isAdded) {
       getUserProjects(data.id);
-      this.hideForm();
+      this.setState(this.initialState);
     }
   }
-
-  showForm() {
-    this.setState({ openModal: true });
+ 
+  openProjectCreateComponent() {
+    this.setState({ openCreateComponent: true });
   }
-
-  hideForm() {
-    const { clearAddProjectState } = this.props;
-    clearAddProjectState();
+  callbackProjectCreateComponent() {
     this.setState(this.initialState);
   }
-
-  validateProjectName(name) {
-    if (/^[a-z]/i.test(name)) {
-      if (name.match(/[^-a-zA-Z]/)) {
-        return "false_convention";
-      }
-      return true;
-    }
-    return false;
-  }
-
-  handleChange(e) {
-    const { error } = this.state;
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-
-    if (error) {
-      this.setState({
-        error: "",
-      });
-    }
-  }
-
-  handleSelectChange(selected) {
-    this.setState({ clusterID: selected.id });
-  }
-
-  handleSubmit() {
-    const { projectName, projectDescription, clusterID } = this.state;
-    const { addProject, data } = this.props;
-
-    if (!projectName || !clusterID || !projectDescription) {
-      this.setState({
-        error: "all fields are required",
-      });
-    } else if (this.validateProjectName(projectName) === false) {
-      this.setState({
-        error: "name should start with a letter",
-      });
-    } else if (this.validateProjectName(projectName) === "false_convention") {
-      this.setState({
-        error: "name may only contain letters and a hypen -",
-      });
-    } else if (projectName.length > 30) {
-      this.setState({
-        error: "project name may not exceed 30 characters",
-      });
-    } else {
-      const newProject = {
-        description: projectDescription,
-        cluster_id: clusterID,
-        name: projectName,
-        owner_id: data.id,
-      };
-      addProject(newProject);
-    }
-  }
-
+  
+  
   render() {
-    const { openModal, projectName, projectDescription, error } = this.state;
+    const { openCreateComponent } = this.state;
     const {
       projects,
-      clusters,
       isRetrieving,
-      message,
-      errorCode,
       isFetched,
-      isAdded,
-      isAdding,
+      match: { params },
     } = this.props;
     const sortedProjects = projects.sort((a, b) => b.date_created > a.date_created ? 1: -1);
 
     return (
       <div className={styles.Page}>
+        {openCreateComponent ? (
+            <CreateProject
+              closeComponent={this.callbackProjectCreateComponent}
+              params={params}
+            />
+          ):(
+        <div>
         <div className={styles.TopRow}>
           <Header />
-          <InformationBar header="Projects" showBtn btnAction={this.showForm} />
+          <InformationBar header="Projects" showBtn btnAction={this.openProjectCreateComponent} />
         </div>
         <div className={styles.MainRow}>
-          {isRetrieving ? (
+        {isRetrieving ? (
             <div className={styles.NoResourcesMessage}>
               <div className={styles.SpinnerWrapper}>
                 <Spinner size="big" />
@@ -198,71 +126,13 @@ class UserProjectsPage extends React.Component {
             </div>
           )}
         </div>
+      </div>
+          )}
         <div className={styles.FooterRow}>
           <div>
             Copyright {new Date().getFullYear()} Crane Cloud. All Rights Reserved.
           </div>
-        </div>
-
-        {/* Modal for creating a new project
-        Its triggered by the value of state.openModal */}
-        <Modal showModal={openModal} onClickAway={this.hideForm}>
-          <div className="ModalForm">
-            <div className="ModalFormHeading">
-              <h2>Add a project</h2>
-            </div>
-            <div className="ModalFormInputs">
-              <Select
-                required
-                placeholder="Choose Datacenter location"
-                options={clusters}
-                onChange={this.handleSelectChange}
-              />
-
-              <BlackInputText
-                required
-                placeholder="Project name"
-                name="projectName"
-                value={projectName}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
-              />
-
-              <TextArea
-                placeholder="Project description"
-                name="projectDescription"
-                value={projectDescription}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
-              />
-            </div>
-            {error && <Feedback type="error" message={error} />}
-            <div className="ModalFormButtons">
-              <PrimaryButton
-                label="Cancel"
-                className="CancelBtn"
-                onClick={this.hideForm}
-              />
-              <PrimaryButton
-                label={isAdding ? <Spinner /> : "add"}
-                onClick={this.handleSubmit}
-              />
-            </div>
-
-            {message && (
-              <Feedback
-                message={
-                  errorCode === 409
-                    ? "Name already in use, please choose another"
-                    : message
-                }
-                type={isAdded && errorCode !== 409 ? "success" : "error"}
-              />
-            )}
-          </div>
-        </Modal>
+        </div>     
       </div>
     );
   }
@@ -277,6 +147,11 @@ UserProjectsPage.propTypes = {
   addProject: PropTypes.func.isRequired,
   data: PropTypes.shape({
     id: PropTypes.string.isRequired,
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      userID: PropTypes.string.isRequired,
+    }).isRequired,
   }).isRequired,
   isAdded: PropTypes.bool,
   errorCode: PropTypes.number,
@@ -326,9 +201,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   getUserProjects,
-  addProject,
   getClustersList,
-  clearAddProjectState,
   clearUpdateProjectState,
 };
 

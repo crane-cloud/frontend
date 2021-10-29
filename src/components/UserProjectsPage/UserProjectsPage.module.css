@@ -28,16 +28,12 @@
   font-weight: bold;
 }
 
-.ModalFormInputs input::placeholder {
-  color: #808080;
-}
-
 .MainRow > .ConnectModal {
   width: 100%;
   margin-left: 0;
 }
 
-.MainRow{
+.MainRow {
   background-color: #f1f1f1;
   min-height: calc(100vh - 14rem);
 }
@@ -52,7 +48,7 @@
   padding: 6rem;
 }
 
-.ButtonPlusSmall{
+.ButtonPlusSmall {
   width: 1rem;
   height: 1rem;
 }
