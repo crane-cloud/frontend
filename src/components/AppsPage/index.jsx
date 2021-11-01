@@ -16,7 +16,7 @@ class AppsPage extends React.Component {
     super(props);
     this.initialState = {
       name: "",
-      openModal: false, // add project modal is closed initially
+      openModal: false, // add project component is closed initially
       error: "",
       port: "",
     };
@@ -25,8 +25,8 @@ class AppsPage extends React.Component {
 
     this.showForm = this.showForm.bind(this);
     this.hideForm = this.hideForm.bind(this);
-    this.getProjectName = this.getProjectName.bind(this);
-    this.getProjectDescription = this.getProjectDescription.bind(this);
+    this.getProjectDetails = this.getProjectDetails.bind(this);
+
   }
 
   componentDidMount() {
@@ -42,14 +42,10 @@ class AppsPage extends React.Component {
     }
   }
 
-  getProjectName(projects, id) {
+ 
+  getProjectDetails(projects,id) {
     const project = projects.find((project) => project.id === id);
-    return project.name;
-  }
-
-  getProjectDescription(projects, id) {
-    const project = projects.find((project) => project.id === id);
-    return project.description;
+    return project;
   }
 
   showForm() {
@@ -72,13 +68,16 @@ class AppsPage extends React.Component {
     } = this.props;
 
     const { projectID, userID } = params;
+    const projectDetails = this.getProjectDetails(projects, params.projectID);
 
-    const projectDetails = {
-      name: this.getProjectName(projects, params.projectID),
-      description: this.getProjectDescription(projects, params.projectID),
-    };
+     const filteredDetails = {
+       name: projectDetails.name,
+       description: projectDetails.description,
+       organisation: projectDetails.organisation,
+       project_type: projectDetails.project_type,
+     };
 
-    localStorage.setItem("project", JSON.stringify(projectDetails));
+    localStorage.setItem("project", JSON.stringify(filteredDetails));
 
     return (
       <div className="Page">
@@ -88,9 +87,9 @@ class AppsPage extends React.Component {
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
-              name={this.getProjectName(projects, params.projectID)}
+              name={projectDetails.name}
               params={params}
-              description={this.getProjectName(projects, params.projectID)}
+              description={projectDetails.description}
               pageRoute={this.props.location.pathname}
               allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
               cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}

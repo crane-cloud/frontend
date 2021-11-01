@@ -14,15 +14,10 @@ import addProject, {
 } from "../../redux/actions/addProject";
 import getClustersList from "../../redux/actions/clusters";
 import styles from "./CreateProject.module.css";
+import {
+  retrieveProjectTypes
+} from "../../helpers/projecttypes";
 
-const types = [
-  { name: "Personal", id: 1, value: "Personal" },
-  { name: "Student", id: 2, value: "Student" },
-  { name: "Commercial", id: 3, value: "Commercial" },
-  { name: "Charity", id: 4, value: "Charity" },
-  { name: "Research", id: 5, value: "Research" },
-  { name: "Others, please specify below", id: 6, value: "Others" },
-];
 
 class CreateProject extends React.Component {
   constructor(props) {
@@ -78,7 +73,7 @@ class CreateProject extends React.Component {
           this.setState({ othersBool: false });
         }
       }
-  }
+  };
   handleDatacenterSelectChange(selected) {
     this.setState({ clusterID: selected.id });
   }
@@ -170,6 +165,7 @@ class CreateProject extends React.Component {
     } = this.props;
     const { projectName, projectDescription, error, projectOrganisation,othersBool,otherType } =
       this.state;
+    const types = retrieveProjectTypes();
     if (isAdded) {
       return <Redirect to={`/users/${userID}/projects/`} noThrow />;
     }
