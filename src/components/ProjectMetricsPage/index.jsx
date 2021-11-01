@@ -78,7 +78,7 @@ class ProjectMetricsPage extends React.Component {
       match: { params },
     } = this.props;
 
-    const { projectID, userID } = params;
+    const { projectID } = params;
     const projectDetails = {
       name: this.getProjectName(projectID),
       description: this.getProjectDescription(projectID),
@@ -101,11 +101,11 @@ class ProjectMetricsPage extends React.Component {
               params={params}
               description={this.getProjectName(params.projectID)}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
-              cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
-              memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
-              databaseLink={`/users/${userID}/projects/${projectID}/databases`}
-              networkLink={`/users/${userID}/projects/${projectID}/network/`}
+              allMetricsLink={`/projects/${projectID}/metrics`}
+              cpuLink={`/projects/${projectID}/cpu/`}
+              memoryLink={`/projects/${projectID}/memory/`}
+              databaseLink={`/projects/${projectID}/databases`}
+              networkLink={`/projects/${projectID}/network/`}
             />
           </div>
           <div className="MainContentSection">

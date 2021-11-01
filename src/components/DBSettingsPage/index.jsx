@@ -154,12 +154,12 @@ class DBSettingsPage extends React.Component {
 
   renderRedirect = () => {
     const { dbDeleteMessage } = this.props;
-    const { userID, projectID } = this.props.match.params;
+    const { projectID } = this.props.match.params;
     if (dbDeleteMessage === "Database Deleted Successfully") {
       this.hideDeleteAlert();
       return (
         <Redirect
-          to={`/users/${userID}/projects/${projectID}/databases`}
+          to={`/projects/${projectID}/databases`}
           noThrow
         />
       );
@@ -168,11 +168,11 @@ class DBSettingsPage extends React.Component {
 
   renderUpdateRedirect = () => {
     const { dpPasswordUpdated } = this.props;
-    const { userID, projectID, databaseID } = this.props.match.params;
+    const { projectID, databaseID } = this.props.match.params;
     if (dpPasswordUpdated) {
       return (
         <Redirect
-          to={`/users/${userID}/projects/${projectID}/databases/${databaseID}/settings`}
+          to={`/projects/${projectID}/databases/${databaseID}/settings`}
           noThrow
         />
       );
@@ -291,7 +291,7 @@ class DBSettingsPage extends React.Component {
       isRetrievingPassword,
       passwordFetched
     } = this.props;
-    const { userID, projectID, databaseID } = this.props.match.params;
+    const { projectID, databaseID } = this.props.match.params;
     // const dbInfo = this.getDatabaseInfo(databaseID);
     const {
       openDeleteAlert,
@@ -323,11 +323,11 @@ class DBSettingsPage extends React.Component {
               name={this.getProjectName(projects, projectID)}
               params={this.props.match.params}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
-              cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
-              memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
-              databaseLink={`/users/${userID}/projects/${projectID}/databases`}
-              networkLink={`/users/${userID}/projects/${projectID}/network/`}
+              allMetricsLink={`/projects/${projectID}/metrics`}
+              cpuLink={`/projects/${projectID}/cpu/`}
+              memoryLink={`/projects/${projectID}/memory/`}
+              databaseLink={`/projects/${projectID}/databases`}
+              networkLink={`/projects/${projectID}/network/`}
             />
           </div>
           <div className="MainContentSection">

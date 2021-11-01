@@ -11,7 +11,7 @@ export const startFetchingClusters = () => ({
 
 export const getClustersSuccess = (response) => ({
   type: GET_CLUSTERS,
-  payload: response.data.data.clusters,
+  payload: response.data.data,
 });
 
 export const getClustersFail = (error) => ({

@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useCallback } from "react";
 import "./AdminProjectsPage.css";
 import InformationBar from "../InformationBar";
 import Header from "../Header";
@@ -8,10 +7,24 @@ import getAdminProjects from "../../redux/actions/adminProjects";
 import getUsersList from "../../redux/actions/users";
 import Spinner from "../Spinner";
 import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
-const AdminProjectsPage = ({adminProjects, usersList}) => {
+const AdminProjectsPage = () => {
+  const { clusterID } = useParams();
+  const dispatch = useDispatch();
 
-  const {clusterID } = useParams();
+  const getAdminProps = useCallback(
+    () => dispatch(getAdminProjects()),
+    [dispatch]
+  );
+  const getUsersProps = useCallback(() => dispatch(getUsersList), [dispatch]);
+  const adminProjects = useSelector((state) => state.adminProjectsReducer);
+  const usersList = useSelector((state) => state.usersListReducer);
+
+  useEffect(() => {
+    getAdminProps();
+    getUsersProps();
+  }, [getAdminProps, getUsersProps]);
 
   const getUserName = (userId) => {
     let username = "";
@@ -25,11 +38,6 @@ const AdminProjectsPage = ({adminProjects, usersList}) => {
     }
     return username;
   };
-
-  useEffect(() => {
-    getAdminProjects();
-    getUsersList();
-  }, []);
 
   const clusterName = localStorage.getItem("clusterName");
 
@@ -86,11 +94,12 @@ const AdminProjectsPage = ({adminProjects, usersList}) => {
                   </tbody>
                 )}
               </table>
-              {adminProjects.isRetrieved && adminProjects.projects.length === 0 && (
-                <div className="NoResourcesMessage">
-                  <p>No projects available</p>
-                </div>
-              )}
+              {adminProjects.isRetrieved &&
+                adminProjects.projects.length === 0 && (
+                  <div className="NoResourcesMessage">
+                    <p>No projects available</p>
+                  </div>
+                )}
               {!adminProjects.isRetrieving && !adminProjects.isRetrieved && (
                 <div className="NoResourcesMessage">
                   <p>
@@ -106,16 +115,4 @@ const AdminProjectsPage = ({adminProjects, usersList}) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    adminProjects: state.adminProjectsReducer,
-    usersList: state.usersListReducer,
-  };
-};
-
-const mapDispatchToProps = {
-  getAdminProjects,
-  getUsersList,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AdminProjectsPage);
+export default AdminProjectsPage;

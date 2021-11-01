@@ -39,7 +39,7 @@ class AppsCard extends React.Component {
       <>
         <Link
           to={{
-            pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`,
+            pathname: `/projects/${otherData.projectID}/apps/${appId}/metrics`,
           }}
           key={otherData.projectID}
           className="AppName"

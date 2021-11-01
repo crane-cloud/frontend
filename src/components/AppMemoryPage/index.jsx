@@ -130,7 +130,7 @@ class AppMemoryPage extends React.Component {
       isFetchingAppMemory,
       appMemoryMetrics,
     } = this.props;
-    const { projectID, appID, userID } = params;
+    const { projectID, appID } = params;
     const { period } = this.state;
 
     const formattedMetrics = formatAppMemoryMetrics(
@@ -150,12 +150,12 @@ class AppMemoryPage extends React.Component {
               name={this.getAppName(appID)}
               params={params}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/metrics/`}
-              cpuLink={`/users/${userID}/projects/${projectID}/apps/${appID}/cpu/`}
-              memoryLink={`/users/${userID}/projects/${projectID}/apps/${appID}/memory/`}
-              databaseLink={`/users/${userID}/projects/${projectID}/databases`}
-              networkLink={`/users/${userID}/projects/${projectID}/apps/${appID}/network/`}
-              appLogsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/logs/`}
+              allMetricsLink={`/projects/${projectID}/apps/${appID}/metrics/`}
+              cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
+              memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
+              databaseLink={`/projects/${projectID}/databases`}
+              networkLink={`/projects/${projectID}/apps/${appID}/network/`}
+              appLogsLink={`/projects/${projectID}/apps/${appID}/logs/`}
             />
           </div>
           <div className="MainContentSection">
