@@ -48,7 +48,8 @@ class CreateProject extends React.Component {
   }
 
   componentDidMount() {
-    const { clearAddProjectState } = this.props;
+    const { clearAddProjectState,getClustersList } = this.props;
+    getClustersList();
     clearAddProjectState();
   }
 
@@ -164,7 +165,7 @@ class CreateProject extends React.Component {
       isAdding,
       message,
       errorCode,
-      clusters,
+      clusters: {clusters},
       params: { userID },
     } = this.props;
     const { projectName, projectDescription, error, projectOrganisation,othersBool,otherType } =
@@ -287,7 +288,7 @@ class CreateProject extends React.Component {
 }
 
 CreateProject.propTypes = {
-  clusters: PropTypes.arrayOf(PropTypes.object),
+  clusters: PropTypes.object,
   getClustersList: PropTypes.func.isRequired,
   clearAddProjectState: PropTypes.func.isRequired,
   addProject: PropTypes.func.isRequired,
