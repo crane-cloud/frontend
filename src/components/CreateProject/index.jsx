@@ -110,7 +110,8 @@ class CreateProject extends React.Component {
       projectOrganisation,
     } = this.state;
     const { addProject, data } = this.props;
-    const type = othersBool ? (otherType) : (projectType);
+    const capitalizeFirstLetter = (input) => input.charAt(0).toUpperCase() + input.slice(1);
+    const type = othersBool ? capitalizeFirstLetter(otherType) : capitalizeFirstLetter(projectType);
 
     if (
       !projectName ||
@@ -122,7 +123,6 @@ class CreateProject extends React.Component {
       this.setState({
         error: "all fields are required",
       });
-      console.log(clusterID)
     } else if (this.validateProjectName(projectName) === false) {
       this.setState({
         error: "name should start with a letter",
@@ -136,9 +136,15 @@ class CreateProject extends React.Component {
         error: "project name may not exceed 30 characters",
       });
     // for a meaning full project type
-    } else if(type.length < 4){
+    } else if(type.length < 4 || this.validateProjectName(type) === false 
+    || this.validateProjectName(type) === "false_convention"){
       this.setState({
-        error: "project type must be atleast 4 characters",
+        error: "project type must be atleast 4 characters, start with a letter and may only contain letters and a hypen -",
+      });
+    } else if(this.validateProjectName(projectOrganisation) === false 
+    || this.validateProjectName(projectOrganisation) === "false_convention"){
+      this.setState({
+        error: "project organisation must start with a letter and may only contain letters and a hypen -",
       });
     } else {
 

@@ -53,7 +53,7 @@ class ProjectSettingsPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateProjectName = this.validateProjectName.bind(this);
-    this.checkProjectName = this.checkProjectName.bind(this);
+    this.checkProjectInputValidity = this.checkProjectInputValidity.bind(this);
     this.handleTypeSelectChange = this.handleTypeSelectChange.bind(this); 
     this.renderRedirect = this.renderRedirect.bind(this);
   }
@@ -118,51 +118,85 @@ class ProjectSettingsPage extends React.Component {
         params: { projectID },
       },
     } = this.props;
-    const type = othersBool ? (otherType) : (projectType);
+   
     const projectInfo = JSON.parse(localStorage.getItem("project"));
     const { name, description, organisation, project_type } = projectInfo;
 
   
-
     const Trim = (input) => input.trim();
+    const capitalizeFirstLetter = (input) => input.charAt(0).toUpperCase() + input.slice(1);
+    const type = othersBool ? capitalizeFirstLetter(otherType) : capitalizeFirstLetter(projectType);
     const trimedprojectName = Trim(projectName);
     const trimedprojectDescription = Trim(projectDescription);
     const trimedprojectOrganisation = Trim(projectOrganisation);
-    const trimedprojectType = Trim(type)
+    const trimedprojectType = Trim(type);
 
-    if (trimedprojectName !== name || trimedprojectDescription !== description || trimedprojectOrganisation !== organisation || trimedprojectType !== project_type) {
+    if (trimedprojectName !== name || trimedprojectDescription !== description 
+      || trimedprojectOrganisation !== organisation || trimedprojectType !== project_type) {
       if (!trimedprojectName || !trimedprojectDescription || !trimedprojectOrganisation || !trimedprojectType) {
         this.setState({
           error: "Can't update when an empty field is submited, please fill the missing field or leave it unchanged.",
         });
       } else {
+        
         if ( trimedprojectName !== name ) {
-          const nameCheckResult = this.checkProjectName(trimedprojectName);
+          const nameCheckResult = this.checkProjectInputValidity(trimedprojectName,name);
           if (nameCheckResult !== "") {
             this.setState({
               error: nameCheckResult,
-            });
+            }); 
           } else {
-            //update is successfull whether other fields apart from mame are not changed or not 
-            // as long as they are not empty
-            const newProject = { 
-              name: trimedprojectName,
-              project_type: trimedprojectType,
-              organisation: trimedprojectOrganisation,
-              description: trimedprojectDescription
-             };
-            updateProject(projectID, newProject);
+               const organisationCheckResult = 
+               this.checkProjectInputValidity(trimedprojectOrganisation,"organisation");
+               const typeCheckResult = this.checkProjectInputValidity(trimedprojectType,"type");
+               if(organisationCheckResult !== "" || typeCheckResult !=="" ){
+                 if(organisationCheckResult !== ""){
+                  this.setState({
+                      error: organisationCheckResult,
+                  }); 
+                 }
+                if(typeCheckResult !==""){
+                  this.setState({
+                    error: typeCheckResult,
+                  }); 
+               }
+             }
+            if(typeCheckResult==="" && organisationCheckResult===""){
+             const newProject = { 
+                 name: trimedprojectName,
+                 project_type: trimedprojectType,
+                 organisation: trimedprojectOrganisation,
+                description: trimedprojectDescription
+                };
+             updateProject(projectID, newProject);
+              }
           }
         } else {
-          // without name
-          const newProject = { 
+          const organisationCheckResult = 
+          this.checkProjectInputValidity(trimedprojectOrganisation,"organisation");
+          const typeCheckResult = this.checkProjectInputValidity(trimedprojectType,"type");
+          if(organisationCheckResult !== "" || typeCheckResult !=="" ){
+            if(organisationCheckResult !== ""){
+             this.setState({
+                 error: organisationCheckResult,
+             }); 
+            }
+           if(typeCheckResult !==""){
+             this.setState({
+               error: typeCheckResult,
+             }); 
+          }
+        }
+       if(typeCheckResult==="" && organisationCheckResult===""){
+        const newProject = { 
             project_type: trimedprojectType,
             organisation: trimedprojectOrganisation,
-            description: trimedprojectDescription
+           description: trimedprojectDescription
            };
-          updateProject(projectID, newProject);
+        updateProject(projectID, newProject);
+         }
         }
-        }
+      }
       }else {
       this.setState({
         error: "Please provide new information in atleast one of the fields",
@@ -183,13 +217,13 @@ class ProjectSettingsPage extends React.Component {
   showDeleteAlert() {
     this.setState({ openDeleteAlert: true });
   }
-  checkProjectName(name) {
-    if (!this.validateProjectName(name)) {
-      return "Name should start with a letter";
-    } else if (this.validateProjectName(name) === "false_convention") {
-      return "Name may only contain letters and a hypen -";
-    } else if (name.length > 22) {
-      return "Project name cannot exceed 22 characters";
+  checkProjectInputValidity(input,output) {
+    if (!this.validateProjectName(input)) {
+      return `${output} should start with a letter`;
+    } else if (this.validateProjectName(input) === "false_convention") {
+      return `${output} may only contain letters and a hypen -`;
+    } else if (input.length > 22) {
+      return `Project ${output} cannot exceed 22 characters`;
     } else {
       return "";
     }
