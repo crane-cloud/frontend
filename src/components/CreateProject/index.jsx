@@ -229,13 +229,13 @@ class CreateProject extends React.Component {
                   <div className={styles.ElementTitle}>Type</div>
                   <Select
                     required
-                    placeholder="choose project type"
+                    placeholder="Choose project type"
                     options={types}
                     onChange={this.handleTypeSelectChange}
                   />
                   {othersBool && (<BlackInputText
                    required
-                   placeholder="type of project"
+                   placeholder="Type of project"
                    name="otherType"
                    value={otherType}
                    onChange={(e) => {

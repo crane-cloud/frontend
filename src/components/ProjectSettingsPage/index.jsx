@@ -385,7 +385,7 @@ class ProjectSettingsPage extends React.Component {
                             Organisation
                           </div>
                           <BlackInputText
-                            placeholder="organisation"
+                            placeholder="Organisation"
                             name="projectOrganisation"
                             value={projectOrganisation}
                             onChange={(e) => {
@@ -397,13 +397,13 @@ class ProjectSettingsPage extends React.Component {
                           </div>
                           <Select
                             required
-                            placeholder={projectType ? projectType:"update project type"}
+                            placeholder={projectType ? projectType:"Update project type"}
                             options={types}
                             onChange={this.handleTypeSelectChange}
                           />
                           {othersBool && (<BlackInputText
                              required
-                             placeholder="type of project"
+                             placeholder="Type of project"
                              name="otherType"
                              value={otherType}
                              onChange={(e) => {
