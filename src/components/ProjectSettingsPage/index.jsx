@@ -20,12 +20,15 @@ import DeleteWarning from "../DeleteWarning";
 import BlackInputText from "../BlackInputText";
 import styles from "./ProjectSettingsPage.module.css";
 import SettingsButton from "../SettingsButton";
-
+import Select from "../Select";
+import {
+  retrieveProjectTypes
+} from "../../helpers/projecttypes";
 class ProjectSettingsPage extends React.Component {
   constructor(props) {
     super(props);
     const projectInfo = JSON.parse(localStorage.getItem("project"));
-    const { name, description } = projectInfo;
+    const { name, description, organisation, project_type } = projectInfo;
 
     this.state = {
       openUpdateAlert: false,
@@ -36,6 +39,10 @@ class ProjectSettingsPage extends React.Component {
       error: "",
       Confirmprojectname: "",
       disableDelete: true,
+      projectOrganisation: organisation ? organisation : "",
+      projectType: project_type ? project_type : "",
+      othersBool:false,
+      otherType:"",
     };
 
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
@@ -46,10 +53,11 @@ class ProjectSettingsPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateProjectName = this.validateProjectName.bind(this);
-    this.checkProjectName = this.checkProjectName.bind(this);
+    this.checkProjectInputValidity = this.checkProjectInputValidity.bind(this);
+    this.handleTypeSelectChange = this.handleTypeSelectChange.bind(this); 
     this.renderRedirect = this.renderRedirect.bind(this);
   }
-
+  
   componentDidUpdate(prevProps) {
     const { isDeleted } = this.props;
 
@@ -103,66 +111,95 @@ class ProjectSettingsPage extends React.Component {
   }
 
   handleSubmit() {
-    const { projectName, projectDescription } = this.state;
+    const { projectName, projectDescription,projectOrganisation,projectType, otherType, othersBool } = this.state;
     const {
       updateProject,
       match: {
         params: { projectID },
       },
     } = this.props;
+   
     const projectInfo = JSON.parse(localStorage.getItem("project"));
-    const { name, description } = projectInfo;
+    const { name, description, organisation, project_type } = projectInfo;
 
-    const trimmed = (input) => input.trim();
-    const trimprojectName = trimmed(projectName);
-    const trimprojectDescription = trimmed(projectDescription);
+  
+    const Trim = (input) => input.trim();
+    const capitalizeFirstLetter = (input) => input.charAt(0).toUpperCase() + input.slice(1);
+    const type = othersBool ? capitalizeFirstLetter(otherType) : capitalizeFirstLetter(projectType);
+    const trimedprojectName = Trim(projectName);
+    const trimedprojectDescription = Trim(projectDescription);
+    const trimedprojectOrganisation = Trim(projectOrganisation);
+    const trimedprojectType = Trim(type);
 
-    if (trimprojectName !== name || trimprojectDescription !== description) {
-      if (!trimprojectName || !trimprojectDescription) {
+    if (trimedprojectName !== name || trimedprojectDescription !== description 
+      || trimedprojectOrganisation !== organisation || trimedprojectType !== project_type) {
+      if (!trimedprojectName || !trimedprojectDescription || !trimedprojectOrganisation || !trimedprojectType) {
         this.setState({
-          error: "Please provide either a new name or description",
+          error: "Can't update when an empty field is submited, please fill the missing field or leave it unchanged.",
         });
       } else {
-        if (
-          trimprojectName !== name &&
-          trimprojectDescription === description
-        ) {
-          const nameCheckResult = this.checkProjectName(trimprojectName);
+        
+        if ( trimedprojectName !== name ) {
+          const nameCheckResult = this.checkProjectInputValidity(trimedprojectName,name);
           if (nameCheckResult !== "") {
             this.setState({
               error: nameCheckResult,
-            });
+            }); 
           } else {
-            const newProject = { name: trimprojectName };
-            updateProject(projectID, newProject);
+               const organisationCheckResult = 
+               this.checkProjectInputValidity(trimedprojectOrganisation,"organisation");
+               const typeCheckResult = this.checkProjectInputValidity(trimedprojectType,"type");
+               if(organisationCheckResult !== "" || typeCheckResult !=="" ){
+                 if(organisationCheckResult !== ""){
+                  this.setState({
+                      error: organisationCheckResult,
+                  }); 
+                 }
+                if(typeCheckResult !==""){
+                  this.setState({
+                    error: typeCheckResult,
+                  }); 
+               }
+             }
+            if(typeCheckResult==="" && organisationCheckResult===""){
+             const newProject = { 
+                 name: trimedprojectName,
+                 project_type: trimedprojectType,
+                 organisation: trimedprojectOrganisation,
+                description: trimedprojectDescription
+                };
+             updateProject(projectID, newProject);
+              }
           }
-        } else if (
-          trimprojectName === name &&
-          trimprojectDescription !== description
-        ) {
-          const newProject = { description: trimprojectDescription };
-          updateProject(projectID, newProject);
-        } else if (
-          trimprojectName !== name &&
-          trimprojectDescription !== description
-        ) {
-          const nameCheckResult = this.checkProjectName(trimprojectName);
-          if (nameCheckResult !== "") {
-            this.setState({
-              error: nameCheckResult,
-            });
-          } else {
-            const newProject = {
-              name: trimprojectName,
-              description: trimprojectDescription,
-            };
-            updateProject(projectID, newProject);
+        } else {
+          const organisationCheckResult = 
+          this.checkProjectInputValidity(trimedprojectOrganisation,"organisation");
+          const typeCheckResult = this.checkProjectInputValidity(trimedprojectType,"type");
+          if(organisationCheckResult !== "" || typeCheckResult !=="" ){
+            if(organisationCheckResult !== ""){
+             this.setState({
+                 error: organisationCheckResult,
+             }); 
+            }
+           if(typeCheckResult !==""){
+             this.setState({
+               error: typeCheckResult,
+             }); 
           }
         }
+       if(typeCheckResult==="" && organisationCheckResult===""){
+        const newProject = { 
+            project_type: trimedprojectType,
+            organisation: trimedprojectOrganisation,
+           description: trimedprojectDescription
+           };
+        updateProject(projectID, newProject);
+         }
+        }
       }
-    } else {
+      }else {
       this.setState({
-        error: "Please provide either a new name or description",
+        error: "Please provide new information in atleast one of the fields",
       });
     }
   }
@@ -180,13 +217,13 @@ class ProjectSettingsPage extends React.Component {
   showDeleteAlert() {
     this.setState({ openDeleteAlert: true });
   }
-  checkProjectName(name) {
-    if (!this.validateProjectName(name)) {
-      return "Name should start with a letter";
-    } else if (this.validateProjectName(name) === "false_convention") {
-      return "Name may only contain letters and a hypen -";
-    } else if (name.length > 22) {
-      return "Project name cannot exceed 22 characters";
+  checkProjectInputValidity(input,output) {
+    if (!this.validateProjectName(input)) {
+      return `${output} should start with a letter`;
+    } else if (this.validateProjectName(input) === "false_convention") {
+      return `${output} may only contain letters and a hypen -`;
+    } else if (input.length > 22) {
+      return `Project ${output} cannot exceed 22 characters`;
     } else {
       return "";
     }
@@ -201,6 +238,21 @@ class ProjectSettingsPage extends React.Component {
     clearDeleteProjectState();
     this.setState({ openDeleteAlert: false });
   }
+  handleTypeSelectChange(selected) {
+    const{
+      othersBool,
+    } = this.state
+      if(selected.id===6){
+        if(!othersBool){
+          this.setState({ othersBool: true });
+        }
+      }else{
+        this.setState({ projectType: selected.value });
+        if(othersBool){
+          this.setState({ othersBool: false });
+        }
+      }
+  };
   renderRedirect = () => {
     const { isDeleted, isUpdated } = this.props;
     const { userID } = this.props.match.params;
@@ -221,8 +273,11 @@ class ProjectSettingsPage extends React.Component {
       errorMessage,
     } = this.props;
     const projectInfo = JSON.parse(localStorage.getItem("project"));
-    const name = projectInfo.name;
-    const description = projectInfo.description;
+    const{
+      name,
+      description,
+    } = projectInfo
+
     const {
       openUpdateAlert,
       openDeleteAlert,
@@ -231,10 +286,14 @@ class ProjectSettingsPage extends React.Component {
       error,
       Confirmprojectname,
       disableDelete,
+      projectOrganisation,
+      projectType,
+      othersBool,
+      otherType
     } = this.state;
+    const types = retrieveProjectTypes();
 
     const { projectID, userID } = params;
-
     return (
       <div className={styles.Page}>
         {isUpdated || isDeleted ? this.renderRedirect() : null}
@@ -322,6 +381,35 @@ class ProjectSettingsPage extends React.Component {
                               this.handleChange(e);
                             }}
                           />
+                          <div className={styles.DeleteDescription}>
+                            Organisation
+                          </div>
+                          <BlackInputText
+                            placeholder="Organisation"
+                            name="projectOrganisation"
+                            value={projectOrganisation}
+                            onChange={(e) => {
+                              this.handleChange(e);
+                            }}
+                          />
+                          <div className={styles.DeleteDescription}>
+                            Project type
+                          </div>
+                          <Select
+                            required
+                            placeholder={projectType ? projectType:"Update project type"}
+                            options={types}
+                            onChange={this.handleTypeSelectChange}
+                          />
+                          {othersBool && (<BlackInputText
+                             required
+                             placeholder="Type of project"
+                             name="otherType"
+                             value={otherType}
+                             onChange={(e) => {
+                             this.handleChange(e);
+                           }}
+                          />)}
                           <div className={styles.DeleteDescription}>
                             Project description
                           </div>
