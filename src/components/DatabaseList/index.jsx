@@ -190,12 +190,6 @@ class DatabaseList extends React.Component {
 
 DatabaseList.propTypes = {
   databases: PropTypes.arrayOf(PropTypes.shape({})),
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      projectID: PropTypes.string.isRequired,
-      userID: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getProjectDatabases: PropTypes.func.isRequired,
   isFetchingDatabases: PropTypes.bool,

@@ -14,15 +14,10 @@ import addProject, {
 } from "../../redux/actions/addProject";
 import getClustersList from "../../redux/actions/clusters";
 import styles from "./CreateProject.module.css";
+import {
+  retrieveProjectTypes
+} from "../../helpers/projecttypes";
 
-const types = [
-  { name: "Personal", id: 1, value: "Personal" },
-  { name: "Student", id: 2, value: "Student" },
-  { name: "Commercial", id: 3, value: "Commercial" },
-  { name: "Charity", id: 4, value: "Charity" },
-  { name: "Research", id: 5, value: "Research" },
-  { name: "Others, please specify below", id: 6, value: "Others" },
-];
 
 class CreateProject extends React.Component {
   constructor(props) {
@@ -78,7 +73,7 @@ class CreateProject extends React.Component {
           this.setState({ othersBool: false });
         }
       }
-  }
+  };
   handleDatacenterSelectChange(selected) {
     this.setState({ clusterID: selected.id });
   }
@@ -115,7 +110,8 @@ class CreateProject extends React.Component {
       projectOrganisation,
     } = this.state;
     const { addProject, data } = this.props;
-    const type = othersBool ? (otherType) : (projectType);
+    const capitalizeFirstLetter = (input) => input.charAt(0).toUpperCase() + input.slice(1);
+    const type = othersBool ? capitalizeFirstLetter(otherType) : capitalizeFirstLetter(projectType);
 
     if (
       !projectName ||
@@ -140,9 +136,15 @@ class CreateProject extends React.Component {
         error: "project name may not exceed 30 characters",
       });
     // for a meaning full project type
-    } else if(type.length < 4){
+    } else if(type.length < 4 || this.validateProjectName(type) === false 
+    || this.validateProjectName(type) === "false_convention"){
       this.setState({
-        error: "project type must be atleast 4 characters",
+        error: "project type must be atleast 4 characters, start with a letter and may only contain letters and a hypen -",
+      });
+    } else if(this.validateProjectName(projectOrganisation) === false 
+    || this.validateProjectName(projectOrganisation) === "false_convention"){
+      this.setState({
+        error: "project organisation must start with a letter and may only contain letters and a hypen -",
       });
     } else {
 
@@ -169,6 +171,7 @@ class CreateProject extends React.Component {
     } = this.props;
     const { projectName, projectDescription, error, projectOrganisation,othersBool,otherType } =
       this.state;
+    const types = retrieveProjectTypes();
     if (isAdded) {
       return <Redirect to={`/users/${userID}/projects/`} noThrow />;
     }
@@ -226,13 +229,13 @@ class CreateProject extends React.Component {
                   <div className={styles.ElementTitle}>Type</div>
                   <Select
                     required
-                    placeholder="choose project type"
+                    placeholder="Choose project type"
                     options={types}
                     onChange={this.handleTypeSelectChange}
                   />
                   {othersBool && (<BlackInputText
                    required
-                   placeholder="type of project"
+                   placeholder="Type of project"
                    name="otherType"
                    value={otherType}
                    onChange={(e) => {

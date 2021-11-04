@@ -77,7 +77,6 @@ AppsCard.propTypes = {
   url: PropTypes.string.isRequired,
   appId: PropTypes.string.isRequired,
   otherData: PropTypes.shape({
-    userID: PropTypes.string.isRequired,
     projectID: PropTypes.string.isRequired,
   }).isRequired,
 };

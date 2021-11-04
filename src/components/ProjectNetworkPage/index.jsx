@@ -191,12 +191,7 @@ class ProjectNetworkPage extends React.Component {
 }
 
 ProjectNetworkPage.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      projectID: PropTypes.string.isRequired,
-      userID: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
+
   isFetchingNetwork: PropTypes.bool.isRequired,
   networkMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getProjectNetwork: PropTypes.func.isRequired,

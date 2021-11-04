@@ -190,12 +190,6 @@ class ProjectMemoryPage extends React.Component {
 }
 
 ProjectMemoryPage.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      projectID: PropTypes.string.isRequired,
-      userID: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
   isFetchingMemory: PropTypes.bool.isRequired,
   memoryMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getProjectMemory: PropTypes.func.isRequired,
