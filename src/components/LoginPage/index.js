@@ -156,7 +156,6 @@ class LoginPage extends React.Component {
       axios
         .post(`${API_BASE_URL}/users/oauth`, object)
         .then((res) => {
-          console.log(res);
           if (res.data.status === "success") {
             saveUser(res.data.data);
             localStorage.setItem("token", res.data.data.access_token);

@@ -127,7 +127,6 @@ class CreateProject extends React.Component {
       this.setState({
         error: "all fields are required",
       });
-      console.log(clusterID)
     } else if (this.validateProjectName(projectName) === false) {
       this.setState({
         error: "name should start with a letter",
