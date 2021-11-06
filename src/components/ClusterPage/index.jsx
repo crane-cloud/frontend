@@ -182,7 +182,7 @@ class ClusterPage extends React.Component {
                         label={{
                           value: "Number of Users",
                           angle: 270,
-                          position: "middle",
+                          position: "outside",
                         }}
                       />
                       <Tooltip />
@@ -236,6 +236,7 @@ class ClusterPage extends React.Component {
                       width={600}
                       height={300}
                       syncId="anyId"
+                      position="outside"
                       data={summary?.graph_data}
                     >
                       <Line type="monotone" dataKey="value" stroke="#8884d8" />
@@ -255,7 +256,7 @@ class ClusterPage extends React.Component {
                         label={{
                           value: "Number of Apps",
                           angle: 270,
-                          position: "middle",
+                          position: "outside",
                         }}
                       />
                       <Tooltip />

@@ -166,11 +166,11 @@ class AppSettingsPage extends React.Component {
 
   renderRedirect = () => {
     const { isDeleted, clearState } = this.props;
-    const { userID, projectID } = this.props.match.params;
+    const { projectID } = this.props.match.params;
     if (isDeleted) {
       clearState();
       return (
-        <Redirect to={`/users/${userID}/projects/${projectID}/apps`} noThrow />
+        <Redirect to={`/projects/${projectID}/apps`} noThrow />
       );
     }
   };
@@ -395,14 +395,13 @@ class AppSettingsPage extends React.Component {
     } = this.state;
     // project name from line 105 disappears on refreash, another source of the name was needed
     //const { name } = this.props.location;
-    const { projectID, userID, appID } = params;
+    const { projectID, appID } = params;
     const replicaOptions = [
       { id: 1, name: "1" },
       { id: 2, name: "2" },
       { id: 3, name: "3" },
       { id: 4, name: "4" },
     ];
-    console.log(app)
     return (
       <div className={styles.Page}>
         {isDeleted ? this.renderRedirect() : null}
@@ -416,12 +415,12 @@ class AppSettingsPage extends React.Component {
               params={params}
               // description={description}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/metrics/`}
-              cpuLink={`/users/${userID}/projects/${projectID}/apps/${appID}/cpu/`}
-              memoryLink={`/users/${userID}/projects/${projectID}/apps/${appID}/memory/`}
-              databaseLink={`/users/${userID}/projects/${projectID}/databases`}
-              networkLink={`/users/${userID}/projects/${projectID}/apps/${appID}/network/`}
-              appLogsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/logs/`}
+              allMetricsLink={`/projects/${projectID}/apps/${appID}/metrics/`}
+              cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
+              memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
+              databaseLink={`/projects/${projectID}/databases`}
+              networkLink={`/projects/${projectID}/apps/${appID}/network/`}
+              appLogsLink={`/projects/${projectID}/apps/${appID}/logs/`}
             />
           </div>
           <div className={styles.MainContentSection}>

@@ -74,97 +74,97 @@ const Routes = () => (
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/users/:userID/projects"
+        path="/projects"
         component={UserProjectsPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/users/:userID/projects/:projectID/databases"
+        path="/projects/:projectID/databases"
         component={DatabaseList}
       />
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/users/:userID/projects/:projectID/databases/:databaseID/settings"
+        path="/projects/:projectID/databases/:databaseID/settings"
         component={DBSettingsPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/users/:userID/projects/:projectID/apps"
+        path="/projects/:projectID/apps"
         component={AppsPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/users/:userID/projects/:projectID/apps/:appID/network"
+        path="/projects/:projectID/apps/:appID/network"
         component={AppNetworkPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/users/:userID/projects/:projectID/apps/:appID/cpu"
+        path="/projects/:projectID/apps/:appID/cpu"
         component={AppCpuPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/users/:userID/projects/:projectID/apps/:appID/memory"
+        path="/projects/:projectID/apps/:appID/memory"
         component={AppMemoryPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/users/:userID/projects/:projectID/apps/:appID/metrics"
+        path="/projects/:projectID/apps/:appID/metrics"
         component={AppMetricsPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/users/:userID/projects/:projectID/apps/:appID/settings"
+        path="/projects/:projectID/apps/:appID/settings"
         component={AppSettingsPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/users/:userID/projects/:projectID/apps/:appID/logs"
+        path="/projects/:projectID/apps/:appID/logs"
         component={AppLogsPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/users/:userID/projects/:projectID/databases"
+        path="/projects/:projectID/databases"
         component={DatabaseList}
       />
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/users/:userID/projects/:projectID/memory/"
+        path="/projects/:projectID/memory/"
         component={ProjectMemoryPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/users/:userID/projects/:projectID/cpu/"
+        path="/projects/:projectID/cpu/"
         component={ProjectCPUPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/users/:userID/projects/:projectID/metrics"
+        path="/projects/:projectID/metrics"
         component={ProjectMetricsPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/users/:userID/projects/:projectID/network/"
+        path="/projects/:projectID/network/"
         component={ProjectNetworkPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/users/:userID/projects/:projectID/settings"
+        path="/projects/:projectID/settings"
         component={ProjectSettingsPage}
       />
       <ProtectedRoute

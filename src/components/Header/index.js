@@ -89,7 +89,7 @@ const Header = (props) => {
                   Team
                 </Link>
                 <Link
-                  to={`/users/${user.data.id}/projects`}
+                  to={`/projects`}
                   className={`${styles.HeaderLinkBackToConsole} ${styles.TurnLight}`}
                 >
                   dashboard

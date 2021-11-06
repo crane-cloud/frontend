@@ -36,7 +36,7 @@ class AppLogsPage extends React.Component {
     const {
       match: { params },
     } = this.props;
-    const { projectID, userID, appID } = params;
+    const { projectID, appID } = params;
     const { logs, retrieveingLogs } = this.props;
     const appInfo = this.getAppInfo(appID);
 
@@ -51,12 +51,12 @@ class AppLogsPage extends React.Component {
               name={appInfo.name}
               params={params}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/metrics/`}
-              cpuLink={`/users/${userID}/projects/${projectID}/apps/${appID}/cpu/`}
-              memoryLink={`/users/${userID}/projects/${projectID}/apps/${appID}/memory/`}
-              databaseLink={`/users/${userID}/projects/${projectID}/databases`}
-              networkLink={`/users/${userID}/projects/${projectID}/apps/${appID}/network/`}
-              appLogsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/logs/`}
+              allMetricsLink={`/projects/${projectID}/apps/${appID}/metrics/`}
+              cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
+              memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
+              databaseLink={`/projects/${projectID}/databases`}
+              networkLink={`/projects/${projectID}/apps/${appID}/network/`}
+              appLogsLink={`/projects/${projectID}/apps/${appID}/logs/`}
             />
           </div>
           <div className="MainContentSection">

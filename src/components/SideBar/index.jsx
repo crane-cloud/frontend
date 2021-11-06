@@ -18,30 +18,30 @@ const SideBar = (props) => {
   } = props;
 
   const isAppPage = matchPath(pageRoute, {
-    path: "/users/:userID/projects/:projectID/apps/:appID/metrics",
+    path: "/projects/:projectID/apps/:appID/metrics",
     exact: true,
     strict: true,
   });
 
   const isAppMetricsPage = matchPath(pageRoute, {
-    path: "/users/:userID/projects/:projectID/apps/:appID/",
+    path: "/projects/:projectID/apps/:appID/",
     exact: false,
     strict: true,
   });
 
   const pageLocation = matchPath(pageRoute, {
-    path: "/users/:userID/projects/:projectID/apps",
+    path: "/projects/:projectID/apps",
     exact: true,
     strict: true,
   });
 
   const databaseLocation = matchPath(pageRoute, {
-    path: "/users/:userID/projects/:projectID/databases/:databaseID/settings",
+    path: "/projects/:projectID/databases/:databaseID/settings",
     exact: true,
     strict: true,
   });
 
-  const { userID, projectID, appID } = params;
+  const { projectID, appID } = params;
 
   return (
     <div className={styles.SideBar}>
@@ -50,7 +50,7 @@ const SideBar = (props) => {
           <div className={styles.SideBarTopSection}>
             <Link
               to={{
-                pathname: `/users/${userID}/projects/${projectID}/databases`,
+                pathname: `/projects/${projectID}/databases`,
               }}
             >
               <img src={BackButton} alt="Back Button" />
@@ -58,7 +58,7 @@ const SideBar = (props) => {
             </Link>
             <Link
               to={{
-                pathname: `/users/${userID}/projects/${projectID}/databases`,
+                pathname: `/projects/${projectID}/databases`,
               }}
               className={styles.ProjectName}
             >
@@ -68,14 +68,14 @@ const SideBar = (props) => {
         ) : isAppPage ? (
           <div className={styles.SideBarTopSection}>
             <Link
-              to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}
+              to={{ pathname: `/projects/${projectID}/apps` }}
             >
               <img src={BackButton} alt="Back Button" />
               <span>&nbsp; &nbsp; &nbsp;</span>
             </Link>
             <Link
               to={{
-                pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/metrics`,
+                pathname: `/projects/${projectID}/apps/${appID}/metrics`,
               }}
               className={styles.ProjectName}
             >
@@ -86,7 +86,7 @@ const SideBar = (props) => {
           <div className={styles.SideBarTopSection}>
             <Link
               to={{
-                pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/metrics`,
+                pathname: `/projects/${projectID}/apps/${appID}/metrics`,
               }}
             >
               <img src={BackButton} alt="Back Button" />
@@ -94,7 +94,7 @@ const SideBar = (props) => {
             </Link>
             <Link
               to={{
-                pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/metrics`,
+                pathname: `/projects/${projectID}/apps/${appID}/metrics`,
               }}
               className={styles.ProjectName}
             >
@@ -103,12 +103,12 @@ const SideBar = (props) => {
           </div>
         ) : pageLocation ? (
           <div className={styles.SideBarTopSection}>
-            <Link to={{ pathname: `/users/${userID}/projects/` }}>
+            <Link to={{ pathname: `/projects/` }}>
               <img src={BackButton} alt="Back Button" />
               <span>&nbsp; &nbsp; &nbsp;</span>
             </Link>
             <Link
-              to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}
+              to={{ pathname: `/projects/${projectID}/apps` }}
               className={styles.ProjectName}
             >
               {name}
@@ -117,13 +117,13 @@ const SideBar = (props) => {
         ) : (
           <div className={styles.SideBarTopSection}>
             <Link
-              to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}
+              to={{ pathname: `/projects/${projectID}/apps` }}
             >
               <img src={BackButton} alt="Back Button" />
               <span>&nbsp; &nbsp; &nbsp;</span>
             </Link>
             <Link
-              to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}
+              to={{ pathname: `/projects/${projectID}/apps` }}
               className={styles.ProjectName}
             >
               {name}
@@ -135,7 +135,7 @@ const SideBar = (props) => {
       <div className={styles.SideBarBottomSection}>
         <div className={styles.SideBarLinks}>
           <NavLink
-            to={{ pathname: `/users/${userID}/projects/${projectID}/apps` }}
+            to={{ pathname: `/projects/${projectID}/apps` }}
             className={styles.SubBarListItem}
           >
             Dashboard
@@ -180,7 +180,7 @@ const SideBar = (props) => {
                 <div>
                   <NavLink
                     to={{
-                      pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/settings`,
+                      pathname: `/projects/${projectID}/apps/${appID}/settings`,
                       name,
                     }}
                     className={styles.SubBarListItem}
@@ -203,7 +203,7 @@ const SideBar = (props) => {
               <div>
                 <NavLink
                   to={{
-                    pathname: `/users/${userID}/projects/${projectID}/settings`,
+                    pathname: `/projects/${projectID}/settings`,
                   }}
                   className={styles.SubBarListItem}
                 >

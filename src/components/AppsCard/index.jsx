@@ -39,7 +39,7 @@ class AppsCard extends React.Component {
       <>
         <Link
           to={{
-            pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`,
+            pathname: `/projects/${otherData.projectID}/apps/${appId}/metrics`,
           }}
           key={otherData.projectID}
           className="AppName"
@@ -77,7 +77,6 @@ AppsCard.propTypes = {
   url: PropTypes.string.isRequired,
   appId: PropTypes.string.isRequired,
   otherData: PropTypes.shape({
-    userID: PropTypes.string.isRequired,
     projectID: PropTypes.string.isRequired,
   }).isRequired,
 };

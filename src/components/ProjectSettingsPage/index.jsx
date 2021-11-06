@@ -140,7 +140,7 @@ class ProjectSettingsPage extends React.Component {
       } else {
         
         if ( trimedprojectName !== name ) {
-          const nameCheckResult = this.checkProjectInputValidity(trimedprojectName,name);
+          const nameCheckResult = this.checkProjectInputValidity(trimedprojectName,"name");
           if (nameCheckResult !== "") {
             this.setState({
               error: nameCheckResult,
@@ -255,9 +255,8 @@ class ProjectSettingsPage extends React.Component {
   };
   renderRedirect = () => {
     const { isDeleted, isUpdated } = this.props;
-    const { userID } = this.props.match.params;
     if (isDeleted || isUpdated) {
-      return <Redirect to={`/users/${userID}/projects`} noThrow />;
+      return <Redirect to={`/projects`} noThrow />;
     }
   };
 
@@ -293,7 +292,8 @@ class ProjectSettingsPage extends React.Component {
     } = this.state;
     const types = retrieveProjectTypes();
 
-    const { projectID, userID } = params;
+    const { projectID } = params;
+
     return (
       <div className={styles.Page}>
         {isUpdated || isDeleted ? this.renderRedirect() : null}
@@ -307,11 +307,11 @@ class ProjectSettingsPage extends React.Component {
               params={params}
               description={description}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
-              cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
-              memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
-              databaseLink={`/users/${userID}/projects/${projectID}/databases`}
-              networkLink={`/users/${userID}/projects/${projectID}/network/`}
+              allMetricsLink={`/projects/${projectID}/metrics`}
+              cpuLink={`/projects/${projectID}/cpu/`}
+              memoryLink={`/projects/${projectID}/memory/`}
+              databaseLink={`/projects/${projectID}/databases`}
+              networkLink={`/projects/${projectID}/network/`}
             />
           </div>
           <div className={styles.MainContentSection}>

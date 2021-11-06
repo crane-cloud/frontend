@@ -26,7 +26,6 @@ class AppsPage extends React.Component {
     this.showForm = this.showForm.bind(this);
     this.hideForm = this.hideForm.bind(this);
     this.getProjectDetails = this.getProjectDetails.bind(this);
-
   }
 
   componentDidMount() {
@@ -42,8 +41,7 @@ class AppsPage extends React.Component {
     }
   }
 
- 
-  getProjectDetails(projects,id) {
+  getProjectDetails(projects, id) {
     const project = projects.find((project) => project.id === id);
     return project;
   }
@@ -67,15 +65,15 @@ class AppsPage extends React.Component {
       projects,
     } = this.props;
 
-    const { projectID, userID } = params;
-    const projectDetails = this.getProjectDetails(projects, params.projectID);
+    const { projectID } = params;
+    const projectDetails = this.getProjectDetails(projects, projectID);
 
-     const filteredDetails = {
-       name: projectDetails.name,
-       description: projectDetails.description,
-       organisation: projectDetails.organisation,
-       project_type: projectDetails.project_type,
-     };
+    const filteredDetails = {
+      name: projectDetails.name,
+      description: projectDetails.description,
+      organisation: projectDetails.organisation,
+      project_type: projectDetails.project_type,
+    };
 
     localStorage.setItem("project", JSON.stringify(filteredDetails));
 
@@ -91,11 +89,11 @@ class AppsPage extends React.Component {
               params={params}
               description={projectDetails.description}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
-              cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
-              memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
-              databaseLink={`/users/${userID}/projects/${projectID}/databases`}
-              networkLink={`/users/${userID}/projects/${projectID}/network/`}
+              allMetricsLink={`/projects/${projectID}/metrics`}
+              cpuLink={`/projects/${projectID}/cpu/`}
+              memoryLink={`/projects/${projectID}/memory/`}
+              databaseLink={`/projects/${projectID}/databases`}
+              networkLink={`/projects/${projectID}/network/`}
             />
           </div>
           {openModal ? (
@@ -123,12 +121,6 @@ class AppsPage extends React.Component {
 AppsPage.propTypes = {
   isCreated: PropTypes.bool.isRequired,
   clearState: PropTypes.func.isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      projectID: PropTypes.string.isRequired,
-      userID: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 

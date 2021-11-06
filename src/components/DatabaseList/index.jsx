@@ -72,7 +72,7 @@ class DatabaseList extends React.Component {
     } = this.props;
     const { openCreateComponent } = this.state;
 
-    const { projectID, userID } = params;
+    const { projectID } = params;
     const sortedDbs = databases.sort((a, b) => b.date_created > a.date_created ? 1: -1);
     return (
       <div className={styles.MainPage}>
@@ -86,11 +86,11 @@ class DatabaseList extends React.Component {
               params={params}
               description={this.getProjectName(projects, params.projectID)}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
-              cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
-              memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
-              databaseLink={`/users/${userID}/projects/${projectID}/databases`}
-              networkLink={`/users/${userID}/projects/${projectID}/network/`}
+              allMetricsLink={`/projects/${projectID}/metrics`}
+              cpuLink={`/projects/${projectID}/cpu/`}
+              memoryLink={`/projects/${projectID}/memory/`}
+              databaseLink={`/projects/${projectID}/databases`}
+              networkLink={`/projects/${projectID}/network/`}
             />
           </div>
           {openCreateComponent ? (
@@ -139,7 +139,7 @@ class DatabaseList extends React.Component {
                         sortedDbs.map((database) => (
                           <Link
                             to={{
-                              pathname: `/users/${userID}/projects/${projectID}/databases/${database.id}/settings`,
+                              pathname: `/projects/${projectID}/databases/${database.id}/settings`,
                             }}
                             key={database.id}
                             className={styles.DatabaseTableRow}
@@ -190,12 +190,6 @@ class DatabaseList extends React.Component {
 
 DatabaseList.propTypes = {
   databases: PropTypes.arrayOf(PropTypes.shape({})),
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      projectID: PropTypes.string.isRequired,
-      userID: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getProjectDatabases: PropTypes.func.isRequired,
   isFetchingDatabases: PropTypes.bool,

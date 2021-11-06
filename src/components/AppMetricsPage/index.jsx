@@ -101,7 +101,7 @@ class AppMetricsPage extends React.Component {
 
   render() {
     const { params } = this.props.match;
-    const { projectID, userID, appID } = params;
+    const { projectID, appID } = params;
     const { logs, retrieveingLogs } = this.props;
     const { urlChecked } = this.state;
 
@@ -121,12 +121,12 @@ class AppMetricsPage extends React.Component {
               name={appInfo.name}
               params={params}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/metrics/`}
-              cpuLink={`/users/${userID}/projects/${projectID}/apps/${appID}/cpu/`}
-              memoryLink={`/users/${userID}/projects/${projectID}/apps/${appID}/memory/`}
-              databaseLink={`/users/${userID}/projects/${projectID}/databases`}
-              networkLink={`/users/${userID}/projects/${projectID}/apps/${appID}/network/`}
-              appLogsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/logs/`}
+              allMetricsLink={`/projects/${projectID}/apps/${appID}/metrics/`}
+              cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
+              memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
+              databaseLink={`/projects/${projectID}/databases`}
+              networkLink={`/projects/${projectID}/apps/${appID}/network/`}
+              appLogsLink={`/projects/${projectID}/apps/${appID}/logs/`}
             />
           </div>
           <div className={styles.MainContentSection}>
@@ -209,7 +209,7 @@ class AppMetricsPage extends React.Component {
               <div className={styles.MetricsCardsSection}>
                 <Link
                   to={{
-                    pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/memory/`,
+                    pathname: `/projects/${projectID}/apps/${appID}/memory/`,
                   }}
                 >
                   <MetricsCard
@@ -226,7 +226,7 @@ class AppMetricsPage extends React.Component {
                 </Link>
                 <Link
                   to={{
-                    pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/cpu/`,
+                    pathname: `/projects/${projectID}/apps/${appID}/cpu/`,
                   }}
                 >
                   <MetricsCard
@@ -243,7 +243,7 @@ class AppMetricsPage extends React.Component {
                 </Link>
                 <Link
                   to={{
-                    pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/network/`,
+                    pathname: `/projects/${projectID}/apps/${appID}/network/`,
                   }}
                 >
                   <MetricsCard
@@ -262,7 +262,7 @@ class AppMetricsPage extends React.Component {
               <div className={styles.LogsSection}>
                 <Link
                   to={{
-                    pathname: `/users/${userID}/projects/${projectID}/apps/${appID}/logs/`,
+                    pathname: `/projects/${projectID}/apps/${appID}/logs/`,
                   }}
                 >
                   <LogsFrame

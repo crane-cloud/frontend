@@ -65,12 +65,12 @@ class CreateApp extends React.Component {
   componentDidUpdate(prevProps) {
     const {
       isCreated,
-      params: { userID, projectID },
+      params: { projectID },
     } = this.props;
 
     if (isCreated !== prevProps.isCreated) {
       return (
-        <Redirect to={`/users/${userID}/projects/${projectID}/Apps`} noThrow />
+        <Redirect to={`/projects/${projectID}/Apps`} noThrow />
       );
     }
   }
@@ -261,7 +261,7 @@ class CreateApp extends React.Component {
       isCreated,
       message,
       errorCode,
-      params: { userID, projectID },
+      params: { projectID },
     } = this.props;
     const {
       name,
@@ -278,7 +278,7 @@ class CreateApp extends React.Component {
     } = this.state;
     if (isCreated) {
       return (
-        <Redirect to={`/users/${userID}/projects/${projectID}/Apps`} noThrow />
+        <Redirect to={`/projects/${projectID}/Apps`} noThrow />
       );
     }
     const replicaOptions = [

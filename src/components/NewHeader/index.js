@@ -94,7 +94,7 @@ const NewHeader = (props) => {
                 Blog
               </a>
               <Link
-                to={`/users/${user.data.id}/projects`}
+                to={`/projects`}
                 className="HeaderLinkDocs"
               >
                 Dashboard
