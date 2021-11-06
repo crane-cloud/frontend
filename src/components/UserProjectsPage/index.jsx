@@ -146,6 +146,11 @@ UserProjectsPage.propTypes = {
   data: PropTypes.shape({
     id: PropTypes.string.isRequired,
   }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      userID: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
   isAdded: PropTypes.bool,
   errorCode: PropTypes.number,
   isAdding: PropTypes.bool,
