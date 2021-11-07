@@ -198,7 +198,7 @@
 }
 
 .DbSupportCheckField,
-.PrivateImageCheckField {
+.PrivateImageCheckField, .CustomDomainCheckField {
   display: flex;
 }
 
@@ -227,12 +227,12 @@
 }
 
 .DatabaseSupportTabContainer,
-.PrivateImageTabContainer {
+.PrivateImageTabContainer, .CustomDomainTabContainer{
   max-width: 60%; /* this is to correspond with the width of the input elements */
 }
 
 .PrivateImageInputs,
-.DatabaseSupportInputs {
+.DatabaseSupportInputs, .CustomDomainInputs {
   display: grid;
   gap: 0.5rem;
 }

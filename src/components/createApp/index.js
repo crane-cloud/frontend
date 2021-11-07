@@ -32,6 +32,7 @@ class CreateApp extends React.Component {
       entryCommand: "",
       port: "",
       isPrivateImage: false,
+      isCustomDomain: false,
       dockerCredentials: {
         username: "",
         email: "",
@@ -50,6 +51,7 @@ class CreateApp extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateAppName = this.validateAppName.bind(this);
     this.togglePrivateImage = this.togglePrivateImage.bind(this);
+    this.toggleCustomDomain = this.toggleCustomDomain.bind(this);
     this.handleDockerCredentialsChange =
       this.handleDockerCredentialsChange.bind(this);
     this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
@@ -177,6 +179,13 @@ class CreateApp extends React.Component {
     });
   }
 
+  toggleCustomDomain() {
+    const { isCustomDomain } = this.state;
+    this.setState({
+      isCustomDomain: !isCustomDomain,
+    });
+  }
+
   handleSelectReplicas(selected) {
     this.setState({ replicas: selected.id });
   }
@@ -275,6 +284,7 @@ class CreateApp extends React.Component {
       isPrivateImage,
       dockerCredentials,
       dockerCredentials: { username, email, password, server },
+      isCustomDomain,
     } = this.state;
     if (isCreated) {
       return (
@@ -413,6 +423,38 @@ class CreateApp extends React.Component {
                               message={dockerCredentials.error}
                             />
                           )}
+                        </div>
+                      </div>
+                    </Tabs>
+                  </div>
+                )}
+
+                <div className={styles.CustomDomainCheckField}>
+                  <Checkbox
+                    isBlack
+                    onClick={this.toggleCustomDomain}
+                    isChecked={isCustomDomain}
+                  />
+                  &nbsp; Custom Domain
+                </div>
+
+                {isCustomDomain && (
+                  <div className={styles.CustomDomainTabContainer}>
+                    <Tabs>
+                      <div index={1}>
+                        <div className={styles.InputFieldWithTooltip}>
+                          <BlackInputText
+                            required
+                            placeholder="Domain name"
+                            name="domain"
+                          />
+                          <div className={styles.InputTooltipContainer}>
+                            <Tooltip
+                              showIcon
+                              message="You will be given IP addresses to link your hosting provider DNS to our servers"
+                              position="left"
+                            />
+                          </div>
                         </div>
                       </div>
                     </Tabs>
