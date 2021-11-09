@@ -33,6 +33,7 @@ class CreateApp extends React.Component {
       port: "",
       isPrivateImage: false,
       isCustomDomain: false,
+      domainName:"",
       dockerCredentials: {
         username: "",
         email: "",
@@ -50,6 +51,7 @@ class CreateApp extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateAppName = this.validateAppName.bind(this);
+    this.validateDomainName = this.validateDomainName.bind(this);
     this.togglePrivateImage = this.togglePrivateImage.bind(this);
     this.toggleCustomDomain = this.toggleCustomDomain.bind(this);
     this.handleDockerCredentialsChange =
@@ -95,6 +97,18 @@ class CreateApp extends React.Component {
     const { clearState } = this.props;
     clearState();
     this.setState(this.initialState);
+  }
+
+  validateDomainName(domainName){
+    const expression = /[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)?/gi;
+    const regex = new RegExp(expression);
+    if(regex.test(domainName)){
+      if(domainName.match(!regex)){
+        return "false_convention"
+      }
+      return true;
+    }
+    return false;
   }
 
   handleChange(e) {
@@ -199,6 +213,8 @@ class CreateApp extends React.Component {
       port,
       isPrivateImage,
       dockerCredentials: { username, email, password, server },
+      isCustomDomain,
+      domainName,
       replicas,
     } = this.state;
     const { createApp, params } = this.props;
@@ -235,6 +251,18 @@ class CreateApp extends React.Component {
           error: "please provide all the information above",
         },
       }));
+    } else if(isCustomDomain && (!domainName)){
+        this.setState({
+          error: "Please enter a domain name",
+        })
+    } else if (this.validateDomainName(domainName) === false) {
+      this.setState({
+        error: "Domain name should start with a letter",
+      });
+    } else if (this.validateDomainName(domainName) === "false_convention") {
+      this.setState({
+        error: "Use accepted formats for example google.com, domain.ug",
+      });
     } else {
       let appInfo = {
         command: entryCommand,
@@ -286,6 +314,7 @@ class CreateApp extends React.Component {
       dockerCredentials,
       dockerCredentials: { username, email, password, server },
       isCustomDomain,
+      domainName,
     } = this.state;
     if (isCreated) {
       return (
@@ -430,7 +459,7 @@ class CreateApp extends React.Component {
                   </div>
                 )}
 
-                { beta && (
+                {beta && (
                 <div className={styles.CustomDomainCheckField}>
                   <Checkbox
                     isBlack
@@ -438,7 +467,7 @@ class CreateApp extends React.Component {
                     isChecked={isCustomDomain}
                   />
                   &nbsp; Custom Domain
-                </div> )} 
+                </div>)}
 
                 {isCustomDomain && (
                   <div className={styles.CustomDomainTabContainer}>
@@ -448,7 +477,11 @@ class CreateApp extends React.Component {
                           <BlackInputText
                             required
                             placeholder="Domain name"
-                            name="domain"
+                            name="domainName"
+                            value={domainName.toLowerCase()}
+                            onChange = { (e) => {
+                              this.handleChange(e);
+                            }}
                           />
                           <div className={styles.InputTooltipContainer}>
                             <Tooltip
