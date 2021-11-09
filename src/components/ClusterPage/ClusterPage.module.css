@@ -1,43 +1,43 @@
-.Page{
+.Page {
   margin: 0;
   background: #f1f1f1;
 }
 
-.ViewAccountsBtn{
+.ViewAccountsBtn {
   text-transform: capitalize !important;
   color: #008ac1;
   background-color: #fff;
   outline: 2px solid #008ac1;
 }
 
-.ViewAccountsBtn:hover{
+.ViewAccountsBtn:hover {
   background-color: #fff;
   outline: 2px solid #008ac1;
   color: #008ac1;
 }
 
-.ContentSection{
+.ContentSection {
   padding: 1rem 3rem;
   display: grid;
 }
 
-.SummaryCardContainer{
+.SummaryCardContainer {
   background-color: #fff;
   display: flex;
   flex-direction: column;
   border: 1px solid #cccccc;
 }
 
-.SummaryCardContainer:hover{
+.SummaryCardContainer:hover {
   border: 1px solid #f7b21f;
 }
 
-.SummaryCardDimensions{
+.SummaryCardDimensions {
   min-width: 100%;
   display: flex;
 }
 
-.CardHeaderSection{
+.CardHeaderSection {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -45,12 +45,12 @@
   border: 1px solid #cccccc;
 }
 
-.CardTitle{
+.CardTitle {
   width: 80%;
   font-weight: bold;
 }
 
-.CardBodySection{
+.CardBodySection {
   max-height: 10rem;
   flex-grow: 1;
   padding: 1rem 0rem 1rem 1rem;
@@ -58,49 +58,54 @@
   justify-content: space-between;
 }
 
-.DBSection, .UserSection{
+.DBSection,
+.UserSection {
   min-height: 5rem;
   display: grid;
   grid-template-columns: 30% auto;
 }
 
-.LeftDBSide, .LeftUserSide{
+.LeftDBSide,
+.LeftUserSide {
   display: grid;
   grid-template-rows: 2.5rem auto;
   padding-bottom: 1rem;
 }
 
-.TopTitle{
+.TopTitle {
   font-weight: bold;
   margin: auto;
 }
 
-.DBStats, .UserStats{
+.DBStats,
+.UserStats {
   display: grid;
   grid-template-columns: 49% auto 49%;
   padding-bottom: 1rem;
 }
 
-.MetricsGraph{
+.MetricsGraph {
   border-left: 1px solid #cccccc;
   padding-bottom: 1rem;
   display: flex;
   justify-content: center;
 }
 
-.UserCount{
+.UserCount {
   font-size: 32px;
   font-weight: normal;
   padding: 3rem 1rem 3rem 9rem;
 }
 
-.InnerTitlesStart, .InnerTitlesMiddle, .CardTop {
+.InnerTitlesStart,
+.InnerTitlesMiddle,
+.CardTop {
   font-weight: bold;
   text-align: center;
   padding-top: 1rem;
 }
 
-.verticalLine{
+.verticalLine {
   border-left: 1px solid #cccccc;
   height: 10rem;
 }
@@ -166,10 +171,16 @@
   overflow-y: auto;
 }
 
-.MetricsCardGraph{
+.MetricsCardGraph {
   max-height: 12rem;
 }
-.AllUsers{
+.AllUsers {
   display: flex;
   margin: auto;
+}
+
+.OtherCards {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
 }

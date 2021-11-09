@@ -1,0 +1,55 @@
+.DateInputContainer {
+  display: inline-block;
+  width: 100%;
+  z-index: 2;
+}
+
+.DateInputWrapper {
+  display: flex;
+  cursor: default;
+}
+
+.DateInputLabel {
+  user-select: none;
+  padding-right: 0.5rem;
+  display: flex;
+  justify-content: center;
+  text-transform: capitalize;
+  align-items: center;
+}
+
+.DateInputDisplay {
+  border: 2px solid #cccccc;
+  height: 1rem;
+  padding: 0.2rem 1rem;
+  color: #555555;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.DisplayActive {
+  border: 2px solid #f7b21f;
+}
+
+.DateInputCalendar {
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  padding: 0.5rem;
+  display: grid;
+  gap: 1rem;
+  position: absolute; /*relative */
+  top: 3rem;
+  z-index: 3;
+  left: -0.5rem;
+  width: 21rem;
+}
+
+.CalendarModalButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ModalBtn {
+  max-height: 2rem;
+}
