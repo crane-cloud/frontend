@@ -270,7 +270,8 @@ class CreateApp extends React.Component {
       isCreated,
       message,
       errorCode,
-      params: { projectID },
+      params: { userID, projectID },
+      data: { beta },
     } = this.props;
     const {
       name,
@@ -429,6 +430,7 @@ class CreateApp extends React.Component {
                   </div>
                 )}
 
+                { beta && (
                 <div className={styles.CustomDomainCheckField}>
                   <Checkbox
                     isBlack
@@ -436,7 +438,7 @@ class CreateApp extends React.Component {
                     isChecked={isCustomDomain}
                   />
                   &nbsp; Custom Domain
-                </div>
+                </div> )} 
 
                 {isCustomDomain && (
                   <div className={styles.CustomDomainTabContainer}>
@@ -604,6 +606,7 @@ CreateApp.defaultProps = {
 const mapStateToProps = (state) => {
   const { isCreating, isCreated, clearAppCreateState, message, errorCode } =
     state.createAppReducer;
+  const { data } = state.user;
 
   return {
     isCreating,
@@ -611,6 +614,7 @@ const mapStateToProps = (state) => {
     isCreated,
     clearAppCreateState,
     errorCode,
+    data
   };
 };
 
