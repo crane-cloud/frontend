@@ -46,6 +46,7 @@ class AppSettingsPage extends React.Component {
       },
       isPrivateImage: false,
       isCustomDomain: false,
+      domainName: "",
       uri: app.uri ? app.uri : "",
       varName: "",
       varValue: "",
@@ -70,6 +71,7 @@ class AppSettingsPage extends React.Component {
     this.addEnvVar = this.addEnvVar.bind(this);
     this.removeEnvVar = this.removeEnvVar.bind(this);
     this.togglePrivateImage = this.togglePrivateImage.bind(this);
+    this.validateDomainName = this.validateDomainName.bind(this);
     this.toggleCustomDomain = this.toggleCustomDomain.bind(this);
     this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -160,6 +162,19 @@ class AppSettingsPage extends React.Component {
     const { clearState } = this.props;
     clearState();
     this.setState({ openDeleteAlert: false });
+  }
+
+  validateDomainName(domainName) {
+    const expression =
+      /[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)?/gi;
+    const regex = new RegExp(expression);
+    if (regex.test(domainName)) {
+      if (domainName.match(!regex)) {
+        return "false_convention";
+      }
+      return true;
+    }
+    return false;
   }
 
   renderRedirect = () => {
@@ -296,6 +311,8 @@ class AppSettingsPage extends React.Component {
     const {
       isPrivateImage,
       dockerCredentials: { username, email, password, server },
+      domainName,
+      isCustomDomain,
       replicas,
       newImage,
     } = this.state;
@@ -325,6 +342,18 @@ class AppSettingsPage extends React.Component {
           error: "please provide all the information above",
         },
       }));
+    } else if (isCustomDomain && !domainName) {
+      this.setState({
+        error: "Please enter a domain name",
+      });
+    } else if (this.validateDomainName(domainName) === false) {
+      this.setState({
+        error: "Domain name should start with a letter",
+      });
+    } else if (this.validateDomainName(domainName) === "false_convention") {
+      this.setState({
+        error: "Use accepted formats for example google.com, domain.ug",
+      });
     } else {
       let appInfo = {
         image: app.image,
@@ -369,6 +398,7 @@ class AppSettingsPage extends React.Component {
   render() {
     const {
       match: { params },
+      data: { beta },
       isDeleting,
       isDeleted,
       message,
@@ -393,6 +423,7 @@ class AppSettingsPage extends React.Component {
       envVars,
       isPrivateImage,
       isCustomDomain,
+      domainName,
       dockerCredentials,
       updating_command,
       updating_port,
@@ -547,15 +578,17 @@ class AppSettingsPage extends React.Component {
                       </div>
                     </div>
                   )}
-                  
-                  <div className={styles.CustomDomainCheckField}>
-                    <Checkbox
-                      isBlack
-                      onClick={this.toggleCustomDomain}
-                      isChecked={isCustomDomain}
-                    />
-                    Custom Domain
-                  </div>
+
+                  {beta && (
+                    <div className={styles.CustomDomainCheckField}>
+                      <Checkbox
+                        isBlack
+                        onClick={this.toggleCustomDomain}
+                        isChecked={isCustomDomain}
+                      />
+                      Custom Domain
+                    </div>
+                  )}
 
                   {isCustomDomain && (
                     <div className={styles.CustomDomainTabContainer}>
@@ -567,7 +600,11 @@ class AppSettingsPage extends React.Component {
                               <BlackInputText
                                 required
                                 placeholder="Domain name"
-                                name="domain"
+                                name="domainName"
+                                value={domainName.toLowerCase()}
+                                onChange={(e) => {
+                                  this.handleChange(e);
+                                }}
                               />
                             </div>
                           </div>
@@ -907,6 +944,7 @@ const mapStateToProps = (state) => {
   // const { apps } = state.appsListReducer;
   const { app } = state.singleAppReducer;
   const { isUpdating, isUpdated, errorMessage } = state.updateAppReducer;
+  const { data } = state.user;
   return {
     // apps,
     isDeleting,
@@ -917,6 +955,7 @@ const mapStateToProps = (state) => {
     isUpdated,
     isUpdating,
     errorMessage,
+    data,
   };
 };
 
