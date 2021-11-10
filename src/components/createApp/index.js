@@ -298,7 +298,7 @@ class CreateApp extends React.Component {
       isCreated,
       message,
       errorCode,
-      params: { userID, projectID },
+      params: { projectID },
       data: { beta },
     } = this.props;
     const {
