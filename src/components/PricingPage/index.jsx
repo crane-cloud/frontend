@@ -53,11 +53,11 @@ const PricingPage = (props) => {
                RAM
             </div>
             <div className={styles.InnerGridText}>
-              For teams or campanies that need to manage work accross initiatives.
+              For teams or companies that need to manage work across initiatives.
             </div>
             <div className={styles.InnerGridPrice}>
             <div className={styles.Price}>
-                $5
+                $4
             </div>
             <div className={styles.PriceDetail}>
                 per GB
@@ -71,14 +71,14 @@ const PricingPage = (props) => {
               Network
             </div>
             <div className={styles.InnerGridText}>
-            For teams or campanies that need to manage work accross initiatives.
+            For teams or companies that need to manage work across initiatives.
             </div>
             <div className={styles.InnerGridPrice}>
             <div className={styles.Price}>
                 1$
             </div>
             <div className={styles.PriceDetail}>
-                per 100 requests/invocations
+                per 1k requests/invocations
             </div>
             </div>
         </div>
@@ -89,7 +89,7 @@ const PricingPage = (props) => {
                Storage
             </div>
             <div className={styles.InnerGridText}>
-                for organaisations that need additional security, control and support.
+            For organisations that need additional security, control and support.
             </div>
             <div className={styles.InnerGridPrice}>
             <div className={styles.Price}>
@@ -107,7 +107,7 @@ const PricingPage = (props) => {
                Database
             </div>
             <div className={styles.InnerGridText}>
-            for organaisations that need additional security, control and support.
+            For organisations that need additional security, control and support.
             </div>
             <div className={styles.InnerGridPrice}>
             <div className={styles.Price}>
