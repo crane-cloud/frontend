@@ -255,11 +255,11 @@ class CreateApp extends React.Component {
         this.setState({
           error: "Please enter a domain name",
         })
-    } else if (this.validateDomainName(domainName) === false) {
+    } else if (domainName && (this.validateDomainName(domainName) === false)) {
       this.setState({
         error: "Domain name should start with a letter",
       });
-    } else if (this.validateDomainName(domainName) === "false_convention") {
+    } else if (domainName && (this.validateDomainName(domainName) === "false_convention")) {
       this.setState({
         error: "Use accepted formats for example google.com, domain.ug",
       });
