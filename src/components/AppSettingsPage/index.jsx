@@ -45,6 +45,8 @@ class AppSettingsPage extends React.Component {
         error: "",
       },
       isPrivateImage: false,
+      isCustomDomain: false,
+      domainName: "",
       uri: app.uri ? app.uri : "",
       varName: "",
       varValue: "",
@@ -52,9 +54,9 @@ class AppSettingsPage extends React.Component {
       entryCommand: "",
       port: app.port ? app.port : "",
       replicas: "",
-      updating_port:false,
-      updating_command:false,
-      updating_form:false,
+      updating_port: false,
+      updating_command: false,
+      updating_form: false,
     };
 
     this.handleDeleteApp = this.handleDeleteApp.bind(this);
@@ -69,6 +71,8 @@ class AppSettingsPage extends React.Component {
     this.addEnvVar = this.addEnvVar.bind(this);
     this.removeEnvVar = this.removeEnvVar.bind(this);
     this.togglePrivateImage = this.togglePrivateImage.bind(this);
+    this.validateDomainName = this.validateDomainName.bind(this);
+    this.toggleCustomDomain = this.toggleCustomDomain.bind(this);
     this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.urlOnClick = this.urlOnClick.bind(this);
@@ -116,11 +120,7 @@ class AppSettingsPage extends React.Component {
       isUpdating,
       match: { params },
     } = this.props;
-    const {
-      updating_command,
-      updating_form,
-      updating_port,
-    } = this.state;
+    const { updating_command, updating_form, updating_port } = this.state;
 
     if (isDeleted !== prevProps.isDeleted) {
       this.hideDeleteAlert();
@@ -132,14 +132,14 @@ class AppSettingsPage extends React.Component {
       window.location.reload();
     }
     if (isUpdating !== prevProps.isUpdating) {
-      if(updating_command && !isUpdating){
-        this.setState({updating_command: false})
+      if (updating_command && !isUpdating) {
+        this.setState({ updating_command: false });
       }
-      if(updating_port && !isUpdating ){
-        this.setState({updating_port: false})
+      if (updating_port && !isUpdating) {
+        this.setState({ updating_port: false });
       }
-      if(updating_form && !isUpdating){
-        this.setState({updating_form: false})
+      if (updating_form && !isUpdating) {
+        this.setState({ updating_form: false });
       }
     }
   }
@@ -162,6 +162,19 @@ class AppSettingsPage extends React.Component {
     const { clearState } = this.props;
     clearState();
     this.setState({ openDeleteAlert: false });
+  }
+
+  validateDomainName(domainName) {
+    const expression =
+      /[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)?/gi;
+    const regex = new RegExp(expression);
+    if (regex.test(domainName)) {
+      if (domainName.match(!regex)) {
+        return "false_convention";
+      }
+      return true;
+    }
+    return false;
   }
 
   renderRedirect = () => {
@@ -209,8 +222,8 @@ class AppSettingsPage extends React.Component {
       });
     } else {
       this.setState({
-        error: "Provide an environment variable key and value."
-      })
+        error: "Provide an environment variable key and value.",
+      });
     }
   }
 
@@ -231,6 +244,13 @@ class AppSettingsPage extends React.Component {
     const { isPrivateImage } = this.state;
     this.setState({
       isPrivateImage: !isPrivateImage,
+    });
+  }
+
+  toggleCustomDomain() {
+    const { isCustomDomain } = this.state;
+    this.setState({
+      isCustomDomain: !isCustomDomain,
     });
   }
 
@@ -267,7 +287,7 @@ class AppSettingsPage extends React.Component {
         portError: "Port should be an integer",
       });
     } else {
-      this.setState({updating_port: true})
+      this.setState({ updating_port: true });
       updateApp(appID, { port: parseInt(port, 10) });
     }
   }
@@ -280,7 +300,7 @@ class AppSettingsPage extends React.Component {
     const { appID } = params;
     const { entryCommand } = this.state;
     if (entryCommand && entryCommand.length > 0) {
-      this.setState({updating_command: true})
+      this.setState({ updating_command: true });
       updateApp(appID, { command: entryCommand });
     } else {
       this.setState({ commandError: "Please enter a command" });
@@ -291,6 +311,8 @@ class AppSettingsPage extends React.Component {
     const {
       isPrivateImage,
       dockerCredentials: { username, email, password, server },
+      domainName,
+      isCustomDomain,
       replicas,
       newImage,
     } = this.state;
@@ -305,10 +327,10 @@ class AppSettingsPage extends React.Component {
         error: "No changes made",
       });
     } else if (newImage && !isPrivateImage && replicas === "") {
-      this.setState({updating_form: true});
+      this.setState({ updating_form: true });
       updateApp(params.appID, { image: newImage });
     } else if (newImage && !isPrivateImage && replicas !== "") {
-      this.setState({updating_form: true});
+      this.setState({ updating_form: true });
       updateApp(params.appID, { image: newImage, replicas: replicas });
     } else if (
       isPrivateImage &&
@@ -320,6 +342,18 @@ class AppSettingsPage extends React.Component {
           error: "please provide all the information above",
         },
       }));
+    } else if (isCustomDomain && !domainName) {
+      this.setState({
+        error: "Please enter a domain name",
+      });
+    } else if (this.validateDomainName(domainName) === false) {
+      this.setState({
+        error: "Domain name should start with a letter",
+      });
+    } else if (this.validateDomainName(domainName) === "false_convention") {
+      this.setState({
+        error: "Use accepted formats for example google.com, domain.ug",
+      });
     } else {
       let appInfo = {
         image: app.image,
@@ -336,7 +370,7 @@ class AppSettingsPage extends React.Component {
           docker_server: server,
           replicas: app.replicas,
         };
-        this.setState({updating_form: true});
+        this.setState({ updating_form: true });
         updateApp(params.appID, appInfo);
       } else {
         appInfo = {
@@ -347,7 +381,7 @@ class AppSettingsPage extends React.Component {
           docker_server: server,
           replicas: replicas,
         };
-        this.setState({updating_form: true});
+        this.setState({ updating_form: true });
         updateApp(params.appID, appInfo);
       }
     }
@@ -364,6 +398,7 @@ class AppSettingsPage extends React.Component {
   render() {
     const {
       match: { params },
+      data: { beta },
       isDeleting,
       isDeleted,
       message,
@@ -387,6 +422,8 @@ class AppSettingsPage extends React.Component {
       varName,
       envVars,
       isPrivateImage,
+      isCustomDomain,
+      domainName,
       dockerCredentials,
       updating_command,
       updating_port,
@@ -541,12 +578,49 @@ class AppSettingsPage extends React.Component {
                       </div>
                     </div>
                   )}
+
+                  {beta && (
+                    <div className={styles.CustomDomainCheckField}>
+                      <Checkbox
+                        isBlack
+                        onClick={this.toggleCustomDomain}
+                        isChecked={isCustomDomain}
+                      />
+                      Custom Domain
+                    </div>
+                  )}
+
+                  {isCustomDomain && (
+                    <div className={styles.CustomDomainTabContainer}>
+                      <div index={1}>
+                        <div className={styles.CustomDomainInputs}>
+                          <div className={styles.APPButtonRow}>
+                            <div className={styles.AppLabel}>Domain name</div>
+                            <div className={styles.flexa}>
+                              <BlackInputText
+                                required
+                                placeholder="Domain name"
+                                name="domainName"
+                                value={domainName.toLowerCase()}
+                                onChange={(e) => {
+                                  this.handleChange(e);
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   <div className={styles.APPButtonRow}>
                     <div className={styles.AppLabel}>Replicas</div>
                     <div className={styles.flexa}>
                       <div className={styles.ReplicasSelect}>
                         <Select
-                          placeholder= {"App has "+ app.replicas + " replica(s)"}
+                          placeholder={
+                            "App has " + app.replicas + " replica(s)"
+                          }
                           options={replicaOptions}
                           onChange={this.handleSelectReplicas}
                         />
@@ -586,9 +660,11 @@ class AppSettingsPage extends React.Component {
                   <div className={styles.APPButton}>
                     <div className={styles.UpperSection}>
                       <PrimaryButton
-                        label={(isUpdating && updating_form )? <Spinner /> : "UPDATE"}
+                        label={
+                          isUpdating && updating_form ? <Spinner /> : "UPDATE"
+                        }
                         disable={isUpdating}
-                        className={(isUpdating) && styles.deactivatedBtn }
+                        className={isUpdating && styles.deactivatedBtn}
                         onClick={this.handleSubmit}
                       />
                     </div>
@@ -617,9 +693,7 @@ class AppSettingsPage extends React.Component {
                           <tr key={index} className={styles.VarsRow}>
                             <td>{envVar}</td>
                             <td>{app.env_vars[envVar]}</td>
-                            <td>
-                              
-                            </td>
+                            <td></td>
                           </tr>
                         ))}
                       </tbody>
@@ -628,14 +702,16 @@ class AppSettingsPage extends React.Component {
                   {Object.keys(envVars).length > 0 && (
                     <div className={styles.EnvVarsTable}>
                       <table className={styles.varsTable}>
-                        {!app.env_vars && (<thead>
-                          <tr className={styles.VarsRow}>
-                            <td>Name</td>
-                            <td>Value</td>
-                            <td>Remove</td>
-                            <td></td>
-                          </tr>
-                        </thead>)}
+                        {!app.env_vars && (
+                          <thead>
+                            <tr className={styles.VarsRow}>
+                              <td>Name</td>
+                              <td>Value</td>
+                              <td>Remove</td>
+                              <td></td>
+                            </tr>
+                          </thead>
+                        )}
                         <tbody>
                           {Object.keys(envVars).map((envVar, index) => (
                             <tr key={uuidv4()} className={styles.VarsRow}>
@@ -713,9 +789,9 @@ class AppSettingsPage extends React.Component {
                     }}
                   />
                   <PrimaryButton
-                    label={(isUpdating && updating_port) ? <Spinner /> : "UPDATE"}
+                    label={isUpdating && updating_port ? <Spinner /> : "UPDATE"}
                     disable={isUpdating}
-                    className={(isUpdating) && styles.deactivatedBtn }
+                    className={isUpdating && styles.deactivatedBtn}
                     onClick={this.handlePortSubmit}
                   />
                 </div>
@@ -727,7 +803,6 @@ class AppSettingsPage extends React.Component {
               <div className={styles.errorCenterDiv}>
                 {errorMessage && (
                   <Feedback type="error" message={errorMessage} />
-                  
                 )}
               </div>
               <div className={styles.APPSectionPort}>
@@ -747,9 +822,11 @@ class AppSettingsPage extends React.Component {
                 </div>
                 <div>
                   <PrimaryButton
-                    label={(isUpdating && updating_command) ? <Spinner /> : "UPDATE"}
+                    label={
+                      isUpdating && updating_command ? <Spinner /> : "UPDATE"
+                    }
                     disable={isUpdating}
-                    className={(isUpdating) && styles.deactivatedBtn }
+                    className={isUpdating && styles.deactivatedBtn}
                     onClick={this.handleCommandSubmit}
                   />
                 </div>
@@ -867,6 +944,7 @@ const mapStateToProps = (state) => {
   // const { apps } = state.appsListReducer;
   const { app } = state.singleAppReducer;
   const { isUpdating, isUpdated, errorMessage } = state.updateAppReducer;
+  const { data } = state.user;
   return {
     // apps,
     isDeleting,
@@ -877,6 +955,7 @@ const mapStateToProps = (state) => {
     isUpdated,
     isUpdating,
     errorMessage,
+    data,
   };
 };
 

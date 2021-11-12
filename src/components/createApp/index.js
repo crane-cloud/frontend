@@ -32,6 +32,8 @@ class CreateApp extends React.Component {
       entryCommand: "",
       port: "",
       isPrivateImage: false,
+      isCustomDomain: false,
+      domainName:"",
       dockerCredentials: {
         username: "",
         email: "",
@@ -49,7 +51,9 @@ class CreateApp extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateAppName = this.validateAppName.bind(this);
+    this.validateDomainName = this.validateDomainName.bind(this);
     this.togglePrivateImage = this.togglePrivateImage.bind(this);
+    this.toggleCustomDomain = this.toggleCustomDomain.bind(this);
     this.handleDockerCredentialsChange =
       this.handleDockerCredentialsChange.bind(this);
     this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
@@ -93,6 +97,18 @@ class CreateApp extends React.Component {
     const { clearState } = this.props;
     clearState();
     this.setState(this.initialState);
+  }
+
+  validateDomainName(domainName){
+    const expression = /[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)?/gi;
+    const regex = new RegExp(expression);
+    if(regex.test(domainName)){
+      if(domainName.match(!regex)){
+        return "false_convention"
+      }
+      return true;
+    }
+    return false;
   }
 
   handleChange(e) {
@@ -177,6 +193,13 @@ class CreateApp extends React.Component {
     });
   }
 
+  toggleCustomDomain() {
+    const { isCustomDomain } = this.state;
+    this.setState({
+      isCustomDomain: !isCustomDomain,
+    });
+  }
+
   handleSelectReplicas(selected) {
     this.setState({ replicas: selected.id });
   }
@@ -190,6 +213,8 @@ class CreateApp extends React.Component {
       port,
       isPrivateImage,
       dockerCredentials: { username, email, password, server },
+      isCustomDomain,
+      domainName,
       replicas,
     } = this.state;
     const { createApp, params } = this.props;
@@ -226,6 +251,18 @@ class CreateApp extends React.Component {
           error: "please provide all the information above",
         },
       }));
+    } else if(isCustomDomain && (!domainName)){
+        this.setState({
+          error: "Please enter a domain name",
+        })
+    } else if (this.validateDomainName(domainName) === false) {
+      this.setState({
+        error: "Domain name should start with a letter",
+      });
+    } else if (this.validateDomainName(domainName) === "false_convention") {
+      this.setState({
+        error: "Use accepted formats for example google.com, domain.ug",
+      });
     } else {
       let appInfo = {
         command: entryCommand,
@@ -262,6 +299,7 @@ class CreateApp extends React.Component {
       message,
       errorCode,
       params: { projectID },
+      data: { beta },
     } = this.props;
     const {
       name,
@@ -275,6 +313,8 @@ class CreateApp extends React.Component {
       isPrivateImage,
       dockerCredentials,
       dockerCredentials: { username, email, password, server },
+      isCustomDomain,
+      domainName,
     } = this.state;
     if (isCreated) {
       return (
@@ -413,6 +453,43 @@ class CreateApp extends React.Component {
                               message={dockerCredentials.error}
                             />
                           )}
+                        </div>
+                      </div>
+                    </Tabs>
+                  </div>
+                )}
+
+                {beta && (
+                <div className={styles.CustomDomainCheckField}>
+                  <Checkbox
+                    isBlack
+                    onClick={this.toggleCustomDomain}
+                    isChecked={isCustomDomain}
+                  />
+                  &nbsp; Custom Domain
+                </div>)}
+
+                {isCustomDomain && (
+                  <div className={styles.CustomDomainTabContainer}>
+                    <Tabs>
+                      <div index={1}>
+                        <div className={styles.InputFieldWithTooltip}>
+                          <BlackInputText
+                            required
+                            placeholder="Domain name"
+                            name="domainName"
+                            value={domainName.toLowerCase()}
+                            onChange = { (e) => {
+                              this.handleChange(e);
+                            }}
+                          />
+                          <div className={styles.InputTooltipContainer}>
+                            <Tooltip
+                              showIcon
+                              message="You will be given IP addresses to link your hosting provider DNS to our servers"
+                              position="left"
+                            />
+                          </div>
                         </div>
                       </div>
                     </Tabs>
@@ -562,6 +639,7 @@ CreateApp.defaultProps = {
 const mapStateToProps = (state) => {
   const { isCreating, isCreated, clearAppCreateState, message, errorCode } =
     state.createAppReducer;
+  const { data } = state.user;
 
   return {
     isCreating,
@@ -569,6 +647,7 @@ const mapStateToProps = (state) => {
     isCreated,
     clearAppCreateState,
     errorCode,
+    data
   };
 };
 

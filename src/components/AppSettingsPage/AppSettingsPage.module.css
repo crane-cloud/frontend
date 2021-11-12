@@ -196,18 +196,18 @@
   font-weight: 400;
 }
 
-.PrivateImageCheckField {
+.PrivateImageCheckField, .CustomDomainCheckField {
   display: grid;
   grid-template-columns: 20% auto;
   gap: 1rem;
 }
 
-.PrivateImageTabContainer {
+.PrivateImageTabContainer, .CustomDomainTabContainer {
   border-left: 5px solid #e1e2e2;
   padding: 0rem 2rem;
 }
 
-.PrivateImageInputs {
+.PrivateImageInputs, .CustomDomainInputs {
   display: grid;
   row-gap: 1rem;
 }
