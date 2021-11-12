@@ -23,10 +23,10 @@ export const getResourcesFail = (error) => ({
   },
 });
 
-const getClusterResourcesCount = (params) => (dispatch) => {
+const getClusterResourcesCount = (clusterID) => (dispatch) => {
   dispatch(startFetchingResources());
   return axios
-    .get(`/clusters/${params.clusterID}`)
+    .get(`/clusters/${clusterID}`)
     .then((response) => dispatch(getResourcesSuccess(response)))
     .catch((error) => {
       dispatch(getResourcesFail(error));
