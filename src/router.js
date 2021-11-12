@@ -8,6 +8,7 @@ import {
 import store from "./redux/store";
 import App from "./components/App";
 import LoginPage from "./components/LoginPage";
+import PricingPage from "./components/PricingPage";
 import PasswordReset from "./components/PasswordReset";
 import RegisterPage from "./components/RegisterPage";
 import ClusterPage from "./components/ClusterPage";
@@ -60,6 +61,7 @@ const Routes = () => (
     <Switch>
       <Route exact path="/" component={App} />
       <Route path="/login" component={LoginPage} />
+      <Route path="/pricing" component={PricingPage} />
       <Route path="/admin-login" component={AdminLoginPage} />
       <Route path="/forgot-password" component={PasswordReset} />
       <Route path="/register" component={RegisterPage} />
