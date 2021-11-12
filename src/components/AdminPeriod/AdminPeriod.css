@@ -1,0 +1,56 @@
+.PeriodContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.PeriodButtonsSection {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  gap: 0.5rem;
+  padding: 10px;
+  position: relative;
+}
+
+.PeriodButton {
+  height: 1.7rem;
+  width: 3rem;
+  background-color: #eeeeee;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.PeriodButtonActive {
+  background-color: #f7b21f;
+}
+
+.DateInputsSection {
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  gap: 0.5rem;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.PeriodButtonCustom {
+  width: 5rem;
+}
+
+.CalendarModal {
+  position: absolute;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  display: grid;
+  gap: 1rem;
+  padding: 1rem 0.5rem;
+  top: 3rem;
+  right: -18rem;
+  z-index: 3;
+  width: 21rem;
+}
