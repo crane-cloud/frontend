@@ -255,7 +255,7 @@ class CreateApp extends React.Component {
         this.setState({
           error: "Please enter a domain name",
         })
-    } else if (domainName && (this.validateDomainName(domainName) === false)) {
+    } else if (domainName &&(this.validateDomainName(domainName) === false)) {
       this.setState({
         error: "Domain name should start with a letter",
       });
@@ -274,6 +274,28 @@ class CreateApp extends React.Component {
         replicas,
       };
 
+      if(isCustomDomain === true){
+        let sentDomainName = domainName.toLowerCase();
+        if (port) {
+          appInfo = { ...appInfo, port: parseInt(port, 10)};
+        }
+
+        if (isPrivateImage) {
+          appInfo = {
+            ...appInfo,
+            docker_email: email,
+            docker_username: username,
+            docker_password: password,
+            docker_server: server,
+          };
+        }
+        appInfo = { ...appInfo, custom_domain: sentDomainName };
+  
+        createApp(appInfo, params.projectID);
+        
+      }
+      else{
+
       if (port) {
         appInfo = { ...appInfo, port: parseInt(port, 10) };
       }
@@ -289,6 +311,7 @@ class CreateApp extends React.Component {
       }
 
       createApp(appInfo, params.projectID);
+    }
     }
   }
 
@@ -478,7 +501,7 @@ class CreateApp extends React.Component {
                             required
                             placeholder="Domain name"
                             name="domainName"
-                            value={domainName.toLowerCase()}
+                            value={domainName}
                             onChange = { (e) => {
                               this.handleChange(e);
                             }}

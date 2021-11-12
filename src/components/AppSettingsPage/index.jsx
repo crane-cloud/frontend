@@ -182,9 +182,7 @@ class AppSettingsPage extends React.Component {
     const { projectID } = this.props.match.params;
     if (isDeleted) {
       clearState();
-      return (
-        <Redirect to={`/projects/${projectID}/apps`} noThrow />
-      );
+      return <Redirect to={`/projects/${projectID}/apps`} noThrow />;
     }
   };
 
@@ -346,11 +344,14 @@ class AppSettingsPage extends React.Component {
       this.setState({
         error: "Please enter a domain name",
       });
-    } else if (this.validateDomainName(domainName) === false) {
+    } else if (domainName && this.validateDomainName(domainName) === false) {
       this.setState({
         error: "Domain name should start with a letter",
       });
-    } else if (this.validateDomainName(domainName) === "false_convention") {
+    } else if (
+      domainName &&
+      this.validateDomainName(domainName) === "false_convention"
+    ) {
       this.setState({
         error: "Use accepted formats for example google.com, domain.ug",
       });
@@ -360,29 +361,56 @@ class AppSettingsPage extends React.Component {
         project_id: params.projectID,
         private_image: isPrivateImage,
       };
-
-      if (replicas === "") {
-        appInfo = {
-          ...appInfo,
-          docker_email: email,
-          docker_username: username,
-          docker_password: password,
-          docker_server: server,
-          replicas: app.replicas,
-        };
-        this.setState({ updating_form: true });
-        updateApp(params.appID, appInfo);
+      if (isCustomDomain === true) {
+        let sentDomainName = domainName.toLowerCase();
+        if (replicas === "") {
+          appInfo = {
+            ...appInfo,
+            docker_email: email,
+            docker_username: username,
+            docker_password: password,
+            docker_server: server,
+            replicas: app.replicas,
+          };
+          this.setState({ updating_form: true });
+          updateApp(params.appID, appInfo);
+        } else {
+          appInfo = {
+            ...appInfo,
+            docker_email: email,
+            docker_username: username,
+            docker_password: password,
+            docker_server: server,
+            replicas: replicas,
+          };
+          this.setState({ updating_form: true });
+          appInfo = { ...appInfo, custom_domain: sentDomainName };
+          updateApp(params.appID, appInfo);
+        }
       } else {
-        appInfo = {
-          ...appInfo,
-          docker_email: email,
-          docker_username: username,
-          docker_password: password,
-          docker_server: server,
-          replicas: replicas,
-        };
-        this.setState({ updating_form: true });
-        updateApp(params.appID, appInfo);
+        if (replicas === "") {
+          appInfo = {
+            ...appInfo,
+            docker_email: email,
+            docker_username: username,
+            docker_password: password,
+            docker_server: server,
+            replicas: app.replicas,
+          };
+          this.setState({ updating_form: true });
+          updateApp(params.appID, appInfo);
+        } else {
+          appInfo = {
+            ...appInfo,
+            docker_email: email,
+            docker_username: username,
+            docker_password: password,
+            docker_server: server,
+            replicas: replicas,
+          };
+          this.setState({ updating_form: true });
+          updateApp(params.appID, appInfo);
+        }
       }
     }
   }
