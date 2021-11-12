@@ -255,11 +255,11 @@ class CreateApp extends React.Component {
         this.setState({
           error: "Please enter a domain name",
         })
-    } else if (this.validateDomainName(domainName) === false) {
+    } else if (domainName &&(this.validateDomainName(domainName) === false)) {
       this.setState({
         error: "Domain name should start with a letter",
       });
-    } else if (this.validateDomainName(domainName) === "false_convention") {
+    } else if (domainName && (this.validateDomainName(domainName) === "false_convention")) {
       this.setState({
         error: "Use accepted formats for example google.com, domain.ug",
       });
@@ -273,6 +273,28 @@ class CreateApp extends React.Component {
         private_image: isPrivateImage,
         replicas,
       };
+
+      if(isCustomDomain === true){
+        let sentDomainName = domainName.toLowerCase();
+        if (port) {
+          appInfo = { ...appInfo, port: parseInt(port, 10)};
+        }
+
+        if (isPrivateImage) {
+          appInfo = {
+            ...appInfo,
+            docker_email: email,
+            docker_username: username,
+            docker_password: password,
+            docker_server: server,
+          };
+        }
+        appInfo = { ...appInfo, custom_domain: sentDomainName };
+  
+        createApp(appInfo, params.projectID);
+        
+      }
+      else{
 
       if (port) {
         appInfo = { ...appInfo, port: parseInt(port, 10) };
@@ -289,6 +311,7 @@ class CreateApp extends React.Component {
       }
 
       createApp(appInfo, params.projectID);
+    }
     }
   }
 
@@ -478,7 +501,7 @@ class CreateApp extends React.Component {
                             required
                             placeholder="Domain name"
                             name="domainName"
-                            value={domainName.toLowerCase()}
+                            value={domainName}
                             onChange = { (e) => {
                               this.handleChange(e);
                             }}
