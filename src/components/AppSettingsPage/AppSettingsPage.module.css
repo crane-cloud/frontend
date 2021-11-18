@@ -236,6 +236,7 @@
 
 .CopyDiv {
   display: flex;
+  gap: 1rem;
 }
 
 .UpperSection {
@@ -360,4 +361,54 @@
 .deactivatedBtn {
   background-color: transparent;
   color: #f7b21f;
+}
+
+.Domain__Popup{
+  color: #008ac1;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.Domain__Popup:hover{
+  color: #f7b21f;
+}
+
+.DomainModal__Main{
+  display: grid;
+  grid-template-rows: 13% auto;
+}
+
+.DomainModal__Title{
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 42.1px;
+}
+
+.Description__button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Description__button button{
+  background-color: #008ac1;
+  color: #fff;
+  border: none;
+  width: 9rem;
+  height: 2.9rem;
+  font-weight: bold;
+}
+
+.Step__Title{
+  font-size: 20px;
+  font-weight: 600;
+  padding-bottom: 1rem;
+}
+
+.Step__Description{
+  padding: 0rem 0rem 1rem 1rem;
+}
+
+ul  li{
+  list-style-type: none;
 }
