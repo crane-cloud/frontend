@@ -38,13 +38,13 @@ class CreateDatabase extends React.Component {
   componentDidUpdate(prevProps) {
     const {
       isCreated,
-      params: { userID, projectID },
+      params: { projectID },
     } = this.props;
 
     if (isCreated !== prevProps.isCreated) {
       return (
         <Redirect
-          to={`/users/${userID}/projects/${projectID}/databases`}
+          to={`/projects/${projectID}/databases`}
           noThrow
         />
       );
@@ -78,13 +78,13 @@ class CreateDatabase extends React.Component {
       isCreating,
       isCreated,
       message,
-      params: { userID, projectID },
+      params: { projectID },
     } = this.props;
     const { error } = this.state;
     if (isCreated) {
       return (
         <Redirect
-          to={`/users/${userID}/projects/${projectID}/databases`}
+          to={`/projects/${projectID}/databases`}
           noThrow
         />
       );

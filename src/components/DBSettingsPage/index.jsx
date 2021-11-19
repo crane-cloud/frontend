@@ -20,6 +20,7 @@ import updateDatabasePassword, {
   clearUpdateDatabasePasswordState,
 } from "../../redux/actions/updateDBPassword";
 import getSingleDB from "../../redux/actions/getSingleDB";
+import getPassword, { clearFetchDBPassword } from "../../redux/actions/getPassword";
 import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
@@ -69,11 +70,13 @@ class DBSettingsPage extends React.Component {
     this.handleSubmitUpdate = this.handleSubmitUpdate.bind(this);
     this.renderUpdateRedirect = this.renderUpdateRedirect.bind(this);
     this.getProjectName = this.getProjectName.bind(this);
+    this.fetchPassword = this.fetchPassword.bind(this);
   }
   componentDidMount() {
-    const { getSingleDB } = this.props;
+    const { getSingleDB, clearFetchDBPassword } = this.props;
     const { projectID, databaseID } = this.props.match.params;
     clearDatabaseResetState();
+    clearFetchDBPassword();
     getSingleDB(projectID, databaseID);
   }
 
@@ -92,23 +95,6 @@ class DBSettingsPage extends React.Component {
       this.hideUpdateModal();
     }
   }
-
-  // getDatabaseInfo(id) {
-  //   const { databases } = this.props;
-  //   const found = databases.find((database) => database.id === id);
-  //   const info = {
-  //     flavor: found.database_flavour_name,
-  //     name: found.name,
-  //     user: found.user,
-  //     host: found.host,
-  //     dbID: found.id,
-  //     port: found.port,
-  //     password: found.password,
-  //     age: found.age,
-  //   };
-
-  //   return info;
-  // }
 
   handleDeleteDatabase(e, projectID, databaseID) {
     const { deleteDatabase } = this.props;
@@ -168,12 +154,12 @@ class DBSettingsPage extends React.Component {
 
   renderRedirect = () => {
     const { dbDeleteMessage } = this.props;
-    const { userID, projectID } = this.props.match.params;
+    const { projectID } = this.props.match.params;
     if (dbDeleteMessage === "Database Deleted Successfully") {
       this.hideDeleteAlert();
       return (
         <Redirect
-          to={`/users/${userID}/projects/${projectID}/databases`}
+          to={`/projects/${projectID}/databases`}
           noThrow
         />
       );
@@ -182,11 +168,11 @@ class DBSettingsPage extends React.Component {
 
   renderUpdateRedirect = () => {
     const { dpPasswordUpdated } = this.props;
-    const { userID, projectID, databaseID } = this.props.match.params;
+    const { projectID, databaseID } = this.props.match.params;
     if (dpPasswordUpdated) {
       return (
         <Redirect
-          to={`/users/${userID}/projects/${projectID}/databases/${databaseID}/settings`}
+          to={`/projects/${projectID}/databases/${databaseID}/settings`}
           noThrow
         />
       );
@@ -195,6 +181,7 @@ class DBSettingsPage extends React.Component {
 
   togglePassword() {
     this.setState({ hidden: !this.state.hidden });
+    this.fetchPassword();
   }
 
   nameOnClick() {
@@ -237,6 +224,17 @@ class DBSettingsPage extends React.Component {
     const { database } = this.props;
     navigator.clipboard.writeText(database.password);
     this.setState({ passwordChecked: true });
+  }
+
+  fetchPassword() {
+    const {
+      getPassword,
+      match: {
+        params: { projectID, databaseID },
+      },
+    } = this.props;
+
+    getPassword(projectID, databaseID);
   }
 
   // handle submit for update modal
@@ -289,8 +287,11 @@ class DBSettingsPage extends React.Component {
       projects,
       database,
       isRetrieving,
+      password,
+      isRetrievingPassword,
+      passwordFetched
     } = this.props;
-    const { userID, projectID, databaseID } = this.props.match.params;
+    const { projectID, databaseID } = this.props.match.params;
     // const dbInfo = this.getDatabaseInfo(databaseID);
     const {
       openDeleteAlert,
@@ -322,11 +323,11 @@ class DBSettingsPage extends React.Component {
               name={this.getProjectName(projects, projectID)}
               params={this.props.match.params}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
-              cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
-              memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
-              databaseLink={`/users/${userID}/projects/${projectID}/databases`}
-              networkLink={`/users/${userID}/projects/${projectID}/network/`}
+              allMetricsLink={`/projects/${projectID}/metrics`}
+              cpuLink={`/projects/${projectID}/cpu/`}
+              memoryLink={`/projects/${projectID}/memory/`}
+              databaseLink={`/projects/${projectID}/databases`}
+              networkLink={`/projects/${projectID}/network/`}
             />
           </div>
           <div className="MainContentSection">
@@ -347,7 +348,9 @@ class DBSettingsPage extends React.Component {
                       <div className="DBDetailRow">
                         <div className="DBThead">Type</div>
                         <div className="DBTDetail uppercase">
-                          {database.flavor === 'mysql'?"MYSQL":"POSTGRESQL"}
+                          {database.database_flavour_name === "mysql"
+                            ? "MYSQL"
+                            : "POSTGRESQL"}
                         </div>
                       </div>
                       <div className="DBDetailRow">
@@ -366,12 +369,11 @@ class DBSettingsPage extends React.Component {
                           {userChecked ? <Checked /> : null}
                         </div>
                       </div>
-                      <div className="DBDetailRow">
+                      {passwordFetched ? (
+                        <div className="DBDetailRow">
                         <div className="DBColumn1 DBThead">Password</div>
                         <div className="DBColumn">
-                          {hidden
-                            ? "***************************"
-                            : database.password}
+                          {(hidden) ? (isRetrievingPassword ? <Spinner /> : "***************************") : password}
                         </div>
                         <div className="DBIcon">
                           <CopyText onClick={this.passwordOnClick} />
@@ -379,10 +381,27 @@ class DBSettingsPage extends React.Component {
                         </div>
                         <div className="DBPassword">
                           <div onClick={this.togglePassword}>
-                            {hidden ? <Open /> : <Closed />}
+                            {hidden ? (isRetrievingPassword ? <Spinner /> : <Open />) : <Closed />}
                           </div>
                         </div>
                       </div>
+                      ) : (
+                        <div className="DBDetailRow">
+                        <div className="DBColumn1 DBThead">Password</div>
+                        <div className="DBColumn">
+                          {(hidden) ? (isRetrievingPassword ? <Spinner /> : "click to get password") : password}
+                        </div>
+                        <div className="DBIcon">
+                          {/* <CopyText onClick={this.passwordOnClick} /> */}
+                          {passwordChecked ? <Checked /> : null}
+                        </div>
+                        <div className="DBPassword">
+                          <div onClick={this.togglePassword}>
+                            {hidden ? (isRetrievingPassword ? <Spinner /> : <Open />) : <Closed />}
+                          </div>
+                        </div>
+                      </div>
+                      )}
                       <div className="DBDetailRow">
                         <div className="DBThead">Host</div>
                         <div className="DBTDetail">{database.host}</div>
@@ -412,7 +431,7 @@ class DBSettingsPage extends React.Component {
 
                   <div className="DBSections">
                     <div className="DBSectionTitle">Connect to database</div>
-                    {database.flavor === "mysql" ? (
+                    {database.database_flavour_name === "mysql" ? (
                       <div className="DBInstructions">
                         <div className="DBInfoTop">
                           <div>
@@ -756,6 +775,8 @@ const mapStateToProps = (state) => {
     clearUpdateDatabasePasswordState,
   } = state.updateDatabasePasswordReducer;
 
+  const { password, isRetrievingPassword, passwordFetched } =
+    state.passwordReducer;
   return {
     databaseDeleted,
     databaseDeleteFailed,
@@ -776,6 +797,9 @@ const mapStateToProps = (state) => {
     projects,
     isRetrieving,
     isFetched,
+    password,
+    isRetrievingPassword,
+    passwordFetched,
   };
 };
 
@@ -787,6 +811,8 @@ const mapDispatchToProps = {
   updateDatabasePassword,
   clearUpdateDatabasePasswordState,
   getSingleDB,
+  getPassword,
+  clearFetchDBPassword,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DBSettingsPage);

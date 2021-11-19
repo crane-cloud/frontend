@@ -1,7 +1,6 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+import { useParams, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import InformationBar from "../InformationBar";
 import Header from "../Header";
 import SideBar from "../SideBar";
@@ -9,19 +8,20 @@ import "./AppLogsPage.css";
 import LogsFrame from "../LogsFrame";
 import getAppLogs from "../../redux/actions/getAppLogs";
 
-class AppLogsPage extends React.Component {
-  componentDidMount() {
-    const {
-      getAppLogs,
-      match: { params },
-    } = this.props;
-    const { projectID, appID } = params;
+const AppLogsPage = () => {
+  const location = useLocation();
+  const params = useParams();
+  const { projectID, appID } = params;
 
+  useEffect(() => {
     getAppLogs({ projectID, appID }, { timestamps: true });
-  }
+  }, [projectID, appID]);
 
-  getAppInfo(id) {
-    const { apps } = this.props;
+  const myApps = useSelector((state) => state.appsListReducer);
+  const appLogs = useSelector((state) => state.appLogsReducer);
+
+  const getAppInfo = (id) => {
+    const { apps } = myApps;
     const found = apps.apps.find((app) => app.id === id);
     const info = {
       name: found.name,
@@ -30,88 +30,47 @@ class AppLogsPage extends React.Component {
     };
 
     return info;
-  }
+  };
 
-  render() {
-    const {
-      match: { params },
-    } = this.props;
-    const { projectID, userID, appID } = params;
-    const { logs, retrieveingLogs } = this.props;
-    const appInfo = this.getAppInfo(appID);
+  const { logs, retrieveingLogs } = appLogs;
+  const appInfo = getAppInfo(appID);
 
-    return (
-      <div className="Page">
-        <div className="TopBarSection">
-          <Header />
+  return (
+    <div className="Page">
+      <div className="TopBarSection">
+        <Header />
+      </div>
+      <div className="MainSection">
+        <div className="SideBarSection">
+          <SideBar
+            name={appInfo.name}
+            params={params}
+            pageRoute={location.pathname}
+            allMetricsLink={`/projects/${projectID}/apps/${appID}/metrics/`}
+            cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
+            memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
+            databaseLink={`/projects/${projectID}/databases`}
+            networkLink={`/projects/${projectID}/apps/${appID}/network/`}
+            appLogsLink={`/projects/${projectID}/apps/${appID}/logs/`}
+          />
         </div>
-        <div className="MainSection">
-          <div className="SideBarSection">
-            <SideBar
-              name={appInfo.name}
-              params={params}
-              pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/metrics/`}
-              cpuLink={`/users/${userID}/projects/${projectID}/apps/${appID}/cpu/`}
-              memoryLink={`/users/${userID}/projects/${projectID}/apps/${appID}/memory/`}
-              databaseLink={`/users/${userID}/projects/${projectID}/databases`}
-              networkLink={`/users/${userID}/projects/${projectID}/apps/${appID}/network/`}
-              appLogsLink={`/users/${userID}/projects/${projectID}/apps/${appID}/logs/`}
-            />
+        <div className="MainContentSection">
+          <div className="InformationBarSection">
+            <InformationBar header={appInfo.url} status={appInfo.status} />
           </div>
-          <div className="MainContentSection">
-            <div className="InformationBarSection">
-              <InformationBar header={appInfo.url} status={appInfo.status} />
-            </div>
-            <div className="ContentSection">
-              <div className="LogsSection">
-                <LogsFrame
-                  loading={retrieveingLogs}
-                  data={logs}
-                  title={`${appInfo.name} logs`}
-                />
-              </div>
+          <div className="ContentSection">
+            <div className="LogsSection">
+              <LogsFrame
+                loading={retrieveingLogs}
+                data={logs}
+                title={`${appInfo.name} logs`}
+              />
             </div>
           </div>
         </div>
       </div>
-    );
-  }
-}
-
-AppLogsPage.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      appID: PropTypes.string.isRequired,
-      projectID: PropTypes.string.isRequired,
-      userID: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-  getAppLogs: PropTypes.func.isRequired,
-  apps: PropTypes.shape({
-    apps: PropTypes.arrayOf(PropTypes.object),
-  }).isRequired,
-  logs: PropTypes.arrayOf(PropTypes.string).isRequired,
-  retrieveingLogs: PropTypes.bool.isRequired,
+    </div>
+  );
 };
 
-const mapStateToProps = (state) => {
-  const { apps } = state.appsListReducer;
-  const { logs, retrievedLogs, retrieveingLogs } = state.appLogsReducer;
-
-  return {
-    apps,
-    logs,
-    retrievedLogs,
-    retrieveingLogs,
-  };
-};
-
-const mapDispatchToProps = {
-  getAppLogs,
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(AppLogsPage));
+export default AppLogsPage;

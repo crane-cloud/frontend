@@ -180,7 +180,7 @@ export default class RegisterPage extends Component {
                       isChecked={hasAgreed}
                     />
                     &nbsp; I agree to Crane Cloud&apos;s&nbsp;&nbsp;
-                    <Link to="/register" className="RegisterContentLink">
+                    <Link to="/terms-of-service" target="_blank" className="RegisterContentLink">
                       Terms of service.
                     </Link>
                   </div>

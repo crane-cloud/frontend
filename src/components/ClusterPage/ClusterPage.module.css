@@ -1,0 +1,186 @@
+.Page {
+  margin: 0;
+  background: #f1f1f1;
+}
+
+.ViewAccountsBtn {
+  text-transform: capitalize !important;
+  color: #008ac1;
+  background-color: #fff;
+  outline: 2px solid #008ac1;
+}
+
+.ViewAccountsBtn:hover {
+  background-color: #fff;
+  outline: 2px solid #008ac1;
+  color: #008ac1;
+}
+
+.ContentSection {
+  padding: 1rem 3rem;
+  display: grid;
+}
+
+.SummaryCardContainer {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #cccccc;
+}
+
+.SummaryCardContainer:hover {
+  border: 1px solid #f7b21f;
+}
+
+.SummaryCardDimensions {
+  min-width: 100%;
+  display: flex;
+}
+
+.CardHeaderSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #cccccc;
+}
+
+.CardTitle {
+  width: 80%;
+  font-weight: bold;
+}
+
+.CardBodySection {
+  max-height: 10rem;
+  flex-grow: 1;
+  padding: 1rem 0rem 1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.DBSection,
+.UserSection {
+  min-height: 5rem;
+  display: grid;
+  grid-template-columns: 30% auto;
+}
+
+.LeftDBSide,
+.LeftUserSide {
+  display: grid;
+  grid-template-rows: 2.5rem auto;
+  padding-bottom: 1rem;
+}
+
+.TopTitle {
+  font-weight: bold;
+  margin: auto;
+}
+
+.DBStats,
+.UserStats {
+  display: grid;
+  grid-template-columns: 49% auto 49%;
+  padding-bottom: 1rem;
+}
+
+.MetricsGraph {
+  border-left: 1px solid #cccccc;
+  padding-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.UserCount {
+  font-size: 32px;
+  font-weight: normal;
+  padding: 3rem 1rem 3rem 9rem;
+}
+
+.InnerTitlesStart,
+.InnerTitlesMiddle,
+.CardTop {
+  font-weight: bold;
+  text-align: center;
+  padding-top: 1rem;
+}
+
+.verticalLine {
+  border-left: 1px solid #cccccc;
+  height: 10rem;
+}
+
+.Card {
+  width: 100%;
+  max-width: 385px;
+  margin-left: 45px;
+  text-align: left;
+  margin-bottom: 1rem;
+  background: #fff;
+  position: relative;
+  color: #000000;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  height: 250px;
+}
+
+.ResourceDigit {
+  flex: 1 1 auto;
+  padding: 1.25rem;
+  font-size: 32px;
+  font-weight: normal;
+  box-sizing: border-box;
+  padding-top: 4rem;
+  text-align: center;
+}
+.Card .CardHeader {
+  font-weight: bold;
+  border: none;
+  outline: 0;
+  padding: 12px;
+  text-transform: lowercase;
+  text-align: left;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+  padding: 1rem;
+  margin-bottom: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.Card .CardHeader::first-letter {
+  text-transform: uppercase;
+}
+
+.Card:hover {
+  opacity: 0.7;
+  border: 1px solid #f7b21f;
+}
+
+.FooterRow {
+  padding: 1rem 3rem;
+  background-color: #f1f1f1;
+}
+
+.ContentSection {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.MetricsCardGraph {
+  max-height: 12rem;
+}
+.AllUsers {
+  display: flex;
+  margin: auto;
+}
+
+.OtherCards {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}

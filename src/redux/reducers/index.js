@@ -35,6 +35,12 @@ import resetDatabaseReducer from "./resetDatabase";
 import createDatabaseReducer from "./createDatabase";
 import updateDatabasePasswordReducer from "./updateDBPassword";
 import singleDBReducer from "./getSingleDB";
+import passwordReducer from "./getPassword";
+import updateAppReducer from "./updateApp";
+import singleAppReducer from "./getSingleApp";
+import databasesReducer from "./getDatabases";
+import appsSummaryReducer from "./appsSummary";
+import usersSummaryReducer from "./usersSummary";
 
 export default combineReducers({
   clusterResourcesReducer,
@@ -54,7 +60,7 @@ export default combineReducers({
   appsListReducer,
   userProjectsReducer,
   addProjectReducer,
-  createNewApp: createAppReducer,
+  createAppReducer,
   deleteAppReducer,
   deleteProjectReducer,
   userDetailReducer,
@@ -73,4 +79,10 @@ export default combineReducers({
   createDatabaseReducer,
   updateDatabasePasswordReducer,
   singleDBReducer,
+  passwordReducer,
+  updateAppReducer,
+  singleAppReducer,
+  databasesReducer,
+  appsSummaryReducer,
+  usersSummaryReducer,
 });

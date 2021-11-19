@@ -2,8 +2,7 @@ import React from "react";
 
 import "./ClusterCard.css";
 
-const ClusterCard = (props) => {
-  const { name, description, icon } = props;
+const ClusterCard = ({ name, description, icon }) => {
   return (
     <div className="ClusterCard">
       <div

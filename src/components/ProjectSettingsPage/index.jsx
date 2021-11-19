@@ -19,15 +19,19 @@ import Feedback from "../Feedback";
 import DeleteWarning from "../DeleteWarning";
 import BlackInputText from "../BlackInputText";
 import styles from "./ProjectSettingsPage.module.css";
-
+import SettingsButton from "../SettingsButton";
+import Select from "../Select";
+import {
+  retrieveProjectTypes
+} from "../../helpers/projecttypes";
 class ProjectSettingsPage extends React.Component {
   constructor(props) {
     super(props);
     const projectInfo = JSON.parse(localStorage.getItem("project"));
-    const { name, description } = projectInfo;
+    const { name, description, organisation, project_type } = projectInfo;
 
     this.state = {
-      openUpdateModal: false,
+      openUpdateAlert: false,
       openDeleteAlert: false,
       openDropDown: false,
       projectName: name ? name : "",
@@ -35,17 +39,25 @@ class ProjectSettingsPage extends React.Component {
       error: "",
       Confirmprojectname: "",
       disableDelete: true,
+      projectOrganisation: organisation ? organisation : "",
+      projectType: project_type ? project_type : "",
+      othersBool:false,
+      otherType:"",
     };
 
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
+    this.showUpdateAlert = this.showUpdateAlert.bind(this);
+    this.hideUpdateAlert = this.hideUpdateAlert.bind(this);
     this.showDeleteAlert = this.showDeleteAlert.bind(this);
     this.hideDeleteAlert = this.hideDeleteAlert.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateProjectName = this.validateProjectName.bind(this);
+    this.checkProjectInputValidity = this.checkProjectInputValidity.bind(this);
+    this.handleTypeSelectChange = this.handleTypeSelectChange.bind(this); 
     this.renderRedirect = this.renderRedirect.bind(this);
   }
-
+  
   componentDidUpdate(prevProps) {
     const { isDeleted } = this.props;
 
@@ -53,7 +65,6 @@ class ProjectSettingsPage extends React.Component {
       this.hideDeleteAlert();
     }
   }
-
   validateProjectName(name) {
     if (/^[a-z]/i.test(name)) {
       if (name.match(/[^-a-zA-Z]/)) {
@@ -63,10 +74,17 @@ class ProjectSettingsPage extends React.Component {
     }
     return false;
   }
-
   handleChange(e) {
-    const { error, projectName, openDeleteAlert } = this.state;
-    const { errorMessage, clearUpdateProjectState,clearDeleteProjectState,isFailed,message  } = this.props;
+    const { error, openDeleteAlert } = this.state;
+    const projectInfo = JSON.parse(localStorage.getItem("project"));
+    const { name } = projectInfo;
+    const {
+      errorMessage,
+      clearUpdateProjectState,
+      clearDeleteProjectState,
+      isFailed,
+      message,
+    } = this.props;
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -78,15 +96,14 @@ class ProjectSettingsPage extends React.Component {
         error: "",
       });
     }
-    if(isFailed && message){
+    if (isFailed && message) {
       clearDeleteProjectState();
-     
     }
-    if (e.target.value === projectName && openDeleteAlert) {
+    if (e.target.value === name && openDeleteAlert) {
       this.setState({
         disableDelete: false,
       });
-    } else if (e.target.value !== projectName && openDeleteAlert) {
+    } else if (e.target.value !== name && openDeleteAlert) {
       this.setState({
         disableDelete: true,
       });
@@ -94,80 +111,96 @@ class ProjectSettingsPage extends React.Component {
   }
 
   handleSubmit() {
-    const { projectName, projectDescription } = this.state;
+    const { projectName, projectDescription,projectOrganisation,projectType, otherType, othersBool } = this.state;
     const {
       updateProject,
-      name,
-      description,
       match: {
         params: { projectID },
       },
     } = this.props;
-    const trimmed = (input) => input.trim();
-    const trimprojectName = trimmed(projectName);
-    const trimprojectDescription = trimmed(projectDescription);
+   
+    const projectInfo = JSON.parse(localStorage.getItem("project"));
+    const { name, description, organisation, project_type } = projectInfo;
 
-    if (trimprojectName !== name || trimprojectDescription !== description) {
-      if (!trimprojectName || !trimprojectDescription) {
+  
+    const Trim = (input) => input.trim();
+    const capitalizeFirstLetter = (input) => input.charAt(0).toUpperCase() + input.slice(1);
+    const type = othersBool ? capitalizeFirstLetter(otherType) : capitalizeFirstLetter(projectType);
+    const trimedprojectName = Trim(projectName);
+    const trimedprojectDescription = Trim(projectDescription);
+    const trimedprojectOrganisation = Trim(projectOrganisation);
+    const trimedprojectType = Trim(type);
+
+    if (trimedprojectName !== name || trimedprojectDescription !== description 
+      || trimedprojectOrganisation !== organisation || trimedprojectType !== project_type) {
+      if (!trimedprojectName || !trimedprojectDescription || !trimedprojectOrganisation || !trimedprojectType) {
         this.setState({
-          error: "please provide either a new name or description",
+          error: "Can't update when an empty field is submited, please fill the missing field or leave it unchanged.",
         });
       } else {
-        if (
-          trimprojectName !== name &&
-          trimprojectDescription === description
-        ) {
-          if (!this.validateProjectName(trimprojectName)) {
+        
+        if ( trimedprojectName !== name ) {
+          const nameCheckResult = this.checkProjectInputValidity(trimedprojectName,"name");
+          if (nameCheckResult !== "") {
             this.setState({
-              error: "name should start with a letter",
-            });
-          } else if (
-            this.validateProjectName(trimprojectName) === "false_convention"
-          ) {
-            this.setState({
-              error: "name may only contain letters and a hypen -",
-            });
-          } else if (trimprojectName.length > 22) {
-            this.setState({
-              error: "project name cannot exceed 22 characters",
-            });
+              error: nameCheckResult,
+            }); 
           } else {
-            const newProject = { name: trimprojectName };
-            updateProject(projectID, newProject);
+               const organisationCheckResult = 
+               this.checkProjectInputValidity(trimedprojectOrganisation,"organisation");
+               const typeCheckResult = this.checkProjectInputValidity(trimedprojectType,"type");
+               if(organisationCheckResult !== "" || typeCheckResult !=="" ){
+                 if(organisationCheckResult !== ""){
+                  this.setState({
+                      error: organisationCheckResult,
+                  }); 
+                 }
+                if(typeCheckResult !==""){
+                  this.setState({
+                    error: typeCheckResult,
+                  }); 
+               }
+             }
+            if(typeCheckResult==="" && organisationCheckResult===""){
+             const newProject = { 
+                 name: trimedprojectName,
+                 project_type: trimedprojectType,
+                 organisation: trimedprojectOrganisation,
+                description: trimedprojectDescription
+                };
+             updateProject(projectID, newProject);
+              }
+          }
+        } else {
+          const organisationCheckResult = 
+          this.checkProjectInputValidity(trimedprojectOrganisation,"organisation");
+          const typeCheckResult = this.checkProjectInputValidity(trimedprojectType,"type");
+          if(organisationCheckResult !== "" || typeCheckResult !=="" ){
+            if(organisationCheckResult !== ""){
+             this.setState({
+                 error: organisationCheckResult,
+             }); 
+            }
+           if(typeCheckResult !==""){
+             this.setState({
+               error: typeCheckResult,
+             }); 
           }
         }
-
-        if (
-          trimprojectName === name &&
-          trimprojectDescription !== description
-        ) {
-          const newProject = { description: trimprojectDescription };
-          updateProject(projectID, newProject);
-        }
-
-        if (
-          trimprojectName !== name &&
-          trimprojectDescription !== description
-        ) {
-          if (!this.validateProjectName(trimprojectName)) {
-            this.setState({
-              error: "name should start with a letter",
-            });
-          } else if (
-            this.validateProjectName(trimprojectName) === "false_convention"
-          ) {
-            this.setState({
-              error: "name may only contain letters and a hypen -",
-            });
-          } else {
-            const newProject = {
-              name: trimprojectName,
-              description: trimprojectDescription,
-            };
-            updateProject(projectID, newProject);
-          }
+       if(typeCheckResult==="" && organisationCheckResult===""){
+        const newProject = { 
+            project_type: trimedprojectType,
+            organisation: trimedprojectOrganisation,
+           description: trimedprojectDescription
+           };
+        updateProject(projectID, newProject);
+         }
         }
       }
+      }else {
+      this.setState({
+        error: "Please provide new information in atleast one of the fields",
+      });
     }
   }
 
@@ -177,8 +210,27 @@ class ProjectSettingsPage extends React.Component {
     deleteProject(projectID);
   }
 
+  showUpdateAlert() {
+    this.setState({ openUpdateAlert: true });
+  }
+
   showDeleteAlert() {
     this.setState({ openDeleteAlert: true });
+  }
+  checkProjectInputValidity(input,output) {
+    if (!this.validateProjectName(input)) {
+      return `${output} should start with a letter`;
+    } else if (this.validateProjectName(input) === "false_convention") {
+      return `${output} may only contain letters and a hypen -`;
+    } else if (input.length > 22) {
+      return `Project ${output} cannot exceed 22 characters`;
+    } else {
+      return "";
+    }
+  }
+
+  hideUpdateAlert() {
+    this.setState({ openUpdateAlert: false });
   }
 
   hideDeleteAlert() {
@@ -186,11 +238,25 @@ class ProjectSettingsPage extends React.Component {
     clearDeleteProjectState();
     this.setState({ openDeleteAlert: false });
   }
+  handleTypeSelectChange(selected) {
+    const{
+      othersBool,
+    } = this.state
+      if(selected.id===6){
+        if(!othersBool){
+          this.setState({ othersBool: true });
+        }
+      }else{
+        this.setState({ projectType: selected.value });
+        if(othersBool){
+          this.setState({ othersBool: false });
+        }
+      }
+  };
   renderRedirect = () => {
     const { isDeleted, isUpdated } = this.props;
-    const { userID } = this.props.match.params;
     if (isDeleted || isUpdated) {
-      return <Redirect to={`/users/${userID}/projects`} noThrow />;
+      return <Redirect to={`/projects`} noThrow />;
     }
   };
 
@@ -206,18 +272,27 @@ class ProjectSettingsPage extends React.Component {
       errorMessage,
     } = this.props;
     const projectInfo = JSON.parse(localStorage.getItem("project"));
-    const name = projectInfo.name;
-    const description = projectInfo.description;
+    const{
+      name,
+      description,
+    } = projectInfo
+
     const {
+      openUpdateAlert,
       openDeleteAlert,
       projectName,
       projectDescription,
       error,
       Confirmprojectname,
       disableDelete,
+      projectOrganisation,
+      projectType,
+      othersBool,
+      otherType
     } = this.state;
+    const types = retrieveProjectTypes();
 
-    const { projectID, userID } = params;
+    const { projectID } = params;
 
     return (
       <div className={styles.Page}>
@@ -232,11 +307,11 @@ class ProjectSettingsPage extends React.Component {
               params={params}
               description={description}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
-              cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
-              memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
-              databaseLink={`/users/${userID}/projects/${projectID}/databases`}
-              networkLink={`/users/${userID}/projects/${projectID}/network/`}
+              allMetricsLink={`/projects/${projectID}/metrics`}
+              cpuLink={`/projects/${projectID}/cpu/`}
+              memoryLink={`/projects/${projectID}/memory/`}
+              databaseLink={`/projects/${projectID}/databases`}
+              networkLink={`/projects/${projectID}/network/`}
             />
           </div>
           <div className={styles.MainContentSection}>
@@ -244,55 +319,138 @@ class ProjectSettingsPage extends React.Component {
               <InformationBar header="Settings" />
             </div>
             <div className={styles.ContentSection}>
-              <div>
-                <div
-                  onSubmit={(e) => {
-                    this.handleSubmit();
-                    e.preventDefault();
-                  }}
-                >
-                  <div className={styles.UpdateForm}>
-                    <BlackInputText
-                      placeholder="Project Name"
-                      name="projectName"
-                      value={projectName}
-                      onChange={(e) => {
-                        this.handleChange(e);
-                      }}
-                    />
-                    <TextArea
-                      placeholder="Description"
-                      name="projectDescription"
-                      value={projectDescription}
-                      onChange={(e) => {
-                        this.handleChange(e);
-                      }}
-                    />
-                    {(errorMessage || error) && (
-                      <Feedback
-                        type="error"
-                        message={
-                          errorMessage
-                            ? "you cant update only the description"
-                            : error
-                        }
+              <div className={styles.ProjectSections}>
+                <div className={styles.ProjectSectionTitle}>Manage project</div>
+                <div className={styles.ProjectInstructions}>
+                  <div className={styles.ProjectButtonRow}>
+                    <div className="flexa">
+                      <div>
+                        <strong>Update project</strong>
+                      </div>
+                      <div>Modify the project name and description</div>
+                    </div>
+                    <div className={styles.SectionButtons}>
+                      <SettingsButton
+                        label="Update this project"
+                        onClick={this.showUpdateAlert}
                       />
-                    )}
-
-                    <PrimaryButton
-                      label={isUpdating ? <Spinner /> : "update project"}
-                      onClick={this.handleSubmit}
-                    />
+                    </div>
+                  </div>
+                  <div className={styles.ProjectButtonRow}>
+                    <div className="flexa">
+                      <div>
+                        <strong>Delete project</strong>
+                      </div>
+                      <div>
+                        Take down your entire project, delete all apps under it.
+                      </div>
+                    </div>
+                    <div className={styles.SectionButtons}>
+                      <SettingsButton
+                        label="Delete this project"
+                        className="Change-Btn"
+                        onClick={this.showDeleteAlert}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className={styles.DeleteButtonDiv}>
-                <PrimaryButton
-                  label="Delete Project"
-                  className={styles.DeleteBtn}
-                  onClick={this.showDeleteAlert}
-                />
-              </div>
+
+              {openUpdateAlert && (
+                <div className={styles.ProjectDeleteModel}>
+                  <Modal
+                    showModal={openUpdateAlert}
+                    onClickAway={this.hideUpdateAlert}
+                  >
+                    <div>
+                      <div
+                        onSubmit={(e) => {
+                          this.handleSubmit();
+                          e.preventDefault();
+                        }}
+                      >
+                        <div className={styles.UpdateForm}>
+                          <div className={styles.DeleteDescription}>
+                            Project name
+                          </div>
+                          <BlackInputText
+                            placeholder="Project Name"
+                            name="projectName"
+                            value={projectName}
+                            onChange={(e) => {
+                              this.handleChange(e);
+                            }}
+                          />
+                          <div className={styles.DeleteDescription}>
+                            Organisation
+                          </div>
+                          <BlackInputText
+                            placeholder="Organisation"
+                            name="projectOrganisation"
+                            value={projectOrganisation}
+                            onChange={(e) => {
+                              this.handleChange(e);
+                            }}
+                          />
+                          <div className={styles.DeleteDescription}>
+                            Project type
+                          </div>
+                          <Select
+                            required
+                            placeholder={projectType ? projectType:"Update project type"}
+                            options={types}
+                            onChange={this.handleTypeSelectChange}
+                          />
+                          {othersBool && (<BlackInputText
+                             required
+                             placeholder="Type of project"
+                             name="otherType"
+                             value={otherType}
+                             onChange={(e) => {
+                             this.handleChange(e);
+                           }}
+                          />)}
+                          <div className={styles.DeleteDescription}>
+                            Project description
+                          </div>
+                          <TextArea
+                            placeholder="Description"
+                            name="projectDescription"
+                            value={projectDescription}
+                            onChange={(e) => {
+                              this.handleChange(e);
+                            }}
+                          />
+                          {(errorMessage || error) && (
+                            <Feedback
+                              type="error"
+                              message={
+                                errorMessage
+                                  ? "Failed to update Project"
+                                  : error
+                              }
+                            />
+                          )}
+                          <div className={styles.UpdateProjectModelButtons}>
+                            <PrimaryButton
+                              label="cancel"
+                              className="CancelBtn"
+                              onClick={this.hideUpdateAlert}
+                            />
+                            <PrimaryButton
+                              label={
+                                isUpdating ? <Spinner /> : "update project"
+                              }
+                              onClick={this.handleSubmit}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+              )}
+
               {openDeleteAlert && (
                 <div className={styles.ProjectDeleteModel}>
                   <Modal
@@ -304,24 +462,26 @@ class ProjectSettingsPage extends React.Component {
                         <div className={styles.WarningContainer}>
                           <div className={styles.DeleteDescription}>
                             Are you sure you want to delete&nbsp;
-                            <span>{projectName}</span>
+                            <span>{name}</span>
                             &nbsp;?
                           </div>
                           <div className={styles.DeleteSubDescription}>
-                            This will permanently delete the project and all its resources.
-                            Please confirm by typing <b className={styles.DeleteWarning}>{projectName}</b> below.
+                            This will permanently delete the project and all its
+                            resources. Please confirm by typing &nbsp;
+                            <b className={styles.DeleteWarning}>{name}</b>{" "}
+                            &nbsp; below.
                           </div>
                           <div className={styles.InnerModalDescription}>
                             <BlackInputText
                               required
-                              placeholder={projectName}
+                              placeholder={name}
                               name="Confirmprojectname"
                               value={Confirmprojectname}
                               onChange={(e) => {
                                 this.handleChange(e);
                               }}
                             />
-                            <DeleteWarning textAlignment="Left"/>
+                            <DeleteWarning textAlignment="Left" />
                           </div>
                         </div>
                       </div>

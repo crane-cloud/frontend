@@ -10,7 +10,8 @@ import InputText from "../InputText";
 import InputPassword from "../InputPassword";
 import PrimaryButton from "../PrimaryButton";
 import Spinner from "../Spinner";
-import { API_BASE_URL } from "../../config";
+import { API_BASE_URL, GIT_REDIRECT_URL } from "../../config";
+import { ReactComponent as LogoIcon } from "../../assets/images/githublogo.svg";
 import "./LoginPage.css";
 
 class LoginPage extends React.Component {
@@ -21,22 +22,34 @@ class LoginPage extends React.Component {
       password: "",
       loading: false,
       error: "",
+      gitLoading: false,
+      feedbackMessage: "",
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
+    this.initiateGitHubLogin = this.initiateGitHubLogin.bind(this);
+    this.toGithubauth = this.toGithubauth.bind(this);
   }
 
   componentDidMount() {
     // remove the current state from local storage
     // so that when a person logs in they dont encounter
     // the previous state which wasnt cleared
-    localStorage.setItem("state", {});
-    localStorage.removeItem("state");
-    this.props.removeUser();
+    const queryParams = new URLSearchParams(window.location.search);
+    const code = queryParams?.get("code");
+    // localStorage.setItem("state", {});
+    // localStorage.removeItem("state");
+    // this.props.removeUser();
+    if (code) {
+      this.initiateGitHubLogin(code);
+    }
   }
 
+  toGithubauth = () => {
+    window.location.href = `${GIT_REDIRECT_URL}`;
+  };
   handleChange(e) {
     const { error } = this.state;
     this.setState({
@@ -101,7 +114,7 @@ class LoginPage extends React.Component {
                   feedbackMessage: "Login Successful",
                 },
                 () => {
-                  window.location.href = `/users/${res.data.data.id}/projects`;
+                  window.location.href = `/projects`;
                 }
               );
             }
@@ -128,8 +141,45 @@ class LoginPage extends React.Component {
     }
   }
 
+  initiateGitHubLogin = (code) => {
+    const { gitLoading, feedbackMessage } = this.state;
+    const { saveUser } = this.props;
+    if (!gitLoading && !feedbackMessage) {
+      const object = {
+        code,
+      };
+      this.setState({
+        gitLoading: true,
+        feedbackMessage: "Please wait",
+      });
+
+      axios
+        .post(`${API_BASE_URL}/users/oauth`, object)
+        .then((res) => {
+          if (res.data.status === "success") {
+            saveUser(res.data.data);
+            localStorage.setItem("token", res.data.data.access_token);
+
+            this.setState({
+              gitLoading: false,
+              feedbackMessage: "Login Successful",
+            });
+            window.location.href = `/projects`;
+          }
+        })
+        .catch((e) => {
+          this.setState({
+            gitLoading: false,
+            error: "Login failed",
+            feedbackMessage: "",
+          });
+        });
+    }
+  };
+
   render() {
-    const { error, email, password, loading } = this.state;
+    const { error, email, password, loading, gitLoading, feedbackMessage } =
+      this.state;
 
     return (
       <div className="LoginPageContainer">
@@ -170,17 +220,43 @@ class LoginPage extends React.Component {
 
               <PrimaryButton
                 label={loading ? <Spinner /> : "login"}
+                className="LoginButton"
                 onClick={this.handleSubmit}
               />
-
-              <div className="LoginContentBottomLink LoginLinkContainer">
-                Not signed up? &nbsp;
-                <Link to="/register" className="LoginContentLink">
-                  Create an account.
-                </Link>
-              </div>
             </div>
           </form>
+          <div className="LowerLoginSection">
+            <div>
+              <p className="LoginWith">
+                <span>Or Login with</span>
+              </p>
+            </div>
+            <PrimaryButton
+              label={
+                gitLoading ? (
+                  <Spinner />
+                ) : (
+                  <div className="GitLoginBtn">
+                    <LogoIcon className="LogoIcon" />
+                    <div className="GitText">Github</div>
+                  </div>
+                )
+              }
+              className="GithubLoginBtn"
+              disable={gitLoading}
+              onClick={this.toGithubauth}
+            />
+
+            {feedbackMessage && (
+              <div className="LoginFeedBackDiv">{feedbackMessage}</div>
+            )}
+            <div className="LoginContentBottomLink LoginLinkContainer">
+              Not signed up? &nbsp;
+              <Link to="/register" className="LoginContentLink">
+                Create an account.
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     );

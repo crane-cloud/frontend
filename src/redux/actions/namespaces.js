@@ -22,10 +22,10 @@ export const getNamespacesFailed = (error) => ({
   },
 });
 
-const getNamespaces = (params) => (dispatch) => {
+const getNamespaces = (clusterID) => (dispatch) => {
   dispatch(initiateFetch());
   return axios
-    .get(`/clusters/${params.clusterID}/namespaces`)
+    .get(`/clusters/${clusterID}/namespaces`)
     .then((response) => dispatch(getNamespacesSuccess(response)))
     .catch((error) => {
       dispatch(getNamespacesFailed(error));

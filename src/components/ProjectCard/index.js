@@ -27,18 +27,16 @@ class ProjectCard extends React.Component {
   }
 
   render() {
-    const { name, data, description, cardID } = this.props;
+    const { name, description, cardID } = this.props;
 
     const formattedMetrics = this.getProjectMemoryMetrics();
-
-    const userId = data.id;
 
     return (
       <>
         <div className="ProjectsCard">
           <Link
             to={{
-              pathname: `/users/${userId}/projects/${cardID}/apps`,
+              pathname: `/projects/${cardID}/apps`,
               projectData: name,
             }}
             key={cardID}
@@ -55,7 +53,7 @@ class ProjectCard extends React.Component {
             <div className="ProjectInfoSection">
               <Link
                 to={{
-                  pathname: `/users/${userId}/projects/${cardID}/apps`,
+                  pathname: `/projects/${cardID}/apps`,
                   projectData: name,
                 }}
                 key={cardID}
@@ -75,9 +73,6 @@ ProjectCard.propTypes = {
   cardID: PropTypes.string.isRequired,
   name: PropTypes.string,
   description: PropTypes.string,
-  data: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-  }).isRequired,
   getProjectMemory: PropTypes.func.isRequired,
   memoryMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
@@ -88,11 +83,9 @@ ProjectCard.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { data } = state.user;
   const { isFetchingMemory, memoryMetrics, memoryMessage } =
     state.projectMemoryReducer;
   return {
-    data,
     isFetchingMemory,
     memoryMetrics,
     memoryMessage,

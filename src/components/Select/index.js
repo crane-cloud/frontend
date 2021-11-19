@@ -40,7 +40,7 @@ const Select = ({ required, placeholder, options, onChange }) => {
   }, []);
 
   return (
-    <div ref={openSelectRef} className="SelectWrapper">
+    <div ref={openSelectRef} className="SelectWrapper fix-width">
       <div
         className="SelectElementMain"
         onClick={toggleOptions}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -8,67 +8,53 @@ import "./AppsCard.css";
 import getAppMemory, { clearAppMemory } from "../../redux/actions/appMemory";
 import { formatAppMemoryMetrics } from "../../helpers/formatMetrics";
 
-class AppsCard extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.getAppMemoryMetrics = this.getAppMemoryMetrics.bind(this);
-  }
-
-  componentDidMount() {
-    const { getAppMemory, appId } = this.props;
-    const { projectID } = this.props.otherData;
-
+const AppsCard = (props) => {
+  const { getAppMemory, name, appStatus, appId, otherData, appMemoryMetrics } = props;
+  const { projectID } = props.otherData;
+  useEffect(() => {
     clearAppMemory();
     getAppMemory(projectID, appId, {});
-  }
+  }, [appId, projectID, getAppMemory]);
 
-  getAppMemoryMetrics() {
-    const { appId } = this.props;
-    const { appMemoryMetrics } = this.props;
-    const results = formatAppMemoryMetrics(appId, appMemoryMetrics);
-    return results;
-  }
+  const getAppMemoryMetrics = () => {
+    return formatAppMemoryMetrics(appId, appMemoryMetrics);
+  };
 
-  render() {
-    const { name, appStatus, appId, otherData } = this.props;
+  const formattedMemoryMetrics = getAppMemoryMetrics();
 
-    const formattedMemoryMetrics = this.getAppMemoryMetrics();
-
-    return (
-      <>
-        <Link
-          to={{
-            pathname: `/users/${otherData.userID}/projects/${otherData.projectID}/apps/${appId}/metrics`,
-          }}
-          key={otherData.projectID}
-          className="AppName"
-        >
-          <div className="AppCard">
-            <div className="AppCardHeader">
-              <div className="AppNameSection">{name}</div>
-              <div className="AppIconsSection">
-                <div className="StatusData">
-                  <AppStatus appStatus={appStatus} />
-                </div>
-              </div>
-            </div>
-            <div className="AppCardBottomSection">
-              <div className="AppGraphSummaryLabel">Memory (1d)</div>
-              <div className="AppGraphSummary">
-                <LineChartComponent
-                  lineDataKey="memory"
-                  preview
-                  data={formattedMemoryMetrics}
-                />
+  return (
+    <>
+      <Link
+        to={{
+          pathname: `/projects/${otherData.projectID}/apps/${appId}/metrics`,
+        }}
+        key={otherData.projectID}
+        className="AppName"
+      >
+        <div className="AppCard">
+          <div className="AppCardHeader">
+            <div className="AppNameSection">{name}</div>
+            <div className="AppIconsSection">
+              <div className="StatusData">
+                <AppStatus appStatus={appStatus} />
               </div>
             </div>
           </div>
-        </Link>
-      </>
-    );
-  }
-}
+          <div className="AppCardBottomSection">
+            <div className="AppGraphSummaryLabel">Memory (1d)</div>
+            <div className="AppGraphSummary">
+              <LineChartComponent
+                lineDataKey="memory"
+                preview
+                data={formattedMemoryMetrics}
+              />
+            </div>
+          </div>
+        </div>
+      </Link>
+    </>
+  );
+};
 
 // inititate props
 AppsCard.propTypes = {
@@ -77,7 +63,6 @@ AppsCard.propTypes = {
   url: PropTypes.string.isRequired,
   appId: PropTypes.string.isRequired,
   otherData: PropTypes.shape({
-    userID: PropTypes.string.isRequired,
     projectID: PropTypes.string.isRequired,
   }).isRequired,
 };

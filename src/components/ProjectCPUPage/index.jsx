@@ -129,7 +129,7 @@ class ProjectCPUPage extends React.Component {
       isFetchingCPU,
       cpuMetrics,
     } = this.props;
-    const { projectID, userID } = params;
+    const { projectID } = params;
     const { period } = this.state;
 
     const formattedMetrics = formatCPUMetrics(projectID, cpuMetrics, period);
@@ -145,11 +145,11 @@ class ProjectCPUPage extends React.Component {
               name={this.getProjectName(projectID)}
               params={params}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/users/${userID}/projects/${projectID}/metrics`}
-              cpuLink={`/users/${userID}/projects/${projectID}/cpu/`}
-              memoryLink={`/users/${userID}/projects/${projectID}/memory/`}
-              databaseLink={`/users/${userID}/projects/${projectID}/databases`}
-              networkLink={`/users/${userID}/projects/${projectID}/network/`}
+              allMetricsLink={`/projects/${projectID}/metrics`}
+              cpuLink={`/projects/${projectID}/cpu/`}
+              memoryLink={`/projects/${projectID}/memory/`}
+              databaseLink={`/projects/${projectID}/databases`}
+              networkLink={`/projects/${projectID}/network/`}
             />
           </div>
           <div className="MainContentSection">

@@ -28,7 +28,7 @@ build_and_push_image: &build_and_push_image
     name: build image
     command: |
       echo REACT_APP_API_BASE_URL=$REACT_APP_API_BASE_URL >> .env
-      echo $REACT_APP_API_BASE_URL
+      echo REACT_APP_GITHUB_CLEINT_ID=$REACT_APP_GITHUB_CLEINT_ID_STAGING >> .env
       export IMG_TAG=$(echo $CIRCLE_SHA1 | cut -c -7)
       docker login -u _json_key -p "$(echo $GCLOUD_SERVICE_KEY)" https://gcr.io
       docker build -f docker/prod/Dockerfile -t gcr.io/$GCP_PROJECT_ID/cranecloud-frontend:$IMG_TAG .

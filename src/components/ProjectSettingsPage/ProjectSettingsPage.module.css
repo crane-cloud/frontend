@@ -45,16 +45,11 @@
   justify-content: space-between;
 }
 
-.DeleteBtn {
-  background-color: #ff0000;
-  outline: 2px solid #ff0000;
+.UpdateProjectModelButtons {
+  display: flex;
+  justify-content: space-between;
 }
 
-.DeleteBtn:hover {
-  background-color: #fff;
-  outline: 2px solid #ff0000;
-  color: #ff0000;
-}
 .ModalUpdateForm {
   display: grid;
   gap: 2rem;
@@ -90,12 +85,11 @@
   padding: 1rem 1.3rem;
   grid-template-rows: 2fr;
 }
-.DeleteButtonDiv {
-  bottom: 0rem;
-  padding: 1.3rem;
-}
+
 .ContentSection {
-  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }
 
 .ErrorOnWhite {
@@ -115,10 +109,6 @@
 .Page {
   margin: 0;
   background: #f1f1f1;
-  max-height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  overflow: hidden;
 }
 
 .MainSection {
@@ -148,6 +138,7 @@
   flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
+  padding-left: 3rem;
 }
 .InnerModalDescription {
   display: grid;
@@ -173,4 +164,46 @@
 }
 .DeleteSubDescription {
   font-weight: 500;
+}
+
+.ProjectInstructions {
+  padding: 1rem 1rem;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  display: grid;
+  gap: 1rem;
+  width: 90%;
+}
+
+.ProjectButtonRow {
+  display: grid;
+  grid-template-columns: auto 40%;
+  grid-auto-flow: column;
+  align-items: center;
+  column-gap: 1rem;
+}
+
+.SectionButtons {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1rem;
+}
+
+.ProjectSections {
+  padding-top: 1rem;
+}
+
+.ProjectSectionTitle {
+  font-size: 18px;
+  font-weight: bold;
+}
+.DeleteBtn {
+  background-color: #ff0000;
+  outline: 2px solid #ff0000;
+}
+
+.DeleteBtn:hover {
+  background-color: #fff;
+  outline: 2px solid #ff0000;
+  color: #ff0000;
 }

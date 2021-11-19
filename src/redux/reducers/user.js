@@ -10,6 +10,7 @@ const user = (user = { accessToken: "", data: {} }, action) => {
           email: action.payload.email,
           verified: action.payload.verified,
           id: action.payload.id,
+          beta: action.payload.is_beta_user
         },
       };
 

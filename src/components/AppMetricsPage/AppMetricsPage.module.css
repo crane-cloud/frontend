@@ -1,0 +1,181 @@
+.ContentSection {
+  padding: 2rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.MetricsCardsSection {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1rem;
+  padding-bottom: 1rem;
+}
+
+.CardSizeDimensions {
+  min-width: 15rem;
+  display: flex;
+  /* we dont set values the height
+       is a pre-requiste for the line
+       component, try removing or editing
+       it and you will see why it matters.
+    */
+  height: 18rem;
+  color: initial;
+}
+
+.SummaryCardDimentions {
+  min-width: 100%;
+  display: flex;
+}
+.TopBarSection {
+  background-color: black;
+}
+.Page {
+  margin: 0;
+  background: #f1f1f1;
+  max-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  /* overflow: hidden; */
+}
+.MainSection {
+  /* divided into two columns */
+  background-color: #f1f1f1;
+  display: grid;
+  grid-template-columns: 1.3fr 6fr;
+  overflow: hidden;
+}
+
+.SideBarSection {
+  overflow: hidden;
+  overflow-y: scroll;
+  height: calc(100vh - 5rem);
+}
+
+.SideBarSection::-webkit-scrollbar {
+  display: none;
+  min-width: fit-content;
+}
+
+.SideBarSection {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.MainContentSection {
+  /* divided into two rows */
+  display: grid;
+  grid-template-rows: 80px 4fr;
+  overflow: hidden;
+}
+.ContentSection {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.SummaryCardContainer {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #cccccc;
+}
+
+.CardHeaderSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #cccccc;
+}
+
+.CardTitle {
+  width: 100%;
+}
+.InnerCard {
+  display: grid;
+  grid-template-columns: 7fr 1fr 7fr 1fr 7fr;
+  grid-template-rows: auto;
+  grid-gap: 1rem;
+  overflow-x: auto;
+}
+.InnerCardSections {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 0.2rem;
+}
+.CardBodySection {
+  min-height: 10rem;
+  flex-grow: 1;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.SummaryCardContainer:hover {
+  border: 1px solid #f7b21f;
+}
+.verticalLine {
+  border-left: 1px solid #cccccc;
+  height: 10rem;
+  padding: 1rem;
+}
+.InnerTitlesStart {
+  color: #666666;
+  text-align: start;
+  padding: 1rem 1rem 0rem 0rem;
+}
+.InnerTitlesMiddle {
+  color: #666666;
+  text-align: center;
+  padding-top: 1rem;
+}
+.InnerTitlesEnd {
+  color: #666666;
+  text-align: end;
+  padding-top: 1rem;
+}
+.InnerContentGrid {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 0.5fr 0.5fr;
+  grid-gap: 0.2rem;
+}
+.InnerContentEnd {
+  text-align: end;
+}
+.InnerContentStatus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: .5rem;
+}
+.InnerContentAge {
+  text-align: center;
+}
+.InnerContentLinkText {
+  white-space: nowrap;
+  overflow: hidden;
+  color: #008ac1;
+  text-overflow: ellipsis;
+}
+.InnerContentLink {
+  display: grid;
+  grid-template-columns: auto 20%;
+  column-gap: .3rem;
+}
+.Icons {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 0.8rem;
+  padding: 0 0.8rem;
+  align-items: center;
+}
+
+.CopierDiv{
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
