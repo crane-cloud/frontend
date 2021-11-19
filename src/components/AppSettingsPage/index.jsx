@@ -35,6 +35,7 @@ class AppSettingsPage extends React.Component {
       disableDelete: true,
       ConfirmAppname: "",
       updateModal: false,
+      domainModal: false,
       newImage: "",
       urlChecked: false,
       dockerCredentials: {
@@ -79,6 +80,8 @@ class AppSettingsPage extends React.Component {
     this.handlePortSubmit = this.handlePortSubmit.bind(this);
     this.handleCommandSubmit = this.handleCommandSubmit.bind(this);
     this.handleEnvVarsSubmit = this.handleEnvVarsSubmit.bind(this);
+    this.showDomainModal = this.showDomainModal.bind(this);
+    this.hideDomainModal = this.hideDomainModal.bind(this);
   }
 
   handleChange(e) {
@@ -99,6 +102,7 @@ class AppSettingsPage extends React.Component {
       });
     }
   }
+
   componentDidMount() {
     const {
       match: { params },
@@ -111,6 +115,7 @@ class AppSettingsPage extends React.Component {
     clearUpdateAppState();
     getSingleApp(appID);
   }
+
   componentDidUpdate(prevProps) {
     const {
       isDeleted,
@@ -120,6 +125,7 @@ class AppSettingsPage extends React.Component {
       isUpdating,
       match: { params },
     } = this.props;
+
     const { updating_command, updating_form, updating_port } = this.state;
 
     if (isDeleted !== prevProps.isDeleted) {
@@ -131,6 +137,7 @@ class AppSettingsPage extends React.Component {
       getSingleApp(params.appID);
       window.location.reload();
     }
+
     if (isUpdating !== prevProps.isUpdating) {
       if (updating_command && !isUpdating) {
         this.setState({ updating_command: false });
@@ -143,6 +150,7 @@ class AppSettingsPage extends React.Component {
       }
     }
   }
+
   getAppName(id) {
     const { apps } = this.props;
     return apps.apps.find((app) => app.id === id).name;
@@ -423,6 +431,14 @@ class AppSettingsPage extends React.Component {
     this.setState({ updateModal: false });
   }
 
+  showDomainModal() {
+    this.setState({ domainModal: true });
+  }
+
+  hideDomainModal() {
+    this.setState({ domainModal: false });
+  }
+
   render() {
     const {
       match: { params },
@@ -435,8 +451,10 @@ class AppSettingsPage extends React.Component {
       isUpdating,
       errorMessage,
     } = this.props;
+
     const {
       openDeleteAlert,
+      domainModal,
       ConfirmAppname,
       disableDelete,
       newImage,
@@ -467,6 +485,7 @@ class AppSettingsPage extends React.Component {
       { id: 3, name: "3" },
       { id: 4, name: "4" },
     ];
+
     return (
       <div className={styles.Page}>
         {isDeleted ? this.renderRedirect() : null}
@@ -635,6 +654,13 @@ class AppSettingsPage extends React.Component {
                                 }}
                               />
                             </div>
+                          </div>
+                          <div
+                            className={styles.Domain__Popup}
+                            onClick={this.showDomainModal}
+                          >
+                            Click for more instructions on how to set up you
+                            custom domain.
                           </div>
                         </div>
                       </div>
@@ -807,7 +833,6 @@ class AppSettingsPage extends React.Component {
                   <div>Port</div>
                   <input
                     type="text"
-                    // required
                     placeholder={app.port}
                     name="port"
                     value={port}
@@ -838,7 +863,6 @@ class AppSettingsPage extends React.Component {
                 <div className={styles.commandInputSection}>
                   <input
                     type="text"
-                    // required
                     placeholder="command"
                     name="entryCommand"
                     value={entryCommand}
@@ -940,6 +964,69 @@ class AppSettingsPage extends React.Component {
                             message={message}
                           />
                         )}
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+              )}
+              {domainModal && (
+                <div className={styles.AppDeleteModel}>
+                  <Modal
+                    showModal={domainModal}
+                    onClickAway={this.hideDomainModal}
+                  >
+                    <div className={styles.DomainModal__Main}>
+                      <div className={styles.DomainModal__Title}>
+                        Instructions on how to add an A-Record{" "}
+                      </div>
+                      <div className={styles.DomainModal__Description}>
+                        <div className={styles.Description__Step}>
+                          <div className={styles.Step__Title}>Step 1.</div>
+                          <div className={styles.Step__Description}>
+                            <div>
+                              Login to your domain register account (e.g.
+                              GoDaddy, NameCheap, Google Domains), then locate
+                            </div>
+                            <div>
+                              {" "}
+                              the DNS settings or management page for your
+                              domain.
+                            </div>
+                          </div>
+                        </div>
+                        <div className={styles.Description__Step}>
+                          <div className={styles.Step__Title}>Step 2.</div>
+                          <div className={styles.Step__Description}>
+                            <div>
+                              Add A-Records. Add A-records inorder to use your
+                              root domain(i.e custom domain).
+                            </div>
+                            <div>
+                              Edit any existing A Records with Host Name @
+                            </div>
+                            <div>
+                              Do not edit or delete A-Records for Mail or Email
+                              as it could interfere with your email service.{" "}
+                            </div>
+                            <div>
+                              An example of A-records with the IP address we
+                              shall provide you;
+                            </div>
+                            <ul>
+                              <li>A-Record: 3.209.XX.XX</li>
+                              <li>Host or Name: @</li>
+                              <li>Points To: 3.209.XX.XX</li>
+                              <li>TTL: 1 Hour</li>
+                              <li>Click: Save</li>
+                            </ul>
+                            <div>
+                              <strong>Note:</strong> DNS settings may look different for each
+                            </div>
+                          </div>
+                        </div>
+                        <div className={styles.Description__button}>
+                          <button onClick={this.hideDomainModal}>OK</button>
+                        </div>
                       </div>
                     </div>
                   </Modal>
