@@ -45,8 +45,8 @@ import PageNotFound from "./components/PageNotFound";
 import DatabaseList from "./components/DatabaseList";
 import DBSettingsPage from "./components/DBSettingsPage";
 import CreateDatabase from "./components/CreateDatabase";
-import Terms from "./components/documents/terms";
-import Privacy from "./components/documents/privacy";
+import Terms from "./components/Documents/terms";
+import Privacy from "./components/Documents/privacy";
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>

@@ -2,8 +2,8 @@ import React from "react";
 
 import "./MemberCard.css";
 
-const MemberCard = (props) => {
-  const { name, title, icon } = props;
+const MemberCard = ({ name, title, icon }) => {
+  
   return (
     <div className="MemberCard">
       <div

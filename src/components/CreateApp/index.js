@@ -15,7 +15,7 @@ import Checkbox from "../Checkbox";
 import Tooltip from "../Tooltip";
 import Tabs from "../Tabs";
 import createApp, { clearState } from "../../redux/actions/createApp";
-import styles from "./createApp.module.css";
+import styles from "./CreateApp.module.css";
 
 class CreateApp extends React.Component {
   constructor(props) {

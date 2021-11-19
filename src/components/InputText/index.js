@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./InputText.css";
 
-const InputText = (props) => {
+const InputText = ({ name, value, placeholder, onChange, required }) => {
   const [inputBackground, setBackground] = useState("InitialBackground");
-  const { name, value, placeholder, onChange, required } = props;
 
   const changeBackground = () => {
     if (value) {

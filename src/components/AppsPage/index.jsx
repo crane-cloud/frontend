@@ -8,7 +8,7 @@ import InformationBar from "../InformationBar";
 import AppsList from "../AppsList";
 import Header from "../Header";
 import SideBar from "../SideBar";
-import CreateApp from "../createApp";
+import CreateApp from "../CreateApp";
 import "./AppsPage.css";
 
 class AppsPage extends React.Component {
