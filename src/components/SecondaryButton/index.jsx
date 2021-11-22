@@ -1,12 +1,12 @@
 import React from "react";
 import "./SecondaryButton.css";
 
-const SecondaryButton = (props) => (
+const SecondaryButton = ({isBlack, label}) => (
   <div>
-    {props.isBlack ? (
-      <button className="Secondary-Btn SecondaryBlack">{props.label}</button>
+    {isBlack ? (
+      <button className="Secondary-Btn SecondaryBlack">{label}</button>
     ) : (
-      <button className="Secondary-Btn SecondaryWhite">{props.label}</button>
+      <button className="Secondary-Btn SecondaryWhite">{label}</button>
     )}
   </div>
 );

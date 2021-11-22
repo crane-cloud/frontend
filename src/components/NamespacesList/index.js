@@ -27,8 +27,7 @@ const NamespacesListPage = () => {
   }, [adminNamespaces]);
 
   const clusterName = localStorage.getItem("clusterName");
-  console.log(isRetrieved)
-  console.log(isRetrieving)
+  
   return (
     <div className="MainPage">
       <div className="TopBarSection">

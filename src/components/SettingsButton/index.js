@@ -1,13 +1,12 @@
 import React from "react";
 import "./SettingsButton.css";
 
-const SettingsButton = (props) => {
-  const { label, className,disable } = props;
+const SettingsButton = ({ label, className, disable, onClick }) => {
   return (
     <button
       disabled={disable}
       className={`Settings-Btn ${className}`}
-      onClick={props.onClick}
+      onClick={onClick}
     >
       {label}
     </button>
