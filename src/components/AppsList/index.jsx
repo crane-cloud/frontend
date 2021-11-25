@@ -5,6 +5,7 @@ import getAppsList from "../../redux/actions/appsList";
 import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import AppsCard from "../AppsCard";
 import Spinner from "../Spinner";
+import BlackInputText from "../BlackInputText";
 import styles from "./AppsList.module.css";
 
 class AppsList extends Component {
@@ -12,9 +13,13 @@ class AppsList extends Component {
     super(props);
     this.state = {
       rerender: false,
+      Searchword:"",
+      SearchList:[],
     };
 
     this.renderAfterDelete = this.renderAfterDelete.bind(this);
+    this.searchThroughApps = this.searchThroughApps.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -31,7 +36,7 @@ class AppsList extends Component {
       getAppsList,
       newAppCreated,
     } = this.props;
-    const { rerender } = this.state;
+    const { rerender,Searchword } = this.state;
 
     if (newAppCreated !== prevProps.newAppCreated) {
       getAppsList(projectID);
@@ -40,6 +45,33 @@ class AppsList extends Component {
     if (rerender !== prevState.rerender) {
       getAppsList(projectID);
     }
+    if(Searchword !== prevState.Searchword){
+      this.searchThroughApps();
+    }
+  }
+
+   
+  searchThroughApps(){
+    const { Searchword } = this.state;
+    const {
+      apps,
+    } = this.props;
+    let searchResult = [];
+    apps.apps.forEach(element => {
+      if(element.name.toLowerCase().includes(Searchword.toLowerCase())){
+        searchResult.push(element);
+      }
+    }
+    );
+   this.setState({ 
+    SearchList: searchResult.sort((a, b) => b.date_created > a.date_created ? 1: -1),
+   })
+  
+  }
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
   }
 
   renderAfterDelete() {
@@ -50,17 +82,46 @@ class AppsList extends Component {
   }
 
   render() {
+    const { Searchword, SearchList} =this.state;
     const { apps, isRetrieved, isRetrieving, params } = this.props;
     const allApps = apps.apps
     const sortedApps = allApps?.sort((a, b) => b.date_created < a.date_created ? 1: -1);
     return (
-      <>
+      <div>
+      
+      <div className={styles.SearchBar}>
+        <BlackInputText
+            required
+            placeholder="Search through apps"
+            name="Searchword"
+            value={Searchword}
+            onChange={(e) => {
+               this.handleChange(e);
+             }}
+          />
+        </div>
         {isRetrieving ? (
           <div className={styles.NoResourcesMessage}>
             <div className={styles.SpinnerWrapper}>
               <Spinner size="big" />
             </div>
           </div>
+        ) : Searchword !=="" ? (
+          <div className={styles.AppList}>
+          {isRetrieved &&
+            SearchList.map((app) => (
+              <div key={app.id} className="AppCardItem">
+                <AppsCard
+                  name={app.name}
+                  appStatus={app.app_running_status}
+                  url={app.url}
+                  appId={app.id}
+                  otherData={params}
+                  hasDeleted={this.renderAfterDelete}
+                />
+              </div>
+            ))}
+        </div>
         ) : (
           <div className={styles.AppList}>
             {isRetrieved &&
@@ -88,7 +149,7 @@ class AppsList extends Component {
             Oops! Something went wrong! Failed to retrieve Apps.
           </div>
         )}
-      </>
+      </div>
     );
   }
 }
