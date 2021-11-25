@@ -152,7 +152,7 @@
 .SectionButtons {
   display: flex;
   justify-content: flex-end;
-  padding-right: 1rem;
+  padding-left: 1rem;
 }
 
 .APPSections {
@@ -196,18 +196,21 @@
   font-weight: 400;
 }
 
-.PrivateImageCheckField, .CustomDomainCheckField {
+.PrivateImageCheckField,
+.CustomDomainCheckField {
   display: grid;
   grid-template-columns: 20% auto;
   gap: 1rem;
 }
 
-.PrivateImageTabContainer, .CustomDomainTabContainer {
+.PrivateImageTabContainer,
+.CustomDomainTabContainer {
   border-left: 5px solid #e1e2e2;
   padding: 0rem 2rem;
 }
 
-.PrivateImageInputs, .CustomDomainInputs {
+.PrivateImageInputs,
+.CustomDomainInputs {
   display: grid;
   row-gap: 1rem;
 }
@@ -344,16 +347,16 @@
   color: grey;
 } */
 
-.VarsRow{
+.VarsRow {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  padding: .3rem;
+  padding: 0.3rem;
 }
 
-.varsTable{
+.varsTable {
   width: 100%;
 }
-.TableRow{
+.TableRow {
   display: flex;
   justify-content: flex-end;
 }
@@ -363,34 +366,34 @@
   color: #f7b21f;
 }
 
-.Domain__Popup{
+.Domain__Popup {
   color: #008ac1;
   text-decoration: underline;
   cursor: pointer;
 }
 
-.Domain__Popup:hover{
+.Domain__Popup:hover {
   color: #f7b21f;
 }
 
-.DomainModal__Main{
+.DomainModal__Main {
   display: grid;
   grid-template-rows: 13% auto;
 }
 
-.DomainModal__Title{
+.DomainModal__Title {
   font-size: 25px;
   font-weight: 700;
   line-height: 42.1px;
 }
 
-.Description__button{
+.Description__button {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.Description__button button{
+.Description__button button {
   background-color: #008ac1;
   color: #fff;
   border: none;
@@ -399,16 +402,24 @@
   font-weight: bold;
 }
 
-.Step__Title{
+.Step__Title {
   font-size: 20px;
   font-weight: 600;
   padding-bottom: 1rem;
 }
 
-.Step__Description{
+.Step__Description {
   padding: 0rem 0rem 1rem 1rem;
 }
 
-ul  li{
+ul li {
   list-style-type: none;
+}
+
+.RevertSection {
+  display: grid;
+  grid-template-columns: 70% 30%;
+  grid-auto-flow: column;
+  align-items: center;
+  column-gap: 1rem;
 }

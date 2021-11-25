@@ -662,6 +662,22 @@ class AppSettingsPage extends React.Component {
                             Click for more instructions on how to set up you
                             custom domain.
                           </div>
+                        <div className={styles.RevertSection}>
+                        <div className={styles.FlexRevertSection}>
+                          <div>
+                            <strong>Revert to URL</strong>
+                          </div>
+                          <div>
+                            Reverts to cranecloud's auto-generated URL.
+                          </div>
+                        </div>
+                        <div className={styles.SectionButtons}>
+                          <PrimaryButton
+                            label="REVERT"
+                            className={styles.RevertButton}
+                          />
+                        </div>
+                      </div>
                         </div>
                       </div>
                     </div>
