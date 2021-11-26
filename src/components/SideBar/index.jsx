@@ -4,19 +4,17 @@ import styles from "./SideBar.module.css";
 import { Link, NavLink, matchPath } from "react-router-dom";
 import BackButton from "../../assets/images/backButton.svg";
 
-const SideBar = (props) => {
-  const {
-    name,
-    params,
-    pageRoute,
-    cpuLink,
-    memoryLink,
-    databaseLink,
-    networkLink,
-    allMetricsLink,
-    appLogsLink,
-  } = props;
-
+const SideBar = ({
+  name,
+  params,
+  pageRoute,
+  cpuLink,
+  memoryLink,
+  databaseLink,
+  networkLink,
+  allMetricsLink,
+  appLogsLink,
+}) => {
   const isAppPage = matchPath(pageRoute, {
     path: "/projects/:projectID/apps/:appID/metrics",
     exact: true,
@@ -67,9 +65,7 @@ const SideBar = (props) => {
           </div>
         ) : isAppPage ? (
           <div className={styles.SideBarTopSection}>
-            <Link
-              to={{ pathname: `/projects/${projectID}/apps` }}
-            >
+            <Link to={{ pathname: `/projects/${projectID}/apps` }}>
               <img src={BackButton} alt="Back Button" />
               <span>&nbsp; &nbsp; &nbsp;</span>
             </Link>
@@ -116,9 +112,7 @@ const SideBar = (props) => {
           </div>
         ) : (
           <div className={styles.SideBarTopSection}>
-            <Link
-              to={{ pathname: `/projects/${projectID}/apps` }}
-            >
+            <Link to={{ pathname: `/projects/${projectID}/apps` }}>
               <img src={BackButton} alt="Back Button" />
               <span>&nbsp; &nbsp; &nbsp;</span>
             </Link>

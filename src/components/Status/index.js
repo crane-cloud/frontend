@@ -1,11 +1,11 @@
 import React from "react";
 import "./Status.css";
 
-const Status = (props) => (
+const Status = ({status}) => (
   <div className="StatusWrapper">
     <div
       className={
-        props.status ? "StatusSignal StatusIsOn" : "StatusSignal StatusIsOff"
+        status ? "StatusSignal StatusIsOn" : "StatusSignal StatusIsOff"
       }
     />
   </div>
