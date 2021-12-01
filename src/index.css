@@ -19,6 +19,10 @@
   font-family: monaco;
   src: url("./assets/fonts/monaco.ttf") format("truetype");
 }
+html {
+  --primary-color: #008ac1;
+  --secondary-color: #f7b21f;
+}
 
 body {
   margin: 0;
@@ -305,6 +309,14 @@ tr.TableLoading td {
 
 /* //////////--- PAGE STYLES ---//////////// */
 
+.SmallContainer{
+  padding: 2rem;
+}
+@media (max-width: 580px) {
+  .SmallContainer{
+    padding: 1rem;
+  }
+}
 .Page {
   margin: 0;
   background: #f1f1f1;

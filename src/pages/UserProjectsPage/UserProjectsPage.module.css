@@ -1,9 +1,8 @@
 .ProjectList {
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   justify-content: flex-start;
   flex-wrap: wrap;
-  padding: 2rem;
 }
 
 .ProjectFormErrorDiv {
@@ -66,6 +65,11 @@
 }
 
 
+@media (max-width: 500px) {
+  .ProjectList > div{
+    width: 100%!important;
+  }  
+}
 /* @media only screen and (max-width: 1100px) and (min-width: 901px) {
   .ProjectList {
     grid-template-columns: repeat(4, 1fr);
@@ -78,8 +82,4 @@
   }
 }
 
-@media only screen and (max-width: 480px) {
-  .ProjectList {
-    grid-template-columns: repeat(2, 1fr);
-  }  
 } */

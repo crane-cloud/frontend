@@ -12,6 +12,7 @@ import CreateProject from "../../components/CreateProject";
 import getUserProjects from "../../redux/actions/projectsList";
 import ProjectCard from "../../components/ProjectCard";
 import Spinner from "../../components/Spinner";
+import "../../index.css";
 
 class UserProjectsPage extends React.Component {
   constructor(props) {
@@ -148,7 +149,7 @@ class UserProjectsPage extends React.Component {
                   </div>
                 </div>
               ) : Searchword !== "" ? (
-                <div className={styles.ProjectList}>
+                <div className={`${styles.ProjectList}  SmallContainer`}>
                   {isFetched &&
                     SearchList !== undefined &&
                     SearchList.map((project) => (
@@ -161,7 +162,7 @@ class UserProjectsPage extends React.Component {
                     ))}
                 </div>
               ) : (
-                <div className={styles.ProjectList}>
+                <div className={`${styles.ProjectList}  SmallContainer`}>
                   {isFetched &&
                     sortedProjects !== undefined &&
                     sortedProjects.map((project) => (
