@@ -23,7 +23,6 @@ import StorageClassList from "./components/StorageClassList";
 import PvsListPage from "./components/PvsListPage";
 import JobsListPage from "./components/JobsListPage";
 import DeploymentsPage from "./components/DeploymentsPage";
-import UserProjectsPage from "./components/UserProjectsPage";
 import AdminProjectsPage from "./components/AdminProjectsPage";
 import VerificationSentPage from "./components/VerificationSentPage";
 import AdminLoginPage from "./components/AdminLoginPage";
@@ -47,6 +46,7 @@ import DBSettingsPage from "./components/DBSettingsPage";
 import CreateDatabase from "./components/CreateDatabase";
 import Terms from "./components/Documents/terms";
 import Privacy from "./components/Documents/privacy";
+import UserProjectsPage from "./pages/UserProjectsPage";
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>

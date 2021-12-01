@@ -3,30 +3,31 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import styles from "./UserProjectsPage.module.css";
 import { clearUpdateProjectState } from "../../redux/actions/updateProject";
-import InformationBar from "../InformationBar";
+import InformationBar from "../../components/InformationBar";
 import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
-import Header from "../Header";
+import Header from "../../components/Header";
 import getClustersList from "../../redux/actions/clusters";
-import BlackInputText from "../BlackInputText";
-import CreateProject from "../CreateProject";
+import BlackInputText from "../../components/BlackInputText";
+import CreateProject from "../../components/CreateProject";
 import getUserProjects from "../../redux/actions/projectsList";
-import ProjectCard from "../ProjectCard";
-import Spinner from "../Spinner";
-
+import ProjectCard from "../../components/ProjectCard";
+import Spinner from "../../components/Spinner";
 
 class UserProjectsPage extends React.Component {
   constructor(props) {
     super(props);
     this.initialState = {
       openCreateComponent: false,
-      Searchword:"",
-      SearchList:[],
+      Searchword: "",
+      SearchList: [],
     };
 
     this.state = this.initialState;
 
-    this.openProjectCreateComponent = this.openProjectCreateComponent.bind(this);
-    this.callbackProjectCreateComponent = this.callbackProjectCreateComponent.bind(this);
+    this.openProjectCreateComponent =
+      this.openProjectCreateComponent.bind(this);
+    this.callbackProjectCreateComponent =
+      this.callbackProjectCreateComponent.bind(this);
     this.searchThroughProjects = this.searchThroughProjects.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
@@ -49,9 +50,7 @@ class UserProjectsPage extends React.Component {
       isUpdated,
       clearUpdateProjectState,
     } = this.props;
-    const { 
-      Searchword
-    } = this.state;
+    const { Searchword } = this.state;
 
     if (isDeleted !== prevProps.isDeleted) {
       getUserProjects(data.id);
@@ -68,42 +67,39 @@ class UserProjectsPage extends React.Component {
       getUserProjects(data.id);
       this.setState(this.initialState);
     }
-    if(Searchword !== prevState.Searchword){
+    if (Searchword !== prevState.Searchword) {
       this.searchThroughProjects();
     }
   }
- 
+
   openProjectCreateComponent() {
     this.setState({ openCreateComponent: true });
   }
   callbackProjectCreateComponent() {
     this.setState(this.initialState);
   }
-  searchThroughProjects(){
+  searchThroughProjects() {
     const { Searchword } = this.state;
-    const {
-      projects,
-    } = this.props;
+    const { projects } = this.props;
     let searchResult = [];
-    projects.forEach(element => {
-      if(element.name.toLowerCase().includes(Searchword.toLowerCase())){
+    projects.forEach((element) => {
+      if (element.name.toLowerCase().includes(Searchword.toLowerCase())) {
         searchResult.push(element);
       }
-    }
-    );
+    });
 
-   this.setState({ 
-    SearchList: searchResult.sort((a, b) => b.date_created > a.date_created ? 1: -1),
-   })
-  
+    this.setState({
+      SearchList: searchResult.sort((a, b) =>
+        b.date_created > a.date_created ? 1 : -1
+      ),
+    });
   }
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value,
     });
   }
-  
-  
+
   render() {
     const { openCreateComponent, Searchword, SearchList } = this.state;
     const {
@@ -112,85 +108,93 @@ class UserProjectsPage extends React.Component {
       isFetched,
       match: { params },
     } = this.props;
-    const sortedProjects = projects.sort((a, b) => b.date_created > a.date_created ? 1: -1);
+    const sortedProjects = projects.sort((a, b) =>
+      b.date_created > a.date_created ? 1 : -1
+    );
 
     return (
       <div className={styles.Page}>
         {openCreateComponent ? (
-            <CreateProject
-              closeComponent={this.callbackProjectCreateComponent}
-              params={params}
-            />
-          ):(
-        <div>
-        <div className={styles.TopRow}>
-          <Header />
-          <InformationBar header="Projects" showBtn btnAction={this.openProjectCreateComponent} />
-        </div>
-        <div className={styles.MainRow}>
-        <div className={styles.SearchBar}>
-        <BlackInputText
-            required
-            placeholder="Search through projects"
-            name="Searchword"
-            value={Searchword}
-            onChange={(e) => {
-               this.handleChange(e);
-             }}
+          <CreateProject
+            closeComponent={this.callbackProjectCreateComponent}
+            params={params}
           />
-        </div>
-        {isRetrieving ? (
-            <div className={styles.NoResourcesMessage}>
-              <div className={styles.SpinnerWrapper}>
-                <Spinner size="big" />
+        ) : (
+          <div>
+            <div className={styles.TopRow}>
+              <Header />
+              <InformationBar
+                header="Projects"
+                showBtn
+                btnAction={this.openProjectCreateComponent}
+              />
+            </div>
+            <div className={styles.MainRow}>
+              <div className={styles.SearchBar}>
+                <BlackInputText
+                  required
+                  placeholder="Search through projects"
+                  name="Searchword"
+                  value={Searchword}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+                />
               </div>
+              {isRetrieving ? (
+                <div className={styles.NoResourcesMessage}>
+                  <div className={styles.SpinnerWrapper}>
+                    <Spinner size="big" />
+                  </div>
+                </div>
+              ) : Searchword !== "" ? (
+                <div className={styles.ProjectList}>
+                  {isFetched &&
+                    SearchList !== undefined &&
+                    SearchList.map((project) => (
+                      <ProjectCard
+                        key={project.id}
+                        name={project.name}
+                        description={project.description}
+                        cardID={project.id}
+                      />
+                    ))}
+                </div>
+              ) : (
+                <div className={styles.ProjectList}>
+                  {isFetched &&
+                    sortedProjects !== undefined &&
+                    sortedProjects.map((project) => (
+                      <ProjectCard
+                        key={project.id}
+                        name={project.name}
+                        description={project.description}
+                        cardID={project.id}
+                      />
+                    ))}
+                </div>
+              )}
+              {isFetched && projects.length === 0 && (
+                <div className={styles.NoResourcesMessage}>
+                  You haven’t created any projects yet. Click the &nbsp;{" "}
+                  <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp;
+                  button to add a project.
+                </div>
+              )}
+              {!isRetrieving && !isFetched && (
+                <div className={styles.NoResourcesMessage}>
+                  Oops! Something went wrong! Failed to retrieve Projects.
+                </div>
+              )}
             </div>
-          ) : Searchword !=="" ? (
-            <div className={styles.ProjectList}>
-               {isFetched &&
-                SearchList !== undefined &&
-                SearchList.map((project) => (
-                  <ProjectCard
-                    key={project.id}
-                    name={project.name}
-                    description={project.description}
-                    cardID={project.id}
-                  />
-                ))}
-            </div>
-          ) : (
-            <div className={styles.ProjectList}>
-              {isFetched &&
-                sortedProjects !== undefined &&
-                sortedProjects.map((project) => (
-                  <ProjectCard
-                    key={project.id}
-                    name={project.name}
-                    description={project.description}
-                    cardID={project.id}
-                  />
-                ))}
-            </div>
-          )}
-          {isFetched && projects.length === 0 && (
-            <div className={styles.NoResourcesMessage}>
-              You haven’t created any projects yet. Click the &nbsp; <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp; button to add a project.
-
-            </div>
-          )}
-          {!isRetrieving && !isFetched && (
-            <div className={styles.NoResourcesMessage}>
-              Oops! Something went wrong! Failed to retrieve Projects.
-            </div>
-          )}
-        </div>
-      </div>
-          )}
+          </div>
+        )}
         <div className={styles.FooterRow}>
           <div>
-            Copyright {new Date().getFullYear()} Crane Cloud. All Rights Reserved.
+            Copyright {new Date().getFullYear()} Crane Cloud. All Rights
+            Reserved.
           </div>
-        </div>     
+        </div>
       </div>
     );
   }

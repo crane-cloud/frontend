@@ -1,7 +1,8 @@
 .ProjectList {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(5, 1fr);
+  display: flex;
+  gap: 2rem;
+  justify-content: flex-start;
+  flex-wrap: wrap;
   padding: 2rem;
 }
 
@@ -64,7 +65,8 @@
   padding: 2rem;
 }
 
-@media only screen and (max-width: 1100px) and (min-width: 901px) {
+
+/* @media only screen and (max-width: 1100px) and (min-width: 901px) {
   .ProjectList {
     grid-template-columns: repeat(4, 1fr);
   }
@@ -79,5 +81,5 @@
 @media only screen and (max-width: 480px) {
   .ProjectList {
     grid-template-columns: repeat(2, 1fr);
-  }
-}
+  }  
+} */
