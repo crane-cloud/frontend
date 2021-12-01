@@ -310,11 +310,13 @@ tr.TableLoading td {
 /* //////////--- PAGE STYLES ---//////////// */
 
 .SmallContainer{
-  padding: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 @media (max-width: 580px) {
   .SmallContainer{
-    padding: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
 .Page {

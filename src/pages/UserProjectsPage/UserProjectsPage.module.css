@@ -3,6 +3,7 @@
   gap: 1rem;
   justify-content: flex-start;
   flex-wrap: wrap;
+  padding: 2rem 0;
 }
 
 .ProjectFormErrorDiv {

@@ -1,7 +1,6 @@
 .InformationBar {
   background: #f8f7e5;
   height: 5rem;
-  padding: 0 3rem;
   display: flex;
   align-items: center;
 }
