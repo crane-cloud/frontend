@@ -29,7 +29,7 @@ import AdminLoginPage from "./components/AdminLoginPage";
 import AppsPage from "./components/AppsPage";
 import UsersAccounts from "./components/UserAccounts";
 import AppMetricsPage from "./components/AppMetricsPage";
-import ProjectSettingsPage from "./components/ProjectSettingsPage";
+import ProjectSettingsPage from "./pages/ProjectSettingsPage";
 import AppSettingsPage from "./components/AppSettingsPage";
 import ProjectMemoryPage from "./components/ProjectMemoryPage";
 import ProjectCPUPage from "./components/ProjectCPUPage";
