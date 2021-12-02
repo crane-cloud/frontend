@@ -1,6 +1,6 @@
 .TextArea {
   width: 25rem;
-  border: 2px solid black;
+  border: 1px solid black;
   box-sizing: border-box;
   font-size: inherit;
   padding: 1rem;

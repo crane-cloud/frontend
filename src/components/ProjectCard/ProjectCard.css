@@ -35,8 +35,7 @@
 }
 
 .ProjectsCardName:hover {
-  /* opacity: 0.8; */
-  text-decoration: underline;
+  opacity: 0.8;
 }
 
 .ProjectInfoSection {

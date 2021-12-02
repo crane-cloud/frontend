@@ -29,6 +29,8 @@
 .DeleteDescription {
   cursor: default;
   font-weight: 700;
+  font-size: 1.2rem;
+  
 }
 
 .DeleteDescription span {
@@ -141,8 +143,9 @@
   /* padding-left: 3rem; */
 }
 .InnerModalDescription {
-  display: grid;
-  gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 .DeleteWarning {
   color: #f00;
@@ -158,9 +161,9 @@
   color: #ff9595;
 }
 .WarningContainer {
-  display: grid;
-  gap: 0.8rem;
-  width: 25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 .DeleteSubDescription {
   font-weight: 500;
@@ -213,11 +216,11 @@
 
 .DeleteBtn {
   background-color: #ff0000;
-  outline: 2px solid #ff0000;
+  outline: 1px solid #ff0000;
 }
 
 .DeleteBtn:hover {
   background-color: #fff;
-  outline: 2px solid #ff0000;
+  outline: 1px solid #ff0000;
   color: #ff0000;
 }

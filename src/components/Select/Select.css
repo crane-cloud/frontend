@@ -6,7 +6,7 @@
 }
 
 .SelectElementMain {
-  border: 2px solid #000000;
+  border: 1px solid #000000;
 }
 
 .SelectElementValue {
@@ -15,9 +15,9 @@
   justify-content: space-between;
 }
 
-.SelectElementValue.SelectElementPlaceholder {
-  color: #808080;
-}
+/* .SelectElementValue.SelectElementPlaceholder {    */
+  /* color: #808080; */
+/* }   */
 
 .SelectOptionsWrapper {
   background-color: #ffffff;
