@@ -28,3 +28,30 @@
   background-color: #008ac1;
   outline: 2px solid #008ac1;
 }
+
+.SearchBar{
+  padding: 0.5rem 0rem 0rem 30rem;
+}
+
+.SearchInput{
+  display:flex;
+}
+
+.SearchInput input{
+  background-color: #EBEAD5;
+  color: #000;
+  border: 0;
+  border-top-left-radius: 4px 2px;
+  border-bottom-left-radius: 3px 4px;
+  font-size: 18px;
+  padding: 15px;
+  height: 45px;
+  width: 300px;
+}
+
+.SearchIcon{
+  background-color: #EBEAD5;
+  padding: 0.42rem;
+  border-bottom-right-radius: 6px 2px;
+  border-top-right-radius: 3px 4px;
+}

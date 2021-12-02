@@ -5,7 +5,6 @@ import getAppsList from "../../redux/actions/appsList";
 import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import AppsCard from "../AppsCard";
 import Spinner from "../Spinner";
-import BlackInputText from "../BlackInputText";
 import styles from "./AppsList.module.css";
 
 class AppsList extends Component {
@@ -13,8 +12,8 @@ class AppsList extends Component {
     super(props);
     this.state = {
       rerender: false,
-      Searchword:"",
-      SearchList:[],
+      Searchword: props.word,
+      SearchList: [],
     };
 
     this.renderAfterDelete = this.renderAfterDelete.bind(this);
@@ -35,8 +34,9 @@ class AppsList extends Component {
       params: { projectID },
       getAppsList,
       newAppCreated,
+      word,
     } = this.props;
-    const { rerender,Searchword } = this.state;
+    const { rerender } = this.state;
 
     if (newAppCreated !== prevProps.newAppCreated) {
       getAppsList(projectID);
@@ -45,28 +45,24 @@ class AppsList extends Component {
     if (rerender !== prevState.rerender) {
       getAppsList(projectID);
     }
-    if(Searchword !== prevState.Searchword){
+    if (word !== prevProps.word) {
       this.searchThroughApps();
     }
   }
 
-   
-  searchThroughApps(){
-    const { Searchword } = this.state;
-    const {
-      apps,
-    } = this.props;
+  searchThroughApps() {
+    const { apps, word } = this.props;
     let searchResult = [];
-    apps.apps.forEach(element => {
-      if(element.name.toLowerCase().includes(Searchword.toLowerCase())){
+    apps.apps.forEach((element) => {
+      if (element.name.toLowerCase().includes(word.toLowerCase())) {
         searchResult.push(element);
       }
-    }
-    );
-   this.setState({ 
-    SearchList: searchResult.sort((a, b) => b.date_created > a.date_created ? 1: -1),
-   })
-  
+    });
+    this.setState({
+      SearchList: searchResult.sort((a, b) =>
+        b.date_created > a.date_created ? 1 : -1
+      ),
+    });
   }
   handleChange(e) {
     this.setState({
@@ -82,46 +78,36 @@ class AppsList extends Component {
   }
 
   render() {
-    const { Searchword, SearchList} =this.state;
-    const { apps, isRetrieved, isRetrieving, params } = this.props;
-    const allApps = apps.apps
-    const sortedApps = allApps?.sort((a, b) => b.date_created < a.date_created ? 1: -1);
+    const { SearchList } = this.state;
+    const { apps, isRetrieved, isRetrieving, params, word } = this.props;
+    const allApps = apps.apps;
+    const sortedApps = allApps?.sort((a, b) =>
+      b.date_created < a.date_created ? 1 : -1
+    );
     return (
       <div>
-      
-      <div className={styles.SearchBar}>
-        <BlackInputText
-            required
-            placeholder="Search through apps"
-            name="Searchword"
-            value={Searchword}
-            onChange={(e) => {
-               this.handleChange(e);
-             }}
-          />
-        </div>
         {isRetrieving ? (
           <div className={styles.NoResourcesMessage}>
             <div className={styles.SpinnerWrapper}>
               <Spinner size="big" />
             </div>
           </div>
-        ) : Searchword !=="" ? (
+        ) : word !== "" ? (
           <div className={styles.AppList}>
-          {isRetrieved &&
-            SearchList.map((app) => (
-              <div key={app.id} className="AppCardItem">
-                <AppsCard
-                  name={app.name}
-                  appStatus={app.app_running_status}
-                  url={app.url}
-                  appId={app.id}
-                  otherData={params}
-                  hasDeleted={this.renderAfterDelete}
-                />
-              </div>
-            ))}
-        </div>
+            {isRetrieved &&
+              SearchList.map((app) => (
+                <div key={app.id} className="AppCardItem">
+                  <AppsCard
+                    name={app.name}
+                    appStatus={app.app_running_status}
+                    url={app.url}
+                    appId={app.id}
+                    otherData={params}
+                    hasDeleted={this.renderAfterDelete}
+                  />
+                </div>
+              ))}
+          </div>
         ) : (
           <div className={styles.AppList}>
             {isRetrieved &&
@@ -141,7 +127,9 @@ class AppsList extends Component {
         )}
         {isRetrieved && sortedApps.length === 0 && (
           <div className={styles.NoResourcesMessage}>
-            You haven’t created any apps yet. Click the &nbsp; <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp; button to deploy an app.
+            You haven’t created any apps yet. Click the &nbsp;{" "}
+            <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp; button to
+            deploy an app.
           </div>
         )}
         {!isRetrieving && !isRetrieved && (

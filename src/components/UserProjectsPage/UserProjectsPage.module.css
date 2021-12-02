@@ -45,7 +45,7 @@
   text-align: center;
   justify-content: center;
   align-items: center;
-  padding: 6rem;
+  padding: 12rem;
 }
 
 .ButtonPlusSmall {
@@ -56,12 +56,6 @@
 .FooterRow {
   padding: 1rem 3rem;
   background-color: #f1f1f1;
-}
-
-.SearchBar {
-  flex-grow: 1;
-  display: flex;
-  padding: 2rem;
 }
 
 @media only screen and (max-width: 1100px) and (min-width: 901px) {
