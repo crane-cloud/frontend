@@ -394,61 +394,71 @@ class ProjectSettingsPage extends React.Component {
                         }}
                       >
                         <div className={styles.UpdateForm}>
-                          <div className={styles.DeleteDescription}>
-                            Project name
-                          </div>
-                          <BlackInputText
-                            placeholder="Project Name"
-                            name="projectName"
-                            value={projectName}
-                            onChange={(e) => {
-                              this.handleChange(e);
-                            }}
-                          />
-                          <div className={styles.DeleteDescription}>
-                            Organisation
-                          </div>
-                          <BlackInputText
-                            placeholder="Organisation"
-                            name="projectOrganisation"
-                            value={projectOrganisation}
-                            onChange={(e) => {
-                              this.handleChange(e);
-                            }}
-                          />
-                          <div className={styles.DeleteDescription}>
-                            Project type
-                          </div>
-                          <Select
-                            required
-                            placeholder={
-                              projectType ? projectType : "Update project type"
-                            }
-                            options={types}
-                            onChange={this.handleTypeSelectChange}
-                          />
-                          {othersBool && (
+                          <div className={styles.UpdateInputSection}>
+                            <div className={styles.DeleteDescription}>
+                              Project name
+                            </div>
                             <BlackInputText
-                              required
-                              placeholder="Type of project"
-                              name="otherType"
-                              value={otherType}
+                              placeholder="Project Name"
+                              name="projectName"
+                              value={projectName}
                               onChange={(e) => {
                                 this.handleChange(e);
                               }}
                             />
-                          )}
-                          <div className={styles.DeleteDescription}>
-                            Project description
                           </div>
-                          <TextArea
-                            placeholder="Description"
-                            name="projectDescription"
-                            value={projectDescription}
-                            onChange={(e) => {
-                              this.handleChange(e);
-                            }}
-                          />
+                          <div className={styles.UpdateInputSection}>
+                            <div className={styles.DeleteDescription}>
+                              Organisation
+                            </div>
+                            <BlackInputText
+                              placeholder="Organisation"
+                              name="projectOrganisation"
+                              value={projectOrganisation}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />
+                          </div>
+                          <div className={styles.UpdateInputSection}>
+                            <div className={styles.DeleteDescription}>
+                              Project type
+                            </div>
+                            <Select
+                              required
+                              placeholder={
+                                projectType
+                                  ? projectType
+                                  : "Update project type"
+                              }
+                              options={types}
+                              onChange={this.handleTypeSelectChange}
+                            />
+                            {othersBool && (
+                              <BlackInputText
+                                required
+                                placeholder="Type of project"
+                                name="otherType"
+                                value={otherType}
+                                onChange={(e) => {
+                                  this.handleChange(e);
+                                }}
+                              />
+                            )}
+                          </div>
+                          <div className={styles.UpdateInputSection}>
+                            <div className={styles.DeleteDescription}>
+                              Project description
+                            </div>
+                            <TextArea
+                              placeholder="Description"
+                              name="projectDescription"
+                              value={projectDescription}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />
+                          </div>
                           {(errorMessage || error) && (
                             <Feedback
                               type="error"
