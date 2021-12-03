@@ -129,20 +129,26 @@ const SideBar = ({
       <div className={styles.SideBarBottomSection}>
         <div className={styles.SideBarLinks}>
           <NavLink
-            to={{ pathname: `/projects/${projectID}/apps` }}
+            to={{ pathname: `/projects/${projectID}/dashboard` }}
             className={styles.SubBarListItem}
           >
             Dashboard
           </NavLink>
-          <Link to="/" className={`${styles.ListItem} ${styles.DisabledLink}`}>
+          <Link to="#" className={`${styles.ListItem} ${styles.DisabledLink}`}>
             SERVICES
           </Link>
           <div>
+            <NavLink
+              to={{ pathname: `/projects/${projectID}/apps` }}
+              className={styles.SubBarListItem}
+            >
+              Apps
+            </NavLink>
             <NavLink to={databaseLink} className={styles.SubBarListItem}>
               Databases
             </NavLink>
           </div>
-          <Link to={allMetricsLink} className={styles.ListItem}>
+          <Link to="#" className={`${styles.ListItem} ${styles.DisabledLink}`}>
             METRICS
           </Link>
           <div>
@@ -165,7 +171,7 @@ const SideBar = ({
                     </NavLink>
                   </div>
                   <Link
-                    to="/"
+                    to="#"
                     className={`${styles.ListItem} ${styles.DisabledLink}`}
                   >
                     OTHER

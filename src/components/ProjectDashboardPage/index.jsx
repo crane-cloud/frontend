@@ -10,14 +10,14 @@ import Header from "../Header";
 import SideBar from "../SideBar";
 import MetricsCard from "../MetricsCard";
 import { ReactComponent as MetricIcon } from "../../assets/images/resource-icon.svg";
-import "./ProjectMetricsPage.css";
+import "./ProjectDashboardPage.css";
 import {
   formatCPUMetrics,
   formatMemoryMetrics,
   formatNetworkMetrics,
 } from "../../helpers/formatMetrics";
 
-class ProjectMetricsPage extends React.Component {
+class ProjectDashboardPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -156,7 +156,7 @@ class ProjectMetricsPage extends React.Component {
   }
 }
 
-ProjectMetricsPage.propTypes = {
+ProjectDashboardPage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       projectID: PropTypes.string.isRequired,
@@ -195,4 +195,7 @@ const mapDispatchToProps = {
   getProjectNetwork,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectMetricsPage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProjectDashboardPage);
