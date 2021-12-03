@@ -7,8 +7,9 @@
 }
 
 .InformationBarWithButton {
-  flex: 1;
+  width: 100%;
   display: flex;
+  gap: 1rem;
   justify-content: space-between;
 }
 
@@ -18,6 +19,14 @@
   font-weight: bold;
   font-size: 1.5rem;
 }
+
+.InfoContent{
+  display: flex;
+  justify-content: flex-end;
+  gap: 4rem;
+  align-items: center;
+}
+
 .ViewAppBtn {
   color: #008ac1;
   background-color: transparent;
@@ -27,10 +36,6 @@
   color: #fff;
   background-color: #008ac1;
   outline: 2px solid #008ac1;
-}
-
-.SearchBar{
-  padding: 0.5rem 0rem 0rem 30rem;
 }
 
 .SearchInput{
@@ -43,8 +48,8 @@
   border: 0;
   border-top-left-radius: 4px 2px;
   border-bottom-left-radius: 3px 4px;
-  font-size: 18px;
-  padding: 15px;
+  font-size: 1rem;
+  padding: 1rem;
   height: 45px;
   width: 300px;
 }

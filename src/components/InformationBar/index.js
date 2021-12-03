@@ -37,6 +37,7 @@ const InformationBar = ({
       ) : showSearchBar ? (
         <div className="InformationBarWithButton">
           <div className="InfoHeader">{header}</div>
+          <div className="InfoContent">
           <div className="SearchBar">
             <div className="SearchInput">
               <input
@@ -52,6 +53,7 @@ const InformationBar = ({
           </div>
           <div className="RoundAddButtonWrap">
             <RoundAddButton onClick={btnAction} />
+          </div>
           </div>
         </div>
       ) : showBtn ? (
