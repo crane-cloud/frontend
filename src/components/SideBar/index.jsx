@@ -27,103 +27,23 @@ const SideBar = ({
     strict: true,
   });
 
-  const pageLocation = matchPath(pageRoute, {
-    path: "/projects/:projectID/apps",
-    exact: true,
-    strict: true,
-  });
-
-  const databaseLocation = matchPath(pageRoute, {
-    path: "/projects/:projectID/databases/:databaseID/settings",
-    exact: true,
-    strict: true,
-  });
-
   const { projectID, appID } = params;
 
   return (
     <div className={styles.SideBar}>
       <div>
-        {databaseLocation ? (
-          <div className={styles.SideBarTopSection}>
-            <Link
-              to={{
-                pathname: `/projects/${projectID}/databases`,
-              }}
-            >
-              <img src={BackButton} alt="Back Button" />
-              <span>&nbsp; &nbsp; &nbsp;</span>
-            </Link>
-            <Link
-              to={{
-                pathname: `/projects/${projectID}/databases`,
-              }}
-              className={styles.ProjectName}
-            >
-              {name}
-            </Link>
-          </div>
-        ) : isAppPage ? (
-          <div className={styles.SideBarTopSection}>
-            <Link to={{ pathname: `/projects/${projectID}/dashboard` }}>
-              <img src={BackButton} alt="Back Button" />
-              <span>&nbsp; &nbsp; &nbsp;</span>
-            </Link>
-            <Link
-              to={{
-                pathname: `/projects/${projectID}/apps/${appID}/metrics`,
-              }}
-              className={styles.ProjectName}
-            >
-              {name}
-            </Link>
-          </div>
-        ) : isAppMetricsPage ? (
-          <div className={styles.SideBarTopSection}>
-            <Link
-              to={{
-                pathname: `/projects/${projectID}/apps/${appID}/metrics`,
-              }}
-            >
-              <img src={BackButton} alt="Back Button" />
-              <span>&nbsp; &nbsp; &nbsp;</span>
-            </Link>
-            <Link
-              to={{
-                pathname: `/projects/${projectID}/apps/${appID}/metrics`,
-              }}
-              className={styles.ProjectName}
-            >
-              {name}
-            </Link>
-          </div>
-        ) : pageLocation ? (
-          <div className={styles.SideBarTopSection}>
-            <Link to={{ pathname: `/projects/` }}>
-              <img src={BackButton} alt="Back Button" />
-              <span>&nbsp; &nbsp; &nbsp;</span>
-            </Link>
-            <Link
-              to={{ pathname: `/projects/${projectID}/apps` }}
-              className={styles.ProjectName}
-            >
-              {name}
-            </Link>
-          </div>
-        ) : (
-          <div className={styles.SideBarTopSection}>
-            <Link to={{ pathname: `/projects/${projectID}/dashboard` }}>
-              <img src={BackButton} alt="Back Button" />
-              <span>&nbsp; &nbsp; &nbsp;</span>
-            </Link>
-            <Link
-              to={{ pathname: `/projects/${projectID}/dashboard` }}
-              className={styles.ProjectName}
-            >
-              {name}
-            </Link>
-          </div>
-        )}
+        <div className={styles.SideBarTopSection}>
+          <Link to={{ pathname: `/projects` }}>
+            <img src={BackButton} alt="Back Button" />
+            <span>&nbsp; &nbsp; &nbsp;</span>
+          </Link>
+          <Link
+            to={{ pathname: `/projects/${projectID}/dashboard` }}
+            className={styles.ProjectName}
+          >
+            {name}
+          </Link>
+        </div>
       </div>
 
       <div className={styles.SideBarBottomSection}>
