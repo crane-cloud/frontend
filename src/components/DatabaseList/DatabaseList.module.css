@@ -1,9 +1,3 @@
-.MainContentSection {
-  /* divided into two rows */
-  display: grid;
-  grid-template-rows: 80px 4fr;
-  overflow: hidden;
-}
 
 .ContentSection {
   display: flex;
@@ -15,10 +9,10 @@
 
 .DatabaseTableHead {
   text-transform: uppercase;
-  padding: 1rem;
   color: #008ac1;
-  text-align: center;
+  text-align: left;
   grid-row: 1;
+  padding: 0.5rem 0;
 }
 
 .DatabaseTableRow {
@@ -26,21 +20,32 @@
   color: #000000;
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
-.DatabaseTableRow:hover {
-  color: #f7b21f;
+
+.CardBodySection .DatabaseTableRow{
+  width: 100%;
+}
+
+.DatabaseBody .DatabaseTableRow:hover {
+  /* color: #f7b21f; */
+  background-color: var(--color-gray-light);
 }
 
 .DatabaseTableCell {
   font-weight: normal;
   padding: 1rem 0;
-  text-align: center;
+  text-align: left;
   grid-row: 1;
   overflow: hidden;
+}
+
+.DatabaseTableCell div {
+  justify-content: start!important;
 }
 
 .DatabaseTableHead:first-child,
 .DatabaseTableCell:first-child {
   text-align: left;
+  padding-left: 1rem!important;
 }
 
 .DatabaseTableCell:first-child {
@@ -50,6 +55,7 @@
 .DatabaseTableHead:last-child,
 .DatabaseTableCell:last-child {
   text-align: right;
+  padding-right: 1rem!important;
 }
 
 .NoResourcesMessage {

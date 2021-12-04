@@ -1,5 +1,6 @@
 .MetricsCardGraph {
-  height: 100%;
+  height: 35rem;
+  margin-top: 2rem;
 }
 
 .ContentSectionSpinner {
