@@ -65,7 +65,7 @@ const SideBar = ({
           </div>
         ) : isAppPage ? (
           <div className={styles.SideBarTopSection}>
-            <Link to={{ pathname: `/projects/${projectID}/apps` }}>
+            <Link to={{ pathname: `/projects/${projectID}/dashboard` }}>
               <img src={BackButton} alt="Back Button" />
               <span>&nbsp; &nbsp; &nbsp;</span>
             </Link>
@@ -112,12 +112,12 @@ const SideBar = ({
           </div>
         ) : (
           <div className={styles.SideBarTopSection}>
-            <Link to={{ pathname: `/projects/${projectID}/apps` }}>
+            <Link to={{ pathname: `/projects/${projectID}/dashboard` }}>
               <img src={BackButton} alt="Back Button" />
               <span>&nbsp; &nbsp; &nbsp;</span>
             </Link>
             <Link
-              to={{ pathname: `/projects/${projectID}/apps` }}
+              to={{ pathname: `/projects/${projectID}/dashboard` }}
               className={styles.ProjectName}
             >
               {name}

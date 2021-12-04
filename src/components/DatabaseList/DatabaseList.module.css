@@ -1,39 +1,3 @@
-.MainPage {
-  /* Divided into two rows */
-  margin: 0;
-  background: #f1f1f1;
-  height: 100vh;
-  display: grid;
-  grid-template-rows: 80px 4fr;
-  overflow-x: hidden;
-}
-.TopBarSection {
-  background-color: black;
-}
-.MainSection {
-  /* divided into two columns */
-  background-color: #f1f1f1;
-  display: grid;
-  grid-template-columns: 1.3fr 6fr;
-  overflow: hidden;
-}
-
-.SideBarSection {
-  overflow: hidden;
-  overflow-y: scroll;
-  height: calc(100vh - 5rem);
-}
-
-.SideBarSection::-webkit-scrollbar {
-  display: none;
-  min-width: fit-content;
-}
-
-.SideBarSection {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
 .MainContentSection {
   /* divided into two rows */
   display: grid;

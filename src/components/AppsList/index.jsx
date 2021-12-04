@@ -13,8 +13,8 @@ class AppsList extends Component {
     super(props);
     this.state = {
       rerender: false,
-      Searchword:"",
-      SearchList:[],
+      Searchword: "",
+      SearchList: [],
     };
 
     this.renderAfterDelete = this.renderAfterDelete.bind(this);
@@ -36,7 +36,7 @@ class AppsList extends Component {
       getAppsList,
       newAppCreated,
     } = this.props;
-    const { rerender,Searchword } = this.state;
+    const { rerender, Searchword } = this.state;
 
     if (newAppCreated !== prevProps.newAppCreated) {
       getAppsList(projectID);
@@ -45,28 +45,25 @@ class AppsList extends Component {
     if (rerender !== prevState.rerender) {
       getAppsList(projectID);
     }
-    if(Searchword !== prevState.Searchword){
+    if (Searchword !== prevState.Searchword) {
       this.searchThroughApps();
     }
   }
 
-   
-  searchThroughApps(){
+  searchThroughApps() {
     const { Searchword } = this.state;
-    const {
-      apps,
-    } = this.props;
+    const { apps } = this.props;
     let searchResult = [];
-    apps.apps.forEach(element => {
-      if(element.name.toLowerCase().includes(Searchword.toLowerCase())){
+    apps.apps.forEach((element) => {
+      if (element.name.toLowerCase().includes(Searchword.toLowerCase())) {
         searchResult.push(element);
       }
-    }
-    );
-   this.setState({ 
-    SearchList: searchResult.sort((a, b) => b.date_created > a.date_created ? 1: -1),
-   })
-  
+    });
+    this.setState({
+      SearchList: searchResult.sort((a, b) =>
+        b.date_created > a.date_created ? 1 : -1
+      ),
+    });
   }
   handleChange(e) {
     this.setState({
@@ -82,22 +79,23 @@ class AppsList extends Component {
   }
 
   render() {
-    const { Searchword, SearchList} =this.state;
-    const { apps, isRetrieved, isRetrieving, params } = this.props;
-    const allApps = apps.apps
-    const sortedApps = allApps?.sort((a, b) => b.date_created < a.date_created ? 1: -1);
+    const { Searchword, SearchList } = this.state;
+    const { apps, isRetrieved, isRetrieving, params, message } = this.props;
+    const allApps = apps.apps;
+    const sortedApps = allApps?.sort((a, b) =>
+      b.date_created < a.date_created ? 1 : -1
+    );
     return (
       <div>
-      
-      <div className={styles.SearchBar}>
-        <BlackInputText
+        <div className={styles.SearchBar}>
+          <BlackInputText
             required
             placeholder="Search through apps"
             name="Searchword"
             value={Searchword}
             onChange={(e) => {
-               this.handleChange(e);
-             }}
+              this.handleChange(e);
+            }}
           />
         </div>
         {isRetrieving ? (
@@ -106,22 +104,22 @@ class AppsList extends Component {
               <Spinner size="big" />
             </div>
           </div>
-        ) : Searchword !=="" ? (
+        ) : Searchword !== "" ? (
           <div className={styles.AppList}>
-          {isRetrieved &&
-            SearchList.map((app) => (
-              <div key={app.id} className="AppCardItem">
-                <AppsCard
-                  name={app.name}
-                  appStatus={app.app_running_status}
-                  url={app.url}
-                  appId={app.id}
-                  otherData={params}
-                  hasDeleted={this.renderAfterDelete}
-                />
-              </div>
-            ))}
-        </div>
+            {isRetrieved &&
+              SearchList.map((app) => (
+                <div key={app.id} className="AppCardItem">
+                  <AppsCard
+                    name={app.name}
+                    appStatus={app.app_running_status}
+                    url={app.url}
+                    appId={app.id}
+                    otherData={params}
+                    hasDeleted={this.renderAfterDelete}
+                  />
+                </div>
+              ))}
+          </div>
         ) : (
           <div className={styles.AppList}>
             {isRetrieved &&
@@ -141,7 +139,15 @@ class AppsList extends Component {
         )}
         {isRetrieved && sortedApps.length === 0 && (
           <div className={styles.NoResourcesMessage}>
-            You haven’t created any apps yet. Click the &nbsp; <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp; button to deploy an app.
+            {message ? (
+              message
+            ) : (
+              <div>
+                You haven’t created any apps yet. Click the &nbsp;{" "}
+                <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp; button
+                to deploy an app.
+              </div>
+            )}
           </div>
         )}
         {!isRetrieving && !isRetrieved && (
@@ -163,6 +169,7 @@ AppsList.propTypes = {
   isRetrieving: PropTypes.bool,
   getAppsList: PropTypes.func.isRequired,
   newAppCreated: PropTypes.bool.isRequired,
+  message: PropTypes.string,
   params: PropTypes.shape({
     projectID: PropTypes.string.isRequired,
   }).isRequired,
@@ -173,6 +180,7 @@ AppsList.defaultProps = {
   apps: {},
   isRetrieved: false,
   isRetrieving: true,
+  message: false,
 };
 
 const mapStateToProps = (state) => {

@@ -36,7 +36,7 @@ class ProjectCard extends React.Component {
         <div className="ProjectsCard">
           <Link
             to={{
-              pathname: `/projects/${cardID}/apps`,
+              pathname: `/projects/${cardID}/dashboard`,
               projectData: name,
             }}
             key={cardID}
@@ -53,7 +53,7 @@ class ProjectCard extends React.Component {
             <div className="ProjectInfoSection">
               <Link
                 to={{
-                  pathname: `/projects/${cardID}/apps`,
+                  pathname: `/projects/${cardID}/dashboard`,
                   projectData: name,
                 }}
                 key={cardID}

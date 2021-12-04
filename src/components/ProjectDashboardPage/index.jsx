@@ -16,6 +16,7 @@ import {
   formatMemoryMetrics,
   formatNetworkMetrics,
 } from "../../helpers/formatMetrics";
+import AppsList from "../AppsList";
 
 class ProjectDashboardPage extends React.Component {
   constructor(props) {
@@ -110,9 +111,10 @@ class ProjectDashboardPage extends React.Component {
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
-              <InformationBar header="Project Metrics" />
+              <InformationBar header="Project Dashboard" />
             </div>
-            <div className="ContentSection">
+            <div className="ProjectContentSection SmallContainer">
+              <h3>Project Metrics</h3>
               <div className="MetricCardsSection">
                 <MetricsCard
                   icon={<MetricIcon />}
@@ -148,6 +150,11 @@ class ProjectDashboardPage extends React.Component {
                   />
                 </MetricsCard>
               </div>
+              <h3>Project Apps</h3>
+              <AppsList
+                params={params}
+                message="You have no apps currently, please go to Apps section on the sidebar to create one"
+              />
             </div>
           </div>
         </div>

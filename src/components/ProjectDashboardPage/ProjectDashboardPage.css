@@ -1,13 +1,15 @@
-.ContentSection {
-  padding: 2rem;
+.ProjectContentSection {
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .MetricCardsSection {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 1rem;
+  width: 100%;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
 }
 
 .CardDimensions {
-  height: 20rem;
+  height: 15rem;
 }

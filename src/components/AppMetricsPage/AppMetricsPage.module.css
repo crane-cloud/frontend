@@ -38,13 +38,6 @@
   grid-template-rows: auto 1fr auto;
   /* overflow: hidden; */
 }
-.MainSection {
-  /* divided into two columns */
-  background-color: #f1f1f1;
-  display: grid;
-  grid-template-columns: 1.3fr 6fr;
-  overflow: hidden;
-}
 
 .SideBarSection {
   overflow: hidden;
