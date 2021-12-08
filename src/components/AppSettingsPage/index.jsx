@@ -723,10 +723,7 @@ class AppSettingsPage extends React.Component {
                   <div className={styles.APPButtonRow}>
                     <div className={styles.AppLabel}>Link</div>
                     <div className={styles.CopyDiv}>
-                      <div className="DBTDetail">
-                        {app.url}
-                        https://cranecloud.io/afad{" "}
-                      </div>
+                      <div className="DBTDetail">{app.url}</div>
                       <div className={styles.CopyUrl}>
                         <CopyText onClick={this.urlOnClick} />
                         {urlChecked ? <Checked /> : null}
@@ -751,90 +748,72 @@ class AppSettingsPage extends React.Component {
                 </div>
               </div>
               <hr className={styles.HorizontalLine} />
-              <div className={styles.APPSectionPort}>
+              <div className={styles.APPSections}>
+                {/* <div className={styles.APPSectionPort}> */}
                 <div className={styles.APPSectionTitle}>Environment Vars</div>
                 <div className={styles.ModalFormInputsEnvVars}>
                   {app.env_vars && (
-                    <table className={styles.varsTable}>
-                      <thead>
-                        <tr className={styles.VarsRow}>
-                          <td>Name</td>
-                          <td>Value</td>
-                          <td>Remove</td>
-                          <td></td>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {Object.keys(app.env_vars).map((envVar, index) => (
-                          <tr key={index} className={styles.VarsRow}>
-                            <td>{envVar}</td>
-                            <td>{app.env_vars[envVar]}</td>
-                            <td></td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
-                  {Object.keys(envVars).length > 0 && (
-                    <div className={styles.EnvVarsTable}>
-                      <table className={styles.varsTable}>
-                        {!app.env_vars && (
-                          <thead>
-                            <tr className={styles.VarsRow}>
-                              <td>Name</td>
-                              <td>Value</td>
-                              <td>Remove</td>
-                              <td></td>
-                            </tr>
-                          </thead>
-                        )}
-                        <tbody>
-                          {Object.keys(envVars).map((envVar, index) => (
-                            <tr key={uuidv4()} className={styles.VarsRow}>
-                              <td>{Object.keys(envVars)[index]}</td>
-                              <td>{envVars[Object.keys(envVars)[index]]}</td>
-                              <td>
-                                <img
-                                  src={RemoveIcon}
-                                  alt="remove_ico"
-                                  onClick={() => this.removeEnvVar(index)}
-                                  role="presentation"
-                                />
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                      <div className={styles.TableRow}>
-                        <PrimaryButton
-                          label={isUpdating ? <Spinner /> : "UPDATE"}
-                          onClick={this.handleEnvVarsSubmit}
-                        />
+                    <div className={styles.EnvData}>
+                      <div className={styles.EnvDataItem}>
+                        <div>Name</div>
+                        <div>Value</div>
+                        <div>Remove</div>
                       </div>
-                      <hr className={styles.HorizontalHalfLine} />
+                      {Object.keys(app.env_vars).map((envVar, index) => (
+                        <div key={index} className={styles.EnvDataItem}>
+                          <div>{envVar}</div>
+                          <div>{app.env_vars[envVar]}</div>
+                          <td></td>
+                        </div>
+                      ))}
                     </div>
                   )}
-                  <div className={styles.EnvVarsInputGroup}>
-                    <div className={styles.EnvVarsInputs}>
-                      <input
-                        placeholder="Name"
-                        name="varName"
-                        value={varName}
-                        className={styles.varInput}
-                        onChange={(e) => {
-                          this.handleChange(e);
-                        }}
-                      />
-                      <input
-                        placeholder="Value"
-                        name="varValue"
-                        value={varValue}
-                        className={styles.varInput}
-                        onChange={(e) => {
-                          this.handleChange(e);
-                        }}
-                      />
+
+                  {Object.keys(envVars).length > 0 && (
+                    <div className={styles.EnvData}>
+                      {!app.env_vars && (
+                        <div className={styles.EnvDataItem}>
+                          <div>Name</div>
+                          <div>Value</div>
+                          <div>Remove</div>
+                        </div>
+                      )}
+
+                      {Object.keys(envVars).map((envVar, index) => (
+                        <div key={uuidv4()} className={styles.EnvDataItem}>
+                          <div>{Object.keys(envVars)[index]}</div>
+                          <div>{envVars[Object.keys(envVars)[index]]}</div>
+                          <div className={styles.RemoveIconBtn}>
+                            <img
+                              src={RemoveIcon}
+                              alt="remove_ico"
+                              onClick={() => this.removeEnvVar(index)}
+                              role="presentation"
+                            />
+                          </div>
+                        </div>
+                      ))}
                     </div>
+                  )}
+                  <div className={styles.EnvDataItem}>
+                    <input
+                      placeholder="Name"
+                      name="varName"
+                      value={varName}
+                      className={styles.varInput}
+                      onChange={(e) => {
+                        this.handleChange(e);
+                      }}
+                    />
+                    <input
+                      placeholder="Value"
+                      name="varValue"
+                      value={varValue}
+                      className={styles.varInput}
+                      onChange={(e) => {
+                        this.handleChange(e);
+                      }}
+                    />
                     <div className={styles.EnvVarsAddBtn}>
                       <PrimaryButton
                         label="add"
@@ -843,87 +822,114 @@ class AppSettingsPage extends React.Component {
                       />
                     </div>
                   </div>
+                  {Object.keys(envVars).length > 0 && (
+                    <div className={styles.APPButton}>
+                      <div className={styles.UpperSection}>
+                        <PrimaryButton
+                          label={isUpdating ? <Spinner /> : "UPDATE"}
+                          onClick={this.handleEnvVarsSubmit}
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
               <hr className={styles.HorizontalLine} />
-              <div className={styles.APPSectionPort}>
+              <div className={styles.APPSections}>
                 <div className={styles.APPSectionTitle}>
                   Port & Entry commands
                 </div>
-                <div className={styles.PortSection}>
-                  <div>Port</div>
-                  <input
-                    type="text"
-                    placeholder={app.port}
-                    name="port"
-                    value={port}
-                    className={styles.portInput}
-                    onChange={(e) => {
-                      this.handleChange(e);
-                    }}
-                  />
-                  <PrimaryButton
-                    label={isUpdating && updating_port ? <Spinner /> : "UPDATE"}
-                    disable={isUpdating}
-                    className={isUpdating && styles.deactivatedBtn}
-                    onClick={this.handlePortSubmit}
-                  />
-                </div>
-              </div>
-              <div className={styles.errorCenterDiv}>
-                {portError && <Feedback type="error" message={portError} />}
-              </div>
-              <hr className={styles.HorizontalHalfLine} />
-              <div className={styles.errorCenterDiv}>
-                {errorMessage && (
-                  <Feedback type="error" message={errorMessage} />
-                )}
-              </div>
-              <div className={styles.APPSectionPort}>
-                <div></div>
-                <div className={styles.commandInputSection}>
-                  <input
-                    type="text"
-                    placeholder="command"
-                    name="entryCommand"
-                    value={entryCommand}
-                    className={styles.portInput}
-                    onChange={(e) => {
-                      this.handleChange(e);
-                    }}
-                  />
-                </div>
-                <div>
-                  <PrimaryButton
-                    label={
-                      isUpdating && updating_command ? <Spinner /> : "UPDATE"
-                    }
-                    disable={isUpdating}
-                    className={isUpdating && styles.deactivatedBtn}
-                    onClick={this.handleCommandSubmit}
-                  />
-                </div>
-              </div>
-              <div className={styles.errorCenterDiv}>
-                {commandError && (
-                  <Feedback type="error" message={commandError} />
-                )}
-              </div>
-              <hr className={styles.HorizontalLine} />
-              <div className={styles.AppDelete}>
-                <div className={styles.APPInstruct}>
-                  <div className={styles.APPSectionDelete}>
-                    Delete application
+                <div className={styles.AppOtherSection}>
+                  <div className={styles.PortSection}>
+                    <div>Port</div>
+                    <div>
+                      <input
+                        type="text"
+                        placeholder={app.port}
+                        name="port"
+                        value={port}
+                        className={styles.portInput}
+                        onChange={(e) => {
+                          this.handleChange(e);
+                        }}
+                      />
+                    </div>
+                    <PrimaryButton
+                      label={
+                        isUpdating && updating_port ? <Spinner /> : "UPDATE"
+                      }
+                      disable={isUpdating}
+                      className={isUpdating && styles.deactivatedBtn}
+                      onClick={this.handlePortSubmit}
+                    />
                   </div>
-                  <div>Deleting your app is irreversible.</div>
+                  <div className={styles.PortSection}>
+                    <div>Entry Command</div>
+                    <div className={styles.commandInputSection}>
+                      <div>
+                        <input
+                          type="text"
+                          placeholder="command"
+                          name="entryCommand"
+                          value={entryCommand}
+                          className={styles.portInput}
+                          onChange={(e) => {
+                            this.handleChange(e);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <PrimaryButton
+                        label={
+                          isUpdating && updating_command ? (
+                            <Spinner />
+                          ) : (
+                            "UPDATE"
+                          )
+                        }
+                        disable={isUpdating}
+                        className={isUpdating && styles.deactivatedBtn}
+                        onClick={this.handleCommandSubmit}
+                      />
+                    </div>
+                  </div>
+                  {portError && (
+                    <div className={styles.errorCenterDiv}>
+                      <Feedback type="error" message={portError} />
+                    </div>
+                  )}
+                  <hr className={styles.HorizontalHalfLine} />
+                  {errorMessage && (
+                    <div className={styles.errorCenterDiv}>
+                      <Feedback type="error" message={errorMessage} />
+                    </div>
+                  )}
+                  {commandError && (
+                    <div className={styles.errorCenterDiv}>
+                      <Feedback type="error" message={commandError} />
+                    </div>
+                  )}
                 </div>
-                <div className={styles.DeleteButtonDiv}>
-                  <PrimaryButton
-                    label="Delete App"
-                    className={styles.DeleteBtn}
-                    onClick={this.showDeleteAlert}
-                  />
+              </div>
+
+              <hr className={styles.HorizontalLine} />
+              <div className={styles.APPSections}>
+                <div className={styles.APPSectionDelete}>
+                  Delete application
+                </div>
+                <div className={styles.AppDeleteInstructions}>
+                  <div className={styles.APPInstruct}>
+                    <div>Deleting your app is irreversible.</div>
+                  </div>
+                  <div className={styles.DeleteButtonDiv}>
+                    <PrimaryButton
+                      label="Delete App"
+                      className={styles.DeleteBtn}
+                      onClick={this.showDeleteAlert}
+                    />
+                  </div>
                 </div>
               </div>
               {openDeleteAlert && (

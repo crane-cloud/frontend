@@ -185,10 +185,15 @@
 }
 
 .APPSectionDelete {
-  flex: 1;
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 700;
   color: #ff0000;
+}
+
+.AppDeleteInstructions{
+  display:flex;
+  gap: 1rem;
+  justify-content: space-between;
 }
 
 .flexa input {
@@ -229,7 +234,7 @@
   display: grid;
   justify-content: flex-start;
   justify-items: flex-start;
-  gap: 2rem;
+  gap: 1rem;
   align-items: center;
   grid-template-columns: 10% 15% auto;
 }
@@ -249,8 +254,8 @@
 
 .CopyDiv {
   display: flex;
-  gap: 1rem;
-  justify-content: space-between;
+  gap: 3rem;
+  justify-content: flex-start;
 }
 
 .UpperSection {
@@ -287,24 +292,31 @@
 
 .PortSection {
   display: grid;
-  grid-template-columns: 18% auto 18%;
+  grid-template-columns: 1fr 4fr 1fr;
   gap: 1rem;
-  align-items: center;
+  width: 100%;
 }
 
 .varInput {
   width: auto;
   background: transparent;
   border: 1px solid #000;
-  padding-left: 1rem;
+  padding: 0.5rem;
+}
+
+.AppOtherSection{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .portInput {
   width: auto;
   background: transparent;
   border: 1px solid #000;
+  padding: 0.5rem;
   padding-left: 1rem;
-  height: 100%;
+  width: 100%;
 }
 
 .commandInputSection {
@@ -337,18 +349,31 @@
   align-items: center;
 }
 
-.EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn {
+.ModalFormInputsEnvVars{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.EnvVarsAddBtn button.EnvVarAddBtn {
   /* position: absolute;
   max-width: 100%; */
   color: #fff;
   background-color: #008ac1;
   outline: 1px solid #008ac1;
+  padding: 0.5rem;
+  height: 2.5rem;
 }
 
 .EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn:hover {
   color: #008ac1;
   background-color: #fff;
 }
+
+.RemoveIconBtn{
+  cursor: pointer;
+}
+
 
 /* .EnvVarsInputGroup input {
   max-width: 10rem;
@@ -358,7 +383,27 @@
   color: grey;
 } */
 
-.VarsRow {
+.EnvData {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  padding-bottom: 1rem ;
+}
+
+.EnvDataItem {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+.EnvDataItem div{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* .VarsRow {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   padding: 0.3rem;
@@ -370,7 +415,7 @@
 .TableRow {
   display: flex;
   justify-content: flex-end;
-}
+} */
 
 .deactivatedBtn {
   background-color: transparent;
