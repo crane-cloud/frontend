@@ -100,10 +100,12 @@
   grid-template-rows: 80px 4fr;
   overflow: hidden;
 }
+
 .ContentSection {
   justify-content: space-between;
   padding: 2rem 2rem 0rem;
 }
+
 .ContentSection {
   display: flex;
   flex-direction: column;
@@ -127,8 +129,10 @@
 }
 
 .APPInstructions {
-  display: grid;
-  gap: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .APPInstruct {
@@ -137,10 +141,14 @@
 
 .APPButtonRow {
   display: grid;
-  grid-template-columns: 20% auto;
+  grid-template-columns: 1fr 5fr;
   grid-auto-flow: column;
   align-items: center;
-  column-gap: 1rem;
+  gap: 1rem;
+}
+
+.APPButtonRow select{
+  padding: 0.5rem;
 }
 
 .SectionButtons {
@@ -151,7 +159,9 @@
 
 .APPSections {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  gap: 1rem;
+  grid-template-columns: 1fr 5fr;
+  padding: 1rem 5rem;
 }
 
 .APPSectionPort {
@@ -169,8 +179,7 @@
 }
 
 .APPSectionTitle {
-  flex: 1;
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 700;
   color: #008ac1;
 }
@@ -184,6 +193,7 @@
 
 .flexa input {
   border: 1px solid;
+  padding: 0.5rem;
 }
 
 .AppLabel {
@@ -229,11 +239,18 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  cursor: pointer;
+}
+
+.CopyUrl:hover {
+  color: #008ac1;
+  transform: scale(1.1);
 }
 
 .CopyDiv {
   display: flex;
   gap: 1rem;
+  justify-content: space-between;
 }
 
 .UpperSection {

@@ -511,7 +511,7 @@ class AppSettingsPage extends React.Component {
             <div className="InformationBarSection">
               <InformationBar header="Settings" />
             </div>
-            <div className={styles.ContentSection}>
+            <div className={`${styles.ContentSection} SmallContainer`}>
               <div className={styles.APPSections}>
                 <div className={styles.APPSectionTitle}>App Information</div>
                 <div className={styles.APPInstructions}>
@@ -537,13 +537,13 @@ class AppSettingsPage extends React.Component {
                       />
                     </div>
                   </div>
-                  <div className={styles.PrivateImageCheckField}>
+                  <div className={styles.APPButtonRow}>
+                    <div className={styles.AppLabel}>Private Image</div>
                     <Checkbox
                       isBlack
                       onClick={this.togglePrivateImage}
                       isChecked={isPrivateImage}
                     />
-                    Private Image
                   </div>
 
                   {isPrivateImage && (
@@ -627,7 +627,9 @@ class AppSettingsPage extends React.Component {
                   )}
 
                   {beta && (
-                    <div className={styles.CustomDomainCheckField}>
+                    <div
+                      className={`${styles.CustomDomainCheckField}  ${styles.flexa}`}
+                    >
                       <Checkbox
                         isBlack
                         onClick={this.toggleCustomDomain}
@@ -692,6 +694,7 @@ class AppSettingsPage extends React.Component {
                             "App has " + app.replicas + " replica(s)"
                           }
                           options={replicaOptions}
+                          isSmall
                           onChange={this.handleSelectReplicas}
                         />
                       </div>
@@ -720,7 +723,10 @@ class AppSettingsPage extends React.Component {
                   <div className={styles.APPButtonRow}>
                     <div className={styles.AppLabel}>Link</div>
                     <div className={styles.CopyDiv}>
-                      <div className="DBTDetail">{app.url}</div>
+                      <div className="DBTDetail">
+                        {app.url}
+                        https://cranecloud.io/afad{" "}
+                      </div>
                       <div className={styles.CopyUrl}>
                         <CopyText onClick={this.urlOnClick} />
                         {urlChecked ? <Checked /> : null}
