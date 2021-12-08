@@ -27,17 +27,17 @@ const SideBar = ({
     strict: true,
   });
 
-  const pageLocation = matchPath(pageRoute, {
-    path: "/projects/:projectID/apps",
-    exact: true,
-    strict: true,
-  });
+  // const pageLocation = matchPath(pageRoute, {
+  //   path: "/projects/:projectID/apps",
+  //   exact: true,
+  //   strict: true,
+  // });
 
-  const databaseLocation = matchPath(pageRoute, {
-    path: "/projects/:projectID/databases/:databaseID/settings",
-    exact: true,
-    strict: true,
-  });
+  // const databaseLocation = matchPath(pageRoute, {
+  //   path: "/projects/:projectID/databases/:databaseID/settings",
+  //   exact: true,
+  //   strict: true,
+  // });
 
   const { projectID, appID } = params;
 

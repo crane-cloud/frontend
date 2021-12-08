@@ -133,7 +133,7 @@ class AppMetricsPage extends React.Component {
             <div className={styles.InformationBarSection}>
               <InformationBar header={appInfo.name} viewAppLink={appInfo.url} />
             </div>
-            <div className={styles.ContentSection}>
+            <div className={`${styles.ContentSection} SmallContainer`}>
               <div
                 className={
                   styles.SummaryCardContainer +
@@ -148,13 +148,13 @@ class AppMetricsPage extends React.Component {
                   <div className={styles.InnerCard}>
                     <div className={styles.InnerCardSections}>
                       <div className={styles.InnerContentGrid}>
-                        <div className={styles.InnerTitlesStart}>APP NAME</div>
+                        <div className={styles.InnerTitlesStart}>App Name</div>
                         <div className={styles.InnerContentName}>
                           {appInfo.name}
                         </div>
                       </div>
                       <div className={styles.InnerContentGrid}>
-                        <div className={styles.InnerTitlesStart}>LINK</div>
+                        <div className={styles.InnerTitlesStart}>App Url</div>
                         <div className={styles.InnerContentLink}>
                           <div className={styles.InnerContentLinkText}>
                             {appInfo.url}
@@ -168,11 +168,11 @@ class AppMetricsPage extends React.Component {
                         </div>
                       </div>
                     </div>
-                    <div className={styles.verticalLine}> </div>
+                    <hr />
                     <div className={styles.InnerCardSections}>
                       <div className={styles.InnerContentGrid}>
                         <div className={styles.InnerTitlesMiddle}>
-                          APP STATUS
+                          App Status
                         </div>
                         <div className={styles.InnerContentStatus}>
                           <AppStatus appStatus={appInfo.status} />
@@ -182,22 +182,24 @@ class AppMetricsPage extends React.Component {
                         </div>
                       </div>
                       <div className={styles.InnerContentGrid}>
-                        <div className={styles.InnerTitlesMiddle}>AGE</div>
+                        <div className={styles.InnerTitlesMiddle}>
+                          Date Deployed
+                        </div>
                         <div className={styles.InnerContentAge}>
                           {appInfo.age}
                         </div>
                       </div>
                     </div>
-                    <div className={styles.verticalLine}> </div>
+                    <hr />
                     <div className={styles.InnerCardSections}>
                       <div className={styles.InnerContentGrid}>
-                        <div className={styles.InnerTitlesEnd}>ALIAS</div>
+                        <div className={styles.InnerTitlesEnd}>App Alias</div>
                         <div className={styles.InnerContentEnd}>
                           {appInfo.alias}
                         </div>
                       </div>
                       <div className={styles.InnerContentGrid}>
-                        <div className={styles.InnerTitlesEnd}>PORT</div>
+                        <div className={styles.InnerTitlesEnd}>Port</div>
                         <div className={styles.InnerContentEnd}>
                           {appInfo.port}
                         </div>

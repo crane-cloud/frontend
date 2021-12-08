@@ -79,7 +79,9 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  border: 1px solid #cccccc;
+  border-bottom: 1px solid #cccccc;
+  gap: 1rem;
+  flex-grow: 1;
 }
 
 .CardTitle {
@@ -92,50 +94,58 @@
   grid-gap: 1rem;
   overflow-x: auto;
 }
+
 .InnerCardSections {
   display: grid;
   grid-template-columns: auto;
   grid-template-rows: 1fr 1fr;
-  grid-gap: 0.2rem;
+  gap: 0.2rem;
 }
+
 .CardBodySection {
-  min-height: 10rem;
-  flex-grow: 1;
-  padding: 1rem;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  flex-grow: 1;
   align-items: center;
+  padding: 1rem 3rem;
+  min-height: 10rem;
 }
 
 .SummaryCardContainer:hover {
-  border: 1px solid #f7b21f;
+  border: 1px solid var(--secondary-color);
 }
 .verticalLine {
   border-left: 1px solid #cccccc;
-  height: 10rem;
+  height: 80%;
+  width: 1px;;
   padding: 1rem;
 }
 .InnerTitlesStart {
-  color: #666666;
+  color: #000;
+  font-weight: bold;
   text-align: start;
   padding: 1rem 1rem 0rem 0rem;
 }
 .InnerTitlesMiddle {
-  color: #666666;
+  color: #000;
+  font-weight: bold;
   text-align: center;
   padding-top: 1rem;
 }
 .InnerTitlesEnd {
-  color: #666666;
+  color: #000;
+  font-weight: bold;
   text-align: end;
   padding-top: 1rem;
 }
+
 .InnerContentGrid {
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: 0.5fr 0.5fr;
-  grid-gap: 0.2rem;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 0.3rem;
 }
+
 .InnerContentEnd {
   text-align: end;
 }
@@ -144,6 +154,8 @@
   align-items: center;
   justify-content: center;
   column-gap: .5rem;
+  color: #555;
+  font-size: 0.9rem;
 }
 .InnerContentAge {
   text-align: center;
