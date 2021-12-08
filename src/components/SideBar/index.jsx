@@ -16,8 +16,8 @@ const SideBar = ({
   appLogsLink,
 }) => {
   const isAppPage = matchPath(pageRoute, {
-    path: "/projects/:projectID/apps/:appID/dashboard",
-    exact: true,
+    path: "/projects/:projectID/apps/:appID",
+    // exact: true,
     strict: true,
   });
 
@@ -124,18 +124,35 @@ const SideBar = ({
             </Link>
           </div>
         )} */}
-        <div className={styles.SideBarTopSection}>
-          <Link to={{ pathname: `/projects` }}>
-            <img src={BackButton} alt="Back Button" />
-            <span>&nbsp; &nbsp; &nbsp;</span>
-          </Link>
-          <Link
-            to={{ pathname: `/projects/${projectID}/dashboard` }}
-            className={styles.ProjectName}
-          >
-            {name}
-          </Link>
-        </div>
+        {isAppPage ? (
+          <div className={styles.SideBarTopSection}>
+            <Link to={{ pathname: `/projects/${projectID}/dashboard` }}>
+              <img src={BackButton} alt="Back Button" />
+              <span>&nbsp; &nbsp; &nbsp;</span>
+            </Link>
+            <Link
+              to={{
+                pathname: `/projects/${projectID}/apps/${appID}/dashboard`,
+              }}
+              className={styles.ProjectName}
+            >
+              {name}
+            </Link>
+          </div>
+        ) : (
+          <div className={styles.SideBarTopSection}>
+            <Link to={{ pathname: `/projects` }}>
+              <img src={BackButton} alt="Back Button" />
+              <span>&nbsp; &nbsp; &nbsp;</span>
+            </Link>
+            <Link
+              to={{ pathname: `/projects/${projectID}/dashboard` }}
+              className={styles.ProjectName}
+            >
+              {name}
+            </Link>
+          </div>
+        )}
       </div>
 
       <div className={styles.SideBarBottomSection}>
@@ -169,7 +186,7 @@ const SideBar = ({
                 Apps
               </NavLink>
             )}
-            
+
             <NavLink to={databaseLink} className={styles.SubBarListItem}>
               Databases
             </NavLink>

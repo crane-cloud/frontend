@@ -157,7 +157,7 @@ class AppCpuPage extends React.Component {
             <div className="InformationBarSection">
               <InformationBar header="CPU" />
             </div>
-            <div className="ContentSection">
+            <div className="ContentSection SmallContainer">
               <MetricsCard
                 className="MetricsCardGraph"
                 title={<PeriodSelector onChange={this.handlePeriodChange} />}

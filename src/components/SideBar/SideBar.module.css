@@ -12,6 +12,7 @@
 .SideBarTopSection {
   padding: 2rem 1rem;
   display: grid;
+  gap: 1rem;
   grid-auto-flow: column;
 }
 
@@ -21,6 +22,9 @@
   font-size: large;
   color: #fff;
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .SideBarBottomSection {

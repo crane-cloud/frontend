@@ -160,7 +160,7 @@ class AppNetworkPage extends React.Component {
             <div className="InformationBarSection">
               <InformationBar header="Network" />
             </div>
-            <div className="ContentSection">
+            <div className="ContentSection SmallContainer">
               <MetricsCard
                 className="MetricsCardGraph"
                 title={<PeriodSelector onChange={this.handlePeriodChange} />}
