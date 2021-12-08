@@ -58,7 +58,7 @@ const AppLogsPage = () => {
           <div className="InformationBarSection">
             <InformationBar header={appInfo.url} status={appInfo.status} />
           </div>
-          <div className="ContentSection">
+          <div className="ContentSection SmallContainer">
             <div className="LogsSection">
               <LogsFrame
                 loading={retrieveingLogs}

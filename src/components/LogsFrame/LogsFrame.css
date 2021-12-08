@@ -6,6 +6,7 @@
   min-height: 400px; /* *** */
   background-color: #ffffff;
   color: initial;
+  height: 100%;
 }
 .LogsFrameContainer:hover{
   border: 1px solid #f7b21f;
@@ -31,7 +32,6 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  height: 6rem;
   overflow-y: auto;
 }
 

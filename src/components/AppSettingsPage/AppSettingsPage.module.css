@@ -102,12 +102,9 @@
 }
 
 .ContentSection {
+  display: flex;
   justify-content: space-between;
   padding: 2rem 2rem 0rem;
-}
-
-.ContentSection {
-  display: flex;
   flex-direction: column;
   overflow-y: auto;
 }
