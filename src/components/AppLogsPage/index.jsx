@@ -46,7 +46,7 @@ const AppLogsPage = () => {
             name={appInfo.name}
             params={params}
             pageRoute={location.pathname}
-            allMetricsLink={`/projects/${projectID}/apps/${appID}/metrics/`}
+            allMetricsLink={`/projects/${projectID}/apps/${appID}/dashboard`}
             cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
             memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
             databaseLink={`/projects/${projectID}/databases`}

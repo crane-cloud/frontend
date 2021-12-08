@@ -16,7 +16,7 @@ const SideBar = ({
   appLogsLink,
 }) => {
   const isAppPage = matchPath(pageRoute, {
-    path: "/projects/:projectID/apps/:appID/metrics",
+    path: "/projects/:projectID/apps/:appID/dashboard",
     exact: true,
     strict: true,
   });
@@ -27,11 +27,103 @@ const SideBar = ({
     strict: true,
   });
 
+  const pageLocation = matchPath(pageRoute, {
+    path: "/projects/:projectID/apps",
+    exact: true,
+    strict: true,
+  });
+
+  const databaseLocation = matchPath(pageRoute, {
+    path: "/projects/:projectID/databases/:databaseID/settings",
+    exact: true,
+    strict: true,
+  });
+
   const { projectID, appID } = params;
 
   return (
     <div className={styles.SideBar}>
       <div>
+        {/* {databaseLocation ? (
+          <div className={styles.SideBarTopSection}>
+            <Link
+              to={{
+                pathname: `/projects/${projectID}/databases`,
+              }}
+            >
+              <img src={BackButton} alt="Back Button" />
+              <span>&nbsp; &nbsp; &nbsp;</span>
+            </Link>
+            <Link
+              to={{
+                pathname: `/projects/${projectID}/databases`,
+              }}
+              className={styles.ProjectName}
+            >
+              {name}
+            </Link>
+          </div>
+        ) : isAppPage ? (
+          <div className={styles.SideBarTopSection}>
+            <Link to={{ pathname: `/projects/${projectID}/apps` }}>
+              <img src={BackButton} alt="Back Button" />
+              <span>&nbsp; &nbsp; &nbsp;</span>
+            </Link>
+            <Link
+              to={{
+                pathname: `/projects/${projectID}/apps/${appId}/dashboard`,
+              }}
+              className={styles.ProjectName}
+            >
+              {name}
+            </Link>
+          </div>
+        ) : isAppMetricsPage ? (
+          <div className={styles.SideBarTopSection}>
+            <Link
+              to={{
+                pathname: `/projects/${projectID}/apps/${appId}/dashboard`,
+              }}
+            >
+              <img src={BackButton} alt="Back Button" />
+              <span>&nbsp; &nbsp; &nbsp;</span>
+            </Link>
+            <Link
+              to={{
+                pathname: `/projects/${projectID}/apps/${appId}/dashboard`,
+              }}
+              className={styles.ProjectName}
+            >
+              {name}
+            </Link>
+          </div>
+        ) : pageLocation ? (
+          <div className={styles.SideBarTopSection}>
+            <Link to={{ pathname: `/projects/` }}>
+              <img src={BackButton} alt="Back Button" />
+              <span>&nbsp; &nbsp; &nbsp;</span>
+            </Link>
+            <Link
+              to={{ pathname: `/projects/${projectID}/apps` }}
+              className={styles.ProjectName}
+            >
+              {name}
+            </Link>
+          </div>
+        ) : (
+          <div className={styles.SideBarTopSection}>
+            <Link to={{ pathname: `/projects/${projectID}/apps` }}>
+              <img src={BackButton} alt="Back Button" />
+              <span>&nbsp; &nbsp; &nbsp;</span>
+            </Link>
+            <Link
+              to={{ pathname: `/projects/${projectID}/apps` }}
+              className={styles.ProjectName}
+            >
+              {name}
+            </Link>
+          </div>
+        )} */}
         <div className={styles.SideBarTopSection}>
           <Link to={{ pathname: `/projects` }}>
             <img src={BackButton} alt="Back Button" />
@@ -48,22 +140,36 @@ const SideBar = ({
 
       <div className={styles.SideBarBottomSection}>
         <div className={styles.SideBarLinks}>
-          <NavLink
-            to={{ pathname: `/projects/${projectID}/dashboard` }}
-            className={styles.SubBarListItem}
-          >
-            Dashboard
-          </NavLink>
+          {isAppPage ? (
+            <NavLink
+              to={{
+                pathname: `/projects/${projectID}/apps/${appID}/dashboard`,
+              }}
+              className={styles.SubBarListItem}
+            >
+              Dashboard
+            </NavLink>
+          ) : (
+            <NavLink
+              to={{ pathname: `/projects/${projectID}/dashboard` }}
+              className={styles.SubBarListItem}
+            >
+              Dashboard
+            </NavLink>
+          )}
           <Link to="#" className={`${styles.ListItem} ${styles.DisabledLink}`}>
             SERVICES
           </Link>
           <div>
-            <NavLink
-              to={{ pathname: `/projects/${projectID}/apps` }}
-              className={styles.SubBarListItem}
-            >
-              Apps
-            </NavLink>
+            {!isAppPage && (
+              <NavLink
+                to={{ pathname: `/projects/${projectID}/apps` }}
+                className={styles.SubBarListItem}
+              >
+                Apps
+              </NavLink>
+            )}
+            
             <NavLink to={databaseLink} className={styles.SubBarListItem}>
               Databases
             </NavLink>

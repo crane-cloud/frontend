@@ -150,7 +150,7 @@ class AppMemoryPage extends React.Component {
               name={this.getAppName(appID)}
               params={params}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/projects/${projectID}/apps/${appID}/metrics/`}
+              allMetricsLink={`/projects/${projectID}/apps/${appID}/dashboard`}
               cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
               memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
               databaseLink={`/projects/${projectID}/databases`}

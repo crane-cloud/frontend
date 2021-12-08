@@ -85,6 +85,7 @@ const Routes = () => (
         path="/projects/:projectID/databases"
         component={DatabaseList}
       />
+      
       <ProtectedRoute
         isAllowed={hasToken}
         exact
@@ -118,7 +119,7 @@ const Routes = () => (
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/projects/:projectID/apps/:appID/metrics"
+        path="/projects/:projectID/apps/:appID/dashboard"
         component={AppMetricsPage}
       />
       <ProtectedRoute

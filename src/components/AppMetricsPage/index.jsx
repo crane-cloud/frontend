@@ -115,13 +115,13 @@ class AppMetricsPage extends React.Component {
         <div className={styles.TopBarSection}>
           <Header />
         </div>
-        <div className={styles.MainSection}>
-          <div className={styles.SideBarSection}>
+        <div className="MainSection">
+          <div className="SideBarSection">
             <SideBar
               name={appInfo.name}
               params={params}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/projects/${projectID}/apps/${appID}/metrics/`}
+              allMetricsLink={`/projects/${projectID}/apps/${appID}/dashboard`}
               cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
               memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
               databaseLink={`/projects/${projectID}/databases`}
@@ -129,7 +129,7 @@ class AppMetricsPage extends React.Component {
               appLogsLink={`/projects/${projectID}/apps/${appID}/logs/`}
             />
           </div>
-          <div className={styles.MainContentSection}>
+          <div className="MainContentSection">
             <div className={styles.InformationBarSection}>
               <InformationBar header={appInfo.name} viewAppLink={appInfo.url} />
             </div>

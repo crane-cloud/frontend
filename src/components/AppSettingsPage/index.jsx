@@ -489,17 +489,17 @@ class AppSettingsPage extends React.Component {
     return (
       <div className={styles.Page}>
         {isDeleted ? this.renderRedirect() : null}
-        <div className={styles.TopBarSection}>
+        <div className="TopBarSection">
           <Header />
         </div>
-        <div className={styles.MainSection}>
-          <div className={styles.SideBarSection}>
+        <div className="MainSection">
+          <div className="SideBarSection">
             <SideBar
               name={app.name}
               params={params}
               // description={description}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/projects/${projectID}/apps/${appID}/metrics/`}
+              allMetricsLink={`/projects/${projectID}/apps/${appID}/dashboard`}
               cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
               memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
               databaseLink={`/projects/${projectID}/databases`}
@@ -507,8 +507,8 @@ class AppSettingsPage extends React.Component {
               appLogsLink={`/projects/${projectID}/apps/${appID}/logs/`}
             />
           </div>
-          <div className={styles.MainContentSection}>
-            <div className={styles.InformationBarSection}>
+          <div className="MainContentSection">
+            <div className="InformationBarSection">
               <InformationBar header="Settings" />
             </div>
             <div className={styles.ContentSection}>
@@ -662,22 +662,22 @@ class AppSettingsPage extends React.Component {
                             Click for more instructions on how to set up you
                             custom domain.
                           </div>
-                        <div className={styles.RevertSection}>
-                        <div className={styles.FlexRevertSection}>
-                          <div>
-                            <strong>Revert to URL</strong>
+                          <div className={styles.RevertSection}>
+                            <div className={styles.FlexRevertSection}>
+                              <div>
+                                <strong>Revert to URL</strong>
+                              </div>
+                              <div>
+                                Reverts to cranecloud's auto-generated URL.
+                              </div>
+                            </div>
+                            <div className={styles.SectionButtons}>
+                              <PrimaryButton
+                                label="REVERT"
+                                className={styles.RevertButton}
+                              />
+                            </div>
                           </div>
-                          <div>
-                            Reverts to cranecloud's auto-generated URL.
-                          </div>
-                        </div>
-                        <div className={styles.SectionButtons}>
-                          <PrimaryButton
-                            label="REVERT"
-                            className={styles.RevertButton}
-                          />
-                        </div>
-                      </div>
                         </div>
                       </div>
                     </div>
@@ -1036,7 +1036,8 @@ class AppSettingsPage extends React.Component {
                               <li>Click: Save</li>
                             </ul>
                             <div>
-                              <strong>Note:</strong> DNS settings may look different for each
+                              <strong>Note:</strong> DNS settings may look
+                              different for each
                             </div>
                           </div>
                         </div>
