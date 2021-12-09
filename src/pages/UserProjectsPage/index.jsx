@@ -7,7 +7,6 @@ import InformationBar from "../../components/InformationBar";
 import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import Header from "../../components/Header";
 import getClustersList from "../../redux/actions/clusters";
-import BlackInputText from "../../components/BlackInputText";
 import CreateProject from "../../components/CreateProject";
 import getUserProjects from "../../redux/actions/projectsList";
 import ProjectCard from "../../components/ProjectCard";
@@ -30,7 +29,7 @@ class UserProjectsPage extends React.Component {
     this.callbackProjectCreateComponent =
       this.callbackProjectCreateComponent.bind(this);
     this.searchThroughProjects = this.searchThroughProjects.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleCallbackSearchword = this.handleCallbackSearchword.bind(this);
   }
 
   componentDidMount() {
@@ -95,9 +94,9 @@ class UserProjectsPage extends React.Component {
       ),
     });
   }
-  handleChange(e) {
+  handleCallbackSearchword(word) {
     this.setState({
-      [e.target.name]: e.target.value,
+      Searchword: word,
     });
   }
 
@@ -127,21 +126,13 @@ class UserProjectsPage extends React.Component {
               <InformationBar
                 header="Projects"
                 showBtn
+                showSearchBar
+                placeholder="Search through projects"
                 btnAction={this.openProjectCreateComponent}
+                searchAction={this.handleCallbackSearchword}
               />
             </div>
             <div className={styles.MainRow}>
-              <div className={styles.SearchBar}>
-                <BlackInputText
-                  required
-                  placeholder="Search through projects"
-                  name="Searchword"
-                  value={Searchword}
-                  onChange={(e) => {
-                    this.handleChange(e);
-                  }}
-                />
-              </div>
               {isRetrieving ? (
                 <div className={styles.NoResourcesMessage}>
                   <div className={styles.SpinnerWrapper}>

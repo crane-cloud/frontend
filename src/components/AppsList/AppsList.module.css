@@ -12,10 +12,7 @@
   text-align: center;
   justify-content: center;
   align-items: center;
-}
-.SearchBar {
-  display: flex;
-  padding: 0 0 1rem;
+  padding-top: 12rem;
 }
 
 .ButtonPlusSmall {
