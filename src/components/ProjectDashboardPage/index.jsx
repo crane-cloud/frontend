@@ -153,6 +153,7 @@ class ProjectDashboardPage extends React.Component {
               <h3>Project Apps</h3>
               <AppsList
                 params={params}
+                word=""
                 message="You have no apps currently, please go to Apps section on the sidebar to create one"
               />
             </div>
