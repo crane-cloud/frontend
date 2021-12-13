@@ -19,7 +19,7 @@ class AppsPage extends React.Component {
       openModal: false, // add project component is closed initially
       error: "",
       port: "",
-      word:"",
+      word: "",
     };
 
     this.state = this.initialState;
@@ -42,8 +42,8 @@ class AppsPage extends React.Component {
       this.hideForm();
     }
   }
-  handleCallbackSearchword(word){
-    this.setState({word:word});
+  handleCallbackSearchword(word) {
+    this.setState({ word: word });
   }
 
   getProjectDetails(projects, id) {
@@ -115,8 +115,12 @@ class AppsPage extends React.Component {
                   btnAction={this.showForm}
                 />
               </div>
-              <div className="ContentSection">
-                <AppsList params={params} newAppCreated={isCreated} word={word} />
+              <div className="ContentSection AppsPage SmallContainer">
+                <AppsList
+                  params={params}
+                  newAppCreated={isCreated}
+                  word={word}
+                />
               </div>
             </div>
           )}

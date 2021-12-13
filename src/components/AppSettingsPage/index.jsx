@@ -865,14 +865,16 @@ class AppSettingsPage extends React.Component {
                           }}
                         />
                       </div>
-                      <PrimaryButton
-                        label={
-                          isUpdating && updating_port ? <Spinner /> : "UPDATE"
-                        }
-                        disable={isUpdating}
-                        className={isUpdating && styles.deactivatedBtn}
-                        onClick={this.handlePortSubmit}
-                      />
+                      <div className={styles.APPOptionsButton}>
+                        <PrimaryButton
+                          label={
+                            isUpdating && updating_port ? <Spinner /> : "UPDATE"
+                          }
+                          disable={isUpdating}
+                          className={isUpdating && styles.deactivatedBtn}
+                          onClick={this.handlePortSubmit}
+                        />
+                      </div>
                     </div>
                     <div className={styles.PortSection}>
                       <div>Entry Command</div>
@@ -890,7 +892,7 @@ class AppSettingsPage extends React.Component {
                           />
                         </div>
                       </div>
-                      <div>
+                      <div className={styles.APPOptionsButton}>
                         <PrimaryButton
                           label={
                             isUpdating && updating_command ? (
