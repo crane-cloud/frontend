@@ -13,12 +13,12 @@
 .ProjectImageDiv {
   margin: 0;
   width: 100%;
-  height: 9.375rem;
+  height: 7rem;
 }
 
 .BottomContainer {
-  padding: 1rem 0.7rem;
-  height: 5rem;
+  /* padding: 1rem 0.7rem; */
+  height: 4rem;
   display: flex;
   flex-direction: column;
   background-color: #f6fbe5;
@@ -39,6 +39,7 @@
 }
 
 .ProjectInfoSection {
+  width:100%;
   display: flex;
   justify-content: space-between;
 }

@@ -157,7 +157,13 @@ class AppMetricsPage extends React.Component {
                         <div className={styles.InnerTitlesStart}>App Url</div>
                         <div className={styles.InnerContentLink}>
                           <div className={styles.InnerContentLinkText}>
-                            {appInfo.url}
+                            <a
+                              href={appInfo.url}
+                              rel="noopener noreferrer"
+                              target="_blank"
+                            >
+                              {appInfo.url}
+                            </a>
                           </div>
                           <div className={styles.CopierDiv}>
                             <div className={styles.Icons}>
@@ -217,7 +223,7 @@ class AppMetricsPage extends React.Component {
                   <MetricsCard
                     icon={<MetricIcon />}
                     title="Memory"
-                    className={styles.CardSizeDimensions}
+                    className="CardDimensions"
                   >
                     <LineChartComponent
                       lineDataKey="memory"
@@ -234,7 +240,7 @@ class AppMetricsPage extends React.Component {
                   <MetricsCard
                     icon={<MetricIcon />}
                     title="CPU"
-                    className={styles.CardSizeDimensions}
+                    className="CardDimensions"
                   >
                     <LineChartComponent
                       lineDataKey="cpu"
@@ -251,7 +257,7 @@ class AppMetricsPage extends React.Component {
                   <MetricsCard
                     icon={<MetricIcon />}
                     title="Network"
-                    className={styles.CardSizeDimensions}
+                    className="CardDimensions"
                   >
                     <LineChartComponent
                       lineDataKey="network"

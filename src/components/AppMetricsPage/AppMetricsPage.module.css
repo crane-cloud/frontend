@@ -1,5 +1,5 @@
 .ContentSection {
-  padding: 2rem;
+  padding: 1rem;
   display: grid;
   gap: 1rem;
 }
@@ -107,7 +107,7 @@
   justify-content: flex-start;
   flex-grow: 1;
   align-items: center;
-  padding: 1rem 3rem;
+  padding: 1rem 2rem;
   min-height: 10rem;
 }
 
@@ -166,16 +166,23 @@
   color: #008ac1;
   text-overflow: ellipsis;
 }
+
+.InnerContentLinkText a{
+  color: inherit;
+  text-decoration: none;
+} 
+
 .InnerContentLink {
   display: grid;
   grid-template-columns: auto 20%;
-  column-gap: .3rem;
+  gap: 0.5rem;
 }
+
 .Icons {
   display: grid;
   grid-auto-flow: column;
-  gap: 0.8rem;
-  padding: 0 0.8rem;
+  gap: 0.5rem;
+  cursor: pointer;
   align-items: center;
 }
 
