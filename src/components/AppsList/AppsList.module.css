@@ -7,11 +7,11 @@
 .NoResourcesMessage {
   flex-grow: 1;
   display: flex;
-  font-size: 16px;
+  font-size: 1rem;
+  padding-top: 2rem;
   text-align: center;
   justify-content: center;
   align-items: center;
-  padding-top: 12rem;
 }
 
 .ButtonPlusSmall {

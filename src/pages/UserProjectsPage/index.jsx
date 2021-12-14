@@ -3,14 +3,15 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import styles from "./UserProjectsPage.module.css";
 import { clearUpdateProjectState } from "../../redux/actions/updateProject";
-import InformationBar from "../InformationBar";
+import InformationBar from "../../components/InformationBar";
 import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
-import Header from "../Header";
+import Header from "../../components/Header";
 import getClustersList from "../../redux/actions/clusters";
-import CreateProject from "../CreateProject";
+import CreateProject from "../../components/CreateProject";
 import getUserProjects from "../../redux/actions/projectsList";
-import ProjectCard from "../ProjectCard";
-import Spinner from "../Spinner";
+import ProjectCard from "../../components/ProjectCard";
+import Spinner from "../../components/Spinner";
+import "../../index.css";
 
 class UserProjectsPage extends React.Component {
   constructor(props) {
@@ -139,7 +140,7 @@ class UserProjectsPage extends React.Component {
                   </div>
                 </div>
               ) : Searchword !== "" ? (
-                <div className={styles.ProjectList}>
+                <div className={`${styles.ProjectList}  SmallContainer`}>
                   {isFetched &&
                     SearchList !== undefined &&
                     SearchList.map((project) => (
@@ -152,7 +153,7 @@ class UserProjectsPage extends React.Component {
                     ))}
                 </div>
               ) : (
-                <div className={styles.ProjectList}>
+                <div className={`${styles.ProjectList}  SmallContainer`}>
                   {isFetched &&
                     sortedProjects !== undefined &&
                     sortedProjects.map((project) => (

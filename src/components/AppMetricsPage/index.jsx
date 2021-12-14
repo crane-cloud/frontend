@@ -115,13 +115,13 @@ class AppMetricsPage extends React.Component {
         <div className={styles.TopBarSection}>
           <Header />
         </div>
-        <div className={styles.MainSection}>
-          <div className={styles.SideBarSection}>
+        <div className="MainSection">
+          <div className="SideBarSection">
             <SideBar
               name={appInfo.name}
               params={params}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/projects/${projectID}/apps/${appID}/metrics/`}
+              allMetricsLink={`/projects/${projectID}/apps/${appID}/dashboard`}
               cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
               memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
               databaseLink={`/projects/${projectID}/databases`}
@@ -129,11 +129,11 @@ class AppMetricsPage extends React.Component {
               appLogsLink={`/projects/${projectID}/apps/${appID}/logs/`}
             />
           </div>
-          <div className={styles.MainContentSection}>
+          <div className="MainContentSection">
             <div className={styles.InformationBarSection}>
               <InformationBar header={appInfo.name} viewAppLink={appInfo.url} />
             </div>
-            <div className={styles.ContentSection}>
+            <div className={`${styles.ContentSection} SmallContainer`}>
               <div
                 className={
                   styles.SummaryCardContainer +
@@ -148,16 +148,22 @@ class AppMetricsPage extends React.Component {
                   <div className={styles.InnerCard}>
                     <div className={styles.InnerCardSections}>
                       <div className={styles.InnerContentGrid}>
-                        <div className={styles.InnerTitlesStart}>APP NAME</div>
+                        <div className={styles.InnerTitlesStart}>App Name</div>
                         <div className={styles.InnerContentName}>
                           {appInfo.name}
                         </div>
                       </div>
                       <div className={styles.InnerContentGrid}>
-                        <div className={styles.InnerTitlesStart}>LINK</div>
+                        <div className={styles.InnerTitlesStart}>App Url</div>
                         <div className={styles.InnerContentLink}>
                           <div className={styles.InnerContentLinkText}>
-                            {appInfo.url}
+                            <a
+                              href={appInfo.url}
+                              rel="noopener noreferrer"
+                              target="_blank"
+                            >
+                              {appInfo.url}
+                            </a>
                           </div>
                           <div className={styles.CopierDiv}>
                             <div className={styles.Icons}>
@@ -168,11 +174,11 @@ class AppMetricsPage extends React.Component {
                         </div>
                       </div>
                     </div>
-                    <div className={styles.verticalLine}> </div>
+                    <hr />
                     <div className={styles.InnerCardSections}>
                       <div className={styles.InnerContentGrid}>
                         <div className={styles.InnerTitlesMiddle}>
-                          APP STATUS
+                          App Status
                         </div>
                         <div className={styles.InnerContentStatus}>
                           <AppStatus appStatus={appInfo.status} />
@@ -182,22 +188,24 @@ class AppMetricsPage extends React.Component {
                         </div>
                       </div>
                       <div className={styles.InnerContentGrid}>
-                        <div className={styles.InnerTitlesMiddle}>AGE</div>
+                        <div className={styles.InnerTitlesMiddle}>
+                          Date Deployed
+                        </div>
                         <div className={styles.InnerContentAge}>
                           {appInfo.age}
                         </div>
                       </div>
                     </div>
-                    <div className={styles.verticalLine}> </div>
+                    <hr />
                     <div className={styles.InnerCardSections}>
                       <div className={styles.InnerContentGrid}>
-                        <div className={styles.InnerTitlesEnd}>ALIAS</div>
+                        <div className={styles.InnerTitlesEnd}>App Alias</div>
                         <div className={styles.InnerContentEnd}>
                           {appInfo.alias}
                         </div>
                       </div>
                       <div className={styles.InnerContentGrid}>
-                        <div className={styles.InnerTitlesEnd}>PORT</div>
+                        <div className={styles.InnerTitlesEnd}>Port</div>
                         <div className={styles.InnerContentEnd}>
                           {appInfo.port}
                         </div>
@@ -215,7 +223,7 @@ class AppMetricsPage extends React.Component {
                   <MetricsCard
                     icon={<MetricIcon />}
                     title="Memory"
-                    className={styles.CardSizeDimensions}
+                    className="CardDimensions"
                   >
                     <LineChartComponent
                       lineDataKey="memory"
@@ -232,7 +240,7 @@ class AppMetricsPage extends React.Component {
                   <MetricsCard
                     icon={<MetricIcon />}
                     title="CPU"
-                    className={styles.CardSizeDimensions}
+                    className="CardDimensions"
                   >
                     <LineChartComponent
                       lineDataKey="cpu"
@@ -249,7 +257,7 @@ class AppMetricsPage extends React.Component {
                   <MetricsCard
                     icon={<MetricIcon />}
                     title="Network"
-                    className={styles.CardSizeDimensions}
+                    className="CardDimensions"
                   >
                     <LineChartComponent
                       lineDataKey="network"

@@ -35,7 +35,7 @@ const getAppMemory = (projectID, appID, params) => (dispatch) => {
   dispatch(startFetchingAppMemoryMetrics());
 
   return axios
-    .post(`/projects/${projectID}/apps/${appID}/metrics/memory`, params)
+    .post(`/projects/${projectID}/apps/${appID}/dashboardmemory`, params)
     .then((response) => {
       dispatch(getAppMemoryMetricsSuccess(appID, response));
     })

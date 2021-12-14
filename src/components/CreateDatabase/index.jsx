@@ -42,12 +42,7 @@ class CreateDatabase extends React.Component {
     } = this.props;
 
     if (isCreated !== prevProps.isCreated) {
-      return (
-        <Redirect
-          to={`/projects/${projectID}/databases`}
-          noThrow
-        />
-      );
+      return <Redirect to={`/projects/${projectID}/databases`} noThrow />;
     }
   }
 
@@ -82,19 +77,14 @@ class CreateDatabase extends React.Component {
     } = this.props;
     const { error } = this.state;
     if (isCreated) {
-      return (
-        <Redirect
-          to={`/projects/${projectID}/databases`}
-          noThrow
-        />
-      );
+      return <Redirect to={`/projects/${projectID}/databases`} noThrow />;
     }
     return (
       <div>
         <div className="MainContentSection">
-          <div className="InformationBarSection">
+          <div className="InformationBarSection ">
             <div className="InformationBar">
-              <div className="InformationBarWithButton">
+              <div className="InformationBarWithButton SmallContainer">
                 <div className="InfoHeader">Create database</div>
                 <div className="RoundAddButtonWrap">
                   <CancelButton onClick={this.props.closeComponent} />
@@ -118,8 +108,8 @@ class CreateDatabase extends React.Component {
 
                     {message && (
                       <Feedback
-                      message={message !== "" ? message : null}
-                      type={isCreated ? "success" : "error"}
+                        message={message !== "" ? message : null}
+                        type={isCreated ? "success" : "error"}
                       />
                     )}
                   </div>

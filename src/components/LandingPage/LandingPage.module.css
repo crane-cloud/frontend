@@ -15,9 +15,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 3rem;
+  padding: 9rem 3rem;
   background: #008ac1;
-  height: calc(100vh - 5rem);
+
+  /* height: calc(100vh - 5rem); */
+}
+@media screen and (max-width: 768px) {
+  .LandingPageMainContent {
+    flex-direction: column;
+  }
 }
 
 .LandingPageMainContentInfo {
@@ -39,7 +45,7 @@
 
 .LandingPageMainContentTitle {
   color: #ffffff;
-  font-size: 32px;
+  font-size: 4rem;
   font-weight: bold;
 }
 .LandingPageInfrastructurePic path {

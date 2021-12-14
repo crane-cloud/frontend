@@ -48,12 +48,12 @@
 
 .DeleteAppModelButtons .DeleteBtn {
   background-color: #ff0000;
-  outline: 2px solid #ff0000;
+  outline: 1px solid #ff0000;
   transform: scaleX(0.9);
 }
 .DeleteAppModelButtons .DeleteBtn:hover {
   background-color: #fff;
-  outline: 2px solid #ff0000;
+  outline: 1px solid #ff0000;
   color: #ff0000;
 }
 
@@ -79,13 +79,7 @@
 .TopBarSection {
   background-color: black;
 }
-.MainSection {
-  /* divided into two columns */
-  background-color: #f1f1f1;
-  display: grid;
-  grid-template-columns: 1.3fr 6fr;
-  overflow: hidden;
-}
+
 .SideBarSection {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -106,12 +100,12 @@
   grid-template-rows: 80px 4fr;
   overflow: hidden;
 }
-.ContentSection {
-  justify-content: space-between;
-  padding: 2rem 2rem 0rem;
-}
+
 .ContentSection {
   display: flex;
+  justify-content: space-between;
+  padding-top: 1rem;
+  padding-bottom: 3rem;
   flex-direction: column;
   overflow-y: auto;
 }
@@ -133,8 +127,10 @@
 }
 
 .APPInstructions {
-  display: grid;
-  gap: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .APPInstruct {
@@ -143,10 +139,14 @@
 
 .APPButtonRow {
   display: grid;
-  grid-template-columns: 20% auto;
+  grid-template-columns: 1fr 5fr;
   grid-auto-flow: column;
   align-items: center;
-  column-gap: 1rem;
+  gap: 1rem;
+}
+
+.APPButtonRow select{
+  padding: 0.5rem;
 }
 
 .SectionButtons {
@@ -157,7 +157,9 @@
 
 .APPSections {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  gap: 1rem;
+  grid-template-columns: 1fr 5fr;
+  padding: 1rem 5rem;
 }
 
 .APPSectionPort {
@@ -175,21 +177,26 @@
 }
 
 .APPSectionTitle {
-  flex: 1;
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 700;
   color: #008ac1;
 }
 
 .APPSectionDelete {
-  flex: 1;
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 700;
   color: #ff0000;
 }
 
+.AppDeleteInstructions{
+  display:flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
 .flexa input {
   border: 1px solid;
+  padding: 0.5rem;
 }
 
 .AppLabel {
@@ -225,7 +232,7 @@
   display: grid;
   justify-content: flex-start;
   justify-items: flex-start;
-  gap: 2rem;
+  gap: 1rem;
   align-items: center;
   grid-template-columns: 10% 15% auto;
 }
@@ -235,11 +242,18 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  cursor: pointer;
+}
+
+.CopyUrl:hover {
+  color: #008ac1;
+  transform: scale(1.1);
 }
 
 .CopyDiv {
   display: flex;
-  gap: 1rem;
+  gap: 3rem;
+  justify-content: flex-start;
 }
 
 .UpperSection {
@@ -265,35 +279,48 @@
 
 .DeleteBtn {
   background-color: #ff0000;
-  outline: 2px solid #ff0000;
+  outline: 1px solid #ff0000;
 }
 
 .DeleteBtn:hover {
   background-color: #fff;
-  outline: 2px solid #ff0000;
+  outline: 1px solid #ff0000;
   color: #ff0000;
 }
 
 .PortSection {
   display: grid;
-  grid-template-columns: 18% auto 18%;
+  grid-template-columns: 1fr 4fr 1fr;
   gap: 1rem;
-  align-items: center;
+  width: 100%;
 }
 
 .varInput {
   width: auto;
   background: transparent;
   border: 1px solid #000;
-  padding-left: 1rem;
+  padding: 0.5rem;
+}
+
+.AppOtherSection{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.APPOptionsButton{
+  display: flex;
+  justify-content: flex-end;
 }
 
 .portInput {
   width: auto;
   background: transparent;
   border: 1px solid #000;
+  padding: 0.5rem;
   padding-left: 1rem;
-  height: 100%;
+  width: 100%;
 }
 
 .commandInputSection {
@@ -326,18 +353,31 @@
   align-items: center;
 }
 
-.EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn {
+.ModalFormInputsEnvVars{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.EnvVarsAddBtn button.EnvVarAddBtn {
   /* position: absolute;
   max-width: 100%; */
   color: #fff;
   background-color: #008ac1;
   outline: 1px solid #008ac1;
+  padding: 0.5rem;
+  height: 2.5rem;
 }
 
 .EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn:hover {
   color: #008ac1;
   background-color: #fff;
 }
+
+.RemoveIconBtn{
+  cursor: pointer;
+}
+
 
 /* .EnvVarsInputGroup input {
   max-width: 10rem;
@@ -347,7 +387,27 @@
   color: grey;
 } */
 
-.VarsRow {
+.EnvData {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  padding-bottom: 1rem ;
+}
+
+.EnvDataItem {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+.EnvDataItem div{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* .VarsRow {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   padding: 0.3rem;
@@ -359,7 +419,7 @@
 .TableRow {
   display: flex;
   justify-content: flex-end;
-}
+} */
 
 .deactivatedBtn {
   background-color: transparent;

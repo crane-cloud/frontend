@@ -79,7 +79,8 @@ class AppsList extends Component {
 
   render() {
     const { SearchList } = this.state;
-    const { apps, isRetrieved, isRetrieving, params, word } = this.props;
+    const { apps, isRetrieved, isRetrieving, params, word, message } =
+      this.props;
     const allApps = apps.apps;
     const sortedApps = allApps?.sort((a, b) =>
       b.date_created < a.date_created ? 1 : -1
@@ -127,9 +128,15 @@ class AppsList extends Component {
         )}
         {isRetrieved && sortedApps.length === 0 && (
           <div className={styles.NoResourcesMessage}>
-            You haven’t created any apps yet. Click the &nbsp;{" "}
-            <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp; button to
-            deploy an app.
+            {message ? (
+              message
+            ) : (
+              <div>
+                You haven’t created any apps yet. Click the &nbsp;{" "}
+                <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp; button
+                to deploy an app.
+              </div>
+            )}
           </div>
         )}
         {!isRetrieving && !isRetrieved && (
@@ -151,6 +158,7 @@ AppsList.propTypes = {
   isRetrieving: PropTypes.bool,
   getAppsList: PropTypes.func.isRequired,
   newAppCreated: PropTypes.bool.isRequired,
+  message: PropTypes.string,
   params: PropTypes.shape({
     projectID: PropTypes.string.isRequired,
   }).isRequired,
@@ -161,6 +169,7 @@ AppsList.defaultProps = {
   apps: {},
   isRetrieved: false,
   isRetrieving: true,
+  message: false,
 };
 
 const mapStateToProps = (state) => {

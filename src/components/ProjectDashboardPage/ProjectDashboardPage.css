@@ -1,0 +1,22 @@
+.ProjectContentSection {
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-bottom: 1rem;
+}
+
+.MetricCardsSection {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.CardDimensions {
+  height: 15rem;
+  color: initial;
+}
+@media(max-width: 1367px) {
+  .CardDimensions {
+    height: 11rem;
+  }
+}

@@ -23,21 +23,19 @@ import StorageClassList from "./components/StorageClassList";
 import PvsListPage from "./components/PvsListPage";
 import JobsListPage from "./components/JobsListPage";
 import DeploymentsPage from "./components/DeploymentsPage";
-import UserProjectsPage from "./components/UserProjectsPage";
 import AdminProjectsPage from "./components/AdminProjectsPage";
 import VerificationSentPage from "./components/VerificationSentPage";
 import AdminLoginPage from "./components/AdminLoginPage";
 import AppsPage from "./components/AppsPage";
 import UsersAccounts from "./components/UserAccounts";
 import AppMetricsPage from "./components/AppMetricsPage";
-import ProjectSettingsPage from "./components/ProjectSettingsPage";
+import ProjectSettingsPage from "./pages/ProjectSettingsPage";
 import AppSettingsPage from "./components/AppSettingsPage";
 import ProjectMemoryPage from "./components/ProjectMemoryPage";
 import ProjectCPUPage from "./components/ProjectCPUPage";
 import ProjectNetworkPage from "./components/ProjectNetworkPage";
 import AppCpuPage from "./components/AppCpuPage";
 import AppMemoryPage from "./components/AppMemoryPage";
-import ProjectMetricsPage from "./components/ProjectMetricsPage";
 import AppLogsPage from "./components/AppLogsPage";
 import AppNetworkPage from "./components/AppNetworkPage";
 import TeamPage from "./components/TeamPage";
@@ -47,6 +45,8 @@ import DBSettingsPage from "./components/DBSettingsPage";
 import CreateDatabase from "./components/CreateDatabase";
 import Terms from "./components/Documents/terms";
 import Privacy from "./components/Documents/privacy";
+import UserProjectsPage from "./pages/UserProjectsPage";
+import ProjectDashboardPage from "./components/ProjectDashboardPage";
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
@@ -85,6 +85,7 @@ const Routes = () => (
         path="/projects/:projectID/databases"
         component={DatabaseList}
       />
+      
       <ProtectedRoute
         isAllowed={hasToken}
         exact
@@ -118,7 +119,7 @@ const Routes = () => (
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/projects/:projectID/apps/:appID/metrics"
+        path="/projects/:projectID/apps/:appID/dashboard"
         component={AppMetricsPage}
       />
       <ProtectedRoute
@@ -148,14 +149,14 @@ const Routes = () => (
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/projects/:projectID/cpu/"
-        component={ProjectCPUPage}
+        path="/projects/:projectID/dashboard"
+        component={ProjectDashboardPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/projects/:projectID/metrics"
-        component={ProjectMetricsPage}
+        path="/projects/:projectID/cpu/"
+        component={ProjectCPUPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}

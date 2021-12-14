@@ -2,28 +2,26 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import InformationBar from "../InformationBar";
-import Header from "../Header";
-import PrimaryButton from "../PrimaryButton";
+import InformationBar from "../../components/InformationBar";
+import Header from "../../components/Header";
+import PrimaryButton from "../../components/PrimaryButton";
 import deleteProject, {
   clearDeleteProjectState,
 } from "../../redux/actions/deleteProject";
 import updateProject, {
   clearUpdateProjectState,
 } from "../../redux/actions/updateProject";
-import Spinner from "../Spinner";
-import Modal from "../Modal";
-import SideBar from "../SideBar";
-import TextArea from "../TextArea";
-import Feedback from "../Feedback";
-import DeleteWarning from "../DeleteWarning";
-import BlackInputText from "../BlackInputText";
+import Spinner from "../../components/Spinner";
+import Modal from "../../components/Modal";
+import SideBar from "../../components/SideBar";
+import TextArea from "../../components/TextArea";
+import Feedback from "../../components/Feedback";
+import DeleteWarning from "../../components/DeleteWarning";
+import BlackInputText from "../../components/BlackInputText";
 import styles from "./ProjectSettingsPage.module.css";
-import SettingsButton from "../SettingsButton";
-import Select from "../Select";
-import {
-  retrieveProjectTypes
-} from "../../helpers/projecttypes";
+import SettingsButton from "../../components/SettingsButton";
+import Select from "../../components/Select";
+import { retrieveProjectTypes } from "../../helpers/projecttypes";
 class ProjectSettingsPage extends React.Component {
   constructor(props) {
     super(props);
@@ -41,8 +39,8 @@ class ProjectSettingsPage extends React.Component {
       disableDelete: true,
       projectOrganisation: organisation ? organisation : "",
       projectType: project_type ? project_type : "",
-      othersBool:false,
-      otherType:"",
+      othersBool: false,
+      otherType: "",
     };
 
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
@@ -54,10 +52,10 @@ class ProjectSettingsPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateProjectName = this.validateProjectName.bind(this);
     this.checkProjectInputValidity = this.checkProjectInputValidity.bind(this);
-    this.handleTypeSelectChange = this.handleTypeSelectChange.bind(this); 
+    this.handleTypeSelectChange = this.handleTypeSelectChange.bind(this);
     this.renderRedirect = this.renderRedirect.bind(this);
   }
-  
+
   componentDidUpdate(prevProps) {
     const { isDeleted } = this.props;
 
@@ -111,93 +109,124 @@ class ProjectSettingsPage extends React.Component {
   }
 
   handleSubmit() {
-    const { projectName, projectDescription,projectOrganisation,projectType, otherType, othersBool } = this.state;
+    const {
+      projectName,
+      projectDescription,
+      projectOrganisation,
+      projectType,
+      otherType,
+      othersBool,
+    } = this.state;
     const {
       updateProject,
       match: {
         params: { projectID },
       },
     } = this.props;
-   
+
     const projectInfo = JSON.parse(localStorage.getItem("project"));
     const { name, description, organisation, project_type } = projectInfo;
 
-  
     const Trim = (input) => input.trim();
-    const capitalizeFirstLetter = (input) => input.charAt(0).toUpperCase() + input.slice(1);
-    const type = othersBool ? capitalizeFirstLetter(otherType) : capitalizeFirstLetter(projectType);
+    const capitalizeFirstLetter = (input) =>
+      input.charAt(0).toUpperCase() + input.slice(1);
+    const type = othersBool
+      ? capitalizeFirstLetter(otherType)
+      : capitalizeFirstLetter(projectType);
     const trimedprojectName = Trim(projectName);
     const trimedprojectDescription = Trim(projectDescription);
     const trimedprojectOrganisation = Trim(projectOrganisation);
     const trimedprojectType = Trim(type);
 
-    if (trimedprojectName !== name || trimedprojectDescription !== description 
-      || trimedprojectOrganisation !== organisation || trimedprojectType !== project_type) {
-      if (!trimedprojectName || !trimedprojectDescription || !trimedprojectOrganisation || !trimedprojectType) {
+    if (
+      trimedprojectName !== name ||
+      trimedprojectDescription !== description ||
+      trimedprojectOrganisation !== organisation ||
+      trimedprojectType !== project_type
+    ) {
+      if (
+        !trimedprojectName ||
+        !trimedprojectDescription ||
+        !trimedprojectOrganisation ||
+        !trimedprojectType
+      ) {
         this.setState({
-          error: "Can't update when an empty field is submited, please fill the missing field or leave it unchanged.",
+          error:
+            "Can't update when an empty field is submited, please fill the missing field or leave it unchanged.",
         });
       } else {
-        
-        if ( trimedprojectName !== name ) {
-          const nameCheckResult = this.checkProjectInputValidity(trimedprojectName,"name");
+        if (trimedprojectName !== name) {
+          const nameCheckResult = this.checkProjectInputValidity(
+            trimedprojectName,
+            "name"
+          );
           if (nameCheckResult !== "") {
             this.setState({
               error: nameCheckResult,
-            }); 
+            });
           } else {
-               const organisationCheckResult = 
-               this.checkProjectInputValidity(trimedprojectOrganisation,"organisation");
-               const typeCheckResult = this.checkProjectInputValidity(trimedprojectType,"type");
-               if(organisationCheckResult !== "" || typeCheckResult !=="" ){
-                 if(organisationCheckResult !== ""){
-                  this.setState({
-                      error: organisationCheckResult,
-                  }); 
-                 }
-                if(typeCheckResult !==""){
-                  this.setState({
-                    error: typeCheckResult,
-                  }); 
-               }
-             }
-            if(typeCheckResult==="" && organisationCheckResult===""){
-             const newProject = { 
-                 name: trimedprojectName,
-                 project_type: trimedprojectType,
-                 organisation: trimedprojectOrganisation,
-                description: trimedprojectDescription
-                };
-             updateProject(projectID, newProject);
+            const organisationCheckResult = this.checkProjectInputValidity(
+              trimedprojectOrganisation,
+              "organisation"
+            );
+            const typeCheckResult = this.checkProjectInputValidity(
+              trimedprojectType,
+              "type"
+            );
+            if (organisationCheckResult !== "" || typeCheckResult !== "") {
+              if (organisationCheckResult !== "") {
+                this.setState({
+                  error: organisationCheckResult,
+                });
               }
+              if (typeCheckResult !== "") {
+                this.setState({
+                  error: typeCheckResult,
+                });
+              }
+            }
+            if (typeCheckResult === "" && organisationCheckResult === "") {
+              const newProject = {
+                name: trimedprojectName,
+                project_type: trimedprojectType,
+                organisation: trimedprojectOrganisation,
+                description: trimedprojectDescription,
+              };
+              updateProject(projectID, newProject);
+            }
           }
         } else {
-          const organisationCheckResult = 
-          this.checkProjectInputValidity(trimedprojectOrganisation,"organisation");
-          const typeCheckResult = this.checkProjectInputValidity(trimedprojectType,"type");
-          if(organisationCheckResult !== "" || typeCheckResult !=="" ){
-            if(organisationCheckResult !== ""){
-             this.setState({
-                 error: organisationCheckResult,
-             }); 
+          const organisationCheckResult = this.checkProjectInputValidity(
+            trimedprojectOrganisation,
+            "organisation"
+          );
+          const typeCheckResult = this.checkProjectInputValidity(
+            trimedprojectType,
+            "type"
+          );
+          if (organisationCheckResult !== "" || typeCheckResult !== "") {
+            if (organisationCheckResult !== "") {
+              this.setState({
+                error: organisationCheckResult,
+              });
             }
-           if(typeCheckResult !==""){
-             this.setState({
-               error: typeCheckResult,
-             }); 
+            if (typeCheckResult !== "") {
+              this.setState({
+                error: typeCheckResult,
+              });
+            }
+          }
+          if (typeCheckResult === "" && organisationCheckResult === "") {
+            const newProject = {
+              project_type: trimedprojectType,
+              organisation: trimedprojectOrganisation,
+              description: trimedprojectDescription,
+            };
+            updateProject(projectID, newProject);
           }
         }
-       if(typeCheckResult==="" && organisationCheckResult===""){
-        const newProject = { 
-            project_type: trimedprojectType,
-            organisation: trimedprojectOrganisation,
-           description: trimedprojectDescription
-           };
-        updateProject(projectID, newProject);
-         }
-        }
       }
-      }else {
+    } else {
       this.setState({
         error: "Please provide new information in atleast one of the fields",
       });
@@ -217,7 +246,7 @@ class ProjectSettingsPage extends React.Component {
   showDeleteAlert() {
     this.setState({ openDeleteAlert: true });
   }
-  checkProjectInputValidity(input,output) {
+  checkProjectInputValidity(input, output) {
     if (!this.validateProjectName(input)) {
       return `${output} should start with a letter`;
     } else if (this.validateProjectName(input) === "false_convention") {
@@ -239,20 +268,18 @@ class ProjectSettingsPage extends React.Component {
     this.setState({ openDeleteAlert: false });
   }
   handleTypeSelectChange(selected) {
-    const{
-      othersBool,
-    } = this.state
-      if(selected.id===6){
-        if(!othersBool){
-          this.setState({ othersBool: true });
-        }
-      }else{
-        this.setState({ projectType: selected.value });
-        if(othersBool){
-          this.setState({ othersBool: false });
-        }
+    const { othersBool } = this.state;
+    if (selected.id === 6) {
+      if (!othersBool) {
+        this.setState({ othersBool: true });
       }
-  };
+    } else {
+      this.setState({ projectType: selected.value });
+      if (othersBool) {
+        this.setState({ othersBool: false });
+      }
+    }
+  }
   renderRedirect = () => {
     const { isDeleted, isUpdated } = this.props;
     if (isDeleted || isUpdated) {
@@ -272,10 +299,7 @@ class ProjectSettingsPage extends React.Component {
       errorMessage,
     } = this.props;
     const projectInfo = JSON.parse(localStorage.getItem("project"));
-    const{
-      name,
-      description,
-    } = projectInfo
+    const { name, description } = projectInfo;
 
     const {
       openUpdateAlert,
@@ -288,7 +312,7 @@ class ProjectSettingsPage extends React.Component {
       projectOrganisation,
       projectType,
       othersBool,
-      otherType
+      otherType,
     } = this.state;
     const types = retrieveProjectTypes();
 
@@ -319,13 +343,13 @@ class ProjectSettingsPage extends React.Component {
               <InformationBar header="Settings" />
             </div>
             <div className={styles.ContentSection}>
-              <div className={styles.ProjectSections}>
+              <div className={`${styles.ProjectSections} SmallContainer`}>
                 <div className={styles.ProjectSectionTitle}>Manage project</div>
                 <div className={styles.ProjectInstructions}>
                   <div className={styles.ProjectButtonRow}>
-                    <div className="flexa">
-                      <div>
-                        <strong>Update project</strong>
+                    <div className={styles.SettingsSectionInfo}>
+                      <div className={styles.SettingsSectionInfoHeader}>
+                        Update project
                       </div>
                       <div>Modify the project name and description</div>
                     </div>
@@ -337,9 +361,9 @@ class ProjectSettingsPage extends React.Component {
                     </div>
                   </div>
                   <div className={styles.ProjectButtonRow}>
-                    <div className="flexa">
-                      <div>
-                        <strong>Delete project</strong>
+                    <div className={styles.SettingsSectionInfo}>
+                      <div className={styles.SettingsSectionInfoHeader}>
+                        Delete project
                       </div>
                       <div>
                         Take down your entire project, delete all apps under it.
@@ -370,57 +394,71 @@ class ProjectSettingsPage extends React.Component {
                         }}
                       >
                         <div className={styles.UpdateForm}>
-                          <div className={styles.DeleteDescription}>
-                            Project name
+                          <div className={styles.UpdateInputSection}>
+                            <div className={styles.DeleteDescription}>
+                              Project name
+                            </div>
+                            <BlackInputText
+                              placeholder="Project Name"
+                              name="projectName"
+                              value={projectName}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />
                           </div>
-                          <BlackInputText
-                            placeholder="Project Name"
-                            name="projectName"
-                            value={projectName}
-                            onChange={(e) => {
-                              this.handleChange(e);
-                            }}
-                          />
-                          <div className={styles.DeleteDescription}>
-                            Organisation
+                          <div className={styles.UpdateInputSection}>
+                            <div className={styles.DeleteDescription}>
+                              Organisation
+                            </div>
+                            <BlackInputText
+                              placeholder="Organisation"
+                              name="projectOrganisation"
+                              value={projectOrganisation}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />
                           </div>
-                          <BlackInputText
-                            placeholder="Organisation"
-                            name="projectOrganisation"
-                            value={projectOrganisation}
-                            onChange={(e) => {
-                              this.handleChange(e);
-                            }}
-                          />
-                          <div className={styles.DeleteDescription}>
-                            Project type
+                          <div className={styles.UpdateInputSection}>
+                            <div className={styles.DeleteDescription}>
+                              Project type
+                            </div>
+                            <Select
+                              required
+                              placeholder={
+                                projectType
+                                  ? projectType
+                                  : "Update project type"
+                              }
+                              options={types}
+                              onChange={this.handleTypeSelectChange}
+                            />
+                            {othersBool && (
+                              <BlackInputText
+                                required
+                                placeholder="Type of project"
+                                name="otherType"
+                                value={otherType}
+                                onChange={(e) => {
+                                  this.handleChange(e);
+                                }}
+                              />
+                            )}
                           </div>
-                          <Select
-                            required
-                            placeholder={projectType ? projectType:"Update project type"}
-                            options={types}
-                            onChange={this.handleTypeSelectChange}
-                          />
-                          {othersBool && (<BlackInputText
-                             required
-                             placeholder="Type of project"
-                             name="otherType"
-                             value={otherType}
-                             onChange={(e) => {
-                             this.handleChange(e);
-                           }}
-                          />)}
-                          <div className={styles.DeleteDescription}>
-                            Project description
+                          <div className={styles.UpdateInputSection}>
+                            <div className={styles.DeleteDescription}>
+                              Project description
+                            </div>
+                            <TextArea
+                              placeholder="Description"
+                              name="projectDescription"
+                              value={projectDescription}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />
                           </div>
-                          <TextArea
-                            placeholder="Description"
-                            name="projectDescription"
-                            value={projectDescription}
-                            onChange={(e) => {
-                              this.handleChange(e);
-                            }}
-                          />
                           {(errorMessage || error) && (
                             <Feedback
                               type="error"
@@ -467,7 +505,10 @@ class ProjectSettingsPage extends React.Component {
                           </div>
                           <div className={styles.DeleteSubDescription}>
                             This will permanently delete the project and all its
-                            resources. Please confirm by typing &nbsp;
+                            resources.
+                            <br />
+                            <br />
+                            Please confirm by typing &nbsp;
                             <b className={styles.DeleteWarning}>{name}</b>{" "}
                             &nbsp; below.
                           </div>

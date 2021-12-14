@@ -22,7 +22,7 @@ const InformationBar = ({
     searchAction(value);
   };
   return (
-    <div className="InformationBar">
+    <div className="InformationBar SmallContainer">
       {status ? (
         <div className="InformationBarWithButton">
           <div className="AppUrl">
@@ -38,22 +38,22 @@ const InformationBar = ({
         <div className="InformationBarWithButton">
           <div className="InfoHeader">{header}</div>
           <div className="InfoContent">
-          <div className="SearchBar">
-            <div className="SearchInput">
-              <input
-                type="text"
-                class="searchTerm"
-                name="Searchword"
-                placeholder={placeholder}
-                value={Searchword}
-                onChange={callbackSearchWord}
-              />
-              <SearchButton className="SearchIcon" />
+            <div className="SearchBar">
+              <div className="SearchInput">
+                <input
+                  type="text"
+                  class="searchTerm"
+                  name="Searchword"
+                  placeholder={placeholder}
+                  value={Searchword}
+                  onChange={callbackSearchWord}
+                />
+                <SearchButton className="SearchIcon" />
+              </div>
             </div>
-          </div>
-          <div className="RoundAddButtonWrap">
-            <RoundAddButton onClick={btnAction} />
-          </div>
+            <div className="RoundAddButtonWrap">
+              <RoundAddButton onClick={btnAction} />
+            </div>
           </div>
         </div>
       ) : showBtn ? (

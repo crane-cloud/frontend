@@ -148,7 +148,7 @@ class AppNetworkPage extends React.Component {
               name={this.getAppName(appID)}
               params={params}
               pageRoute={this.props.location.pathname}
-              allMetricsLink={`/projects/${projectID}/apps/${appID}/metrics/`}
+              allMetricsLink={`/projects/${projectID}/apps/${appID}/dashboard`}
               cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
               memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
               databaseLink={`/projects/${projectID}/databases`}
@@ -160,7 +160,7 @@ class AppNetworkPage extends React.Component {
             <div className="InformationBarSection">
               <InformationBar header="Network" />
             </div>
-            <div className="ContentSection">
+            <div className="ContentSection SmallContainer">
               <MetricsCard
                 className="MetricsCardGraph"
                 title={<PeriodSelector onChange={this.handlePeriodChange} />}
