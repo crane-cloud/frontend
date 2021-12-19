@@ -328,16 +328,20 @@ class AppSettingsPage extends React.Component {
       app,
     } = this.props;
 
-    if (!newImage && replicas === "") {
+    if (!newImage && replicas === "" && !domainName) {
       this.setState({
         error: "No changes made",
       });
-    } else if (newImage && !isPrivateImage && replicas === "") {
+    } else if (newImage && !isPrivateImage && replicas === "" && !domainName) {
       this.setState({ updating_form: true });
       updateApp(params.appID, { image: newImage });
-    } else if (newImage && !isPrivateImage && replicas !== "") {
+    } else if (newImage && !isPrivateImage && replicas !== "" && !domainName) {
       this.setState({ updating_form: true });
       updateApp(params.appID, { image: newImage, replicas: replicas });
+    } else if (newImage && !isPrivateImage && replicas !== "" && domainName) {
+      let setDomainName = domainName.toLowerCase();
+      this.setState({ updating_form: true });
+      updateApp(params.appID, { image: newImage, replicas: replicas,  custom_domain: setDomainName});
     } else if (
       isPrivateImage &&
       (!email || !username || !password || !server)
@@ -369,8 +373,8 @@ class AppSettingsPage extends React.Component {
         project_id: params.projectID,
         private_image: isPrivateImage,
       };
-      if (isCustomDomain === true) {
-        let sentDomainName = domainName.toLowerCase();
+      if (isPrivateImage === true && domainName) {
+        let setDomainName = domainName.toLowerCase();
         if (replicas === "") {
           appInfo = {
             ...appInfo,
@@ -381,6 +385,7 @@ class AppSettingsPage extends React.Component {
             replicas: app.replicas,
           };
           this.setState({ updating_form: true });
+          appInfo = { ...appInfo, custom_domain: setDomainName };
           updateApp(params.appID, appInfo);
         } else {
           appInfo = {
@@ -392,7 +397,6 @@ class AppSettingsPage extends React.Component {
             replicas: replicas,
           };
           this.setState({ updating_form: true });
-          appInfo = { ...appInfo, custom_domain: sentDomainName };
           updateApp(params.appID, appInfo);
         }
       } else {
