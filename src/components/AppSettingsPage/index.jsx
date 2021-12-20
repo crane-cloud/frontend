@@ -18,8 +18,11 @@ import DeleteWarning from "../DeleteWarning";
 import AppStatus from "../AppStatus";
 import styles from "./AppSettingsPage.module.css";
 import BlackInputText from "../BlackInputText";
-import getSingleApp from "../../redux/actions/getSingleApp";
+import getSingleApp, {
+  clearFetchAppState,
+} from "../../redux/actions/getSingleApp";
 import updateApp, { clearUpdateAppState } from "../../redux/actions/updateApp";
+import revertUrl from "../../redux/actions/revertUrl";
 import RemoveIcon from "../../assets/images/remove.svg";
 import { v4 as uuidv4 } from "uuid";
 
@@ -58,6 +61,7 @@ class AppSettingsPage extends React.Component {
       updating_port: false,
       updating_command: false,
       updating_form: false,
+      urlReverted: false,
     };
 
     this.handleDeleteApp = this.handleDeleteApp.bind(this);
@@ -82,6 +86,8 @@ class AppSettingsPage extends React.Component {
     this.handleEnvVarsSubmit = this.handleEnvVarsSubmit.bind(this);
     this.showDomainModal = this.showDomainModal.bind(this);
     this.hideDomainModal = this.hideDomainModal.bind(this);
+    this.domainRevert = this.domainRevert.bind(this);
+    this.disableRevert = this.disableRevert.bind(this);
   }
 
   handleChange(e) {
@@ -109,8 +115,10 @@ class AppSettingsPage extends React.Component {
       getSingleApp,
       clearState,
       clearUpdateAppState,
+      clearFetchAppState,
     } = this.props;
     const { appID } = params;
+    clearFetchAppState();
     clearState();
     clearUpdateAppState();
     getSingleApp(appID);
@@ -123,6 +131,7 @@ class AppSettingsPage extends React.Component {
       getSingleApp,
       clearUpdateAppState,
       isUpdating,
+      isReverted,
       match: { params },
     } = this.props;
 
@@ -132,7 +141,7 @@ class AppSettingsPage extends React.Component {
       this.hideDeleteAlert();
     }
 
-    if (isUpdated !== prevProps.isUpdated) {
+    if (isUpdated !== prevProps.isUpdated || isReverted !== prevProps.isReverted) {
       clearUpdateAppState();
       getSingleApp(params.appID);
       window.location.reload();
@@ -439,6 +448,26 @@ class AppSettingsPage extends React.Component {
     this.setState({ domainModal: false });
   }
 
+  domainRevert() {
+    const {
+      revertUrl,
+      match: {
+        params: { appID },
+      },
+    } = this.props;
+    revertUrl(appID);
+    this.disableRevert();
+  }
+
+  disableRevert() {
+    const { isReverted } = this.props;
+    if (isReverted) {
+      this.setState({
+        urlReverted: true,
+      });
+    }
+  }
+
   render() {
     const {
       match: { params },
@@ -450,6 +479,7 @@ class AppSettingsPage extends React.Component {
       app,
       isUpdating,
       errorMessage,
+      isReverting,
     } = this.props;
 
     const {
@@ -474,6 +504,7 @@ class AppSettingsPage extends React.Component {
       updating_command,
       updating_port,
       updating_form,
+      urlReverted,
       dockerCredentials: { username, email, password, server },
     } = this.state;
     // project name from line 105 disappears on refreash, another source of the name was needed
@@ -676,8 +707,10 @@ class AppSettingsPage extends React.Component {
                               </div>
                               <div className={styles.SectionButtons}>
                                 <PrimaryButton
-                                  label="REVERT"
+                                  label={isReverting ? <Spinner /> : "REVERT"}
                                   className={styles.RevertButton}
+                                  onClick={this.domainRevert}
+                                  disable={urlReverted}
                                 />
                               </div>
                             </div>
@@ -1102,6 +1135,7 @@ const mapStateToProps = (state) => {
   const { app } = state.singleAppReducer;
   const { isUpdating, isUpdated, errorMessage } = state.updateAppReducer;
   const { data } = state.user;
+  const { isReverting, isReverted } = state.revertUrlReducer;
   return {
     // apps,
     isDeleting,
@@ -1113,6 +1147,8 @@ const mapStateToProps = (state) => {
     isUpdating,
     errorMessage,
     data,
+    isReverted,
+    isReverting,
   };
 };
 
@@ -1122,6 +1158,8 @@ const mapDispatchToProps = {
   getSingleApp,
   updateApp,
   clearUpdateAppState,
+  revertUrl,
+  clearFetchAppState,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppSettingsPage);
