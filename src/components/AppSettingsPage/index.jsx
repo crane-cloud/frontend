@@ -25,6 +25,7 @@ import updateApp, { clearUpdateAppState } from "../../redux/actions/updateApp";
 import revertUrl from "../../redux/actions/revertUrl";
 import RemoveIcon from "../../assets/images/remove.svg";
 import { v4 as uuidv4 } from "uuid";
+import validateDomain from "../../helpers/validate";
 
 class AppSettingsPage extends React.Component {
   constructor(props) {
@@ -91,7 +92,7 @@ class AppSettingsPage extends React.Component {
   }
 
   handleChange(e) {
-    const { openDeleteAlert } = this.state;
+    const { openDeleteAlert, error } = this.state;
     const { app } = this.props;
 
     this.setState({
@@ -105,6 +106,12 @@ class AppSettingsPage extends React.Component {
     } else if (openDeleteAlert && e.target.value !== app.name) {
       this.setState({
         disableDelete: true,
+      });
+    }
+
+    if (error) {
+      this.setState({
+        error: "",
       });
     }
   }
@@ -337,16 +344,37 @@ class AppSettingsPage extends React.Component {
       app,
     } = this.props;
 
-    if (!newImage && replicas === "") {
+    if (!newImage && replicas === "" && !domainName && !isPrivateImage) {
       this.setState({
         error: "No changes made",
       });
-    } else if (newImage && !isPrivateImage && replicas === "") {
+    } else if (newImage && !isPrivateImage && replicas === "" && !domainName) {
       this.setState({ updating_form: true });
       updateApp(params.appID, { image: newImage });
-    } else if (newImage && !isPrivateImage && replicas !== "") {
+    } else if (!newImage && !isPrivateImage && replicas !== "" && !domainName) {
+      this.setState({ updating_form: true });
+      updateApp(params.appID, { replicas: replicas });
+    } else if (newImage && !isPrivateImage && replicas !== "" && !domainName) {
       this.setState({ updating_form: true });
       updateApp(params.appID, { image: newImage, replicas: replicas });
+    } else if (!newImage && !isPrivateImage && replicas === "" && domainName) {
+      let error = validateDomain(domainName.toLowerCase());
+      if (error) {
+        this.setState({
+          error: error,
+        });
+      } else {
+        this.setState({ updating_form: true });
+        updateApp(params.appID, { custom_domain: domainName.toLowerCase() });
+      }
+    } else if (newImage && !isPrivateImage && replicas !== "" && domainName) {
+      let setDomainName = domainName.toLowerCase();
+      this.setState({ updating_form: true });
+      updateApp(params.appID, {
+        image: newImage,
+        replicas: replicas,
+        custom_domain: setDomainName,
+      });
     } else if (
       isPrivateImage &&
       (!email || !username || !password || !server)
@@ -378,8 +406,8 @@ class AppSettingsPage extends React.Component {
         project_id: params.projectID,
         private_image: isPrivateImage,
       };
-      if (isCustomDomain === true) {
-        let sentDomainName = domainName.toLowerCase();
+      if (isPrivateImage === true && domainName) {
+        let setDomainName = domainName.toLowerCase();
         if (replicas === "") {
           appInfo = {
             ...appInfo,
@@ -390,6 +418,7 @@ class AppSettingsPage extends React.Component {
             replicas: app.replicas,
           };
           this.setState({ updating_form: true });
+          appInfo = { ...appInfo, custom_domain: setDomainName };
           updateApp(params.appID, appInfo);
         } else {
           appInfo = {
@@ -401,7 +430,6 @@ class AppSettingsPage extends React.Component {
             replicas: replicas,
           };
           this.setState({ updating_form: true });
-          appInfo = { ...appInfo, custom_domain: sentDomainName };
           updateApp(params.appID, appInfo);
         }
       } else {
