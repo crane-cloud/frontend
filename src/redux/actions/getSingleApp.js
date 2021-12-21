@@ -2,7 +2,8 @@ import axios from "../../axios";
 import {
     GETTING_SINGLE_APP,
     SINGLE_APP_FAIL,
-    SINGLE_APP_SUCCESS
+    SINGLE_APP_SUCCESS,
+    CLEAR_FETCH_APP
 } from "./actionTypes";
 
 export const startTheFetch = () => ({
@@ -22,6 +23,10 @@ export const getSingleAppFailed = (error) => ({
   },
 });
 
+const clearFetchAppState = () => ({
+  type: CLEAR_FETCH_APP,
+});
+
 const getSingleApp = (appID) => (dispatch) => {
   dispatch(startTheFetch());
   return axios
@@ -31,5 +36,6 @@ const getSingleApp = (appID) => (dispatch) => {
       dispatch(getSingleAppFailed(error));
     });
 };
+export { clearFetchAppState };
 
 export default getSingleApp;
