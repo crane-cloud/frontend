@@ -16,7 +16,7 @@ function create_env_file
     then
         echo REACT_APP_GITHUB_CLEINT_ID=$REACT_APP_GITHUB_CLEINT_ID_PROD >> .env
     else
-        echo echo REACT_APP_GITHUB_CLEINT_ID=$REACT_APP_GITHUB_CLEINT_ID_STAGING >> .env
+        echo REACT_APP_GITHUB_CLEINT_ID=$REACT_APP_GITHUB_CLEINT_ID_STAGING >> .env
     fi
 }
 
