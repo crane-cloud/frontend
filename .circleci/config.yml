@@ -26,14 +26,7 @@ persist_to_workspace: &persist_to_workspace
 build_and_push_image: &build_and_push_image
   run:
     name: build image
-    command: |
-      echo REACT_APP_API_BASE_URL=$REACT_APP_API_BASE_URL >> .env
-      echo REACT_APP_GITHUB_CLEINT_ID=$REACT_APP_GITHUB_CLEINT_ID >> .env
-      cat .env
-      export IMG_TAG=$(echo $CIRCLE_SHA1 | cut -c -7)
-      docker login -u _json_key -p "$(echo $GCLOUD_SERVICE_KEY)" https://gcr.io
-      docker build -f docker/prod/Dockerfile -t gcr.io/$GCP_PROJECT_ID/cranecloud-frontend:$IMG_TAG .
-      # docker push gcr.io/$GCP_PROJECT_ID/cranecloud-frontend:$IMG_TAG
+    command: ./.circleci/bin/build-and-push-frontend.sh
 
 configure_gcloud: &configure_gcloud
   run:
@@ -58,7 +51,6 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: /root/crane-cloud
           cluster: staging-cluster
           REACT_APP_API_BASE_URL: https://staging-api.cranecloud.io
-          REACT_APP_GITHUB_CLEINT_ID: $(echo $REACT_APP_GITHUB_CLEINT_ID_STAGING)
           namespace: cranecloud
     working_directory: ~/crane-cloud
     steps:
@@ -72,7 +64,7 @@ jobs:
 
       - *configure_gcloud
       - *build_and_push_image
-      # - *deploy_to_kubernetes
+      - *deploy_to_kubernetes
 
   build_and_deploy_production:
     docker:
@@ -81,7 +73,6 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: /root/crane-cloud
           cluster: staging-cluster
           REACT_APP_API_BASE_URL: https://api.cranecloud.io
-          REACT_APP_GITHUB_CLEINT_ID: $(echo $REACT_APP_GITHUB_CLEINT_ID_PROD)
           namespace: cranecloud-prod
     working_directory: ~/crane-cloud
     steps:
@@ -104,7 +95,7 @@ workflows:
       - build_and_deploy_staging:
           filters:
             branches:
-              only: innocent/add-prod-github-client-variables
+              only: develop
       - build_and_deploy_production:
           filters:
             branches:
