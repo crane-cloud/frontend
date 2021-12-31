@@ -1,5 +1,14 @@
 .MetricsCardGraph {
-  height: 100%;
+  height: 25rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width:1366px) {
+  .MetricsCardGraph {
+    height: 32rem;
+    margin-top: 1rem;
+  }
 }
 
 .ContentSectionSpinner {

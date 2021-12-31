@@ -3,7 +3,13 @@ import PropTypes from "prop-types";
 import { ReactComponent as DownArrow } from "../../assets/images/down-arrow-black.svg";
 import "./Select.css";
 
-const Select = ({ required, placeholder, options, onChange }) => {
+const Select = ({
+  required,
+  placeholder,
+  options,
+  onChange,
+  isSmall = false,
+}) => {
   const [showOptions, setShowOptions] = useState(false);
   const [selected, setValue] = useState(
     `${placeholder}${required ? " *" : ""}`
@@ -47,7 +53,9 @@ const Select = ({ required, placeholder, options, onChange }) => {
         role="presentation"
       >
         <div
-          className={`SelectElementValue ${
+          className={`${
+            isSmall ? "SmallSelectElementValue" : "SelectElementValue"
+          } ${
             (selected.startsWith(placeholder) || showOptions) &&
             "SelectElementPlaceholder"
           }`}
@@ -87,11 +95,13 @@ Select.propTypes = {
       name: PropTypes.string.isRequired,
     })
   ).isRequired,
+  isSmall: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
 };
 
 Select.defaultProps = {
   required: false,
+  isSmall: false,
 };
 
 export default Select;

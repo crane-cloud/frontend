@@ -73,14 +73,16 @@ class DatabaseList extends React.Component {
     const { openCreateComponent } = this.state;
 
     const { projectID } = params;
-    const sortedDbs = databases.sort((a, b) => b.date_created > a.date_created ? 1: -1);
+    const sortedDbs = databases.sort((a, b) =>
+      b.date_created > a.date_created ? 1 : -1
+    );
     return (
-      <div className={styles.MainPage}>
-        <div className={styles.TopBarSection}>
+      <div className="MainPage">
+        <div className="TopBarSection">
           <Header />
         </div>
-        <div className={styles.MainSection}>
-          <div className={styles.SideBarSection}>
+        <div className="MainSection">
+          <div className="SideBarSection">
             <SideBar
               name={this.getProjectName(projects, params.projectID)}
               params={params}
@@ -115,62 +117,55 @@ class DatabaseList extends React.Component {
                     </div>
                   </div>
                 ) : (
-                  <div className={styles.DatabaseTable}>
-                    <div className={styles.DatabaseTableRow}>
-                      <div className={styles.DatabaseTableHead}>
-                        Type
+                  databasesFetched &&
+                  sortedDbs !== undefined &&
+                  sortedDbs.map((database) => (
+                    <div
+                      className={`${styles.DatabaseTable} MetricsCardContainer`}
+                    >
+                      <div
+                        className={`${styles.DatabaseTableRow} CardHeaderSection`}
+                      >
+                        <div className={styles.DatabaseTableHead}>Type</div>
+                        <div className={styles.DatabaseTableHead}>Name</div>
+                        <div className={styles.DatabaseTableHead}>Host</div>
+                        <div className={styles.DatabaseTableHead}>Status</div>
+                        <div className={styles.DatabaseTableHead}>Age</div>
                       </div>
-                      <div className={styles.DatabaseTableHead}>
-                        Name
-                      </div>
-                      <div className={styles.DatabaseTableHead}>
-                        Host
-                      </div>
-                      <div className={styles.DatabaseTableHead}>
-                        Status
-                      </div>
-                      <div className={styles.DatabaseTableHead}>
-                        Age
+                      <div className={styles.DatabaseBody}>
+                        <Link
+                          to={{
+                            pathname: `/projects/${projectID}/databases/${database.id}/settings`,
+                          }}
+                          key={database.id}
+                          className={styles.DatabaseTableRow}
+                        >
+                          <div className={styles.DatabaseTableCell}>
+                            {database.database_flavour_name}
+                          </div>
+                          <div className={styles.DatabaseTableCell}>
+                            {database.name}
+                          </div>
+                          <div className={styles.DatabaseTableCell}>
+                            {database.host}
+                          </div>
+                          <div className={styles.DatabaseTableCell}>
+                            <Status status={database.db_status} />
+                          </div>
+                          <div className={styles.DatabaseTableCell}>
+                            {database.age}
+                          </div>
+                        </Link>
                       </div>
                     </div>
-                    <div className={styles.DatabaseTableBody}>
-                      {databasesFetched &&
-                        sortedDbs !== undefined &&
-                        sortedDbs.map((database) => (
-                          <Link
-                            to={{
-                              pathname: `/projects/${projectID}/databases/${database.id}/settings`,
-                            }}
-                            key={database.id}
-                            className={styles.DatabaseTableRow}
-                          >
-                            
-                            <div className={styles.DatabaseTableCell}>
-                              {database.database_flavour_name}
-                            </div>
-                            <div className={styles.DatabaseTableCell}>
-                              {database.name}
-                            </div>
-                            <div className={styles.DatabaseTableCell}>
-                              {database.host}
-                            </div>
-                            <div className={styles.DatabaseTableCell}>
-                              <Status status={database.db_status} />
-                            </div>
-                            <div className={styles.DatabaseTableCell}>
-                              {database.age}
-                            </div>
-                            
-                          </Link>
-                        ))}
-                    </div>
-                  </div>
-                )}                  
+                  ))
+                )}
 
                 {databasesFetched && databases.length === 0 && (
                   <div className={styles.NoResourcesMessage}>
-                    You haven’t created any databases yet. Click the &nbsp; <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp; button to create one.
-
+                    You haven’t created any databases yet. Click the &nbsp;{" "}
+                    <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp;
+                    button to create one.
                   </div>
                 )}
 

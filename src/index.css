@@ -19,6 +19,13 @@
   font-family: monaco;
   src: url("./assets/fonts/monaco.ttf") format("truetype");
 }
+html {
+  --primary-color: #008ac1;
+  --secondary-color: #f7b21f;
+  --color-gray-light: #ccc;
+  --primary-color-dark: #06222f;
+  --primary-color-light: #99d2e9;
+}
 
 body {
   margin: 0;
@@ -305,6 +312,16 @@ tr.TableLoading td {
 
 /* //////////--- PAGE STYLES ---//////////// */
 
+.SmallContainer{
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+@media (max-width: 580px) {
+  .SmallContainer{
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
 .Page {
   margin: 0;
   background: #f1f1f1;

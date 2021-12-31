@@ -25,7 +25,6 @@ const ClusterResourcesPage = () => {
 
   const { isRetrieving, isRetrieved, resourceCount, clusterName } = useSelector(state => state.clusterResourcesReducer);
   localStorage.setItem("clusterName", clusterName);
-
   return (
     <div className="MainPage">
       <div className="TopBarSection">

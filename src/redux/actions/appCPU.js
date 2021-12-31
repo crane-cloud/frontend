@@ -35,7 +35,7 @@ const getAppCPU = (projectID, appID, params) => (dispatch) => {
   dispatch(startFetchingCPUMetrics());
 
   return axios
-    .post(`/projects/${projectID}/apps/${appID}/metrics/cpu`, params)
+    .post(`/projects/${projectID}/apps/${appID}/dashboardcpu`, params)
     .then((response) => {
       dispatch(getAppCPUMetricsSuccess(appID, response));
     })

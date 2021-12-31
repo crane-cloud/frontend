@@ -46,7 +46,7 @@ const Header = (props) => {
   }, []);
 
   return (
-    <header className={styles.Header}>
+    <header className={`${styles.Header} SmallContainer`}>
       <Logo />
 
       {(!user.accessToken || user.accessToken === "") && (

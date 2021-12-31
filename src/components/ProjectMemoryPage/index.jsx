@@ -162,7 +162,7 @@ class ProjectMemoryPage extends React.Component {
             <div className="InformationBarSection">
               <InformationBar header="Memory" />
             </div>
-            <div className="ContentSection">
+            <div className="ContentSection SmallContainer">
               <MetricsCard
                 className="MetricsCardGraph"
                 title={<PeriodSelector onChange={this.handlePeriodChange} />}

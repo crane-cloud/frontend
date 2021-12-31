@@ -2,9 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./TextArea.css";
 
-const TextArea = (props) => {
-  const { name, value, placeholder, onChange, required } = props;
-
+const TextArea = ({ name, value, placeholder, onChange, required }) => {
   return (
     <textarea
       className="TextArea"

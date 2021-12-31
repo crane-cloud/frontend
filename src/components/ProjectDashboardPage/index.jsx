@@ -10,14 +10,15 @@ import Header from "../Header";
 import SideBar from "../SideBar";
 import MetricsCard from "../MetricsCard";
 import { ReactComponent as MetricIcon } from "../../assets/images/resource-icon.svg";
-import "./ProjectMetricsPage.css";
+import "./ProjectDashboardPage.css";
 import {
   formatCPUMetrics,
   formatMemoryMetrics,
   formatNetworkMetrics,
 } from "../../helpers/formatMetrics";
+import AppsList from "../AppsList";
 
-class ProjectMetricsPage extends React.Component {
+class ProjectDashboardPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -110,9 +111,10 @@ class ProjectMetricsPage extends React.Component {
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
-              <InformationBar header="Project Metrics" />
+              <InformationBar header="Project Dashboard" />
             </div>
-            <div className="ContentSection">
+            <div className="ProjectContentSection SmallContainer">
+              <h3>Project Metrics</h3>
               <div className="MetricCardsSection">
                 <MetricsCard
                   icon={<MetricIcon />}
@@ -148,6 +150,12 @@ class ProjectMetricsPage extends React.Component {
                   />
                 </MetricsCard>
               </div>
+              <h3>Project Apps</h3>
+              <AppsList
+                params={params}
+                word=""
+                message="You have no apps currently, please go to Apps section on the sidebar to create one"
+              />
             </div>
           </div>
         </div>
@@ -156,7 +164,7 @@ class ProjectMetricsPage extends React.Component {
   }
 }
 
-ProjectMetricsPage.propTypes = {
+ProjectDashboardPage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       projectID: PropTypes.string.isRequired,
@@ -195,4 +203,7 @@ const mapDispatchToProps = {
   getProjectNetwork,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectMetricsPage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProjectDashboardPage);

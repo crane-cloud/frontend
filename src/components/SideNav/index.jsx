@@ -3,9 +3,7 @@ import "./SideNav.css";
 import { NavLink, Link } from "react-router-dom";
 import BackButton from "../../assets/images/backButton.svg";
 
-const SideNav = (props) => {
-  const { clusterId } = props;
-  const { clusterName } = props;
+const SideNav = ({ clusterId, clusterName }) => {
 
   const BASE_URL = `/clusters/${clusterId}`;
   return (

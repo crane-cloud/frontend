@@ -176,7 +176,7 @@ const ClusterPage = ({
               <div className={styles.TopTitle}>Metrics</div>
               <div className={styles.MetricsGraph}>
                 <MetricsCard
-                  className="MetricsCardGraph"
+                  className="ClusterMetricsCardGraph"
                   title={<AdminPeriod onChange={handlePeriodChange} />}
                 >
                   {isFetchingUsersSummary ? (
@@ -258,7 +258,7 @@ const ClusterPage = ({
               <div className={styles.TopTitle}>Metrics</div>
               <div className={styles.MetricsGraph}>
                 <MetricsCard
-                  className="MetricsCardGraph"
+                  className="ClusterMetricsCardGraph"
                   title={<AdminPeriod onChange={appsHandlePeriodChange} />}
                 >
                   {isFetchingAppsSummary ? (

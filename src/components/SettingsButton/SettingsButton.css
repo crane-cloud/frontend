@@ -21,4 +21,13 @@
   background-color: #ffffff;
 }
 
+.Settings-Btn:hover {
+  background-color: #000;
+  color: #ffffff;
+}
+
+.Settings-Btn.Change-Btn:hover {
+  background-color: #ff0000;
+  color: #fff;
+}
 

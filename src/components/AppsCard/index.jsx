@@ -9,7 +9,8 @@ import getAppMemory, { clearAppMemory } from "../../redux/actions/appMemory";
 import { formatAppMemoryMetrics } from "../../helpers/formatMetrics";
 
 const AppsCard = (props) => {
-  const { getAppMemory, name, appStatus, appId, otherData, appMemoryMetrics } = props;
+  const { getAppMemory, name, appStatus, appId, otherData, appMemoryMetrics } =
+    props;
   const { projectID } = props.otherData;
   useEffect(() => {
     clearAppMemory();
@@ -26,7 +27,7 @@ const AppsCard = (props) => {
     <>
       <Link
         to={{
-          pathname: `/projects/${otherData.projectID}/apps/${appId}/metrics`,
+          pathname: `/projects/${otherData.projectID}/apps/${appId}/dashboard`,
         }}
         key={otherData.projectID}
         className="AppName"

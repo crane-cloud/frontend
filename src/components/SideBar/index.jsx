@@ -4,22 +4,20 @@ import styles from "./SideBar.module.css";
 import { Link, NavLink, matchPath } from "react-router-dom";
 import BackButton from "../../assets/images/backButton.svg";
 
-const SideBar = (props) => {
-  const {
-    name,
-    params,
-    pageRoute,
-    cpuLink,
-    memoryLink,
-    databaseLink,
-    networkLink,
-    allMetricsLink,
-    appLogsLink,
-  } = props;
-
+const SideBar = ({
+  name,
+  params,
+  pageRoute,
+  cpuLink,
+  memoryLink,
+  databaseLink,
+  networkLink,
+  allMetricsLink,
+  appLogsLink,
+}) => {
   const isAppPage = matchPath(pageRoute, {
-    path: "/projects/:projectID/apps/:appID/metrics",
-    exact: true,
+    path: "/projects/:projectID/apps/:appID",
+    // exact: true,
     strict: true,
   });
 
@@ -29,24 +27,24 @@ const SideBar = (props) => {
     strict: true,
   });
 
-  const pageLocation = matchPath(pageRoute, {
-    path: "/projects/:projectID/apps",
-    exact: true,
-    strict: true,
-  });
+  // const pageLocation = matchPath(pageRoute, {
+  //   path: "/projects/:projectID/apps",
+  //   exact: true,
+  //   strict: true,
+  // });
 
-  const databaseLocation = matchPath(pageRoute, {
-    path: "/projects/:projectID/databases/:databaseID/settings",
-    exact: true,
-    strict: true,
-  });
+  // const databaseLocation = matchPath(pageRoute, {
+  //   path: "/projects/:projectID/databases/:databaseID/settings",
+  //   exact: true,
+  //   strict: true,
+  // });
 
   const { projectID, appID } = params;
 
   return (
     <div className={styles.SideBar}>
       <div>
-        {databaseLocation ? (
+        {/* {databaseLocation ? (
           <div className={styles.SideBarTopSection}>
             <Link
               to={{
@@ -67,15 +65,13 @@ const SideBar = (props) => {
           </div>
         ) : isAppPage ? (
           <div className={styles.SideBarTopSection}>
-            <Link
-              to={{ pathname: `/projects/${projectID}/apps` }}
-            >
+            <Link to={{ pathname: `/projects/${projectID}/apps` }}>
               <img src={BackButton} alt="Back Button" />
               <span>&nbsp; &nbsp; &nbsp;</span>
             </Link>
             <Link
               to={{
-                pathname: `/projects/${projectID}/apps/${appID}/metrics`,
+                pathname: `/projects/${projectID}/apps/${appId}/dashboard`,
               }}
               className={styles.ProjectName}
             >
@@ -86,7 +82,7 @@ const SideBar = (props) => {
           <div className={styles.SideBarTopSection}>
             <Link
               to={{
-                pathname: `/projects/${projectID}/apps/${appID}/metrics`,
+                pathname: `/projects/${projectID}/apps/${appId}/dashboard`,
               }}
             >
               <img src={BackButton} alt="Back Button" />
@@ -94,7 +90,7 @@ const SideBar = (props) => {
             </Link>
             <Link
               to={{
-                pathname: `/projects/${projectID}/apps/${appID}/metrics`,
+                pathname: `/projects/${projectID}/apps/${appId}/dashboard`,
               }}
               className={styles.ProjectName}
             >
@@ -116,9 +112,7 @@ const SideBar = (props) => {
           </div>
         ) : (
           <div className={styles.SideBarTopSection}>
-            <Link
-              to={{ pathname: `/projects/${projectID}/apps` }}
-            >
+            <Link to={{ pathname: `/projects/${projectID}/apps` }}>
               <img src={BackButton} alt="Back Button" />
               <span>&nbsp; &nbsp; &nbsp;</span>
             </Link>
@@ -129,26 +123,75 @@ const SideBar = (props) => {
               {name}
             </Link>
           </div>
+        )} */}
+        {isAppPage ? (
+          <div className={styles.SideBarTopSection}>
+            <Link to={{ pathname: `/projects/${projectID}/dashboard` }}>
+              <img src={BackButton} alt="Back Button" />
+              <span>&nbsp; &nbsp; &nbsp;</span>
+            </Link>
+            <Link
+              to={{
+                pathname: `/projects/${projectID}/apps/${appID}/dashboard`,
+              }}
+              className={styles.ProjectName}
+            >
+              {name}
+            </Link>
+          </div>
+        ) : (
+          <div className={styles.SideBarTopSection}>
+            <Link to={{ pathname: `/projects` }}>
+              <img src={BackButton} alt="Back Button" />
+              <span>&nbsp; &nbsp; &nbsp;</span>
+            </Link>
+            <Link
+              to={{ pathname: `/projects/${projectID}/dashboard` }}
+              className={styles.ProjectName}
+            >
+              {name}
+            </Link>
+          </div>
         )}
       </div>
 
       <div className={styles.SideBarBottomSection}>
         <div className={styles.SideBarLinks}>
-          <NavLink
-            to={{ pathname: `/projects/${projectID}/apps` }}
-            className={styles.SubBarListItem}
-          >
-            Dashboard
-          </NavLink>
-          <Link to="/" className={`${styles.ListItem} ${styles.DisabledLink}`}>
+          {isAppPage ? (
+            <NavLink
+              to={{
+                pathname: `/projects/${projectID}/apps/${appID}/dashboard`,
+              }}
+              className={styles.SubBarListItem}
+            >
+              Dashboard
+            </NavLink>
+          ) : (
+            <NavLink
+              to={{ pathname: `/projects/${projectID}/dashboard` }}
+              className={styles.SubBarListItem}
+            >
+              Dashboard
+            </NavLink>
+          )}
+          <Link to="#" className={`${styles.ListItem} ${styles.DisabledLink}`}>
             SERVICES
           </Link>
           <div>
+            {!isAppPage && (
+              <NavLink
+                to={{ pathname: `/projects/${projectID}/apps` }}
+                className={styles.SubBarListItem}
+              >
+                Apps
+              </NavLink>
+            )}
+
             <NavLink to={databaseLink} className={styles.SubBarListItem}>
               Databases
             </NavLink>
           </div>
-          <Link to={allMetricsLink} className={styles.ListItem}>
+          <Link to="#" className={`${styles.ListItem} ${styles.DisabledLink}`}>
             METRICS
           </Link>
           <div>
@@ -171,7 +214,7 @@ const SideBar = (props) => {
                     </NavLink>
                   </div>
                   <Link
-                    to="/"
+                    to="#"
                     className={`${styles.ListItem} ${styles.DisabledLink}`}
                   >
                     OTHER

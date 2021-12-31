@@ -41,6 +41,7 @@ class ClustersList extends Component {
                 <Link
                   to={{ pathname: `/clusters/${cluster.id}/resources` }}
                   key={cluster.id}
+                  state={{ clusterName: cluster.name }}
                 >
                   <div key={cluster.id} className="ClusterCardItem">
                     <ClusterCard

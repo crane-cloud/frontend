@@ -12,9 +12,13 @@ class AppsList extends Component {
     super(props);
     this.state = {
       rerender: false,
+      Searchword: props.word,
+      SearchList: [],
     };
 
     this.renderAfterDelete = this.renderAfterDelete.bind(this);
+    this.searchThroughApps = this.searchThroughApps.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +34,7 @@ class AppsList extends Component {
       params: { projectID },
       getAppsList,
       newAppCreated,
+      word,
     } = this.props;
     const { rerender } = this.state;
 
@@ -40,6 +45,29 @@ class AppsList extends Component {
     if (rerender !== prevState.rerender) {
       getAppsList(projectID);
     }
+    if (word !== prevProps.word) {
+      this.searchThroughApps();
+    }
+  }
+
+  searchThroughApps() {
+    const { apps, word } = this.props;
+    let searchResult = [];
+    apps.apps.forEach((element) => {
+      if (element.name.toLowerCase().includes(word.toLowerCase())) {
+        searchResult.push(element);
+      }
+    });
+    this.setState({
+      SearchList: searchResult.sort((a, b) =>
+        b.date_created > a.date_created ? 1 : -1
+      ),
+    });
+  }
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
   }
 
   renderAfterDelete() {
@@ -50,16 +78,36 @@ class AppsList extends Component {
   }
 
   render() {
-    const { apps, isRetrieved, isRetrieving, params } = this.props;
-    const allApps = apps.apps
-    const sortedApps = allApps?.sort((a, b) => b.date_created < a.date_created ? 1: -1);
+    const { SearchList } = this.state;
+    const { apps, isRetrieved, isRetrieving, params, word, message } =
+      this.props;
+    const allApps = apps.apps;
+    const sortedApps = allApps?.sort((a, b) =>
+      b.date_created < a.date_created ? 1 : -1
+    );
     return (
-      <>
+      <div>
         {isRetrieving ? (
           <div className={styles.NoResourcesMessage}>
             <div className={styles.SpinnerWrapper}>
               <Spinner size="big" />
             </div>
+          </div>
+        ) : word !== "" ? (
+          <div className={styles.AppList}>
+            {isRetrieved &&
+              SearchList.map((app) => (
+                <div key={app.id} className="AppCardItem">
+                  <AppsCard
+                    name={app.name}
+                    appStatus={app.app_running_status}
+                    url={app.url}
+                    appId={app.id}
+                    otherData={params}
+                    hasDeleted={this.renderAfterDelete}
+                  />
+                </div>
+              ))}
           </div>
         ) : (
           <div className={styles.AppList}>
@@ -80,7 +128,15 @@ class AppsList extends Component {
         )}
         {isRetrieved && sortedApps.length === 0 && (
           <div className={styles.NoResourcesMessage}>
-            You haven’t created any apps yet. Click the &nbsp; <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp; button to deploy an app.
+            {message ? (
+              message
+            ) : (
+              <div>
+                You haven’t created any apps yet. Click the &nbsp;{" "}
+                <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp; button
+                to deploy an app.
+              </div>
+            )}
           </div>
         )}
         {!isRetrieving && !isRetrieved && (
@@ -88,7 +144,7 @@ class AppsList extends Component {
             Oops! Something went wrong! Failed to retrieve Apps.
           </div>
         )}
-      </>
+      </div>
     );
   }
 }
@@ -102,6 +158,7 @@ AppsList.propTypes = {
   isRetrieving: PropTypes.bool,
   getAppsList: PropTypes.func.isRequired,
   newAppCreated: PropTypes.bool.isRequired,
+  message: PropTypes.string,
   params: PropTypes.shape({
     projectID: PropTypes.string.isRequired,
   }).isRequired,
@@ -112,6 +169,7 @@ AppsList.defaultProps = {
   apps: {},
   isRetrieved: false,
   isRetrieving: true,
+  message: false,
 };
 
 const mapStateToProps = (state) => {

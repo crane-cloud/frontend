@@ -46,7 +46,7 @@ const AppLogsPage = () => {
             name={appInfo.name}
             params={params}
             pageRoute={location.pathname}
-            allMetricsLink={`/projects/${projectID}/apps/${appID}/metrics/`}
+            allMetricsLink={`/projects/${projectID}/apps/${appID}/dashboard`}
             cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
             memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
             databaseLink={`/projects/${projectID}/databases`}
@@ -58,7 +58,7 @@ const AppLogsPage = () => {
           <div className="InformationBarSection">
             <InformationBar header={appInfo.url} status={appInfo.status} />
           </div>
-          <div className="ContentSection">
+          <div className="ContentSection SmallContainer">
             <div className="LogsSection">
               <LogsFrame
                 loading={retrieveingLogs}

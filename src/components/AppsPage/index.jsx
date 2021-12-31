@@ -19,6 +19,7 @@ class AppsPage extends React.Component {
       openModal: false, // add project component is closed initially
       error: "",
       port: "",
+      word: "",
     };
 
     this.state = this.initialState;
@@ -26,6 +27,7 @@ class AppsPage extends React.Component {
     this.showForm = this.showForm.bind(this);
     this.hideForm = this.hideForm.bind(this);
     this.getProjectDetails = this.getProjectDetails.bind(this);
+    this.handleCallbackSearchword = this.handleCallbackSearchword.bind(this);
   }
 
   componentDidMount() {
@@ -39,6 +41,9 @@ class AppsPage extends React.Component {
     if (isCreated !== prevProps.isCreated) {
       this.hideForm();
     }
+  }
+  handleCallbackSearchword(word) {
+    this.setState({ word: word });
   }
 
   getProjectDetails(projects, id) {
@@ -57,7 +62,7 @@ class AppsPage extends React.Component {
   }
 
   render() {
-    const { openModal } = this.state;
+    const { openModal, word } = this.state;
 
     const {
       match: { params },
@@ -104,11 +109,18 @@ class AppsPage extends React.Component {
                 <InformationBar
                   header="Apps"
                   showBtn
+                  showSearchBar
+                  placeholder="Search through apps"
+                  searchAction={this.handleCallbackSearchword}
                   btnAction={this.showForm}
                 />
               </div>
-              <div className="ContentSection">
-                <AppsList params={params} newAppCreated={isCreated} />
+              <div className="ContentSection AppsPage SmallContainer">
+                <AppsList
+                  params={params}
+                  newAppCreated={isCreated}
+                  word={word}
+                />
               </div>
             </div>
           )}

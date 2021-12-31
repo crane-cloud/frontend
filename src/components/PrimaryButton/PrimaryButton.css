@@ -1,14 +1,14 @@
 .Primary-Btn {
   background-color: #f7b21f;
-  width: 9.7rem;
-  height: 2.9rem;
+  width: 8rem;
+  height: 2rem;
   color: white;
   font-size: 1rem;
   font-weight: bold;
   line-height: 19px;
   text-align: center;
   border: none;
-  outline: 2px solid #f7b21f;
+  outline: 1px solid #f7b21f;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,11 +18,11 @@
 .Primary-Btn:hover {
   background-color: transparent;
   color: #f7b21f;
-  outline: 2px solid #f7b21f;
+  outline: 1px solid #f7b21f;
 }
 
 .Primary-Btn.CancelBtn {
-  outline: 2px solid #000000;
+  outline: 1px solid #000000;
   color: #000000;
   background-color: #ffffff;
 }

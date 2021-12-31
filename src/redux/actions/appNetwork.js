@@ -35,7 +35,7 @@ const getAppNetwork = (projectID, appID, params) => (dispatch) => {
   dispatch(startFetchingAppNetworkMetrics());
 
   return axios
-    .post(`/projects/${projectID}/apps/${appID}/metrics/network`, params)
+    .post(`/projects/${projectID}/apps/${appID}/dashboardnetwork`, params)
     .then((response) => {
       dispatch(getAppNetworkMetricsSuccess(appID, response));
     })
