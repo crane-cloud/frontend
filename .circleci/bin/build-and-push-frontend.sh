@@ -1,5 +1,8 @@
 #!/bin/bash
 
+
+set -e
+
 # env variables
 REACT_APP_BASE_URL=${REACT_APP_API_BASE_URL:-}
 REACT_APP_GITHUB_CLEINT_ID_STAGING=${REACT_APP_GITHUB_CLEINT_ID_STAGING:-}
@@ -7,12 +10,13 @@ REACT_APP_GITHUB_CLEINT_ID_PROD=${REACT_APP_GITHUB_CLEINT_ID_PRODUCTION:-}
 IMG_TAG=$(echo $CIRCLE_SHA1 | cut -c -7)
 GCLOUD_SERVICE_KEY=${GCLOUD_SERVICE_KEY:-}
 GCP_PROJECT_ID=${GCP_PROJECT_ID:-}
+branch=${CIRCLE_BRANCH:-}
 
 function create_env_file
 {
     echo REACT_APP_API_BASE_URL=$REACT_APP_API_BASE_URL >> .env
 
-    if [$CIRCLE_BRANCH == 'master']
+    if [ $branch == 'master' ]
     then
         echo REACT_APP_GITHUB_CLEINT_ID=$REACT_APP_GITHUB_CLEINT_ID_PROD >> .env
     else
