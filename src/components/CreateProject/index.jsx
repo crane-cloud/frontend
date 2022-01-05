@@ -12,7 +12,6 @@ import BlackInputText from "../BlackInputText";
 import addProject, {
   clearAddProjectState,
 } from "../../redux/actions/addProject";
-import getClustersList from "../../redux/actions/clusters";
 import styles from "./CreateProject.module.css";
 import {
   retrieveProjectTypes
@@ -43,8 +42,7 @@ class CreateProject extends React.Component {
   }
 
   componentDidMount() {
-    const { clearAddProjectState,getClustersList } = this.props;
-    getClustersList();
+    const { clearAddProjectState } = this.props;
     clearAddProjectState();
   }
 
@@ -328,7 +326,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   addProject,
-  getClustersList,
   clearAddProjectState,
 };
 
