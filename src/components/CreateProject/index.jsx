@@ -51,11 +51,10 @@ class CreateProject extends React.Component {
   componentDidUpdate(prevProps) {
     const {
       isAdded,
-      params: { userID },
     } = this.props;
 
     if (isAdded !== prevProps.isAdded) {
-      return <Redirect to={`/users/${userID}/projects`} noThrow />;
+      return <Redirect to={`/projects`} noThrow />;
     }
   }
 
@@ -167,13 +166,12 @@ class CreateProject extends React.Component {
       message,
       errorCode,
       clusters: {clusters},
-      params: { userID },
     } = this.props;
     const { projectName, projectDescription, error, projectOrganisation,othersBool,otherType } =
       this.state;
     const types = retrieveProjectTypes();
     if (isAdded) {
-      return <Redirect to={`/users/${userID}/projects/`} noThrow />;
+      return <Redirect to={`/projects/`} noThrow />;
     }
     return (
       <div className={styles.MainContentSection}>
