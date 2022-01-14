@@ -12,7 +12,6 @@ import BlackInputText from "../BlackInputText";
 import addProject, {
   clearAddProjectState,
 } from "../../redux/actions/addProject";
-import getClustersList from "../../redux/actions/clusters";
 import styles from "./CreateProject.module.css";
 import { retrieveProjectTypes } from "../../helpers/projecttypes";
 import handleProjectValidation from "../../helpers/validation";
@@ -35,14 +34,12 @@ class CreateProject extends React.Component {
     this.handleTypeSelectChange = this.handleTypeSelectChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    // this.validateProjectName = this.validateProjectName.bind(this);
     this.handleDatacenterSelectChange =
       this.handleDatacenterSelectChange.bind(this);
   }
 
   componentDidMount() {
-    const { clearAddProjectState, getClustersList } = this.props;
-    getClustersList();
+    const { clearAddProjectState } = this.props;
     clearAddProjectState();
   }
 
@@ -290,7 +287,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   addProject,
-  getClustersList,
   clearAddProjectState,
 };
 
