@@ -25,7 +25,7 @@ import updateApp, { clearUpdateAppState } from "../../redux/actions/updateApp";
 import revertUrl from "../../redux/actions/revertUrl";
 import RemoveIcon from "../../assets/images/remove.svg";
 import { v4 as uuidv4 } from "uuid";
-import validateDomain from "../../helpers/validate";
+import {validateDomain, validateDomainName} from "../../helpers/validation";
 
 class AppSettingsPage extends React.Component {
   constructor(props) {
@@ -77,7 +77,6 @@ class AppSettingsPage extends React.Component {
     this.addEnvVar = this.addEnvVar.bind(this);
     this.removeEnvVar = this.removeEnvVar.bind(this);
     this.togglePrivateImage = this.togglePrivateImage.bind(this);
-    this.validateDomainName = this.validateDomainName.bind(this);
     this.toggleCustomDomain = this.toggleCustomDomain.bind(this);
     this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -186,19 +185,6 @@ class AppSettingsPage extends React.Component {
     const { clearState } = this.props;
     clearState();
     this.setState({ openDeleteAlert: false });
-  }
-
-  validateDomainName(domainName) {
-    const expression =
-      /[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)?/gi;
-    const regex = new RegExp(expression);
-    if (regex.test(domainName)) {
-      if (domainName.match(!regex)) {
-        return "false_convention";
-      }
-      return true;
-    }
-    return false;
   }
 
   renderRedirect = () => {
@@ -389,13 +375,13 @@ class AppSettingsPage extends React.Component {
       this.setState({
         error: "Please enter a domain name",
       });
-    } else if (domainName && this.validateDomainName(domainName) === false) {
+    } else if (domainName && validateDomainName(domainName) === false) {
       this.setState({
         error: "Domain name should start with a letter",
       });
     } else if (
       domainName &&
-      this.validateDomainName(domainName) === "false_convention"
+      validateDomainName(domainName) === "false_convention"
     ) {
       this.setState({
         error: "Use accepted formats for example google.com, domain.ug",
