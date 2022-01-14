@@ -8,81 +8,88 @@ const validateName = (name) => {
   return false;
 };
 
-const validateProjectName = (name) => {
-  let projectNameError;
+export const validateProjectDescription = (description) => {
+  if (!description || description.length <= 1) {
+    return "Add Project Description";
+  }
+};
 
+export const validateOrganizationName = (name) => {
+  if (
+    !name ||
+    validateName(name) === false ||
+    validateName(name) === "false_convention"
+  ) {
+    return "Project organisation must start with a letter and may only contain letters and a hypen -";
+  }
+};
+
+export const validateProjectName = (name) => {
   if (!name) {
-    projectNameError = "Project Name cannot be empty";
+    return "Project Name cannot be empty";
   }
 
   if (validateName(name) === "false_convention") {
-    projectNameError = "Project name may only contain letters and a hypen -";
+    return "Project name may only contain letters and a hypen -";
   }
 
   if (validateName(name) === false) {
-    projectNameError = "Project name should start with a letter";
+    return "Project name should start with a letter";
   }
 
   if (name.length > 30) {
-    projectNameError = "Project name may not exceed 30 characters";
-  };
-
-  return projectNameError;
+    return "Project name may not exceed 30 characters";
+  }
 };
 
-const validateProjectType = (type) => {
-  let projectTypeError;
-
-  if (!type) {
-    projectTypeError = "Project Type cannot be empty";
+export const validateProjectType = (projectType) => {
+  if (!projectType) {
+    return "Project Type cannot be empty";
   }
 
-  if (type.length < 4) {
-    projectTypeError = "Project Type must be at least 4 characters";
+  if (projectType.length < 4) {
+    return "Project Type must be at least 4 characters";
   }
 
-  if(validateName(type) === "false_convention") {
-    projectTypeError = "Project Type may only contain letters and a hypen -";
+  if (validateName(projectType) === "false_convention") {
+    return "Project Type may only contain letters and a hypen -";
   }
 
-  if(validateName(type) === false) {
-    projectTypeError = "Project Type should start with a letter";
+  if (validateName(projectType) === false) {
+    return "Project Type should start with a letter";
   }
 
-  if (validateName(type) === "false_convention") {
-    projectTypeError = "Project Type may only contain letters and a hypen -";
+  if (validateName(projectType) === "false_convention") {
+    return "Project Type may only contain letters and a hypen -";
   }
-
-  return projectTypeError;
 };
 
-
-export const handleProjectValidation = ({
+export const handleProjectValidation = (
   projectName,
   projectDescription,
   organisationType,
   organisation,
-}) => {
-  let error = "";
-
-  //Name
-  error = validateProjectName(projectName);
-
-  // project type
-  error = validateProjectType(organisationType);
-  
-  // project description
-  if (!projectDescription) {
-    error = "Project description cannot be empty";
+  clusterID
+) => {
+  if (
+    !projectName ||
+    !clusterID ||
+    !projectDescription ||
+    !organisationType ||
+    !organisation
+  ) {
+    return "All fields are required";
+  } else if (!clusterID) {
+    return "Please select a cluster";
+  } else if (validateProjectDescription(projectDescription) !== undefined) {
+    return validateProjectDescription(projectDescription);
+  } else if (validateProjectName(projectName) !== undefined) {
+    return validateProjectName(projectName);
+  } else if (validateProjectType(organisationType) !== undefined) {
+    return validateProjectType(organisationType);
+  } else if (validateOrganizationName(organisation) !== undefined) {
+    return validateOrganizationName(organisation);
   }
-
-  if (!organisationType) {
-    error = "Select organisation type";
-  }
-
-  if (!organisation) {
-    error = "Organisation cannot be empty";
-  }
-
-  return error;
 };
+
+export default handleProjectValidation;
