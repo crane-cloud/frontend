@@ -22,6 +22,7 @@ import styles from "./ProjectSettingsPage.module.css";
 import SettingsButton from "../../components/SettingsButton";
 import Select from "../../components/Select";
 import { retrieveProjectTypes } from "../../helpers/projecttypes";
+import { validateName } from "../../helpers/validation"
 class ProjectSettingsPage extends React.Component {
   constructor(props) {
     super(props);
@@ -50,7 +51,6 @@ class ProjectSettingsPage extends React.Component {
     this.hideDeleteAlert = this.hideDeleteAlert.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.validateProjectName = this.validateProjectName.bind(this);
     this.checkProjectInputValidity = this.checkProjectInputValidity.bind(this);
     this.handleTypeSelectChange = this.handleTypeSelectChange.bind(this);
     this.renderRedirect = this.renderRedirect.bind(this);
@@ -62,15 +62,6 @@ class ProjectSettingsPage extends React.Component {
     if (isDeleted !== prevProps.isDeleted) {
       this.hideDeleteAlert();
     }
-  }
-  validateProjectName(name) {
-    if (/^[a-z]/i.test(name)) {
-      if (name.match(/[^-a-zA-Z]/)) {
-        return "false_convention";
-      }
-      return true;
-    }
-    return false;
   }
   handleChange(e) {
     const { error, openDeleteAlert } = this.state;
@@ -247,9 +238,9 @@ class ProjectSettingsPage extends React.Component {
     this.setState({ openDeleteAlert: true });
   }
   checkProjectInputValidity(input, output) {
-    if (!this.validateProjectName(input)) {
+    if (!validateName(input)) {
       return `${output} should start with a letter`;
-    } else if (this.validateProjectName(input) === "false_convention") {
+    } else if (validateName(input) === "false_convention") {
       return `${output} may only contain letters and a hypen -`;
     } else if (input.length > 22) {
       return `Project ${output} cannot exceed 22 characters`;

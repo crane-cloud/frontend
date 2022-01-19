@@ -13,10 +13,8 @@ import addProject, {
   clearAddProjectState,
 } from "../../redux/actions/addProject";
 import styles from "./CreateProject.module.css";
-import {
-  retrieveProjectTypes
-} from "../../helpers/projecttypes";
-
+import { retrieveProjectTypes } from "../../helpers/projecttypes";
+import handleProjectValidation from "../../helpers/validation";
 
 class CreateProject extends React.Component {
   constructor(props) {
@@ -29,14 +27,13 @@ class CreateProject extends React.Component {
       projectType: "",
       projectOrganisation: "",
       error: "",
-      othersBool:false,
-      otherType:"",
+      othersBool: false,
+      otherType: "",
     };
 
     this.handleTypeSelectChange = this.handleTypeSelectChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.validateProjectName = this.validateProjectName.bind(this);
     this.handleDatacenterSelectChange =
       this.handleDatacenterSelectChange.bind(this);
   }
@@ -47,42 +44,28 @@ class CreateProject extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {
-      isAdded,
-      params: { userID },
-    } = this.props;
+    const { isAdded } = this.props;
 
     if (isAdded !== prevProps.isAdded) {
-      return <Redirect to={`/users/${userID}/projects`} noThrow />;
+      return <Redirect to={`/projects`} noThrow />;
     }
   }
 
   handleTypeSelectChange(selected) {
-    const{
-      othersBool,
-    } = this.state
-      if(selected.id===6){
-        if(!othersBool){
-          this.setState({ othersBool: true });
-        }
-      }else{
-        this.setState({ projectType: selected.value });
-        if(othersBool){
-          this.setState({ othersBool: false });
-        }
+    const { othersBool } = this.state;
+    if (selected.id === 6) {
+      if (!othersBool) {
+        this.setState({ othersBool: true });
       }
-  };
+    } else {
+      this.setState({ projectType: selected.value });
+      if (othersBool) {
+        this.setState({ othersBool: false });
+      }
+    }
+  }
   handleDatacenterSelectChange(selected) {
     this.setState({ clusterID: selected.id });
-  }
-  validateProjectName(name) {
-    if (/^[a-z]/i.test(name)) {
-      if (name.match(/[^-a-zA-Z]/)) {
-        return "false_convention";
-      }
-      return true;
-    }
-    return false;
   }
   handleChange(e) {
     const { error } = this.state;
@@ -108,51 +91,23 @@ class CreateProject extends React.Component {
       projectOrganisation,
     } = this.state;
     const { addProject, data } = this.props;
-    const capitalizeFirstLetter = (input) => input.charAt(0).toUpperCase() + input.slice(1);
-    const type = othersBool ? capitalizeFirstLetter(otherType) : capitalizeFirstLetter(projectType);
-
-    if (
-      !projectName ||
-      !clusterID ||
-      !projectDescription ||
-      !type ||
-      !projectOrganisation
-    ) {
+    const capitalizeFirstLetter = (input) =>
+      input.charAt(0).toUpperCase() + input.slice(1);
+    const approvedType = othersBool
+      ? capitalizeFirstLetter(otherType)
+      : capitalizeFirstLetter(projectType);
+    if((handleProjectValidation(projectName, projectDescription, approvedType, projectOrganisation, clusterID)) !== undefined) {
       this.setState({
-        error: "all fields are required",
-      });
-    } else if (this.validateProjectName(projectName) === false) {
-      this.setState({
-        error: "name should start with a letter",
-      });
-    } else if (this.validateProjectName(projectName) === "false_convention") {
-      this.setState({
-        error: "name may only contain letters and a hypen -",
-      });
-    } else if (projectName.length > 30) {
-      this.setState({
-        error: "project name may not exceed 30 characters",
-      });
-    // for a meaning full project type
-    } else if(type.length < 4 || this.validateProjectName(type) === false 
-    || this.validateProjectName(type) === "false_convention"){
-      this.setState({
-        error: "project type must be atleast 4 characters, start with a letter and may only contain letters and a hypen -",
-      });
-    } else if(this.validateProjectName(projectOrganisation) === false 
-    || this.validateProjectName(projectOrganisation) === "false_convention"){
-      this.setState({
-        error: "project organisation must start with a letter and may only contain letters and a hypen -",
+        error: handleProjectValidation(projectName, projectDescription, approvedType, projectOrganisation, clusterID),
       });
     } else {
-
       const newProject = {
         description: projectDescription,
         cluster_id: clusterID,
         name: projectName,
         owner_id: data.id,
         organisation: projectOrganisation,
-        project_type: type,
+        project_type: approvedType,
       };
       addProject(newProject);
     }
@@ -164,14 +119,19 @@ class CreateProject extends React.Component {
       isAdding,
       message,
       errorCode,
-      clusters: {clusters},
-      params: { userID },
+      clusters: { clusters },
     } = this.props;
-    const { projectName, projectDescription, error, projectOrganisation,othersBool,otherType } =
-      this.state;
+    const {
+      projectName,
+      projectDescription,
+      error,
+      projectOrganisation,
+      othersBool,
+      otherType,
+    } = this.state;
     const types = retrieveProjectTypes();
     if (isAdded) {
-      return <Redirect to={`/users/${userID}/projects/`} noThrow />;
+      return <Redirect to={`/projects/`} noThrow />;
     }
     return (
       <div className={styles.MainContentSection}>
@@ -231,33 +191,34 @@ class CreateProject extends React.Component {
                     options={types}
                     onChange={this.handleTypeSelectChange}
                   />
-                  {othersBool && (<BlackInputText
-                   required
-                   placeholder="Type of project"
-                   name="otherType"
-                   value={otherType}
-                   onChange={(e) => {
-                     this.handleChange(e);
-                   }}
-                  />)}
+                  {othersBool && (
+                    <BlackInputText
+                      required
+                      placeholder="Type of project"
+                      name="otherType"
+                      value={otherType}
+                      onChange={(e) => {
+                        this.handleChange(e);
+                      }}
+                    />
+                  )}
                 </div>
                 <div className={styles.Element}>
                   <div className={styles.ElementTitle}>Description</div>
                   <textarea
-                     className={styles.TextArea}
-                     type="text"
-                     placeholder="Project description"
-                     rows="4"
-                     cols="50"
-                     name="projectDescription"
-                     value={projectDescription}
-                     onChange={(e) => {
+                    className={styles.TextArea}
+                    type="text"
+                    placeholder="Project description"
+                    rows="4"
+                    cols="50"
+                    name="projectDescription"
+                    value={projectDescription}
+                    onChange={(e) => {
                       this.handleChange(e);
-                   }}
+                    }}
                   />
                 </div>
               </div>
-             
             </div>
             <div className={styles.CreateButtons}>
               <div className={styles.InnerContent}>

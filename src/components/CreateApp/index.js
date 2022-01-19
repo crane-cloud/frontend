@@ -16,6 +16,7 @@ import Tooltip from "../Tooltip";
 import Tabs from "../Tabs";
 import createApp, { clearState } from "../../redux/actions/createApp";
 import styles from "./CreateApp.module.css";
+import { validateName} from "../../helpers/validation";
 
 class CreateApp extends React.Component {
   constructor(props) {
@@ -50,7 +51,6 @@ class CreateApp extends React.Component {
     this.hideForm = this.hideForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.validateAppName = this.validateAppName.bind(this);
     this.validateDomainName = this.validateDomainName.bind(this);
     this.togglePrivateImage = this.togglePrivateImage.bind(this);
     this.toggleCustomDomain = this.toggleCustomDomain.bind(this);
@@ -176,16 +176,6 @@ class CreateApp extends React.Component {
     this.setState({ envVars: newEnvVars });
   }
 
-  validateAppName(name) {
-    if (/^[a-z]/i.test(name)) {
-      if (name.match(/[^-a-zA-Z0-9.]/)) {
-        return "false_convention";
-      }
-      return true;
-    }
-    return false;
-  }
-
   togglePrivateImage() {
     const { isPrivateImage } = this.state;
     this.setState({
@@ -224,11 +214,11 @@ class CreateApp extends React.Component {
       this.setState({
         error: "app name & image uri are required",
       });
-    } else if (this.validateAppName(name) === false) {
+    } else if (validateName(name) === false) {
       this.setState({
         error: "Name should start with a letter",
       });
-    } else if (this.validateAppName(name) === "false_convention") {
+    } else if (validateName(name) === "false_convention") {
       this.setState({
         error: "Name may only contain letters,numbers,dot and a hypen -",
       });
