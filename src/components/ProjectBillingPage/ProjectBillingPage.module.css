@@ -40,15 +40,11 @@
   }
 
   .SmallContainer{
-    padding-left: 2rem;
-    padding-right: 2rem;
-    padding-bottom: 2rem;
+    padding: 0 2rem 2rem 2rem;
   }
   @media (max-width: 580px) {
     .SmallContainer{
-      padding-left: 1rem;
-      padding-right: 1rem;
-      padding-bottom: 2rem;
+      padding: 0 1rem 1rem 2rem;
     }
   }
   
@@ -56,8 +52,6 @@
     display: grid;
     grid-template-columns: 3fr .01fr 4fr;
     border:1px solid #cccccc;
-    min-width: 0;
-    height: 100%;
     background-color: #ffffff;
     overflow: auto;
 }
@@ -67,14 +61,13 @@
 .DonutChatContainer{
     display: flex;
     flex-direction: column;
-    gap: 0.1;
+    gap: 0.5;
 
 }
 .InsideHeading{
     display: flex;
     justify-content: center;
     border-bottom: 1px solid #cccccc;
-    height: min-content;
 }
 .Heading{
     padding: .3rem;
@@ -82,15 +75,9 @@
     font-weight: bold;
 }
 .Subtext{
-    display: flex;
-    height: min-content;
-    justify-items: flex-start;
     padding: 0 1rem;
 }
 .Subtext2{
-    display: flex;
-    height: min-content;
-    justify-items: flex-start;
     padding:  0 1rem;
     font-weight: 800;
 }
@@ -98,13 +85,12 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    height: min-content;
 
 }
 .MonthSummary{
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 2fr;
-    grid-gap: .6rem;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1.5fr;
+    grid-gap: .1rem;
     padding: 0 1rem;
 }
 .ResourseDetail{
@@ -137,7 +123,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0rem 1rem; 
+    padding: 0rem 1rem 0.5rem 1rem; 
 }
 .BarGraphContainer{
     display: flex;
