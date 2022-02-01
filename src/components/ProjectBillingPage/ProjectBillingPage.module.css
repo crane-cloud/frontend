@@ -1,0 +1,143 @@
+.Page {
+    margin: 0;
+    background: #f1f1f1;
+    max-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    /* overflow: hidden; */
+  }
+  .TopBarSection {
+    background-color: black;
+  }
+  .MainSection {
+    /* divided into two columns */
+    background-color: #f1f1f1;
+    display: grid;
+    grid-template-columns: 1.3fr 6fr;
+    overflow: hidden;
+  }
+  .SideBarSection {
+    overflow: hidden;
+    overflow-y: scroll;
+    height: calc(100vh - 5rem);
+  }
+  
+  .SideBarSection::-webkit-scrollbar {
+    display: none;
+    min-width: fit-content;
+  }
+  
+  .SideBarSection {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .MainContentSection {
+    /* divided into two rows */
+    display: grid;
+    grid-template-rows: 80px 4fr;
+    overflow: auto;
+  }
+
+  .SmallContainer{
+    padding: 0 2rem 2rem 2rem;
+  }
+  @media (max-width: 580px) {
+    .SmallContainer{
+      padding: 0 1rem 1rem 2rem;
+    }
+  }
+  
+.OuterContainerBorder{
+    display: grid;
+    grid-template-columns: 3fr .01fr 4fr;
+    border:1px solid #cccccc;
+    background-color: #ffffff;
+    overflow: auto;
+}
+.hr {
+  border-left:1px solid #cccccc;
+}
+.DonutChatContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5;
+
+}
+.InsideHeading{
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #cccccc;
+}
+.Heading{
+    padding: .3rem;
+    font-size: large;
+    font-weight: bold;
+}
+.Subtext{
+    padding: 0 1rem;
+}
+.Subtext2{
+    padding:  0 1rem;
+    font-weight: 800;
+}
+.DonutChat{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+}
+.MonthSummary{
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1.5fr;
+    grid-gap: .1rem;
+    padding: 0 1rem;
+}
+.ResourseDetail{
+    display: grid;
+    grid-template-columns: 1fr  3fr 1fr;
+    grid-gap:.5rem;
+    border-bottom: 1px solid #000000;
+    padding: .2rem;
+}
+.Cube{
+    display: flex;
+    width: 1rem;
+    height: 1rem;
+}
+
+.ResourcePrice{
+    font-weight: 700;
+    text-align: end;
+}
+.Total{
+    display: grid;
+    grid-template-columns: 1fr  1fr;
+    grid-gap:.5rem;
+    padding: 0rem 0.6rem;   
+}
+.TotalTxt{
+    text-align: start; 
+}
+.paymentButton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0rem 1rem 0.5rem 1rem; 
+}
+.BarGraphContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+   
+}
+
+
+@media(max-width: 768px){
+    .OuterContainerBorder{
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        overflow: auto;
+    }
+  }
