@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Toggle Button Component Renders a Toggle button component 1`] = `ShallowWrapper {}`;

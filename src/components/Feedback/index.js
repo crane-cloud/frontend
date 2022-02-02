@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const Feedback = ({ type, message }) => (
-  <div className={type === "success" ? "SuccessOnWhite" : "ErrorOnWhite"}>
+  <div className={type === "success" ? "SuccessOnWhite" : "ErrorOnWhite"} >
     {message}
   </div>
 );
