@@ -9,6 +9,9 @@ import Header from "../Header";
 import Spinner from "../Spinner";
 import Feedback from "../Feedback";
 import BlackInputText from "../BlackInputText";
+import Checkbox from "../Checkbox";
+import ToggleOnOffButton from "../ToggleOnOffButton";
+import { ReactComponent as InfoIcon } from "../../assets/images/info-icon.svg";
 import addProject, {
   clearAddProjectState,
 } from "../../redux/actions/addProject";
@@ -19,6 +22,9 @@ import handleProjectValidation from "../../helpers/validation";
 class CreateProject extends React.Component {
   constructor(props) {
     super(props);
+    const {
+      clusters: { clusters },
+    } = this.props;
 
     this.state = {
       projectName: "",
@@ -27,7 +33,10 @@ class CreateProject extends React.Component {
       projectType: "",
       projectOrganisation: "",
       error: "",
+      multiCluster: false,
+      clusterchoices:false,
       othersBool: false,
+      SelectedClusters: new Array(clusters.length).fill(false),
       otherType: "",
     };
 
@@ -36,6 +45,9 @@ class CreateProject extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleDatacenterSelectChange =
       this.handleDatacenterSelectChange.bind(this);
+    this.changeMultiSelectioOption = this.changeMultiSelectioOption.bind(this);
+    this.togglemultiCluster = this.togglemultiCluster.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
   }
 
   componentDidMount() {
@@ -50,6 +62,28 @@ class CreateProject extends React.Component {
       return <Redirect to={`/projects`} noThrow />;
     }
   }
+  handleOnChange(position){
+    const { SelectedClusters } = this.state;
+    this.setState({
+      SelectedClusters: SelectedClusters.map((item, index) =>
+        index === position ? !item : item
+      )
+    });
+  }
+  changeMultiSelectioOption() {
+    const { clusterchoices } = this.state;
+    this.setState({
+      clusterchoices: !clusterchoices
+    })
+  };
+
+  togglemultiCluster() {
+    const { multiCluster } = this.state;
+    this.setState({
+      multiCluster: !multiCluster
+    })
+  }
+
 
   handleTypeSelectChange(selected) {
     const { othersBool } = this.state;
@@ -96,7 +130,7 @@ class CreateProject extends React.Component {
     const approvedType = othersBool
       ? capitalizeFirstLetter(otherType)
       : capitalizeFirstLetter(projectType);
-    if((handleProjectValidation(projectName, projectDescription, approvedType, projectOrganisation, clusterID)) !== undefined) {
+    if ((handleProjectValidation(projectName, projectDescription, approvedType, projectOrganisation, clusterID)) !== undefined) {
       this.setState({
         error: handleProjectValidation(projectName, projectDescription, approvedType, projectOrganisation, clusterID),
       });
@@ -128,6 +162,9 @@ class CreateProject extends React.Component {
       projectOrganisation,
       othersBool,
       otherType,
+      multiCluster,
+      clusterchoices,
+      SelectedClusters,
     } = this.state;
     const types = retrieveProjectTypes();
     if (isAdded) {
@@ -150,7 +187,7 @@ class CreateProject extends React.Component {
           <div className={styles.FormsSection}>
             <div className={styles.ProjectForm}>
               <div className={styles.LeftFormElements}>
-                <div className={styles.Element}>
+                <div className={styles.ClusterElement}>
                   <div className={styles.ElementTitle}>Datacenter</div>
                   <Select
                     required
@@ -158,7 +195,54 @@ class CreateProject extends React.Component {
                     options={clusters}
                     onChange={this.handleDatacenterSelectChange}
                   />
+                  <div className={styles.ClusterCheckboxSection}>
+                    <InfoIcon />  &nbsp; The above selection is for a single cluster set up, for multi-cluster options check the box below.
+                  </div>
+                  <div className={styles.ClusterCheckboxSection}>
+                    <Checkbox
+                      isBlack
+                      onClick={this.togglemultiCluster}
+                      isChecked={multiCluster}
+                    />
+                    &nbsp; Multi-cluster options
+                  </div>
+                  { multiCluster && (
+                    <div>
+                  <div className={styles.ClusterToggleSection}>
+                    <ToggleOnOffButton onClick={this.changeMultiSelectioOption} /> &nbsp;
+                    Cranecloud automatically selects the rest of the clusters for this project.
+                  </div>
+                  { clusterchoices &&  (<div>
+                    <div className={styles.MultiSelectioOption}>
+                    Please any other cluster for this project.
+                  </div>
+                  <div className={styles.Multipleclusters}>
+                    {clusters.map(({ name, id }, index) => {
+                      return (
+                        <li className={styles.ListStyle} key={index}>
+                          <div className={styles.clusterListItem}>
+                            <div className={styles.leftsection}>
+                              <input
+                                type="checkbox"
+                                id={id}
+                                name={name}
+                                value={name}
+                                checked={SelectedClusters[index]}
+                                onChange={() => this.handleOnChange(index)}
+                              />
+                              <label className={styles.ClusterLabel} htmlFor={id}>{name}</label>
+                            </div>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </div> 
+                  </div> )}  
+
+                  </div>)}
+                  
                 </div>
+               
                 <div className={styles.Element}>
                   <div className={styles.ElementTitle}>Name</div>
                   <BlackInputText

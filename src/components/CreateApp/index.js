@@ -9,6 +9,7 @@ import BlackInputText from "../BlackInputText";
 import { v4 as uuidv4 } from "uuid";
 // import Modal from "../Modal";
 import RemoveIcon from "../../assets/images/remove.svg";
+import ToggleOnOffButton from "../ToggleOnOffButton";
 import Spinner from "../Spinner";
 import Feedback from "../Feedback";
 import Checkbox from "../Checkbox";
@@ -22,6 +23,9 @@ class CreateApp extends React.Component {
   constructor(props) {
     super(props);
 
+    const {
+      clusters: { clusters },
+    } = this.props;
     this.state = {
       name: "",
       uri: "",
@@ -43,6 +47,8 @@ class CreateApp extends React.Component {
         error: "",
       },
       replicas: 1,
+      multiCluster: false,
+      SelectedClusters: new Array(clusters.length).fill(false),
     };
 
     this.addEnvVar = this.addEnvVar.bind(this);
@@ -59,7 +65,24 @@ class CreateApp extends React.Component {
     this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
     this.getProjectName = this.getProjectName.bind(this);
     this.getProjectDescription = this.getProjectDescription.bind(this);
+    this.changeMultiSelectionOption = this.changeMultiSelectionOption.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
+    
   }
+  handleOnChange(position){
+    const { SelectedClusters } = this.state;
+    this.setState({
+      SelectedClusters: SelectedClusters.map((item, index) =>
+        index === position ? !item : item
+      )
+    });
+  }
+  changeMultiSelectionOption() {
+    const { multiCluster } = this.state;
+    this.setState({
+      multiCluster: !multiCluster
+    })
+  };
 
   componentDidMount() {
     const { clearState } = this.props;
@@ -207,7 +230,9 @@ class CreateApp extends React.Component {
       domainName,
       replicas,
     } = this.state;
-    const { createApp, params } = this.props;
+    const { createApp,
+       params,
+       } = this.props;
 
     if (!name || !uri) {
       // if user tries to submit empty email/password
@@ -313,6 +338,7 @@ class CreateApp extends React.Component {
       errorCode,
       params: { projectID },
       data: { beta },
+      clusters: { clusters },
     } = this.props;
     const {
       name,
@@ -328,6 +354,8 @@ class CreateApp extends React.Component {
       dockerCredentials: { username, email, password, server },
       isCustomDomain,
       domainName,
+      multiCluster,
+      SelectedClusters,
     } = this.state;
     if (isCreated) {
       return (
@@ -471,6 +499,48 @@ class CreateApp extends React.Component {
                     </Tabs>
                   </div>
                 )}
+
+                <div className={styles.ClusterSelectionSection}>  
+                  <div className={styles.alignText}>Multicluster options</div> 
+                  <div className={styles.TooltipStyles}>
+                  <Tooltip
+                      showIcon
+                      message="Chosse cluster policy for your application deployment"
+                    />
+                  </div>
+              
+                  </div>
+                  <div className={styles.ClusterToggleSection}>
+                    <ToggleOnOffButton onClick={this.changeMultiSelectionOption} /> &nbsp;
+                     Deploy app on the same datacenter(s) as project.
+                  </div>
+                  { multiCluster && (
+                    <div className={styles.ClustersSection}>
+                    <div className={styles.MultiSelectionText}>
+                    Please select a datacenter(s) you would like your app to be deployed to.
+                  </div>
+                  <div className={styles.Multipleclusters}>
+                    {clusters.map(({ name, id }, index) => {
+                      return (
+                        <li className={styles.ListStyle} key={index}>
+                          <div className={styles.clusterListItem}>
+                            <div className={styles.leftsection}>
+                              <input
+                                type="checkbox"
+                                id={id}
+                                name={name}
+                                value={name}
+                                checked={SelectedClusters[index]}
+                                onChange={() => this.handleOnChange(index)}
+                              />
+                              <label className={styles.ClusterLabel} htmlFor={id}>{name}</label>
+                            </div>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </div> 
+                  </div> )}  
 
                 {beta && (
                 <div className={styles.CustomDomainCheckField}>
@@ -639,11 +709,14 @@ CreateApp.propTypes = {
   isCreating: PropTypes.bool,
   isCreated: PropTypes.bool,
   message: PropTypes.string,
+  clusters: PropTypes.object,
+  getClustersList: PropTypes.func.isRequired,
   params: PropTypes.shape({}),
 };
 
 CreateApp.defaultProps = {
   message: "",
+  clusters: [],
   isCreated: false,
   isCreating: false,
   params: {},
@@ -653,6 +726,7 @@ const mapStateToProps = (state) => {
   const { isCreating, isCreated, clearAppCreateState, message, errorCode } =
     state.createAppReducer;
   const { data } = state.user;
+  const { clusters } = state.clustersReducer;
 
   return {
     isCreating,
@@ -660,6 +734,7 @@ const mapStateToProps = (state) => {
     isCreated,
     clearAppCreateState,
     errorCode,
+    clusters,
     data
   };
 };

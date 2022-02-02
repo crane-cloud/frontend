@@ -97,3 +97,42 @@ textarea {
   justify-content: center;
   gap: 1rem;
 }
+
+
+.ClusterCheckboxSection {
+  display: flex;
+  padding: .4rem 0rem;
+  flex-direction: row;
+  font-size: 13px;
+}
+.ClusterToggleSection{
+  display: flex;
+  padding: .4rem .7rem;
+  flex-direction: row;
+  font-size: 13px;
+  text-align: center;
+  align-items: center;
+}
+.MultiSelectioOption {
+  display: flex;
+  padding: .4rem 4.9rem;
+  font-size: 13px;
+  color: #7c7a7a;
+  text-align: center;
+  align-items: center;
+}
+.Multipleclusters{
+  display: flex;
+  padding: .4rem 4.9rem;
+}
+li.ListStyle{
+  list-style-type: none;
+}
+.leftsection{
+  display: flex;
+  align-items: center;
+}
+.ClusterLabel{
+  display: flex;
+  padding-left: 2rem;
+}
