@@ -505,7 +505,7 @@ class CreateApp extends React.Component {
                   <div className={styles.TooltipStyles}>
                   <Tooltip
                       showIcon
-                      message="Chosse cluster policy for your application deployment"
+                      message="Choose cluster policy for your application deployment"
                     />
                   </div>
               
