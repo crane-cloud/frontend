@@ -290,3 +290,59 @@
 .ErrorOnWhite{
   width: 100%;
 }
+
+
+.ClusterSelectionSection{
+  display: flex;
+  justify-content: space-between;
+  width: 58%;
+  height: fit-content;
+  flex-direction: row;
+ color: rgb(85, 85, 85);
+}
+.TooltipStyles{
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.alignText{
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+
+.ClusterToggleSection{
+  display: flex;
+  padding: 0rem;
+  flex-direction: row;
+  font-size: 13px;
+  text-align: center;
+  align-items: center;
+}
+
+.ClustersSection{
+  display: flex;
+  padding: 0 4rem;
+  flex-direction: column;
+  font-size: 13px;
+  color: #000000;
+}
+.MultiSelectionText{
+  padding-bottom: 1rem;
+}
+
+li.ListStyle{
+  list-style-type: none;
+}
+.leftsection{
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  width: fit-content;
+
+}
+
+.ClusterLabel{
+  display: flex;
+  padding-left: 1rem;
+}
