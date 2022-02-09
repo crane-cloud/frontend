@@ -131,6 +131,24 @@
     gap: 0.5rem;
    
 }
+.MetricsCardGraph {
+  width: 90%;
+  align-self: flex-start;
+  
+}
+.MetricContainer{
+  display: flex;
+  padding-left: 1rem;
+  padding-bottom: 1rem;
+  justify-items: center;
+}
+
+
+@media (min-width:1366px) {
+  .MetricsCardGraph {
+    height: 25rem;    
+  }
+}
 
 
 @media(max-width: 768px){
