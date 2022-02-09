@@ -184,7 +184,7 @@ class ProjectBillingPage extends PureComponent {
               </div>
                
                </div>
-               <hr className={styles.hr}/>
+               <div className={styles.hr}></div> 
                <div className={styles.BarGraphContainer}>
                <div className={styles.InsideHeading}>
                     <div className={styles.Heading}>
@@ -200,7 +200,7 @@ class ProjectBillingPage extends PureComponent {
                  <MetricsCard
                 className={styles.MetricsCardGraph}
                 title={<SpendingPeriod  onChange={this.handlePeriodChange} />}
-              >
+                 >
                  <BarGraph data={months} height={180} width={200}  barSize={30} 
                  width_percentage="80%" height_percentage="80%" />
                  </MetricsCard>
