@@ -7,10 +7,15 @@
 .ContentSection {
   display: flex;
   flex-direction: column;
-  height: 100vh;
   padding: 1rem 2rem 0rem 2rem;
   gap: 1rem;
   padding-left: 3rem;
+  overflow: auto;
+}
+
+.ModalFormInputs{
+  height: calc(100vh - 12rem);
+  max-width: 40rem;
 }
 
 .BackDiv img {
@@ -39,9 +44,6 @@
   gap: 1rem;
 }
 
-.ModalFormInputsBasic input {
-  width: 60%;
-}
 
 .ModalFormInputsBasic input::placeholder {
   color: gray;
@@ -49,7 +51,6 @@
 
 .EnvVarsInputGroup {
   width: 100%;
-  max-width: 60%;
   display: grid;
   grid-template-columns: 3fr 1fr;
   gap: 0.5rem;
@@ -57,7 +58,6 @@
 
 .EnvVarsInputGroup .EnvVarsInputs {
   width: 70%;
-  max-width: 60%;
   display: grid;
   gap: 0.5rem;
   grid-template-columns: 1fr 1fr;
@@ -72,9 +72,11 @@
 .EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn {
   position: absolute;
   max-width: 100%;
+  height: 2.7rem;
   color: #fff;
   background-color: #008ac1;
   outline: 2px solid #008ac1;
+  padding: 1.3rem;
 }
 
 .EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn:hover {
@@ -91,10 +93,9 @@
 }
 
 .ModalFormButtons {
-  width: 50%;
-  display: grid;
+  display: flex;
   justify-content: center;
-  padding: 2rem ;
+  padding: 2rem 0;
   gap: 1rem;
 }
 
@@ -104,7 +105,6 @@
 }
 
 .EnvVarsTable table {
-  max-width: 60%;
   text-align: left;
 }
 
@@ -219,7 +219,7 @@
 
 .InputTooltipContainer {
   position: absolute;
-  right: 41%;
+  right: 0%;
   padding-right: 0.5rem;
   height: 100%;
   display: flex;
@@ -273,14 +273,6 @@
   font-size: 1.5rem;
 }
 
-.ReplicasSelect {
-  width: 60%!important;
-}
-
-.ModalFormInputs{
-  height: calc(100vh - 12rem);
-  overflow: auto;
-}
 
 .FormHeading{
   padding: .3rem 0rem;
@@ -295,7 +287,6 @@
 .ClusterSelectionSection{
   display: flex;
   justify-content: space-between;
-  width: 58%;
   height: fit-content;
   flex-direction: row;
  color: rgb(85, 85, 85);
