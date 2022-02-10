@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-import  "./SpendingPeriod.css";
+import "./SpendingPeriod.css";
 import PrimaryButton from "../PrimaryButton";
 
 const SpendingPeriod = (props) => {
@@ -10,14 +10,14 @@ const SpendingPeriod = (props) => {
 
   const [showModal, setShowModal] = useState(false);
   const [toTimeStamp, setToTimeStamp] =
-   useState(`${todate.getFullYear()}-${("0" + (todate.getMonth() + 1)).slice(-2)}`);
-  const [period,setPeriod] = useState();
-  const [fromTimeStamp, setFromTimeStamp] = 
-  useState(`${before.getFullYear()}-${("0" + (before.getMonth() + 1)).slice(-2)}`);
+    useState(`${todate.getFullYear()}-${("0" + (todate.getMonth() + 1)).slice(-2)}`);
+  const [period, setPeriod] = useState();
+  const [fromTimeStamp, setFromTimeStamp] =
+    useState(`${before.getFullYear()}-${("0" + (before.getMonth() + 1)).slice(-2)}`);
 
-   const openModalRef = useRef(null);
+  const openModalRef = useRef(null);
 
-  
+
   const displayCalendar = ({ target }) => {
     setShowModal(!showModal);
     setPeriod(target.getAttribute("value"));
@@ -60,10 +60,10 @@ const SpendingPeriod = (props) => {
   }, []);
 
   return (
-   
+
     <div className="PeriodContainer">
       <div className="PeriodButtonsSection">
-      <div
+        <div
           className={`${period === "5m" && "PeriodButtonActive"} PeriodButton`}
           name="5m"
           value="5m"
@@ -82,9 +82,8 @@ const SpendingPeriod = (props) => {
           all
         </div>
         <div
-          className={`${
-            period === "custom" && "PeriodButtonActive"
-          } PeriodButton PeriodButtonCustom`}
+          className={`${period === "custom" && "PeriodButtonActive"
+            } PeriodButton PeriodButtonCustom`}
           name="custom"
           value="custom"
           role="presentation"
@@ -96,27 +95,29 @@ const SpendingPeriod = (props) => {
         {showModal && (
           <div ref={openModalRef} className="CalendarModal">
             <div className="DateInputsSection">
-            <label htmlFor="start">From:</label>
-               <input type="month" 
-               id="From" 
-               name="From"
-               value={fromTimeStamp}
-                onChange={ (event)=>
-                  {setFromTimeStamp(event.target.value)}}
+              <div className="SelectDate">
+                <div >From:</div>
+                <input type="month"
+                  id="From"
+                  name="From"
+                  value={fromTimeStamp}
+                  onChange={(event) => { setFromTimeStamp(event.target.value) }}
                 />
-                <label htmlFor="To">To:</label>
-               <input type="month" 
-               id="To" 
-               name="To"
-               value={toTimeStamp}
-               onChange={ (event)=>
-                {setToTimeStamp(event.target.value)}}/>   
+              </div>
+              <div className="SelectDate">
+                <div >To:</div>
+                <input type="month"
+                  id="To"
+                  name="To"
+                  value={toTimeStamp}
+                  onChange={(event) => { setToTimeStamp(event.target.value) }} />
+              </div>
             </div>
             <PrimaryButton
-               label="Submit"
-               className="Button"
-               onClick={handleSubmit}
-               />
+              label="Submit"
+              className="Button"
+              onClick={handleSubmit}
+            />
           </div>
         )}
       </div>

@@ -202,7 +202,7 @@ class ProjectBillingPage extends PureComponent {
                 title={<SpendingPeriod  onChange={this.handlePeriodChange} />}
                  >
                  <BarGraph data={months} height={180} width={200}  barSize={30} 
-                 width_percentage="80%" height_percentage="80%" />
+                 width_percentage="100%" height_percentage="80%" />
                  </MetricsCard>
                  </div>
                </div>      
