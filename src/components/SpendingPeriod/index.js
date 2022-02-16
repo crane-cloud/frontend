@@ -61,8 +61,8 @@ const SpendingPeriod = (props) => {
 
   return (
 
-    <div className="PeriodContainer">
-      <div className="PeriodButtonsSection">
+    <div className="SprendPeriodContainer">
+      <div className="SpendPeriodButtonsSection">
         <div
           className={`${period === "5m" && "PeriodButtonActive"} PeriodButton`}
           name="5m"
@@ -93,9 +93,9 @@ const SpendingPeriod = (props) => {
           custom
         </div>
         {showModal && (
-          <div ref={openModalRef} className="CalendarModal">
-            <div className="DateInputsSection">
-              <div className="SelectDate">
+          <div ref={openModalRef} className="SpendCalendarModal">
+            <div className="SpendDateInputsSection">
+              <div className="SpendSelectDate">
                 <div >From:</div>
                 <input type="month"
                   id="From"
@@ -104,7 +104,7 @@ const SpendingPeriod = (props) => {
                   onChange={(event) => { setFromTimeStamp(event.target.value) }}
                 />
               </div>
-              <div className="SelectDate">
+              <div className="SpendSelectDate">
                 <div >To:</div>
                 <input type="month"
                   id="To"
@@ -115,7 +115,7 @@ const SpendingPeriod = (props) => {
             </div>
             <PrimaryButton
               label="Submit"
-              className="Button"
+              className="SpendButton"
               onClick={handleSubmit}
             />
           </div>
