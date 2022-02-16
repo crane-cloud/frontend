@@ -1,20 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
+import DateInput from "../DateInput";
 import "./SpendingPeriod.css";
-import PrimaryButton from "../PrimaryButton";
 
 const SpendingPeriod = (props) => {
-  const current = new Date();
-  const before = new Date(current.setMonth(current.getMonth() - 5));
-  const todate = new Date();
 
   const [showModal, setShowModal] = useState(false);
-  const [toTimeStamp, setToTimeStamp] =
-    useState(`${todate.getFullYear()}-${("0" + (todate.getMonth() + 1)).slice(-2)}`);
-  const [period, setPeriod] = useState();
-  const [fromTimeStamp, setFromTimeStamp] =
-    useState(`${before.getFullYear()}-${("0" + (before.getMonth() + 1)).slice(-2)}`);
 
+ const [toTimeStamp, setToTimeStamp] = useState(0);
+  const [fromTimeStamp, setFromTimeStamp] = useState(0);
+  const [period, setPeriod] = useState();
+  
+ 
+    const [showFromCalendar, setShowFromCalendar] = useState(true);
+    const [showToCalendar, setShowToCalendar] = useState(false);
   const openModalRef = useRef(null);
 
 
@@ -37,6 +36,27 @@ const SpendingPeriod = (props) => {
     const { onChange } = props;
     setPeriod(target.getAttribute("value"));
     onChange(target.getAttribute("value"));
+  };
+  const handleFromDate = (fromTS) => {
+    const from_date = new Date(fromTS)
+    setFromTimeStamp(`${from_date.getFullYear()}-${from_date.getMonth()+1}`);
+  };
+  const handleToDate = (toTS) => {
+    const to_date = new Date(toTS)
+    setToTimeStamp(`${to_date.getFullYear()}-${to_date.getMonth()+1}`);
+  };
+  const switchCalendars = ({ target }) => {
+    const calendar = target.getAttribute("value");
+
+    if (calendar === "from" && !showFromCalendar) {
+      setShowFromCalendar(true);
+      setShowToCalendar(false);
+    }
+
+    if (calendar === "to" && !showToCalendar) {
+      setShowToCalendar(true);
+      setShowFromCalendar(false);
+    }
   };
 
   const handleSubmit = () => {
@@ -94,30 +114,35 @@ const SpendingPeriod = (props) => {
         </div>
         {showModal && (
           <div ref={openModalRef} className="SpendCalendarModal">
-            <div className="SpendDateInputsSection">
               <div className="SpendSelectDate">
-                <div >From:</div>
-                <input type="month"
-                  id="From"
-                  name="From"
-                  value={fromTimeStamp}
-                  onChange={(event) => { setFromTimeStamp(event.target.value) }}
-                />
+                <div className="SpendDateInputSection">
+              <div >from:</div>
+              <DateInput
+                handleChange={handleFromDate}
+                showCalendar={showFromCalendar}
+                SpendCalenderClass="Calenderposition"
+                onClick={switchCalendars}
+                months_only = {true}
+                onCancel={closeCalendar}
+                onSubmit={handleSubmit}
+                value="from"
+              />
               </div>
-              <div className="SpendSelectDate">
-                <div >To:</div>
-                <input type="month"
-                  id="To"
-                  name="To"
-                  value={toTimeStamp}
-                  onChange={(event) => { setToTimeStamp(event.target.value) }} />
+              <div className="SpendDateInputSection">
+               <div>To:</div>
+              <DateInput
+                handleChange={handleToDate}
+                showCalendar={showToCalendar}
+                SpendCalenderClass="Calenderposition"
+                months_only={true}
+                onClick={switchCalendars}
+                onCancel={closeCalendar}
+                onSubmit={handleSubmit}
+                value="to"
+              />
               </div>
             </div>
-            <PrimaryButton
-              label="Submit"
-              className="SpendButton"
-              onClick={handleSubmit}
-            />
+            
           </div>
         )}
       </div>

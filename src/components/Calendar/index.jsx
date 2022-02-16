@@ -33,11 +33,10 @@ class Calendar extends React.Component {
   }
 
   componentDidMount() {
-    const { onChange } = this.props;
+    const { onChange} = this.props;
     const { selected } = this.state;
 
     this.renderDays(currentMonth, currentYear);
-
     onChange(selected);
   }
 
@@ -52,6 +51,7 @@ class Calendar extends React.Component {
   // this function sets state for next month
   prevMonth() {
     const { month, year } = this.state;
+  const { onChange,months_only} = this.props;
     let monthCopy = month;
     let yearCopy = year;
 
@@ -63,13 +63,20 @@ class Calendar extends React.Component {
       monthCopy -= 1;
       this.setState({ month: monthCopy });
     }
-
-    this.renderDays(monthCopy, yearCopy);
+    if(months_only){
+      onChange({
+        day:1,
+        month: monthCopy,
+        year:yearCopy,
+      });
+    }
+    
   }
 
   // this function sets state for previous month
   nextMonth() {
     const { month, year } = this.state;
+   const { onChange,months_only} = this.props;
     let monthCopy = month;
     let yearCopy = year;
 
@@ -81,9 +88,16 @@ class Calendar extends React.Component {
       monthCopy += 1;
       this.setState({ month: monthCopy });
     }
-
-    this.renderDays(monthCopy, yearCopy);
+    if(months_only){
+      onChange({
+        day:1,
+        month: monthCopy,
+        year: yearCopy,
+      });
+    }
+   
   }
+ 
 
   // this function sets selected to the clicked date
   handleSelected(day) {
@@ -147,7 +161,9 @@ class Calendar extends React.Component {
   }
 
   render() {
+    const { months_only } = this.props
     const { month, year, weeks, selected } = this.state;
+
 
     return (
       <div className="CalendarWrapper DisableTextSelect">
@@ -168,6 +184,8 @@ class Calendar extends React.Component {
             <RightArrow />
           </div>
         </div>
+
+       {!months_only && ( <>
         <div className="CalendarDayNames">
           <div className="WeekDay">sun</div>
           <div className="WeekDay">mon</div>
@@ -201,6 +219,7 @@ class Calendar extends React.Component {
             </div>
           ))}
         </div>
+        </>)}
       </div>
     );
   }
