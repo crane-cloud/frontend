@@ -34,7 +34,7 @@ class CreateProject extends React.Component {
       projectOrganisation: "",
       error: "",
       multiCluster: false,
-      clusterchoices:false,
+      clusterchoices: false,
       othersBool: false,
       SelectedClusters: new Array(clusters.length).fill(false),
       otherType: "",
@@ -62,28 +62,27 @@ class CreateProject extends React.Component {
       return <Redirect to={`/projects`} noThrow />;
     }
   }
-  handleOnChange(position){
+  handleOnChange(position) {
     const { SelectedClusters } = this.state;
     this.setState({
       SelectedClusters: SelectedClusters.map((item, index) =>
         index === position ? !item : item
-      )
+      ),
     });
   }
   changeMultiSelectioOption() {
     const { clusterchoices } = this.state;
     this.setState({
-      clusterchoices: !clusterchoices
-    })
-  };
+      clusterchoices: !clusterchoices,
+    });
+  }
 
   togglemultiCluster() {
     const { multiCluster } = this.state;
     this.setState({
-      multiCluster: !multiCluster
-    })
+      multiCluster: !multiCluster,
+    });
   }
-
 
   handleTypeSelectChange(selected) {
     const { othersBool } = this.state;
@@ -130,9 +129,23 @@ class CreateProject extends React.Component {
     const approvedType = othersBool
       ? capitalizeFirstLetter(otherType)
       : capitalizeFirstLetter(projectType);
-    if ((handleProjectValidation(projectName, projectDescription, approvedType, projectOrganisation, clusterID)) !== undefined) {
+    if (
+      handleProjectValidation(
+        projectName,
+        projectDescription,
+        approvedType,
+        projectOrganisation,
+        clusterID
+      ) !== undefined
+    ) {
       this.setState({
-        error: handleProjectValidation(projectName, projectDescription, approvedType, projectOrganisation, clusterID),
+        error: handleProjectValidation(
+          projectName,
+          projectDescription,
+          approvedType,
+          projectOrganisation,
+          clusterID
+        ),
       });
     } else {
       const newProject = {
@@ -196,7 +209,9 @@ class CreateProject extends React.Component {
                     onChange={this.handleDatacenterSelectChange}
                   />
                   <div className={styles.ClusterCheckboxSection}>
-                    <InfoIcon />  &nbsp; The above selection is for a single cluster set up, for multi-cluster options check the box below.
+                    <InfoIcon /> &nbsp; The above selection is for a single
+                    cluster set up, for multi-cluster options check the box
+                    below.
                   </div>
                   <div className={styles.ClusterCheckboxSection}>
                     <Checkbox
@@ -204,45 +219,58 @@ class CreateProject extends React.Component {
                       onClick={this.togglemultiCluster}
                       isChecked={multiCluster}
                     />
-                    &nbsp; Multi-cluster options
+                    <div className={styles.NormalText}>
+                      &nbsp; Multi-cluster options
+                    </div>
                   </div>
-                  { multiCluster && (
+                  {multiCluster && (
                     <div>
-                  <div className={styles.ClusterToggleSection}>
-                    <ToggleOnOffButton onClick={this.changeMultiSelectioOption} /> &nbsp;
-                    Cranecloud automatically selects the rest of the clusters for this project.
-                  </div>
-                  { clusterchoices &&  (<div>
-                    <div className={styles.MultiSelectioOption}>
-                    Please any other cluster for this project.
-                  </div>
-                  <div className={styles.Multipleclusters}>
-                    {clusters.map(({ name, id }, index) => {
-                      return (
-                        <li className={styles.ListStyle} key={index}>
-                          <div className={styles.clusterListItem}>
-                            <div className={styles.leftsection}>
-                              <input
-                                type="checkbox"
-                                id={id}
-                                name={name}
-                                value={name}
-                                checked={SelectedClusters[index]}
-                                onChange={() => this.handleOnChange(index)}
-                              />
-                              <label className={styles.ClusterLabel} htmlFor={id}>{name}</label>
-                            </div>
+                      <div className={styles.ClusterToggleSection}>
+                        <ToggleOnOffButton
+                          onClick={this.changeMultiSelectioOption}
+                        />{" "}
+                        &nbsp; Cranecloud automatically selects the rest of the
+                        clusters for this project.
+                      </div>
+                      {clusterchoices && (
+                        <div>
+                          <div className={styles.MultiSelectioOption}>
+                            Please any other cluster for this project.
                           </div>
-                        </li>
-                      );
-                    })}
-                  </div> 
-                  </div> )}  
-
-                  </div>)}
-                  
+                          <div className={styles.Multipleclusters}>
+                            {clusters.map(({ name, id }, index) => {
+                              return (
+                                <li className={styles.ListStyle} key={index}>
+                                  <div className={styles.clusterListItem}>
+                                    <div className={styles.leftsection}>
+                                      <input
+                                        type="checkbox"
+                                        id={id}
+                                        name={name}
+                                        value={name}
+                                        checked={SelectedClusters[index]}
+                                        onChange={() =>
+                                          this.handleOnChange(index)
+                                        }
+                                      />
+                                      <label
+                                        className={styles.ClusterLabel}
+                                        htmlFor={id}
+                                      >
+                                        {name}
+                                      </label>
+                                    </div>
+                                  </div>
+                                </li>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
-               
+
                 <div className={styles.Element}>
                   <div className={styles.ElementTitle}>Name</div>
                   <BlackInputText
@@ -307,7 +335,8 @@ class CreateProject extends React.Component {
             <div className={styles.CreateButtons}>
               <div className={styles.InnerContent}>
                 <PrimaryButton
-                  label={isAdding ? <Spinner /> : "Create"}
+                  className="AuthBtn"
+                  label={isAdding ? <Spinner /> : "Create Project"}
                   onClick={this.handleSubmit}
                 />
               </div>

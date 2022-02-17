@@ -20,6 +20,8 @@ const DateInput = ({
   showCalendar,
   onClick,
   value,
+  months_only,
+  SpendCalenderClass,
   onCancel,
   onSubmit,
 }) => {
@@ -93,20 +95,21 @@ const DateInput = ({
           role="presentation"
         >
           {date
-            ? `${trimMonthName(monthNames[date.month])} ${date.day}, ${
-                date.year
-              }`
-            : `${trimMonthName(
-                monthNames[currentMonth]
-              )} ${today}, ${currentYear}`}
+            ? `${
+              date.year
+            } ${!months_only?date.day:""}, ${trimMonthName(monthNames[date.month])} `
+            : `${currentYear} ${!months_only ? today :""}, ${trimMonthName(
+              monthNames[currentMonth]
+            )}`}
         </div>
       </div>
       {showCalendar && (
-        <div className={`DateInputCalendar ${position}`}>
+        <div className={!months_only ? `DateInputCalendar ${position}`: `${SpendCalenderClass}`}>
+          {!months_only &&
           <div className="TimeSection">
             <TimeInput onChange={getTime} />
-          </div>
-          <Calendar onChange={getDate} />
+          </div>}
+          <Calendar onChange={getDate} months_only={months_only} />
           <div className="CalendarModalButtons">
             <PrimaryButton
               label="Cancel"

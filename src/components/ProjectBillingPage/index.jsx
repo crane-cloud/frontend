@@ -5,20 +5,11 @@ import Header from "../Header";
 import SideBar from "../SideBar";
 import InformationBar from "../InformationBar";
 import Modal from "../../components/Modal";
-import PrimaryButton from "../../components/PrimaryButton";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import PrimaryButton from "../PrimaryButton";
+import DonutChart from "../DonutChart";
+import BarGraph from "../BarGraph";
+import MetricsCard from "../MetricsCard";
+import SpendingPeriod from "../SpendingPeriod";
 import styles from "./ProjectBillingPage.module.css";
 
 const data = [
@@ -29,12 +20,13 @@ const data = [
   { name: "Database/ $1 per GB", value: 67, color: "#99D2E9" },
 ];
 const data2 = [
-  { name: "Aug", amount: 1398 },
-  { name: "Sept", amount: 9800 },
-  { name: "Oct", amount: 3908 },
-  { name: "Nov", amount: 4800 },
-  { name: "Dec", amount: 3800 },
-  { name: "Jan", amount: 1267 },
+  { date: "2021-08", amount: 1398 },
+  { date: "2021-09", amount: 9800 },
+  { date: "2021-10", amount: 3908 },
+  { date: "2021-11", amount: 4800 },
+  { date: "2021-12", amount: 3800 },
+  { date: "2022-01", amount: 1267 },
+  { date: "2022-02", amount: 1267 },
 ];
 
 class ProjectBillingPage extends PureComponent {
@@ -42,44 +34,96 @@ class ProjectBillingPage extends PureComponent {
     super(props);
     this.state = {
       paymentModal: false,
+      time: {
+        start: 0,
+        end: 0,
+      },
+      period: "5m",
+      months: data2,
     };
     this.closePaymentModal = this.closePaymentModal.bind(this);
-    this.openPaymentModal = this.openPaymentModal.bind(this)
+    this.openPaymentModal = this.openPaymentModal.bind(this);
+    this.getProjectName = this.getProjectName.bind(this);
+    this.handlePeriodChange = this.handlePeriodChange.bind(this);
+    this.findSum = this.findSum.bind(this);
   }
   componentDidMount() {
     // this.setState({
     //  isLoading: true,
     // });
-}
+  }
 
-
-  openPaymentModal(){
+  openPaymentModal() {
     this.setState({ paymentModal: true });
-  };
+  }
 
   closePaymentModal() {
     this.setState({ paymentModal: false });
-  };
+  }
 
   getProjectName = (id) => {
     const { projects } = this.props;
     return projects.find((project) => project.id === id).name;
   };
-
-  findSum = () => {
-    let sum = 0;
-    for (let i = 0; i < data.length; i++) {
+  findSum() {
+    var sum = 0;
+    for (var i = 0; i < data.length; i++) {
       sum += data[i].value;
     }
     return sum;
-  };
+  }
+  async handlePeriodChange(period, customTime = null) {
+    this.setState({ period });
+    let startTimeStamp;
+    let endTimeStamp = new Date();
+
+    if (period === "5m") {
+      startTimeStamp = new Date(
+        endTimeStamp.setMonth(endTimeStamp.getMonth() - 5)
+      );
+      endTimeStamp = new Date();
+      let newMonths = [];
+      for (var i = 0; i < data2.length; i++) {
+        if (new Date(data2[i].date).getTime() >= startTimeStamp.getTime()) {
+          newMonths.push(data2[i]);
+        }
+      }
+
+      this.setState({ months: newMonths });
+    }
+    if (period === "all") {
+      // get all months
+      this.setState({ months: data2 });
+    } else if (period === "custom" && customTime !== null) {
+      startTimeStamp = customTime.start;
+      endTimeStamp = customTime.end;
+      let newMonths = [];
+      for (var n = 0; n < data2.length; n++) {
+        if (
+          new Date(data2[n].date).getTime() >=
+            new Date(startTimeStamp).getTime() &&
+          new Date(data2[n].date).getTime() <= new Date(endTimeStamp).getTime()
+        ) {
+          newMonths.push(data2[n]);
+        }
+      }
+      this.setState({ months: newMonths });
+    }
+    this.setState((prevState) => ({
+      time: {
+        ...prevState.time,
+        end: endTimeStamp,
+        start: startTimeStamp,
+      },
+    }));
+  }
 
   render() {
     const {
       match: { params },
     } = this.props;
     const { projectID } = params;
-    const { paymentModal } = this.state;
+    const { paymentModal, months } = this.state;
     console.log(paymentModal);
 
     return (
@@ -101,47 +145,32 @@ class ProjectBillingPage extends PureComponent {
             />
           </div>
           <div className={styles.MainContentSection}>
-            <div className>
+            <div>
               <InformationBar header="Project Billing" />
             </div>
             <div className={styles.SmallContainer}>
               <div className={styles.OuterContainerBorder}>
                 <div className={styles.DonutChatContainer}>
                   <div className={styles.InsideHeading}>
-                    <h className={styles.Heading}>Month-to date Summary</h>
+                    <div className={styles.Heading}>Month-to date Summary</div>
                   </div>
                   <div className={styles.Subtext}>
                     The chart below shows the proportion of costs spent for each
                     service you use on the platform
                   </div>
-                  <div className={styles.DonutChat}>
-                    <PieChart
-                      width={150}
-                      height={130}
-                      onMouseEnter={this.onPieEnter}
-                    >
-                      <Pie
-                        data={data}
-                        cx={70}
-                        cy={60}
-                        innerRadius={30}
-                        outerRadius={50}
-                        fill="#8884d8"
-                        paddingAngle={3}
-                        dataKey="value"
-                      >
-                        {data.map((entry, index) => (
-                          <Cell
-                            key={`cell-${index}`}
-                            fill={data[index % data.length].color}
-                          />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </div>
+                  <DonutChart
+                    center_x={60}
+                    center_y={70}
+                    InnerRadius={30}
+                    OuterRadius={50}
+                    data={data}
+                    height={150}
+                    width={130}
+                  />
+
                   <div className={styles.MonthSummary}>
                     {data.map((entry, index) => (
-                      <div className={styles.ResourseDetail}>
+                      <div className={styles.ResourseDetail} key={index}>
                         <div
                           className={styles.Cube}
                           style={{
@@ -164,16 +193,13 @@ class ProjectBillingPage extends PureComponent {
                     </div>
                   </div>
                   <div className={styles.paymentButton}>
-                    <PrimaryButton
-                      label={"Pay Bill"}
-                      onClick={this.openPaymentModal}
-                    />
+                    <PrimaryButton label={"Pay Bill"} />
                   </div>
                 </div>
-                <vl className={styles.hr} />
+                <div className={styles.hr}></div>
                 <div className={styles.BarGraphContainer}>
                   <div className={styles.InsideHeading}>
-                    <h className={styles.Heading}>Spending Summary</h>
+                    <div className={styles.Heading}>Spending Summary</div>
                   </div>
                   <div className={styles.Subtext}>
                     Your spending summary for the last three months appears
@@ -182,35 +208,23 @@ class ProjectBillingPage extends PureComponent {
                   <div className={styles.Subtext2}>
                     Current Month-to-Date balance is ${this.findSum()}
                   </div>
-                  <ResponsiveContainer width="100%" height="80%">
-                    <BarChart
-                      width={200}
-                      height={200}
-                      data={data2}
-                      margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                      }}
-                      barSize={30}
+                  <div className={styles.MetricContainer}>
+                    <MetricsCard
+                      className={styles.MetricsCardGraph}
+                      title={
+                        <SpendingPeriod onChange={this.handlePeriodChange} />
+                      }
                     >
-                      <XAxis
-                        dataKey="name"
-                        scale="point"
-                        padding={{ left: 10, right: 10 }}
+                      <BarGraph
+                        data={months}
+                        height={180}
+                        width={200}
+                        barSize={30}
+                        width_percentage="100%"
+                        height_percentage="80%"
                       />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <Bar
-                        dataKey="amount"
-                        fill="#8884d8"
-                        background={{ fill: "#eee" }}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
+                    </MetricsCard>
+                  </div>
                 </div>
               </div>
               {paymentModal && (
@@ -245,7 +259,6 @@ ProjectBillingPage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       projectID: PropTypes.string.isRequired,
-      userID: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
