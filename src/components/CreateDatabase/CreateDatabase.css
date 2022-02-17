@@ -1,5 +1,5 @@
 .DatabaseForm {
-  width: 40%;
+  max-width: 30rem;
   padding-top: 2rem;
   height: 100%;
 }

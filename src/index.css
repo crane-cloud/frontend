@@ -56,6 +56,9 @@ button:focus {
   outline: none;
 }
 
+.FullWidth{
+  width: 100%;
+}
 .uppercase {
   text-transform: uppercase;
 }

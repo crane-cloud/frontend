@@ -10,7 +10,6 @@ import { ReactComponent as LogoIcon } from "../../assets/images/githublogo.svg";
 import { API_BASE_URL, GIT_REDIRECT_URL } from "../../config";
 import Checkbox from "../Checkbox";
 
-
 import "./RegisterPage.css";
 
 export default class RegisterPage extends Component {
@@ -25,7 +24,7 @@ export default class RegisterPage extends Component {
       hasAgreed: false,
       loading: false,
       registered: false,
-      gitLoading:false,
+      gitLoading: false,
       error: "",
     };
 
@@ -52,16 +51,16 @@ export default class RegisterPage extends Component {
     // on return, github will be redricted to the login page where the
     // functions that handle the rest of the authrntications are
     const { hasAgreed } = this.state;
-    if(hasAgreed){
-    this.setState({
-      loading:true,
-      gitLoading:true,
-    });
-    window.location.href = `${GIT_REDIRECT_URL}`;
-    }else{
+    if (hasAgreed) {
+      this.setState({
+        loading: true,
+        gitLoading: true,
+      });
+      window.location.href = `${GIT_REDIRECT_URL}`;
+    } else {
       this.setState({
         loading: false,
-        gitLoading:false,
+        gitLoading: false,
         error: "Please agree to our Terms of Service",
       });
     }
@@ -81,7 +80,8 @@ export default class RegisterPage extends Component {
   }
 
   validateEmail(email) {
-    const emailRegEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const emailRegEx =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegEx.test(String(email).toLowerCase());
   }
 
@@ -161,7 +161,7 @@ export default class RegisterPage extends Component {
         <Header />
         <div className="RegisterContent">
           {!registered ? (
-          <>
+            <>
               <div className="RegisterContentHeading">
                 <h1>Create an account</h1>
               </div>
@@ -203,20 +203,23 @@ export default class RegisterPage extends Component {
                       isChecked={hasAgreed}
                     />
                     &nbsp; I agree to Crane Cloud&apos;s&nbsp;&nbsp;
-                    <Link to="/terms-of-service" target="_blank" className="RegisterContentLink">
+                    <Link
+                      to="/terms-of-service"
+                      target="_blank"
+                      className="RegisterContentLink"
+                    >
                       Terms of service.
                     </Link>
                   </div>
 
                   <PrimaryButton
-                    className="SignupBtn"
+                    className="SignupBtn AuthBtn"
                     label={loading ? <Spinner /> : "Register"}
                     onClick={this.handleSubmit}
                   />
                 </div>
               </form>
-
-           </>
+            </>
           ) : (
             <div className="RegisterSuccessContent">
               <div className="RegisteredMessage">
@@ -250,12 +253,17 @@ export default class RegisterPage extends Component {
                   </div>
                 )
               }
-              className="GithubLoginBtn"
+              className="GithubLoginBtn AuthBtn"
               disable={gitLoading}
               onClick={this.toGithubauth}
             />
-           </div>
-           
+          </div>
+          <div className="LoginContentBottomLink LoginLinkContainer">
+            Already have an account? &nbsp;
+            <Link to="/login" className="LoginContentLink">
+              Go to Login
+            </Link>
+          </div>
         </div>
       </div>
     );

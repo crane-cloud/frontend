@@ -17,7 +17,7 @@ import Tooltip from "../Tooltip";
 import Tabs from "../Tabs";
 import createApp, { clearState } from "../../redux/actions/createApp";
 import styles from "./CreateApp.module.css";
-import { validateName} from "../../helpers/validation";
+import { validateName } from "../../helpers/validation";
 
 class CreateApp extends React.Component {
   constructor(props) {
@@ -38,7 +38,7 @@ class CreateApp extends React.Component {
       port: "",
       isPrivateImage: false,
       isCustomDomain: false,
-      domainName:"",
+      domainName: "",
       dockerCredentials: {
         username: "",
         email: "",
@@ -65,24 +65,24 @@ class CreateApp extends React.Component {
     this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
     this.getProjectName = this.getProjectName.bind(this);
     this.getProjectDescription = this.getProjectDescription.bind(this);
-    this.changeMultiSelectionOption = this.changeMultiSelectionOption.bind(this);
+    this.changeMultiSelectionOption =
+      this.changeMultiSelectionOption.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
-    
   }
-  handleOnChange(position){
+  handleOnChange(position) {
     const { SelectedClusters } = this.state;
     this.setState({
       SelectedClusters: SelectedClusters.map((item, index) =>
         index === position ? !item : item
-      )
+      ),
     });
   }
   changeMultiSelectionOption() {
     const { multiCluster } = this.state;
     this.setState({
-      multiCluster: !multiCluster
-    })
-  };
+      multiCluster: !multiCluster,
+    });
+  }
 
   componentDidMount() {
     const { clearState } = this.props;
@@ -96,9 +96,7 @@ class CreateApp extends React.Component {
     } = this.props;
 
     if (isCreated !== prevProps.isCreated) {
-      return (
-        <Redirect to={`/projects/${projectID}/Apps`} noThrow />
-      );
+      return <Redirect to={`/projects/${projectID}/Apps`} noThrow />;
     }
   }
 
@@ -122,12 +120,13 @@ class CreateApp extends React.Component {
     this.setState(this.initialState);
   }
 
-  validateDomainName(domainName){
-    const expression = /[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)?/gi;
+  validateDomainName(domainName) {
+    const expression =
+      /[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)?/gi;
     const regex = new RegExp(expression);
-    if(regex.test(domainName)){
-      if(domainName.match(!regex)){
-        return "false_convention"
+    if (regex.test(domainName)) {
+      if (domainName.match(!regex)) {
+        return "false_convention";
       }
       return true;
     }
@@ -230,9 +229,7 @@ class CreateApp extends React.Component {
       domainName,
       replicas,
     } = this.state;
-    const { createApp,
-       params,
-       } = this.props;
+    const { createApp, params } = this.props;
 
     if (!name || !uri) {
       // if user tries to submit empty email/password
@@ -266,15 +263,18 @@ class CreateApp extends React.Component {
           error: "please provide all the information above",
         },
       }));
-    } else if(isCustomDomain && (!domainName)){
-        this.setState({
-          error: "Please enter a domain name",
-        })
-    } else if (domainName &&(this.validateDomainName(domainName) === false)) {
+    } else if (isCustomDomain && !domainName) {
+      this.setState({
+        error: "Please enter a domain name",
+      });
+    } else if (domainName && this.validateDomainName(domainName) === false) {
       this.setState({
         error: "Domain name should start with a letter",
       });
-    } else if (domainName && (this.validateDomainName(domainName) === "false_convention")) {
+    } else if (
+      domainName &&
+      this.validateDomainName(domainName) === "false_convention"
+    ) {
       this.setState({
         error: "Use accepted formats for example google.com, domain.ug",
       });
@@ -289,10 +289,10 @@ class CreateApp extends React.Component {
         replicas,
       };
 
-      if(isCustomDomain === true){
+      if (isCustomDomain === true) {
         let sentDomainName = domainName.toLowerCase();
         if (port) {
-          appInfo = { ...appInfo, port: parseInt(port, 10)};
+          appInfo = { ...appInfo, port: parseInt(port, 10) };
         }
 
         if (isPrivateImage) {
@@ -305,28 +305,25 @@ class CreateApp extends React.Component {
           };
         }
         appInfo = { ...appInfo, custom_domain: sentDomainName };
-  
+
         createApp(appInfo, params.projectID);
-        
-      }
-      else{
+      } else {
+        if (port) {
+          appInfo = { ...appInfo, port: parseInt(port, 10) };
+        }
 
-      if (port) {
-        appInfo = { ...appInfo, port: parseInt(port, 10) };
-      }
+        if (isPrivateImage) {
+          appInfo = {
+            ...appInfo,
+            docker_email: email,
+            docker_username: username,
+            docker_password: password,
+            docker_server: server,
+          };
+        }
 
-      if (isPrivateImage) {
-        appInfo = {
-          ...appInfo,
-          docker_email: email,
-          docker_username: username,
-          docker_password: password,
-          docker_server: server,
-        };
+        createApp(appInfo, params.projectID);
       }
-
-      createApp(appInfo, params.projectID);
-    }
     }
   }
 
@@ -358,9 +355,7 @@ class CreateApp extends React.Component {
       SelectedClusters,
     } = this.state;
     if (isCreated) {
-      return (
-        <Redirect to={`/projects/${projectID}/Apps`} noThrow />
-      );
+      return <Redirect to={`/projects/${projectID}/Apps`} noThrow />;
     }
     const replicaOptions = [
       { id: 1, name: "1" },
@@ -500,57 +495,66 @@ class CreateApp extends React.Component {
                   </div>
                 )}
 
-                <div className={styles.ClusterSelectionSection}>  
-                  <div className={styles.alignText}>Multicluster options</div> 
+                <div className={styles.ClusterSelectionSection}>
+                  <div className={styles.alignText}>Multicluster options</div>
                   <div className={styles.TooltipStyles}>
-                  <Tooltip
+                    <Tooltip
                       showIcon
                       message="Choose cluster policy for your application deployment"
                     />
                   </div>
-              
-                  </div>
-                  <div className={styles.ClusterToggleSection}>
-                    <ToggleOnOffButton onClick={this.changeMultiSelectionOption} /> &nbsp;
-                     Deploy app on the same datacenter(s) as project.
-                  </div>
-                  { multiCluster && (
-                    <div className={styles.ClustersSection}>
+                </div>
+                <div className={styles.ClusterToggleSection}>
+                  <ToggleOnOffButton
+                    onClick={this.changeMultiSelectionOption}
+                  />{" "}
+                  &nbsp; Deploy app on the same datacenter(s) as project.
+                </div>
+                {multiCluster && (
+                  <div className={styles.ClustersSection}>
                     <div className={styles.MultiSelectionText}>
-                    Please select a datacenter(s) you would like your app to be deployed to.
-                  </div>
-                  <div className={styles.Multipleclusters}>
-                    {clusters.map(({ name, id }, index) => {
-                      return (
-                        <li className={styles.ListStyle} key={index}>
-                          <div className={styles.clusterListItem}>
-                            <div className={styles.leftsection}>
-                              <input
-                                type="checkbox"
-                                id={id}
-                                name={name}
-                                value={name}
-                                checked={SelectedClusters[index]}
-                                onChange={() => this.handleOnChange(index)}
-                              />
-                              <label className={styles.ClusterLabel} htmlFor={id}>{name}</label>
+                      Please select a datacenter(s) you would like your app to
+                      be deployed to.
+                    </div>
+                    <div className={styles.Multipleclusters}>
+                      {clusters.map(({ name, id }, index) => {
+                        return (
+                          <li className={styles.ListStyle} key={index}>
+                            <div className={styles.clusterListItem}>
+                              <div className={styles.leftsection}>
+                                <input
+                                  type="checkbox"
+                                  id={id}
+                                  name={name}
+                                  value={name}
+                                  checked={SelectedClusters[index]}
+                                  onChange={() => this.handleOnChange(index)}
+                                />
+                                <label
+                                  className={styles.ClusterLabel}
+                                  htmlFor={id}
+                                >
+                                  {name}
+                                </label>
+                              </div>
                             </div>
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </div> 
-                  </div> )}  
+                          </li>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
 
                 {beta && (
-                <div className={styles.CustomDomainCheckField}>
-                  <Checkbox
-                    isBlack
-                    onClick={this.toggleCustomDomain}
-                    isChecked={isCustomDomain}
-                  />
-                  &nbsp; Custom Domain
-                </div>)}
+                  <div className={styles.CustomDomainCheckField}>
+                    <Checkbox
+                      isBlack
+                      onClick={this.toggleCustomDomain}
+                      isChecked={isCustomDomain}
+                    />
+                    &nbsp; Custom Domain
+                  </div>
+                )}
 
                 {isCustomDomain && (
                   <div className={styles.CustomDomainTabContainer}>
@@ -562,7 +566,7 @@ class CreateApp extends React.Component {
                             placeholder="Domain name"
                             name="domainName"
                             value={domainName}
-                            onChange = { (e) => {
+                            onChange={(e) => {
                               this.handleChange(e);
                             }}
                           />
@@ -694,6 +698,7 @@ class CreateApp extends React.Component {
                 )}
 
                 <PrimaryButton
+                  className="AuthBtn FullWidth"
                   label={isCreating ? <Spinner /> : "deploy"}
                   onClick={this.handleSubmit}
                 />
@@ -735,7 +740,7 @@ const mapStateToProps = (state) => {
     clearAppCreateState,
     errorCode,
     clusters,
-    data
+    data,
   };
 };
 

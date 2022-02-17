@@ -63,8 +63,9 @@ class LoginPage extends React.Component {
   }
 
   validateEmail(email) {
-    // eslint-disable-next-line no-useless-escape
-    const emailRegEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const emailRegEx =
+      // eslint-disable-next-line no-useless-escape
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegEx.test(String(email).toLowerCase());
   }
 
@@ -220,7 +221,7 @@ class LoginPage extends React.Component {
 
               <PrimaryButton
                 label={loading ? <Spinner /> : "login"}
-                className="LoginButton"
+                className="LoginButton AuthBtn"
                 onClick={this.handleSubmit}
               />
             </div>
@@ -242,7 +243,7 @@ class LoginPage extends React.Component {
                   </div>
                 )
               }
-              className="GithubLoginBtn"
+              className="GithubLoginBtn AuthBtn"
               disable={gitLoading}
               onClick={this.toGithubauth}
             />

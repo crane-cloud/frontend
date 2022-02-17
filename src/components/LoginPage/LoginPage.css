@@ -15,6 +15,11 @@
   justify-content: center;
 }
 
+.AuthBtn{
+  padding: 0.9rem;
+  height: auto;
+}
+
 .LoginContentInputs {
   display: grid;
   grid-template-columns: 1fr;
