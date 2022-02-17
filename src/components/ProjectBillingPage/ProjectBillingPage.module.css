@@ -53,10 +53,12 @@
     grid-template-columns: 3fr .01fr 4fr;
     border:1px solid #cccccc;
     background-color: #ffffff;
-    overflow: auto;
 }
 .hr {
-  border-left:1px solid #cccccc;
+  display: flex;
+  height: 100%;
+  width: 0.1px;
+  background-color: #cccccc;
 }
 .DonutChatContainer{
     display: flex;
@@ -81,12 +83,7 @@
     padding:  0 1rem;
     font-weight: 800;
 }
-.DonutChat{
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
 
-}
 .MonthSummary{
     display: grid;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1.5fr;
@@ -131,6 +128,20 @@
     gap: 0.5rem;
    
 }
+.MetricsCardGraph {
+  width: 90%;
+  height: 25rem;
+  align-self: flex-start;
+  
+}
+.MetricContainer{
+  display: flex;
+  padding-left: 1rem;
+  padding-bottom: 1rem;
+  justify-items: center;
+}
+
+
 
 
 @media(max-width: 768px){
@@ -138,6 +149,7 @@
         display: flex;
         flex-direction: column;
         min-width: 0;
-        overflow: auto;
+        height: fit-content;
+        
     }
   }
