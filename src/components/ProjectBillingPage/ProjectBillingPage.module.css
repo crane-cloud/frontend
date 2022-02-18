@@ -140,9 +140,52 @@
   padding-bottom: 1rem;
   justify-items: center;
 }
+.PaymentModal{
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+.PaymentHead{
+  text-align: center;
+}
 
+.PaymentModalHeader{
+  font-size: 30px;
+  font-weight: 700;
+}
 
+.PaymentModalSubHeader{
+  font-size: 24px;
+  font-weight: 500;
+}
 
+.PaymentButtons{
+  display: flex;
+  justify-content: space-between;
+}
+
+.PaymentModalBody{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 1rem;
+  column-gap: .5rem;
+}
+
+.PaymentIcon{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #000000;
+  height: 100px;
+  width: 200px;
+  object-fit: contain;
+  padding: .5rem;
+}
+
+.PaymentIcon:hover{
+  background-color: #cccccc;
+  cursor: pointer;
+}
 
 @media(max-width: 768px){
     .OuterContainerBorder{

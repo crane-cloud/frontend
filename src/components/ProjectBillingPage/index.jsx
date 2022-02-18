@@ -11,6 +11,9 @@ import BarGraph from "../BarGraph";
 import MetricsCard from "../MetricsCard";
 import SpendingPeriod from "../SpendingPeriod";
 import styles from "./ProjectBillingPage.module.css";
+import { ReactComponent as MastercardIcon } from "../../assets/images/logo-mastercard.svg";
+import { ReactComponent as VisaIcon } from "../../assets/images/visa.svg";
+import { ReactComponent as FlutterwaveIcon } from "../../assets/images/flutterwave.svg";
 
 const data = [
   { name: "CPU / $1 per 1K seconds", value: 400, color: "#0088FE" },
@@ -193,7 +196,7 @@ class ProjectBillingPage extends PureComponent {
                     </div>
                   </div>
                   <div className={styles.paymentButton}>
-                    <PrimaryButton label={"Pay Bill"} />
+                    <PrimaryButton label={"Pay Bill"} onClick={this.openPaymentModal}/>
                   </div>
                 </div>
                 <div className={styles.hr}></div>
@@ -233,9 +236,17 @@ class ProjectBillingPage extends PureComponent {
                     showModal={paymentModal}
                     onClickAway={this.closePaymentModal}
                   >
-                    <div>
-                      <div>I am a boy</div>
-                      <div>
+                    <div className={styles.PaymentModal}>
+                      <div className={styles.PaymentHead}>
+                        <div className={styles.PaymentModalHeader}>Choose a payment method.</div>
+                        <div className={styles.PaymentModalSubHeader}>Click on the options below:</div>
+                      </div>
+                      <div className={styles.PaymentModalBody}>
+                        <div className={styles.PaymentIcon}><MastercardIcon/></div>
+                        <div className={styles.PaymentIcon}><VisaIcon /></div>
+                        <div className={styles.PaymentIcon}><FlutterwaveIcon /></div>
+                      </div>
+                      <div className={styles.PaymentButtons}>
                         <PrimaryButton
                           label="CANCEL"
                           className="CancelBtn"
