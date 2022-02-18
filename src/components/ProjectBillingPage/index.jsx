@@ -196,7 +196,10 @@ class ProjectBillingPage extends PureComponent {
                     </div>
                   </div>
                   <div className={styles.paymentButton}>
-                    <PrimaryButton label={"Pay Bill"} onClick={this.openPaymentModal}/>
+                    <PrimaryButton
+                      label={"Pay Bill"}
+                      onClick={this.openPaymentModal}
+                    />
                   </div>
                 </div>
                 <div className={styles.hr}></div>
@@ -230,6 +233,59 @@ class ProjectBillingPage extends PureComponent {
                   </div>
                 </div>
               </div>
+              <div className={styles.TransactionHistoryWrapper}>
+                <div className={styles.TransactionHistoryContainer}>
+                  <div className={styles.TransactionHistoryHeading}>
+                    Transaction History
+                  </div>
+                  <div className={styles.TransactionHistoryBody}>
+                    <div className={styles.TransactionHistoryTable}>
+                      <div className={styles.TransactionHistoryHead}>
+                        <div className={styles.TransactionHistoryCell}>
+                          Date
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          Transaction Id
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          Payment Method
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          Status
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          Amount
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          Details
+                        </div>
+                      </div>
+                      <div className={styles.TransactionHistoryRow}>
+                        <div className={styles.TransactionHistoryCell}>
+                          02-17-2020
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          875469470120
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          Master Card
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          <span className={styles.Status} style={{ background: '#98A058' }}>Successful</span>
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          $7,600
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          <button className={styles.PaymentDetailsButton}>
+                            View
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               {paymentModal && (
                 <div>
                   <Modal
@@ -238,13 +294,23 @@ class ProjectBillingPage extends PureComponent {
                   >
                     <div className={styles.PaymentModal}>
                       <div className={styles.PaymentHead}>
-                        <div className={styles.PaymentModalHeader}>Choose a payment method.</div>
-                        <div className={styles.PaymentModalSubHeader}>Click on the options below:</div>
+                        <div className={styles.PaymentModalHeader}>
+                          Choose a payment method.
+                        </div>
+                        <div className={styles.PaymentModalSubHeader}>
+                          Click on the options below:
+                        </div>
                       </div>
                       <div className={styles.PaymentModalBody}>
-                        <div className={styles.PaymentIcon}><MastercardIcon/></div>
-                        <div className={styles.PaymentIcon}><VisaIcon /></div>
-                        <div className={styles.PaymentIcon}><FlutterwaveIcon /></div>
+                        <div className={styles.PaymentIcon}>
+                          <MastercardIcon />
+                        </div>
+                        <div className={styles.PaymentIcon}>
+                          <VisaIcon />
+                        </div>
+                        <div className={styles.PaymentIcon}>
+                          <FlutterwaveIcon />
+                        </div>
                       </div>
                       <div className={styles.PaymentButtons}>
                         <PrimaryButton
