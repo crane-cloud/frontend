@@ -1,97 +1,116 @@
-import React ,{ PureComponent }from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Header from "../Header";
 import SideBar from "../SideBar";
 import InformationBar from "../InformationBar";
+import Modal from "../../components/Modal";
 import PrimaryButton from "../PrimaryButton";
 import DonutChart from "../DonutChart";
 import BarGraph from "../BarGraph";
 import MetricsCard from "../MetricsCard";
 import SpendingPeriod from "../SpendingPeriod";
-import  styles from  "./ProjectBillingPage.module.css";
+import styles from "./ProjectBillingPage.module.css";
+import { ReactComponent as MastercardIcon } from "../../assets/images/logo-mastercard.svg";
+import { ReactComponent as VisaIcon } from "../../assets/images/visa.svg";
+import { ReactComponent as FlutterwaveIcon } from "../../assets/images/flutterwave.svg";
 
 const data = [
-    { name: 'CPU / $1 per 1K seconds', value: 400, color:'#0088FE' },
-    { name: 'RAM / $4 per GB', value: 300, color:'#00C49F'},
-    { name: 'Network / $1 per request', value: 300, color:'#FFBB28' },
-    { name: 'Storage/ $1 per GB', value: 200, color:'#FF8042' },
-    {name:  'Database/ $1 per GB', value: 67, color:'#99D2E9' },
-  ];
-  const data2 = [
-    {date: '2021-08', amount: 1398},
-    {date: '2021-09', amount: 9800},
-    {date: '2021-10',amount: 3908},
-    {date: '2021-11',amount: 4800},
-    {date: '2021-12',amount: 3800},
-    {date: '2022-01',amount: 1267},
-    {date: '2022-02',amount: 1267},
-  ];
- 
+  { name: "CPU / $1 per 1K seconds", value: 400, color: "#0088FE" },
+  { name: "RAM / $4 per GB", value: 300, color: "#00C49F" },
+  { name: "Network / $1 per request", value: 300, color: "#FFBB28" },
+  { name: "Storage/ $1 per GB", value: 200, color: "#FF8042" },
+  { name: "Database/ $1 per GB", value: 67, color: "#99D2E9" },
+];
+const data2 = [
+  { date: "2021-08", amount: 1398 },
+  { date: "2021-09", amount: 9800 },
+  { date: "2021-10", amount: 3908 },
+  { date: "2021-11", amount: 4800 },
+  { date: "2021-12", amount: 3800 },
+  { date: "2022-01", amount: 1267 },
+  { date: "2022-02", amount: 1267 },
+];
 
 class ProjectBillingPage extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-        time: {
-          start: 0,
-          end: 0,
-        },
-        period: "5m",
-        months: data2
+      paymentModal: false,
+      time: {
+        start: 0,
+        end: 0,
+      },
+      period: "5m",
+      months: data2,
     };
+    this.closePaymentModal = this.closePaymentModal.bind(this);
+    this.openPaymentModal = this.openPaymentModal.bind(this);
     this.getProjectName = this.getProjectName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
     this.findSum = this.findSum.bind(this);
   }
-
   componentDidMount() {
-   
+    // this.setState({
+    //  isLoading: true,
+    // });
   }
 
-  getProjectName(id) {
+  openPaymentModal() {
+    this.setState({ paymentModal: true });
+  }
+
+  closePaymentModal() {
+    this.setState({ paymentModal: false });
+  }
+
+  getProjectName = (id) => {
     const { projects } = this.props;
     return projects.find((project) => project.id === id).name;
-  }
-  findSum(){
-      var sum = 0;
-      for(var i =0; i < data.length ; i++){
-        sum += data[i].value;
-      }
-      return sum;
+  };
+  findSum() {
+    var sum = 0;
+    for (var i = 0; i < data.length; i++) {
+      sum += data[i].value;
+    }
+    return sum;
   }
   async handlePeriodChange(period, customTime = null) {
-    this.setState({ period }); 
+    this.setState({ period });
     let startTimeStamp;
     let endTimeStamp = new Date();
-   
+
     if (period === "5m") {
-       startTimeStamp = new Date(endTimeStamp.setMonth(endTimeStamp.getMonth() - 5))
-       endTimeStamp = new Date();
-       let newMonths = [];
-       for(var i=0; i<data2.length; i++){ 
-        if( new Date(data2[i].date).getTime()>=startTimeStamp.getTime()){
-           newMonths.push(data2[i])
-        }  
-       }
-      
-      this.setState({ months: newMonths })
-    } 
+      startTimeStamp = new Date(
+        endTimeStamp.setMonth(endTimeStamp.getMonth() - 5)
+      );
+      endTimeStamp = new Date();
+      let newMonths = [];
+      for (var i = 0; i < data2.length; i++) {
+        if (new Date(data2[i].date).getTime() >= startTimeStamp.getTime()) {
+          newMonths.push(data2[i]);
+        }
+      }
+
+      this.setState({ months: newMonths });
+    }
     if (period === "all") {
       // get all months
-      this.setState({months: data2});
-
+      this.setState({ months: data2 });
     } else if (period === "custom" && customTime !== null) {
       startTimeStamp = customTime.start;
       endTimeStamp = customTime.end;
       let newMonths = [];
-      for(var n=0; n<data2.length; n++){ 
-       if( new Date(data2[n].date).getTime()>=new Date(startTimeStamp).getTime()  &&
-       new Date(data2[n].date).getTime()<=new Date(endTimeStamp).getTime()){
-          newMonths.push(data2[n])
-       }  
+      for (var n = 0; n < data2.length; n++) {
+        if (
+          new Date(data2[n].date).getTime() >=
+            new Date(startTimeStamp).getTime() &&
+          new Date(data2[n].date).getTime() <= new Date(endTimeStamp).getTime()
+        ) {
+          newMonths.push(data2[n]);
+        }
       }
-     this.setState({ months: newMonths })
+      this.setState({ months: newMonths });
     }
     this.setState((prevState) => ({
       time: {
@@ -100,8 +119,6 @@ class ProjectBillingPage extends PureComponent {
         start: startTimeStamp,
       },
     }));
-
-     
   }
 
   render() {
@@ -109,13 +126,10 @@ class ProjectBillingPage extends PureComponent {
       match: { params },
     } = this.props;
     const { projectID } = params;
-
-    const {
-      months
-    } = this.state;
+    const { paymentModal, months } = this.state;
+    console.log(paymentModal);
 
     return (
-     
       <div className={styles.Page}>
         <div className={styles.TopBarSection}>
           <Header />
@@ -134,80 +148,117 @@ class ProjectBillingPage extends PureComponent {
             />
           </div>
           <div className={styles.MainContentSection}>
-          <div  >
+            <div>
               <InformationBar header="Project Billing" />
-          </div>
-            <div className= {styles.SmallContainer}> 
-           <div className={styles.OuterContainerBorder}>
-               <div className={styles.DonutChatContainer}>
-                 <div className={styles.InsideHeading}>
-                    <div className={styles.Heading}>
-                        Month-to date Summary</div>
-                 </div>
-                 <div className={styles.Subtext}>
-                 The chart below shows the proportion of costs spent 
-                 for each service you use on the platform
-                 </div>
-                 <DonutChart 
-                 center_x={60}
-                 center_y={70}
-                InnerRadius={30}
-                OuterRadius={50}
-                data={data}
-                height={150}
-                width={130}
-                 />
-                
-                <div className={styles.MonthSummary}>
-                {data.map((entry, index) => (
-                    <div className={styles.ResourseDetail} key={index} >
-                    <div className={styles.Cube} style={{background: `${data[(index % data.length)].color}` }}/>
-                    <div className={styles.ResourceName}>
-                    {data[(index % data.length)].name}  
+            </div>
+            <div className={styles.SmallContainer}>
+              <div className={styles.OuterContainerBorder}>
+                <div className={styles.DonutChatContainer}>
+                  <div className={styles.InsideHeading}>
+                    <div className={styles.Heading}>Month-to date Summary</div>
+                  </div>
+                  <div className={styles.Subtext}>
+                    The chart below shows the proportion of costs spent for each
+                    service you use on the platform
+                  </div>
+                  <DonutChart
+                    center_x={60}
+                    center_y={70}
+                    InnerRadius={30}
+                    OuterRadius={50}
+                    data={data}
+                    height={150}
+                    width={130}
+                  />
+
+                  <div className={styles.MonthSummary}>
+                    {data.map((entry, index) => (
+                      <div className={styles.ResourseDetail} key={index}>
+                        <div
+                          className={styles.Cube}
+                          style={{
+                            background: `${data[index % data.length].color}`,
+                          }}
+                        />
+                        <div className={styles.ResourceName}>
+                          {data[index % data.length].name}
+                        </div>
+                        <div className={styles.ResourcePrice}>
+                          ${data[index % data.length].value}
+                        </div>
+                      </div>
+                    ))}
+                    <div className={styles.Total}>
+                      <div className={styles.TotalTxt}>Total</div>
+                      <div className={styles.ResourcePrice}>
+                        ${this.findSum()}
+                      </div>
                     </div>
-                    <div className={styles.ResourcePrice}>
-                     ${data[(index % data.length)].value}
-                    </div>
-                   </div>
-                 ))}
-                 <div className={styles.Total} >
-                   <div className={styles.TotalTxt}>
-                      Total
-                   </div>
-                   <div className={styles.ResourcePrice}>
-                     ${this.findSum()}
-                   </div>
-               </div>
-               </div>
-               <div className={styles.paymentButton}>
-               <PrimaryButton label={"Pay Bill"}/>
-              </div>
-               
-               </div>
-               <div className={styles.hr}></div> 
-               <div className={styles.BarGraphContainer}>
-               <div className={styles.InsideHeading}>
-                    <div className={styles.Heading}>
-                    Spending Summary</div>
+                  </div>
+                  <div className={styles.paymentButton}>
+                    <PrimaryButton label={"Pay Bill"} onClick={this.openPaymentModal}/>
+                  </div>
                 </div>
-                <div className={styles.Subtext}>
-                Your spending summary for the last three months appears below
-                 </div>
-                 <div className={styles.Subtext2}>
-                  Current Month-to-Date balance is  ${this.findSum()}
-                 </div>
-                 <div className={styles.MetricContainer}>
-                 <MetricsCard
-                className={styles.MetricsCardGraph}
-                title={<SpendingPeriod  onChange={this.handlePeriodChange} />}
-                 >
-                 <BarGraph data={months} height={180} width={200}  barSize={30} 
-                 width_percentage="100%" height_percentage="80%" />
-                 </MetricsCard>
-                 </div>
-               </div>      
-          </div>
-          </div>
+                <div className={styles.hr}></div>
+                <div className={styles.BarGraphContainer}>
+                  <div className={styles.InsideHeading}>
+                    <div className={styles.Heading}>Spending Summary</div>
+                  </div>
+                  <div className={styles.Subtext}>
+                    Your spending summary for the last three months appears
+                    below
+                  </div>
+                  <div className={styles.Subtext2}>
+                    Current Month-to-Date balance is ${this.findSum()}
+                  </div>
+                  <div className={styles.MetricContainer}>
+                    <MetricsCard
+                      className={styles.MetricsCardGraph}
+                      title={
+                        <SpendingPeriod onChange={this.handlePeriodChange} />
+                      }
+                    >
+                      <BarGraph
+                        data={months}
+                        height={180}
+                        width={200}
+                        barSize={30}
+                        width_percentage="100%"
+                        height_percentage="80%"
+                      />
+                    </MetricsCard>
+                  </div>
+                </div>
+              </div>
+              {paymentModal && (
+                <div>
+                  <Modal
+                    showModal={paymentModal}
+                    onClickAway={this.closePaymentModal}
+                  >
+                    <div className={styles.PaymentModal}>
+                      <div className={styles.PaymentHead}>
+                        <div className={styles.PaymentModalHeader}>Choose a payment method.</div>
+                        <div className={styles.PaymentModalSubHeader}>Click on the options below:</div>
+                      </div>
+                      <div className={styles.PaymentModalBody}>
+                        <div className={styles.PaymentIcon}><MastercardIcon/></div>
+                        <div className={styles.PaymentIcon}><VisaIcon /></div>
+                        <div className={styles.PaymentIcon}><FlutterwaveIcon /></div>
+                      </div>
+                      <div className={styles.PaymentButtons}>
+                        <PrimaryButton
+                          label="CANCEL"
+                          className="CancelBtn"
+                          onClick={this.closePaymentModal}
+                        />
+                        <PrimaryButton label={"PROCEED"} />
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -228,12 +279,9 @@ const mapStateToProps = (state) => {
   const { projects } = state.userProjectsReducer;
   return {
     projects,
-
   };
 };
 
-const mapDispatchToProps = {
- 
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectBillingPage);
