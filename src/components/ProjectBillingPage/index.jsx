@@ -31,6 +31,17 @@ const data2 = [
   { date: "2022-01", amount: 1267 },
   { date: "2022-02", amount: 1267 },
 ];
+const transactionData = [{
+  id: "875469470120", 
+  date: "02-17-2020", 
+  paymentMethod: "Master Card",
+  amount: "$1,267",
+  status: {
+    text: "Successful",
+    color: "#408140"
+  },
+  receipt: data
+}]
 
 class ProjectBillingPage extends PureComponent {
   constructor(props) {
@@ -271,26 +282,27 @@ class ProjectBillingPage extends PureComponent {
                           Details
                         </div>
                       </div>
-                      <div className={styles.TransactionHistoryRow}>
+                      {transactionData.map((entry, index) => (
+                      <div className={styles.TransactionHistoryRow} key={index}>
                         <div className={styles.TransactionHistoryCell}>
-                          02-17-2020
+                          {entry.date}
                         </div>
                         <div className={styles.TransactionHistoryCell}>
-                          875469470120
+                          {entry.id}
                         </div>
                         <div className={styles.TransactionHistoryCell}>
-                          Master Card
+                          {entry.paymentMethod}
                         </div>
                         <div className={styles.TransactionHistoryCell}>
                           <span
                             className={styles.Status}
-                            style={{ background: "#98A058" }}
+                            style={{ background: entry.status.color }}
                           >
-                            Successful
+                            {entry.status.text}
                           </span>
                         </div>
                         <div className={styles.TransactionHistoryCell}>
-                          $1,267
+                          {entry.amount}
                         </div>
                         <div className={styles.TransactionHistoryCell}>
                           <button
@@ -301,6 +313,7 @@ class ProjectBillingPage extends PureComponent {
                           </button>
                         </div>
                       </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -353,30 +366,30 @@ class ProjectBillingPage extends PureComponent {
                       <div className={styles.ReceiptDetailContainer}>
                         <div>
                           <div className={styles.ReceiptLabel}>Transaction ID</div>
-                          <div className={styles.ReceiptDetail}>875469470120</div>
+                          <div className={styles.ReceiptDetail}>{transactionData[0].id}</div>
                         </div>
                         <div>
                           <div className={styles.ReceiptLabel}>Date</div>
-                          <div className={styles.ReceiptDetail}>02-17-2020</div>
+                          <div className={styles.ReceiptDetail}>{transactionData[0].date}</div>
                         </div>
                       </div>
                       <div className={styles.ReceiptLabel} style={{padding: '0.8rem'}}>Receipt</div>
                       <div className={styles.MonthSummary}>
-                        {data.map((entry, index) => (
+                        {transactionData[0].receipt.map((entry, index) => (
                           <div className={styles.ResourseDetail} key={index}>
                             <div
                               className={styles.Cube}
                               style={{
                                 background: `${
-                                  data[index % data.length].color
+                                  transactionData[0].receipt[index % transactionData[0].receipt.length].color
                                 }`,
                               }}
                             />
                             <div className={styles.ResourceName}>
-                              {data[index % data.length].name}
+                              {transactionData[0].receipt[index % transactionData[0].receipt.length].name}
                             </div>
                             <div className={styles.ResourcePrice}>
-                              ${data[index % data.length].value}
+                              ${transactionData[0].receipt[index % transactionData[0].receipt.length].value}
                             </div>
                           </div>
                         ))}
