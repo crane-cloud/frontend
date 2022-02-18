@@ -36,6 +36,7 @@ class ProjectBillingPage extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      viewReceipt: false,
       paymentModal: false,
       time: {
         start: 0,
@@ -49,6 +50,8 @@ class ProjectBillingPage extends PureComponent {
     this.getProjectName = this.getProjectName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
     this.findSum = this.findSum.bind(this);
+    this.closeReceiptModal = this.closeReceiptModal.bind(this);
+    this.openReceiptModal = this.openReceiptModal.bind(this);
   }
   componentDidMount() {
     // this.setState({
@@ -62,6 +65,14 @@ class ProjectBillingPage extends PureComponent {
 
   closePaymentModal() {
     this.setState({ paymentModal: false });
+  }
+
+  openReceiptModal() {
+    this.setState({ viewReceipt: true });
+  }
+
+  closeReceiptModal() {
+    this.setState({ viewReceipt: false });
   }
 
   getProjectName = (id) => {
@@ -126,8 +137,8 @@ class ProjectBillingPage extends PureComponent {
       match: { params },
     } = this.props;
     const { projectID } = params;
-    const { paymentModal, months } = this.state;
-    console.log(paymentModal);
+    const { paymentModal, viewReceipt, months } = this.state;
+    console.log(viewReceipt);
 
     return (
       <div className={styles.Page}>
@@ -271,13 +282,21 @@ class ProjectBillingPage extends PureComponent {
                           Master Card
                         </div>
                         <div className={styles.TransactionHistoryCell}>
-                          <span className={styles.Status} style={{ background: '#98A058' }}>Successful</span>
+                          <span
+                            className={styles.Status}
+                            style={{ background: "#98A058" }}
+                          >
+                            Successful
+                          </span>
                         </div>
                         <div className={styles.TransactionHistoryCell}>
-                          $7,600
+                          $1,267
                         </div>
                         <div className={styles.TransactionHistoryCell}>
-                          <button className={styles.PaymentDetailsButton}>
+                          <button
+                            onClick={this.openReceiptModal}
+                            className={styles.PaymentDetailsButton}
+                          >
                             View
                           </button>
                         </div>
@@ -319,6 +338,62 @@ class ProjectBillingPage extends PureComponent {
                           onClick={this.closePaymentModal}
                         />
                         <PrimaryButton label={"PROCEED"} />
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+              )}
+              {viewReceipt && (
+                <div>
+                  <Modal
+                    showModal={viewReceipt}
+                    onClickAway={this.closeReceiptModal}
+                  >
+                    <div className={styles.ReceiptModal}>
+                      <div className={styles.ReceiptDetailContainer}>
+                        <div>
+                          <div className={styles.ReceiptLabel}>Transaction ID</div>
+                          <div className={styles.ReceiptDetail}>875469470120</div>
+                        </div>
+                        <div>
+                          <div className={styles.ReceiptLabel}>Date</div>
+                          <div className={styles.ReceiptDetail}>02-17-2020</div>
+                        </div>
+                      </div>
+                      <div className={styles.ReceiptLabel} style={{padding: '0.8rem'}}>Receipt</div>
+                      <div className={styles.MonthSummary}>
+                        {data.map((entry, index) => (
+                          <div className={styles.ResourseDetail} key={index}>
+                            <div
+                              className={styles.Cube}
+                              style={{
+                                background: `${
+                                  data[index % data.length].color
+                                }`,
+                              }}
+                            />
+                            <div className={styles.ResourceName}>
+                              {data[index % data.length].name}
+                            </div>
+                            <div className={styles.ResourcePrice}>
+                              ${data[index % data.length].value}
+                            </div>
+                          </div>
+                        ))}
+                        <div className={styles.Total}>
+                          <div className={styles.TotalTxt}>Paid</div>
+                          <div className={styles.ResourcePrice}>
+                            ${this.findSum()}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className={styles.ReceiptButton}>
+                        <PrimaryButton
+                          label="Close"
+                          className="CancelBtn"
+                          onClick={this.closeReceiptModal}
+                        />
                       </div>
                     </div>
                   </Modal>
