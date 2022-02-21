@@ -154,9 +154,11 @@ class ProjectBillingPage extends PureComponent {
             <div className={styles.SmallContainer}>
               <div className={styles.OuterContainerBorder}>
                 <div className={styles.DonutChatContainer}>
+                  
                   <div className={styles.InsideHeading}>
                     <div className={styles.Heading}>Month-to date Summary</div>
                   </div>
+                  <div className={styles.InnerContainer} >
                   <div className={styles.Subtext}>
                     The chart below shows the proportion of costs spent for each
                     service you use on the platform
@@ -199,11 +201,12 @@ class ProjectBillingPage extends PureComponent {
                     <PrimaryButton label={"Pay Bill"} onClick={this.openPaymentModal}/>
                   </div>
                 </div>
-                <div className={styles.hr}></div>
+                </div>
                 <div className={styles.BarGraphContainer}>
                   <div className={styles.InsideHeading}>
                     <div className={styles.Heading}>Spending Summary</div>
                   </div>
+                  <div className={styles.InnerContainer} >
                   <div className={styles.Subtext}>
                     Your spending summary for the last three months appears
                     below
@@ -228,6 +231,7 @@ class ProjectBillingPage extends PureComponent {
                       />
                     </MetricsCard>
                   </div>
+                </div>
                 </div>
               </div>
               {paymentModal && (
