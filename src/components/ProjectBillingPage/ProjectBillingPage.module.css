@@ -49,22 +49,18 @@
   }
   
 .OuterContainerBorder{
-    display: grid;
-    grid-template-columns: 3fr .01fr 4fr;
-    border:1px solid #cccccc;
-    background-color: #ffffff;
-}
-.hr {
-  display: flex;
-  height: 100%;
-  width: 0.1px;
-  background-color: #cccccc;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    
 }
 .DonutChatContainer{
     display: flex;
     flex-direction: column;
     gap: 0.5;
-
+    max-width: 25rem;
+    border:1px solid #cccccc;
+    background-color: #ffffff;
 }
 .InsideHeading{
     display: flex;
@@ -76,18 +72,16 @@
     font-size: large;
     font-weight: bold;
 }
-.Subtext{
-    padding: 0 1rem;
-}
+
 .Subtext2{
-    padding:  0 1rem;
     font-weight: 800;
 }
 .MonthSummary{
-    display: grid;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1.5fr;
-    grid-gap: .1rem;
-    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+}
+.InnerContainer{
+  padding: 0 1rem;
 }
 .ResourseDetail{
     display: grid;
@@ -109,7 +103,7 @@
     display: grid;
     grid-template-columns: 1fr  1fr;
     grid-gap:.5rem;
-    padding: 0rem 0.6rem;   
+    padding: .8rem 0.3rem;   
 }
 .TotalTxt{
     text-align: start; 
@@ -124,7 +118,9 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-   
+    border:1px solid #cccccc;
+    width: 100%;
+    background-color: #ffffff;
 }
 .MetricsCardGraph {
   width: 90%;
@@ -134,7 +130,6 @@
 }
 .MetricContainer{
   display: flex;
-  padding-left: 1rem;
   padding-bottom: 1rem;
   justify-items: center;
 }
@@ -260,4 +255,7 @@
         min-width: 0;
         height: fit-content;
     }
+    .DonutChatContainer{
+      max-width: 100%; 
+  }
   }
