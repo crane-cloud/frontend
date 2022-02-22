@@ -71,7 +71,7 @@
     justify-content: center;
     border-bottom: 1px solid #cccccc;
 }
-.Heading{
+.Heading, .TransactionHistoryHeading{
     padding: .3rem;
     font-size: large;
     font-weight: bold;
@@ -83,7 +83,6 @@
     padding:  0 1rem;
     font-weight: 800;
 }
-
 .MonthSummary{
     display: grid;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1.5fr;
@@ -102,7 +101,6 @@
     width: 1rem;
     height: 1rem;
 }
-
 .ResourcePrice{
     font-weight: 700;
     text-align: end;
@@ -148,29 +146,24 @@
 .PaymentHead{
   text-align: center;
 }
-
 .PaymentModalHeader{
   font-size: 30px;
   font-weight: 700;
 }
-
 .PaymentModalSubHeader{
   font-size: 24px;
   font-weight: 500;
 }
-
 .PaymentButtons{
   display: flex;
   justify-content: space-between;
 }
-
 .PaymentModalBody{
   display: grid;
   grid-template-columns: 1fr 1fr;
   row-gap: 1rem;
   column-gap: .5rem;
 }
-
 .PaymentIcon{
   display: flex;
   justify-content: center;
@@ -181,10 +174,83 @@
   object-fit: contain;
   padding: .5rem;
 }
-
+.TransactionHistoryWrapper {
+  padding-top: 1.5rem;
+}
+.TransactionHistoryContainer{
+  border: 1px solid #cccccc;
+  background-color: white;
+}
+.TransactionHistoryHeading {
+  padding: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid #cccccc;
+}
+.TransactionHistoryBody {
+  padding: 2rem;
+}
+.TransactionHistoryRow, .TransactionHistoryHead {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-gap: 10px;
+  border-bottom: 1px solid #ccc;
+  padding: 1rem;
+}
+.TransactionHistoryCell{
+  overflow-wrap: break-word;
+}
+.TransactionHistoryHead .TransactionHistoryCell{
+  text-transform: uppercase;
+  color: #008ac1;
+}
+.TransactionHistoryCell .Status{
+  color: white;
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+}
+.TransactionHistoryRow .TransactionHistoryCell:first-child,.TransactionHistoryHead .TransactionHistoryCell:first-child {
+  text-align: left;
+}
+.TransactionHistoryRow .TransactionHistoryCell:last-child, .TransactionHistoryHead .TransactionHistoryCell:last-child {
+  text-align: right;
+}
+.PaymentDetailsButton{
+    color: #008ac1;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background: transparent;
+}
+.PaymentDetailsButton:hover{
+  text-decoration: underline;
+}
 .PaymentIcon:hover{
   background-color: #cccccc;
   cursor: pointer;
+}
+.ReceiptModal .TotalTxt{
+  font-weight: 700;
+}
+.ReceiptDetailContainer{
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 1rem;
+  padding: 0 1rem;
+  padding-bottom: 0.5rem;
+}
+.ReceiptLabel {
+  font-size: 0.8rem;
+  color: #9b9b9b;
+}
+.ReceiptDetail {
+  font-weight: 700;
+}
+.ReceiptModal .ResourseDetail, .ReceiptModal .Total {
+  padding: 0.8rem;
+}
+.ReceiptButton{
+  display: flex;
+  justify-content: center;
 }
 
 @media(max-width: 768px){
@@ -193,6 +259,5 @@
         flex-direction: column;
         min-width: 0;
         height: fit-content;
-        
     }
   }

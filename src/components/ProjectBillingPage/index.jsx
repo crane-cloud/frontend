@@ -31,11 +31,23 @@ const data2 = [
   { date: "2022-01", amount: 1267 },
   { date: "2022-02", amount: 1267 },
 ];
+const transactionData = [{
+  id: "875469470120", 
+  date: "02-17-2020", 
+  paymentMethod: "Master Card",
+  amount: "$1,267",
+  status: {
+    text: "Successful",
+    color: "#408140"
+  },
+  receipt: data
+}]
 
 class ProjectBillingPage extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      viewReceipt: false,
       paymentModal: false,
       time: {
         start: 0,
@@ -49,6 +61,8 @@ class ProjectBillingPage extends PureComponent {
     this.getProjectName = this.getProjectName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
     this.findSum = this.findSum.bind(this);
+    this.closeReceiptModal = this.closeReceiptModal.bind(this);
+    this.openReceiptModal = this.openReceiptModal.bind(this);
   }
   componentDidMount() {
     // this.setState({
@@ -62,6 +76,14 @@ class ProjectBillingPage extends PureComponent {
 
   closePaymentModal() {
     this.setState({ paymentModal: false });
+  }
+
+  openReceiptModal() {
+    this.setState({ viewReceipt: true });
+  }
+
+  closeReceiptModal() {
+    this.setState({ viewReceipt: false });
   }
 
   getProjectName = (id) => {
@@ -126,8 +148,8 @@ class ProjectBillingPage extends PureComponent {
       match: { params },
     } = this.props;
     const { projectID } = params;
-    const { paymentModal, months } = this.state;
-    console.log(paymentModal);
+    const { paymentModal, viewReceipt, months } = this.state;
+    console.log(viewReceipt);
 
     return (
       <div className={styles.Page}>
@@ -196,7 +218,10 @@ class ProjectBillingPage extends PureComponent {
                     </div>
                   </div>
                   <div className={styles.paymentButton}>
-                    <PrimaryButton label={"Pay Bill"} onClick={this.openPaymentModal}/>
+                    <PrimaryButton
+                      label={"Pay Bill"}
+                      onClick={this.openPaymentModal}
+                    />
                   </div>
                 </div>
                 <div className={styles.hr}></div>
@@ -230,6 +255,69 @@ class ProjectBillingPage extends PureComponent {
                   </div>
                 </div>
               </div>
+              <div className={styles.TransactionHistoryWrapper}>
+                <div className={styles.TransactionHistoryContainer}>
+                  <div className={styles.TransactionHistoryHeading}>
+                    Transaction History
+                  </div>
+                  <div className={styles.TransactionHistoryBody}>
+                    <div className={styles.TransactionHistoryTable}>
+                      <div className={styles.TransactionHistoryHead}>
+                        <div className={styles.TransactionHistoryCell}>
+                          Date
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          Transaction Id
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          Payment Method
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          Status
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          Amount
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          Details
+                        </div>
+                      </div>
+                      {transactionData.map((entry, index) => (
+                      <div className={styles.TransactionHistoryRow} key={index}>
+                        <div className={styles.TransactionHistoryCell}>
+                          {entry.date}
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          {entry.id}
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          {entry.paymentMethod}
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          <span
+                            className={styles.Status}
+                            style={{ background: entry.status.color }}
+                          >
+                            {entry.status.text}
+                          </span>
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          {entry.amount}
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          <button
+                            onClick={this.openReceiptModal}
+                            className={styles.PaymentDetailsButton}
+                          >
+                            View
+                          </button>
+                        </div>
+                      </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
               {paymentModal && (
                 <div>
                   <Modal
@@ -238,13 +326,23 @@ class ProjectBillingPage extends PureComponent {
                   >
                     <div className={styles.PaymentModal}>
                       <div className={styles.PaymentHead}>
-                        <div className={styles.PaymentModalHeader}>Choose a payment method.</div>
-                        <div className={styles.PaymentModalSubHeader}>Click on the options below:</div>
+                        <div className={styles.PaymentModalHeader}>
+                          Choose a payment method.
+                        </div>
+                        <div className={styles.PaymentModalSubHeader}>
+                          Click on the options below:
+                        </div>
                       </div>
                       <div className={styles.PaymentModalBody}>
-                        <div className={styles.PaymentIcon}><MastercardIcon/></div>
-                        <div className={styles.PaymentIcon}><VisaIcon /></div>
-                        <div className={styles.PaymentIcon}><FlutterwaveIcon /></div>
+                        <div className={styles.PaymentIcon}>
+                          <MastercardIcon />
+                        </div>
+                        <div className={styles.PaymentIcon}>
+                          <VisaIcon />
+                        </div>
+                        <div className={styles.PaymentIcon}>
+                          <FlutterwaveIcon />
+                        </div>
                       </div>
                       <div className={styles.PaymentButtons}>
                         <PrimaryButton
@@ -253,6 +351,62 @@ class ProjectBillingPage extends PureComponent {
                           onClick={this.closePaymentModal}
                         />
                         <PrimaryButton label={"PROCEED"} />
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+              )}
+              {viewReceipt && (
+                <div>
+                  <Modal
+                    showModal={viewReceipt}
+                    onClickAway={this.closeReceiptModal}
+                  >
+                    <div className={styles.ReceiptModal}>
+                      <div className={styles.ReceiptDetailContainer}>
+                        <div>
+                          <div className={styles.ReceiptLabel}>Transaction ID</div>
+                          <div className={styles.ReceiptDetail}>{transactionData[0].id}</div>
+                        </div>
+                        <div>
+                          <div className={styles.ReceiptLabel}>Date</div>
+                          <div className={styles.ReceiptDetail}>{transactionData[0].date}</div>
+                        </div>
+                      </div>
+                      <div className={styles.ReceiptLabel} style={{padding: '0.8rem'}}>Receipt</div>
+                      <div className={styles.MonthSummary}>
+                        {transactionData[0].receipt.map((entry, index) => (
+                          <div className={styles.ResourseDetail} key={index}>
+                            <div
+                              className={styles.Cube}
+                              style={{
+                                background: `${
+                                  transactionData[0].receipt[index % transactionData[0].receipt.length].color
+                                }`,
+                              }}
+                            />
+                            <div className={styles.ResourceName}>
+                              {transactionData[0].receipt[index % transactionData[0].receipt.length].name}
+                            </div>
+                            <div className={styles.ResourcePrice}>
+                              ${transactionData[0].receipt[index % transactionData[0].receipt.length].value}
+                            </div>
+                          </div>
+                        ))}
+                        <div className={styles.Total}>
+                          <div className={styles.TotalTxt}>Paid</div>
+                          <div className={styles.ResourcePrice}>
+                            ${this.findSum()}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className={styles.ReceiptButton}>
+                        <PrimaryButton
+                          label="Close"
+                          className="CancelBtn"
+                          onClick={this.closeReceiptModal}
+                        />
                       </div>
                     </div>
                   </Modal>
