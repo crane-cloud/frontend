@@ -9,7 +9,7 @@ import BlackInputText from "../BlackInputText";
 import { v4 as uuidv4 } from "uuid";
 // import Modal from "../Modal";
 import RemoveIcon from "../../assets/images/remove.svg";
-import ToggleOnOffButton from "../ToggleOnOffButton";
+//import ToggleOnOffButton from "../ToggleOnOffButton";
 import Spinner from "../Spinner";
 import Feedback from "../Feedback";
 import Checkbox from "../Checkbox";
@@ -495,8 +495,8 @@ class CreateApp extends React.Component {
                   </div>
                 )}
 
-                <div className={styles.ClusterSelectionSection}>
-                  <div className={styles.alignText}>Multicluster options</div>
+                {/** <div className={styles.ClusterSelectionSection}>
+                 <div className={styles.alignText}>Multicluster options</div>
                   <div className={styles.TooltipStyles}>
                     <Tooltip
                       showIcon
@@ -504,12 +504,12 @@ class CreateApp extends React.Component {
                     />
                   </div>
                 </div>
-                <div className={styles.ClusterToggleSection}>
+                 <div className={styles.ClusterToggleSection}>
                   <ToggleOnOffButton
                     onClick={this.changeMultiSelectionOption}
                   />{" "}
                   &nbsp; Deploy app on the same datacenter(s) as project.
-                </div>
+                </div>*/}
                 {multiCluster && (
                   <div className={styles.ClustersSection}>
                     <div className={styles.MultiSelectionText}>

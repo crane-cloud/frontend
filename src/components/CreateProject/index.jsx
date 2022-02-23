@@ -9,9 +9,9 @@ import Header from "../Header";
 import Spinner from "../Spinner";
 import Feedback from "../Feedback";
 import BlackInputText from "../BlackInputText";
-import Checkbox from "../Checkbox";
+//import Checkbox from "../Checkbox";
 import ToggleOnOffButton from "../ToggleOnOffButton";
-import { ReactComponent as InfoIcon } from "../../assets/images/info-icon.svg";
+//import { ReactComponent as InfoIcon } from "../../assets/images/info-icon.svg";
 import addProject, {
   clearAddProjectState,
 } from "../../redux/actions/addProject";
@@ -208,7 +208,7 @@ class CreateProject extends React.Component {
                     options={clusters}
                     onChange={this.handleDatacenterSelectChange}
                   />
-                  <div className={styles.ClusterCheckboxSection}>
+                 {/*  <div className={styles.ClusterCheckboxSection}>
                     <InfoIcon /> &nbsp; The above selection is for a single
                     cluster set up, for multi-cluster options check the box
                     below.
@@ -222,7 +222,7 @@ class CreateProject extends React.Component {
                     <div className={styles.NormalText}>
                       &nbsp; Multi-cluster options
                     </div>
-                  </div>
+                  </div>*/}
                   {multiCluster && (
                     <div>
                       <div className={styles.ClusterToggleSection}>
