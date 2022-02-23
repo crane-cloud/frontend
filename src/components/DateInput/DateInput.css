@@ -21,7 +21,7 @@
 .DateInputDisplay {
   border: 2px solid #cccccc;
   height: 1rem;
-  padding: 0.2rem 1rem;
+  padding: 0.2rem .4rem;
   color: #555555;
   display: flex;
   justify-content: center;
