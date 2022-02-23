@@ -134,8 +134,8 @@ class DatabaseList extends React.Component {
                       {
                         databasesFetched &&
                         sortedDbs !== undefined &&
-                        sortedDbs.map((database) => (
-                          <div className={styles.DatabaseBody}>
+                        sortedDbs.map((database, index) => (
+                          <div className={styles.DatabaseBody} key={index}>
                             <Link
                               to={{
                                 pathname: `/projects/${projectID}/databases/${database.id}/settings`,
