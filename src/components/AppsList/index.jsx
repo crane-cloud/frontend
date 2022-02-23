@@ -79,7 +79,7 @@ class AppsList extends Component {
 
   render() {
     const { SearchList } = this.state;
-    const { apps, isRetrieved, isRetrieving, params, word, message } =
+    const { apps, isRetrieved, isRetrieving, params, word, message,openComponent } =
       this.props;
     const allApps = apps.apps;
     const sortedApps = allApps?.sort((a, b) =>
@@ -133,7 +133,7 @@ class AppsList extends Component {
             ) : (
               <div>
                 You haven’t created any apps yet. Click the &nbsp;{" "}
-                <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp; button
+                <ButtonPlus className={styles.ButtonPlusSmall} onClick={openComponent} /> &nbsp; button
                 to deploy an app.
               </div>
             )}
