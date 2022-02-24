@@ -9,7 +9,7 @@ WORKDIR /app
 COPY . /app
 
 # install dependencies
-RUN npm install -g create-react-app && npm install
+RUN npm install -g create-react-app && npm install --save --legacy-peer-deps
 
 # make port available to the world outside this container
 EXPOSE 3000
