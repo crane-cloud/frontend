@@ -72,6 +72,9 @@ const LandingFooter = () => (
                 <li className="TextDivSpacing">
                   <Link to="/pricing">Pricing</Link>
                 </li>
+                <li className="TextDivSpacing">
+                  <Link to="/contact">Contact</Link>
+                </li>
               </ul>
             </div>
             <div className="FooterChildTwo">

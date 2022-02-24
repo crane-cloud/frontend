@@ -8,6 +8,7 @@
   z-index: 4;
   background-color: rgb(0, 0, 0, 0.8);
   top: 0;
+  left: 0;
 }
 
 .ModalChildWrap {

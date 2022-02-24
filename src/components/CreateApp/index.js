@@ -9,6 +9,7 @@ import BlackInputText from "../BlackInputText";
 import { v4 as uuidv4 } from "uuid";
 // import Modal from "../Modal";
 import RemoveIcon from "../../assets/images/remove.svg";
+//import ToggleOnOffButton from "../ToggleOnOffButton";
 import Spinner from "../Spinner";
 import Feedback from "../Feedback";
 import Checkbox from "../Checkbox";
@@ -16,11 +17,15 @@ import Tooltip from "../Tooltip";
 import Tabs from "../Tabs";
 import createApp, { clearState } from "../../redux/actions/createApp";
 import styles from "./CreateApp.module.css";
+import { validateName } from "../../helpers/validation";
 
 class CreateApp extends React.Component {
   constructor(props) {
     super(props);
 
+    const {
+      clusters: { clusters },
+    } = this.props;
     this.state = {
       name: "",
       uri: "",
@@ -33,7 +38,7 @@ class CreateApp extends React.Component {
       port: "",
       isPrivateImage: false,
       isCustomDomain: false,
-      domainName:"",
+      domainName: "",
       dockerCredentials: {
         username: "",
         email: "",
@@ -42,6 +47,8 @@ class CreateApp extends React.Component {
         error: "",
       },
       replicas: 1,
+      multiCluster: false,
+      SelectedClusters: new Array(clusters.length).fill(false),
     };
 
     this.addEnvVar = this.addEnvVar.bind(this);
@@ -50,7 +57,6 @@ class CreateApp extends React.Component {
     this.hideForm = this.hideForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.validateAppName = this.validateAppName.bind(this);
     this.validateDomainName = this.validateDomainName.bind(this);
     this.togglePrivateImage = this.togglePrivateImage.bind(this);
     this.toggleCustomDomain = this.toggleCustomDomain.bind(this);
@@ -59,6 +65,23 @@ class CreateApp extends React.Component {
     this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
     this.getProjectName = this.getProjectName.bind(this);
     this.getProjectDescription = this.getProjectDescription.bind(this);
+    this.changeMultiSelectionOption =
+      this.changeMultiSelectionOption.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
+  }
+  handleOnChange(position) {
+    const { SelectedClusters } = this.state;
+    this.setState({
+      SelectedClusters: SelectedClusters.map((item, index) =>
+        index === position ? !item : item
+      ),
+    });
+  }
+  changeMultiSelectionOption() {
+    const { multiCluster } = this.state;
+    this.setState({
+      multiCluster: !multiCluster,
+    });
   }
 
   componentDidMount() {
@@ -73,9 +96,7 @@ class CreateApp extends React.Component {
     } = this.props;
 
     if (isCreated !== prevProps.isCreated) {
-      return (
-        <Redirect to={`/projects/${projectID}/Apps`} noThrow />
-      );
+      return <Redirect to={`/projects/${projectID}/Apps`} noThrow />;
     }
   }
 
@@ -99,12 +120,13 @@ class CreateApp extends React.Component {
     this.setState(this.initialState);
   }
 
-  validateDomainName(domainName){
-    const expression = /[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)?/gi;
+  validateDomainName(domainName) {
+    const expression =
+      /[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)?/gi;
     const regex = new RegExp(expression);
-    if(regex.test(domainName)){
-      if(domainName.match(!regex)){
-        return "false_convention"
+    if (regex.test(domainName)) {
+      if (domainName.match(!regex)) {
+        return "false_convention";
       }
       return true;
     }
@@ -176,16 +198,6 @@ class CreateApp extends React.Component {
     this.setState({ envVars: newEnvVars });
   }
 
-  validateAppName(name) {
-    if (/^[a-z]/i.test(name)) {
-      if (name.match(/[^-a-zA-Z0-9.]/)) {
-        return "false_convention";
-      }
-      return true;
-    }
-    return false;
-  }
-
   togglePrivateImage() {
     const { isPrivateImage } = this.state;
     this.setState({
@@ -224,11 +236,11 @@ class CreateApp extends React.Component {
       this.setState({
         error: "app name & image uri are required",
       });
-    } else if (this.validateAppName(name) === false) {
+    } else if (validateName(name) === false) {
       this.setState({
         error: "Name should start with a letter",
       });
-    } else if (this.validateAppName(name) === "false_convention") {
+    } else if (validateName(name) === "false_convention") {
       this.setState({
         error: "Name may only contain letters,numbers,dot and a hypen -",
       });
@@ -251,15 +263,18 @@ class CreateApp extends React.Component {
           error: "please provide all the information above",
         },
       }));
-    } else if(isCustomDomain && (!domainName)){
-        this.setState({
-          error: "Please enter a domain name",
-        })
-    } else if (domainName &&(this.validateDomainName(domainName) === false)) {
+    } else if (isCustomDomain && !domainName) {
+      this.setState({
+        error: "Please enter a domain name",
+      });
+    } else if (domainName && this.validateDomainName(domainName) === false) {
       this.setState({
         error: "Domain name should start with a letter",
       });
-    } else if (domainName && (this.validateDomainName(domainName) === "false_convention")) {
+    } else if (
+      domainName &&
+      this.validateDomainName(domainName) === "false_convention"
+    ) {
       this.setState({
         error: "Use accepted formats for example google.com, domain.ug",
       });
@@ -274,10 +289,10 @@ class CreateApp extends React.Component {
         replicas,
       };
 
-      if(isCustomDomain === true){
+      if (isCustomDomain === true) {
         let sentDomainName = domainName.toLowerCase();
         if (port) {
-          appInfo = { ...appInfo, port: parseInt(port, 10)};
+          appInfo = { ...appInfo, port: parseInt(port, 10) };
         }
 
         if (isPrivateImage) {
@@ -290,28 +305,25 @@ class CreateApp extends React.Component {
           };
         }
         appInfo = { ...appInfo, custom_domain: sentDomainName };
-  
+
         createApp(appInfo, params.projectID);
-        
-      }
-      else{
+      } else {
+        if (port) {
+          appInfo = { ...appInfo, port: parseInt(port, 10) };
+        }
 
-      if (port) {
-        appInfo = { ...appInfo, port: parseInt(port, 10) };
-      }
+        if (isPrivateImage) {
+          appInfo = {
+            ...appInfo,
+            docker_email: email,
+            docker_username: username,
+            docker_password: password,
+            docker_server: server,
+          };
+        }
 
-      if (isPrivateImage) {
-        appInfo = {
-          ...appInfo,
-          docker_email: email,
-          docker_username: username,
-          docker_password: password,
-          docker_server: server,
-        };
+        createApp(appInfo, params.projectID);
       }
-
-      createApp(appInfo, params.projectID);
-    }
     }
   }
 
@@ -323,6 +335,7 @@ class CreateApp extends React.Component {
       errorCode,
       params: { projectID },
       data: { beta },
+      clusters: { clusters },
     } = this.props;
     const {
       name,
@@ -338,11 +351,11 @@ class CreateApp extends React.Component {
       dockerCredentials: { username, email, password, server },
       isCustomDomain,
       domainName,
+      multiCluster,
+      SelectedClusters,
     } = this.state;
     if (isCreated) {
-      return (
-        <Redirect to={`/projects/${projectID}/Apps`} noThrow />
-      );
+      return <Redirect to={`/projects/${projectID}/Apps`} noThrow />;
     }
     const replicaOptions = [
       { id: 1, name: "1" },
@@ -482,15 +495,66 @@ class CreateApp extends React.Component {
                   </div>
                 )}
 
+                {/** <div className={styles.ClusterSelectionSection}>
+                 <div className={styles.alignText}>Multicluster options</div>
+                  <div className={styles.TooltipStyles}>
+                    <Tooltip
+                      showIcon
+                      message="Choose cluster policy for your application deployment"
+                    />
+                  </div>
+                </div>
+                 <div className={styles.ClusterToggleSection}>
+                  <ToggleOnOffButton
+                    onClick={this.changeMultiSelectionOption}
+                  />{" "}
+                  &nbsp; Deploy app on the same datacenter(s) as project.
+                </div>*/}
+                {multiCluster && (
+                  <div className={styles.ClustersSection}>
+                    <div className={styles.MultiSelectionText}>
+                      Please select a datacenter(s) you would like your app to
+                      be deployed to.
+                    </div>
+                    <div className={styles.Multipleclusters}>
+                      {clusters.map(({ name, id }, index) => {
+                        return (
+                          <li className={styles.ListStyle} key={index}>
+                            <div className={styles.clusterListItem}>
+                              <div className={styles.leftsection}>
+                                <input
+                                  type="checkbox"
+                                  id={id}
+                                  name={name}
+                                  value={name}
+                                  checked={SelectedClusters[index]}
+                                  onChange={() => this.handleOnChange(index)}
+                                />
+                                <label
+                                  className={styles.ClusterLabel}
+                                  htmlFor={id}
+                                >
+                                  {name}
+                                </label>
+                              </div>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
                 {beta && (
-                <div className={styles.CustomDomainCheckField}>
-                  <Checkbox
-                    isBlack
-                    onClick={this.toggleCustomDomain}
-                    isChecked={isCustomDomain}
-                  />
-                  &nbsp; Custom Domain
-                </div>)}
+                  <div className={styles.CustomDomainCheckField}>
+                    <Checkbox
+                      isBlack
+                      onClick={this.toggleCustomDomain}
+                      isChecked={isCustomDomain}
+                    />
+                    &nbsp; Custom Domain
+                  </div>
+                )}
 
                 {isCustomDomain && (
                   <div className={styles.CustomDomainTabContainer}>
@@ -502,7 +566,7 @@ class CreateApp extends React.Component {
                             placeholder="Domain name"
                             name="domainName"
                             value={domainName}
-                            onChange = { (e) => {
+                            onChange={(e) => {
                               this.handleChange(e);
                             }}
                           />
@@ -634,6 +698,7 @@ class CreateApp extends React.Component {
                 )}
 
                 <PrimaryButton
+                  className="AuthBtn FullWidth"
                   label={isCreating ? <Spinner /> : "deploy"}
                   onClick={this.handleSubmit}
                 />
@@ -649,11 +714,14 @@ CreateApp.propTypes = {
   isCreating: PropTypes.bool,
   isCreated: PropTypes.bool,
   message: PropTypes.string,
+  clusters: PropTypes.object,
+  getClustersList: PropTypes.func.isRequired,
   params: PropTypes.shape({}),
 };
 
 CreateApp.defaultProps = {
   message: "",
+  clusters: [],
   isCreated: false,
   isCreating: false,
   params: {},
@@ -663,6 +731,7 @@ const mapStateToProps = (state) => {
   const { isCreating, isCreated, clearAppCreateState, message, errorCode } =
     state.createAppReducer;
   const { data } = state.user;
+  const { clusters } = state.clustersReducer;
 
   return {
     isCreating,
@@ -670,7 +739,8 @@ const mapStateToProps = (state) => {
     isCreated,
     clearAppCreateState,
     errorCode,
-    data
+    clusters,
+    data,
   };
 };
 

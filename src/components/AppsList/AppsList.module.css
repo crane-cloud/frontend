@@ -17,6 +17,7 @@
 .ButtonPlusSmall {
   width: 1rem;
   height: 1rem;
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 1100px) and (min-width: 901px) {

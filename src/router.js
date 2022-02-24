@@ -9,6 +9,7 @@ import store from "./redux/store";
 import App from "./components/App";
 import LoginPage from "./components/LoginPage";
 import PricingPage from "./components/PricingPage";
+import ContactPage from "./components/ContactPage";
 import PasswordReset from "./components/PasswordReset";
 import RegisterPage from "./components/RegisterPage";
 import ClusterPage from "./components/ClusterPage";
@@ -48,6 +49,9 @@ import Privacy from "./components/Documents/privacy";
 import UserProjectsPage from "./pages/UserProjectsPage";
 import ProjectDashboardPage from "./components/ProjectDashboardPage";
 
+//commented out  to push to prod because it is still static
+//import ProjectBillingPage from "./components/ProjectBillingPage";
+
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
   isAllowed ? <Route {...props} /> : <Redirect to="/login" />;
@@ -62,6 +66,7 @@ const Routes = () => (
       <Route exact path="/" component={App} />
       <Route path="/login" component={LoginPage} />
       <Route path="/pricing" component={PricingPage} />
+      <Route path="/contact" component={ContactPage} />
       <Route path="/admin-login" component={AdminLoginPage} />
       <Route path="/forgot-password" component={PasswordReset} />
       <Route path="/register" component={RegisterPage} />
@@ -73,6 +78,12 @@ const Routes = () => (
       <Route path="/terms-of-service" component={Terms} />
       <Route path="/privacy-policy" component={Privacy} />
       {/* projects */}
+     {/*  <ProtectedRoute
+        isAllowed={hasToken}
+        exact
+        path="/projects/:projectID/billing"
+        component={ProjectBillingPage}
+      />*/}
       <ProtectedRoute
         isAllowed={hasToken}
         exact
@@ -85,7 +96,7 @@ const Routes = () => (
         path="/projects/:projectID/databases"
         component={DatabaseList}
       />
-      
+
       <ProtectedRoute
         isAllowed={hasToken}
         exact

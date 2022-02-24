@@ -1,17 +1,17 @@
-FROM node:10.16.0-alpine as build_step
+FROM node:16-alpine as build_step
 
 WORKDIR /app
 
 COPY package.json yarn.lock ./
 
-RUN yarn
+RUN yarn install --ignore-engines
 
 COPY . /app
 
 RUN yarn build
 
 
-FROM node:10.16.0-alpine
+FROM node:16-alpine
 
 WORKDIR /app
 

@@ -120,6 +120,7 @@ class AppsPage extends React.Component {
                   params={params}
                   newAppCreated={isCreated}
                   word={word}
+                  openComponent={this.showForm}
                 />
               </div>
             </div>

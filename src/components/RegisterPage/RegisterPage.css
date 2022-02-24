@@ -2,17 +2,16 @@
   background: #008ac1;
   color: #ffffff;
   display: flex;
-  overflow-y: hidden;
   flex-direction: column;
-  flex-grow: 1;
+  flex: 1;
 }
 
 .RegisterContent {
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-self: center;
   justify-content: center;
+  flex: 1;
 }
 
 .RegisterSuccessContent {
@@ -55,6 +54,50 @@ a.RegisterContentLink {
   color: #d63b3b;
   text-align: center;
   padding: 1rem 0;
+}
+.GitLoginBtn {
+  display: grid;
+  grid-gap: 0.2rem;
+  grid-auto-flow: column;
+  align-items: center;
+}
+.LogoIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.GithubLoginBtn {
+  width: 100%;
+  color: #fff;
+  background-color: #000;
+  outline: 2px solid #000000;
+}
+
+.GithubLoginBtn:hover {
+  outline: 2px solid #06222f;
+  background-color: #06222f;
+}
+.GitText {
+  color: #fff;
+  text-transform: capitalize;
+}
+.SignupBtn{
+  width: 100%;
+}
+.SignupWith {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #fff;
+  line-height: 0.1em;
+}
+.SignupWith span {
+  background-color: #008ac1;
+  padding: 0 1rem;
+}
+.LowerSignupSection {
+  display: grid;
+  grid-template-columns: 1fr;
+  padding-top: 0.5rem;
+  gap: 0.5rem;
 }
 
 @media only screen and (max-width: 640px) {

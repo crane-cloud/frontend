@@ -6,8 +6,9 @@ import InputText from "../InputText";
 import InputPassword from "../InputPassword";
 import PrimaryButton from "../PrimaryButton";
 import Spinner from "../Spinner";
+import { ReactComponent as LogoIcon } from "../../assets/images/githublogo.svg";
+import { API_BASE_URL, GIT_REDIRECT_URL } from "../../config";
 import Checkbox from "../Checkbox";
-import { API_BASE_URL } from "../../config";
 
 import "./RegisterPage.css";
 
@@ -23,6 +24,7 @@ export default class RegisterPage extends Component {
       hasAgreed: false,
       loading: false,
       registered: false,
+      gitLoading: false,
       error: "",
     };
 
@@ -30,6 +32,7 @@ export default class RegisterPage extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleAgreed = this.toggleAgreed.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
+    this.toGithubauth = this.toGithubauth.bind(this);
   }
 
   toggleAgreed() {
@@ -44,6 +47,24 @@ export default class RegisterPage extends Component {
       });
     }
   }
+  toGithubauth = () => {
+    // on return, github will be redricted to the login page where the
+    // functions that handle the rest of the authrntications are
+    const { hasAgreed } = this.state;
+    if (hasAgreed) {
+      this.setState({
+        loading: true,
+        gitLoading: true,
+      });
+      window.location.href = `${GIT_REDIRECT_URL}`;
+    } else {
+      this.setState({
+        loading: false,
+        gitLoading: false,
+        error: "Please agree to our Terms of Service",
+      });
+    }
+  };
 
   handleOnChange(e) {
     const { error } = this.state;
@@ -59,7 +80,8 @@ export default class RegisterPage extends Component {
   }
 
   validateEmail(email) {
-    const emailRegEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const emailRegEx =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegEx.test(String(email).toLowerCase());
   }
 
@@ -131,6 +153,7 @@ export default class RegisterPage extends Component {
       registered,
       error,
       hasAgreed,
+      gitLoading,
     } = this.state;
 
     return (
@@ -180,12 +203,17 @@ export default class RegisterPage extends Component {
                       isChecked={hasAgreed}
                     />
                     &nbsp; I agree to Crane Cloud&apos;s&nbsp;&nbsp;
-                    <Link to="/terms-of-service" target="_blank" className="RegisterContentLink">
+                    <Link
+                      to="/terms-of-service"
+                      target="_blank"
+                      className="RegisterContentLink"
+                    >
                       Terms of service.
                     </Link>
                   </div>
 
                   <PrimaryButton
+                    className="SignupBtn AuthBtn"
                     label={loading ? <Spinner /> : "Register"}
                     onClick={this.handleSubmit}
                   />
@@ -208,6 +236,34 @@ export default class RegisterPage extends Component {
               </div>
             </div>
           )}
+          <div className="LowerSignupSection">
+            <div>
+              <p className="SignupWith">
+                <span>Or Join with</span>
+              </p>
+            </div>
+            <PrimaryButton
+              label={
+                gitLoading ? (
+                  <Spinner />
+                ) : (
+                  <div className="GitLoginBtn">
+                    <LogoIcon className="LogoIcon" />
+                    <div className="GitText">Github</div>
+                  </div>
+                )
+              }
+              className="GithubLoginBtn AuthBtn"
+              disable={gitLoading}
+              onClick={this.toGithubauth}
+            />
+          </div>
+          <div className="LoginContentBottomLink LoginLinkContainer">
+            Already have an account? &nbsp;
+            <Link to="/login" className="LoginContentLink">
+              Go to Login
+            </Link>
+          </div>
         </div>
       </div>
     );

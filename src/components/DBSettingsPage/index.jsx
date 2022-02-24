@@ -20,7 +20,9 @@ import updateDatabasePassword, {
   clearUpdateDatabasePasswordState,
 } from "../../redux/actions/updateDBPassword";
 import getSingleDB from "../../redux/actions/getSingleDB";
-import getPassword, { clearFetchDBPassword } from "../../redux/actions/getPassword";
+import getPassword, {
+  clearFetchDBPassword,
+} from "../../redux/actions/getPassword";
 import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
@@ -157,12 +159,7 @@ class DBSettingsPage extends React.Component {
     const { projectID } = this.props.match.params;
     if (dbDeleteMessage === "Database Deleted Successfully") {
       this.hideDeleteAlert();
-      return (
-        <Redirect
-          to={`/projects/${projectID}/databases`}
-          noThrow
-        />
-      );
+      return <Redirect to={`/projects/${projectID}/databases`} noThrow />;
     }
   };
 
@@ -289,7 +286,7 @@ class DBSettingsPage extends React.Component {
       isRetrieving,
       password,
       isRetrievingPassword,
-      passwordFetched
+      passwordFetched,
     } = this.props;
     const { projectID, databaseID } = this.props.match.params;
     // const dbInfo = this.getDatabaseInfo(databaseID);
@@ -334,7 +331,7 @@ class DBSettingsPage extends React.Component {
             <div className="InformationBarSection">
               <InformationBar header="Settings" />
             </div>
-            <div className="ContentSection">
+            <div className="ContentSection SmallContainer">
               {isRetrieving ? (
                 <div className="NoResourcesMessage">
                   <div className="SpinnerWrapper">
@@ -342,9 +339,10 @@ class DBSettingsPage extends React.Component {
                   </div>
                 </div>
               ) : (
-                <div>
-                  <div>
-                    <div className="DatabaseDetail">
+                <div className="DatabaseSettingsInfo">
+                  <div className="DBSectionTitle">Database information</div>
+                  <div className="DatabaseDetail">
+                    <div className="DBCardSection">
                       <div className="DBDetailRow">
                         <div className="DBThead">Type</div>
                         <div className="DBTDetail uppercase">
@@ -371,36 +369,74 @@ class DBSettingsPage extends React.Component {
                       </div>
                       {passwordFetched ? (
                         <div className="DBDetailRow">
-                        <div className="DBColumn1 DBThead">Password</div>
-                        <div className="DBColumn">
-                          {(hidden) ? (isRetrievingPassword ? <Spinner /> : "***************************") : password}
-                        </div>
-                        <div className="DBIcon">
-                          <CopyText onClick={this.passwordOnClick} />
-                          {passwordChecked ? <Checked /> : null}
-                        </div>
-                        <div className="DBPassword">
-                          <div onClick={this.togglePassword}>
-                            {hidden ? (isRetrievingPassword ? <Spinner /> : <Open />) : <Closed />}
+                          <div className="DBColumn1 DBThead">Password</div>
+                          <div className="DBColumn">
+                            {hidden ? (
+                              isRetrievingPassword ? (
+                                <Spinner />
+                              ) : (
+                                "***************************"
+                              )
+                            ) : (
+                              password
+                            )}
+                          </div>
+                          <div className="DBPasswordBtns">
+                            <div className="DBIcon">
+                              <CopyText onClick={this.passwordOnClick} />
+                              {passwordChecked ? <Checked /> : null}
+                            </div>
+                            <div
+                              className="DBPassword"
+                              onClick={this.togglePassword}
+                            >
+                              {hidden ? (
+                                isRetrievingPassword ? (
+                                  <Spinner />
+                                ) : (
+                                  <Open />
+                                )
+                              ) : (
+                                <Closed />
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
                       ) : (
                         <div className="DBDetailRow">
-                        <div className="DBColumn1 DBThead">Password</div>
-                        <div className="DBColumn">
-                          {(hidden) ? (isRetrievingPassword ? <Spinner /> : "click to get password") : password}
-                        </div>
-                        <div className="DBIcon">
-                          {/* <CopyText onClick={this.passwordOnClick} /> */}
-                          {passwordChecked ? <Checked /> : null}
-                        </div>
-                        <div className="DBPassword">
-                          <div onClick={this.togglePassword}>
-                            {hidden ? (isRetrievingPassword ? <Spinner /> : <Open />) : <Closed />}
+                          <div className="DBColumn1 DBThead">Password</div>
+                          <div className="DBColumn">
+                            {hidden ? (
+                              isRetrievingPassword ? (
+                                <Spinner />
+                              ) : (
+                                "click to get password"
+                              )
+                            ) : (
+                              password
+                            )}
+                          </div>
+                          <div className="DBPasswordBtns">
+                            <div className="DBIcon">
+                              <CopyText onClick={this.passwordOnClick} />
+                              {passwordChecked ? <Checked /> : null}
+                            </div>
+                            <div
+                              className="DBPassword"
+                              onClick={this.togglePassword}
+                            >
+                              {hidden ? (
+                                isRetrievingPassword ? (
+                                  <Spinner />
+                                ) : (
+                                  <Open />
+                                )
+                              ) : (
+                                <Closed />
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
                       )}
                       <div className="DBDetailRow">
                         <div className="DBThead">Host</div>
@@ -451,10 +487,8 @@ class DBSettingsPage extends React.Component {
                         <div className="DBInfoBottom">
                           <div className="DBAccessInfo">{`mysql -u ${database.user} -p -P ${database.port} -h ${database.host} -D ${database.name}`}</div>
                           <div className="DBAccessCopy">
-                            <div className="DBPassword">
-                              <CopyText onClick={this.uriOnClick} />
-                              {uriChecked ? <Checked /> : null}
-                            </div>
+                            <CopyText onClick={this.uriOnClick} />
+                            {uriChecked ? <Checked /> : null}
                           </div>
                         </div>
                       </div>

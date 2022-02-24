@@ -1,7 +1,8 @@
 import {
   REVERT_FAIL,
   REVERT_SUCCESS,
-  REVERTING_URL
+  REVERTING_URL,
+  CLEAR_REVERT_STATE,
 } from "../actions/actionTypes";
 const initialState = {
   app: [],
@@ -33,6 +34,14 @@ const revertUrlReducer = (state = initialState, action) => {
         message: action.payload,
         isReverted: false,
         isReverting: false,
+      };
+    
+    case CLEAR_REVERT_STATE:
+      return {
+        ...state,
+        isReverting: false,
+        isReverted: false,
+        message: "",
       };
 
     default:

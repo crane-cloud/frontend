@@ -9,19 +9,22 @@ import Header from "../Header";
 import Spinner from "../Spinner";
 import Feedback from "../Feedback";
 import BlackInputText from "../BlackInputText";
+//import Checkbox from "../Checkbox";
+import ToggleOnOffButton from "../ToggleOnOffButton";
+//import { ReactComponent as InfoIcon } from "../../assets/images/info-icon.svg";
 import addProject, {
   clearAddProjectState,
 } from "../../redux/actions/addProject";
-import getClustersList from "../../redux/actions/clusters";
 import styles from "./CreateProject.module.css";
-import {
-  retrieveProjectTypes
-} from "../../helpers/projecttypes";
-
+import { retrieveProjectTypes } from "../../helpers/projecttypes";
+import handleProjectValidation from "../../helpers/validation";
 
 class CreateProject extends React.Component {
   constructor(props) {
     super(props);
+    const {
+      clusters: { clusters },
+    } = this.props;
 
     this.state = {
       projectName: "",
@@ -30,61 +33,72 @@ class CreateProject extends React.Component {
       projectType: "",
       projectOrganisation: "",
       error: "",
-      othersBool:false,
-      otherType:"",
+      multiCluster: false,
+      clusterchoices: false,
+      othersBool: false,
+      SelectedClusters: new Array(clusters.length).fill(false),
+      otherType: "",
     };
 
     this.handleTypeSelectChange = this.handleTypeSelectChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.validateProjectName = this.validateProjectName.bind(this);
     this.handleDatacenterSelectChange =
       this.handleDatacenterSelectChange.bind(this);
+    this.changeMultiSelectioOption = this.changeMultiSelectioOption.bind(this);
+    this.togglemultiCluster = this.togglemultiCluster.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
   }
 
   componentDidMount() {
-    const { clearAddProjectState,getClustersList } = this.props;
-    getClustersList();
+    const { clearAddProjectState } = this.props;
     clearAddProjectState();
   }
 
   componentDidUpdate(prevProps) {
-    const {
-      isAdded,
-      params: { userID },
-    } = this.props;
+    const { isAdded } = this.props;
 
     if (isAdded !== prevProps.isAdded) {
-      return <Redirect to={`/users/${userID}/projects`} noThrow />;
+      return <Redirect to={`/projects`} noThrow />;
     }
+  }
+  handleOnChange(position) {
+    const { SelectedClusters } = this.state;
+    this.setState({
+      SelectedClusters: SelectedClusters.map((item, index) =>
+        index === position ? !item : item
+      ),
+    });
+  }
+  changeMultiSelectioOption() {
+    const { clusterchoices } = this.state;
+    this.setState({
+      clusterchoices: !clusterchoices,
+    });
+  }
+
+  togglemultiCluster() {
+    const { multiCluster } = this.state;
+    this.setState({
+      multiCluster: !multiCluster,
+    });
   }
 
   handleTypeSelectChange(selected) {
-    const{
-      othersBool,
-    } = this.state
-      if(selected.id===6){
-        if(!othersBool){
-          this.setState({ othersBool: true });
-        }
-      }else{
-        this.setState({ projectType: selected.value });
-        if(othersBool){
-          this.setState({ othersBool: false });
-        }
+    const { othersBool } = this.state;
+    if (selected.id === 6) {
+      if (!othersBool) {
+        this.setState({ othersBool: true });
       }
-  };
+    } else {
+      this.setState({ projectType: selected.value });
+      if (othersBool) {
+        this.setState({ othersBool: false });
+      }
+    }
+  }
   handleDatacenterSelectChange(selected) {
     this.setState({ clusterID: selected.id });
-  }
-  validateProjectName(name) {
-    if (/^[a-z]/i.test(name)) {
-      if (name.match(/[^-a-zA-Z]/)) {
-        return "false_convention";
-      }
-      return true;
-    }
-    return false;
   }
   handleChange(e) {
     const { error } = this.state;
@@ -110,51 +124,37 @@ class CreateProject extends React.Component {
       projectOrganisation,
     } = this.state;
     const { addProject, data } = this.props;
-    const capitalizeFirstLetter = (input) => input.charAt(0).toUpperCase() + input.slice(1);
-    const type = othersBool ? capitalizeFirstLetter(otherType) : capitalizeFirstLetter(projectType);
-
+    const capitalizeFirstLetter = (input) =>
+      input.charAt(0).toUpperCase() + input.slice(1);
+    const approvedType = othersBool
+      ? capitalizeFirstLetter(otherType)
+      : capitalizeFirstLetter(projectType);
     if (
-      !projectName ||
-      !clusterID ||
-      !projectDescription ||
-      !type ||
-      !projectOrganisation
+      handleProjectValidation(
+        projectName,
+        projectDescription,
+        approvedType,
+        projectOrganisation,
+        clusterID
+      ) !== undefined
     ) {
       this.setState({
-        error: "all fields are required",
-      });
-    } else if (this.validateProjectName(projectName) === false) {
-      this.setState({
-        error: "name should start with a letter",
-      });
-    } else if (this.validateProjectName(projectName) === "false_convention") {
-      this.setState({
-        error: "name may only contain letters and a hypen -",
-      });
-    } else if (projectName.length > 30) {
-      this.setState({
-        error: "project name may not exceed 30 characters",
-      });
-    // for a meaning full project type
-    } else if(type.length < 4 || this.validateProjectName(type) === false 
-    || this.validateProjectName(type) === "false_convention"){
-      this.setState({
-        error: "project type must be atleast 4 characters, start with a letter and may only contain letters and a hypen -",
-      });
-    } else if(this.validateProjectName(projectOrganisation) === false 
-    || this.validateProjectName(projectOrganisation) === "false_convention"){
-      this.setState({
-        error: "project organisation must start with a letter and may only contain letters and a hypen -",
+        error: handleProjectValidation(
+          projectName,
+          projectDescription,
+          approvedType,
+          projectOrganisation,
+          clusterID
+        ),
       });
     } else {
-
       const newProject = {
         description: projectDescription,
         cluster_id: clusterID,
         name: projectName,
         owner_id: data.id,
         organisation: projectOrganisation,
-        project_type: type,
+        project_type: approvedType,
       };
       addProject(newProject);
     }
@@ -166,14 +166,22 @@ class CreateProject extends React.Component {
       isAdding,
       message,
       errorCode,
-      clusters: {clusters},
-      params: { userID },
+      clusters: { clusters },
     } = this.props;
-    const { projectName, projectDescription, error, projectOrganisation,othersBool,otherType } =
-      this.state;
+    const {
+      projectName,
+      projectDescription,
+      error,
+      projectOrganisation,
+      othersBool,
+      otherType,
+      multiCluster,
+      clusterchoices,
+      SelectedClusters,
+    } = this.state;
     const types = retrieveProjectTypes();
     if (isAdded) {
-      return <Redirect to={`/users/${userID}/projects/`} noThrow />;
+      return <Redirect to={`/projects/`} noThrow />;
     }
     return (
       <div className={styles.MainContentSection}>
@@ -192,7 +200,7 @@ class CreateProject extends React.Component {
           <div className={styles.FormsSection}>
             <div className={styles.ProjectForm}>
               <div className={styles.LeftFormElements}>
-                <div className={styles.Element}>
+                <div className={styles.ClusterElement}>
                   <div className={styles.ElementTitle}>Datacenter</div>
                   <Select
                     required
@@ -200,7 +208,69 @@ class CreateProject extends React.Component {
                     options={clusters}
                     onChange={this.handleDatacenterSelectChange}
                   />
+                 {/*  <div className={styles.ClusterCheckboxSection}>
+                    <InfoIcon /> &nbsp; The above selection is for a single
+                    cluster set up, for multi-cluster options check the box
+                    below.
+                  </div>
+                  <div className={styles.ClusterCheckboxSection}>
+                    <Checkbox
+                      isBlack
+                      onClick={this.togglemultiCluster}
+                      isChecked={multiCluster}
+                    />
+                    <div className={styles.NormalText}>
+                      &nbsp; Multi-cluster options
+                    </div>
+                  </div>*/}
+                  {multiCluster && (
+                    <div>
+                      <div className={styles.ClusterToggleSection}>
+                        <ToggleOnOffButton
+                          onClick={this.changeMultiSelectioOption}
+                        />{" "}
+                        &nbsp; Cranecloud automatically selects the rest of the
+                        clusters for this project.
+                      </div>
+                      {clusterchoices && (
+                        <div>
+                          <div className={styles.MultiSelectioOption}>
+                            Please any other cluster for this project.
+                          </div>
+                          <div className={styles.Multipleclusters}>
+                            {clusters.map(({ name, id }, index) => {
+                              return (
+                                <li className={styles.ListStyle} key={index}>
+                                  <div className={styles.clusterListItem}>
+                                    <div className={styles.leftsection}>
+                                      <input
+                                        type="checkbox"
+                                        id={id}
+                                        name={name}
+                                        value={name}
+                                        checked={SelectedClusters[index]}
+                                        onChange={() =>
+                                          this.handleOnChange(index)
+                                        }
+                                      />
+                                      <label
+                                        className={styles.ClusterLabel}
+                                        htmlFor={id}
+                                      >
+                                        {name}
+                                      </label>
+                                    </div>
+                                  </div>
+                                </li>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
+
                 <div className={styles.Element}>
                   <div className={styles.ElementTitle}>Name</div>
                   <BlackInputText
@@ -233,38 +303,40 @@ class CreateProject extends React.Component {
                     options={types}
                     onChange={this.handleTypeSelectChange}
                   />
-                  {othersBool && (<BlackInputText
-                   required
-                   placeholder="Type of project"
-                   name="otherType"
-                   value={otherType}
-                   onChange={(e) => {
-                     this.handleChange(e);
-                   }}
-                  />)}
+                  {othersBool && (
+                    <BlackInputText
+                      required
+                      placeholder="Type of project"
+                      name="otherType"
+                      value={otherType}
+                      onChange={(e) => {
+                        this.handleChange(e);
+                      }}
+                    />
+                  )}
                 </div>
                 <div className={styles.Element}>
                   <div className={styles.ElementTitle}>Description</div>
                   <textarea
-                     className={styles.TextArea}
-                     type="text"
-                     placeholder="Project description"
-                     rows="4"
-                     cols="50"
-                     name="projectDescription"
-                     value={projectDescription}
-                     onChange={(e) => {
+                    className={styles.TextArea}
+                    type="text"
+                    placeholder="Project description"
+                    rows="4"
+                    cols="50"
+                    name="projectDescription"
+                    value={projectDescription}
+                    onChange={(e) => {
                       this.handleChange(e);
-                   }}
+                    }}
                   />
                 </div>
               </div>
-             
             </div>
             <div className={styles.CreateButtons}>
               <div className={styles.InnerContent}>
                 <PrimaryButton
-                  label={isAdding ? <Spinner /> : "Create"}
+                  className="AuthBtn"
+                  label={isAdding ? <Spinner /> : "Create Project"}
                   onClick={this.handleSubmit}
                 />
               </div>
@@ -328,7 +400,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   addProject,
-  getClustersList,
   clearAddProjectState,
 };
 

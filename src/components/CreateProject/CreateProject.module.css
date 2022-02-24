@@ -1,5 +1,6 @@
 .ProjectForm {
   width: 100%;
+  font-size: 1rem;
 }
 
 .CreateProjectError {
@@ -62,7 +63,7 @@
 
 .TextArea {
   padding: 1rem;
-  border: 2px solid black;
+  border: 1px solid black;
   box-sizing: border-box;
   font-size: inherit;
   width: 100%;
@@ -93,7 +94,57 @@ textarea {
   padding: 0.7rem 0rem 0rem;
 }
 .InnerContent {
-  display: grid;
+  display: flex;
   justify-content: center;
   gap: 1rem;
+}
+
+.InnerContent button {
+  width: 100%;
+}
+
+
+
+
+.ClusterCheckboxSection {
+  display: flex;
+  padding: .4rem 0rem;
+  flex-direction: row;
+  font-size: 14px;
+}
+
+.NormalText{
+  font-size: 1rem;
+}
+
+.ClusterToggleSection{
+  display: flex;
+  padding: .4rem .7rem;
+  flex-direction: row;
+  font-size: 14px;
+  text-align: center;
+  align-items: center;
+}
+.MultiSelectioOption {
+  display: flex;
+  padding: .4rem 4.9rem;
+  font-size: 14px;
+  color: #7c7a7a;
+  text-align: center;
+  align-items: center;
+}
+.Multipleclusters{
+  display: flex;
+  padding: .4rem 4.9rem;
+}
+li.ListStyle{
+  list-style-type: none;
+}
+.leftsection{
+  display: flex;
+  align-items: center;
+}
+.ClusterLabel{
+  display: flex;
+  padding-left: 2rem;
 }
