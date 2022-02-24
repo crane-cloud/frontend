@@ -79,12 +79,9 @@
 .ButtonPlusSmall{
   width: 1rem;
   height: 1rem;
-<<<<<<< HEAD
   cursor: pointer;
-=======
 }
 
 .DatabaseTable:hover{
   border-color: #cccccc;
->>>>>>> 7c6971e5 (Fix table header repetition)
 }
