@@ -118,8 +118,7 @@ class DatabaseList extends React.Component {
                   </div>
                 ) : (
                   databasesFetched &&
-                  sortedDbs !== undefined &&
-                  sortedDbs.map((database) => (
+                  databases.length > 0 && (
                     <div
                       className={`${styles.DatabaseTable} MetricsCardContainer`}
                     >
@@ -132,33 +131,38 @@ class DatabaseList extends React.Component {
                         <div className={styles.DatabaseTableHead}>Status</div>
                         <div className={styles.DatabaseTableHead}>Age</div>
                       </div>
-                      <div className={styles.DatabaseBody}>
-                        <Link
-                          to={{
-                            pathname: `/projects/${projectID}/databases/${database.id}/settings`,
-                          }}
-                          key={database.id}
-                          className={styles.DatabaseTableRow}
-                        >
-                          <div className={styles.DatabaseTableCell}>
-                            {database.database_flavour_name}
+                      {
+                        databasesFetched &&
+                        sortedDbs !== undefined &&
+                        sortedDbs.map((database, index) => (
+                          <div className={styles.DatabaseBody} key={index}>
+                            <Link
+                              to={{
+                                pathname: `/projects/${projectID}/databases/${database.id}/settings`,
+                              }}
+                              key={database.id}
+                              className={styles.DatabaseTableRow}
+                            >
+                              <div className={styles.DatabaseTableCell}>
+                                {database.database_flavour_name}
+                              </div>
+                              <div className={styles.DatabaseTableCell}>
+                                {database.name}
+                              </div>
+                              <div className={styles.DatabaseTableCell}>
+                                {database.host}
+                              </div>
+                              <div className={styles.DatabaseTableCell}>
+                                <Status status={database.db_status} />
+                              </div>
+                              <div className={styles.DatabaseTableCell}>
+                                {database.age}
+                              </div>
+                            </Link>
                           </div>
-                          <div className={styles.DatabaseTableCell}>
-                            {database.name}
-                          </div>
-                          <div className={styles.DatabaseTableCell}>
-                            {database.host}
-                          </div>
-                          <div className={styles.DatabaseTableCell}>
-                            <Status status={database.db_status} />
-                          </div>
-                          <div className={styles.DatabaseTableCell}>
-                            {database.age}
-                          </div>
-                        </Link>
-                      </div>
+                        ))}
                     </div>
-                  ))
+                  )
                 )}
 
                 {databasesFetched && databases.length === 0 && (
