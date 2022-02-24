@@ -1,6 +1,6 @@
   
 # use an official node runtime as the base image
-FROM node:10.16.0-alpine
+FROM node:16-alpine
 
 # set the (container) working directory
 WORKDIR /app
