@@ -11,7 +11,7 @@
 .DatabaseTableHead {
   text-transform: uppercase;
   color: #008ac1;
-  text-align: left;
+  text-align: center;
   grid-row: 1;
   padding: 0.5rem 0;
 }
@@ -39,14 +39,14 @@
 .DatabaseTableCell {
   font-weight: normal;
   padding: 1rem 0;
-  text-align: left;
+  text-align: center;
   grid-row: 1;
   overflow: hidden;
   overflow-wrap: break-word;
 }
 
 .DatabaseTableCell div {
-  justify-content: start!important;
+  justify-content: center!important;
 }
 
 .DatabaseTableHead:first-child,
