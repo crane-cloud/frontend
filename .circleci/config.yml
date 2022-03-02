@@ -78,7 +78,8 @@ jobs:
     working_directory: ~/crane-cloud
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 19.03.13
       - run:
           name: install kubectl
           command: |
