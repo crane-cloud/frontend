@@ -101,4 +101,4 @@ workflows:
       - build_and_deploy_production:
           filters:
             branches:
-              only: innocent/fix-prod-deoloyment
+              only: master
