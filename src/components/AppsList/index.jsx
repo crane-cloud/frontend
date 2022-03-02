@@ -79,7 +79,7 @@ class AppsList extends Component {
 
   render() {
     const { SearchList } = this.state;
-    const { apps, isRetrieved, isRetrieving, params, word, message,openComponent } =
+    const { apps, isRetrieved, isRetrieving, params, word, message, openComponent } =
       this.props;
     const allApps = apps.apps;
     const sortedApps = allApps?.sort((a, b) =>
@@ -111,7 +111,7 @@ class AppsList extends Component {
           </div>
         ) : (
           <div className={styles.AppList}>
-            {isRetrieved &&
+            { (apps.apps.length !== 0) &&
               sortedApps.map((app) => (
                 <div key={app.id} className="AppCardItem">
                   <AppsCard
@@ -139,7 +139,7 @@ class AppsList extends Component {
             )}
           </div>
         )}
-        {!isRetrieving && !isRetrieved && (
+        {!isRetrieving && !isRetrieved && (apps.apps.length === 0) && (
           <div className={styles.NoResourcesMessage}>
             Oops! Something went wrong! Failed to retrieve Apps.
           </div>
