@@ -14,6 +14,8 @@ import styles from "./ProjectBillingPage.module.css";
 import { ReactComponent as MastercardIcon } from "../../assets/images/logo-mastercard.svg";
 import { ReactComponent as VisaIcon } from "../../assets/images/visa.svg";
 import { ReactComponent as FlutterwaveIcon } from "../../assets/images/flutterwave.svg";
+import BlackInputText from "../BlackInputText";
+import Tooltip from "../Tooltip";
 
 const data = [
   { name: "CPU / $1 per 1K seconds", value: 400, color: "#0088FE" },
@@ -41,7 +43,7 @@ const transactionData = [{
     color: "#408140"
   },
   receipt: data
-}]
+}];
 
 class ProjectBillingPage extends PureComponent {
   constructor(props) {
@@ -55,6 +57,15 @@ class ProjectBillingPage extends PureComponent {
       },
       period: "5m",
       months: data2,
+      seen_steps:[1],
+      modal_current_step:1,
+      amount:"$1267",
+      holder_name:"",
+      card_number:"",
+      expiry_month:"",
+      expiry_year:"",
+      cvv_number:"",
+      paymentMethod:"",
     };
     this.closePaymentModal = this.closePaymentModal.bind(this);
     this.openPaymentModal = this.openPaymentModal.bind(this);
@@ -63,11 +74,39 @@ class ProjectBillingPage extends PureComponent {
     this.findSum = this.findSum.bind(this);
     this.closeReceiptModal = this.closeReceiptModal.bind(this);
     this.openReceiptModal = this.openReceiptModal.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.RevertToMethods = this.RevertToMethods.bind(this);
+    this.FromPaymentMethods = this.FromPaymentMethods.bind(this);
   }
   componentDidMount() {
     // this.setState({
     //  isLoading: true,
     // });
+  }
+  handleChange(e) {
+  
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+
+  }
+  RevertToMethods(){
+    this.setState({
+      seen_steps:[1],
+      modal_current_step:1
+    })
+  }
+  FromPaymentMethods(){
+    const {
+      paymentMethod
+    } = this.state;
+    if(paymentMethod!=="" && (paymentMethod==="MasterCard" || paymentMethod==="VisaCard")){
+      this.setState({
+        seen_steps:[1,2],
+        modal_current_step:2
+      });
+    }
+
   }
 
   openPaymentModal() {
@@ -142,14 +181,26 @@ class ProjectBillingPage extends PureComponent {
       },
     }));
   }
+ 
 
   render() {
     const {
       match: { params },
     } = this.props;
     const { projectID } = params;
-    const { paymentModal, viewReceipt, months } = this.state;
-    console.log(viewReceipt);
+    const { paymentModal,
+       viewReceipt, 
+       months, 
+       seen_steps,
+      modal_current_step,
+      amount,
+      holder_name,
+      card_number,
+      expiry_year,
+      cvv_number,
+      expiry_month,
+      paymentMethod,
+      } = this.state;
 
     return (
       <div className={styles.Page}>
@@ -328,7 +379,26 @@ class ProjectBillingPage extends PureComponent {
                     showModal={paymentModal}
                     onClickAway={this.closePaymentModal}
                   >
+                    
                     <div className={styles.PaymentModal}>
+                      <div className={styles.StepSection}>
+                      <div className={styles.StepInnerSection}>
+                      <div className={styles.StepNumber}>1</div>
+                      <span className={seen_steps.length > 1
+                       || modal_current_step === 1 ? styles.currentdot : styles.dot}
+                       onClick={() => {this.RevertToMethods()}}
+                       ></span>
+                      </div>
+                      <div className={styles.StepInnerSection}>
+                      <div className={styles.StepNumber}>2</div>
+                      <span className={seen_steps.length>2
+                       || modal_current_step === 2 ? styles.currentdot : styles.dot}
+                       onClick={() => {this.FromPaymentMethods()}}
+                       ></span>
+                      </div>
+                      </div>
+                      { seen_steps.length === 1 && modal_current_step===1 &&
+                      <div className={styles.Methods}>
                       <div className={styles.PaymentHead}>
                         <div className={styles.PaymentModalHeader}>
                           Choose a payment method.
@@ -337,14 +407,24 @@ class ProjectBillingPage extends PureComponent {
                           Click on the options below:
                         </div>
                       </div>
+
                       <div className={styles.PaymentModalBody}>
-                        <div className={styles.PaymentIcon}>
+                        <div className={paymentMethod==="MasterCard"?
+                        styles.PaymentIconSelected: styles.PaymentIcon
+                          }  
+                          onClick={() => {this.setState({paymentMethod:"MasterCard"})} }>
                           <MastercardIcon />
                         </div>
-                        <div className={styles.PaymentIcon}>
+                        <div className={paymentMethod==="VisaCard"?
+                        styles.PaymentIconSelected: styles.PaymentIcon
+                        } 
+                        onClick={() => {this.setState({paymentMethod:"VisaCard"})}}>
                           <VisaIcon />
                         </div>
-                        <div className={styles.PaymentIcon}>
+                        <div className={paymentMethod==="FlutterWave"? 
+                        styles.PaymentIconSelected: styles.PaymentIcon
+                        } 
+                        onClick={() => {this.setState({paymentMethod:"FlutterWave"})}}>
                           <FlutterwaveIcon />
                         </div>
                       </div>
@@ -354,9 +434,153 @@ class ProjectBillingPage extends PureComponent {
                           className="CancelBtn"
                           onClick={this.closePaymentModal}
                         />
-                        <PrimaryButton label={"PROCEED"} />
+                        <PrimaryButton 
+                        onClick={this.FromPaymentMethods}
+                        label={"PROCEED"} />
                       </div>
+                     </div>}
+                     { seen_steps.length === 2 && modal_current_step===2 &&
+                      <>
+                     <div className={styles.PaymentInput}>
+                      <div className={styles.FormText}>
+                       Amount 
+                     </div>
+                     <BlackInputText
+                     name="amount"
+                     value={amount}
+                      />
                     </div>
+                    <div className={styles.PaymentInput}>
+                      <div className={styles.FormText}>
+                       CardHolder's Name
+                     </div>
+                     <div className={styles.InputFieldWithTooltip}>
+                     <BlackInputText
+                    required
+                    placeholder="Name on card"
+                    name="holder_name"
+                    value={holder_name}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                  <div className={styles.InputTooltipContainer}>
+                    <Tooltip
+                      showIcon
+                      message=""
+                      position="left"
+                    />
+                  </div>
+                  </div>
+                  </div>
+                  <div className={styles.PaymentInput}>
+                      <div className={styles.FormText}>
+                       Card Number
+                     </div>
+                     <div className={styles.InputFieldWithTooltip}>
+                     <BlackInputText
+                    required
+                    placeholder="Card number"
+                    name="card_number"
+                    value={card_number}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                  <div className={styles.InputTooltipContainer}>
+                    <Tooltip
+                      showIcon
+                      message=""
+                      position="left"
+                    />
+                  </div>
+                  </div>
+                  </div>
+                  <div className={styles.PaymentInput}>
+                    <div className={styles.DatesOuterSection}>
+                    <div className={styles.PaymentInput}>
+                    <div className={styles.DatesSection}>
+                    <div className={styles.FormText}>
+                       Expiry Month
+                     </div>
+                    <Tooltip
+                      showIcon
+                      message="The month the card will expire, its at the front of your card"
+                      position="right"
+                    />
+                    </div>
+                    <BlackInputText
+                    required
+                    type="Number"
+                    placeholder="12"
+                    name="expiry_month"
+                    value={expiry_month}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                    </div>
+                    <div className={styles.PaymentInput}>
+                    <div className={styles.DatesSection}>
+                    <div className={styles.FormText}>
+                       Expiry Year
+                     </div>
+                    <Tooltip
+                      showIcon
+                      message="The year the card will expire, its at the front of your card"
+                      position="right"
+                    />
+                    </div>
+                    <BlackInputText
+                    required
+                    type="Number"
+                    placeholder="2025"
+                    name="expiry_year"
+                    value={expiry_year}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                    </div>
+                
+                  </div>
+                  </div>
+                  <div className={styles.PaymentInput}>
+                      <div className={styles.FormText}>
+                       CVV Number
+                     </div>
+                     <div className={styles.InputFieldWithTooltip}>
+                     <BlackInputText
+                    required
+                    type="Number"
+                    placeholder="CVV Number"
+                    name="cvv_number"
+                    value={cvv_number}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                  <div className={styles.InputTooltipContainer}>
+                    <Tooltip
+                      showIcon
+                      message=""
+                      position="left"
+                    />
+                  </div>
+                  </div>
+                  </div>
+                    
+                      <div className={styles.PaymentButtons}>
+                        <PrimaryButton
+                          label="BACK"
+                          className="CancelBtn"
+                          onClick={this.RevertToMethods}
+                        />
+                        <PrimaryButton label={"PAY BILL"} />
+                      </div>
+                     </>}
+                    </div>
+
                   </Modal>
                 </div>
               )}
