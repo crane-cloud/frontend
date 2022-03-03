@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styles from "./SideBar.module.css";
 import { Link, NavLink, matchPath } from "react-router-dom";
 import BackButton from "../../assets/images/backButton.svg";
+import useMedia from '../../hooks/mediaquery';
 
 const SideBar = ({
   name,
@@ -20,6 +21,7 @@ const SideBar = ({
     // exact: true,
     strict: true,
   });
+  const isDesktop = useMedia();
 
   const isAppMetricsPage = matchPath(pageRoute, {
     path: "/projects/:projectID/apps/:appID/",
@@ -42,6 +44,8 @@ const SideBar = ({
   const { projectID, appID } = params;
 
   return (
+    <>
+    { isDesktop && <>
     <div className={styles.SideBar}>
       <div>
         {/* {databaseLocation ? (
@@ -274,7 +278,10 @@ const SideBar = ({
           </div>
         </div>
       </div>
+      
     </div>
+    </>}
+    </>
   );
 };
 

@@ -64,11 +64,9 @@
   text-align: right;
   padding-right: 1rem!important;
 }
-
-.NoResourcesMessage {
+.NoResourcesMessageSection{
   flex-grow: 1;
   display: flex;
-  font-size: 16px;
   height: 50vh;
   text-align: center;
   justify-content: center;
@@ -76,7 +74,14 @@
   padding: 6rem;
 }
 
+.NoResourcesMessage {
+  font-size: 16px;
+  text-align: center;
+  justify-content: center;
+}
+
 .ButtonPlusSmall{
+  display: inline;
   width: 1rem;
   height: 1rem;
   cursor: pointer;
@@ -84,4 +89,33 @@
 
 .DatabaseTable:hover{
   border-color: #cccccc;
+}
+
+.MainPage {
+  /* Divided into two rows */
+  margin: 0;
+  background: #f1f1f1;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 80px 4fr;
+  overflow-x: hidden;
+}
+
+.MainSection {
+  /* divided into two columns */
+  background-color: #f1f1f1;
+  display: grid;
+  grid-template-columns: 1.3fr 6fr;
+  overflow: hidden;
+}
+.MainContentSection{
+  width: 100%;
+}
+@media(max-width: 650px) {
+.MainSection {
+    /*one column required */
+   display: flex;
+   overflow: auto;
+}
+
 }

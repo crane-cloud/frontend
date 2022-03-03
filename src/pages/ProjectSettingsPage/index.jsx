@@ -346,7 +346,7 @@ class ProjectSettingsPage extends React.Component {
                     </div>
                     <div className={styles.SectionButtons}>
                       <SettingsButton
-                        label="Update this project"
+                        label="Update"
                         onClick={this.showUpdateAlert}
                       />
                     </div>
@@ -362,7 +362,7 @@ class ProjectSettingsPage extends React.Component {
                     </div>
                     <div className={styles.SectionButtons}>
                       <SettingsButton
-                        label="Delete this project"
+                        label="Delete"
                         className="Change-Btn"
                         onClick={this.showDeleteAlert}
                       />

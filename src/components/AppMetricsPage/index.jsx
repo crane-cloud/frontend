@@ -214,7 +214,7 @@ class AppMetricsPage extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className={styles.MetricsCardsSection}>
+              <div className={styles.MetricCardsSection}>
                 <Link
                   to={{
                     pathname: `/projects/${projectID}/apps/${appID}/memory/`,

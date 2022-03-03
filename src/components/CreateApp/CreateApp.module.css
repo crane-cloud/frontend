@@ -1,3 +1,8 @@
+.Page {
+  margin: 0;
+  background: #f1f1f1;
+  width: 100%;
+}
 .MainContentSection {
   /* divided into two rows */
   display: grid;
@@ -336,4 +341,22 @@ li.ListStyle{
 .ClusterLabel{
   display: flex;
   padding-left: 1rem;
+}
+
+@media only screen and (max-width: 650px) {
+  .RoundAddButtonWrap {
+    position: absolute;
+    top: 10rem;
+    right: 1rem;
+  }
+  .ContentSection{
+    padding-top: 2.5rem;
+  }
+  .MainContentSection{
+      background-color: #f1f1f1;
+      flex-direction: column;
+      display: flex;
+      flex-shrink: 0;
+      width:100%;
+  }
 }

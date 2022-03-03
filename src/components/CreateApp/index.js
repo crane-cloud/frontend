@@ -364,7 +364,7 @@ class CreateApp extends React.Component {
       { id: 4, name: "4" },
     ];
     return (
-      <div>
+      <div className={styles.Page}>
         <div className={styles.MainContentSection}>
           <div className={styles.InformationBarSection}>
             <div className={styles.InformationBar}>

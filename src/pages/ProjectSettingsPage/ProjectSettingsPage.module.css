@@ -230,3 +230,28 @@
   outline: 1px solid #ff0000;
   color: #ff0000;
 }
+@media(max-width: 650px) {
+  .MainSection {
+    /*one column required */
+  background-color: #f1f1f1;
+  display: flex;
+  flex-shrink: 0;
+  width:100%;
+  }
+  .MainContentSection {
+    background-color: #f1f1f1;
+    flex-direction: column;
+    display: flex;
+    flex-shrink: 0;
+    width:100%;
+  }
+  
+  .ContentSection {
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+  }
+
+}

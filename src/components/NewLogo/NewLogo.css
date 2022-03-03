@@ -23,3 +23,16 @@
   font-weight: 600;
   font-size: 1.5rem;
 }
+
+@media (max-width: 650px) {
+  .BrandLogoType {
+    font-weight: 600;
+    font-size: 1rem;
+  } 
+  .LogoIcon {
+    width: 1rem;
+    height: auto;
+  }
+}
+
+
