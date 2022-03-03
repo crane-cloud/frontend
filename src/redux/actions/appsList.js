@@ -18,7 +18,7 @@ export const getAppsFail = (error) => ({
   type: GET_APPS_FAIL,
   payload: {
     status: false,
-    error: error.status,
+    error: error,
   },
 });
 

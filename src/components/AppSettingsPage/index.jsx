@@ -1149,13 +1149,11 @@ AppSettingsPage.defaultProps = {
 
 const mapStateToProps = (state) => {
   const { isDeleting, isDeleted, isFailed, message } = state.deleteAppReducer;
-  // const { apps } = state.appsListReducer;
   const { app } = state.singleAppReducer;
   const { isUpdating, isUpdated, errorMessage } = state.updateAppReducer;
   const { data } = state.user;
   const { isReverting, isReverted } = state.revertUrlReducer;
   return {
-    // apps,
     isDeleting,
     isDeleted,
     isFailed,
