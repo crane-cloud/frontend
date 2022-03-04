@@ -48,7 +48,7 @@ class AppNetworkPage extends React.Component {
 
   getAppName(id) {
     const { apps } = this.props;
-    return apps.apps.find((app) => app.id === id).name;
+    return apps?.apps.find((app) => app.id === id).name;
   }
 
   getDateCreated() {
@@ -57,7 +57,7 @@ class AppNetworkPage extends React.Component {
       apps,
     } = this.props;
     const { appID } = params;
-    return apps.apps.find((app) => app.id === appID).date_created;
+    return apps?.apps.find((app) => app.id === appID).date_created;
   }
 
   async handlePeriodChange(period, customTime = null) {

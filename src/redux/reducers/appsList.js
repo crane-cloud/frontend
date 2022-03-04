@@ -32,7 +32,7 @@ const appsListReducer = (state = initialState, action) => {
     case GET_APPS_FAIL:
       return {
         ...state,
-        message: action.payload,
+        error: action.payload,
         isRetrieving: false,
         isRetrieved: false,
       };

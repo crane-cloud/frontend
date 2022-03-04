@@ -1,7 +1,7 @@
 version: 2
 defaults: &defaults
   docker:
-    - image: circleci/node:8
+    - image: circleci/node:16
       environment:
         GOOGLE_APPLICATION_CREDENTIALS: /root/crane-cloud
   working_directory: ~/crane-cloud
@@ -44,6 +44,35 @@ deploy_to_kubernetes: &deploy_to_kubernetes
       ./kubectl set image deployment/cranecloud-frontend cranecloud-frontend=gcr.io/$GCP_PROJECT_ID/cranecloud-frontend:$IMG_TAG --record -n $namespace
 
 jobs:
+  test_and_report:
+    <<: *defaults
+    steps:
+      - checkout
+      - *attach_workspace
+      - run:
+          name: Setup Dependencies
+          command: yarn
+      - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+            ./cc-test-reporter before-build
+
+      - save_cache:  # special step to save the dependency cache
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run: # run tests
+          name: Run Test and Coverage
+          command:
+            yarn test
+      - run: # send coverage
+          name: Code Climate report
+          command: ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
+
+      - *persist_to_workspace
+
   build_and_deploy_staging:
     docker:
       - image: google/cloud-sdk
@@ -52,6 +81,7 @@ jobs:
           cluster: staging-cluster
           REACT_APP_API_BASE_URL: https://staging-api.cranecloud.io
           namespace: cranecloud
+          CC_TEST_REPORTER_ID: $CC_TEST_REPORTER_ID
     working_directory: ~/crane-cloud
     steps:
       - checkout
@@ -75,6 +105,7 @@ jobs:
           cluster: staging-cluster
           REACT_APP_API_BASE_URL: https://api.cranecloud.io
           namespace: cranecloud-prod
+          CC_TEST_REPORTER_ID: $CC_TEST_REPORTER_ID
     working_directory: ~/crane-cloud
     steps:
       - checkout
@@ -94,11 +125,16 @@ workflows:
   version: 2
   cranecloud_deployment:
     jobs:
+      - test_and_report
       - build_and_deploy_staging:
+          requires:
+            - test_and_report
           filters:
             branches:
               only: develop
       - build_and_deploy_production:
+          requires:
+            - test_and_report
           filters:
             branches:
               only: master

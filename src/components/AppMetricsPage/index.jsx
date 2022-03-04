@@ -39,7 +39,7 @@ class AppMetricsPage extends React.Component {
 
   getAppInfo(id) {
     const { apps } = this.props;
-    const found = apps.apps.find((app) => app.id === id);
+    const found = apps?.apps.find((app) => app.id === id);
     const info = {
       name: found.name,
       status: found.app_running_status,

@@ -49,7 +49,6 @@ import Privacy from "./components/Documents/privacy";
 import UserProjectsPage from "./pages/UserProjectsPage";
 import ProjectDashboardPage from "./components/ProjectDashboardPage";
 
-//commented out  to push to prod because it is still static
 //import ProjectBillingPage from "./components/ProjectBillingPage";
 
 // Protected route should have token. If not, login.
@@ -78,12 +77,12 @@ const Routes = () => (
       <Route path="/terms-of-service" component={Terms} />
       <Route path="/privacy-policy" component={Privacy} />
       {/* projects */}
-     {/*  <ProtectedRoute
+       {/*<ProtectedRoute
         isAllowed={hasToken}
         exact
         path="/projects/:projectID/billing"
         component={ProjectBillingPage}
-      />*/}
+/>*/}
       <ProtectedRoute
         isAllowed={hasToken}
         exact
