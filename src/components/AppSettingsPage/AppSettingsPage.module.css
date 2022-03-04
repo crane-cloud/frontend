@@ -494,4 +494,7 @@ ul li {
    display: flex;
    flex-wrap: wrap;
   }
+  .ContentSection{
+    padding-top: 2.5rem;
+  }
 }

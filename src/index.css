@@ -369,6 +369,7 @@ tr.TableLoading td {
   }
   .ContentSection {
     display: flex;
+    padding-top: 2.5rem;
     flex-direction: column;
     overflow-x: hidden;
     overflow-y: auto;

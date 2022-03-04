@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useEffect, useRef} from "react";
 import PropTypes from "prop-types";
 import styles from "./SideBar.module.css";
 import { Link, NavLink, matchPath } from "react-router-dom";
 import BackButton from "../../assets/images/backButton.svg";
 import useMedia from '../../hooks/mediaquery';
+import Menu from "../../assets/images/menu.svg";
 
 const SideBar = ({
   name,
@@ -22,12 +23,29 @@ const SideBar = ({
     strict: true,
   });
   const isDesktop = useMedia();
+  const [OpenForsmallScreen, setopenForsmallScreen] = useState(false);
+  const BarRef = useRef(null);
 
   const isAppMetricsPage = matchPath(pageRoute, {
     path: "/projects/:projectID/apps/:appID/",
     exact: false,
     strict: true,
   });
+  const handleClickOutsideBar = (event) => {
+    if (BarRef.current && !BarRef.current.contains(event.target)) {
+      setopenForsmallScreen(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutsideBar);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideBar);
+    };
+  }, []);
+
+  const HandleMenuClick = () =>{
+    setopenForsmallScreen(true);
+  }
 
   // const pageLocation = matchPath(pageRoute, {
   //   path: "/projects/:projectID/apps",
@@ -45,8 +63,8 @@ const SideBar = ({
 
   return (
     <>
-    { isDesktop && <>
-    <div className={styles.SideBar}>
+    { (isDesktop || OpenForsmallScreen) ? <>
+    <div ref={BarRef} className={OpenForsmallScreen? styles.SmallSidebar:styles.SideBar}>
       <div>
         {/* {databaseLocation ? (
           <div className={styles.SideBarTopSection}>
@@ -280,7 +298,8 @@ const SideBar = ({
       </div>
       
     </div>
-    </>}
+    </>:<div className={styles.MenuIcon} onClick={()=>{HandleMenuClick()}} >  
+    <img src={Menu} alt="menu" /></div>  }
     </>
   );
 };

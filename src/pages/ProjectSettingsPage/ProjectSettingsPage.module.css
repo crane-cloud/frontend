@@ -245,9 +245,16 @@
     flex-shrink: 0;
     width:100%;
   }
+  .UpdateForm {
+    max-width: 20rem;
+  }
+  .UpdateInputSection{
+    
+  }
   
   .ContentSection {
     display: flex;
+    padding-top: 2rem;
     flex-direction: column;
     overflow-x: hidden;
     overflow-y: auto;

@@ -117,5 +117,8 @@
    display: flex;
    overflow: auto;
 }
+.ContentSection {
+   padding-top: 3.5rem;
+}
 
 }
