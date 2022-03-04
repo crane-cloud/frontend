@@ -467,7 +467,7 @@ class ProjectBillingPage extends PureComponent {
                   <div className={styles.InputTooltipContainer}>
                     <Tooltip
                       showIcon
-                      message=""
+                      message="The name on the card"
                       position="left"
                     />
                   </div>
@@ -490,7 +490,7 @@ class ProjectBillingPage extends PureComponent {
                   <div className={styles.InputTooltipContainer}>
                     <Tooltip
                       showIcon
-                      message=""
+                      message="The number at the front of the card."
                       position="left"
                     />
                   </div>
@@ -563,7 +563,7 @@ class ProjectBillingPage extends PureComponent {
                   <div className={styles.InputTooltipContainer}>
                     <Tooltip
                       showIcon
-                      message=""
+                      message="The cvv 3 digit number behind the card"
                       position="left"
                     />
                   </div>

@@ -287,11 +287,9 @@
 .StepSection{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  align-self: center;
-  width: 20%;
-  height: min-content;
+  justify-content: center;
+  gap: 2rem;
+
 }
 
 .StepNumber{
