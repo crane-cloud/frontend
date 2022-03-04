@@ -249,7 +249,7 @@
     max-width: 20rem;
   }
   .UpdateInputSection{
-    
+    width: 20rem;
   }
   
   .ContentSection {
@@ -259,6 +259,13 @@
     overflow-x: hidden;
     overflow-y: auto;
     height: 100%;
+  }
+  .TextArea {
+    width: 20rem; 
+    border: 1px solid black;
+    box-sizing: border-box;
+    font-size: inherit;
+    padding: 1rem;
   }
 
 }
