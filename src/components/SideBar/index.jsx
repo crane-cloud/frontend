@@ -253,7 +253,7 @@ const SideBar = ({
                   Project settings
                 </NavLink>
               </div>
-             {/* <div>
+              <div>
                 <NavLink
                   to={{
                     pathname: `/projects/${projectID}/billing`,
@@ -262,7 +262,7 @@ const SideBar = ({
                 >
                  Billing
                 </NavLink>
-                </div>*/}
+                </div>
             </>
           )}
         </div>
