@@ -2,10 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./TextArea.css";
 
-const TextArea = ({ name, value, placeholder, onChange, required }) => {
+const TextArea = ({ name, value, placeholder, onChange, required, style}) => {
   return (
     <textarea
-      className="TextArea"
+      className={style? `${style}`  :"TextArea" }
       type="text"
       placeholder={`${placeholder}${required ? " *" : ""}`}
       rows="3"

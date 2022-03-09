@@ -1,7 +1,8 @@
 .DatabaseForm {
-  max-width: 30rem;
+  max-width: 20rem;
   padding-top: 2rem;
   height: 100%;
+  padding-bottom: 1rem;
 }
 
 .CreateDBError{
@@ -19,4 +20,15 @@
 .DBFormElements {
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
+}
+.CreatePage{
+  width: 100%;
+  margin: 0;
+  background: #f1f1f1;
+}
+
+@media (max-width: 650px) {
+.DatabaseForm{
+padding-top: 5rem;
+}
 }

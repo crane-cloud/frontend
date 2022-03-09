@@ -191,3 +191,24 @@
   justify-content: flex-end;
   align-items: flex-start;
 }
+.MetricCardsSection {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+@media only screen and (max-width: 650px) {
+  .MetricCardsSection {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .ContentSection {
+    padding-top: 2.5rem;
+  }
+}
+
+@media only screen and (max-width: 900px) and (min-width: 481px) {
+  .MetricCardsSection {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+

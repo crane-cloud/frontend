@@ -122,6 +122,45 @@ a.HeaderLinkDocs:hover {
   background-color: #f7b21f;
 }
 
+.Headerarrow{
+  display: flex;
+  height: 4rem;
+  width: 4rem;
+  align-self: center;
+  justify-self: center;
+  align-items: center;
+  justify-content: center;
+
+}
+.HeaderDropdown{
+  position: absolute;
+  top: 3rem;
+  right: 0rem;
+}
+.HeaderDropItems{
+  display: flex;
+  border: #000;
+  flex-direction: column;
+}
+.HeaderDropLinks{
+  display: flex;
+  background-color: #fff;
+  width: 7rem;
+  flex-direction: column;
+  border: #000 solid 1px;
+}
+.HeaderDropLinkDocs{
+  text-align: end;
+  padding-right: 2rem;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  color: #000;
+  border-bottom: #000 solid 1px;
+
+}
+.HeaderDropLinkDocs:hover {
+  background-color: #f7b21f;
+}
 @media only screen and (max-width: 640px) {
   .HeaderLinkPricing,
   .HeaderLinkDocs {

@@ -1,13 +1,39 @@
-import React from "react";
+import React,  { useState, useEffect, useRef} from "react";
 import "./SideNav.css";
 import { NavLink, Link } from "react-router-dom";
 import BackButton from "../../assets/images/backButton.svg";
+import Menu from "../../assets/images/menu.svg";
+import useMedia from '../../hooks/mediaquery';
 
 const SideNav = ({ clusterId, clusterName }) => {
 
+
   const BASE_URL = `/clusters/${clusterId}`;
+
+  const isDesktop = useMedia();
+  const [OpenForsmallScreen, setopenForsmallScreen] = useState(false);
+  const BarRef = useRef(null);
+
+  const handleClickOutsideBar = (event) => {
+    if (BarRef.current && !BarRef.current.contains(event.target)) {
+      setopenForsmallScreen(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutsideBar);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideBar);
+    };
+  }, []);
+
+  const HandleMenuClick = () =>{
+    setopenForsmallScreen(true);
+  }
+
   return (
-    <div className="SideNav">
+    <>
+    { (isDesktop || OpenForsmallScreen) ? <>
+    <div ref={BarRef} className={OpenForsmallScreen?"SmallSidebar" :"SideNav"} >
       <div className="ClusterName StickTop">
         <Link to={{ pathname: "/clusters" }}>
           <img src={BackButton} alt="Back Button" />
@@ -110,6 +136,9 @@ const SideNav = ({ clusterId, clusterName }) => {
         All Rights Reserved.
       </div>
     </div>
+    </>:<div className="MenuIcon" onClick={()=>{HandleMenuClick()}} >  
+    <img src={Menu} alt="menu" /></div>}
+    </>
   );
 };
 

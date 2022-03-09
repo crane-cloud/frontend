@@ -49,8 +49,8 @@
   border-bottom-left-radius: 3px 4px;
   font-size: 1rem;
   padding: 1rem;
-  height: 45px;
-  width: 300px;
+  height : 45.5px;
+  max-width: 21rem;
 }
 
 .SearchIcon{
@@ -58,4 +58,14 @@
   padding: 0.42rem;
   border-bottom-right-radius: 6px 2px;
   border-top-right-radius: 3px 4px;
+}
+
+
+
+@media only screen and (max-width: 650px) {
+  .RoundAddButtonWrap {
+    position: absolute;
+    top: 9rem;
+    right: 1rem;
+  }
 }
