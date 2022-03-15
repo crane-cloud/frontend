@@ -275,7 +275,7 @@ const SideBar = ({
                   Project settings
                 </NavLink>
               </div>
-              {/** 
+              
               <div>
                 <NavLink
                   to={{
@@ -285,7 +285,7 @@ const SideBar = ({
                 >
                  Billing
                 </NavLink>
-                </div>*/}
+                </div>
             </>
           )}
         </div>
