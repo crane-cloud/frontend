@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import InformationBar from "../InformationBar";
 import PrimaryButton from "../PrimaryButton";
@@ -69,7 +70,6 @@ const ClusterPage = ({
     appSummary(details);
     getClustersList();
     getDatabases();
-
   }, [userSummary, appSummary, getDatabases]);
 
   const showForm = () => setOpenModal(true);
@@ -95,7 +95,7 @@ const ClusterPage = ({
     } else if (period === "2y") {
       startTimeStamp = twoYearBack;
     } else if (period === "all") {
-      startTimeStamp = '2018-01-01';
+      startTimeStamp = "2018-01-01";
     }
 
     await setBegin(startTimeStamp);
@@ -105,7 +105,7 @@ const ClusterPage = ({
 
   const appsHandlePeriodChange = async (period) => {
     let startTimeStamp;
-  
+
     if (period === "3m") {
       startTimeStamp = getBackDate(3);
     } else if (period === "4m") {
@@ -117,12 +117,11 @@ const ClusterPage = ({
     } else if (period === "2y") {
       startTimeStamp = twoYearBack;
     } else if (period === "all") {
-      startTimeStamp = '2018-01-01'
+      startTimeStamp = "2018-01-01";
     }
 
     await setBegin(startTimeStamp);
     appSummary({ end: currentDate, set_by: "month", start: begin });
-
   };
 
   const handleSubmit = () => {
@@ -156,10 +155,12 @@ const ClusterPage = ({
         >
           <div className={styles.CardHeaderSection}>
             <div className={styles.CardTitle}>Users</div>
-            <PrimaryButton
-              label="View accounts"
-              className={styles.ViewAccountsBtn}
-            />
+            <Link to="/accounts">
+              <PrimaryButton
+                label="View accounts"
+                className={styles.ViewAccountsBtn}
+              />
+            </Link>
           </div>
           <div className={styles.UserSection}>
             <div className={styles.LeftUserSide}>
@@ -332,7 +333,9 @@ const ClusterPage = ({
         <div className={styles.Card}>
           <div className={styles.CardHeader}>Clusters</div>
           <div className={styles.CardTop}>Count</div>
-          <div className={styles.ResourceDigit}>{clusters.metadata?.cluster_count}</div>
+          <div className={styles.ResourceDigit}>
+            {clusters.metadata?.cluster_count}
+          </div>
         </div>
       </div>
 

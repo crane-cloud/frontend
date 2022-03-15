@@ -112,12 +112,12 @@ const SideNav = ({ clusterId, clusterName }) => {
           Jobs
         </NavLink>
       </div>
-      <Link to={{ pathname: `${BASE_URL}/accounts` }} className="ListItem">
+      <Link to={{ pathname: '/accounts' }} className="ListItem">
         Users
       </Link>
       <div>
         <NavLink
-          to={{ pathname: `${BASE_URL}/accounts` }}
+          to={{ pathname: '/accounts' }}
           className="SubListItem"
         >
           Accounts

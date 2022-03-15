@@ -46,7 +46,7 @@ class UserAccounts extends Component {
                   <thead>
                     <tr>
                       <th>Name</th>
-                      <th>Role</th>
+                      <th>Beta User</th>
                       <th>Email</th>
                     </tr>
                   </thead>
@@ -64,11 +64,11 @@ class UserAccounts extends Component {
                     <tbody>
                       {isFetched &&
                         users !== undefined &&
-                        users.map((user) => (
+                        users?.map((user) => (
                           <tr key={users.indexOf(user)}>
-                            <td>{user.name}</td>
-                            <td>{user.roles[0].name}</td>
-                            <td>{user.email}</td>
+                            <td>{user?.name}</td>
+                            <td>{user.is_beta_user?"True":"False"}</td>
+                            <td>{user?.email}</td>
                           </tr>
                         ))}
                     </tbody>

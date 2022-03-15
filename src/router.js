@@ -182,7 +182,7 @@ const Routes = () => (
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/clusters/:clusterID/accounts"
+        path="/accounts"
         component={UsersAccounts}
       />
       <ProtectedRoute
