@@ -175,17 +175,17 @@ class ProjectBillingPage extends PureComponent {
       },
     }));
   }
+ 
 
   render() {
     const {
       match: { params },
     } = this.props;
     const { projectID } = params;
-    const {
-      paymentModal,
-      viewReceipt,
-      months,
-      seen_steps,
+    const { paymentModal,
+       viewReceipt, 
+       months, 
+       seen_steps,
       modal_current_step,
       amount,
       holder_name,
@@ -194,7 +194,7 @@ class ProjectBillingPage extends PureComponent {
       cvv_number,
       expiry_month,
       paymentMethod,
-    } = this.state;
+      } = this.state;
 
     return (
       <div className={styles.Page}>
@@ -375,20 +375,29 @@ class ProjectBillingPage extends PureComponent {
                     showModal={paymentModal}
                     onClickAway={this.closePaymentModal}
                   >
+                    
                     <div className={styles.PaymentModal}>
                       <div className={styles.StepSection}>
-                        <div className={styles.StepInnerSection}>
-                          <div className={styles.StepNumber}>1</div>
-                          <span
-                            className={
-                              seen_steps.length > 1 || modal_current_step === 1
-                                ? styles.currentdot
-                                : styles.dot
-                            }
-                            onClick={() => {
-                              this.RevertToMethods();
-                            }}
-                          ></span>
+                      <div className={styles.StepInnerSection}>
+                      <div className={styles.StepNumber}>1</div>
+                      <span className={seen_steps.length > 1
+                       || modal_current_step === 1 ? styles.currentdot : styles.dot}
+                       onClick={() => {this.RevertToMethods()}}
+                       ></span>
+                      </div>
+                      <div className={styles.StepInnerSection}>
+                      <div className={styles.StepNumber}>2</div>
+                      <span className={seen_steps.length>2
+                       || modal_current_step === 2 ? styles.currentdot : styles.dot}
+                       onClick={() => {this.FromPaymentMethods()}}
+                       ></span>
+                      </div>
+                      </div>
+                      { seen_steps.length === 1 && modal_current_step===1 &&
+                      <div className={styles.Methods}>
+                      <div className={styles.PaymentHead}>
+                        <div className={styles.PaymentModalHeader}>
+                          Choose a payment method.
                         </div>
                         <div className={styles.StepInnerSection}>
                           <div className={styles.StepNumber}>2</div>
@@ -404,192 +413,180 @@ class ProjectBillingPage extends PureComponent {
                           ></span>
                         </div>
                       </div>
-                      {seen_steps.length === 1 && modal_current_step === 1 && (
-                        <div className={styles.Methods}>
-                          <div className={styles.PaymentHead}>
-                            <div className={styles.PaymentModalHeader}>
-                              Choose a payment method.
-                            </div>
-                            <div className={styles.PaymentModalSubHeader}>
-                              Click on the options below:
-                            </div>
-                          </div>
 
-                          <div className={styles.PaymentModalBody}>
-                            <div
-                              className={
-                                paymentMethod === "MasterCard"
-                                  ? styles.PaymentIconSelected
-                                  : styles.PaymentIcon
-                              }
-                              onClick={this.FromPaymentMethods}
-                            >
-                              <MastercardIcon />
-                            </div>
-                            <div
-                              className={
-                                paymentMethod === "VisaCard"
-                                  ? styles.PaymentIconSelected
-                                  : styles.PaymentIcon
-                              }
-                              onClick={this.FromPaymentMethods}
-                            >
-                              <VisaIcon />
-                            </div>
-                            <div
-                              className={
-                                paymentMethod === "FlutterWave"
-                                  ? styles.PaymentIconSelected
-                                  : styles.PaymentIcon
-                              }
-                              onClick={() => {
-                                this.setState({ paymentMethod: "FlutterWave" });
-                              }}
-                            >
-                              <FlutterwaveIcon />
-                            </div>
-                          </div>
-                          <div className={styles.CancelButton}>
-                            <PrimaryButton
-                              label="CANCEL"
-                              className="CancelBtn"
-                              onClick={this.closePaymentModal}
-                            />
-                          </div>
+                      <div className={styles.PaymentModalBody}>
+                        <div className={paymentMethod==="MasterCard"?
+                        styles.PaymentIconSelected: styles.PaymentIcon
+                          }  
+                          onClick={() => {this.setState({paymentMethod:"MasterCard"})} }>
+                          <MastercardIcon />
                         </div>
-                      )}
-                      {seen_steps.length === 2 && modal_current_step === 2 && (
-                        <>
-                          <div className={styles.PaymentInput}>
-                            <div className={styles.FormText}>Amount</div>
-                            <BlackInputText name="amount" value={amount} />
-                          </div>
-                          <div className={styles.PaymentInput}>
-                            <div className={styles.FormText}>
-                              CardHolder's Name
-                            </div>
-                            <div className={styles.InputFieldWithTooltip}>
-                              <BlackInputText
-                                required
-                                placeholder="Name on card"
-                                name="holder_name"
-                                value={holder_name}
-                                onChange={(e) => {
-                                  this.handleChange(e);
-                                }}
-                              />
-                              <div className={styles.InputTooltipContainer}>
-                                <Tooltip
-                                  showIcon
-                                  message="The name on the card"
-                                  position="left"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className={styles.PaymentInput}>
-                            <div className={styles.FormText}>Card Number</div>
-                            <div className={styles.InputFieldWithTooltip}>
-                              <BlackInputText
-                                required
-                                placeholder="Card number"
-                                name="card_number"
-                                value={card_number}
-                                onChange={(e) => {
-                                  this.handleChange(e);
-                                }}
-                              />
-                              <div className={styles.InputTooltipContainer}>
-                                <Tooltip
-                                  showIcon
-                                  message="The number at the front of the card."
-                                  position="left"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className={styles.PaymentInput}>
-                            <div className={styles.DatesOuterSection}>
-                              <div className={styles.PaymentInput}>
-                                <div className={styles.DatesSection}>
-                                  <div className={styles.FormText}>
-                                    Expiry Month
-                                  </div>
-                                  <Tooltip
-                                    showIcon
-                                    message="The month the card will expire, its at the front of your card"
-                                    position="right"
-                                  />
-                                </div>
-                                <BlackInputText
-                                  required
-                                  type="Number"
-                                  placeholder="12"
-                                  name="expiry_month"
-                                  value={expiry_month}
-                                  onChange={(e) => {
-                                    this.handleChange(e);
-                                  }}
-                                />
-                              </div>
-                              <div className={styles.PaymentInput}>
-                                <div className={styles.DatesSection}>
-                                  <div className={styles.FormText}>
-                                    Expiry Year
-                                  </div>
-                                  <Tooltip
-                                    showIcon
-                                    message="The year the card will expire, its at the front of your card"
-                                    position="right"
-                                  />
-                                </div>
-                                <BlackInputText
-                                  required
-                                  type="Number"
-                                  placeholder="2025"
-                                  name="expiry_year"
-                                  value={expiry_year}
-                                  onChange={(e) => {
-                                    this.handleChange(e);
-                                  }}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className={styles.PaymentInput}>
-                            <div className={styles.FormText}>CVV Number</div>
-                            <div className={styles.InputFieldWithTooltip}>
-                              <BlackInputText
-                                required
-                                type="Number"
-                                placeholder="CVV Number"
-                                name="cvv_number"
-                                value={cvv_number}
-                                onChange={(e) => {
-                                  this.handleChange(e);
-                                }}
-                              />
-                              <div className={styles.InputTooltipContainer}>
-                                <Tooltip
-                                  showIcon
-                                  message="The cvv 3 digit number behind the card"
-                                  position="left"
-                                />
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className={styles.PaymentButtons}>
-                            <PrimaryButton
-                              label="BACK"
-                              className="CancelBtn"
-                              onClick={this.RevertToMethods}
-                            />
-                            <PrimaryButton label={"PAY BILL"} />
-                          </div>
-                        </>
-                      )}
+                        <div className={paymentMethod==="VisaCard"?
+                        styles.PaymentIconSelected: styles.PaymentIcon
+                        } 
+                        onClick={() => {this.setState({paymentMethod:"VisaCard"})}}>
+                          <VisaIcon />
+                        </div>
+                        <div className={paymentMethod==="FlutterWave"? 
+                        styles.PaymentIconSelected: styles.PaymentIcon
+                        } 
+                        onClick={() => {this.setState({paymentMethod:"FlutterWave"})}}>
+                          <FlutterwaveIcon />
+                        </div>
+                      </div>
+                      <div className={styles.PaymentButtons}>
+                        <PrimaryButton
+                          label="CANCEL"
+                          className="CancelBtn"
+                          onClick={this.closePaymentModal}
+                        />
+                        <PrimaryButton 
+                        onClick={this.FromPaymentMethods}
+                        label={"PROCEED"} />
+                      </div>
+                     </div>}
+                     { seen_steps.length === 2 && modal_current_step===2 &&
+                      <>
+                     <div className={styles.PaymentInput}>
+                      <div className={styles.FormText}>
+                       Amount 
+                     </div>
+                     <BlackInputText
+                     name="amount"
+                     value={amount}
+                      />
                     </div>
+                    <div className={styles.PaymentInput}>
+                      <div className={styles.FormText}>
+                       CardHolder's Name
+                     </div>
+                     <div className={styles.InputFieldWithTooltip}>
+                     <BlackInputText
+                    required
+                    placeholder="Name on card"
+                    name="holder_name"
+                    value={holder_name}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                  <div className={styles.InputTooltipContainer}>
+                    <Tooltip
+                      showIcon
+                      message="The name on the card"
+                      position="left"
+                    />
+                  </div>
+                  </div>
+                  </div>
+                  <div className={styles.PaymentInput}>
+                      <div className={styles.FormText}>
+                       Card Number
+                     </div>
+                     <div className={styles.InputFieldWithTooltip}>
+                     <BlackInputText
+                    required
+                    placeholder="Card number"
+                    name="card_number"
+                    value={card_number}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                  <div className={styles.InputTooltipContainer}>
+                    <Tooltip
+                      showIcon
+                      message="The number at the front of the card."
+                      position="left"
+                    />
+                  </div>
+                  </div>
+                  </div>
+                  <div className={styles.PaymentInput}>
+                    <div className={styles.DatesOuterSection}>
+                    <div className={styles.PaymentInput}>
+                    <div className={styles.DatesSection}>
+                    <div className={styles.FormText}>
+                       Expiry Month
+                     </div>
+                    <Tooltip
+                      showIcon
+                      message="The month the card will expire, its at the front of your card"
+                      position="right"
+                    />
+                    </div>
+                    <BlackInputText
+                    required
+                    type="Number"
+                    placeholder="12"
+                    name="expiry_month"
+                    value={expiry_month}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                    </div>
+                    <div className={styles.PaymentInput}>
+                    <div className={styles.DatesSection}>
+                    <div className={styles.FormText}>
+                       Expiry Year
+                     </div>
+                    <Tooltip
+                      showIcon
+                      message="The year the card will expire, its at the front of your card"
+                      position="right"
+                    />
+                    </div>
+                    <BlackInputText
+                    required
+                    type="Number"
+                    placeholder="2025"
+                    name="expiry_year"
+                    value={expiry_year}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                    </div>
+                
+                  </div>
+                  </div>
+                  <div className={styles.PaymentInput}>
+                      <div className={styles.FormText}>
+                       CVV Number
+                     </div>
+                     <div className={styles.InputFieldWithTooltip}>
+                     <BlackInputText
+                    required
+                    type="Number"
+                    placeholder="CVV Number"
+                    name="cvv_number"
+                    value={cvv_number}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                  <div className={styles.InputTooltipContainer}>
+                    <Tooltip
+                      showIcon
+                      message="The cvv 3 digit number behind the card"
+                      position="left"
+                    />
+                  </div>
+                  </div>
+                  </div>
+                    
+                      <div className={styles.PaymentButtons}>
+                        <PrimaryButton
+                          label="BACK"
+                          className="CancelBtn"
+                          onClick={this.RevertToMethods}
+                        />
+                        <PrimaryButton label={"PAY BILL"} />
+                      </div>
+                     </>}
+                    </div>
+
                   </Modal>
                 </div>
               )}
