@@ -33,17 +33,19 @@ const data2 = [
   { date: "2022-01", amount: 1267 },
   { date: "2022-02", amount: 1267 },
 ];
-const transactionData = [{
-  id: "875469470120", 
-  date: "02-17-2020", 
-  paymentMethod: "Master Card",
-  amount: "$1,267",
-  status: {
-    text: "Successful",
-    color: "#408140"
+const transactionData = [
+  {
+    id: "875469470120",
+    date: "02-17-2020",
+    paymentMethod: "Master Card",
+    amount: "$1,267",
+    status: {
+      text: "Successful",
+      color: "#408140",
+    },
+    receipt: data,
   },
-  receipt: data
-}];
+];
 
 class ProjectBillingPage extends PureComponent {
   constructor(props) {
@@ -57,15 +59,15 @@ class ProjectBillingPage extends PureComponent {
       },
       period: "5m",
       months: data2,
-      seen_steps:[1],
-      modal_current_step:1,
-      amount:"$1267",
-      holder_name:"",
-      card_number:"",
-      expiry_month:"",
-      expiry_year:"",
-      cvv_number:"",
-      paymentMethod:"",
+      seen_steps: [1],
+      modal_current_step: 1,
+      amount: "$1267",
+      holder_name: "",
+      card_number: "",
+      expiry_month: "",
+      expiry_year: "",
+      cvv_number: "",
+      paymentMethod: "",
     };
     this.closePaymentModal = this.closePaymentModal.bind(this);
     this.openPaymentModal = this.openPaymentModal.bind(this);
@@ -84,29 +86,21 @@ class ProjectBillingPage extends PureComponent {
     // });
   }
   handleChange(e) {
-  
     this.setState({
       [e.target.name]: e.target.value,
     });
-
   }
-  RevertToMethods(){
+  RevertToMethods() {
     this.setState({
-      seen_steps:[1],
-      modal_current_step:1
-    })
+      seen_steps: [1],
+      modal_current_step: 1,
+    });
   }
-  FromPaymentMethods(){
-    const {
-      paymentMethod
-    } = this.state;
-    if(paymentMethod!=="" && (paymentMethod==="MasterCard" || paymentMethod==="VisaCard")){
+  FromPaymentMethods() {
       this.setState({
-        seen_steps:[1,2],
-        modal_current_step:2
+        seen_steps: [1, 2],
+        modal_current_step: 2,
       });
-    }
-
   }
 
   openPaymentModal() {
@@ -227,87 +221,86 @@ class ProjectBillingPage extends PureComponent {
             <div className={styles.SmallContainer}>
               <div className={styles.OuterContainerBorder}>
                 <div className={styles.DonutChatContainer}>
-                  
                   <div className={styles.InsideHeading}>
                     <div className={styles.Heading}>Month-to date Summary</div>
                   </div>
-                  <div className={styles.InnerContainer} >
-                  <div className={styles.Subtext}>
-                    The chart below shows the proportion of costs spent for each
-                    service you use on the platform
-                  </div>
-                  <DonutChart
-                    center_x={60}
-                    center_y={70}
-                    InnerRadius={30}
-                    OuterRadius={50}
-                    data={data}
-                    height={150}
-                    width={130}
-                  />
+                  <div className={styles.InnerContainer}>
+                    <div className={styles.Subtext}>
+                      The chart below shows the proportion of costs spent for
+                      each service you use on the platform
+                    </div>
+                    <DonutChart
+                      center_x={60}
+                      center_y={70}
+                      InnerRadius={30}
+                      OuterRadius={50}
+                      data={data}
+                      height={150}
+                      width={130}
+                    />
 
-                  <div className={styles.MonthSummary}>
-                    {data.map((entry, index) => (
-                      <div className={styles.ResourseDetail} key={index}>
-                        <div
-                          className={styles.Cube}
-                          style={{
-                            background: `${data[index % data.length].color}`,
-                          }}
-                        />
-                        <div className={styles.ResourceName}>
-                          {data[index % data.length].name}
+                    <div className={styles.MonthSummary}>
+                      {data.map((entry, index) => (
+                        <div className={styles.ResourseDetail} key={index}>
+                          <div
+                            className={styles.Cube}
+                            style={{
+                              background: `${data[index % data.length].color}`,
+                            }}
+                          />
+                          <div className={styles.ResourceName}>
+                            {data[index % data.length].name}
+                          </div>
+                          <div className={styles.ResourcePrice}>
+                            ${data[index % data.length].value}
+                          </div>
                         </div>
+                      ))}
+                      <div className={styles.Total}>
+                        <div className={styles.TotalTxt}>Total</div>
                         <div className={styles.ResourcePrice}>
-                          ${data[index % data.length].value}
+                          ${this.findSum()}
                         </div>
-                      </div>
-                    ))}
-                    <div className={styles.Total}>
-                      <div className={styles.TotalTxt}>Total</div>
-                      <div className={styles.ResourcePrice}>
-                        ${this.findSum()}
                       </div>
                     </div>
+                    <div className={styles.paymentButton}>
+                      <PrimaryButton
+                        label={"Pay Bill"}
+                        onClick={this.openPaymentModal}
+                      />
+                    </div>
                   </div>
-                  <div className={styles.paymentButton}>
-                    <PrimaryButton
-                      label={"Pay Bill"}
-                      onClick={this.openPaymentModal}
-                    />
-                  </div>
-                </div>
                 </div>
                 <div className={styles.BarGraphContainer}>
                   <div className={styles.InsideHeading}>
                     <div className={styles.Heading}>Spending Summary</div>
                   </div>
-                  <div className={styles.InnerContainer} >
-                  <div className={styles.Subtext}>
-                    Your spending summary for the last three months appears
-                    below
+                  <div className={styles.InnerContainer}>
+                    <div className={styles.Subtext}>
+                      Your spending summary for the last three months appears
+                      below
+                    </div>
+                    <div className={styles.Subtext2}>
+                      Current Month-to-Date balance is ${this.findSum()}
+                    </div>
+                    <div className={styles.MetricContainer}>
+                      <MetricsCard
+                        className={styles.MetricsCardGraph}
+                        title={
+                          <SpendingPeriod onChange={this.handlePeriodChange} />
+                        }
+                      >
+                        <BarGraph
+                          data={months}
+                          height={180}
+                          width={200}
+                          barSize={30}
+                          width_percentage="100%"
+                          height_percentage="80%"
+                        />
+                      </MetricsCard>
+                    </div>
                   </div>
-                  <div className={styles.Subtext2}>
-                    Current Month-to-Date balance is ${this.findSum()}
-                  </div>
-                  <div className={styles.MetricContainer}>
-                    <MetricsCard
-                      className={styles.MetricsCardGraph}
-                      title={
-                        <SpendingPeriod onChange={this.handlePeriodChange} />
-                      }
-                    >
-                      <BarGraph
-                        data={months}
-                        height={180}
-                        width={200}
-                        barSize={30}
-                        width_percentage="100%"
-                        height_percentage="80%"
-                      />
-                    </MetricsCard>
-                  </div>
-                </div>
                 </div>
               </div>
               <div className={styles.TransactionHistoryWrapper}>
@@ -338,36 +331,39 @@ class ProjectBillingPage extends PureComponent {
                         </div>
                       </div>
                       {transactionData.map((entry, index) => (
-                      <div className={styles.TransactionHistoryRow} key={index}>
-                        <div className={styles.TransactionHistoryCell}>
-                          {entry.date}
+                        <div
+                          className={styles.TransactionHistoryRow}
+                          key={index}
+                        >
+                          <div className={styles.TransactionHistoryCell}>
+                            {entry.date}
+                          </div>
+                          <div className={styles.TransactionHistoryCell}>
+                            {entry.id}
+                          </div>
+                          <div className={styles.TransactionHistoryCell}>
+                            {entry.paymentMethod}
+                          </div>
+                          <div className={styles.TransactionHistoryCell}>
+                            <span
+                              className={styles.Status}
+                              style={{ background: entry.status.color }}
+                            >
+                              {entry.status.text}
+                            </span>
+                          </div>
+                          <div className={styles.TransactionHistoryCell}>
+                            {entry.amount}
+                          </div>
+                          <div className={styles.TransactionHistoryCell}>
+                            <button
+                              onClick={this.openReceiptModal}
+                              className={styles.PaymentDetailsButton}
+                            >
+                              View
+                            </button>
+                          </div>
                         </div>
-                        <div className={styles.TransactionHistoryCell}>
-                          {entry.id}
-                        </div>
-                        <div className={styles.TransactionHistoryCell}>
-                          {entry.paymentMethod}
-                        </div>
-                        <div className={styles.TransactionHistoryCell}>
-                          <span
-                            className={styles.Status}
-                            style={{ background: entry.status.color }}
-                          >
-                            {entry.status.text}
-                          </span>
-                        </div>
-                        <div className={styles.TransactionHistoryCell}>
-                          {entry.amount}
-                        </div>
-                        <div className={styles.TransactionHistoryCell}>
-                          <button
-                            onClick={this.openReceiptModal}
-                            className={styles.PaymentDetailsButton}
-                          >
-                            View
-                          </button>
-                        </div>
-                      </div>
                       ))}
                     </div>
                   </div>
@@ -403,8 +399,18 @@ class ProjectBillingPage extends PureComponent {
                         <div className={styles.PaymentModalHeader}>
                           Choose a payment method.
                         </div>
-                        <div className={styles.PaymentModalSubHeader}>
-                          Click on the options below:
+                        <div className={styles.StepInnerSection}>
+                          <div className={styles.StepNumber}>2</div>
+                          <span
+                            className={
+                              seen_steps.length > 2 || modal_current_step === 2
+                                ? styles.currentdot
+                                : styles.dot
+                            }
+                            onClick={() => {
+                              this.FromPaymentMethods();
+                            }}
+                          ></span>
                         </div>
                       </div>
 
@@ -593,15 +599,26 @@ class ProjectBillingPage extends PureComponent {
                     <div className={styles.ReceiptModal}>
                       <div className={styles.ReceiptDetailContainer}>
                         <div>
-                          <div className={styles.ReceiptLabel}>Transaction ID</div>
-                          <div className={styles.ReceiptDetail}>{transactionData[0].id}</div>
+                          <div className={styles.ReceiptLabel}>
+                            Transaction ID
+                          </div>
+                          <div className={styles.ReceiptDetail}>
+                            {transactionData[0].id}
+                          </div>
                         </div>
                         <div>
                           <div className={styles.ReceiptLabel}>Date</div>
-                          <div className={styles.ReceiptDetail}>{transactionData[0].date}</div>
+                          <div className={styles.ReceiptDetail}>
+                            {transactionData[0].date}
+                          </div>
                         </div>
                       </div>
-                      <div className={styles.ReceiptLabel} style={{padding: '0.8rem'}}>Receipt</div>
+                      <div
+                        className={styles.ReceiptLabel}
+                        style={{ padding: "0.8rem" }}
+                      >
+                        Receipt
+                      </div>
                       <div className={styles.MonthSummary}>
                         {transactionData[0].receipt.map((entry, index) => (
                           <div className={styles.ResourseDetail} key={index}>
@@ -609,15 +626,26 @@ class ProjectBillingPage extends PureComponent {
                               className={styles.Cube}
                               style={{
                                 background: `${
-                                  transactionData[0].receipt[index % transactionData[0].receipt.length].color
+                                  transactionData[0].receipt[
+                                    index % transactionData[0].receipt.length
+                                  ].color
                                 }`,
                               }}
                             />
                             <div className={styles.ResourceName}>
-                              {transactionData[0].receipt[index % transactionData[0].receipt.length].name}
+                              {
+                                transactionData[0].receipt[
+                                  index % transactionData[0].receipt.length
+                                ].name
+                              }
                             </div>
                             <div className={styles.ResourcePrice}>
-                              ${transactionData[0].receipt[index % transactionData[0].receipt.length].value}
+                              $
+                              {
+                                transactionData[0].receipt[
+                                  index % transactionData[0].receipt.length
+                                ].value
+                              }
                             </div>
                           </div>
                         ))}

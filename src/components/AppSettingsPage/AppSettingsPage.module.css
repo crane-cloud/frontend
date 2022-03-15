@@ -483,3 +483,18 @@ ul li {
   align-items: center;
   column-gap: 1rem;
 }
+
+@media (max-width: 650px) {
+  .APPSections {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1rem;
+  }
+  .EnvDataItem{
+   display: flex;
+   flex-wrap: wrap;
+  }
+  .ContentSection{
+    padding-top: 2.5rem;
+  }
+}

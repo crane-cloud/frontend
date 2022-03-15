@@ -126,7 +126,7 @@ class AppsList extends Component {
               ))}
           </div>
         )}
-        {isRetrieved && sortedApps.length === 0 && (
+        {isRetrieved && sortedApps?.length === 0 && (
           <div className={styles.NoResourcesMessage}>
             {message ? (
               message

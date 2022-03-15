@@ -80,7 +80,7 @@ class CreateDatabase extends React.Component {
       return <Redirect to={`/projects/${projectID}/databases`} noThrow />;
     }
     return (
-      <div>
+      <div className="CreatePage">
         <div className="MainContentSection">
           <div className="InformationBarSection ">
             <div className="InformationBar">

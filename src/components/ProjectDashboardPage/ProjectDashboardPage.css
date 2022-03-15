@@ -12,6 +12,7 @@
 }
 
 .CardDimensions {
+  max-width: 21rem;
   height: 15rem;
   color: initial;
 }
@@ -20,3 +21,20 @@
     height: 11rem;
   }
 }
+
+@media only screen and (max-width: 650px) {
+  .MetricCardsSection {
+    grid-template-columns: repeat(1, 1fr);
+    
+  }
+  .ProjectContentSection {
+    padding-top: 2.5rem;
+  }
+}
+
+@media only screen and (max-width: 900px) and (min-width: 481px) {
+  .MetricCardsSection {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+

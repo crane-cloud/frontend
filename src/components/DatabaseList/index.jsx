@@ -77,11 +77,11 @@ class DatabaseList extends React.Component {
       b.date_created > a.date_created ? 1 : -1
     );
     return (
-      <div className="MainPage">
+      <div className={styles.MainPage}>
         <div className="TopBarSection">
           <Header />
         </div>
-        <div className="MainSection">
+        <div className={styles.MainSection}>
           <div className="SideBarSection">
             <SideBar
               name={this.getProjectName(projects, params.projectID)}
@@ -111,7 +111,7 @@ class DatabaseList extends React.Component {
               </div>
               <div className={styles.ContentSection}>
                 {isFetchingDatabases ? (
-                  <div className={styles.NoResourcesMessage}>
+                  <div className={styles.NoResourcesMessageSection}>
                     <div className={styles.SpinnerWrapper}>
                       <Spinner size="big" />
                     </div>
@@ -166,10 +166,16 @@ class DatabaseList extends React.Component {
                 )}
 
                 {databasesFetched && databases.length === 0 && (
+                  <div className={styles.NoResourcesMessageSection}>
                   <div className={styles.NoResourcesMessage}>
-                    You haven’t created any databases yet. Click the &nbsp;{" "}
+                    You haven’t created any databases yet. 
+                  </div>
+                  <br></br>
+                  <div className={styles.NoResourcesMessage}>
+                    Click the &nbsp;{" "}
                     <ButtonPlus className={styles.ButtonPlusSmall} onClick={this.showCreateComponent} /> &nbsp;
                     button to create one.
+                  </div>
                   </div>
                 )}
 

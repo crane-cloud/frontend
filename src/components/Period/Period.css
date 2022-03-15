@@ -54,3 +54,23 @@
   z-index: 3;
   width: 21rem;
 }
+
+@media (max-width: 650px) {
+  .PeriodButtonsSection {
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+  }
+  .CalendarModal {
+    padding: 1rem .5rem;
+    right: -1.5rem;
+  }
+}
+
+
+@media (max-width: 900px) {
+  .CalendarModal {
+    padding: 1rem .5rem;
+    right: -1.5rem;
+  }
+}

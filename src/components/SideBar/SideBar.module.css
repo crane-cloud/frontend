@@ -8,6 +8,19 @@
   flex-direction: column;
   position: relative;
 }
+.SmallSidebar{
+  height: inherit;
+  background: #06222f;
+  mix-blend-mode: normal;
+  margin-left: 0px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  width: 50%;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+}
 
 .SideBarTopSection {
   padding: 2rem 1rem;
@@ -83,6 +96,13 @@
   color: #06222f;
   background-color: #7aa6b9;
   padding-left: 20px;
+}
+.MenuIcon{
+  height: 3rem;
+  width: 3rem;
+  position: absolute;
+  top: 9rem;
+  left: 1rem;
 }
 
 .DisabledLink {
