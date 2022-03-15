@@ -42,7 +42,7 @@ const InformationBar = ({
               <div className="SearchInput">
                 <input
                   type="text"
-                  class="searchTerm"
+                  className="searchTerm"
                   name="Searchword"
                   placeholder={placeholder}
                   value={Searchword}

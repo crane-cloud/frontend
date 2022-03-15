@@ -166,7 +166,7 @@ AppsList.propTypes = {
 
 // assigning defaults
 AppsList.defaultProps = {
-  apps: {},
+  apps: {apps:[]},
   isRetrieved: false,
   isRetrieving: true,
   message: false,
