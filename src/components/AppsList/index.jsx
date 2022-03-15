@@ -111,8 +111,8 @@ class AppsList extends Component {
           </div>
         ) : (
           <div className={styles.AppList}>
-            { (apps.apps.length !== 0) &&
-              sortedApps.map((app) => (
+            { (apps.apps?.length !== 0) &&
+              sortedApps?.map((app) => (
                 <div key={app.id} className="AppCardItem">
                   <AppsCard
                     name={app.name}
@@ -126,7 +126,7 @@ class AppsList extends Component {
               ))}
           </div>
         )}
-        {isRetrieved && sortedApps.length === 0 && (
+        {isRetrieved && sortedApps?.length === 0 && (
           <div className={styles.NoResourcesMessage}>
             {message ? (
               message
@@ -139,7 +139,7 @@ class AppsList extends Component {
             )}
           </div>
         )}
-        {!isRetrieving && !isRetrieved && (apps.apps.length === 0) && (
+        {!isRetrieving && !isRetrieved && (apps.apps?.length === 0) && (
           <div className={styles.NoResourcesMessage}>
             Oops! Something went wrong! Failed to retrieve Apps.
           </div>
