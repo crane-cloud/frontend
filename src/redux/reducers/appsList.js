@@ -5,7 +5,7 @@ import {
 } from "../actions/actionTypes";
 
 const initialState = {
-  apps: {},
+  apps: {apps:[]},
   isRetrieved: false,
   isRetrieving: false,
   message: "Apps Not Available",
