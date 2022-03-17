@@ -137,7 +137,7 @@ AppsPage.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isCreated } = state.createAppReducer;
   const { projects } = state.userProjectsReducer;
   return {

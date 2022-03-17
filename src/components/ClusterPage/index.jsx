@@ -430,7 +430,7 @@ ClusterPage.propTypes = {
   message: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isFetchingDatabases, databasesFetched, databases } =
     state.databasesReducer;
   const { creatingCluster, isAdded, isFailed, errorOccured, message } =

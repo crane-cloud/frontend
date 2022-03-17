@@ -200,7 +200,7 @@ AppNetworkPage.propTypes = {
   clearAppNetwork: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isFetchingAppNetwork, appNetworkMetrics, appNetworkMessage } =
     state.appNetworkReducer;
   const { apps } = state.appsListReducer;
