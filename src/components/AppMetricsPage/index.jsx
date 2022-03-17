@@ -288,7 +288,7 @@ class AppMetricsPage extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { logs, retrievedLogs, retrieveingLogs } = state.appLogsReducer;
 
   const { isFetchingAppMemory, appMemoryMetrics, appMemoryMessage } =

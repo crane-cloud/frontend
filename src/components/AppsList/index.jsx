@@ -172,7 +172,7 @@ AppsList.defaultProps = {
   message: false,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isRetrieving, apps, isRetrieved } = state.appsListReducer;
   return { isRetrieving, apps, isRetrieved };
 };

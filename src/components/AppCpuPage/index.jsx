@@ -16,7 +16,7 @@ import {
   subtractTime,
 } from "../../helpers/formatMetrics";
 
-class AppCpuPage extends React.Component {
+export class AppCpuPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -185,12 +185,12 @@ class AppCpuPage extends React.Component {
 }
 
 AppCpuPage.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      appID: PropTypes.string.isRequired,
-      userID: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
+  // match: PropTypes.shape({
+  //   params: PropTypes.shape({
+  //     appID: PropTypes.string.isRequired,
+  //     userID: PropTypes.string.isRequired,
+  //   }).isRequired,
+  // }).isRequired,
   isFetchingCPU: PropTypes.bool.isRequired,
   appCPUMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getAppCPU: PropTypes.func.isRequired,
@@ -198,13 +198,13 @@ AppCpuPage.propTypes = {
   apps: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isFetchingCPU, appCPUMetrics, cpuMessage } = state.appCpuReducer;
   const { apps } = state.appsListReducer;
   return { apps, isFetchingCPU, appCPUMetrics, cpuMessage };
 };
 
-const mapDispatchToProps = {
+export const mapDispatchToProps = {
   getAppCPU,
   clearAppCPU,
 };

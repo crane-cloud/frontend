@@ -1147,7 +1147,7 @@ AppSettingsPage.defaultProps = {
   apps: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isDeleting, isDeleted, isFailed, message } = state.deleteAppReducer;
   const { app } = state.singleAppReducer;
   const { isUpdating, isUpdated, errorMessage } = state.updateAppReducer;

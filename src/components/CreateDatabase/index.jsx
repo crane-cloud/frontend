@@ -141,7 +141,7 @@ CreateDatabase.defaultProps = {
   params: {},
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isCreating, isCreated, clearDatabaseCreateState, message } =
     state.createDatabaseReducer;
 
