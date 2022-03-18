@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`NewLogo Component Renders a Logo component 1`] = `ShallowWrapper {}`;
+exports[`Test new logo checks whether the component rendered correctly 1`] = `ShallowWrapper {}`;

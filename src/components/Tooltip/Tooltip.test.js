@@ -4,8 +4,8 @@ import { shallow } from "enzyme";
 
 import Tooltip from "./index";
 
-describe('Tooltip Component', () => {
-    it('Renders correctly', () => {
+describe('Test the component', () => {
+    it('checks if tooltip rendered as expected', () => {
         const TooltipComponent = shallow(<Tooltip showIcon={true} keyword="" position="top" message="" />);
         
         expect(TooltipComponent).toMatchSnapshot();

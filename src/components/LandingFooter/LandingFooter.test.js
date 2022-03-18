@@ -14,8 +14,8 @@ import { ReactComponent as LinkedinIcon } from "../../assets/images/Linkedin.svg
 
 import { ReactComponent as MediumIcon } from "../../assets/images/medium.svg";
 
-describe ('LandingFooter Component', () => {
-    it('Renders a Footer component', () => {
+describe ('Test the LandingFooter component', () => {
+    it('checks if landing footer component rendered correctly', () => {
         const FooterComponent = shallow(<LandingFooter />);
         
         expect(FooterComponent).toMatchSnapshot();

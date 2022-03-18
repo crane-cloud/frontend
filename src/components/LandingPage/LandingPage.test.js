@@ -4,16 +4,16 @@ import { shallow } from 'enzyme';
 
 import LandingPage from './';
 
-const props = {
+const LandingPageProps = {
     user: {
         data: {
             id: ""
         }
     }
 }
-describe('LandingPage Component', () => { 
-    const LandingPageComponent = shallow(<LandingPage.WrappedComponent {...props} />);
-    it('Matches snapshot', () => {
+describe('LandingPage component test', () => { 
+    const LandingPageComponent = shallow(<LandingPage.WrappedComponent {...LandingPageProps} />);
+    it('matches the existing snapshot', () => {
         expect(LandingPageComponent).toMatchSnapshot();
     })
 })

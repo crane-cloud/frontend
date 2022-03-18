@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 
 import NewHeader from "./";
 
-const props = {
+const NewHeaderProps = {
   removeUser: jest.fn(),
   user: {
     data: {}
@@ -14,9 +14,9 @@ const props = {
   }
 };
 
-describe('NewHeader Component', () => {
-    const NewHeaderComponent = shallow(<NewHeader.WrappedComponent {...props} />);
-    it('Matches snapshot', () => {
+describe('NewHeader component test', () => {
+    const NewHeaderComponent = shallow(<NewHeader.WrappedComponent {...NewHeaderProps} />);
+    it('checks the snapshot', () => {
         expect(NewHeaderComponent).toMatchSnapshot();
     })
 })

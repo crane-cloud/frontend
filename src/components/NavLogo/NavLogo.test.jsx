@@ -5,10 +5,10 @@ import { shallow } from 'enzyme';
 import NavLogo from '.';
 
 
-describe('NavLogo Component', () => { 
-    it('Renders correctly', () => {
-        const NavLogoComponent = shallow(<NavLogo />)
+describe('Test the nav logo', () => { 
+    it('checks for correct rendering of the component', () => {
+        const NavLogoComponent = shallow(<NavLogo />);
         expect(NavLogoComponent).toMatchSnapshot();
-        expect(NavLogoComponent.find('img').length).toBe(1)
+        expect(NavLogoComponent.find('img').length).toBe(1);
     })
 })

@@ -4,8 +4,8 @@ import { shallow } from 'enzyme';
 
 import Logo from './index';
 
-describe('Logo Component', () => {
-    it('Renders a Logo component', () => {
+describe('Logo component test', () => {
+    it('checks whether the component rendered with expected elements', () => {
         const LogoComponent = shallow(<Logo />);
         
         expect(LogoComponent).toMatchSnapshot();
