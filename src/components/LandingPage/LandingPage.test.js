@@ -12,8 +12,9 @@ const LandingPageProps = {
     }
 }
 describe('LandingPage component test', () => { 
-    const LandingPageComponent = shallow(<LandingPage.WrappedComponent {...LandingPageProps} />);
-    it('matches the existing snapshot', () => {
+    it('matches rendered component with the existing snapshot', () => {
+        const wrapper = LandingPage.WrappedComponent;
+        const LandingPageComponent = shallow(<wrapper {...LandingPageProps} />);
         expect(LandingPageComponent).toMatchSnapshot();
     })
 })

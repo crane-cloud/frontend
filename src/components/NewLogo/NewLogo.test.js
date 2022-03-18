@@ -6,11 +6,11 @@ import NewLogo from './index';
 
 describe('Test new logo', () => {
     it('checks whether the component rendered correctly', () => {
-        const LogoComponent = shallow(<NewLogo />);
+        const NewLogoComponent = shallow(<NewLogo />);
         
-        expect(LogoComponent).toMatchSnapshot();
+        expect(NewLogoComponent).toMatchSnapshot();
 
-        const BrandLogoType = LogoComponent.find("div > div");
+        const BrandLogoType = NewLogoComponent.find("div > div");
         expect(BrandLogoType.hasClass("BrandLogoType")).toEqual(true);
         expect(BrandLogoType.text()).toBe("Crane Cloud");
     })

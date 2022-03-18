@@ -16,7 +16,7 @@ const NewHeaderProps = {
 
 describe('NewHeader component test', () => {
     const NewHeaderComponent = shallow(<NewHeader.WrappedComponent {...NewHeaderProps} />);
-    it('checks the snapshot', () => {
+    it('checks whether component correctly rendered', () => {
         expect(NewHeaderComponent).toMatchSnapshot();
     })
 })
