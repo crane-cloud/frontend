@@ -76,9 +76,9 @@ const NewHeader = (props) => {
               >
                 Blog
               </a>
-              <Link to="/pricing" className="HeaderLinkDocs">
+              {/* <Link to="/pricing" className="HeaderLinkDocs">
                 Pricing
-              </Link>
+              </Link> */}
               <Link to="/login" className="HeaderLinkDocs">
                 Login
               </Link>
@@ -111,9 +111,9 @@ const NewHeader = (props) => {
               >
                 Blog
               </a>
-              <Link to="/pricing" className="HeaderLinkDocs">
+              {/* <Link to="/pricing" className="HeaderLinkDocs">
                 Pricing
-              </Link>
+              </Link> */}
               <Link
                 to={`/projects`}
                 className="HeaderLinkDocs"
@@ -162,9 +162,9 @@ const NewHeader = (props) => {
               >
                 Blog
               </a>
-              <Link to="/pricing" className="HeaderDropLinkDocs">
+              {/* <Link to="/pricing" className="HeaderDropLinkDocs">
                 Pricing
-              </Link>
+              </Link> */}
               <Link to="/login" className="HeaderDropLinkDocs">
                 Login
               </Link>
@@ -197,9 +197,9 @@ const NewHeader = (props) => {
               >
                 Blog
               </a>
-              <Link to="/pricing" className="HeaderDropLinkDocs">
+              {/* <Link to="/pricing" className="HeaderDropLinkDocs">
                 Pricing
-              </Link>
+              </Link> */}
               <Link
                 to={`/projects`}
                 className="HeaderDropLinkDocs"
