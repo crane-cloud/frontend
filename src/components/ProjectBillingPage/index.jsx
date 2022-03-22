@@ -8,12 +8,16 @@ import Modal from "../../components/Modal";
 import PrimaryButton from "../PrimaryButton";
 import DonutChart from "../DonutChart";
 import BarGraph from "../BarGraph";
+import FlutterwaveHook from "../FlutterwaveHook";
 import MetricsCard from "../MetricsCard";
 import SpendingPeriod from "../SpendingPeriod";
 import styles from "./ProjectBillingPage.module.css";
+
 import { ReactComponent as MastercardIcon } from "../../assets/images/logo-mastercard.svg";
 import { ReactComponent as VisaIcon } from "../../assets/images/visa.svg";
 import { ReactComponent as FlutterwaveIcon } from "../../assets/images/flutterwave.svg";
+
+
 import BlackInputText from "../BlackInputText";
 import Tooltip from "../Tooltip";
 
@@ -50,6 +54,8 @@ const transactionData = [
 class ProjectBillingPage extends PureComponent {
   constructor(props) {
     super(props);
+    
+
     this.state = {
       viewReceipt: false,
       paymentModal: false,
@@ -78,6 +84,7 @@ class ProjectBillingPage extends PureComponent {
     this.openReceiptModal = this.openReceiptModal.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.RevertToMethods = this.RevertToMethods.bind(this);
+ 
     this.FromPaymentMethods = this.FromPaymentMethods.bind(this);
   }
   componentDidMount() {
@@ -180,6 +187,7 @@ class ProjectBillingPage extends PureComponent {
   render() {
     const {
       match: { params },
+      data: {name,email}
     } = this.props;
     const { projectID } = params;
     const { paymentModal,
@@ -264,10 +272,12 @@ class ProjectBillingPage extends PureComponent {
                       </div>
                     </div>
                     <div className={styles.paymentButton}>
-                      <PrimaryButton
-                        label={"Pay Bill"}
-                        onClick={this.openPaymentModal}
+                      <FlutterwaveHook
+                      amount={30000}
+                      name={name}
+                      email={email}
                       />
+                      
                     </div>
                   </div>
                 </div>
@@ -687,8 +697,10 @@ ProjectBillingPage.propTypes = {
 
 const mapStateToProps = (state) => {
   const { projects } = state.userProjectsReducer;
+  const { data } = state.user;
   return {
     projects,
+    data
   };
 };
 
