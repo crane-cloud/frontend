@@ -140,44 +140,15 @@
   padding-bottom: 1rem;
   justify-items: center;
 }
-.PaymentModal{
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 29rem;
- height: 35rem;
-}
-.PaymentHead{
-  text-align: center;
-}
-.PaymentModalHeader{
-  font-size: 30px;
-  font-weight: 700;
-}
+
+
+
 .PaymentModalSubHeader{
   font-size: 24px;
   font-weight: 500;
 }
-.PaymentButtons{
-  display: flex;
-  justify-content: space-between;
-}
-.PaymentModalBody{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  row-gap: 1rem;
-  column-gap: .5rem;
-}
-.PaymentIcon{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #000000;
-  height: 100px;
-  width: 200px;
-  object-fit: contain;
-  padding: .5rem;
-}
+
+
 .TransactionHistoryWrapper {
   padding-top: 1.5rem;
 }
@@ -228,21 +199,8 @@
 .PaymentDetailsButton:hover{
   text-decoration: underline;
 }
-.PaymentIcon:hover{
-  background-color: #cccccc;
-  cursor: pointer;
-}
-.PaymentIconSelected{
-  background-color: #cccccc;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #000000;
-  height: 100px;
-  width: 200px;
-  object-fit: contain;
-  padding: .5rem;
-}
+
+
 
 .ReceiptModal .TotalTxt{
   font-weight: 700;
@@ -268,75 +226,6 @@
   display: flex;
   justify-content: center;
 }
-
-.dot {
-  height: 15px;
-  width: 15px;
-  background-color: #bbb;
-  border-radius: 50%;
-  display: inline-block;
-}
-.currentdot{
-  height: 15px;
-  width: 15px;
-  background-color: #F7B21F;
-  border-radius: 50%;
-  display: inline-block;
-}
-.InputTooltipContainer {
-  position: absolute;
-  right: 0%;
-  padding-right: 0.5rem;
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-.StepSection{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 2rem;
-
-}
-
-.StepNumber{
-  text-align: center;
-}
-.StepInnerSection{
-  display: flex;
-  flex-direction: column;
-
-}
-.Methods{
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-}
-.PaymentInput{
-  display: flex;
-  flex-direction: column;
-  gap:.5rem;
-}
-.DatesSection{
-  display: flex;
-  flex-direction: row;
-  gap:1rem;
-}
-.DatesOuterSection{
-  display: flex;
-  flex-direction: row;
-  gap:4rem;
-
-}
-.FormText{
-  font-weight: 600;
-}
-.InputFieldWithTooltip {
-  /* width: 60%; same as input field */
-  display: flex;
-  position: relative;
-}
-
 
 @media(max-width: 768px){
     .OuterContainerBorder{
