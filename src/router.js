@@ -48,6 +48,7 @@ import Terms from "./components/Documents/terms";
 import Privacy from "./components/Documents/privacy";
 import UserProjectsPage from "./pages/UserProjectsPage";
 import ProjectDashboardPage from "./components/ProjectDashboardPage";
+import AdminDBList from "./components/AdminDB";
 
 //import ProjectBillingPage from "./components/ProjectBillingPage";
 
@@ -246,6 +247,12 @@ const Routes = () => (
         exact
         path="/clusters"
         component={ClusterPage}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        exact
+        path="/databases"
+        component={AdminDBList}
       />
       <Route path="*" component={PageNotFound} />
     </Switch>
