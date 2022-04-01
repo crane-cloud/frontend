@@ -41,13 +41,13 @@ class AppMetricsPage extends React.Component {
     const { apps } = this.props;
     const found = apps?.apps.find((app) => app.id === id);
     const info = {
-      name: found.name,
-      status: found.app_running_status,
-      url: found.url,
-      age: found.age,
-      alias: found.alias,
-      image: found.image,
-      port: found.port,
+      name: found?.name,
+      status: found?.app_running_status,
+      url: found?.url,
+      age: found?.age,
+      alias: found?.alias,
+      image: found?.image,
+      port: found?.port,
     };
 
     return info;
@@ -120,7 +120,7 @@ class AppMetricsPage extends React.Component {
             <SideBar
               name={appInfo.name}
               params={params}
-              pageRoute={this.props.location.pathname}
+              pageRoute={this.props.location?.pathname}
               allMetricsLink={`/projects/${projectID}/apps/${appID}/dashboard`}
               cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
               memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}

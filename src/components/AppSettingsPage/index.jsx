@@ -52,12 +52,12 @@ class AppSettingsPage extends React.Component {
       isPrivateImage: false,
       isCustomDomain: app?.has_custom_domain ? true : false,
       domainName: "",
-      uri: app.uri ? app.uri : "",
+      uri: app?.uri ? app?.uri : "",
       varName: "",
       varValue: "",
       envVars: "",
       entryCommand: "",
-      port: app.port ? app.port : "",
+      port: app?.port ? app?.port : "",
       replicas: "",
       updating_port: false,
       updating_command: false,
@@ -544,10 +544,10 @@ class AppSettingsPage extends React.Component {
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
-              name={app.name}
+              name={app?.name}
               params={params}
               // description={description}
-              pageRoute={this.props.location.pathname}
+              pageRoute={this.props.location?.pathname}
               allMetricsLink={`/projects/${projectID}/apps/${appID}/dashboard`}
               cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
               memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
@@ -567,20 +567,20 @@ class AppSettingsPage extends React.Component {
                   <div className={styles.APPInstructions}>
                     <div className={styles.APPButtonRow}>
                       <div className={styles.AppLabel}>Name</div>
-                      <div className={styles.flexa}>{app.name}</div>
+                      <div className={styles.flexa}>{app?.name}</div>
                     </div>
                     <div className={styles.APPButtonRow}>
                       <div className={styles.AppLabel}>Alias</div>
-                      <div className={styles.flexa}>{app.alias}</div>
+                      <div className={styles.flexa}>{app?.alias}</div>
                     </div>
                     <div className={styles.APPButtonRow}>
                       <div className={styles.AppLabel}>Image</div>
                       <div className={styles.flexa}>
                         <BlackInputText
                           required
-                          placeholder={app.image}
+                          placeholder={app?.image}
                           name="newImage"
-                          value={newImage ? newImage : app.image}
+                          value={newImage ? newImage : app?.image}
                           onChange={(e) => {
                             this.handleChange(e);
                           }}

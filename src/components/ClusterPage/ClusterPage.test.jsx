@@ -4,7 +4,7 @@ import { shallow } from "enzyme";
 import ClusterPage, { mapStateToProps } from "./";
 
 const clusterPageProps = {
-  info: { cluster: "mak-dev" },
+  clusters: { metadata: "mak-dev" },
 };
 
 describe("test cluster page", () => {

@@ -5,6 +5,7 @@ import AppSettingsPage, { mapStateToProps } from "./";
 
 const AppSettingsPageProps = {
   data: { app: "test-app" },
+  match: { params: []}
 };
 
 describe("Test for the AppSettingsPage", () => {
@@ -29,7 +30,7 @@ describe("Test the mapstatetoprops function", () => {
           isFailed: false,
           message: "",
         },
-        singleAppReducer: { app: {uri:""} },
+        singleAppReducer: { app: {uri:"xx"} },
         updateAppReducer: {
           isUpdating: false,
           isUpdated: false,
@@ -43,7 +44,7 @@ describe("Test the mapstatetoprops function", () => {
       isDeleted: false,
       isFailed: false,
       message: "",
-      app: {uri:""},
+      app: {uri:"xx"},
       isUpdating: false,
       isUpdated: false,
       errorMessage: "",

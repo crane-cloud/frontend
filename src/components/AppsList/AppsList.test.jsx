@@ -5,7 +5,7 @@ import AppsList, { mapStateToProps } from "./";
 
 const AppsListProps = {
   app: { name: "sanlam" },
-  match: { params: { projectID: "1" } },
+  params: { projectID: "1"},
 };
 
 describe("Test AppsList component", () => {

@@ -17,6 +17,7 @@ import {
   getCurrentTimeStamp,
   subtractTime,
 } from "../../helpers/formatMetrics";
+import {getProjectName} from "../../helpers/projectName"
 
 class ProjectNetworkPage extends React.Component {
   constructor(props) {
@@ -29,8 +30,6 @@ class ProjectNetworkPage extends React.Component {
       },
       period: "1d",
     };
-
-    this.getProjectName = this.getProjectName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
     this.fetchNetwork = this.fetchNetwork.bind(this);
     this.getDateCreated = this.getDateCreated.bind(this);
@@ -45,11 +44,6 @@ class ProjectNetworkPage extends React.Component {
     const { projectID } = params;
     clearProjectNetwork();
     getProjectNetwork(projectID, { step: "2h" });
-  }
-
-  getProjectName(id) {
-    const { projects } = this.props;
-    return projects.find((project) => project.id === id).name;
   }
 
   getDateCreated() {
@@ -131,6 +125,7 @@ class ProjectNetworkPage extends React.Component {
       match: { params },
       isFetchingNetwork,
       networkMetrics,
+      projects
     } = this.props;
     const { projectID } = params;
     const { period } = this.state;
@@ -149,7 +144,7 @@ class ProjectNetworkPage extends React.Component {
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
-              name={this.getProjectName(projectID)}
+              name={getProjectName(projects, projectID)}
               params={params}
               pageRoute={this.props.location.pathname}
               allMetricsLink={`/projects/${projectID}/metrics`}

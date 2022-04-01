@@ -47,8 +47,7 @@ class AppsPage extends React.Component {
   }
 
   getProjectDetails(projects, id) {
-    const project = projects.find((project) => project.id === id);
-    return project;
+    return projects?.find((project) => project.id === id);
   }
 
   showForm() {
@@ -74,10 +73,10 @@ class AppsPage extends React.Component {
     const projectDetails = this.getProjectDetails(projects, projectID);
 
     const filteredDetails = {
-      name: projectDetails.name,
-      description: projectDetails.description,
-      organisation: projectDetails.organisation,
-      project_type: projectDetails.project_type,
+      name: projectDetails?.name,
+      description: projectDetails?.description,
+      organisation: projectDetails?.organisation,
+      project_type: projectDetails?.project_type,
     };
 
     localStorage.setItem("project", JSON.stringify(filteredDetails));
@@ -90,10 +89,10 @@ class AppsPage extends React.Component {
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
-              name={projectDetails.name}
+              name={projectDetails?.name}
               params={params}
-              description={projectDetails.description}
-              pageRoute={this.props.location.pathname}
+              description={projectDetails?.description}
+              pageRoute={this.props.location?.pathname}
               allMetricsLink={`/projects/${projectID}/metrics`}
               cpuLink={`/projects/${projectID}/cpu/`}
               memoryLink={`/projects/${projectID}/memory/`}

@@ -24,8 +24,9 @@ class AppsList extends Component {
   componentDidMount() {
     const {
       params: { projectID },
-      getAppsList,
+      getAppsList
     } = this.props;
+
     getAppsList(projectID);
   }
 
