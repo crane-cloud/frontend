@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Test the CreateDatabase component wraps the component then creates a snapshot 1`] = `ShallowWrapper {}`;
