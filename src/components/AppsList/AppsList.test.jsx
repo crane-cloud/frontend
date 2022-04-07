@@ -43,11 +43,3 @@ describe("Test AppsList's map state to props and dispatch", () => {
     });
   });
 });
-
-// describe('componentDidUpdate', () => {
-//   it('loads profile', () => {
-//       const wrapper = shallow(<AppsListwrapper  {...props} />) as any;
-//       wrapper.setProps({ person: { uri: "something_different" } });
-//       expect(wrapper.instance().props.onLoadProfile).toBeCalled();
-//   })
-// })

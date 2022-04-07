@@ -215,7 +215,6 @@ const ClusterPage = ({
                           position: "outside",
                         }}
                       />
-                      <Tooltip />
                       <Area
                         type="monotone"
                         dataKey="value"
@@ -294,7 +293,6 @@ const ClusterPage = ({
                           position: "outside",
                         }}
                       />
-                      <Tooltip />
                       <Area
                         type="monotone"
                         dataKey="value"

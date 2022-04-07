@@ -131,8 +131,8 @@ class AppsPage extends React.Component {
 }
 
 AppsPage.propTypes = {
-  isCreated: PropTypes.bool.isRequired,
-  clearState: PropTypes.func.isRequired,
+  isCreated: PropTypes.bool,
+  clearState: PropTypes.func,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 

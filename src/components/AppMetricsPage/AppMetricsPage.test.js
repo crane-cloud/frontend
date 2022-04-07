@@ -11,7 +11,7 @@ const AppMetricsPageProps = {
   getAppCPU: jest.fn(),
   getAppNetwork: jest.fn(),
 };
-
+// {} ={}
 describe("Testing the App Metrics Page component", () => {
   const WrapperAppMetricsPage = AppMetricsPage.WrappedComponent;
   const AppMetricsPageComponent = shallow(<WrapperAppMetricsPage {...AppMetricsPageProps} />);
