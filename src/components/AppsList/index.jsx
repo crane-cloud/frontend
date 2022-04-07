@@ -157,8 +157,8 @@ AppsList.propTypes = {
   }),
   isRetrieved: PropTypes.bool,
   isRetrieving: PropTypes.bool,
-  getAppsList: PropTypes.func.isRequired,
-  newAppCreated: PropTypes.bool.isRequired,
+  getAppsList: PropTypes.func,
+  newAppCreated: PropTypes.bool,
   message: PropTypes.string,
   params: PropTypes.shape({
     projectID: PropTypes.string.isRequired,

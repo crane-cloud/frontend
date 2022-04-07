@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`test the component matchs the component snapshot 1`] = `ShallowWrapper {}`;
+exports[`testing the Apps page component this matchs Apps page component snapshot 1`] = `ShallowWrapper {}`;

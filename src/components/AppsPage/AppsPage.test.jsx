@@ -6,6 +6,8 @@ import AppsPage, { mapStateToProps } from "./";
 const AppsPageProps = {
   response: { apps: "apps" },
   match: { params: { projectID: "id" } },
+  clearState: jest.fn(),
+  projects: [],
 };
 
 describe("testing the Apps page component", () => {

@@ -4,19 +4,23 @@ import { shallow } from "enzyme";
 import AppMetricsPage, { mapStateToProps } from "./";
 
 const AppMetricsPageProps = {
-  logs: [{metric: 0.5}],
+  logs: ["log1", "log2"],
   match: { params: { projectID: "1" } },
+  getAppLogs: jest.fn(),
+  getAppMemory: jest.fn(),
+  getAppCPU: jest.fn(),
+  getAppNetwork: jest.fn(),
 };
 
 describe("Testing the App Metrics Page component", () => {
   const WrapperAppMetricsPage = AppMetricsPage.WrappedComponent;
   const AppMetricsPageComponent = shallow(<WrapperAppMetricsPage {...AppMetricsPageProps} />);
-  it("matchs the AppMetricsPage component snapshot", () => {
-    expect(AppMetricsPageComponent).toMatchSnapshot();
-  });
   it("should match the snapshot for AppMetricsPage after adding props", () => {
     AppMetricsPageComponent.setProps(AppMetricsPageProps);
     expect(AppMetricsPageComponent).toBeDefined();
+  });
+  it("matchs the AppMetricsPage component snapshot", () => {
+    expect(AppMetricsPageComponent).toMatchSnapshot();
   });
 });
 

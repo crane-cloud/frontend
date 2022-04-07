@@ -310,9 +310,9 @@ SideBar.defaultProps = {
 };
 
 SideBar.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   params: PropTypes.shape({}).isRequired,
-  pageRoute: PropTypes.string.isRequired,
+  pageRoute: PropTypes.string,
   cpuLink: PropTypes.string.isRequired,
   memoryLink: PropTypes.string.isRequired,
   databaseLink: PropTypes.string.isRequired,

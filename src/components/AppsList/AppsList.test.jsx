@@ -5,19 +5,28 @@ import AppsList, { mapStateToProps } from "./";
 
 const AppsListProps = {
   app: { name: "sanlam" },
-  params: { projectID: "1"},
+  params: { projectID: "1" },
+  message: "This successful",
+  getAppsList: jest.fn(),
 };
 
 describe("Test AppsList component", () => {
-
-  const AppsListwrapper = AppsList.WrappedComponent;
-  const AppsListComponent = shallow(<AppsListwrapper {...AppsListProps} />);
-  it("matching component snapshot for AppsList", () => {
-    expect(AppsListComponent).toMatchSnapshot();
+  let applistWrapper;
+  beforeEach(() => {
+    const AppsListwrapper = AppsList.WrappedComponent;
+    applistWrapper = shallow(<AppsListwrapper {...AppsListProps} />);
   });
-  it("should match AppsList component to the snapshot", () => {
-    AppsListComponent.setProps(AppsListProps);
-    expect(AppsListComponent).toBeDefined();
+
+  it("should check `componentDidMount()`", () => {
+    applistWrapper.instance().componentDidMount();
+    expect(AppsListProps.getAppsList).toHaveBeenCalledTimes(2); 
+    
+    expect(AppsListProps.getAppsList).toBeDefined();
+    expect(AppsListProps.params).toBeDefined();
+    expect(applistWrapper.instance().props.getAppsList).toBeCalled();
+  });
+  it("matching component snapshot for AppsList", () => {
+    expect(applistWrapper).toMatchSnapshot();
   });
 });
 
@@ -34,3 +43,11 @@ describe("Test AppsList's map state to props and dispatch", () => {
     });
   });
 });
+
+// describe('componentDidUpdate', () => {
+//   it('loads profile', () => {
+//       const wrapper = shallow(<AppsListwrapper  {...props} />) as any;
+//       wrapper.setProps({ person: { uri: "something_different" } });
+//       expect(wrapper.instance().props.onLoadProfile).toBeCalled();
+//   })
+// })
