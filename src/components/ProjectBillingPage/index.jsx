@@ -11,7 +11,7 @@ import MetricsCard from "../MetricsCard";
 import SpendingPeriod from "../SpendingPeriod";
 import { useParams } from "react-router-dom";
 import styles from "./ProjectBillingPage.module.css";
-import { useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 const data1 = [
   { name: "CPU / $1 per 1K seconds", value: 400, color: "#0088FE" },
   { name: "RAM / $4 per GB", value: 300, color: "#00C49F" },
@@ -44,34 +44,37 @@ const transactionData = [
 const ProjectBillingPage = (props) => {
   const { projectID } = useParams();
   const { projects } = useSelector((state) => state.userProjectsReducer);
-  const{ data}= useSelector((state) => state.user);
+  const { data } = useSelector((state) => state.user);
   const [viewReceipt, setViewReceipt] = useState(false);
 
   const [months, setMonths] = useState(data2);
   const openReceiptModal = () => {
     setViewReceipt(true);
-  }
-  const closeReceiptModal =()=> {
+  };
+  const closeReceiptModal = () => {
     setViewReceipt(false);
-  }
- const getProjectName = (id) => {
+  };
+  const getProjectName = (id) => {
     return projects.find((project) => project.id === id).name;
   };
- const findSum =() => {
+  const findSum = () => {
     var sum = 0;
     for (var i = 0; i < data1.length; i++) {
       sum += data1[i].value;
     }
     return sum;
   };
- const handlePeriodChange = (period, customTime = null)=> {
-    let startTimeStamp, endTimeStamp = new Date();
+  const handlePeriodChange = (period, customTime = null) => {
+    let startTimeStamp,
+      endTimeStamp = new Date();
     if (period === "5m") {
-      startTimeStamp = new Date(endTimeStamp.setMonth(endTimeStamp.getMonth() - 5) );
+      startTimeStamp = new Date(
+        endTimeStamp.setMonth(endTimeStamp.getMonth() - 5)
+      );
       endTimeStamp = new Date();
       let newMonths = [];
       for (var i = 0; i < data2.length; i++) {
-        if (new Date(data2[i].date).getTime() >= startTimeStamp.getTime()) 
+        if (new Date(data2[i].date).getTime() >= startTimeStamp.getTime())
           newMonths.push(data2[i]);
       }
       setMonths(newMonths);
@@ -84,7 +87,11 @@ const ProjectBillingPage = (props) => {
       endTimeStamp = customTime.end;
       let newMonths = [];
       for (var n = 0; n < data2.length; n++) {
-        if (new Date(data2[n].date).getTime() >=new Date(startTimeStamp).getTime() &&new Date(data2[n].date).getTime() <= new Date(endTimeStamp).getTime())
+        if (
+          new Date(data2[n].date).getTime() >=
+            new Date(startTimeStamp).getTime() &&
+          new Date(data2[n].date).getTime() <= new Date(endTimeStamp).getTime()
+        )
           newMonths.push(data2[n]);
       }
       setMonths(newMonths);
@@ -121,8 +128,8 @@ const ProjectBillingPage = (props) => {
                 </div>
                 <div className={styles.InnerContainer}>
                   <div className={styles.Subtext}>
-                    The chart below shows the proportion of costs spent for
-                    each service you use on the platform
+                    The chart below shows the proportion of costs spent for each
+                    service you use on the platform
                   </div>
                   <DonutChart
                     center_x={60}
@@ -153,18 +160,15 @@ const ProjectBillingPage = (props) => {
                     ))}
                     <div className={styles.Total}>
                       <div className={styles.TotalTxt}>Total</div>
-                      <div className={styles.ResourcePrice}>
-                        ${findSum()}
-                      </div>
+                      <div className={styles.ResourcePrice}>${findSum()}</div>
                     </div>
                   </div>
                   <div className={styles.paymentButton}>
                     <FlutterwaveHook
-                    amount={30000}
-                    name={data.name}
-                    email={data.email}
+                      amount={30000}
+                      name={data.name}
+                      email={data.email}
                     />
-                    
                   </div>
                 </div>
               </div>
@@ -183,9 +187,7 @@ const ProjectBillingPage = (props) => {
                   <div className={styles.MetricContainer}>
                     <MetricsCard
                       className={styles.MetricsCardGraph}
-                      title={
-                        <SpendingPeriod onChange={handlePeriodChange} />
-                      }
+                      title={<SpendingPeriod onChange={handlePeriodChange} />}
                     >
                       <BarGraph
                         data={months}
@@ -208,9 +210,7 @@ const ProjectBillingPage = (props) => {
                 <div className={styles.TransactionHistoryBody}>
                   <div className={styles.TransactionHistoryTable}>
                     <div className={styles.TransactionHistoryHead}>
-                      <div className={styles.TransactionHistoryCell}>
-                        Date
-                      </div>
+                      <div className={styles.TransactionHistoryCell}>Date</div>
                       <div className={styles.TransactionHistoryCell}>
                         Transaction Id
                       </div>
@@ -228,10 +228,7 @@ const ProjectBillingPage = (props) => {
                       </div>
                     </div>
                     {transactionData.map((entry, index) => (
-                      <div
-                        className={styles.TransactionHistoryRow}
-                        key={index}
-                      >
+                      <div className={styles.TransactionHistoryRow} key={index}>
                         <div className={styles.TransactionHistoryCell}>
                           {entry.date}
                         </div>
@@ -269,10 +266,7 @@ const ProjectBillingPage = (props) => {
 
             {viewReceipt && (
               <div>
-                <Modal
-                  showModal={viewReceipt}
-                  onClickAway={closeReceiptModal}
-                >
+                <Modal showModal={viewReceipt} onClickAway={closeReceiptModal}>
                   <div className={styles.ReceiptModal}>
                     <div className={styles.ReceiptDetailContainer}>
                       <div>
@@ -328,9 +322,7 @@ const ProjectBillingPage = (props) => {
                       ))}
                       <div className={styles.Total}>
                         <div className={styles.TotalTxt}>Paid</div>
-                        <div className={styles.ResourcePrice}>
-                          ${findSum()}
-                        </div>
+                        <div className={styles.ResourcePrice}>${findSum()}</div>
                       </div>
                     </div>
 

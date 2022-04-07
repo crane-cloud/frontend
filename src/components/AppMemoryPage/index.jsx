@@ -202,7 +202,7 @@ AppMemoryPage.propTypes = {
   clearAppMemory: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isFetchingAppMemory, appMemoryMetrics, appMemoryMessage } =
     state.appMemoryReducer;
   const { apps } = state.appsListReducer;
