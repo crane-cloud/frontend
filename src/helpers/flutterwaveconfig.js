@@ -1,6 +1,7 @@
+import { FLUTTER_WAVE_PUBLIC_KEY} from "../config"
 export const Config = (amount,customer) => {
     const config = {
-        public_key: process.env.REACT_APP_PUBLIC_KEY,
+        public_key: FLUTTER_WAVE_PUBLIC_KEY,
         tx_ref: Date.now(),
         amount,
         currency: 'UGX',
