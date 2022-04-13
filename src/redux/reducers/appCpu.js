@@ -19,8 +19,8 @@ const appCpuReducer = (state = initialState, action) => {
         appCPUMetrics: [
           ...state.appCPUMetrics,
           {
-            app: action.payload.app,
-            metrics: action.payload.metrics,
+            app: action.payload?.app,
+            metrics: action.payload?.metrics,
           },
         ],
         isFetchingCPU: false,
@@ -33,8 +33,8 @@ const appCpuReducer = (state = initialState, action) => {
         appCPUMetrics: [
           ...state.appCPUMetrics,
           {
-            app: action.payload.app,
-            metrics: action.payload.metrics,
+            app: action.payload?.app,
+            metrics: action.payload?.metrics,
           },
         ],
         isFetchingCPU: false,

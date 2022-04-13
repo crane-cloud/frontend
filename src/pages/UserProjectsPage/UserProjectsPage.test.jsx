@@ -9,7 +9,11 @@ const UserProjectsPageProps = {
   getUserProjects: jest.fn(),
   getClustersList: jest.fn(),
   clearUpdateProjectState: jest.fn(),
-  clusters: {}
+  clusters: {},
+  openProjectCreateComponent: jest.fn(),
+  callbackProjectCreateComponent: jest.fn(),
+  searchThroughProjects: jest.fn(),
+  handleCallbackSearchword: jest.fn()
 };
 
 describe("Testing the App Metrics Page component", () => {
@@ -18,6 +22,28 @@ describe("Testing the App Metrics Page component", () => {
   it("should match the snapshot for UserProjectsPage after adding props", () => {
     UserProjectsPageComponent.setProps(UserProjectsPageProps);
     expect(UserProjectsPageComponent).toBeDefined();
+  });
+
+  it("should match the snapshot", () => {
+    let wrapper = UserProjectsPageComponent.instance();
+    const spy = jest.spyOn(wrapper, "componentDidMount");
+    const spyDidUpdate = jest.spyOn(wrapper, "componentDidUpdate");
+    wrapper.componentDidMount();
+    wrapper.componentDidUpdate();
+
+    expect(spy).toHaveBeenCalled();
+    expect(spyDidUpdate).toHaveBeenCalled();
+
+    expect(wrapper.componentDidMount).toHaveBeenCalled();
+    wrapper.handleCallbackSearchword("test");
+    expect(wrapper.handleCallbackSearchword).toHaveBeenCalled();
+    wrapper.searchThroughProjects();
+    expect(wrapper.searchThroughProjects).toHaveBeenCalled();
+    wrapper.openProjectCreateComponent();
+    expect(wrapper.openProjectCreateComponent).toHaveBeenCalled();
+    wrapper.callbackProjectCreateComponent();
+  
+    spy.mockRestore();
   });
   it("matchs the UserProjectsPage component snapshot", () => {
     expect(UserProjectsPageComponent).toMatchSnapshot();
