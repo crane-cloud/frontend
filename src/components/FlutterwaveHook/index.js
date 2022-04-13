@@ -25,7 +25,11 @@ export default function FlutterWaveHook(props) {
   };
 
   const generatePaymentReceipt = (response) => {
-    if (response.amount !== undefined && response.currency !== undefined && response.flw_ref !== undefined) {
+    if (
+      response.amount !== undefined &&
+      response.currency !== undefined &&
+      response.flw_ref !== undefined
+    ) {
       setPaymentReceipt({
         amount: response.amount,
         currency: response.currency,
@@ -75,11 +79,12 @@ export default function FlutterWaveHook(props) {
                 <div className="StatusInfo Success">
                   Transaction successful!
                 </div>
-                <div>A receipt has been sent to your email</div>
+                <div>A receipt has been sent to your email.</div>
                 <div className="StatusGroup">
                   <div className="StatusLabel">Total Payment Amount</div>
                   <div className="StatusDetail Amount">
-                  {paymentReceipt.currency}&nbsp;{paymentReceipt.amount.toLocaleString('en-US')}
+                    {paymentReceipt.currency}&nbsp;
+                    {paymentReceipt.amount.toLocaleString("en-US")}
                   </div>
                 </div>
                 <div className="StatusGroup">
@@ -95,11 +100,18 @@ export default function FlutterWaveHook(props) {
                   <div className="StatusInfo">Sorry!</div>
                   <div>
                     Your transaction has failed, please try again. If this
-                    continues please contact support
+                    continues please contact support.
                   </div>
                 </>
               )
             )}
+            <div>
+              <PrimaryButton
+                label="Close"
+                className="CancelBtn"
+                onClick={closePaymentStatusModal}
+              />
+            </div>
           </div>
         </Modal>
       )}
