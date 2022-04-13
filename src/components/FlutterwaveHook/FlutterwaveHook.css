@@ -1,0 +1,29 @@
+.StatusBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #555555;
+}
+.StatusInfo {
+  padding-bottom: 2rem;
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+.Success{
+    color: #068709;
+}
+.StatusGroup {
+  text-align: center;
+  padding: 0.6rem;
+}
+.StatusLabel {
+  font-size: 0.8rem;
+  color: #9b9b9b;
+}
+.StatusDetail {
+  font-weight: 700;
+}
+.Amount {
+  font-size: 1.8rem;
+}
