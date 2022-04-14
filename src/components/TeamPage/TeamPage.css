@@ -2,13 +2,13 @@
   background-color: #f1f1f1;
 }
 .TeamImagesRow {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  width: 100%;
-  justify-items: center;
-  align-items: center;
-  padding: 2.5rem 0rem;
-  row-gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2.5rem 0;
+    gap: 1rem;
+    width: 100%;
 }
 
 img .TeamMemberImage {

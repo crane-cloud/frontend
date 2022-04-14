@@ -96,7 +96,7 @@ class AppsList extends Component {
           </div>
         ) : word !== "" ? (
           <div className={styles.AppList}>
-            {isRetrieved &&
+            {(isRetrieved && !isRetrieving) &&
               SearchList.map((app) => (
                 <div key={app.id} className="AppCardItem">
                   <AppsCard
@@ -112,7 +112,7 @@ class AppsList extends Component {
           </div>
         ) : (
           <div className={styles.AppList}>
-            { (apps.apps.length !== 0) &&
+            { (apps.apps.length !== 0 && !isRetrieving && isRetrieved) && 
               sortedApps.map((app) => (
                 <div key={app.id} className="AppCardItem">
                   <AppsCard
@@ -140,7 +140,7 @@ class AppsList extends Component {
             )}
           </div>
         )}
-        {!isRetrieving && !isRetrieved && (apps.apps.length === 0) && (
+        {!isRetrieving && !isRetrieved  && (
           <div className={styles.NoResourcesMessage}>
             Oops! Something went wrong! Failed to retrieve Apps.
           </div>
