@@ -42,6 +42,7 @@ describe("test the component", () => {
     expect(wrapper.handlePeriodChange).toBeDefined();
     wrapper.fetchCpu(1);
     expect(wrapper.fetchCpu).toBeDefined();
+  
     spy.mockRestore();
   });
 });

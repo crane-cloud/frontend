@@ -35,14 +35,11 @@ describe("Testing the App Metrics Page component", () => {
     expect(spyDidUpdate).toHaveBeenCalled();
 
     expect(wrapper.componentDidMount).toHaveBeenCalled();
-    wrapper.handleCallbackSearchword("test");
-    expect(wrapper.handleCallbackSearchword).toHaveBeenCalled();
-    wrapper.searchThroughProjects();
-    expect(wrapper.searchThroughProjects).toHaveBeenCalled();
     wrapper.openProjectCreateComponent();
-    expect(wrapper.openProjectCreateComponent).toHaveBeenCalled();
+    wrapper.searchThroughProjects();
+    wrapper.handleCallbackSearchword("test");
+    
     wrapper.callbackProjectCreateComponent();
-  
     spy.mockRestore();
   });
   it("matchs the UserProjectsPage component snapshot", () => {

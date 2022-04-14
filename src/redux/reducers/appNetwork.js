@@ -19,8 +19,8 @@ const appNetworkReducer = (state = initialState, action) => {
         appNetworkMetrics: [
           ...state.appNetworkMetrics,
           {
-            app: action.payload.app,
-            metrics: action.payload.metrics,
+            app: action.payload?.app,
+            metrics: action.payload?.metrics,
           },
         ],
         isFetchingAppNetwork: false,
@@ -33,8 +33,8 @@ const appNetworkReducer = (state = initialState, action) => {
         appNetworkMetrics: [
           ...state.appNetworkMetrics,
           {
-            app: action.payload.app,
-            metrics: action.payload.metrics,
+            app: action.payload?.app,
+            metrics: action.payload?.metrics,
           },
         ],
         isFetchingAppNetwork: false,
