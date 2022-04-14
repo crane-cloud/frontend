@@ -51,7 +51,7 @@ export const formatMemoryMetrics = (
   memoryMetrics,
   period = "1d"
 ) => {
-  const found = memoryMetrics.find((metric) => metric.project === projectID);
+  const found = memoryMetrics?.find((metric) => metric.project === projectID);
   const memoryData = [];
 
   if (found !== undefined && found.metrics.length > 0) {
@@ -69,7 +69,7 @@ export const formatMemoryMetrics = (
 };
 
 export const formatCPUMetrics = (projectID, cpuMetrics, period = "1d") => {
-  const found = cpuMetrics.find((metric) => metric.project === projectID);
+  const found = cpuMetrics?.find((metric) => metric.project === projectID);
   const cpuData = [];
 
   if (found !== undefined && found.metrics.length > 0) {
@@ -91,7 +91,7 @@ export const formatNetworkMetrics = (
   period = "1d"
 ) => {
   // this is a shortcut for when function is called and period is undefined
-  const found = networkMetrics.find((metric) => metric.project === projectID);
+  const found = networkMetrics?.find((metric) => metric.project === projectID);
   const networkData = [];
 
   if (found !== undefined && found.metrics.length > 0) {
@@ -109,7 +109,7 @@ export const formatNetworkMetrics = (
 };
 
 export const formatAppMemoryMetrics = (appID, memoryMetrics, period = "1d") => {
-  const found = memoryMetrics.find((metric) => metric.app === appID);
+  const found = memoryMetrics?.find((metric) => metric.app === appID);
   const memoryData = [];
 
   if (found !== undefined && found.metrics.length > 0) {
@@ -127,7 +127,7 @@ export const formatAppMemoryMetrics = (appID, memoryMetrics, period = "1d") => {
 };
 
 export const formatAppCPUMetrics = (appID, cpuMetrics, period = "1d") => {
-  const found = cpuMetrics.find((metric) => metric.app === appID);
+  const found = cpuMetrics?.find((metric) => metric.app === appID);
   const cpuData = [];
 
   if (found !== undefined && found.metrics.length > 0) {
@@ -148,7 +148,7 @@ export const formatAppNetworkMetrics = (
   networkMetrics,
   period = "1d"
 ) => {
-  const found = networkMetrics.find((metric) => metric.app === appID);
+  const found = networkMetrics?.find((metric) => metric.app === appID);
   const networkData = [];
 
   if (found !== undefined && found.metrics.length > 0) {

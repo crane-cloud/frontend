@@ -24,8 +24,9 @@ class AppsList extends Component {
   componentDidMount() {
     const {
       params: { projectID },
-      getAppsList,
+      getAppsList
     } = this.props;
+
     getAppsList(projectID);
   }
 
@@ -95,7 +96,7 @@ class AppsList extends Component {
           </div>
         ) : word !== "" ? (
           <div className={styles.AppList}>
-            {isRetrieved &&
+            {(isRetrieved && !isRetrieving) &&
               SearchList.map((app) => (
                 <div key={app.id} className="AppCardItem">
                   <AppsCard
@@ -111,7 +112,7 @@ class AppsList extends Component {
           </div>
         ) : (
           <div className={styles.AppList}>
-            { (apps.apps.length !== 0) &&
+            { (apps.apps.length !== 0 && !isRetrieving && isRetrieved) && 
               sortedApps.map((app) => (
                 <div key={app.id} className="AppCardItem">
                   <AppsCard
@@ -139,7 +140,7 @@ class AppsList extends Component {
             )}
           </div>
         )}
-        {!isRetrieving && !isRetrieved && (apps.apps.length === 0) && (
+        {!isRetrieving && !isRetrieved  && (
           <div className={styles.NoResourcesMessage}>
             Oops! Something went wrong! Failed to retrieve Apps.
           </div>
@@ -156,8 +157,8 @@ AppsList.propTypes = {
   }),
   isRetrieved: PropTypes.bool,
   isRetrieving: PropTypes.bool,
-  getAppsList: PropTypes.func.isRequired,
-  newAppCreated: PropTypes.bool.isRequired,
+  getAppsList: PropTypes.func,
+  newAppCreated: PropTypes.bool,
   message: PropTypes.string,
   params: PropTypes.shape({
     projectID: PropTypes.string.isRequired,
@@ -172,7 +173,7 @@ AppsList.defaultProps = {
   message: false,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isRetrieving, apps, isRetrieved } = state.appsListReducer;
   return { isRetrieving, apps, isRetrieved };
 };

@@ -68,7 +68,7 @@ AppsCard.propTypes = {
   }).isRequired,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { data } = state.user;
   const { appMemoryMetrics, isFetchingAppMemory, appMemoryMessage } =
     state.appMemoryReducer;

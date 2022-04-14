@@ -215,7 +215,6 @@ const ClusterPage = ({
                           position: "outside",
                         }}
                       />
-                      <Tooltip />
                       <Area
                         type="monotone"
                         dataKey="value"
@@ -294,7 +293,6 @@ const ClusterPage = ({
                           position: "outside",
                         }}
                       />
-                      <Tooltip />
                       <Area
                         type="monotone"
                         dataKey="value"
@@ -421,16 +419,16 @@ const ClusterPage = ({
   );
 };
 
-ClusterPage.propTypes = {
-  addCluster: PropTypes.func.isRequired,
-  clearAddClusterState: PropTypes.func.isRequired,
-  isAdded: PropTypes.bool.isRequired,
-  isFailed: PropTypes.bool.isRequired,
-  creatingCluster: PropTypes.bool.isRequired,
-  message: PropTypes.string.isRequired,
-};
+// ClusterPage.propTypes = {
+//   addCluster: PropTypes.func.isRequired,
+//   clearAddClusterState: PropTypes.func.isRequired,
+//   isAdded: PropTypes.bool.isRequired,
+//   isFailed: PropTypes.bool.isRequired,
+//   creatingCluster: PropTypes.bool.isRequired,
+//   message: PropTypes.string.isRequired,
+// };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isFetchingDatabases, databasesFetched, databases } =
     state.databasesReducer;
   const { creatingCluster, isAdded, isFailed, errorOccured, message } =
