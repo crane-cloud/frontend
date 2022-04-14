@@ -17,13 +17,12 @@ import {
   formatNetworkMetrics,
 } from "../../helpers/formatMetrics";
 import AppsList from "../AppsList";
+import {getProjectName, getProjectDescription} from "../../helpers/projectName"
 
 class ProjectDashboardPage extends React.Component {
   constructor(props) {
     super(props);
 
-    this.getProjectName = this.getProjectName.bind(this);
-    this.getProjectDescription = this.getProjectDescription.bind(this);
     this.getMemoryMetrics = this.getMemoryMetrics.bind(this);
     this.getCPUMetrics = this.getCPUMetrics.bind(this);
     this.getNetworkMetrics = this.getNetworkMetrics.bind(this);
@@ -41,16 +40,6 @@ class ProjectDashboardPage extends React.Component {
     clearProjectCPU();
     getProjectCPU(projectID, {});
     getProjectNetwork(projectID, {});
-  }
-
-  getProjectName(id) {
-    const { projects } = this.props;
-    return projects.find((project) => project.id === id).name;
-  }
-
-  getProjectDescription(id) {
-    const { projects } = this.props;
-    return projects.find((project) => project.id === id).description;
   }
 
   getMemoryMetrics() {
@@ -77,12 +66,13 @@ class ProjectDashboardPage extends React.Component {
   render() {
     const {
       match: { params },
+      projects
     } = this.props;
 
     const { projectID } = params;
     const projectDetails = {
-      name: this.getProjectName(projectID),
-      description: this.getProjectDescription(projectID),
+      name: getProjectName(projects, projectID),
+      description: getProjectDescription(projects, projectID),
     };
 
     localStorage.setItem("project", JSON.stringify(projectDetails));
@@ -98,9 +88,9 @@ class ProjectDashboardPage extends React.Component {
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
-              name={this.getProjectName(params.projectID)}
+              name={getProjectName(projects, params.projectID)}
               params={params}
-              description={this.getProjectName(params.projectID)}
+              description={getProjectName(projects, params.projectID)}
               pageRoute={this.props.location.pathname}
               allMetricsLink={`/projects/${projectID}/metrics`}
               cpuLink={`/projects/${projectID}/cpu/`}

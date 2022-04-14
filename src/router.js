@@ -50,7 +50,7 @@ import UserProjectsPage from "./pages/UserProjectsPage";
 import ProjectDashboardPage from "./components/ProjectDashboardPage";
 import AdminDBList from "./components/AdminDB";
 
-//import ProjectBillingPage from "./components/ProjectBillingPage";
+import ProjectBillingPage from "./components/ProjectBillingPage";
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
@@ -78,12 +78,12 @@ const Routes = () => (
       <Route path="/terms-of-service" component={Terms} />
       <Route path="/privacy-policy" component={Privacy} />
       {/* projects */}
-       {/*<ProtectedRoute
+       {<ProtectedRoute
         isAllowed={hasToken}
         exact
         path="/projects/:projectID/billing"
         component={ProjectBillingPage}
-/>*/}
+/>}
       <ProtectedRoute
         isAllowed={hasToken}
         exact

@@ -30,6 +30,7 @@ import { ReactComponent as Closed } from "../../assets/images/close.svg";
 import BlackInputText from "../BlackInputText";
 import SettingsButton from "../SettingsButton";
 import "./DBSettingsPage.css";
+import {getProjectName} from "../../helpers/projectName"
 
 class DBSettingsPage extends React.Component {
   constructor(props) {
@@ -71,7 +72,6 @@ class DBSettingsPage extends React.Component {
     this.hideUpdateModal = this.hideUpdateModal.bind(this);
     this.handleSubmitUpdate = this.handleSubmitUpdate.bind(this);
     this.renderUpdateRedirect = this.renderUpdateRedirect.bind(this);
-    this.getProjectName = this.getProjectName.bind(this);
     this.fetchPassword = this.fetchPassword.bind(this);
   }
   componentDidMount() {
@@ -265,10 +265,6 @@ class DBSettingsPage extends React.Component {
       updateDatabasePassword(projectID, databaseID, newPassword);
     }
   }
-  getProjectName(projects, id) {
-    const project = projects.find((project) => project.id === id);
-    return project.name;
-  }
 
   render() {
     const {
@@ -317,7 +313,7 @@ class DBSettingsPage extends React.Component {
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
-              name={this.getProjectName(projects, projectID)}
+              name={getProjectName(projects, projectID)}
               params={this.props.match.params}
               pageRoute={this.props.location.pathname}
               allMetricsLink={`/projects/${projectID}/metrics`}

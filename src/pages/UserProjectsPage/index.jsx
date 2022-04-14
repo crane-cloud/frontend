@@ -198,11 +198,11 @@ UserProjectsPage.propTypes = {
   getClustersList: PropTypes.func.isRequired,
   getUserProjects: PropTypes.func.isRequired,
   data: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
   }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      userID: PropTypes.string.isRequired,
+      userID: PropTypes.string,
     }).isRequired,
   }).isRequired,
   isAdded: PropTypes.bool,
@@ -228,7 +228,7 @@ UserProjectsPage.defaultProps = {
   isRetrieving: false,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { data } = state.user;
   const { isAdded, isAdding, message, errorCode } = state.addProjectReducer;
   const { clusters } = state.clustersReducer;
