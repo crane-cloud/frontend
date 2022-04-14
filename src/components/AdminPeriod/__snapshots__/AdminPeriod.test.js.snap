@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test the admin period component checks if the admin period component matches the snapshot 1`] = `ShallowWrapper {}`;
