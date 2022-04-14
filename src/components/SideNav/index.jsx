@@ -112,6 +112,17 @@ const SideNav = ({ clusterId, clusterName }) => {
           Jobs
         </NavLink>
       </div>
+      <Link to={{ pathname: '/databases' }} className="ListItem">
+        Databases
+      </Link>
+      <div>
+        <NavLink
+          to={{ pathname: '/databases' }}
+          className="SubListItem"
+        >
+          Databases
+        </NavLink>
+      </div>
       <Link to={{ pathname: '/accounts' }} className="ListItem">
         Users
       </Link>
