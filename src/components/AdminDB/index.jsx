@@ -6,7 +6,6 @@ import InformationBar from "../InformationBar";
 import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import SideNav from "../SideNav";
 import Spinner from "../Spinner";
-import Status from "../Status";
 import CreateAdminDB from "./CreateAdminDB";
 import adminGetDatabases from "../../redux/actions/getAdminDatabases";
 import styles from "./AdminDB.module.css";
@@ -35,6 +34,7 @@ class AdminDBList extends React.Component {
       this.callbackCreateComponent();
     }
   }
+  
 
   showCreateComponent() {
     this.setState({ openCreateComponent: true });
@@ -91,7 +91,6 @@ class AdminDBList extends React.Component {
                         <div className={styles.DatabaseTableHead}>Type</div>
                         <div className={styles.DatabaseTableHead}>Name</div>
                         <div className={styles.DatabaseTableHead}>Host</div>
-                        <div className={styles.DatabaseTableHead}>Status</div>
                         <div className={styles.DatabaseTableHead}>Age</div>
                       </div>
                       {databasesFetched &&
@@ -110,9 +109,6 @@ class AdminDBList extends React.Component {
                               </div>
                               <div className={styles.DatabaseTableCell}>
                                 {database.host}
-                              </div>
-                              <div className={styles.DatabaseTableCell}>
-                                <Status status={database.db_status} />
                               </div>
                               <div className={styles.DatabaseTableCell}>
                                 {database.age}

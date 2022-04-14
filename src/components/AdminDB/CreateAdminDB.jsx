@@ -33,6 +33,7 @@ class CreateAdminDB extends React.Component {
 
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -51,12 +52,23 @@ class CreateAdminDB extends React.Component {
   handleSelectChange(selected) {
     this.setState({ databaseFlavour: selected.value });
   }
+  handleChange(e) {
+    const { error } = this.state;
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+
+    if (error) {
+      this.setState({
+        error: "",
+      });
+    }
+  }
 
   handleSubmit() {
     const { databaseFlavour, dbName, projectId } = this.state;
     const {
-      createDatabase,
-      params: { projectID },
+      createAdminDB,
     } = this.props;
     if (!databaseFlavour) {
       this.setState({
@@ -73,7 +85,8 @@ class CreateAdminDB extends React.Component {
       });
     } else if (validateName(dbName) === "false_convention") {
       this.setState({
-        error: "Database name may only contain letters,numbers,dot and a hypen -",
+        error:
+          "Database name may only contain letters,numbers,dot and a hypen -",
       });
     } else if (projectId.length !== 36) {
       this.setState({
@@ -82,8 +95,10 @@ class CreateAdminDB extends React.Component {
     } else {
       const newDBType = {
         database_flavour_name: databaseFlavour,
+        name: dbName,
+        project_id: projectId,
       };
-      createDatabase(newDBType, projectID);
+      createAdminDB(newDBType);
     }
   }
 
@@ -122,7 +137,7 @@ class CreateAdminDB extends React.Component {
                   name="dbName"
                   value={dbName}
                   onChange={(e) => {
-                    this.handleDockerCredentialsChange(e);
+                    this.handleChange(e);
                   }}
                 />
 
@@ -132,7 +147,7 @@ class CreateAdminDB extends React.Component {
                   name="projectId"
                   value={projectId}
                   onChange={(e) => {
-                    this.handleDockerCredentialsChange(e);
+                    this.handleChange(e);
                   }}
                 />
                 <div className="CreateDBError">
