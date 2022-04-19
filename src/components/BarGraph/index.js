@@ -1,7 +1,7 @@
 import React from "react";
 import {
     BarChart,
-    Bar,XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+    Bar,XAxis, YAxis, CartesianGrid, Legend,
      ResponsiveContainer
 } from 'recharts';
 
@@ -31,7 +31,7 @@ const BarGraph = (props) => {
  >
       <XAxis dataKey="date" scale="point" padding={{ left: 10, right: 10 }} />
       <YAxis />
-      <Tooltip />
+      
        <Legend />
       <CartesianGrid strokeDasharray="3 3" />
       <Bar dataKey="amount" fill="#8884d8" background={{ fill: '#eee' }} />
