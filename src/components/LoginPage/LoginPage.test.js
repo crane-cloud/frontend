@@ -6,7 +6,10 @@ import LoginPage from './index';
 
 
 
-
+const Props = {
+  saveUser: jest.fn(),
+  removeUser: jest.fn()
+}
 
 describe('<Login /> Component', () => {
     const handleChange = jest.fn(); 
@@ -16,8 +19,9 @@ describe('<Login /> Component', () => {
     const initiateGitHubLogin = jest.fn();
 
  const WrapperLoginPage = LoginPage.WrappedComponent;
-  const LoginPageComponent = shallow(<WrapperLoginPage />);
+  const LoginPageComponent = shallow(<WrapperLoginPage {...Props} />);
  // const LoginPageComponent = shallow(<LoginPage/>);
+ LoginPageComponent.setProps(Props);
 
   it(' component should match the snapshot', () => {
     expect(LoginPageComponent).toMatchSnapshot();
@@ -27,9 +31,11 @@ describe('<Login /> Component', () => {
     expect(validateEmail).toBeDefined();
     expect(handleSubmit).toBeDefined();
     expect(initiateGitHubLogin).toBeDefined();
+
   });
 
   it('should have an email field', () => {
+
     expect(LoginPageComponent.find('InputText[name="email"]').length).toEqual(1);
   });
 
