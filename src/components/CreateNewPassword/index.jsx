@@ -64,12 +64,8 @@ export default class CreateNewPassword extends React.Component {
           if (response.data.status === "success") {
             this.setState({
               loading: false,
+              passreset: true,
             });
-            setTimeout(() => {
-              this.setState({
-                passreset: true,
-              });
-            }, 1000);
           }
         })
         .catch((error) => {
