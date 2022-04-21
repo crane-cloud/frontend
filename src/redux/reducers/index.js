@@ -42,6 +42,8 @@ import databasesReducer from "./getDatabases";
 import appsSummaryReducer from "./appsSummary";
 import usersSummaryReducer from "./usersSummary";
 import revertUrlReducer from "./revertUrl";
+import adminDatabasesReducer from "./adminGetDatabases";
+import adminCreateDBReducer from "./adminCreateDB";
 
 export default combineReducers({
   clusterResourcesReducer,
@@ -87,4 +89,6 @@ export default combineReducers({
   appsSummaryReducer,
   usersSummaryReducer,
   revertUrlReducer,
+  adminDatabasesReducer,
+  adminCreateDBReducer
 });

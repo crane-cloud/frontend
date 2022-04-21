@@ -53,7 +53,6 @@ export default function FlutterWaveHook(props) {
           handleFlutterPayment({
             callback: (response) => {
               //send response to backend has transaction id and status
-              console.log(response);
               closePaymentModal(); // this will close the modal programmatically
               // Show status to user
               handlePaymentStatusChange(response.status);
