@@ -2,7 +2,6 @@ import {
   FETCH_APP_NETWORK_SUCCESS,
   FETCH_APP_NETWORK_FAILED,
   IS_FETCHING_APP_NETWORK,
-  CLEAR_APP_NETWORK,
 } from "../actions/actionTypes";
 import appNetworkReducer from "../reducers/appNetwork";
 

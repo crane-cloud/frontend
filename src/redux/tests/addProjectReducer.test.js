@@ -1,6 +1,5 @@
 import {
   START_ADDING_PROJECT,
-  CLEAR_ADD_PROJECT_STATE,
   ADD_PROJECT_SUCCESS,
   ADD_PROJECT_FAILED,
 } from "../actions/actionTypes";
