@@ -19,7 +19,6 @@ describe('Test the component', () => {
         expect(BlackInputTextProps).toBeDefined();
       });
     it('checks if BlackInputText rendered as expected', () => {
-
         BlackInputTextComponent.find("input").simulate("change", { target: { value: 'typing' } });
         expect(OnChangeEvent).toHaveBeenCalled();
         expect(BlackInputTextComponent).toMatchSnapshot();

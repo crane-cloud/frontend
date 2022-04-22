@@ -1,21 +1,19 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Header from "../Header";
-
 import RegisterPage from './index';
 
-describe('<RegisterPage /> Component', () => {
+describe('<RegisterPage/> Component', () => {
     const handleOnChange = jest.fn(); 
     const toGithubauth = jest.fn();
     const validateEmail = jest.fn();
     const handleSubmit = jest.fn();
-
     
   const RegisterPageComponent = shallow(<RegisterPage />);
 
   it(' component should match the snapshot', () => {
     expect(RegisterPageComponent).toMatchSnapshot();
-    expect(RegisterPageComponent.contains(<Header />)).toEqual(true);
+    expect(RegisterPageComponent).toBeDefined();
     expect(handleOnChange).toBeDefined();
     expect(toGithubauth).toBeDefined();
     expect(validateEmail).toBeDefined();

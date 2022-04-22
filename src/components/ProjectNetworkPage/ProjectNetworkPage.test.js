@@ -16,20 +16,10 @@ const ProjectNetworkPageProps = {
 };
 
 
-
-describe('container test', () => {
-  it('Testing  constructor', () => {
-    const wrappedProjectNetworkPage = ProjectNetworkPage.WrappedComponent;
-    const wrapper = shallow(<wrappedProjectNetworkPage />);
-    expect(wrapper.exists()).toBeTruthy();
-    expect(wrapper).toHaveLength(1);
-  });
-});
-
 describe(" components test", () => {
   it("matching to  snapshots", () => {
-    const wrapper = ProjectNetworkPage.WrappedComponent;
-    const component = shallow(<wrapper {...ProjectNetworkPageProps} />);
+    const Wrapper = ProjectNetworkPage.WrappedComponent;
+    const component = shallow(<Wrapper {...ProjectNetworkPageProps} />);
 
     expect(component).toMatchSnapshot();
   });

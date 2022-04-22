@@ -18,21 +18,11 @@ const ProjectMemoryPageProps = {
 
 
 
-describe('Test s Container', () => {
-  it('Test the constructor', () => {
-    const wrappedProjectMemoryPage = ProjectMemoryPage.WrappedComponent;
-
-    const wrapper = shallow(<wrappedProjectMemoryPage />);
-    expect(wrapper.exists()).toBeTruthy();
-    expect(wrapper).toHaveLength(1);
-  });
-});
 
 describe("testing the component", () => {
   it("should match  snapshots", () => {
-    const wrapper = ProjectMemoryPage.WrappedComponent;
-    const component = shallow(<wrapper {...ProjectMemoryPageProps} />);
-
+    const Wrapper = ProjectMemoryPage.WrappedComponent;
+    const component = shallow(<Wrapper {...ProjectMemoryPageProps} />);
     expect(component).toMatchSnapshot();
   });
   it("if its matching snapshot", () => {

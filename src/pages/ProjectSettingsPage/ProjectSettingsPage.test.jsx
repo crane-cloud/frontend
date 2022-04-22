@@ -16,8 +16,6 @@ const ProjectSettingsPageProps = {
 describe("Testing the Project Settings Page component", () => {
   const WrapperProjectSettingsPage = ProjectSettingsPage.WrappedComponent;
   const ProjectSettingsPageComponent = shallow(<WrapperProjectSettingsPage {...ProjectSettingsPageProps}/>);
-
-
   
   it("should match the snapshot for ProjectSettingsPage after adding props", () => {
     ProjectSettingsPageComponent.setProps(ProjectSettingsPage);
@@ -32,7 +30,6 @@ describe("Testing the exported mapstate to props and dispatch for ProjectSetting
   it("matches the ProjectSettingsPage mapstostate", () => {
     expect(
       mapStateToProps({
-
         deleteProjectReducer: { isDeleting:false, isDeleted:false, isFailed:false,  message:""},
         updateProjectReducer: { isUpdated:false, isUpdating:false, errorMessage: null }
       })
