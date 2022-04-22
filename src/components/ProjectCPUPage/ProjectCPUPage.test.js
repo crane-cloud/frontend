@@ -7,31 +7,25 @@ const ProjectCpuPageProps = {
   fetchCpu: jest.fn(),
   handlePeriodChange: jest.fn(),
   getDateCreated: jest.fn(),
-  cpuMetrics: [{ slug: "slug" }],
-  match: {params:{}}
+  clearProjectCPU: jest.fn(),
+  getProjectCPU:jest.fn(),
+  isFetchingCPU: false,
+  projects:[],
+  cpuMetrics: [{metrics : [{ slug: "slug" }]} ],
+  location:{pathname:"path"},
+  match: {params:{projectID:"1",userID:"2"}}
 };
-
-
-
-describe('Test component Container', () => {
-  it('Test class constructor', () => {
-    const wrappedProjectCPUPage = ProjectCPUPage.WrappedComponent;
-    const wrapper = shallow(<wrappedProjectCPUPage />);
-    expect(wrapper.exists()).toBeTruthy();
-    expect(wrapper).toHaveLength(1);
-  });
-});
 
 describe("test out component", () => {
   it("should matchs  component snapshot", () => {
-    const wrapper = ProjectCPUPage.WrappedComponent;
-    const component = shallow(<wrapper {...ProjectCpuPageProps} />);
+    const Wrapper = ProjectCPUPage.WrappedComponent;
+    const component = shallow(<Wrapper {...ProjectCpuPageProps} />);
 
     expect(component).toMatchSnapshot();
   });
   it("match snapshot", () => {
-    const newComponent = ProjectCPUPage.WrappedComponent;
-    const wrapper = shallow(<newComponent {...ProjectCpuPageProps} />);
+    const NewComponent = ProjectCPUPage.WrappedComponent;
+    const wrapper = shallow(<NewComponent {...ProjectCpuPageProps} />);
     wrapper.setProps(ProjectCpuPageProps);
     expect(wrapper).toBeDefined();
     expect(wrapper).toHaveLength(1);
