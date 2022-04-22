@@ -193,7 +193,7 @@ ProjectMemoryPage.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isFetchingMemory, memoryMetrics, memoryMessage } =
     state.projectMemoryReducer;
   const { projects } = state.userProjectsReducer;

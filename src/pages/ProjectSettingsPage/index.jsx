@@ -26,7 +26,7 @@ import { validateName } from "../../helpers/validation"
 class ProjectSettingsPage extends React.Component {
   constructor(props) {
     super(props);
-    const projectInfo = JSON.parse(localStorage.getItem("project"));
+    const projectInfo = {...JSON.parse(localStorage.getItem("project"))};
     const { name, description, organisation, project_type } = projectInfo;
 
     this.state = {
@@ -65,7 +65,7 @@ class ProjectSettingsPage extends React.Component {
   }
   handleChange(e) {
     const { error, openDeleteAlert } = this.state;
-    const projectInfo = JSON.parse(localStorage.getItem("project"));
+    const projectInfo = {...JSON.parse(localStorage.getItem("project"))};
     const { name } = projectInfo;
     const {
       errorMessage,
@@ -115,7 +115,7 @@ class ProjectSettingsPage extends React.Component {
       },
     } = this.props;
 
-    const projectInfo = JSON.parse(localStorage.getItem("project"));
+    const projectInfo ={...JSON.parse(localStorage.getItem("project"))};
     const { name, description, organisation, project_type } = projectInfo;
 
     const Trim = (input) => input.trim();
@@ -282,6 +282,7 @@ class ProjectSettingsPage extends React.Component {
     const {
       match: { params },
       isDeleting,
+      location,
       isDeleted,
       isUpdating,
       message,
@@ -289,7 +290,7 @@ class ProjectSettingsPage extends React.Component {
       isUpdated,
       errorMessage,
     } = this.props;
-    const projectInfo = JSON.parse(localStorage.getItem("project"));
+    const projectInfo = {...JSON.parse(localStorage.getItem("project"))};
     const { name, description } = projectInfo;
 
     const {
@@ -321,7 +322,7 @@ class ProjectSettingsPage extends React.Component {
               name={name}
               params={params}
               description={description}
-              pageRoute={this.props.location.pathname}
+              pageRoute={location.pathname}
               allMetricsLink={`/projects/${projectID}/metrics`}
               cpuLink={`/projects/${projectID}/cpu/`}
               memoryLink={`/projects/${projectID}/memory/`}
@@ -577,7 +578,7 @@ ProjectSettingsPage.defaultProps = {
   isUpdating: false,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isDeleting, isDeleted, isFailed, clearDeleteProjectState, message } =
     state.deleteProjectReducer;
 
