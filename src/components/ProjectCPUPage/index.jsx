@@ -194,7 +194,7 @@ ProjectCPUPage.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isFetchingCPU, cpuMetrics, cpuMessage } = state.projectCPUReducer;
   const { projects } = state.userProjectsReducer;
   return {

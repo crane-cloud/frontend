@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test the component checks if InputText rendered as expected on typing 1`] = `ShallowWrapper {}`;
