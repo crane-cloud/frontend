@@ -82,7 +82,7 @@ ProjectCard.defaultProps = {
   description: "",
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isFetchingMemory, memoryMetrics, memoryMessage } =
     state.projectMemoryReducer;
   return {

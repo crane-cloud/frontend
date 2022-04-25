@@ -194,7 +194,7 @@ ProjectNetworkPage.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isFetchingNetwork, networkMetrics, networkMessage } =
     state.projectNetworkReducer;
   const { projects } = state.userProjectsReducer;

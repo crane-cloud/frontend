@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing the Project Settings Page component matchs the ProjectSettingsPage component snapshot 1`] = `ShallowWrapper {}`;
