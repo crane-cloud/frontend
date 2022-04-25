@@ -9,11 +9,12 @@ const initialState = {
   isCreated: false,
   isCreating: false,
   message: "",
+  errorCode: "",
 };
 
 const createAdminDB = {
   type: ADMIN_CREATE_DATABASE_SUCCESS,
-  database: "action.payload",
+  // database: "action.payload",
   isCreating: false,
   message: "Success! Your database has been created.",
 };
@@ -36,12 +37,12 @@ describe("add create db Reducer initial state", () => {
           isCreated: false,
           isCreating: false,
           message: "",
+          errorCode: "",
         },
         {}
       )
     ).toEqual(initialState);
   });
-
   it("should handle ADMIN create DATABASE_SUCCESS", () => {
     expect(adminCreateDBReducer(initialState, createAdminDB)).toEqual({
       ...initialState,
@@ -59,6 +60,8 @@ describe("add create db Reducer initial state", () => {
       isCreated: false,
       isCreating: false,
       message: "Failed to create database. Please try again",
+      database: null,
+      errorCode: undefined,
     });
   });
 
@@ -68,6 +71,9 @@ describe("add create db Reducer initial state", () => {
       isCreated: false,
       isCreating: true,
       message: "",
+      errorCode: null,
+      database:null
     });
   });
+
 });
