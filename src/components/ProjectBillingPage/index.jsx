@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../Header";
 import SideBar from "../SideBar";
 import InformationBar from "../InformationBar";
@@ -12,6 +12,10 @@ import SpendingPeriod from "../SpendingPeriod";
 import { useParams } from "react-router-dom";
 import styles from "./ProjectBillingPage.module.css";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import Spinner from "../Spinner";
+import { API_BASE_URL } from "../../config";
+
 const data1 = [
   { name: "CPU / $1 per 1K seconds", value: 400, color: "#0088FE" },
   { name: "RAM / $4 per GB", value: 300, color: "#00C49F" },
@@ -48,6 +52,25 @@ const ProjectBillingPage = (props) => {
   const [viewReceipt, setViewReceipt] = useState(false);
 
   const [months, setMonths] = useState(data2);
+  const [transactions, setTransactions] = useState(transactionData);
+  // const [payment, setPayment] = useState({});
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get(
+        `${API_BASE_URL}/projects/${projectID}/transactions`
+      );
+      setMonths(response.data.months);
+      setTransactions(response.data.transactions);
+     // handle error
+     if(response.data.error){
+        setError(response.data.error);
+      }
+    };
+    fetchData();
+  }, [projectID]);
+
   const openReceiptModal = () => {
     setViewReceipt(true);
   };
