@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import moment from "moment";
 import Header from "../Header";
 import SideBar from "../SideBar";
 import InformationBar from "../InformationBar";
@@ -11,14 +12,9 @@ import MetricsCard from "../MetricsCard";
 import SpendingPeriod from "../SpendingPeriod";
 import { useParams } from "react-router-dom";
 import styles from "./ProjectBillingPage.module.css";
-import { useSelector } from "react-redux";
-const data1 = [
-  { name: "CPU / $1 per 1K seconds", value: 400, color: "#0088FE" },
-  { name: "RAM / $4 per GB", value: 300, color: "#00C49F" },
-  { name: "Network / $1 per request", value: 300, color: "#FFBB28" },
-  { name: "Storage/ $1 per GB", value: 200, color: "#FF8042" },
-  { name: "Database/ $1 per GB", value: 67, color: "#99D2E9" },
-];
+import { useSelector, useDispatch } from "react-redux";
+import getProjectBill from "../../redux/actions/getProjectBill";
+
 const data2 = [
   { date: "2021-08", amount: 1398 },
   { date: "2021-09", amount: 9800 },
@@ -28,32 +24,89 @@ const data2 = [
   { date: "2022-01", amount: 1267 },
   { date: "2022-02", amount: 1267 },
 ];
-const transactionData = [
-  {
-    id: "875469470120",
-    date: "02-17-2020",
-    paymentMethod: "Master Card",
-    amount: "$1,267",
-    status: {
-      text: "Successful",
-      color: "#408140",
-    },
-    receipt: data1,
-  },
-];
+
 const ProjectBillingPage = (props) => {
   const { projectID } = useParams();
+  const dispatch = useDispatch();
   const { projects } = useSelector((state) => state.userProjectsReducer);
   const { data } = useSelector((state) => state.user);
   const [viewReceipt, setViewReceipt] = useState(false);
 
-  const [months, setMonths] = useState(data2);
+  const [months, setMonths] = useState([]);
   const openReceiptModal = () => {
     setViewReceipt(true);
   };
   const closeReceiptModal = () => {
     setViewReceipt(false);
   };
+
+  const getBill = useCallback(
+    () => dispatch(getProjectBill(projectID, { series: true })),
+    [dispatch, projectID]
+  );
+
+  // create a function that takes in a array and returns a new array of objects with the data 2 format
+  const getData2Format = (data) => {
+    const newData = [];
+    data.forEach((element) => {
+      newData.push({
+        date: moment(element.start).utc().format('YYYY-MM-DD'),
+        amount: element.totalCost,
+      });
+    });
+    // let newData2 = newData.slice(4)
+    return newData;
+  };
+
+  // create a function that takes in a array and sums all the object key values to create one object
+  const summationObject = (data) => {
+    const newData = {};
+    data.forEach((element) => {
+      Object.keys(element).forEach((key) => {
+        if (newData[key]) {
+          newData[key] += element[key];
+        } else {
+          newData[key] = element[key];
+        }
+      });
+    });
+    return newData;
+  };
+
+  useEffect(() => {
+    getBill();
+  }, [getBill]);
+
+  const billInfo = useSelector((state) => state.getProjectBillReducer);
+  const { projectBill } = billInfo;
+  
+  useEffect(() => {
+    setMonths(getData2Format(projectBill.data.cost_data));
+  }, [projectBill.data]);
+
+  let newObject = summationObject(projectBill.data.cost_data);
+  const data1 = [
+    { name: "CPU / $1 per 1K seconds", value: ((newObject.cpuCost + 1) * 10), color: "#0088FE" },
+    { name: "RAM / $4 per GB", value: ((newObject.ramCost + 1) * 10), color: "#00C49F" },
+    { name: "Network / $1 per request", value: ((newObject.networkCost + 1)* 10), color: "#FFBB28" },
+    { name: "Storage/ $1 per GB", value: 1, color: "#FF8042" },
+    { name: "Database/ $1 per GB", value: 1, color: "#99D2E9" },
+  ];
+
+  const transactionData = [
+    {
+      id: "875469470120",
+      date: "02-17-2020",
+      paymentMethod: "Master Card",
+      amount: "$1,267",
+      status: {
+        text: "Successful",
+        color: "#408140",
+      },
+      receipt: data1,
+    },
+  ];
+  
   const getProjectName = (id) => {
     return projects.find((project) => project.id === id).name;
   };
@@ -97,6 +150,7 @@ const ProjectBillingPage = (props) => {
       setMonths(newMonths);
     }
   };
+  console.log(months);
 
   return (
     <div className={styles.Page}>
@@ -160,7 +214,7 @@ const ProjectBillingPage = (props) => {
                     ))}
                     <div className={styles.Total}>
                       <div className={styles.TotalTxt}>Total</div>
-                      <div className={styles.ResourcePrice}>${findSum()}</div>
+                      <div className={styles.ResourcePrice}>${(newObject.totalCost + 1)* 10}</div>
                     </div>
                   </div>
                   <div className={styles.paymentButton}>
@@ -182,7 +236,7 @@ const ProjectBillingPage = (props) => {
                     below
                   </div>
                   <div className={styles.Subtext2}>
-                    Current Month-to-Date balance is ${findSum()}
+                    Current Month-to-Date balance is ${(newObject.totalCost + 1)* 10}
                   </div>
                   <div className={styles.MetricContainer}>
                     <MetricsCard
@@ -322,7 +376,7 @@ const ProjectBillingPage = (props) => {
                       ))}
                       <div className={styles.Total}>
                         <div className={styles.TotalTxt}>Paid</div>
-                        <div className={styles.ResourcePrice}>${findSum()}</div>
+                        <div className={styles.ResourcePrice}>${(newObject.totalCost + 1) * 10}</div>
                       </div>
                     </div>
 
