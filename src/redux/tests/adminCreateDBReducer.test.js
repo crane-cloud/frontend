@@ -49,6 +49,8 @@ describe("add create db Reducer initial state", () => {
       isCreated: true,
       isCreating: false,
       message: "Success! Your database has been created.",
+      database: undefined,
+      errorCode: null,
     });
   });
 
