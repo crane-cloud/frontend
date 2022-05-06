@@ -32,9 +32,6 @@ import {
       case ALL_DATABASES_FAIL:
         return {
           ...state,
-          isFetchingDatabases: false,
-          databasesFetched: false,
-          databasesMessage: "Error fetching databases",
         };
       default:
         return state;
