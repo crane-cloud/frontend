@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Header from "../Header";
 import SideBar from "../SideBar";
 import InformationBar from "../InformationBar";
@@ -11,10 +11,8 @@ import MetricsCard from "../MetricsCard";
 import SpendingPeriod from "../SpendingPeriod";
 import { useParams } from "react-router-dom";
 import styles from "./ProjectBillingPage.module.css";
-import { useSelector } from "react-redux";
-import axios from "axios";
-import Spinner from "../Spinner";
-import { API_BASE_URL } from "../../config";
+import { useSelector, useDispatch } from "react-redux";
+import getTransactions from "../../redux/actions/getTransactions";
 
 const data1 = [
   { name: "CPU / $1 per 1K seconds", value: 400, color: "#0088FE" },
@@ -47,29 +45,24 @@ const transactionData = [
 ];
 const ProjectBillingPage = (props) => {
   const { projectID } = useParams();
-  const { projects } = useSelector((state) => state.userProjectsReducer);
-  const { data } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const getAllTransactions = useCallback(
+    () => dispatch(getTransactions(projectID)),
+    [dispatch, projectID]
+  );
+
   const [viewReceipt, setViewReceipt] = useState(false);
 
   const [months, setMonths] = useState(data2);
-  const [transactions, setTransactions] = useState(transactionData);
-  // const [payment, setPayment] = useState({});
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get(
-        `${API_BASE_URL}/projects/${projectID}/transactions`
-      );
-      setMonths(response.data.months);
-      setTransactions(response.data.transactions);
-     // handle error
-     if(response.data.error){
-        setError(response.data.error);
-      }
-    };
-    fetchData();
-  }, [projectID]);
+    getAllTransactions();
+  }, [getAllTransactions]);
+
+  const { projects } = useSelector((state) => state.userProjectsReducer);
+  const { data } = useSelector((state) => state.user);
+  const { transactions } = useSelector((state) => state.getTransactionsReducer);
 
   const openReceiptModal = () => {
     setViewReceipt(true);
@@ -120,7 +113,8 @@ const ProjectBillingPage = (props) => {
       setMonths(newMonths);
     }
   };
-
+  console.log(transactions);
+  console.count(transactions);
   return (
     <div className={styles.Page}>
       <div className={styles.TopBarSection}>
@@ -250,13 +244,13 @@ const ProjectBillingPage = (props) => {
                         Details
                       </div>
                     </div>
-                    {transactionData.map((entry, index) => (
+                    {transactions?.map((entry, index) => (
                       <div className={styles.TransactionHistoryRow} key={index}>
                         <div className={styles.TransactionHistoryCell}>
                           {entry.date}
                         </div>
                         <div className={styles.TransactionHistoryCell}>
-                          {entry.id}
+                          {entry.transaction_id}
                         </div>
                         <div className={styles.TransactionHistoryCell}>
                           {entry.paymentMethod}
@@ -266,7 +260,7 @@ const ProjectBillingPage = (props) => {
                             className={styles.Status}
                             style={{ background: entry.status.color }}
                           >
-                            {entry.status.text}
+                            {entry.status}
                           </span>
                         </div>
                         <div className={styles.TransactionHistoryCell}>

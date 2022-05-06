@@ -11,7 +11,7 @@ const startFetchingDatabases = () => ({
 
 const getTransactionsSuccess = (response) => ({
   type: TRANSACTIONS_SUCCESS,
-  payload: response.data,
+  payload: response.data.data.transaction,
 });
 
 const getTransactionsFailed = (error) => ({
