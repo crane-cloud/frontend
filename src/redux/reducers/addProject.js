@@ -39,7 +39,7 @@ const addProjectReducer = (state = initialState, action) => {
         isFailed: true,
         isAdded: false,
         isAdding: false,
-        errorCode: action.payload.errorCode,
+        errorCode: action.payload?.errorCode,
         message: "Failed to add Project",
       };
 
