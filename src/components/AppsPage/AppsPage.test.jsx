@@ -21,6 +21,12 @@ describe("testing the Apps page component", () => {
     const wrapper = shallow(<NewComponent {...AppsPageProps} />);
     wrapper.setProps(AppsPageProps);
     expect(wrapper).toBeDefined();
+    wrapper.instance().showForm();
+    expect(wrapper.state("openModal")).toBe(true);
+    wrapper.instance().hideForm();
+    expect(wrapper.state("openModal")).toBe(false);
+    wrapper.instance().handleCallbackSearchword("word");
+    expect(wrapper.state("word")).toBe("word");
   });
 });
 
