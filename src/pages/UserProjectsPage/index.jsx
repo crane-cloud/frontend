@@ -52,22 +52,22 @@ class UserProjectsPage extends React.Component {
     } = this.props;
     const { Searchword } = this.state;
 
-    if (isDeleted !== (prevProps?.isDeleted)) {
+    if (isDeleted !== prevProps.isDeleted) {
       getUserProjects(data.id);
       getClustersList();
     }
 
-    if (isUpdated !== (prevProps?.isUpdated)) {
+    if (isUpdated !== prevProps.isUpdated) {
       clearUpdateProjectState();
       getUserProjects(data.id);
       getClustersList();
     }
 
-    if (isAdded !== (prevProps?.isAdded)) {
+    if (isAdded !== prevProps.isAdded) {
       getUserProjects(data.id);
       this.setState(this.initialState);
     }
-    if (Searchword !== (prevState?.Searchword)) {
+    if (Searchword !== prevState.Searchword) {
       this.searchThroughProjects();
     }
   }

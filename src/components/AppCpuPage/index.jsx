@@ -45,9 +45,9 @@ export class AppCpuPage extends React.Component {
     getAppCPU(projectID, appID, { step: "2h" });
   }
 
-  getAppName(apps, appID) {
-    let result = apps?.find((app) => app.id === appID).name;
-    return result
+  getAppName(id) {
+    const { apps } = this.props;
+    return apps?.apps.find((app) => app.id === id).name;
   }
 
   getDateCreated() {
@@ -128,7 +128,6 @@ export class AppCpuPage extends React.Component {
       match: { params },
       isFetchingCPU,
       appCPUMetrics,
-      apps: { apps}
     } = this.props;
     const { projectID, appID } = params;
     const { period } = this.state;
@@ -143,7 +142,7 @@ export class AppCpuPage extends React.Component {
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
-              name={this.getAppName(apps, appID)}
+              name={this.getAppName(appID)}
               params={params}
               pageRoute={this.props.location.pathname}
               allMetricsLink={`/projects/${projectID}/apps/${appID}/dashboard`}
@@ -192,7 +191,7 @@ AppCpuPage.propTypes = {
   //     userID: PropTypes.string.isRequired,
   //   }).isRequired,
   // }).isRequired,
-  isFetchingCPU: PropTypes.bool,
+  isFetchingCPU: PropTypes.bool.isRequired,
   appCPUMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getAppCPU: PropTypes.func.isRequired,
   clearAppCPU: PropTypes.func.isRequired,

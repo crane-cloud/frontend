@@ -12,14 +12,15 @@ const AppsListProps = {
 
 describe("Test AppsList component", () => {
   let applistWrapper;
-
-  const AppsListwrapper = AppsList.WrappedComponent;
-  applistWrapper = shallow(<AppsListwrapper {...AppsListProps} />);
+  beforeEach(() => {
+    const AppsListwrapper = AppsList.WrappedComponent;
+    applistWrapper = shallow(<AppsListwrapper {...AppsListProps} />);
+  });
 
   it("should check `componentDidMount()`", () => {
     applistWrapper.instance().componentDidMount();
-    expect(AppsListProps.getAppsList).toHaveBeenCalledTimes(1);
-
+    expect(AppsListProps.getAppsList).toHaveBeenCalledTimes(2); 
+    
     expect(AppsListProps.getAppsList).toBeDefined();
     expect(AppsListProps.params).toBeDefined();
     expect(applistWrapper.instance().props.getAppsList).toBeCalled();

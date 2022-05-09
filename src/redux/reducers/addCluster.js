@@ -39,7 +39,7 @@ const addClusterReducer = (state = initialState, action) => {
         isFailed: true,
         isAdded: false,
         creatingCluster: false,
-        error: action.payload?.error,
+        error: action.payload.error,
         message: "Failed to add cluster",
       };
 

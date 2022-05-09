@@ -66,8 +66,12 @@ export default class PasswordReset extends React.Component {
           if (response.data.status === "success") {
             this.setState({
               loading: false,
-              registered: true,
             });
+            setTimeout(() => {
+              this.setState({
+                registered: true,
+              });
+            }, 1000);
           }
         })
         .catch((err) => {
