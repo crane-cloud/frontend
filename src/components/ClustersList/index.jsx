@@ -73,7 +73,7 @@ class ClustersList extends Component {
 ClustersList.propTypes = {
   clusters: PropTypes.arrayOf(PropTypes.object),
   getClustersList: PropTypes.func.isRequired,
-  newClusterAdded: PropTypes.bool.isRequired,
+  newClusterAdded: PropTypes.bool,
   isRetrieved: PropTypes.bool,
   isRetrieving: PropTypes.bool,
 };
@@ -85,7 +85,7 @@ ClustersList.defaultProps = {
   isRetrieving: true,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isRetrieving, clusters: { clusters}, isRetrieved } = state.clustersReducer;
   return { isRetrieving, clusters, isRetrieved };
 };

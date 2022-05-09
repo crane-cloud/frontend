@@ -1,47 +1,50 @@
-/* eslint-disable no-undef */
 import React from "react";
 import { shallow } from "enzyme";
-import {AppCpuPage, mapStateToProps } from "./";
+import AppCpuPage, { mapStateToProps } from "./";
 
 const AppCpuPageProps = {
   getAppName: jest.fn(),
   handlePeriodChange: jest.fn(),
   fetchCpu: jest.fn(),
   getDateCreated: jest.fn(),
-  getAppCpuMetrics: jest.fn(),
-  appCPUMetrics: [{ slug: "slug" }],
-  match: {params:{}}
+  getAppCPU: jest.fn(),
+  appCPUMetrics: [{ metrics: { timestamp: "" } }],
+  match: { params: {} },
+  cpuMessage: "",
+  location: { pathname: "derek" },
+  apps: [
+    { id: 1, name: "1" },
+    { id: 2, name: "2" },
+  ],
+  clearAppCPU: jest.fn(),
 };
 
 // LEAVE THE COMMENTED OUT CODE
-
-describe('TestContainer', () => {
-  // const testWrapper = shallow(<AppCpuPage {...AppCpuPageProps} />);
-  it('Test class constructor', () => {
-    const wrappedAppCPUPage = AppCpuPage.WrappedComponent;
-    const wrapper = shallow(<wrappedAppCPUPage />);
-    // const wrapperInstance = wrapper.instance();
-    expect(wrapper.exists()).toBeTruthy();
-    expect(wrapper).toHaveLength(1);
-    // const testWrapperInstance = testWrapper.instance()
-    // console.log(testWrapperInstance)
-    // expect(wrapper.state.period).toBe("1d");
-  });
-});
 describe("test the component", () => {
   it("matchs the component snapshot", () => {
-    const wrapper = AppCpuPage.WrappedComponent;
-    const mycomponent = shallow(<wrapper {...AppCpuPageProps} />);
-    expect(mycomponent).toMatchSnapshot();
+    const CPUWrapped = AppCpuPage.WrappedComponent;
+    const CPUPropsComponent = shallow(<CPUWrapped {...AppCpuPageProps} />);
+    expect(CPUPropsComponent).toMatchSnapshot();
   });
   it("should match the snapshot", () => {
-    const newComponent = AppCpuPage.WrappedComponent;
-    const wrapper = shallow(<newComponent {...AppCpuPageProps} />);
-    wrapper.setProps(AppCpuPageProps);
-    expect(wrapper).toBeDefined();
-    expect(wrapper).toHaveLength(1);
-  });
+    const WrappedCPU = AppCpuPage.WrappedComponent;
+    const OriginalConnectedComponent = shallow(
+      <WrappedCPU {...AppCpuPageProps} />
+    );
+    let wrapper = OriginalConnectedComponent.instance();
+    const spy = jest.spyOn(wrapper, "componentDidMount");
+    wrapper.componentDidMount();
 
+    expect(spy).toHaveBeenCalled();
+
+    expect(wrapper.componentDidMount).toHaveBeenCalled();
+    wrapper.handlePeriodChange("1d");
+    expect(wrapper.handlePeriodChange).toBeDefined();
+    wrapper.fetchCpu(1);
+    expect(wrapper.fetchCpu).toBeDefined();
+  
+    spy.mockRestore();
+  });
 });
 
 describe("test the map state to props and dispatch", () => {
