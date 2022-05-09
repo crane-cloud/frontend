@@ -65,6 +65,7 @@ jobs:
             - ./node_modules
       - run: # run tests
           name: Run Test and Coverage
+          no_output_timeout: 20m
           command:
             yarn test --detectOpenHandles
       - run: # send coverage
