@@ -44,6 +44,8 @@ import usersSummaryReducer from "./usersSummary";
 import revertUrlReducer from "./revertUrl";
 import adminDatabasesReducer from "./adminGetDatabases";
 import adminCreateDBReducer from "./adminCreateDB";
+import savePaymentReducer from "./savePayment";
+import getTransactionsReducer from "./getTransactions";
 
 export default combineReducers({
   clusterResourcesReducer,
@@ -90,5 +92,7 @@ export default combineReducers({
   usersSummaryReducer,
   revertUrlReducer,
   adminDatabasesReducer,
-  adminCreateDBReducer
+  adminCreateDBReducer,
+  savePaymentReducer,
+  getTransactionsReducer,
 });
