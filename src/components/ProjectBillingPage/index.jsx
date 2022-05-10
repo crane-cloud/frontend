@@ -64,14 +64,19 @@ const ProjectBillingPage = (props) => {
   const { data } = useSelector((state) => state.user);
   const { transactions } = useSelector((state) => state.getTransactionsReducer);
 
-  const openReceiptModal = () => {
-    setViewReceipt(true);
-  };
   const closeReceiptModal = () => {
     setViewReceipt(false);
   };
   const getProjectName = (id) => {
     return projects.find((project) => project.id === id).name;
+  };
+  const getTransactionDetail = (transactions, id)=>{
+    return transactions.find((transaction)=> transaction.id === id);
+  }
+  const openReceiptModal = (transactions, transaction_id) => {
+    let currentTransaction = getTransactionDetail(transactions, transaction_id);
+    console.log(currentTransaction);
+    setViewReceipt(true);
   };
   const findSum = () => {
     var sum = 0;
@@ -114,8 +119,9 @@ const ProjectBillingPage = (props) => {
       setMonths(newMonths);
     }
   };
-  console.log(transactions);
-  console.count(transactions);
+  //console.log(transactions);
+  console.log(getTransactionDetail(transactions, "a25f3875-4d97-43d4-a2d4-4d9482a190ca"))
+  //console.count(transactions);
   return (
     <div className={styles.Page}>
       <div className={styles.TopBarSection}>
@@ -259,7 +265,7 @@ const ProjectBillingPage = (props) => {
                         </div>
                         <div className={styles.TransactionHistoryCell}>
                           <button
-                            onClick={openReceiptModal}
+                            onClick={()=> openReceiptModal(transactions, entry.transaction_id)}
                             className={styles.PaymentDetailsButton}
                           >
                             View
