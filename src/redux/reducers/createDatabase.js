@@ -42,7 +42,7 @@ const createDatabaseReducer = (state = initialState, action) => {
         isCreating: false,
         isCreated: false,
         message: "Failed to create database. Please try again",
-        errorCode: action.payload?.errorCode,
+        errorCode: action.payload.errorCode,
       };
 
     case CLEAR_ADD_DATABASE_STATE:
