@@ -80,6 +80,7 @@ const ProjectBillingPage = (props) => {
     }
     return sum;
   };
+
   const handlePeriodChange = (period, customTime = null) => {
     let startTimeStamp,
       endTimeStamp = new Date();
@@ -227,12 +228,8 @@ const ProjectBillingPage = (props) => {
                 <div className={styles.TransactionHistoryBody}>
                   <div className={styles.TransactionHistoryTable}>
                     <div className={styles.TransactionHistoryHead}>
-                      <div className={styles.TransactionHistoryCell}>Date</div>
                       <div className={styles.TransactionHistoryCell}>
                         Transaction Id
-                      </div>
-                      <div className={styles.TransactionHistoryCell}>
-                        Payment Method
                       </div>
                       <div className={styles.TransactionHistoryCell}>
                         Status
@@ -247,13 +244,7 @@ const ProjectBillingPage = (props) => {
                     {transactions?.map((entry, index) => (
                       <div className={styles.TransactionHistoryRow} key={index}>
                         <div className={styles.TransactionHistoryCell}>
-                          {entry.date}
-                        </div>
-                        <div className={styles.TransactionHistoryCell}>
                           {entry.transaction_id}
-                        </div>
-                        <div className={styles.TransactionHistoryCell}>
-                          {entry.paymentMethod}
                         </div>
                         <div className={styles.TransactionHistoryCell}>
                           <span
