@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing the TeamPage component should match the team page snapshot 1`] = `ShallowWrapper {}`;

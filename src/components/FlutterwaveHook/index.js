@@ -5,9 +5,14 @@ import PrimaryButton from "../PrimaryButton";
 import Modal from "../../components/Modal";
 import { ReactComponent as Success } from "../../assets/images/checked.svg";
 import { ReactComponent as Error } from "../../assets/images/red-cross-mark.svg";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import savePayment from "../../redux/actions/savePayment";
 import "./FlutterwaveHook.css";
 
 export default function FlutterWaveHook(props) {
+  const { projectID } = useParams();
+  const dispatch = useDispatch();
   const { amount, name, email } = props;
   const handleFlutterPayment = useFlutterwave(
     Config(amount, { name: name, email: email })
@@ -35,6 +40,19 @@ export default function FlutterWaveHook(props) {
         currency: response.currency,
         flw_ref: response.flw_ref,
       });
+
+      let paymentObj = {
+        amount: response.amount,
+        currency: response.currency,
+        email: email,
+        flutterwave_ref: response.flw_ref,
+        name: name,
+        phone_number: (response.phone_number?(response.phone_number):("0000")),
+        status: response.status,
+        transaction_id: response.transaction_id,
+        tx_ref: (response.tx_ref).toString(),
+      };
+      dispatch(savePayment(paymentObj, projectID));
     }
   };
 

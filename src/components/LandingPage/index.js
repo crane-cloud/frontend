@@ -189,7 +189,7 @@ const LandingPage = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { user } = state;
   return { user };
 };

@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Connection component test checks if the connection component matches the snapshot 1`] = `ShallowWrapper {}`;

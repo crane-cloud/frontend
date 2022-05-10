@@ -15,6 +15,8 @@ import styles from "./ProjectBillingPage.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import getProjectBill from "../../redux/actions/getProjectBill";
 
+import getTransactions from "../../redux/actions/getTransactions";
+
 const data2 = [
   { date: "2021-08", amount: 1398 },
   { date: "2021-09", amount: 9800 },
@@ -28,11 +30,23 @@ const data2 = [
 const ProjectBillingPage = (props) => {
   const { projectID } = useParams();
   const dispatch = useDispatch();
-  const { projects } = useSelector((state) => state.userProjectsReducer);
-  const { data } = useSelector((state) => state.user);
+
+  const getAllTransactions = useCallback(
+    () => dispatch(getTransactions(projectID)),
+    [dispatch, projectID]
+  );
+
   const [viewReceipt, setViewReceipt] = useState(false);
 
-  const [months, setMonths] = useState([]);
+  const [months, setMonths] = useState(data2);
+
+  useEffect(() => {
+    getAllTransactions();
+  }, [getAllTransactions]);
+
+  const { projects } = useSelector((state) => state.userProjectsReducer);
+  const { data } = useSelector((state) => state.user);
+  const { transactions } = useSelector((state) => state.getTransactionsReducer);
   const openReceiptModal = () => {
     setViewReceipt(true);
   };
@@ -61,7 +75,7 @@ const ProjectBillingPage = (props) => {
   // create a function that takes in a array and sums all the object key values to create one object
   const summationObject = (data) => {
     const newData = {};
-    data.forEach((element) => {
+    data?.forEach((element) => {
       Object.keys(element).forEach((key) => {
         if (newData[key]) {
           newData[key] += element[key];
@@ -81,10 +95,10 @@ const ProjectBillingPage = (props) => {
   const { projectBill } = billInfo;
   
   useEffect(() => {
-    setMonths(getData2Format(projectBill.data.cost_data));
+    setMonths(getData2Format(projectBill?.data?.cost_data));
   }, [projectBill.data]);
 
-  let newObject = summationObject(projectBill.data.cost_data);
+  let newObject = summationObject(projectBill?.data?.cost_data);
   const data1 = [
     { name: "CPU / $1 per 1K seconds", value: ((newObject.cpuCost + 1) * 10), color: "#0088FE" },
     { name: "RAM / $4 per GB", value: ((newObject.ramCost + 1) * 10), color: "#00C49F" },
@@ -117,6 +131,7 @@ const ProjectBillingPage = (props) => {
     }
     return sum;
   };
+
   const handlePeriodChange = (period, customTime = null) => {
     let startTimeStamp,
       endTimeStamp = new Date();
@@ -150,7 +165,6 @@ const ProjectBillingPage = (props) => {
       setMonths(newMonths);
     }
   };
-  console.log(months);
 
   return (
     <div className={styles.Page}>
@@ -264,12 +278,8 @@ const ProjectBillingPage = (props) => {
                 <div className={styles.TransactionHistoryBody}>
                   <div className={styles.TransactionHistoryTable}>
                     <div className={styles.TransactionHistoryHead}>
-                      <div className={styles.TransactionHistoryCell}>Date</div>
                       <div className={styles.TransactionHistoryCell}>
                         Transaction Id
-                      </div>
-                      <div className={styles.TransactionHistoryCell}>
-                        Payment Method
                       </div>
                       <div className={styles.TransactionHistoryCell}>
                         Status
@@ -281,23 +291,17 @@ const ProjectBillingPage = (props) => {
                         Details
                       </div>
                     </div>
-                    {transactionData.map((entry, index) => (
+                    {transactions?.map((entry, index) => (
                       <div className={styles.TransactionHistoryRow} key={index}>
                         <div className={styles.TransactionHistoryCell}>
-                          {entry.date}
-                        </div>
-                        <div className={styles.TransactionHistoryCell}>
-                          {entry.id}
-                        </div>
-                        <div className={styles.TransactionHistoryCell}>
-                          {entry.paymentMethod}
+                          {entry.transaction_id}
                         </div>
                         <div className={styles.TransactionHistoryCell}>
                           <span
                             className={styles.Status}
                             style={{ background: entry.status.color }}
                           >
-                            {entry.status.text}
+                            {entry.status}
                           </span>
                         </div>
                         <div className={styles.TransactionHistoryCell}>

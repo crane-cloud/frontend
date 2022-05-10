@@ -12,4 +12,4 @@ const NewLogo = () => (
   </Link>
 );
 
-export default NewLogo;
+export default React.memo(NewLogo);

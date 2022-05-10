@@ -55,7 +55,7 @@ class VerificationSentPage extends React.Component {
               feedback: "Login successful",
             },
             () => {
-              window.location.href = `/users/${response.data.data.id}/projects`;
+              window.location.href = `/projects`;
             }
           );
         }

@@ -45,11 +45,11 @@ const mytoday = new Date();
 export const currentDate = changeToFormat(mytoday);
 
 // date from three months back
-const subMonths = (date, months) => {
+export const subMonths = (date, months) => {
   return date.setMonth(date.getMonth() - months);
 };
 
-const monthFigure = (month) =>
+export const monthFigure = (month) =>
   ("0" + new Date(subMonths(mytoday, month)).getMonth()).slice(-2);
 
 export const getBackDate = month => {

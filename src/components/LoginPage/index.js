@@ -39,7 +39,7 @@ class LoginPage extends React.Component {
     // the previous state which wasnt cleared
     const queryParams = new URLSearchParams(window.location.search);
     const code = queryParams?.get("code");
-    // localStorage.setItem("state", {});
+    localStorage.setItem("state", {});
     // localStorage.removeItem("state");
     // this.props.removeUser();
     if (code) {
