@@ -175,9 +175,11 @@
   text-transform: uppercase;
   color: #008ac1;
 }
-.TransactionHistoryCell .Status {
+.TransactionHistoryCell .PaymentStatus {
   padding: 0.3rem;
   border-radius: 0.3rem;
+  background-color: #408140;
+  color: #ffffff;
 }
 .TransactionHistoryRow .TransactionHistoryCell:first-child,
 .TransactionHistoryHead .TransactionHistoryCell:first-child {
@@ -214,6 +216,14 @@
 }
 .ReceiptDetail {
   font-weight: 700;
+}
+.ReceiptDetail .PaymentStatus{
+  font-weight: normal;
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+  max-width: 20%;
+  background: #408140;
+  color: #ffffff;
 }
 .ReceiptModal .ResourseDetail,
 .ReceiptModal .Total {
