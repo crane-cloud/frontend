@@ -36,8 +36,8 @@ const ProjectBillingPage = (props) => {
     [dispatch, projectID]
   );
 
+  const [transactionDetails, setTransactionDetails] = useState({});
   const [viewReceipt, setViewReceipt] = useState(false);
-
   const [months, setMonths] = useState(data2);
 
   useEffect(() => {
@@ -47,9 +47,7 @@ const ProjectBillingPage = (props) => {
   const { projects } = useSelector((state) => state.userProjectsReducer);
   const { data } = useSelector((state) => state.user);
   const { transactions } = useSelector((state) => state.getTransactionsReducer);
-  const openReceiptModal = () => {
-    setViewReceipt(true);
-  };
+
   const closeReceiptModal = () => {
     setViewReceipt(false);
   };
@@ -106,30 +104,19 @@ const ProjectBillingPage = (props) => {
     { name: "Storage/ $1 per GB", value: 1, color: "#FF8042" },
     { name: "Database/ $1 per GB", value: 1, color: "#99D2E9" },
   ];
-
-  const transactionData = [
-    {
-      id: "875469470120",
-      date: "02-17-2020",
-      paymentMethod: "Master Card",
-      amount: "$1,267",
-      status: {
-        text: "Successful",
-        color: "#408140",
-      },
-      receipt: data1,
-    },
-  ];
   
   const getProjectName = (id) => {
     return projects.find((project) => project.id === id).name;
   };
-  const findSum = () => {
-    var sum = 0;
-    for (var i = 0; i < data1.length; i++) {
-      sum += data1[i].value;
-    }
-    return sum;
+  const getTransactionDetail = (transactions, transaction_id) => {
+    return transactions.find(
+      (transaction) => transaction.transaction_id === transaction_id
+    );
+  };
+  const openReceiptModal = (transactions, transaction_id) => {
+    let transactionDetail = getTransactionDetail(transactions, transaction_id);
+    setTransactionDetails(transactionDetail);
+    setViewReceipt(true);
   };
 
   const handlePeriodChange = (period, customTime = null) => {
@@ -165,7 +152,6 @@ const ProjectBillingPage = (props) => {
       setMonths(newMonths);
     }
   };
-
   return (
     <div className={styles.Page}>
       <div className={styles.TopBarSection}>
@@ -297,19 +283,21 @@ const ProjectBillingPage = (props) => {
                           {entry.transaction_id}
                         </div>
                         <div className={styles.TransactionHistoryCell}>
-                          <span
-                            className={styles.Status}
-                            style={{ background: entry.status.color }}
-                          >
+                          <span className={styles.PaymentStatus}>
                             {entry.status}
                           </span>
                         </div>
                         <div className={styles.TransactionHistoryCell}>
-                          {entry.amount}
+                          {entry.amount.toLocaleString("en-US")}
                         </div>
                         <div className={styles.TransactionHistoryCell}>
                           <button
-                            onClick={openReceiptModal}
+                            onClick={() =>
+                              openReceiptModal(
+                                transactions,
+                                entry.transaction_id
+                              )
+                            }
                             className={styles.PaymentDetailsButton}
                           >
                             View
@@ -327,69 +315,48 @@ const ProjectBillingPage = (props) => {
                 <Modal showModal={viewReceipt} onClickAway={closeReceiptModal}>
                   <div className={styles.ReceiptModal}>
                     <div className={styles.ReceiptDetailContainer}>
-                      <div>
-                        <div className={styles.ReceiptLabel}>
-                          Transaction ID
-                        </div>
-                        <div className={styles.ReceiptDetail}>
-                          {transactionData[0].id}
-                        </div>
-                      </div>
-                      <div>
-                        <div className={styles.ReceiptLabel}>Date</div>
-                        <div className={styles.ReceiptDetail}>
-                          {transactionData[0].date}
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      className={styles.ReceiptLabel}
-                      style={{ padding: "0.8rem" }}
-                    >
-                      Receipt
-                    </div>
-                    <div className={styles.MonthSummary}>
-                      {transactionData[0].receipt.map((entry, index) => (
-                        <div className={styles.ResourseDetail} key={index}>
-                          <div
-                            className={styles.Cube}
-                            style={{
-                              background: `${
-                                transactionData[0].receipt[
-                                  index % transactionData[0].receipt.length
-                                ].color
-                              }`,
-                            }}
-                          />
-                          <div className={styles.ResourceName}>
-                            {
-                              transactionData[0].receipt[
-                                index % transactionData[0].receipt.length
-                              ].name
-                            }
+                      {transactionDetails && (
+                        <>
+                          <div className={styles.ReceiptLabel}>
+                            Transaction reference
                           </div>
-                          <div className={styles.ResourcePrice}>
-                            $
-                            {
-                              transactionData[0].receipt[
-                                index % transactionData[0].receipt.length
-                              ].value
-                            }
+                          <div className={styles.ReceiptDetail}>
+                            {transactionDetails.flutterwave_ref}
                           </div>
-                        </div>
-                      ))}
-                      <div className={styles.Total}>
-                        <div className={styles.TotalTxt}>Paid</div>
-                        <div className={styles.ResourcePrice}>${(newObject.totalCost + 1) * 10}</div>
-                      </div>
-                    </div>
+                          <div className={styles.ReceiptLabel}>Name</div>
+                          <div className={styles.ReceiptDetail}>
+                            {transactionDetails.name}
+                          </div>
+                          <div className={styles.ReceiptLabel}>Email</div>
+                          <div className={styles.ReceiptDetail}>
+                            {transactionDetails.email}
+                          </div>
+                          <div className={styles.ReceiptLabel}>
+                            Payment Status
+                          </div>
+                          <div className={styles.ReceiptDetail}>
+                            <div className={styles.PaymentStatus}>
+                              {transactionDetails.status}
+                            </div>
+                          </div>
+                          <div className={styles.ReceiptLabel}>Currency</div>
+                          <div className={styles.ReceiptDetail}>
+                            {transactionDetails.currency}
+                          </div>
+                          <div className={styles.ReceiptLabel}>Amount Paid</div>
+                          <div className={styles.ReceiptDetail}>
+                            {transactionDetails.amount.toLocaleString("en-US")}
+                          </div>
+                        </>
+                      )}
 
-                    <div className={styles.ReceiptButton}>
-                      <PrimaryButton
-                        label="Close"
-                        className="CancelBtn"
-                        onClick={closeReceiptModal}
-                      />
+                      <div className={styles.ReceiptButton}>
+                        <PrimaryButton
+                          label="Close"
+                          className="CancelBtn"
+                          onClick={closeReceiptModal}
+                        />
+                      </div>
                     </div>
                   </div>
                 </Modal>
