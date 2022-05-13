@@ -60,7 +60,7 @@ const ProjectBillingPage = (props) => {
   // create a function that takes in a array and returns a new array of objects with the data 2 format
   const getData2Format = (data) => {
     const newData = [];
-    data.forEach((element) => {
+    data?.forEach((element) => {
       newData.push({
         date: moment(element.start).utc().format('YYYY-MM-DD'),
         amount: element.totalCost,
