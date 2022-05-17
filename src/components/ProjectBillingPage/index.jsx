@@ -60,12 +60,14 @@ const ProjectBillingPage = (props) => {
   // create a function that takes in a array and returns a new array of objects with the data 2 format
   const getData2Format = (data) => {
     const newData = [];
-    data?.forEach((element) => {
+    if (Array.isArray(data)){
+    data.forEach((element) => {
       newData.push({
         date: moment(element.start).utc().format('YYYY-MM-DD'),
         amount: element.totalCost,
       });
     });
+   }
     // let newData2 = newData.slice(4)
     return newData;
   };
@@ -73,6 +75,7 @@ const ProjectBillingPage = (props) => {
   // create a function that takes in a array and sums all the object key values to create one object
   const summationObject = (data) => {
     const newData = {};
+    if (Array.isArray(data)){
     data?.forEach((element) => {
       Object.keys(element).forEach((key) => {
         if (newData[key]) {
@@ -82,6 +85,7 @@ const ProjectBillingPage = (props) => {
         }
       });
     });
+  }
     return newData;
   };
 
@@ -98,11 +102,11 @@ const ProjectBillingPage = (props) => {
 
   let newObject = summationObject(projectBill?.data?.cost_data);
   const data1 = [
-    { name: "CPU / $1 per 1K seconds", value: ((newObject.cpuCost + 1) * 10), color: "#0088FE" },
-    { name: "RAM / $4 per GB", value: ((newObject.ramCost + 1) * 10), color: "#00C49F" },
-    { name: "Network / $1 per request", value: ((newObject.networkCost + 1)* 10), color: "#FFBB28" },
-    { name: "Storage/ $1 per GB", value: 1, color: "#FF8042" },
-    { name: "Database/ $1 per GB", value: 1, color: "#99D2E9" },
+    { name: "CPU / $1 per 1K seconds", value: (Object.keys(newObject).length === 0) ? "n/a" : ((newObject.cpuCost + 1) * 10), color: "#0088FE" },
+    { name: "RAM / $4 per GB", value: (Object.keys(newObject).length === 0) ?"n/a" : ((newObject.ramCost + 1) * 10), color: "#00C49F" },
+    { name: "Network / $1 per request", value: (Object.keys(newObject).length === 0) ? "n/a" :((newObject.networkCost + 1)* 10), color: "#FFBB28" },
+    { name: "Storage/ $1 per GB",  value: "n/a", color: "#FF8042" },
+    { name: "Database/ $1 per GB", value: "n/a", color: "#99D2E9" },
   ];
   
   const getProjectName = (id) => {
@@ -214,7 +218,7 @@ const ProjectBillingPage = (props) => {
                     ))}
                     <div className={styles.Total}>
                       <div className={styles.TotalTxt}>Total</div>
-                      <div className={styles.ResourcePrice}>${(newObject.totalCost + 1)* 10}</div>
+                      <div className={styles.ResourcePrice}>{(Object.keys(newObject).length === 0) ? "n/a" : `${(newObject.totalCost + 1)* 10}` }</div>
                     </div>
                   </div>
                   <div className={styles.paymentButton}>
@@ -236,7 +240,8 @@ const ProjectBillingPage = (props) => {
                     below
                   </div>
                   <div className={styles.Subtext2}>
-                    Current Month-to-Date balance is ${(newObject.totalCost + 1)* 10}
+                    Current Month-to-Date balance is {(Object.keys(newObject).length !== 0) ? "Not computed":
+                    `${((newObject.totalCost + 1)* 10)}` }
                   </div>
                   <div className={styles.MetricContainer}>
                     <MetricsCard
