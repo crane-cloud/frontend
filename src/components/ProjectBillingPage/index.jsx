@@ -38,6 +38,8 @@ const ProjectBillingPage = (props) => {
 
   const [transactionDetails, setTransactionDetails] = useState({});
   const [viewReceipt, setViewReceipt] = useState(false);
+  const [currentTab, setCurrentTab] = useState(true);
+  const [nextTab, setNextTab] = useState(false);
   const [months, setMonths] = useState(data2);
 
   useEffect(() => {
@@ -52,6 +54,15 @@ const ProjectBillingPage = (props) => {
     setViewReceipt(false);
   };
 
+  const viewTransactions = () => {
+    setCurrentTab(true);
+    setNextTab(false);
+  };
+  const viewInvoices = () => {
+    setNextTab(true);
+    setCurrentTab(false);
+  };
+
   const getBill = useCallback(
     () => dispatch(getProjectBill(projectID, { series: true })),
     [dispatch, projectID]
@@ -60,14 +71,14 @@ const ProjectBillingPage = (props) => {
   // create a function that takes in a array and returns a new array of objects with the data 2 format
   const getData2Format = (data) => {
     const newData = [];
-    if (Array.isArray(data)){
-    data.forEach((element) => {
-      newData.push({
-        date: moment(element.start).utc().format('YYYY-MM-DD'),
-        amount: element.totalCost,
+    if (Array.isArray(data)) {
+      data.forEach((element) => {
+        newData.push({
+          date: moment(element.start).utc().format("YYYY-MM-DD"),
+          amount: element.totalCost,
+        });
       });
-    });
-   }
+    }
     // let newData2 = newData.slice(4)
     return newData;
   };
@@ -75,17 +86,17 @@ const ProjectBillingPage = (props) => {
   // create a function that takes in a array and sums all the object key values to create one object
   const summationObject = (data) => {
     const newData = {};
-    if (Array.isArray(data)){
-    data?.forEach((element) => {
-      Object.keys(element).forEach((key) => {
-        if (newData[key]) {
-          newData[key] += element[key];
-        } else {
-          newData[key] = element[key];
-        }
+    if (Array.isArray(data)) {
+      data?.forEach((element) => {
+        Object.keys(element).forEach((key) => {
+          if (newData[key]) {
+            newData[key] += element[key];
+          } else {
+            newData[key] = element[key];
+          }
+        });
       });
-    });
-  }
+    }
     return newData;
   };
 
@@ -95,20 +106,41 @@ const ProjectBillingPage = (props) => {
 
   const billInfo = useSelector((state) => state.getProjectBillReducer);
   const { projectBill } = billInfo;
-  
+
   useEffect(() => {
     setMonths(getData2Format(projectBill?.data?.cost_data));
   }, [projectBill.data]);
 
   let newObject = summationObject(projectBill?.data?.cost_data);
   const data1 = [
-    { name: "CPU / $1 per 1K seconds", value: (Object.keys(newObject).length === 0) ? "n/a" : ((newObject.cpuCost + 1) * 10), color: "#0088FE" },
-    { name: "RAM / $4 per GB", value: (Object.keys(newObject).length === 0) ?"n/a" : ((newObject.ramCost + 1) * 10), color: "#00C49F" },
-    { name: "Network / $1 per request", value: (Object.keys(newObject).length === 0) ? "n/a" :((newObject.networkCost + 1)* 10), color: "#FFBB28" },
-    { name: "Storage/ $1 per GB",  value: "n/a", color: "#FF8042" },
+    {
+      name: "CPU / $1 per 1K seconds",
+      value:
+        Object.keys(newObject).length === 0
+          ? "n/a"
+          : (newObject.cpuCost + 1) * 10,
+      color: "#0088FE",
+    },
+    {
+      name: "RAM / $4 per GB",
+      value:
+        Object.keys(newObject).length === 0
+          ? "n/a"
+          : (newObject.ramCost + 1) * 10,
+      color: "#00C49F",
+    },
+    {
+      name: "Network / $1 per request",
+      value:
+        Object.keys(newObject).length === 0
+          ? "n/a"
+          : (newObject.networkCost + 1) * 10,
+      color: "#FFBB28",
+    },
+    { name: "Storage/ $1 per GB", value: "n/a", color: "#FF8042" },
     { name: "Database/ $1 per GB", value: "n/a", color: "#99D2E9" },
   ];
-  
+
   const getProjectName = (id) => {
     return projects.find((project) => project.id === id).name;
   };
@@ -218,7 +250,11 @@ const ProjectBillingPage = (props) => {
                     ))}
                     <div className={styles.Total}>
                       <div className={styles.TotalTxt}>Total</div>
-                      <div className={styles.ResourcePrice}>{(Object.keys(newObject).length === 0) ? "n/a" : `${(newObject.totalCost + 1)* 10}` }</div>
+                      <div className={styles.ResourcePrice}>
+                        {Object.keys(newObject).length === 0
+                          ? "n/a"
+                          : `${(newObject.totalCost + 1) * 10}`}
+                      </div>
                     </div>
                   </div>
                   <div className={styles.paymentButton}>
@@ -240,8 +276,10 @@ const ProjectBillingPage = (props) => {
                     below
                   </div>
                   <div className={styles.Subtext2}>
-                    Current Month-to-Date balance is {(Object.keys(newObject).length !== 0) ? "Not computed":
-                    `${((newObject.totalCost + 1)* 10)}` }
+                    Current Month-to-Date balance is{" "}
+                    {Object.keys(newObject).length !== 0
+                      ? "Not computed"
+                      : `${(newObject.totalCost + 1) * 10}`}
                   </div>
                   <div className={styles.MetricContainer}>
                     <MetricsCard
@@ -264,54 +302,100 @@ const ProjectBillingPage = (props) => {
             <div className={styles.TransactionHistoryWrapper}>
               <div className={styles.TransactionHistoryContainer}>
                 <div className={styles.TransactionHistoryHeading}>
-                  Transaction History
+                  <span
+                    className={currentTab ? styles.CurrentTab : styles.Tab}
+                    onClick={() => viewTransactions()}
+                  >
+                    Transactions
+                  </span>
+                  <span
+                    className={nextTab ? styles.CurrentTab : styles.Tab}
+                    onClick={() => viewInvoices()}
+                  >
+                    Invoices
+                  </span>
                 </div>
-                <div className={styles.TransactionHistoryBody}>
-                  <div className={styles.TransactionHistoryTable}>
-                    <div className={styles.TransactionHistoryHead}>
-                      <div className={styles.TransactionHistoryCell}>
-                        Transaction Id
+
+                {currentTab && (
+                  <div className={styles.TransactionHistoryBody}>
+                    <div className={styles.TransactionHistoryTable}>
+                      <div className={styles.TransactionHistoryHead}>
+                        <div className={styles.TransactionHistoryCell}>
+                          Transaction Id
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          Status
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          Amount
+                        </div>
+                        <div className={styles.TransactionHistoryCell}>
+                          Details
+                        </div>
                       </div>
-                      <div className={styles.TransactionHistoryCell}>
-                        Status
-                      </div>
-                      <div className={styles.TransactionHistoryCell}>
-                        Amount
-                      </div>
-                      <div className={styles.TransactionHistoryCell}>
-                        Details
-                      </div>
+                      {transactions?.map((entry, index) => (
+                        <div
+                          className={styles.TransactionHistoryRow}
+                          key={index}
+                        >
+                          <div className={styles.TransactionHistoryCell}>
+                            {entry.transaction_id}
+                          </div>
+                          <div className={styles.TransactionHistoryCell}>
+                            <span className={styles.PaymentStatus}>
+                              {entry.status}
+                            </span>
+                          </div>
+                          <div className={styles.TransactionHistoryCell}>
+                            {entry.amount.toLocaleString("en-US")}
+                          </div>
+                          <div className={styles.TransactionHistoryCell}>
+                            <button
+                              onClick={() =>
+                                openReceiptModal(
+                                  transactions,
+                                  entry.transaction_id
+                                )
+                              }
+                              className={styles.PaymentDetailsButton}
+                            >
+                              View
+                            </button>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                    {transactions?.map((entry, index) => (
-                      <div className={styles.TransactionHistoryRow} key={index}>
-                        <div className={styles.TransactionHistoryCell}>
-                          {entry.transaction_id}
+                  </div>
+                )}
+
+                {nextTab && (
+                  <div className={styles.InvoiceHistoryBody}>
+                    <div className={styles.InvoiceHistoryTable}>
+                      <div className={styles.InvoiceHistoryHead}>
+                        <div className={styles.InvoiceHistoryCell}>Date</div>
+                        <div className={styles.InvoiceHistoryCell}>
+                          Invoice ID
                         </div>
-                        <div className={styles.TransactionHistoryCell}>
-                          <span className={styles.PaymentStatus}>
-                            {entry.status}
-                          </span>
+                        <div className={styles.InvoiceHistoryCell}>Amount</div>
+                        <div className={styles.InvoiceHistoryCell}>Details</div>
+                      </div>
+                      <div className={styles.InvoiceHistoryRow}>
+                        <div className={styles.InvoiceHistoryCell}>
+                          31-01-2022
                         </div>
-                        <div className={styles.TransactionHistoryCell}>
-                          {entry.amount.toLocaleString("en-US")}
+                        <div className={styles.InvoiceHistoryCell}>
+                          87546947
                         </div>
-                        <div className={styles.TransactionHistoryCell}>
-                          <button
-                            onClick={() =>
-                              openReceiptModal(
-                                transactions,
-                                entry.transaction_id
-                              )
-                            }
-                            className={styles.PaymentDetailsButton}
-                          >
-                            View
+                        <div className={styles.InvoiceHistoryCell}>200,000</div>
+                        <div className={styles.InvoiceHistoryCell}>
+                          <button className={styles.InvoiceDownloadButton}>
+                            Download
                           </button>
                         </div>
                       </div>
-                    ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
 
