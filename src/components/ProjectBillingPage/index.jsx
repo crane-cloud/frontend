@@ -15,8 +15,10 @@ import styles from "./ProjectBillingPage.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import getProjectBill from "../../redux/actions/getProjectBill";
 
-import {getTransactions, clearTransactions} from "../../redux/actions/getTransactions";
-
+import {
+  getTransactions,
+  clearTransactions,
+} from "../../redux/actions/getTransactions";
 
 const data2 = [
   { date: "2021-08", amount: 1398 },
@@ -51,7 +53,7 @@ const ProjectBillingPage = (props) => {
   useEffect(() => {
     clearAllTransactions();
     getAllTransactions();
-  }, [clearAllTransactions,getAllTransactions]);
+  }, [clearAllTransactions, getAllTransactions]);
 
   const { projects } = useSelector((state) => state.userProjectsReducer);
   const { data } = useSelector((state) => state.user);
@@ -266,7 +268,12 @@ const ProjectBillingPage = (props) => {
                   </div>
                   <div className={styles.paymentButton}>
                     <FlutterwaveHook
-                      amount={(transactionDetails.amount)?transactionDetails.amount.toLocaleString("en-US"):0}
+                      amount={
+                        transactionDetails.amount
+                          ? transactionDetails.amount.toLocaleString("en-US") *
+                            3600
+                          : 0
+                      }
                       name={data.name}
                       email={data.email}
                     />
