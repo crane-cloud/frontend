@@ -2,6 +2,7 @@ import {
   GETTING_TRANSACTIONS,
   TRANSACTIONS_FAIL,
   TRANSACTIONS_SUCCESS,
+  CLEAR_TRANSACTIONS,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -27,6 +28,11 @@ const getTransactionsReducer = (state = initialState, action) => {
         ...state,
         isRetrieving: true,
       };
+    case CLEAR_TRANSACTIONS:
+        return {
+          ...state,
+          transactions: [],
+    };
 
     case TRANSACTIONS_FAIL:
       return {

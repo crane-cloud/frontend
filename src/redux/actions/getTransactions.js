@@ -3,6 +3,7 @@ import {
   GETTING_TRANSACTIONS,
   TRANSACTIONS_FAIL,
   TRANSACTIONS_SUCCESS,
+  CLEAR_TRANSACTIONS,
 } from "./actionTypes";
 
 const startFetchingDatabases = () => ({
@@ -22,7 +23,11 @@ const getTransactionsFailed = (error) => ({
   },
 });
 
-const getTransactions = (projectID) => (dispatch) => {
+export const clearTransactions = () => ({
+  type: CLEAR_TRANSACTIONS,
+});
+
+export const getTransactions = (projectID) => (dispatch) => {
   dispatch(startFetchingDatabases());
 
   return axios
