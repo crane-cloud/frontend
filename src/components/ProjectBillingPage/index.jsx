@@ -15,7 +15,8 @@ import styles from "./ProjectBillingPage.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import getProjectBill from "../../redux/actions/getProjectBill";
 
-import getTransactions from "../../redux/actions/getTransactions";
+import {getTransactions, clearTransactions} from "../../redux/actions/getTransactions";
+
 
 const data2 = [
   { date: "2021-08", amount: 1398 },
@@ -36,13 +37,19 @@ const ProjectBillingPage = (props) => {
     [dispatch, projectID]
   );
 
+  const clearAllTransactions = useCallback(
+    () => dispatch(clearTransactions()),
+    [dispatch]
+  );
+
   const [transactionDetails, setTransactionDetails] = useState({});
   const [viewReceipt, setViewReceipt] = useState(false);
   const [months, setMonths] = useState(data2);
 
   useEffect(() => {
+    clearAllTransactions();
     getAllTransactions();
-  }, [getAllTransactions]);
+  }, [clearAllTransactions,getAllTransactions]);
 
   const { projects } = useSelector((state) => state.userProjectsReducer);
   const { data } = useSelector((state) => state.user);
