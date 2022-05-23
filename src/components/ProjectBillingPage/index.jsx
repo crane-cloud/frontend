@@ -223,7 +223,7 @@ const ProjectBillingPage = (props) => {
                   </div>
                   <div className={styles.paymentButton}>
                     <FlutterwaveHook
-                      amount={30000}
+                      amount={(transactionDetails.amount)?transactionDetails.amount.toLocaleString("en-US"):0}
                       name={data.name}
                       email={data.email}
                     />
