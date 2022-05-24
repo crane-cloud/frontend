@@ -6,6 +6,7 @@ import InformationBar from "../InformationBar";
 import Modal from "../../components/Modal";
 import PrimaryButton from "../PrimaryButton";
 import DonutChart from "../DonutChart";
+import Spinner from "../Spinner";
 import BarGraph from "../BarGraph";
 import FlutterwaveHook from "../FlutterwaveHook";
 import MetricsCard from "../MetricsCard";
@@ -46,7 +47,9 @@ const ProjectBillingPage = (props) => {
   const [viewReceipt, setViewReceipt] = useState(false);
   const [currentTab, setCurrentTab] = useState(true);
   const [nextTab, setNextTab] = useState(false);
+  const [currentUsageTab, setCurrentUsageTab] = useState("days");
   const [months, setMonths] = useState(data2);
+  const [days, setDays] = useState([]);
 
   useEffect(() => {
     clearAllTransactions();
@@ -56,6 +59,7 @@ const ProjectBillingPage = (props) => {
   const { projects } = useSelector((state) => state.userProjectsReducer);
   const { data } = useSelector((state) => state.user);
   const { transactions } = useSelector((state) => state.getTransactionsReducer);
+
 
   const closeReceiptModal = () => {
     setViewReceipt(false);
@@ -69,9 +73,16 @@ const ProjectBillingPage = (props) => {
     setNextTab(true);
     setCurrentTab(false);
   };
+  
+  const viewUsageInDays = () => {
+    setCurrentUsageTab("days");
+  };
+  const viewUsageInMonths = () => {
+    setCurrentUsageTab("months");
+  };
 
   const getBill = useCallback(
-    () => dispatch(getProjectBill(projectID, { series: true })),
+    (startTimeStamp) => dispatch(getProjectBill(projectID, { series: true, start:startTimeStamp })),
     [dispatch, projectID]
   );
 
@@ -81,15 +92,15 @@ const ProjectBillingPage = (props) => {
     if (Array.isArray(data)) {
       data.forEach((element) => {
         newData.push({
-          date: moment(element.start).utc().format("YYYY-MM-DD"),
-          amount: element.totalCost,
+          date: currentUsageTab ==="months"?
+           moment(element.start).utc().format("YYYY-MM-DD"): moment(element.start).utc().format("DD"),
+          amount: element.totalCost*3600,
         });
       });
     }
     // let newData2 = newData.slice(4)
     return newData;
   };
-
   // create a function that takes in a array and sums all the object key values to create one object
   const summationObject = (data) => {
     const newData = {};
@@ -107,16 +118,21 @@ const ProjectBillingPage = (props) => {
     return newData;
   };
 
+
   useEffect(() => {
-    getBill();
+    // 7 days ago
+    var startTimeStamp =  new Date()
+    startTimeStamp.setDate(startTimeStamp.getDate() - 14);
+    getBill(Math.round(startTimeStamp.getTime()/1000));
   }, [getBill]);
 
   const billInfo = useSelector((state) => state.getProjectBillReducer);
   const { projectBill } = billInfo;
 
   useEffect(() => {
-    setMonths(getData2Format(projectBill?.data?.cost_data));
-  }, [projectBill.data]);
+    currentUsageTab === "months"? setMonths(getData2Format(projectBill?.data?.cost_data)):
+    setDays(getData2Format(projectBill?.data?.cost_data));
+  }, [ projectBill.data]);
 
   let newObject = summationObject(projectBill?.data?.cost_data);
   const data1 = [
@@ -125,7 +141,7 @@ const ProjectBillingPage = (props) => {
       value:
         Object.keys(newObject).length === 0
           ? "n/a"
-          : (newObject.cpuCost + 1) * 10,
+          : ((newObject.cpuCost + 1) * 10).toFixed(2),
       color: "#0088FE",
     },
     {
@@ -133,7 +149,7 @@ const ProjectBillingPage = (props) => {
       value:
         Object.keys(newObject).length === 0
           ? "n/a"
-          : (newObject.ramCost + 1) * 10,
+          : ((newObject.ramCost + 1) * 10).toFixed(2),
       color: "#00C49F",
     },
     {
@@ -141,7 +157,7 @@ const ProjectBillingPage = (props) => {
       value:
         Object.keys(newObject).length === 0
           ? "n/a"
-          : (newObject.networkCost + 1) * 10,
+          :((newObject.networkCost + 1) * 10).toFixed(2),
       color: "#FFBB28",
     },
     { name: "Storage/ $1 per GB", value: "n/a", color: "#FF8042" },
@@ -163,8 +179,10 @@ const ProjectBillingPage = (props) => {
   };
 
   const handlePeriodChange = (period, customTime = null) => {
-    let startTimeStamp,
-      endTimeStamp = new Date();
+    let startTimeStamp ;
+    let endTimeStamp = new Date();
+    if(currentUsageTab === "months" ){
+    
     if (period === "5m") {
       startTimeStamp = new Date(
         endTimeStamp.setMonth(endTimeStamp.getMonth() - 5)
@@ -194,6 +212,31 @@ const ProjectBillingPage = (props) => {
       }
       setMonths(newMonths);
     }
+    }
+  if(currentUsageTab === "days" ){
+    //lowest index is lowest day in data
+    if (period === "14d") {
+      startTimeStamp =  new Date()
+      startTimeStamp.setDate(startTimeStamp.getDate() - 14);
+      //in unix timstamp
+      getBill(Math.round(startTimeStamp.getTime()/1000))
+    }
+    if (period === "7d") {
+      startTimeStamp =  new Date()
+      startTimeStamp.setDate(startTimeStamp.getDate() - 7);
+      getBill(Math.round(startTimeStamp.getTime()/1000))
+    }
+    if (period === "3d") {
+      startTimeStamp =  new Date()
+      startTimeStamp.setDate(startTimeStamp.getDate() - 3);
+      getBill(Math.round(startTimeStamp.getTime()/1000))
+    }  
+    if (period === "all") {
+      startTimeStamp =  new Date()
+      startTimeStamp.setDate(startTimeStamp.getDate() - 14);
+      getBill(Math.round(startTimeStamp.getTime()/1000))
+    }
+  }
   };
   return (
     <div className={styles.Page}>
@@ -260,7 +303,7 @@ const ProjectBillingPage = (props) => {
                       <div className={styles.ResourcePrice}>
                         {Object.keys(newObject).length === 0
                           ? "n/a"
-                          : `${(newObject.totalCost + 1) * 10}`}
+                          : `${((newObject.totalCost + 1) * 10).toFixed(2)}`}
                       </div>
                     </div>
                   </div>
@@ -275,32 +318,44 @@ const ProjectBillingPage = (props) => {
               </div>
               <div className={styles.BarGraphContainer}>
                 <div className={styles.InsideHeading}>
-                  <div className={styles.Heading}>Spending Summary</div>
+                  <div className={styles.Heading}>Usage Summary</div>
                 </div>
                 <div className={styles.InnerContainer}>
                   <div className={styles.Subtext}>
-                    Your spending summary for the last three months appears
-                    below
+                    Your usage summary for the previous days/months. (UGX)  
                   </div>
-                  <div className={styles.Subtext2}>
-                    Current Month-to-Date balance is{" "}
-                    {Object.keys(newObject).length !== 0
-                      ? "Not computed"
-                      : `${(newObject.totalCost + 1) * 10}`}
-                  </div>
+                 
+                  <div className={styles.UsageHistoryHeading}>
+                  <span
+                    className={currentUsageTab==="days" ? styles.CurrentTab : styles.Tab}
+                    onClick={()=>{viewUsageInDays()}}
+                  >
+                    Days
+                  </span>
+                  <span
+                    className={ currentUsageTab === "months" ? styles.CurrentTab : styles.Tab}
+                    onClick={()=>{viewUsageInMonths()}}
+                  >
+                    Months
+                  </span>
+                </div>
+                
                   <div className={styles.MetricContainer}>
                     <MetricsCard
                       className={styles.MetricsCardGraph}
-                      title={<SpendingPeriod onChange={handlePeriodChange} />}
+                      title={<SpendingPeriod onChange={handlePeriodChange} period={currentUsageTab ==="days"
+                       ?"days":currentUsageTab?"months":"days"} />}
                     >
+                      
                       <BarGraph
-                        data={months}
+                        data={currentUsageTab ==="days"? days: currentUsageTab ==="months"?months:days}
                         height={180}
                         width={200}
                         barSize={30}
                         width_percentage="100%"
                         height_percentage="80%"
                       />
+                      
                     </MetricsCard>
                   </div>
                 </div>
