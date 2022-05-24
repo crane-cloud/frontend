@@ -26,7 +26,7 @@ class ClustersList extends Component {
     const { clusters, isRetrieved, isRetrieving } = this.props;
 
     return (
-      <div className="ClusterList">
+      <div>
         {isRetrieving ? (
           <div className="TableLoading">
             <div className="SpinnerWrapper">
@@ -34,7 +34,7 @@ class ClustersList extends Component {
             </div>
           </div>
         ) : (
-          <div>
+          <div className="ClusterList">
             {isRetrieved &&
               clusters !== undefined &&
               clusters.map((cluster) => (
