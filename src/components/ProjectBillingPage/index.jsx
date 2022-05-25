@@ -6,7 +6,6 @@ import InformationBar from "../InformationBar";
 import Modal from "../../components/Modal";
 import PrimaryButton from "../PrimaryButton";
 import DonutChart from "../DonutChart";
-import Spinner from "../Spinner";
 import BarGraph from "../BarGraph";
 import FlutterwaveHook from "../FlutterwaveHook";
 import MetricsCard from "../MetricsCard";
@@ -87,7 +86,8 @@ const ProjectBillingPage = (props) => {
   );
 
   // create a function that takes in a array and returns a new array of objects with the data 2 format
-  const getData2Format = (data) => {
+  const getData2Format = useCallback (
+     (data) => {
     const newData = [];
     if (Array.isArray(data)) {
       data.forEach((element) => {
@@ -97,10 +97,11 @@ const ProjectBillingPage = (props) => {
           amount: element.totalCost*3600,
         });
       });
+  
     }
     // let newData2 = newData.slice(4)
     return newData;
-  };
+  },[currentUsageTab]);
   // create a function that takes in a array and sums all the object key values to create one object
   const summationObject = (data) => {
     const newData = {};
@@ -132,16 +133,17 @@ const ProjectBillingPage = (props) => {
   useEffect(() => {
     currentUsageTab === "months"? setMonths(getData2Format(projectBill?.data?.cost_data)):
     setDays(getData2Format(projectBill?.data?.cost_data));
-  }, [ projectBill.data]);
+  }, [ projectBill.data,currentUsageTab,getData2Format]);
 
   let newObject = summationObject(projectBill?.data?.cost_data);
+  // turn values to percentages for donut chart
   const data1 = [
     {
       name: "CPU / $1 per 1K seconds",
       value:
         Object.keys(newObject).length === 0
           ? "n/a"
-          : ((newObject.cpuCost + 1) * 10).toFixed(2),
+          :newObject.totalCost===0 ? 0 : (newObject.cpuCost/newObject.totalCost * 100),
       color: "#0088FE",
     },
     {
@@ -149,7 +151,7 @@ const ProjectBillingPage = (props) => {
       value:
         Object.keys(newObject).length === 0
           ? "n/a"
-          : ((newObject.ramCost + 1) * 10).toFixed(2),
+          : newObject.totalCost===0 ? 0 : (newObject.ramCost/newObject.totalCost * 100),
       color: "#00C49F",
     },
     {
@@ -157,11 +159,11 @@ const ProjectBillingPage = (props) => {
       value:
         Object.keys(newObject).length === 0
           ? "n/a"
-          :((newObject.networkCost + 1) * 10).toFixed(2),
+          : newObject.totalCost===0 ? 0 : (newObject.networkCost/newObject.totalCost * 100),
       color: "#FFBB28",
     },
-    { name: "Storage/ $1 per GB", value: "n/a", color: "#FF8042" },
-    { name: "Database/ $1 per GB", value: "n/a", color: "#99D2E9" },
+    { name: "Storage/ $1 per GB", value: 0, color: "#FF8042" },
+    { name: "Database/ $1 per GB", value: 0, color: "#99D2E9" },
   ];
 
   const getProjectName = (id) => {
@@ -294,7 +296,8 @@ const ProjectBillingPage = (props) => {
                           {data1[index % data1.length].name}
                         </div>
                         <div className={styles.ResourcePrice}>
-                          ${data1[index % data1.length].value}
+                          {/**display in dollars, covert back form percentages to dollars*/}
+                          {((data1[index % data1.length].value)*(newObject.totalCost/100)).toFixed(2)}
                         </div>
                       </div>
                     ))}
@@ -303,7 +306,7 @@ const ProjectBillingPage = (props) => {
                       <div className={styles.ResourcePrice}>
                         {Object.keys(newObject).length === 0
                           ? "n/a"
-                          : `${((newObject.totalCost + 1) * 10).toFixed(2)}`}
+                          : `${(newObject.totalCost).toFixed(2)}`}
                       </div>
                     </div>
                   </div>
@@ -346,7 +349,7 @@ const ProjectBillingPage = (props) => {
                       title={<SpendingPeriod onChange={handlePeriodChange} period={currentUsageTab ==="days"
                        ?"days":currentUsageTab?"months":"days"} />}
                     >
-                      
+                     
                       <BarGraph
                         data={currentUsageTab ==="days"? days: currentUsageTab ==="months"?months:days}
                         height={180}
@@ -354,6 +357,7 @@ const ProjectBillingPage = (props) => {
                         barSize={30}
                         width_percentage="100%"
                         height_percentage="80%"
+                        
                       />
                       
                     </MetricsCard>
