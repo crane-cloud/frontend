@@ -54,6 +54,7 @@ const ClusterPage = ({
   const [error, setError] = useState("");
   const [description, setDescription] = useState("");
   const [begin, setBegin] = useState("");
+  const [prometheus_url, setPrometheus_url] = useState("")
 
   useEffect(() => {
     let details = { begin: "2021-03-01", end: currentDate, set_by: "month" };
@@ -117,7 +118,7 @@ const ClusterPage = ({
 
   const handleSubmit = () => {
     // input validation
-    if (!host || !name || !token || !description) {
+    if (!host || !name || !token || !description ||!prometheus_url) {
       setError("Please provide all the information");
     } else {
       const cluster = {
@@ -125,6 +126,7 @@ const ClusterPage = ({
         name,
         token,
         description,
+        prometheus_url
       };
 
       addCluster(cluster);
@@ -376,6 +378,13 @@ const ClusterPage = ({
                 name="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+              />
+              <BlackInputText
+                required
+                placeholder="Prometheus Url"
+                name="prometheus_url"
+                value={prometheus_url}
+                onChange={(e) => setPrometheus_url(e.target.value)}
               />
               <BlackInputText
                 required
