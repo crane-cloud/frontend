@@ -297,7 +297,7 @@ const ProjectBillingPage = (props) => {
                         </div>
                         <div className={styles.ResourcePrice}>
                           {/**display in dollars, covert back form percentages to dollars*/}
-                          {((data1[index % data1.length].value)*(newObject.totalCost/100)).toFixed(2)}
+                          ${((data1[index % data1.length].value)*(newObject.totalCost/100)).toFixed(2)}
                         </div>
                       </div>
                     ))}
@@ -306,7 +306,7 @@ const ProjectBillingPage = (props) => {
                       <div className={styles.ResourcePrice}>
                         {Object.keys(newObject).length === 0
                           ? "n/a"
-                          : `${(newObject.totalCost).toFixed(2)}`}
+                          : `$${(newObject.totalCost).toFixed(2)}`}
                       </div>
                     </div>
                   </div>
@@ -413,7 +413,7 @@ const ProjectBillingPage = (props) => {
                             </span>
                           </div>
                           <div className={styles.TransactionHistoryCell}>
-                            {entry.amount.toLocaleString("en-US")}
+                            UGX {entry.amount.toLocaleString("en-US")}
                           </div>
                           <div className={styles.TransactionHistoryCell}>
                             <button
