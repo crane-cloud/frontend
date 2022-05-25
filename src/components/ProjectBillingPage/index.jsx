@@ -48,7 +48,9 @@ const ProjectBillingPage = (props) => {
   const [viewReceipt, setViewReceipt] = useState(false);
   const [currentTab, setCurrentTab] = useState(true);
   const [nextTab, setNextTab] = useState(false);
+  const [currentUsageTab, setCurrentUsageTab] = useState("days");
   const [months, setMonths] = useState(data2);
+  const [days, setDays] = useState([]);
 
   useEffect(() => {
     clearAllTransactions();
@@ -58,6 +60,7 @@ const ProjectBillingPage = (props) => {
   const { projects } = useSelector((state) => state.userProjectsReducer);
   const { data } = useSelector((state) => state.user);
   const { transactions } = useSelector((state) => state.getTransactionsReducer);
+
 
   const closeReceiptModal = () => {
     setViewReceipt(false);
@@ -71,27 +74,36 @@ const ProjectBillingPage = (props) => {
     setNextTab(true);
     setCurrentTab(false);
   };
+  
+  const viewUsageInDays = () => {
+    setCurrentUsageTab("days");
+  };
+  const viewUsageInMonths = () => {
+    setCurrentUsageTab("months");
+  };
 
   const getBill = useCallback(
-    () => dispatch(getProjectBill(projectID, { series: true })),
+    (startTimeStamp) => dispatch(getProjectBill(projectID, { series: true, start:startTimeStamp })),
     [dispatch, projectID]
   );
 
   // create a function that takes in a array and returns a new array of objects with the data 2 format
-  const getData2Format = (data) => {
+  const getData2Format = useCallback (
+     (data) => {
     const newData = [];
     if (Array.isArray(data)) {
       data.forEach((element) => {
         newData.push({
-          date: moment(element.start).utc().format("YYYY-MM-DD"),
-          amount: element.totalCost,
+          date: currentUsageTab ==="months"?
+           moment(element.start).utc().format("YYYY-MM-DD"): moment(element.start).utc().format("DD"),
+          amount: element.totalCost*3600,
         });
       });
+  
     }
     // let newData2 = newData.slice(4)
     return newData;
-  };
-
+  },[currentUsageTab]);
   // create a function that takes in a array and sums all the object key values to create one object
   const summationObject = (data) => {
     const newData = {};
@@ -109,25 +121,31 @@ const ProjectBillingPage = (props) => {
     return newData;
   };
 
+
   useEffect(() => {
-    getBill();
+    // 7 days ago
+    var startTimeStamp =  new Date()
+    startTimeStamp.setDate(startTimeStamp.getDate() - 14);
+    getBill(Math.round(startTimeStamp.getTime()/1000));
   }, [getBill]);
 
   const billInfo = useSelector((state) => state.getProjectBillReducer);
   const { projectBill } = billInfo;
 
   useEffect(() => {
-    setMonths(getData2Format(projectBill?.data?.cost_data));
-  }, [projectBill.data]);
+    currentUsageTab === "months"? setMonths(getData2Format(projectBill?.data?.cost_data)):
+    setDays(getData2Format(projectBill?.data?.cost_data));
+  }, [ projectBill.data,currentUsageTab,getData2Format]);
 
   let newObject = summationObject(projectBill?.data?.cost_data);
+  // turn values to percentages for donut chart
   const data1 = [
     {
       name: "CPU / $1 per 1K seconds",
       value:
         Object.keys(newObject).length === 0
           ? "n/a"
-          : (newObject.cpuCost + 1) * 10,
+          :newObject.totalCost===0 ? 0 : (newObject.cpuCost/newObject.totalCost * 100),
       color: "#0088FE",
     },
     {
@@ -135,7 +153,7 @@ const ProjectBillingPage = (props) => {
       value:
         Object.keys(newObject).length === 0
           ? "n/a"
-          : (newObject.ramCost + 1) * 10,
+          : newObject.totalCost===0 ? 0 : (newObject.ramCost/newObject.totalCost * 100),
       color: "#00C49F",
     },
     {
@@ -143,11 +161,11 @@ const ProjectBillingPage = (props) => {
       value:
         Object.keys(newObject).length === 0
           ? "n/a"
-          : (newObject.networkCost + 1) * 10,
+          : newObject.totalCost===0 ? 0 : (newObject.networkCost/newObject.totalCost * 100),
       color: "#FFBB28",
     },
-    { name: "Storage/ $1 per GB", value: "n/a", color: "#FF8042" },
-    { name: "Database/ $1 per GB", value: "n/a", color: "#99D2E9" },
+    { name: "Storage/ $1 per GB", value: 0, color: "#FF8042" },
+    { name: "Database/ $1 per GB", value: 0, color: "#99D2E9" },
   ];
 
   const getProjectName = (id) => {
@@ -165,8 +183,10 @@ const ProjectBillingPage = (props) => {
   };
 
   const handlePeriodChange = (period, customTime = null) => {
-    let startTimeStamp,
-      endTimeStamp = new Date();
+    let startTimeStamp ;
+    let endTimeStamp = new Date();
+    if(currentUsageTab === "months" ){
+    
     if (period === "5m") {
       startTimeStamp = new Date(
         endTimeStamp.setMonth(endTimeStamp.getMonth() - 5)
@@ -196,6 +216,31 @@ const ProjectBillingPage = (props) => {
       }
       setMonths(newMonths);
     }
+    }
+  if(currentUsageTab === "days" ){
+    //lowest index is lowest day in data
+    if (period === "14d") {
+      startTimeStamp =  new Date()
+      startTimeStamp.setDate(startTimeStamp.getDate() - 14);
+      //in unix timstamp
+      getBill(Math.round(startTimeStamp.getTime()/1000))
+    }
+    if (period === "7d") {
+      startTimeStamp =  new Date()
+      startTimeStamp.setDate(startTimeStamp.getDate() - 7);
+      getBill(Math.round(startTimeStamp.getTime()/1000))
+    }
+    if (period === "3d") {
+      startTimeStamp =  new Date()
+      startTimeStamp.setDate(startTimeStamp.getDate() - 3);
+      getBill(Math.round(startTimeStamp.getTime()/1000))
+    }  
+    if (period === "all") {
+      startTimeStamp =  new Date()
+      startTimeStamp.setDate(startTimeStamp.getDate() - 14);
+      getBill(Math.round(startTimeStamp.getTime()/1000))
+    }
+  }
   };
   return (
     <div className={styles.Page}>
@@ -253,7 +298,8 @@ const ProjectBillingPage = (props) => {
                           {data1[index % data1.length].name}
                         </div>
                         <div className={styles.ResourcePrice}>
-                          ${data1[index % data1.length].value}
+                          {/**display in dollars, covert back form percentages to dollars*/}
+                          ${((data1[index % data1.length].value)*(newObject.totalCost/100)).toFixed(2)}
                         </div>
                       </div>
                     ))}
@@ -262,7 +308,7 @@ const ProjectBillingPage = (props) => {
                       <div className={styles.ResourcePrice}>
                         {Object.keys(newObject).length === 0
                           ? "n/a"
-                          : `${(newObject.totalCost + 1) * 10}`}
+                          : `$${(newObject.totalCost).toFixed(2)}`}
                       </div>
                     </div>
                   </div>
@@ -282,32 +328,45 @@ const ProjectBillingPage = (props) => {
               </div>
               <div className={styles.BarGraphContainer}>
                 <div className={styles.InsideHeading}>
-                  <div className={styles.Heading}>Spending Summary</div>
+                  <div className={styles.Heading}>Usage Summary</div>
                 </div>
                 <div className={styles.InnerContainer}>
                   <div className={styles.Subtext}>
-                    Your spending summary for the last three months appears
-                    below
+                    Your usage summary for the previous days/months. (UGX)  
                   </div>
-                  <div className={styles.Subtext2}>
-                    Current Month-to-Date balance is{" "}
-                    {Object.keys(newObject).length !== 0
-                      ? "Not computed"
-                      : `${(newObject.totalCost + 1) * 10}`}
-                  </div>
+                 
+                  <div className={styles.UsageHistoryHeading}>
+                  <span
+                    className={currentUsageTab==="days" ? styles.CurrentTab : styles.Tab}
+                    onClick={()=>{viewUsageInDays()}}
+                  >
+                    Days
+                  </span>
+                  <span
+                    className={ currentUsageTab === "months" ? styles.CurrentTab : styles.Tab}
+                    onClick={()=>{viewUsageInMonths()}}
+                  >
+                    Months
+                  </span>
+                </div>
+                
                   <div className={styles.MetricContainer}>
                     <MetricsCard
                       className={styles.MetricsCardGraph}
-                      title={<SpendingPeriod onChange={handlePeriodChange} />}
+                      title={<SpendingPeriod onChange={handlePeriodChange} period={currentUsageTab ==="days"
+                       ?"days":currentUsageTab?"months":"days"} />}
                     >
+                     
                       <BarGraph
-                        data={months}
+                        data={currentUsageTab ==="days"? days: currentUsageTab ==="months"?months:days}
                         height={180}
                         width={200}
                         barSize={30}
                         width_percentage="100%"
                         height_percentage="80%"
+                        
                       />
+                      
                     </MetricsCard>
                   </div>
                 </div>
@@ -361,7 +420,7 @@ const ProjectBillingPage = (props) => {
                             </span>
                           </div>
                           <div className={styles.TransactionHistoryCell}>
-                            {entry.amount.toLocaleString("en-US")}
+                            UGX {entry.amount.toLocaleString("en-US")}
                           </div>
                           <div className={styles.TransactionHistoryCell}>
                             <button
