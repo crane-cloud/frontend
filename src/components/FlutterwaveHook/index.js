@@ -67,6 +67,7 @@ export default function FlutterWaveHook(props) {
     <div>
       <PrimaryButton
         label={"Pay Bill"}
+        disable = {((amount === null) || (amount === undefined) || (amount < 4000))?true:false}
         onClick={() => {
           handleFlutterPayment({
             callback: (response) => {
