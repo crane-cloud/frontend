@@ -67,7 +67,6 @@ export default function FlutterWaveHook(props) {
     <div>
       <PrimaryButton
         label={"Pay Bill"}
-        disable = {true}
         onClick={() => {
           handleFlutterPayment({
             callback: (response) => {
