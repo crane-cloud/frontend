@@ -1,0 +1,12 @@
+.context-menu {
+  color: #000;
+  background-color: #f9f9f9;
+  position: absolute;
+  box-shadow: 0 4px 4px 0 rgba(117, 117, 117, 0.2);
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
