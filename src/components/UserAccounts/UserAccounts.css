@@ -10,3 +10,13 @@
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
+
+.BetaUser{
+  display: flex;
+  gap: 1rem;
+}
+
+.BetaUserText{
+  text-align: center;
+  font-size: 18px;
+}

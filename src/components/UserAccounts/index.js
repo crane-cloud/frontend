@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import getUsersList from "../../redux/actions/users";
 import "./UserAccounts.css";
 import Header from "../Header";
@@ -10,6 +11,8 @@ import SideNav from "../SideNav";
 import Modal from "../Modal";
 import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
 import PrimaryButton from "../PrimaryButton";
+import addBetaUser from "../../redux/actions/addBetaUser";
+import Feedback from "../Feedback";
 
 class UserAccounts extends Component {
   constructor() {
@@ -17,6 +20,7 @@ class UserAccounts extends Component {
     this.state = {
       actionsMenu: false,
       betaUserModal: false,
+      selectedUser: "",
     };
     // this.handleChange = this.handleChange.bind(this);
     // this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,14 +31,23 @@ class UserAccounts extends Component {
     this.handleBetaUserSubmit = this.handleBetaUserSubmit.bind(this);
     this.closeBetaUserModal = this.closeBetaUserModal.bind(this);
     this.showBetaUserModal = this.showBetaUserModal.bind(this);
+    this.renderRedirect = this.renderRedirect.bind(this);
   }
   componentDidMount() {
     const { getUsersList } = this.props;
     getUsersList();
   }
+
+  componentDidUpdate(prevProps) {
+    const { getUsersList, isAdded } = this.props;
+    if (isAdded !== prevProps.isAdded) {
+      getUsersList();
+      this.closeBetaUserModal();
+    }
+  }
   handleClick = (e) => {
     if (this.state.actionsMenu) {
-      this.closeModal();
+      // this.closeModal();
       return;
     }
     this.setState({ actionsMenu: true });
@@ -65,20 +78,35 @@ class UserAccounts extends Component {
     });
   }
 
-  handleBetaUserSubmit(){
-    console.log("Got it");
+  handleBetaUserSubmit() {
+    const { selectedUser } = this.state;
+    const { addBetaUser } = this.props;
+    const betaUser = {
+      is_beta_user: true,
+      user_id: selectedUser,
+    };
+    addBetaUser(betaUser);
   }
 
+  renderRedirect = () => {
+    const { isAdded } = this.props;
+    if (isAdded) {
+      return <Redirect to={`/accounts`} noThrow />;
+    }
+  };
+
   render() {
-    const { users, isFetched, isFetching } = this.props;
+    const { users, isFetched, isFetching, isAdding, isFailed, error, isAdded } =
+      this.props;
     const clusterName = localStorage.getItem("clusterName");
     const {
       match: { params },
     } = this.props;
     const { actionsMenu, selectedUser, betaUserModal } = this.state;
-
+    console.log(selectedUser);
     return (
       <div className="MainPage">
+        {isAdded ? this.renderRedirect() : null}
         <div className="TopBarSection">
           <Header />
         </div>
@@ -180,14 +208,17 @@ class UserAccounts extends Component {
             >
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">
+                  <h5
+                    class="modal-title BetaUserText"
+                    id="exampleModalLongTitle"
+                  >
                     Add user as Beta user?
                   </h5>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer BetaUser">
                   <PrimaryButton
                     type="button"
-                    class="btn btn-info"
+                    className="CancelBtn"
                     label="Cancel"
                     onClick={this.closeBetaUserModal}
                   >
@@ -195,17 +226,16 @@ class UserAccounts extends Component {
                   </PrimaryButton>
                   <PrimaryButton
                     type="button"
-                    className="btn btn-danger"
-                    label={1 > 2 ? <Spinner /> : "Confirm"}
+                    label={isAdding ? <Spinner /> : "Confirm"}
                     onClick={this.handleBetaUserSubmit}
                   />
                 </div>
-                {/* {addingCountryErr && (
+                {isFailed && (
                   <Feedback
-                    message={addingCountryErr !== "" ? addingCountryMsg : null}
-                    type={countryIsDeleted ? "success" : "error"}
+                    message={error !== "" ? error : null}
+                    type={"error"}
                   />
-                )} */}
+                )}
               </div>
             </Modal>
           </div>
@@ -232,11 +262,13 @@ UserAccounts.defaultProps = {
 
 const mapStateToProps = (state) => {
   const { isFetching, users, isFetched } = state.usersListReducer;
-  return { isFetching, users, isFetched };
+  const { isAdded, isAdding, isFailed, error } = state.addBetaUserReducer;
+  return { isFetching, users, isFetched, isAdded, isAdding, isFailed, error };
 };
 
 const mapDispatchToProps = {
   getUsersList,
+  addBetaUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserAccounts);
