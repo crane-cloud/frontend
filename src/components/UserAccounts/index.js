@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import getUsersList from "../../redux/actions/users";
 import "./UserAccounts.css";
 import Header from "../Header";
@@ -12,6 +11,7 @@ import Modal from "../Modal";
 import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
 import PrimaryButton from "../PrimaryButton";
 import addBetaUser from "../../redux/actions/addBetaUser";
+import deleteUser from "../../redux/actions/deleteUser";
 import Feedback from "../Feedback";
 
 class UserAccounts extends Component {
@@ -21,17 +21,16 @@ class UserAccounts extends Component {
       actionsMenu: false,
       betaUserModal: false,
       selectedUser: "",
+      deleteModal: false,
     };
-    // this.handleChange = this.handleChange.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
-    // this.showModal = this.showModal.bind(this);
-    // this.closeModal = this.closeModal.bind(this);
+    this.handleDeleteUser = this.handleDeleteUser.bind(this);
     this.showMenu = this.showMenu.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleBetaUserSubmit = this.handleBetaUserSubmit.bind(this);
     this.closeBetaUserModal = this.closeBetaUserModal.bind(this);
     this.showBetaUserModal = this.showBetaUserModal.bind(this);
-    this.renderRedirect = this.renderRedirect.bind(this);
+    this.showDeleteModal = this.showDeleteModal.bind(this);
+    this.closeDeleteModal = this.closeDeleteModal.bind(this);
   }
   componentDidMount() {
     const { getUsersList } = this.props;
@@ -39,10 +38,11 @@ class UserAccounts extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { getUsersList, isAdded } = this.props;
-    if (isAdded !== prevProps.isAdded) {
+    const { getUsersList, isAdded, isDeleted } = this.props;
+    if ((isAdded !== prevProps.isAdded) || (isDeleted !== prevProps.isDeleted)) {
       getUsersList();
       this.closeBetaUserModal();
+      this.closeDeleteModal();
     }
   }
   handleClick = (e) => {
@@ -78,6 +78,18 @@ class UserAccounts extends Component {
     });
   }
 
+  showDeleteModal() {
+    this.setState({
+      deleteModal: true,
+    });
+  }
+
+  closeDeleteModal() {
+    this.setState({
+      deleteModal: false,
+    });
+  }
+
   handleBetaUserSubmit() {
     const { selectedUser } = this.state;
     const { addBetaUser } = this.props;
@@ -88,25 +100,30 @@ class UserAccounts extends Component {
     addBetaUser(betaUser);
   }
 
-  renderRedirect = () => {
-    const { isAdded } = this.props;
-    if (isAdded) {
-      return <Redirect to={`/accounts`} noThrow />;
-    }
-  };
+  handleDeleteUser() {
+    const { selectedUser } = this.state;
+    const { deleteUser } = this.props;
+    deleteUser(selectedUser);
+  }
 
   render() {
-    const { users, isFetched, isFetching, isAdding, isFailed, error, isAdded } =
-      this.props;
+    const {
+      users,
+      isFetched,
+      isFetching,
+      isAdding,
+      isFailed,
+      error,
+      isDeleting,
+    } = this.props;
     const clusterName = localStorage.getItem("clusterName");
     const {
       match: { params },
     } = this.props;
-    const { actionsMenu, selectedUser, betaUserModal } = this.state;
-    console.log(selectedUser);
+    const { actionsMenu, selectedUser, betaUserModal, deleteModal } =
+      this.state;
     return (
       <div className="MainPage">
-        {isAdded ? this.renderRedirect() : null}
         <div className="TopBarSection">
           <Header />
         </div>
@@ -171,13 +188,13 @@ class UserAccounts extends Component {
                                     >
                                       Add Beta User
                                     </div>
-                                    {/* <div
+                                    <div
                                       className="DropDownLink"
                                       role="presentation"
-                                      onClick={this.showDeletionModal}
+                                      onClick={this.showDeleteModal}
                                     >
-                                      Delete
-                                    </div> */}
+                                      Delete User
+                                    </div>
                                   </div>
                                 </div>
                               )}
@@ -238,6 +255,39 @@ class UserAccounts extends Component {
                 )}
               </div>
             </Modal>
+            <Modal showModal={deleteModal} onClickAway={this.closeDeleteModal}>
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5
+                    class="modal-title BetaUserText"
+                    id="exampleModalLongTitle"
+                  >
+                    Delete User?
+                  </h5>
+                </div>
+                <div class="modal-footer BetaUser">
+                  <PrimaryButton
+                    type="button"
+                    className="CancelBtn"
+                    label="Cancel"
+                    onClick={this.closeDeleteModal}
+                  >
+                    Cancel
+                  </PrimaryButton>
+                  <PrimaryButton
+                    type="button"
+                    label={isDeleting ? <Spinner /> : "Delete"}
+                    onClick={this.handleDeleteUser}
+                  />
+                </div>
+                {isFailed && (
+                  <Feedback
+                    message={error !== "" ? error : null}
+                    type={"error"}
+                  />
+                )}
+              </div>
+            </Modal>
           </div>
         </div>
       </div>
@@ -263,12 +313,25 @@ UserAccounts.defaultProps = {
 const mapStateToProps = (state) => {
   const { isFetching, users, isFetched } = state.usersListReducer;
   const { isAdded, isAdding, isFailed, error } = state.addBetaUserReducer;
-  return { isFetching, users, isFetched, isAdded, isAdding, isFailed, error };
+  const { isDeleting, isDeleted, deleteFailed } = state.deleteUserReducer;
+  return {
+    isFetching,
+    users,
+    isFetched,
+    isAdded,
+    isAdding,
+    isFailed,
+    error,
+    isDeleting,
+    isDeleted,
+    deleteFailed,
+  };
 };
 
 const mapDispatchToProps = {
   getUsersList,
   addBetaUser,
+  deleteUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserAccounts);
