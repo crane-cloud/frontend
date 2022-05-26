@@ -47,6 +47,7 @@ import adminCreateDBReducer from "./adminCreateDB";
 import getProjectBillReducer from "./getProjectBill"
 import savePaymentReducer from "./savePayment";
 import getTransactionsReducer from "./getTransactions";
+import addBetaUserReducer from "./addBetaUser";
 
 export default combineReducers({
   clusterResourcesReducer,
@@ -97,4 +98,5 @@ export default combineReducers({
   getProjectBillReducer,
   savePaymentReducer,
   getTransactionsReducer,
+  addBetaUserReducer,
 });
