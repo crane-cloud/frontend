@@ -51,6 +51,7 @@ import ProjectDashboardPage from "./components/ProjectDashboardPage";
 import AdminDBList from "./components/AdminDB";
 
 import ProjectBillingPage from "./components/ProjectBillingPage";
+import ClusterSettingsPage from "./components/ClusterSettingsPage";
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
@@ -253,6 +254,12 @@ const Routes = () => (
         exact
         path="/databases"
         component={AdminDBList}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        exact
+        path="/clusters/:clusterID/clusterSettings"
+        component={ClusterSettingsPage}
       />
       <Route path="*" component={PageNotFound} />
     </Switch>
