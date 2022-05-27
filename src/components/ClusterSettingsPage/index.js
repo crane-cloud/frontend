@@ -16,7 +16,7 @@ import SideNav from "../../components/SideNav";
 import Feedback from "../../components/Feedback";
 import BlackInputText from "../../components/BlackInputText";
 import styles from "./ClusterSettingsPage.module.css";
-import SettingsButton from "../../components/SettingsButton";
+
 
 class ClusterSettingsPage extends React.Component {
   constructor(props) {
@@ -179,7 +179,7 @@ class ClusterSettingsPage extends React.Component {
                       <div>Modify the cluster Information</div>
                     </div>
                     <div className={styles.SectionButtons}>
-                      <SettingsButton
+                      <PrimaryButton
                         label="Update"
                         onClick={this.showUpdateAlert}
                       />
