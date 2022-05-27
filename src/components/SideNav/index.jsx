@@ -140,6 +140,20 @@ const SideNav = ({ clusterId, clusterName }) => {
           Projects
         </NavLink>
       </div>
+      
+       <div className="ListItem">
+         Others
+       </div>
+       <div>
+       <NavLink
+           to={{
+              pathname: `${BASE_URL}/clusterSettings`,
+           }}
+           className="SubListItem"
+           >
+          Cluster settings
+          </NavLink>
+       </div>
 
       <div className="SideFooter StickBottom">
         Copyright {new Date().getFullYear()} Crane Cloud.
