@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test ClustersList component matching component snapshot for ClustersList 1`] = `ShallowWrapper {}`;

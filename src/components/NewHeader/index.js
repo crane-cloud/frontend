@@ -6,12 +6,11 @@ import NewLogo from "../NewLogo";
 import removeUser from "../../redux/actions/removeUser";
 import "./NewHeader.css";
 import { DOCS_URL, BLOG_URL } from "../../config";
-import useMedia from '../../hooks/mediaquery';
+import useMedia from "../../hooks/mediaquery";
 import { ReactComponent as DownArrow } from "../../assets/images/down-arrow-black.svg";
 import { ReactComponent as UpArrow } from "../../assets/images/up-arrow.svg";
 
 const NewHeader = (props) => {
-
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -29,18 +28,17 @@ const NewHeader = (props) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setHidden(false);
     }
-    if(!isDesktop && open===false){
-      setOpen(false)
+    if (!isDesktop && open === false) {
+      setOpen(false);
     }
-
   };
-   const handleArrowClick =()=>{
-     if (open) {
+  const handleArrowClick = () => {
+    if (open) {
       setOpen(false);
     } else {
       setOpen(true);
     }
-   }
+  };
 
   // componentWillMount & componentWillUnmount
   useEffect(() => {
@@ -55,166 +53,161 @@ const NewHeader = (props) => {
   return (
     <header className="NewHeader">
       <NewLogo />
-      {isDesktop ?<>
-      {(!user.accessToken || user.accessToken === "") && (
-        <div className="HeaderLinksWrap">
-          {match.path !== "/admin-login" && (
-            <div className="HeaderLink bold">
-              <a
-                href={`${DOCS_URL}`}
-                className="HeaderLinkDocs"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Docs
-              </a>
-              <a
-                href={`${BLOG_URL}`}
-                className="HeaderLinkDocs"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Blog
-              </a>
-              <Link to="/pricing" className="HeaderLinkDocs">
-                Pricing
-              </Link>
-              <Link to="/login" className="HeaderLinkDocs">
-                Login
-              </Link>
+      {isDesktop ? (
+        <>
+          {(!user.accessToken || user.accessToken === "") && (
+            <div className="HeaderLinksWrap">
+              {match.path !== "/admin-login" && (
+                <div className="HeaderLink bold">
+                  <a
+                    href={`${DOCS_URL}`}
+                    className="HeaderLinkDocs"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Docs
+                  </a>
+                  <a
+                    href={`${BLOG_URL}`}
+                    className="HeaderLinkDocs"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Blog
+                  </a>
+                  {/* <Link to="/pricing" className="HeaderLinkDocs">
+                    Pricing
+                  </Link> */}
+                  <Link to="/login" className="HeaderLinkDocs">
+                    Login
+                  </Link>
+                </div>
+              )}
             </div>
           )}
-        </div>
-      )}
-      {user.accessToken && (
-        <div
-          ref={dropdownRef}
-          className="HeaderLink"
-          onClick={toggleHidden}
-          role="presentation"
-        >
-          {match.path === "/" || match.path === "/team" ? (
-            <>
-              <a
-                href={`${DOCS_URL}`}
-                className="HeaderLinkDocs"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Docs
-              </a>
-              <a
-                href={`${BLOG_URL}`}
-                className="HeaderLinkDocs"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Blog
-              </a>
-              <Link to="/pricing" className="HeaderLinkDocs">
-                Pricing
-              </Link>
-              <Link
-                to={`/projects`}
-                className="HeaderLinkDocs"
-              >
-                Dashboard
-              </Link>
-            </>
-          ) : null}
-        </div>
-      )}
-    </>:<><div className="Headerarrow"   >
-    {!open &&
-    <div
-    onClick={handleArrowClick}
-    >
-    <DownArrow /> 
-    </div>
-    }
-    {open &&
-    <div
-    onClick={handleArrowClick}
-    >
-    <UpArrow /> 
-    </div>
-    }
-
-    </div>
-    {open && <div className="HeaderDropdown">
-    {(!user.accessToken || user.accessToken === "") && (
-        <div className="HeaderDropItems">
-          {match.path !== "/admin-login" && (
-            <div className="HeaderDropLinks bold">
-              <a
-                href={`${DOCS_URL}`}
-                className="HeaderDropLinkDocs"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Docs
-              </a>
-              <a
-                href={`${BLOG_URL}`}
-                className="HeaderDropLinkDocs"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Blog
-              </a>
-              <Link to="/pricing" className="HeaderDropLinkDocs">
-                Pricing
-              </Link>
-              <Link to="/login" className="HeaderDropLinkDocs">
-                Login
-              </Link>
+          {user.accessToken && (
+            <div
+              ref={dropdownRef}
+              className="HeaderLink"
+              onClick={toggleHidden}
+              role="presentation"
+            >
+              {match.path === "/" || match.path === "/team" ? (
+                <>
+                  <a
+                    href={`${DOCS_URL}`}
+                    className="HeaderLinkDocs"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Docs
+                  </a>
+                  <a
+                    href={`${BLOG_URL}`}
+                    className="HeaderLinkDocs"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Blog
+                  </a>
+                  {/* <Link to="/pricing" className="HeaderLinkDocs">
+                    Pricing
+                  </Link> */}
+                  <Link to={`/projects`} className="HeaderLinkDocs">
+                    Dashboard
+                  </Link>
+                </>
+              ) : null}
             </div>
           )}
-        </div>
+        </>
+      ) : (
+        <>
+          <div className="Headerarrow">
+            {!open && (
+              <div className="DownArrowWrapper" onClick={handleArrowClick}>
+                <DownArrow />
+              </div>
+            )}
+            {open && (
+              <div className="UpArrowWrapper" onClick={handleArrowClick}>
+                <UpArrow />
+              </div>
+            )}
+          </div>
+          {open && (
+            <div className="HeaderDropdown">
+              {(!user.accessToken || user.accessToken === "") && (
+                <div className="HeaderDropItems">
+                  {match.path !== "/admin-login" && (
+                    <div className="HeaderDropLinks bold">
+                      <a
+                        href={`${DOCS_URL}`}
+                        className="HeaderDropLinkDocs"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Docs
+                      </a>
+                      <a
+                        href={`${BLOG_URL}`}
+                        className="HeaderDropLinkDocs"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Blog
+                      </a>
+                      {/* <Link to="/pricing" className="HeaderDropLinkDocs">
+                        Pricing
+                      </Link> */}
+                      <Link to="/login" className="HeaderDropLinkDocs">
+                        Login
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              )}
+              {user.accessToken && (
+                <div
+                  ref={dropdownRef}
+                  className="HeaderDropdown"
+                  onClick={toggleHidden}
+                  role="presentation"
+                >
+                  <div className="HeaderDropLinks">
+                    {match.path === "/" || match.path === "/team" ? (
+                      <>
+                        <a
+                          href={`${DOCS_URL}`}
+                          className="HeaderDropLinkDocs"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          Docs
+                        </a>
+                        <a
+                          href={`${BLOG_URL}`}
+                          className="HeaderDropLinkDocs"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          Blog
+                        </a>
+                        {/* <Link to="/pricing" className="HeaderDropLinkDocs">
+                          Pricing
+                        </Link> */}
+                        <Link to={`/projects`} className="HeaderDropLinkDocs">
+                          Dashboard
+                        </Link>
+                      </>
+                    ) : null}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </>
       )}
-      {user.accessToken && (
-        <div
-          ref={dropdownRef}
-          className="HeaderDropdown"
-          onClick={toggleHidden}
-          role="presentation"
-        ><div className="HeaderDropLinks">
-          {match.path === "/" || match.path === "/team" ? (
-            <>
-              <a
-                href={`${DOCS_URL}`}
-                className="HeaderDropLinkDocs"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Docs
-              </a>
-              <a
-                href={`${BLOG_URL}`}
-                className="HeaderDropLinkDocs"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Blog
-              </a>
-              <Link to="/pricing" className="HeaderDropLinkDocs">
-                Pricing
-              </Link>
-              <Link
-                to={`/projects`}
-                className="HeaderDropLinkDocs"
-              >
-                Dashboard
-              </Link>
-            </>
-          ) : null}</div>
-        </div>
-      )}
-
-    </div>}
-    
-    </> 
-    }
     </header>
   );
 };
@@ -237,7 +230,7 @@ NewHeader.defaultProps = {
   user: {},
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { user } = state;
   return { user };
 };

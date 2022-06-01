@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test the logs frame component checks if the logs frame component matches the snapshot 1`] = `ShallowWrapper {}`;

@@ -26,7 +26,7 @@ class ClustersList extends Component {
     const { clusters, isRetrieved, isRetrieving } = this.props;
 
     return (
-      <div className="ClusterList">
+      <div>
         {isRetrieving ? (
           <div className="TableLoading">
             <div className="SpinnerWrapper">
@@ -34,7 +34,7 @@ class ClustersList extends Component {
             </div>
           </div>
         ) : (
-          <div>
+          <div className="ClusterList">
             {isRetrieved &&
               clusters !== undefined &&
               clusters.map((cluster) => (
@@ -72,8 +72,8 @@ class ClustersList extends Component {
 // inititate props
 ClustersList.propTypes = {
   clusters: PropTypes.arrayOf(PropTypes.object),
-  getClustersList: PropTypes.func.isRequired,
-  newClusterAdded: PropTypes.bool.isRequired,
+  getClustersList: PropTypes.func,
+  newClusterAdded: PropTypes.bool,
   isRetrieved: PropTypes.bool,
   isRetrieving: PropTypes.bool,
 };
@@ -85,7 +85,7 @@ ClustersList.defaultProps = {
   isRetrieving: true,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isRetrieving, clusters: { clusters}, isRetrieved } = state.clustersReducer;
   return { isRetrieving, clusters, isRetrieved };
 };

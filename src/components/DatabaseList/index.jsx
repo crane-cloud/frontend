@@ -11,6 +11,7 @@ import Status from "../Status";
 import CreateDatabase from "../CreateDatabase";
 import getProjectDatabases from "../../redux/actions/databaseList";
 import styles from "./DatabaseList.module.css";
+import {getProjectName} from "../../helpers/projectName"
 
 class DatabaseList extends React.Component {
   constructor(props) {
@@ -19,7 +20,6 @@ class DatabaseList extends React.Component {
       openCreateComponent: false,
     };
     this.state = this.initialState;
-    this.getProjectName = this.getProjectName.bind(this);
     this.showCreateComponent = this.showCreateComponent.bind(this);
     this.callbackCreateComponent = this.callbackCreateComponent.bind(this);
   }
@@ -47,11 +47,6 @@ class DatabaseList extends React.Component {
       getProjectDatabases(projectID);
       this.callbackCreateComponent();
     }
-  }
-
-  getProjectName(projects, id) {
-    const project = projects.find((project) => project.id === id);
-    return project.name;
   }
 
   showCreateComponent() {
@@ -84,9 +79,9 @@ class DatabaseList extends React.Component {
         <div className={styles.MainSection}>
           <div className="SideBarSection">
             <SideBar
-              name={this.getProjectName(projects, params.projectID)}
+              name={getProjectName(projects, params.projectID)}
               params={params}
-              description={this.getProjectName(projects, params.projectID)}
+              description={getProjectName(projects, params.projectID)}
               pageRoute={this.props.location.pathname}
               allMetricsLink={`/projects/${projectID}/metrics`}
               cpuLink={`/projects/${projectID}/cpu/`}

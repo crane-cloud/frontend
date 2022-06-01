@@ -80,9 +80,10 @@ const SpendingPeriod = (props) => {
   }, []);
 
   return (
-
+   
     <div className="SprendPeriodContainer">
       <div className="SpendPeriodButtonsSection">
+        {props.period === "months" && <>
         <div
           className={`${period === "5m" && "PeriodButtonActive"} PeriodButton`}
           name="5m"
@@ -112,6 +113,46 @@ const SpendingPeriod = (props) => {
         >
           custom
         </div>
+         </>}
+         {props.period === "days" && <>
+        <div
+          className={`${period === "14d" && "PeriodButtonActive"} PeriodButton`}
+          name="14d"
+          value="14d"
+          role="presentation"
+          onClick={handleChange}
+        >
+          14 D
+        </div>
+        <div
+          className={`${period === "7d" && "PeriodButtonActive"} PeriodButton`}
+          name="7d"
+          value="7d"
+          role="presentation"
+          onClick={handleChange}
+        >
+          7 D
+        </div>
+        <div
+          className={`${period === "3d" && "PeriodButtonActive"} PeriodButton`}
+          name="3d"
+          value="3d"
+          role="presentation"
+          onClick={handleChange}
+        >
+          3 D
+        </div>
+        <div
+          className={`${period === "all" && "PeriodButtonActive"} PeriodButton`}
+          name="all"
+          value="all"
+          role="presentation"
+          onClick={handleChange}
+        >
+          all
+        </div>
+       
+         </>}
         {showModal && (
           <div ref={openModalRef} className="SpendCalendarModal">
               <div className="SpendSelectDate">

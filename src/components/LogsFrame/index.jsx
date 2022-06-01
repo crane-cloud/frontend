@@ -44,7 +44,7 @@ const LogsFrame = ({ loading, title, data }) => {
 LogsFrame.propTypes = {
   data: PropTypes.arrayOf(PropTypes.string).isRequired,
   title: PropTypes.string.isRequired,
-  loading: PropTypes.bool.isRequired,
+  loading: PropTypes.bool,
 };
 
 export default LogsFrame;

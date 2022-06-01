@@ -8,7 +8,7 @@ import {
 import store from "./redux/store";
 import App from "./components/App";
 import LoginPage from "./components/LoginPage";
-import PricingPage from "./components/PricingPage";
+// import PricingPage from "./components/PricingPage";
 import ContactPage from "./components/ContactPage";
 import PasswordReset from "./components/PasswordReset";
 import RegisterPage from "./components/RegisterPage";
@@ -48,8 +48,10 @@ import Terms from "./components/Documents/terms";
 import Privacy from "./components/Documents/privacy";
 import UserProjectsPage from "./pages/UserProjectsPage";
 import ProjectDashboardPage from "./components/ProjectDashboardPage";
+import AdminDBList from "./components/AdminDB";
 
-//import ProjectBillingPage from "./components/ProjectBillingPage";
+import ProjectBillingPage from "./components/ProjectBillingPage";
+import ClusterSettingsPage from "./components/ClusterSettingsPage";
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
@@ -64,7 +66,7 @@ const Routes = () => (
     <Switch>
       <Route exact path="/" component={App} />
       <Route path="/login" component={LoginPage} />
-      <Route path="/pricing" component={PricingPage} />
+      {/* <Route path="/pricing" component={PricingPage} /> */}
       <Route path="/contact" component={ContactPage} />
       <Route path="/admin-login" component={AdminLoginPage} />
       <Route path="/forgot-password" component={PasswordReset} />
@@ -77,12 +79,12 @@ const Routes = () => (
       <Route path="/terms-of-service" component={Terms} />
       <Route path="/privacy-policy" component={Privacy} />
       {/* projects */}
-       {/*<ProtectedRoute
+       {<ProtectedRoute
         isAllowed={hasToken}
         exact
         path="/projects/:projectID/billing"
         component={ProjectBillingPage}
-/>*/}
+/>}
       <ProtectedRoute
         isAllowed={hasToken}
         exact
@@ -246,6 +248,18 @@ const Routes = () => (
         exact
         path="/clusters"
         component={ClusterPage}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        exact
+        path="/databases"
+        component={AdminDBList}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        exact
+        path="/clusters/:clusterID/clusterSettings"
+        component={ClusterSettingsPage}
       />
       <Route path="*" component={PageNotFound} />
     </Switch>

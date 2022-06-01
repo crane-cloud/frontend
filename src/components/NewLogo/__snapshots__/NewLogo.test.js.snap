@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test new logo checks rendered component matches snapshot 1`] = `ShallowWrapper {}`;

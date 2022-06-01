@@ -484,6 +484,16 @@ ul li {
   column-gap: 1rem;
 }
 
+.NoResourcesMessage {
+  flex-grow: 1;
+  display: flex;
+  font-size: 16px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
 @media (max-width: 650px) {
   .APPSections {
     display: flex;

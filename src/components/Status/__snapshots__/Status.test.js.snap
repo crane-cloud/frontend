@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Status Component Renders a Status component 1`] = `ShallowWrapper {}`;
+
+exports[`Status Component Renders a Status component running status 1`] = `ShallowWrapper {}`;

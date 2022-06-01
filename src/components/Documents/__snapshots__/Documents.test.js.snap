@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test the privacy document checks if the privacy document matches the snapshot 1`] = `ShallowWrapper {}`;
+
+exports[`Test the terms document checks if the terms document matches the snapshot 1`] = `ShallowWrapper {}`;

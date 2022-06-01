@@ -112,6 +112,17 @@ const SideNav = ({ clusterId, clusterName }) => {
           Jobs
         </NavLink>
       </div>
+      <Link to={{ pathname: '/databases' }} className="ListItem">
+        Databases
+      </Link>
+      <div>
+        <NavLink
+          to={{ pathname: '/databases' }}
+          className="SubListItem"
+        >
+          Databases
+        </NavLink>
+      </div>
       <Link to={{ pathname: '/accounts' }} className="ListItem">
         Users
       </Link>
@@ -129,6 +140,20 @@ const SideNav = ({ clusterId, clusterName }) => {
           Projects
         </NavLink>
       </div>
+      
+       <div className="ListItem">
+         Others
+       </div>
+       <div>
+       <NavLink
+           to={{
+              pathname: `${BASE_URL}/clusterSettings`,
+           }}
+           className="SubListItem"
+           >
+          Cluster settings
+          </NavLink>
+       </div>
 
       <div className="SideFooter StickBottom">
         Copyright {new Date().getFullYear()} Crane Cloud.

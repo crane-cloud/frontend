@@ -42,6 +42,13 @@ import databasesReducer from "./getDatabases";
 import appsSummaryReducer from "./appsSummary";
 import usersSummaryReducer from "./usersSummary";
 import revertUrlReducer from "./revertUrl";
+import adminDatabasesReducer from "./adminGetDatabases";
+import adminCreateDBReducer from "./adminCreateDB";
+import getProjectBillReducer from "./getProjectBill"
+import savePaymentReducer from "./savePayment";
+import getTransactionsReducer from "./getTransactions";
+import addBetaUserReducer from "./addBetaUser";
+import updateClusterReducer from "./updateCluster";
 
 export default combineReducers({
   clusterResourcesReducer,
@@ -87,4 +94,11 @@ export default combineReducers({
   appsSummaryReducer,
   usersSummaryReducer,
   revertUrlReducer,
+  adminDatabasesReducer,
+  adminCreateDBReducer,
+  getProjectBillReducer,
+  savePaymentReducer,
+  getTransactionsReducer,
+  addBetaUserReducer,
+  updateClusterReducer,
 });

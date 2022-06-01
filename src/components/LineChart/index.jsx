@@ -7,7 +7,6 @@ import {
   CartesianGrid,
   XAxis,
   YAxis,
-  Tooltip,
   Label,
 } from "recharts";
 import "./LineChart.css";
@@ -58,7 +57,7 @@ const LineChartComponent = ({
               dy={-10}
             />
           </YAxis>
-          <Tooltip />
+          
           <Line dot strokeWidth="2px" dataKey={lineDataKey} stroke="#008AC1" />
         </LineChart>
       ) : (

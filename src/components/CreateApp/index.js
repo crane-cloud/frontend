@@ -63,8 +63,6 @@ class CreateApp extends React.Component {
     this.handleDockerCredentialsChange =
       this.handleDockerCredentialsChange.bind(this);
     this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
-    this.getProjectName = this.getProjectName.bind(this);
-    this.getProjectDescription = this.getProjectDescription.bind(this);
     this.changeMultiSelectionOption =
       this.changeMultiSelectionOption.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -98,16 +96,6 @@ class CreateApp extends React.Component {
     if (isCreated !== prevProps.isCreated) {
       return <Redirect to={`/projects/${projectID}/Apps`} noThrow />;
     }
-  }
-
-  getProjectName(projects, id) {
-    const project = projects.find((project) => project.id === id);
-    return project.name;
-  }
-
-  getProjectDescription(projects, id) {
-    const project = projects.find((project) => project.id === id);
-    return project.description;
   }
 
   showForm() {

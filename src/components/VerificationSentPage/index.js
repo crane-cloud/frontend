@@ -55,7 +55,7 @@ class VerificationSentPage extends React.Component {
               feedback: "Login successful",
             },
             () => {
-              window.location.href = `/users/${response.data.data.id}/projects`;
+              window.location.href = `/projects`;
             }
           );
         }
@@ -83,7 +83,8 @@ class VerificationSentPage extends React.Component {
   }
 
   validateEmail(email) {
-    const emailRegEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const emailRegEx =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegEx.test(String(email).toLowerCase());
   }
 
@@ -204,7 +205,7 @@ class VerificationSentPage extends React.Component {
 }
 
 VerificationSentPage.propTypes = {
-  saveUser: PropTypes.func.isRequired,
+  saveUser: PropTypes.func,
   match: PropTypes.shape({
     params: PropTypes.shape({
       token: PropTypes.string.isRequired,
@@ -212,7 +213,10 @@ VerificationSentPage.propTypes = {
   }).isRequired,
 };
 
-const mapStateToProps = (state) => ({ user: state.user });
+export const mapStateToProps = (state) => {
+  const { data } = state.user;
+  return { data };
+};
 
 const mapDispatchToProps = {
   saveUser,

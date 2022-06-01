@@ -15,6 +15,8 @@ import {
   getCurrentTimeStamp,
   subtractTime,
 } from "../../helpers/formatMetrics";
+import { getProjectName} from '../../helpers/projectName'
+
 
 class ProjectCPUPage extends React.Component {
   constructor(props) {
@@ -28,7 +30,6 @@ class ProjectCPUPage extends React.Component {
       period: "1d",
     };
 
-    this.getProjectName = this.getProjectName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
     this.fetchCPU = this.fetchCPU.bind(this);
     this.getDateCreated = this.getDateCreated.bind(this);
@@ -43,11 +44,6 @@ class ProjectCPUPage extends React.Component {
     const { projectID } = params;
     clearProjectCPU();
     getProjectCPU(projectID, { step: "2h" });
-  }
-
-  getProjectName(id) {
-    const { projects } = this.props;
-    return projects.find((project) => project.id === id).name;
   }
 
   getDateCreated() {
@@ -128,6 +124,7 @@ class ProjectCPUPage extends React.Component {
       match: { params },
       isFetchingCPU,
       cpuMetrics,
+      projects
     } = this.props;
     const { projectID } = params;
     const { period } = this.state;
@@ -142,7 +139,7 @@ class ProjectCPUPage extends React.Component {
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
-              name={this.getProjectName(projectID)}
+              name={getProjectName(projects, projectID)}
               params={params}
               pageRoute={this.props.location.pathname}
               allMetricsLink={`/projects/${projectID}/metrics`}
@@ -197,7 +194,7 @@ ProjectCPUPage.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isFetchingCPU, cpuMetrics, cpuMessage } = state.projectCPUReducer;
   const { projects } = state.userProjectsReducer;
   return {

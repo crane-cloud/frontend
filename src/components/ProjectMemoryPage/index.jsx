@@ -17,6 +17,7 @@ import {
   getCurrentTimeStamp,
   subtractTime,
 } from "../../helpers/formatMetrics";
+import {getProjectName} from "../../helpers/projectName"
 
 class ProjectMemoryPage extends React.Component {
   constructor(props) {
@@ -30,7 +31,6 @@ class ProjectMemoryPage extends React.Component {
       period: "1d",
     };
 
-    this.getProjectName = this.getProjectName.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
     this.fetchMemory = this.fetchMemory.bind(this);
     this.getDateCreated = this.getDateCreated.bind(this);
@@ -45,11 +45,6 @@ class ProjectMemoryPage extends React.Component {
     const { projectID } = params;
     clearProjectMemory();
     getProjectMemory(projectID, { step: "2h" });
-  }
-
-  getProjectName(id) {
-    const { projects } = this.props;
-    return projects.find((project) => project.id === id).name;
   }
 
   getDateCreated() {
@@ -130,6 +125,7 @@ class ProjectMemoryPage extends React.Component {
       match: { params },
       isFetchingMemory,
       memoryMetrics,
+      projects
     } = this.props;
     const { projectID } = params;
     const { period } = this.state;
@@ -148,7 +144,7 @@ class ProjectMemoryPage extends React.Component {
         <div className="MainSection">
           <div className="SideBarSection">
             <SideBar
-              name={this.getProjectName(projectID)}
+              name={getProjectName(projects, projectID)}
               params={params}
               pageRoute={this.props.location.pathname}
               allMetricsLink={`/projects/${projectID}/metrics`}
@@ -197,7 +193,7 @@ ProjectMemoryPage.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isFetchingMemory, memoryMetrics, memoryMessage } =
     state.projectMemoryReducer;
   const { projects } = state.userProjectsReducer;

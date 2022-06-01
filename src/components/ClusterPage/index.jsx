@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
 import InformationBar from "../InformationBar";
 import PrimaryButton from "../PrimaryButton";
 import Spinner from "../Spinner";
@@ -18,15 +17,7 @@ import Feedback from "../Feedback";
 import styles from "./ClusterPage.module.css";
 import getDatabases from "../../redux/actions/getDatabases";
 import getClustersList from "../../redux/actions/clusters";
-import {
-  Line,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  AreaChart,
-  Tooltip,
-  Area,
-} from "recharts";
+import { Line, CartesianGrid, XAxis, YAxis, AreaChart, Area } from "recharts";
 import MetricsCard from "../MetricsCard";
 import AdminPeriod from "../AdminPeriod";
 import {
@@ -63,6 +54,7 @@ const ClusterPage = ({
   const [error, setError] = useState("");
   const [description, setDescription] = useState("");
   const [begin, setBegin] = useState("");
+  const [prometheus_url, setPrometheus_url] = useState("")
 
   useEffect(() => {
     let details = { begin: "2021-03-01", end: currentDate, set_by: "month" };
@@ -126,7 +118,7 @@ const ClusterPage = ({
 
   const handleSubmit = () => {
     // input validation
-    if (!host || !name || !token || !description) {
+    if (!host || !name || !token || !description ||!prometheus_url) {
       setError("Please provide all the information");
     } else {
       const cluster = {
@@ -134,6 +126,7 @@ const ClusterPage = ({
         name,
         token,
         description,
+        prometheus_url
       };
 
       addCluster(cluster);
@@ -215,7 +208,6 @@ const ClusterPage = ({
                           position: "outside",
                         }}
                       />
-                      <Tooltip />
                       <Area
                         type="monotone"
                         dataKey="value"
@@ -294,7 +286,6 @@ const ClusterPage = ({
                           position: "outside",
                         }}
                       />
-                      <Tooltip />
                       <Area
                         type="monotone"
                         dataKey="value"
@@ -311,25 +302,28 @@ const ClusterPage = ({
       </div>
       <br />
       <div className={styles.OtherCards}>
-        <div className={styles.Card}>
-          <div className={styles.CardHeader}>Databases</div>
-          <div className={styles.DBStats}>
-            <div className={styles.In}>
-              <div className={styles.InnerTitlesStart}>Mysql</div>
-              <div className={styles.ResourceDigit}>
-                {databases && databases?.dbs_stats_per_flavour?.mysql_db_count}
+        <Link to="/databases" className={styles.Card}>
+          <>
+            <div className={styles.CardHeader}>Databases</div>
+            <div className={styles.DBStats}>
+              <div className={styles.In}>
+                <div className={styles.InnerTitlesStart}>Mysql</div>
+                <div className={styles.ResourceDigit}>
+                  {databases &&
+                    databases?.dbs_stats_per_flavour?.mysql_db_count}
+                </div>
+              </div>
+              <div className={styles.verticalLine}></div>
+              <div className={styles.In}>
+                <div className={styles.InnerTitlesMiddle}>Postgresql</div>
+                <div className={styles.ResourceDigit}>
+                  {databases &&
+                    databases.dbs_stats_per_flavour?.postgres_db_count}
+                </div>
               </div>
             </div>
-            <div className={styles.verticalLine}></div>
-            <div className={styles.In}>
-              <div className={styles.InnerTitlesMiddle}>Postgresql</div>
-              <div className={styles.ResourceDigit}>
-                {databases &&
-                  databases.dbs_stats_per_flavour?.postgres_db_count}
-              </div>
-            </div>
-          </div>
-        </div>
+          </>
+        </Link>
         <div className={styles.Card}>
           <div className={styles.CardHeader}>Clusters</div>
           <div className={styles.CardTop}>Count</div>
@@ -387,6 +381,13 @@ const ClusterPage = ({
               />
               <BlackInputText
                 required
+                placeholder="Prometheus Url"
+                name="prometheus_url"
+                value={prometheus_url}
+                onChange={(e) => setPrometheus_url(e.target.value)}
+              />
+              <BlackInputText
+                required
                 placeholder="Description"
                 name="description"
                 value={description}
@@ -421,16 +422,7 @@ const ClusterPage = ({
   );
 };
 
-ClusterPage.propTypes = {
-  addCluster: PropTypes.func.isRequired,
-  clearAddClusterState: PropTypes.func.isRequired,
-  isAdded: PropTypes.bool.isRequired,
-  isFailed: PropTypes.bool.isRequired,
-  creatingCluster: PropTypes.bool.isRequired,
-  message: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isFetchingDatabases, databasesFetched, databases } =
     state.databasesReducer;
   const { creatingCluster, isAdded, isFailed, errorOccured, message } =
