@@ -61,7 +61,6 @@ const ProjectBillingPage = (props) => {
   const { data } = useSelector((state) => state.user);
   const { transactions } = useSelector((state) => state.getTransactionsReducer);
 
-
   const closeReceiptModal = () => {
     setViewReceipt(false);
   };
@@ -74,7 +73,7 @@ const ProjectBillingPage = (props) => {
     setNextTab(true);
     setCurrentTab(false);
   };
-  
+
   const viewUsageInDays = () => {
     setCurrentUsageTab("days");
   };
@@ -83,27 +82,33 @@ const ProjectBillingPage = (props) => {
   };
 
   const getBill = useCallback(
-    (startTimeStamp) => dispatch(getProjectBill(projectID, { series: true, start:startTimeStamp })),
+    (startTimeStamp) =>
+      dispatch(
+        getProjectBill(projectID, { series: true, start: startTimeStamp })
+      ),
     [dispatch, projectID]
   );
 
   // create a function that takes in a array and returns a new array of objects with the data 2 format
-  const getData2Format = useCallback (
-     (data) => {
-    const newData = [];
-    if (Array.isArray(data)) {
-      data.forEach((element) => {
-        newData.push({
-          date: currentUsageTab ==="months"?
-           moment(element.start).utc().format("YYYY-MM-DD"): moment(element.start).utc().format("DD"),
-          amount: element.totalCost*3600,
+  const getData2Format = useCallback(
+    (data) => {
+      const newData = [];
+      if (Array.isArray(data)) {
+        data.forEach((element) => {
+          newData.push({
+            date:
+              currentUsageTab === "months"
+                ? moment(element.start).utc().format("YYYY-MM-DD")
+                : moment(element.start).utc().format("DD"),
+            amount: element.totalCost * 3600,
+          });
         });
-      });
-  
-    }
-    // let newData2 = newData.slice(4)
-    return newData;
-  },[currentUsageTab]);
+      }
+      // let newData2 = newData.slice(4)
+      return newData;
+    },
+    [currentUsageTab]
+  );
   // create a function that takes in a array and sums all the object key values to create one object
   const summationObject = (data) => {
     const newData = {};
@@ -123,18 +128,19 @@ const ProjectBillingPage = (props) => {
 
   useEffect(() => {
     // 7 days ago
-    var startTimeStamp =  new Date()
+    var startTimeStamp = new Date();
     startTimeStamp.setDate(startTimeStamp.getDate() - 14);
-    getBill(Math.round(startTimeStamp.getTime()/1000));
+    getBill(Math.round(startTimeStamp.getTime() / 1000));
   }, [getBill]);
 
   const billInfo = useSelector((state) => state.getProjectBillReducer);
   const { projectBill } = billInfo;
 
   useEffect(() => {
-    currentUsageTab === "months"? setMonths(getData2Format(projectBill?.data?.cost_data)):
-    setDays(getData2Format(projectBill?.data?.cost_data));
-  }, [ projectBill.data,currentUsageTab,getData2Format]);
+    currentUsageTab === "months"
+      ? setMonths(getData2Format(projectBill?.data?.cost_data))
+      : setDays(getData2Format(projectBill?.data?.cost_data));
+  }, [projectBill.data, currentUsageTab, getData2Format]);
 
   let newObject = summationObject(projectBill?.data?.cost_data);
   // turn values to percentages for donut chart
@@ -144,7 +150,9 @@ const ProjectBillingPage = (props) => {
       value:
         Object.keys(newObject).length === 0
           ? "n/a"
-          :newObject.totalCost===0 ? 0 : (newObject.cpuCost/newObject.totalCost * 100),
+          : newObject.totalCost === 0
+          ? 0
+          : (newObject.cpuCost / newObject.totalCost) * 100,
       color: "#0088FE",
     },
     {
@@ -152,7 +160,9 @@ const ProjectBillingPage = (props) => {
       value:
         Object.keys(newObject).length === 0
           ? "n/a"
-          : newObject.totalCost===0 ? 0 : (newObject.ramCost/newObject.totalCost * 100),
+          : newObject.totalCost === 0
+          ? 0
+          : (newObject.ramCost / newObject.totalCost) * 100,
       color: "#00C49F",
     },
     {
@@ -160,7 +170,9 @@ const ProjectBillingPage = (props) => {
       value:
         Object.keys(newObject).length === 0
           ? "n/a"
-          : newObject.totalCost===0 ? 0 : (newObject.networkCost/newObject.totalCost * 100),
+          : newObject.totalCost === 0
+          ? 0
+          : (newObject.networkCost / newObject.totalCost) * 100,
       color: "#FFBB28",
     },
     { name: "Storage/ $1 per GB", value: 0, color: "#FF8042" },
@@ -182,64 +194,64 @@ const ProjectBillingPage = (props) => {
   };
 
   const handlePeriodChange = (period, customTime = null) => {
-    let startTimeStamp ;
+    let startTimeStamp;
     let endTimeStamp = new Date();
-    if(currentUsageTab === "months" ){
-    
-    if (period === "5m") {
-      startTimeStamp = new Date(
-        endTimeStamp.setMonth(endTimeStamp.getMonth() - 5)
-      );
-      endTimeStamp = new Date();
-      let newMonths = [];
-      for (var i = 0; i < data2.length; i++) {
-        if (new Date(data2[i].date).getTime() >= startTimeStamp.getTime())
-          newMonths.push(data2[i]);
+    if (currentUsageTab === "months") {
+      if (period === "5m") {
+        startTimeStamp = new Date(
+          endTimeStamp.setMonth(endTimeStamp.getMonth() - 5)
+        );
+        endTimeStamp = new Date();
+        let newMonths = [];
+        for (var i = 0; i < data2.length; i++) {
+          if (new Date(data2[i].date).getTime() >= startTimeStamp.getTime())
+            newMonths.push(data2[i]);
+        }
+        setMonths(newMonths);
       }
-      setMonths(newMonths);
-    }
-    if (period === "all") {
-      // get all months
-      setMonths(data2);
-    } else if (period === "custom" && customTime !== null) {
-      startTimeStamp = customTime.start;
-      endTimeStamp = customTime.end;
-      let newMonths = [];
-      for (var n = 0; n < data2.length; n++) {
-        if (
-          new Date(data2[n].date).getTime() >=
-            new Date(startTimeStamp).getTime() &&
-          new Date(data2[n].date).getTime() <= new Date(endTimeStamp).getTime()
-        )
-          newMonths.push(data2[n]);
+      if (period === "all") {
+        // get all months
+        setMonths(data2);
+      } else if (period === "custom" && customTime !== null) {
+        startTimeStamp = customTime.start;
+        endTimeStamp = customTime.end;
+        let newMonths = [];
+        for (var n = 0; n < data2.length; n++) {
+          if (
+            new Date(data2[n].date).getTime() >=
+              new Date(startTimeStamp).getTime() &&
+            new Date(data2[n].date).getTime() <=
+              new Date(endTimeStamp).getTime()
+          )
+            newMonths.push(data2[n]);
+        }
+        setMonths(newMonths);
       }
-      setMonths(newMonths);
     }
+    if (currentUsageTab === "days") {
+      //lowest index is lowest day in data
+      if (period === "14d") {
+        startTimeStamp = new Date();
+        startTimeStamp.setDate(startTimeStamp.getDate() - 14);
+        //in unix timstamp
+        getBill(Math.round(startTimeStamp.getTime() / 1000));
+      }
+      if (period === "7d") {
+        startTimeStamp = new Date();
+        startTimeStamp.setDate(startTimeStamp.getDate() - 7);
+        getBill(Math.round(startTimeStamp.getTime() / 1000));
+      }
+      if (period === "3d") {
+        startTimeStamp = new Date();
+        startTimeStamp.setDate(startTimeStamp.getDate() - 3);
+        getBill(Math.round(startTimeStamp.getTime() / 1000));
+      }
+      if (period === "all") {
+        startTimeStamp = new Date();
+        startTimeStamp.setDate(startTimeStamp.getDate() - 14);
+        getBill(Math.round(startTimeStamp.getTime() / 1000));
+      }
     }
-  if(currentUsageTab === "days" ){
-    //lowest index is lowest day in data
-    if (period === "14d") {
-      startTimeStamp =  new Date()
-      startTimeStamp.setDate(startTimeStamp.getDate() - 14);
-      //in unix timstamp
-      getBill(Math.round(startTimeStamp.getTime()/1000))
-    }
-    if (period === "7d") {
-      startTimeStamp =  new Date()
-      startTimeStamp.setDate(startTimeStamp.getDate() - 7);
-      getBill(Math.round(startTimeStamp.getTime()/1000))
-    }
-    if (period === "3d") {
-      startTimeStamp =  new Date()
-      startTimeStamp.setDate(startTimeStamp.getDate() - 3);
-      getBill(Math.round(startTimeStamp.getTime()/1000))
-    }  
-    if (period === "all") {
-      startTimeStamp =  new Date()
-      startTimeStamp.setDate(startTimeStamp.getDate() - 14);
-      getBill(Math.round(startTimeStamp.getTime()/1000))
-    }
-  }
   };
   return (
     <div className={styles.Page}>
@@ -296,12 +308,13 @@ const ProjectBillingPage = (props) => {
                         <div className={styles.ResourceName}>
                           {data1[index % data1.length].name}
                         </div>
-                      ))}
-                      <div className={styles.Total}>
-                        <div className={styles.TotalTxt}>Total</div>
                         <div className={styles.ResourcePrice}>
                           {/**display in dollars, covert back form percentages to dollars*/}
-                          ${((data1[index % data1.length].value)*(newObject.totalCost/100)).toFixed(2)}
+                          $
+                          {(
+                            data1[index % data1.length].value *
+                            (newObject.totalCost / 100)
+                          ).toFixed(2)}
                         </div>
                       </div>
                     ))}
@@ -310,7 +323,7 @@ const ProjectBillingPage = (props) => {
                       <div className={styles.ResourcePrice}>
                         {Object.keys(newObject).length === 0
                           ? "n/a"
-                          : `$${(newObject.totalCost).toFixed(2)}`}
+                          : `$${newObject.totalCost.toFixed(2)}`}
                       </div>
                     </div>
                   </div>
@@ -334,41 +347,66 @@ const ProjectBillingPage = (props) => {
                 </div>
                 <div className={styles.InnerContainer}>
                   <div className={styles.Subtext}>
-                    Your usage summary for the previous days/months. (UGX)  
+                    Your usage summary for the previous days/months. (UGX)
                   </div>
-                 
+
                   <div className={styles.UsageHistoryHeading}>
-                  <span
-                    className={currentUsageTab==="days" ? styles.CurrentTab : styles.Tab}
-                    onClick={()=>{viewUsageInDays()}}
-                  >
-                    Days
-                  </span>
-                  <span
-                    className={ currentUsageTab === "months" ? styles.CurrentTab : styles.Tab}
-                    onClick={()=>{viewUsageInMonths()}}
-                  >
-                    Months
-                  </span>
-                </div>
-                
+                    <span
+                      className={
+                        currentUsageTab === "days"
+                          ? styles.CurrentTab
+                          : styles.Tab
+                      }
+                      onClick={() => {
+                        viewUsageInDays();
+                      }}
+                    >
+                      Days
+                    </span>
+                    <span
+                      className={
+                        currentUsageTab === "months"
+                          ? styles.CurrentTab
+                          : styles.Tab
+                      }
+                      onClick={() => {
+                        viewUsageInMonths();
+                      }}
+                    >
+                      Months
+                    </span>
+                  </div>
+
                   <div className={styles.MetricContainer}>
                     <MetricsCard
                       className={styles.MetricsCardGraph}
-                      title={<SpendingPeriod onChange={handlePeriodChange} period={currentUsageTab ==="days"
-                       ?"days":currentUsageTab?"months":"days"} />}
+                      title={
+                        <SpendingPeriod
+                          onChange={handlePeriodChange}
+                          period={
+                            currentUsageTab === "days"
+                              ? "days"
+                              : currentUsageTab
+                              ? "months"
+                              : "days"
+                          }
+                        />
+                      }
                     >
-                     
                       <BarGraph
-                        data={currentUsageTab ==="days"? days: currentUsageTab ==="months"?months:days}
+                        data={
+                          currentUsageTab === "days"
+                            ? days
+                            : currentUsageTab === "months"
+                            ? months
+                            : days
+                        }
                         height={180}
                         width={200}
                         barSize={30}
                         width_percentage="100%"
                         height_percentage="80%"
-                        
                       />
-                      
                     </MetricsCard>
                   </div>
                 </div>
