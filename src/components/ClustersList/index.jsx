@@ -72,8 +72,8 @@ class ClustersList extends Component {
 // inititate props
 ClustersList.propTypes = {
   clusters: PropTypes.arrayOf(PropTypes.object),
-  getClustersList: PropTypes.func.isRequired,
-  newClusterAdded: PropTypes.bool.isRequired,
+  getClustersList: PropTypes.func,
+  newClusterAdded: PropTypes.bool,
   isRetrieved: PropTypes.bool,
   isRetrieving: PropTypes.bool,
 };
