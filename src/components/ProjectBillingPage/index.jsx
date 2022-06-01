@@ -121,7 +121,6 @@ const ProjectBillingPage = (props) => {
     return newData;
   };
 
-
   useEffect(() => {
     // 7 days ago
     var startTimeStamp =  new Date()
@@ -297,6 +296,9 @@ const ProjectBillingPage = (props) => {
                         <div className={styles.ResourceName}>
                           {data1[index % data1.length].name}
                         </div>
+                      ))}
+                      <div className={styles.Total}>
+                        <div className={styles.TotalTxt}>Total</div>
                         <div className={styles.ResourcePrice}>
                           {/**display in dollars, covert back form percentages to dollars*/}
                           ${((data1[index % data1.length].value)*(newObject.totalCost/100)).toFixed(2)}

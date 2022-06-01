@@ -422,15 +422,6 @@ const ClusterPage = ({
   );
 };
 
-// ClusterPage.propTypes = {
-//   addCluster: PropTypes.func.isRequired,
-//   clearAddClusterState: PropTypes.func.isRequired,
-//   isAdded: PropTypes.bool.isRequired,
-//   isFailed: PropTypes.bool.isRequired,
-//   creatingCluster: PropTypes.bool.isRequired,
-//   message: PropTypes.string.isRequired,
-// };
-
 export const mapStateToProps = (state) => {
   const { isFetchingDatabases, databasesFetched, databases } =
     state.databasesReducer;

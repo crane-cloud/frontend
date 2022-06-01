@@ -12,6 +12,7 @@
 }
 
 .CardDimensions {
+  max-width: 21rem;
   height: 15rem;
   color: initial;
 }

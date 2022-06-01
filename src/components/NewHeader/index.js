@@ -6,11 +6,12 @@ import NewLogo from "../NewLogo";
 import removeUser from "../../redux/actions/removeUser";
 import "./NewHeader.css";
 import { DOCS_URL, BLOG_URL } from "../../config";
-import useMedia from "../../hooks/mediaquery";
+import useMedia from '../../hooks/mediaquery';
 import { ReactComponent as DownArrow } from "../../assets/images/down-arrow-black.svg";
 import { ReactComponent as UpArrow } from "../../assets/images/up-arrow.svg";
 
 const NewHeader = (props) => {
+
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -208,6 +209,97 @@ const NewHeader = (props) => {
           )}
         </>
       )}
+    </>:<><div className="Headerarrow"   >
+    {!open &&
+    <div
+    onClick={handleArrowClick}
+    >
+    <DownArrow /> 
+    </div>
+    }
+    {open &&
+    <div
+    onClick={handleArrowClick}
+    >
+    <UpArrow /> 
+    </div>
+    }
+
+    </div>
+    {open && <div className="HeaderDropdown">
+    {(!user.accessToken || user.accessToken === "") && (
+        <div className="HeaderDropItems">
+          {match.path !== "/admin-login" && (
+            <div className="HeaderDropLinks bold">
+              <a
+                href={`${DOCS_URL}`}
+                className="HeaderDropLinkDocs"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Docs
+              </a>
+              <a
+                href={`${BLOG_URL}`}
+                className="HeaderDropLinkDocs"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Blog
+              </a>
+              <Link to="/pricing" className="HeaderDropLinkDocs">
+                Pricing
+              </Link>
+              <Link to="/login" className="HeaderDropLinkDocs">
+                Login
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
+      {user.accessToken && (
+        <div
+          ref={dropdownRef}
+          className="HeaderDropdown"
+          onClick={toggleHidden}
+          role="presentation"
+        ><div className="HeaderDropLinks">
+          {match.path === "/" || match.path === "/team" ? (
+            <>
+              <a
+                href={`${DOCS_URL}`}
+                className="HeaderDropLinkDocs"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Docs
+              </a>
+              <a
+                href={`${BLOG_URL}`}
+                className="HeaderDropLinkDocs"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Blog
+              </a>
+              <Link to="/pricing" className="HeaderDropLinkDocs">
+                Pricing
+              </Link>
+              <Link
+                to={`/projects`}
+                className="HeaderDropLinkDocs"
+              >
+                Dashboard
+              </Link>
+            </>
+          ) : null}</div>
+        </div>
+      )}
+
+    </div>}
+    
+    </> 
+    }
     </header>
   );
 };

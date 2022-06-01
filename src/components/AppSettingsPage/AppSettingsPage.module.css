@@ -483,6 +483,7 @@ ul li {
   align-items: center;
   column-gap: 1rem;
 }
+
 .NoResourcesMessage {
   flex-grow: 1;
   display: flex;
