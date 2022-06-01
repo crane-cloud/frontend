@@ -79,12 +79,12 @@ const Routes = () => (
       <Route path="/terms-of-service" component={Terms} />
       <Route path="/privacy-policy" component={Privacy} />
       {/* projects */}
-       {<ProtectedRoute
+      <ProtectedRoute
         isAllowed={hasToken}
         exact
         path="/projects/:projectID/billing"
         component={ProjectBillingPage}
-/>}
+      />
       <ProtectedRoute
         isAllowed={hasToken}
         exact
