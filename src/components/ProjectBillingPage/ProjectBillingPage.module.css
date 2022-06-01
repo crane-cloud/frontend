@@ -178,6 +178,7 @@
   gap: 3rem;
   border-bottom: 1px solid #cccccc;
 }
+
 .UsageHistoryHeading {
   padding: .5rem 0 1rem 0rem;
   display: flex;
@@ -201,7 +202,8 @@
 }
 
 .TransactionHistoryBody,
-.InvoiceHistoryBody {
+.InvoiceHistoryBody,
+.ReceiptHistoryBody {
   padding: 2rem;
 }
 
@@ -217,15 +219,27 @@
 }
 
 .TransactionHistoryCell,
-.InoviceHistoryCell {
+.InoviceHistoryCell,
+.ReceiptHistoryCell {
   overflow-wrap: break-word;
 }
 
 .TransactionHistoryHead .TransactionHistoryCell,
-.InvoiceHistoryHead {
+.InvoiceHistoryHead,
+.ReceiptHistoryHead {
   text-transform: uppercase;
   color: #008ac1;
 }
+
+.ReceiptHistoryHead,
+.ReceiptHistoryRow {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 1.5rem;
+  border-bottom: 1px solid #ccc;
+  padding: 1rem;
+}
+
 
 .TransactionHistoryCell .PaymentStatus {
   padding: 0.3rem;
@@ -249,7 +263,8 @@
 }
 
 .PaymentDetailsButton,
-.InvoiceDownloadButton {
+.InvoiceDownloadButton,
+.ReceiptDownloadButton {
   color: #008ac1;
   outline: none;
   border: none;
@@ -258,7 +273,8 @@
 }
 
 .PaymentDetailsButton:hover,
-.InvoiceDownloadButton:hover {
+.InvoiceDownloadButton:hover,
+.ReceiptDownloadButton:hover {
   text-decoration: underline;
 }
 
