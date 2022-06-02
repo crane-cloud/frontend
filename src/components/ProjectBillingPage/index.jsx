@@ -46,8 +46,7 @@ const ProjectBillingPage = (props) => {
 
   const [transactionDetails, setTransactionDetails] = useState({});
   const [viewReceipt, setViewReceipt] = useState(false);
-  const [currentTab, setCurrentTab] = useState(true);
-  const [nextTab, setNextTab] = useState(false);
+  const [currentTab, setCurrentTab] = useState("transactions");
   const [currentUsageTab, setCurrentUsageTab] = useState("days");
   const [months, setMonths] = useState(data2);
   const [days, setDays] = useState([]);
@@ -66,12 +65,13 @@ const ProjectBillingPage = (props) => {
   };
 
   const viewTransactions = () => {
-    setCurrentTab(true);
-    setNextTab(false);
+    setCurrentTab("transactions");
   };
   const viewInvoices = () => {
-    setNextTab(true);
-    setCurrentTab(false);
+    setCurrentTab("invoices");
+  };
+  const viewReceipts = () => {
+    setCurrentTab("receipts");
   };
 
   const viewUsageInDays = () => {
@@ -416,20 +416,34 @@ const ProjectBillingPage = (props) => {
               <div className={styles.TransactionHistoryContainer}>
                 <div className={styles.TransactionHistoryHeading}>
                   <span
-                    className={currentTab ? styles.CurrentTab : styles.Tab}
+                    className={
+                      currentTab === "transactions"
+                        ? styles.CurrentTab
+                        : styles.Tab
+                    }
                     onClick={() => viewTransactions()}
                   >
                     Transactions
                   </span>
                   <span
-                    className={nextTab ? styles.CurrentTab : styles.Tab}
+                    className={
+                      currentTab === "invoices" ? styles.CurrentTab : styles.Tab
+                    }
                     onClick={() => viewInvoices()}
                   >
                     Invoices
                   </span>
+                  <span
+                    className={
+                      currentTab === "receipts" ? styles.CurrentTab : styles.Tab
+                    }
+                    onClick={() => viewReceipts()}
+                  >
+                    Receipts
+                  </span>
                 </div>
 
-                {currentTab && (
+                {currentTab === "transactions" && (
                   <div className={styles.TransactionHistoryBody}>
                     <div className={styles.TransactionHistoryTable}>
                       <div className={styles.TransactionHistoryHead}>
@@ -481,7 +495,7 @@ const ProjectBillingPage = (props) => {
                   </div>
                 )}
 
-                {nextTab && (
+                {currentTab === "invoices" && (
                   <div className={styles.InvoiceHistoryBody}>
                     <div className={styles.InvoiceHistoryTable}>
                       <div className={styles.InvoiceHistoryHead}>
@@ -499,9 +513,50 @@ const ProjectBillingPage = (props) => {
                         <div className={styles.InvoiceHistoryCell}>
                           87546947
                         </div>
-                        <div className={styles.InvoiceHistoryCell}>200,000</div>
+                        <div className={styles.InvoiceHistoryCell}>
+                          UGX 40,000
+                        </div>
                         <div className={styles.InvoiceHistoryCell}>
                           <button className={styles.InvoiceDownloadButton}>
+                            Download
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {currentTab === "receipts" && (
+                  <div className={styles.ReceiptHistoryBody}>
+                    <div className={styles.ReceiptHistoryTable}>
+                      <div className={styles.ReceiptHistoryHead}>
+                        <div className={styles.ReceiptHistoryCell}>Date</div>
+                        <div className={styles.ReceiptHistoryCell}>
+                          Transaction ID
+                        </div>
+                        <div className={styles.ReceiptHistoryCell}>
+                          Invoice ID
+                        </div>
+                        <div className={styles.ReceiptHistoryCell}>
+                          Amount Paid
+                        </div>
+                        <div className={styles.ReceiptHistoryCell}>Balance</div>
+                        <div className={styles.ReceiptHistoryCell}>Details</div>
+                      </div>
+                      <div className={styles.ReceiptHistoryRow}>
+                        <div className={styles.ReceiptHistoryCell}>
+                          01-06-2022
+                        </div>
+                        <div className={styles.ReceiptHistoryCell}>3437533</div>
+                        <div className={styles.ReceiptHistoryCell}>
+                          87546947
+                        </div>
+                        <div className={styles.ReceiptHistoryCell}>
+                          UGX 40,000
+                        </div>
+                        <div className={styles.ReceiptHistoryCell}>UGX 0</div>
+                        <div className={styles.ReceiptHistoryCell}>
+                          <button className={styles.ReceiptDownloadButton}>
                             Download
                           </button>
                         </div>
