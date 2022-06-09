@@ -13,6 +13,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "^5.0.0",
     "react-test-renderer": "^16.2.0",
+    "react-to-pdf": "^0.0.14",
     "recharts": "^1.8.5",
     "redux": "^4.0.5",
     "redux-form": "^8.3.0",

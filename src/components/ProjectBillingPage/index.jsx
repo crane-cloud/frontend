@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import moment from "moment";
+import Pdf from "react-to-pdf";
 import Header from "../Header";
 import SideBar from "../SideBar";
 import InformationBar from "../InformationBar";
@@ -19,6 +20,8 @@ import {
   getTransactions,
   clearTransactions,
 } from "../../redux/actions/getTransactions";
+
+const ref = React.createRef();
 
 const data2 = [
   { date: "2021-08", amount: 1398 },
@@ -47,6 +50,7 @@ const ProjectBillingPage = (props) => {
   const [transactionDetails, setTransactionDetails] = useState({});
   const [viewReceipt, setViewReceipt] = useState(false);
   const [currentTab, setCurrentTab] = useState("transactions");
+  const [downloadFile, setDownloadFile] = useState("");
   const [currentUsageTab, setCurrentUsageTab] = useState("days");
   const [months, setMonths] = useState(data2);
   const [days, setDays] = useState([]);
@@ -66,12 +70,18 @@ const ProjectBillingPage = (props) => {
 
   const viewTransactions = () => {
     setCurrentTab("transactions");
+    setDownloadFile("");
   };
   const viewInvoices = () => {
     setCurrentTab("invoices");
+    setDownloadFile("invoice");
   };
   const viewReceipts = () => {
     setCurrentTab("receipts");
+    setDownloadFile("");
+  };
+  const removePreview = () => {
+    setDownloadFile("");
   };
 
   const viewUsageInDays = () => {
@@ -517,9 +527,20 @@ const ProjectBillingPage = (props) => {
                           UGX 40,000
                         </div>
                         <div className={styles.InvoiceHistoryCell}>
-                          <button className={styles.InvoiceDownloadButton}>
-                            Download
-                          </button>
+                          <Pdf
+                            targetRef={ref}
+                            onComplete={() => removePreview()}
+                            filename="demo-invoice.pdf"
+                          >
+                            {({ toPdf }) => (
+                              <button
+                                className={styles.InvoiceDownloadButton}
+                                onClick={toPdf}
+                              >
+                                Download
+                              </button>
+                            )}
+                          </Pdf>
                         </div>
                       </div>
                     </div>
@@ -566,6 +587,64 @@ const ProjectBillingPage = (props) => {
                 )}
               </div>
             </div>
+
+            {downloadFile === "invoice" && (
+              <div className={styles.InvoiceHistoryBody} ref={ref}>
+                <div className={styles.TransactionHistoryHeading}>
+                  <span>
+                    <img
+                      src="https://raw.githubusercontent.com/crane-cloud/frontend/develop/public/favicon.png"
+                      width="40"
+                      alt=""
+                    />
+                    Crane Cloud Project Invoice
+                  </span>
+                </div>
+                <div className={styles.InvoiceHistoryTable}>
+                  <div className={styles.InvoiceHistoryHead}>
+                    <div className={styles.InvoiceHistoryCell}>
+                      Date Generated
+                    </div>
+                    <div className={styles.InvoiceHistoryCell}>Invoice ID</div>
+                    <div className={styles.InvoiceHistoryCell}>
+                      Project Name
+                    </div>
+                  </div>
+                  <div className={styles.InvoiceHistoryRow}>
+                    <div className={styles.InvoiceHistoryCell}>10-06-2022</div>
+                    <div className={styles.InvoiceHistoryCell}>87546947</div>
+                    <div className={styles.InvoiceHistoryCell}>Rhodin Apps</div>
+                  </div>
+                </div>
+                <br />
+                <div className={styles.InvoiceHistoryTable}>
+                  <div className={styles.InvoiceHistoryHead}>
+                    <div className={styles.InvoiceHistoryCell}>Amount Due</div>
+                    <div className={styles.InvoiceHistoryCell}>Amount Paid</div>
+                    <div className={styles.InvoiceHistoryCell}>Balance Due</div>
+                  </div>
+                  <div className={styles.InvoiceHistoryRow}>
+                    <div className={styles.InvoiceHistoryCell}>UGX 40,000</div>
+                    <div className={styles.InvoiceHistoryCell}>UGX 40,000</div>
+                    <div className={styles.InvoiceHistoryCell}>UGX 0</div>
+                  </div>
+                </div>
+                <br />
+                <div className={styles.TransactionHistoryHeading}>
+                  <span>Contact Details</span>
+                </div>
+                <br />
+                <span>Software Center, Level 3, Block B</span>
+                <br />
+                <span> College of Computing and Information Sciences</span>
+                <br />
+                <span>Makerere University Kampala, Uganda</span>
+                <br />
+                <span>
+                  <a href="https://cranecloud.io">https://cranecloud.io</a>
+                </span>
+              </div>
+            )}
 
             {viewReceipt && (
               <div>
