@@ -103,7 +103,7 @@ class UserAccounts extends Component {
       match: { params },
     } = this.props;
     const { actionsMenu, selectedUser, betaUserModal } = this.state;
-    console.log(selectedUser);
+    
     return (
       <div className="MainPage">
         {isAdded ? this.renderRedirect() : null}

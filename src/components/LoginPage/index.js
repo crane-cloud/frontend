@@ -12,7 +12,9 @@ import PrimaryButton from "../PrimaryButton";
 import Spinner from "../Spinner";
 import { API_BASE_URL, GIT_REDIRECT_URL } from "../../config";
 import { ReactComponent as LogoIcon } from "../../assets/images/githublogo.svg";
+import { onUnload } from "../../helpers/localStorage";
 import "./LoginPage.css";
+
 
 class LoginPage extends React.Component {
   constructor() {
@@ -34,18 +36,19 @@ class LoginPage extends React.Component {
   }
 
   componentDidMount() {
-    // remove the current state from local storage
-    // so that when a person logs in they dont encounter
-    // the previous state which wasnt cleared
+    // window.addEventListener('beforeunload', onUnload);
     const queryParams = new URLSearchParams(window.location.search);
     const code = queryParams?.get("code");
-    localStorage.setItem("state", {});
-    // localStorage.removeItem("state");
-    // this.props.removeUser();
+    localStorage.clear();
     if (code) {
       this.initiateGitHubLogin(code);
     }
   }
+
+  // componentWillUnmount() {
+  //   window.removeEventListener('beforeunload', onUnload);
+  // }
+
 
   toGithubauth = () => {
     window.location.href = `${GIT_REDIRECT_URL}`;
@@ -181,7 +184,6 @@ class LoginPage extends React.Component {
   render() {
     const { error, email, password, loading, gitLoading, feedbackMessage } =
       this.state;
-
     return (
       <div className="LoginPageContainer">
         <Header />

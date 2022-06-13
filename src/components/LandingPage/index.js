@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import NewHeader from "../NewHeader";
@@ -11,6 +11,7 @@ import { ReactComponent as Container } from "../../assets/images/container.svg";
 import { ReactComponent as Orch } from "../../assets/images/orcherstration.svg";
 import { ReactComponent as Registry } from "../../assets/images/registry.svg";
 import { ReactComponent as Cloud } from "../../assets/images/multicloud.svg";
+import { onUnload } from "../../helpers/localStorage";
 import styles from "./LandingPage.module.css";
 
 const LandingPage = (props) => {
@@ -18,6 +19,13 @@ const LandingPage = (props) => {
   if (user.data.id === undefined) {
     user = false;
   }
+  useEffect(() => {
+    
+    // This is meant to clear localstorage when the window is closed
+    window.addEventListener("beforeunload", onUnload);
+
+    return () => window.removeEventListener("beforeunload", onUnload);
+  }, []);
   return (
     <div className={styles.LandingPageMain}>
       <NewHeader />

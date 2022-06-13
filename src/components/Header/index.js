@@ -22,9 +22,7 @@ const Header = (props) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("state");
-    localStorage.removeItem("token");
-    localStorage.removeItem("project");
+    localStorage.clear();
     props.removeUser();
     window.location.href = "/";
   };
@@ -44,6 +42,7 @@ const Header = (props) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+  console.log(user)
 
   return (
     <header className={`${styles.Header} SmallContainer`}>
