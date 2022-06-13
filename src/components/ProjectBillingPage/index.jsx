@@ -22,6 +22,9 @@ import {
 } from "../../redux/actions/getTransactions";
 
 const ref = React.createRef();
+const options = {
+  orientation: "landscape",
+};
 
 const data2 = [
   { date: "2021-08", amount: 1398 },
@@ -50,7 +53,8 @@ const ProjectBillingPage = (props) => {
   const [transactionDetails, setTransactionDetails] = useState({});
   const [viewReceipt, setViewReceipt] = useState(false);
   const [currentTab, setCurrentTab] = useState("transactions");
-  const [downloadFile, setDownloadFile] = useState("");
+  const [viewInvoiceFile, setViewInvoiceFile] = useState(false);
+  const [viewReceiptFile, setViewReceiptFile] = useState(false);
   const [currentUsageTab, setCurrentUsageTab] = useState("days");
   const [months, setMonths] = useState(data2);
   const [days, setDays] = useState([]);
@@ -70,18 +74,16 @@ const ProjectBillingPage = (props) => {
 
   const viewTransactions = () => {
     setCurrentTab("transactions");
-    setDownloadFile("");
   };
   const viewInvoices = () => {
     setCurrentTab("invoices");
-    setDownloadFile("invoice");
   };
   const viewReceipts = () => {
     setCurrentTab("receipts");
-    setDownloadFile("");
   };
   const removePreview = () => {
-    setDownloadFile("");
+    setViewInvoiceFile(false);
+    setViewReceiptFile(false);
   };
 
   const viewUsageInDays = () => {
@@ -201,6 +203,13 @@ const ProjectBillingPage = (props) => {
     let transactionDetail = getTransactionDetail(transactions, transaction_id);
     setTransactionDetails(transactionDetail);
     setViewReceipt(true);
+  };
+
+  const openInvoiceModal = () => {
+    setViewInvoiceFile(true);
+  };
+  const openReceiptsModal = () => {
+    setViewReceiptFile(true);
   };
 
   const handlePeriodChange = (period, customTime = null) => {
@@ -527,20 +536,12 @@ const ProjectBillingPage = (props) => {
                           UGX 40,000
                         </div>
                         <div className={styles.InvoiceHistoryCell}>
-                          <Pdf
-                            targetRef={ref}
-                            onComplete={() => removePreview()}
-                            filename="demo-invoice.pdf"
+                          <button
+                            onClick={() => openInvoiceModal()}
+                            className={styles.PaymentDetailsButton}
                           >
-                            {({ toPdf }) => (
-                              <button
-                                className={styles.InvoiceDownloadButton}
-                                onClick={toPdf}
-                              >
-                                Download
-                              </button>
-                            )}
-                          </Pdf>
+                            View
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -577,8 +578,11 @@ const ProjectBillingPage = (props) => {
                         </div>
                         <div className={styles.ReceiptHistoryCell}>UGX 0</div>
                         <div className={styles.ReceiptHistoryCell}>
-                          <button className={styles.ReceiptDownloadButton}>
-                            Download
+                          <button
+                            onClick={() => openReceiptsModal()}
+                            className={styles.PaymentDetailsButton}
+                          >
+                            View
                           </button>
                         </div>
                       </div>
@@ -588,62 +592,200 @@ const ProjectBillingPage = (props) => {
               </div>
             </div>
 
-            {downloadFile === "invoice" && (
-              <div className={styles.InvoiceHistoryBody} ref={ref}>
-                <div className={styles.TransactionHistoryHeading}>
+            {viewInvoiceFile && (
+              <>
+                <div>
+                  <Modal
+                    showModal={viewInvoiceFile}
+                    onClickAway={() => removePreview()}
+                  >
+                    <div className={styles.ModalHistoryBody} ref={ref}>
+                      <div className={styles.ModalHistoryHeading}>
+                        <span>
+                          <img
+                            src="https://raw.githubusercontent.com/crane-cloud/frontend/develop/public/favicon.png"
+                            width="50"
+                            alt=""
+                          />
+                        </span>
+                        <span>
+                          Crane Cloud Project Invoice
+                          <br />
+                          <div className={styles.InvoiceID}>
+                            Invoice ID 87546947
+                          </div>
+                        </span>
+                      </div>
+
+                      <div className={styles.InvoiceModalHistoryTable}>
+                        <div className={styles.InvoiceModalHistoryHead}>
+                          <div className={styles.InvoiceModalTitle}>
+                            Date Generated
+                          </div>
+                          <div className={styles.InvoiceModalTitle}>
+                            Project Name
+                          </div>
+                          <div className={styles.InvoiceModalTitle}>
+                            Total Amount Due
+                          </div>
+                          <div className={styles.InvoiceModalTitle}>
+                            Total Balance Due
+                          </div>
+                        </div>
+                        <div className={styles.InvoiceModalHistoryRow}>
+                          <div className={styles.InvoiceHistoryCell}>
+                            01-06-2022
+                          </div>
+                          <div className={styles.InvoiceHistoryCell}>
+                            Rhodin Apps
+                          </div>
+                          <div className={styles.InvoiceHistoryCell}>
+                            UGX 40,000
+                          </div>
+                          <div className={styles.InvoiceHistoryCell}>
+                            UGX 40,000
+                          </div>
+                        </div>
+                      </div>
+                      <br />
+                      <div className={styles.ModalHistoryHeading}>
+                        <span>Contact Details</span>
+                      </div>
+                      <div className={styles.ContactDetails}>
+                        Software Center, Level 3, Block B
+                        <br />
+                        College of Computing and Information Sciences
+                        <br />
+                        Makerere University Kampala, Uganda
+                        <br />
+                        <a href="https://cranecloud.io">
+                          https://cranecloud.io
+                        </a>
+                      </div>
+                    </div>
+                    <div className={styles.ViewFileLowerSection}>
+                      <div className={styles.ViewFileModalButtons}>
+                        <PrimaryButton
+                          label="cancel"
+                          className="CancelBtn"
+                          onClick={() => removePreview()}
+                        />
+                        <Pdf
+                          targetRef={ref}
+                          options={options}
+                          onComplete={() => removePreview()}
+                          filename="demo-invoice.pdf"
+                        >
+                          {({ toPdf }) => (
+                            <PrimaryButton
+                              label="download"
+                              className={styles.DownloadButton}
+                              onClick={toPdf}
+                            />
+                          )}
+                        </Pdf>
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+              </>
+            )}
+
+            {viewReceiptFile && (
+              <Modal
+                showModal={viewReceiptFile}
+                onClickAway={() => removePreview()}
+              >
+                <div className={styles.ModalHistoryBody} ref={ref}>
+                  <div className={styles.ModalHistoryHeading}>
+                    <span>
+                      <img
+                        src="https://raw.githubusercontent.com/crane-cloud/frontend/develop/public/favicon.png"
+                        width="40"
+                        alt=""
+                      />
+                      Crane Cloud Payment Receipt
+                    </span>
+                  </div>
+                  <div className={styles.InvoiceHistoryTable}>
+                    <div className={styles.InvoiceHistoryHead}>
+                      <div className={styles.InvoiceHistoryCell}>
+                        Date Generated
+                      </div>
+                      <div className={styles.InvoiceHistoryCell}>
+                        Transaction ID
+                      </div>
+                      <div className={styles.InvoiceHistoryCell}>
+                        Invoice ID
+                      </div>
+                    </div>
+                    <div className={styles.InvoiceHistoryRow}>
+                      <div className={styles.InvoiceHistoryCell}>
+                        01-06-2022
+                      </div>
+                      <div className={styles.InvoiceHistoryCell}>3437533</div>
+                      <div className={styles.InvoiceHistoryCell}>87546947</div>
+                    </div>
+                  </div>
+                  <br />
+                  <div className={styles.InvoiceHistoryTable}>
+                    <div className={styles.InvoiceHistoryHead}>
+                      <div className={styles.InvoiceHistoryCell}>Username</div>
+                      <div className={styles.InvoiceHistoryCell}>
+                        Total Amount Paid
+                      </div>
+                      <div className={styles.InvoiceHistoryCell}>
+                        Available Balance
+                      </div>
+                    </div>
+                    <div className={styles.InvoiceHistoryRow}>
+                      <div className={styles.InvoiceHistoryCell}>
+                        rhodinemma
+                      </div>
+                      <div className={styles.InvoiceHistoryCell}>
+                        UGX 40,000
+                      </div>
+                      <div className={styles.InvoiceHistoryCell}>UGX 0</div>
+                    </div>
+                  </div>
+                  <br />
+                  <div className={styles.ModalHistoryHeading}>
+                    <span>Contact Details</span>
+                  </div>
+                  <br />
+                  <span>Software Center, Level 3, Block B</span>
+                  <br />
+                  <span> College of Computing and Information Sciences</span>
+                  <br />
+                  <span>Makerere University Kampala, Uganda</span>
+                  <br />
                   <span>
-                    <img
-                      src="https://raw.githubusercontent.com/crane-cloud/frontend/develop/public/favicon.png"
-                      width="40"
-                      alt=""
-                    />
-                    Crane Cloud Project Invoice
+                    <a href="https://cranecloud.io">https://cranecloud.io</a>
                   </span>
                 </div>
-                <div className={styles.InvoiceHistoryTable}>
-                  <div className={styles.InvoiceHistoryHead}>
-                    <div className={styles.InvoiceHistoryCell}>
-                      Date Generated
-                    </div>
-                    <div className={styles.InvoiceHistoryCell}>Invoice ID</div>
-                    <div className={styles.InvoiceHistoryCell}>
-                      Project Name
-                    </div>
-                  </div>
-                  <div className={styles.InvoiceHistoryRow}>
-                    <div className={styles.InvoiceHistoryCell}>10-06-2022</div>
-                    <div className={styles.InvoiceHistoryCell}>87546947</div>
-                    <div className={styles.InvoiceHistoryCell}>Rhodin Apps</div>
-                  </div>
-                </div>
-                <br />
-                <div className={styles.InvoiceHistoryTable}>
-                  <div className={styles.InvoiceHistoryHead}>
-                    <div className={styles.InvoiceHistoryCell}>Amount Due</div>
-                    <div className={styles.InvoiceHistoryCell}>Amount Paid</div>
-                    <div className={styles.InvoiceHistoryCell}>Balance Due</div>
-                  </div>
-                  <div className={styles.InvoiceHistoryRow}>
-                    <div className={styles.InvoiceHistoryCell}>UGX 40,000</div>
-                    <div className={styles.InvoiceHistoryCell}>UGX 40,000</div>
-                    <div className={styles.InvoiceHistoryCell}>UGX 0</div>
+                <div className={styles.ViewFileLowerSection}>
+                  <div className={styles.ViewFileModalButtons}>
+                    <PrimaryButton
+                      label="cancel"
+                      className="CancelBtn"
+                      onClick={() => removePreview()}
+                    />
+                    <Pdf
+                      targetRef={ref}
+                      onComplete={() => removePreview()}
+                      filename="demo-receipt.pdf"
+                    >
+                      {({ toPdf }) => (
+                        <PrimaryButton
+                          label="download"
+                          className={styles.DownloadButton}
+                          onClick={toPdf}
+                        />
+                      )}
+                    </Pdf>
                   </div>
                 </div>
-                <br />
-                <div className={styles.TransactionHistoryHeading}>
-                  <span>Contact Details</span>
-                </div>
-                <br />
-                <span>Software Center, Level 3, Block B</span>
-                <br />
-                <span> College of Computing and Information Sciences</span>
-                <br />
-                <span>Makerere University Kampala, Uganda</span>
-                <br />
-                <span>
-                  <a href="https://cranecloud.io">https://cranecloud.io</a>
-                </span>
-              </div>
+              </Modal>
             )}
 
             {viewReceipt && (
