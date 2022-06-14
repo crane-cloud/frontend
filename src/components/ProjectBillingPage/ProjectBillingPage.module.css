@@ -338,7 +338,8 @@
   justify-content: space-between;
 }
 
-.InvoiceModalTitle {
+.InvoiceModalTitle,
+.ReceiptModalTitle {
   font-size: large;
   font-weight: bold;
 }

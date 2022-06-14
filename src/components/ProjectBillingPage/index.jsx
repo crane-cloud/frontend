@@ -701,47 +701,37 @@ const ProjectBillingPage = (props) => {
                     <span>
                       <img
                         src="https://raw.githubusercontent.com/crane-cloud/frontend/develop/public/favicon.png"
-                        width="40"
+                        width="50"
                         alt=""
                       />
+                    </span>
+                    <span>
                       Crane Cloud Payment Receipt
+                      <br />
+                      <div className={styles.InvoiceID}>
+                        Transaction ID 3437533
+                      </div>
                     </span>
                   </div>
-                  <div className={styles.InvoiceHistoryTable}>
-                    <div className={styles.InvoiceHistoryHead}>
-                      <div className={styles.InvoiceHistoryCell}>
+
+                  <div className={styles.InvoiceModalHistoryTable}>
+                    <div className={styles.InvoiceModalHistoryHead}>
+                      <div className={styles.ReceiptModalTitle}>
                         Date Generated
                       </div>
-                      <div className={styles.InvoiceHistoryCell}>
-                        Transaction ID
+                      <div className={styles.ReceiptModalTitle}>Invoice ID</div>
+                      <div className={styles.ReceiptModalTitle}>
+                        Amount Paid
                       </div>
-                      <div className={styles.InvoiceHistoryCell}>
-                        Invoice ID
-                      </div>
-                    </div>
-                    <div className={styles.InvoiceHistoryRow}>
-                      <div className={styles.InvoiceHistoryCell}>
-                        01-06-2022
-                      </div>
-                      <div className={styles.InvoiceHistoryCell}>3437533</div>
-                      <div className={styles.InvoiceHistoryCell}>87546947</div>
-                    </div>
-                  </div>
-                  <br />
-                  <div className={styles.InvoiceHistoryTable}>
-                    <div className={styles.InvoiceHistoryHead}>
-                      <div className={styles.InvoiceHistoryCell}>Username</div>
-                      <div className={styles.InvoiceHistoryCell}>
-                        Total Amount Paid
-                      </div>
-                      <div className={styles.InvoiceHistoryCell}>
+                      <div className={styles.ReceiptModalTitle}>
                         Available Balance
                       </div>
                     </div>
-                    <div className={styles.InvoiceHistoryRow}>
+                    <div className={styles.InvoiceModalHistoryRow}>
                       <div className={styles.InvoiceHistoryCell}>
-                        rhodinemma
+                        15-06-2022
                       </div>
+                      <div className={styles.InvoiceHistoryCell}>87546947</div>
                       <div className={styles.InvoiceHistoryCell}>
                         UGX 40,000
                       </div>
@@ -752,16 +742,15 @@ const ProjectBillingPage = (props) => {
                   <div className={styles.ModalHistoryHeading}>
                     <span>Contact Details</span>
                   </div>
-                  <br />
-                  <span>Software Center, Level 3, Block B</span>
-                  <br />
-                  <span> College of Computing and Information Sciences</span>
-                  <br />
-                  <span>Makerere University Kampala, Uganda</span>
-                  <br />
-                  <span>
+                  <div className={styles.ContactDetails}>
+                    Software Center, Level 3, Block B
+                    <br />
+                    College of Computing and Information Sciences
+                    <br />
+                    Makerere University Kampala, Uganda
+                    <br />
                     <a href="https://cranecloud.io">https://cranecloud.io</a>
-                  </span>
+                  </div>
                 </div>
                 <div className={styles.ViewFileLowerSection}>
                   <div className={styles.ViewFileModalButtons}>
@@ -772,6 +761,7 @@ const ProjectBillingPage = (props) => {
                     />
                     <Pdf
                       targetRef={ref}
+                      options={options}
                       onComplete={() => removePreview()}
                       filename="demo-receipt.pdf"
                     >
