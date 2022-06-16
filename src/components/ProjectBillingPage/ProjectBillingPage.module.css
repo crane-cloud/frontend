@@ -207,6 +207,10 @@
   padding: 2rem;
 }
 
+.ModalHistoryBody {
+  padding: 2rem;
+}
+
 .TransactionHistoryRow,
 .TransactionHistoryHead,
 .InvoiceHistoryHead,
@@ -216,6 +220,15 @@
   grid-gap: 10px;
   border-bottom: 1px solid #ccc;
   padding: 1rem;
+}
+
+.InvoiceModalHistoryHead,
+.InvoiceModalHistoryRow {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 3rem;
+  border-bottom: 1px solid #ccc;
+  padding: 3rem;
 }
 
 .TransactionHistoryCell,
@@ -316,6 +329,37 @@
 .ReceiptButton {
   display: flex;
   justify-content: center;
+}
+
+.ModalHistoryHeading {
+  font-size: large;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
+
+.InvoiceModalTitle,
+.ReceiptModalTitle {
+  font-size: large;
+  font-weight: bold;
+}
+
+.InvoiceID {
+  font-weight: normal;
+}
+
+.ContactDetails {
+  display: grid;
+  gap: 1rem;
+}
+
+.ViewFileLowerSection {
+  padding: 1rem 2rem 0 2rem;
+}
+
+.ViewFileModalButtons {
+  display: flex;
+  justify-content: space-between;
 }
 
 @media (max-width: 768px) {
