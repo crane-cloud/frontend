@@ -111,23 +111,22 @@ const AdminProjectsPage = () => {
                           <td>{project.name}</td>
                           <td>{getUserName(project.owner_id)}</td>
                           <td>{project.description}</td>
-                          <td onClick={() => showContextMenu(project.owner_id)}>
+                          <td onClick={() => showContextMenu(project.id)}>
                             <MoreIcon />
 
-                            {contextMenu &&
-                              project.owner_id === selectedProject && (
-                                <div className="BelowHeader bg-light">
-                                  <div className="context-menu">
-                                    <div
-                                      className="DropDownLink"
-                                      role="presentation"
-                                      onClick={() => showModal()}
-                                    >
-                                      Add Credits
-                                    </div>
+                            {contextMenu && project.id === selectedProject && (
+                              <div className="BelowHeader bg-light">
+                                <div className="context-menu">
+                                  <div
+                                    className="DropDownLink"
+                                    role="presentation"
+                                    onClick={() => showModal()}
+                                  >
+                                    Add Credits
                                   </div>
                                 </div>
-                              )}
+                              </div>
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -135,14 +134,14 @@ const AdminProjectsPage = () => {
                 )}
               </table>
               <Modal showModal={addCredits} onClickAway={() => hideModal()}>
-                <div className="modal-header">
-                  <h5 className="modal-title">Add Credits</h5>
-                  <div className="modal-content">
+                <div className="ModalHeader">
+                  <h5 className="ModalTitle">Add Credits</h5>
+                  <div className="ModalContent">
                     <BlackInputText required placeholder="Number of credits" />
                   </div>
                 </div>
-                <div className="modal-footer">
-                  <div className="modal-buttons">
+                <div className="ModalFooter">
+                  <div className="ModalButtons">
                     <PrimaryButton
                       className="CancelBtn"
                       label="Cancel"
