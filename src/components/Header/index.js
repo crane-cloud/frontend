@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, matchPath } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Logo from "../Logo";
@@ -21,6 +21,12 @@ const Header = (props) => {
     }
   };
 
+  const pageUrl = matchPath(match.path, {
+    path: "/login",
+    exact: true,
+    strict: true,
+  });
+
   const logout = () => {
     localStorage.clear();
     props.removeUser();
@@ -36,19 +42,19 @@ const Header = (props) => {
   // componentWillMount & componentWillUnmount
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
+    // const { removeUser } = props;
 
     // returned function will be called on component unmount
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  console.log(user)
 
   return (
     <header className={`${styles.Header} SmallContainer`}>
       <Logo />
 
-      {(!user.accessToken || user.accessToken === "") && (
+      {(!user.accessToken || user.accessToken === "" || pageUrl !== null) && (
         <div className={styles.HeaderLinksWrap}>
           {match.path !== "/admin-login" && (
             <div className={styles.HeaderLinks}>
@@ -74,7 +80,7 @@ const Header = (props) => {
         </div>
       )}
 
-      {user.accessToken && (
+      {(user.accessToken && pageUrl === null) && (
         <div className={styles.HeaderLinksWrap}>
           <div
             ref={dropdownRef}
