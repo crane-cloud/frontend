@@ -470,7 +470,7 @@ const ProjectBillingPage = (props) => {
                     <div className={styles.TransactionHistoryTable}>
                       <div className={styles.TransactionHistoryHead}>
                       <div className={styles.TransactionHistoryCell}>
-                          Date
+                          Date & Time
                         </div>
                         <div className={styles.TransactionHistoryCell}>
                           Transaction Id
@@ -795,7 +795,7 @@ const ProjectBillingPage = (props) => {
                       {transactionDetails && (
                         <>
                         <div className={styles.ReceiptLabel}>
-                            Transaction Date/Time
+                            Transaction Date & Time
                           </div>
                           <div className={styles.ReceiptDetail}>
                             {DisplayDateTime(new Date(transactionDetails.date_created))}
