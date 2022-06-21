@@ -221,6 +221,11 @@
   border-bottom: 1px solid #ccc;
   padding: 1rem;
 }
+.CBLabel{
+  display: grid;
+  grid-template-columns: 3% 10%;
+  gap: .4rem;
+}
 
 .InvoiceModalHistoryHead,
 .InvoiceModalHistoryRow {

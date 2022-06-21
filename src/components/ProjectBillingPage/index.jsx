@@ -8,6 +8,7 @@ import Modal from "../../components/Modal";
 import PrimaryButton from "../PrimaryButton";
 import DonutChart from "../DonutChart";
 import BarGraph from "../BarGraph";
+import Checkbox from "../Checkbox";
 import FlutterwaveHook from "../FlutterwaveHook";
 import MetricsCard from "../MetricsCard";
 import SpendingPeriod from "../SpendingPeriod";
@@ -15,6 +16,8 @@ import { useParams } from "react-router-dom";
 import styles from "./ProjectBillingPage.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import getProjectBill from "../../redux/actions/getProjectBill";
+import axios from "axios";
+import {  LIVE_EXCHANGE_RATE_API } from "../../config";
 
 import {
   getTransactions,
@@ -58,16 +61,32 @@ const ProjectBillingPage = (props) => {
   const [currentUsageTab, setCurrentUsageTab] = useState("days");
   const [months, setMonths] = useState(data2);
   const [days, setDays] = useState([]);
+  const [rate, setRate] = useState(1);
+  const [inUgx, setInUgx] = useState(false);
 
   useEffect(() => {
     clearAllTransactions();
     getAllTransactions();
+    handleConversion();
   }, [clearAllTransactions, getAllTransactions]);
 
   const { projects } = useSelector((state) => state.userProjectsReducer);
   const { data } = useSelector((state) => state.user);
   const { transactions } = useSelector((state) => state.getTransactionsReducer);
 
+  const handleConversion = () => {
+        axios
+          .get(LIVE_EXCHANGE_RATE_API)
+          .then((response) => {
+            if (response.status !== 200) {
+              return false;
+            }
+           setRate(response.data.rates.UGX);  
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    }
   const closeReceiptModal = () => {
     setViewReceipt(false);
   };
@@ -78,6 +97,13 @@ const ProjectBillingPage = (props) => {
   const viewInvoices = () => {
     setCurrentTab("invoices");
   };
+  const ChangeCurrency = ()=>{
+    if(inUgx && rate === 1){
+      //if the ugx conversion din't work
+      handleConversion()
+    }
+    setInUgx(!inUgx);
+  }
   const viewReceipts = () => {
     setCurrentTab("receipts");
   };
@@ -100,7 +126,6 @@ const ProjectBillingPage = (props) => {
       ),
     [dispatch, projectID]
   );
-
   // create a function that takes in a array and returns a new array of objects with the data 2 format
   const getData2Format = useCallback(
     (data) => {
@@ -112,14 +137,14 @@ const ProjectBillingPage = (props) => {
               currentUsageTab === "months"
                 ? moment(element.start).utc().format("YYYY-MM-DD")
                 : moment(element.start).utc().format("DD"),
-            amount: element.totalCost * 3600,
+            amount: element.totalCost * rate,
           });
         });
       }
       // let newData2 = newData.slice(4)
       return newData;
     },
-    [currentUsageTab]
+    [currentUsageTab,rate]
   );
   // create a function that takes in a array and sums all the object key values to create one object
   const summationObject = (data) => {
@@ -194,6 +219,8 @@ const ProjectBillingPage = (props) => {
   const getProjectName = (id) => {
     return projects.find((project) => project.id === id).name;
   };
+
+
   const getTransactionDetail = (transactions, transaction_id) => {
     return transactions.find(
       (transaction) => transaction.transaction_id === transaction_id
@@ -272,6 +299,7 @@ const ProjectBillingPage = (props) => {
       }
     }
   };
+
   return (
     <div className={styles.Page}>
       <div className={styles.TopBarSection}>
@@ -295,6 +323,14 @@ const ProjectBillingPage = (props) => {
             <InformationBar header="Project Billing" />
           </div>
           <div className={styles.SmallContainer}>
+          <div className={styles.CBLabel}>
+                <Checkbox
+                   isBlack
+                   onClick={ChangeCurrency}
+                   isChecked={inUgx}
+                   />
+                  In UGX
+               </div>
             <div className={styles.OuterContainerBorder}>
               <div className={styles.DonutChatContainer}>
                 <div className={styles.InsideHeading}>
@@ -329,11 +365,15 @@ const ProjectBillingPage = (props) => {
                         </div>
                         <div className={styles.ResourcePrice}>
                           {/**display in dollars, covert back form percentages to dollars*/}
-                          $
-                          {(
+
+                          {inUgx? <>  {(
+                            (data1[index % data1.length].value *
+                            (newObject.totalCost / 100))*rate
+                          ).toFixed(2)}/= </>:
+                          <>${(
                             data1[index % data1.length].value *
                             (newObject.totalCost / 100)
-                          ).toFixed(2)}
+                          ).toFixed(2)}</>}
                         </div>
                       </div>
                     ))}
@@ -342,7 +382,7 @@ const ProjectBillingPage = (props) => {
                       <div className={styles.ResourcePrice}>
                         {Object.keys(newObject).length === 0
                           ? "n/a"
-                          : `$${newObject.totalCost.toFixed(2)}`}
+                          :inUgx ?`${(newObject.totalCost*rate).toFixed(2)}/=`:`$${(newObject.totalCost).toFixed(2)}`}
                       </div>
                     </div>
                   </div>
@@ -351,7 +391,7 @@ const ProjectBillingPage = (props) => {
                       amount={
                         transactionDetails.amount
                           ? transactionDetails.amount.toLocaleString("en-US") *
-                            3600
+                            rate.toFixed(1)
                           : 0
                       }
                       name={data.name}
@@ -493,7 +533,9 @@ const ProjectBillingPage = (props) => {
                             </span>
                           </div>
                           <div className={styles.TransactionHistoryCell}>
-                            UGX {entry.amount.toLocaleString("en-US")}
+                            {inUgx ?<>UGX {(entry.amount.toFixed(2)).toLocaleString("en-US")} </>: 
+                            <>$ {((entry.amount/rate).toFixed(2)).toLocaleString("en-US")} </>
+                           }
                           </div>
                           <div className={styles.TransactionHistoryCell}>
                             <button
@@ -533,7 +575,9 @@ const ProjectBillingPage = (props) => {
                           87546947
                         </div>
                         <div className={styles.InvoiceHistoryCell}>
-                          UGX 40,000
+                        {inUgx ?<>UGX 40000 </>: 
+                            <>$ {(40000/rate).toFixed(2)}</>
+                           }
                         </div>
                         <div className={styles.InvoiceHistoryCell}>
                           <button
@@ -574,7 +618,9 @@ const ProjectBillingPage = (props) => {
                           87546947
                         </div>
                         <div className={styles.ReceiptHistoryCell}>
-                          UGX 40,000
+                        {inUgx ?<>UGX 40000 </>: 
+                            <>$ {(40000/rate).toFixed(2)}</>
+                           }
                         </div>
                         <div className={styles.ReceiptHistoryCell}>UGX 0</div>
                         <div className={styles.ReceiptHistoryCell}>
@@ -640,10 +686,14 @@ const ProjectBillingPage = (props) => {
                             Rhodin Apps
                           </div>
                           <div className={styles.InvoiceHistoryCell}>
-                            UGX 40,000
+                          {inUgx ?<>UGX 40000 </>: 
+                            <>$ {(40000/rate).toFixed(2)}</>
+                           }
                           </div>
                           <div className={styles.InvoiceHistoryCell}>
-                            UGX 40,000
+                          {inUgx ?<>UGX 40000 </>: 
+                            <>$ {(40000/rate).toFixed(2)}</>
+                           }
                           </div>
                         </div>
                       </div>
@@ -690,7 +740,7 @@ const ProjectBillingPage = (props) => {
                 </div>
               </>
             )}
-
+          {/**Not converting recipts printable to Dollars since amount has already been paid */}
             {viewReceiptFile && (
               <Modal
                 showModal={viewReceiptFile}
@@ -807,13 +857,15 @@ const ProjectBillingPage = (props) => {
                               {transactionDetails.status}
                             </div>
                           </div>
-                          <div className={styles.ReceiptLabel}>Currency</div>
+                          <div className={styles.ReceiptLabel}>Currency of payment</div>
                           <div className={styles.ReceiptDetail}>
                             {transactionDetails.currency}
                           </div>
                           <div className={styles.ReceiptLabel}>Amount Paid</div>
                           <div className={styles.ReceiptDetail}>
-                            {transactionDetails.amount.toLocaleString("en-US")}
+                          {inUgx ?<>UGX {(transactionDetails.amount.toFixed(2)).toLocaleString("en-US")} </>: 
+                            <>$ {((transactionDetails.amount/rate).toFixed(2)).toLocaleString("en-US")} </>
+                           }
                           </div>
                         </>
                       )}
