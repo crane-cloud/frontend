@@ -87,8 +87,9 @@ const ProjectBillingPage = (props) => {
             }
            setRate(response.data.rates.UGX);  
           })
-          .catch((error) => {
-            console.log(error);
+          .catch((e) => {
+            //failed to load current rate
+            setInUgx(false)
           });
     }
   const closeReceiptModal = () => {
