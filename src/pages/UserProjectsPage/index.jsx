@@ -149,6 +149,7 @@ class UserProjectsPage extends React.Component {
                         name={project.name}
                         description={project.description}
                         cardID={project.id}
+                        apps_count={project.apps_count}
                       />
                     ))}
                 </div>
@@ -162,6 +163,7 @@ class UserProjectsPage extends React.Component {
                         name={project.name}
                         description={project.description}
                         cardID={project.id}
+                        apps_count={project.apps_count}
                       />
                     ))}
                 </div>

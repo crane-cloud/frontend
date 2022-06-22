@@ -1,0 +1,12 @@
+.ModalTitle {
+    display: flex;
+    align-items: flex-start;
+    font-size: large;
+}
+
+.ModalButtons {
+    display: flex;
+    gap: 3rem;
+    justify-content: space-between;
+    padding-top: 2rem;
+}

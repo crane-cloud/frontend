@@ -27,13 +27,14 @@ class ProjectCard extends React.Component {
   }
 
   render() {
-    const { name, description, cardID } = this.props;
+    const { name, description, cardID,apps_count } = this.props;
 
     const formattedMetrics = this.getProjectMemoryMetrics();
 
     return (
       <>
         <div className="ProjectsCard">
+          <div className="appCount">{apps_count}</div>
           <Link
             to={{
               pathname: `/projects/${cardID}/dashboard`,

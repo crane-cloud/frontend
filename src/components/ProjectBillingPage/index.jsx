@@ -18,6 +18,10 @@ import { useSelector, useDispatch } from "react-redux";
 import getProjectBill from "../../redux/actions/getProjectBill";
 import axios from "axios";
 import {  LIVE_EXCHANGE_RATE_API } from "../../config";
+import {
+  DisplayDateTime,
+} from "../../helpers/dateConstants";
+
 
 import {
   getTransactions,
@@ -506,6 +510,9 @@ const ProjectBillingPage = (props) => {
                   <div className={styles.TransactionHistoryBody}>
                     <div className={styles.TransactionHistoryTable}>
                       <div className={styles.TransactionHistoryHead}>
+                      <div className={styles.TransactionHistoryCell}>
+                          Date & Time
+                        </div>
                         <div className={styles.TransactionHistoryCell}>
                           Transaction Id
                         </div>
@@ -524,6 +531,9 @@ const ProjectBillingPage = (props) => {
                           className={styles.TransactionHistoryRow}
                           key={index}
                         >
+                          <div className={styles.TransactionHistoryCell}>
+                            {DisplayDateTime(new Date(entry.date_created))}
+                          </div>
                           <div className={styles.TransactionHistoryCell}>
                             {entry.transaction_id}
                           </div>
@@ -835,6 +845,12 @@ const ProjectBillingPage = (props) => {
                     <div className={styles.ReceiptDetailContainer}>
                       {transactionDetails && (
                         <>
+                        <div className={styles.ReceiptLabel}>
+                            Transaction Date & Time
+                          </div>
+                          <div className={styles.ReceiptDetail}>
+                            {DisplayDateTime(new Date(transactionDetails.date_created))}
+                          </div>
                           <div className={styles.ReceiptLabel}>
                             Transaction reference
                           </div>

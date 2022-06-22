@@ -10,6 +10,7 @@ const AppMetricsPageProps = {
   getAppMemory: jest.fn(),
   getAppCPU: jest.fn(),
   getAppNetwork: jest.fn(),
+  clearUrlRevertState: jest.fn(),
 };
 // {} ={}
 describe("Testing the App Metrics Page component", () => {
@@ -49,6 +50,10 @@ describe("Testing the exported mapstate to props and dispatch", () => {
           appNetworkMessage: "",
         },
         appsListReducer: { apps: [] },
+        revertUrlReducer: {
+          isReverting: false,
+          isReverted: false
+        }
       })
     ).toEqual({
       isFetchingAppMemory: false,
@@ -64,6 +69,8 @@ describe("Testing the exported mapstate to props and dispatch", () => {
       isFetchingAppNetwork: false,
       appNetworkMessage: "",
       apps: [],
+      isReverted:false,
+      isReverting:false
     });
   });
 });
