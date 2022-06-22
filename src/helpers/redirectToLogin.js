@@ -3,10 +3,7 @@ import removeUser from "../redux/actions/removeUser";
 
 const redirectToLogin = (dispatch) => {
   dispatch(removeUser());
-  localStorage.removeItem("state");
-  localStorage.removeItem("token");
-  localStorage.removeItem("project");
-
+  localStorage.clear();
   window.location.href = "/login";
 };
 
