@@ -88,7 +88,9 @@ class AppSettingsPage extends React.Component {
     this.hideDomainModal = this.hideDomainModal.bind(this);
     this.domainRevert = this.domainRevert.bind(this);
     this.disableRevert = this.disableRevert.bind(this);
+    this.regenerate = this.regenerate.bind(this);
   }
+
 
   handleChange(e) {
     const { openDeleteAlert, error } = this.state;
@@ -195,13 +197,24 @@ class AppSettingsPage extends React.Component {
   }
 
   renderRedirect = () => {
-    const { isDeleted, clearState } = this.props;
+    const { isDeleted, isReverted, clearState,clearUrlRevertState } = this.props;
     const { projectID } = this.props.match.params;
     if (isDeleted) {
       clearState();
       return <Redirect to={`/projects/${projectID}/apps`} noThrow />;
     }
+    if(isReverted){
+      clearUrlRevertState();
+      return <Redirect to={`/projects/${projectID}/apps`} noThrow />;
+    }
   };
+  regenerate() {
+    const {
+      revertUrl,
+      match: { params },
+    } = this.props;
+    revertUrl(params.appID);
+  }
 
   handleDockerCredentialsChange({ target, target: { value } }) {
     const { dockerCredentials } = this.state;
@@ -501,6 +514,7 @@ class AppSettingsPage extends React.Component {
       isFetched,
       isRetrieving,
       isUpdating,
+      isReverted,
       errorMessage,
       isReverting,
     } = this.props;
@@ -542,7 +556,7 @@ class AppSettingsPage extends React.Component {
 
     return (
       <div className={styles.Page}>
-        {isDeleted ? this.renderRedirect() : null}
+        {(isDeleted || isReverted )? this.renderRedirect() : null}
         <div className="TopBarSection">
           <Header />
         </div>
@@ -805,13 +819,18 @@ class AppSettingsPage extends React.Component {
                         </div>
                         <div className={styles.APPButtonRow}>
                           <div className={styles.AppLabel}>Link</div>
-                          <div className={styles.CopyDiv}>
+                          {app.url ? <div className={styles.CopyDiv}>
                             <div className="DBTDetail">{app.url}</div>
                             <div className={styles.CopyUrl}>
                               <CopyText onClick={this.urlOnClick} />
                               {urlChecked ? <Checked /> : null}
                             </div>
-                          </div>
+                          </div>:<>
+                           {isReverting ? <Spinner/> :<div className={styles.InnerContentWarnText} 
+                           onClick={()=>{this.regenerate()}} >
+                          Click to re-generate url
+                         </div> }</>
+                         } 
                         </div>
                         <div className={styles.APPButton}>
                           <div className={styles.UpperSection}>
