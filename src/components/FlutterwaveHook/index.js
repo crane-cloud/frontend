@@ -63,11 +63,11 @@ export default function FlutterWaveHook(props) {
   const closePaymentStatusModal = () => {
     setViewPaymentStatus(false);
   };
+  console.log(amount);
   return (
     <div>
       <PrimaryButton
         label={"Pay Bill"}
-        disable = {((amount === null) || (amount === undefined) || (amount < 4000))?true:false}
         onClick={() => {
           handleFlutterPayment({
             callback: (response) => {

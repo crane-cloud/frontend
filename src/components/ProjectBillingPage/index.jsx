@@ -28,6 +28,8 @@ import {
   clearTransactions,
 } from "../../redux/actions/getTransactions";
 
+import getInvoices, { clearInvoices } from "../../redux/actions/getInvoices";
+
 const ref = React.createRef();
 const options = {
   orientation: "landscape",
@@ -52,6 +54,17 @@ const ProjectBillingPage = (props) => {
     [dispatch, projectID]
   );
 
+  const getAllInvoices = useCallback(
+    () => dispatch(getInvoices(projectID)),
+    [dispatch, projectID]
+  );
+
+  const clearAllInvoices = useCallback(
+    () => dispatch(clearInvoices()),
+    [dispatch]
+  );
+
+
   const clearAllTransactions = useCallback(
     () => dispatch(clearTransactions()),
     [dispatch]
@@ -70,13 +83,16 @@ const ProjectBillingPage = (props) => {
 
   useEffect(() => {
     clearAllTransactions();
+    clearAllInvoices();
     getAllTransactions();
+    getAllInvoices();
     handleConversion();
-  }, [clearAllTransactions, getAllTransactions]);
+  }, [clearAllTransactions, getAllTransactions, clearAllInvoices, getAllInvoices]);
 
   const { projects } = useSelector((state) => state.userProjectsReducer);
   const { data } = useSelector((state) => state.user);
   const { transactions } = useSelector((state) => state.getTransactionsReducer);
+  const { invoices } = useSelector((state) => state.getInvoicesReducer);
 
   const handleConversion = () => {
         axios
@@ -304,7 +320,7 @@ const ProjectBillingPage = (props) => {
       }
     }
   };
-
+  console.log(invoices);
   return (
     <div className={styles.Page}>
       <div className={styles.TopBarSection}>
@@ -393,12 +409,7 @@ const ProjectBillingPage = (props) => {
                   </div>
                   <div className={styles.paymentButton}>
                     <FlutterwaveHook
-                      amount={
-                        transactionDetails.amount
-                          ? transactionDetails.amount.toLocaleString("en-US") *
-                            rate.toFixed(1)
-                          : 0
-                      }
+                      amount={30000}
                       name={data.name}
                       email={data.email}
                     />
