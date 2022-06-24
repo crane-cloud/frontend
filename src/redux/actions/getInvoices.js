@@ -13,7 +13,7 @@ const startFetchingInvoices = () => ({
 
 const getInvoicesSuccess = (response) => ({
   type: INVOICES_SUCCESS,
-  payload: response.data,
+  payload: response.data.data.billing_invoice,
 });
 
 const getInvoicesFailed = (error) => ({
