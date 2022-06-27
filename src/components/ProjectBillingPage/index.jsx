@@ -740,20 +740,20 @@ const ProjectBillingPage = (props) => {
                             {DisplayDateTime(new Date(invoiceDetails.date_created))}
                           </div>
                           <div className={styles.InvoiceHistoryCell}>
-                            Project Name
+                            {getProjectName(projectID)}
                           </div>
                           <div className={styles.InvoiceHistoryCell}>
                             {inUgx ? (
-                              <>UGX 40000 </>
+                              <>UGX {invoiceDetails.total_amount} </>
                             ) : (
-                              <>$ {(40000 / rate).toFixed(2)}</>
+                              <>$ {(invoiceDetails.total_amount / rate).toFixed(2)}</>
                             )}
                           </div>
                           <div className={styles.InvoiceHistoryCell}>
                             {inUgx ? (
-                              <>UGX 40000 </>
+                              <>UGX {invoiceDetails.total_amount} </>
                             ) : (
-                              <>$ {(40000 / rate).toFixed(2)}</>
+                              <>$ {(invoiceDetails.total_amount / rate).toFixed(2)}</>
                             )}
                           </div>
                         </div>
