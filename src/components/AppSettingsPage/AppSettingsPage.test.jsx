@@ -18,7 +18,8 @@ const AppSettingsPage = {
   clearState: jest.fn(),
   clearUpdateAppstate: jest.fn(),
   clearUrlRevertState: jest.fn(),
-  getSingleApp: jest.fn(), 
+  getSingleApp: jest.fn(),
+  clearUpdateAppState: jest.fn()
 };
 
 
@@ -39,8 +40,11 @@ describe("Testing the exported mapstate to props and dispatch for ProjectSetting
   it("matches the ProjectSettingsPage mapstostate", () => {
     expect(
       mapStateToProps({
-        handleDeleteAppReducer: { isDeleting:false, isDeleted:false, isFailed:false,  message:""},
-        showDeleteAlertReducer: { isUpdated:false, isUpdating:false, errorMessage: null }
+        deleteAppReducer: { isDeleting:false, isDeleted:false, isFailed:false,  message:""},
+        updateAppReducer: { isUpdated:false, isUpdating:false, errorMessage: null },
+        revertUrlReducer: { isReverted:false, isReverting:false },
+        singleAppReducer: { isFetched:false, app:null },
+        user: {  }
       })
     ).toEqual({
         isUpdated: false,
@@ -50,6 +54,10 @@ describe("Testing the exported mapstate to props and dispatch for ProjectSetting
         isFailed: false,
         isDeleted: false,
         errorMessage: null,
+        isReverted: false,
+        isReverting: false,
+        app: null,
+        isFetched: false,
     });
   });
 });
