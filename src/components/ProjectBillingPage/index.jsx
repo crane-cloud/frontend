@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import moment from "moment";
+import Pdf from "react-to-pdf";
 import Header from "../Header";
 import SideBar from "../SideBar";
 import InformationBar from "../InformationBar";
@@ -7,6 +8,7 @@ import Modal from "../../components/Modal";
 import PrimaryButton from "../PrimaryButton";
 import DonutChart from "../DonutChart";
 import BarGraph from "../BarGraph";
+import Checkbox from "../Checkbox";
 import FlutterwaveHook from "../FlutterwaveHook";
 import MetricsCard from "../MetricsCard";
 import SpendingPeriod from "../SpendingPeriod";
@@ -14,11 +16,22 @@ import { useParams } from "react-router-dom";
 import styles from "./ProjectBillingPage.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import getProjectBill from "../../redux/actions/getProjectBill";
+import axios from "axios";
+import {  LIVE_EXCHANGE_RATE_API } from "../../config";
+import {
+  DisplayDateTime,
+} from "../../helpers/dateConstants";
+
 
 import {
   getTransactions,
   clearTransactions,
 } from "../../redux/actions/getTransactions";
+
+const ref = React.createRef();
+const options = {
+  orientation: "landscape",
+};
 
 const data2 = [
   { date: "2021-08", amount: 1398 },
@@ -47,19 +60,38 @@ const ProjectBillingPage = (props) => {
   const [transactionDetails, setTransactionDetails] = useState({});
   const [viewReceipt, setViewReceipt] = useState(false);
   const [currentTab, setCurrentTab] = useState("transactions");
+  const [viewInvoiceFile, setViewInvoiceFile] = useState(false);
+  const [viewReceiptFile, setViewReceiptFile] = useState(false);
   const [currentUsageTab, setCurrentUsageTab] = useState("days");
   const [months, setMonths] = useState(data2);
   const [days, setDays] = useState([]);
+  const [rate, setRate] = useState(1);
+  const [inUgx, setInUgx] = useState(false);
 
   useEffect(() => {
     clearAllTransactions();
     getAllTransactions();
+    handleConversion();
   }, [clearAllTransactions, getAllTransactions]);
 
   const { projects } = useSelector((state) => state.userProjectsReducer);
   const { data } = useSelector((state) => state.user);
   const { transactions } = useSelector((state) => state.getTransactionsReducer);
 
+  const handleConversion = () => {
+        axios
+          .get(LIVE_EXCHANGE_RATE_API)
+          .then((response) => {
+            if (response.status !== 200) {
+              return false;
+            }
+           setRate(response.data.rates.UGX);  
+          })
+          .catch((e) => {
+            //failed to load current rate
+            setInUgx(false)
+          });
+    }
   const closeReceiptModal = () => {
     setViewReceipt(false);
   };
@@ -70,8 +102,19 @@ const ProjectBillingPage = (props) => {
   const viewInvoices = () => {
     setCurrentTab("invoices");
   };
+  const ChangeCurrency = ()=>{
+    if(inUgx && rate === 1){
+      //if the ugx conversion din't work
+      handleConversion()
+    }
+    setInUgx(!inUgx);
+  }
   const viewReceipts = () => {
     setCurrentTab("receipts");
+  };
+  const removePreview = () => {
+    setViewInvoiceFile(false);
+    setViewReceiptFile(false);
   };
 
   const viewUsageInDays = () => {
@@ -88,7 +131,6 @@ const ProjectBillingPage = (props) => {
       ),
     [dispatch, projectID]
   );
-
   // create a function that takes in a array and returns a new array of objects with the data 2 format
   const getData2Format = useCallback(
     (data) => {
@@ -100,14 +142,14 @@ const ProjectBillingPage = (props) => {
               currentUsageTab === "months"
                 ? moment(element.start).utc().format("YYYY-MM-DD")
                 : moment(element.start).utc().format("DD"),
-            amount: element.totalCost * 3600,
+            amount: element.totalCost * rate,
           });
         });
       }
       // let newData2 = newData.slice(4)
       return newData;
     },
-    [currentUsageTab]
+    [currentUsageTab,rate]
   );
   // create a function that takes in a array and sums all the object key values to create one object
   const summationObject = (data) => {
@@ -182,6 +224,8 @@ const ProjectBillingPage = (props) => {
   const getProjectName = (id) => {
     return projects.find((project) => project.id === id).name;
   };
+
+
   const getTransactionDetail = (transactions, transaction_id) => {
     return transactions.find(
       (transaction) => transaction.transaction_id === transaction_id
@@ -191,6 +235,13 @@ const ProjectBillingPage = (props) => {
     let transactionDetail = getTransactionDetail(transactions, transaction_id);
     setTransactionDetails(transactionDetail);
     setViewReceipt(true);
+  };
+
+  const openInvoiceModal = () => {
+    setViewInvoiceFile(true);
+  };
+  const openReceiptsModal = () => {
+    setViewReceiptFile(true);
   };
 
   const handlePeriodChange = (period, customTime = null) => {
@@ -253,6 +304,7 @@ const ProjectBillingPage = (props) => {
       }
     }
   };
+
   return (
     <div className={styles.Page}>
       <div className={styles.TopBarSection}>
@@ -276,6 +328,14 @@ const ProjectBillingPage = (props) => {
             <InformationBar header="Project Billing" />
           </div>
           <div className={styles.SmallContainer}>
+          <div className={styles.CBLabel}>
+                <Checkbox
+                   isBlack
+                   onClick={ChangeCurrency}
+                   isChecked={inUgx}
+                   />
+                  In UGX
+               </div>
             <div className={styles.OuterContainerBorder}>
               <div className={styles.DonutChatContainer}>
                 <div className={styles.InsideHeading}>
@@ -310,11 +370,15 @@ const ProjectBillingPage = (props) => {
                         </div>
                         <div className={styles.ResourcePrice}>
                           {/**display in dollars, covert back form percentages to dollars*/}
-                          $
-                          {(
+
+                          {inUgx? <>  {(
+                            (data1[index % data1.length].value *
+                            (newObject.totalCost / 100))*rate
+                          ).toFixed(2)}/= </>:
+                          <>${(
                             data1[index % data1.length].value *
                             (newObject.totalCost / 100)
-                          ).toFixed(2)}
+                          ).toFixed(2)}</>}
                         </div>
                       </div>
                     ))}
@@ -323,7 +387,7 @@ const ProjectBillingPage = (props) => {
                       <div className={styles.ResourcePrice}>
                         {Object.keys(newObject).length === 0
                           ? "n/a"
-                          : `$${newObject.totalCost.toFixed(2)}`}
+                          :inUgx ?`${(newObject.totalCost*rate).toFixed(2)}/=`:`$${(newObject.totalCost).toFixed(2)}`}
                       </div>
                     </div>
                   </div>
@@ -332,7 +396,7 @@ const ProjectBillingPage = (props) => {
                       amount={
                         transactionDetails.amount
                           ? transactionDetails.amount.toLocaleString("en-US") *
-                            3600
+                            rate.toFixed(1)
                           : 0
                       }
                       name={data.name}
@@ -447,6 +511,9 @@ const ProjectBillingPage = (props) => {
                   <div className={styles.TransactionHistoryBody}>
                     <div className={styles.TransactionHistoryTable}>
                       <div className={styles.TransactionHistoryHead}>
+                      <div className={styles.TransactionHistoryCell}>
+                          Date & Time
+                        </div>
                         <div className={styles.TransactionHistoryCell}>
                           Transaction Id
                         </div>
@@ -466,6 +533,9 @@ const ProjectBillingPage = (props) => {
                           key={index}
                         >
                           <div className={styles.TransactionHistoryCell}>
+                            {DisplayDateTime(new Date(entry.date_created))}
+                          </div>
+                          <div className={styles.TransactionHistoryCell}>
                             {entry.transaction_id}
                           </div>
                           <div className={styles.TransactionHistoryCell}>
@@ -474,7 +544,9 @@ const ProjectBillingPage = (props) => {
                             </span>
                           </div>
                           <div className={styles.TransactionHistoryCell}>
-                            UGX {entry.amount.toLocaleString("en-US")}
+                            {inUgx ?<>UGX {(entry.amount.toFixed(2)).toLocaleString("en-US")} </>: 
+                            <>$ {((entry.amount/rate).toFixed(2)).toLocaleString("en-US")} </>
+                           }
                           </div>
                           <div className={styles.TransactionHistoryCell}>
                             <button
@@ -514,11 +586,16 @@ const ProjectBillingPage = (props) => {
                           87546947
                         </div>
                         <div className={styles.InvoiceHistoryCell}>
-                          UGX 40,000
+                        {inUgx ?<>UGX 40000 </>: 
+                            <>$ {(40000/rate).toFixed(2)}</>
+                           }
                         </div>
                         <div className={styles.InvoiceHistoryCell}>
-                          <button className={styles.InvoiceDownloadButton}>
-                            Download
+                          <button
+                            onClick={() => openInvoiceModal()}
+                            className={styles.PaymentDetailsButton}
+                          >
+                            View
                           </button>
                         </div>
                       </div>
@@ -552,12 +629,17 @@ const ProjectBillingPage = (props) => {
                           87546947
                         </div>
                         <div className={styles.ReceiptHistoryCell}>
-                          UGX 40,000
+                        {inUgx ?<>UGX 40000 </>: 
+                            <>$ {(40000/rate).toFixed(2)}</>
+                           }
                         </div>
                         <div className={styles.ReceiptHistoryCell}>UGX 0</div>
                         <div className={styles.ReceiptHistoryCell}>
-                          <button className={styles.ReceiptDownloadButton}>
-                            Download
+                          <button
+                            onClick={() => openReceiptsModal()}
+                            className={styles.PaymentDetailsButton}
+                          >
+                            View
                           </button>
                         </div>
                       </div>
@@ -567,6 +649,196 @@ const ProjectBillingPage = (props) => {
               </div>
             </div>
 
+            {viewInvoiceFile && (
+              <>
+                <div>
+                  <Modal
+                    showModal={viewInvoiceFile}
+                    onClickAway={() => removePreview()}
+                  >
+                    <div className={styles.ModalHistoryBody} ref={ref}>
+                      <div className={styles.ModalHistoryHeading}>
+                        <span>
+                          <img
+                            src="https://raw.githubusercontent.com/crane-cloud/frontend/develop/public/favicon.png"
+                            width="50"
+                            alt=""
+                          />
+                        </span>
+                        <span>
+                          Crane Cloud Project Invoice
+                          <br />
+                          <div className={styles.InvoiceID}>
+                            Invoice ID 87546947
+                          </div>
+                        </span>
+                      </div>
+
+                      <div className={styles.InvoiceModalHistoryTable}>
+                        <div className={styles.InvoiceModalHistoryHead}>
+                          <div className={styles.InvoiceModalTitle}>
+                            Date Generated
+                          </div>
+                          <div className={styles.InvoiceModalTitle}>
+                            Project Name
+                          </div>
+                          <div className={styles.InvoiceModalTitle}>
+                            Total Amount Due
+                          </div>
+                          <div className={styles.InvoiceModalTitle}>
+                            Total Balance Due
+                          </div>
+                        </div>
+                        <div className={styles.InvoiceModalHistoryRow}>
+                          <div className={styles.InvoiceHistoryCell}>
+                            01-06-2022
+                          </div>
+                          <div className={styles.InvoiceHistoryCell}>
+                            Rhodin Apps
+                          </div>
+                          <div className={styles.InvoiceHistoryCell}>
+                          {inUgx ?<>UGX 40000 </>: 
+                            <>$ {(40000/rate).toFixed(2)}</>
+                           }
+                          </div>
+                          <div className={styles.InvoiceHistoryCell}>
+                          {inUgx ?<>UGX 40000 </>: 
+                            <>$ {(40000/rate).toFixed(2)}</>
+                           }
+                          </div>
+                        </div>
+                      </div>
+                      <br />
+                      <div className={styles.ModalHistoryHeading}>
+                        <span>Contact Details</span>
+                      </div>
+                      <div className={styles.ContactDetails}>
+                        Software Center, Level 3, Block B
+                        <br />
+                        College of Computing and Information Sciences
+                        <br />
+                        Makerere University Kampala, Uganda
+                        <br />
+                        <a href="https://cranecloud.io">
+                          https://cranecloud.io
+                        </a>
+                      </div>
+                    </div>
+                    <div className={styles.ViewFileLowerSection}>
+                      <div className={styles.ViewFileModalButtons}>
+                        <PrimaryButton
+                          label="cancel"
+                          className="CancelBtn"
+                          onClick={() => removePreview()}
+                        />
+                        <Pdf
+                          targetRef={ref}
+                          options={options}
+                          onComplete={() => removePreview()}
+                          filename="demo-invoice.pdf"
+                        >
+                          {({ toPdf }) => (
+                            <PrimaryButton
+                              label="download"
+                              className={styles.DownloadButton}
+                              onClick={toPdf}
+                            />
+                          )}
+                        </Pdf>
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+              </>
+            )}
+          {/**Not converting recipts printable to Dollars since amount has already been paid */}
+            {viewReceiptFile && (
+              <Modal
+                showModal={viewReceiptFile}
+                onClickAway={() => removePreview()}
+              >
+                <div className={styles.ModalHistoryBody} ref={ref}>
+                  <div className={styles.ModalHistoryHeading}>
+                    <span>
+                      <img
+                        src="https://raw.githubusercontent.com/crane-cloud/frontend/develop/public/favicon.png"
+                        width="50"
+                        alt=""
+                      />
+                    </span>
+                    <span>
+                      Crane Cloud Payment Receipt
+                      <br />
+                      <div className={styles.InvoiceID}>
+                        Transaction ID 3437533
+                      </div>
+                    </span>
+                  </div>
+
+                  <div className={styles.InvoiceModalHistoryTable}>
+                    <div className={styles.InvoiceModalHistoryHead}>
+                      <div className={styles.ReceiptModalTitle}>
+                        Date Generated
+                      </div>
+                      <div className={styles.ReceiptModalTitle}>Invoice ID</div>
+                      <div className={styles.ReceiptModalTitle}>
+                        Amount Paid
+                      </div>
+                      <div className={styles.ReceiptModalTitle}>
+                        Available Balance
+                      </div>
+                    </div>
+                    <div className={styles.InvoiceModalHistoryRow}>
+                      <div className={styles.InvoiceHistoryCell}>
+                        15-06-2022
+                      </div>
+                      <div className={styles.InvoiceHistoryCell}>87546947</div>
+                      <div className={styles.InvoiceHistoryCell}>
+                        UGX 40,000
+                      </div>
+                      <div className={styles.InvoiceHistoryCell}>UGX 0</div>
+                    </div>
+                  </div>
+                  <br />
+                  <div className={styles.ModalHistoryHeading}>
+                    <span>Contact Details</span>
+                  </div>
+                  <div className={styles.ContactDetails}>
+                    Software Center, Level 3, Block B
+                    <br />
+                    College of Computing and Information Sciences
+                    <br />
+                    Makerere University Kampala, Uganda
+                    <br />
+                    <a href="https://cranecloud.io">https://cranecloud.io</a>
+                  </div>
+                </div>
+                <div className={styles.ViewFileLowerSection}>
+                  <div className={styles.ViewFileModalButtons}>
+                    <PrimaryButton
+                      label="cancel"
+                      className="CancelBtn"
+                      onClick={() => removePreview()}
+                    />
+                    <Pdf
+                      targetRef={ref}
+                      options={options}
+                      onComplete={() => removePreview()}
+                      filename="demo-receipt.pdf"
+                    >
+                      {({ toPdf }) => (
+                        <PrimaryButton
+                          label="download"
+                          className={styles.DownloadButton}
+                          onClick={toPdf}
+                        />
+                      )}
+                    </Pdf>
+                  </div>
+                </div>
+              </Modal>
+            )}
+
             {viewReceipt && (
               <div>
                 <Modal showModal={viewReceipt} onClickAway={closeReceiptModal}>
@@ -574,6 +846,12 @@ const ProjectBillingPage = (props) => {
                     <div className={styles.ReceiptDetailContainer}>
                       {transactionDetails && (
                         <>
+                        <div className={styles.ReceiptLabel}>
+                            Transaction Date & Time
+                          </div>
+                          <div className={styles.ReceiptDetail}>
+                            {DisplayDateTime(new Date(transactionDetails.date_created))}
+                          </div>
                           <div className={styles.ReceiptLabel}>
                             Transaction reference
                           </div>
@@ -596,13 +874,15 @@ const ProjectBillingPage = (props) => {
                               {transactionDetails.status}
                             </div>
                           </div>
-                          <div className={styles.ReceiptLabel}>Currency</div>
+                          <div className={styles.ReceiptLabel}>Currency of payment</div>
                           <div className={styles.ReceiptDetail}>
                             {transactionDetails.currency}
                           </div>
                           <div className={styles.ReceiptLabel}>Amount Paid</div>
                           <div className={styles.ReceiptDetail}>
-                            {transactionDetails.amount.toLocaleString("en-US")}
+                          {inUgx ?<>UGX {(transactionDetails.amount.toFixed(2)).toLocaleString("en-US")} </>: 
+                            <>$ {((transactionDetails.amount/rate).toFixed(2)).toLocaleString("en-US")} </>
+                           }
                           </div>
                         </>
                       )}

@@ -20,3 +20,7 @@ export const saveState = (state) => {
     // ingore
   }
 };
+
+export const onUnload = () => {
+  localStorage.clear();
+}
