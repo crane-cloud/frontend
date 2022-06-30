@@ -12,7 +12,6 @@ import PrimaryButton from "../PrimaryButton";
 import Spinner from "../Spinner";
 import { API_BASE_URL, GIT_REDIRECT_URL } from "../../config";
 import { ReactComponent as LogoIcon } from "../../assets/images/githublogo.svg";
-import { onUnload } from "../../helpers/localStorage";
 import "./LoginPage.css";
 
 
