@@ -544,9 +544,10 @@ const ProjectBillingPage = (props) => {
                             </span>
                           </div>
                           <div className={styles.TransactionHistoryCell}>
-                            {inUgx ?<>UGX {(entry.amount.toFixed(2)).toLocaleString("en-US")} </>: 
+                            {/* inUgx ?<>UGX {(entry.amount.toFixed(2)).toLocaleString("en-US")} </>: 
                             <>$ {((entry.amount/rate).toFixed(2)).toLocaleString("en-US")} </>
-                           }
+                      */}
+                         {<>UGX {entry.amount}</>}
                           </div>
                           <div className={styles.TransactionHistoryCell}>
                             <button
@@ -629,9 +630,7 @@ const ProjectBillingPage = (props) => {
                           87546947
                         </div>
                         <div className={styles.ReceiptHistoryCell}>
-                        {inUgx ?<>UGX 40000 </>: 
-                            <>$ {(40000/rate).toFixed(2)}</>
-                           }
+                        UGX 40,000 
                         </div>
                         <div className={styles.ReceiptHistoryCell}>UGX 0</div>
                         <div className={styles.ReceiptHistoryCell}>
@@ -697,14 +696,10 @@ const ProjectBillingPage = (props) => {
                             Rhodin Apps
                           </div>
                           <div className={styles.InvoiceHistoryCell}>
-                          {inUgx ?<>UGX 40000 </>: 
-                            <>$ {(40000/rate).toFixed(2)}</>
-                           }
+                           UGX 40000 
                           </div>
                           <div className={styles.InvoiceHistoryCell}>
-                          {inUgx ?<>UGX 40000 </>: 
-                            <>$ {(40000/rate).toFixed(2)}</>
-                           }
+                          UGX 40000
                           </div>
                         </div>
                       </div>
@@ -880,9 +875,7 @@ const ProjectBillingPage = (props) => {
                           </div>
                           <div className={styles.ReceiptLabel}>Amount Paid</div>
                           <div className={styles.ReceiptDetail}>
-                          {inUgx ?<>UGX {(transactionDetails.amount.toFixed(2)).toLocaleString("en-US")} </>: 
-                            <>$ {((transactionDetails.amount/rate).toFixed(2)).toLocaleString("en-US")} </>
-                           }
+                          UGX {(transactionDetails.amount.toFixed(2)).toLocaleString("en-US")}
                           </div>
                         </>
                       )}
