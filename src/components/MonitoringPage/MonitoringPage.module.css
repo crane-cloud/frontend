@@ -1,0 +1,72 @@
+.MonitoringPageMain {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #e5f3f9;
+}
+
+.PrimaryTitle {
+    color: #008ac1;
+    font-size: 52px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 3rem;
+}
+
+.PrimaryContent,
+.PrimaryDescription {
+    color: #000000;
+    font-size: 19px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 1.5rem;
+}
+
+.BannerArea {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 0 3rem 0;
+}
+
+.StatusBanner {
+    background-color: #f7b21f;
+    width: 35%;
+}
+
+.StatusBanner:hover {
+    cursor: pointer;
+}
+
+.BannerText {
+    padding: 1rem;
+    color: #ffff;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.StatusTypes {
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr 2fr;
+    gap: 8rem;
+    padding: 2rem 0 2rem 3rem;
+}
+
+.StatusTypesContainer {
+    display: flex;
+}
+
+.StatusTypeIcon {
+    flex: 1;
+    padding-top: 1.1rem;
+}
+
+.StatusTypeIcon svg {
+    height: 24px;
+}
+
+.StatusTypeName {
+    flex: 5;
+}
