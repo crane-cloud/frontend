@@ -49,6 +49,7 @@ import savePaymentReducer from "./savePayment";
 import getTransactionsReducer from "./getTransactions";
 import addBetaUserReducer from "./addBetaUser";
 import updateClusterReducer from "./updateCluster";
+import getInvoicesReducer from "./getInvoices";
 
 export default combineReducers({
   clusterResourcesReducer,
@@ -101,4 +102,5 @@ export default combineReducers({
   getTransactionsReducer,
   addBetaUserReducer,
   updateClusterReducer,
+  getInvoicesReducer,
 });
