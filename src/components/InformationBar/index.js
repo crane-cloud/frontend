@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import RoundAddButton from "../RoundAddButton";
+//import RoundAddButton from "../RoundAddButton";
+import NewButton from "../NewButton";
 import AppStatus from "../AppStatus";
 import PrimaryButton from "../PrimaryButton";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
@@ -7,6 +8,7 @@ import "./InformationBar.css";
 
 const InformationBar = ({
   header,
+  buttontext,
   status,
   showBtn,
   btnAction,
@@ -52,7 +54,8 @@ const InformationBar = ({
               </div>
             </div>
             <div className="RoundAddButtonWrap">
-              <RoundAddButton onClick={btnAction} />
+              {/*<RoundAddButton onClick={btnAction} />*/}
+              <NewButton label={buttontext} type="new" onClick={btnAction}/>
             </div>
           </div>
         </div>
@@ -60,7 +63,8 @@ const InformationBar = ({
         <div className="InformationBarWithButton">
           <div className="InfoHeader">{header}</div>
           <div className="RoundAddButtonWrap">
-            <RoundAddButton onClick={btnAction} />
+            {/*<RoundAddButton onClick={btnAction} />*/}
+            <NewButton label={buttontext}  type="new" onClick={btnAction}/>
           </div>
         </div>
       ) : viewAppLink ? (

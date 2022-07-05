@@ -237,9 +237,20 @@
 }
 
 .TransactionHistoryCell,
-.InoviceHistoryCell,
+.InvoiceHistoryCell,
 .ReceiptHistoryCell {
-  overflow-wrap: break-word;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.TransactionHistoryCell:hover,
+.InvoiceHistoryCell:hover,
+.ReceiptHistoryCell:hover {
+  overflow: visible;
+  white-space: normal;
+  text-overflow: initial;
+  overflow-wrap: anywhere;
 }
 
 .TransactionHistoryHead .TransactionHistoryCell,

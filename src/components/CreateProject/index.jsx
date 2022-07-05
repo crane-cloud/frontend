@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import PrimaryButton from "../PrimaryButton";
 import Select from "../Select";
-import CancelButton from "../CancelButton";
+//import CancelButton from "../CancelButton";
+import NewButton from "../NewButton";
 import Header from "../Header";
 import Spinner from "../Spinner";
 import Feedback from "../Feedback";
@@ -191,7 +192,8 @@ class CreateProject extends React.Component {
             <div className={styles.InformationBarWithButton}>
               <div className={styles.InfoHeader}>Create Project</div>
               <div className={styles.RoundAddButtonWrap}>
-                <CancelButton onClick={this.props.closeComponent} />
+                {/*<CancelButton onClick={this.props.closeComponent} />*/}
+                <NewButton label="close"  type="close" onClick={this.props.closeComponent}/>
               </div>
             </div>
           </div>
