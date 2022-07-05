@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import PrimaryButton from "../PrimaryButton";
 import Select from "../Select";
-import CancelButton from "../CancelButton";
+//import CancelButton from "../CancelButton";
+import NewButton from "../NewButton";
 import Spinner from "../Spinner";
 import Feedback from "../Feedback";
 import createDatabase, {
@@ -87,7 +88,8 @@ class CreateDatabase extends React.Component {
               <div className="InformationBarWithButton SmallContainer">
                 <div className="InfoHeader">Create database</div>
                 <div className="RoundAddButtonWrap">
-                  <CancelButton onClick={this.props.closeComponent} />
+                 {/* <CancelButton onClick={this.props.closeComponent} />*/}
+                  <NewButton label="close"  type="close" onClick={this.props.closeComponent}/>
                 </div>
               </div>
             </div>

@@ -108,6 +108,7 @@ class AppsPage extends React.Component {
                 <InformationBar
                   header="Apps"
                   showBtn
+                  buttontext="App"
                   showSearchBar
                   placeholder="Search through apps"
                   searchAction={this.handleCallbackSearchword}
