@@ -26,6 +26,7 @@ import {
 } from "../../redux/actions/getTransactions";
 
 import getInvoices, { clearInvoices } from "../../redux/actions/getInvoices";
+import getReceipts, { clearReceipts } from "../../redux/actions/getReceipts";
 
 const ref = React.createRef();
 const options = {
@@ -56,6 +57,16 @@ const ProjectBillingPage = (props) => {
     [dispatch, projectID]
   );
 
+  const getAllReceipts = useCallback(
+    () => dispatch(getReceipts(projectID)),
+    [dispatch, projectID]
+  );
+
+  const clearAllReceipts = useCallback(
+    () => dispatch(clearReceipts()),
+    [dispatch]
+  );
+
   const clearAllInvoices = useCallback(
     () => dispatch(clearInvoices()),
     [dispatch]
@@ -68,6 +79,7 @@ const ProjectBillingPage = (props) => {
 
   const [transactionDetails, setTransactionDetails] = useState({});
   const [invoiceDetails, setInvoiceDetails] = useState({});
+  const [receiptDetails, setReceiptDetails] = useState({});
   const [viewReceipt, setViewReceipt] = useState(false);
   const [currentTab, setCurrentTab] = useState("transactions");
   const [viewInvoiceFile, setViewInvoiceFile] = useState(false);
@@ -81,6 +93,8 @@ const ProjectBillingPage = (props) => {
   useEffect(() => {
     clearAllTransactions();
     clearAllInvoices();
+    clearAllReceipts();
+    getAllReceipts();
     getAllTransactions();
     getAllInvoices();
     handleConversion();
@@ -89,12 +103,15 @@ const ProjectBillingPage = (props) => {
     getAllTransactions,
     clearAllInvoices,
     getAllInvoices,
+    clearAllReceipts,
+    getAllReceipts,
   ]);
 
   const { projects } = useSelector((state) => state.userProjectsReducer);
   const { data } = useSelector((state) => state.user);
   const { transactions } = useSelector((state) => state.getTransactionsReducer);
   const { invoices } = useSelector((state) => state.getInvoicesReducer);
+  const { receipts } = useSelector((state) => state.getReceiptsReducer);
 
   const handleConversion = () => {
     axios
@@ -259,7 +276,9 @@ const ProjectBillingPage = (props) => {
     setInvoiceDetails(invoiceDetail);
     setViewInvoiceFile(true);
   };
-  const openReceiptsModal = () => {
+  const openReceiptsModal = (receipts, receiptId) => {
+    let receiptDetail = receipts.find((receipt) => receipt.id === receiptId);
+    setReceiptDetails(receiptDetail);
     setViewReceiptFile(true);
   };
 
@@ -323,7 +342,6 @@ const ProjectBillingPage = (props) => {
       }
     }
   };
-  console.log(invoices);
   return (
     <div className={styles.Page}>
       <div className={styles.TopBarSection}>
@@ -619,9 +637,12 @@ const ProjectBillingPage = (props) => {
                         <div className={styles.InvoiceHistoryCell}>Details</div>
                       </div>
                       {invoices?.map((invoice, invoiceIndex) => (
-                        <div className={styles.InvoiceHistoryRow} key={invoiceIndex}>
+                        <div
+                          className={styles.InvoiceHistoryRow}
+                          key={invoiceIndex}
+                        >
                           <div className={styles.InvoiceHistoryCell}>
-                          {DisplayDateTime(new Date(invoice.date_created))}
+                            {DisplayDateTime(new Date(invoice.date_created))}
                           </div>
                           <div className={styles.InvoiceHistoryCell}>
                             {invoice.id}
@@ -635,7 +656,9 @@ const ProjectBillingPage = (props) => {
                           </div>
                           <div className={styles.InvoiceHistoryCell}>
                             <button
-                              onClick={() => openInvoiceModal(invoices, invoice.id)}
+                              onClick={() =>
+                                openInvoiceModal(invoices, invoice.id)
+                              }
                               className={styles.PaymentDetailsButton}
                             >
                               View
@@ -664,31 +687,38 @@ const ProjectBillingPage = (props) => {
                         <div className={styles.ReceiptHistoryCell}>Balance</div>
                         <div className={styles.ReceiptHistoryCell}>Details</div>
                       </div>
-                      <div className={styles.ReceiptHistoryRow}>
-                        <div className={styles.ReceiptHistoryCell}>
-                          01-06-2022
+                      {receipts?.map((receipt, receiptIndex) => (
+                        <div
+                          className={styles.ReceiptHistoryRow}
+                          key={receiptIndex}
+                        >
+                          <div className={styles.ReceiptHistoryCell}>
+                            {DisplayDateTime(new Date(receipt.date_created))}
+                          </div>
+                          <div className={styles.ReceiptHistoryCell}>
+                            {receipt.transaction_id}
+                          </div>
+                          <div className={styles.ReceiptHistoryCell}>
+                            {receipt.billing_invoice_id?receipt.billing_invoice_id:'None'}
+                          </div>
+                          <div className={styles.ReceiptHistoryCell}>
+                            {inUgx ? (
+                              <>UGX {receipt.amount} </>
+                            ) : (
+                              <>$ {(receipt.amount / rate).toFixed(2)}</>
+                            )}
+                          </div>
+                          <div className={styles.ReceiptHistoryCell}>UGX 0</div>
+                          <div className={styles.ReceiptHistoryCell}>
+                            <button
+                              onClick={() => openReceiptsModal(receipts, receipt.id)}
+                              className={styles.PaymentDetailsButton}
+                            >
+                              View
+                            </button>
+                          </div>
                         </div>
-                        <div className={styles.ReceiptHistoryCell}>3437533</div>
-                        <div className={styles.ReceiptHistoryCell}>
-                          87546947
-                        </div>
-                        <div className={styles.ReceiptHistoryCell}>
-                          {inUgx ? (
-                            <>UGX 40000 </>
-                          ) : (
-                            <>$ {(40000 / rate).toFixed(2)}</>
-                          )}
-                        </div>
-                        <div className={styles.ReceiptHistoryCell}>UGX 0</div>
-                        <div className={styles.ReceiptHistoryCell}>
-                          <button
-                            onClick={() => openReceiptsModal()}
-                            className={styles.PaymentDetailsButton}
-                          >
-                            View
-                          </button>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
                 )}
@@ -737,7 +767,9 @@ const ProjectBillingPage = (props) => {
                         </div>
                         <div className={styles.InvoiceModalHistoryRow}>
                           <div className={styles.InvoiceHistoryCell}>
-                            {DisplayDateTime(new Date(invoiceDetails.date_created))}
+                            {DisplayDateTime(
+                              new Date(invoiceDetails.date_created)
+                            )}
                           </div>
                           <div className={styles.InvoiceHistoryCell}>
                             {getProjectName(projectID)}
@@ -746,14 +778,24 @@ const ProjectBillingPage = (props) => {
                             {inUgx ? (
                               <>UGX {invoiceDetails.total_amount} </>
                             ) : (
-                              <>$ {(invoiceDetails.total_amount / rate).toFixed(2)}</>
+                              <>
+                                ${" "}
+                                {(invoiceDetails.total_amount / rate).toFixed(
+                                  2
+                                )}
+                              </>
                             )}
                           </div>
                           <div className={styles.InvoiceHistoryCell}>
                             {inUgx ? (
                               <>UGX {invoiceDetails.total_amount} </>
                             ) : (
-                              <>$ {(invoiceDetails.total_amount / rate).toFixed(2)}</>
+                              <>
+                                ${" "}
+                                {(invoiceDetails.total_amount / rate).toFixed(
+                                  2
+                                )}
+                              </>
                             )}
                           </div>
                         </div>
@@ -820,7 +862,7 @@ const ProjectBillingPage = (props) => {
                       Crane Cloud Payment Receipt
                       <br />
                       <div className={styles.InvoiceID}>
-                        Transaction ID 3437533
+                        Transaction ID {receiptDetails.id}
                       </div>
                     </span>
                   </div>
@@ -840,11 +882,13 @@ const ProjectBillingPage = (props) => {
                     </div>
                     <div className={styles.InvoiceModalHistoryRow}>
                       <div className={styles.InvoiceHistoryCell}>
-                        15-06-2022
+                      {DisplayDateTime(
+                              new Date(receiptDetails.date_created)
+                            )}
                       </div>
-                      <div className={styles.InvoiceHistoryCell}>87546947</div>
+                      <div className={styles.InvoiceHistoryCell}>{receiptDetails.billing_invoice_id}</div>
                       <div className={styles.InvoiceHistoryCell}>
-                        UGX 40,000
+                        UGX {receiptDetails.amount}
                       </div>
                       <div className={styles.InvoiceHistoryCell}>UGX 0</div>
                     </div>
