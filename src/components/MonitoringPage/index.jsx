@@ -1,9 +1,11 @@
 import React from "react";
 import NewHeader from "../NewHeader";
+import LandingFooter from "../LandingFooter";
 import { ReactComponent as Operational } from "../../assets/images/operational.svg";
 import { ReactComponent as Maintenance } from "../../assets/images/maintenance.svg";
 import { ReactComponent as Incident } from "../../assets/images/incident.svg";
 import { ReactComponent as Outage } from "../../assets/images/off.svg";
+import { ReactComponent as DownArrow } from "../../assets/images/down-arrow-black.svg";
 import styles from "./MonitoringPage.module.css";
 
 const MonitoringPage = () => {
@@ -58,6 +60,121 @@ const MonitoringPage = () => {
             <h3>Outage</h3>
           </div>
         </div>
+      </div>
+
+      <div className={styles.StatusSectionTitle}>
+        <h1>Current Status by Service</h1>
+      </div>
+
+      <div className={styles.StatusSectionContent}>
+        <div className={styles.StatusSectionChildContainer}>
+          <div className={styles.StatusSectionItem}>
+            <div className={styles.StatusSection}>
+              <span>
+                <DownArrow className={styles.DownArrow} />
+              </span>
+              <span>
+                <div className={styles.StatusSectionCardTitle}>Application</div>
+                <div>No Issues</div>
+              </span>
+              <span>
+                <Operational className={styles.SmallIcon} />
+              </span>
+            </div>
+          </div>
+          <div className={styles.StatusSectionItem}>
+            <div className={styles.StatusSection}>
+              <span>
+                <DownArrow className={styles.DownArrow} />
+              </span>
+              <span>
+                <div className={styles.StatusSectionCardTitle}>
+                  Database Servers
+                </div>
+                <div>No Issues</div>
+              </span>
+              <span>
+                <Operational className={styles.SmallIcon} />
+              </span>
+            </div>
+          </div>
+          <div className={styles.StatusSectionItem}>
+            <div className={styles.StatusSection}>
+              <span>
+                <DownArrow className={styles.DownArrow} />
+              </span>
+              <span>
+                <div className={styles.StatusSectionCardTitle}>Clusters</div>
+                <div>No Issues</div>
+              </span>
+              <span>
+                <Operational className={styles.SmallIcon} />
+              </span>
+            </div>
+          </div>
+          <div className={styles.StatusSectionItem}>
+            <div className={styles.StatusSection}>
+              <span>
+                <DownArrow className={styles.DownArrow} />
+              </span>
+              <span>
+                <div className={styles.StatusSectionCardTitle}>Prometheus</div>
+                <div>Issues detected</div>
+              </span>
+              <span>
+                <Incident className={styles.SmallIcon} />
+              </span>
+            </div>
+          </div>
+          <div className={styles.StatusSectionItem}>
+            <div className={styles.StatusSection}>
+              <span>
+                <DownArrow className={styles.DownArrow} />
+              </span>
+              <span>
+                <div className={styles.StatusSectionCardTitle}>
+                  Harbor Registry
+                </div>
+                <div>No Issues</div>
+              </span>
+              <span>
+                <Operational className={styles.SmallIcon} />
+              </span>
+            </div>
+          </div>
+          <div className={styles.StatusSectionItem}>
+            <div className={styles.StatusSection}>
+              <span>
+                <DownArrow className={styles.DownArrow} />
+              </span>
+              <span>
+                <div className={styles.StatusSectionCardTitle}>MIRA</div>
+                <div>No Issues</div>
+              </span>
+              <span>
+                <Operational className={styles.SmallIcon} />
+              </span>
+            </div>
+          </div>
+          <div className={styles.StatusSectionItem}>
+            <div className={styles.StatusSection}>
+              <span>
+                <DownArrow className={styles.DownArrow} />
+              </span>
+              <span>
+                <div className={styles.StatusSectionCardTitle}>Integrations</div>
+                <div>No Issues</div>
+              </span>
+              <span>
+                <Operational className={styles.SmallIcon} />
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.FooterSection}>
+        <LandingFooter />
       </div>
     </div>
   );
