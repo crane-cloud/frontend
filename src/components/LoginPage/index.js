@@ -44,11 +44,6 @@ class LoginPage extends React.Component {
     }
   }
 
-  // componentWillUnmount() {
-  //   window.removeEventListener('beforeunload', onUnload);
-  // }
-
-
   toGithubauth = () => {
     window.location.href = `${GIT_REDIRECT_URL}`;
   };
