@@ -1,15 +1,24 @@
 import React from "react";
+import { useEffect } from 'react';
+
 
 import { mount, shallow } from "enzyme";
 import * as redux from "react-redux";
 // import { useParams } from 'react-router-dom'
 import ProjectBillingPage from "./";
 
-jest.mock('React', () => ({
-  ...jest.requireActual('React'),
-  useEffect: jest.fn(),
-}));
+// jest.mock('React', () => ({
+//   ...jest.requireActual('React'),
+//   useEffect: jest.fn(),
+// }));
 
+jest.mock('react', () => {
+  const originReact = jest.requireActual('react');
+  return {
+    ...originReact,
+    useRef: jest.fn(),
+  };
+});
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useParams: () => ({
@@ -23,6 +32,7 @@ describe("TodoList", () => {
   let mockDispatch;
 
   beforeEach(() => {
+    jest.spyOn(React, "useEffect").mockImplementationOnce(cb => cb()());
     // Mock useSelector hook
     spyOnUseSelector = jest.spyOn(redux, "useSelector");
     spyOnUseSelector.mockReturnValue([{ id: 1, app: "nginx" }]);
@@ -48,7 +58,6 @@ describe("TodoList", () => {
     const useDispatchSpy = jest.spyOn(redux, "useDispatch");
     const mockDispatchFn = jest.fn();
     useDispatchSpy.mockReturnValue(mockDispatchFn);
-
     //action
     // triggerYourFlow();
 

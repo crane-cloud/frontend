@@ -109,7 +109,7 @@ const ProjectBillingPage = (props) => {
 
   const { projects } = useSelector((state) => state.userProjectsReducer);
   const { data } = useSelector((state) => state.user);
-  const { transactions } = useSelector((state) => state.getTransactionsReducer);
+  const { transactions, isRetrieving, isFetched } = useSelector((state) => state.getTransactionsReducer);
   const { invoices } = useSelector((state) => state.getInvoicesReducer);
   const { receipts } = useSelector((state) => state.getReceiptsReducer);
 
@@ -553,7 +553,7 @@ const ProjectBillingPage = (props) => {
                   </span>
                 </div>
 
-                {currentTab === "transactions" && (
+                {currentTab === "transactions" && !isRetrieving && isFetched ? (
                   <div className={styles.TransactionHistoryBody}>
                     <div className={styles.TransactionHistoryTable}>
                       <div className={styles.TransactionHistoryHead}>
@@ -590,21 +590,11 @@ const ProjectBillingPage = (props) => {
                             </span>
                           </div>
                           <div className={styles.TransactionHistoryCell}>
-                            {inUgx ? (
-                              <>
-                                UGX{" "}
-                                {entry.amount
-                                  .toFixed(2)
-                                  .toLocaleString("en-US")}{" "}
-                              </>
-                            ) : (
-                              <>
-                                ${" "}
-                                {(entry.amount / rate)
-                                  .toFixed(2)
-                                  .toLocaleString("en-US")}{" "}
-                              </>
-                            )}
+                            {/* inUgx ?<>UGX {(entry.amount.toFixed(2)).toLocaleString("en-US")} </>: 
+                            <>$ {((entry.amount/rate).toFixed(2)).toLocaleString("en-US")} </>
+                      */}
+                         {<>UGX {entry.amount}</>}
+
                           </div>
                           <div className={styles.TransactionHistoryCell}>
                             <button
@@ -623,7 +613,15 @@ const ProjectBillingPage = (props) => {
                       ))}
                     </div>
                   </div>
+                ):
+                <>
+                {currentTab === "transactions" && !isFetched && (
+                  <div className={styles.NoResourcesMesssage}>
+                      No transactions found under this project.
+                  </div>
                 )}
+                </>
+                }
 
                 {currentTab === "invoices" && (
                   <div className={styles.InvoiceHistoryBody}>
@@ -687,6 +685,7 @@ const ProjectBillingPage = (props) => {
                         <div className={styles.ReceiptHistoryCell}>Balance</div>
                         <div className={styles.ReceiptHistoryCell}>Details</div>
                       </div>
+
                       {receipts?.map((receipt, receiptIndex) => (
                         <div
                           className={styles.ReceiptHistoryRow}
@@ -775,6 +774,7 @@ const ProjectBillingPage = (props) => {
                             {getProjectName(projectID)}
                           </div>
                           <div className={styles.InvoiceHistoryCell}>
+
                             {inUgx ? (
                               <>UGX {invoiceDetails.total_amount} </>
                             ) : (
@@ -978,21 +978,7 @@ const ProjectBillingPage = (props) => {
                           </div>
                           <div className={styles.ReceiptLabel}>Amount Paid</div>
                           <div className={styles.ReceiptDetail}>
-                            {inUgx ? (
-                              <>
-                                UGX{" "}
-                                {transactionDetails.amount
-                                  .toFixed(2)
-                                  .toLocaleString("en-US")}{" "}
-                              </>
-                            ) : (
-                              <>
-                                ${" "}
-                                {(transactionDetails.amount / rate)
-                                  .toFixed(2)
-                                  .toLocaleString("en-US")}{" "}
-                              </>
-                            )}
+                          UGX {(transactionDetails.amount.toFixed(2)).toLocaleString("en-US")}
                           </div>
                         </>
                       )}
