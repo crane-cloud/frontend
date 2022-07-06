@@ -109,7 +109,7 @@ const ProjectBillingPage = (props) => {
 
   const { projects } = useSelector((state) => state.userProjectsReducer);
   const { data } = useSelector((state) => state.user);
-  const { transactions } = useSelector((state) => state.getTransactionsReducer);
+  const { transactions, isRetrieving, isFetched } = useSelector((state) => state.getTransactionsReducer);
   const { invoices } = useSelector((state) => state.getInvoicesReducer);
   const { receipts } = useSelector((state) => state.getReceiptsReducer);
 
@@ -553,7 +553,7 @@ const ProjectBillingPage = (props) => {
                   </span>
                 </div>
 
-                {currentTab === "transactions" && (
+                {currentTab === "transactions" && !isRetrieving && isFetched ? (
                   <div className={styles.TransactionHistoryBody}>
                     <div className={styles.TransactionHistoryTable}>
                       <div className={styles.TransactionHistoryHead}>
@@ -623,7 +623,15 @@ const ProjectBillingPage = (props) => {
                       ))}
                     </div>
                   </div>
+                ):
+                <>
+                {currentTab === "transactions" && !isFetched && (
+                  <div className={styles.NoResourcesMesssage}>
+                      No transactions found under this project.
+                  </div>
                 )}
+                </>
+                }
 
                 {currentTab === "invoices" && (
                   <div className={styles.InvoiceHistoryBody}>
