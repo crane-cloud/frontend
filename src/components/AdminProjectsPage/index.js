@@ -136,9 +136,19 @@ const AdminProjectsPage = () => {
               <Modal showModal={addCredits} onClickAway={() => hideModal()}>
                 <div className="ModalHeader">
                   <h5 className="ModalTitle">Add Credits</h5>
+
+                  <div className="">Number of credits</div>
                   <div className="ModalContent">
                     <BlackInputText required placeholder="Number of credits" />
                   </div>
+                  <div className="CreditsTitle">Description</div>
+                  <textarea
+                    className="TextArea"
+                    type="text"
+                    placeholder="Credits description"
+                    rows="4"
+                    cols="50"
+                  />
                 </div>
                 <div className="ModalFooter">
                   <div className="ModalButtons">

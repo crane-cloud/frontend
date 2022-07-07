@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import * as redux from "react-redux";
-import ProjectBillingPage from "./";
+import AdminProjectsPage from "./";
 
 jest.mock('react', () => {
   const originReact = jest.requireActual('react');
@@ -40,7 +40,7 @@ describe("TodoList", () => {
   });
 
   it("should render", () => {
-    const wrapper = shallow(<ProjectBillingPage />);
+    const wrapper = shallow(<AdminProjectsPage />);
 
     expect(wrapper.exists()).toBe(true);
   });

@@ -91,7 +91,7 @@ class ProjectDashboardPage extends React.Component {
               name={getProjectName(projects, params.projectID)}
               params={params}
               description={getProjectName(projects, params.projectID)}
-              pageRoute={this.props.location.pathname}
+              pageRoute={this.props.location?.pathname}
               allMetricsLink={`/projects/${projectID}/metrics`}
               cpuLink={`/projects/${projectID}/cpu/`}
               memoryLink={`/projects/${projectID}/memory/`}
@@ -157,15 +157,15 @@ class ProjectDashboardPage extends React.Component {
 ProjectDashboardPage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      projectID: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-  getProjectCPU: PropTypes.func.isRequired,
-  clearProjectCPU: PropTypes.func.isRequired,
-  projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+      projectID: PropTypes.string,
+    }),
+  }),
+  getProjectCPU: PropTypes.func,
+  clearProjectCPU: PropTypes.func,
+  projects: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isFetchingMemory, memoryMetrics, memoryMessage } =
     state.projectMemoryReducer;
   const { isFetchingCPU, cpuMetrics, cpuMessage } = state.projectCPUReducer;

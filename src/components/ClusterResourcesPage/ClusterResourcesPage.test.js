@@ -1,10 +1,10 @@
 import React from "react";
 import { shallow } from "enzyme";
 import * as redux from "react-redux";
-import ProjectBillingPage from "./";
+import ClusterResourcesPage from "./";
 
-jest.mock('react', () => {
-  const originReact = jest.requireActual('react');
+jest.mock("react", () => {
+  const originReact = jest.requireActual("react");
   return {
     ...originReact,
     useRef: jest.fn(),
@@ -13,7 +13,10 @@ jest.mock('react', () => {
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useParams: () => ({
-    projectId: "12",
+    clusterID: "12",
+  }),
+  useLocation: () => ({
+    pathname: "localhost:3000/clusters/resources",
   }),
 }));
 
@@ -23,10 +26,10 @@ describe("TodoList", () => {
   let mockDispatch;
 
   beforeEach(() => {
-    jest.spyOn(React, "useEffect").mockImplementationOnce(cb => cb()());
+    jest.spyOn(React, "useEffect").mockImplementationOnce((cb) => cb()());
     // Mock useSelector hook
     spyOnUseSelector = jest.spyOn(redux, "useSelector");
-    spyOnUseSelector.mockReturnValue([{ id: 1, app: "nginx" }]);
+    spyOnUseSelector.mockReturnValue([{ id: 1, cluster: "nginx" }]);
 
     // Mock useDispatch hook
     const useDispatchSpy = jest.spyOn(redux, "useDispatch");
@@ -40,7 +43,7 @@ describe("TodoList", () => {
   });
 
   it("should render", () => {
-    const wrapper = shallow(<ProjectBillingPage />);
+    const wrapper = shallow(<ClusterResourcesPage />);
 
     expect(wrapper.exists()).toBe(true);
   });

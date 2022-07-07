@@ -37,7 +37,7 @@ class CreateProject extends React.Component {
       multiCluster: false,
       clusterchoices: false,
       othersBool: false,
-      SelectedClusters: new Array(clusters.length).fill(false),
+      SelectedClusters: new Array(clusters?.length).fill(false),
       otherType: "",
     };
 
@@ -386,7 +386,7 @@ CreateProject.defaultProps = {
   params: {},
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { data } = state.user;
   const { isAdded, isAdding, message, errorCode } = state.addProjectReducer;
   const { clusters } = state.clustersReducer;

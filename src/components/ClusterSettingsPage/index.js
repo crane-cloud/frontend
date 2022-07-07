@@ -54,7 +54,7 @@ class ClusterSettingsPage extends React.Component {
   fliterCluster(clusterID){   
     const { clusters } = this.props;
     const { currentCluster } = this.state;
-    for(var i = 0; i<clusters.clusters.length ;i++){
+    for(var i = 0; i<clusters.clusters?.length ;i++){
         if(clusters.clusters[i].id === clusterID){
             this.setState({
                currentCluster: {currentCluster, ...clusters.clusters[i]},

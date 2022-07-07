@@ -105,15 +105,15 @@ class PvcsListPage extends React.Component {
 }
 
 PvcsListPage.propTypes = {
-  getPvcs: PropTypes.func.isRequired,
+  getPvcs: PropTypes.func,
   pvcs: PropTypes.arrayOf(PropTypes.object),
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      clusterID: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
+      clusterID: PropTypes.string,
+    }),
+  }),
 };
 
 PvcsListPage.defaultProps = {
@@ -122,7 +122,7 @@ PvcsListPage.defaultProps = {
   isFetched: false,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isRetrieving, pvcs, isFetched } = state.pvcsReducer;
   return { isRetrieving, pvcs, isFetched };
 };
