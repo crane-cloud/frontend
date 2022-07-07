@@ -10,19 +10,41 @@ import styles from "./MonitoringPage.module.css";
 
 const MonitoringPage = () => {
   const [showOptions, setShowOptions] = useState(false);
+  const [optionsFor, setOptionsFor] = useState("");
   const openSelectRef = useRef(null);
-  const toggleOptions = () => {
-    setShowOptions(!showOptions);
+
+  const viewAppModules = () => {
+    setOptionsFor("Application");
+    setShowOptions(true);
   };
-  const handleChange = () => {
-    toggleOptions();
+
+  const viewDBModules = () => {
+    setOptionsFor("Database");
+    setShowOptions(true);
   };
+
+  const viewClusterModules = () => {
+    setOptionsFor("Cluster");
+    setShowOptions(true);
+  };
+
+  const viewMiraModules = () => {
+    setOptionsFor("Mira");
+    setShowOptions(true);
+  };
+
+  const viewIntegratedModules = () => {
+    setOptionsFor("Integration");
+    setShowOptions(true);
+  };
+
   const handleClickOutside = (event) => {
     if (
       openSelectRef.current &&
       !openSelectRef.current.contains(event.target)
     ) {
       setShowOptions(false);
+      setOptionsFor("");
     }
   };
   useEffect(() => {
@@ -32,6 +54,7 @@ const MonitoringPage = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   return (
     <div className={styles.MonitoringPageMain}>
       <NewHeader />
@@ -94,7 +117,52 @@ const MonitoringPage = () => {
           <div className={styles.StatusSectionItem}>
             <div className={styles.StatusSection}>
               <span>
-                <DownArrow className={styles.DownArrow} />
+                <div
+                  ref={openSelectRef}
+                  onClick={() => viewAppModules()}
+                  role="presentation"
+                >
+                  <DownArrow className={styles.DownArrow} />
+
+                  {optionsFor === "Application" && showOptions && (
+                    <div className={styles.DropDownContainer}>
+                      <div className={styles.DropDownContent}>
+                        <div
+                          className={styles.DropDownDetails}
+                          role="presentation"
+                        >
+                          <div className={styles.DropDownValue}>
+                            <span>
+                              <div className={styles.DropDownValueTitle}>
+                                Frontend
+                              </div>
+                              <div>No issues found</div>
+                            </span>
+                            <span>
+                              <Operational className={styles.SmallerIcon} />
+                            </span>
+                          </div>
+                        </div>
+                        <div
+                          className={styles.DropDownDetails}
+                          role="presentation"
+                        >
+                          <div className={styles.DropDownValue}>
+                            <span>
+                              <div className={styles.DropDownValueTitle}>
+                                Backend
+                              </div>
+                              <div>No issues found</div>
+                            </span>
+                            <span>
+                              <Operational className={styles.SmallerIcon} />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </span>
               <span>
                 <div className={styles.StatusSectionCardTitle}>Application</div>
@@ -108,39 +176,45 @@ const MonitoringPage = () => {
           <div className={styles.StatusSectionItem}>
             <div className={styles.StatusSection}>
               <span>
-                <div ref={openSelectRef} className="SelectWrapper">
-                  <div onClick={() => toggleOptions()} role="presentation">
-                    <div className={`${showOptions}`}>
-                      <DownArrow className={styles.DownArrow} />
-                    </div>
-                  </div>
-                  {showOptions && (
-                    <div className="SelectOptionsWrapper">
-                      <div onClick={() => handleChange()} role="presentation">
-                        <div className={styles.StatusSectionItem}>
-                          <div className={styles.StatusSection}>
+                <div
+                  ref={openSelectRef}
+                  onClick={() => viewDBModules()}
+                  role="presentation"
+                >
+                  <DownArrow className={styles.DownArrow} />
+
+                  {optionsFor === "Database" && showOptions && (
+                    <div className={styles.DropDownContainer}>
+                      <div className={styles.DropDownContent}>
+                        <div
+                          className={styles.DropDownDetails}
+                          role="presentation"
+                        >
+                          <div className={styles.DropDownValue}>
                             <span>
-                              <div className={styles.StatusSectionCardTitle}>
+                              <div className={styles.DropDownValueTitle}>
                                 MySQL
                               </div>
-                              <div>No Issues</div>
+                              <div>No issues found</div>
                             </span>
                             <span>
-                              <Operational className={styles.SmallIcon} />
+                              <Operational className={styles.SmallerIcon} />
                             </span>
                           </div>
                         </div>
-                        <hr />
-                        <div className={styles.StatusSectionItem}>
-                          <div className={styles.StatusSection}>
+                        <div
+                          className={styles.DropDownDetails}
+                          role="presentation"
+                        >
+                          <div className={styles.DropDownValue}>
                             <span>
-                              <div className={styles.StatusSectionCardTitle}>
+                              <div className={styles.DropDownValueTitle}>
                                 PostgreSQL
                               </div>
-                              <div>No Issues</div>
+                              <div>No issues found</div>
                             </span>
                             <span>
-                              <Operational className={styles.SmallIcon} />
+                              <Operational className={styles.SmallerIcon} />
                             </span>
                           </div>
                         </div>
@@ -163,7 +237,84 @@ const MonitoringPage = () => {
           <div className={styles.StatusSectionItem}>
             <div className={styles.StatusSection}>
               <span>
-                <DownArrow className={styles.DownArrow} />
+                <div
+                  ref={openSelectRef}
+                  onClick={() => viewClusterModules()}
+                  role="presentation"
+                >
+                  <DownArrow className={styles.DownArrow} />
+
+                  {optionsFor === "Cluster" && showOptions && (
+                    <div className={styles.DropDownContainer}>
+                      <div className={styles.DropDownContent}>
+                        <div
+                          className={styles.DropDownDetails}
+                          role="presentation"
+                        >
+                          <div className={styles.DropDownValue}>
+                            <span>
+                              <div className={styles.DropDownValueTitle}>
+                                Makerere
+                              </div>
+                              <div>No issues found</div>
+                            </span>
+                            <span>
+                              <Operational className={styles.SmallerIcon} />
+                            </span>
+                          </div>
+                        </div>
+                        <div
+                          className={styles.DropDownDetails}
+                          role="presentation"
+                        >
+                          <div className={styles.DropDownValue}>
+                            <span>
+                              <div className={styles.DropDownValueTitle}>
+                                NetLabs
+                              </div>
+                              <div>Under maintenance</div>
+                            </span>
+                            <span>
+                              <Maintenance className={styles.SmallerIcon} />
+                            </span>
+                          </div>
+                        </div>
+                        <div
+                          className={styles.DropDownDetails}
+                          role="presentation"
+                        >
+                          <div className={styles.DropDownValue}>
+                            <span>
+                              <div className={styles.DropDownValueTitle}>
+                                ACE
+                              </div>
+                              <div>No issues found</div>
+                            </span>
+                            <span>
+                              <Operational className={styles.SmallerIcon} />
+                            </span>
+                          </div>
+                        </div>
+                        <div
+                          className={styles.DropDownDetails}
+                          role="presentation"
+                        >
+                          <div className={styles.DropDownValue}>
+                            <span>
+                              <div className={styles.DropDownValueTitle}>
+                                CIS
+                              </div>
+                              <div>Unavailable</div>
+                            </span>
+                            <span>
+                              <Outage className={styles.SmallerIcon} />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </span>
               <span>
                 <div className={styles.StatusSectionCardTitle}>Clusters</div>
@@ -207,7 +358,52 @@ const MonitoringPage = () => {
           <div className={styles.StatusSectionItem}>
             <div className={styles.StatusSection}>
               <span>
-                <DownArrow className={styles.DownArrow} />
+                <div
+                  ref={openSelectRef}
+                  onClick={() => viewMiraModules()}
+                  role="presentation"
+                >
+                  <DownArrow className={styles.DownArrow} />
+
+                  {optionsFor === "Mira" && showOptions && (
+                    <div className={styles.DropDownContainer}>
+                      <div className={styles.DropDownContent}>
+                        <div
+                          className={styles.DropDownDetails}
+                          role="presentation"
+                        >
+                          <div className={styles.DropDownValue}>
+                            <span>
+                              <div className={styles.DropDownValueTitle}>
+                                MIRA Frontend
+                              </div>
+                              <div>No issues found</div>
+                            </span>
+                            <span>
+                              <Operational className={styles.SmallerIcon} />
+                            </span>
+                          </div>
+                        </div>
+                        <div
+                          className={styles.DropDownDetails}
+                          role="presentation"
+                        >
+                          <div className={styles.DropDownValue}>
+                            <span>
+                              <div className={styles.DropDownValueTitle}>
+                                MIRA Backend
+                              </div>
+                              <div>No issues found</div>
+                            </span>
+                            <span>
+                              <Operational className={styles.SmallerIcon} />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </span>
               <span>
                 <div className={styles.StatusSectionCardTitle}>MIRA</div>
@@ -221,7 +417,36 @@ const MonitoringPage = () => {
           <div className={styles.StatusSectionItem}>
             <div className={styles.StatusSection}>
               <span>
-                <DownArrow className={styles.DownArrow} />
+                <div
+                  ref={openSelectRef}
+                  onClick={() => viewIntegratedModules()}
+                  role="presentation"
+                >
+                  <DownArrow className={styles.DownArrow} />
+
+                  {optionsFor === "Integration" && showOptions && (
+                    <div className={styles.DropDownContainer}>
+                      <div className={styles.DropDownContent}>
+                        <div
+                          className={styles.DropDownDetails}
+                          role="presentation"
+                        >
+                          <div className={styles.DropDownValue}>
+                            <span>
+                              <div className={styles.DropDownValueTitle}>
+                                Liqo
+                              </div>
+                              <div>No issues found</div>
+                            </span>
+                            <span>
+                              <Operational className={styles.SmallerIcon} />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </span>
               <span>
                 <div className={styles.StatusSectionCardTitle}>
