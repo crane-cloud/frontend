@@ -10,3 +10,11 @@
     justify-content: space-between;
     padding-top: 2rem;
 }
+
+.CreditsTitle{
+    padding-top: 1rem;
+}
+
+.TextArea > ::placeholder{
+    padding-left: 1rem;
+}
