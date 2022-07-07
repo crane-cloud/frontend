@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import NewHeader from "../NewHeader";
 import LandingFooter from "../LandingFooter";
 import { ReactComponent as Operational } from "../../assets/images/operational.svg";
@@ -9,6 +9,29 @@ import { ReactComponent as DownArrow } from "../../assets/images/down-arrow-blac
 import styles from "./MonitoringPage.module.css";
 
 const MonitoringPage = () => {
+  const [showOptions, setShowOptions] = useState(false);
+  const openSelectRef = useRef(null);
+  const toggleOptions = () => {
+    setShowOptions(!showOptions);
+  };
+  const handleChange = () => {
+    toggleOptions();
+  };
+  const handleClickOutside = (event) => {
+    if (
+      openSelectRef.current &&
+      !openSelectRef.current.contains(event.target)
+    ) {
+      setShowOptions(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    // returned function will be called on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <div className={styles.MonitoringPageMain}>
       <NewHeader />
@@ -85,7 +108,46 @@ const MonitoringPage = () => {
           <div className={styles.StatusSectionItem}>
             <div className={styles.StatusSection}>
               <span>
-                <DownArrow className={styles.DownArrow} />
+                <div ref={openSelectRef} className="SelectWrapper">
+                  <div onClick={() => toggleOptions()} role="presentation">
+                    <div className={`${showOptions}`}>
+                      <DownArrow className={styles.DownArrow} />
+                    </div>
+                  </div>
+                  {showOptions && (
+                    <div className="SelectOptionsWrapper">
+                      <div onClick={() => handleChange()} role="presentation">
+                        <div className={styles.StatusSectionItem}>
+                          <div className={styles.StatusSection}>
+                            <span>
+                              <div className={styles.StatusSectionCardTitle}>
+                                MySQL
+                              </div>
+                              <div>No Issues</div>
+                            </span>
+                            <span>
+                              <Operational className={styles.SmallIcon} />
+                            </span>
+                          </div>
+                        </div>
+                        <hr />
+                        <div className={styles.StatusSectionItem}>
+                          <div className={styles.StatusSection}>
+                            <span>
+                              <div className={styles.StatusSectionCardTitle}>
+                                PostgreSQL
+                              </div>
+                              <div>No Issues</div>
+                            </span>
+                            <span>
+                              <Operational className={styles.SmallIcon} />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </span>
               <span>
                 <div className={styles.StatusSectionCardTitle}>
@@ -162,7 +224,9 @@ const MonitoringPage = () => {
                 <DownArrow className={styles.DownArrow} />
               </span>
               <span>
-                <div className={styles.StatusSectionCardTitle}>Integrations</div>
+                <div className={styles.StatusSectionCardTitle}>
+                  Integrations
+                </div>
                 <div>No Issues</div>
               </span>
               <span>
