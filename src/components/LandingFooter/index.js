@@ -64,10 +64,14 @@ const LandingFooter = () => (
                   <Link to="/team">Team</Link>
                 </li>
                 <li className="TextDivSpacing">
-                  <Link to="/terms-of-service" target="_blank">Terms of service</Link>
+                  <Link to="/terms-of-service" target="_blank">
+                    Terms of service
+                  </Link>
                 </li>
                 <li className="TextDivSpacing">
-                  <Link to="/privacy-policy" target="_blank">Privacy policy</Link>
+                  <Link to="/privacy-policy" target="_blank">
+                    Privacy policy
+                  </Link>
                 </li>
                 {/* <li className="TextDivSpacing">
                   <Link to="/pricing">Pricing</Link>
@@ -103,7 +107,15 @@ const LandingFooter = () => (
             <div className="FooterChildTwo">
               <div className="TextDivSpacing FooterLogoName">Community</div>
               <ul className="FooterList">
-                <li className="TextDivSpacing">Contribute</li>
+                <li className="TextDivSpacing">
+                  <a
+                    href="https://github.com/crane-cloud"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Contribute
+                  </a>
+                </li>
                 <li className="TextDivSpacing">
                   <a
                     href="https://medium.com/cranecloud"
