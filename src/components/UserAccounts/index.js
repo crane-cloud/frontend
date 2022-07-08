@@ -22,10 +22,6 @@ class UserAccounts extends Component {
       betaUserModal: false,
       selectedUser: "",
     };
-    // this.handleChange = this.handleChange.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
-    // this.showModal = this.showModal.bind(this);
-    // this.closeModal = this.closeModal.bind(this);
     this.showMenu = this.showMenu.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleBetaUserSubmit = this.handleBetaUserSubmit.bind(this);
@@ -260,7 +256,7 @@ UserAccounts.defaultProps = {
   isFetched: false,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isFetching, users, isFetched } = state.usersListReducer;
   const { isAdded, isAdding, isFailed, error } = state.addBetaUserReducer;
   return { isFetching, users, isFetched, isAdded, isAdding, isFailed, error };

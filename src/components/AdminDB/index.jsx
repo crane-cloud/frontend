@@ -153,10 +153,10 @@ class AdminDBList extends React.Component {
 
 AdminDBList.propTypes = {
   databases: PropTypes.arrayOf(PropTypes.shape({})),
-  getProjectDatabases: PropTypes.func.isRequired,
+  getProjectDatabases: PropTypes.func,
   isFetchingDatabases: PropTypes.bool,
   databasesFetched: PropTypes.bool,
-  isCreated: PropTypes.bool.isRequired,
+  isCreated: PropTypes.bool,
 };
 
 AdminDBList.defaultProps = {
@@ -165,7 +165,7 @@ AdminDBList.defaultProps = {
   databasesFetched: false,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { databases, databasesFetched, isFetchingDatabases } =
     state.adminDatabasesReducer;
   const { isCreated } = state.adminCreateDBReducer;

@@ -1219,9 +1219,9 @@ class AppSettingsPage extends React.Component {
 AppSettingsPage.propTypes = {
   isDeleted: PropTypes.bool,
   isFailed: PropTypes.bool,
-  deleteApp: PropTypes.func.isRequired,
+  deleteApp: PropTypes.func,
   clearState: PropTypes.func.isRequired,
-  message: PropTypes.string.isRequired,
+  message: PropTypes.string,
 };
 
 AppSettingsPage.defaultProps = {

@@ -168,12 +168,12 @@ PodsList.propTypes = {
   }),
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
-  getPodsList: PropTypes.func.isRequired,
+  getPodsList: PropTypes.func,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      clusterID: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
+      clusterID: PropTypes.string,
+    }),
+  }),
 };
 
 // assigning defaults
@@ -183,7 +183,7 @@ PodsList.defaultProps = {
   isFetched: false,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isRetrieving, pods, isFetched } = state.podsReducer;
   return { isRetrieving, pods, isFetched };
 };

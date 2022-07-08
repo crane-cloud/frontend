@@ -217,7 +217,7 @@ const ProjectBillingPage = (props) => {
     currentUsageTab === "months"
       ? setMonths(getData2Format(projectBill?.data?.cost_data))
       : setDays(getData2Format(projectBill?.data?.cost_data));
-  }, [projectBill.data, currentUsageTab, getData2Format]);
+  }, [projectBill?.data, currentUsageTab, getData2Format]);
 
   let newObject = summationObject(projectBill?.data?.cost_data);
   // turn values to percentages for donut chart
@@ -257,7 +257,7 @@ const ProjectBillingPage = (props) => {
   ];
 
   const getProjectName = (id) => {
-    return projects.find((project) => project.id === id).name;
+    return projects?.find((project) => project.id === id).name;
   };
 
   const getTransactionDetail = (transactions, transaction_id) => {
@@ -352,7 +352,7 @@ const ProjectBillingPage = (props) => {
           <SideBar
             name={getProjectName(projectID)}
             params={useParams()}
-            pageRoute={props.location.pathname}
+            pageRoute={props.location?.pathname}
             allMetricsLink={`/projects/${projectID}/metrics`}
             cpuLink={`/projects/${projectID}/cpu/`}
             memoryLink={`/projects/${projectID}/memory/`}
@@ -445,8 +445,8 @@ const ProjectBillingPage = (props) => {
                             rate.toFixed(1)
                           : 0
                       }
-                      name={data.name}
-                      email={data.email}
+                      name={data?.name}
+                      email={data?.email}
                     />
                   </div>
                 </div>

@@ -49,7 +49,7 @@ class CreateApp extends React.Component {
       },
       replicas: 1,
       multiCluster: false,
-      SelectedClusters: new Array(clusters.length).fill(false),
+      SelectedClusters: new Array(clusters?.length).fill(false),
     };
 
     this.addEnvVar = this.addEnvVar.bind(this);
@@ -717,7 +717,7 @@ CreateApp.defaultProps = {
   params: {},
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isCreating, isCreated, clearAppCreateState, message, errorCode } =
     state.createAppReducer;
   const { data } = state.user;

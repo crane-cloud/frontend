@@ -107,15 +107,15 @@ class PvsListPage extends React.Component {
 }
 
 PvsListPage.propTypes = {
-  getPvs: PropTypes.func.isRequired,
+  getPvs: PropTypes.func,
   pvs: PropTypes.arrayOf(PropTypes.object),
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      clusterID: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
+      clusterID: PropTypes.string,
+    }),
+  }),
 };
 
 PvsListPage.defaultProps = {
@@ -124,7 +124,7 @@ PvsListPage.defaultProps = {
   isFetched: false,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isRetrieving, pvs, isFetched } = state.pvsReducer;
   return { isRetrieving, pvs, isFetched };
 };
