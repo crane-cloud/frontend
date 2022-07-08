@@ -1,7 +1,6 @@
 import React, { useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import "./NamespacesList.css";
 import Header from "../Header";
 import InformationBar from "../InformationBar";
 import SideNav from "../SideNav";
