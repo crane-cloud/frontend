@@ -104,18 +104,15 @@
     flex: 2;
 }
 
-.SmallIcon {
-    width: 3rem;
-    height: 3rem;
-}
-
+.SmallIcon,
 .SmallerIcon {
     width: 2rem;
     height: 2rem;
 }
 
+.SmallIcon,
 .DownArrow {
-    padding-top: 0.5rem;
+    padding-top: 0.6rem;
 }
 
 .StatusSectionContent {
