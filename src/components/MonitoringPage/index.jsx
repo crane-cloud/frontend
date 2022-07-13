@@ -73,41 +73,6 @@ const MonitoringPage = () => {
         </div>
       </div>
 
-      <div className={styles.StatusTypes}>
-        <div className={styles.StatusTypesContainer}>
-          <div className={styles.StatusTypeIcon}>
-            <Operational />
-          </div>
-          <div className={styles.StatusTypeName}>
-            <h3>Operational</h3>
-          </div>
-        </div>
-        <div className={styles.StatusTypesContainer}>
-          <div className={styles.StatusTypeIcon}>
-            <Maintenance />
-          </div>
-          <div className={styles.StatusTypeName}>
-            <h3>Maintenance</h3>
-          </div>
-        </div>
-        <div className={styles.StatusTypesContainer}>
-          <div className={styles.StatusTypeIcon}>
-            <Incident />
-          </div>
-          <div className={styles.StatusTypeName}>
-            <h3>Incident</h3>
-          </div>
-        </div>
-        <div className={styles.StatusTypesContainer}>
-          <div className={styles.StatusTypeIcon}>
-            <Outage />
-          </div>
-          <div className={styles.StatusTypeName}>
-            <h3>Outage</h3>
-          </div>
-        </div>
-      </div>
-
       <div className={styles.StatusSectionTitle}>
         <h1>Current Status by Service</h1>
       </div>
@@ -458,6 +423,41 @@ const MonitoringPage = () => {
                 <Operational className={styles.SmallIcon} />
               </span>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.StatusTypes}>
+        <div className={styles.StatusTypesContainer}>
+          <div className={styles.StatusTypeIcon}>
+            <Operational />
+          </div>
+          <div className={styles.StatusTypeName}>
+            <h3>Operational</h3>
+          </div>
+        </div>
+        <div className={styles.StatusTypesContainer}>
+          <div className={styles.StatusTypeIcon}>
+            <Maintenance />
+          </div>
+          <div className={styles.StatusTypeName}>
+            <h3>Maintenance</h3>
+          </div>
+        </div>
+        <div className={styles.StatusTypesContainer}>
+          <div className={styles.StatusTypeIcon}>
+            <Incident />
+          </div>
+          <div className={styles.StatusTypeName}>
+            <h3>Incident</h3>
+          </div>
+        </div>
+        <div className={styles.StatusTypesContainer}>
+          <div className={styles.StatusTypeIcon}>
+            <Outage />
+          </div>
+          <div className={styles.StatusTypeName}>
+            <h3>Outage</h3>
           </div>
         </div>
       </div>
