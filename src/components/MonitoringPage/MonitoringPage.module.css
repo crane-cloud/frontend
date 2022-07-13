@@ -24,6 +24,7 @@
 
 .BannerArea {
     display: flex;
+    flex-wrap: wrap;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -33,10 +34,6 @@
 .StatusBanner {
     background-color: #f7b21f;
     width: 35%;
-}
-
-.StatusBanner:hover {
-    cursor: pointer;
 }
 
 .BannerText {
@@ -113,6 +110,10 @@
 .SmallIcon,
 .DownArrow {
     padding-top: 0.6rem;
+}
+
+.DownArrow:hover {
+    cursor: pointer;
 }
 
 .StatusSectionContent {
@@ -206,4 +207,19 @@
 
 .DropDownDetails:hover {
     background-color: #f1f1f1;
+}
+
+@media only screen and (max-width: 600px) {
+    .StatusSectionChildContainer {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+    }
+
+    .StatusTypes {
+        display: none;
+    }
+
+    .StatusBanner {
+        width: 80%;
+    }
 }

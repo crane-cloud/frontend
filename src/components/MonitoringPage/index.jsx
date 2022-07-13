@@ -297,10 +297,10 @@ const MonitoringPage = () => {
               </span>
               <span>
                 <div className={styles.StatusSectionCardTitle}>Prometheus</div>
-                <div>Issues detected</div>
+                <div>No Issues</div>
               </span>
               <span>
-                <Incident className={styles.SmallIcon} />
+                <Operational className={styles.SmallIcon} />
               </span>
             </div>
           </div>
