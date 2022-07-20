@@ -10,6 +10,8 @@ import DonutChart from "../DonutChart";
 import BarGraph from "../BarGraph";
 import Checkbox from "../Checkbox";
 import FlutterwaveHook from "../FlutterwaveHook";
+import { ReactComponent as Coin } from "../../assets/images/coin.svg";
+import { ReactComponent as Flutterwave} from "../../assets/images/flutterwave.svg";
 import MetricsCard from "../MetricsCard";
 import SpendingPeriod from "../SpendingPeriod";
 import { useParams } from "react-router-dom";
@@ -81,6 +83,8 @@ const ProjectBillingPage = (props) => {
   const [invoiceDetails, setInvoiceDetails] = useState({});
   const [receiptDetails, setReceiptDetails] = useState({});
   const [viewReceipt, setViewReceipt] = useState(false);
+  const [paymentOptions, setPaymentOptions] = useState(false);
+  const [choosenPaymentOption, setChoosenPaymentOption] = useState("");
   const [currentTab, setCurrentTab] = useState("transactions");
   const [viewInvoiceFile, setViewInvoiceFile] = useState(false);
   const [viewReceiptFile, setViewReceiptFile] = useState(false);
@@ -158,6 +162,7 @@ const ProjectBillingPage = (props) => {
   const viewUsageInMonths = () => {
     setCurrentUsageTab("months");
   };
+ 
 
   const getBill = useCallback(
     (startTimeStamp) =>
@@ -271,6 +276,13 @@ const ProjectBillingPage = (props) => {
     setViewReceipt(true);
   };
 
+  const openPaymentsOptions = () =>{
+    setPaymentOptions(true)
+  }
+  const closePaymentsOptions = () =>{
+    setPaymentOptions(false)
+  }
+
   const openInvoiceModal = (invoices, invoiceId) => {
     let invoiceDetail = invoices.find((invoice) => invoice.id === invoiceId);
     setInvoiceDetails(invoiceDetail);
@@ -362,7 +374,7 @@ const ProjectBillingPage = (props) => {
         </div>
         <div className={styles.MainContentSection}>
           <div>
-            <InformationBar header="Project Billing" />
+            <InformationBar header="Project Billing" credits={true}/>
           </div>
           <div className={styles.SmallContainer}>
             <div className={styles.CBLabel}>
@@ -438,16 +450,21 @@ const ProjectBillingPage = (props) => {
                     </div>
                   </div>
                   <div className={styles.paymentButton}>
-                    <FlutterwaveHook
+                     <PrimaryButton
+                          label="Pay bill"
+                          onClick={openPaymentsOptions}
+                        />
+
+                    {/* <FlutterwaveHook
                       amount={
                         transactionDetails.amount
-                          ? transactionDetails.amount.toLocaleString("en-US") *
+                          ? transactionDetails.amount *
                             rate.toFixed(1)
                           : 0
                       }
                       name={data?.name}
                       email={data?.email}
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -992,6 +1009,60 @@ const ProjectBillingPage = (props) => {
                       </div>
                     </div>
                   </div>
+                </Modal>
+              </div>
+            )}
+ 
+            {paymentOptions && (
+              <div>
+                <Modal showModal={paymentOptions} onClickAway={closePaymentsOptions}>
+                  <div className={styles.OptionsModal}>
+                    <div className={styles.MainModalTitle}>Choose payment form</div>
+                    <div className={styles.SubModalTitle}>Click one of the options below</div>
+                    <div className={styles.PaymentForms} >
+                      <div className={choosenPaymentOption==="credits"? styles.SelectedPaymentFormBox : styles.PaymentFormBox}
+                       onClick={()=>{setChoosenPaymentOption("credits")}}>
+                       <div className={styles.PaymentText}> Credits</div>
+                       <div className={styles.CoinSize}>
+                       <Coin/>
+                       </div>
+                      </div>
+                      <div className={ choosenPaymentOption==="flutterwave"? styles.SelectedPaymentFormBox : styles.PaymentFormBox} 
+                      onClick={()=>{setChoosenPaymentOption("flutterwave")}}>
+                      <div className={styles.PaymentText}>Cash/Card</div>
+                      <div className={styles.Iconsection}>Powered by 
+                      <div className={styles.FlutterWaveSize}>
+                       <Flutterwave/>
+                       </div>
+                      </div>
+                      </div>
+                    </div>
+
+                      <div className={styles.OptionButtons}>
+                        <PrimaryButton
+                          label="Close"
+                          className="CancelBtn"
+                          onClick={closePaymentsOptions}
+                        />
+
+                         {choosenPaymentOption==="credits"&& <PrimaryButton
+                          label="Proceed"
+                          onClick={()=>{}}
+                        />}
+                        {choosenPaymentOption==="flutterwave"&& 
+                          <FlutterwaveHook
+                          amount={
+                        transactionDetails.amount
+                          ? transactionDetails.amount *
+                            rate.toFixed(1)
+                          : 0
+                      }
+                      name={data?.name}
+                      email={data?.email}
+                       /> 
+                        }
+                      </div>
+                    </div>
                 </Modal>
               </div>
             )}

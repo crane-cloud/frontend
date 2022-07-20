@@ -25,6 +25,13 @@
   gap: 4rem;
   align-items: center;
 }
+.CreditsCorner{
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 1fr;
+  color: #F7B21F;
+  grid-gap: 1rem;
+}
 
 .ViewAppBtn {
   color: #008ac1;
