@@ -34,6 +34,18 @@ describe("Testing the Project Settings Page component", () => {
   it("matchs the ProjectSettingsPage component snapshot", () => {
     expect(ProjectSettingsPageComponent).toMatchSnapshot();
   });
+  it("Test onChange component method", () => {
+    const event = {
+      target: {
+        value: 'New',
+        name: 'newImage',
+      },
+    };
+    const instance = ProjectSettingsPageComponent.instance();
+
+    instance.handleChange(event);
+    expect(instance.state.newImage).toBe('New');
+  });
 });
 
 describe("Testing the exported mapstate to props and dispatch for ProjectSettingsPage", () => {

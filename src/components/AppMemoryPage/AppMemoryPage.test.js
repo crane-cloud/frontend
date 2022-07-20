@@ -7,20 +7,24 @@ import
  from "./";
 
 const props = {
-  appMemoryMetrics: [{ slug: "slug" }]
+  data: { id:"1" },
+  match: { params: { projectID: "2" } },
+  appMemoryMetrics: [{ item: "item" }],
+  getUserProjects: jest.fn(),
+  getClustersList: jest.fn(),
+  clearAppMemory: jest.fn(),
+  getAppMemory: jest.fn(),
 };
 
 describe("test the component", () => {
+  const NewComponent = AppMemoryPage.WrappedComponent;
+  const Wrapper = shallow(<NewComponent {...props} />);
   it("matchs the component snapshot", () => {
-    const wrapper = AppMemoryPage.WrappedComponent;
-    const mycomponent = shallow(<wrapper {...props} />);
-    expect(mycomponent).toMatchSnapshot();
+    expect(Wrapper).toMatchSnapshot();
   });
   it("should match the snapshot", () => {
-    const newComponent = AppMemoryPage.WrappedComponent;
-    const wrapper = shallow(<newComponent {...props} />);
-    wrapper.setProps(props);
-    expect(wrapper).toBeDefined();
+    Wrapper.setProps(props);
+    expect(Wrapper).toBeDefined();
   });
 });
 

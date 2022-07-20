@@ -112,7 +112,7 @@ export const formatAppMemoryMetrics = (appID, memoryMetrics, period = "1d") => {
   const found = memoryMetrics?.find((metric) => metric.app === appID);
   const memoryData = [];
 
-  if (found !== undefined && found.metrics.length > 0) {
+  if (found !== undefined && found.metrics?.length > 0) {
     found.metrics.forEach((metric) => {
       const newMetricObject = {
         time: getTimeString(timestampToDate(metric.timestamp), period),
