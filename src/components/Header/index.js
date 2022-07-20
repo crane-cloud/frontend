@@ -81,6 +81,7 @@ const Header = (props) => {
       )}
 
       {(user.accessToken && pageUrl === null) && (
+
         <div className={styles.HeaderLinksWrap}>
           <div
             ref={dropdownRef}
@@ -102,7 +103,14 @@ const Header = (props) => {
               </>
             ) : (
               <>
-                <div className={styles.UserNames}>{user.data.name}</div>
+              {/** user's credits should appear here if the user has any  */}
+              {/**Not displayed in billing  */}
+              {( match.path !== "/projects/:projectID/billing" &&
+              <div className={styles.Credits}
+              title="credits"
+              >537</div>
+              )}
+               <div className={styles.UserNames}>{user.data.name}</div>
               </>
             )}
 

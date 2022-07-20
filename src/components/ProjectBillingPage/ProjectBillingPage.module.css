@@ -351,10 +351,83 @@
 .ReceiptModal .Total {
   padding: 0.8rem;
 }
+.OptionsModal{
+  padding: 0.5rem;
+}
+.MainModalTitle{
+  font-weight: 900;
+  font-size: 2rem;
+}
+.SubModalTitle{
+  font-weight: 500;
+  font-size: 1rem;
+  text-align: center;
+  padding-bottom: .5rem;
+}
+.Iconsection{
+ display: flex;
+ font-weight: 500;
+ font-size: 1rem;
+ text-align: center;
+ flex-direction: column;
+ padding-top: .5rem;
+ align-self: center;
+}
+.PaymentForms{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+.PaymentFormBox{
+  display: flex;
+  flex-direction: column;
+  width: 7rem;
+  height: 6rem;
+  background-color: #F8F7E5;
+  align-items: center;
+  gap: .3rem
+}
+ .SelectedPaymentFormBox{
+  display: flex;
+  flex-direction: column;
+  width: 7rem;
+  height: 6rem;
+  background-color: #F8F7E5;
+  align-items: center;
+  gap: .3rem;
+  border:  1px solid #000000;
+
+}
+.PaymentText{
+  color: black;
+  text-align: center;
+  font-weight: 700;
+  padding: .3rem 0;
+}
+.CoinSize{
+  display: flex;
+  width: 3rem;
+}
+.FlutterWaveSize{
+  display: flex;
+  width: 6rem;
+
+}
+.PaymentFormBox:hover{
+  border:  1px solid #000000;
+}
+
 
 .ReceiptButton {
   display: flex;
   justify-content: center;
+}
+.OptionButtons{
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .ModalHistoryHeading {

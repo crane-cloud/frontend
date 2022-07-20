@@ -4,6 +4,7 @@ import NewButton from "../NewButton";
 import AppStatus from "../AppStatus";
 import PrimaryButton from "../PrimaryButton";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
+import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 import "./InformationBar.css";
 
 const InformationBar = ({
@@ -13,6 +14,7 @@ const InformationBar = ({
   showBtn,
   btnAction,
   viewAppLink,
+  credits,
   showSearchBar,
   placeholder,
   searchAction,
@@ -74,7 +76,16 @@ const InformationBar = ({
             <PrimaryButton label="Open App" className="ViewAppBtn" />
           </a>
         </div>
-      ) : (
+      ) :  credits ? (
+        <div className="InformationBarWithButton">
+          <div className="InfoHeader">{header}</div>
+          {/**appears if user has credits */}
+          <div className="CreditsCorner" title="credits">
+            537
+           <Coin/>
+          </div>
+        </div>
+      ):(
         <div className="InfoHeader">{header}</div>
       )}
     </div>
