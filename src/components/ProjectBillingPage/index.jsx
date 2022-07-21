@@ -114,8 +114,8 @@ const ProjectBillingPage = (props) => {
   const { projects } = useSelector((state) => state.userProjectsReducer);
   const { data } = useSelector((state) => state.user);
   const { transactions, isRetrieving, isFetched } = useSelector((state) => state.getTransactionsReducer);
-  const { invoices } = useSelector((state) => state.getInvoicesReducer);
-  const { receipts } = useSelector((state) => state.getReceiptsReducer);
+  const { invoices, isRetrievingInvoices, invoicesFetched } = useSelector((state) => state.getInvoicesReducer);
+  const { receipts, isRetrievingReceipts, receiptsFetched } = useSelector((state) => state.getReceiptsReducer);
 
   const handleConversion = () => {
     axios
@@ -640,7 +640,7 @@ const ProjectBillingPage = (props) => {
                 </>
                 }
 
-                {currentTab === "invoices" && (
+                {currentTab === "invoices" && !isRetrievingInvoices && invoicesFetched ? (
                   <div className={styles.InvoiceHistoryBody}>
                     <div className={styles.InvoiceHistoryTable}>
                       <div className={styles.InvoiceHistoryHead}>
@@ -683,9 +683,17 @@ const ProjectBillingPage = (props) => {
                       ))}
                     </div>
                   </div>
+                ):
+                <>
+                {currentTab === "invoices" && !isFetched && (
+                  <div className={styles.NoResourcesMesssage}>
+                      No invoices found under this project.
+                  </div>
                 )}
+                </>
+                }
 
-                {currentTab === "receipts" && (
+                {currentTab === "receipts" && !isRetrievingReceipts && receiptsFetched ? (
                   <div className={styles.ReceiptHistoryBody}>
                     <div className={styles.ReceiptHistoryTable}>
                       <div className={styles.ReceiptHistoryHead}>
@@ -737,7 +745,15 @@ const ProjectBillingPage = (props) => {
                       ))}
                     </div>
                   </div>
-                )}
+                ):
+                <>
+                 {currentTab === "receipts" && !receiptsFetched && (
+                  <div className={styles.NoResourcesMesssage}>
+                    No receipts found under this project.
+                  </div>
+                 )}
+                </>
+                }
               </div>
             </div>
 
