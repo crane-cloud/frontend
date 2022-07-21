@@ -149,7 +149,7 @@ class AppMemoryPage extends React.Component {
             <SideBar
               name={this.getAppName(appID)}
               params={params}
-              pageRoute={this.props.location.pathname}
+              pageRoute={this.props.location?.pathname}
               allMetricsLink={`/projects/${projectID}/apps/${appID}/dashboard`}
               cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
               memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
@@ -192,14 +192,14 @@ class AppMemoryPage extends React.Component {
 AppMemoryPage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      appID: PropTypes.string.isRequired,
-      userID: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-  isFetchingAppMemory: PropTypes.bool.isRequired,
-  appMemoryMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  getAppMemory: PropTypes.func.isRequired,
-  clearAppMemory: PropTypes.func.isRequired,
+      appID: PropTypes.string,
+      userID: PropTypes.string,
+    }),
+  }),
+  isFetchingAppMemory: PropTypes.bool,
+  appMemoryMetrics: PropTypes.arrayOf(PropTypes.shape({})),
+  getAppMemory: PropTypes.func,
+  clearAppMemory: PropTypes.func,
 };
 
 export const mapStateToProps = (state) => {
