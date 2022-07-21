@@ -35,6 +35,12 @@ describe("Testing the exported mapstate to props and dispatch for UserAccounts",
           isFailed: false,
           error: "",
         },
+        addUserCreditsReducer: {
+           Added: false,
+            Adding: false, 
+            Failed:false,
+        }
+
       })
     ).toEqual({
       isAdded: false,
@@ -42,6 +48,9 @@ describe("Testing the exported mapstate to props and dispatch for UserAccounts",
       isFetching: false,
       isFailed: false,
       isFetched: false,
+      Added: false,
+      Adding: false, 
+      Failed:false,
       error: "",
     });
   });

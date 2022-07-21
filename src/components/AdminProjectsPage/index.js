@@ -1,12 +1,12 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useCallback } from "react";
 import "./AdminProjectsPage.css";
 import InformationBar from "../InformationBar";
 import Header from "../Header";
 import SideNav from "../SideNav";
-import Modal from "../Modal";
-import BlackInputText from "../BlackInputText";
-import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
-import PrimaryButton from "../PrimaryButton";
+// import Modal from "../Modal";
+// import BlackInputText from "../BlackInputText";
+// import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
+// import PrimaryButton from "../PrimaryButton";
 import getAdminProjects from "../../redux/actions/adminProjects";
 import getUsersList from "../../redux/actions/users";
 import Spinner from "../Spinner";
@@ -25,10 +25,9 @@ const AdminProjectsPage = () => {
   const getUsersProps = useCallback(() => dispatch(getUsersList), [dispatch]);
   const adminProjects = useSelector((state) => state.adminProjectsReducer);
   const usersList = useSelector((state) => state.usersListReducer);
-
-  const [contextMenu, setContextMenu] = useState(false);
-  const [selectedProject, setSelectedProject] = useState("");
-  const [addCredits, setAddCredits] = useState(false);
+  // const [contextMenu, setContextMenu] = useState(false);
+  // const [selectedProject, setSelectedProject] = useState("");
+  // const [addCredits, setAddCredits] = useState(false);
 
   useEffect(() => {
     getAdminProps();
@@ -48,17 +47,17 @@ const AdminProjectsPage = () => {
     return username;
   };
 
-  const showModal = () => {
-    setAddCredits(true);
-  };
-  const hideModal = () => {
-    setAddCredits(false);
-    setContextMenu(false);
-  };
-  const showContextMenu = (id) => {
-    setContextMenu(true);
-    setSelectedProject(id);
-  };
+  // const showModal = () => {
+  //   setAddCredits(true);
+  // };
+  // const hideModal = () => {
+  //   setAddCredits(false);
+  //   setContextMenu(false);
+  // };
+  // const showContextMenu = (id) => {
+  //   setContextMenu(true);
+  //   setSelectedProject(id);
+  // };
 
   const clusterName = localStorage.getItem("clusterName");
 
@@ -89,7 +88,7 @@ const AdminProjectsPage = () => {
                     <th>name</th>
                     <th>owner</th>
                     <th>description</th>
-                    <th>Actions</th>
+                    {/* <th>Actions</th> */}
                   </tr>
                 </thead>
                 {adminProjects.isRetrieving ? (
@@ -111,7 +110,7 @@ const AdminProjectsPage = () => {
                           <td>{project.name}</td>
                           <td>{getUserName(project.owner_id)}</td>
                           <td>{project.description}</td>
-                          <td onClick={() => showContextMenu(project.id)}>
+                          {/* <td onClick={() => showContextMenu(project.id)}>
                             <MoreIcon />
 
                             {contextMenu && project.id === selectedProject && (
@@ -127,13 +126,13 @@ const AdminProjectsPage = () => {
                                 </div>
                               </div>
                             )}
-                          </td>
+                          </td> */}
                         </tr>
                       ))}
                   </tbody>
                 )}
               </table>
-              <Modal showModal={addCredits} onClickAway={() => hideModal()}>
+              {/* <Modal showModal={addCredits} onClickAway={() => hideModal()}>
                 <div className="ModalHeader">
                   <h5 className="ModalTitle">Add Credits</h5>
 
@@ -160,7 +159,7 @@ const AdminProjectsPage = () => {
                     <PrimaryButton type="button" label="Add" />
                   </div>
                 </div>
-              </Modal>
+              </Modal> */}
               {adminProjects.isRetrieved &&
                 adminProjects.projects.length === 0 && (
                   <div className="NoResourcesMessage">

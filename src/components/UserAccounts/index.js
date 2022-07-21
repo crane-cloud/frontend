@@ -2,13 +2,16 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import BlackInputText from "../BlackInputText";
 import getUsersList from "../../redux/actions/users";
+import addUserCredits from "../../redux/actions/addCredits";
 import "./UserAccounts.css";
 import Header from "../Header";
 import Spinner from "../Spinner";
 import InformationBar from "../InformationBar";
 import SideNav from "../SideNav";
 import Modal from "../Modal";
+import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
 import PrimaryButton from "../PrimaryButton";
 import addBetaUser from "../../redux/actions/addBetaUser";
@@ -20,6 +23,9 @@ class UserAccounts extends Component {
     this.state = {
       actionsMenu: false,
       betaUserModal: false,
+      addCredits: false,
+      credits:"",
+      creditDescription:"",
       selectedUser: "",
     };
     this.showMenu = this.showMenu.bind(this);
@@ -28,6 +34,10 @@ class UserAccounts extends Component {
     this.closeBetaUserModal = this.closeBetaUserModal.bind(this);
     this.showBetaUserModal = this.showBetaUserModal.bind(this);
     this.renderRedirect = this.renderRedirect.bind(this);
+    this.hideCreditsModal = this.hideCreditsModal.bind(this);
+    this.showCreditsModal = this.showCreditsModal.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleCreditSubmittion = this.handleCreditSubmittion.bind(this);
   }
   componentDidMount() {
     const { getUsersList } = this.props;
@@ -35,10 +45,14 @@ class UserAccounts extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { getUsersList, isAdded } = this.props;
+    const { getUsersList, isAdded, Added } = this.props;
     if (isAdded !== prevProps.isAdded) {
       getUsersList();
       this.closeBetaUserModal();
+    }
+    if (Added !== prevProps.Added) {
+      getUsersList();
+      this.hideCreditsModal();
     }
   }
   handleClick = (e) => {
@@ -67,12 +81,43 @@ class UserAccounts extends Component {
       betaUserModal: true,
     });
   }
+  handleCreditSubmittion(){
+    const {credits, creditDescription,selectedUser} = this.state;
+    const { addUserCredits } = this.props;
+    if(credits !== ""  && creditDescription !== ""){
+        const creditsObject={
+            amount: credits,
+            description: creditDescription,
+            user_id: selectedUser
+          }
+          addUserCredits(creditsObject);
+    }
+
+  }
+   showCreditsModal() {
+    this.setState({
+      addCredits:true,
+    })
+  };
+  hideCreditsModal = () => {
+    this.setState({
+      addCredits: false,
+      actionsMenu:false,
+    });
+    };
 
   closeBetaUserModal() {
     this.setState({
       betaUserModal: false,
     });
   }
+  handleChange(e){
+      this.setState({
+        [e.target.name]: e.target.value,
+      });  
+  }
+
+
 
   handleBetaUserSubmit() {
     const { selectedUser } = this.state;
@@ -86,19 +131,21 @@ class UserAccounts extends Component {
 
   renderRedirect = () => {
     const { isAdded } = this.props;
+   
     if (isAdded) {
       return <Redirect to={`/accounts`} noThrow />;
     }
   };
+  
 
   render() {
-    const { users, isFetched, isFetching, isAdding, isFailed, error, isAdded } =
+    const { users, isFetched, isFetching, isAdding, isFailed, error, isAdded, Adding, Failed } =
       this.props;
     const clusterName = localStorage.getItem("clusterName");
     const {
       match: { params },
     } = this.props;
-    const { actionsMenu, selectedUser, betaUserModal } = this.state;
+    const { actionsMenu, selectedUser, betaUserModal, credits, creditDescription } = this.state;
     
     return (
       <div className="MainPage">
@@ -127,6 +174,7 @@ class UserAccounts extends Component {
                     <tr>
                       <th>Name</th>
                       <th>Beta User</th>
+                      <th>Credits</th>
                       <th>Email</th>
                       <th>Actions</th>
                     </tr>
@@ -149,6 +197,8 @@ class UserAccounts extends Component {
                           <tr key={users.indexOf(user)}>
                             <td>{user?.name}</td>
                             <td>{user.is_beta_user ? "True" : "False"}</td>
+                            <td>{user?.credits.length === 0 ?"No credits":
+                            <div className="creditSection">{user?.credits[0]?.amount}<div className="creditCoin"> <Coin title="credits"/></div></div>}</td>
                             <td>{user?.email}</td>
                             <td
                               onClick={(e) => {
@@ -167,13 +217,13 @@ class UserAccounts extends Component {
                                     >
                                       Add Beta User
                                     </div>
-                                    {/* <div
+                                    { <div
                                       className="DropDownLink"
                                       role="presentation"
-                                      onClick={this.showDeletionModal}
+                                      onClick={this.showCreditsModal}
                                     >
-                                      Delete
-                                    </div> */}
+                                      Assign credits
+                                    </div> }
                                   </div>
                                 </div>
                               )}
@@ -198,6 +248,56 @@ class UserAccounts extends Component {
                 )}
               </div>
             </div>
+            <Modal showModal={this.state.addCredits} onClickAway={() => this.hideCreditsModal()}>
+                <div className="ModalHeader">
+                  <h5 className="ModalTitle">Add Credits</h5>
+
+                  <div className="">Number of credits</div>
+                  <div className="ModalContent">
+                    <BlackInputText 
+                    required 
+                    placeholder="Number of credits"
+                    name="credits"
+                    type="number"
+                    value={credits}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                    />
+                  </div>
+                  <div className="CreditsTitle">Description</div>
+                  <textarea
+                    className="TextArea"
+                    type="text"
+                    placeholder="Credits description"
+                    rows="4"
+                    cols="50"
+                    name="creditDescription"
+                    value={creditDescription}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                </div>
+                <div className="ModalFooter">
+                  <div className="ModalButtons">
+                    <PrimaryButton
+                      className="CancelBtn"
+                      label="Cancel"
+                      onClick={() => this.hideCreditsModal()}
+                    />
+
+                    <PrimaryButton type="button" label={Adding? <Spinner/>: "Add"}   
+                    onClick={() => this.handleCreditSubmittion()}/>
+                  </div>
+                  {Failed && (
+                  <Feedback
+                    message={"failed to add credits"}
+                    type={"error"}
+                  />
+                )}
+                </div>
+              </Modal>
             <Modal
               showModal={betaUserModal}
               onClickAway={this.closeBetaUserModal}
@@ -259,12 +359,14 @@ UserAccounts.defaultProps = {
 export const mapStateToProps = (state) => {
   const { isFetching, users, isFetched } = state.usersListReducer;
   const { isAdded, isAdding, isFailed, error } = state.addBetaUserReducer;
-  return { isFetching, users, isFetched, isAdded, isAdding, isFailed, error };
+  const { Added, Adding, Failed } = state.addUserCreditsReducer;
+  return { isFetching, users, isFetched, isAdded, isAdding, isFailed, error, Added, Adding, Failed };
 };
 
 const mapDispatchToProps = {
   getUsersList,
   addBetaUser,
+  addUserCredits,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserAccounts);
