@@ -5,6 +5,10 @@
     background-color: #e5f3f9;
 }
 
+.PageContainer {
+    max-width: 100%;
+}
+
 .PrimaryTitle {
     color: #008ac1;
     font-size: 52px;
@@ -112,7 +116,7 @@
     padding-top: 0.6rem;
 }
 
-.DownArrow:hover {
+.SmallIcon, .DownArrow:hover {
     cursor: pointer;
 }
 
@@ -209,7 +213,7 @@
     background-color: #f1f1f1;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 700px) {
     .StatusSectionChildContainer {
         grid-template-columns: 1fr;
         grid-template-rows: 1fr;
