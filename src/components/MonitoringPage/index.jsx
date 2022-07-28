@@ -2,9 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import NewHeader from "../NewHeader";
 import LandingFooter from "../LandingFooter";
 import { ReactComponent as Operational } from "../../assets/images/operational.svg";
-import { ReactComponent as Maintenance } from "../../assets/images/maintenance.svg";
 import { ReactComponent as Incident } from "../../assets/images/incident.svg";
-import { ReactComponent as Outage } from "../../assets/images/off.svg";
 import { ReactComponent as DownArrow } from "../../assets/images/down-arrow-black.svg";
 import styles from "./MonitoringPage.module.css";
 import axios from "axios";
@@ -99,11 +97,11 @@ const MonitoringPage = () => {
           </div>
         </div>
 
+
+        <div className={styles.StatusSectionContent}>
         <div className={styles.StatusSectionTitle}>
           <h1>Current Status by Service</h1>
         </div>
-
-        <div className={styles.StatusSectionContent}>
           <div className={styles.StatusSectionChildContainer}>
             <div className={styles.StatusSectionItem}>
               <div className={styles.StatusSection}>
@@ -615,41 +613,6 @@ const MonitoringPage = () => {
                   </>
                 )}
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.StatusTypes}>
-          <div className={styles.StatusTypesContainer}>
-            <div className={styles.StatusTypeIcon}>
-              <Operational />
-            </div>
-            <div className={styles.StatusTypeName}>
-              <h3>Operational</h3>
-            </div>
-          </div>
-          <div className={styles.StatusTypesContainer}>
-            <div className={styles.StatusTypeIcon}>
-              <Maintenance />
-            </div>
-            <div className={styles.StatusTypeName}>
-              <h3>Maintenance</h3>
-            </div>
-          </div>
-          <div className={styles.StatusTypesContainer}>
-            <div className={styles.StatusTypeIcon}>
-              <Incident />
-            </div>
-            <div className={styles.StatusTypeName}>
-              <h3>Incident</h3>
-            </div>
-          </div>
-          <div className={styles.StatusTypesContainer}>
-            <div className={styles.StatusTypeIcon}>
-              <Outage />
-            </div>
-            <div className={styles.StatusTypeName}>
-              <h3>Outage</h3>
             </div>
           </div>
         </div>

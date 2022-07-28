@@ -48,36 +48,8 @@
     font-weight: bold;
 }
 
-.StatusTypes {
-    display: grid;
-    grid-template-columns: 2fr 2fr 2fr 2fr;
-    gap: 8rem;
-    padding: 2rem 0 0.5rem 3rem;
-}
-
-.StatusTypesContainer {
-    display: flex;
-}
-
-.StatusTypeIcon {
-    flex: 1;
-    padding-top: 1.1rem;
-}
-
-.StatusTypeIcon:hover {
-    cursor: pointer;
-}
-
-.StatusTypeIcon svg {
-    height: 24px;
-}
-
-.StatusTypeName {
-    flex: 5;
-}
-
 .StatusSectionTitle {
-    padding: 2rem 0 1rem 3rem;
+    padding: 2rem 0 0 5rem;
 }
 
 .StatusSection {
@@ -116,19 +88,23 @@
     padding-top: 0.6rem;
 }
 
-.SmallIcon, .DownArrow:hover {
+.SmallIcon,
+.DownArrow:hover {
     cursor: pointer;
 }
 
 .StatusSectionContent {
-    padding: 0 3rem 2rem 3rem;
+    padding-left: 10rem;
+    padding-bottom: 3rem;
+    max-width: 70%;
 }
 
 .StatusSectionChildContainer {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 2fr 2fr;
     grid-template-rows: 1fr 1fr;
-    gap: 1.5rem;
+    gap: 1rem;
+    padding-left: 5rem;
 }
 
 .StatusSectionItem {
@@ -136,7 +112,6 @@
     background-color: #ffff;
     color: #555555;
     display: grid;
-    grid-template-rows: max-content;
     gap: 0.5rem;
 }
 
@@ -217,6 +192,8 @@
     .StatusSectionChildContainer {
         grid-template-columns: 1fr;
         grid-template-rows: 1fr;
+        padding: 0;
+        max-width: none;
     }
 
     .StatusTypes {
