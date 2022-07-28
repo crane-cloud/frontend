@@ -646,7 +646,9 @@ const MonitoringPage = () => {
                 {statusData?.mira_status?.status === statusValue[0].type ? (
                   <>
                     <span>
-                      <div className={styles.StatusSectionCardTitle}>MIRA</div>
+                      <div className={styles.StatusSectionCardTitle}>
+                        Mira Service
+                      </div>
                       <div>No Issues</div>
                     </span>
                     <span>
@@ -659,7 +661,9 @@ const MonitoringPage = () => {
                 ) : (
                   <>
                     <span>
-                      <div className={styles.StatusSectionCardTitle}>MIRA</div>
+                      <div className={styles.StatusSectionCardTitle}>
+                        Mira Service
+                      </div>
                       <div>Issues detected</div>
                     </span>
                     <span>
