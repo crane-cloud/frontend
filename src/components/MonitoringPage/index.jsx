@@ -4,6 +4,7 @@ import LandingFooter from "../LandingFooter";
 import { ReactComponent as Operational } from "../../assets/images/operational.svg";
 import { ReactComponent as Incident } from "../../assets/images/incident.svg";
 import { ReactComponent as DownArrow } from "../../assets/images/down-arrow-black.svg";
+import { ReactComponent as UpArrow } from "../../assets/images/up-arrow.svg";
 import styles from "./MonitoringPage.module.css";
 import axios from "axios";
 import { CRANE_CLOUD_STATUS } from "../../config";
@@ -19,7 +20,17 @@ const MonitoringPage = () => {
   const [statusData, setStatusData] = useState([]);
   const [showOptions, setShowOptions] = useState(false);
   const [optionsFor, setOptionsFor] = useState("");
+  const [flip, setFlip] = useState(false);
   const openSelectRef = useRef(null);
+
+  const handleDropdown = () => {
+    if (flip) {
+      setFlip(false);
+    } else {
+      setFlip(true);
+      setShowOptions(false);
+    }
+  };
 
   const viewAppModules = () => {
     setOptionsFor("Application");
@@ -48,6 +59,7 @@ const MonitoringPage = () => {
     ) {
       setShowOptions(false);
       setOptionsFor("");
+      setFlip(false);
     }
   };
   useEffect(() => {
@@ -97,11 +109,10 @@ const MonitoringPage = () => {
           </div>
         </div>
 
-
         <div className={styles.StatusSectionContent}>
-        <div className={styles.StatusSectionTitle}>
-          <h1>Current Status by Service</h1>
-        </div>
+          <div className={styles.StatusSectionTitle}>
+            <h1>Current Status by Service</h1>
+          </div>
           <div className={styles.StatusSectionChildContainer}>
             <div className={styles.StatusSectionItem}>
               <div className={styles.StatusSection}>
@@ -111,7 +122,18 @@ const MonitoringPage = () => {
                     onClick={() => viewAppModules()}
                     role="presentation"
                   >
-                    <DownArrow className={styles.DownArrow} />
+                    {!flip && (
+                      <DownArrow
+                        className={styles.DownArrow}
+                        onClick={handleDropdown}
+                      />
+                    )}
+                    {flip && optionsFor === "Application" && (
+                      <UpArrow
+                        className={styles.UpArrow}
+                        onClick={handleDropdown}
+                      />
+                    )}
 
                     {optionsFor === "Application" && showOptions && (
                       <div className={styles.DropDownContainer}>
@@ -252,7 +274,18 @@ const MonitoringPage = () => {
                     onClick={() => viewDBModules()}
                     role="presentation"
                   >
-                    <DownArrow className={styles.DownArrow} />
+                    {!flip && (
+                      <DownArrow
+                        className={styles.DownArrow}
+                        onClick={handleDropdown}
+                      />
+                    )}
+                    {flip && optionsFor === "Database" && (
+                      <UpArrow
+                        className={styles.UpArrow}
+                        onClick={handleDropdown}
+                      />
+                    )}
 
                     {optionsFor === "Database" && showOptions && (
                       <div className={styles.DropDownContainer}>
@@ -392,7 +425,18 @@ const MonitoringPage = () => {
                     onClick={() => viewRegistryModules()}
                     role="presentation"
                   >
-                    <DownArrow className={styles.DownArrow} />
+                    {!flip && (
+                      <DownArrow
+                        className={styles.DownArrow}
+                        onClick={handleDropdown}
+                      />
+                    )}
+                    {flip && optionsFor === "Registry" && (
+                      <UpArrow
+                        className={styles.UpArrow}
+                        onClick={handleDropdown}
+                      />
+                    )}
 
                     {optionsFor === "Registry" && showOptions && (
                       <div className={styles.DropDownContainer}>
@@ -486,7 +530,18 @@ const MonitoringPage = () => {
                     onClick={() => viewMiraModules()}
                     role="presentation"
                   >
-                    <DownArrow className={styles.DownArrow} />
+                    {!flip && (
+                      <DownArrow
+                        className={styles.DownArrow}
+                        onClick={handleDropdown}
+                      />
+                    )}
+                    {flip && optionsFor === "Mira" && (
+                      <UpArrow
+                        className={styles.UpArrow}
+                        onClick={handleDropdown}
+                      />
+                    )}
 
                     {optionsFor === "Mira" && showOptions && (
                       <div className={styles.DropDownContainer}>

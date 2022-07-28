@@ -84,12 +84,14 @@
 }
 
 .SmallIcon,
-.DownArrow {
+.DownArrow,
+.UpArrow {
     padding-top: 0.6rem;
 }
 
 .SmallIcon,
-.DownArrow:hover {
+.DownArrow:hover,
+.UpArrow:hover {
     cursor: pointer;
 }
 
@@ -181,18 +183,21 @@
 
 .DropDownDetails {
     cursor: pointer;
-    padding: 1rem 1.5rem;
+    padding: 1rem 3rem;
 }
 
 .DropDownDetails:hover {
     background-color: #f1f1f1;
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 750px) {
+    .StatusSectionContent {
+        padding-left: 0rem;
+    }
+
     .StatusSectionChildContainer {
         grid-template-columns: 1fr;
         grid-template-rows: 1fr;
-        padding: 0;
         max-width: none;
     }
 
