@@ -51,6 +51,7 @@ describe("Testing the exported mapstate to props and dispatch", () => {
           networkMessage: "",
         },
         userProjectsReducer: { projects: [] },
+        userCreditsReducer: { credits: [] },
       })
     ).toEqual({
       isFetchingMemory: false,
@@ -63,6 +64,7 @@ describe("Testing the exported mapstate to props and dispatch", () => {
       networkMetrics:[],
       networkMessage: "",
       projects: [],
+      credits: [],
     });
   });
 });

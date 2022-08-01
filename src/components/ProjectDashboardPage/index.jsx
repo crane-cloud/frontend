@@ -84,7 +84,7 @@ class ProjectDashboardPage extends React.Component {
     return (
       <div className="Page">
         <div className="TopBarSection">
-          <Header credits={credits.amount}/>
+          <Header credits={credits?.amount}/>
         </div>
         <div className="MainSection">
           <div className="SideBarSection">

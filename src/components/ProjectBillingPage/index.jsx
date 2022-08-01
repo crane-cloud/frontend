@@ -118,7 +118,6 @@ const ProjectBillingPage = (props) => {
   const { transactions, isRetrieving, isFetched } = useSelector((state) => state.getTransactionsReducer);
   const { invoices, isRetrievingInvoices, invoicesFetched } = useSelector((state) => state.getInvoicesReducer);
   const { receipts, isRetrievingReceipts, receiptsFetched } = useSelector((state) => state.getReceiptsReducer);
-  // const { credit_assignment_records } = userCredits || {};
 
   const handleConversion = () => {
     axios
@@ -377,7 +376,7 @@ const ProjectBillingPage = (props) => {
         </div>
         <div className={styles.MainContentSection}>
           <div>
-            <InformationBar header="Project Billing" credits={credits.amount}/>
+            <InformationBar header="Project Billing" credits={credits?.amount}/>
           </div>
           <div className={styles.SmallContainer}>
             <div className={styles.CBLabel}>

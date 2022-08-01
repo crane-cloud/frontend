@@ -129,7 +129,7 @@ class UserProjectsPage extends React.Component {
         ) : (
           <div>
             <div className={styles.TopRow}>
-              <Header credits={credits.amount} />
+              <Header credits={credits?.amount} />
               <InformationBar
                 header="Projects"
                 showBtn

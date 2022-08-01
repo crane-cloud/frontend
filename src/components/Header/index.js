@@ -106,11 +106,11 @@ const Header = (props) => {
             ) : (
               <>
                 {/**Not displayed in billing  */}
-                {match.path !== "/projects/:projectID/billing" && credits > 0 &&(
-                    <div className={styles.Credits} title="credits">
-                      {credits > 0 ? credits : 0}
-                      <Coin />
-                    </div>
+                {match.path !== "/projects/:projectID/billing" && credits > 0 && (
+                  <div className={styles.Credits} title="credits">
+                    {credits > 0 ? credits : 0}
+                    <Coin />
+                  </div>
                 )}
                 <div className={styles.UserNames}>{user.data.name}</div>
               </>
@@ -172,6 +172,4 @@ const mapDispatchToProps = {
   removeUser,
 };
 
-export default React.memo(
-  connect(mapStateToProps, mapDispatchToProps)(withRouter(Header))
-);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));
