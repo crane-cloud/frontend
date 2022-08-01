@@ -1,7 +1,6 @@
 import React from "react";
-
 import { shallow } from "enzyme";
-
+import * as redux from "react-redux";
 import Header, { mapStateToProps } from ".";
 
 const HeaderProps = {
@@ -13,7 +12,39 @@ const HeaderProps = {
   match: {
     path: "/",
   },
+  userCredits: {
+    credit_assignment_records: [
+      {
+        amount: 0,
+      },
+    ],
+  },
 };
+
+describe("dispatch mock", function () {
+  let useDispatchSpy;
+  let useSelectorSpy;
+  let mockDispatch;
+
+  beforeEach(() => {
+    jest.spyOn(React, "useEffect").mockImplementationOnce(cb => cb()());
+    useSelectorSpy = jest.spyOn(redux, "useSelector");
+    useSelectorSpy.mockReturnValue(HeaderProps.userCredits);
+    useDispatchSpy = jest.spyOn(redux, "useDispatch");
+    mockDispatch = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatch);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+  it("should mock dispatch", function () {
+    const Wrapper = Header.WrappedComponent
+    const WrappedHeader =shallow(<Wrapper />);
+
+    expect(WrappedHeader.exists()).toBe(true);
+  });
+});
 
 describe("Header component test", () => {
   let headerWrapper;

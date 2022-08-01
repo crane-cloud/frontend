@@ -66,7 +66,8 @@ class ProjectDashboardPage extends React.Component {
   render() {
     const {
       match: { params },
-      projects
+      projects,
+      credits,
     } = this.props;
 
     const { projectID } = params;
@@ -83,7 +84,7 @@ class ProjectDashboardPage extends React.Component {
     return (
       <div className="Page">
         <div className="TopBarSection">
-          <Header />
+          <Header credits={credits.amount}/>
         </div>
         <div className="MainSection">
           <div className="SideBarSection">
@@ -172,6 +173,7 @@ export const mapStateToProps = (state) => {
   const { isFetchingNetwork, networkMetrics, networkMessage } =
     state.projectNetworkReducer;
   const { projects } = state.userProjectsReducer;
+  const { credits } = state.userCreditsReducer;
   return {
     projects,
     isFetchingMemory,
@@ -183,6 +185,7 @@ export const mapStateToProps = (state) => {
     isFetchingNetwork,
     networkMetrics,
     networkMessage,
+    credits,
   };
 };
 

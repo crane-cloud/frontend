@@ -9,6 +9,7 @@ import Header from "../../components/Header";
 import getClustersList from "../../redux/actions/clusters";
 import CreateProject from "../../components/CreateProject";
 import getUserProjects from "../../redux/actions/projectsList";
+import getUserCredits from "../../redux/actions/userCredits";
 import ProjectCard from "../../components/ProjectCard";
 import Spinner from "../../components/Spinner";
 import "../../index.css";
@@ -33,11 +34,17 @@ class UserProjectsPage extends React.Component {
   }
 
   componentDidMount() {
-    const { getClustersList, getUserProjects, data, clearUpdateProjectState } =
-      this.props;
+    const {
+      getClustersList,
+      getUserProjects,
+      data,
+      clearUpdateProjectState,
+      getUserCredits,
+    } = this.props;
     getUserProjects(data.id);
     getClustersList();
     clearUpdateProjectState();
+    getUserCredits(data.id);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -107,11 +114,11 @@ class UserProjectsPage extends React.Component {
       isRetrieving,
       isFetched,
       match: { params },
+      credits,
     } = this.props;
     const sortedProjects = projects.sort((a, b) =>
       b.date_created > a.date_created ? 1 : -1
     );
-
     return (
       <div className={styles.Page}>
         {openCreateComponent ? (
@@ -122,7 +129,7 @@ class UserProjectsPage extends React.Component {
         ) : (
           <div>
             <div className={styles.TopRow}>
-              <Header />
+              <Header credits={credits.amount} />
               <InformationBar
                 header="Projects"
                 showBtn
@@ -238,6 +245,7 @@ export const mapStateToProps = (state) => {
   const { isDeleted } = state.deleteProjectReducer;
   const { isRetrieving, projects, isFetched } = state.userProjectsReducer;
   const { isUpdated, clearUpdateProjectState } = state.updateProjectReducer;
+  const { credits } = state.userCreditsReducer;
   return {
     isAdded,
     data,
@@ -251,6 +259,7 @@ export const mapStateToProps = (state) => {
     isDeleted,
     errorCode,
     clearUpdateProjectState,
+    credits,
   };
 };
 
@@ -258,6 +267,7 @@ const mapDispatchToProps = {
   getUserProjects,
   getClustersList,
   clearUpdateProjectState,
+  getUserCredits,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserProjectsPage);
