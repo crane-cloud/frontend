@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, matchPath } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Logo from "../Logo";
@@ -21,10 +21,14 @@ const Header = (props) => {
     }
   };
 
+  const pageUrl = matchPath(match.path, {
+    path: "/login",
+    exact: true,
+    strict: true,
+  });
+
   const logout = () => {
-    localStorage.removeItem("state");
-    localStorage.removeItem("token");
-    localStorage.removeItem("project");
+    localStorage.clear();
     props.removeUser();
     window.location.href = "/";
   };
@@ -38,6 +42,7 @@ const Header = (props) => {
   // componentWillMount & componentWillUnmount
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
+    // const { removeUser } = props;
 
     // returned function will be called on component unmount
     return () => {
@@ -49,7 +54,7 @@ const Header = (props) => {
     <header className={`${styles.Header} SmallContainer`}>
       <Logo />
 
-      {(!user.accessToken || user.accessToken === "") && (
+      {(!user.accessToken || user.accessToken === "" || pageUrl !== null) && (
         <div className={styles.HeaderLinksWrap}>
           {match.path !== "/admin-login" && (
             <div className={styles.HeaderLinks}>
@@ -75,7 +80,8 @@ const Header = (props) => {
         </div>
       )}
 
-      {user.accessToken && (
+      {(user.accessToken && pageUrl === null) && (
+
         <div className={styles.HeaderLinksWrap}>
           <div
             ref={dropdownRef}
@@ -97,7 +103,14 @@ const Header = (props) => {
               </>
             ) : (
               <>
-                <div className={styles.UserNames}>{user.data.name}</div>
+              {/** user's credits should appear here if the user has any  */}
+              {/**Not displayed in billing  */}
+              {( match.path !== "/projects/:projectID/billing" &&
+              <div className={styles.Credits}
+              title="credits"
+              >&nbsp;</div>
+              )}
+               <div className={styles.UserNames}>{user.data.name}</div>
               </>
             )}
 

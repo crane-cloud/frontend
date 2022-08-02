@@ -22,11 +22,11 @@ const AppLogsPage = () => {
 
   const getAppInfo = (id) => {
     const { apps } = myApps;
-    const found = apps.apps.find((app) => app.id === id);
+    const found = apps?.apps.find((app) => app.id === id);
     const info = {
-      name: found.name,
-      status: found.app_running_status,
-      url: found.url,
+      name: found?.name,
+      status: found?.app_running_status,
+      url: found?.url,
     };
 
     return info;

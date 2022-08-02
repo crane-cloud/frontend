@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test AdminDBList component matching component snapshot for AdminDBList 1`] = `ShallowWrapper {}`;

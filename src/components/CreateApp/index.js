@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import PrimaryButton from "../PrimaryButton";
 import Select from "../Select";
-import CancelButton from "../CancelButton";
+//import CancelButton from "../CancelButton";
+import NewButton from "../NewButton";
 import BlackInputText from "../BlackInputText";
 import { v4 as uuidv4 } from "uuid";
 // import Modal from "../Modal";
@@ -48,7 +49,7 @@ class CreateApp extends React.Component {
       },
       replicas: 1,
       multiCluster: false,
-      SelectedClusters: new Array(clusters.length).fill(false),
+      SelectedClusters: new Array(clusters?.length).fill(false),
     };
 
     this.addEnvVar = this.addEnvVar.bind(this);
@@ -359,7 +360,8 @@ class CreateApp extends React.Component {
               <div className={styles.InformationBarWithButton}>
                 <div className={styles.InfoHeader}>Create App</div>
                 <div className={styles.RoundAddButtonWrap}>
-                  <CancelButton onClick={this.props.closeComponent} />
+                 {/* <CancelButton onClick={this.props.closeComponent} />*/}
+                  <NewButton label="close"  type="close" onClick={this.props.closeComponent}/>
                 </div>
               </div>
             </div>
@@ -715,7 +717,7 @@ CreateApp.defaultProps = {
   params: {},
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isCreating, isCreated, clearAppCreateState, message, errorCode } =
     state.createAppReducer;
   const { data } = state.user;

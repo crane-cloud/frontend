@@ -7,6 +7,16 @@
   /* overflow: hidden; */
 }
 
+.NoResourcesMesssage{
+  flex-grow: 1;
+  display : flex;
+  font-size: 1rem;
+  padding: 4rem;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
 .TopBarSection {
   background-color: black;
 }
@@ -178,6 +188,7 @@
   gap: 3rem;
   border-bottom: 1px solid #cccccc;
 }
+
 .UsageHistoryHeading {
   padding: .5rem 0 1rem 0rem;
   display: flex;
@@ -201,7 +212,12 @@
 }
 
 .TransactionHistoryBody,
-.InvoiceHistoryBody {
+.InvoiceHistoryBody,
+.ReceiptHistoryBody {
+  padding: 2rem;
+}
+
+.ModalHistoryBody {
   padding: 2rem;
 }
 
@@ -210,21 +226,58 @@
 .InvoiceHistoryHead,
 .InvoiceHistoryRow {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   grid-gap: 10px;
   border-bottom: 1px solid #ccc;
   padding: 1rem;
 }
 
+.CBLabel{
+  display: grid;
+  grid-template-columns: 3% 10%;
+  gap: .4rem;
+}
+
+.InvoiceModalHistoryHead,
+.InvoiceModalHistoryRow {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 3rem;
+  border-bottom: 1px solid #ccc;
+  padding: 3rem;
+}
+
 .TransactionHistoryCell,
-.InoviceHistoryCell {
-  overflow-wrap: break-word;
+.InvoiceHistoryCell,
+.ReceiptHistoryCell {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.TransactionHistoryCell:hover,
+.InvoiceHistoryCell:hover,
+.ReceiptHistoryCell:hover {
+  overflow: visible;
+  white-space: normal;
+  text-overflow: initial;
+  overflow-wrap: anywhere;
 }
 
 .TransactionHistoryHead .TransactionHistoryCell,
-.InvoiceHistoryHead {
+.InvoiceHistoryHead,
+.ReceiptHistoryHead {
   text-transform: uppercase;
   color: #008ac1;
+}
+
+.ReceiptHistoryHead,
+.ReceiptHistoryRow {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 1.5rem;
+  border-bottom: 1px solid #ccc;
+  padding: 1rem;
 }
 
 .TransactionHistoryCell .PaymentStatus {
@@ -249,7 +302,8 @@
 }
 
 .PaymentDetailsButton,
-.InvoiceDownloadButton {
+.InvoiceDownloadButton,
+.ReceiptDownloadButton {
   color: #008ac1;
   outline: none;
   border: none;
@@ -258,7 +312,8 @@
 }
 
 .PaymentDetailsButton:hover,
-.InvoiceDownloadButton:hover {
+.InvoiceDownloadButton:hover,
+.ReceiptDownloadButton:hover {
   text-decoration: underline;
 }
 
@@ -296,10 +351,114 @@
 .ReceiptModal .Total {
   padding: 0.8rem;
 }
+.OptionsModal{
+  padding: 0.5rem;
+}
+.MainModalTitle{
+  font-weight: 900;
+  font-size: 2rem;
+}
+.SubModalTitle{
+  font-weight: 500;
+  font-size: 1rem;
+  text-align: center;
+  padding-bottom: .5rem;
+}
+.Iconsection{
+ display: flex;
+ font-weight: 500;
+ font-size: 1rem;
+ text-align: center;
+ flex-direction: column;
+ padding-top: .5rem;
+ align-self: center;
+}
+.PaymentForms{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+.PaymentFormBox{
+  display: flex;
+  flex-direction: column;
+  width: 7rem;
+  height: 6rem;
+  background-color: #F8F7E5;
+  align-items: center;
+  gap: .3rem
+}
+ .SelectedPaymentFormBox{
+  display: flex;
+  flex-direction: column;
+  width: 7rem;
+  height: 6rem;
+  background-color: #F8F7E5;
+  align-items: center;
+  gap: .3rem;
+  border:  1px solid #000000;
+
+}
+.PaymentText{
+  color: black;
+  text-align: center;
+  font-weight: 700;
+  padding: .3rem 0;
+}
+.CoinSize{
+  display: flex;
+  width: 3rem;
+}
+.FlutterWaveSize{
+  display: flex;
+  width: 6rem;
+
+}
+.PaymentFormBox:hover{
+  border:  1px solid #000000;
+}
+
 
 .ReceiptButton {
   display: flex;
   justify-content: center;
+}
+.OptionButtons{
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.ModalHistoryHeading {
+  font-size: large;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
+
+.InvoiceModalTitle,
+.ReceiptModalTitle {
+  font-size: large;
+  font-weight: bold;
+}
+
+.InvoiceID {
+  font-weight: normal;
+}
+
+.ContactDetails {
+  display: grid;
+  gap: 1rem;
+}
+
+.ViewFileLowerSection {
+  padding: 1rem 2rem 0 2rem;
+}
+
+.ViewFileModalButtons {
+  display: flex;
+  justify-content: space-between;
 }
 
 @media (max-width: 768px) {

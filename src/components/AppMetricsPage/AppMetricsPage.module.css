@@ -171,6 +171,13 @@
   color: inherit;
   text-decoration: none;
 } 
+.InnerContentWarnText{
+  overflow: hidden;
+  color: #fb0c0c;
+  text-overflow: ellipsis;
+  cursor:pointer;
+  text-decoration: underline;
+}
 
 .InnerContentLink {
   display: grid;

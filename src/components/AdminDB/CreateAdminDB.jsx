@@ -189,7 +189,7 @@ CreateAdminDB.defaultProps = {
   params: {},
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isCreating, isCreated, clearAdminCreateDBState, message } =
     state.adminCreateDBReducer;
 

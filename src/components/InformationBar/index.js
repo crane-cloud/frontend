@@ -1,16 +1,20 @@
 import React, { useState } from "react";
-import RoundAddButton from "../RoundAddButton";
+//import RoundAddButton from "../RoundAddButton";
+import NewButton from "../NewButton";
 import AppStatus from "../AppStatus";
 import PrimaryButton from "../PrimaryButton";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
+import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 import "./InformationBar.css";
 
 const InformationBar = ({
   header,
+  buttontext,
   status,
   showBtn,
   btnAction,
   viewAppLink,
+  credits,
   showSearchBar,
   placeholder,
   searchAction,
@@ -52,7 +56,8 @@ const InformationBar = ({
               </div>
             </div>
             <div className="RoundAddButtonWrap">
-              <RoundAddButton onClick={btnAction} />
+              {/*<RoundAddButton onClick={btnAction} />*/}
+              <NewButton label={buttontext} type="new" onClick={btnAction}/>
             </div>
           </div>
         </div>
@@ -60,7 +65,8 @@ const InformationBar = ({
         <div className="InformationBarWithButton">
           <div className="InfoHeader">{header}</div>
           <div className="RoundAddButtonWrap">
-            <RoundAddButton onClick={btnAction} />
+            {/*<RoundAddButton onClick={btnAction} />*/}
+            <NewButton label={buttontext}  type="new" onClick={btnAction}/>
           </div>
         </div>
       ) : viewAppLink ? (
@@ -70,7 +76,16 @@ const InformationBar = ({
             <PrimaryButton label="Open App" className="ViewAppBtn" />
           </a>
         </div>
-      ) : (
+      ) :  credits ? (
+        <div className="InformationBarWithButton">
+          <div className="InfoHeader">{header}</div>
+          {/**appears if user has credits */}
+          <div className="CreditsCorner" title="credits">
+            537
+           <Coin/>
+          </div>
+        </div>
+      ):(
         <div className="InfoHeader">{header}</div>
       )}
     </div>

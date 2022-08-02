@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test CreateAdminDB component matching component snapshot for CreateAdminDB 1`] = `ShallowWrapper {}`;

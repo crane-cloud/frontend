@@ -68,7 +68,7 @@ class DatabaseList extends React.Component {
     const { openCreateComponent } = this.state;
 
     const { projectID } = params;
-    const sortedDbs = databases.sort((a, b) =>
+    const sortedDbs = [...databases]?.sort((a, b) =>
       b.date_created > a.date_created ? 1 : -1
     );
     return (
@@ -82,7 +82,7 @@ class DatabaseList extends React.Component {
               name={getProjectName(projects, params.projectID)}
               params={params}
               description={getProjectName(projects, params.projectID)}
-              pageRoute={this.props.location.pathname}
+              pageRoute={this.props.location?.pathname}
               allMetricsLink={`/projects/${projectID}/metrics`}
               cpuLink={`/projects/${projectID}/cpu/`}
               memoryLink={`/projects/${projectID}/memory/`}
@@ -101,6 +101,7 @@ class DatabaseList extends React.Component {
                 <InformationBar
                   header="Databases"
                   showBtn
+                  buttontext="database"
                   btnAction={this.showCreateComponent}
                 />
               </div>
@@ -190,11 +191,11 @@ class DatabaseList extends React.Component {
 
 DatabaseList.propTypes = {
   databases: PropTypes.arrayOf(PropTypes.shape({})),
-  projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  getProjectDatabases: PropTypes.func.isRequired,
+  projects: PropTypes.arrayOf(PropTypes.shape({})),
+  getProjectDatabases: PropTypes.func,
   isFetchingDatabases: PropTypes.bool,
   databasesFetched: PropTypes.bool,
-  isCreated: PropTypes.bool.isRequired,
+  isCreated: PropTypes.bool,
 };
 
 DatabaseList.defaultProps = {
@@ -203,7 +204,7 @@ DatabaseList.defaultProps = {
   databasesFetched: false,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { projects } = state.userProjectsReducer;
   const { databases, databasesFetched, isFetchingDatabases } =
     state.projectDatabasesReducer;

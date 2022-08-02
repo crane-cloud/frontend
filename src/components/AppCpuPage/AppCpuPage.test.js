@@ -16,16 +16,12 @@ const AppCpuPageProps = {
 // LEAVE THE COMMENTED OUT CODE
 
 describe('TestContainer', () => {
-  // const testWrapper = shallow(<AppCpuPage {...AppCpuPageProps} />);
   it('Test class constructor', () => {
     const wrappedAppCPUPage = AppCpuPage.WrappedComponent;
     const wrapper = shallow(<wrappedAppCPUPage />);
     // const wrapperInstance = wrapper.instance();
     expect(wrapper.exists()).toBeTruthy();
     expect(wrapper).toHaveLength(1);
-    // const testWrapperInstance = testWrapper.instance()
-    // console.log(testWrapperInstance)
-    // expect(wrapper.state.period).toBe("1d");
   });
 });
 describe("test the component", () => {

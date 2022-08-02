@@ -26,9 +26,14 @@ const revertUrl = (appID) => (dispatch) => {
   dispatch(revertingUrl());
 
   return axios
-    .patch(`/apps/${appID}/custom_domains`)
-    .then((response) => dispatch(revertUrlSuccess(response)))
+    .patch(`/apps/${appID}/revert_url`)
+    .then((response) => {
+      
+      dispatch(revertUrlSuccess(response))
+    })
     .catch((error) => {
+      console.log(appID)
+      console.log(error)
       dispatch(revertUrlFail(error));
     });
 };

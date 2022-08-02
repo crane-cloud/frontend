@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import getPodsList from "../../redux/actions/pods";
 import tellAge from "../../helpers/ageUtility";
-import "./PodsList.css";
 import Header from "../Header";
 import Status from "../Status";
 import Spinner from "../Spinner";
@@ -168,12 +167,12 @@ PodsList.propTypes = {
   }),
   isRetrieving: PropTypes.bool,
   isFetched: PropTypes.bool,
-  getPodsList: PropTypes.func.isRequired,
+  getPodsList: PropTypes.func,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      clusterID: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
+      clusterID: PropTypes.string,
+    }),
+  }),
 };
 
 // assigning defaults
@@ -183,7 +182,7 @@ PodsList.defaultProps = {
   isFetched: false,
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   const { isRetrieving, pods, isFetched } = state.podsReducer;
   return { isRetrieving, pods, isFetched };
 };
