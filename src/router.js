@@ -6,7 +6,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import store from "./redux/store";
-import App from "./components/App";
+// import App from "./components/App";
 import LoginPage from "./components/LoginPage";
 // import PricingPage from "./components/PricingPage";
 import ContactPage from "./components/ContactPage";
@@ -65,8 +65,8 @@ const hasToken = store.getState().user.accessToken;
 const Routes = () => (
   <Router>
     <Switch>
-      <Route exact path="/" component={App} />
-      <Route path="/login" component={LoginPage} />
+      <Route key="default-route" exact path="/" component={LoginPage} />
+      <Route key="login-route" path="/login" component={LoginPage} />
       {/* <Route path="/pricing" component={PricingPage} /> */}
       <Route path="/contact" component={ContactPage} />
       <Route path="/admin-login" component={AdminLoginPage} />
