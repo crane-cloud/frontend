@@ -83,19 +83,69 @@
 }
 
 .CreditsButton{
+  display: grid;
   grid-gap: 1rem;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 20% auto;
   height: 1rem;
+  align-items: center;
 }
 
 .CreditsTable{
-  background-color: ffffff;
+  background-color: #ffffff;
   border: 1px solid #ccc;
+  height: 100%;
+}
+
+.BlueButton{
+  background-color: #008AC1;
+  color: #ffffff;
+  /* padding: 0.5rem 1rem; */
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
 }
 
 .CreditsHeader{
-  line-height: 28px;
+  line-height: 2rem;
   padding-left: 2rem;
   font-weight: 600;
   font-size: 24px;
+  border: 1px solid #ccc;
+}
+
+.CreditsHead{
+  line-height: 1.8rem;
+  padding-left: 2rem;
+  font-weight: 500;
+  font-size: 20px;
+  border: 1px solid #ccc;
+  color: #008AC1;
+}
+
+.CreditsHeaderRow{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 1rem;
+}
+
+.Credits{
+  height: 100%;
+}
+
+.CreditsError{
+  display: grid;
+  height: 50%;
+  place-items: center;
+  padding-left: 2rem;
+}
+
+.CreditsBody{
+  height: 100%;
+}
+
+.CreditsWrap{
+  display: grid;
+  align-items: center;
+  grid-auto-flow: column;
+  width: 3rem;
 }
