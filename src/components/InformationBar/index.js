@@ -81,7 +81,7 @@ const InformationBar = ({
           <div className="InfoHeader">{header}</div>
           {/**appears if user has credits */}
           <div className="CreditsCorner" title="credits">
-            537
+            {(credits > 0)?credits:0}
            <Coin/>
           </div>
         </div>
