@@ -121,6 +121,7 @@ const MonitoringPage = () => {
                     ref={openSelectRef}
                     onClick={() => viewAppModules()}
                     role="presentation"
+                    className="CardArrow"
                   >
                     {!flip && (
                       <DownArrow
