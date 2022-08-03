@@ -142,7 +142,7 @@ export const mapStateToProps = (state) => {
   const { projects } = state.userProjectsReducer;
   return {
     isCreated,
-    projects,
+    projects
   };
 };
 

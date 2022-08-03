@@ -30,7 +30,8 @@
   align-items: center;
   grid-template-columns: 1fr 1fr;
   color: #F7B21F;
-  grid-gap: 1rem;
+  grid-gap: .5rem;
+  width: 3rem;
 }
 
 .ViewAppBtn {
