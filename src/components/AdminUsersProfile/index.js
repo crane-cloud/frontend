@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Redirect, Link } from "react-router-dom";
-import addUserCredits from "../../redux/actions/addCredits";
+import { Redirect } from "react-router-dom";
+import addUserCredits, { clearCreditsState } from "../../redux/actions/addCredits";
 import "./AdminUserPage.css";
 import Header from "../Header";
 import Spinner from "../Spinner";
@@ -10,8 +10,9 @@ import InformationBar from "../InformationBar";
 import SideNav from "../SideNav";
 import Modal from "../Modal";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
-import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
 import SettingsButton from "../SettingsButton";
+import BlackInputText from "../BlackInputText";
+import PrimaryButton from "../PrimaryButton";
 import addBetaUser from "../../redux/actions/addBetaUser";
 import adminGetUserCredits, {clearUserCredits} from "../../redux/actions/adminGetUserCredits";
 import Feedback from "../Feedback";
@@ -20,6 +21,7 @@ import {
   nameStringToHslColor,
   avatarName,
 } from "../../helpers/projectName";
+import { DisplayDateTime } from "../../helpers/dateConstants";
 
 class AdminUserPage extends Component {
   constructor() {
@@ -45,27 +47,23 @@ class AdminUserPage extends Component {
   }
   componentDidMount() {
     const {
-      getUsersList,
       adminGetUserCredits,
       clearUserCredits,
+      clearCreditsState,
       match: { params },
     } = this.props;
-    // getUsersList();
+    clearCreditsState();
     clearUserCredits();
     adminGetUserCredits(params.userID);
   }
 
-  // componentDidUpdate(prevProps) {
-  //   const { getUsersList, isAdded, Added } = this.props;
-  //   if (isAdded !== prevProps.isAdded) {
-  //     getUsersList();
-  //     this.closeBetaUserModal();
-  //   }
-  //   if (Added !== prevProps.Added) {
-  //     getUsersList();
-  //     this.hideCreditsModal();
-  //   }
-  // }
+  componentDidUpdate(prevProps) {
+    const { Added } = this.props;
+
+    if (Added !== prevProps.Added) {
+      this.hideCreditsModal();
+    }
+  }
 
   // componentWillUnmount() {
   //   // fix Warning: Can't perform a React state update on an unmounted component
@@ -100,14 +98,16 @@ class AdminUserPage extends Component {
     });
   }
   handleCreditSubmittion() {
-    const { credits, creditDescription, selectedUser } = this.state;
-    const { addUserCredits } = this.props;
+    const { credits, creditDescription} = this.state;
+    const { addUserCredits, 
+      match: { params }, } = this.props;
     if (credits !== "" && creditDescription !== "") {
       const creditsObject = {
         amount: credits,
         description: creditDescription,
-        user_id: selectedUser,
+        user_id: params.userID,
       };
+      console.log()
       addUserCredits(creditsObject);
     }
   }
@@ -117,9 +117,14 @@ class AdminUserPage extends Component {
     });
   }
   hideCreditsModal = () => {
+    const { clearCreditsState } = this.props;
+    clearCreditsState();
     this.setState({
       addCredits: false,
       actionsMenu: false,
+      credits:"",
+      creditDescription:"",
+      selectedUser: "",
     });
   };
 
@@ -145,9 +150,9 @@ class AdminUserPage extends Component {
   }
 
   renderRedirect = () => {
-    const { isAdded } = this.props;
+    const { Added } = this.props;
 
-    if (isAdded) {
+    if (Added) {
       return <Redirect to={`/accounts`} noThrow />;
     }
   };
@@ -157,32 +162,24 @@ class AdminUserPage extends Component {
       users,
       isFetched,
       isFetching,
-      isAdding,
-      isFailed,
-      error,
-      isAdded,
       Adding,
       Failed,
       userCredits,
-      isFetchingCredits,
-      creditsFetched,
+      Added
     } = this.props;
     const clusterName = localStorage.getItem("clusterName");
     const {
       match: { params },
     } = this.props;
     const {
-      actionsMenu,
-      selectedUser,
-      betaUserModal,
       credits,
       creditDescription,
     } = this.state;
     const user = getUser(users, params.userID);
-    console.log(userCredits);
+    const {credit_assignment_records} = userCredits;
     return (
       <div className="MainPage">
-        {isAdded ? this.renderRedirect() : null}
+        {Added ? this.renderRedirect() : null}
         <div className="TopBarSection">
           <Header />
         </div>
@@ -208,7 +205,6 @@ class AdminUserPage extends Component {
                         color: "#555",
                       }}
                     >
-                      {/* {user.name.charAt(0).toUpperCase()} */}
                       {avatarName(user.name)}
                     </div>
                   </div>
@@ -247,7 +243,7 @@ class AdminUserPage extends Component {
                           <Coin />
                         </div>
                         <>
-                          <SettingsButton label="Add Credits" className="BlueButton"/>
+                          <SettingsButton label="Add Credits" className="BlueButton" onClick={this.showCreditsModal}/>
                         </>
                       </div>
                     </div>
@@ -265,7 +261,7 @@ class AdminUserPage extends Component {
                             Record ID
                           </div>
                           <div className="CreditsHeaderAttribute">
-                            Date
+                            Date & Time
                           </div>
                           <div className="CreditsHeaderAttribute">
                             Amount
@@ -276,14 +272,14 @@ class AdminUserPage extends Component {
                         </div>
                       </div>
                       <div className="CreditsBody">
-                        {userCredits.length > 0 ? (
-                          userCredits.map((credit) => (
-                            <div className="CreditsRow">
+                        {credit_assignment_records ? (
+                          credit_assignment_records.map((credit) => (
+                            <div className="CreditsHeaderRow">
                               <div className="CreditsRowAttribute">
                                 {credit.id}
                               </div>
                               <div className="CreditsRowAttribute">
-                                {credit.created_at}
+                              {DisplayDateTime(new Date(credit.date_created))}
                               </div>
                               <div className="CreditsRowAttribute">
                                 {credit.amount}
@@ -295,9 +291,9 @@ class AdminUserPage extends Component {
                           ))
                         ) : (
                           <div className="CreditsError">
-                            <div className="">
+                            <>
                               No Credits Assigned.
-                            </div>
+                            </>
                           </div>
                         )}
                       </div>
@@ -315,6 +311,56 @@ class AdminUserPage extends Component {
                 )}
               </div>
             </div>
+            <Modal showModal={this.state.addCredits} onClickAway={() => this.hideCreditsModal()}>
+                <div className="ModalHeader">
+                  <h5 className="ModalTitle">Add Credits</h5>
+
+                  <div className="">Number of credits</div>
+                  <div className="ModalContent">
+                    <BlackInputText 
+                    required 
+                    placeholder="Number of credits"
+                    name="credits"
+                    type="number"
+                    value={credits}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                    />
+                  </div>
+                  <div className="CreditsTitle">Description</div>
+                  <textarea
+                    className="TextArea"
+                    type="text"
+                    placeholder="Credits description"
+                    rows="4"
+                    cols="50"
+                    name="creditDescription"
+                    value={creditDescription}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                </div>
+                <div className="ModalFooter">
+                  <div className="ModalButtons">
+                    <PrimaryButton
+                      className="CancelBtn"
+                      label="Cancel"
+                      onClick={() => this.hideCreditsModal()}
+                    />
+
+                    <PrimaryButton type="button" label={Adding? <Spinner/>: "Add"}   
+                    onClick={() => this.handleCreditSubmittion()}/>
+                  </div>
+                  {Failed && (
+                  <Feedback
+                    message={"failed to add credits"}
+                    type={"error"}
+                  />
+                )}
+                </div>
+              </Modal>
           </div>
         </div>
       </div>
@@ -365,6 +411,7 @@ const mapDispatchToProps = {
   addUserCredits,
   adminGetUserCredits,
   clearUserCredits,
+  clearCreditsState
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminUserPage);

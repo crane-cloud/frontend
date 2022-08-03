@@ -3,6 +3,7 @@ import {
   ADDING_USER_CREDITS,
   ADD_BETA_USER_CREDITS_SUCCESS,
   ADD_BETA_USER_CREDITS_FAIL,
+  CLEAR_ADD_BETA_USER_CREDITS_STATE,
 } from "./actionTypes";
 
 const startAddingUserCredits = () => ({
@@ -21,6 +22,10 @@ const addUserCreditsFail = (error) => ({
   },
 });
 
+const clearCreditsState = () => ({
+  type: CLEAR_ADD_BETA_USER_CREDITS_STATE,
+});
+
 const addUserCredits = (creditsData) => (dispatch) => {
   dispatch(startAddingUserCredits());
 
@@ -33,3 +38,4 @@ const addUserCredits = (creditsData) => (dispatch) => {
 };
 
 export default addUserCredits;
+export { clearCreditsState };

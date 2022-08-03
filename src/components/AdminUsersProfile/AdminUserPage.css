@@ -107,7 +107,7 @@
 
 .CreditsHeader{
   line-height: 2rem;
-  padding-left: 2rem;
+  padding: .5rem 2rem;
   font-weight: 600;
   font-size: 24px;
   border: 1px solid #ccc;
@@ -125,7 +125,9 @@
 .CreditsHeaderRow{
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 1rem;
+  grid-gap: 2rem;
+  border-top: 1px solid #ccc;
+  border-top-width: 80%;
 }
 
 .Credits{
@@ -148,4 +150,26 @@
   align-items: center;
   grid-auto-flow: column;
   width: 3rem;
+}
+
+.CreditsRowAttribute{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: .5rem 1rem;
+}
+.CreditsRowAttribute:first-child{
+  padding-left: 2rem;
+}
+
+.CreditsRowAttribute:first-child:hover, .CreditsRowAttribute:last-child:hover{
+  overflow: visible;
+}
+
+.CreditsRowAttribute:nth-child(3) {
+  padding-right: 2rem;
+}
+
+.CreditsHeaderAttribute{
+  padding: .3rem 0rem;
 }

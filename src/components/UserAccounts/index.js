@@ -103,6 +103,9 @@ class UserAccounts extends Component {
     this.setState({
       addCredits: false,
       actionsMenu:false,
+      credits:"",
+      creditDescription:"",
+      selectedUser: "",
     });
     };
 
