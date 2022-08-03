@@ -5,6 +5,10 @@
     background-color: #e5f3f9;
 }
 
+.PageContainer {
+    max-width: 100%;
+}
+
 .PrimaryTitle {
     color: #008ac1;
     font-size: 52px;
@@ -24,6 +28,7 @@
 
 .BannerArea {
     display: flex;
+    flex-wrap: wrap;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -35,10 +40,6 @@
     width: 35%;
 }
 
-.StatusBanner:hover {
-    cursor: pointer;
-}
-
 .BannerText {
     padding: 1rem;
     color: #ffff;
@@ -47,36 +48,8 @@
     font-weight: bold;
 }
 
-.StatusTypes {
-    display: grid;
-    grid-template-columns: 2fr 2fr 2fr 2fr;
-    gap: 8rem;
-    padding: 2rem 0 0.5rem 3rem;
-}
-
-.StatusTypesContainer {
-    display: flex;
-}
-
-.StatusTypeIcon {
-    flex: 1;
-    padding-top: 1.1rem;
-}
-
-.StatusTypeIcon:hover {
-    cursor: pointer;
-}
-
-.StatusTypeIcon svg {
-    height: 24px;
-}
-
-.StatusTypeName {
-    flex: 5;
-}
-
 .StatusSectionTitle {
-    padding: 2rem 0 1rem 3rem;
+    padding: 2rem 0 0 5rem;
 }
 
 .StatusSection {
@@ -104,29 +77,36 @@
     flex: 2;
 }
 
-.SmallIcon {
-    width: 3rem;
-    height: 3rem;
-}
-
+.SmallIcon,
 .SmallerIcon {
     width: 2rem;
     height: 2rem;
 }
 
-.DownArrow {
-    padding-top: 0.5rem;
+.SmallIcon,
+.DownArrow,
+.UpArrow {
+    padding-top: 0.6rem;
+}
+
+.SmallIcon,
+.DownArrow:hover,
+.UpArrow:hover {
+    cursor: pointer;
 }
 
 .StatusSectionContent {
-    padding: 0 3rem 2rem 3rem;
+    padding-left: 10rem;
+    padding-bottom: 3rem;
+    max-width: 70%;
 }
 
 .StatusSectionChildContainer {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 2fr 2fr;
     grid-template-rows: 1fr 1fr;
-    gap: 1.5rem;
+    gap: 1rem;
+    padding-left: 5rem;
 }
 
 .StatusSectionItem {
@@ -134,7 +114,6 @@
     background-color: #ffff;
     color: #555555;
     display: grid;
-    grid-template-rows: max-content;
     gap: 0.5rem;
 }
 
@@ -204,9 +183,29 @@
 
 .DropDownDetails {
     cursor: pointer;
-    padding: 1rem 1.5rem;
+    padding: 1rem 3rem;
 }
 
 .DropDownDetails:hover {
     background-color: #f1f1f1;
+}
+
+@media only screen and (max-width: 750px) {
+    .StatusSectionContent {
+        padding-left: 0rem;
+    }
+
+    .StatusSectionChildContainer {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        max-width: none;
+    }
+
+    .StatusTypes {
+        display: none;
+    }
+
+    .StatusBanner {
+        width: 80%;
+    }
 }
