@@ -9,7 +9,8 @@ const UserProjectsPageProps = {
   getUserProjects: jest.fn(),
   getClustersList: jest.fn(),
   clearUpdateProjectState: jest.fn(),
-  clusters: {}
+  clusters: {},
+  getUserCredits: jest.fn(),
 };
 
 describe("Testing the App Metrics Page component", () => {
@@ -35,7 +36,8 @@ describe("Testing the exported mapstate to props and dispatch", () => {
         clustersReducer: { clusters: {} },
         deleteProjectReducer:{ isDeleted: false },
         userProjectsReducer: { isRetrieving: false, projects: [], isFetched: false },
-        updateProjectReducer: { isUpdated: false, }
+        updateProjectReducer: { isUpdated: false, },
+        userCreditsReducer: { credits: {} },
       })
     ).toEqual({
       isAdded: false,
@@ -49,6 +51,7 @@ describe("Testing the exported mapstate to props and dispatch", () => {
       message: "",
       isDeleted: false,
       errorCode: null,
+      credits: {},
     });
   });
 });

@@ -46,6 +46,7 @@ const data2 = [
 ];
 
 const ProjectBillingPage = (props) => {
+  const { data } = useSelector((state) => state.user);
   const { projectID } = useParams();
   const dispatch = useDispatch();
 
@@ -78,6 +79,8 @@ const ProjectBillingPage = (props) => {
     () => dispatch(clearTransactions()),
     [dispatch]
   );
+  
+  const { credits } = useSelector((state) => state.userCreditsReducer);
 
   const [transactionDetails, setTransactionDetails] = useState({});
   const [invoiceDetails, setInvoiceDetails] = useState({});
@@ -112,7 +115,6 @@ const ProjectBillingPage = (props) => {
   ]);
 
   const { projects } = useSelector((state) => state.userProjectsReducer);
-  const { data } = useSelector((state) => state.user);
   const { transactions, isRetrieving, isFetched } = useSelector((state) => state.getTransactionsReducer);
   const { invoices, isRetrievingInvoices, invoicesFetched } = useSelector((state) => state.getInvoicesReducer);
   const { receipts, isRetrievingReceipts, receiptsFetched } = useSelector((state) => state.getReceiptsReducer);
@@ -374,7 +376,7 @@ const ProjectBillingPage = (props) => {
         </div>
         <div className={styles.MainContentSection}>
           <div>
-            <InformationBar header="Project Billing" credits={true}/>
+            <InformationBar header="Project Billing" credits={credits?.amount}/>
           </div>
           <div className={styles.SmallContainer}>
             <div className={styles.CBLabel}>
