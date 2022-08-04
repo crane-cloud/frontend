@@ -3,7 +3,7 @@ import {
   ADMIN_GET_USER_CREDITS_FAIL,
   ADMIN_GET_USER_CREDITS_SUCCESS,
   ADMIN_GETTING_USER_CREDITS,
-  // ADMIN_CLEAR_USER_CREDITS,
+  ADMIN_CLEAR_USER_CREDITS,
 } from "./actionTypes";
 
 export const startFetchingUserCredit = () => ({
@@ -21,6 +21,10 @@ export const getUserCreditsFail = (error) => ({
     status: false,
     error: error.status,
   },
+});
+
+export const clearUserCredits = () => ({
+  type: ADMIN_CLEAR_USER_CREDITS,
 });
 
 const adminGetUserCredits = (userID) => (dispatch) => {

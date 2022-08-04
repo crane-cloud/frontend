@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import BlackInputText from "../BlackInputText";
 import getUsersList from "../../redux/actions/users";
 import addUserCredits from "../../redux/actions/addCredits";
@@ -130,7 +130,10 @@ class UserAccounts extends Component {
   hideCreditsModal = () => {
     this.setState({
       addCredits: false,
-      actionsMenu: false,
+      actionsMenu:false,
+      credits:"",
+      creditDescription:"",
+      selectedUser: "",
     });
   };
 
@@ -335,17 +338,14 @@ class UserAccounts extends Component {
                                       role="presentation"
                                       onClick={this.showBetaUserModal}
                                     >
-                                      Add Beta User
+                                      Assign Credits
+                                    </div> }
+                                    <div
+                                      className="DropDownLink"
+                                      role="presentation"
+                                    >
+                                      <Link to={{ pathname: `/accounts/${selectedUser}` }}>View User Profile</Link>
                                     </div>
-                                    {
-                                      <div
-                                        className="DropDownLink"
-                                        role="presentation"
-                                        onClick={this.showCreditsModal}
-                                      >
-                                        Assign credits
-                                      </div>
-                                    }
                                   </div>
                                 </div>
                               )}
