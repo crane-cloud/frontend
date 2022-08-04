@@ -6,7 +6,8 @@ const user = (user = { accessToken: "", data: {} }, action) => {
       return {
         accessToken: action.payload.access_token,
         data: {
-          name: action.payload.username,
+          name: action.payload.name,
+          username: action.payload.username,
           email: action.payload.email,
           verified: action.payload.verified,
           id: action.payload.id,

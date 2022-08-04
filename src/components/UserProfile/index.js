@@ -112,7 +112,7 @@ class UserProfile extends React.Component {
                           onChange={(e) => {
                              this.handleChange(e);
                          }}
-                        />{user.name!==username.trim() && <PrimaryButton
+                        />{user.name!==username?.trim() && <PrimaryButton
                          label= { profileUpdating ? <Spinner /> :"EDIT NAME"}
                          onClick={()=>{this.handleNameEdit()}}
                          className={styles.BackButton} 

@@ -55,6 +55,7 @@ const Header = (props) => {
   const { credits } = props;
   return (
     <header className={`${styles.Header} SmallContainer`}>
+    
       <Logo />
 
       {(!user.accessToken || user.accessToken === "" || pageUrl !== null) && (
