@@ -6,8 +6,8 @@ import {
 
 const initialState = {
   credits: [],
-  isFetched: false,
-  isFetching: false,
+  isFetchedCreditsCredits: false,
+  isFetchingCreditsCredits: false,
   message: "",
 };
 
@@ -17,24 +17,24 @@ const userCreditsReducer = (state = initialState, action) => {
       return {
         ...state,
         credits: action.payload,
-        isFetching: false,
-        isFetched: true,
+        isFetchingCredits: false,
+        isFetchedCredits: true,
         message: "User credits fetched",
       };
 
     case GETTING_USER_CREDITS:
       return {
         ...state,
-        isFetching: true,
-        isFetched: false,
+        isFetchingCredits: true,
+        isFetchedCredits: false,
       };
 
     case GET_USER_CREDITS_FAIL:
       return {
         ...state,
         message: action.payload,
-        isFetching: false,
-        isFetched: false,
+        isFetchingCredits: false,
+        isFetchedCredits: false,
       };
 
     default:

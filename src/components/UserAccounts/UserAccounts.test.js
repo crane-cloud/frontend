@@ -9,7 +9,7 @@ const UserAccountsProps = {
   getUsersList: jest.fn(),
 };
 
-describe("Testing the Project Settings Page component", () => {
+describe("Testing the User Accounts Page component", () => {
   const WrapperUserAccounts = UserAccounts.WrappedComponent;
   const UserAccountsComponent = shallow(
     <WrapperUserAccounts {...UserAccountsProps} />
@@ -21,6 +21,17 @@ describe("Testing the Project Settings Page component", () => {
   });
   it("matchs the UserAccounts component snapshot", () => {
     expect(UserAccountsComponent).toMatchSnapshot();
+  });
+  it("should check the search input field", () => {
+    UserAccountsComponent.find("input")
+      .props()
+      .onChange({
+        target: {
+          name: "rhod",
+          value: "rhodin",
+        },
+      });
+    expect(UserAccountsComponent.state("input")).toBeUndefined();
   });
 });
 
@@ -36,11 +47,10 @@ describe("Testing the exported mapstate to props and dispatch for UserAccounts",
           error: "",
         },
         addUserCreditsReducer: {
-           Added: false,
-            Adding: false, 
-            Failed:false,
-        }
-
+          Added: false,
+          Adding: false,
+          Failed: false,
+        },
       })
     ).toEqual({
       isAdded: false,
@@ -49,8 +59,8 @@ describe("Testing the exported mapstate to props and dispatch for UserAccounts",
       isFailed: false,
       isFetched: false,
       Added: false,
-      Adding: false, 
-      Failed:false,
+      Adding: false,
+      Failed: false,
       error: "",
     });
   });

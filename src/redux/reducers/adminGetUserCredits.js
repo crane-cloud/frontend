@@ -1,40 +1,51 @@
 import {
-  GETTING_USER_CREDITS,
-  GET_USER_CREDITS_FAIL,
-  GET_USER_CREDITS_SUCCESS,
+  ADMIN_GET_USER_CREDITS_FAIL,
+  ADMIN_GET_USER_CREDITS_SUCCESS,
+  ADMIN_GETTING_USER_CREDITS,
+  ADMIN_CLEAR_USER_CREDITS,
+
 } from "../actions/actionTypes";
 
 const initialState = {
   userCredits: [],
-  isFetched: false,
-  isFetching: false,
+  creditsFetched: false,
+  isFetchingCredits: false,
   message: "",
 };
 
 const adminGetUserCreditsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_USER_CREDITS_SUCCESS:
+    case ADMIN_GET_USER_CREDITS_SUCCESS:
       return {
         ...state,
         userCredits: action.payload,
-        isFetching: false,
-        isFetched: true,
+        isFetchingCredits: false,
+        creditsFetched: true,
         message: "User credits fetched",
       };
 
-    case GETTING_USER_CREDITS:
+    case ADMIN_GETTING_USER_CREDITS:
       return {
         ...state,
-        isFetching: true,
-        isFetched: false,
+        isFetchingCredits: true,
+        creditsFetched: false,
       };
 
-    case GET_USER_CREDITS_FAIL:
+    case ADMIN_GET_USER_CREDITS_FAIL:
       return {
         ...state,
         message: action.payload,
-        isFetching: false,
-        isFetched: false,
+        isFetchingCredits: false,
+        creditsFetched: false,
+      };
+
+    case ADMIN_CLEAR_USER_CREDITS:
+      return {
+        ...state,
+        userCredits: [],
+        isFetchingCredits: false,
+        creditsFetched: false,
+        message: "",
       };
 
     default:
