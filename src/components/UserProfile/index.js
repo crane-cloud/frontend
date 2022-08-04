@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Avatar from "../Avatar";
 import styles from "./UserProfile.module.css";
 import InformationBar from "../../components/InformationBar";
-import { Link,Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import BlackInputText from "../BlackInputText";
 import Spinner from "../../components/Spinner";
