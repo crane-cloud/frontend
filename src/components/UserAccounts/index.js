@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import BlackInputText from "../BlackInputText";
 import getUsersList from "../../redux/actions/users";
 import addUserCredits from "../../redux/actions/addCredits";
@@ -13,6 +13,7 @@ import SideNav from "../SideNav";
 import Modal from "../Modal";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
+import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import PrimaryButton from "../PrimaryButton";
 import addBetaUser from "../../redux/actions/addBetaUser";
 import Feedback from "../Feedback";
@@ -24,9 +25,11 @@ class UserAccounts extends Component {
       actionsMenu: false,
       betaUserModal: false,
       addCredits: false,
-      credits:"",
-      creditDescription:"",
+      credits: "",
+      creditDescription: "",
       selectedUser: "",
+      word: "",
+      SearchList: [],
     };
     this.showMenu = this.showMenu.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -38,6 +41,8 @@ class UserAccounts extends Component {
     this.showCreditsModal = this.showCreditsModal.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleCreditSubmittion = this.handleCreditSubmittion.bind(this);
+    this.handleCallbackSearchword = this.handleCallbackSearchword.bind(this);
+    this.searchThroughAccounts = this.searchThroughAccounts.bind(this);
   }
   componentDidMount() {
     const { getUsersList } = this.props;
@@ -55,6 +60,30 @@ class UserAccounts extends Component {
       this.hideCreditsModal();
     }
   }
+
+  searchThroughAccounts() {
+    const { users } = this.props;
+    const { word } = this.state;
+    let resultsList = [];
+    users.forEach((element) => {
+      if (element.name.toLowerCase().includes(word.toLowerCase())) {
+        resultsList.push(element);
+      }
+    });
+    this.setState({ searchList: resultsList });
+  }
+
+  handleCallbackSearchword({ target }) {
+    const { value } = target;
+    this.setState({ word: value });
+    if (value !== "") {
+      this.searchThroughAccounts();
+    }
+    if (value === "") {
+      this.setState({ searchList: [] });
+    }
+  }
+
   handleClick = (e) => {
     if (this.state.actionsMenu) {
       // this.closeModal();
@@ -81,43 +110,43 @@ class UserAccounts extends Component {
       betaUserModal: true,
     });
   }
-  handleCreditSubmittion(){
-    const {credits, creditDescription,selectedUser} = this.state;
+  handleCreditSubmittion() {
+    const { credits, creditDescription, selectedUser } = this.state;
     const { addUserCredits } = this.props;
-    if(credits !== ""  && creditDescription !== ""){
-        const creditsObject={
-            amount: credits,
-            description: creditDescription,
-            user_id: selectedUser
-          }
-          addUserCredits(creditsObject);
+    if (credits !== "" && creditDescription !== "") {
+      const creditsObject = {
+        amount: credits,
+        description: creditDescription,
+        user_id: selectedUser,
+      };
+      addUserCredits(creditsObject);
     }
-
   }
-   showCreditsModal() {
+  showCreditsModal() {
     this.setState({
-      addCredits:true,
-    })
-  };
+      addCredits: true,
+    });
+  }
   hideCreditsModal = () => {
     this.setState({
       addCredits: false,
       actionsMenu:false,
+      credits:"",
+      creditDescription:"",
+      selectedUser: "",
     });
-    };
+  };
 
   closeBetaUserModal() {
     this.setState({
       betaUserModal: false,
     });
   }
-  handleChange(e){
-      this.setState({
-        [e.target.name]: e.target.value,
-      });  
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
   }
-
-
 
   handleBetaUserSubmit() {
     const { selectedUser } = this.state;
@@ -131,22 +160,38 @@ class UserAccounts extends Component {
 
   renderRedirect = () => {
     const { isAdded } = this.props;
-   
+
     if (isAdded) {
       return <Redirect to={`/accounts`} noThrow />;
     }
   };
-  
 
   render() {
-    const { users, isFetched, isFetching, isAdding, isFailed, error, isAdded, Adding, Failed } =
-      this.props;
+    const {
+      users,
+      isFetched,
+      isFetching,
+      isAdding,
+      isFailed,
+      error,
+      isAdded,
+      Adding,
+      Failed,
+    } = this.props;
     const clusterName = localStorage.getItem("clusterName");
     const {
       match: { params },
     } = this.props;
-    const { actionsMenu, selectedUser, betaUserModal, credits, creditDescription } = this.state;
-    
+    const {
+      actionsMenu,
+      selectedUser,
+      betaUserModal,
+      credits,
+      creditDescription,
+      word,
+      searchList,
+    } = this.state;
+
     return (
       <div className="MainPage">
         {isAdded ? this.renderRedirect() : null}
@@ -162,6 +207,19 @@ class UserAccounts extends Component {
               <InformationBar header="User Accounts" showBtn={false} />
             </div>
             <div className="ContentSection">
+              <div className="SearchBar">
+                <div className="AdminSearchInput">
+                  <input
+                    type="text"
+                    className="searchTerm"
+                    name="Searchword"
+                    placeholder="Search for account"
+                    value={word}
+                    onChange={this.handleCallbackSearchword}
+                  />
+                  <SearchButton className="SearchIcon" />
+                </div>
+              </div>
               <div
                 className={
                   isFetching
@@ -189,16 +247,26 @@ class UserAccounts extends Component {
                         </td>
                       </tr>
                     </tbody>
-                  ) : (
+                  ) : word !== "" ? (
                     <tbody>
                       {isFetched &&
-                        users !== undefined &&
-                        users?.map((user) => (
+                        searchList.map((user) => (
                           <tr key={users.indexOf(user)}>
                             <td>{user?.name}</td>
                             <td>{user.is_beta_user ? "True" : "False"}</td>
-                            <td>{user?.credits.length === 0 ?"No credits":
-                            <div className="creditSection">{user?.credits[0]?.amount}<div className="creditCoin"> <Coin title="credits"/></div></div>}</td>
+                            <td>
+                              {user?.credits.length === 0 ? (
+                                "No credits"
+                              ) : (
+                                <div className="creditSection">
+                                  {user?.credits[0]?.amount}
+                                  <div className="creditCoin">
+                                    {" "}
+                                    <Coin title="credits" />
+                                  </div>
+                                </div>
+                              )}
+                            </td>
                             <td>{user?.email}</td>
                             <td
                               onClick={(e) => {
@@ -217,13 +285,67 @@ class UserAccounts extends Component {
                                     >
                                       Add Beta User
                                     </div>
-                                    { <div
+                                    {
+                                      <div
+                                        className="DropDownLink"
+                                        role="presentation"
+                                        onClick={this.showCreditsModal}
+                                      >
+                                        Assign credits
+                                      </div>
+                                    }
+                                  </div>
+                                </div>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  ) : (
+                    <tbody>
+                      {isFetched &&
+                        users !== undefined &&
+                        users?.map((user) => (
+                          <tr key={users.indexOf(user)}>
+                            <td>{user?.name}</td>
+                            <td>{user.is_beta_user ? "True" : "False"}</td>
+                            <td>
+                              {user?.credits.length === 0 ? (
+                                "No credits"
+                              ) : (
+                                <div className="creditSection">
+                                  {user?.credits[0]?.amount}
+                                  <div className="creditCoin">
+                                    {" "}
+                                    <Coin title="credits" />
+                                  </div>
+                                </div>
+                              )}
+                            </td>
+                            <td>{user?.email}</td>
+                            <td
+                              onClick={(e) => {
+                                this.showMenu(user.id);
+                                this.handleClick(e);
+                              }}
+                            >
+                              <MoreIcon />
+                              {actionsMenu && user.id === selectedUser && (
+                                <div className="BelowHeader bg-light">
+                                  <div className="context-menu">
+                                    <div
                                       className="DropDownLink"
                                       role="presentation"
-                                      onClick={this.showCreditsModal}
+                                      onClick={this.showBetaUserModal}
                                     >
-                                      Assign credits
+                                      Assign Credits
                                     </div> }
+                                    <div
+                                      className="DropDownLink"
+                                      role="presentation"
+                                    >
+                                      <Link to={{ pathname: `/accounts/${selectedUser}` }}>View User Profile</Link>
+                                    </div>
                                   </div>
                                 </div>
                               )}
@@ -234,12 +356,12 @@ class UserAccounts extends Component {
                   )}
                 </table>
                 {isFetched && users.length === 0 && (
-                  <div className="NoResourcesMessage">
+                  <div className="AdminNoResourcesMessage">
                     <p>No Users Available</p>
                   </div>
                 )}
                 {!isFetching && !isFetched && (
-                  <div className="NoResourcesMessage">
+                  <div className="AdminNoResourcesMessage">
                     <p>
                       Oops! Something went wrong! Failed to retrieve Available
                       Users.
@@ -248,14 +370,17 @@ class UserAccounts extends Component {
                 )}
               </div>
             </div>
-            <Modal showModal={this.state.addCredits} onClickAway={() => this.hideCreditsModal()}>
-                <div className="ModalHeader">
-                  <h5 className="ModalTitle">Add Credits</h5>
+            <Modal
+              showModal={this.state.addCredits}
+              onClickAway={() => this.hideCreditsModal()}
+            >
+              <div className="ModalHeader">
+                <h5 className="ModalTitle">Add Credits</h5>
 
-                  <div className="">Number of credits</div>
-                  <div className="ModalContent">
-                    <BlackInputText 
-                    required 
+                <div className="">Number of credits</div>
+                <div className="ModalContent">
+                  <BlackInputText
+                    required
                     placeholder="Number of credits"
                     name="credits"
                     type="number"
@@ -263,41 +388,41 @@ class UserAccounts extends Component {
                     onChange={(e) => {
                       this.handleChange(e);
                     }}
-                    />
-                  </div>
-                  <div className="CreditsTitle">Description</div>
-                  <textarea
-                    className="TextArea"
-                    type="text"
-                    placeholder="Credits description"
-                    rows="4"
-                    cols="50"
-                    name="creditDescription"
-                    value={creditDescription}
-                    onChange={(e) => {
-                      this.handleChange(e);
-                    }}
                   />
                 </div>
-                <div className="ModalFooter">
-                  <div className="ModalButtons">
-                    <PrimaryButton
-                      className="CancelBtn"
-                      label="Cancel"
-                      onClick={() => this.hideCreditsModal()}
-                    />
+                <div className="CreditsTitle">Description</div>
+                <textarea
+                  className="TextArea"
+                  type="text"
+                  placeholder="Credits description"
+                  rows="4"
+                  cols="50"
+                  name="creditDescription"
+                  value={creditDescription}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+                />
+              </div>
+              <div className="ModalFooter">
+                <div className="ModalButtons">
+                  <PrimaryButton
+                    className="CancelBtn"
+                    label="Cancel"
+                    onClick={() => this.hideCreditsModal()}
+                  />
 
-                    <PrimaryButton type="button" label={Adding? <Spinner/>: "Add"}   
-                    onClick={() => this.handleCreditSubmittion()}/>
-                  </div>
-                  {Failed && (
-                  <Feedback
-                    message={"failed to add credits"}
-                    type={"error"}
+                  <PrimaryButton
+                    type="button"
+                    label={Adding ? <Spinner /> : "Add"}
+                    onClick={() => this.handleCreditSubmittion()}
                   />
-                )}
                 </div>
-              </Modal>
+                {Failed && (
+                  <Feedback message={"failed to add credits"} type={"error"} />
+                )}
+              </div>
+            </Modal>
             <Modal
               showModal={betaUserModal}
               onClickAway={this.closeBetaUserModal}
@@ -360,7 +485,18 @@ export const mapStateToProps = (state) => {
   const { isFetching, users, isFetched } = state.usersListReducer;
   const { isAdded, isAdding, isFailed, error } = state.addBetaUserReducer;
   const { Added, Adding, Failed } = state.addUserCreditsReducer;
-  return { isFetching, users, isFetched, isAdded, isAdding, isFailed, error, Added, Adding, Failed };
+  return {
+    isFetching,
+    users,
+    isFetched,
+    isAdded,
+    isAdding,
+    isFailed,
+    error,
+    Added,
+    Adding,
+    Failed,
+  };
 };
 
 const mapDispatchToProps = {

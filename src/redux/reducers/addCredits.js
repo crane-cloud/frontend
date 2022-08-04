@@ -2,6 +2,7 @@ import {
     ADDING_USER_CREDITS,
     ADD_BETA_USER_CREDITS_SUCCESS,
     ADD_BETA_USER_CREDITS_FAIL,
+    CLEAR_ADD_BETA_USER_CREDITS_STATE,
   } from "../actions/actionTypes";
   
   const initialState = {
@@ -38,6 +39,16 @@ import {
           Adding: false,
           error: action.payload.error,
           message: "Failed to add user credits",
+        };
+      
+      case CLEAR_ADD_BETA_USER_CREDITS_STATE:
+        return {
+          ...state,
+          Added: false,
+          Failed: false,
+          Adding: false,
+          error: null,
+          message: "",
         };
   
       default:
