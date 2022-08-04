@@ -3,30 +3,62 @@
   background-color: #f9f9f9;
   position: absolute;
   box-shadow: 0 4px 4px 0 rgba(117, 117, 117, 0.2);
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Old versions of Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
 
-.BetaUser{
+.BetaUser {
   display: flex;
   gap: 1rem;
 }
 
-.BetaUserText{
+.BetaUserText {
   text-align: center;
   font-size: 18px;
 }
-.creditCoin{
+
+.creditCoin {
   width: 1rem;
   height: 1rem;
 }
-.creditSection{
+
+.creditSection {
   display: flex;
   flex-direction: row;
   justify-content: center;
   gap: .4rem;
+}
+
+.AdminSearchInput {
+  padding-left: 1.5rem;
+  display: flex;
+}
+
+.AdminSearchInput input {
+  background-color: #EBEAD5;
+  color: #000;
+  border: 0;
+  border-top-left-radius: 4px 2px;
+  border-bottom-left-radius: 3px 4px;
+  font-size: 1rem;
+  padding: 1rem;
+  height: 45.5px;
+  max-width: 21rem;
+}
+
+.AdminNoResourcesMessage {
+  padding: 3rem;
+  display: flex;
+  text-align: center;
+  justify-content: center;
 }
