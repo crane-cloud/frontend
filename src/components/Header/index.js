@@ -120,6 +120,12 @@ const Header = (props) => {
             {hidden && (
               <div className={styles.BelowHeader}>
                 <div className={styles.DropDownContent}>
+                <Link
+                  to={`/profile`}
+                  className={styles.DropDownLink}
+                >
+                  Profile
+                </Link>
                   <a
                     href={`${DOCS_URL}`}
                     className={styles.DropDownLink}

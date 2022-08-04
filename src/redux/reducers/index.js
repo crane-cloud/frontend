@@ -54,6 +54,7 @@ import getReceiptsReducer from "./getReceipts";
 import addUserCreditsReducer from "./addCredits";
 import userCreditsReducer from "./userCredits";
 import adminGetUserCreditsReducer from "./adminGetUserCredits";
+import updateProfileReducer from "./updateProfile";
 
 export default combineReducers({
   clusterResourcesReducer,
@@ -111,4 +112,5 @@ export default combineReducers({
   addUserCreditsReducer,
   userCreditsReducer,
   adminGetUserCreditsReducer,
+  updateProfileReducer,
 });
