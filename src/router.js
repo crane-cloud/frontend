@@ -53,6 +53,7 @@ import AdminDBList from "./components/AdminDB";
 import ProjectBillingPage from "./components/ProjectBillingPage";
 import ClusterSettingsPage from "./components/ClusterSettingsPage";
 import MonitoringPage from "./components/MonitoringPage";
+import UserProfile from "./components/UserProfile";
 import AdminUsersProfile from "./components/AdminUsersProfile";
 
 // Protected route should have token. If not, login.
@@ -190,6 +191,12 @@ const Routes = () => (
         exact
         path="/accounts"
         component={UsersAccounts}
+      />
+       <ProtectedRoute
+        isAllowed={hasToken}
+        exact
+        path="/profile"
+        component={UserProfile}
       />
       <ProtectedRoute
         isAllowed={hasToken}

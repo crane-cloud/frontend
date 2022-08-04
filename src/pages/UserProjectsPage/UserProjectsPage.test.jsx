@@ -13,7 +13,7 @@ const UserProjectsPageProps = {
   getUserCredits: jest.fn(),
 };
 
-describe("Testing the App Metrics Page component", () => {
+describe("Testing the user projects Page component", () => {
   const WrapperUserProjectsPage = UserProjectsPage.WrappedComponent;
   const UserProjectsPageComponent = shallow(<WrapperUserProjectsPage {...UserProjectsPageProps} />);
   it("should match the snapshot for UserProjectsPage after adding props", () => {

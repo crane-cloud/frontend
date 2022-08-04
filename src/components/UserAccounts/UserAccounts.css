@@ -16,6 +16,12 @@
   user-select: none;
   /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
+.AdminSearchInput{
+  display: flex;
+  flex-direction: row;
+  padding-left: 2rem;
+}
+
 
 .BetaUser {
   display: flex;

@@ -55,6 +55,7 @@ const Header = (props) => {
   const { credits } = props;
   return (
     <header className={`${styles.Header} SmallContainer`}>
+    
       <Logo />
 
       {(!user.accessToken || user.accessToken === "" || pageUrl !== null) && (
@@ -120,6 +121,12 @@ const Header = (props) => {
             {hidden && (
               <div className={styles.BelowHeader}>
                 <div className={styles.DropDownContent}>
+                <Link
+                  to={`/profile`}
+                  className={styles.DropDownLink}
+                >
+                  Profile
+                </Link>
                   <a
                     href={`${DOCS_URL}`}
                     className={styles.DropDownLink}
