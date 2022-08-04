@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Avatar from "../Avatar";
 import styles from "./UserProfile.module.css";
 import InformationBar from "../../components/InformationBar";
-import { Link } from "react-router-dom";
+import { Link,Redirect } from "react-router-dom";
 import Header from "../../components/Header";
 import BlackInputText from "../BlackInputText";
 import Spinner from "../../components/Spinner";
@@ -13,6 +13,7 @@ import getUserDetail from "../../redux/actions/userDetails";
 import {updateProfile , clearUpdateProfileState} from "../../redux/actions/updateProfile";
 import "../../index.css";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
+
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -69,6 +70,7 @@ class UserProfile extends React.Component {
     const { username } = this.state;
     const {
       user,
+      data,
       isFetching,
       isFetched,
       profileUpdating
@@ -76,7 +78,6 @@ class UserProfile extends React.Component {
 
     return (
       <div className={styles.Page}>
-        
           <div>
             <div className={styles.TopRow}>
               <Header />
@@ -111,7 +112,7 @@ class UserProfile extends React.Component {
                           onChange={(e) => {
                              this.handleChange(e);
                          }}
-                        />{user.name!==username && <PrimaryButton
+                        />{user.name!==username.trim() && <PrimaryButton
                          label= { profileUpdating ? <Spinner /> :"EDIT NAME"}
                          onClick={()=>{this.handleNameEdit()}}
                          className={styles.BackButton} 
@@ -121,6 +122,10 @@ class UserProfile extends React.Component {
                          </div> 
                       <div className={styles.Row}><div className={styles.RowHeading}>Email:</div> 
                       <div className={styles.RowContent}>{user.email}</div>
+                        </div>
+                        {/**Username is un-editable, only name is */}
+                        <div className={styles.Row}><div className={styles.RowHeading}>Username</div> 
+                      <div className={styles.RowContent}>{data.name}</div>
                         </div>
                       <div className={styles.Row}><div className={styles.RowHeading}>Beta user:</div>
                       <div className={styles.RowContent}>{user.is_beta_user? "Yes":"No"}</div>
