@@ -51,7 +51,10 @@ import addBetaUserReducer from "./addBetaUser";
 import updateClusterReducer from "./updateCluster";
 import getInvoicesReducer from "./getInvoices";
 import getReceiptsReducer from "./getReceipts";
-import creditsPaymentReducer from "./creditsPayments";
+import addUserCreditsReducer from "./addCredits";
+import userCreditsReducer from "./userCredits";
+import adminGetUserCreditsReducer from "./adminGetUserCredits";
+import updateProfileReducer from "./updateProfile";
 
 export default combineReducers({
   clusterResourcesReducer,
@@ -106,5 +109,8 @@ export default combineReducers({
   updateClusterReducer,
   getInvoicesReducer,
   getReceiptsReducer,
-  creditsPaymentReducer,
+  addUserCreditsReducer,
+  userCreditsReducer,
+  adminGetUserCreditsReducer,
+  updateProfileReducer,
 });
