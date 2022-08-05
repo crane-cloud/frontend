@@ -130,9 +130,9 @@ class UserAccounts extends Component {
   hideCreditsModal = () => {
     this.setState({
       addCredits: false,
-      actionsMenu:false,
-      credits:"",
-      creditDescription:"",
+      actionsMenu: false,
+      credits: "",
+      creditDescription: "",
       selectedUser: "",
     });
   };
@@ -285,15 +285,25 @@ class UserAccounts extends Component {
                                     >
                                       Add Beta User
                                     </div>
-                                    {
-                                      <div
-                                        className="DropDownLink"
-                                        role="presentation"
-                                        onClick={this.showCreditsModal}
+                                    <div
+                                      className="DropDownLink"
+                                      role="presentation"
+                                      onClick={this.showBetaUserModal}
+                                    >
+                                      Assign Credits
+                                    </div>
+                                    <div
+                                      className="DropDownLink"
+                                      role="presentation"
+                                    >
+                                      <Link
+                                        to={{
+                                          pathname: `/accounts/${selectedUser}`,
+                                        }}
                                       >
-                                        Assign credits
-                                      </div>
-                                    }
+                                        View User Profile
+                                      </Link>
+                                    </div>
                                   </div>
                                 </div>
                               )}
@@ -338,13 +348,26 @@ class UserAccounts extends Component {
                                       role="presentation"
                                       onClick={this.showBetaUserModal}
                                     >
+                                      Add Beta User
+                                    </div>
+                                    <div
+                                      className="DropDownLink"
+                                      role="presentation"
+                                      onClick={this.showBetaUserModal}
+                                    >
                                       Assign Credits
-                                    </div> }
+                                    </div>
                                     <div
                                       className="DropDownLink"
                                       role="presentation"
                                     >
-                                      <Link to={{ pathname: `/accounts/${selectedUser}` }}>View User Profile</Link>
+                                      <Link
+                                        to={{
+                                          pathname: `/accounts/${selectedUser}`,
+                                        }}
+                                      >
+                                        View User Profile
+                                      </Link>
                                     </div>
                                   </div>
                                 </div>
