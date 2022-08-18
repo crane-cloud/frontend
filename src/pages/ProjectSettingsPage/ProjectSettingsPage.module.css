@@ -215,6 +215,14 @@
   font-size: 1.1rem;
 }
 
+.TokenItem {
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 20rem;
+}
+
 .ProjectSectionTitle {
   font-size: 1.3rem;
   font-weight: bold;
