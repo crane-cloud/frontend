@@ -23,19 +23,32 @@ import SettingsButton from "../../components/SettingsButton";
 import Select from "../../components/Select";
 import { retrieveProjectTypes } from "../../helpers/projecttypes";
 import { validateName } from "../../helpers/validation"
+import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
+import { ReactComponent as Checked } from "../../assets/images/checked.svg";
+// import "./../../components/DBSettingsPage/DBSettingsPage.css"
+
+
 class ProjectSettingsPage extends React.Component {
   constructor(props) {
     super(props);
     const projectInfo = {...JSON.parse(localStorage.getItem("project"))};
-    const { name, description, organisation, project_type } = projectInfo;
+    const userToken = localStorage.getItem("token", null);
+    const { name, description, organisation, project_type, project_id } = projectInfo;
+
 
     this.state = {
       openUpdateAlert: false,
       openDeleteAlert: false,
       openDropDown: false,
+      userToken: userToken,
       projectName: name ? name : "",
+      projectID: project_id ? project_id : "",
       projectDescription: description ? description : "",
       error: "",
+      nameChecked: false,
+      idChecked: false,
+      tokenChecked: false,
+      descriptionChecked: false,
       Confirmprojectname: "",
       disableDelete: true,
       projectOrganisation: organisation ? organisation : "",
@@ -49,6 +62,10 @@ class ProjectSettingsPage extends React.Component {
     this.hideUpdateAlert = this.hideUpdateAlert.bind(this);
     this.showDeleteAlert = this.showDeleteAlert.bind(this);
     this.hideDeleteAlert = this.hideDeleteAlert.bind(this);
+    this.nameOnClick = this.nameOnClick.bind(this);
+    this.projectIDOnClick = this.projectIDOnClick.bind(this);
+    this.projectDescriptionOnClick = this.projectDescriptionOnClick.bind(this);
+    this.userTokenOnClick = this.userTokenOnClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.checkProjectInputValidity = this.checkProjectInputValidity.bind(this);
@@ -224,6 +241,34 @@ class ProjectSettingsPage extends React.Component {
     }
   }
 
+  nameOnClick(e) {
+    const projectInfo ={...JSON.parse(localStorage.getItem("project"))};
+    const { name } = projectInfo;
+    navigator.clipboard.writeText(name);
+    this.setState({ nameChecked: true });
+    e.preventDefault();
+  }
+
+  projectIDOnClick() {
+    const projectInfo ={...JSON.parse(localStorage.getItem("project"))};
+    const { project_id } = projectInfo;
+    navigator.clipboard.writeText(project_id);
+    this.setState({ idChecked: true });
+  }
+
+  projectDescriptionOnClick() {
+    const projectInfo ={...JSON.parse(localStorage.getItem("project"))};
+    const { description } = projectInfo;
+    navigator.clipboard.writeText(description);
+    this.setState({ descriptionChecked: true });
+  }
+
+  userTokenOnClick() {
+    const token = localStorage.getItem("token");
+    navigator.clipboard.writeText(token);
+    this.setState({ tokenChecked: true });
+  }
+
   handleDeleteProject(e, projectID) {
     const { deleteProject } = this.props;
     e.preventDefault();
@@ -291,11 +336,14 @@ class ProjectSettingsPage extends React.Component {
       errorMessage,
     } = this.props;
     const projectInfo = {...JSON.parse(localStorage.getItem("project"))};
+
     const { name, description } = projectInfo;
+
 
     const {
       openUpdateAlert,
       openDeleteAlert,
+      userToken,
       projectName,
       projectDescription,
       error,
@@ -305,6 +353,10 @@ class ProjectSettingsPage extends React.Component {
       projectType,
       othersBool,
       otherType,
+      nameChecked,
+      idChecked,
+      descriptionChecked,
+      tokenChecked
     } = this.state;
     const types = retrieveProjectTypes();
 
@@ -336,6 +388,66 @@ class ProjectSettingsPage extends React.Component {
             </div>
             <div className={styles.ContentSection}>
               <div className={`${styles.ProjectSections} SmallContainer`}>
+
+              <div className={styles.ProjectSectionTitle}>Project Details</div>
+
+
+              <div className={styles.ProjectInstructions}>
+                  <div className={styles.ProjectButtonRow}>
+                    <div className={styles.SettingsSectionInfo}>
+                      <div className={styles.SettingsSectionInfoHeader}>
+                        Project ID
+                      </div>
+                      <div>{projectID}</div>
+                      
+                    </div>
+                    <div className={styles.DBIcon}>
+                          <CopyText onClick={this.projectIDOnClick} />
+                          {idChecked ? <Checked /> : null}
+                    </div>
+                  </div>
+
+                  <div className={styles.ProjectButtonRow}>
+                    <div className={styles.SettingsSectionInfo}>
+                      <div className={styles.SettingsSectionInfoHeader}>
+                        Project Name
+                      </div>
+                      <div>{projectName}</div>
+
+                    </div>
+                    <div className={styles.DBIcon}>
+                          <CopyText onClick={this.nameOnClick} />
+                          {nameChecked ? <Checked /> : null}
+                    </div>
+                  </div>
+
+                  <div className={styles.ProjectButtonRow}>
+                    <div className={styles.SettingsSectionInfo}>
+                      <div className={styles.SettingsSectionInfoHeader}>
+                        Project Description
+                      </div>
+                      <div>{projectDescription}</div>
+                    </div>
+                    <div className={styles.DBIcon}>
+                          <CopyText onClick={this.projectDescriptionOnClick} />
+                          {descriptionChecked ? <Checked /> : null}
+                    </div>
+                  </div>
+
+                  <div className={styles.ProjectButtonRow}>
+                    <div className={styles.SettingsSectionInfo}>
+                      <div className={styles.SettingsSectionInfoHeader}>
+                        User Token
+                      </div>
+                      <div className={styles.TokenItem}>{userToken}</div>
+                    </div>
+                    <div className={styles.DBIcon}>
+                          <CopyText onClick={this.userTokenOnClick} />
+                          {tokenChecked ? <Checked /> : null}
+                    </div>
+                  </div>
+                </div>
+
                 <div className={styles.ProjectSectionTitle}>Manage project</div>
                 <div className={styles.ProjectInstructions}>
                   <div className={styles.ProjectButtonRow}>
@@ -370,6 +482,7 @@ class ProjectSettingsPage extends React.Component {
                     </div>
                   </div>
                 </div>
+              
               </div>
 
               {openUpdateAlert && (
