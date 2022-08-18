@@ -29,6 +29,8 @@ import {
 
 import getInvoices, { clearInvoices } from "../../redux/actions/getInvoices";
 import getReceipts, { clearReceipts } from "../../redux/actions/getReceipts";
+import {creditsPayment,clearCreditsTransactions} from "../../redux/actions/creditsPayments";
+import Spinner from "../Spinner";
 
 const ref = React.createRef();
 const options = {
@@ -52,6 +54,10 @@ const ProjectBillingPage = (props) => {
 
   const getAllTransactions = useCallback(
     () => dispatch(getTransactions(projectID)),
+    [dispatch, projectID]
+  );
+  const payWithcredits = useCallback(
+    (amountObject) => dispatch(creditsPayment(amountObject ,projectID)),
     [dispatch, projectID]
   );
 
@@ -79,8 +85,13 @@ const ProjectBillingPage = (props) => {
     () => dispatch(clearTransactions()),
     [dispatch]
   );
+  const clearCreditsTransactionsState = useCallback(
+    () => dispatch( clearCreditsTransactions()),
+    [dispatch]
+  );
   
   const { credits } = useSelector((state) => state.userCreditsReducer);
+
 
   const [transactionDetails, setTransactionDetails] = useState({});
   const [invoiceDetails, setInvoiceDetails] = useState({});
@@ -105,6 +116,7 @@ const ProjectBillingPage = (props) => {
     getAllTransactions();
     getAllInvoices();
     handleConversion();
+    clearCreditsTransactionsState();
   }, [
     clearAllTransactions,
     getAllTransactions,
@@ -112,12 +124,14 @@ const ProjectBillingPage = (props) => {
     getAllInvoices,
     clearAllReceipts,
     getAllReceipts,
+    clearCreditsTransactionsState,
   ]);
 
   const { projects } = useSelector((state) => state.userProjectsReducer);
   const { transactions, isRetrieving, isFetched } = useSelector((state) => state.getTransactionsReducer);
   const { invoices, isRetrievingInvoices, invoicesFetched } = useSelector((state) => state.getInvoicesReducer);
   const { receipts, isRetrievingReceipts, receiptsFetched } = useSelector((state) => state.getReceiptsReducer);
+  const { creditsSaved, creditsSaving } = useSelector((state) => state.creditsPaymentReducer);
 
   const handleConversion = () => {
     axios
@@ -133,9 +147,17 @@ const ProjectBillingPage = (props) => {
         setInUgx(false);
       });
   };
+
   const closeReceiptModal = () => {
     setViewReceipt(false);
   };
+
+  const handleCreditsPayment = (amount) => {
+    const amountObject = {
+      amount
+    }
+    payWithcredits(amountObject);
+  }
 
   const viewTransactions = () => {
     setCurrentTab("transactions");
@@ -164,7 +186,6 @@ const ProjectBillingPage = (props) => {
   const viewUsageInMonths = () => {
     setCurrentUsageTab("months");
   };
- 
 
   const getBill = useCallback(
     (startTimeStamp) =>
@@ -216,6 +237,13 @@ const ProjectBillingPage = (props) => {
     startTimeStamp.setDate(startTimeStamp.getDate() - 14);
     getBill(Math.round(startTimeStamp.getTime() / 1000));
   }, [getBill]);
+  useEffect(() => {
+    if(creditsSaved && !creditsSaving){
+      closePaymentsOptions();
+      clearCreditsTransactions()
+      window.location.href = "/projects";
+    }  
+  }, [creditsSaved,creditsSaving]);
 
   const billInfo = useSelector((state) => state.getProjectBillReducer);
   const { projectBill } = billInfo;
@@ -605,14 +633,15 @@ const ProjectBillingPage = (props) => {
                           </div>
                           <div className={styles.TransactionHistoryCell}>
                             <span className={styles.PaymentStatus}>
-                              {entry.status}
+                              { (entry.status==="successful" 
+                              || entry.status==="success") ? "successful" : entry.status }
                             </span>
                           </div>
                           <div className={styles.TransactionHistoryCell}>
                             {/* inUgx ?<>UGX {(entry.amount.toFixed(2)).toLocaleString("en-US")} </>: 
                             <>$ {((entry.amount/rate).toFixed(2)).toLocaleString("en-US")} </>
                       */}
-                         {<>UGX {entry.amount}</>}
+                         {<>{entry.currency} {entry.amount}</>}
 
                           </div>
                           <div className={styles.TransactionHistoryCell}>
@@ -1039,6 +1068,7 @@ const ProjectBillingPage = (props) => {
                     <div className={styles.SubModalTitle}>Click one of the options below</div>
                     <div className={styles.PaymentForms} >
                       <div className={choosenPaymentOption==="credits"? styles.SelectedPaymentFormBox : styles.PaymentFormBox}
+                      title="1 credit is equivalent to a USD"
                        onClick={()=>{setChoosenPaymentOption("credits")}}>
                        <div className={styles.PaymentText}> Credits</div>
                        <div className={styles.CoinSize}>
@@ -1064,19 +1094,18 @@ const ProjectBillingPage = (props) => {
                         />
 
                          {choosenPaymentOption==="credits"&& <PrimaryButton
-                          label="Proceed"
-                          onClick={()=>{}}
+                          label={creditsSaving?<Spinner/>:"Proceed"}
+                          onClick={()=>{
+                            //add current invoice price
+                            handleCreditsPayment(1)
+                          }}
                         />}
                         {choosenPaymentOption==="flutterwave"&& 
                           <FlutterwaveHook
-                          amount={
-                        transactionDetails.amount
-                          ? transactionDetails.amount *
-                            rate.toFixed(1)
-                          : 0
-                      }
-                      name={data?.name}
-                      email={data?.email}
+                          //add current invoice price
+                          amount={0}
+                          name={data?.name}
+                          email={data?.email}
                        /> 
                         }
                       </div>
