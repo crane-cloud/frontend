@@ -7,11 +7,13 @@ import { ReactComponent as DownArrow } from "../../assets/images/downarrow.svg";
 import removeUser from "../../redux/actions/removeUser";
 import styles from "./Header.module.css";
 import { DOCS_URL, APP_URL } from "../../config";
+import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 
 const Header = (props) => {
+  const { user, match } = props;
+
   const [hidden, setHidden] = useState(false);
   const dropdownRef = useRef(null);
-  const { user, match } = props;
 
   const toggleHidden = () => {
     if (hidden) {
@@ -50,8 +52,10 @@ const Header = (props) => {
     };
   }, []);
 
+  const { credits } = props;
   return (
     <header className={`${styles.Header} SmallContainer`}>
+    
       <Logo />
 
       {(!user.accessToken || user.accessToken === "" || pageUrl !== null) && (
@@ -80,8 +84,7 @@ const Header = (props) => {
         </div>
       )}
 
-      {(user.accessToken && pageUrl === null) && (
-
+      {user.accessToken && pageUrl === null && (
         <div className={styles.HeaderLinksWrap}>
           <div
             ref={dropdownRef}
@@ -103,14 +106,14 @@ const Header = (props) => {
               </>
             ) : (
               <>
-              {/** user's credits should appear here if the user has any  */}
-              {/**Not displayed in billing  */}
-              {( match.path !== "/projects/:projectID/billing" &&
-              <div className={styles.Credits}
-              title="credits"
-              >&nbsp;</div>
-              )}
-               <div className={styles.UserNames}>{user.data.name}</div>
+                {/**Not displayed in billing  */}
+                {match.path !== "/projects/:projectID/billing" && credits > 0 && (
+                  <div className={styles.Credits} title="credits">
+                    {credits > 0 ? credits : 0}
+                    <Coin />
+                  </div>
+                )}
+                <div className={styles.UserNames}>{user.data.name}</div>
               </>
             )}
 
@@ -118,6 +121,12 @@ const Header = (props) => {
             {hidden && (
               <div className={styles.BelowHeader}>
                 <div className={styles.DropDownContent}>
+                <Link
+                  to={`/profile`}
+                  className={styles.DropDownLink}
+                >
+                  Profile
+                </Link>
                   <a
                     href={`${DOCS_URL}`}
                     className={styles.DropDownLink}

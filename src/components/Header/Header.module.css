@@ -126,6 +126,12 @@ a.HeaderLinkBackToConsole {
   color: white;
   padding: 1rem;
 }
+.Credits{
+  display: grid;
+  grid-auto-flow: column;
+  width: 3rem;
+  align-items: center;
+}
 @media only screen and (max-width: 640px) {
   .HeaderLinkPricing,
   .HeaderLinkDocs {

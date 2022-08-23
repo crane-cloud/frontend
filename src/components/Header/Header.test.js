@@ -2,7 +2,7 @@ import React from "react";
 
 import { shallow } from "enzyme";
 
-import Header, { mapStateToProps } from ".";
+import Header, { mapStateToProps } from "./index";
 
 const HeaderProps = {
   removeUser: jest.fn(),
