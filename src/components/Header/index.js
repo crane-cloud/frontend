@@ -6,7 +6,7 @@ import Logo from "../Logo";
 import { ReactComponent as DownArrow } from "../../assets/images/downarrow.svg";
 import removeUser from "../../redux/actions/removeUser";
 import styles from "./Header.module.css";
-import { DOCS_URL } from "../../config";
+import { DOCS_URL, APP_URL } from "../../config";
 
 const Header = (props) => {
   const [hidden, setHidden] = useState(false);
@@ -69,12 +69,12 @@ const Header = (props) => {
               >
                 Docs
               </a>
-              <Link
-                to="/login"
+              <a
+                href={`${APP_URL}`}
                 className={`${styles.HeaderLinkLogin} ${styles.TurnLight}`}
               >
                 Login
-              </Link>
+              </a>
             </div>
           )}
         </div>
