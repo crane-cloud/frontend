@@ -21,7 +21,6 @@ import getProjectBill from "../../redux/actions/getProjectBill";
 import axios from "axios";
 import { LIVE_EXCHANGE_RATE_API } from "../../config";
 import { DisplayDateTime } from "../../helpers/dateConstants";
-/* Just demonstrating workflow */
 import {
   getTransactions,
   clearTransactions,
@@ -190,7 +189,7 @@ const ProjectBillingPage = (props) => {
   const getBill = useCallback(
     (startTimeStamp) =>
       dispatch(
-        getProjectBill(projectID, { series: true, start: startTimeStamp })
+        getProjectBill(projectID, { series: false, start: startTimeStamp })
       ),
     [dispatch, projectID]
   );

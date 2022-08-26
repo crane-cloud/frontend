@@ -6,7 +6,7 @@ import Logo from "../Logo";
 import { ReactComponent as DownArrow } from "../../assets/images/downarrow.svg";
 import removeUser from "../../redux/actions/removeUser";
 import styles from "./Header.module.css";
-import { DOCS_URL, APP_URL } from "../../config";
+import { DOCS_URL } from "../../config";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 
 const Header = (props) => {
@@ -24,7 +24,13 @@ const Header = (props) => {
   };
 
   const pageUrl = matchPath(match.path, {
-    path: "/login",
+    path: "/",
+    exact: true,
+    strict: true,
+  });
+
+  const registerUrl = matchPath(match.path, {
+    path: "/register",
     exact: true,
     strict: true,
   });
@@ -53,32 +59,30 @@ const Header = (props) => {
   }, []);
 
   const { credits } = props;
+  console.log(registerUrl);
   return (
     <header className={`${styles.Header} SmallContainer`}>
     
       <Logo />
 
-      {(!user.accessToken || user.accessToken === "" || pageUrl !== null) && (
+      {(!user.accessToken || user.accessToken === "") && (
         <div className={styles.HeaderLinksWrap}>
           {match.path !== "/admin-login" && (
             <div className={styles.HeaderLinks}>
-              <Link to="/team" className={styles.HeaderLinkDocs}>
-                Team
-              </Link>
-              <a
+              {/* <a
                 href={`${DOCS_URL}`}
                 className={styles.HeaderLinkDocs}
                 rel="noopener noreferrer"
                 target="_blank"
               >
                 Docs
-              </a>
-              <a
-                href={`${APP_URL}`}
+              </a> */}
+              <Link
+                to="/register"
                 className={`${styles.HeaderLinkLogin} ${styles.TurnLight}`}
               >
-                Login
-              </a>
+                Register
+              </Link>
             </div>
           )}
         </div>
@@ -92,16 +96,13 @@ const Header = (props) => {
             onClick={toggleHidden}
             role="presentation"
           >
-            {match.path === "/" || match.path === "/team" ? (
+            {(match.path === "/") ? (
               <>
-                <Link to="/team" className={styles.StripBorder}>
-                  Team
-                </Link>
                 <Link
                   to={`/projects`}
                   className={`${styles.HeaderLinkBackToConsole} ${styles.TurnLight}`}
                 >
-                  dashboard
+                  Dashboard
                 </Link>
               </>
             ) : (

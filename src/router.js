@@ -68,7 +68,7 @@ const Routes = () => (
   <Router>
     <Switch>
       <Route key="default-route" exact path="/" component={LoginPage} />
-      <Route key="login-route" path="/login" component={LoginPage} />
+      {/* <Route key="login-route" path="/login" component={LoginPage} /> */}
       {/* <Route path="/pricing" component={PricingPage} /> */}
       <Route path="/contact" component={ContactPage} />
       <Route path="/admin-login" component={AdminLoginPage} />
