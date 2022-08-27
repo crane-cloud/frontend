@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import NewLogo from "../NewLogo";
 import removeUser from "../../redux/actions/removeUser";
 import "./NewHeader.css";
-import { DOCS_URL, BLOG_URL } from "../../config";
+import { DOCS_URL, BLOG_URL, APP_URL } from "../../config";
 import useMedia from "../../hooks/mediaquery";
 import { ReactComponent as DownArrow } from "../../assets/images/down-arrow-black.svg";
 import { ReactComponent as UpArrow } from "../../assets/images/up-arrow.svg";
@@ -78,9 +78,9 @@ const NewHeader = (props) => {
                   {/* <Link to="/pricing" className="HeaderLinkDocs">
                     Pricing
                   </Link> */}
-                  <Link to="/login" className="HeaderLinkDocs">
+                  <a href={`${APP_URL}`} className="HeaderLinkDocs">
                     Login
-                  </Link>
+                  </a>
                 </div>
               )}
             </div>
@@ -160,9 +160,9 @@ const NewHeader = (props) => {
                       {/* <Link to="/pricing" className="HeaderDropLinkDocs">
                         Pricing
                       </Link> */}
-                      <Link to="/login" className="HeaderDropLinkDocs">
+                      <a href={`${APP_URL}`} className="HeaderDropLinkDocs">
                         Login
-                      </Link>
+                      </a>
                     </div>
                   )}
                 </div>

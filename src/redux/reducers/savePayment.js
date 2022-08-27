@@ -45,7 +45,7 @@ const savePaymentReducer = (state = initialState, action) => {
     case CLEAR_SAVE_PAYMENT_STATE:
       return {
         ...state,
-        app: null,
+        payment: null,
         isSaved: false,
         isSaving: false,
         message: "",
