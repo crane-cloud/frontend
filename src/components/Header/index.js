@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, withRouter, matchPath } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Logo from "../Logo";
@@ -22,18 +22,6 @@ const Header = (props) => {
       setHidden(true);
     }
   };
-
-  const pageUrl = matchPath(match.path, {
-    path: "/",
-    exact: true,
-    strict: true,
-  });
-
-  const registerUrl = matchPath(match.path, {
-    path: "/register",
-    exact: true,
-    strict: true,
-  });
 
   const logout = () => {
     localStorage.clear();
@@ -59,24 +47,14 @@ const Header = (props) => {
   }, []);
 
   const { credits } = props;
-  console.log(registerUrl);
   return (
     <header className={`${styles.Header} SmallContainer`}>
-    
       <Logo />
 
       {(!user.accessToken || user.accessToken === "") && (
         <div className={styles.HeaderLinksWrap}>
-          {match.path !== "/admin-login" && (
+          {match.path === "/" && (
             <div className={styles.HeaderLinks}>
-              {/* <a
-                href={`${DOCS_URL}`}
-                className={styles.HeaderLinkDocs}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Docs
-              </a> */}
               <Link
                 to="/register"
                 className={`${styles.HeaderLinkLogin} ${styles.TurnLight}`}
@@ -85,10 +63,20 @@ const Header = (props) => {
               </Link>
             </div>
           )}
+          {match.path === "/register" && (
+            <div className={styles.HeaderLinks}>
+              <Link
+                to="/"
+                className={`${styles.HeaderLinkLogin} ${styles.TurnLight}`}
+              >
+                Login
+              </Link>
+            </div>
+          )}
         </div>
       )}
 
-      {user.accessToken && pageUrl === null && (
+      {user.accessToken && (
         <div className={styles.HeaderLinksWrap}>
           <div
             ref={dropdownRef}
@@ -96,38 +84,23 @@ const Header = (props) => {
             onClick={toggleHidden}
             role="presentation"
           >
-            {(match.path === "/") ? (
-              <>
-                <Link
-                  to={`/projects`}
-                  className={`${styles.HeaderLinkBackToConsole} ${styles.TurnLight}`}
-                >
-                  Dashboard
-                </Link>
-              </>
-            ) : (
-              <>
-                {/**Not displayed in billing  */}
-                {match.path !== "/projects/:projectID/billing" && credits > 0 && (
-                  <div className={styles.Credits} title="credits">
-                    {credits > 0 ? credits : 0}
-                    <Coin />
-                  </div>
-                )}
-                <div className={styles.UserNames}>{user.data.name}</div>
-              </>
-            )}
+            <>
+              {match.path !== "/projects/:projectID/billing" && credits > 0 && (
+                <div className={styles.Credits} title="credits">
+                  {credits > 0 ? credits : 0}
+                  <Coin />
+                </div>
+              )}
+              <div className={styles.UserNames}>{user.data.name}</div>
+            </>
 
             <DownArrow className={styles.DropdownArrowSvg} />
             {hidden && (
               <div className={styles.BelowHeader}>
                 <div className={styles.DropDownContent}>
-                <Link
-                  to={`/profile`}
-                  className={styles.DropDownLink}
-                >
-                  Profile
-                </Link>
+                  <Link to={`/profile`} className={styles.DropDownLink}>
+                    Profile
+                  </Link>
                   <a
                     href={`${DOCS_URL}`}
                     className={styles.DropDownLink}
