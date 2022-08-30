@@ -113,7 +113,7 @@ const Header = (props) => {
                     <Coin />
                   </div>
                 )}
-                <div className={styles.UserNames}>{user.data.name}</div>
+                <div className={styles.UserNames}>{user?.data?.name?user?.data?.name:user?.data?.username}</div>
               </>
             )}
 
