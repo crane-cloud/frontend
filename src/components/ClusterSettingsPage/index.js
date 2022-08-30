@@ -17,59 +17,58 @@ import Feedback from "../../components/Feedback";
 import BlackInputText from "../../components/BlackInputText";
 import styles from "./ClusterSettingsPage.module.css";
 
-
 class ClusterSettingsPage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-        name: "",
-        host:"",
-        prometheus_url: "",
-        token: "",
-        description:"",
-        error:"",
-        currentCluster:{},
-        openUpdateAlert: false,
-
+      name: "",
+      host: "",
+      prometheus_url: "",
+      costmodal_url:"",
+      token: "",
+      description: "",
+      error: "",
+      currentCluster: {},
+      openUpdateAlert: false,
     };
 
     this.showUpdateAlert = this.showUpdateAlert.bind(this);
     this.hideUpdateAlert = this.hideUpdateAlert.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.fliterCluster =  this.fliterCluster.bind(this);
+    this.fliterCluster = this.fliterCluster.bind(this);
     this.renderRedirect = this.renderRedirect.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const {
-        match: { params },
-        clearUpdateClusterState
-      } = this.props;
-      clearUpdateClusterState()
+      match: { params },
+      clearUpdateClusterState,
+    } = this.props;
+    clearUpdateClusterState();
     const { clusterID } = params;
     this.fliterCluster(clusterID);
   }
-  fliterCluster(clusterID){   
+  fliterCluster(clusterID) {
     const { clusters } = this.props;
     const { currentCluster } = this.state;
-    for(var i = 0; i<clusters.clusters?.length ;i++){
-        if(clusters.clusters[i].id === clusterID){
-            this.setState({
-               currentCluster: {currentCluster, ...clusters.clusters[i]},
-               name: clusters.clusters[i].name,
-               prometheus_url: clusters.clusters[i].prometheus_url !== null? clusters.clusters[i].prometheus_url:"",
-               host: clusters.clusters[i].host
-            })
-        }
+    for (var i = 0; i < clusters.clusters?.length; i++) {
+      if (clusters.clusters[i].id === clusterID) {
+        this.setState({
+          currentCluster: { currentCluster, ...clusters.clusters[i] },
+          name: clusters.clusters[i].name,
+          prometheus_url:
+            clusters.clusters[i].prometheus_url !== null
+              ? clusters.clusters[i].prometheus_url
+              : "",
+          host: clusters.clusters[i].host,
+        });
+      }
     }
   }
   handleChange(e) {
-    const {
-      errorMessage,
-      clearUpdateClusterState,
-    } = this.props;
+    const { errorMessage, clearUpdateClusterState } = this.props;
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -78,59 +77,51 @@ class ClusterSettingsPage extends React.Component {
     }
   }
 
-
   handleSubmit() {
-    const {
-      host,
-      prometheus_url,
-      name,
-      token,
-      currentCluster
-    } = this.state;
+    const { host, prometheus_url, costmodal_url, name, token, currentCluster } = this.state;
     const {
       match: {
         params: { clusterID },
       },
       updateCluster,
     } = this.props;
-    let updateObject={}
-   
-    if(currentCluster.name !== name ){
-        updateObject = {...updateObject, name}
+    let updateObject = {};
+
+    if (currentCluster.name !== name) {
+      updateObject = { ...updateObject, name };
     }
-    if(currentCluster.prometheus_url !== prometheus_url  ){
-        updateObject = {...updateObject, prometheus_url}
+    if (currentCluster.prometheus_url !== prometheus_url) {
+      updateObject = { ...updateObject, prometheus_url };
     }
-    if(currentCluster.host !== host ){
-        updateObject = {...updateObject, host:host}
+    if(currentCluster.costmodal_url !== costmodal_url){
+      updateObject = { ...updateObject, costmodal_url}
     }
-    if(token !== "" ){
-        updateObject = {...updateObject, token}
+    if (currentCluster.host !== host) {
+      updateObject = { ...updateObject, host: host };
     }
-    if(Object.keys(updateObject).length >0 ){
-        updateCluster(clusterID, updateObject);
-    }else{
-        this.setState({
-            error:"Please edit any feild before update"
-        });
+    if (token !== "") {
+      updateObject = { ...updateObject, token };
     }
+    if (Object.keys(updateObject).length > 0) {
+      updateCluster(clusterID, updateObject);
+    } else {
+      this.setState({
+        error: "Please edit any feild before update",
+      });
     }
+  }
   showUpdateAlert() {
     this.setState({ openUpdateAlert: true });
   }
-
 
   hideUpdateAlert() {
     this.setState({ openUpdateAlert: false });
   }
 
-  
-
-  
   renderRedirect = () => {
-    const {  isUpdated, clearUpdateClusterState } = this.props;
-    if ( isUpdated) {
-        clearUpdateClusterState();
+    const { isUpdated, clearUpdateClusterState } = this.props;
+    if (isUpdated) {
+      clearUpdateClusterState();
       return <Redirect to={`/clusters`} noThrow />;
     }
   };
@@ -150,18 +141,19 @@ class ClusterSettingsPage extends React.Component {
       name,
       token,
       prometheus_url,
+      costmodal_url,
     } = this.state;
     const { clusterID } = params;
 
     return (
       <div className={styles.Page}>
-       {isUpdated ? this.renderRedirect() : null}
+        {isUpdated ? this.renderRedirect() : null}
         <div className={styles.TopBarSection}>
           <Header />
         </div>
         <div className={styles.MainSection}>
           <div className={styles.SideBarSection}>
-          <SideNav clusterName={currentCluster.name} clusterId={clusterID} />
+            <SideNav clusterName={currentCluster.name} clusterId={clusterID} />
           </div>
           <div className={styles.MainContentSection}>
             <div className={styles.InformationBarSection}>
@@ -185,46 +177,68 @@ class ClusterSettingsPage extends React.Component {
                       />
                     </div>
                   </div>
-                
                 </div>
               </div>
 
-             
-                <Modal showModal={openUpdateAlert} onClickAway={this.hideUpdateAlert}>
-                <div className="ModalForm">
-                    <div className="ModalFormHeading">
+              <Modal
+                showModal={openUpdateAlert}
+                onClickAway={this.hideUpdateAlert}
+              >
+                <div className="ModalUpdateForm">
+                  <div className="ModalFormHeading">
                     <h2>Update the cluster</h2>
                   </div>
                   <div className="ModalFormInputs">
-            <div className="ModalFormInputsBasic">
-                      <BlackInputText
-                        placeholder="Host"
-                        className = {styles.UpdateInputSection}
-                        name="host"
-                        value={host}
-                        onChange={(e) => this.handleChange(e)}
-                      />
-                      <BlackInputText
-                        placeholder="Token"
-                        name="token"
-                        value={token}
-                        onChange={(e) => this.handleChange(e)}
-                      />
-                      <BlackInputText
-                        placeholder="Name"
-                        name="name"
-                        value={name}
-                        onChange={(e) => this.handleChange(e)}
-                      />
-                      <BlackInputText
-                        placeholder="Prometheus Url"
-                        name="prometheus_url"
-                        value={prometheus_url}
-                        onChange={(e) => this.handleChange(e)}
-                      />
-        
+                    <div className="ModalFormInputsBasic">
+                      <div className="ModalFormGroup">
+                        <label>Host</label>
+                        <BlackInputText
+                          placeholder="Host"
+                          className={styles.UpdateInputSection}
+                          name="host"
+                          value={host}
+                          onChange={(e) => this.handleChange(e)}
+                        />
+                      </div>
+                      <div className="ModalFormGroup">
+                        <label>Token</label>
+                        <BlackInputText
+                          placeholder="Token"
+                          name="token"
+                          value={token}
+                          onChange={(e) => this.handleChange(e)}
+                        />
+                      </div>
+                      <div className="ModalFormGroup">
+                        <label>Name</label>
+                        <BlackInputText
+                          placeholder="Name"
+                          name="name"
+                          value={name}
+                          onChange={(e) => this.handleChange(e)}
+                        />
+                      </div>
+                      <div className="ModalFormGroup">
+                        <label>Cost Modal Url</label>
+                        <BlackInputText
+                          placeholder="Cost Modal Url"
+                          name="costmodal_url"
+                          value={costmodal_url}
+                          onChange={(e) => this.handleChange(e)}
+                        />
+                      </div>
+                      <div className="ModalFormGroup">
+                        <label>Prometheus Url</label>
+                        <BlackInputText
+                          placeholder="Prometheus Url"
+                          name="prometheus_url"
+                          value={prometheus_url}
+                          onChange={(e) => this.handleChange(e)}
+                        />
+                      </div>
+
                       {error && <Feedback type="error" message={error} />}
-        
+
                       <div className={styles.UpdateProjectModelButtons}>
                         <PrimaryButton
                           label="cancel"
@@ -236,20 +250,19 @@ class ClusterSettingsPage extends React.Component {
                           onClick={this.handleSubmit}
                         />
                       </div>
-        
+
                       {(isFailed || isUpdated) && (
                         <Feedback
                           type={isUpdated ? "success" : "error"}
-                          message={isUpdated ? "Update successfull": "Update failed"}
+                          message={
+                            isUpdated ? "Update successfull" : "Update failed"
+                          }
                         />
                       )}
                     </div>
                   </div>
                 </div>
               </Modal>
-            
-
-             
             </div>
           </div>
         </div>
@@ -270,14 +283,19 @@ ClusterSettingsPage.propTypes = {
 ClusterSettingsPage.defaultProps = {
   isUpdated: false,
   isUpdating: false,
-  isFailed:false
+  isFailed: false,
 };
 
 export const mapStateToProps = (state) => {
   //wont re-fetch cluster because at this point they already exist in redux
   const { clusters } = state.clustersReducer;
-  const { isUpdating , errorMessage, clearUpdateClusterState, isFailed, isUpdated } =
-    state.updateClusterReducer;
+  const {
+    isUpdating,
+    errorMessage,
+    clearUpdateClusterState,
+    isFailed,
+    isUpdated,
+  } = state.updateClusterReducer;
   return {
     isUpdated,
     isUpdating,
@@ -290,7 +308,7 @@ export const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   updateCluster,
-  clearUpdateClusterState
+  clearUpdateClusterState,
 };
 
 export default connect(
