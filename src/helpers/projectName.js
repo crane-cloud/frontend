@@ -21,7 +21,7 @@ export function getUser(users, userID){
 export function nameStringToHslColor(name){
   let hash = 0;
   let i = 0;
-  for (i; i < name.length; i += 1) {
+  for (i; i < name?.length; i += 1) {
     hash = name.charCodeAt(i) + ((hash << 5) - hash); // eslint-disable-line no-bitwise
   }
   const h = hash % 360;
@@ -29,7 +29,7 @@ export function nameStringToHslColor(name){
 };
 
 export function avatarName(name){
-  return name.match(/(\b\S)?/g).join("")
+  return name?.match(/(\b\S)?/g).join("")
     .match(/(^\S|\S$)?/g)
     .join("").toUpperCase();
 }
