@@ -58,7 +58,7 @@ import AdminUsersProfile from "./components/AdminUsersProfile";
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
-  isAllowed ? <Route {...props} /> : <Redirect to="/login" />;
+  isAllowed ? <Route {...props} /> : <Redirect to="/" />;
 
 // for now, existence of token will determine access to route
 // later, this token will be a verified boolean
@@ -68,8 +68,6 @@ const Routes = () => (
   <Router>
     <Switch>
       <Route key="default-route" exact path="/" component={LoginPage} />
-      <Route key="login-route" path="/login" component={LoginPage} />
-      {/* <Route path="/pricing" component={PricingPage} /> */}
       <Route path="/contact" component={ContactPage} />
       <Route path="/admin-login" component={AdminLoginPage} />
       <Route path="/forgot-password" component={PasswordReset} />
