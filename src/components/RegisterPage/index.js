@@ -260,7 +260,7 @@ export default class RegisterPage extends Component {
           </div>
           <div className="LoginContentBottomLink LoginLinkContainer">
             Already have an account? &nbsp;
-            <Link to="/login" className="LoginContentLink">
+            <Link to="/" className="LoginContentLink">
               Go to Login
             </Link>
           </div>

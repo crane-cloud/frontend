@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, withRouter, matchPath } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Logo from "../Logo";
 import { ReactComponent as DownArrow } from "../../assets/images/downarrow.svg";
 import removeUser from "../../redux/actions/removeUser";
 import styles from "./Header.module.css";
-import { DOCS_URL, APP_URL } from "../../config";
+import { DOCS_URL } from "../../config";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 
 const Header = (props) => {
@@ -22,12 +22,6 @@ const Header = (props) => {
       setHidden(true);
     }
   };
-
-  const pageUrl = matchPath(match.path, {
-    path: "/login",
-    exact: true,
-    strict: true,
-  });
 
   const logout = () => {
     localStorage.clear();
@@ -55,36 +49,34 @@ const Header = (props) => {
   const { credits } = props;
   return (
     <header className={`${styles.Header} SmallContainer`}>
-    
       <Logo />
 
-      {(!user.accessToken || user.accessToken === "" || pageUrl !== null) && (
+      {(!user.accessToken || user.accessToken === "") && (
         <div className={styles.HeaderLinksWrap}>
-          {match.path !== "/admin-login" && (
+          {match.path === "/" && (
             <div className={styles.HeaderLinks}>
-              <Link to="/team" className={styles.HeaderLinkDocs}>
-                Team
-              </Link>
-              <a
-                href={`${DOCS_URL}`}
-                className={styles.HeaderLinkDocs}
-                rel="noopener noreferrer"
-                target="_blank"
+              <Link
+                to="/register"
+                className={`${styles.HeaderLinkLogin} ${styles.TurnLight}`}
               >
-                Docs
-              </a>
-              <a
-                href={`${APP_URL}`}
+                Register
+              </Link>
+            </div>
+          )}
+          {match.path === "/register" && (
+            <div className={styles.HeaderLinks}>
+              <Link
+                to="/"
                 className={`${styles.HeaderLinkLogin} ${styles.TurnLight}`}
               >
                 Login
-              </a>
+              </Link>
             </div>
           )}
         </div>
       )}
 
-      {user.accessToken && pageUrl === null && (
+      {user.accessToken && (
         <div className={styles.HeaderLinksWrap}>
           <div
             ref={dropdownRef}
@@ -92,41 +84,23 @@ const Header = (props) => {
             onClick={toggleHidden}
             role="presentation"
           >
-            {match.path === "/" || match.path === "/team" ? (
-              <>
-                <Link to="/team" className={styles.StripBorder}>
-                  Team
-                </Link>
-                <Link
-                  to={`/projects`}
-                  className={`${styles.HeaderLinkBackToConsole} ${styles.TurnLight}`}
-                >
-                  dashboard
-                </Link>
-              </>
-            ) : (
-              <>
-                {/**Not displayed in billing  */}
-                {match.path !== "/projects/:projectID/billing" && credits > 0 && (
-                  <div className={styles.Credits} title="credits">
-                    {credits > 0 ? credits : 0}
-                    <Coin />
-                  </div>
-                )}
-                <div className={styles.UserNames}>{user?.data?.name?user?.data?.name:user?.data?.username}</div>
-              </>
-            )}
+            <>
+              {match.path !== "/projects/:projectID/billing" && credits > 0 && (
+                <div className={styles.Credits} title="credits">
+                  {credits > 0 ? credits : 0}
+                  <Coin />
+                </div>
+              )}
+              <div className={styles.UserNames}>{user.data.name}</div>
+            </>
 
             <DownArrow className={styles.DropdownArrowSvg} />
             {hidden && (
               <div className={styles.BelowHeader}>
                 <div className={styles.DropDownContent}>
-                <Link
-                  to={`/profile`}
-                  className={styles.DropDownLink}
-                >
-                  Profile
-                </Link>
+                  <Link to={`/profile`} className={styles.DropDownLink}>
+                    Profile
+                  </Link>
                   <a
                     href={`${DOCS_URL}`}
                     className={styles.DropDownLink}

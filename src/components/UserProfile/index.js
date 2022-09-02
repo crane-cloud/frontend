@@ -46,7 +46,7 @@ class UserProfile extends React.Component {
     if (profileUpdated !== prevProps.profileUpdated) {
       //log user out 
       localStorage.clear();
-      window.location.href = "/login";
+      window.location.href = "/";
     }
     if (user !== prevProps.user) {
       this.setState({username:user.name})
