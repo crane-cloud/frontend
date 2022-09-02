@@ -467,7 +467,7 @@ const ProjectBillingPage = (props) => {
                                 data1[index % data1.length].value *
                                 (cost_data.totalCost / 100) *
                                 rate
-                              ).toFixed(2)}
+                              ).toFixed(5)}
                               /={" "}
                             </>
                           ) : (
@@ -476,7 +476,7 @@ const ProjectBillingPage = (props) => {
                               {(
                                 data1[index % data1.length].value *
                                 (cost_data?.totalCost / 100)
-                              ).toFixed(2)}
+                              ).toFixed(5)}
                             </>
                           )}
                         </div>
@@ -488,8 +488,8 @@ const ProjectBillingPage = (props) => {
                         {Object.keys(cost_data || {}).length === 0
                           ? "n/a"
                           : inUgx
-                          ? `${(cost_data?.totalCost * rate).toFixed(2)}/=`
-                          : `$${cost_data?.totalCost.toFixed(2)}`}
+                          ? `${((cost_data?.totalCost * rate).toFixed(5) *10)}/=`
+                          : `$${(cost_data?.totalCost.toFixed(5) * 10)}`}
                       </div>
                     </div>
                   </div>
@@ -718,7 +718,7 @@ const ProjectBillingPage = (props) => {
                             {inUgx ? (
                               <>UGX {invoice.total_amount} </>
                             ) : (
-                              <>$ {(invoice.total_amount / rate).toFixed(2)}</>
+                              <>$ {(invoice.total_amount / rate).toFixed(3)}</>
                             )}
                           </div>
                           <div className={styles.InvoiceHistoryCell}>
@@ -785,7 +785,7 @@ const ProjectBillingPage = (props) => {
                             {inUgx ? (
                               <>UGX {receipt.amount} </>
                             ) : (
-                              <>$ {(receipt.amount / rate).toFixed(2)}</>
+                              <>$ {(receipt.amount / rate).toFixed(3)}</>
                             )}
                           </div>
                           <div className={styles.ReceiptHistoryCell}>UGX 0</div>
@@ -871,7 +871,7 @@ const ProjectBillingPage = (props) => {
                               <>
                                 ${" "}
                                 {(invoiceDetails.total_amount / rate).toFixed(
-                                  2
+                                  3
                                 )}
                               </>
                             )}
@@ -883,7 +883,7 @@ const ProjectBillingPage = (props) => {
                               <>
                                 ${" "}
                                 {(invoiceDetails.total_amount / rate).toFixed(
-                                  2
+                                  3
                                 )}
                               </>
                             )}
@@ -1070,7 +1070,7 @@ const ProjectBillingPage = (props) => {
                           <div className={styles.ReceiptDetail}>
                             UGX{" "}
                             {transactionDetails.amount
-                              .toFixed(2)
+                              .toFixed(3)
                               .toLocaleString("en-US")}
                           </div>
                         </>
