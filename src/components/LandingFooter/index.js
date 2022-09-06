@@ -106,7 +106,9 @@ const LandingFooter = () => (
                 <li className="TextDivSpacing">
                   <ul>
                     <li>
-                      <a href="https://www.github.com">Github</a>
+                      <a href="https://www.github.com" 
+                       target="_blank">
+                        Github</a>
                     </li>
                   </ul>
                   Contribute</li>
