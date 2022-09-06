@@ -106,7 +106,7 @@ const LandingFooter = () => (
                 <li className="TextDivSpacing">
                   <ul>
                     <li>
-                      <a href="https://www.github.com" 
+                      <a href="https://www.github.com/crane-cloud" 
                        target="_blank">
                         Github</a>
                     </li>
