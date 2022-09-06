@@ -103,7 +103,13 @@ const LandingFooter = () => (
             <div className="FooterChildTwo">
               <div className="TextDivSpacing FooterLogoName">Community</div>
               <ul className="FooterList">
-                <li className="TextDivSpacing">Contribute</li>
+                <li className="TextDivSpacing">
+                  <ul>
+                    <li>
+                      <a href="https://www.github.com">Github</a>
+                    </li>
+                  </ul>
+                  Contribute</li>
                 <li className="TextDivSpacing">
                   <a
                     href="https://medium.com/cranecloud"
