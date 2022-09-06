@@ -37,7 +37,7 @@ import {
           Failed: true,
           Added: false,
           Adding: false,
-          error: action.payload.error,
+          error: action.payload?.error,
           message: "Failed to add user credits",
         };
       

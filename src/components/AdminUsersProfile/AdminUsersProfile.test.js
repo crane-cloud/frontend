@@ -11,7 +11,8 @@ const AdminUserPageProps = {
   clearCreditsState: jest.fn(),
   clearUserCredits: jest.fn(),
   match: {params:{}},
-  userCredits: { credit_assignment_records: []}
+  userCredits: { credit_assignment_records: []},
+  adminGetUserCredits: jest.fn()
 };
 
 describe("Testing the  user Profile Page component", () => {
