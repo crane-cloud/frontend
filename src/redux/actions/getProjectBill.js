@@ -11,7 +11,7 @@ const startFetchingBill = () => ({
 
 const getProjectBillSuccess = (response) => ({
   type: PROJECT_BILLING_INFO_SUCCESS,
-  payload: response.data,
+  payload: response.data.data,
 });
 
 const getProjectBillFailed = (error) => ({

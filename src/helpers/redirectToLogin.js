@@ -4,7 +4,7 @@ import removeUser from "../redux/actions/removeUser";
 const redirectToLogin = (dispatch) => {
   dispatch(removeUser());
   localStorage.clear();
-  window.location.href = "/login";
+  window.location.href = "/";
 };
 
 export default redirectToLogin;

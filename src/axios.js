@@ -15,7 +15,7 @@ instance.interceptors.response.use(
     // this checks for when a token is not verified and logs you out
     if ((error.response.status === 401) || (error.response.status === 422)) {
       localStorage.clear();
-      window.location.href = "/login";
+      window.location.href = "/";
     }
     return Promise.reject(error);
   }

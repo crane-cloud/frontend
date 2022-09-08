@@ -121,7 +121,7 @@ class AdminLoginPage extends React.Component {
               />
 
               <div className="LoginContentBottomLink LoginLinkContainer">
-                <Link to="/login" className="LoginContentLink">
+                <Link to="/" className="LoginContentLink">
                   Go to user login.
                 </Link>
               </div>
