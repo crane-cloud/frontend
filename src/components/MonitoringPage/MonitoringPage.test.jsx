@@ -1,6 +1,5 @@
 import React from "react";
 import { shallow } from "enzyme";
-import Enzyme from "enzyme";
 import MonitoringPage from "./index";
 
 describe("Testing the MonitoringPage component", () => {
@@ -22,20 +21,5 @@ describe("Testing the MonitoringPage component", () => {
     expect(viewMiraModules).toBeDefined();
     expect(handleClickOutside).toBeDefined();
     expect(getStatusData).toBeDefined();
-  });
-});
-
-describe("should check useState", () => {
-  let wrapper;
-  const setState = jest.fn();
-  const useStateSpy = jest.spyOn(React, "useState");
-  useStateSpy.mockImplementation((init) => [init, setState]);
-
-  beforeEach(() => {
-    wrapper = Enzyme.shallow(<MonitoringPage />);
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
   });
 });
