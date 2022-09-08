@@ -23,17 +23,6 @@ describe("Testing the MonitoringPage component", () => {
     expect(handleClickOutside).toBeDefined();
     expect(getStatusData).toBeDefined();
   });
-
-  it("assert the card dropdown arrow flip", () => {
-    const ArrowFlipWrapper = monitoringPageWrapper
-      .find(".CardArrow")
-      .childAt(0);
-    ArrowFlipWrapper.simulate("click");
-    // next we verify that the arrow flips
-    expect(monitoringPageWrapper.find(".CardArrow").childAt(0)).not.toEqual(
-      ArrowFlipWrapper
-    );
-  });
 });
 
 describe("should check useState", () => {
@@ -48,12 +37,5 @@ describe("should check useState", () => {
 
   afterEach(() => {
     jest.clearAllMocks();
-  });
-
-  describe("Viewing App modules", () => {
-    it("calls setOptionsFor", () => {
-      wrapper.find(".CardArrow").props().onClick();
-      expect(setState).toBeDefined();
-    });
   });
 });
