@@ -11,4 +11,4 @@ export const FLUTTER_WAVE_PUBLIC_KEY =
 export const LIVE_EXCHANGE_RATE_API = `https://openexchangerates.org/api/latest.json?app_id=${process.env.REACT_APP_EXCHANGE_RATE_KEY}`;
 //crane cloud status
 export const CRANE_CLOUD_STATUS =
-  "https://cc-status.herokuapp.com/api/v1/statuses";
+  "https://status-api.cranecloud.io/api/v1/statuses";

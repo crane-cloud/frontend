@@ -49,7 +49,7 @@
 }
 
 .StatusSectionTitle {
-    padding: 2rem 0 0 5rem;
+    padding: 1rem 0 0 5rem;
 }
 
 .StatusSection {
@@ -188,6 +188,10 @@
 
 .DropDownDetails:hover {
     background-color: #f1f1f1;
+}
+
+.LoadingArea {
+    padding: 4rem 0 4rem 0;
 }
 
 @media only screen and (max-width: 750px) {
