@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./Avatar.css";
 
-const Avatar = ({ name }) => {
+const Avatar = ({ name,className }) => {
   const nameStringToHslColor = (name) => {
     let hash = 0;
     let i = 0;
@@ -15,7 +15,7 @@ const Avatar = ({ name }) => {
 
   return (
     <div
-      className="UserAvatar"
+      className={className? className: "UserAvatar"}
       style={{ backgroundColor: nameStringToHslColor(name), color: "#555" }}
     >
       {name.charAt(0).toUpperCase()}

@@ -291,16 +291,18 @@ const SideBar = ({
                       </NavLink>
                     </div>
 
-                    {/* <div>
-                      <NavLink
-                        to={{
-                          pathname: `/projects/${projectID}/billing`,
-                        }}
-                        className={styles.SubBarListItem}
-                      >
-                        Billing
-                      </NavLink>
-                    </div> */}
+                    <div>
+                      <div>
+                        <NavLink
+                          to={{
+                            pathname: `/projects/${projectID}/billing`,
+                          }}
+                          className={styles.SubBarListItem}
+                        >
+                          Billing
+                        </NavLink>
+                      </div>
+                    </div>
                   </>
                 )}
               </div>

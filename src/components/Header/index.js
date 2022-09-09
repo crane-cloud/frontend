@@ -7,11 +7,13 @@ import { ReactComponent as DownArrow } from "../../assets/images/downarrow.svg";
 import removeUser from "../../redux/actions/removeUser";
 import styles from "./Header.module.css";
 import { DOCS_URL } from "../../config";
+import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 
 const Header = (props) => {
+  const { user, match } = props;
+
   const [hidden, setHidden] = useState(false);
   const dropdownRef = useRef(null);
-  const { user, match } = props;
 
   const toggleHidden = () => {
     if (hidden) {
@@ -50,27 +52,27 @@ const Header = (props) => {
     };
   }, []);
 
+  const { credits } = props;
   return (
     <header className={`${styles.Header} SmallContainer`}>
       <Logo />
 
       {(!user.accessToken || user.accessToken === "" || pageUrl !== null) && (
         <div className={styles.HeaderLinksWrap}>
-          {match.path !== "/admin-login" && (
+          {match.path === "/" && (
             <div className={styles.HeaderLinks}>
-              <Link to="/team" className={styles.HeaderLinkDocs}>
-                Team
-              </Link>
-              <a
-                href={`${DOCS_URL}`}
-                className={styles.HeaderLinkDocs}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Docs
-              </a>
               <Link
-                to="/login"
+                to="/register"
+                className={`${styles.HeaderLinkLogin} ${styles.TurnLight}`}
+              >
+                Register
+              </Link>
+            </div>
+          )}
+          {match.path === "/register" && (
+            <div className={styles.HeaderLinks}>
+              <Link
+                to="/"
                 className={`${styles.HeaderLinkLogin} ${styles.TurnLight}`}
               >
                 Login
@@ -89,35 +91,23 @@ const Header = (props) => {
             onClick={toggleHidden}
             role="presentation"
           >
-            {match.path === "/" || match.path === "/team" ? (
-              <>
-                <Link to="/team" className={styles.StripBorder}>
-                  Team
-                </Link>
-                <Link
-                  to={`/projects`}
-                  className={`${styles.HeaderLinkBackToConsole} ${styles.TurnLight}`}
-                >
-                  dashboard
-                </Link>
-              </>
-            ) : (
-              <>
-              {/** user's credits should appear here if the user has any  */}
-              {/**Not displayed in billing  */}
-              {( match.path !== "/projects/:projectID/billing" &&
-              <div className={styles.Credits}
-              title="credits"
-              >&nbsp;</div>
+            <>
+              {match.path !== "/projects/:projectID/billing" && credits > 0 && (
+                <div className={styles.Credits} title="credits">
+                  {credits > 0 ? credits : 0}
+                  <Coin />
+                </div>
               )}
-               <div className={styles.UserNames}>{user.data.name}</div>
-              </>
-            )}
+              <div className={styles.UserNames}>{user.data.name}</div>
+            </>
 
             <DownArrow className={styles.DropdownArrowSvg} />
             {hidden && (
               <div className={styles.BelowHeader}>
                 <div className={styles.DropDownContent}>
+                  <Link to={`/profile`} className={styles.DropDownLink}>
+                    Profile
+                  </Link>
                   <a
                     href={`${DOCS_URL}`}
                     className={styles.DropDownLink}

@@ -11,7 +11,7 @@ import BarGraph from "../BarGraph";
 import Checkbox from "../Checkbox";
 import FlutterwaveHook from "../FlutterwaveHook";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
-import { ReactComponent as Flutterwave} from "../../assets/images/flutterwave.svg";
+import { ReactComponent as Flutterwave } from "../../assets/images/flutterwave.svg";
 import MetricsCard from "../MetricsCard";
 import SpendingPeriod from "../SpendingPeriod";
 import { useParams } from "react-router-dom";
@@ -28,6 +28,11 @@ import {
 
 import getInvoices, { clearInvoices } from "../../redux/actions/getInvoices";
 import getReceipts, { clearReceipts } from "../../redux/actions/getReceipts";
+import {
+  creditsPayment,
+  clearCreditsTransactions,
+} from "../../redux/actions/creditsPayments";
+import Spinner from "../Spinner";
 
 const ref = React.createRef();
 const options = {
@@ -45,11 +50,16 @@ const data2 = [
 ];
 
 const ProjectBillingPage = (props) => {
+  const { data } = useSelector((state) => state.user);
   const { projectID } = useParams();
   const dispatch = useDispatch();
 
   const getAllTransactions = useCallback(
     () => dispatch(getTransactions(projectID)),
+    [dispatch, projectID]
+  );
+  const payWithcredits = useCallback(
+    (amountObject) => dispatch(creditsPayment(amountObject, projectID)),
     [dispatch, projectID]
   );
 
@@ -77,6 +87,12 @@ const ProjectBillingPage = (props) => {
     () => dispatch(clearTransactions()),
     [dispatch]
   );
+  const clearCreditsTransactionsState = useCallback(
+    () => dispatch(clearCreditsTransactions()),
+    [dispatch]
+  );
+
+  const { credits } = useSelector((state) => state.userCreditsReducer);
 
   const [transactionDetails, setTransactionDetails] = useState({});
   const [invoiceDetails, setInvoiceDetails] = useState({});
@@ -101,6 +117,7 @@ const ProjectBillingPage = (props) => {
     getAllTransactions();
     getAllInvoices();
     handleConversion();
+    clearCreditsTransactionsState();
   }, [
     clearAllTransactions,
     getAllTransactions,
@@ -108,13 +125,22 @@ const ProjectBillingPage = (props) => {
     getAllInvoices,
     clearAllReceipts,
     getAllReceipts,
+    clearCreditsTransactionsState,
   ]);
 
   const { projects } = useSelector((state) => state.userProjectsReducer);
-  const { data } = useSelector((state) => state.user);
-  const { transactions, isRetrieving, isFetched } = useSelector((state) => state.getTransactionsReducer);
-  const { invoices, isRetrievingInvoices, invoicesFetched } = useSelector((state) => state.getInvoicesReducer);
-  const { receipts, isRetrievingReceipts, receiptsFetched } = useSelector((state) => state.getReceiptsReducer);
+  const { transactions, isRetrieving, isFetched } = useSelector(
+    (state) => state.getTransactionsReducer
+  );
+  const { invoices, isRetrievingInvoices, invoicesFetched } = useSelector(
+    (state) => state.getInvoicesReducer
+  );
+  const { receipts, isRetrievingReceipts, receiptsFetched } = useSelector(
+    (state) => state.getReceiptsReducer
+  );
+  const { creditsSaved, creditsSaving } = useSelector(
+    (state) => state.creditsPaymentReducer
+  );
 
   const handleConversion = () => {
     axios
@@ -130,8 +156,16 @@ const ProjectBillingPage = (props) => {
         setInUgx(false);
       });
   };
+
   const closeReceiptModal = () => {
     setViewReceipt(false);
+  };
+
+  const handleCreditsPayment = (amount) => {
+    const amountObject = {
+      amount,
+    };
+    payWithcredits(amountObject);
   };
 
   const viewTransactions = () => {
@@ -161,12 +195,11 @@ const ProjectBillingPage = (props) => {
   const viewUsageInMonths = () => {
     setCurrentUsageTab("months");
   };
- 
 
   const getBill = useCallback(
     (startTimeStamp) =>
       dispatch(
-        getProjectBill(projectID, { series: true, start: startTimeStamp })
+        getProjectBill(projectID, { series: false, start: startTimeStamp })
       ),
     [dispatch, projectID]
   );
@@ -191,21 +224,21 @@ const ProjectBillingPage = (props) => {
     [currentUsageTab, rate]
   );
   // create a function that takes in a array and sums all the object key values to create one object
-  const summationObject = (data) => {
-    const newData = {};
-    if (Array.isArray(data)) {
-      data?.forEach((element) => {
-        Object.keys(element).forEach((key) => {
-          if (newData[key]) {
-            newData[key] += element[key];
-          } else {
-            newData[key] = element[key];
-          }
-        });
-      });
-    }
-    return newData;
-  };
+  // const summationObject = (data) => {
+  //   const newData = {};
+  //   if (Array.isArray(data)) {
+  //     data?.forEach((element) => {
+  //       Object.keys(element).forEach((key) => {
+  //         if (newData[key]) {
+  //           newData[key] += element[key];
+  //         } else {
+  //           newData[key] = element[key];
+  //         }
+  //       });
+  //     });
+  //   }
+  //   return newData;
+  // };
 
   useEffect(() => {
     // 7 days ago
@@ -213,47 +246,55 @@ const ProjectBillingPage = (props) => {
     startTimeStamp.setDate(startTimeStamp.getDate() - 14);
     getBill(Math.round(startTimeStamp.getTime() / 1000));
   }, [getBill]);
+  useEffect(() => {
+    if (creditsSaved && !creditsSaving) {
+      closePaymentsOptions();
+      clearCreditsTransactions();
+      window.location.href = "/projects";
+    }
+  }, [creditsSaved, creditsSaving]);
 
-  const billInfo = useSelector((state) => state.getProjectBillReducer);
-  const { projectBill } = billInfo;
+  const { projectBill } = useSelector((state) => state.getProjectBillReducer);
+  let cost_data = projectBill?.cost_data;
 
   useEffect(() => {
     currentUsageTab === "months"
-      ? setMonths(getData2Format(projectBill?.data?.cost_data))
-      : setDays(getData2Format(projectBill?.data?.cost_data));
-  }, [projectBill?.data, currentUsageTab, getData2Format]);
+      ? setMonths(getData2Format(cost_data))
+      : setDays(getData2Format(cost_data));
+  }, [cost_data, currentUsageTab, getData2Format]);
 
-  let newObject = summationObject(projectBill?.data?.cost_data);
+  // let newObject = summationObject(projectBill?.data?.cost_data);
   // turn values to percentages for donut chart
+
   const data1 = [
     {
       name: "CPU / $1 per 1K seconds",
       value:
-        Object.keys(newObject).length === 0
+        Object.keys(cost_data || {}).length === 0
           ? "n/a"
-          : newObject.totalCost === 0
+          : cost_data.totalCost === 0
           ? 0
-          : (newObject.cpuCost / newObject.totalCost) * 100,
+          : (cost_data.cpuCost / cost_data.totalCost) * 1000,
       color: "#0088FE",
     },
     {
       name: "RAM / $4 per GB",
       value:
-        Object.keys(newObject).length === 0
+        Object.keys(cost_data || {}).length === 0
           ? "n/a"
-          : newObject.totalCost === 0
+          : cost_data.totalCost === 0
           ? 0
-          : (newObject.ramCost / newObject.totalCost) * 100,
+          : (cost_data.ramCost / cost_data.totalCost) * 1000,
       color: "#00C49F",
     },
     {
       name: "Network / $1 per request",
       value:
-        Object.keys(newObject).length === 0
+        Object.keys(cost_data || {}).length === 0
           ? "n/a"
-          : newObject.totalCost === 0
+          : cost_data.totalCost === 0
           ? 0
-          : (newObject.networkCost / newObject.totalCost) * 100,
+          : (cost_data.networkCost / cost_data.totalCost) * 1000,
       color: "#FFBB28",
     },
     { name: "Storage/ $1 per GB", value: 0, color: "#FF8042" },
@@ -275,12 +316,12 @@ const ProjectBillingPage = (props) => {
     setViewReceipt(true);
   };
 
-  const openPaymentsOptions = () =>{
-    setPaymentOptions(true)
-  }
-  const closePaymentsOptions = () =>{
-    setPaymentOptions(false)
-  }
+  const openPaymentsOptions = () => {
+    setPaymentOptions(true);
+  };
+  const closePaymentsOptions = () => {
+    setPaymentOptions(false);
+  };
 
   const openInvoiceModal = (invoices, invoiceId) => {
     let invoiceDetail = invoices.find((invoice) => invoice.id === invoiceId);
@@ -373,7 +414,10 @@ const ProjectBillingPage = (props) => {
         </div>
         <div className={styles.MainContentSection}>
           <div>
-            <InformationBar header="Project Billing" credits={true}/>
+            <InformationBar
+              header="Project Billing"
+              credits={credits?.amount}
+            />
           </div>
           <div className={styles.SmallContainer}>
             <div className={styles.CBLabel}>
@@ -420,9 +464,9 @@ const ProjectBillingPage = (props) => {
                               {" "}
                               {(
                                 data1[index % data1.length].value *
-                                (newObject.totalCost / 100) *
+                                (cost_data.totalCost / 100) *
                                 rate
-                              ).toFixed(2)}
+                              ).toFixed(5)}
                               /={" "}
                             </>
                           ) : (
@@ -430,8 +474,8 @@ const ProjectBillingPage = (props) => {
                               $
                               {(
                                 data1[index % data1.length].value *
-                                (newObject.totalCost / 100)
-                              ).toFixed(2)}
+                                (cost_data?.totalCost / 100)
+                              ).toFixed(5)}
                             </>
                           )}
                         </div>
@@ -440,19 +484,19 @@ const ProjectBillingPage = (props) => {
                     <div className={styles.Total}>
                       <div className={styles.TotalTxt}>Total</div>
                       <div className={styles.ResourcePrice}>
-                        {Object.keys(newObject).length === 0
+                        {Object.keys(cost_data || {}).length === 0
                           ? "n/a"
                           : inUgx
-                          ? `${(newObject.totalCost * rate).toFixed(2)}/=`
-                          : `$${newObject.totalCost.toFixed(2)}`}
+                          ? `${(cost_data?.totalCost * rate).toFixed(5) * 10}/=`
+                          : `$${cost_data?.totalCost.toFixed(5) * 10}`}
                       </div>
                     </div>
                   </div>
                   <div className={styles.paymentButton}>
-                     <PrimaryButton
-                          label="Pay bill"
-                          onClick={openPaymentsOptions}
-                        />
+                    <PrimaryButton
+                      label="Pay bill"
+                      onClick={openPaymentsOptions}
+                    />
 
                     {/* <FlutterwaveHook
                       amount={
@@ -602,15 +646,21 @@ const ProjectBillingPage = (props) => {
                           </div>
                           <div className={styles.TransactionHistoryCell}>
                             <span className={styles.PaymentStatus}>
-                              {entry.status}
+                              {entry.status === "successful" ||
+                              entry.status === "success"
+                                ? "successful"
+                                : entry.status}
                             </span>
                           </div>
                           <div className={styles.TransactionHistoryCell}>
                             {/* inUgx ?<>UGX {(entry.amount.toFixed(2)).toLocaleString("en-US")} </>: 
                             <>$ {((entry.amount/rate).toFixed(2)).toLocaleString("en-US")} </>
                       */}
-                         {<>UGX {entry.amount}</>}
-
+                            {
+                              <>
+                                {entry.currency} {entry.amount}
+                              </>
+                            }
                           </div>
                           <div className={styles.TransactionHistoryCell}>
                             <button
@@ -629,17 +679,19 @@ const ProjectBillingPage = (props) => {
                       ))}
                     </div>
                   </div>
-                ):
-                <>
-                {currentTab === "transactions" && !isFetched && (
-                  <div className={styles.NoResourcesMesssage}>
-                      No transactions found under this project.
-                  </div>
+                ) : (
+                  <>
+                    {currentTab === "transactions" && !isFetched && (
+                      <div className={styles.NoResourcesMesssage}>
+                        No transactions found under this project.
+                      </div>
+                    )}
+                  </>
                 )}
-                </>
-                }
 
-                {currentTab === "invoices" && !isRetrievingInvoices && invoicesFetched ? (
+                {currentTab === "invoices" &&
+                !isRetrievingInvoices &&
+                invoicesFetched ? (
                   <div className={styles.InvoiceHistoryBody}>
                     <div className={styles.InvoiceHistoryTable}>
                       <div className={styles.InvoiceHistoryHead}>
@@ -665,7 +717,7 @@ const ProjectBillingPage = (props) => {
                             {inUgx ? (
                               <>UGX {invoice.total_amount} </>
                             ) : (
-                              <>$ {(invoice.total_amount / rate).toFixed(2)}</>
+                              <>$ {(invoice.total_amount / rate).toFixed(3)}</>
                             )}
                           </div>
                           <div className={styles.InvoiceHistoryCell}>
@@ -682,17 +734,19 @@ const ProjectBillingPage = (props) => {
                       ))}
                     </div>
                   </div>
-                ):
-                <>
-                {currentTab === "invoices" && !isFetched && (
-                  <div className={styles.NoResourcesMesssage}>
-                      No invoices found under this project.
-                  </div>
+                ) : (
+                  <>
+                    {currentTab === "invoices" && !isFetched && (
+                      <div className={styles.NoResourcesMesssage}>
+                        No invoices found under this project.
+                      </div>
+                    )}
+                  </>
                 )}
-                </>
-                }
 
-                {currentTab === "receipts" && !isRetrievingReceipts && receiptsFetched ? (
+                {currentTab === "receipts" &&
+                !isRetrievingReceipts &&
+                receiptsFetched ? (
                   <div className={styles.ReceiptHistoryBody}>
                     <div className={styles.ReceiptHistoryTable}>
                       <div className={styles.ReceiptHistoryHead}>
@@ -722,19 +776,23 @@ const ProjectBillingPage = (props) => {
                             {receipt.transaction_id}
                           </div>
                           <div className={styles.ReceiptHistoryCell}>
-                            {receipt.billing_invoice_id?receipt.billing_invoice_id:'None'}
+                            {receipt.billing_invoice_id
+                              ? receipt.billing_invoice_id
+                              : "None"}
                           </div>
                           <div className={styles.ReceiptHistoryCell}>
                             {inUgx ? (
                               <>UGX {receipt.amount} </>
                             ) : (
-                              <>$ {(receipt.amount / rate).toFixed(2)}</>
+                              <>$ {(receipt.amount / rate).toFixed(3)}</>
                             )}
                           </div>
                           <div className={styles.ReceiptHistoryCell}>UGX 0</div>
                           <div className={styles.ReceiptHistoryCell}>
                             <button
-                              onClick={() => openReceiptsModal(receipts, receipt.id)}
+                              onClick={() =>
+                                openReceiptsModal(receipts, receipt.id)
+                              }
                               className={styles.PaymentDetailsButton}
                             >
                               View
@@ -744,15 +802,15 @@ const ProjectBillingPage = (props) => {
                       ))}
                     </div>
                   </div>
-                ):
-                <>
-                 {currentTab === "receipts" && !receiptsFetched && (
-                  <div className={styles.NoResourcesMesssage}>
-                    No receipts found under this project.
-                  </div>
-                 )}
-                </>
-                }
+                ) : (
+                  <>
+                    {currentTab === "receipts" && !receiptsFetched && (
+                      <div className={styles.NoResourcesMesssage}>
+                        No receipts found under this project.
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             </div>
 
@@ -806,14 +864,13 @@ const ProjectBillingPage = (props) => {
                             {getProjectName(projectID)}
                           </div>
                           <div className={styles.InvoiceHistoryCell}>
-
                             {inUgx ? (
                               <>UGX {invoiceDetails.total_amount} </>
                             ) : (
                               <>
                                 ${" "}
                                 {(invoiceDetails.total_amount / rate).toFixed(
-                                  2
+                                  3
                                 )}
                               </>
                             )}
@@ -825,7 +882,7 @@ const ProjectBillingPage = (props) => {
                               <>
                                 ${" "}
                                 {(invoiceDetails.total_amount / rate).toFixed(
-                                  2
+                                  3
                                 )}
                               </>
                             )}
@@ -914,11 +971,11 @@ const ProjectBillingPage = (props) => {
                     </div>
                     <div className={styles.InvoiceModalHistoryRow}>
                       <div className={styles.InvoiceHistoryCell}>
-                      {DisplayDateTime(
-                              new Date(receiptDetails.date_created)
-                            )}
+                        {DisplayDateTime(new Date(receiptDetails.date_created))}
                       </div>
-                      <div className={styles.InvoiceHistoryCell}>{receiptDetails.billing_invoice_id}</div>
+                      <div className={styles.InvoiceHistoryCell}>
+                        {receiptDetails.billing_invoice_id}
+                      </div>
                       <div className={styles.InvoiceHistoryCell}>
                         UGX {receiptDetails.amount}
                       </div>
@@ -1010,7 +1067,10 @@ const ProjectBillingPage = (props) => {
                           </div>
                           <div className={styles.ReceiptLabel}>Amount Paid</div>
                           <div className={styles.ReceiptDetail}>
-                          UGX {(transactionDetails.amount.toFixed(2)).toLocaleString("en-US")}
+                            UGX{" "}
+                            {transactionDetails.amount
+                              .toFixed(3)
+                              .toLocaleString("en-US")}
                           </div>
                         </>
                       )}
@@ -1027,57 +1087,83 @@ const ProjectBillingPage = (props) => {
                 </Modal>
               </div>
             )}
- 
+
             {paymentOptions && (
               <div>
-                <Modal showModal={paymentOptions} onClickAway={closePaymentsOptions}>
+                <Modal
+                  showModal={paymentOptions}
+                  onClickAway={closePaymentsOptions}
+                >
                   <div className={styles.OptionsModal}>
-                    <div className={styles.MainModalTitle}>Choose payment form</div>
-                    <div className={styles.SubModalTitle}>Click one of the options below</div>
-                    <div className={styles.PaymentForms} >
-                      <div className={choosenPaymentOption==="credits"? styles.SelectedPaymentFormBox : styles.PaymentFormBox}
-                       onClick={()=>{setChoosenPaymentOption("credits")}}>
-                       <div className={styles.PaymentText}> Credits</div>
-                       <div className={styles.CoinSize}>
-                       <Coin/>
-                       </div>
-                      </div>
-                      <div className={ choosenPaymentOption==="flutterwave"? styles.SelectedPaymentFormBox : styles.PaymentFormBox} 
-                      onClick={()=>{setChoosenPaymentOption("flutterwave")}}>
-                      <div className={styles.PaymentText}>Cash/Card</div>
-                      <div className={styles.Iconsection}>Powered by 
-                      <div className={styles.FlutterWaveSize}>
-                       <Flutterwave/>
-                       </div>
-                      </div>
-                      </div>
+                    <div className={styles.MainModalTitle}>
+                      Choose payment form
                     </div>
-
-                      <div className={styles.OptionButtons}>
-                        <PrimaryButton
-                          label="Close"
-                          className="CancelBtn"
-                          onClick={closePaymentsOptions}
-                        />
-
-                         {choosenPaymentOption==="credits"&& <PrimaryButton
-                          label="Proceed"
-                          onClick={()=>{}}
-                        />}
-                        {choosenPaymentOption==="flutterwave"&& 
-                          <FlutterwaveHook
-                          amount={
-                        transactionDetails.amount
-                          ? transactionDetails.amount *
-                            rate.toFixed(1)
-                          : 0
-                      }
-                      name={data?.name}
-                      email={data?.email}
-                       /> 
+                    <div className={styles.SubModalTitle}>
+                      Click one of the options below
+                    </div>
+                    <div className={styles.PaymentForms}>
+                      <div
+                        className={
+                          choosenPaymentOption === "credits"
+                            ? styles.SelectedPaymentFormBox
+                            : styles.PaymentFormBox
                         }
+                        title="1 credit is equivalent to a USD"
+                        onClick={() => {
+                          setChoosenPaymentOption("credits");
+                        }}
+                      >
+                        <div className={styles.PaymentText}> Credits</div>
+                        <div className={styles.CoinSize}>
+                          <Coin />
+                        </div>
+                      </div>
+                      <div
+                        className={
+                          choosenPaymentOption === "flutterwave"
+                            ? styles.SelectedPaymentFormBox
+                            : styles.PaymentFormBox
+                        }
+                        onClick={() => {
+                          setChoosenPaymentOption("flutterwave");
+                        }}
+                      >
+                        <div className={styles.PaymentText}>Cash/Card</div>
+                        <div className={styles.Iconsection}>
+                          Powered by
+                          <div className={styles.FlutterWaveSize}>
+                            <Flutterwave />
+                          </div>
+                        </div>
                       </div>
                     </div>
+
+                    <div className={styles.OptionButtons}>
+                      <PrimaryButton
+                        label="Close"
+                        className="CancelBtn"
+                        onClick={closePaymentsOptions}
+                      />
+
+                      {choosenPaymentOption === "credits" && (
+                        <PrimaryButton
+                          label={creditsSaving ? <Spinner /> : "Proceed"}
+                          onClick={() => {
+                            //add current invoice price
+                            handleCreditsPayment(1);
+                          }}
+                        />
+                      )}
+                      {choosenPaymentOption === "flutterwave" && (
+                        <FlutterwaveHook
+                          //add current invoice price
+                          amount={0}
+                          name={data?.name}
+                          email={data?.email}
+                        />
+                      )}
+                    </div>
+                  </div>
                 </Modal>
               </div>
             )}

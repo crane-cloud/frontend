@@ -5,7 +5,7 @@ import {
 } from "../actions/actionTypes";
 
 const initialState = {
-  user: [],
+  user: {},
   isFetched: false,
   isFetching: false,
   message: "",

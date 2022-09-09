@@ -16,6 +16,7 @@ footer.LandingFooter {
 .FooterParent .FooterChild1 {
   flex: 1;
 }
+
 .FooterParent .FooterChild2 {
   flex: 2;
 }
@@ -39,9 +40,11 @@ footer.LandingFooter {
 .TextDivSpacing a {
   color: #555555;
 }
+
 .FooterList {
   padding-left: 0;
 }
+
 .FooterList li {
   list-style: none;
   text-align: left;
@@ -50,6 +53,7 @@ footer.LandingFooter {
 .CenteredDiv {
   padding-left: 2rem;
 }
+
 .LogoBrandName {
   text-align: left;
 }
@@ -72,4 +76,20 @@ li.TextDivSpacing a:visited {
 .SocialsIcons a {
   display: flex;
   align-items: center;
+}
+
+@media only screen and (max-width: 600px) {
+  .FooterParent {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+
+  .FooterChild1 {
+    padding-bottom: 1rem;
+  }
+
+  .SocialsIcons {
+    gap: 1rem;
+  }
 }

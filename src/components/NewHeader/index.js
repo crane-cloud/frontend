@@ -78,7 +78,7 @@ const NewHeader = (props) => {
                   {/* <Link to="/pricing" className="HeaderLinkDocs">
                     Pricing
                   </Link> */}
-                  <Link to="/login" className="HeaderLinkDocs">
+                  <Link to="/" className="HeaderLinkDocs">
                     Login
                   </Link>
                 </div>
@@ -160,7 +160,7 @@ const NewHeader = (props) => {
                       {/* <Link to="/pricing" className="HeaderDropLinkDocs">
                         Pricing
                       </Link> */}
-                      <Link to="/login" className="HeaderDropLinkDocs">
+                      <Link to="/" className="HeaderDropLinkDocs">
                         Login
                       </Link>
                     </div>
@@ -175,7 +175,7 @@ const NewHeader = (props) => {
                   role="presentation"
                 >
                   <div className="HeaderDropLinks">
-                    {match.path === "/" || match.path === "/team" ? (
+                    {match.path === "/" ? (
                       <>
                         <a
                           href={`${DOCS_URL}`}
