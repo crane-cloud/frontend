@@ -140,6 +140,7 @@
 .SideBarSection {
   -ms-overflow-style: none;
   scrollbar-width: none;
+  height:100%;
 }
 .ContentSection {
   display: flex;
@@ -204,7 +205,7 @@
 }
 
 .ProjectSections {
-  padding-top: 2rem;
+  padding-top: 1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;

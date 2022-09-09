@@ -175,7 +175,7 @@ const NewHeader = (props) => {
                   role="presentation"
                 >
                   <div className="HeaderDropLinks">
-                    {(match.path === "/") ? (
+                    {match.path === "/" ? (
                       <>
                         <a
                           href={`${DOCS_URL}`}

@@ -19,7 +19,6 @@ jest.mock("react-router-dom", () => ({
 
 describe("Admin projects", () => {
   let spyOnUseSelector;
-  let spyOnUseDispatch;
   let mockDispatch;
 
   beforeEach(() => {

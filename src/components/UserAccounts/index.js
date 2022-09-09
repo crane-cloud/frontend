@@ -160,7 +160,6 @@ class UserAccounts extends Component {
 
   renderRedirect = () => {
     const { isAdded } = this.props;
-
     if (isAdded) {
       return <Redirect to={`/accounts`} noThrow />;
     }
