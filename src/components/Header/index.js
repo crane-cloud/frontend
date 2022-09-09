@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, matchPath } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Logo from "../Logo";
@@ -22,6 +22,12 @@ const Header = (props) => {
       setHidden(true);
     }
   };
+
+  const pageUrl = matchPath(match.path, {
+    path: "/login",
+    exact: true,
+    strict: true,
+  });
 
   const logout = () => {
     localStorage.clear();
@@ -51,7 +57,7 @@ const Header = (props) => {
     <header className={`${styles.Header} SmallContainer`}>
       <Logo />
 
-      {(!user.accessToken || user.accessToken === "") && (
+      {(!user.accessToken || user.accessToken === "" || pageUrl !== null) && (
         <div className={styles.HeaderLinksWrap}>
           {match.path === "/" && (
             <div className={styles.HeaderLinks}>
@@ -76,7 +82,8 @@ const Header = (props) => {
         </div>
       )}
 
-      {user.accessToken && (
+      {(user.accessToken && pageUrl === null) && (
+
         <div className={styles.HeaderLinksWrap}>
           <div
             ref={dropdownRef}
