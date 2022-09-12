@@ -3,8 +3,8 @@ import { shallow } from "enzyme";
 import * as redux from "react-redux";
 import ProjectBillingPage from "./";
 
-jest.mock('react', () => {
-  const originReact = jest.requireActual('react');
+jest.mock("react", () => {
+  const originReact = jest.requireActual("react");
   return {
     ...originReact,
     useRef: jest.fn(),
@@ -14,7 +14,7 @@ jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useParams: () => ({
     projectId: "12",
-    id:2
+    id: 2,
   }),
 }));
 
@@ -24,10 +24,10 @@ describe("Billing page", () => {
   let mockDispatch;
 
   beforeEach(() => {
-    jest.spyOn(React, "useEffect").mockImplementationOnce(cb => cb()());
+    jest.spyOn(React, "useEffect").mockImplementationOnce((cb) => cb()());
     // Mock useSelector hook
     spyOnUseSelector = jest.spyOn(redux, "useSelector");
-    spyOnUseSelector.mockReturnValue({credit_assignment_records:[], id: 2});
+    spyOnUseSelector.mockReturnValue({ credit_assignment_records: [], id: 2 });
 
     // Mock useDispatch hook
     const useDispatchSpy = jest.spyOn(redux, "useDispatch");
