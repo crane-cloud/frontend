@@ -39,7 +39,7 @@ const savePaymentReducer = (state = initialState, action) => {
         isSaving: false,
         isSaved: false,
         message: "Payment failed. Please try again",
-        error: action.payload.error
+        error: action.payload.error,
       };
 
     case CLEAR_SAVE_PAYMENT_STATE:
