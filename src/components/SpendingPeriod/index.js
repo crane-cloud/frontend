@@ -5,17 +5,13 @@ import "./SpendingPeriod.css";
 
 const SpendingPeriod = (props) => {
 
-  const [showModal, setShowModal] = useState(false);
-
+ const [showModal, setShowModal] = useState(false);
  const [toTimeStamp, setToTimeStamp] = useState(0);
-  const [fromTimeStamp, setFromTimeStamp] = useState(0);
-  const [period, setPeriod] = useState();
-  
- 
-    const [showFromCalendar, setShowFromCalendar] = useState(true);
-    const [showToCalendar, setShowToCalendar] = useState(false);
-  const openModalRef = useRef(null);
-
+ const [fromTimeStamp, setFromTimeStamp] = useState(0);
+ const [period, setPeriod] = useState();
+ const [showFromCalendar, setShowFromCalendar] = useState(true);
+ const [showToCalendar, setShowToCalendar] = useState(false);
+ const openModalRef = useRef(null);
 
   const displayCalendar = ({ target }) => {
     setShowModal(!showModal);
