@@ -8,6 +8,7 @@ import { ReactComponent as UpArrow } from "../../assets/images/up-arrow.svg";
 import styles from "./MonitoringPage.module.css";
 import axios from "axios";
 import { CRANE_CLOUD_STATUS } from "../../config";
+import Spinner from "../Spinner";
 
 const statusValue = [
   { type: "success" },
@@ -99,583 +100,624 @@ const MonitoringPage = () => {
           Here you will find real-time information about the status of our
           services reported here.
         </div>
-        <div className={styles.BannerArea}>
-          <div className={styles.StatusBanner}>
-            {statusAvailable === "success" ? (
-              <div className={styles.BannerText}>Services Available</div>
-            ) : (
-              <div className={styles.BannerText}>Something went wrong</div>
-            )}
-          </div>
-        </div>
 
-        <div className={styles.StatusSectionContent}>
-          <div className={styles.StatusSectionTitle}>
-            <h1>Current Status by Service</h1>
-          </div>
-          <div className={styles.StatusSectionChildContainer}>
-            <div className={styles.StatusSectionItem}>
-              <div className={styles.StatusSection}>
-                <span>
-                  <div
-                    ref={openSelectRef}
-                    onClick={() => viewAppModules()}
-                    role="presentation"
-                    className="CardArrow"
-                  >
-                    {!flip && (
-                      <DownArrow
-                        className={styles.DownArrow}
-                        onClick={handleDropdown}
-                      />
-                    )}
-                    {flip && optionsFor === "Application" && (
-                      <UpArrow
-                        className={styles.UpArrow}
-                        onClick={handleDropdown}
-                      />
-                    )}
-
-                    {optionsFor === "Application" && showOptions && (
-                      <div className={styles.DropDownContainer}>
-                        <div className={styles.DropDownContent}>
-                          <div
-                            className={styles.DropDownDetails}
-                            role="presentation"
-                          >
-                            <>
-                              <div className={styles.DropDownValue}>
-                                {statusData?.cranecloud_status?.data[0]
-                                  .status === statusValue[0].type ? (
-                                  <>
-                                    <span>
-                                      <div
-                                        className={styles.DropDownValueTitle}
-                                      >
-                                        Frontend
-                                      </div>
-                                      <div>No issues found</div>
-                                    </span>
-                                    <span>
-                                      <Operational
-                                        className={styles.SmallerIcon}
-                                      />
-                                    </span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <span>
-                                      <div
-                                        className={
-                                          styles.StatusSectionCardTitle
-                                        }
-                                      >
-                                        Frontend
-                                      </div>
-                                      <div>Issues detected</div>
-                                    </span>
-                                    <span>
-                                      <Incident
-                                        className={styles.SmallIcon}
-                                        title="Incident"
-                                      />
-                                    </span>
-                                  </>
-                                )}
-                              </div>
-                            </>
-                          </div>
-                          <div
-                            className={styles.DropDownDetails}
-                            role="presentation"
-                          >
-                            <>
-                              <div className={styles.DropDownValue}>
-                                {statusData?.cranecloud_status?.data[1]
-                                  .status === statusValue[0].type ? (
-                                  <>
-                                    <span>
-                                      <div
-                                        className={styles.DropDownValueTitle}
-                                      >
-                                        Backend
-                                      </div>
-                                      <div>No issues found</div>
-                                    </span>
-                                    <span>
-                                      <Operational
-                                        className={styles.SmallerIcon}
-                                      />
-                                    </span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <span>
-                                      <div
-                                        className={
-                                          styles.StatusSectionCardTitle
-                                        }
-                                      >
-                                        Backend
-                                      </div>
-                                      <div>Issues detected</div>
-                                    </span>
-                                    <span>
-                                      <Incident
-                                        className={styles.SmallIcon}
-                                        title="Incident"
-                                      />
-                                    </span>
-                                  </>
-                                )}
-                              </div>
-                            </>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </span>
-                {statusData?.cranecloud_status?.status ===
-                statusValue[0].type ? (
-                  <>
-                    <span>
-                      <div className={styles.StatusSectionCardTitle}>
-                        Applications
-                      </div>
-                      <div>No Issues</div>
-                    </span>
-                    <span>
-                      <Operational
-                        className={styles.SmallIcon}
-                        title="Operational"
-                      />
-                    </span>
-                  </>
+        {statusAvailable === "success" ? (
+          <>
+            <div className={styles.BannerArea}>
+              <div className={styles.StatusBanner}>
+                {statusData?.cranecloud_status &&
+                statusData?.database_status &&
+                statusData?.mira_status &&
+                statusData?.registry === "success" ? (
+                  <div className={styles.BannerText}>Services Available</div>
                 ) : (
-                  <>
-                    <span>
-                      <div className={styles.StatusSectionCardTitle}>
-                        Applications
-                      </div>
-                      <div>Issues detected</div>
-                    </span>
-                    <span>
-                      <Incident className={styles.SmallIcon} title="Incident" />
-                    </span>
-                  </>
+                  <div className={styles.BannerText}>Issues detected</div>
                 )}
               </div>
             </div>
-            <div className={styles.StatusSectionItem}>
-              <div className={styles.StatusSection}>
-                <span>
-                  <div
-                    ref={openSelectRef}
-                    onClick={() => viewDBModules()}
-                    role="presentation"
-                  >
-                    {!flip && (
-                      <DownArrow
-                        className={styles.DownArrow}
-                        onClick={handleDropdown}
-                      />
-                    )}
-                    {flip && optionsFor === "Database" && (
-                      <UpArrow
-                        className={styles.UpArrow}
-                        onClick={handleDropdown}
-                      />
-                    )}
 
-                    {optionsFor === "Database" && showOptions && (
-                      <div className={styles.DropDownContainer}>
-                        <div className={styles.DropDownContent}>
-                          <div
-                            className={styles.DropDownDetails}
-                            role="presentation"
-                          >
-                            <>
-                              <div className={styles.DropDownValue}>
-                                {statusData?.database_status?.data[0].status ===
-                                statusValue[0].type ? (
-                                  <>
-                                    <span>
-                                      <div
-                                        className={styles.DropDownValueTitle}
-                                      >
-                                        MySQL
-                                      </div>
-                                      <div>No issues found</div>
-                                    </span>
-                                    <span>
-                                      <Operational
-                                        className={styles.SmallerIcon}
-                                      />
-                                    </span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <span>
-                                      <div
-                                        className={
-                                          styles.StatusSectionCardTitle
-                                        }
-                                      >
-                                        MySQL
-                                      </div>
-                                      <div>Issues detected</div>
-                                    </span>
-                                    <span>
-                                      <Incident
-                                        className={styles.SmallIcon}
-                                        title="Incident"
-                                      />
-                                    </span>
-                                  </>
-                                )}
+            <div className={styles.StatusSectionContent}>
+              <div className={styles.StatusSectionTitle}>
+                <h1>Current Status by Service</h1>
+              </div>
+              <div className={styles.StatusSectionChildContainer}>
+                <div className={styles.StatusSectionItem}>
+                  <div className={styles.StatusSection}>
+                    <span>
+                      <div
+                        ref={openSelectRef}
+                        onClick={() => viewAppModules()}
+                        role="presentation"
+                        className="CardArrow"
+                      >
+                        {!flip && (
+                          <DownArrow
+                            className={styles.DownArrow}
+                            onClick={handleDropdown}
+                          />
+                        )}
+                        {flip && optionsFor === "Application" && (
+                          <UpArrow
+                            className={styles.UpArrow}
+                            onClick={handleDropdown}
+                          />
+                        )}
+
+                        {optionsFor === "Application" && showOptions && (
+                          <div className={styles.DropDownContainer}>
+                            <div className={styles.DropDownContent}>
+                              <div
+                                className={styles.DropDownDetails}
+                                role="presentation"
+                              >
+                                <>
+                                  <div className={styles.DropDownValue}>
+                                    {statusData?.cranecloud_status?.data[0]
+                                      .status === statusValue[0].type ? (
+                                      <>
+                                        <span>
+                                          <div
+                                            className={
+                                              styles.DropDownValueTitle
+                                            }
+                                          >
+                                            Frontend
+                                          </div>
+                                          <div>No issues found</div>
+                                        </span>
+                                        <span>
+                                          <Operational
+                                            className={styles.SmallerIcon}
+                                          />
+                                        </span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <span>
+                                          <div
+                                            className={
+                                              styles.StatusSectionCardTitle
+                                            }
+                                          >
+                                            Frontend
+                                          </div>
+                                          <div>Issues detected</div>
+                                        </span>
+                                        <span>
+                                          <Incident
+                                            className={styles.SmallIcon}
+                                            title="Incident"
+                                          />
+                                        </span>
+                                      </>
+                                    )}
+                                  </div>
+                                </>
                               </div>
-                            </>
-                          </div>
-                          <div
-                            className={styles.DropDownDetails}
-                            role="presentation"
-                          >
-                            <>
-                              <div className={styles.DropDownValue}>
-                                {statusData?.database_status?.data[1].status ===
-                                statusValue[0].type ? (
-                                  <>
-                                    <span>
-                                      <div
-                                        className={styles.DropDownValueTitle}
-                                      >
-                                        PostgreSQL
-                                      </div>
-                                      <div>No issues found</div>
-                                    </span>
-                                    <span>
-                                      <Operational
-                                        className={styles.SmallerIcon}
-                                      />
-                                    </span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <span>
-                                      <div
-                                        className={
-                                          styles.StatusSectionCardTitle
-                                        }
-                                      >
-                                        PostgreSQL
-                                      </div>
-                                      <div>Issues detected</div>
-                                    </span>
-                                    <span>
-                                      <Incident
-                                        className={styles.SmallIcon}
-                                        title="Incident"
-                                      />
-                                    </span>
-                                  </>
-                                )}
+                              <div
+                                className={styles.DropDownDetails}
+                                role="presentation"
+                              >
+                                <>
+                                  <div className={styles.DropDownValue}>
+                                    {statusData?.cranecloud_status?.data[1]
+                                      .status === statusValue[0].type ? (
+                                      <>
+                                        <span>
+                                          <div
+                                            className={
+                                              styles.DropDownValueTitle
+                                            }
+                                          >
+                                            Backend
+                                          </div>
+                                          <div>No issues found</div>
+                                        </span>
+                                        <span>
+                                          <Operational
+                                            className={styles.SmallerIcon}
+                                          />
+                                        </span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <span>
+                                          <div
+                                            className={
+                                              styles.StatusSectionCardTitle
+                                            }
+                                          >
+                                            Backend
+                                          </div>
+                                          <div>Issues detected</div>
+                                        </span>
+                                        <span>
+                                          <Incident
+                                            className={styles.SmallIcon}
+                                            title="Incident"
+                                          />
+                                        </span>
+                                      </>
+                                    )}
+                                  </div>
+                                </>
                               </div>
-                            </>
+                            </div>
                           </div>
-                        </div>
+                        )}
                       </div>
+                    </span>
+                    {statusData?.cranecloud_status?.status ===
+                    statusValue[0].type ? (
+                      <>
+                        <span>
+                          <div className={styles.StatusSectionCardTitle}>
+                            Applications
+                          </div>
+                          <div>No Issues</div>
+                        </span>
+                        <span>
+                          <Operational
+                            className={styles.SmallIcon}
+                            title="Operational"
+                          />
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <span>
+                          <div className={styles.StatusSectionCardTitle}>
+                            Applications
+                          </div>
+                          <div>Issues detected</div>
+                        </span>
+                        <span>
+                          <Incident
+                            className={styles.SmallIcon}
+                            title="Incident"
+                          />
+                        </span>
+                      </>
                     )}
                   </div>
-                </span>
-                {statusData?.database_status?.status === statusValue[0].type ? (
-                  <>
+                </div>
+                <div className={styles.StatusSectionItem}>
+                  <div className={styles.StatusSection}>
                     <span>
-                      <div className={styles.StatusSectionCardTitle}>
-                        Databases
-                      </div>
-                      <div>No Issues</div>
-                    </span>
-                    <span>
-                      <Operational
-                        className={styles.SmallIcon}
-                        title="Operational"
-                      />
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <span>
-                      <div className={styles.StatusSectionCardTitle}>
-                        Databases
-                      </div>
-                      <div>Issues detected</div>
-                    </span>
-                    <span>
-                      <Incident className={styles.SmallIcon} title="Incident" />
-                    </span>
-                  </>
-                )}
-              </div>
-            </div>
-            <div className={styles.StatusSectionItem}>
-              <div className={styles.StatusSection}>
-                <span>
-                  <div
-                    ref={openSelectRef}
-                    onClick={() => viewRegistryModules()}
-                    role="presentation"
-                  >
-                    {!flip && (
-                      <DownArrow
-                        className={styles.DownArrow}
-                        onClick={handleDropdown}
-                      />
-                    )}
-                    {flip && optionsFor === "Registry" && (
-                      <UpArrow
-                        className={styles.UpArrow}
-                        onClick={handleDropdown}
-                      />
-                    )}
+                      <div
+                        ref={openSelectRef}
+                        onClick={() => viewDBModules()}
+                        role="presentation"
+                      >
+                        {!flip && (
+                          <DownArrow
+                            className={styles.DownArrow}
+                            onClick={handleDropdown}
+                          />
+                        )}
+                        {flip && optionsFor === "Database" && (
+                          <UpArrow
+                            className={styles.UpArrow}
+                            onClick={handleDropdown}
+                          />
+                        )}
 
-                    {optionsFor === "Registry" && showOptions && (
-                      <div className={styles.DropDownContainer}>
-                        <div className={styles.DropDownContent}>
-                          <div
-                            className={styles.DropDownDetails}
-                            role="presentation"
-                          >
-                            <>
-                              <div className={styles.DropDownValue}>
-                                {statusData?.registry?.data[0].status ===
-                                statusValue[0].type ? (
-                                  <>
-                                    <span>
-                                      <div
-                                        className={styles.DropDownValueTitle}
-                                      >
-                                        Image Registry
-                                      </div>
-                                      <div>No issues found</div>
-                                    </span>
-                                    <span>
-                                      <Operational
-                                        className={styles.SmallerIcon}
-                                      />
-                                    </span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <span>
-                                      <div
-                                        className={
-                                          styles.StatusSectionCardTitle
-                                        }
-                                      >
-                                        Image Registry
-                                      </div>
-                                      <div>Issues detected</div>
-                                    </span>
-                                    <span>
-                                      <Incident
-                                        className={styles.SmallIcon}
-                                        title="Incident"
-                                      />
-                                    </span>
-                                  </>
-                                )}
+                        {optionsFor === "Database" && showOptions && (
+                          <div className={styles.DropDownContainer}>
+                            <div className={styles.DropDownContent}>
+                              <div
+                                className={styles.DropDownDetails}
+                                role="presentation"
+                              >
+                                <>
+                                  <div className={styles.DropDownValue}>
+                                    {statusData?.database_status?.data[0]
+                                      .status === statusValue[0].type ? (
+                                      <>
+                                        <span>
+                                          <div
+                                            className={
+                                              styles.DropDownValueTitle
+                                            }
+                                          >
+                                            MySQL
+                                          </div>
+                                          <div>No issues found</div>
+                                        </span>
+                                        <span>
+                                          <Operational
+                                            className={styles.SmallerIcon}
+                                          />
+                                        </span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <span>
+                                          <div
+                                            className={
+                                              styles.StatusSectionCardTitle
+                                            }
+                                          >
+                                            MySQL
+                                          </div>
+                                          <div>Issues detected</div>
+                                        </span>
+                                        <span>
+                                          <Incident
+                                            className={styles.SmallIcon}
+                                            title="Incident"
+                                          />
+                                        </span>
+                                      </>
+                                    )}
+                                  </div>
+                                </>
                               </div>
-                            </>
+                              <div
+                                className={styles.DropDownDetails}
+                                role="presentation"
+                              >
+                                <>
+                                  <div className={styles.DropDownValue}>
+                                    {statusData?.database_status?.data[1]
+                                      .status === statusValue[0].type ? (
+                                      <>
+                                        <span>
+                                          <div
+                                            className={
+                                              styles.DropDownValueTitle
+                                            }
+                                          >
+                                            PostgreSQL
+                                          </div>
+                                          <div>No issues found</div>
+                                        </span>
+                                        <span>
+                                          <Operational
+                                            className={styles.SmallerIcon}
+                                          />
+                                        </span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <span>
+                                          <div
+                                            className={
+                                              styles.StatusSectionCardTitle
+                                            }
+                                          >
+                                            PostgreSQL
+                                          </div>
+                                          <div>Issues detected</div>
+                                        </span>
+                                        <span>
+                                          <Incident
+                                            className={styles.SmallIcon}
+                                            title="Incident"
+                                          />
+                                        </span>
+                                      </>
+                                    )}
+                                  </div>
+                                </>
+                              </div>
+                            </div>
                           </div>
-                        </div>
+                        )}
                       </div>
+                    </span>
+                    {statusData?.database_status?.status ===
+                    statusValue[0].type ? (
+                      <>
+                        <span>
+                          <div className={styles.StatusSectionCardTitle}>
+                            Databases
+                          </div>
+                          <div>No Issues</div>
+                        </span>
+                        <span>
+                          <Operational
+                            className={styles.SmallIcon}
+                            title="Operational"
+                          />
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <span>
+                          <div className={styles.StatusSectionCardTitle}>
+                            Databases
+                          </div>
+                          <div>Issues detected</div>
+                        </span>
+                        <span>
+                          <Incident
+                            className={styles.SmallIcon}
+                            title="Incident"
+                          />
+                        </span>
+                      </>
                     )}
                   </div>
-                </span>
-                {statusData?.registry?.status === statusValue[0].type ? (
-                  <>
+                </div>
+                <div className={styles.StatusSectionItem}>
+                  <div className={styles.StatusSection}>
                     <span>
-                      <div className={styles.StatusSectionCardTitle}>
-                        Registry
-                      </div>
-                      <div>No Issues</div>
-                    </span>
-                    <span>
-                      <Operational
-                        className={styles.SmallIcon}
-                        title="Operational"
-                      />
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <span>
-                      <div className={styles.StatusSectionCardTitle}>
-                        Registry
-                      </div>
-                      <div>Issues detected</div>
-                    </span>
-                    <span>
-                      <Incident className={styles.SmallIcon} title="Incident" />
-                    </span>
-                  </>
-                )}
-              </div>
-            </div>
-            <div className={styles.StatusSectionItem}>
-              <div className={styles.StatusSection}>
-                <span>
-                  <div
-                    ref={openSelectRef}
-                    onClick={() => viewMiraModules()}
-                    role="presentation"
-                  >
-                    {!flip && (
-                      <DownArrow
-                        className={styles.DownArrow}
-                        onClick={handleDropdown}
-                      />
-                    )}
-                    {flip && optionsFor === "Mira" && (
-                      <UpArrow
-                        className={styles.UpArrow}
-                        onClick={handleDropdown}
-                      />
-                    )}
+                      <div
+                        ref={openSelectRef}
+                        onClick={() => viewRegistryModules()}
+                        role="presentation"
+                      >
+                        {!flip && (
+                          <DownArrow
+                            className={styles.DownArrow}
+                            onClick={handleDropdown}
+                          />
+                        )}
+                        {flip && optionsFor === "Registry" && (
+                          <UpArrow
+                            className={styles.UpArrow}
+                            onClick={handleDropdown}
+                          />
+                        )}
 
-                    {optionsFor === "Mira" && showOptions && (
-                      <div className={styles.DropDownContainer}>
-                        <div className={styles.DropDownContent}>
-                          <div
-                            className={styles.DropDownDetails}
-                            role="presentation"
-                          >
-                            <>
-                              <div className={styles.DropDownValue}>
-                                {statusData?.mira_status?.data[0].status ===
-                                statusValue[0].type ? (
-                                  <>
-                                    <span>
-                                      <div
-                                        className={styles.DropDownValueTitle}
-                                      >
-                                        MIRA Frontend
-                                      </div>
-                                      <div>No issues found</div>
-                                    </span>
-                                    <span>
-                                      <Operational
-                                        className={styles.SmallerIcon}
-                                      />
-                                    </span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <span>
-                                      <div
-                                        className={
-                                          styles.StatusSectionCardTitle
-                                        }
-                                      >
-                                        MIRA Frontend
-                                      </div>
-                                      <div>Issues detected</div>
-                                    </span>
-                                    <span>
-                                      <Incident
-                                        className={styles.SmallIcon}
-                                        title="Incident"
-                                      />
-                                    </span>
-                                  </>
-                                )}
+                        {optionsFor === "Registry" && showOptions && (
+                          <div className={styles.DropDownContainer}>
+                            <div className={styles.DropDownContent}>
+                              <div
+                                className={styles.DropDownDetails}
+                                role="presentation"
+                              >
+                                <>
+                                  <div className={styles.DropDownValue}>
+                                    {statusData?.registry?.data[0].status ===
+                                    statusValue[0].type ? (
+                                      <>
+                                        <span>
+                                          <div
+                                            className={
+                                              styles.DropDownValueTitle
+                                            }
+                                          >
+                                            Image Registry
+                                          </div>
+                                          <div>No issues found</div>
+                                        </span>
+                                        <span>
+                                          <Operational
+                                            className={styles.SmallerIcon}
+                                          />
+                                        </span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <span>
+                                          <div
+                                            className={
+                                              styles.StatusSectionCardTitle
+                                            }
+                                          >
+                                            Image Registry
+                                          </div>
+                                          <div>Issues detected</div>
+                                        </span>
+                                        <span>
+                                          <Incident
+                                            className={styles.SmallIcon}
+                                            title="Incident"
+                                          />
+                                        </span>
+                                      </>
+                                    )}
+                                  </div>
+                                </>
                               </div>
-                            </>
+                            </div>
                           </div>
-                          <div
-                            className={styles.DropDownDetails}
-                            role="presentation"
-                          >
-                            <>
-                              <div className={styles.DropDownValue}>
-                                {statusData?.mira_status?.data[1].status ===
-                                statusValue[0].type ? (
-                                  <>
-                                    <span>
-                                      <div
-                                        className={styles.DropDownValueTitle}
-                                      >
-                                        MIRA Backend
-                                      </div>
-                                      <div>No issues found</div>
-                                    </span>
-                                    <span>
-                                      <Operational
-                                        className={styles.SmallerIcon}
-                                      />
-                                    </span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <span>
-                                      <div
-                                        className={
-                                          styles.StatusSectionCardTitle
-                                        }
-                                      >
-                                        MIRA Backend
-                                      </div>
-                                      <div>Issues detected</div>
-                                    </span>
-                                    <span>
-                                      <Incident
-                                        className={styles.SmallIcon}
-                                        title="Incident"
-                                      />
-                                    </span>
-                                  </>
-                                )}
-                              </div>
-                            </>
-                          </div>
-                        </div>
+                        )}
                       </div>
+                    </span>
+                    {statusData?.registry?.status === statusValue[0].type ? (
+                      <>
+                        <span>
+                          <div className={styles.StatusSectionCardTitle}>
+                            Registry
+                          </div>
+                          <div>No Issues</div>
+                        </span>
+                        <span>
+                          <Operational
+                            className={styles.SmallIcon}
+                            title="Operational"
+                          />
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <span>
+                          <div className={styles.StatusSectionCardTitle}>
+                            Registry
+                          </div>
+                          <div>Issues detected</div>
+                        </span>
+                        <span>
+                          <Incident
+                            className={styles.SmallIcon}
+                            title="Incident"
+                          />
+                        </span>
+                      </>
                     )}
                   </div>
-                </span>
-                {statusData?.mira_status?.status === statusValue[0].type ? (
-                  <>
+                </div>
+                <div className={styles.StatusSectionItem}>
+                  <div className={styles.StatusSection}>
                     <span>
-                      <div className={styles.StatusSectionCardTitle}>
-                        Mira Service
+                      <div
+                        ref={openSelectRef}
+                        onClick={() => viewMiraModules()}
+                        role="presentation"
+                      >
+                        {!flip && (
+                          <DownArrow
+                            className={styles.DownArrow}
+                            onClick={handleDropdown}
+                          />
+                        )}
+                        {flip && optionsFor === "Mira" && (
+                          <UpArrow
+                            className={styles.UpArrow}
+                            onClick={handleDropdown}
+                          />
+                        )}
+
+                        {optionsFor === "Mira" && showOptions && (
+                          <div className={styles.DropDownContainer}>
+                            <div className={styles.DropDownContent}>
+                              <div
+                                className={styles.DropDownDetails}
+                                role="presentation"
+                              >
+                                <>
+                                  <div className={styles.DropDownValue}>
+                                    {statusData?.mira_status?.data[0].status ===
+                                    statusValue[0].type ? (
+                                      <>
+                                        <span>
+                                          <div
+                                            className={
+                                              styles.DropDownValueTitle
+                                            }
+                                          >
+                                            MIRA Frontend
+                                          </div>
+                                          <div>No issues found</div>
+                                        </span>
+                                        <span>
+                                          <Operational
+                                            className={styles.SmallerIcon}
+                                          />
+                                        </span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <span>
+                                          <div
+                                            className={
+                                              styles.StatusSectionCardTitle
+                                            }
+                                          >
+                                            MIRA Frontend
+                                          </div>
+                                          <div>Issues detected</div>
+                                        </span>
+                                        <span>
+                                          <Incident
+                                            className={styles.SmallIcon}
+                                            title="Incident"
+                                          />
+                                        </span>
+                                      </>
+                                    )}
+                                  </div>
+                                </>
+                              </div>
+                              <div
+                                className={styles.DropDownDetails}
+                                role="presentation"
+                              >
+                                <>
+                                  <div className={styles.DropDownValue}>
+                                    {statusData?.mira_status?.data[1].status ===
+                                    statusValue[0].type ? (
+                                      <>
+                                        <span>
+                                          <div
+                                            className={
+                                              styles.DropDownValueTitle
+                                            }
+                                          >
+                                            MIRA Backend
+                                          </div>
+                                          <div>No issues found</div>
+                                        </span>
+                                        <span>
+                                          <Operational
+                                            className={styles.SmallerIcon}
+                                          />
+                                        </span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <span>
+                                          <div
+                                            className={
+                                              styles.StatusSectionCardTitle
+                                            }
+                                          >
+                                            MIRA Backend
+                                          </div>
+                                          <div>Issues detected</div>
+                                        </span>
+                                        <span>
+                                          <Incident
+                                            className={styles.SmallIcon}
+                                            title="Incident"
+                                          />
+                                        </span>
+                                      </>
+                                    )}
+                                  </div>
+                                </>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
-                      <div>No Issues</div>
                     </span>
-                    <span>
-                      <Operational
-                        className={styles.SmallIcon}
-                        title="Operational"
-                      />
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <span>
-                      <div className={styles.StatusSectionCardTitle}>
-                        Mira Service
-                      </div>
-                      <div>Issues detected</div>
-                    </span>
-                    <span>
-                      <Incident className={styles.SmallIcon} title="Incident" />
-                    </span>
-                  </>
-                )}
+                    {statusData?.mira_status?.status === statusValue[0].type ? (
+                      <>
+                        <span>
+                          <div className={styles.StatusSectionCardTitle}>
+                            Mira Service
+                          </div>
+                          <div>No Issues</div>
+                        </span>
+                        <span>
+                          <Operational
+                            className={styles.SmallIcon}
+                            title="Operational"
+                          />
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <span>
+                          <div className={styles.StatusSectionCardTitle}>
+                            Mira Service
+                          </div>
+                          <div>Issues detected</div>
+                        </span>
+                        <span>
+                          <Incident
+                            className={styles.SmallIcon}
+                            title="Incident"
+                          />
+                        </span>
+                      </>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          </>
+        ) : (
+          <>
+            <div className={styles.LoadingArea}>
+              <Spinner size="big" />
+            </div>
+          </>
+        )}
       </div>
 
       <div className={styles.FooterSection}>
