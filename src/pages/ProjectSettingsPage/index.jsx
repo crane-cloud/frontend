@@ -336,7 +336,6 @@ class ProjectSettingsPage extends React.Component {
       errorMessage,
     } = this.props;
     const projectInfo = {...JSON.parse(localStorage.getItem("project"))};
-
     const { name, description } = projectInfo;
 
 

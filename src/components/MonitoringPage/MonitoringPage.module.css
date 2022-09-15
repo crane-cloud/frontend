@@ -1,211 +1,215 @@
 .MonitoringPageMain {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    background-color: #e5f3f9;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #e5f3f9;
 }
 
 .PageContainer {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 .PrimaryTitle {
-    color: #008ac1;
-    font-size: 52px;
-    font-weight: bold;
-    text-align: center;
-    padding-top: 3rem;
+  color: #008ac1;
+  font-size: 52px;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 3rem;
 }
 
 .PrimaryContent,
 .PrimaryDescription {
-    color: #000000;
-    font-size: 19px;
-    font-weight: bold;
-    text-align: center;
-    padding-top: 1.5rem;
+  color: #000000;
+  font-size: 19px;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 1.5rem;
 }
 
 .BannerArea {
-    display: flex;
-    flex-wrap: wrap;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    padding: 3rem 0 3rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 0 3rem 0;
 }
 
 .StatusBanner {
-    background-color: #f7b21f;
-    width: 35%;
+  background-color: #f7b21f;
+  width: 35%;
 }
 
 .BannerText {
-    padding: 1rem;
-    color: #ffff;
-    font-size: 1.5rem;
-    text-transform: uppercase;
-    font-weight: bold;
+  padding: 1rem;
+  color: #ffff;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 .StatusSectionTitle {
-    padding: 2rem 0 0 5rem;
+  padding: 1rem 0 0 5rem;
 }
 
 .StatusSection {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 4rem;
 }
 
 .StatusContainer {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
 }
 
 .MoreDetailsIcon {
-    padding: 1rem 1rem 2rem;
+  padding: 1rem 1rem 2rem;
 }
 
 .MoreDetailsIcon svg {
-    height: 24px;
+  height: 24px;
 }
 
 .StatusContent {
-    flex: 2;
+  flex: 2;
 }
 
 .SmallIcon,
 .SmallerIcon {
-    width: 2rem;
-    height: 2rem;
+  width: 2rem;
+  height: 2rem;
 }
 
 .SmallIcon,
 .DownArrow,
 .UpArrow {
-    padding-top: 0.6rem;
+  padding-top: 0.6rem;
 }
 
 .SmallIcon,
 .DownArrow:hover,
 .UpArrow:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .StatusSectionContent {
-    padding-left: 10rem;
-    padding-bottom: 3rem;
-    max-width: 70%;
+  padding-left: 10rem;
+  padding-bottom: 3rem;
+  max-width: 70%;
 }
 
 .StatusSectionChildContainer {
-    display: grid;
-    grid-template-columns: 2fr 2fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 1rem;
-    padding-left: 5rem;
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 1rem;
+  padding-left: 5rem;
 }
 
 .StatusSectionItem {
-    padding: 1rem;
-    background-color: #ffff;
-    color: #555555;
-    display: grid;
-    gap: 0.5rem;
+  padding: 1rem;
+  background-color: #ffff;
+  color: #555555;
+  display: grid;
+  gap: 0.5rem;
 }
 
 .StatusSectionCardTitle {
-    font-size: medium;
-    line-height: 2rem;
-    font-weight: bold;
+  font-size: medium;
+  line-height: 2rem;
+  font-weight: bold;
 }
 
 .StatusSection {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .SelectWrapper {
-    max-height: 6rem;
-    display: grid;
-    gap: 0.3rem;
+  max-height: 6rem;
+  display: grid;
+  gap: 0.3rem;
 }
 
 .SelectOptionsWrapper {
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    z-index: 3;
-    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
-        0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 3;
+  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
 .DropDownContainer {
-    background-color: #f9f9f9;
-    position: absolute;
+  background-color: #f9f9f9;
+  position: absolute;
 }
 
 .DropDownContent {
-    color: #000;
-    background-color: #f9f9f9;
-    display: flex;
-    flex-direction: column;
-    z-index: 1;
-    box-shadow: 0 4px 4px 0 rgba(117, 117, 117, 0.2);
-    -webkit-touch-callout: none;
-    /* iOS Safari */
-    -webkit-user-select: none;
-    /* Safari */
-    -khtml-user-select: none;
-    /* Konqueror HTML */
-    -moz-user-select: none;
-    /* Old versions of Firefox */
-    -ms-user-select: none;
-    /* Internet Explorer/Edge */
-    user-select: none;
-    /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+  color: #000;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+  box-shadow: 0 4px 4px 0 rgba(117, 117, 117, 0.2);
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
 
 .DropDownValue {
-    display: flex;
-    justify-content: space-between;
-    gap: 3rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 3rem;
 }
 
 .DropDownValueTitle {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .DropDownDetails {
-    cursor: pointer;
-    padding: 1rem 3rem;
+  cursor: pointer;
+  padding: 1rem 3rem;
 }
 
 .DropDownDetails:hover {
-    background-color: #f1f1f1;
+  background-color: #f1f1f1;
+}
+
+.LoadingArea {
+  padding: 4rem 0 4rem 0;
 }
 
 @media only screen and (max-width: 750px) {
-    .StatusSectionContent {
-        padding-left: 0rem;
-    }
+  .StatusSectionContent {
+    padding-left: 0rem;
+  }
 
-    .StatusSectionChildContainer {
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr;
-        max-width: none;
-    }
+  .StatusSectionChildContainer {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    max-width: none;
+  }
 
-    .StatusTypes {
-        display: none;
-    }
+  .StatusTypes {
+    display: none;
+  }
 
-    .StatusBanner {
-        width: 80%;
-    }
+  .StatusBanner {
+    width: 80%;
+  }
 }

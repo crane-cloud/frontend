@@ -21,7 +21,6 @@ import getProjectBill from "../../redux/actions/getProjectBill";
 import axios from "axios";
 import { LIVE_EXCHANGE_RATE_API } from "../../config";
 import { DisplayDateTime } from "../../helpers/dateConstants";
-
 import {
   getTransactions,
   clearTransactions,
@@ -256,7 +255,7 @@ const ProjectBillingPage = (props) => {
   }, [creditsSaved, creditsSaving]);
 
   const { projectBill } = useSelector((state) => state.getProjectBillReducer);
-  let cost_data  = projectBill?.cost_data;
+  let cost_data = projectBill?.cost_data;
 
   useEffect(() => {
     currentUsageTab === "months"
@@ -488,8 +487,8 @@ const ProjectBillingPage = (props) => {
                         {Object.keys(cost_data || {}).length === 0
                           ? "n/a"
                           : inUgx
-                          ? `${((cost_data?.totalCost * rate).toFixed(5) *10)}/=`
-                          : `$${(cost_data?.totalCost.toFixed(5) * 10)}`}
+                          ? `${(cost_data?.totalCost * rate).toFixed(5) * 10}/=`
+                          : `$${cost_data?.totalCost.toFixed(5) * 10}`}
                       </div>
                     </div>
                   </div>
