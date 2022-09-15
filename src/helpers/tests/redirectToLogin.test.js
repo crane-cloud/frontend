@@ -1,4 +1,4 @@
-import redirectToLogin from "./redirectToLogin"
+import redirectToLogin from "../redirectToLogin"
 
 
 // storage mock should be implemented further

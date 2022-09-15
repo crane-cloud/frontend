@@ -1,4 +1,4 @@
-import {retrieveProjectTypes} from "./projecttypes.js"
+import {retrieveProjectTypes} from "../projecttypes.js"
 var assert = require('assert')
 
 describe('test project types', () => {

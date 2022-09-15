@@ -1,6 +1,6 @@
 import {DisplayDateTime,
     getBackDate,
-} from "./dateConstants"
+} from "../dateConstants"
 var assert = require('assert')
 var today = new Date()
 var thisYear = today.getFullYear()

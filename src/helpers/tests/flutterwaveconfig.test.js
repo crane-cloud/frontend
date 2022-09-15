@@ -1,4 +1,4 @@
-import Config from "./flutterwaveconfig.js"
+import Config from "../flutterwaveconfig.js"
 var assert = require('assert')
 
 

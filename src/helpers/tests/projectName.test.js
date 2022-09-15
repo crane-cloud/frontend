@@ -2,7 +2,7 @@ import {getProjectName,
     getProjectDescription,
     getDateCreated, 
     getUser, 
-    avatarName} from "./projectName.js"
+    avatarName} from "../projectName.js"
 var assert = require('assert')
 
 

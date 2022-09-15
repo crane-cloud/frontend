@@ -5,7 +5,7 @@ import handleProjectValidation,{validateDomain,
     validateOrganizationName,
     validateProjectName,
     validateProjectType
-} from "./validation.js"
+} from "../validation.js"
 var assert = require('assert')
 
 describe('checks valiidation', () => {

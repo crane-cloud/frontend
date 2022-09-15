@@ -1,4 +1,4 @@
-import {saveState,loadState,onUnload} from "./localStorage.js"
+import {saveState,loadState,onUnload} from "../localStorage.js"
 var assert = require('assert')
 
 // storage mock should be implemented further

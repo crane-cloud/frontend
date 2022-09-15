@@ -6,7 +6,7 @@ import {
     formatAppMemoryMetrics,
     formatAppCPUMetrics,
     formatAppNetworkMetrics,
-} from "./formatMetrics"
+} from "../formatMetrics"
 var assert = require('assert')
 
 

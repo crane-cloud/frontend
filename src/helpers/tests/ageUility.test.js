@@ -1,4 +1,4 @@
-import tellAge from "./ageUtility.js"
+import tellAge from "../ageUtility.js"
 var assert = require('assert')
     var today = new Date();
     //utctime
