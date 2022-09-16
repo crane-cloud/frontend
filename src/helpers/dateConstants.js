@@ -16,7 +16,7 @@ export const monthNames = [
 export const dayNames = [
   "Sunday",
   "Monday",
-  "TuesDay",
+  "Tuesday",
   "Wednesday",
   "Thursday",
   "Friday",

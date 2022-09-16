@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Graph input component graph input  should match snapshot 1`] = `ShallowWrapper {}`;

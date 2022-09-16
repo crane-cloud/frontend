@@ -120,7 +120,6 @@ class AdminUserPage extends Component {
       selectedUser: "",
     });
   };
-
   closeBetaUserModal() {
     this.setState({
       betaUserModal: false,
@@ -131,7 +130,6 @@ class AdminUserPage extends Component {
       [e.target.name]: e.target.value,
     });
   }
-
   handleBetaUserSubmit() {
     const { selectedUser } = this.state;
     const { addBetaUser } = this.props;
