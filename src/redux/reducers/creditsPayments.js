@@ -43,7 +43,7 @@ import {
           creditsSaved: false,
           creditsSavingFailed: true,
           message: "Payment failed. Please try again",
-          error: action.payload.error
+          error: action.payload?.error
         };
   
       case CLEAR_CREDITS_PAYMENT_STATE:
