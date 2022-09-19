@@ -208,9 +208,8 @@ const ProjectBillingPage = (props) => {
     (startTimeStamp) =>
       dispatch(
         getGraphData(projectID, {
-          series: false,
+          series: true,
           start: startTimeStamp,
-          show_deployments: true,
         })
       ),
     [dispatch, projectID]
@@ -272,8 +271,7 @@ const ProjectBillingPage = (props) => {
   const { graphData } = useSelector((state) => state.getGraphDataReducer);
   
   let cost_data = projectBill?.cost_data;
-  let billGraph = graphData?.cost_data;
-  let graphBillData = billGraph?.deployments_costs;
+  let graphBillData = graphData?.cost_data;
 
   useEffect(() => {
     currentUsageTab === "months"
