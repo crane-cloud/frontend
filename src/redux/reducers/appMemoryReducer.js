@@ -19,8 +19,8 @@ const appMemoryReducer = (state = initialState, action) => {
         appMemoryMetrics: [
           ...state.appMemoryMetrics,
           {
-            app: action.payload.app,
-            metrics: action.payload.metrics,
+            app: action.payload?.app,
+            metrics: action.payload?.metrics,
           },
         ],
         isFetchingAppMemory: false,

@@ -20,7 +20,7 @@ const tellAge = (utcTime) => {
   }
 
   if (diff < 60 * SECOND_MILLIS) {
-    return `${Math.trunc(diff / SECOND_MILLIS)}seconds ago`;
+    return `${Math.trunc(diff / SECOND_MILLIS)} seconds ago`;
   }
   if (diff < 2 * MINUTE_MILLIS) {
     return "1 minute ago";

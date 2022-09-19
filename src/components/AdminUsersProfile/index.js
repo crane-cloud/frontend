@@ -65,12 +65,6 @@ class AdminUserPage extends Component {
     }
   }
 
-  // componentWillUnmount() {
-  //   // fix Warning: Can't perform a React state update on an unmounted component
-  //   this.setState = (state, callback) => {
-  //     return;
-  //   };
-  // }
   handleClick = (e) => {
     if (this.state.actionsMenu) {
       // this.closeModal();
@@ -107,7 +101,6 @@ class AdminUserPage extends Component {
         description: creditDescription,
         user_id: params.userID,
       };
-      console.log()
       addUserCredits(creditsObject);
     }
   }
@@ -127,7 +120,6 @@ class AdminUserPage extends Component {
       selectedUser: "",
     });
   };
-
   closeBetaUserModal() {
     this.setState({
       betaUserModal: false,
@@ -138,7 +130,6 @@ class AdminUserPage extends Component {
       [e.target.name]: e.target.value,
     });
   }
-
   handleBetaUserSubmit() {
     const { selectedUser } = this.state;
     const { addBetaUser } = this.props;
@@ -190,7 +181,7 @@ class AdminUserPage extends Component {
           <div className="MainContentSection">
             <div className="InformationBarSection">
               <InformationBar
-                header={`Accounts/${user.name}`}
+                header={`Accounts/${user?.name}`}
                 showBtn={false}
               />
             </div>
@@ -201,45 +192,45 @@ class AdminUserPage extends Component {
                     <div
                       className="UserAvatar"
                       style={{
-                        backgroundColor: nameStringToHslColor(user.name),
+                        backgroundColor: nameStringToHslColor(user?.name),
                         color: "#555",
                       }}
                     >
-                      {avatarName(user.name)}
+                      {avatarName(user?.name)}
                     </div>
                   </div>
                   <div className="UserProfileInfo">
                     <div className="ProfileInfoRow">
                       <div className="ProfileInfoAttribute">Name:</div>
-                      <div className="ProfileInfoValue">{user.name}</div>
+                      <div className="ProfileInfoValue">{user?.name}</div>
                     </div>
                     <div className="ProfileInfoRow">
                       <div className="ProfileInfoAttribute">Email:</div>
-                      <div className="ProfileInfoValue">{user.email}</div>
+                      <div className="ProfileInfoValue">{user?.email}</div>
                     </div>
                     <div className="ProfileInfoRow">
                       <div className="ProfileInfoAttribute">User Role:</div>
                       <div className="ProfileInfoValue">
-                        {user.roles.length > 0 ? user.roles[0].name : "None"}
+                        {user?.roles?.length > 0 ? user?.roles[0].name : "None"}
                       </div>
                     </div>
                     <div className="ProfileInfoRow">
                       <div className="ProfileInfoAttribute">Beta User:</div>
                       <div className="ProfileInfoValue">
-                        {user.is_beta_user ? "True" : "False"}
+                        {user?.is_beta_user ? "True" : "False"}
                       </div>
                     </div>
                     <div className="ProfileInfoRow">
                       <div className="ProfileInfoAttribute">Verified:</div>
                       <div className="ProfileInfoValue">
-                        {user.verified ? "True" : "False"}
+                        {user?.verified ? "True" : "False"}
                       </div>
                     </div>
                     <div className="ProfileInfoRow">
                       <div className="ProfileInfoAttribute">Credits:</div>
                       <div className=" CreditsButton">
                         <div className="CreditsWrap">
-                          {user.credits.length > 0 ? user.credits[0].amount : 0}
+                          {user?.credits.length > 0 ? user?.credits[0].amount : 0}
                           <Coin />
                         </div>
                         <>

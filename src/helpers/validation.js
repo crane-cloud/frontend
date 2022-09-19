@@ -89,9 +89,6 @@ export const validateProjectType = (projectType) => {
     return "Project Type should start with a letter";
   }
 
-  if (validateName(projectType) === "false_convention") {
-    return "Project Type may only contain letters and a hypen -";
-  }
 };
 
 export const handleProjectValidation = (
