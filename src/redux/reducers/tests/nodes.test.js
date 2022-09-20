@@ -8,7 +8,7 @@ import {
 const initialState = {
   nodes: [],
   isRetrieving: false,
-  isRetrieved: false,
+  isFetched: false,
   message: "Nodes Not Available",
 };
 
@@ -16,14 +16,14 @@ const fetchAction = {
   type: GET_NODES_SUCCESS,
   nodes: undefined,
   isRetrieving: false,
-  isRetrieved: true,
-  message: "All Namespaces in this Cluster fetched",
+  isFetched: true,
+  message: "All Nodes fetched",
 };
 
 const fetchFailedAction = {
   type: GET_NODES_FAIL,
   message: undefined,
-  isRetrieved: false,
+  isFetched: false,
   isRetrieving: false,
 };
 
@@ -37,18 +37,17 @@ describe("NodesReducer initial state", () => {
 
   it("should handle nodes added", () => {
     expect(NodesReducer(initialState, fetchAction)).toEqual({
-      nodes: [],
-      jobs: undefined,
+      nodes:undefined,
       isRetrieving: false,
-      isRetrieved: true,
-      message: "All Namespaces in this Cluster fetched",
+      isFetched: true,
+      message: "All Nodes fetched",
     });
   });
 
   it("should handle FETCH_FAILED", () => {
     expect(NodesReducer(initialState, fetchFailedAction)).toEqual({
       message: undefined,
-      isRetrieved: false,
+      isFetched: false,
       isRetrieving: false,
       nodes: [],
     });
@@ -58,7 +57,7 @@ describe("NodesReducer initial state", () => {
     expect(NodesReducer(initialState, startFetchingAction)).toEqual({
       nodes: [],
       isRetrieving: true,
-      isRetrieved: false,
+      isFetched: false,
       message: "Nodes Not Available",
     });
   });

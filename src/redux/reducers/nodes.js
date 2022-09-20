@@ -5,7 +5,7 @@ import {
 } from "../actions/actionTypes";
 
 const initialState = {
-  nodes: {},
+  nodes: [],
   isRetrieving: false,
   isFetched: false,
   message: "Nodes Not Available",

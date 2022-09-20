@@ -37,8 +37,7 @@ describe("namespacesListReducer initial state", () => {
 
   it("should handle namespacesList added", () => {
     expect(namespacesListReducer(initialState, fetchAction)).toEqual({
-      namespacesList: [],
-      jobs: undefined,
+      namespacesList: undefined,
       isRetrieving: false,
       isRetrieved: true,
       message: "All Namespaces in this Cluster fetched",
@@ -48,7 +47,7 @@ describe("namespacesListReducer initial state", () => {
   it("should handle FETCH_FAILED", () => {
     expect(namespacesListReducer(initialState, fetchFailedAction)).toEqual({
       message: undefined,
-      isRetrieved: false,
+      isRetrieved: true,
       isRetrieving: false,
       namespacesList: [],
     });
