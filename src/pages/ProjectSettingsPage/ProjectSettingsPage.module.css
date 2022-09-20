@@ -113,10 +113,13 @@
   display: none;
   min-width: fit-content;
 }
-
 .Page {
   margin: 0;
   background: #f1f1f1;
+  max-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  /* overflow: hidden; */
 }
 
 .MainSection {
@@ -131,7 +134,7 @@
   /* divided into two rows */
   display: grid;
   grid-template-rows: 80px 4fr;
-  overflow: hidden;
+  overflow: auto;
 }
 .TopBarSection {
   background-color: black;
