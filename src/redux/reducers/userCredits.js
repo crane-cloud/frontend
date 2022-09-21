@@ -6,8 +6,8 @@ import {
 
 const initialState = {
   credits: [],
-  isFetchedCreditsCredits: false,
-  isFetchingCreditsCredits: false,
+  isFetchedCredits: false,
+  isFetchingCredits: false,
   message: "",
 };
 
