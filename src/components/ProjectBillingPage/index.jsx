@@ -18,6 +18,7 @@ import { useParams } from "react-router-dom";
 import styles from "./ProjectBillingPage.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import getProjectBill from "../../redux/actions/getProjectBill";
+import getGraphData from "../../redux/actions/getGraphData";
 import axios from "axios";
 import { LIVE_EXCHANGE_RATE_API } from "../../config";
 import { DisplayDateTime } from "../../helpers/dateConstants";
@@ -203,6 +204,16 @@ const ProjectBillingPage = (props) => {
       ),
     [dispatch, projectID]
   );
+  const graphBillingData = useCallback(
+    (startTimeStamp) =>
+      dispatch(
+        getGraphData(projectID, {
+          series: true,
+          start: startTimeStamp,
+        })
+      ),
+    [dispatch, projectID]
+  );
   // create a function that takes in a array and returns a new array of objects with the data 2 format
   const getData2Format = useCallback(
     (data) => {
@@ -245,7 +256,9 @@ const ProjectBillingPage = (props) => {
     var startTimeStamp = new Date();
     startTimeStamp.setDate(startTimeStamp.getDate() - 14);
     getBill(Math.round(startTimeStamp.getTime() / 1000));
-  }, [getBill]);
+    graphBillingData(Math.round(startTimeStamp.getTime() / 1000));
+  }, [getBill, graphBillingData]);
+
   useEffect(() => {
     if (creditsSaved && !creditsSaving) {
       closePaymentsOptions();
@@ -255,13 +268,16 @@ const ProjectBillingPage = (props) => {
   }, [creditsSaved, creditsSaving]);
 
   const { projectBill } = useSelector((state) => state.getProjectBillReducer);
+  const { graphData } = useSelector((state) => state.getGraphDataReducer);
+  
   let cost_data = projectBill?.cost_data;
+  let graphBillData = graphData?.cost_data;
 
   useEffect(() => {
     currentUsageTab === "months"
-      ? setMonths(getData2Format(cost_data))
-      : setDays(getData2Format(cost_data));
-  }, [cost_data, currentUsageTab, getData2Format]);
+      ? setMonths(getData2Format(graphBillData))
+      : setDays(getData2Format(graphBillData));
+  }, [graphBillData, currentUsageTab, getData2Format]);
 
   // let newObject = summationObject(projectBill?.data?.cost_data);
   // turn values to percentages for donut chart
@@ -375,22 +391,22 @@ const ProjectBillingPage = (props) => {
         startTimeStamp = new Date();
         startTimeStamp.setDate(startTimeStamp.getDate() - 14);
         //in unix timstamp
-        getBill(Math.round(startTimeStamp.getTime() / 1000));
+        graphBillingData(Math.round(startTimeStamp.getTime() / 1000));
       }
       if (period === "7d") {
         startTimeStamp = new Date();
         startTimeStamp.setDate(startTimeStamp.getDate() - 7);
-        getBill(Math.round(startTimeStamp.getTime() / 1000));
+        graphBillingData(Math.round(startTimeStamp.getTime() / 1000));
       }
       if (period === "3d") {
         startTimeStamp = new Date();
         startTimeStamp.setDate(startTimeStamp.getDate() - 3);
-        getBill(Math.round(startTimeStamp.getTime() / 1000));
+        graphBillingData(Math.round(startTimeStamp.getTime() / 1000));
       }
       if (period === "all") {
         startTimeStamp = new Date();
         startTimeStamp.setDate(startTimeStamp.getDate() - 14);
-        getBill(Math.round(startTimeStamp.getTime() / 1000));
+        graphBillingData(Math.round(startTimeStamp.getTime() / 1000));
       }
     }
   };
