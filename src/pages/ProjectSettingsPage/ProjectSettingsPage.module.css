@@ -94,11 +94,6 @@
   gap: 0.5rem;
 }
 
-.ContentSection {
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-}
 
 .ErrorOnWhite {
   width: 25rem;
@@ -116,10 +111,10 @@
 .Page {
   margin: 0;
   background: #f1f1f1;
-  max-height: 100vh;
+  height: 100vh;
   display: grid;
-  grid-template-rows: auto 1fr auto;
-  /* overflow: hidden; */
+  grid-template-rows: 80px 4fr;
+  /* overflow-x: hidden; */
 }
 
 .MainSection {
@@ -150,7 +145,7 @@
   flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
-  /* padding-left: 3rem; */
+  padding-bottom: 1rem;
 }
 .InnerModalDescription {
   display: flex;
@@ -264,14 +259,7 @@
     width: 20rem;
   }
   
-  .ContentSection {
-    display: flex;
-    padding-top: 2rem;
-    flex-direction: column;
-    overflow-x: hidden;
-    overflow-y: auto;
-    height: 100%;
-  }
+
   .TextArea {
     width: 20rem; 
     border: 1px solid black;
