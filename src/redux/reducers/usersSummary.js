@@ -38,7 +38,7 @@ const usersSummaryReducer = (state = initialState, action) => {
         summaryIsFailed: true,
         FetchedUsersSummary: false,
         isFetchingUsersSummary: false,
-        errorCode: action.payload.errorCode,
+        errorCode: action.payload?.errorCode,
         message: "Summary Failed",
       };
 

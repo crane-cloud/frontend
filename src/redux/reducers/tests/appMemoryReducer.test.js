@@ -1,4 +1,4 @@
-import appMemoryReducer from "../adminGetUserCredits";
+import appMemoryReducer from "../appMemoryReducer";
 import {
   FETCH_APP_MEMORY_SUCCESS,
   FETCH_APP_MEMORY_FAILED,
@@ -16,8 +16,8 @@ const fetchAction = {
   type: FETCH_APP_MEMORY_SUCCESS,
   appMemoryMetrics: [
     {
-      app: [],
-      metrics: [],
+      app: undefined,
+      metrics: undefined,
     },
   ],
   isFetchingAppMemory: false,
@@ -48,24 +48,34 @@ describe("appMemoryReducer initial state", () => {
 
   it("should handle cluster added", () => {
     expect(appMemoryReducer(initialState, fetchAction)).toEqual({
-      appMemoryMetrics: [],
+      appMemoryMetrics: [
+        {
+          app: undefined,
+          metrics: undefined,
+        },
+      ],
       isFetchingAppMemory: false,
-      appMemoryMessage: "",
+      appMemoryMessage: "Fetched app memory metrics",
     });
   });
 
   it("should handle FETCH_FAILED", () => {
     expect(appMemoryReducer(initialState, fetchFailedAction)).toEqual({
-      appMemoryMetrics: [],
+      appMemoryMetrics: [
+        {
+          app: undefined,
+          metrics: undefined,
+        },
+      ],
       isFetchingAppMemory: false,
-      appMemoryMessage: "",
+      appMemoryMessage: "Error fetching app memory metrics",
     });
   });
 
   it("should handle adding cluster", () => {
     expect(appMemoryReducer(initialState, startFetchingAction)).toEqual({
       appMemoryMetrics: [],
-      isFetchingAppMemory: false,
+      isFetchingAppMemory: true,
       appMemoryMessage: "",
     });
   });

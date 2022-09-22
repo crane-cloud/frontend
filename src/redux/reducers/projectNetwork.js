@@ -18,7 +18,7 @@ const projectNetworkReducer = (state = initialState, action) => {
         ...state,
         networkMetrics: [
           ...state.networkMetrics,
-          { project: action.payload.project, metrics: action.payload.metrics },
+          { project: action.payload?.project, metrics: action.payload?.metrics },
         ],
         isFetchingNetwork: false,
         networkMessage: "Fetched project network metrics",
@@ -29,7 +29,7 @@ const projectNetworkReducer = (state = initialState, action) => {
         ...state,
         networkMetrics: [
           ...state.networkMetrics,
-          { project: action.payload.project, metrics: action.payload.metrics },
+          { project: action.payload?.project, metrics: action.payload?.metrics },
         ],
         isFetchingNetwork: false,
         networkMessage: "Error fetching project network metrics",

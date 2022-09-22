@@ -38,7 +38,7 @@ const updateAppReducer = (state = initialState, action) => {
         isFailed: true,
         isUpdated: false,
         isUpdating: false,
-        errorCode: action.payload.errorCode,
+        errorCode: action.payload?.errorCode,
         errorMessage: "Failed to update App",
       };
 

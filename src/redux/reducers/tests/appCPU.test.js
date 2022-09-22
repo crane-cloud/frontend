@@ -1,79 +1,93 @@
-import adminGetUserCreditsReducer from "../adminGetUserCredits";
+import appCpuReducer from "../appCpu";
 import {
-  ADMIN_GET_USER_CREDITS_FAIL,
-  ADMIN_GET_USER_CREDITS_SUCCESS,
-  ADMIN_GETTING_USER_CREDITS,
-  ADMIN_CLEAR_USER_CREDITS,
+  FETCH_APP_CPU_SUCCESS,
+  FETCH_APP_CPU_FAILED,
+  IS_FETCHING_APP_CPU,
+  CLEAR_APP_CPU,
 } from "../../actions/actionTypes";
 
 const initialState = {
-  userCredits: [],
-  creditsFetched: false,
-  isFetchingCredits: false,
-  message: "",
+  appCPUMetrics: [],
+  isFetchingCPU: false,
+  cpuMessage: "",
 };
 
 const fetchAction = {
-  type: ADMIN_GET_USER_CREDITS_SUCCESS,
-  userCredits: [],
-  isFetchingCredits: false,
-  creditsFetched: true,
-  message: "User credits fetched",
+  type: FETCH_APP_CPU_SUCCESS,
+  appCPUMetrics: [
+    {
+      app: [],
+      metrics: [],
+    },
+  ],
+  isFetchingCPU: false,
+  cpuMessage: "Fetched app CPU metrics",
 };
 
 const fetchFailedAction = {
-  type: ADMIN_GET_USER_CREDITS_FAIL,
-  message: [],
-  isFetchingCredits: false,
-  creditsFetched: false,
+  type: FETCH_APP_CPU_FAILED,
+  appCPUMetrics: [
+    {
+      app: [],
+      metrics: [],
+    },
+  ],
+  isFetchingCPU: false,
+  cpuMessage: "Error fetching app CPU metrics",
 };
 
 const startFetchingAction = {
-  type: ADMIN_GETTING_USER_CREDITS,
+  type: IS_FETCHING_APP_CPU,
 };
 
 const clearAction = {
-  type: ADMIN_CLEAR_USER_CREDITS,
-}
+  type: CLEAR_APP_CPU,
+};
 
-describe("adminGetUserCreditsReducer initial state", () => {
+describe("appCpuReducer initial state", () => {
   it("should return the initial state", () => {
-    expect(adminGetUserCreditsReducer(undefined, {})).toEqual(initialState);
+    expect(appCpuReducer(undefined, {})).toEqual(initialState);
   });
 
   it("should handle cluster added", () => {
-    expect(adminGetUserCreditsReducer(initialState, fetchAction)).toEqual({
-      userCredits: undefined,
-      isFetchingCredits: false,
-      creditsFetched: true,
-      message: "User credits fetched",
+    expect(appCpuReducer(initialState, fetchAction)).toEqual({
+      appCPUMetrics: [
+        {
+          app: undefined,
+          metrics: undefined,
+        },
+      ],
+      isFetchingCPU: false,
+      cpuMessage: "Fetched app CPU metrics",
     });
   });
 
   it("should handle FETCH_FAILED", () => {
-    expect(adminGetUserCreditsReducer(initialState, fetchFailedAction)).toEqual({
-      message: undefined,
-      isFetchingCredits: false,
-      creditsFetched: false,
-      userCredits: []
+    expect(appCpuReducer(initialState, fetchFailedAction)).toEqual({
+      appCPUMetrics: [
+        {
+          app: undefined,
+          metrics: undefined,
+        },
+      ],
+      isFetchingCPU: false,
+      cpuMessage: "Error fetching app CPU metrics",
     });
   });
 
   it("should handle adding cluster", () => {
-    expect(adminGetUserCreditsReducer(initialState, startFetchingAction)).toEqual({
-      isFetchingCredits: true,
-      creditsFetched: false,
-      message: "",
-      userCredits: []
+    expect(appCpuReducer(initialState, startFetchingAction)).toEqual({
+      appCPUMetrics: [],
+      isFetchingCPU: true,
+      cpuMessage: "",
     });
   });
 
   it("should handle clear adding cluster", () => {
-    expect(adminGetUserCreditsReducer(initialState, clearAction)).toEqual({
-      userCredits: [],
-      isFetchingCredits: false,
-      creditsFetched: false,
-      message: "",
+    expect(appCpuReducer(initialState, clearAction)).toEqual({
+      appCPUMetrics: [],
+      isFetchingCPU: false,
+      cpuMessage: "",
     });
   });
 });
