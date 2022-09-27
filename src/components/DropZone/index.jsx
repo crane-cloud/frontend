@@ -42,8 +42,8 @@ const Dropzone = ({ handleDrop }) => {
         </>
       ) : (
         <>
-          {files.map((file) => (
-            <p className={styles.DropzonePlaceholder}>{file.name}</p>
+          {files.map((file,index) => (
+            <p key={index} className={styles.DropzonePlaceholder}>{file.name}</p>
           ))}
         </>
       )}
