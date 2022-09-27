@@ -96,7 +96,7 @@ class AppsList extends Component {
     return (
       <div>
         {isRetrieving ? (
-          <div className={styles.NoResourcesMessage}>
+          <div className={styles.NoAppsResourcesMessage}>
             <div className={styles.SpinnerWrapper}>
               <Spinner size="big" />
             </div>
@@ -154,7 +154,7 @@ class AppsList extends Component {
           </div>
         )}
         {!isRetrieving && !isRetrieved && (
-          <div className={styles.NoResourcesMessage}>
+          <div className={styles.NoAppsResourcesMessage}>
             Oops! Something went wrong! Failed to retrieve Apps.
           </div>
         )}

@@ -1,0 +1,14 @@
+.DropzonePlaceholder {
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    padding-left: 3rem;
+}
+
+.UploadIconSmall {
+    width: 5rem;
+    height: 5rem;
+    display: flex;
+    padding-left: 13rem;
+    padding-top: 3rem;
+}
