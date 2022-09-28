@@ -79,8 +79,8 @@
     "typescript": "^4.5.5"
   },
   "optionalDependencies": {
-    "canvg": "^4.0.0",
-    "dompurify": "^2.3.8",
+    "canvg": "^4.0.1",
+    "dompurify": "^2.4.0",
     "html2canvas": "^1.4.1"
   }
 }

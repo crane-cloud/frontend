@@ -58,7 +58,7 @@ const Header = (props) => {
       <Logo />
       {(!user.accessToken || user.accessToken === "" || pageUrl !== null) && (
         <div className={styles.HeaderLinksWrap}>
-          {match.path === "/" && (
+          {match.path === "/login" && (
             <div className={styles.HeaderLinks}>
               <Link
                 to="/register"
@@ -71,7 +71,7 @@ const Header = (props) => {
           {match.path === "/register" && (
             <div className={styles.HeaderLinks}>
               <Link
-                to="/"
+                to="/login"
                 className={`${styles.HeaderLinkLogin} ${styles.TurnLight}`}
               >
                 Login

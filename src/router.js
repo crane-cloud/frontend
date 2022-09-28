@@ -55,6 +55,7 @@ import ClusterSettingsPage from "./components/ClusterSettingsPage";
 import MonitoringPage from "./components/MonitoringPage";
 import UserProfile from "./components/UserProfile";
 import AdminUsersProfile from "./components/AdminUsersProfile";
+import App from "./components/App";
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
@@ -67,7 +68,8 @@ const hasToken = store.getState().user.accessToken;
 const Routes = () => (
   <Router>
     <Switch>
-      <Route key="default-route" exact path="/" component={LoginPage} />
+      <Route exact path="/" component={App} />
+      <Route path="/login" component={LoginPage} />
       <Route path="/contact" component={ContactPage} />
       <Route path="/admin-login" component={AdminLoginPage} />
       <Route path="/forgot-password" component={PasswordReset} />
