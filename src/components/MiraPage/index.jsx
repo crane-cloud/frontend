@@ -1,4 +1,4 @@
-import  React, {useEffect, useState}  from "react";
+import  React, { useState}  from "react";
 import axios from "axios";
 import Dropzone from "../DropZone";
 import styles from "./MiraPage.module.css";
@@ -32,6 +32,9 @@ const MiraPge = ({projectID}) => {
   };
   const handleChange = ({ target }) => {
     const { name, value } = target;
+    if(error){
+      setError("");
+    }
     setImage({
       ...image,
       [name]: value,
@@ -61,18 +64,15 @@ const MiraPge = ({projectID}) => {
     formData.append("project", projectID);
     formData.append("registry", registry);
 
-    axios.post(`${MIRA_API_URL}/containerize`, formData).
-
-     then(function ({data}) {
-       if(data){
-        setLoader(false);
-        alert("successfull, check crane cloud front end");
-       }
+    axios
+    .post(`${MIRA_API_URL}/containerize`, formData)
+     .then(function ({res}) {
+       setLoader(false);
+       window.location.href = `/projects/${projectID}/Apps`;
      })
     .catch(function (error) {
       setLoader(false);
-      alert(error);
-      console.log(error)
+      setError("failed to deploy")
      });
     
   };
@@ -146,7 +146,7 @@ const MiraPge = ({projectID}) => {
            />
         </div>
       </div>
-
+      {error && <div className="LoginErrorDiv">{error}</div>}
       <div className={styles.ButtonSection}>
         <PrimaryButton 
         className="AuthBtn FullWidth" 
