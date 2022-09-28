@@ -78,7 +78,7 @@ const NewHeader = (props) => {
                   {/* <Link to="/pricing" className="HeaderLinkDocs">
                     Pricing
                   </Link> */}
-                  <Link to="/" className="HeaderLinkDocs">
+                  <Link to="/login" className="HeaderLinkDocs">
                     Login
                   </Link>
                 </div>
