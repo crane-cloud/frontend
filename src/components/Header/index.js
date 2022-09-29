@@ -71,7 +71,7 @@ const Header = (props) => {
           {match.path === "/register" && (
             <div className={styles.HeaderLinks}>
               <Link
-                to="/"
+                to="/login"
                 className={`${styles.HeaderLinkLogin} ${styles.TurnLight}`}
               >
                 Login
