@@ -281,7 +281,6 @@ const ProjectBillingPage = (props) => {
 
   // let newObject = summationObject(projectBill?.data?.cost_data);
   // turn values to percentages for donut chart
-
   const data1 = [
     {
       name: "CPU / $1 per 1K seconds",
