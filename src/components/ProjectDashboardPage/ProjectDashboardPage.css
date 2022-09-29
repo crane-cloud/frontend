@@ -11,16 +11,11 @@
   gap: 1rem;
 }
 
-.CardDimensions {
-  max-width: 21rem;
+.CardDimensions { 
   height: 15rem;
   color: initial;
 }
-@media(max-width: 1367px) {
-  .CardDimensions {
-    height: 11rem;
-  }
-}
+
 
 @media only screen and (max-width: 650px) {
   .MetricCardsSection {

@@ -56,10 +56,9 @@ const Header = (props) => {
   return (
     <header className={`${styles.Header} SmallContainer`}>
       <Logo />
-
       {(!user.accessToken || user.accessToken === "" || pageUrl !== null) && (
         <div className={styles.HeaderLinksWrap}>
-          {match.path === "/" && (
+          {match.path === "/login" && (
             <div className={styles.HeaderLinks}>
               <Link
                 to="/register"

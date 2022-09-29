@@ -94,11 +94,6 @@
   gap: 0.5rem;
 }
 
-.ContentSection {
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-}
 
 .ErrorOnWhite {
   width: 25rem;
@@ -113,10 +108,13 @@
   display: none;
   min-width: fit-content;
 }
-
 .Page {
   margin: 0;
   background: #f1f1f1;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 80px 4fr;
+  /* overflow-x: hidden; */
 }
 
 .MainSection {
@@ -131,7 +129,7 @@
   /* divided into two rows */
   display: grid;
   grid-template-rows: 80px 4fr;
-  overflow: hidden;
+  overflow: auto;
 }
 .TopBarSection {
   background-color: black;
@@ -140,13 +138,14 @@
 .SideBarSection {
   -ms-overflow-style: none;
   scrollbar-width: none;
+  height:100%;
 }
 .ContentSection {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
-  /* padding-left: 3rem; */
+  padding-bottom: 1rem;
 }
 .InnerModalDescription {
   display: flex;
@@ -204,7 +203,7 @@
 }
 
 .ProjectSections {
-  padding-top: 2rem;
+  padding-top: 1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -260,14 +259,7 @@
     width: 20rem;
   }
   
-  .ContentSection {
-    display: flex;
-    padding-top: 2rem;
-    flex-direction: column;
-    overflow-x: hidden;
-    overflow-y: auto;
-    height: 100%;
-  }
+
   .TextArea {
     width: 20rem; 
     border: 1px solid black;

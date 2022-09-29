@@ -56,7 +56,7 @@ class AppSettingsPage extends React.Component {
       varName: "",
       varValue: "",
       envVars: "",
-      entryCommand: "",
+      entryCommand: app?.command ? app?.command : "",
       port: app?.port ? app?.port : "",
       replicas: "",
       updating_port: false,
@@ -90,7 +90,6 @@ class AppSettingsPage extends React.Component {
     this.disableRevert = this.disableRevert.bind(this);
     this.regenerate = this.regenerate.bind(this);
   }
-
 
   handleChange(e) {
     const { openDeleteAlert, error } = this.state;
@@ -197,13 +196,14 @@ class AppSettingsPage extends React.Component {
   }
 
   renderRedirect = () => {
-    const { isDeleted, isReverted, clearState,clearUrlRevertState } = this.props;
+    const { isDeleted, isReverted, clearState, clearUrlRevertState } =
+      this.props;
     const { projectID } = this.props.match.params;
     if (isDeleted) {
       clearState();
       return <Redirect to={`/projects/${projectID}/apps`} noThrow />;
     }
-    if(isReverted){
+    if (isReverted) {
       clearUrlRevertState();
       return <Redirect to={`/projects/${projectID}/apps`} noThrow />;
     }
@@ -324,10 +324,13 @@ class AppSettingsPage extends React.Component {
     const {
       match: { params },
       updateApp,
+      app,
     } = this.props;
     const { appID } = params;
     const { entryCommand } = this.state;
-    if (entryCommand && entryCommand.length > 0) {
+    if (entryCommand === app.command) {
+      this.setState({ commandError: "Enter a new command." });
+    } else if (entryCommand && entryCommand.length > 0) {
       this.setState({ updating_command: true });
       updateApp(appID, { command: entryCommand });
     } else {
@@ -553,10 +556,11 @@ class AppSettingsPage extends React.Component {
       { id: 3, name: "3" },
       { id: 4, name: "4" },
     ];
+    console.log(app);
 
     return (
       <div className={styles.Page}>
-        {(isDeleted || isReverted )? this.renderRedirect() : null}
+        {isDeleted || isReverted ? this.renderRedirect() : null}
         <div className="TopBarSection">
           <Header />
         </div>
@@ -819,18 +823,30 @@ class AppSettingsPage extends React.Component {
                         </div>
                         <div className={styles.APPButtonRow}>
                           <div className={styles.AppLabel}>Link</div>
-                          {app.url ? <div className={styles.CopyDiv}>
-                            <div className="DBTDetail">{app.url}</div>
-                            <div className={styles.CopyUrl}>
-                              <CopyText onClick={this.urlOnClick} />
-                              {urlChecked ? <Checked /> : null}
+                          {app.url ? (
+                            <div className={styles.CopyDiv}>
+                              <div className="DBTDetail">{app.url}</div>
+                              <div className={styles.CopyUrl}>
+                                <CopyText onClick={this.urlOnClick} />
+                                {urlChecked ? <Checked /> : null}
+                              </div>
                             </div>
-                          </div>:<>
-                           {isReverting ? <Spinner/> :<div className={styles.InnerContentWarnText} 
-                           onClick={()=>{this.regenerate()}} >
-                          Click to re-generate url
-                         </div> }</>
-                         } 
+                          ) : (
+                            <>
+                              {isReverting ? (
+                                <Spinner />
+                              ) : (
+                                <div
+                                  className={styles.InnerContentWarnText}
+                                  onClick={() => {
+                                    this.regenerate();
+                                  }}
+                                >
+                                  Click to re-generate url
+                                </div>
+                              )}
+                            </>
+                          )}
                         </div>
                         <div className={styles.APPButton}>
                           <div className={styles.UpperSection}>
@@ -998,7 +1014,9 @@ class AppSettingsPage extends React.Component {
                             <div>
                               <input
                                 type="text"
-                                placeholder="command"
+                                placeholder={
+                                  app.command ? app.command : "command"
+                                }
                                 name="entryCommand"
                                 value={entryCommand}
                                 className={styles.portInput}
@@ -1205,7 +1223,8 @@ class AppSettingsPage extends React.Component {
               )}
               {!isRetrieving && !isFetched && (
                 <div className={styles.NoResourcesMessage}>
-                  Oops! Something went wrong! Failed to retrieve app information.
+                  Oops! Something went wrong! Failed to retrieve app
+                  information.
                 </div>
               )}
             </div>

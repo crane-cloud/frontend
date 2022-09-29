@@ -18,7 +18,7 @@ const projectMemoryReducer = (state = initialState, action) => {
         ...state,
         memoryMetrics: [
           ...state.memoryMetrics,
-          { project: action.payload.project, metrics: action.payload.metrics },
+          { project: action.payload?.project, metrics: action.payload?.metrics },
         ],
         isFetchingMemory: false,
         memoryMessage: "Fetched project memory metrics",
@@ -29,7 +29,7 @@ const projectMemoryReducer = (state = initialState, action) => {
         ...state,
         memoryMetrics: [
           ...state.memoryMetrics,
-          { project: action.payload.project, metrics: action.payload.metrics },
+          { project: action.payload?.project, metrics: action.payload?.metrics },
         ],
         isFetchingMemory: false,
         memoryMessage: "Error fetching project memory metrics",

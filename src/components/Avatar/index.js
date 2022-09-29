@@ -6,7 +6,7 @@ const Avatar = ({ name,className }) => {
   const nameStringToHslColor = (name) => {
     let hash = 0;
     let i = 0;
-    for (i; i < name.length; i += 1) {
+    for (i; i < name?.length; i += 1) {
       hash = name.charCodeAt(i) + ((hash << 5) - hash); // eslint-disable-line no-bitwise
     }
     const h = hash % 360;

@@ -174,7 +174,6 @@ const Period = (props) => {
     </div>
   );
 };
-
 Period.propTypes = {
   onChange: PropTypes.func.isRequired,
 };

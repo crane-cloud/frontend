@@ -24,7 +24,7 @@ class AppsList extends Component {
   componentDidMount() {
     const {
       params: { projectID },
-      getAppsList
+      getAppsList,
     } = this.props;
 
     getAppsList(projectID);
@@ -80,8 +80,15 @@ class AppsList extends Component {
 
   render() {
     const { SearchList } = this.state;
-    const { apps, isRetrieved, isRetrieving, params, word, message, openComponent } =
-      this.props;
+    const {
+      apps,
+      isRetrieved,
+      isRetrieving,
+      params,
+      word,
+      message,
+      openComponent,
+    } = this.props;
     const allApps = apps.apps;
     const sortedApps = allApps?.sort((a, b) =>
       b.date_created < a.date_created ? 1 : -1
@@ -89,14 +96,15 @@ class AppsList extends Component {
     return (
       <div>
         {isRetrieving ? (
-          <div className={styles.NoResourcesMessage}>
+          <div className={styles.NoAppsResourcesMessage}>
             <div className={styles.SpinnerWrapper}>
               <Spinner size="big" />
             </div>
           </div>
         ) : word !== "" ? (
           <div className={styles.AppList}>
-            {(isRetrieved && !isRetrieving) &&
+            {isRetrieved &&
+              !isRetrieving &&
               SearchList.map((app) => (
                 <div key={app.id} className="AppCardItem">
                   <AppsCard
@@ -112,7 +120,9 @@ class AppsList extends Component {
           </div>
         ) : (
           <div className={styles.AppList}>
-            { (apps.apps.length !== 0 && !isRetrieving && isRetrieved) && 
+            {apps.apps.length !== 0 &&
+              !isRetrieving &&
+              isRetrieved &&
               sortedApps.map((app) => (
                 <div key={app.id} className="AppCardItem">
                   <AppsCard
@@ -128,20 +138,23 @@ class AppsList extends Component {
           </div>
         )}
         {isRetrieved && sortedApps?.length === 0 && (
-          <div className={styles.NoResourcesMessage}>
+          <div className={styles.NoAppsError}>
             {message ? (
               message
             ) : (
-              <div>
+              <div className={styles.NoAppsResourcesMessage}>
                 You haven’t created any apps yet. Click the &nbsp;{" "}
-                <ButtonPlus className={styles.ButtonPlusSmall} onClick={openComponent} /> &nbsp; button
-                to deploy an app.
+                <ButtonPlus
+                  className={styles.ButtonPlusSmall}
+                  onClick={openComponent}
+                />{" "}
+                &nbsp; button to deploy an app.
               </div>
             )}
           </div>
         )}
-        {!isRetrieving && !isRetrieved  && (
-          <div className={styles.NoResourcesMessage}>
+        {!isRetrieving && !isRetrieved && (
+          <div className={styles.NoAppsResourcesMessage}>
             Oops! Something went wrong! Failed to retrieve Apps.
           </div>
         )}
@@ -167,7 +180,7 @@ AppsList.propTypes = {
 
 // assigning defaults
 AppsList.defaultProps = {
-  apps: {apps:[]},
+  apps: { apps: [] },
   isRetrieved: false,
   isRetrieving: true,
   message: false,

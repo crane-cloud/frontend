@@ -38,7 +38,7 @@ const addBetaUserReducer = (state = initialState, action) => {
         isFailed: true,
         isAdded: false,
         isAdding: false,
-        error: action.payload.error,
+        error: action.payload?.error,
         message: "Failed to add user",
       };
 

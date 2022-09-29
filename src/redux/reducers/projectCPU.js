@@ -19,8 +19,8 @@ const projectCPUReducer = (state = initialState, action) => {
         cpuMetrics: [
           ...state.cpuMetrics,
           {
-            project: action.payload.project,
-            metrics: action.payload.metrics,
+            project: action.payload?.project,
+            metrics: action.payload?.metrics,
           },
         ],
         isFetchingCPU: false,
@@ -33,8 +33,8 @@ const projectCPUReducer = (state = initialState, action) => {
         cpuMetrics: [
           ...state.cpuMetrics,
           {
-            project: action.payload.project,
-            metrics: action.payload.metrics,
+            project: action.payload?.project,
+            metrics: action.payload?.metrics,
           },
         ],
         isFetchingCPU: false,

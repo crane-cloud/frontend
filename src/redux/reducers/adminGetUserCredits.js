@@ -3,7 +3,6 @@ import {
   ADMIN_GET_USER_CREDITS_SUCCESS,
   ADMIN_GETTING_USER_CREDITS,
   ADMIN_CLEAR_USER_CREDITS,
-
 } from "../actions/actionTypes";
 
 const initialState = {

@@ -4,14 +4,20 @@
   grid-gap: 1rem;
 }
 
-.NoResourcesMessage {
+.NoAppsResourcesMessage {
   flex-grow: 1;
   display: flex;
   font-size: 1rem;
-  padding-top: 2rem;
+  padding-top: 8rem;
   text-align: center;
   justify-content: center;
   align-items: center;
+}
+
+.NoAppsError {
+  text-align: center;
+  justify-content: center;
+  padding-top: 3rem;
 }
 
 .ButtonPlusSmall {

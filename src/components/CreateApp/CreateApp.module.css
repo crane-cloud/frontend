@@ -3,12 +3,14 @@
   background: #f1f1f1;
   width: 100%;
 }
+
 .MainContentSection {
   /* divided into two rows */
   display: grid;
   grid-template-rows: 80px 4fr;
   /* overflow: hidden; */
 }
+
 .ContentSection {
   display: flex;
   flex-direction: column;
@@ -18,7 +20,7 @@
   overflow: auto;
 }
 
-.ModalFormInputs{
+.ModalFormInputs {
   height: calc(100vh - 12rem);
   max-width: 40rem;
 }
@@ -35,6 +37,7 @@
 .BackDiv p {
   display: inline;
 }
+
 .BackDiv img:hover {
   transition: 0.2s;
   transform: scale(1.2);
@@ -97,13 +100,6 @@
   color: grey;
 }
 
-.ModalFormButtons {
-  display: flex;
-  justify-content: center;
-  padding: 2rem 0;
-  gap: 1rem;
-}
-
 .EnvVarsTable {
   width: 100%;
   margin-bottom: 1rem;
@@ -139,8 +135,7 @@
 
 .EnvVarsTable table td img:hover {
   /* cursor: pointer; */
-  filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(180deg)
-    brightness(119%) contrast(5%);
+  filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(180deg) brightness(119%) contrast(5%);
 }
 
 .EnvVarsTable thead,
@@ -176,12 +171,15 @@
   width: 4px;
   height: 0px;
 }
+
 .ModalFormInputs::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
+
 .ModalFormInputs::-webkit-scrollbar-thumb {
   background: #555;
 }
+
 .ModalFormInputs::-webkit-scrollbar-thumb:hover {
   background: #000;
 }
@@ -203,7 +201,8 @@
 }
 
 .DbSupportCheckField,
-.PrivateImageCheckField, .CustomDomainCheckField {
+.PrivateImageCheckField,
+.CustomDomainCheckField {
   display: flex;
 }
 
@@ -232,12 +231,15 @@
 }
 
 .DatabaseSupportTabContainer,
-.PrivateImageTabContainer, .CustomDomainTabContainer{
-  max-width: 60%; /* this is to correspond with the width of the input elements */
+.PrivateImageTabContainer,
+.CustomDomainTabContainer {
+  max-width: 60%;
+  /* this is to correspond with the width of the input elements */
 }
 
 .PrivateImageInputs,
-.DatabaseSupportInputs, .CustomDomainInputs {
+.DatabaseSupportInputs,
+.CustomDomainInputs {
   display: grid;
   gap: 0.5rem;
 }
@@ -279,36 +281,38 @@
 }
 
 
-.FormHeading{
+.FormHeading {
   padding: .3rem 0rem;
   font-weight: 600;
 }
 
-.ErrorOnWhite{
+.ErrorOnWhite {
   width: 100%;
 }
 
 
-.ClusterSelectionSection{
+.ClusterSelectionSection {
   display: flex;
   justify-content: space-between;
   height: fit-content;
   flex-direction: row;
- color: rgb(85, 85, 85);
+  color: rgb(85, 85, 85);
 }
-.TooltipStyles{
+
+.TooltipStyles {
   display: flex;
   justify-content: center;
   align-items: flex-start;
 }
-.alignText{
+
+.alignText {
   display: flex;
   justify-content: center;
   align-items: flex-start;
 }
 
 
-.ClusterToggleSection{
+.ClusterToggleSection {
   display: flex;
   padding: 0rem;
   flex-direction: row;
@@ -317,30 +321,61 @@
   align-items: center;
 }
 
-.ClustersSection{
+.ClustersSection {
   display: flex;
   padding: 0 4rem;
   flex-direction: column;
   font-size: 13px;
   color: #000000;
 }
-.MultiSelectionText{
+
+.MultiSelectionText {
   padding-bottom: 1rem;
 }
 
-li.ListStyle{
+li.ListStyle {
   list-style-type: none;
 }
-.leftsection{
+
+.leftsection {
   display: grid;
   grid-template-columns: 1fr 3fr;
   width: fit-content;
 
 }
 
-.ClusterLabel{
+.ClusterLabel {
   display: flex;
   padding-left: 1rem;
+}
+
+.DeploymentMethodTabs {
+  padding: 0.5rem 0 1rem 0rem;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+.CurrentTab {
+  background-color: #d9d9d9;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.CurrentTab:hover,
+.Tab:hover {
+  cursor: pointer;
+}
+
+.Tab {
+  padding: 0.5rem;
+  font-weight: bold;
+}
+
+.ButtonSection {
+  padding-top: 2rem;
+  padding-bottom: 5rem;
 }
 
 @media only screen and (max-width: 650px) {
@@ -349,14 +384,16 @@ li.ListStyle{
     top: 10rem;
     right: 1rem;
   }
-  .ContentSection{
+
+  .ContentSection {
     padding-top: 2.5rem;
   }
-  .MainContentSection{
-      background-color: #f1f1f1;
-      flex-direction: column;
-      display: flex;
-      flex-shrink: 0;
-      width:100%;
+
+  .MainContentSection {
+    background-color: #f1f1f1;
+    flex-direction: column;
+    display: flex;
+    flex-shrink: 0;
+    width: 100%;
   }
 }
