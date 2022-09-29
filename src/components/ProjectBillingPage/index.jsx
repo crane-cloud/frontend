@@ -268,6 +268,7 @@ const ProjectBillingPage = (props) => {
   }, [creditsSaved, creditsSaving]);
 
   const { projectBill } = useSelector((state) => state.getProjectBillReducer);
+<<<<<<< HEAD
   const { graphData } = useSelector((state) => state.getGraphDataReducer);
   
   let cost_data = projectBill?.cost_data;
@@ -278,6 +279,15 @@ const ProjectBillingPage = (props) => {
       ? setMonths(getData2Format(graphBillData))
       : setDays(getData2Format(graphBillData));
   }, [graphBillData, currentUsageTab, getData2Format]);
+=======
+  let cost_data = projectBill?.cost_data;
+
+  useEffect(() => {
+    currentUsageTab === "months"
+      ? setMonths(getData2Format(cost_data))
+      : setDays(getData2Format(cost_data));
+  }, [cost_data, currentUsageTab, getData2Format]);
+>>>>>>> 8f914d3a01dad36fe7571a9bbd165673c1cfcb92
 
   // let newObject = summationObject(projectBill?.data?.cost_data);
   // turn values to percentages for donut chart
