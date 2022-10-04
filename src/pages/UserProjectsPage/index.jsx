@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import Modal from "../../components/Modal";
 import styles from "./UserProjectsPage.module.css";
 import { clearUpdateProjectState } from "../../redux/actions/updateProject";
 import InformationBar from "../../components/InformationBar";
@@ -11,6 +12,7 @@ import CreateProject from "../../components/CreateProject";
 import getUserProjects from "../../redux/actions/projectsList";
 import getUserCredits from "../../redux/actions/userCredits";
 import ProjectCard from "../../components/ProjectCard";
+import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
 import "../../index.css";
 
@@ -21,6 +23,7 @@ class UserProjectsPage extends React.Component {
       openCreateComponent: false,
       Searchword: "",
       SearchList: [],
+      showInviteModel:false
     };
 
     this.state = this.initialState;
@@ -31,6 +34,8 @@ class UserProjectsPage extends React.Component {
       this.callbackProjectCreateComponent.bind(this);
     this.searchThroughProjects = this.searchThroughProjects.bind(this);
     this.handleCallbackSearchword = this.handleCallbackSearchword.bind(this);
+    this.showInvitationModel = this.showInvitationModel.bind(this);
+    this.hideInvitationModel = this.hideInvitationModel.bind(this);
   }
 
   componentDidMount() {
@@ -101,6 +106,12 @@ class UserProjectsPage extends React.Component {
       ),
     });
   }
+  hideInvitationModel() {
+    this.setState({ showInviteModel: false });
+  }
+  showInvitationModel(){
+    this.setState({ showInviteModel: true });
+  }
   handleCallbackSearchword(word) {
     this.setState({
       Searchword: word,
@@ -108,7 +119,7 @@ class UserProjectsPage extends React.Component {
   }
 
   render() {
-    const { openCreateComponent, Searchword, SearchList } = this.state;
+    const { openCreateComponent, Searchword, SearchList,showInviteModel } = this.state;
     const {
       projects,
       isRetrieving,
@@ -157,6 +168,8 @@ class UserProjectsPage extends React.Component {
                         name={project.name}
                         description={project.description}
                         cardID={project.id}
+                        acceptInviteCallBackModel={this.showInvitationModel}
+                        userID="user"
                         apps_count={project.apps_count}
                       />
                     ))}
@@ -171,9 +184,42 @@ class UserProjectsPage extends React.Component {
                         name={project.name}
                         description={project.description}
                         cardID={project.id}
+                        userID="user"
+                        acceptInviteCallBackModel={this.showInvitationModel}
                         apps_count={project.apps_count}
                       />
                     ))}
+                </div>
+              )}
+               {showInviteModel===true && (
+                <div className={styles.ProjectDeleteModel}>
+                  <Modal
+                    showModal={showInviteModel}
+                    onClickAway={this.hideInvitationModel}
+                  >
+                    <div className={styles.ModelContent}>
+                         <div className={styles.ModelHeader}>
+                         Invitation to this project </div>
+                        <div className={styles.UpdateForm}>
+                           <div className={styles.InformationText}>
+                           You have been invited to join this project as an 
+                           <span className={styles.Role}> Adminstrator.</span>
+                           </div>
+                          <div className={styles.UpdateProjectModelButtons}>
+                          <PrimaryButton
+                              label="Decline"
+                              className="CancelBtn"
+                              onClick={()=>{}}
+                            />
+                            <PrimaryButton
+                              label={"Accept"}
+                              className={styles.BlueBtn}
+                              onClick={()=>{}}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                  </Modal>
                 </div>
               )}
               {isFetched && projects.length === 0 && (

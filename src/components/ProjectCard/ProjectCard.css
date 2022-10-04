@@ -9,6 +9,16 @@
   margin: 0;
   border-color: #f7b21f;
 }
+.PendingNote{
+  display: flex;
+  color: #ccc;
+  text-align: center;
+  align-items: center;
+  width:  15rem;
+  font-size: 1rem;
+  height: 6rem;
+
+}
 
 .ProjectImageDiv {
   margin: 0;

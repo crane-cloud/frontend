@@ -27,7 +27,7 @@ class ProjectCard extends React.Component {
   }
 
   render() {
-    const { name, description, cardID,apps_count } = this.props;
+    const { name, description, cardID,apps_count,userID,acceptInviteCallBackModel } = this.props;
 
     const formattedMetrics = this.getProjectMemoryMetrics();
 
@@ -35,7 +35,10 @@ class ProjectCard extends React.Component {
       <>
         <div className="ProjectsCard">
           <div className="appCount">{apps_count}</div>
-          <Link
+          {/**Check if user is part of the project or 
+           * any implementation */}
+          {userID ==="user"?
+          (<Link
             to={{
               pathname: `/projects/${cardID}/dashboard`,
               projectData: name,
@@ -49,7 +52,13 @@ class ProjectCard extends React.Component {
                 data={formattedMetrics}
               />
             </div>
-          </Link>
+          </Link>):
+          <div 
+          onClick={()=>{acceptInviteCallBackModel()}}
+          className="PendingNote">
+             Invitation to this project is pending acceptance
+          </div>
+          }
           <div className="BottomContainer">
             <div className="ProjectInfoSection">
               <Link
