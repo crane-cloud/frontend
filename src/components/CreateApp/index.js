@@ -744,7 +744,7 @@ class CreateApp extends React.Component {
               </>
             )}
 
-            {currentDeploymentMethod === "mira" && <MiraPage />}
+            {currentDeploymentMethod === "mira" && <MiraPage projectID={projectID} />}
           </div>
         </div>
       </div>
