@@ -482,7 +482,7 @@ class ProjectSettingsPage extends React.Component {
                 <div className={styles.MembershipHeader}>
                  <div className={styles.MemberSection}>
                  <div className={styles.SettingsSectionInfoHeader}>
-                 Project has 3 Team Member
+                 Project has 1 Team Member
                  </div>
                  <div className={styles.MemberDescription}>
                  Members have accounts on crane cloud,
@@ -491,6 +491,7 @@ class ProjectSettingsPage extends React.Component {
                  </div>
                  <SettingsButton
                     label="Invite member"
+                    className={styles.SettingsButton}
                     onClick={()=>{this.showInviteMenu()}}
                    />
                  
@@ -559,6 +560,7 @@ class ProjectSettingsPage extends React.Component {
                     <div className={styles.SectionButtons}>
                       <SettingsButton
                         label="Update"
+                        className={styles.SettingsButtonUpdate}
                         onClick={this.showUpdateAlert}
                       />
                     </div>
@@ -575,7 +577,7 @@ class ProjectSettingsPage extends React.Component {
                     <div className={styles.SectionButtons}>
                       <SettingsButton
                         label="Delete"
-                        className="Change-Btn"
+                        className={styles.DeleteBtn}
                         onClick={this.showDeleteAlert}
                       />
                     </div>
@@ -725,7 +727,7 @@ class ProjectSettingsPage extends React.Component {
                               placeholder={
                                 invitationRole
                                   ? invitationRole
-                                  : "Update project type"
+                                  : "adminstrator"
                               }
                               options={
                                 [

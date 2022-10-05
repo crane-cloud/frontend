@@ -236,6 +236,7 @@
 }
 
 .DeleteBtn {
+  color: #fff;
   background-color: #ff0000;
   outline: 1px solid #ff0000;
 }
@@ -315,6 +316,27 @@
   justify-content: center;
   font-weight: 700;
   font-size: 2rem;
+}
+.SettingsButton{
+  background-color: #008ac1;
+  color: #fff;
+  outline: 1px solid #008ac1;
+}
+.SettingsButton:hover{
+  color: #008ac1;
+  background-color:#fff;
+  outline: 1px solid #008ac1;
+}
+.SettingsButtonUpdate{
+  color: #fff;
+  background-color:#f7b21f;
+  outline: 1px solid #f7b21f;
+}
+
+.SettingsButtonUpdate:hover{
+  color: #f7b21f;
+  background-color:#fff;
+  outline: 1px solid #f7b21f;
 }
 
 .contextMenu {
