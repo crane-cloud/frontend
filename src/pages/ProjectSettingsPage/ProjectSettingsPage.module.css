@@ -41,17 +41,14 @@
   background-color: rgba(27, 31, 35, 0.1);
   border-radius: 3px;
 }
-
 .DeleteProjectModelButtons {
   display: flex;
   justify-content: space-between;
 }
-
 .UpdateProjectModelButtons {
   display: flex;
   justify-content: space-between;
 }
-
 .ModalUpdateForm {
   display: grid;
   gap: 2rem;
@@ -173,7 +170,19 @@
 .DeleteSubDescription {
   font-weight: 500;
 }
-
+.MembershipHeader{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.MemberSection{
+  display: flex;
+  flex-direction: column;
+  gap:0.3rem;
+}
+.MemberDescription{
+  width: 30rem;
+}
 .ProjectInstructions {
   padding: 1rem 1rem;
   background: #ffffff;
@@ -181,7 +190,6 @@
   display: grid;
   gap: 2rem;
 }
-
 .ProjectButtonRow {
   display: grid;
   grid-template-columns: auto 40%;
@@ -228,6 +236,7 @@
 }
 
 .DeleteBtn {
+  color: #fff;
   background-color: #ff0000;
   outline: 1px solid #ff0000;
 }
@@ -237,6 +246,149 @@
   outline: 1px solid #ff0000;
   color: #ff0000;
 }
+.MemberTable{
+  width: 80%;
+}
+.MemberTableHead {
+  text-transform: uppercase;
+  color: #008ac1;
+  text-align: center;
+  grid-row: 1;
+  padding: 0.5rem 0;
+}
+.MemberNameEmail{
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+}
+.MemberTableRow {
+  display: grid;
+  color: #000000;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.NameSecting{
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: .4rem;
+  align-items: center;
+}
+.MemberAvatar{
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+}
+
+.MemberTableRow:not(a) {
+  border-bottom-width: 2px;
+}
+
+
+.CardBodySection .MemberTableRow{
+  width: 100%;
+}
+.SendInvitationButton{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.BlueBtn:hover{
+  color: #008ac1;
+  background-color: #fff;
+  outline: 2px solid #008ac1;
+}
+.BlueBtn{
+  color: #fff;
+  background-color: #008ac1;
+  outline: 2px solid #008ac1;
+  padding: 0.5rem;
+  height: 2.5rem;
+}
+.ModelHeader{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 2rem;
+}
+.SettingsButton{
+  background-color: #008ac1;
+  color: #fff;
+  outline: 1px solid #008ac1;
+}
+.SettingsButton:hover{
+  color: #008ac1;
+  background-color:#fff;
+  outline: 1px solid #008ac1;
+}
+.SettingsButtonUpdate{
+  color: #fff;
+  background-color:#f7b21f;
+  outline: 1px solid #f7b21f;
+}
+
+.SettingsButtonUpdate:hover{
+  color: #f7b21f;
+  background-color:#fff;
+  outline: 1px solid #f7b21f;
+}
+
+.contextMenu {
+  color: #000;
+  background-color: #f9f9f9;
+  position: absolute;
+  box-shadow: 0 4px 4px 0 rgba(117, 117, 117, 0.2);
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+
+.MemberTableCell {
+  font-weight: normal;
+  padding: 1rem 0;
+  text-align: center;
+  grid-row: 1;
+  overflow: hidden;
+  overflow-wrap: break-word;
+}
+
+/* .MemberTableCell div {
+ 
+} */
+
+.MemberTableHead:first-child,
+.MemberTableCell:first-child {
+  text-align: left;
+
+}
+
+/* .MemberTableCell:first-child {
+  text-transform: uppercase;
+} */
+
+.MemberTableHead:last-child,
+.MemberTableCell:last-child {
+  text-align: right;
+  padding-right: 1rem!important;
+}
+
+
+
 @media(max-width: 650px) {
   .MainSection {
     /*one column required */

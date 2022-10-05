@@ -12,10 +12,12 @@ import updateProject, {
   clearUpdateProjectState,
 } from "../../redux/actions/updateProject";
 import Spinner from "../../components/Spinner";
+import Avatar from "../../components/Avatar";
 import Modal from "../../components/Modal";
 import SideBar from "../../components/SideBar";
 import TextArea from "../../components/TextArea";
 import Feedback from "../../components/Feedback";
+import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
 import DeleteWarning from "../../components/DeleteWarning";
 import BlackInputText from "../../components/BlackInputText";
 import styles from "./ProjectSettingsPage.module.css";
@@ -55,6 +57,10 @@ class ProjectSettingsPage extends React.Component {
       projectType: project_type ? project_type : "",
       othersBool: false,
       otherType: "",
+      // actionsMenu:false,
+      showInviteModel:false,
+      invitationRole:"",
+      useremail:""
     };
 
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
@@ -70,6 +76,10 @@ class ProjectSettingsPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.checkProjectInputValidity = this.checkProjectInputValidity.bind(this);
     this.handleTypeSelectChange = this.handleTypeSelectChange.bind(this);
+    this.handleInvitationRole = this.handleInvitationRole.bind(this);
+    // this.handleClick = this.handleClick.bind(this);
+    // this.hideModal = this.hideModal.bind(this);
+    this.showInviteMenu = this.showInviteMenu.bind(this);
     this.renderRedirect = this.renderRedirect.bind(this);
   }
 
@@ -114,6 +124,22 @@ class ProjectSettingsPage extends React.Component {
         disableDelete: true,
       });
     }
+  }
+  // handleClick = (e) => {
+  //   if (this.state.actionsMenu) {
+  //     // this.closeModal();
+  //     return;
+  //   }
+  //   this.setState({ actionsMenu: true });
+  //   e.stopPropagation();
+  //   document.addEventListener("click", this.hideModal);
+  // };
+
+  hideModal = () => {
+    this.setState({ showInviteModel: false });
+  };
+  showInviteMenu(){
+    this.setState({ showInviteModel: true });
   }
 
   handleSubmit() {
@@ -316,6 +342,9 @@ class ProjectSettingsPage extends React.Component {
       }
     }
   }
+  handleInvitationRole(selected) {
+      this.setState({ invitationRole: selected.value });
+  }
   renderRedirect = () => {
     const { isDeleted, isUpdated } = this.props;
     if (isDeleted || isUpdated) {
@@ -355,7 +384,10 @@ class ProjectSettingsPage extends React.Component {
       nameChecked,
       idChecked,
       descriptionChecked,
-      tokenChecked
+      tokenChecked,
+      showInviteModel,
+      useremail,
+      invitationRole,
     } = this.state;
     const types = retrieveProjectTypes();
 
@@ -389,7 +421,6 @@ class ProjectSettingsPage extends React.Component {
               <div className={`${styles.ProjectSections} SmallContainer`}>
 
               <div className={styles.ProjectSectionTitle}>Project Details</div>
-
 
               <div className={styles.ProjectInstructions}>
                   <div className={styles.ProjectButtonRow}>
@@ -446,6 +477,76 @@ class ProjectSettingsPage extends React.Component {
                     </div>
                   </div>
                 </div>
+                <div className={styles.ProjectSectionTitle}>Membership</div>
+                <div className={styles.ProjectInstructions}>
+                <div className={styles.MembershipHeader}>
+                 <div className={styles.MemberSection}>
+                 <div className={styles.SettingsSectionInfoHeader}>
+                 Project has 1 Team Member
+                 </div>
+                 <div className={styles.MemberDescription}>
+                 Members have accounts on crane cloud,
+                  they can perform different operations on the project depending on their permission.  
+                 </div>
+                 </div>
+                 <SettingsButton
+                    label="Invite member"
+                    className={styles.SettingsButton}
+                    onClick={()=>{this.showInviteMenu()}}
+                   />
+                 
+                 </div>
+                  <div className={styles.MemberTable}>
+                      <div className={`${styles.MemberTableRow}`}>
+                        <div className={styles.MemberTableHead}>User</div>
+                        <div className={styles.MemberTableHead}>Role</div>
+                        <div className={styles.MemberTableHead}>Options</div>
+                      </div>
+                      <div className={styles.MemberBody} >
+                            <div className={styles.MemberTableRow}>
+                            <div className={styles.MemberTableCell}>
+                            <div className={styles.NameSecting}>
+                            <Avatar name="kfan" className={styles.MemberAvatar}/>
+                               <div className={styles.MemberNameEmail}>
+                               <div>kfan</div>
+                               <div>kfan@cranecloud.com</div>
+                               </div>
+                               </div>
+                              </div>
+                              <div className={styles.MemberTableCell}>
+                                Owner
+                              </div>
+                              <div className={styles.MemberTableCell}>
+                               <div onClick={(e) => {
+                                // this.showMenu(user.id);
+                                this.handleClick(e);
+                              }}> 
+                              <MoreIcon />
+                              {/* options to be determined per user*/}
+                              {/* {actionsMenu===true  && (
+                                <div className="BelowHeader bg-light">
+                                  <div className={styles.contextMenu}>
+                                    <div
+                                      className="DropDownLink"
+                                      role="presentation"
+                                      onClick={()=>{}}>
+                                      Assign new owner
+                                    </div>
+                                    <div
+                                      className="DropDownLink"
+                                      role="presentation"
+                                      onClick={()=>{}}>
+                                      Assign 
+                                    </div>
+                                  </div>
+                                </div>
+                              )} */}
+                              </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                </div>
 
                 <div className={styles.ProjectSectionTitle}>Manage project</div>
                 <div className={styles.ProjectInstructions}>
@@ -459,6 +560,7 @@ class ProjectSettingsPage extends React.Component {
                     <div className={styles.SectionButtons}>
                       <SettingsButton
                         label="Update"
+                        className={styles.SettingsButtonUpdate}
                         onClick={this.showUpdateAlert}
                       />
                     </div>
@@ -475,7 +577,7 @@ class ProjectSettingsPage extends React.Component {
                     <div className={styles.SectionButtons}>
                       <SettingsButton
                         label="Delete"
-                        className="Change-Btn"
+                        className={styles.DeleteBtn}
                         onClick={this.showDeleteAlert}
                       />
                     </div>
@@ -593,7 +695,71 @@ class ProjectSettingsPage extends React.Component {
                   </Modal>
                 </div>
               )}
-
+               {showInviteModel===true && (
+                <div className={styles.ProjectDeleteModel}>
+                  <Modal
+                    showModal={showInviteModel}
+                    onClickAway={this.hideModal}
+                  >
+                    <div>
+                         <div className={styles.ModelHeader}>
+                          Invitate  Member </div>
+                        <div className={styles.UpdateForm}>
+                          <div className={styles.UpdateInputSection}>
+                            <div className={styles.DeleteDescription}>
+                            Search member (by email)
+                            </div>
+                            <BlackInputText
+                              placeholder="khalifan@gmail.com"
+                              name="useremail"
+                              value={useremail}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />
+                          </div>
+                          <div className={styles.UpdateInputSection}>
+                            <div className={styles.DeleteDescription}>
+                            Member Role (in connection with user permission)
+                            </div>
+                            <Select
+                              required
+                              placeholder={
+                                invitationRole
+                                  ? invitationRole
+                                  : "adminstrator"
+                              }
+                              options={
+                                [
+                                { name: "Administrator", id: 1, value: "Administrator" },
+                                { name: "Collaborator", id: 2, value: "Collaborator" },
+                                ]
+                              }
+                              onChange={this.handleInvitationRole}
+                            />
+                          </div>
+                          {(errorMessage || error) && (
+                            <Feedback
+                              type="error"
+                              message={
+                                errorMessage
+                                  ? "Failed to send invitation"
+                                  : error
+                              }
+                            />
+                          )}
+                          <div className={styles.SendInvitationButton}>
+                            <PrimaryButton
+                              label={"Send Invitation"}
+                              className={styles.BlueBtn}
+                              onClick={()=>{}}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                  </Modal>
+                </div>
+              )}
               {openDeleteAlert && (
                 <div className={styles.ProjectDeleteModel}>
                   <Modal
