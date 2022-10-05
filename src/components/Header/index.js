@@ -11,6 +11,7 @@ import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 
 const Header = (props) => {
   const { user, match } = props;
+  const token = localStorage.getItem("token")
 
   const [hidden, setHidden] = useState(false);
   const dropdownRef = useRef(null);
@@ -56,7 +57,7 @@ const Header = (props) => {
   return (
     <header className={`${styles.Header} SmallContainer`}>
       <Logo />
-      {(!user.accessToken || user.accessToken === "" || pageUrl !== null) && (
+      {(!token || token === "" || pageUrl !== null) && (
         <div className={styles.HeaderLinksWrap}>
           {match.path === "/login" && (
             <div className={styles.HeaderLinks}>
@@ -81,8 +82,7 @@ const Header = (props) => {
         </div>
       )}
 
-      {(user.accessToken && pageUrl === null) && (
-
+      {(token && pageUrl === null) && (
         <div className={styles.HeaderLinksWrap}>
           <div
             ref={dropdownRef}
