@@ -14,7 +14,8 @@ const NewHeader = (props) => {
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const { user, match } = props;
+  const { match } = props;
+  const token =localStorage.getItem("token")
 
   const toggleHidden = () => {
     if (hidden) {
@@ -55,7 +56,7 @@ const NewHeader = (props) => {
       <NewLogo />
       {isDesktop ? (
         <>
-          {(!user.accessToken || user.accessToken === "") && (
+          {(!token || token === "") && (
             <div className="HeaderLinksWrap">
               {match.path !== "/admin-login" && (
                 <div className="HeaderLink bold">
@@ -85,7 +86,7 @@ const NewHeader = (props) => {
               )}
             </div>
           )}
-          {user.accessToken && (
+          {token && (
             <div
               ref={dropdownRef}
               className="HeaderLink"
@@ -137,7 +138,7 @@ const NewHeader = (props) => {
           </div>
           {open && (
             <div className="HeaderDropdown">
-              {(!user.accessToken || user.accessToken === "") && (
+              {(!token || token === "") && (
                 <div className="HeaderDropItems">
                   {match.path !== "/admin-login" && (
                     <div className="HeaderDropLinks bold">
@@ -167,7 +168,7 @@ const NewHeader = (props) => {
                   )}
                 </div>
               )}
-              {user.accessToken && (
+              {token && (
                 <div
                   ref={dropdownRef}
                   className="HeaderDropdown"
@@ -215,7 +216,7 @@ const NewHeader = (props) => {
 NewHeader.propTypes = {
   removeUser: PropTypes.func.isRequired,
   user: PropTypes.shape({
-    accessToken: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+   // accessToken: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     data: PropTypes.shape({
       id: PropTypes.string,
       name: PropTypes.string,
