@@ -84,8 +84,8 @@ class ProjectSettingsPage extends React.Component {
   }
 
   componentDidMount() {
+    const { getProjectMembers } = this.props;
     const projectID = this.props.match.params.projectID;
-    console.log(projectID);
     getProjectMembers(projectID);
   }
 
