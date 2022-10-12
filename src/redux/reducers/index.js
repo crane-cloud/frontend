@@ -44,7 +44,7 @@ import usersSummaryReducer from "./usersSummary";
 import revertUrlReducer from "./revertUrl";
 import adminDatabasesReducer from "./adminGetDatabases";
 import adminCreateDBReducer from "./adminCreateDB";
-import getProjectBillReducer from "./getProjectBill"
+import getProjectBillReducer from "./getProjectBill";
 import savePaymentReducer from "./savePayment";
 import getTransactionsReducer from "./getTransactions";
 import addBetaUserReducer from "./addBetaUser";
@@ -57,6 +57,7 @@ import adminGetUserCreditsReducer from "./adminGetUserCredits";
 import updateProfileReducer from "./updateProfile";
 import creditsPaymentReducer from "./creditsPayments";
 import getGraphDataReducer from "./getGraphData";
+import projectMembersReducer from "./getProjectMembers";
 
 export default combineReducers({
   clusterResourcesReducer,
@@ -117,4 +118,5 @@ export default combineReducers({
   updateProfileReducer,
   creditsPaymentReducer,
   getGraphDataReducer,
+  projectMembersReducer,
 });
