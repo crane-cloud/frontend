@@ -117,6 +117,7 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
 }
 a.HeaderLinkDocs {
   color: #000;
+  border-radius: 10px;
 }
 a.HeaderLinkDocs:hover {
   background-color: #f7b21f;

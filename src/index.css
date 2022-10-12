@@ -85,7 +85,7 @@ select,
 button {
   font-family: inherit;
   font-size: inherit;
-  border-radius: 0;
+  border-radius: 5px;
   margin: 0;
 }
 

@@ -26,6 +26,7 @@
 .SummaryCardDimentions {
   min-width: 100%;
   display: flex;
+  border-radius: 15px;
 }
 .TopBarSection {
   background-color: black;

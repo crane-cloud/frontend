@@ -49,6 +49,7 @@
   grid-template-rows: 0.5fr 1fr;
   grid-gap: 0.2rem;
   width: 100%;
+  border-radius: 5px;
 }
 .FormsSection {
   padding: 1rem;
