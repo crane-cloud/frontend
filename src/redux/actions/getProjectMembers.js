@@ -12,7 +12,7 @@ const startGettingProjectMembers = () => ({
 
 const getProjectMembersSuccess = (response) => ({
   type: GET_PROJECT_MEMBERS_SUCCESS,
-  payload: response.data,
+  payload: response.data.data,
 });
 
 const getProjectMembersFail = (error) => ({

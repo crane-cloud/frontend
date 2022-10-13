@@ -58,6 +58,7 @@ import updateProfileReducer from "./updateProfile";
 import creditsPaymentReducer from "./creditsPayments";
 import getGraphDataReducer from "./getGraphData";
 import projectMembersReducer from "./getProjectMembers";
+import inviteMembersReducer from "./inviteMembers";
 
 export default combineReducers({
   clusterResourcesReducer,
@@ -119,4 +120,5 @@ export default combineReducers({
   creditsPaymentReducer,
   getGraphDataReducer,
   projectMembersReducer,
+  inviteMembersReducer,
 });
