@@ -23,6 +23,7 @@
   padding: 1rem 3rem;
   font-size: 0.9em;
   color: #fff;
+  border-radius: 10px;
 }
 .TurnLight:hover {
   transition: 0.4s;

@@ -1,20 +1,23 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import InformationBar from "../InformationBar";
-import Header from "../Header";
-import Spinner from "../Spinner";
-import SideBar from "../SideBar";
-import "./AppCpuPage.css";
-import getAppCPU, { clearAppCPU } from "../../redux/actions/appCPU";
-import MetricsCard from "../MetricsCard";
-import PeriodSelector from "../Period";
-import LineChartComponent from "../LineChart";
+import './AppCpuPage.css';
+
+import React from 'react';
+
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import Header from '../../components/Header';
+import InformationBar from '../../components/InformationBar';
 import {
   formatAppCPUMetrics,
   getCurrentTimeStamp,
   subtractTime,
-} from "../../helpers/formatMetrics";
+} from '../../helpers/formatMetrics';
+import LineChartComponent from '../../components/LineChart';
+import MetricsCard from '../../components/MetricsCard';
+import PeriodSelector from '../../components/Period';
+import getAppCPU, { clearAppCPU } from '../../redux/actions/appCPU';
+import SideBar from '../../components/SideBar';
+import Spinner from '../../components/Spinner';
 
 export class AppCpuPage extends React.Component {
   constructor(props) {
