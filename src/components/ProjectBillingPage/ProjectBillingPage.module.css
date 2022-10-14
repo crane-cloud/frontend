@@ -73,6 +73,7 @@
   flex-direction: column;
   gap: 0.5;
   max-width: 25rem;
+  border-radius: 15px;
   border: 1px solid #cccccc;
   background-color: #ffffff;
 }
@@ -150,6 +151,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  border-radius: 15px;
   border: 1px solid #cccccc;
   width: 100%;
   background-color: #ffffff;
@@ -179,6 +181,7 @@
 .TransactionHistoryContainer {
   border: 1px solid #cccccc;
   background-color: white;
+  border-radius: 15px;
 }
 
 .TransactionHistoryHeading {

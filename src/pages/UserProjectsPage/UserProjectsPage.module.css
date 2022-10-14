@@ -3,7 +3,7 @@
   gap: 1rem;
   justify-content: flex-start;
   flex-wrap: wrap;
-  padding: 2rem 0;
+  padding: 2rem;
 }
 
 .ProjectFormErrorDiv {
@@ -22,10 +22,10 @@
   z-index: 2;
   background-color: rgba(0, 0, 0, 0.5);
 }
-.Role{
+.Role {
   font-weight: 600;
 }
-.ModelContent{
+.ModelContent {
   width: 23rem;
 }
 
@@ -42,22 +42,22 @@
   padding: 1rem 1.3rem;
   grid-template-rows: 2fr;
 }
-.InformationText{
+.InformationText {
   width: 20rem;
 }
-.ModelHeader{
+.ModelHeader {
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   font-size: 2rem;
 }
-.BlueBtn:hover{
+.BlueBtn:hover {
   color: #008ac1;
   background-color: #fff;
   outline: 2px solid #008ac1;
 }
-.BlueBtn{
+.BlueBtn {
   color: #fff;
   background-color: #008ac1;
   outline: 2px solid #008ac1;
@@ -124,11 +124,10 @@
   padding: 2rem;
 }
 
-
 @media (max-width: 500px) {
-  .ProjectList > div{
-    width: 100%!important;
-  }  
+  .ProjectList > div {
+    width: 100% !important;
+  }
 }
 /* @media only screen and (max-width: 1100px) and (min-width: 901px) {
   .ProjectList {
