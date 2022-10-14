@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
 import { shallow } from "enzyme";
-import AppMetricsPage, { mapStateToProps } from "./";
+import AppMetricsPage, { mapStateToProps } from ".";
 
 const AppMetricsPageProps = {
   logs: ["log1", "log2"],
@@ -15,7 +15,9 @@ const AppMetricsPageProps = {
 // {} ={}
 describe("Testing the App Metrics Page component", () => {
   const WrapperAppMetricsPage = AppMetricsPage.WrappedComponent;
-  const AppMetricsPageComponent = shallow(<WrapperAppMetricsPage {...AppMetricsPageProps} />);
+  const AppMetricsPageComponent = shallow(
+    <WrapperAppMetricsPage {...AppMetricsPageProps} />
+  );
   it("should match the snapshot for AppMetricsPage after adding props", () => {
     AppMetricsPageComponent.setProps(AppMetricsPageProps);
     expect(AppMetricsPageComponent).toBeDefined();
@@ -52,8 +54,8 @@ describe("Testing the exported mapstate to props and dispatch", () => {
         appsListReducer: { apps: [] },
         revertUrlReducer: {
           isReverting: false,
-          isReverted: false
-        }
+          isReverted: false,
+        },
       })
     ).toEqual({
       isFetchingAppMemory: false,
@@ -69,8 +71,8 @@ describe("Testing the exported mapstate to props and dispatch", () => {
       isFetchingAppNetwork: false,
       appNetworkMessage: "",
       apps: [],
-      isReverted:false,
-      isReverting:false
+      isReverted: false,
+      isReverting: false,
     });
   });
 });

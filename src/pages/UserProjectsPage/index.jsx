@@ -159,7 +159,7 @@ class UserProjectsPage extends React.Component {
                   </div>
                 </div>
               ) : Searchword !== "" ? (
-                <div className={`${styles.ProjectList}  SmallContainer`}>
+                <div className={styles.ProjectList}>
                   {isFetched &&
                     SearchList !== undefined &&
                     SearchList.map((project) => (

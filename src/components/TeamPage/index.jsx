@@ -1,19 +1,21 @@
-import React from "react";
-import Header from "../Header";
-import "./TeamPage.css";
-import MemberCard from "../MemberCard";
-import Engineer from "../../assets/images/Engineer.png";
-import Alex from "../../assets/images/Alex.png";
-import Aminah from "../../assets/images/Aminah.png";
-import Greatest from "../../assets/images/Greatest.png";
-import Allan from "../../assets/images/Allan.png";
-import Henry from "../../assets/images/Henry.png";
-import Dorothy from "../../assets/images/Dorothy.png";
-import Steve from "../../assets/images/Steve.png";
-import Colin from "../../assets/images/Colin.png";
-import Dora from "../../assets/images/Dora.jpg";
-import Inno from "../../assets/images/Inno.jpg";
-import James from "../../assets/images/James.jpg";
+import './TeamPage.css';
+
+import React from 'react';
+
+import Alex from '../../assets/images/Alex.png';
+import Allan from '../../assets/images/Allan.png';
+import Aminah from '../../assets/images/Aminah.png';
+import Colin from '../../assets/images/Colin.png';
+import Dora from '../../assets/images/Dora.jpg';
+import Dorothy from '../../assets/images/Dorothy.png';
+import Engineer from '../../assets/images/Engineer.png';
+import Greatest from '../../assets/images/Greatest.png';
+import Henry from '../../assets/images/Henry.png';
+import Inno from '../../assets/images/Inno.jpg';
+import James from '../../assets/images/James.jpg';
+import Steve from '../../assets/images/Steve.png';
+import Header from '../Header';
+import MemberCard from '../MemberCard';
 
 const members = [
   {

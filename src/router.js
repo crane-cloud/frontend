@@ -1,61 +1,62 @@
-import React from "react";
+import React from 'react';
+
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
   Redirect,
-} from "react-router-dom";
-import store from "./redux/store";
-// import App from "./components/App";
-import LoginPage from "./components/LoginPage";
-// import PricingPage from "./components/PricingPage";
-import ContactPage from "./components/ContactPage";
-import PasswordReset from "./components/PasswordReset";
-import RegisterPage from "./components/RegisterPage";
-import ClusterPage from "./components/ClusterPage";
-import ClusterResourcesPage from "./components/ClusterResourcesPage";
-import ClusterNodes from "./components/NodesList";
-import PvcsList from "./components/PvcsList";
-import NamespacesListPage from "./components/NamespacesList";
-import PodsList from "./components/PodsList";
-import CreateNewPassword from "./components/CreateNewPassword";
-import ServicesListPage from "./components/ServicesList";
-import StorageClassList from "./components/StorageClassList";
-import PvsListPage from "./components/PvsListPage";
-import JobsListPage from "./components/JobsListPage";
-import DeploymentsPage from "./components/DeploymentsPage";
-import AdminProjectsPage from "./components/AdminProjectsPage";
-import VerificationSentPage from "./components/VerificationSentPage";
-import AdminLoginPage from "./components/AdminLoginPage";
-import AppsPage from "./components/AppsPage";
-import UsersAccounts from "./components/UserAccounts";
-import AppMetricsPage from "./components/AppMetricsPage";
-import ProjectSettingsPage from "./pages/ProjectSettingsPage";
-import AppSettingsPage from "./components/AppSettingsPage";
-import ProjectMemoryPage from "./components/ProjectMemoryPage";
-import ProjectCPUPage from "./components/ProjectCPUPage";
-import ProjectNetworkPage from "./components/ProjectNetworkPage";
-import AppCpuPage from "./components/AppCpuPage";
-import AppMemoryPage from "./components/AppMemoryPage";
-import AppLogsPage from "./components/AppLogsPage";
-import AppNetworkPage from "./components/AppNetworkPage";
-import TeamPage from "./components/TeamPage";
-import PageNotFound from "./components/PageNotFound";
-import DatabaseList from "./components/DatabaseList";
-import DBSettingsPage from "./components/DBSettingsPage";
-import CreateDatabase from "./components/CreateDatabase";
-import Terms from "./components/Documents/terms";
-import Privacy from "./components/Documents/privacy";
-import UserProjectsPage from "./pages/UserProjectsPage";
-import ProjectDashboardPage from "./components/ProjectDashboardPage";
-import AdminDBList from "./components/AdminDB";
+  Route,
+  Switch,
+} from 'react-router-dom';
 
-import ProjectBillingPage from "./components/ProjectBillingPage";
-import ClusterSettingsPage from "./components/ClusterSettingsPage";
-import MonitoringPage from "./components/MonitoringPage";
-import UserProfile from "./components/UserProfile";
-import AdminUsersProfile from "./components/AdminUsersProfile";
-import App from "./components/App";
+import AdminDBList from './components/AdminDB';
+import AdminLoginPage from './components/AdminLoginPage';
+import AdminProjectsPage from './components/AdminProjectsPage';
+import AdminUsersProfile from './components/AdminUsersProfile';
+import App from './components/App';
+import AppLogsPage from './components/AppLogsPage';
+import AppMemoryPage from './components/AppMemoryPage';
+import AppNetworkPage from './components/AppNetworkPage';
+import AppSettingsPage from './components/AppSettingsPage';
+import AppsPage from './components/AppsPage';
+import ClusterPage from './components/ClusterPage';
+import ClusterResourcesPage from './components/ClusterResourcesPage';
+import ClusterSettingsPage from './components/ClusterSettingsPage';
+// import PricingPage from "./components/PricingPage";
+import ContactPage from './components/ContactPage';
+import CreateDatabase from './components/CreateDatabase';
+import CreateNewPassword from './components/CreateNewPassword';
+import DatabaseList from './components/DatabaseList';
+import DBSettingsPage from './components/DBSettingsPage';
+import DeploymentsPage from './components/DeploymentsPage';
+import Privacy from './components/Documents/privacy';
+import Terms from './components/Documents/terms';
+import JobsListPage from './components/JobsListPage';
+// import App from "./components/App";
+import LoginPage from './components/LoginPage';
+import MonitoringPage from './components/MonitoringPage';
+import NamespacesListPage from './components/NamespacesList';
+import ClusterNodes from './components/NodesList';
+import PageNotFound from './components/PageNotFound';
+import PasswordReset from './components/PasswordReset';
+import PodsList from './components/PodsList';
+import ProjectBillingPage from './components/ProjectBillingPage';
+import ProjectCPUPage from './components/ProjectCPUPage';
+import ProjectDashboardPage from './components/ProjectDashboardPage';
+import ProjectMemoryPage from './components/ProjectMemoryPage';
+import ProjectNetworkPage from './components/ProjectNetworkPage';
+import PvcsList from './components/PvcsList';
+import PvsListPage from './components/PvsListPage';
+import RegisterPage from './components/RegisterPage';
+import ServicesListPage from './components/ServicesList';
+import StorageClassList from './components/StorageClassList';
+import TeamPage from './components/TeamPage';
+import UsersAccounts from './components/UserAccounts';
+import UserProfile from './components/UserProfile';
+import VerificationSentPage from './components/VerificationSentPage';
+import AppCpuPage from './pages/AppCpuPage';
+import AppMetricsPage from './pages/AppMetricsPage';
+import ProjectSettingsPage from './pages/ProjectSettingsPage';
+import UserProjectsPage from './pages/UserProjectsPage';
+import store from './redux/store';
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
@@ -192,7 +193,7 @@ const Routes = () => (
         path="/accounts"
         component={UsersAccounts}
       />
-       <ProtectedRoute
+      <ProtectedRoute
         isAllowed={hasToken}
         exact
         path="/profile"

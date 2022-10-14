@@ -2,16 +2,16 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import InformationBar from "../InformationBar";
-import Header from "../Header";
-import SideBar from "../SideBar";
-import Spinner from "../Spinner";
+import InformationBar from "../../components/InformationBar";
+import Header from "../../components/Header";
+import SideBar from "../../components/SideBar";
+import Spinner from "../../components/Spinner";
 import { Redirect } from "react-router-dom";
-import MetricsCard from "../MetricsCard";
+import MetricsCard from "../../components/MetricsCard";
 import { ReactComponent as MetricIcon } from "../../assets/images/resource-icon.svg";
 import styles from "./AppMetricsPage.module.css";
-import LineChartComponent from "../LineChart";
-import LogsFrame from "../LogsFrame";
+import LineChartComponent from "../../components/LineChart";
+import LogsFrame from "../../components/LogsFrame";
 import getAppLogs from "../../redux/actions/getAppLogs";
 import getAppMemory, { clearAppMemory } from "../../redux/actions/appMemory";
 import getAppCPU from "../../redux/actions/appCPU";
@@ -22,7 +22,7 @@ import {
 } from "../../helpers/formatMetrics";
 import revertUrl, { clearUrlRevertState } from "../../redux/actions/revertUrl";
 import getAppNetwork from "../../redux/actions/appNetwork";
-import AppStatus from "../AppStatus";
+import AppStatus from "../../components/AppStatus";
 import { ReactComponent as CopyText } from "../../assets/images/copytextblue.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 
@@ -57,7 +57,7 @@ class AppMetricsPage extends React.Component {
 
     return info;
   }
-  
+
   componentDidMount() {
     const {
       getAppLogs,
@@ -76,7 +76,6 @@ class AppMetricsPage extends React.Component {
     getAppCPU(projectID, appID, {});
     getAppNetwork(projectID, appID, {});
   }
-
 
   getAppMemoryMetrics() {
     const { appID } = this.props.match.params;
@@ -114,8 +113,8 @@ class AppMetricsPage extends React.Component {
     revertUrl(params.appID);
   }
   renderRedirect = () => {
-    const {  isReverted, clearUrlRevertState } = this.props;
-    if ( isReverted) {
+    const { isReverted, clearUrlRevertState } = this.props;
+    if (isReverted) {
       clearUrlRevertState();
       return <Redirect to={`/projects`} noThrow />;
     }
@@ -124,7 +123,7 @@ class AppMetricsPage extends React.Component {
   render() {
     const { params } = this.props.match;
     const { projectID, appID } = params;
-    const { logs, retrieveingLogs, isReverting,isReverted } = this.props;
+    const { logs, retrieveingLogs, isReverting, isReverted } = this.props;
     const { urlChecked } = this.state;
 
     const formattedMemoryMetrics = this.getAppMemoryMetrics();
@@ -178,29 +177,40 @@ class AppMetricsPage extends React.Component {
                       </div>
                       <div className={styles.InnerContentGrid}>
                         <div className={styles.InnerTitlesStart}>App Url</div>
-                        { appInfo.url ? <div className={styles.InnerContentLink}>
-                          <div className={styles.InnerContentLinkText}>
-                            <a
-                              href={appInfo.url}
-                              rel="noopener noreferrer"
-                              target="_blank"
-                            >
-                              {appInfo.url}
-                            </a>
-                          </div>
-                          <div className={styles.CopierDiv}>
-                            <div className={styles.Icons}>
-                              <CopyText onClick={this.copyUrl} />
-                              {urlChecked === true ? <Checked /> : null}
+                        {appInfo.url ? (
+                          <div className={styles.InnerContentLink}>
+                            <div className={styles.InnerContentLinkText}>
+                              <a
+                                href={appInfo.url}
+                                rel="noopener noreferrer"
+                                target="_blank"
+                              >
+                                {appInfo.url}
+                              </a>
+                            </div>
+                            <div className={styles.CopierDiv}>
+                              <div className={styles.Icons}>
+                                <CopyText onClick={this.copyUrl} />
+                                {urlChecked === true ? <Checked /> : null}
+                              </div>
                             </div>
                           </div>
-                        </div>: 
-                        <>
-                      {isReverting ? <Spinner/> :<div className={styles.InnerContentWarnText} 
-                      onClick={()=>{this.regenerate()}} >
-                        Click to re-generate url
-                      </div> }</>
-                       }
+                        ) : (
+                          <>
+                            {isReverting ? (
+                              <Spinner />
+                            ) : (
+                              <div
+                                className={styles.InnerContentWarnText}
+                                onClick={() => {
+                                  this.regenerate();
+                                }}
+                              >
+                                Click to re-generate url
+                              </div>
+                            )}
+                          </>
+                        )}
                       </div>
                     </div>
                     <hr />
@@ -346,7 +356,7 @@ export const mapStateToProps = (state) => {
     appNetworkMessage,
     apps,
     isReverted,
-    isReverting
+    isReverting,
   };
 };
 
@@ -357,7 +367,7 @@ const mapDispatchToProps = {
   getAppCPU,
   getAppNetwork,
   clearUrlRevertState,
-  revertUrl
+  revertUrl,
 };
 
 AppMetricsPage.propTypes = {

@@ -173,6 +173,8 @@
 .MembershipHeader{
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
 }
 .MemberSection{
@@ -186,6 +188,7 @@
 .ProjectInstructions {
   padding: 1rem 1rem;
   background: #ffffff;
+  border-radius: 15px;
   border: 1px solid var(--color-gray-light);
   display: grid;
   gap: 2rem;
