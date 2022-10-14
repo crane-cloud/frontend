@@ -1,8 +1,9 @@
-import axios from "axios";
+import axios from "../../axios";
 import {
   INVITE_MEMBERS_SUCCESS,
   INVITE_MEMBERS_FAILED,
   START_INVITING_MEMBERS,
+  CLEAR_INVITING_MEMBERS_STATE,
 } from "./actionTypes";
 
 const startInvitingMembers = () => ({
@@ -22,6 +23,10 @@ const inviteMembersFailed = (error) => ({
   },
 });
 
+const clearInvitingMembersState = () => ({
+  type: CLEAR_INVITING_MEMBERS_STATE,
+});
+
 const inviteMembers = (inviteInfo, ProjectID) => (dispatch) => {
   dispatch(startInvitingMembers());
 
@@ -32,5 +37,7 @@ const inviteMembers = (inviteInfo, ProjectID) => (dispatch) => {
       dispatch(inviteMembersFailed(error));
     });
 };
+
+export { clearInvitingMembersState };
 
 export default inviteMembers;

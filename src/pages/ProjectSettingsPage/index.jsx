@@ -12,7 +12,10 @@ import getProjectMembers from "../../redux/actions/getProjectMembers";
 import updateProject, {
   clearUpdateProjectState,
 } from "../../redux/actions/updateProject";
-import inviteMembers from "../../redux/actions/inviteMembers";
+import inviteMembers, {
+  clearInvitingMembersState,
+} from "../../redux/actions/inviteMembers";
+import removeMember from "../../redux/actions/removeMembers";
 import Spinner from "../../components/Spinner";
 import Avatar from "../../components/Avatar";
 import Modal from "../../components/Modal";
@@ -59,10 +62,10 @@ class ProjectSettingsPage extends React.Component {
       projectType: project_type ? project_type : "",
       othersBool: false,
       otherType: "",
-      // actionsMenu: false,
+      actionsMenu: false,
       showInviteModel: false,
-      invitationRole: "",
-      useremail: "",
+      role: "",
+      email: "",
     };
 
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
@@ -78,51 +81,83 @@ class ProjectSettingsPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.checkProjectInputValidity = this.checkProjectInputValidity.bind(this);
     this.handleTypeSelectChange = this.handleTypeSelectChange.bind(this);
-    // this.handleClick = this.handleClick.bind(this);
-    // this.hideModal = this.hideModal.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.hideModal = this.hideModal.bind(this);
     this.showInviteMenu = this.showInviteMenu.bind(this);
     this.handleMemberInvitation = this.handleMemberInvitation.bind(this);
     this.handleInvitationRole = this.handleInvitationRole.bind(this);
+    this.hideInviteMenu = this.hideInviteMenu.bind(this);
+    this.showMenu = this.showMenu.bind(this);
     this.renderRedirect = this.renderRedirect.bind(this);
   }
 
   componentDidMount() {
-    const { getProjectMembers } = this.props;
+    const { getProjectMembers, clearInvitingMembersState } = this.props;
+    clearInvitingMembersState();
     const projectID = this.props.match.params.projectID;
     getProjectMembers(projectID);
   }
 
   componentDidUpdate(prevProps) {
-    const { isDeleted } = this.props;
+    const { getProjectMembers, isDeleted, isSent } = this.props;
 
     if (isDeleted !== prevProps.isDeleted) {
       this.hideDeleteAlert();
     }
+
+    if (isSent !== prevProps.isSent) {
+      clearInvitingMembersState();
+      getProjectMembers();
+      this.hideInviteMenu();
+    }
+  }
+
+  handleClick = (e) => {
+    if (this.state.actionsMenu) {
+      return;
+    }
+    this.setState({ actionsMenu: true });
+    e.propagation();
+    document.addEventListener("click", this.hideModal);
+  };
+
+  hideModal = () => {
+    this.setState({ actionsMenu: false });
+    document.removeEventListener("click", this.hideModal);
+  };
+
+  showMenu(useremail) {
+    this.setState({ email: useremail });
+  }
+
+  removeProjectMember(email) {
+    const { removeMember } = this.props;
+    const projectID = this.props.match.params.projectID;
+    removeMember(email, projectID);
   }
 
   handleMemberInvitation(e) {
     e.preventDefault();
-    const { useremail, invitationRole } = this.state;
+    const { email, role } = this.state;
     const { inviteMembers } = this.props;
 
     const inviteInfo = {
-      useremail,
-      invitationRole,
+      email,
+      role,
     };
-    console.log(inviteInfo);
 
-    if (!useremail || !invitationRole) {
-      this.validateEmail(useremail);
+    if (email !== "" && role !== "") {
+      this.validateEmail(email);
       const projectID = this.props.match.params.projectID;
       inviteMembers(inviteInfo, projectID);
     }
   }
 
-  validateEmail(useremail) {
+  validateEmail(email) {
     const emailRegEx =
       // eslint-disable-next-line no-useless-escape
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return emailRegEx.test(String(useremail).toLowerCase());
+    return emailRegEx.test(String(email).toLowerCase());
   }
 
   handleChange(e) {
@@ -161,21 +196,12 @@ class ProjectSettingsPage extends React.Component {
     }
   }
 
-  // handleClick = (e) => {
-  //   if (this.state.actionsMenu) {
-  //     // this.closeModal();
-  //     return;
-  //   }
-  //   this.setState({ actionsMenu: true });
-  //   e.stopPropagation();
-  //   document.addEventListener("click", this.hideModal);
-  // };
-
-  hideModal = () => {
-    this.setState({ showInviteModel: false });
-  };
   showInviteMenu() {
     this.setState({ showInviteModel: true });
+  }
+
+  hideInviteMenu() {
+    this.setState({ showInviteModel: false });
   }
 
   handleSubmit() {
@@ -379,12 +405,23 @@ class ProjectSettingsPage extends React.Component {
     }
   }
   handleInvitationRole(selected) {
-    this.setState({ invitationRole: selected.value });
+    this.setState({ role: selected.value });
   }
   renderRedirect = () => {
-    const { isDeleted, isUpdated } = this.props;
+    const {
+      isDeleted,
+      isUpdated,
+      isSent,
+      match: {
+        params: { projectID },
+      },
+    } = this.props;
     if (isDeleted || isUpdated) {
       return <Redirect to={`/projects`} noThrow />;
+    }
+
+    if (isSent) {
+      window.location.href = `/projects/${projectID}/settings`;
     }
   };
 
@@ -400,8 +437,10 @@ class ProjectSettingsPage extends React.Component {
       isUpdated,
       errorMessage,
       projectMembers,
-      // isSending,
+      isSending,
+      isSent,
     } = this.props;
+    console.log(isSent);
     const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
     const { name, description } = projectInfo;
 
@@ -430,8 +469,9 @@ class ProjectSettingsPage extends React.Component {
       descriptionChecked,
       tokenChecked,
       showInviteModel,
-      useremail,
-      invitationRole,
+      email,
+      role,
+      actionsMenu,
     } = this.state;
     const types = retrieveProjectTypes();
     const roles = retrieveMembershipRoles();
@@ -440,7 +480,7 @@ class ProjectSettingsPage extends React.Component {
 
     return (
       <div className={styles.Page}>
-        {isUpdated || isDeleted ? this.renderRedirect() : null}
+        {isUpdated || isDeleted || isSent ? this.renderRedirect() : null}
         <div className={styles.TopBarSection}>
           <Header />
         </div>
@@ -576,30 +616,25 @@ class ProjectSettingsPage extends React.Component {
                           <div className={styles.MemberTableCell}>
                             <div
                               onClick={(e) => {
-                                // this.showMenu(user.id);
+                                this.showMenu(entry.user.email);
                                 this.handleClick(e);
                               }}
                             >
                               <MoreIcon />
                               {/* options to be determined per user*/}
-                              {/* {actionsMenu===true  && (
+                              {actionsMenu && entry.user.email === email && (
                                 <div className="BelowHeader bg-light">
                                   <div className={styles.contextMenu}>
                                     <div
                                       className="DropDownLink"
                                       role="presentation"
-                                      onClick={()=>{}}>
-                                      Assign new owner
-                                    </div>
-                                    <div
-                                      className="DropDownLink"
-                                      role="presentation"
-                                      onClick={()=>{}}>
-                                      Assign 
+                                      onClick={this.removeProjectMember}
+                                    >
+                                      Remove member
                                     </div>
                                   </div>
                                 </div>
-                              )} */}
+                              )}
                             </div>
                           </div>
                         </div>
@@ -758,7 +793,7 @@ class ProjectSettingsPage extends React.Component {
                 <div className={styles.ProjectDeleteModel}>
                   <Modal
                     showModal={showInviteModel}
-                    onClickAway={this.hideModal}
+                    onClickAway={this.hideInviteMenu}
                   >
                     <div>
                       <div className={styles.ModelHeader}>Invite Member </div>
@@ -769,8 +804,8 @@ class ProjectSettingsPage extends React.Component {
                           </div>
                           <BlackInputText
                             placeholder="khalifan@gmail.com"
-                            name="useremail"
-                            value={useremail}
+                            name="email"
+                            value={email}
                             onChange={(e) => {
                               this.handleChange(e);
                             }}
@@ -782,7 +817,7 @@ class ProjectSettingsPage extends React.Component {
                           </div>
                           <Select
                             required
-                            placeholder="Choose membership role"
+                            placeholder={role ? role : "Choose membership role"}
                             options={roles}
                             onChange={this.handleInvitationRole}
                           />
@@ -797,9 +832,9 @@ class ProjectSettingsPage extends React.Component {
                         )}
                         <div className={styles.SendInvitationButton}>
                           <PrimaryButton
-                            label="Send Invitation"
+                            label={isSending ? <Spinner /> : "Send Invitation"}
                             className={styles.BlueBtn}
-                            onClick={this.handleSendInvitation}
+                            onClick={this.handleMemberInvitation}
                           />
                         </div>
                       </div>
@@ -894,6 +929,8 @@ ProjectSettingsPage.propTypes = {
   isDeleted: PropTypes.bool,
   isSending: PropTypes.bool,
   isSent: PropTypes.bool,
+  isRemoving: PropTypes.bool,
+  isRemoved: PropTypes.bool,
 };
 
 ProjectSettingsPage.defaultProps = {
@@ -905,6 +942,8 @@ ProjectSettingsPage.defaultProps = {
   isUpdating: false,
   isSending: false,
   isSent: false,
+  isRemoving: false,
+  isRemoved: false,
 };
 
 export const mapStateToProps = (state) => {
@@ -913,7 +952,10 @@ export const mapStateToProps = (state) => {
 
   const { projectMembers } = state.projectMembersReducer;
 
-  const { invitation } = state.inviteMembersReducer;
+  const { invitation, isSending, isSent, clearInvitingMembersState } =
+    state.inviteMembersReducer;
+
+  const { member, isRemoving, isRemoved } = state.removeMemberReducer;
 
   const { isUpdated, isUpdating, errorMessage, clearUpdateProjectState } =
     state.updateProjectReducer;
@@ -922,13 +964,19 @@ export const mapStateToProps = (state) => {
     isUpdating,
     message,
     isDeleting,
+    isSending,
+    isSent,
+    isRemoving,
+    isRemoved,
     isFailed,
     isDeleted,
     errorMessage,
+    clearInvitingMembersState,
     clearDeleteProjectState,
     clearUpdateProjectState,
     projectMembers,
     invitation,
+    member,
   };
 };
 
@@ -937,6 +985,8 @@ const mapDispatchToProps = {
   updateProject,
   getProjectMembers,
   inviteMembers,
+  removeMember,
+  clearInvitingMembersState,
   clearDeleteProjectState,
   clearUpdateProjectState,
 };

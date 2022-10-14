@@ -2,6 +2,7 @@ import {
   INVITE_MEMBERS_SUCCESS,
   INVITE_MEMBERS_FAILED,
   START_INVITING_MEMBERS,
+  CLEAR_INVITING_MEMBERS_STATE,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -35,6 +36,15 @@ const inviteMembersReducer = (state = initialState, action) => {
         message: action.payload,
         isSending: false,
         isSent: false,
+      };
+
+    case CLEAR_INVITING_MEMBERS_STATE:
+      return {
+        ...state,
+        invitation: null,
+        isSent: false,
+        isSending: false,
+        message: "",
       };
 
     default:
