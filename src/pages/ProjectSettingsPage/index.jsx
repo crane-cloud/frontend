@@ -440,7 +440,7 @@ class ProjectSettingsPage extends React.Component {
       isSending,
       isSent,
     } = this.props;
-    console.log(isSent);
+    // console.log(this.props);
     const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
     const { name, description } = projectInfo;
 
@@ -951,7 +951,7 @@ export const mapStateToProps = (state) => {
     state.deleteProjectReducer;
 
   const { projectMembers } = state.projectMembersReducer;
-
+  const { data } = state.user;
   const { invitation, isSending, isSent, clearInvitingMembersState } =
     state.inviteMembersReducer;
 
@@ -960,6 +960,7 @@ export const mapStateToProps = (state) => {
   const { isUpdated, isUpdating, errorMessage, clearUpdateProjectState } =
     state.updateProjectReducer;
   return {
+    data,
     isUpdated,
     isUpdating,
     message,
