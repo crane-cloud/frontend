@@ -15,14 +15,20 @@
   display: flex;
   flex-direction: column;
   padding: 1rem 2rem 0rem 2rem;
-  gap: 1rem;
   padding-left: 3rem;
   overflow: auto;
 }
 
 .ModalFormInputs {
-  height: calc(100vh - 12rem);
+  background: #d9d9d9;
   max-width: 40rem;
+  padding: 1rem;
+  border-bottom-left-radius: 0.7rem;
+  border-bottom-right-radius: 0.7rem;
+  border-top-right-radius: 0.7rem;
+}
+.CreateFormHolder{
+  height: calc(100vh - 14.5rem);
 }
 
 .BackDiv img {
@@ -350,7 +356,7 @@ li.ListStyle {
 }
 
 .DeploymentMethodTabs {
-  padding: 0.5rem 0 1rem 0rem;
+  padding: 0.5rem 0 0rem 0rem;
   display: flex;
   flex-direction: row;
   gap: 2rem;
@@ -359,8 +365,9 @@ li.ListStyle {
 .CurrentTab {
   background-color: #d9d9d9;
   padding: 0.5rem;
-  border-radius: 4px;
   font-weight: bold;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
 }
 
 .CurrentTab:hover,
@@ -375,7 +382,7 @@ li.ListStyle {
 
 .ButtonSection {
   padding-top: 2rem;
-  padding-bottom: 5rem;
+  padding-bottom: 1rem;
 }
 
 @media only screen and (max-width: 650px) {

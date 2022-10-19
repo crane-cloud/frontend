@@ -40,10 +40,16 @@
 .DropSection {
     padding-bottom: 2rem;
 }
+.CreateFormHolder{
+    height: calc(100vh - 14.5rem);
+  }
 
 .FormInputs {
-    height: calc(100vh - 12rem);
     max-width: 40rem;
+    background: #d9d9d9;
+    padding: 0.7rem;
+    border-radius: 0.7rem;
+   
 }
 
 .FormInputs::-webkit-scrollbar {
@@ -70,5 +76,5 @@
 }
 
 .ButtonSection {
-    padding-bottom: 5rem;
+    padding-bottom: 1rem;
 }
