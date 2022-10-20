@@ -2,7 +2,6 @@
 import React from "react";
 import { shallow } from "enzyme";
 import ProjectSettingsPage, { mapStateToProps } from "./";
-import projectMembersReducer from "../../redux/reducers/getProjectMembers";
 
 const ProjectSettingsPageProps = {
   match: { params: { projectID: "1" } },

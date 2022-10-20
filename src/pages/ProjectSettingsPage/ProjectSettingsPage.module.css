@@ -30,7 +30,7 @@
   cursor: default;
   font-weight: 700;
   font-size: 1.1rem;
-  
+
 }
 
 .DeleteDescription span {
@@ -41,14 +41,17 @@
   background-color: rgba(27, 31, 35, 0.1);
   border-radius: 3px;
 }
+
 .DeleteProjectModelButtons {
   display: flex;
   justify-content: space-between;
 }
+
 .UpdateProjectModelButtons {
   display: flex;
   justify-content: space-between;
 }
+
 .ModalUpdateForm {
   display: grid;
   gap: 2rem;
@@ -95,6 +98,7 @@
 .ErrorOnWhite {
   width: 25rem;
 }
+
 .SideBarSection {
   overflow: hidden;
   overflow-y: scroll;
@@ -105,6 +109,7 @@
   display: none;
   min-width: fit-content;
 }
+
 .Page {
   margin: 0;
   background: #f1f1f1;
@@ -128,6 +133,7 @@
   grid-template-rows: 80px 4fr;
   overflow: auto;
 }
+
 .TopBarSection {
   background-color: black;
 }
@@ -135,8 +141,9 @@
 .SideBarSection {
   -ms-overflow-style: none;
   scrollbar-width: none;
-  height:100%;
+  height: 100%;
 }
+
 .ContentSection {
   display: flex;
   flex-direction: column;
@@ -144,47 +151,57 @@
   overflow-y: auto;
   padding-bottom: 1rem;
 }
+
 .InnerModalDescription {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
 }
+
 .DeleteWarning {
   color: #f00;
 }
+
 .InactiveDelete {
   background-color: #fff;
   outline: #ff9595;
   color: #ff9595;
 }
+
 .InactiveDelete:hover {
   background-color: #fff;
   outline: #ff9595;
   color: #ff9595;
 }
+
 .WarningContainer {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
+
 .DeleteSubDescription {
   font-weight: 500;
 }
-.MembershipHeader{
+
+.MembershipHeader {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
 }
-.MemberSection{
+
+.MemberSection {
   display: flex;
   flex-direction: column;
-  gap:0.3rem;
+  gap: 0.3rem;
 }
-.MemberDescription{
+
+.MemberDescription {
   width: 30rem;
 }
+
 .ProjectInstructions {
   padding: 1rem 1rem;
   background: #ffffff;
@@ -193,6 +210,7 @@
   display: grid;
   gap: 2rem;
 }
+
 .ProjectButtonRow {
   display: grid;
   grid-template-columns: auto 40%;
@@ -201,7 +219,7 @@
   column-gap: 1rem;
 }
 
-.SettingsSectionInfo{
+.SettingsSectionInfo {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
@@ -249,9 +267,11 @@
   outline: 1px solid #ff0000;
   color: #ff0000;
 }
-.MemberTable{
+
+.MemberTable {
   width: 80%;
 }
+
 .MemberTableHead {
   text-transform: uppercase;
   color: #008ac1;
@@ -259,24 +279,28 @@
   grid-row: 1;
   padding: 0.5rem 0;
 }
-.MemberNameEmail{
+
+.MemberNameEmail {
   display: flex;
   flex-direction: column;
   gap: .2rem;
 }
+
 .MemberTableRow {
   display: grid;
   color: #000000;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
-.NameSecting{
+
+.NameSecting {
   display: flex;
   justify-content: flex-start;
   flex-direction: row;
   gap: .4rem;
   align-items: center;
 }
-.MemberAvatar{
+
+.MemberAvatar {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
@@ -284,8 +308,8 @@
   font-weight: bold;
   font-size: 1rem;
   display: flex;
-  align-items: center; 
-  justify-content: center; 
+  align-items: center;
+  justify-content: center;
 }
 
 .MemberTableRow:not(a) {
@@ -293,59 +317,68 @@
 }
 
 
-.CardBodySection .MemberTableRow{
+.CardBodySection .MemberTableRow {
   width: 100%;
 }
-.SendInvitationButton{
+
+.SendInvitationButton {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.BlueBtn:hover{
+
+.BlueBtn:hover {
   color: #008ac1;
   background-color: #fff;
   outline: 2px solid #008ac1;
 }
-.BlueBtn{
+
+.BlueBtn {
   color: #fff;
   background-color: #008ac1;
   outline: 2px solid #008ac1;
   padding: 0.5rem;
   height: 2.5rem;
 }
-.ModelHeader{
+
+.ModelHeader {
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   font-size: 2rem;
 }
-.SettingsButton{
+
+.SettingsButton {
   background-color: #008ac1;
   color: #fff;
   outline: 1px solid #008ac1;
 }
-.SettingsButton:hover{
+
+.SettingsButton:hover {
   color: #008ac1;
-  background-color:#fff;
+  background-color: #fff;
   outline: 1px solid #008ac1;
 }
-.SettingsButtonUpdate{
+
+.SettingsButtonUpdate {
   color: #fff;
-  background-color:#f7b21f;
+  background-color: #f7b21f;
   outline: 1px solid #f7b21f;
 }
 
-.SettingsButtonUpdate:hover{
+.SettingsButtonUpdate:hover {
   color: #f7b21f;
-  background-color:#fff;
+  background-color: #fff;
   outline: 1px solid #f7b21f;
 }
 
 .contextMenu {
   color: #000;
   background-color: #f9f9f9;
-  position: absolute;
+  /* display: flex;
+  flex-direction: column; */
+  z-index: 1;
   box-shadow: 0 4px 4px 0 rgba(117, 117, 117, 0.2);
   -webkit-touch-callout: none;
   /* iOS Safari */
@@ -358,7 +391,34 @@
   -ms-user-select: none;
   /* Internet Explorer/Edge */
   user-select: none;
+  cursor: pointer;
   /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+
+.MoreIcon:hover {
+  cursor: pointer;
+}
+
+.BelowHeader {
+  background-color: #f9f9f9;
+  position: relative;
+}
+
+.DropDownLink {
+  cursor: pointer;
+  padding: 1rem 1.5rem;
+  text-align: center;
+}
+
+.DropDownLink:hover,
+.DropDownLink:active {
+  background-color: #f1f1f1;
+}
+
+.DropDownLink,
+.DropDownLink:visited {
+  color: #000;
+  text-decoration: none;
 }
 
 .MemberTableCell {
@@ -387,7 +447,7 @@
 .MemberTableHead:last-child,
 .MemberTableCell:last-child {
   text-align: right;
-  padding-right: 1rem!important;
+  padding-right: 1rem !important;
 }
 
 
@@ -395,28 +455,31 @@
 @media(max-width: 650px) {
   .MainSection {
     /*one column required */
-  background-color: #f1f1f1;
-  display: flex;
-  flex-shrink: 0;
-  width:100%;
+    background-color: #f1f1f1;
+    display: flex;
+    flex-shrink: 0;
+    width: 100%;
   }
+
   .MainContentSection {
     background-color: #f1f1f1;
     flex-direction: column;
     display: flex;
     flex-shrink: 0;
-    width:100%;
+    width: 100%;
   }
+
   .UpdateForm {
     max-width: 20rem;
   }
-  .UpdateInputSection{
+
+  .UpdateInputSection {
     width: 20rem;
   }
-  
+
 
   .TextArea {
-    width: 20rem; 
+    width: 20rem;
     border: 1px solid black;
     box-sizing: border-box;
     font-size: inherit;

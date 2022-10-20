@@ -15,7 +15,9 @@ import updateProject, {
 import inviteMembers, {
   clearInvitingMembersState,
 } from "../../redux/actions/inviteMembers";
-import removeMember from "../../redux/actions/removeMembers";
+import removeMember, {
+  clearRemovingMembersState,
+} from "../../redux/actions/removeMembers";
 import Spinner from "../../components/Spinner";
 import Avatar from "../../components/Avatar";
 import Modal from "../../components/Modal";
@@ -89,6 +91,7 @@ class ProjectSettingsPage extends React.Component {
     this.hideInviteMenu = this.hideInviteMenu.bind(this);
     this.showMenu = this.showMenu.bind(this);
     this.renderRedirect = this.renderRedirect.bind(this);
+    this.removeProjectMember = this.removeProjectMember.bind(this);
   }
 
   componentDidMount() {
@@ -99,7 +102,13 @@ class ProjectSettingsPage extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { getProjectMembers, isDeleted, isSent } = this.props;
+    const {
+      getProjectMembers,
+      isDeleted,
+      isSent,
+      isRemoved,
+      clearRemovingMembersState,
+    } = this.props;
 
     if (isDeleted !== prevProps.isDeleted) {
       this.hideDeleteAlert();
@@ -110,6 +119,10 @@ class ProjectSettingsPage extends React.Component {
       getProjectMembers();
       this.hideInviteMenu();
     }
+
+    if (isRemoved !== prevProps.isRemoved) {
+      clearRemovingMembersState();
+    }
   }
 
   handleClick = (e) => {
@@ -117,7 +130,7 @@ class ProjectSettingsPage extends React.Component {
       return;
     }
     this.setState({ actionsMenu: true });
-    e.propagation();
+    e.stopPropagation();
     document.addEventListener("click", this.hideModal);
   };
 
@@ -126,14 +139,19 @@ class ProjectSettingsPage extends React.Component {
     document.removeEventListener("click", this.hideModal);
   };
 
-  showMenu(useremail) {
-    this.setState({ email: useremail });
+  showMenu(userEmail) {
+    this.setState({ email: userEmail });
   }
 
-  removeProjectMember(email) {
+  removeProjectMember(e) {
+    e.preventDefault();
     const { removeMember } = this.props;
+    const { email } = this.state;
     const projectID = this.props.match.params.projectID;
-    removeMember(email, projectID);
+    const emailDetails = {
+      "email": email
+    };
+    removeMember(emailDetails, projectID);
   }
 
   handleMemberInvitation(e) {
@@ -412,6 +430,7 @@ class ProjectSettingsPage extends React.Component {
       isDeleted,
       isUpdated,
       isSent,
+      isRemoved,
       match: {
         params: { projectID },
       },
@@ -420,7 +439,7 @@ class ProjectSettingsPage extends React.Component {
       return <Redirect to={`/projects`} noThrow />;
     }
 
-    if (isSent) {
+    if (isSent || isRemoved) {
       window.location.href = `/projects/${projectID}/settings`;
     }
   };
@@ -439,6 +458,7 @@ class ProjectSettingsPage extends React.Component {
       projectMembers,
       isSending,
       isSent,
+      isRemoved,
     } = this.props;
     // console.log(this.props);
     const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
@@ -480,7 +500,9 @@ class ProjectSettingsPage extends React.Component {
 
     return (
       <div className={styles.Page}>
-        {isUpdated || isDeleted || isSent ? this.renderRedirect() : null}
+        {isUpdated || isDeleted || isSent || isRemoved
+          ? this.renderRedirect()
+          : null}
         <div className={styles.TopBarSection}>
           <Header />
         </div>
@@ -566,11 +588,11 @@ class ProjectSettingsPage extends React.Component {
                   <div className={styles.MembershipHeader}>
                     <div className={styles.MemberSection}>
                       <div className={styles.SettingsSectionInfoHeader}>
-                        {project_users.length === 1 ? (
+                        {project_users?.length === 1 ? (
                           <div>Project has 1 Team Member</div>
                         ) : (
                           <div>
-                            Project has {project_users.length} Team Members
+                            Project has {project_users?.length} Team Members
                           </div>
                         )}
                       </div>
@@ -616,19 +638,28 @@ class ProjectSettingsPage extends React.Component {
                           <div className={styles.MemberTableCell}>
                             <div
                               onClick={(e) => {
+                                console.log(entry.user.email);
                                 this.showMenu(entry.user.email);
                                 this.handleClick(e);
                               }}
                             >
-                              <MoreIcon />
+                              <MoreIcon className={styles.MoreIcon} />
                               {/* options to be determined per user*/}
                               {actionsMenu && entry.user.email === email && (
-                                <div className="BelowHeader bg-light">
+                                <div className={styles.BelowHeader}>
                                   <div className={styles.contextMenu}>
                                     <div
-                                      className="DropDownLink"
+                                      className={styles.DropDownLink}
                                       role="presentation"
-                                      onClick={this.removeProjectMember}
+                                    >
+                                      Change role
+                                    </div>
+                                    <div
+                                      className={styles.DropDownLink}
+                                      role="presentation"
+                                      onClick={(e) =>
+                                        this.removeProjectMember(e)
+                                      }
                                     >
                                       Remove member
                                     </div>
@@ -931,6 +962,7 @@ ProjectSettingsPage.propTypes = {
   isSent: PropTypes.bool,
   isRemoving: PropTypes.bool,
   isRemoved: PropTypes.bool,
+  clearRemovingMembersState: PropTypes.func.isRequired,
 };
 
 ProjectSettingsPage.defaultProps = {
@@ -955,7 +987,8 @@ export const mapStateToProps = (state) => {
   const { invitation, isSending, isSent, clearInvitingMembersState } =
     state.inviteMembersReducer;
 
-  const { member, isRemoving, isRemoved } = state.removeMemberReducer;
+  const { member, isRemoving, isRemoved, clearRemovingMembersState } =
+    state.removeMemberReducer;
 
   const { isUpdated, isUpdating, errorMessage, clearUpdateProjectState } =
     state.updateProjectReducer;
@@ -975,6 +1008,7 @@ export const mapStateToProps = (state) => {
     clearInvitingMembersState,
     clearDeleteProjectState,
     clearUpdateProjectState,
+    clearRemovingMembersState,
     projectMembers,
     invitation,
     member,
@@ -990,6 +1024,7 @@ const mapDispatchToProps = {
   clearInvitingMembersState,
   clearDeleteProjectState,
   clearUpdateProjectState,
+  clearRemovingMembersState,
 };
 
 export default connect(

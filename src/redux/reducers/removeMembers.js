@@ -2,6 +2,7 @@ import {
   REMOVE_MEMBER_SUCCESS,
   REMOVE_MEMBER_FAIL,
   START_REMOVING_MEMBER,
+  CLEAR_REMOVE_MEMBERS_STATE,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -39,6 +40,16 @@ const removeMemberReducer = (state = initialState, action) => {
         isRemoving: false,
         isRemoved: false,
         isFailed: true,
+      };
+
+    case CLEAR_REMOVE_MEMBERS_STATE:
+      return {
+        ...state,
+        member: null,
+        isRemoved: false,
+        isRemoving: false,
+        message: "",
+        isFailed: false,
       };
 
     default:
