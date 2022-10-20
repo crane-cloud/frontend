@@ -29,10 +29,10 @@ const clearRemovingMembersState = () => ({
 
 const removeMember = (email, ProjectID) => (dispatch) => {
   dispatch(startRemovingProjectMember());
-  console.log("banaye");
+
 
   return axios
-    .delete(`/projects/${ProjectID}/users`, email)
+    .delete(`/projects/${ProjectID}/users`, {data: email})
     .then((response) => dispatch(removeProjectMemberSuccess(response)))
     .catch((error) => {
       dispatch(removeProjectMemberFail(error));
