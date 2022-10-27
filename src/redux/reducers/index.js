@@ -60,6 +60,7 @@ import getGraphDataReducer from "./getGraphData";
 import projectMembersReducer from "./getProjectMembers";
 import inviteMembersReducer from "./inviteMembers";
 import removeMemberReducer from "./removeMembers";
+import updateMemberRoleReducer from "./updateMemberRole";
 
 export default combineReducers({
   clusterResourcesReducer,
@@ -123,4 +124,5 @@ export default combineReducers({
   projectMembersReducer,
   inviteMembersReducer,
   removeMemberReducer,
+  updateMemberRoleReducer,
 });

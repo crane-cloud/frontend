@@ -18,6 +18,9 @@ import inviteMembers, {
 import removeMember, {
   clearRemovingMembersState,
 } from "../../redux/actions/removeMembers";
+import updateMemberRole, {
+  clearUpdateMemberRoleState,
+} from "../../redux/actions/updateMemberRole";
 import Spinner from "../../components/Spinner";
 import Avatar from "../../components/Avatar";
 import Modal from "../../components/Modal";
@@ -47,6 +50,7 @@ class ProjectSettingsPage extends React.Component {
 
     this.state = {
       openUpdateAlert: false,
+      openRoleUpdateAlert: false,
       openDeleteAlert: false,
       openDropDown: false,
       userToken: userToken,
@@ -68,11 +72,14 @@ class ProjectSettingsPage extends React.Component {
       showInviteModel: false,
       role: "",
       email: "",
+      roleCheck: false, // check if you're a member in a project and can view manage projects
     };
 
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
     this.showUpdateAlert = this.showUpdateAlert.bind(this);
+    this.updateRoleAlert = this.updateRoleAlert.bind(this);
     this.hideUpdateAlert = this.hideUpdateAlert.bind(this);
+    this.hideRoleUpdateAlert = this.hideRoleUpdateAlert.bind(this);
     this.showDeleteAlert = this.showDeleteAlert.bind(this);
     this.hideDeleteAlert = this.hideDeleteAlert.bind(this);
     this.nameOnClick = this.nameOnClick.bind(this);
@@ -87,11 +94,14 @@ class ProjectSettingsPage extends React.Component {
     this.hideModal = this.hideModal.bind(this);
     this.showInviteMenu = this.showInviteMenu.bind(this);
     this.handleMemberInvitation = this.handleMemberInvitation.bind(this);
+    this.handleMemberRoleUpdate = this.handleMemberRoleUpdate.bind(this);
     this.handleInvitationRole = this.handleInvitationRole.bind(this);
     this.hideInviteMenu = this.hideInviteMenu.bind(this);
     this.showMenu = this.showMenu.bind(this);
     this.renderRedirect = this.renderRedirect.bind(this);
     this.removeProjectMember = this.removeProjectMember.bind(this);
+    this.checkMembership = this.checkMembership.bind(this);
+    this.updateRoleValue = this.updateRoleValue.bind(this);
   }
 
   componentDidMount() {
@@ -99,6 +109,7 @@ class ProjectSettingsPage extends React.Component {
     clearInvitingMembersState();
     const projectID = this.props.match.params.projectID;
     getProjectMembers(projectID);
+    this.checkMembership();
   }
 
   componentDidUpdate(prevProps) {
@@ -107,7 +118,9 @@ class ProjectSettingsPage extends React.Component {
       isDeleted,
       isSent,
       isRemoved,
+      isRoleUpdated,
       clearRemovingMembersState,
+      clearUpdateMemberRoleState,
     } = this.props;
 
     if (isDeleted !== prevProps.isDeleted) {
@@ -122,6 +135,11 @@ class ProjectSettingsPage extends React.Component {
 
     if (isRemoved !== prevProps.isRemoved) {
       clearRemovingMembersState();
+    }
+
+    if (isRoleUpdated !== prevProps.isRoleUpdated) {
+      clearUpdateMemberRoleState();
+      this.hideRoleUpdateAlert();
     }
   }
 
@@ -149,7 +167,7 @@ class ProjectSettingsPage extends React.Component {
     const { email } = this.state;
     const projectID = this.props.match.params.projectID;
     const emailDetails = {
-      "email": email
+      email: email,
     };
     removeMember(emailDetails, projectID);
   }
@@ -171,6 +189,23 @@ class ProjectSettingsPage extends React.Component {
     }
   }
 
+  handleMemberRoleUpdate(e) {
+    e.preventDefault();
+    const { email, role } = this.state;
+    const { updateMemberRole } = this.props;
+
+    const memberDetails = {
+      email,
+      role,
+    };
+
+    if (email !== "" && role !== "") {
+      this.validateEmail(email);
+      const projectID = this.props.match.params.projectID;
+      updateMemberRole(memberDetails, projectID);
+    }
+  }
+
   validateEmail(email) {
     const emailRegEx =
       // eslint-disable-next-line no-useless-escape
@@ -185,15 +220,20 @@ class ProjectSettingsPage extends React.Component {
     const {
       errorMessage,
       clearUpdateProjectState,
+      clearUpdateMemberRoleState,
       clearDeleteProjectState,
       isFailed,
       message,
+      updateMessage,
     } = this.props;
     this.setState({
       [e.target.name]: e.target.value,
     });
     if (errorMessage) {
       clearUpdateProjectState();
+    }
+    if (updateMessage) {
+      clearUpdateMemberRoleState();
     }
     if (error) {
       this.setState({
@@ -385,6 +425,10 @@ class ProjectSettingsPage extends React.Component {
     this.setState({ openUpdateAlert: true });
   }
 
+  updateRoleAlert() {
+    this.setState({ openRoleUpdateAlert: true });
+  }
+
   showDeleteAlert() {
     this.setState({ openDeleteAlert: true });
   }
@@ -402,6 +446,10 @@ class ProjectSettingsPage extends React.Component {
 
   hideUpdateAlert() {
     this.setState({ openUpdateAlert: false });
+  }
+
+  hideRoleUpdateAlert() {
+    this.setState({ openRoleUpdateAlert: false });
   }
 
   hideDeleteAlert() {
@@ -425,12 +473,34 @@ class ProjectSettingsPage extends React.Component {
   handleInvitationRole(selected) {
     this.setState({ role: selected.value });
   }
+
+  // this method helps us hide the parts that either an admin or member should see
+  checkMembership() {
+    const { data, projectMembers } = this.props;
+    const { project_users } = projectMembers;
+    const result = project_users.filter((item) => item.user.id === data.id);
+    if (
+      result[0].role === "RolesList.member" ||
+      result[0].role === "RolesList.admin"
+    ) {
+      this.setState({ roleCheck: true });
+    } else {
+      this.setState({ roleCheck: false });
+    }
+  }
+
+  updateRoleValue(string) {
+    let role = string[1];
+    return role.charAt(0).toUpperCase() + role.slice(1);
+  }
+
   renderRedirect = () => {
     const {
       isDeleted,
       isUpdated,
       isSent,
       isRemoved,
+      isRoleUpdated,
       match: {
         params: { projectID },
       },
@@ -439,7 +509,7 @@ class ProjectSettingsPage extends React.Component {
       return <Redirect to={`/projects`} noThrow />;
     }
 
-    if (isSent || isRemoved) {
+    if (isSent || isRemoved || isRoleUpdated) {
       window.location.href = `/projects/${projectID}/settings`;
     }
   };
@@ -459,21 +529,21 @@ class ProjectSettingsPage extends React.Component {
       isSending,
       isSent,
       isRemoved,
+      isRoleUpdated,
+      isRoleUpdating,
+      updateMessage,
     } = this.props;
-    // console.log(this.props);
+
     const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
+
     const { name, description } = projectInfo;
 
     const { project_users } = projectMembers;
 
-    function updateRoleValue(string) {
-      let role = string[1];
-      return role.charAt(0).toUpperCase() + role.slice(1);
-    }
-
     const {
       openUpdateAlert,
       openDeleteAlert,
+      openRoleUpdateAlert,
       userToken,
       projectName,
       projectDescription,
@@ -492,6 +562,7 @@ class ProjectSettingsPage extends React.Component {
       email,
       role,
       actionsMenu,
+      roleCheck,
     } = this.state;
     const types = retrieveProjectTypes();
     const roles = retrieveMembershipRoles();
@@ -500,7 +571,7 @@ class ProjectSettingsPage extends React.Component {
 
     return (
       <div className={styles.Page}>
-        {isUpdated || isDeleted || isSent || isRemoved
+        {isUpdated || isDeleted || isSent || isRemoved || isRoleUpdated
           ? this.renderRedirect()
           : null}
         <div className={styles.TopBarSection}>
@@ -529,7 +600,6 @@ class ProjectSettingsPage extends React.Component {
                 <div className={styles.ProjectSectionTitle}>
                   Project Details
                 </div>
-
                 <div className={styles.ProjectInstructions}>
                   <div className={styles.ProjectButtonRow}>
                     <div className={styles.SettingsSectionInfo}>
@@ -633,38 +703,62 @@ class ProjectSettingsPage extends React.Component {
                           </div>
 
                           <div className={styles.MemberTableCell}>
-                            {updateRoleValue(entry.role.split("."))}
+                            {this.updateRoleValue(entry.role.split("."))}
                           </div>
                           <div className={styles.MemberTableCell}>
                             <div
                               onClick={(e) => {
-                                console.log(entry.user.email);
                                 this.showMenu(entry.user.email);
                                 this.handleClick(e);
                               }}
                             >
-                              <MoreIcon className={styles.MoreIcon} />
-                              {/* options to be determined per user*/}
-                              {actionsMenu && entry.user.email === email && (
-                                <div className={styles.BelowHeader}>
-                                  <div className={styles.contextMenu}>
-                                    <div
-                                      className={styles.DropDownLink}
-                                      role="presentation"
-                                    >
-                                      Change role
-                                    </div>
-                                    <div
-                                      className={styles.DropDownLink}
-                                      role="presentation"
-                                      onClick={(e) =>
-                                        this.removeProjectMember(e)
-                                      }
-                                    >
-                                      Remove member
-                                    </div>
-                                  </div>
-                                </div>
+                              {this.updateRoleValue(entry.role.split(".")) !==
+                                "Owner" && (
+                                <>
+                                  <MoreIcon className={styles.MoreIcon} />
+
+                                  {/* options to be determined per user*/}
+                                  {actionsMenu && entry.user.email === email && (
+                                    <>
+                                      <div className={styles.BelowHeader}>
+                                        <div className={styles.contextMenu}>
+                                          {roleCheck === false ? (
+                                            <>
+                                              <div
+                                                className={styles.DropDownLink}
+                                                role="presentation"
+                                                onClick={this.updateRoleAlert}
+                                              >
+                                                Change role
+                                              </div>
+                                              <div
+                                                className={styles.DropDownLink}
+                                                role="presentation"
+                                                onClick={(e) =>
+                                                  this.removeProjectMember(e)
+                                                }
+                                              >
+                                                Remove member
+                                              </div>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <div
+                                                className={styles.DropDownLink}
+                                                role="presentation"
+                                                onClick={(e) =>
+                                                  this.removeProjectMember(e)
+                                                }
+                                              >
+                                                Remove yourself
+                                              </div>
+                                            </>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </>
+                                  )}
+                                </>
                               )}
                             </div>
                           </div>
@@ -673,42 +767,103 @@ class ProjectSettingsPage extends React.Component {
                     </div>
                   </div>
                 </div>
-
-                <div className={styles.ProjectSectionTitle}>Manage project</div>
-                <div className={styles.ProjectInstructions}>
-                  <div className={styles.ProjectButtonRow}>
-                    <div className={styles.SettingsSectionInfo}>
-                      <div className={styles.SettingsSectionInfoHeader}>
-                        Update project
-                      </div>
-                      <div>Modify the project name and description</div>
-                    </div>
-                    <div className={styles.SectionButtons}>
-                      <SettingsButton
-                        label="Update"
-                        className={styles.SettingsButtonUpdate}
-                        onClick={this.showUpdateAlert}
-                      />
-                    </div>
-                  </div>
-                  <div className={styles.ProjectButtonRow}>
-                    <div className={styles.SettingsSectionInfo}>
-                      <div className={styles.SettingsSectionInfoHeader}>
-                        Delete project
-                      </div>
+                {openRoleUpdateAlert && (
+                  <div className={styles.ProjectDeleteModel}>
+                    <Modal
+                      showModal={openRoleUpdateAlert}
+                      onClickAway={this.hideRoleUpdateAlert}
+                    >
                       <div>
-                        Take down your entire project, delete all apps under it.
+                        <div className={styles.ModelHeader}>
+                          Change Member Role
+                        </div>
+                        <div className={styles.UpdateForm}>
+                          <div className={styles.UpdateInputSection}>
+                            <div className={styles.DeleteDescription}>
+                              Search member (by email)
+                            </div>
+                            <BlackInputText
+                              placeholder="Enter email here"
+                              name="email"
+                              value={email}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />
+                          </div>
+                          <div className={styles.UpdateInputSection}>
+                            <div className={styles.DeleteDescription}>
+                              Member Role (in connection with user permission)
+                            </div>
+                            <Select
+                              required
+                              placeholder={
+                                role ? role : "Choose membership role"
+                              }
+                              options={roles}
+                              onChange={this.handleInvitationRole}
+                            />
+                          </div>
+                          {updateMessage !== "" && message && (
+                            <Feedback message={message} type="error" />
+                          )}
+                          <div className={styles.SendInvitationButton}>
+                            <PrimaryButton
+                              label={
+                                isRoleUpdating ? <Spinner /> : "Update Role"
+                              }
+                              className={styles.BlueBtn}
+                              onClick={this.handleMemberRoleUpdate}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </Modal>
+                  </div>
+                )}
+
+                {roleCheck === false ? (
+                  <>
+                    <div className={styles.ProjectSectionTitle}>
+                      Manage project
+                    </div>
+                    <div className={styles.ProjectInstructions}>
+                      <div className={styles.ProjectButtonRow}>
+                        <div className={styles.SettingsSectionInfo}>
+                          <div className={styles.SettingsSectionInfoHeader}>
+                            Update project
+                          </div>
+                          <div>Modify the project name and description</div>
+                        </div>
+                        <div className={styles.SectionButtons}>
+                          <SettingsButton
+                            label="Update"
+                            className={styles.SettingsButtonUpdate}
+                            onClick={this.showUpdateAlert}
+                          />
+                        </div>
+                      </div>
+                      <div className={styles.ProjectButtonRow}>
+                        <div className={styles.SettingsSectionInfo}>
+                          <div className={styles.SettingsSectionInfoHeader}>
+                            Delete project
+                          </div>
+                          <div>
+                            Take down your entire project, delete all apps under
+                            it.
+                          </div>
+                        </div>
+                        <div className={styles.SectionButtons}>
+                          <SettingsButton
+                            label="Delete"
+                            className={styles.DeleteBtn}
+                            onClick={this.showDeleteAlert}
+                          />
+                        </div>
                       </div>
                     </div>
-                    <div className={styles.SectionButtons}>
-                      <SettingsButton
-                        label="Delete"
-                        className={styles.DeleteBtn}
-                        onClick={this.showDeleteAlert}
-                      />
-                    </div>
-                  </div>
-                </div>
+                  </>
+                ) : null}
               </div>
 
               {openUpdateAlert && (
@@ -834,7 +989,7 @@ class ProjectSettingsPage extends React.Component {
                             Search member (by email)
                           </div>
                           <BlackInputText
-                            placeholder="khalifan@gmail.com"
+                            placeholder="Enter email here"
                             name="email"
                             value={email}
                             onChange={(e) => {
@@ -962,6 +1117,10 @@ ProjectSettingsPage.propTypes = {
   isSent: PropTypes.bool,
   isRemoving: PropTypes.bool,
   isRemoved: PropTypes.bool,
+  isRoleUpdated: PropTypes.bool,
+  isRoleUpdating: PropTypes.bool,
+  updateMessage: PropTypes.string,
+  clearUpdateMemberRoleState: PropTypes.func.isRequired,
   clearRemovingMembersState: PropTypes.func.isRequired,
 };
 
@@ -976,6 +1135,8 @@ ProjectSettingsPage.defaultProps = {
   isSent: false,
   isRemoving: false,
   isRemoved: false,
+  isRoleUpdating: false,
+  isRoleUpdated: false,
 };
 
 export const mapStateToProps = (state) => {
@@ -990,10 +1151,21 @@ export const mapStateToProps = (state) => {
   const { member, isRemoving, isRemoved, clearRemovingMembersState } =
     state.removeMemberReducer;
 
+  const {
+    isRoleUpdated,
+    isRoleUpdating,
+    updateMessage,
+    isRoleUpdateFailed,
+    clearUpdateMemberRoleState,
+  } = state.updateMemberRoleReducer;
+
   const { isUpdated, isUpdating, errorMessage, clearUpdateProjectState } =
     state.updateProjectReducer;
   return {
     data,
+    isRoleUpdated,
+    isRoleUpdating,
+    updateMessage,
     isUpdated,
     isUpdating,
     message,
@@ -1003,12 +1175,14 @@ export const mapStateToProps = (state) => {
     isRemoving,
     isRemoved,
     isFailed,
+    isRoleUpdateFailed,
     isDeleted,
     errorMessage,
     clearInvitingMembersState,
     clearDeleteProjectState,
     clearUpdateProjectState,
     clearRemovingMembersState,
+    clearUpdateMemberRoleState,
     projectMembers,
     invitation,
     member,
@@ -1021,6 +1195,8 @@ const mapDispatchToProps = {
   getProjectMembers,
   inviteMembers,
   removeMember,
+  updateMemberRole,
+  clearUpdateMemberRoleState,
   clearInvitingMembersState,
   clearDeleteProjectState,
   clearUpdateProjectState,
