@@ -5,9 +5,13 @@ import ProjectSettingsPage, { mapStateToProps } from "./";
 
 const ProjectSettingsPageProps = {
   match: { params: { projectID: "1" } },
+  projectMembers: { project_users: [] },
   location: { pathname: "path" },
+  data: [],
   deleteProject: jest.fn(),
   updateProject: jest.fn(),
+  getProjectMembers: jest.fn(),
+  clearInvitingMembersState: jest.fn(),
   clearDeleteProjectState: jest.fn(),
   clearUpdateProjectState: jest.fn(),
 };
@@ -42,9 +46,24 @@ describe("Testing the exported mapstate to props and dispatch for ProjectSetting
           isUpdating: false,
           errorMessage: null,
         },
-        projectMembersReducer: { projectMembers },
-        inviteMembersReducer: { invitation, isSending, isSent },
-        removeMemberReducer: { member, isRemoving, isRemoved },
+        projectMembersReducer: { projectMembers: { project_users: [] } },
+        inviteMembersReducer: {
+          invitation: null,
+          isSending: false,
+          isSent: false,
+        },
+        removeMemberReducer: {
+          member: null,
+          isRemoving: false,
+          isRemoved: false,
+        },
+        updateMemberRoleReducer: {
+          isRoleUpdated: false,
+          isRoleUpdating: false,
+          updateMessage: "",
+          isRoleUpdateFailed: false,
+        },
+        user: { data: [] },
       })
     ).toEqual({
       isUpdated: false,
@@ -54,13 +73,19 @@ describe("Testing the exported mapstate to props and dispatch for ProjectSetting
       isFailed: false,
       isDeleted: false,
       errorMessage: null,
-      projectMembers: [],
+      projectMembers: { project_users: [] },
       invitation: null,
       isSending: false,
       isSent: false,
       member: null,
       isRemoving: false,
+      isRoleUpdated: false,
+      isRoleUpdating: false,
+      isRoleUpdateFailed: false,
       isRemoved: false,
+      updateMessage: "",
+      clearDeleteProjectState: undefined,
+      data: [],
     });
   });
 });

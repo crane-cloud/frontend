@@ -478,10 +478,10 @@ class ProjectSettingsPage extends React.Component {
   checkMembership() {
     const { data, projectMembers } = this.props;
     const { project_users } = projectMembers;
-    const result = project_users.filter((item) => item.user.id === data.id);
+    const result = project_users.filter((item) => item.user?.id === data.id);
     if (
-      result[0].role === "RolesList.member" ||
-      result[0].role === "RolesList.admin"
+      result[0]?.role === "RolesList.member" ||
+      result[0]?.role === "RolesList.admin"
     ) {
       this.setState({ roleCheck: true });
     } else {
