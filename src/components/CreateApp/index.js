@@ -406,8 +406,9 @@ class CreateApp extends React.Component {
                 Deploy with mira
               </span>
             </div>
+            
             {currentDeploymentMethod === "default" && (
-              <>
+                <div className={styles.CreateFormHolder}>
                 <div className={styles.ModalFormInputs}>
                   <div className={styles.FormHeading}>
                     Fields marked * are required
@@ -741,7 +742,7 @@ class CreateApp extends React.Component {
                     </div>
                   </div>
                 </div>
-              </>
+              </div>
             )}
 
             {currentDeploymentMethod === "mira" && <MiraPage projectID={projectID} />}
