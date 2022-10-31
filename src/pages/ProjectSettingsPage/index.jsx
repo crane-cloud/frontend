@@ -72,6 +72,7 @@ class ProjectSettingsPage extends React.Component {
       showInviteModel: false,
       role: "",
       email: "",
+      removeMemberModal: false,
       roleCheck: false, // check if you're a member in a project and can view manage projects
     };
 
@@ -102,6 +103,8 @@ class ProjectSettingsPage extends React.Component {
     this.removeProjectMember = this.removeProjectMember.bind(this);
     this.checkMembership = this.checkMembership.bind(this);
     this.updateRoleValue = this.updateRoleValue.bind(this);
+    this.showRemoveMemberModal = this.showRemoveMemberModal.bind(this);
+    this.closeRemoveMemberModal = this.closeRemoveMemberModal.bind(this);
   }
 
   componentDidMount() {
@@ -135,6 +138,7 @@ class ProjectSettingsPage extends React.Component {
 
     if (isRemoved !== prevProps.isRemoved) {
       clearRemovingMembersState();
+      this.closeRemoveMemberModal();
     }
 
     if (isRoleUpdated !== prevProps.isRoleUpdated) {
@@ -159,6 +163,18 @@ class ProjectSettingsPage extends React.Component {
 
   showMenu(userEmail) {
     this.setState({ email: userEmail });
+  }
+
+  showRemoveMemberModal() {
+    this.setState({
+      removeMemberModal: true,
+    });
+  }
+
+  closeRemoveMemberModal() {
+    this.setState({
+      removeMemberModal: false,
+    });
   }
 
   removeProjectMember(e) {
@@ -529,6 +545,7 @@ class ProjectSettingsPage extends React.Component {
       isSending,
       isSent,
       isRemoved,
+      isRemoving,
       isRoleUpdated,
       isRoleUpdating,
       updateMessage,
@@ -563,6 +580,7 @@ class ProjectSettingsPage extends React.Component {
       role,
       actionsMenu,
       roleCheck,
+      removeMemberModal,
     } = this.state;
     const types = retrieveProjectTypes();
     const roles = retrieveMembershipRoles();
@@ -734,8 +752,8 @@ class ProjectSettingsPage extends React.Component {
                                               <div
                                                 className={styles.DropDownLink}
                                                 role="presentation"
-                                                onClick={(e) =>
-                                                  this.removeProjectMember(e)
+                                                onClick={
+                                                  this.showRemoveMemberModal
                                                 }
                                               >
                                                 Remove member
@@ -1094,6 +1112,38 @@ class ProjectSettingsPage extends React.Component {
                   </Modal>
                 </div>
               )}
+
+              <Modal
+                showModal={removeMemberModal}
+                onClickAway={this.closeRemoveMemberModal}
+              >
+                <div className={styles.DeleteProjectModel}>
+                  <div className={styles.DeleteProjectModalUpperSection}>
+                    <div className={styles.WarningContainer}>
+                      <div className={styles.DeleteDescription}>
+                        Are you sure you want to remove this member?
+                      </div>
+                    </div>
+                  </div>
+                  <div className={styles.DeleteProjectModalLowerSection}>
+                    <div className={styles.DeleteProjectModelButtons}>
+                      <PrimaryButton
+                        type="button"
+                        className="CancelBtn"
+                        label="Cancel"
+                        onClick={this.closeRemoveMemberModal}
+                      >
+                        Cancel
+                      </PrimaryButton>
+                      <PrimaryButton
+                        type="button"
+                        label={isRemoving ? <Spinner /> : "Confirm"}
+                        onClick={(e) => this.removeProjectMember(e)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </Modal>
             </div>
           </div>
         </div>
