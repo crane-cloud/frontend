@@ -1,11 +1,11 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./AdminProjectsPage.css";
 import InformationBar from "../InformationBar";
 import Header from "../Header";
 import SideNav from "../SideNav";
 // import Modal from "../Modal";
 // import BlackInputText from "../BlackInputText";
-// import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
+import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
 // import PrimaryButton from "../PrimaryButton";
 import getAdminProjects from "../../redux/actions/adminProjects";
 import getUsersList from "../../redux/actions/users";
@@ -13,6 +13,7 @@ import Spinner from "../Spinner";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./AdminProjectsPage.css";
+import { Link } from "react-router-dom";
 
 const AdminProjectsPage = () => {
   const { clusterID } = useParams();
@@ -25,8 +26,8 @@ const AdminProjectsPage = () => {
   const getUsersProps = useCallback(() => dispatch(getUsersList), [dispatch]);
   const adminProjects = useSelector((state) => state.adminProjectsReducer);
   const usersList = useSelector((state) => state.usersListReducer);
-  // const [contextMenu, setContextMenu] = useState(false);
-  // const [selectedProject, setSelectedProject] = useState("");
+  const [contextMenu, setContextMenu] = useState(false);
+  const [selectedProject, setSelectedProject] = useState("");
   // const [addCredits, setAddCredits] = useState(false);
 
   useEffect(() => {
@@ -50,14 +51,14 @@ const AdminProjectsPage = () => {
   // const showModal = () => {
   //   setAddCredits(true);
   // };
-  // const hideModal = () => {
-  //   setAddCredits(false);
-  //   setContextMenu(false);
-  // };
-  // const showContextMenu = (id) => {
-  //   setContextMenu(true);
-  //   setSelectedProject(id);
-  // };
+  const hideModal = () => {
+    //setAddCredits(false);
+    setContextMenu(false);
+  };
+  const showContextMenu = (id) => {
+    setContextMenu(true);
+    setSelectedProject(id);
+  };
 
   const clusterName = localStorage.getItem("clusterName");
 
@@ -88,7 +89,7 @@ const AdminProjectsPage = () => {
                     <th>name</th>
                     <th>owner</th>
                     <th>description</th>
-                    {/* <th>Actions</th> */}
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 {adminProjects.isRetrieving ? (
@@ -110,7 +111,12 @@ const AdminProjectsPage = () => {
                           <td>{project.name}</td>
                           <td>{getUserName(project.owner_id)}</td>
                           <td>{project.description}</td>
-                          {/* <td onClick={() => showContextMenu(project.id)}>
+                          <td
+                            onClick={(e) => {
+                              showContextMenu(project.id);
+                              this.handleClick(e);
+                            }}
+                          >
                             <MoreIcon />
 
                             {contextMenu && project.id === selectedProject && (
@@ -119,14 +125,19 @@ const AdminProjectsPage = () => {
                                   <div
                                     className="DropDownLink"
                                     role="presentation"
-                                    onClick={() => showModal()}
                                   >
-                                    Add Credits
+                                    <Link
+                                      to={{
+                                        pathname: `/projects/${selectedProject}/logs`,
+                                      }}
+                                    >
+                                      View Project Logs
+                                    </Link>
                                   </div>
                                 </div>
                               </div>
                             )}
-                          </td> */}
+                          </td>
                         </tr>
                       ))}
                   </tbody>
