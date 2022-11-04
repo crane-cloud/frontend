@@ -4,6 +4,9 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Logo from "../Logo";
 import { ReactComponent as DownArrow } from "../../assets/images/downarrow.svg";
+import { ReactComponent as LogOut } from "../../assets/images/log-out.svg";
+import { ReactComponent as User } from "../../assets/images/user.svg";
+import { ReactComponent as Book } from "../../assets/images/book.svg";
 import removeUser from "../../redux/actions/removeUser";
 import styles from "./Header.module.css";
 import { DOCS_URL } from "../../config";
@@ -105,6 +108,7 @@ const Header = (props) => {
               <div className={styles.BelowHeader}>
                 <div className={styles.DropDownContent}>
                   <Link to={`/profile`} className={styles.DropDownLink}>
+                    <User />
                     Profile
                   </Link>
                   <a
@@ -112,14 +116,14 @@ const Header = (props) => {
                     className={styles.DropDownLink}
                     rel="noopener noreferrer"
                     target="_blank"
-                  >
+                  > <Book />
                     Docs
                   </a>
                   <div
                     className={styles.DropDownLink}
                     role="presentation"
                     onClick={logout}
-                  >
+                  > <LogOut/>
                     Logout
                   </div>
                 </div>

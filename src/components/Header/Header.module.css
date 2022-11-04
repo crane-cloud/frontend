@@ -53,9 +53,6 @@
 .OnHeader:hover .UserNames {
   color: #f7b21f;
 }
-.OnHeader:hover svg {
-  fill: #f7b21f;
-}
 
 .BelowHeader {
   background-color: #f9f9f9;
@@ -102,6 +99,9 @@
 .DropDownLink {
   cursor: pointer;
   padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
 .DropDownLink:hover,
 .DropDownLink:active {
