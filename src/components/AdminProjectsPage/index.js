@@ -51,10 +51,10 @@ const AdminProjectsPage = () => {
   // const showModal = () => {
   //   setAddCredits(true);
   // };
-  const hideModal = () => {
-    //setAddCredits(false);
-    setContextMenu(false);
-  };
+  // const hideModal = () => {
+  //   //setAddCredits(false);
+  //   setContextMenu(false);
+  // };
   const showContextMenu = (id) => {
     setContextMenu(true);
     setSelectedProject(id);
