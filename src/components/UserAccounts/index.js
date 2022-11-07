@@ -303,6 +303,18 @@ class UserAccounts extends Component {
                                         View User Profile
                                       </Link>
                                     </div>
+                                    <div
+                                      className="DropDownLink"
+                                      role="presentation"
+                                    >
+                                      <Link
+                                        to={{
+                                          pathname: `/accounts/${selectedUser}/logs`,
+                                        }}
+                                      >
+                                        View User Logs
+                                      </Link>
+                                    </div>
                                   </div>
                                 </div>
                               )}
