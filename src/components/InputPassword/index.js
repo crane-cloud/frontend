@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./InputPassword.css";
 
-const InputPassword = ({ name, value, placeholder, onChange, required }) => {
+const InputPassword = ({ className,name, value, placeholder, onChange, required }) => {
   const [inputBackground, setBackground] = useState("InitialBackground");
 
   const changeBackground = () => {
@@ -17,7 +17,7 @@ const InputPassword = ({ name, value, placeholder, onChange, required }) => {
 
   return (
     <input
-      className={`InputPassword ${inputBackground}`}
+      className={`InputPassword ${inputBackground} ${className}`}
       type="password"
       placeholder={`${placeholder}${required ? " *" : ""}`}
       name={name}

@@ -7,9 +7,11 @@ import InformationBar from "../../components/InformationBar";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import BlackInputText from "../BlackInputText";
+import InputPassword from "../InputPassword";
 import Spinner from "../../components/Spinner";
 import PrimaryButton from "../PrimaryButton";
 import getUserDetail from "../../redux/actions/userDetails";
+import BackButton from "../../assets/images/backButton.svg";
 import {updateProfile , clearUpdateProfileState} from "../../redux/actions/updateProfile";
 import "../../index.css";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
@@ -20,7 +22,10 @@ class UserProfile extends React.Component {
     super(props);
     const { name } = props.user
     this.initialState = {
-     username:name
+     username:name,
+     currentPassword:"",
+     newPassword:"",
+     confirmPassword:"",
     };
     this.state = this.initialState;
     this.handleChange = this.handleChange.bind(this)
@@ -67,10 +72,9 @@ class UserProfile extends React.Component {
 
 
   render() {
-    const { username } = this.state;
+    const { username,newPassword,confirmPassword,currentPassword } = this.state;
     const {
       user,
-      data,
       isFetching,
       isFetched,
       profileUpdating
@@ -82,12 +86,14 @@ class UserProfile extends React.Component {
             <div className={styles.TopRow}>
               <Header />
               <InformationBar
-                header="User"
+                header="Profile"
               />
             </div>
             <div className={styles.MainColumn}>
               <Link
-                  to={`/projects`}><PrimaryButton label="BACK" className={styles.BackButton} /></Link>
+                  to={`/projects`}>
+                    <img src={BackButton} alt="Back Button" />
+                  </Link>
               {isFetching ? (
                 <div className={styles.NoResourcesMessage}>
                   <div className={styles.SpinnerWrapper}>
@@ -96,16 +102,30 @@ class UserProfile extends React.Component {
                 </div>
               ) : isFetched ? (
                 <div className={`${styles.ProjectList}  SmallContainer`}>
-                     
                   {isFetched &&(
                   <div className={styles.UserContainer}>
-                    <Avatar name={user.name} className={styles.UserAvatar}/>
-                    <div className={styles.UserDetailContainer}>
-                      <div className={styles.Row}>
-                        <div className={styles.RowHeading}>Name:</div> 
-                        <div className={styles.RowContent}>
-                        <div  className={styles.SaveContainer} ><BlackInputText
-                          required  
+                    <section className={styles.ContainerSection}>
+                      <div className={styles.HeaderSection}>
+                        <div className={styles.SectionTitle}>Information</div>
+                        <div className={styles.SectionSubTitle}>Your identity on crane cloud</div>
+                      </div>
+                      <aside>
+                         <div className={styles.EmailHead}>
+                         <Avatar name={user.name} className={styles.UserAvatar}/>
+                         {/* not editable */}
+                         <div className={styles.InputDiv}>
+                         Email
+                         <BlackInputText 
+                         className={styles.CustomInput}
+                         name={user.email}
+                         value={user.email}
+                         />
+                         </div>
+                         </div>   
+                         <div className={styles.InputDiv}>
+                          Name
+                         <BlackInputText
+                          className={styles.CustomInput} 
                           placeholder=""
                            name="username"
                           value={username}
@@ -117,26 +137,82 @@ class UserProfile extends React.Component {
                          onClick={()=>{this.handleNameEdit()}}
                          className={styles.BackButton} 
                          />}
-                         </div>
-                          </div>
+                         </div>  
+                      </aside>
+                    </section>
+                    <section className={styles.ContainerSection}>
+                      <div className={styles.HeaderSection}>
+                        <div className={styles.SectionTitle}>Password</div>
+                        <div className={styles.SectionSubTitle}>Change your password</div>
+                      </div>
+                      <aside>
+                         <div className={styles.InputDiv}>
+                         Current password
+                         <InputPassword
+                          className={styles.CustomPasswordInput} 
+                          placeholder=""
+                           name="currentPassword"
+                          value={currentPassword}
+                          onChange={(e) => {
+                             this.handleChange(e);
+                         }}
+                        />
+                        <div className={styles.SectionSubTitle}> You should provide old password first</div>
+                         </div>    
+                         <div className={styles.InputDiv}>
+                         New password
+                         <InputPassword
+                          className={styles.CustomPasswordInput} 
+                          placeholder=""
+                           name="newPassword"
+                          value={newPassword}
+                          onChange={(e) => {
+                             this.handleChange(e);
+                         }}
+                        />
                          </div> 
-                      <div className={styles.Row}><div className={styles.RowHeading}>Email:</div> 
-                      <div className={styles.RowContent}>{user.email}</div>
-                        </div>
-                        {/**Username is un-editable, only name is */}
-                        <div className={styles.Row}><div className={styles.RowHeading}>Username</div> 
-                      <div className={styles.RowContent}>{data.name}</div>
-                        </div>
-                      <div className={styles.Row}><div className={styles.RowHeading}>Beta user:</div>
-                      <div className={styles.RowContent}>{user.is_beta_user? "Yes":"No"}</div>
-                        </div> 
-                      <div className={styles.Row}><div className={styles.RowHeading}>Credits:</div>  
-                      <div className={styles.RowContent}>{user.credits.length===0? "No credits":<div className={styles.CreditsContainer}> {user.credits[0].amount}
+                         <div className={styles.InputDiv}>
+                         Confirm password
+                         <InputPassword
+                          className={styles.CustomPasswordInput} 
+                          placeholder=""
+                          name="confirmPassword"
+                          value={confirmPassword}
+                          onChange={(e) => {
+                             this.handleChange(e);
+                         }}
+                        />
+                         </div> 
+                         {<div className={styles.ButtonDiv}>
+                         {(newPassword !=="" && confirmPassword !=="" && currentPassword!=="") && <PrimaryButton
+                         label= { profileUpdating ? <Spinner /> :"CHANGE PASSWORD"}
+                         onClick={()=>{}}
+                         className={styles.BackButton} 
+                         />}
+                         </div>} 
+                      </aside>
+                    </section>
+                    <section className={styles.ContainerSection}>
+                    <div className={styles.HeaderSection}>
+                      <div className={styles.SectionTitle}>More information</div>
+                      <div className={styles.SectionSubTitle}>More information about a user</div>
+                    </div>
+                    <aside>
+                       <div className={styles.InputDiv}>
+                       <div className={styles.SectionTitle}>Beta User</div>
+                       <div className={user.is_beta_user ===true ?
+                        styles.rowContentYes:styles.rowContentNo}>{user.is_beta_user ===true ? "Yes":"No"}</div>
+                       </div>   
+                       <div className={styles.InputDiv}>
+                       <div className={styles.SectionTitle}>Credits</div>
+                       <div className={styles.SectionSubTitle}>Assigned by Admin for billing purporses</div>
+                       <div className={styles.RowContent}>{user.credits.length===0? "No credits":<div className={styles.CreditsContainer}> {user.credits[0].amount}
                        <div className={styles.CoinSize}>
                        <Coin/>
                        </div></div>}</div>
-                      </div> 
-                    </div>
+                       </div> 
+                    </aside>
+                  </section>
                   </div>)
                    }
                 </div>
