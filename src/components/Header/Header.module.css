@@ -112,6 +112,43 @@
   color: #000;
   text-decoration: none;
 }
+.UserInformation{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.UserInformation:hover,
+.UserInformation:active {
+  background-color: #f1f1f1;
+}
+.UserInformation,
+.UserInformation:visited {
+  color: #000;
+  text-decoration: none;
+}
+.UserDetails{
+  text-align: center;
+  font-size: .7rem;
+  font-weight: 300;
+  overflow-wrap: break-word;
+  inline-size:90%;
+  justify-content: center;
+}
+.UserAvatar {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+  font-size: .9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 a.HeaderLinkBackToConsole {
   text-transform: uppercase;
   border: 2px solid #ffffff;

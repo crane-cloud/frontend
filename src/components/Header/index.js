@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, withRouter, matchPath } from "react-router-dom";
 import { connect } from "react-redux";
+import Avatar from "../Avatar";
 import PropTypes from "prop-types";
 import Logo from "../Logo";
 import { ReactComponent as DownArrow } from "../../assets/images/downarrow.svg";
@@ -54,6 +55,7 @@ const Header = (props) => {
   }, []);
 
   const { credits } = props;
+
   return (
     <header className={`${styles.Header} SmallContainer`}>
       <Logo />
@@ -103,6 +105,13 @@ const Header = (props) => {
             <DownArrow className={styles.DropdownArrowSvg} />
             {hidden && (
               <div className={styles.BelowHeader}>
+                <div className={styles.UserInformation}>
+                <Avatar name={user.data.name} className={styles.UserAvatar} />
+                  <div className={styles.UserDetails}>
+                    {user.data.name.split(' ').slice(-1).join(' ')}</div>
+                  <div className={styles.UserDetails}>
+                    {user.data.email}</div>
+                </div>
                 <div className={styles.DropDownContent}>
                   <Link to={`/profile`} className={styles.DropDownLink}>
                     Profile
