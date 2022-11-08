@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Logo from "../Logo";
 import { ReactComponent as DownArrow } from "../../assets/images/downarrow.svg";
+import { ReactComponent as Activity } from "../../assets/images/activity.svg";
 import removeUser from "../../redux/actions/removeUser";
 import styles from "./Header.module.css";
 import { DOCS_URL } from "../../config";
@@ -104,9 +105,6 @@ const Header = (props) => {
             {hidden && (
               <div className={styles.BelowHeader}>
                 <div className={styles.DropDownContent}>
-                  <Link to={`/profile`} className={styles.DropDownLink}>
-                    Profile
-                  </Link>
                   <a
                     href={`${DOCS_URL}`}
                     className={styles.DropDownLink}
@@ -115,6 +113,12 @@ const Header = (props) => {
                   >
                     Docs
                   </a>
+                  <Link to={`/profile`} className={styles.DropDownLink}>
+                    Profile
+                  </Link>
+                  <Link to={`/activity`} className={styles.DropDownLink}>
+                    <Activity /> Activity
+                  </Link>
                   <div
                     className={styles.DropDownLink}
                     role="presentation"
