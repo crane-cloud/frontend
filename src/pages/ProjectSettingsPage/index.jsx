@@ -73,6 +73,7 @@ class ProjectSettingsPage extends React.Component {
       role: "",
       email: "",
       removeMemberModal: false,
+      currentUserEmail: "",
       roleCheck: false, // check if you're a member in a project and can view manage projects
     };
 
@@ -494,7 +495,7 @@ class ProjectSettingsPage extends React.Component {
   checkMembership() {
     const { data, projectMembers } = this.props;
     const { project_users } = projectMembers;
-    const result = project_users.filter((item) => item.user?.id === data.id);
+    const result = project_users?.filter((item) => item.user?.id === data.id);
     if (
       result[0]?.role === "RolesList.member" ||
       result[0]?.role === "RolesList.admin"
@@ -549,9 +550,12 @@ class ProjectSettingsPage extends React.Component {
       isRoleUpdated,
       isRoleUpdating,
       updateMessage,
+      data,
     } = this.props;
 
     const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
+
+    let currentUserEmail = data.email;
 
     const { name, description } = projectInfo;
 
@@ -730,25 +734,50 @@ class ProjectSettingsPage extends React.Component {
                                 this.handleClick(e);
                               }}
                             >
+                              {/* a project member will have the option menu displayed uniquely */}
                               {this.updateRoleValue(entry.role.split(".")) !==
-                                "Owner" && (
-                                <>
-                                  <MoreIcon className={styles.MoreIcon} />
+                                "Owner" &&
+                              entry.user.email === currentUserEmail ? (
+                                <MoreIcon className={styles.MoreIcon} />
+                              ) : (
+                                <MoreIcon
+                                  className={`entry.user.email !== currentUserEmail ? ${styles.MoreIconHidden} : ${styles.MoreIcon}`}
+                                />
+                              )}
 
-                                  {/* options to be determined per user*/}
-                                  {actionsMenu && entry.user.email === email && (
-                                    <>
-                                      <div className={styles.BelowHeader}>
-                                        <div className={styles.contextMenu}>
-                                          {roleCheck === false ? (
+                              {roleCheck === false &&
+                                this.updateRoleValue(entry.role.split(".")) !==
+                                  "Owner" && (
+                                  <MoreIcon className={styles.MoreIcon} />
+                                )}
+
+                              {/* options to be determined per user*/}
+                              {actionsMenu && entry.user.email === email && (
+                                <>
+                                  <div className={styles.BelowHeader}>
+                                    <div className={styles.contextMenu}>
+                                      {roleCheck === false ? (
+                                        <>
+                                          <div
+                                            className={styles.DropDownLink}
+                                            role="presentation"
+                                            onClick={this.updateRoleAlert}
+                                          >
+                                            Change role
+                                          </div>
+                                          <div
+                                            className={styles.DropDownLink}
+                                            role="presentation"
+                                            onClick={this.showRemoveMemberModal}
+                                          >
+                                            Remove member
+                                          </div>
+                                        </>
+                                      ) : (
+                                        <>
+                                          {entry.user.email ===
+                                            currentUserEmail && (
                                             <>
-                                              <div
-                                                className={styles.DropDownLink}
-                                                role="presentation"
-                                                onClick={this.updateRoleAlert}
-                                              >
-                                                Change role
-                                              </div>
                                               <div
                                                 className={styles.DropDownLink}
                                                 role="presentation"
@@ -756,26 +785,14 @@ class ProjectSettingsPage extends React.Component {
                                                   this.showRemoveMemberModal
                                                 }
                                               >
-                                                Remove member
-                                              </div>
-                                            </>
-                                          ) : (
-                                            <>
-                                              <div
-                                                className={styles.DropDownLink}
-                                                role="presentation"
-                                                onClick={(e) =>
-                                                  this.removeProjectMember(e)
-                                                }
-                                              >
                                                 Remove yourself
                                               </div>
                                             </>
                                           )}
-                                        </div>
-                                      </div>
-                                    </>
-                                  )}
+                                        </>
+                                      )}
+                                    </div>
+                                  </div>
                                 </>
                               )}
                             </div>
@@ -1121,7 +1138,11 @@ class ProjectSettingsPage extends React.Component {
                   <div className={styles.DeleteProjectModalUpperSection}>
                     <div className={styles.WarningContainer}>
                       <div className={styles.DeleteDescription}>
-                        Are you sure you want to remove this member?
+                        {currentUserEmail === email ? (
+                          <>Are you sure you want to remove yourself?</>
+                        ) : (
+                          <>Are you sure you want to remove this member?</>
+                        )}
                       </div>
                     </div>
                   </div>
