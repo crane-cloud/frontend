@@ -10,7 +10,9 @@
     align-items: center;
     padding: 12rem;
   }
-  
+  .Page{
+    background-color: #F1F1F1;
+  }
   .ButtonPlusSmall {
     width: 1rem;
     height: 1rem;
@@ -22,11 +24,12 @@
 
   }
   .MainColumn{
-    padding: .5rem 2rem 0rem 2rem;
+    padding: .5rem 5rem 0rem 4rem;
   }
   .BackButton {
     color: #fff;
     width: fit-content;
+    height: 2rem;
     background-color: #008ac1;
     outline: 1px solid #008ac1;
   }
@@ -34,6 +37,19 @@
     color: #008ac1;
     background-color: #fff;
     outline: 1px solid #008ac1;
+  }
+  .PairButtonCancel{
+    color: #fff;
+    width: fit-content;
+    height: 2rem;
+    padding-bottom: .5rem;
+    background-color: #000;
+    outline: 1px solid #000;
+  }
+  .PairButtonCancel:hover{
+    color: #000;
+    background-color: #fff;
+    outline: 1px solid #000;
   }
   .CreditsContainer{
     display: flex;
@@ -43,9 +59,14 @@
   }
   .rowContentYes{
     color: #008ac1;
+    font-weight: 700;
+  }
+  .RowContent{
+    font-weight: 700;
   }
   .rowContentNo{
     color: #d80000;
+    font-weight: 700;
   }
   .FooterRow {
     padding: 1rem 3rem;
@@ -54,23 +75,29 @@
   .UserContainer{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     padding-bottom: 3rem;
+    padding-left: 5rem;
     padding-top: 1rem;
   }
- 
-  
+
   .UserAvatar {
-    width: 3rem;
-    height: 3rem;
+    width: 3.5rem;
+    height: 3.5rem;
     border-radius: 50%;
     text-align: center;
     font-weight: bold;
-    font-size: 1.5rem;
+    font-size: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
   }
+  .CardInfor{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
   .CustomInput{
     height: 2.5rem;
     padding: .3rem;
@@ -84,10 +111,41 @@
   }
   .InputDiv{
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    padding: .3rem .3rem .7rem .3rem;
+  }
+  .PasswordChange{
+    display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: .3rem;
     width: 100%;
-    padding: .3rem;
+    padding: .3rem .3rem .7rem .3rem;
+  }
+  .ExtraContentDiv{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1rem 1rem 0;
+  }
+  .ContainerCard{
+    padding-left: 1rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    gap:.4rem;
+    flex-direction: column;
+    border-radius: 10px;
+    background-color: #fff;
+  }
+  .ButtonsDiv{
+    display: flex;
+    flex-direction: row;
+    gap:.5rem
   }
   
   .SectionTitle{
@@ -102,14 +160,98 @@
   
 
   .ContainerSection{
-    display: grid;
-    width: 100%;
-    grid-template-columns: 2fr 3fr;
+    display: flex;
+    width: 50rem;
+    padding-top: .5rem;
+    flex-direction: row;
+    justify-content: space-between;
     padding-bottom: .5rem;
     border-bottom: 1px solid #ccc;
   }
+  .ContainerHeadSection{
+    display: flex;
+    width: 50rem;
+    padding-bottom: .5rem;
+    border-bottom: 1px solid #ccc;
+  }
+  .ProfileCard{
+    display: flex;
+    width: 30rem;
+    height: 12rem;
+    gap:1rem;
+    padding-left: 1rem;
+    flex-direction: column;
+    border-radius: 10px;
+    background-color: #fff;
+    min-width: 20rem;
+    padding-right: 1rem;
+  }
+  .AvatarDiv{
+    display: flex;
+    flex-direction: row;
+    padding-top: .5rem;
+    height: 5rem;
+    align-items: center;
+  }
+  .Identity{
+    display: flex;
+    flex-direction: column;
+    padding-left: 1rem;
+  }
+  .IdentityName{
+    font-size: 2rem;
+    font-weight: 700;
+    color: #000;
+  }
+  .BackgroundInfor{
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+  }
+  .ProjectDeleteModel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .ProjectDeleteModel .ModalChildWrap {
+    z-index: 3;
+  }
+  .ProjectDeleteModel .ModalChildWrap {
+    min-width: 21rem;
+    max-width: 25rem;
+  }
+.ProjectDeleteModel .ModalParentWrap {
+  background-color: inherit;
+}
+.UpdateProjectModelButtons {
+  display: flex;
+  justify-content: space-between;
+}
+.ModelContent {
+  width: 23rem;
+}
+.ModelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 2rem;
+}
+.UpdateForm {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem 1.3rem;
+  grid-template-rows: 2fr;
+}
+.InformationText {
+  width: 20rem;
+}
   aside{
-    width: 70%;
+    width: 30rem;
   }
   .HeaderSection{
     display: flex;
@@ -123,6 +265,12 @@
     flex-direction: column;
     gap: 1.3rem;
     align-items: flex-start;
+  }
+  .FeedBackDiv{
+    color: rgb(28, 255, 28);
+  }
+  .ErrorDiv{
+    color: red;
   }
   
   
@@ -139,8 +287,23 @@
   @media only screen and (max-width: 900px)  {
     .ContainerSection{
       display: flex;
-      width: 100%;
       flex-direction: column;
+      width: auto;
+    }
+    .ContainerHeadSection{
+      width: auto;
+    }
+    .ProfileCard{
+      width: auto;
+    }
+    .MainColumn{
+      padding: .5rem 3rem 0rem 1rem;
+    }
+    .UserContainer{
+      padding-left: 0rem;
+    }
+    aside{
+      width: 23rem;
     }
   }
   
