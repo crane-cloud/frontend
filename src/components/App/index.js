@@ -1,5 +1,5 @@
 import React from "react";
-import LandingPage from "../LandingPage";
+import LandingPage from "../../pages/LandingPage";
 import "./App.css";
 
 const App = () => (
