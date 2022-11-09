@@ -77,6 +77,7 @@ const MiraPge = ({ projectID }) => {
   };
 
   return (
+    <div className={styles.CreateFormHolder}>
     <div className={styles.FormInputs}>
       <div className={styles.FormHeading}>Fields marked * are required</div>
       <div className={styles.FrameworkSelect}>
@@ -164,6 +165,7 @@ const MiraPge = ({ projectID }) => {
           onClick={handleSubmit}
         />
       </div>
+    </div>
     </div>
   );
 };

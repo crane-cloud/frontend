@@ -7,6 +7,7 @@
 
 .SelectElementMain {
   border: 1px solid #000000;
+  border-radius: 0.3rem;
 }
 
 .SelectElementValue {

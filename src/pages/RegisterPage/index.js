@@ -18,6 +18,7 @@ export default class RegisterPage extends Component {
 
     this.state = {
       name: "",
+      username:"",
       email: "",
       password: "",
       passwordConfirm: "",
@@ -88,15 +89,16 @@ export default class RegisterPage extends Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    const { name, email, password, passwordConfirm, hasAgreed } = this.state;
+    const { name,username, email, password, passwordConfirm, hasAgreed } = this.state;
 
     const userData = {
       name,
+      username,
       email,
       password,
     };
 
-    if (!email || !password || !name || !passwordConfirm) {
+    if (!email || !password || !name || !username ||!passwordConfirm) {
       this.setState({
         error: "Please enter all fields",
       });
@@ -123,7 +125,6 @@ export default class RegisterPage extends Component {
       this.setState({
         loading: true,
       });
-
       axios
         .post(`${API_BASE_URL}/users`, userData)
         .then((response) => {
@@ -151,6 +152,7 @@ export default class RegisterPage extends Component {
       passwordConfirm,
       loading,
       registered,
+      username,
       error,
       hasAgreed,
       gitLoading,
@@ -172,6 +174,13 @@ export default class RegisterPage extends Component {
                     placeholder="Name"
                     name="name"
                     value={name}
+                    onChange={this.handleOnChange}
+                  />
+                   <InputText
+                    required
+                    placeholder="Username"
+                    name="username"
+                    value={username}
                     onChange={this.handleOnChange}
                   />
                   <InputText
