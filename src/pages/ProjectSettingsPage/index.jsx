@@ -73,7 +73,7 @@ class ProjectSettingsPage extends React.Component {
       role: "",
       email: "",
       removeMemberModal: false,
-      currentUserEmail: "",
+      isCurrentUserRemoved: false,
       roleCheck: false, // check if you're a member in a project and can view manage projects
     };
 
@@ -180,13 +180,19 @@ class ProjectSettingsPage extends React.Component {
 
   removeProjectMember(e) {
     e.preventDefault();
-    const { removeMember } = this.props;
+    const { removeMember, data } = this.props;
     const { email } = this.state;
     const projectID = this.props.match.params.projectID;
     const emailDetails = {
       email: email,
     };
     removeMember(emailDetails, projectID);
+
+    if (email === data.email) {
+      this.setState({
+        isCurrentUserRemoved: true,
+      });
+    }
   }
 
   handleMemberInvitation(e) {
@@ -522,7 +528,8 @@ class ProjectSettingsPage extends React.Component {
         params: { projectID },
       },
     } = this.props;
-    if (isDeleted || isUpdated) {
+    const { isCurrentUserRemoved } = this.state;
+    if (isDeleted || isUpdated || isCurrentUserRemoved) {
       return <Redirect to={`/projects`} noThrow />;
     }
 
