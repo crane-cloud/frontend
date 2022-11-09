@@ -12,7 +12,7 @@ describe("data constants helper", () => {
     //get the year
     thisYear = thisMonth - 1 <= 0 ? thisYear - 1 : thisYear;
     //get the month
-    thisMonth = thisMonth - 1 <= 0 ? 12 + (thisMonth - 1) : thisMonth;
+    thisMonth = thisMonth - 1 <= 0 ? 12 + (thisMonth - 1) : thisMonth - 1;
     //assert equality
     assert.equal(getBackDate(1), thisYear + "-" + thisMonth + "-1");
   });
