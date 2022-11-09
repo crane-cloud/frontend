@@ -23,11 +23,10 @@ export const getUserProjectsFailed = (error) => ({
   },
 });
 
-const getUserProjects = (userID) => (dispatch) => {
+const getUserProjects = () => (dispatch) => {
   dispatch(startTheFetch());
   return axios
-    .get(`/users/${userID}/projects`)
-
+    .get(`/projects`)
     .then((response) => dispatch(getUserProjectsSuccess(response)))
     .catch((error) => {
       dispatch(getUserProjectsFailed(error));

@@ -1,35 +1,35 @@
-import React from 'react';
+import React from "react";
 
 import {
   BrowserRouter as Router,
   Redirect,
   Route,
   Switch,
-} from 'react-router-dom';
+} from "react-router-dom";
 
-import AdminDBList from './components/AdminDB';
-import AdminLoginPage from './components/AdminLoginPage';
-import AdminProjectsPage from './components/AdminProjectsPage';
-import AdminUsersProfile from './components/AdminUsersProfile';
-import App from './components/App';
-import AppLogsPage from './components/AppLogsPage';
-import AppMemoryPage from './components/AppMemoryPage';
-import AppNetworkPage from './components/AppNetworkPage';
-import AppSettingsPage from './components/AppSettingsPage';
-import AppsPage from './components/AppsPage';
-import ClusterPage from './components/ClusterPage';
-import ClusterResourcesPage from './components/ClusterResourcesPage';
-import ClusterSettingsPage from './components/ClusterSettingsPage';
+import AdminDBList from "./components/AdminDB";
+import AdminLoginPage from "./pages/AdminLoginPage";
+import AdminProjectsPage from "./pages/AdminProjectsPage";
+import AdminUsersProfile from "./components/AdminUsersProfile";
+import App from "./components/App";
+import AppLogsPage from "./pages/AppLogsPage";
+import AppMemoryPage from "./pages/AppMemoryPage";
+import AppNetworkPage from "./pages/AppNetworkPage";
+import AppSettingsPage from "./pages/AppSettingsPage";
+import AppsPage from "./pages/AppsPage";
+import ClusterPage from "./pages/ClusterPage";
+import ClusterResourcesPage from "./pages/ClusterResourcesPage";
+import ClusterSettingsPage from "./pages/ClusterSettingsPage";
 // import PricingPage from "./components/PricingPage";
-import ContactPage from './components/ContactPage';
-import CreateDatabase from './components/CreateDatabase';
-import CreateNewPassword from './components/CreateNewPassword';
-import DatabaseList from './components/DatabaseList';
-import DBSettingsPage from './components/DBSettingsPage';
-import DeploymentsPage from './components/DeploymentsPage';
-import Privacy from './components/Documents/privacy';
-import Terms from './components/Documents/terms';
-import JobsListPage from './components/JobsListPage';
+import ContactPage from "./pages/ContactPage";
+import CreateDatabase from "./components/CreateDatabase";
+import CreateNewPassword from "./components/CreateNewPassword";
+import DatabaseList from "./components/DatabaseList";
+import DBSettingsPage from "./pages/DBSettingsPage";
+import DeploymentsPage from "./pages/DeploymentsPage";
+import Privacy from "./components/Documents/privacy";
+import Terms from "./components/Documents/terms";
+import JobsListPage from "./pages/JobsListPage";
 // import App from "./components/App";
 import LoginPage from './components/LoginPage';
 import MonitoringPage from './components/MonitoringPage';

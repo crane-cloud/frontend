@@ -19,7 +19,7 @@ import Tabs from "../Tabs";
 import createApp, { clearState } from "../../redux/actions/createApp";
 import styles from "./CreateApp.module.css";
 import { validateName } from "../../helpers/validation";
-import MiraPage from "../MiraPage";
+import MiraPage from "../../pages/MiraPage";
 
 class CreateApp extends React.Component {
   constructor(props) {
@@ -745,7 +745,9 @@ class CreateApp extends React.Component {
               </div>
             )}
 
-            {currentDeploymentMethod === "mira" && <MiraPage projectID={projectID} />}
+            {currentDeploymentMethod === "mira" && (
+              <MiraPage projectID={projectID} />
+            )}
           </div>
         </div>
       </div>
