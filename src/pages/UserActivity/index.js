@@ -71,7 +71,7 @@ const UserActivity = (props) => {
                 </div>
               </div>
             </div>
-            <hr />
+            <hr className={styles.hr} />
             <div className={styles.TableRow}>
               <Danger className={styles.Danger} />
               <div className={styles.Row}>
@@ -88,7 +88,7 @@ const UserActivity = (props) => {
                 </div>
               </div>
             </div>
-            <hr />
+            <hr className={styles.hr} />
             <div className={styles.TableRow}>
               <CloudOff className={styles.Danger} />
               <div className={styles.Row}>
@@ -105,7 +105,7 @@ const UserActivity = (props) => {
                 </div>
               </div>
             </div>
-            <hr />
+            <hr className={styles.hr} />
             <div className={styles.TableRow}>
               <Upload className={styles.Success} />
               <div className={styles.Row}>
@@ -122,7 +122,7 @@ const UserActivity = (props) => {
                 </div>
               </div>
             </div>
-            <hr />
+            <hr className={styles.hr} />
           </div>
         </div>
       </div>

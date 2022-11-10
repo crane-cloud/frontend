@@ -71,7 +71,7 @@
   color: #008ac1;
 }
 
-hr{
+.hr{
   margin: .5rem 0;
 }
 
@@ -83,7 +83,7 @@ hr{
 
 .Bold{
   font-weight: bold;
-  font-size: 20px;
+  font-size: 17px;
 }
 
 .RowCell{

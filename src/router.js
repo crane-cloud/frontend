@@ -33,33 +33,34 @@ import Privacy from "./components/Documents/privacy";
 import Terms from "./components/Documents/terms";
 import JobsListPage from "./pages/JobsListPage";
 // import App from "./components/App";
-import LoginPage from "./pages/LoginPage";
-import MonitoringPage from "./pages/MonitoringPage";
-import NamespacesListPage from "./components/NamespacesList";
-import ClusterNodes from "./components/NodesList";
-import PageNotFound from "./components/PageNotFound";
-import PasswordReset from "./components/PasswordReset";
-import PodsList from "./components/PodsList";
-import ProjectBillingPage from "./pages/ProjectBillingPage";
-import ProjectCPUPage from "./pages/ProjectCPUPage";
-import ProjectDashboardPage from "./pages/ProjectDashboardPage";
-import ProjectMemoryPage from "./pages/ProjectMemoryPage";
-import ProjectNetworkPage from "./pages/ProjectNetworkPage";
-import PvcsList from "./components/PvcsList";
-import PvsListPage from "./pages/PvsListPage";
-import RegisterPage from "./pages/RegisterPage";
-import ServicesListPage from "./components/ServicesList";
-import StorageClassList from "./components/StorageClassList";
-import TeamPage from "./pages/TeamPage";
-import UsersAccounts from "./components/UserAccounts";
-import UserProfile from "./components/UserProfile";
-import VerificationSentPage from "./pages/VerificationSentPage";
-import AppCpuPage from "./pages/AppCpuPage";
-import AppMetricsPage from "./pages/AppMetricsPage";
-import ProjectSettingsPage from "./pages/ProjectSettingsPage";
-import UserProjectsPage from "./pages/UserProjectsPage";
-import UserActivity from "./pages/UserActivity";
-import store from "./redux/store";
+import LoginPage from './pages/LoginPage';
+import MonitoringPage from './pages/MonitoringPage';
+import NamespacesListPage from './components/NamespacesList';
+import ClusterNodes from './components/NodesList';
+import PageNotFound from './components/PageNotFound';
+import PasswordReset from './components/PasswordReset';
+import PodsList from './components/PodsList';
+import ProjectBillingPage from './pages/ProjectBillingPage';
+import ProjectCPUPage from './pages/ProjectCPUPage';
+import ProjectDashboardPage from './pages/ProjectDashboardPage';
+import ProjectMemoryPage from './pages/ProjectMemoryPage';
+import ProjectNetworkPage from './pages/ProjectNetworkPage';
+import PvcsList from './components/PvcsList';
+import PvsListPage from './pages/PvsListPage';
+import RegisterPage from './pages/RegisterPage';
+import ServicesListPage from './components/ServicesList';
+import StorageClassList from './components/StorageClassList';
+import TeamPage from './pages/TeamPage';
+import UsersAccounts from './components/UserAccounts';
+import UserProfile from './components/UserProfile';
+import VerificationSentPage from './pages/VerificationSentPage';
+import AppCpuPage from './pages/AppCpuPage';
+import AppMetricsPage from './pages/AppMetricsPage';
+import ProjectSettingsPage from './pages/ProjectSettingsPage';
+import UserProjectsPage from './pages/UserProjectsPage';
+import UserActivity from './pages/UserActivity'
+import ProjectLogs from "./pages/ProjectLogs";
+import store from './redux/store';
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
@@ -292,6 +293,12 @@ const Routes = () => (
         exact
         path="/clusters/:clusterID/clusterSettings"
         component={ClusterSettingsPage}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        exact
+        path="/projects/:projectID/activity"
+        component={ProjectLogs}
       />
       <ProtectedRoute
         isAllowed={hasToken}
