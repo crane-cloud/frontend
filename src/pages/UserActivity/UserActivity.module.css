@@ -50,13 +50,13 @@
 .Table{
   background: #ffffff;
   border-radius: 15px;
-  padding: 1rem;
+  padding: 1rem 2rem;
 }
 
 .TableRow{
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .Success{
@@ -72,7 +72,7 @@
 }
 
 hr{
-  margin: 1rem 0;
+  margin: .5rem 0;
 }
 
 .Row{
