@@ -53,7 +53,7 @@
 }
 
 .SmallContainer {
-  padding: 0 2rem 2rem 2rem;
+  padding: 0 2rem;
 }
 
 @media (max-width: 580px) {
@@ -75,6 +75,7 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
+  margin-bottom: 2rem;
 }
 
 .Heading {
@@ -140,7 +141,7 @@
 
 .Bold {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 17px;
 }
 
 .RowCell {
