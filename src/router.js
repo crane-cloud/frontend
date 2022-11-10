@@ -11,6 +11,8 @@ import AdminDBList from "./components/AdminDB";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminProjectsPage from "./pages/AdminProjectsPage";
 import AdminUsersProfile from "./components/AdminUsersProfile";
+import AdminUserLogs from "./components/AdminUserLogs";
+import AdminProjectLogs from "./components/AdminProjectLogs";
 import App from "./components/App";
 import AppLogsPage from "./pages/AppLogsPage";
 import AppMemoryPage from "./pages/AppMemoryPage";
@@ -206,6 +208,18 @@ const Routes = () => (
         exact
         path="/accounts/:userID"
         component={AdminUsersProfile}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        exact
+        path="/accounts/:userID/logs"
+        component={AdminUserLogs}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        exact
+        path="/projects/:projectID/logs"
+        component={AdminProjectLogs}
       />
       <ProtectedRoute
         isAllowed={hasToken}

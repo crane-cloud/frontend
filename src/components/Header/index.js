@@ -59,7 +59,7 @@ const Header = (props) => {
   }, []);
 
   const { credits } = props;
-
+  let displayName = user.data.name ? user.data.name : user.data.username
   return (
     <header className={`${styles.Header} SmallContainer`}>
       <Logo />
@@ -103,16 +103,16 @@ const Header = (props) => {
                   <Coin />
                 </div>
               )}
-              <div className={styles.UserNames}>{user.data.name}</div>
+              <div className={styles.UserNames}>{displayName}</div>
             </>
 
             <DownArrow className={styles.DropdownArrowSvg} />
             {hidden && (
               <div className={styles.BelowHeader}>
                 <div className={styles.UserInformation}>
-                <Avatar name={user.data.name} className={styles.UserAvatar} />
-                  <div className={styles.UserDetails}>
-                    {user.data.name.split(' ').slice(-1).join(' ')}</div>
+                <Avatar name={displayName} className={styles.UserAvatar} />
+                  <div className={styles.UserDetails}>{
+                    displayName.split(' ').slice(-1).join(' ')}</div>
                   <div className={styles.UserDetails}>
                     {user.data.email}</div>
                 </div>
