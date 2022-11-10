@@ -79,7 +79,9 @@
   color: #99d2e9;
   padding: 8px 0px 8px 20px;
   cursor: pointer;
-  display: block;
+  display: flex;
+  gap: .5rem;
+  align-items: center;
 }
 
 .List {

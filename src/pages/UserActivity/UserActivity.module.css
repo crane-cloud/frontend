@@ -1,0 +1,107 @@
+.SmallContainer{
+  display: grid;
+  grid-template-rows: 3rem 3rem auto;
+  padding: 2rem;
+  gap: 1rem;
+  background: #f1f1f1;
+}
+
+.field {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #000;
+  width: -webkit-fill-available;
+  border-radius: unset;
+}
+.Header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.Heading{
+  font-weight: bolder;
+  line-height: 1.8;
+  font-size: larger;
+}
+
+.SimpleForm{
+  display: flex;
+  width: 60%;
+  gap: .5rem;
+}
+
+.BackButton{
+  background:#008ac1;
+  outline: none;
+}
+
+.FilterButton{
+  outline: none;
+  background: unset;
+  border: 1px solid black;
+  color: #000;
+}
+.FilterButton:hover{
+  border: none;
+}
+
+.Table{
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 1rem 2rem;
+}
+
+.TableRow{
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.Success{
+  color: green;
+}
+
+.Danger{
+  color: red;
+}
+
+.Entity{
+  color: #008ac1;
+}
+
+hr{
+  margin: .5rem 0;
+}
+
+.Row{
+  display: flex;
+  justify-content: space-between;
+  width: -webkit-fill-available;
+}
+
+.Bold{
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.RowCell{
+  display: flex;
+  gap: 1rem;
+}
+
+.LastCell{
+  align-self: flex-end;
+}
+.UserAvatar {
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

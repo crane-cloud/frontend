@@ -23,7 +23,7 @@ class UserProjectsPage extends React.Component {
       openCreateComponent: false,
       Searchword: "",
       SearchList: [],
-      showInviteModel:false
+      showInviteModel: false,
     };
 
     this.state = this.initialState;
@@ -57,7 +57,6 @@ class UserProjectsPage extends React.Component {
       isAdded,
       getClustersList,
       getUserProjects,
-      data,
       isDeleted,
       isUpdated,
       clearUpdateProjectState,
@@ -65,18 +64,18 @@ class UserProjectsPage extends React.Component {
     const { Searchword } = this.state;
 
     if (isDeleted !== prevProps.isDeleted) {
-      getUserProjects(data.id);
+      getUserProjects();
       getClustersList();
     }
 
     if (isUpdated !== prevProps.isUpdated) {
       clearUpdateProjectState();
-      getUserProjects(data.id);
+      getUserProjects();
       getClustersList();
     }
 
     if (isAdded !== prevProps.isAdded) {
-      getUserProjects(data.id);
+      getUserProjects();
       this.setState(this.initialState);
     }
     if (Searchword !== prevState.Searchword) {
@@ -109,7 +108,7 @@ class UserProjectsPage extends React.Component {
   hideInvitationModel() {
     this.setState({ showInviteModel: false });
   }
-  showInvitationModel(){
+  showInvitationModel() {
     this.setState({ showInviteModel: true });
   }
   handleCallbackSearchword(word) {
@@ -119,7 +118,8 @@ class UserProjectsPage extends React.Component {
   }
 
   render() {
-    const { openCreateComponent, Searchword, SearchList,showInviteModel } = this.state;
+    const { openCreateComponent, Searchword, SearchList, showInviteModel } =
+      this.state;
     const {
       projects,
       isRetrieving,
@@ -191,34 +191,35 @@ class UserProjectsPage extends React.Component {
                     ))}
                 </div>
               )}
-               {showInviteModel===true && (
+              {showInviteModel === true && (
                 <div className={styles.ProjectDeleteModel}>
                   <Modal
                     showModal={showInviteModel}
                     onClickAway={this.hideInvitationModel}
                   >
                     <div className={styles.ModelContent}>
-                         <div className={styles.ModelHeader}>
-                         Invitation to this project </div>
-                        <div className={styles.UpdateForm}>
-                           <div className={styles.InformationText}>
-                           You have been invited to join this project as an 
-                           <span className={styles.Role}> Adminstrator.</span>
-                           </div>
-                          <div className={styles.UpdateProjectModelButtons}>
+                      <div className={styles.ModelHeader}>
+                        Invitation to this project{" "}
+                      </div>
+                      <div className={styles.UpdateForm}>
+                        <div className={styles.InformationText}>
+                          You have been invited to join this project as an
+                          <span className={styles.Role}> Adminstrator.</span>
+                        </div>
+                        <div className={styles.UpdateProjectModelButtons}>
                           <PrimaryButton
-                              label="Decline"
-                              className="CancelBtn"
-                              onClick={()=>{}}
-                            />
-                            <PrimaryButton
-                              label={"Accept"}
-                              className={styles.BlueBtn}
-                              onClick={()=>{}}
-                            />
-                          </div>
+                            label="Decline"
+                            className="CancelBtn"
+                            onClick={() => {}}
+                          />
+                          <PrimaryButton
+                            label={"Accept"}
+                            className={styles.BlueBtn}
+                            onClick={() => {}}
+                          />
                         </div>
                       </div>
+                    </div>
                   </Modal>
                 </div>
               )}

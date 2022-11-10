@@ -3,6 +3,14 @@ import PropTypes from "prop-types";
 import styles from "./SideBar.module.css";
 import { Link, NavLink, matchPath } from "react-router-dom";
 import BackButton from "../../assets/images/backButton.svg";
+import { ReactComponent as Setting } from "../../assets/images/setting.svg";
+import { ReactComponent as Credit } from "../../assets/images/credit-card.svg";
+import { ReactComponent as Clip } from "../../assets/images/clipboard.svg";
+import { ReactComponent as Network } from "../../assets/images/wifi.svg";
+import { ReactComponent as Disk } from "../../assets/images/server.svg";
+import { ReactComponent as Memory } from "../../assets/images/hard-drive.svg";
+import { ReactComponent as Database } from "../../assets/images/database.svg";
+import { ReactComponent as Apps } from "../../assets/images/grid.svg";
 import useMedia from "../../hooks/mediaquery";
 import Menu from "../../assets/images/menu.svg";
 
@@ -214,12 +222,12 @@ const SideBar = ({
                       to={{ pathname: `/projects/${projectID}/apps` }}
                       className={styles.SubBarListItem}
                     >
-                      Apps
+                    <Apps />  Apps
                     </NavLink>
                   )}
 
                   <NavLink to={databaseLink} className={styles.SubBarListItem}>
-                    Databases
+                  <Database />  Databases
                   </NavLink>
                 </div>
                 <Link
@@ -230,14 +238,14 @@ const SideBar = ({
                 </Link>
                 <div>
                   <NavLink to={cpuLink} className={styles.SubBarListItem}>
-                    CPU
+                  <Disk />  CPU
                   </NavLink>
                   <NavLink to={memoryLink} className={styles.SubBarListItem}>
-                    Memory
+                    <Memory /> Memory
                   </NavLink>
                   {/* <Link to={storageLink} className={styles.SubBarListItem}>Storage</Link> */}
                   <NavLink to={networkLink} className={styles.SubBarListItem}>
-                    Network
+                    <Network /> Network
                   </NavLink>
                   {(isAppMetricsPage || isAppPage) && (
                     <>
@@ -246,7 +254,7 @@ const SideBar = ({
                           <NavLink
                             to={appLogsLink}
                             className={styles.SubBarListItem}
-                          >
+                          > <Clip />
                             Logs
                           </NavLink>
                         </div>
@@ -264,7 +272,7 @@ const SideBar = ({
                             name,
                           }}
                           className={styles.SubBarListItem}
-                        >
+                        > <Setting />
                           App Settings
                         </NavLink>
                       </div>
@@ -287,7 +295,7 @@ const SideBar = ({
                             pathname: `/projects/${projectID}/billing`,
                           }}
                           className={styles.SubBarListItem}
-                        >
+                        ><Credit />
                           Billing
                         </NavLink>
                       </div>
@@ -298,7 +306,7 @@ const SideBar = ({
                           pathname: `/projects/${projectID}/settings`,
                         }}
                         className={styles.SubBarListItem}
-                      >
+                      > <Setting />
                         Project settings
                       </NavLink>
                     </div>
