@@ -10,6 +10,7 @@ import { ReactComponent as Network } from "../../assets/images/wifi.svg";
 import { ReactComponent as Disk } from "../../assets/images/server.svg";
 import { ReactComponent as Memory } from "../../assets/images/hard-drive.svg";
 import { ReactComponent as Database } from "../../assets/images/database.svg";
+import { ReactComponent as Activity } from "../../assets/images/activity.svg";
 import { ReactComponent as Apps } from "../../assets/images/grid.svg";
 import useMedia from "../../hooks/mediaquery";
 import Menu from "../../assets/images/menu.svg";
@@ -288,6 +289,18 @@ const SideBar = ({
                     >
                       OTHER
                     </Link>
+                    <div>
+                      <div>
+                        <NavLink
+                          to={{
+                            pathname: `/projects/${projectID}/activity`,
+                          }}
+                          className={styles.SubBarListItem}
+                        ><Activity />
+                          Activity
+                        </NavLink>
+                      </div>
+                    </div>
                     <div>
                       <div>
                         <NavLink
