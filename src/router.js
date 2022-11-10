@@ -56,6 +56,7 @@ import AppCpuPage from "./pages/AppCpuPage";
 import AppMetricsPage from "./pages/AppMetricsPage";
 import ProjectSettingsPage from "./pages/ProjectSettingsPage";
 import UserProjectsPage from "./pages/UserProjectsPage";
+import ProjectLogs from "./pages/ProjectLogs";
 import store from "./redux/store";
 
 // Protected route should have token. If not, login.
@@ -277,6 +278,12 @@ const Routes = () => (
         exact
         path="/clusters/:clusterID/clusterSettings"
         component={ClusterSettingsPage}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        exact
+        path="/projects/:projectID/activity"
+        component={ProjectLogs}
       />
       <Route path="*" component={PageNotFound} />
     </Switch>
