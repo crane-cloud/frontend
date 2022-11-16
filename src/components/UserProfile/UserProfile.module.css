@@ -94,8 +94,9 @@
   }
   .CardInfor{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
+    padding-top: 5px;
   }
 
   .CustomInput{
@@ -174,9 +175,10 @@
     padding-bottom: .5rem;
     border-bottom: 1px solid #ccc;
   }
+/*increased width to 48rem from 30rem*/
   .ProfileCard{
     display: flex;
-    width: 30rem;
+    width: 48rem;
     height: 12rem;
     gap:1rem;
     padding-left: 1rem;
