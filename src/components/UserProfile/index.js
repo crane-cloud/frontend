@@ -157,7 +157,7 @@ class UserProfile extends React.Component {
                 </div>
               </div>
             ) : isFetched ? (
-              <div className={`${styles.ProjectList}  SmallContainer`}>
+              <div className={`${styles.ProfileContainer}  SmallContainer`}>
                 {isFetched && (
                   <div className={styles.UserContainer}>
                     <section className={styles.ContainerHeadSection}>
@@ -194,12 +194,12 @@ class UserProfile extends React.Component {
                             <Avatar name={user.name} className={styles.UserAvatar} />
                             {/* not editable */}
                             <div className={styles.InputDiv}>
-                              Email
+                              <div className={styles.Title2}>Email</div>
                               <div>{user.email}</div>
                             </div>
                           </div>
                           <div className={styles.InputDiv}>
-                            Name
+                          <div className={styles.Title2}>Name</div>
                             {editMode ? <BlackInputText
                               className={styles.CustomInput}
                               placeholder=""

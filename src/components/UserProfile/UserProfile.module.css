@@ -87,15 +87,16 @@
     border-radius: 50%;
     text-align: center;
     font-weight: bold;
-    font-size: 2rem;
+    font-size: 2.7rem;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   .CardInfor{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
+    padding-top: 5px;
   }
 
   .CustomInput{
@@ -113,7 +114,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 1.5rem;
+    gap: 6rem;
     width: 100%;
     padding: .3rem .3rem .7rem .3rem;
   }
@@ -140,6 +141,7 @@
     gap:.4rem;
     flex-direction: column;
     border-radius: 10px;
+    padding: .5rem 1rem 1rem 2.5rem;
     background-color: #fff;
   }
   .ButtonsDiv{
@@ -149,12 +151,14 @@
   }
   
   .SectionTitle{
-    font-size: 1.5rem;
     font-weight: 700;
+    font-size: 24px;
     color: #000;
   }
   .SectionSubTitle{
-    font-size: .7rem;
+    font-style: normal;
+    font-weight: 300;
+    font-size: .8rem;
     color: #000;
   }
   
@@ -162,29 +166,29 @@
   .ContainerSection{
     display: flex;
     width: 50rem;
-    padding-top: .5rem;
+    padding-top: 2rem;
     flex-direction: row;
     justify-content: space-between;
-    padding-bottom: .5rem;
-    border-bottom: 1px solid #ccc;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(204, 204, 204, 0.69);
   }
   .ContainerHeadSection{
     display: flex;
     width: 50rem;
-    padding-bottom: .5rem;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgba(204, 204, 204, 0.69);
+    padding-bottom: 2rem;
   }
+/*increased width to 48rem from 30rem*/
   .ProfileCard{
     display: flex;
-    width: 30rem;
+    width: 48rem;
     height: 12rem;
     gap:1rem;
-    padding-left: 1rem;
     flex-direction: column;
     border-radius: 10px;
     background-color: #fff;
     min-width: 20rem;
-    padding-right: 1rem;
+    padding: 1.3rem 1rem 1rem 2.5rem;
   }
   .AvatarDiv{
     display: flex;
@@ -192,6 +196,15 @@
     padding-top: .5rem;
     height: 5rem;
     align-items: center;
+  }
+  .ProfileContainer{
+    display: flex;
+    justify-content: center;
+    margin-left: 4rem;
+    margin-right: 4rem;
+  }
+  .Title2{
+   padding: .4rem;
   }
   .Identity{
     display: flex;
@@ -283,8 +296,26 @@
       grid-template-columns: repeat(4, 1fr);
     }
   }*/
-  
+  @media only screen and (max-width: 1070px)  {
+    .ProfileContainer{
+       margin-left: 2rem;
+       margin-right: 2rem;
+    }
+    .UserContainer{
+      padding-left: 2rem;
+    }
+  }
   @media only screen and (max-width: 900px)  {
+    .ProfileContainer{
+       margin-left: .5rem;
+       margin-right: .5rem;
+    }
+    .UserContainer{
+      padding-left: 1rem;
+    }
+  }
+  
+  @media only screen and (max-width: 700px)  {
     .ContainerSection{
       display: flex;
       flex-direction: column;
@@ -301,6 +332,9 @@
     }
     .UserContainer{
       padding-left: 0rem;
+    }
+    .InputDiv{
+      gap: 2rem;
     }
     aside{
       width: 23rem;
