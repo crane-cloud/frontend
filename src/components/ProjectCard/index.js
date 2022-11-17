@@ -76,7 +76,7 @@ class ProjectCard extends React.Component {
             <div className="ProjectDescription">{description}</div>
             </div>
             {/* conditional for when the user project its shared */}
-            {userID ==="user"&&
+            {userID !=="user"&&
               <Users title="This is a shared project"/>
             }
           </div>
