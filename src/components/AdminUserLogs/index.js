@@ -1,71 +1,130 @@
 import InformationBar from "../InformationBar";
 import Header from "../Header";
 import SideNav from "../SideNav";
-import Status from "../Status";
-import "./AdminUserLogs.css";
+import Avatar from "../../components/Avatar";
+import { ReactComponent as CheckMark } from "../../assets/images/check-circle.svg";
+import { ReactComponent as Danger } from "../../assets/images/alert-octagon.svg";
+import { ReactComponent as CloudOff } from "../../assets/images/cloud-off.svg";
+import { ReactComponent as Upload } from "../../assets/images/upload-cloud.svg";
+import styles from "./AdminUserLogs.module.css";
 import { useParams } from "react-router-dom";
+import PrimaryButton from "../../components/PrimaryButton";
 
 const AdminUserLogs = () => {
   const { clusterID } = useParams();
   const clusterName = localStorage.getItem("clusterName");
 
   return (
-    <div className="MainPage">
-      <div className="TopBarSection">
+    <div className={styles.Page}>
+      <div className={styles.TopBarSection}>
         <Header />
       </div>
-      <div className="MainSection">
-        <div className="SideBarSection">
+      <div className={styles.MainSection}>
+        <div className={styles.SideBarSection}>
           <SideNav clusterName={clusterName} clusterId={clusterID} />
         </div>
-        <div className="MainContentSection">
+        <div className={styles.MainContentSection}>
           <div className="InformationBarSection">
-            <InformationBar header="Accounts/SampleUser" showBtn={false} />
+            <InformationBar header="Accounts/Logs" showBtn={false} />
           </div>
-          <div className="ContentSection">
-            <div className="DatabaseTable MetricsCardContainer">
-              <div className="DatabaseTableRow CardHeaderSection">
-                <div className="DatabaseTableHead">Email</div>
-                <div className="DatabaseTableHead">Action</div>
-                <div className="DatabaseTableHead">Status</div>
-                <div className="DatabaseTableHead">Date & Time</div>
+
+          <div className={styles.SmallContainer}>
+            <div className={styles.Header}>
+              <div className={styles.Heading}>User Account logs</div>
+              <div className={styles.SimpleForm}>
+                <input
+                  type="text"
+                  className={styles.field}
+                  placeholder=" Filter by Status"
+                />
+                <PrimaryButton label="Filter" className={styles.FilterButton} />
               </div>
-              <div className="DatabaseBody">
-                <div className="DatabaseTableRow">
-                  <div className="DatabaseTableCell">SampleUser</div>
-                  <div className="DatabaseTableCell">Created a project</div>
-                  <div className="DatabaseTableCell">
-                    <Status status={true} />
+            </div>
+            <div className={styles.Table}>
+              <div className={styles.TableRow}>
+                <CheckMark className={styles.Success} />
+                <div className={styles.Row}>
+                  <div className={styles.RowCell}>
+                    <Avatar name="Rhodin" className={styles.UserAvatar} />
+                    <div>
+                      <div className={styles.Bold}>rhodin@cranecloud.io</div>
+                      <div>Tuesday 12-12-2022 16:00:03</div>
+                    </div>
+                    <div>
+                      Creating project{" "}
+                      <span className={styles.Entity}>4344ewe23</span>{" "}
+                      <span className={styles.Success}>Successful</span>
+                    </div>
                   </div>
-                  <div className="DatabaseTableCell">12-12-2022 16:00</div>
-                </div>
-                <div className="DatabaseTableRow">
-                  <div className="DatabaseTableCell">SampleUser</div>
-                  <div className="DatabaseTableCell">Updated a project</div>
-                  <div className="DatabaseTableCell">
-                    <Status status={true} />
+                  <div className={styles.LastCell}>
+                    <div>Successfully updated project description</div>
                   </div>
-                  <div className="DatabaseTableCell">12-12-2022 16:00</div>
-                </div>
-                <div className="DatabaseTableRow">
-                  <div className="DatabaseTableCell">SampleUser</div>
-                  <div className="DatabaseTableCell">Deleted a project</div>
-                  <div className="DatabaseTableCell">
-                    <Status status={true} />
-                  </div>
-                  <div className="DatabaseTableCell">12-12-2022 16:00</div>
-                </div>
-                <div className="DatabaseTableRow">
-                  <div className="DatabaseTableCell">SampleUser</div>
-                  <div className="DatabaseTableCell">
-                    Deployed an application
-                  </div>
-                  <div className="DatabaseTableCell">
-                    <Status status={true} />
-                  </div>
-                  <div className="DatabaseTableCell">12-12-2022 16:00</div>
                 </div>
               </div>
+              <hr className={styles.hr} />
+              <div className={styles.TableRow}>
+                <Danger className={styles.Danger} />
+                <div className={styles.Row}>
+                  <div className={styles.RowCell}>
+                    <Avatar name="Rhodin" className={styles.UserAvatar} />
+                    <div>
+                      <div className={styles.Bold}>rhodin@cranecloud.io</div>
+                      <div>Tuesday 12-12-2022 16:00:03</div>
+                    </div>
+                    <div>
+                      Creating project{" "}
+                      <span className={styles.Entity}>dsesdwe23</span>{" "}
+                      <span className={styles.Danger}>Failed</span>
+                    </div>
+                  </div>
+                  <div className={styles.LastCell}>
+                    <div>Not right project description</div>
+                  </div>
+                </div>
+              </div>
+              <hr className={styles.hr} />
+              <div className={styles.TableRow}>
+                <CloudOff className={styles.Danger} />
+                <div className={styles.Row}>
+                  <div className={styles.RowCell}>
+                    <Avatar name="Rhodin" className={styles.UserAvatar} />
+                    <div>
+                      <div className={styles.Bold}>rhodin@cranecloud.io</div>
+                      <div>Tuesday 12-12-2022 16:00:03</div>
+                    </div>
+                    <div>
+                      Deploying app{" "}
+                      <span className={styles.Entity}>4344ewe23</span>{" "}
+                      <span className={styles.Danger}>Failed</span>
+                    </div>
+                  </div>
+                  <div className={styles.LastCell}>
+                    <div>App deployment has failed.</div>
+                  </div>
+                </div>
+              </div>
+              <hr className={styles.hr} />
+              <div className={styles.TableRow}>
+                <Upload className={styles.Success} />
+                <div className={styles.Row}>
+                  <div className={styles.RowCell}>
+                    <Avatar name="Rhodin" className={styles.UserAvatar} />
+                    <div>
+                      <div className={styles.Bold}>rhodin@cranecloud.io</div>
+                      <div>Tuesday 12-12-2022 16:00:03</div>
+                    </div>
+                    <div>
+                      Deploying app{" "}
+                      <span className={styles.Entity}>4344ewe23</span>{" "}
+                      <span className={styles.Success}>Successful</span>
+                    </div>
+                  </div>
+                  <div className={styles.LastCell}>
+                    <div>Successfully deployed application.</div>
+                  </div>
+                </div>
+              </div>
+              <hr className={styles.hr} />
             </div>
           </div>
         </div>
