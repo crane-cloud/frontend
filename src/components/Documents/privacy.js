@@ -1,8 +1,8 @@
 import React from "react";
-import Header from "../Header";
+import NewHeader from "../NewHeader";
 const Privacy = () => (
   <div className="TeamPageContainer">
-    <Header />
+    <NewHeader />
     <div className="Terms">
       <h2>Privacy Policy</h2>
       <p>

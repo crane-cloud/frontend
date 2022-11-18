@@ -34,7 +34,7 @@
 .InnerContactGird {
   width: 90%;
   max-width: 1240px;
-  border: 5px solid #bcdfed;
+  border: 2px solid #008ac1;
   border-radius: 15px;
   display: grid;
   grid-template-columns: 1fr;
@@ -94,7 +94,7 @@
 .TelephoneSmall, .MailSmall, .ThumbSmall, .LocationSmall, .MapSmall {
   width: 3rem;
   height: 3rem;
-  border: 5px solid #bcdfed;
+  border: 2px solid #008ac1;
   border-radius: 15px;
   padding: 1rem;
 }
@@ -111,7 +111,7 @@
   grid-gap: 0.1rem;
   overflow-x: auto;
   background-color: #fbfbfb;
-  border: 5px solid #bcdfed;
+  border: 2px solid #008ac1;
   border-radius: 15px;
   width: 97%;
 }
@@ -157,7 +157,7 @@
 }
 
 .verticalLine {
-  border-left: 5px solid #bcdfed;
+  border-left: 2px solid #008ac1;
   height: 100%;
 }
 
