@@ -1,8 +1,8 @@
 import React from "react";
-import Header from "../Header";
+import NewHeader from "../NewHeader";
 const Terms = () => (
   <div className="TeamPageContainer">
-    <Header />
+    <NewHeader />
     <div className="Terms">
       <h4>Terms of service of usage www.cranecloud.io</h4>
       <p>CraneCloud.io provides the

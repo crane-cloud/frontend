@@ -15,7 +15,7 @@ const NewHeader = (props) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { match } = props;
-  const token =localStorage.getItem("token")
+  const token = localStorage.getItem("token");
 
   const toggleHidden = () => {
     if (hidden) {
@@ -58,6 +58,14 @@ const NewHeader = (props) => {
         <>
           {(!token || token === "") && (
             <div className="HeaderLinksWrap">
+              {(match.path === "/terms-of-service" ||
+                match.path === "/privacy-policy" || match.path === "/contact") && (
+                <div className="HeaderLink bold">
+                  <Link to="/" className="HeaderLinkDocs">
+                    Home
+                  </Link>
+                </div>
+              )}
               {match.path !== "/admin-login" && (
                 <div className="HeaderLink bold">
                   <a
@@ -216,7 +224,7 @@ const NewHeader = (props) => {
 NewHeader.propTypes = {
   removeUser: PropTypes.func.isRequired,
   user: PropTypes.shape({
-   // accessToken: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    // accessToken: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     data: PropTypes.shape({
       id: PropTypes.string,
       name: PropTypes.string,
