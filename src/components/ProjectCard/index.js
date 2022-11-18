@@ -6,6 +6,7 @@ import "./ProjectCard.css";
 import LineChartComponent from "../LineChart";
 import getProjectMemory from "../../redux/actions/projectMemory";
 import { formatMemoryMetrics } from "../../helpers/formatMetrics";
+import { ReactComponent as Users } from "../../assets/images/users.svg";
 
 class ProjectCard extends React.Component {
   constructor(props) {
@@ -34,7 +35,7 @@ class ProjectCard extends React.Component {
     return (
       <>
         <div className="ProjectsCard">
-          <div className="appCount">{apps_count}</div>
+          <div className="appCount" title={`${apps_count} Apps in this project`}>{apps_count}</div>
           {/**Check if user is part of the project or 
            * any implementation */}
           {userID ==="user"?
@@ -60,6 +61,7 @@ class ProjectCard extends React.Component {
           </div>
           }
           <div className="BottomContainer">
+            <div className="ProjectInfor">
             <div className="ProjectInfoSection">
               <Link
                 to={{
@@ -72,6 +74,11 @@ class ProjectCard extends React.Component {
               </Link>
             </div>
             <div className="ProjectDescription">{description}</div>
+            </div>
+            {/* conditional for when the user project its shared */}
+            {userID !=="user"&&
+              <Users title="This is a shared project"/>
+            }
           </div>
         </div>
       </>
