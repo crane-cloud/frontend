@@ -211,25 +211,30 @@ const SideBar = ({
                     Dashboard
                   </NavLink>
                 )}
-                <Link
-                  to="#"
-                  className={`${styles.ListItem} ${styles.DisabledLink}`}
-                >
-                  SERVICES
-                </Link>
+
                 <div>
                   {!isAppPage && (
-                    <NavLink
-                      to={{ pathname: `/projects/${projectID}/apps` }}
-                      className={styles.SubBarListItem}
-                    >
-                    <Apps />  Apps
-                    </NavLink>
+                    <>
+                      <Link
+                        to="#"
+                        className={`${styles.ListItem} ${styles.DisabledLink}`}
+                      >
+                        SERVICES
+                      </Link>
+                      <NavLink
+                        to={{ pathname: `/projects/${projectID}/apps` }}
+                        className={styles.SubBarListItem}
+                      >
+                        <Apps /> Apps
+                      </NavLink>
+                      <NavLink
+                        to={databaseLink}
+                        className={styles.SubBarListItem}
+                      >
+                        <Database /> Databases
+                      </NavLink>
+                    </>
                   )}
-
-                  <NavLink to={databaseLink} className={styles.SubBarListItem}>
-                  <Database />  Databases
-                  </NavLink>
                 </div>
                 <Link
                   to="#"
@@ -239,7 +244,7 @@ const SideBar = ({
                 </Link>
                 <div>
                   <NavLink to={cpuLink} className={styles.SubBarListItem}>
-                  <Disk />  CPU
+                    <Disk /> CPU
                   </NavLink>
                   <NavLink to={memoryLink} className={styles.SubBarListItem}>
                     <Memory /> Memory
@@ -255,7 +260,9 @@ const SideBar = ({
                           <NavLink
                             to={appLogsLink}
                             className={styles.SubBarListItem}
-                          > <Clip />
+                          >
+                            {" "}
+                            <Clip />
                             Logs
                           </NavLink>
                         </div>
@@ -273,7 +280,9 @@ const SideBar = ({
                             name,
                           }}
                           className={styles.SubBarListItem}
-                        > <Setting />
+                        >
+                          {" "}
+                          <Setting />
                           App Settings
                         </NavLink>
                       </div>
@@ -296,7 +305,8 @@ const SideBar = ({
                             pathname: `/projects/${projectID}/activity`,
                           }}
                           className={styles.SubBarListItem}
-                        ><Activity />
+                        >
+                          <Activity />
                           Activity
                         </NavLink>
                       </div>
@@ -308,7 +318,8 @@ const SideBar = ({
                             pathname: `/projects/${projectID}/billing`,
                           }}
                           className={styles.SubBarListItem}
-                        ><Credit />
+                        >
+                          <Credit />
                           Billing
                         </NavLink>
                       </div>
@@ -319,7 +330,9 @@ const SideBar = ({
                           pathname: `/projects/${projectID}/settings`,
                         }}
                         className={styles.SubBarListItem}
-                      > <Setting />
+                      >
+                        {" "}
+                        <Setting />
                         Project settings
                       </NavLink>
                     </div>
