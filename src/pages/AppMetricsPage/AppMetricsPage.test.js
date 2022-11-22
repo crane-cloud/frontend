@@ -6,7 +6,6 @@ import AppMetricsPage, { mapStateToProps } from ".";
 const AppMetricsPageProps = {
   logs: ["log1", "log2"],
   match: { params: { projectID: "1" } },
-  getAppLogs: jest.fn(),
   getAppMemory: jest.fn(),
   getAppCPU: jest.fn(),
   getAppNetwork: jest.fn(),
@@ -36,11 +35,6 @@ describe("Testing the exported mapstate to props and dispatch", () => {
           appMemoryMetrics: [],
           appMemoryMessage: "",
         },
-        appLogsReducer: {
-          logs: [],
-          retrievedLogs: false,
-          retrieveingLogs: false,
-        },
         appCpuReducer: {
           isFetchingCPU: false,
           appCPUMetrics: [],
@@ -61,9 +55,6 @@ describe("Testing the exported mapstate to props and dispatch", () => {
       isFetchingAppMemory: false,
       appMemoryMetrics: [],
       appMemoryMessage: "",
-      logs: [],
-      retrievedLogs: false,
-      retrieveingLogs: false,
       isFetchingCPU: false,
       appCPUMetrics: [],
       cpuMessage: "",

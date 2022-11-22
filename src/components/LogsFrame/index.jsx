@@ -4,7 +4,7 @@ import ToggleButton from "../ToggleButton";
 import Spinner from "../Spinner";
 import "./LogsFrame.css";
 
-const LogsFrame = ({ loading, title, data }) => {
+const LogsFrame = ({ loading, title, data,error }) => {
   const [dark, setDarkMode] = useState(false);
 
   const changeMode = () => {
@@ -23,7 +23,7 @@ const LogsFrame = ({ loading, title, data }) => {
           <div className="LogsSpinner">
             <Spinner />
           </div>
-        ) : (
+        ) :error?<div className="LogsEmpty">{error}</div>:(
           <>
             {data.length === 0 || data[0] === "" ? (
               <div className="LogsEmpty">No logs available</div>

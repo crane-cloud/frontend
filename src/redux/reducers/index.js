@@ -28,7 +28,7 @@ import projectNetworkReducer from "./projectNetwork";
 import appNetworkReducer from "./appNetwork";
 import appCpuReducer from "./appCpu";
 import appMemoryReducer from "./appMemoryReducer";
-import appLogsReducer from "./getAppLogs";
+// import appLogsReducer from "./getAppLogs";
 import projectDatabasesReducer from "./databaseList";
 import deleteDatabaseReducer from "./deleteDatabase";
 import resetDatabaseReducer from "./resetDatabase";
@@ -89,7 +89,7 @@ export default combineReducers({
   projectMemoryReducer,
   projectCPUReducer,
   projectNetworkReducer,
-  appLogsReducer,
+  // appLogsReducer,
   appNetworkReducer,
   appCpuReducer,
   appMemoryReducer,
