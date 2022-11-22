@@ -126,6 +126,7 @@ class UserProjectsPage extends React.Component {
       isFetched,
       match: { params },
       credits,
+      data
     } = this.props;
     const sortedProjects = projects.sort((a, b) =>
       b.date_created > a.date_created ? 1 : -1
@@ -169,7 +170,8 @@ class UserProjectsPage extends React.Component {
                         description={project.description}
                         cardID={project.id}
                         acceptInviteCallBackModel={this.showInvitationModel}
-                        userID="user"
+                        userID={data.id}
+                        ownerId={project.owner_id}
                         apps_count={project.apps_count}
                       />
                     ))}
@@ -184,7 +186,8 @@ class UserProjectsPage extends React.Component {
                         name={project.name}
                         description={project.description}
                         cardID={project.id}
-                        userID="user"
+                        userID={data.id}
+                        ownerId={project.owner_id}
                         acceptInviteCallBackModel={this.showInvitationModel}
                         apps_count={project.apps_count}
                       />

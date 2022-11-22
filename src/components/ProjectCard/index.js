@@ -28,7 +28,7 @@ class ProjectCard extends React.Component {
   }
 
   render() {
-    const { name, description, cardID,apps_count,userID,acceptInviteCallBackModel } = this.props;
+    const { name, description, cardID,apps_count,userID,acceptInviteCallBackModel,ownerId } = this.props;
 
     const formattedMetrics = this.getProjectMemoryMetrics();
 
@@ -38,7 +38,7 @@ class ProjectCard extends React.Component {
           <div className="appCount" title={`${apps_count} Apps in this project`}>{apps_count}</div>
           {/**Check if user is part of the project or 
            * any implementation */}
-          {userID ==="user"?
+          {userID !=="user"?
           (<Link
             to={{
               pathname: `/projects/${cardID}/dashboard`,
@@ -76,7 +76,7 @@ class ProjectCard extends React.Component {
             <div className="ProjectDescription">{description}</div>
             </div>
             {/* conditional for when the user project its shared */}
-            {userID !=="user"&&
+            {userID !== ownerId &&
               <Users title="This is a shared project"/>
             }
           </div>
