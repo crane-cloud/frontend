@@ -1,23 +1,14 @@
 .Secondary-Btn {
-  background-color: transparent;
+  background-color: white;
   width: 9.7rem;
   height: 2.9rem;
   font-size: 1rem;
-  font-weight: bold;
-  border: none;
+  /* font-weight: bold; */
+  border: 1px solid white;
+  color: #008ac1;
   /* box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); */
 }
 
 .Secondary-Btn:hover {
   background-color: #dddddd;
-}
-
-.SecondaryBlack {
-  outline: 2px solid black;
-  color: black;
-}
-
-.SecondaryWhite {
-  outline: 2px solid white;
-  color: white;
 }

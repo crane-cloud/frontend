@@ -223,7 +223,107 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+.DatabaseSection,
+.ApplicationSection,
+.StackSection{
+  /* height: 100vh; */
+  padding: 3rem 2rem 3rem 4rem;
+  display: grid;
+  grid-template-columns: 45% auto;
+}
+.DatabaseSection{
+  background-color: #99D2E9;
+  gap: 2rem;
+}
+.ApplicationSection{
+  background: #008AC1;
+  gap: 2rem;
+}
+.StackSection{
+  background: #CCCCCC;
+  gap: 2rem;
+}
+.IconSqure{
+  border-radius: 10px;
+  background-color: #99D2E9;
+  height: 6rem;
+}
 
+.IconSqureImage{
+  border-radius: 10px;
+  background-color: #99D2E9;
+  height: 6rem;
+  justify-self: self-end;
+  width: -webkit-fill-available;
+}
+
+.IconSqureImage img{
+  height: 100%;
+}
+.LeftInfoSection{
+  display: grid;
+  grid-template-rows: 20% auto 30%;
+}
+
+.DatabaseSection .LeftInfoSection div:nth-child(1){
+  color: #555555;
+}
+
+.ApplicationSection .LeftInfoSection div:nth-child(1){
+  color: #ffffff;
+}
+
+.StackSection .LeftInfoSection div:nth-child(1){
+  color: #000000;
+}
+
+.LeftInfoSection div:nth-child(2){
+  line-height: 1.8;
+}
+
+.LeftInfoHeader{
+  line-height: 2rem;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.AutoContainer{
+  background: #F7B21F;
+  color: #000000;
+  border: 1px solid #F7B21F;
+}
+
+.GridSide{
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+
+.Flex{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.DBIcons svg{
+  height: 15rem;
+}
+.DBContain{
+  display: grid;
+  grid-template-rows: auto 30%;
+  gap: 3rem;
+}
+
+.DBChoose{
+  line-height: 2rem;
+  font-size: 2em;
+  font-weight: bold;
+  color: #555555;
+  text-align: center;
+}
+.AlignButton{
+  align-self: end;
+}
 @media only screen and (max-width: 640px) {
   .LandingPageMainContentImg {
     display: none;
