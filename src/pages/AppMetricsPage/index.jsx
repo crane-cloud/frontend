@@ -12,7 +12,7 @@ import { ReactComponent as MetricIcon } from "../../assets/images/resource-icon.
 import styles from "./AppMetricsPage.module.css";
 import LineChartComponent from "../../components/LineChart";
 import LogsFrame from "../../components/LogsFrame";
-import getAppLogs from "../../redux/actions/getAppLogs";
+import { handleAppMetricsPostRequest } from "../../apis/apis";
 import getAppMemory, { clearAppMemory } from "../../redux/actions/appMemory";
 import getAppCPU from "../../redux/actions/appCPU";
 import {
@@ -32,6 +32,9 @@ class AppMetricsPage extends React.Component {
 
     this.state = {
       urlChecked: false,
+      logs: [],
+      fetchingLogs: true,
+      logsError: ''
     };
 
     this.getAppMemoryMetrics = this.getAppMemoryMetrics.bind(this);
@@ -60,7 +63,6 @@ class AppMetricsPage extends React.Component {
 
   componentDidMount() {
     const {
-      getAppLogs,
       getAppMemory,
       getAppCPU,
       getAppNetwork,
@@ -68,13 +70,27 @@ class AppMetricsPage extends React.Component {
       match: { params },
     } = this.props;
     const { projectID, appID } = params;
+    handleAppMetricsPostRequest({ timestamps: true },
+      `/projects/${projectID}/apps/${appID}/logs`)
+      .then((response) => {
+        this.setState({
+          logs: response.data.data.pods_logs,
+          fetchingLogs: false
+        })
+      }).catch((error) => {
+        this.setState({
+          logsError: "Failed to fetch logs",
+          fetchingLogs: false
+        })
+      })
 
-    getAppLogs({ projectID, appID }, { timestamps: true });
     clearAppMemory();
     clearUrlRevertState();
     getAppMemory(projectID, appID, {});
     getAppCPU(projectID, appID, {});
     getAppNetwork(projectID, appID, {});
+
+
   }
 
   getAppMemoryMetrics() {
@@ -123,8 +139,8 @@ class AppMetricsPage extends React.Component {
   render() {
     const { params } = this.props.match;
     const { projectID, appID } = params;
-    const { logs, retrieveingLogs, isReverting, isReverted } = this.props;
-    const { urlChecked } = this.state;
+    const { isReverting, isReverted } = this.props;
+    const { logs, logsError, fetchingLogs, urlChecked } = this.state;
 
     const formattedMemoryMetrics = this.getAppMemoryMetrics();
     const formattedCPUMetrics = this.getAppCPUMetrics();
@@ -313,9 +329,10 @@ class AppMetricsPage extends React.Component {
                   }}
                 >
                   <LogsFrame
-                    loading={retrieveingLogs}
+                    loading={fetchingLogs}
                     data={logs}
                     title={`${appInfo.name} logs`}
+                    error={logsError}
                   />
                 </Link>
               </div>
@@ -328,16 +345,11 @@ class AppMetricsPage extends React.Component {
 }
 
 export const mapStateToProps = (state) => {
-  const { logs, retrievedLogs, retrieveingLogs } = state.appLogsReducer;
-
   const { isFetchingAppMemory, appMemoryMetrics, appMemoryMessage } =
     state.appMemoryReducer;
-
   const { isFetchingCPU, appCPUMetrics, cpuMessage } = state.appCpuReducer;
-
   const { appNetworkMetrics, isFetchingAppNetwork, appNetworkMessage } =
     state.appNetworkReducer;
-
   const { apps } = state.appsListReducer;
   const { isReverting, isReverted } = state.revertUrlReducer;
 
@@ -345,9 +357,6 @@ export const mapStateToProps = (state) => {
     isFetchingAppMemory,
     appMemoryMetrics,
     appMemoryMessage,
-    logs,
-    retrievedLogs,
-    retrieveingLogs,
     isFetchingCPU,
     appCPUMetrics,
     cpuMessage,
@@ -363,7 +372,6 @@ export const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   getAppMemory,
   clearAppMemory,
-  getAppLogs,
   getAppCPU,
   getAppNetwork,
   clearUrlRevertState,
@@ -376,7 +384,6 @@ AppMetricsPage.propTypes = {
       projectID: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
-  logs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppMetricsPage);

@@ -6,19 +6,29 @@ import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
 import "./AppLogsPage.css";
 import LogsFrame from "../../components/LogsFrame";
-import getAppLogs from "../../redux/actions/getAppLogs";
+import {handleAppMetricsPostRequest} from "../../apis/apis";
+import { useState } from "react";
 
 const AppLogsPage = () => {
   const location = useLocation();
   const params = useParams();
   const { projectID, appID } = params;
+  const [ fetchingLogs, setFetchinLogs ] = useState(true);
+  const [logs, setLogs] = useState([])
+  const [logsError, setlogsError] = useState('')
 
   useEffect(() => {
-    getAppLogs({ projectID, appID }, { timestamps: true });
+   handleAppMetricsPostRequest({ timestamps: true },
+    `/projects/${projectID}/apps/${appID}/logs`).then((response)=>{
+      setLogs(response.data.data.pods_logs)
+      setFetchinLogs(false)
+    }).catch((error)=>{
+      setlogsError("Failed to fetch logs")
+      setFetchinLogs(false)
+    })
   }, [projectID, appID]);
 
   const myApps = useSelector((state) => state.appsListReducer);
-  const appLogs = useSelector((state) => state.appLogsReducer);
 
   const getAppInfo = (id) => {
     const { apps } = myApps;
@@ -32,7 +42,6 @@ const AppLogsPage = () => {
     return info;
   };
 
-  const { logs, retrieveingLogs } = appLogs;
   const appInfo = getAppInfo(appID);
 
   return (
@@ -61,9 +70,10 @@ const AppLogsPage = () => {
           <div className="ContentSection SmallContainer">
             <div className="LogsSection">
               <LogsFrame
-                loading={retrieveingLogs}
+                loading={fetchingLogs}
                 data={logs}
                 title={`${appInfo.name} logs`}
+                error={logsError}
               />
             </div>
           </div>
