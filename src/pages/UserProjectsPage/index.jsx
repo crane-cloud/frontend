@@ -14,6 +14,7 @@ import getUserCredits from "../../redux/actions/userCredits";
 import ProjectCard from "../../components/ProjectCard";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
+import { ReactComponent as DownArrow } from "../../assets/images/down-arrow-black.svg";
 import "../../index.css";
 
 class UserProjectsPage extends React.Component {
@@ -24,6 +25,8 @@ class UserProjectsPage extends React.Component {
       Searchword: "",
       SearchList: [],
       showInviteModel: false,
+      selectProjectCategory: false,
+      selectedProjects:'My projects'
     };
 
     this.state = this.initialState;
@@ -98,7 +101,6 @@ class UserProjectsPage extends React.Component {
         searchResult.push(element);
       }
     });
-
     this.setState({
       SearchList: searchResult.sort((a, b) =>
         b.date_created > a.date_created ? 1 : -1
@@ -118,7 +120,7 @@ class UserProjectsPage extends React.Component {
   }
 
   render() {
-    const { openCreateComponent, Searchword, SearchList, showInviteModel } =
+    const { openCreateComponent, Searchword, SearchList, showInviteModel,selectProjectCategory,selectedProjects } =
       this.state;
     const {
       projects,
@@ -153,6 +155,46 @@ class UserProjectsPage extends React.Component {
               />
             </div>
             <div className={styles.MainRow}>
+              <div className={`${styles.SelectProjects} SmallContainer`}>
+              <div className={styles.ProjectsDropDown}>
+                <div className={styles.TopItem}>
+                  <>
+                  {selectedProjects}
+                  </>
+                  <div onClick={()=>{this.setState(
+                    {selectProjectCategory:!selectProjectCategory}
+                    )}} 
+                    className={selectProjectCategory? styles.dropdown:styles.closeDrop}>
+                  <DownArrow/>
+                  </div>
+                </div>
+                {selectProjectCategory &&
+                <div className={styles.itemsList}>
+                <div
+                 onClick={()=>{this.setState({
+                  selectedProjects:'My projects',
+                  selectProjectCategory:false
+                })}}
+                 className={selectedProjects === 'My projects'? 
+                 styles.SelectedListItem
+                :styles.ListItem
+                }>
+                 My projects
+                </div>
+                <div
+                 onClick={()=>{this.setState({
+                  selectedProjects:'Projects shared with me',
+                  selectProjectCategory:false
+                })}}
+                 className={selectedProjects === 'Projects shared with me'? 
+                 styles.SelectedListItem
+                :styles.ListItem }>
+                 Projects shared with me
+                </div>
+                </div>
+                }
+              </div>
+              </div>
               {isRetrieving ? (
                 <div className={styles.NoResourcesMessage}>
                   <div className={styles.SpinnerWrapper}>
@@ -160,7 +202,7 @@ class UserProjectsPage extends React.Component {
                   </div>
                 </div>
               ) : Searchword !== "" ? (
-                <div className={styles.ProjectList}>
+                <div className={`${styles.ProjectList}  SmallContainer`}>
                   {isFetched &&
                     SearchList !== undefined &&
                     SearchList.map((project) => (

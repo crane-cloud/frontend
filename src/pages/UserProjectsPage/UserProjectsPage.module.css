@@ -5,7 +5,57 @@
   flex-wrap: wrap;
   padding: 2rem;
 }
-
+.ProjectsDropDown{
+  display: flex;
+  flex-direction: column;
+}
+.SelectProjects{
+  padding-top: .3rem;
+}
+.TopItem{
+  display: flex;
+  width: 15rem;
+  flex-direction: row;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 17px;
+  padding: 1.5rem 1rem 1rem 0;
+  border-bottom: 1px solid #008ac1;
+}
+.closeDrop{
+  -webkit-transform: rotateX(180deg);
+  transform: rotateX(180deg);
+}
+.itemsList{
+  width: 12rem;
+  gap: 1rem;
+  padding-top: .5rem;
+  position: relative;
+  animation-name: example;
+  left:2rem;
+  animation-duration: 1s;
+}
+@keyframes example {
+  0%   {left:0px; }
+  100%  {left:2rem; }
+}
+.ListItem{
+  display: flex;
+  padding: .3rem 1rem .3rem 0;
+}
+.ListItem:hover{
+  border-bottom: 4px solid #008ac1;
+  cursor: pointer;
+}
+.SelectedListItem{
+  display: flex;
+  padding: .3rem 1rem .3rem 0;
+  color: #008ac1;
+}
+.SelectedListItem:hover{
+  border-bottom: 4px solid #008ac1;
+  cursor: pointer;
+}
 .ProjectFormErrorDiv {
   background-color: rgba(255, 255, 255, 0.5);
   color: #d63b3b;
