@@ -302,6 +302,22 @@ const ClusterPage = ({
       </div>
       <br />
       <div className={styles.OtherCards}>
+        <Link className={styles.Card}>
+          <>
+            <div className={styles.CardHeader}>Projects</div>
+            <div className={styles.DBStats}>
+              <div className={styles.In}>
+                <div className={styles.InnerTitlesStart}>Active</div>
+                <div className={styles.ResourceDigit}>50</div>
+              </div>
+              <div className={styles.verticalLine}></div>
+              <div className={styles.In}>
+                <div className={styles.InnerTitlesMiddle}>Disabled</div>
+                <div className={styles.ResourceDigit}>0</div>
+              </div>
+            </div>
+          </>
+        </Link>
         <Link to="/databases" className={styles.Card}>
           <>
             <div className={styles.CardHeader}>Databases</div>
