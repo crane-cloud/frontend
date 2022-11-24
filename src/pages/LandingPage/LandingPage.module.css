@@ -245,21 +245,11 @@
 }
 .IconSqure{
   border-radius: 10px;
-  background-color: #99D2E9;
+  background-color: #fafafa;
   height: 6rem;
+  padding: .2rem;
 }
 
-.IconSqureImage{
-  border-radius: 10px;
-  background-color: #99D2E9;
-  height: 6rem;
-  justify-self: self-end;
-  width: -webkit-fill-available;
-}
-
-.IconSqureImage img{
-  height: 100%;
-}
 .LeftInfoSection{
   display: grid;
   grid-template-rows: 20% auto 30%;

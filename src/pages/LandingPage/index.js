@@ -27,6 +27,7 @@ import { ReactComponent as Django } from "../../assets/images/django.svg";
 import { ReactComponent as Clang } from "../../assets/images/c.svg";
 import { ReactComponent as Angular } from "../../assets/images/angularjs.svg";
 import { ReactComponent as Html } from "../../assets/images/html.svg";
+import { ReactComponent as CSS } from "../../assets/images/css.svg";
 import { ReactComponent as Drupal } from "../../assets/images/drupal.svg";
 import { onUnload } from "../../helpers/localStorage";
 import SecondaryButton from "../../components/SecondaryButton";
@@ -246,16 +247,33 @@ const LandingPage = (props) => {
             <SecondaryButton label={"Read More"} />
           </div>
           <div className={styles.GridSide}>
-            <div className={styles.IconSqure}><Python />
+            <div className={styles.IconSqure}>
+              <Python />
             </div>
-            <div className={styles.IconSqure}><Php /></div>
-            <div className={styles.IconSqure}><Java /></div>
-            <div className={styles.IconSqure}><Javascript /></div>
-            <div className={styles.IconSqure}><Wordpress /></div>
-            <div className={styles.IconSqure}><Clang /></div>
-            <div className={styles.IconSqure}><Html /></div>
-            <div className={styles.IconSqure}><DockerIcon /></div>
-            <div className={styles.IconSqure}><Drupal /></div>
+            <div className={styles.IconSqure}>
+              <Php />
+            </div>
+            <div className={styles.IconSqure}>
+              <Java />
+            </div>
+            <div className={styles.IconSqure}>
+              <Javascript />
+            </div>
+            <div className={styles.IconSqure}>
+              <Wordpress />
+            </div>
+            <div className={styles.IconSqure}>
+              <Clang />
+            </div>
+            <div className={styles.IconSqure}>
+              <Html />
+            </div>
+            <div className={styles.IconSqure}>
+              <DockerIcon />
+            </div>
+            <div className={styles.IconSqure}>
+              <Drupal />
+            </div>
           </div>
         </section>
         <section className={styles.StackSection}>
@@ -273,18 +291,27 @@ const LandingPage = (props) => {
             />
           </div>
           <div className={styles.GridSide}>
-            <div className={styles.IconSqure}><Django /></div>
-            <div className={styles.IconSqure}><Nodejs /></div>
-            <div className={styles.IconSqure}><Flask /></div>
-            <div className={styles.IconSqure}><ReactIcon /></div>
-            <div className={styles.IconSqure}><Angular /></div>
-            <div className={styles.IconSqureImage}>
-              <img
-                  alt="html-icon"
-                  src={require("../../assets/images/html.png")}
-                />
+            <div className={styles.IconSqure}>
+              <Django />
             </div>
-            <div className={styles.IconSqure}><Lara /></div>
+            <div className={styles.IconSqure}>
+              <Nodejs />
+            </div>
+            <div className={styles.IconSqure}>
+              <Flask />
+            </div>
+            <div className={styles.IconSqure}>
+              <ReactIcon />
+            </div>
+            <div className={styles.IconSqure}>
+              <Angular />
+            </div>
+            <div className={styles.IconSqure}>
+              <CSS />
+            </div>
+            <div className={styles.IconSqure}>
+              <Lara />
+            </div>
           </div>
         </section>
       </div>
