@@ -31,6 +31,7 @@ import { ReactComponent as CSS } from "../../assets/images/css.svg";
 import { ReactComponent as Drupal } from "../../assets/images/drupal.svg";
 import { onUnload } from "../../helpers/localStorage";
 import SecondaryButton from "../../components/SecondaryButton";
+import { DOCS_URL } from "../../config";
 import styles from "./LandingPage.module.css";
 
 const LandingPage = (props) => {
@@ -217,10 +218,14 @@ const LandingPage = (props) => {
               you to access and manage your database from anywhere, whether it
               is filling in database details or managing it via a terminal.
             </div>
-            <SecondaryButton
-              label={"Read More"}
+            <a
+              href="https://medium.com/cranecloud/working-with-databases-on-crane-cloud-466179c41a32"
+              rel="noopener noreferrer"
+              target="_blank"
               className={styles.AlignButton}
-            />
+            >
+              Read More
+            </a>
           </div>
           <div className={styles.DBContain}>
             <div className={styles.Flex}>
@@ -244,7 +249,14 @@ const LandingPage = (props) => {
               Cloud. With the provision of project overview metrics, down to
               individual application metrics and logs.
             </div>
-            <SecondaryButton label={"Read More"} />
+            <a
+              href={`${DOCS_URL}`}
+              rel="noopener noreferrer"
+              target="_blank"
+              className={styles.AlignButton}
+            >
+              Read More
+            </a>
           </div>
           <div className={styles.GridSide}>
             <div className={styles.IconSqure}>

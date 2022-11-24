@@ -170,19 +170,19 @@
   grid-template-columns: auto;
 }
 
-.PageBannerLearnMore{
+.PageBannerLearnMore {
   text-transform: uppercase;
   padding: 1rem 2rem;
   border: 2px solid transparent;
-  background: #FEFEFE;
+  background: #fefefe;
   font-weight: bold;
   cursor: pointer;
 }
 
-.PageBannerLearnMore:hover{
+.PageBannerLearnMore:hover {
   background: transparent;
-  border-color: #FEFEFE;
-  color: #FEFEFE;
+  border-color: #fefefe;
+  color: #fefefe;
 }
 
 .SolutionsSection {
@@ -202,7 +202,7 @@
   padding-top: 1.1rem;
 }
 
-.SolutionsIcon svg{
+.SolutionsIcon svg {
   height: 24px;
 }
 
@@ -225,94 +225,111 @@
 }
 .DatabaseSection,
 .ApplicationSection,
-.StackSection{
+.StackSection {
   /* height: 100vh; */
   padding: 3rem 2rem 3rem 4rem;
   display: grid;
   grid-template-columns: 45% auto;
 }
-.DatabaseSection{
-  background-color: #99D2E9;
+.DatabaseSection {
+  background-color: #99d2e9;
   gap: 2rem;
 }
-.ApplicationSection{
-  background: #008AC1;
+.ApplicationSection {
+  background: #008ac1;
   gap: 2rem;
 }
-.StackSection{
-  background: #CCCCCC;
+.StackSection {
+  background: #cccccc;
   gap: 2rem;
 }
-.IconSqure{
+.IconSqure {
   border-radius: 10px;
   background-color: #fafafa;
   height: 6rem;
-  padding: .2rem;
+  padding: 0.2rem;
 }
 
-.LeftInfoSection{
+.LeftInfoSection {
   display: grid;
   grid-template-rows: 20% auto 30%;
 }
 
-.DatabaseSection .LeftInfoSection div:nth-child(1){
+.DatabaseSection .LeftInfoSection div:nth-child(1) {
   color: #555555;
 }
 
-.ApplicationSection .LeftInfoSection div:nth-child(1){
+.ApplicationSection .LeftInfoSection div:nth-child(1) {
   color: #ffffff;
 }
 
-.StackSection .LeftInfoSection div:nth-child(1){
+.StackSection .LeftInfoSection div:nth-child(1) {
   color: #000000;
 }
 
-.LeftInfoSection div:nth-child(2){
+.LeftInfoSection div:nth-child(2) {
   line-height: 1.8;
 }
 
-.LeftInfoHeader{
+.LeftInfoHeader {
   line-height: 2rem;
   font-size: 1.5em;
   font-weight: bold;
 }
 
-.AutoContainer{
-  background: #F7B21F;
+.AutoContainer {
+  background: #f7b21f;
   color: #000000;
-  border: 1px solid #F7B21F;
+  border: 1px solid #f7b21f;
 }
 
-.GridSide{
+.GridSide {
   display: grid;
   gap: 2rem;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
 }
 
-.Flex{
+.Flex {
   display: flex;
   justify-content: space-evenly;
 }
 
-.DBIcons svg{
+.DBIcons svg {
   height: 15rem;
 }
-.DBContain{
+.DBContain {
   display: grid;
   grid-template-rows: auto 30%;
   gap: 3rem;
 }
 
-.DBChoose{
+.DBChoose {
   line-height: 2rem;
   font-size: 2em;
   font-weight: bold;
   color: #555555;
   text-align: center;
 }
-.AlignButton{
-  align-self: end;
+.AlignButton {
+  /* align-self: end; */
+  display: grid;
+  background-color: white;
+  width: 9.7rem;
+  height: 2.9rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  /* font-weight: bold; */
+  border: 1px solid white;
+  color: #008ac1;
+  cursor: pointer;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.AlignButton:hover {
+  background-color: #dddddd;
 }
 @media only screen and (max-width: 640px) {
   .LandingPageMainContentImg {
