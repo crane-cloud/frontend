@@ -57,7 +57,7 @@ import adminGetUserCreditsReducer from "./adminGetUserCredits";
 import updateProfileReducer from "./updateProfile";
 import creditsPaymentReducer from "./creditsPayments";
 import getGraphDataReducer from "./getGraphData";
-import projectMembersReducer from "./getProjectMembers";
+// import projectMembersReducer from "./getProjectMembers";
 import inviteMembersReducer from "./inviteMembers";
 import removeMemberReducer from "./removeMembers";
 import updateMemberRoleReducer from "./updateMemberRole";
@@ -121,7 +121,7 @@ export default combineReducers({
   updateProfileReducer,
   creditsPaymentReducer,
   getGraphDataReducer,
-  projectMembersReducer,
+  // projectMembersReducer,
   inviteMembersReducer,
   removeMemberReducer,
   updateMemberRoleReducer,

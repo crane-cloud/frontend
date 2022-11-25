@@ -6,18 +6,27 @@ import "./ProjectCard.css";
 import LineChartComponent from "../LineChart";
 import getProjectMemory from "../../redux/actions/projectMemory";
 import { formatMemoryMetrics } from "../../helpers/formatMetrics";
+import { handleGetRequest } from "../../apis/apis.js"
 import { ReactComponent as Users } from "../../assets/images/users.svg";
 
 class ProjectCard extends React.Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      projecMembers:[],
+      fetchMembersError:'',
+      currentUserRecord:{}
+    }
     this.getProjectMemoryMetrics = this.getProjectMemoryMetrics.bind(this);
+    this.getProjectMemberz = this.getProjectMemberz.bind(this);
+    this.getcurrentUserRecord = this.getcurrentUserRecord.bind(this);
+    this.updateRoleValue = this.updateRoleValue.bind(this)
   }
 
   componentDidMount() {
     const { cardID, getProjectMemory } = this.props;
     getProjectMemory(cardID, {});
+    this.getProjectMemberz();
   }
 
   getProjectMemoryMetrics() {
@@ -26,19 +35,43 @@ class ProjectCard extends React.Component {
     const results = formatMemoryMetrics(cardID, memoryMetrics);
     return results;
   }
-
+  getProjectMemberz() {
+    const { cardID } = this.props;
+    handleGetRequest(`/projects/${cardID}/users`).then((response) => {
+      this.setState({
+        projecMembers: response.data.data.project_users,
+      })
+     this.getcurrentUserRecord();
+    })
+      .catch((error) => {
+        this.setState({
+          fetchMembersError: "Failed to fetch project members",
+        })
+      })
+  }
+  getcurrentUserRecord() {
+    const { userID } = this.props;
+    const { projecMembers } = this.state;
+    //one object should be returned.
+    this.setState({currentUserRecord : 
+      projecMembers?.filter((item) => item.user?.id === userID) });
+  }
+  updateRoleValue(string) {
+    let role = string[1];
+    return role.charAt(0).toUpperCase() + role.slice(1);
+  }
   render() {
     const { name, description, cardID,apps_count,userID,acceptInviteCallBackModel,ownerId } = this.props;
-
+    const { currentUserRecord } = this.state;
     const formattedMetrics = this.getProjectMemoryMetrics();
-
     return (
       <>
         <div className="ProjectsCard">
           <div className="appCount" title={`${apps_count} Apps in this project`}>{apps_count}</div>
-          {/**Check if user is part of the project or 
-           * any implementation */}
-          {userID !=="user"?
+          {/**Check if user is not owner and invitation status */}
+          {(userID === ownerId || 
+          currentUserRecord[0]?.accepted_collaboration_invite === true
+          )?
           (<Link
             to={{
               pathname: `/projects/${cardID}/dashboard`,
@@ -55,7 +88,8 @@ class ProjectCard extends React.Component {
             </div>
           </Link>):
           <div 
-          onClick={()=>{acceptInviteCallBackModel()}}
+          onClick={()=>{acceptInviteCallBackModel(cardID,
+            this.updateRoleValue(currentUserRecord[0].role.split(".")))}}
           className="PendingNote">
              Invitation to this project is pending acceptance
           </div>

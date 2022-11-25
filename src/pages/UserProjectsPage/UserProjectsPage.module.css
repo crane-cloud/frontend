@@ -95,6 +95,10 @@
 .InformationText {
   width: 20rem;
 }
+.InformationWarning{
+  color: #d63b3b;
+}
+
 .ModelHeader {
   display: flex;
   align-items: center;

@@ -284,18 +284,28 @@
   display: flex;
   flex-direction: column;
   gap: .2rem;
+  font-weight: 400;
+  font-size: 14px;
+}
+.Wrap{
+  word-break: break-all;
 }
 
 .MemberTableRow {
+  display: grid;
+  color: #000000;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.MemberTableRowUnregistered {
   display: grid;
   color: #000000;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .NameSecting {
-  display: flex;
+  display: grid;
   justify-content: flex-start;
-  flex-direction: row;
+  grid-template-columns: 1fr 3fr;
   gap: .4rem;
   align-items: center;
 }
