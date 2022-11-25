@@ -639,7 +639,6 @@ class ProjectSettingsPage extends React.Component {
 
     return (
       <div className={styles.Page}>
-        {console.log(projectUsers)}
         {isUpdated || isDeleted || isSent || isRemoved || isRoleUpdated
           ? this.renderRedirect()
           : null}
