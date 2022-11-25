@@ -14,3 +14,41 @@ export const handleAppMetricsPostRequest = (data,endpoint) => {
         });
     }) 
 };
+
+export const handleGetRequest = (endpoint) => {
+  return new Promise((resolve,reject)=>{
+      axios
+      .get(endpoint)
+      .then((response) =>{
+       resolve(response)
+       })
+      .catch((error) => {
+        reject(error)
+      });
+  }) 
+};
+
+export const handlePatchRequest = (endpoint,data) => {
+  return new Promise((resolve,reject)=>{
+      axios
+      .patch(endpoint, data)
+      .then((response) =>{
+       resolve(response)
+       })
+      .catch((error) => {
+        reject(error)
+      });
+  }) 
+};
+// export const handleDeleteRequest = (endpoint) => {
+//   return new Promise((resolve,reject)=>{
+//       axios
+//       .delete(endpoint)
+//       .then((response) =>{
+//        resolve(response)
+//        })
+//       .catch((error) => {
+//         reject(error)
+//       });
+//   }) 
+// };

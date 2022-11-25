@@ -14,6 +14,7 @@ import getUserCredits from "../../redux/actions/userCredits";
 import ProjectCard from "../../components/ProjectCard";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
+import { handlePatchRequest } from "../../apis/apis.js"
 import { ReactComponent as DownArrow } from "../../assets/images/down-arrow-black.svg";
 import "../../index.css";
 
@@ -26,11 +27,14 @@ class UserProjectsPage extends React.Component {
       SearchList: [],
       showInviteModel: false,
       selectProjectCategory: false,
-      selectedProjects:'My projects'
+      selectedProjects:'My projects',
+      inviteeProjectId:'',
+      inviteeModelRole:'',
+      decliningInvitation:false,
+      acceptingInvitation:false,
+      invitationError:''
     };
-
     this.state = this.initialState;
-
     this.openProjectCreateComponent =
       this.openProjectCreateComponent.bind(this);
     this.callbackProjectCreateComponent =
@@ -39,6 +43,8 @@ class UserProjectsPage extends React.Component {
     this.handleCallbackSearchword = this.handleCallbackSearchword.bind(this);
     this.showInvitationModel = this.showInvitationModel.bind(this);
     this.hideInvitationModel = this.hideInvitationModel.bind(this);
+    this.handleInvitationAcceptence = this.handleInvitationAcceptence.bind(this);
+    this.handleInvitationDecline = this.handleInvitationDecline.bind(this);
   }
 
   componentDidMount() {
@@ -110,17 +116,81 @@ class UserProjectsPage extends React.Component {
   hideInvitationModel() {
     this.setState({ showInviteModel: false });
   }
-  showInvitationModel() {
-    this.setState({ showInviteModel: true });
+  showInvitationModel(inviteeProjectId,inviteeModelRole) {
+    this.setState({ 
+      showInviteModel: true,
+      inviteeProjectId: inviteeProjectId,
+      inviteeModelRole: inviteeModelRole,
+    });
   }
   handleCallbackSearchword(word) {
     this.setState({
       Searchword: word,
     });
   }
+  handleInvitationDecline(){
+    const {
+      getUserProjects,
+    } = this.props;
+    this.setState({
+      decliningInvitation:true
+    })
+    const { inviteeProjectId } = this.state;
+    handlePatchRequest(`/projects/${inviteeProjectId}/users/handle_invite`,
+    {
+      "accepted_collaboration_invite": false
+    }
+    ).then((response) => {
+      this.setState({
+        decliningInvitation:false
+      })
+      this.hideInvitationModel()
+      getUserProjects()
+    })
+      .catch((error) => {
+        this.setState({
+          invitationError: "Something went wrong",
+          decliningInvitation:false
+        })
+        this.hideInvitationModel()
+      })
+  }
+  handleInvitationAcceptence(){
+    const {
+      getUserProjects,
+    } = this.props;
+    this.setState({
+    acceptingInvitation:true
+  })
+    const { inviteeProjectId } = this.state;
 
+    handlePatchRequest(`/projects/${inviteeProjectId}/users/handle_invite`,
+    {
+      "accepted_collaboration_invite": true
+    }
+    )
+    .then((response) => {
+      this.setState({
+        acceptingInvitation:false
+      })
+      this.hideInvitationModel()
+      getUserProjects()
+    })
+    .catch((error) => {
+      this.setState({
+        invitationError: "Something went wrong",
+        acceptingInvitation:false
+      })
+      this.hideInvitationModel()
+    })
+  }
+  
   render() {
-    const { openCreateComponent, Searchword, SearchList, showInviteModel,selectProjectCategory,selectedProjects } =
+    const { openCreateComponent, Searchword, SearchList,
+       showInviteModel,selectProjectCategory,selectedProjects, 
+       inviteeModelRole, decliningInvitation,acceptingInvitation,
+       invitationError
+      } =
       this.state;
     const {
       projects,
@@ -164,7 +234,7 @@ class UserProjectsPage extends React.Component {
                   <div onClick={()=>{this.setState(
                     {selectProjectCategory:!selectProjectCategory}
                     )}} 
-                    className={selectProjectCategory? styles.dropdown:styles.closeDrop}>
+                    className={selectProjectCategory?styles.closeDrop: styles.dropdown}>
                   <DownArrow/>
                   </div>
                 </div>
@@ -248,21 +318,32 @@ class UserProjectsPage extends React.Component {
                       </div>
                       <div className={styles.UpdateForm}>
                         <div className={styles.InformationText}>
-                          You have been invited to join this project as an
-                          <span className={styles.Role}> Adminstrator.</span>
+                          You have been invited to join this project as (a/an)
+                          <span className={styles.Role}> {inviteeModelRole}.</span>
+                        </div>
+                        <div className={styles.InformationWarning}>
+                          PS: If you decline, you will not be able to see this 
+                          project again unless you are re-invited.
                         </div>
                         <div className={styles.UpdateProjectModelButtons}>
                           <PrimaryButton
-                            label="Decline"
+                            label={decliningInvitation? <Spinner/>: "Decline"}
                             className="CancelBtn"
-                            onClick={() => {}}
+                            onClick={() => 
+                              {this.handleInvitationDecline()}}
                           />
                           <PrimaryButton
-                            label={"Accept"}
+                            label={acceptingInvitation? <Spinner/>: "Accept"}
                             className={styles.BlueBtn}
-                            onClick={() => {}}
+                            onClick={() => 
+                              {this.handleInvitationAcceptence()}}
                           />
                         </div>
+                        { invitationError &&
+                          <div className={styles.InformationWarning}>
+                          {invitationError}
+                         </div>
+                        }
                       </div>
                     </div>
                   </Modal>
