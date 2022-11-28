@@ -34,6 +34,7 @@ const addProject = (projectData) => (dispatch) => {
     .post(`/projects`, projectData)
     .then((response) => dispatch(addProjectSuccess(response)))
     .catch((error) => {
+      console.log(error)
       dispatch(addProjectFail(error));
     });
 };
