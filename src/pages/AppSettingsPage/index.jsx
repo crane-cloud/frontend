@@ -26,6 +26,8 @@ import revertUrl, { clearUrlRevertState } from "../../redux/actions/revertUrl";
 import RemoveIcon from "../../assets/images/remove.svg";
 import { v4 as uuidv4 } from "uuid";
 import { validateDomain, validateDomainName } from "../../helpers/validation";
+import { ReactComponent as CheckMark } from "../../assets/images/check-circle.svg";
+import { ReactComponent as Danger } from "../../assets/images/alert-octagon.svg";
 
 class AppSettingsPage extends React.Component {
   constructor(props) {
@@ -718,15 +720,13 @@ class AppSettingsPage extends React.Component {
                         )}
 
                         {beta && (
-                          <div
-                            className={`${styles.CustomDomainCheckField}  ${styles.flexa}`}
-                          >
+                          <div className={styles.APPButtonRow}>
+                            <div className={styles.AppLabel}>Custom Domain</div>
                             <Checkbox
                               isBlack
                               onClick={this.toggleCustomDomain}
                               isChecked={isCustomDomain}
                             />
-                            Custom Domain
                           </div>
                         )}
 
@@ -822,6 +822,10 @@ class AppSettingsPage extends React.Component {
                           <div className={styles.flexa}>{app.age}</div>
                         </div>
                         <div className={styles.APPButtonRow}>
+                          <div className={styles.AppLabel}>Revisions</div>
+                          <div className={styles.flexa}>{app.revisions}</div>
+                        </div>
+                        <div className={styles.APPButtonRow}>
                           <div className={styles.AppLabel}>Link</div>
                           {app.url ? (
                             <div className={styles.CopyDiv}>
@@ -871,6 +875,89 @@ class AppSettingsPage extends React.Component {
                         )}
                       </div>
                     </div>
+
+                    <hr className={styles.HorizontalLine} />
+                    <div className={styles.APPSections}>
+                      <div className={styles.APPSectionTitle}>
+                        Application Revisions
+                      </div>
+                      <div className={styles.AppDeleteInstructions}>
+                        <div className={styles.APPInstruct}>
+                          <div className={styles.AppRevision}>
+                            <CheckMark className={styles.Success} />
+                            <div>
+                              <div>
+                                <span className={styles.Entity}>38438229</span>{" "}
+                                <span className={styles.Time}>
+                                  10:49am 09-13-2023
+                                </span>
+                                <span className={styles.AppDetails}>
+                                  <span className={styles.Entity}>
+                                    {app.name}
+                                  </span>{" "}
+                                  by rhodinemma
+                                </span>
+                              </div>
+                              <div className={styles.RevisionStatus}>
+                                <div className={styles.Success}>Successful</div>
+                                <div className={styles.Rollback__Option}>
+                                  Rollback here
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className={styles.AppRevision}>
+                            <Danger className={styles.Danger} />
+                            <div>
+                              <div>
+                                <span className={styles.Entity}>38438229</span>{" "}
+                                <span className={styles.Time}>
+                                  10:49am 09-13-2023
+                                </span>
+                                <span className={styles.AppDetails}>
+                                  <span className={styles.Entity}>
+                                    {app.name}
+                                  </span>{" "}
+                                  by rhodinemma
+                                </span>
+                              </div>
+                              <div className={styles.RevisionStatus}>
+                                <div className={styles.Danger}>Failed</div>
+                                <div className={styles.Rollback__Option}>
+                                  Rollback here
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className={styles.AppRevision}>
+                            <CheckMark className={styles.Success} />
+                            <div>
+                              <div>
+                                <span className={styles.Entity}>38438229</span>{" "}
+                                <span className={styles.Time}>
+                                  10:49am 09-13-2023
+                                </span>
+                                <span className={styles.AppDetails}>
+                                  <span className={styles.Entity}>
+                                    {app.name}
+                                  </span>{" "}
+                                  by rhodinemma
+                                </span>
+                              </div>
+                              <div className={styles.RevisionStatus}>
+                                <div className={styles.Success}>Successful</div>
+                                <div className={styles.Rollback__Option}>
+                                  Rollback here
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     <hr className={styles.HorizontalLine} />
                     <div className={styles.APPSections}>
                       {/* <div className={styles.APPSectionPort}> */}
