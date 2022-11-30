@@ -17,10 +17,9 @@ instance.interceptors.response.use(
     if (error.response.status === 401 || error.response.status === 422) {
       localStorage.clear();
       window.location.href = "/";
-    } else if(error.response.error === 409){
-      e = "Entity Duplication, change name"
-    } else {
+    } else if(error.response.status === 502){
       e = "Your request too long possible Server Error."
+      window.location.href = "/projects";
     }
     return Promise.reject(e);
   }

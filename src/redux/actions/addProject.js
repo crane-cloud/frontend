@@ -19,7 +19,7 @@ export const addProjectFail = (error) => ({
   type: ADD_PROJECT_FAILED,
   payload: {
     status: false,
-    errorCode: error.response.status,
+    errorCode: error.response?.status,
   },
 });
 
@@ -34,7 +34,6 @@ const addProject = (projectData) => (dispatch) => {
     .post(`/projects`, projectData)
     .then((response) => dispatch(addProjectSuccess(response)))
     .catch((error) => {
-      console.log(error)
       dispatch(addProjectFail(error));
     });
 };
