@@ -27,7 +27,7 @@ footer.LandingFooter {
 }
 
 .FooterLogoName {
-  color: #008ac1;
+  color: var(--primary-color);
   font-weight: 600;
   margin-bottom: 0.3rem;
   margin-top: 0;

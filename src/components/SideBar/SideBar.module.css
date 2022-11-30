@@ -1,6 +1,6 @@
 .SideBar {
   height: inherit;
-  background: #06222f;
+  background: var(--primary-dark-color);
   mix-blend-mode: normal;
   margin-left: 0px;
   overflow-x: hidden;
@@ -10,7 +10,7 @@
 }
 .SmallSidebar{
   height: inherit;
-  background: #06222f;
+  background: var(--primary-dark-color);
   mix-blend-mode: normal;
   margin-left: 0px;
   overflow-x: hidden;
@@ -30,7 +30,7 @@
 }
 
 .ProjectName {
-  background-color: #06222f;
+  background-color: var(--primary-dark-color);
   font-weight: bold;
   font-size: large;
   color: #fff;
@@ -57,12 +57,12 @@
 
 .ListItem {
   height: 21px;
-  background-color: #06222f;
+  background-color: var(--primary-dark-color);
   font-style: normal;
   font-weight: bold;
   font-size: 16px;
   line-height: 19px;
-  color: #f7b21f;
+  color: var(--secondary-color);
   margin-top: 20px;
   cursor: pointer;
   padding-left: 18px;
@@ -76,7 +76,7 @@
   font-weight: normal;
   font-size: 16px;
   line-height: 19px;
-  color: #99d2e9;
+  color: var(--primary-light-color);
   padding: 8px 0px 8px 20px;
   cursor: pointer;
   display: flex;
@@ -95,7 +95,7 @@
 
 .SubBarListItem:hover,
 .active {
-  color: #06222f;
+  color: var(--primary-dark-color);
   background-color: #7aa6b9;
   padding-left: 20px;
 }
@@ -116,10 +116,10 @@
   font-size: 12px;
   line-height: 14px;
   bottom: 0;
-  color: #008ac1;
+  color: var(--primary-color);
   padding: 18px 0 20px 18px;
   cursor: pointer;
-  background-color: #06222f;
+  background-color: var(--primary-dark-color);
 }
 .SideFooter:hover {
   color: rgb(131, 182, 202);

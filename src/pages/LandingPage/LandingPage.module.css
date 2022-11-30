@@ -1,5 +1,5 @@
 .LandingPage {
-  background: #008ac1;
+  background: var(--primary-color);
   flex-grow: 1;
   display: flex;
   flex-flow: column;
@@ -16,7 +16,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 9rem 3rem;
-  background: #008ac1;
+  background: var(--primary-color);
 
   /* height: calc(100vh - 5rem); */
 }
@@ -49,17 +49,18 @@
   font-weight: bold;
 }
 .LandingPageInfrastructurePic path {
-  fill: #99d2e9;
+  fill: var(--primary-light-color);
 }
+
 .FreeTrialButton {
-  background-color: #f7b21f;
+  background-color: var(--secondary-color);
   text-transform: uppercase;
   color: white;
   padding: 0.7rem;
   font-weight: bold;
   text-align: center;
   border: none;
-  outline: 2px solid #f7b21f;
+  border: 1px solid var(--secondary-color);
   display: grid;
   grid-auto-flow: column;
   gap: 1.5rem;
@@ -67,15 +68,18 @@
   justify-content: space-between;
   cursor: pointer;
   border-radius: 5px;
+  outline: none;
 }
 
 .FreeTrialButton:hover {
-  background: none;
-  color: #f7b21f;
+  background: white;
+  color: var(--primary-color);
+  border-color:  #fff;
+
 }
 
 .FreeTrialButton:hover path {
-  fill: #f7b21f;
+  fill: var(--primary-color);
 }
 
 .LandingPageMainContainer {
@@ -139,7 +143,7 @@
 }
 
 .PageBannerSection {
-  background-color: #f7b21f;
+  background-color: var(--secondary-color);
   color: #f8f7e5;
   display: flex;
   padding: 1rem 3rem;
@@ -232,11 +236,11 @@
   grid-template-columns: 45% auto;
 }
 .DatabaseSection {
-  background-color: #99d2e9;
+  background-color: var(--primary-light-color);
   gap: 2rem;
 }
 .ApplicationSection {
-  background: #008ac1;
+  background: var(--primary-color);
   gap: 2rem;
 }
 .StackSection {
@@ -246,8 +250,18 @@
 .IconSqure {
   border-radius: 10px;
   background-color: #fafafa;
-  height: 6rem;
-  padding: 0.2rem;
+  padding: 0.8rem;
+  cursor: pointer;
+}
+
+.IconSqure:hover {
+  transform: scale(1.06);
+  transition: ease-in-out 0.3s;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2); 
+}
+
+.IconSqure svg {
+  height: 3.4rem;
 }
 
 .LeftInfoSection {
@@ -278,9 +292,9 @@
 }
 
 .AutoContainer {
-  background: #f7b21f;
+  background: var(--secondary-color);
   color: #000000;
-  border: 1px solid #f7b21f;
+  border: 1px solid var(--secondary-color);
 }
 
 .GridSide {
@@ -323,7 +337,7 @@
   justify-content: center;
   /* font-weight: bold; */
   border: 1px solid white;
-  color: #008ac1;
+  color: var(--primary-color);
   cursor: pointer;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }

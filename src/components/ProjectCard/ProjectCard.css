@@ -8,7 +8,7 @@
 
 .ProjectsCard:hover {
   margin: 0;
-  border-color: #f7b21f;
+  border-color: var(--secondary-color);
 }
 .PendingNote{
   display: flex;

@@ -206,7 +206,7 @@
   padding: 1rem 1rem;
   background: #ffffff;
   border-radius: 15px;
-  border: 1px solid var(--color-gray-light);
+  border: 1px solid var(--gray-light-color);
   display: grid;
   gap: 2rem;
 }
@@ -274,7 +274,7 @@
 
 .MemberTableHead {
   text-transform: uppercase;
-  color: #008ac1;
+  color: var(--primary-color);
   text-align: center;
   grid-row: 1;
   padding: 0.5rem 0;
@@ -338,15 +338,15 @@
 }
 
 .BlueBtn:hover {
-  color: #008ac1;
+  color: var(--primary-color);
   background-color: #fff;
-  outline: 2px solid #008ac1;
+  outline: 2px solid var(--primary-color);
 }
 
 .BlueBtn {
   color: #fff;
-  background-color: #008ac1;
-  outline: 2px solid #008ac1;
+  background-color: var(--primary-color);
+  outline: 2px solid var(--primary-color);
   padding: 0.5rem;
   height: 2.5rem;
 }
@@ -360,27 +360,27 @@
 }
 
 .SettingsButton {
-  background-color: #008ac1;
+  background-color: var(--primary-color);
   color: #fff;
-  outline: 1px solid #008ac1;
+  outline: 1px solid var(--primary-color);
 }
 
 .SettingsButton:hover {
-  color: #008ac1;
+  color: var(--primary-color);
   background-color: #fff;
-  outline: 1px solid #008ac1;
+  outline: 1px solid var(--primary-color);
 }
 
 .SettingsButtonUpdate {
   color: #fff;
-  background-color: #f7b21f;
-  outline: 1px solid #f7b21f;
+  background-color: var(--secondary-color);
+  outline: 1px solid var(--secondary-color);
 }
 
 .SettingsButtonUpdate:hover {
-  color: #f7b21f;
+  color: var(--secondary-color);
   background-color: #fff;
-  outline: 1px solid #f7b21f;
+  outline: 1px solid var(--secondary-color);
 }
 
 .contextMenu {

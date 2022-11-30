@@ -30,13 +30,13 @@
     color: #fff;
     width: fit-content;
     height: 2rem;
-    background-color: #008ac1;
-    outline: 1px solid #008ac1;
+    background-color: var(--primary-color);
+    outline: 1px solid var(--primary-color);
   }
   .BackButton:hover {
-    color: #008ac1;
+    color: var(--primary-color);
     background-color: #fff;
-    outline: 1px solid #008ac1;
+    outline: 1px solid var(--primary-color);
   }
   .PairButtonCancel{
     color: #fff;
@@ -58,7 +58,7 @@
     gap: .3rem;
   }
   .rowContentYes{
-    color: #008ac1;
+    color: var(--primary-color);
     font-weight: 700;
   }
   .RowContent{

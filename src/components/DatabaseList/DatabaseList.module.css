@@ -10,7 +10,7 @@
 
 .DatabaseTableHead {
   text-transform: uppercase;
-  color: #008ac1;
+  color: var(--primary-color);
   text-align: center;
   grid-row: 1;
   padding: 0.5rem 0;
@@ -32,8 +32,8 @@
 }
 
 .DatabaseBody .DatabaseTableRow:hover {
-  /* color: #f7b21f; */
-  background-color: var(--color-gray-light);
+  /* color: var(--secondary-color); */
+  background-color: var(--gray-light-color);
 }
 
 .DatabaseTableCell {

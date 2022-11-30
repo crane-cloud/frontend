@@ -1,5 +1,5 @@
 .Primary-Btn {
-  background-color: #f7b21f;
+  background-color: var(--secondary-color);
   min-width: 8rem;
   padding: 0.6rem;
   color: white;
@@ -8,7 +8,7 @@
   line-height: 19px;
   text-align: center;
   border: none;
-  outline: 1px solid #f7b21f;
+  outline: 1px solid var(--secondary-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,8 +19,8 @@
 
 .Primary-Btn:hover {
   background-color: transparent;
-  color: #f7b21f;
-  outline: 1px solid #f7b21f;
+  color: var(--secondary-color);
+  outline: 1px solid var(--secondary-color);
 }
 
 .Primary-Btn.CancelBtn {

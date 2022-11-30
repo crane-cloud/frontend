@@ -18,5 +18,5 @@
   display: inline-block;
   font-size: 22px;
   /* width: 200px; */
-  background-color: #008ac1;
+  background-color: var(--primary-color);
 }

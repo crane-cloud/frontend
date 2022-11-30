@@ -1,5 +1,5 @@
 .LoginPageContainer {
-  background: #008ac1;
+  background: var(--primary-color);
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -37,8 +37,8 @@
 }
 
 a.LoginContentLink {
-  color: #f7b21f;
-  border-bottom: 1px solid #f7b21f;
+  color: var(--secondary-color);
+  border-bottom: 1px solid var(--secondary-color);
 }
 .LoginErrorDiv {
   background-color: rgba(255, 255, 255, 0.5);
@@ -77,8 +77,8 @@ a.LoginContentLink {
 }
 
 .GithubLoginBtn:hover {
-  outline: 2px solid #06222f;
-  background-color: #06222f;
+  outline: 2px solid var(--primary-dark-color);
+  background-color: var(--primary-dark-color);
 }
 .GitText {
   color: #fff;
@@ -91,7 +91,7 @@ a.LoginContentLink {
   line-height: 0.1em;
 }
 .LoginWith span {
-  background-color: #008ac1;
+  background-color: var(--primary-color);
   padding: 0 1rem;
 }
 @media only screen and (max-width: 640px) {

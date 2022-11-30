@@ -186,7 +186,7 @@
 .APPSectionTitle {
   font-size: 1rem;
   font-weight: 700;
-  color: #008ac1;
+  color: var(--primary-color);
 }
 
 .APPSectionDelete {
@@ -245,7 +245,7 @@
 }
 
 .CopyUrl {
-  /* color: #008ac1; */
+  /* color: var(--primary-color); */
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -253,7 +253,7 @@
 }
 
 .CopyUrl:hover {
-  color: #008ac1;
+  color: var(--primary-color);
   transform: scale(1.1);
 }
 
@@ -370,14 +370,14 @@
   /* position: absolute;
   max-width: 100%; */
   color: #fff;
-  background-color: #008ac1;
-  outline: 1px solid #008ac1;
+  background-color: var(--primary-color);
+  outline: 1px solid var(--primary-color);
   padding: 0.5rem;
   height: 2.5rem;
 }
 
 .EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn:hover {
-  color: #008ac1;
+  color: var(--primary-color);
   background-color: #fff;
 }
 
@@ -430,17 +430,17 @@
 
 .deactivatedBtn {
   background-color: transparent;
-  color: #f7b21f;
+  color: var(--secondary-color);
 }
 
 .Domain__Popup {
-  color: #008ac1;
+  color: var(--primary-color);
   text-decoration: underline;
   cursor: pointer;
 }
 
 .Domain__Popup:hover {
-  color: #f7b21f;
+  color: var(--secondary-color);
 }
 
 .DomainModal__Main {
@@ -461,7 +461,7 @@
 }
 
 .Description__button button {
-  background-color: #008ac1;
+  background-color: var(--primary-color);
   color: #fff;
   border: none;
   width: 9rem;

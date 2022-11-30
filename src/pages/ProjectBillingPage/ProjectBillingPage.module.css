@@ -270,7 +270,7 @@
 .InvoiceHistoryHead,
 .ReceiptHistoryHead {
   text-transform: uppercase;
-  color: #008ac1;
+  color: var(--primary-color);
 }
 
 .ReceiptHistoryHead,
@@ -306,7 +306,7 @@
 .PaymentDetailsButton,
 .InvoiceDownloadButton,
 .ReceiptDownloadButton {
-  color: #008ac1;
+  color: var(--primary-color);
   outline: none;
   border: none;
   cursor: pointer;

@@ -1,5 +1,5 @@
 .RegisterPageContainer {
-  background: #008ac1;
+  background: var(--primary-color);
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -23,11 +23,11 @@
 }
 
 .RegisterSuccessContent h2 {
-  color: #f7b21f;
+  color: var(--secondary-color);
 }
 
 .RegisterSuccessContent p span {
-  color: #f7b21f;
+  color: var(--secondary-color);
 }
 
 .RegisterContentInputs {
@@ -41,8 +41,8 @@
 }
 
 a.RegisterContentLink {
-  color: #f7b21f;
-  border-bottom: 1px solid #f7b21f;
+  color: var(--secondary-color);
+  border-bottom: 1px solid var(--secondary-color);
 }
 
 .RegisterCheckbox {
@@ -73,8 +73,8 @@ a.RegisterContentLink {
 }
 
 .GithubLoginBtn:hover {
-  outline: 2px solid #06222f;
-  background-color: #06222f;
+  outline: 2px solid var(--primary-dark-color);
+  background-color: var(--primary-dark-color);
 }
 .GitText {
   color: #fff;
@@ -90,7 +90,7 @@ a.RegisterContentLink {
   line-height: 0.1em;
 }
 .SignupWith span {
-  background-color: #008ac1;
+  background-color: var(--primary-color);
   padding: 0 1rem;
 }
 .LowerSignupSection {

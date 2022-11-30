@@ -5,15 +5,15 @@
 
 .ViewAccountsBtn {
   text-transform: capitalize !important;
-  color: #008ac1;
+  color: var(--primary-color);
   background-color: #fff;
-  outline: 2px solid #008ac1;
+  outline: 2px solid var(--primary-color);
 }
 
 .ViewAccountsBtn:hover {
   background-color: #fff;
-  outline: 2px solid #008ac1;
-  color: #008ac1;
+  outline: 2px solid var(--primary-color);
+  color: var(--primary-color);
 }
 
 .ContentSection {
@@ -29,7 +29,7 @@
 }
 
 .SummaryCardContainer:hover {
-  border: 1px solid #f7b21f;
+  border: 1px solid var(--secondary-color);
 }
 
 .SummaryCardDimensions {
@@ -156,7 +156,7 @@
 
 .Card:hover {
   opacity: 0.7;
-  border: 1px solid #f7b21f;
+  border: 1px solid var(--secondary-color);
 }
 
 .FooterRow {

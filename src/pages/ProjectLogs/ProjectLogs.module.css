@@ -91,7 +91,7 @@
 }
 
 .BackButton {
-  background: #008ac1;
+  background: var(--primary-color);
   outline: none;
 }
 
@@ -126,7 +126,7 @@
 }
 
 .Entity {
-  color: #008ac1;
+  color: var(--primary-color);
 }
 
 .hr {

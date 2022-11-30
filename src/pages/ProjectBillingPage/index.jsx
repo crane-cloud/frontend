@@ -314,7 +314,7 @@ const ProjectBillingPage = (props) => {
       color: "#FFBB28",
     },
     { name: "Storage/ $1 per GB", value: 0, color: "#FF8042" },
-    { name: "Database/ $1 per GB", value: 0, color: "#99D2E9" },
+    { name: "Database/ $1 per GB", value: 0, color: "var(--primary-light-color)" },
   ];
 
   const getProjectName = (id) => {

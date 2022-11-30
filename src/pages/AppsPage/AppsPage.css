@@ -59,12 +59,12 @@
   position: absolute;
   max-width: 100%;
   color: #fff;
-  background-color: #008ac1;
-  outline: 2px solid #008ac1;
+  background-color: var(--primary-color);
+  outline: 2px solid var(--primary-color);
 }
 
 .EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn:hover {
-  color: #008ac1;
+  color: var(--primary-color);
   background-color: #fff;
 }
 

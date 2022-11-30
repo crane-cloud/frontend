@@ -29,20 +29,20 @@
   display: grid;
   align-items: center;
   grid-template-columns: 1fr 1fr;
-  color: #F7B21F;
+  color: var(--secondary-color);
   grid-gap: .5rem;
   width: 3rem;
 }
 
 .ViewAppBtn {
-  color: #008ac1;
+  color: var(--primary-color);
   background-color: transparent;
-  outline: 2px solid #008ac1;
+  outline: 2px solid var(--primary-color);
 }
 .ViewAppBtn:hover {
   color: #fff;
-  background-color: #008ac1;
-  outline: 2px solid #008ac1;
+  background-color: var(--primary-color);
+  outline: 2px solid var(--primary-color);
 }
 
 .SearchInput{

@@ -38,7 +38,7 @@
   }
   
   .ToggleBase.ToggleOff { 
-    background-color: #F7B21F;
+    background-color: var(--secondary-color);
   }
   .ToggleText{
     font-size: 10px;

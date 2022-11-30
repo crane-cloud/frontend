@@ -45,5 +45,5 @@
 
 .Card:hover {
   opacity: 0.7;
-  border: 1px solid #f7b21f;
+  border: 1px solid var(--secondary-color);
 }

@@ -1,5 +1,5 @@
 .Header {
-  background-color: #008ac1;
+  background-color: var(--primary-color);
   color: #ffffff;
   display: flex;
   justify-content: space-between;
@@ -51,7 +51,7 @@
 }
 
 .OnHeader:hover .UserNames {
-  color: #f7b21f;
+  color: var(--secondary-color);
 }
 
 .BelowHeader {
@@ -78,7 +78,7 @@
   user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
 .Credits  {
-  color: #F7B21F;
+  color: var(--secondary-color);
   padding-right: 1rem;
 }
 .DropDownContent {

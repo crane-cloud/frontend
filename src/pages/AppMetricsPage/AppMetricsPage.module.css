@@ -164,7 +164,7 @@
 .InnerContentLinkText {
   white-space: nowrap;
   overflow: hidden;
-  color: #008ac1;
+  color: var(--primary-color);
   text-overflow: ellipsis;
 }
 

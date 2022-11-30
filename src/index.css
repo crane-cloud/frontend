@@ -22,9 +22,9 @@
 html {
   --primary-color: #008ac1;
   --secondary-color: #f7b21f;
-  --color-gray-light: #ccc;
-  --primary-color-dark: #06222f;
-  --primary-color-light: #99d2e9;
+  --gray-light-color: #ccc;
+  --primary-dark-color: #06222f;
+  --primary-light-color: #99d2e9;
 }
 
 body {
@@ -180,7 +180,7 @@ div.ResourcesTable.LoadingResourcesTable {
 
 .ResourcesTable table th {
   padding: 1rem;
-  color: #008ac1;
+  color: var(--primary-color);
   text-align: center;
 }
 
@@ -355,6 +355,7 @@ tr.TableLoading td {
   flex-shrink: 0;
   width:100%;
   }
+  
   .MainContentSection {
     background-color: #f1f1f1;
     flex-direction: column;

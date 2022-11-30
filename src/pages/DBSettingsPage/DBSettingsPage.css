@@ -79,7 +79,7 @@
 }
 
 .DBDetailRow:hover {
-  color: #f7b21f;
+  color: var(--secondary-color);
 }
 
 .DBDetailRow:hover .DBIcon{
@@ -145,7 +145,7 @@
 }
 
 .MysqlArticle {
-  color: #f7b21f;
+  color: var(--secondary-color);
 }
 
 .MysqlArticle:hover {

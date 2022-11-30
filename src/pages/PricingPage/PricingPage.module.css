@@ -6,13 +6,13 @@
 }
 
 .PrimaryTitle {
-  color: #008ac1;
+  color: var(--primary-color);
   font-size: 42px;
   font-weight: bold;
   text-align: center;
 }
 .PrimaryTitleLower {
-  color: #008ac1;
+  color: var(--primary-color);
   font-size: 52px;
   font-weight: bold;
   text-align: center;

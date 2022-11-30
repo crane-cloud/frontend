@@ -10,7 +10,7 @@
 }
 
 .PrimaryTitle {
-  color: #008ac1;
+  color: var(--primary-color);
   font-size: 52px;
   font-weight: bold;
   text-align: center;
@@ -36,7 +36,7 @@
 }
 
 .StatusBanner {
-  background-color: #f7b21f;
+  background-color: var(--secondary-color);
   width: 35%;
 }
 
