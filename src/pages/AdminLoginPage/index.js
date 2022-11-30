@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import saveUser from "../../redux/actions/saveUser";
 import Header from "../../components/Header";
 import InputText from "../../components/InputText";
-import InputPassword from "../../components/InputPassword";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
 import { API_BASE_URL } from "../../config";
@@ -99,10 +98,11 @@ class AdminLoginPage extends React.Component {
                   this.handleChange(e);
                 }}
               />
-              <InputPassword
+              <InputText
                 required
                 placeholder="Password"
                 name="password"
+                type="password"
                 value={password}
                 onChange={(e) => {
                   this.handleChange(e);

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Header from "../../components/Header";
 import InputText from "../../components/InputText";
-import InputPassword from "../../components/InputPassword";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
 import { ReactComponent as LogoIcon } from "../../assets/images/githublogo.svg";
@@ -18,7 +17,7 @@ export default class RegisterPage extends Component {
 
     this.state = {
       name: "",
-      username:"",
+      username: "",
       email: "",
       password: "",
       passwordConfirm: "",
@@ -89,7 +88,8 @@ export default class RegisterPage extends Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    const { name,username, email, password, passwordConfirm, hasAgreed } = this.state;
+    const { name, username, email, password, passwordConfirm, hasAgreed } =
+      this.state;
 
     const userData = {
       name,
@@ -98,7 +98,7 @@ export default class RegisterPage extends Component {
       password,
     };
 
-    if (!email || !password || !name || !username ||!passwordConfirm) {
+    if (!email || !password || !name || !username || !passwordConfirm) {
       this.setState({
         error: "Please enter all fields",
       });
@@ -176,7 +176,7 @@ export default class RegisterPage extends Component {
                     value={name}
                     onChange={this.handleOnChange}
                   />
-                   <InputText
+                  <InputText
                     required
                     placeholder="Username"
                     name="username"
@@ -190,17 +190,19 @@ export default class RegisterPage extends Component {
                     value={email}
                     onChange={this.handleOnChange}
                   />
-                  <InputPassword
+                  <InputText
                     required
                     placeholder="Password"
                     name="password"
+                    type="password"
                     value={password}
                     onChange={this.handleOnChange}
                   />
-                  <InputPassword
+                  <InputText
                     required
                     placeholder="Repeat Password"
                     name="passwordConfirm"
+                    type="password"
                     value={passwordConfirm}
                     onChange={this.handleOnChange}
                   />

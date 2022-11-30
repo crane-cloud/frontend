@@ -55,27 +55,12 @@ a.RegisterContentLink {
   text-align: center;
   padding: 1rem 0;
 }
-.GitLoginBtn {
-  display: grid;
-  grid-gap: 0.2rem;
-  grid-auto-flow: column;
-  align-items: center;
-}
+
 .LogoIcon {
   width: 1.5rem;
   height: 1.5rem;
 }
-.GithubLoginBtn {
-  width: 100%;
-  color: #fff;
-  background-color: #000;
-  outline: 2px solid #000000;
-}
 
-.GithubLoginBtn:hover {
-  outline: 2px solid var(--primary-dark-color);
-  background-color: var(--primary-dark-color);
-}
 .GitText {
   color: #fff;
   text-transform: capitalize;
@@ -101,7 +86,7 @@ a.RegisterContentLink {
 }
 
 @media only screen and (max-width: 640px) {
-  .RegisterContent {
+  /* .RegisterContent {
     width: 90%;
   }
 
@@ -116,5 +101,5 @@ a.RegisterContentLink {
 
   .VerificationCodeInput .InputText {
     width: 100%;
-  }
+  } */
 }

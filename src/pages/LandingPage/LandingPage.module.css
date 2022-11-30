@@ -231,7 +231,7 @@
 .ApplicationSection,
 .StackSection {
   /* height: 100vh; */
-  padding: 3rem 2rem 3rem 4rem;
+  padding: 6rem 2rem 6rem 4rem;
   display: grid;
   grid-template-columns: 45% auto;
 }
@@ -252,6 +252,9 @@
   background-color: #fafafa;
   padding: 0.8rem;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .IconSqure:hover {
@@ -261,7 +264,9 @@
 }
 
 .IconSqure svg {
-  height: 3.4rem;
+  width: 5rem;
+  aspect-ratio: 3/2;
+  object-fit: contain;
 }
 
 .LeftInfoSection {
@@ -287,7 +292,7 @@
 
 .LeftInfoHeader {
   line-height: 2rem;
-  font-size: 1.5em;
+  font-size: 1.8em;
   font-weight: bold;
 }
 
@@ -310,8 +315,12 @@
 }
 
 .DBIcons svg {
-  height: 15rem;
+  width: 8rem;
+  aspect-ratio: 3/4;
+  object-fit: contain;
+  cursor: pointer;
 }
+
 .DBContain {
   display: grid;
   grid-template-rows: auto 30%;

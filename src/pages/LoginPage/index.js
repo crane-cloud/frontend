@@ -7,7 +7,6 @@ import saveUser from "../../redux/actions/saveUser";
 import removeUser from "../../redux/actions/removeUser";
 import Header from "../../components/Header";
 import InputText from "../../components/InputText";
-import InputPassword from "../../components/InputPassword";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
 import { API_BASE_URL, GIT_REDIRECT_URL } from "../../config";
@@ -184,75 +183,73 @@ class LoginPage extends React.Component {
           <div className="LoginContentHeading">
             <h1>Login to the cloud</h1>
           </div>
-          <form onSubmit={this.handleSubmit}>
-            <div className="LoginContentInputs">
-              {/* Input fields */}
-              <InputText
-                required
-                placeholder="Email Address"
-                name="email"
-                value={email}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
-              />
-              <InputPassword
-                required
-                placeholder="Password"
-                name="password"
-                value={password}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
-              />
-
-              {error && <div className="LoginErrorDiv">{error}</div>}
-
-              <div className="LoginLinkContainer">
-                <Link to="/forgot-password" className="LoginContentLink">
-                  Forgot your password?
-                </Link>
-              </div>
-
-              <PrimaryButton
-                label={loading ? <Spinner /> : "login"}
-                className="LoginButton AuthBtn"
-                onClick={this.handleSubmit}
-              />
-            </div>
-          </form>
-          <div className="LowerLoginSection">
-            <div>
-              <p className="LoginWith">
-                <span>Or Login with</span>
-              </p>
-            </div>
-            <PrimaryButton
-              label={
-                gitLoading ? (
-                  <Spinner />
-                ) : (
-                  <div className="GitLoginBtn">
-                    <LogoIcon className="LogoIcon" />
-                    <div className="GitText">Github</div>
-                  </div>
-                )
-              }
-              className="GithubLoginBtn AuthBtn"
-              disable={gitLoading}
-              onClick={this.toGithubauth}
+          <form onSubmit={this.handleSubmit} className="LoginContentInputs">
+            <InputText
+              required
+              placeholder="Email Address"
+              type="email"
+              name="email"
+              value={email}
+              onChange={(e) => {
+                this.handleChange(e);
+              }}
             />
+            <InputText
+              required
+              placeholder="Password"
+              name="password"
+              type="password"
+              value={password}
+              onChange={(e) => {
+                this.handleChange(e);
+              }}
+            />
+            {error && <div className="LoginErrorDiv">{error}</div>}
 
-            {feedbackMessage && (
-              <div className="LoginFeedBackDiv">{feedbackMessage}</div>
-            )}
-            <div className="LoginContentBottomLink LoginLinkContainer">
-              Not signed up? &nbsp;
-              <Link to="/register" className="LoginContentLink">
-                Create an account.
+            <div className="LoginLinkContainer">
+              <Link to="/forgot-password" className="LoginContentLink">
+                Forgot your password?
               </Link>
             </div>
-          </div>
+
+            <PrimaryButton
+              label={loading ? <Spinner /> : "login"}
+              className="LoginButton AuthBtn"
+              onClick={this.handleSubmit}
+            />
+            <div className="LowerLoginSection">
+              <div>
+                <p className="LoginWith">
+                  <span>Or Login with</span>
+                </p>
+              </div>
+              <PrimaryButton
+                label={
+                  gitLoading ? (
+                    <Spinner />
+                  ) : (
+                    <div className="GitLoginBtn">
+                      <LogoIcon className="LogoIcon" />
+                      <div className="GitText">Github</div>
+                    </div>
+                  )
+                }
+                className="GithubLoginBtn AuthBtn"
+                disable={gitLoading}
+                onClick={this.toGithubauth}
+              />
+
+              {feedbackMessage && (
+                <div className="LoginFeedBackDiv">{feedbackMessage}</div>
+              )}
+              <div className="LoginContentBottomLink LoginLinkContainer">
+                Not signed up? &nbsp;
+                <Link to="/register" className="LoginContentLink">
+                  Create an account.
+                </Link>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     );

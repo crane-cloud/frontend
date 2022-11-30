@@ -19,11 +19,22 @@
   color: #fff;
 }
 .HeaderLinkLogin {
-  border: 2px solid #fff;
+  border: 1px solid #fff;
   padding: 1rem 3rem;
-  font-size: 0.9em;
+  font-size: 0.9rem;
   color: #fff;
-  border-radius: 10px;
+  border-radius: 5px;
+}
+
+@media(max-width: 460px) {
+  .HeaderLinkLogin {
+    padding: 0.5rem 1rem;
+  }
+}
+  
+.HeaderLinkLogin:hover {
+  background-color: #fff;
+  color: var(--primary-color);
 }
 .TurnLight:hover {
   transition: 0.4s;
