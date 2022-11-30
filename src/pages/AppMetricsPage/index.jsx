@@ -12,7 +12,7 @@ import { ReactComponent as MetricIcon } from "../../assets/images/resource-icon.
 import styles from "./AppMetricsPage.module.css";
 import LineChartComponent from "../../components/LineChart";
 import LogsFrame from "../../components/LogsFrame";
-import { handleAppMetricsPostRequest } from "../../apis/apis";
+import { handlePostRequestWithDataObject } from "../../apis/apis";
 import getAppMemory, { clearAppMemory } from "../../redux/actions/appMemory";
 import getAppCPU from "../../redux/actions/appCPU";
 import {
@@ -70,7 +70,7 @@ class AppMetricsPage extends React.Component {
       match: { params },
     } = this.props;
     const { projectID, appID } = params;
-    handleAppMetricsPostRequest({ timestamps: true },
+    handlePostRequestWithDataObject({ timestamps: true },
       `/projects/${projectID}/apps/${appID}/logs`)
       .then((response) => {
         this.setState({

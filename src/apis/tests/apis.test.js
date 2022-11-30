@@ -1,8 +1,8 @@
-import { handleAppMetricsPostRequest, handlePatchRequest, handleGetRequest } from "../apis";
+import { handlePostRequest, handlePatchRequest, handleGetRequest } from "../apis";
 
 describe('tests for post funtion for metrics', () => {
     it('test for failure of post request', async () => {
-        return handleAppMetricsPostRequest({ timestamps: true },
+        return handlePostRequest({ timestamps: true },
             "/projects/0/apps/0/logs").then(data => {
                 expect(data).toBeFalsy;
         }).catch(error =>{
