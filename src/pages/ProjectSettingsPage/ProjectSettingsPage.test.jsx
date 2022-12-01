@@ -9,9 +9,7 @@ const ProjectSettingsPageProps = {
   data: [],
   deleteProject: jest.fn(),
   updateProject: jest.fn(),
-  clearInvitingMembersState: jest.fn(),
   clearDeleteProjectState: jest.fn(),
-  clearUpdateProjectState: jest.fn(),
 };
 
 describe("Testing the Project Settings Page component", () => {
@@ -44,21 +42,10 @@ describe("Testing the exported mapstate to props and dispatch for ProjectSetting
           isUpdating: false,
           errorMessage: null,
         },
-        inviteMembersReducer: {
-          invitation: null,
-          isSending: false,
-          isSent: false,
-        },
         removeMemberReducer: {
           member: null,
           isRemoving: false,
           isRemoved: false,
-        },
-        updateMemberRoleReducer: {
-          isRoleUpdated: false,
-          isRoleUpdating: false,
-          updateMessage: "",
-          isRoleUpdateFailed: false,
         },
         user: { data: [] },
       })
@@ -70,16 +57,9 @@ describe("Testing the exported mapstate to props and dispatch for ProjectSetting
       isFailed: false,
       isDeleted: false,
       errorMessage: null,
-      invitation: null,
-      isSending: false,
-      isSent: false,
       member: null,
       isRemoving: false,
-      isRoleUpdated: false,
-      isRoleUpdating: false,
-      isRoleUpdateFailed: false,
       isRemoved: false,
-      updateMessage: "",
       clearDeleteProjectState: undefined,
       data: [],
     });
