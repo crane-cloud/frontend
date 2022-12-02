@@ -54,15 +54,15 @@ export const handlePatchRequest = (endpoint,data) => {
       });
   }) 
 };
-// export const handleDeleteRequest = (endpoint) => {
-//   return new Promise((resolve,reject)=>{
-//       axios
-//       .delete(endpoint)
-//       .then((response) =>{
-//        resolve(response)
-//        })
-//       .catch((error) => {
-//         reject(error)
-//       });
-//   }) 
-// };
+export const handleDeleteRequest = (endpoint,data) => {
+  return new Promise((resolve,reject)=>{
+      axios
+      .delete(endpoint,data)
+      .then((response) =>{
+       resolve(response)
+       })
+      .catch((error) => {
+        reject(error)
+      });
+  }) 
+};

@@ -12,6 +12,7 @@ const ProjectSettingsPageProps = {
   clearDeleteProjectState: jest.fn(),
 };
 
+
 describe("Testing the Project Settings Page component", () => {
   const WrapperProjectSettingsPage = ProjectSettingsPage.WrappedComponent;
   const ProjectSettingsPageComponent = shallow(
@@ -25,6 +26,13 @@ describe("Testing the Project Settings Page component", () => {
   it("matchs the ProjectSettingsPage component snapshot", () => {
     expect(ProjectSettingsPageComponent).toMatchSnapshot();
   });
+  it("test functions inside components",()=>{
+   // const spy = jest.spyOn(ProjectSettingsPageComponent, 'getProjectMemberz');
+   // const getMembers = ProjectSettingsPageComponent.instance().getProjectMemberz();
+   // expect(spy)
+    // .toBeCalled();
+  })
+
 });
 
 describe("Testing the exported mapstate to props and dispatch for ProjectSettingsPage", () => {
@@ -42,11 +50,6 @@ describe("Testing the exported mapstate to props and dispatch for ProjectSetting
           isUpdating: false,
           errorMessage: null,
         },
-        removeMemberReducer: {
-          member: null,
-          isRemoving: false,
-          isRemoved: false,
-        },
         user: { data: [] },
       })
     ).toEqual({
@@ -57,9 +60,6 @@ describe("Testing the exported mapstate to props and dispatch for ProjectSetting
       isFailed: false,
       isDeleted: false,
       errorMessage: null,
-      member: null,
-      isRemoving: false,
-      isRemoved: false,
       clearDeleteProjectState: undefined,
       data: [],
     });
