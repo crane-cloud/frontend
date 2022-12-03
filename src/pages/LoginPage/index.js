@@ -213,10 +213,12 @@ class LoginPage extends React.Component {
             </div>
 
             <PrimaryButton
-              label={loading ? <Spinner /> : "login"}
               className="LoginButton AuthBtn"
               onClick={this.handleSubmit}
-            />
+              type="submit"
+            >
+              {loading ? <Spinner /> : "login"}
+            </PrimaryButton>
             <div className="LowerLoginSection">
               <div>
                 <p className="LoginWith">
@@ -224,20 +226,19 @@ class LoginPage extends React.Component {
                 </p>
               </div>
               <PrimaryButton
-                label={
-                  gitLoading ? (
-                    <Spinner />
-                  ) : (
-                    <div className="GitLoginBtn">
-                      <LogoIcon className="LogoIcon" />
-                      <div className="GitText">Github</div>
-                    </div>
-                  )
-                }
                 className="GithubLoginBtn AuthBtn"
                 disable={gitLoading}
                 onClick={this.toGithubauth}
-              />
+              >
+                {gitLoading ? (
+                  <Spinner />
+                ) : (
+                  <div className="GitLoginBtn">
+                    <LogoIcon className="LogoIcon" />
+                    <div className="GitText">Github</div>
+                  </div>
+                )}
+              </PrimaryButton>
 
               {feedbackMessage && (
                 <div className="LoginFeedBackDiv">{feedbackMessage}</div>

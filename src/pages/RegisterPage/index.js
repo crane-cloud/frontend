@@ -223,10 +223,39 @@ export default class RegisterPage extends Component {
 
                 <PrimaryButton
                   className="LoginButton AuthBtn"
-                  label={loading ? <Spinner /> : "Register"}
+                  type="submit"
                   onClick={this.handleSubmit}
-                />
+                >
+                  {loading ? <Spinner /> : "Register"}
+                </PrimaryButton>
               </form>
+              <div className="LowerLoginSection">
+                <div>
+                  <p className="LoginWith">
+                    <span>Or join with</span>
+                  </p>
+                </div>
+                <PrimaryButton
+                  className="GithubLoginBtn AuthBtn"
+                  disable={gitLoading}
+                  onClick={this.toGithubauth}
+                >
+                  {gitLoading ? (
+                    <Spinner />
+                  ) : (
+                    <div className="GitLoginBtn">
+                      <LogoIcon className="LogoIcon" />
+                      <div className="GitText">Github</div>
+                    </div>
+                  )}
+                </PrimaryButton>
+              </div>
+              <div className="LoginContentBottomLink LoginLinkContainer">
+                Already have an account? &nbsp;
+                <Link to="/login" className="LoginContentLink">
+                  Go to Login
+                </Link>
+              </div>
             </div>
           ) : (
             <div className="RegisterSuccessContent">
@@ -244,34 +273,6 @@ export default class RegisterPage extends Component {
               </div>
             </div>
           )}
-          <div className="LowerLoginSection">
-            <div>
-              <p className="LoginWith">
-                <span>Or join with</span>
-              </p>
-            </div>
-            <PrimaryButton
-              label={
-                gitLoading ? (
-                  <Spinner />
-                ) : (
-                  <div className="GitLoginBtn">
-                    <LogoIcon className="LogoIcon" />
-                    <div className="GitText">Github</div>
-                  </div>
-                )
-              }
-              className="GithubLoginBtn AuthBtn"
-              disable={gitLoading}
-              onClick={this.toGithubauth}
-            />
-          </div>
-          <div className="LoginContentBottomLink LoginLinkContainer">
-            Already have an account? &nbsp;
-            <Link to="/" className="LoginContentLink">
-              Go to Login
-            </Link>
-          </div>
         </div>
       </div>
     );

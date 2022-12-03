@@ -47,10 +47,10 @@ export default function FlutterWaveHook(props) {
         email: email,
         flutterwave_ref: response.flw_ref,
         name: name,
-        phone_number: (response.phone_number?(response.phone_number):("0000")),
+        phone_number: response.phone_number ? response.phone_number : "0000",
         status: response.status,
         transaction_id: response.transaction_id,
-        tx_ref: (response.tx_ref).toString(),
+        tx_ref: response.tx_ref.toString(),
       };
       dispatch(savePayment(paymentObj, projectID));
     }
@@ -66,8 +66,11 @@ export default function FlutterWaveHook(props) {
   return (
     <div>
       <PrimaryButton
-        label={"Proceed"}
-        disable = {((amount === null) || (amount === undefined) || (amount < 4000))?true:false}
+        disable={
+          amount === null || amount === undefined || amount < 4000
+            ? true
+            : false
+        }
         onClick={() => {
           handleFlutterPayment({
             callback: (response) => {
@@ -83,7 +86,9 @@ export default function FlutterWaveHook(props) {
             onClose: () => {},
           });
         }}
-      />
+      >
+        Proceed
+      </PrimaryButton>
 
       {paymentStatus !== "" && viewPaymentStatus && (
         <Modal
@@ -125,10 +130,11 @@ export default function FlutterWaveHook(props) {
             )}
             <div>
               <PrimaryButton
-                label="Close"
                 className="CancelBtn"
                 onClick={closePaymentStatusModal}
-              />
+              >
+                Close
+              </PrimaryButton>
             </div>
           </div>
         </Modal>

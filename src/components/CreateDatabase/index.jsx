@@ -88,8 +88,12 @@ class CreateDatabase extends React.Component {
               <div className="InformationBarWithButton SmallContainer">
                 <div className="InfoHeader">Create database</div>
                 <div className="RoundAddButtonWrap">
-                 {/* <CancelButton onClick={this.props.closeComponent} />*/}
-                  <NewButton label="close"  type="close" onClick={this.props.closeComponent}/>
+                  {/* <CancelButton onClick={this.props.closeComponent} />*/}
+                  <NewButton
+                    label="close"
+                    type="close"
+                    onClick={this.props.closeComponent}
+                  />
                 </div>
               </div>
             </div>
@@ -116,10 +120,11 @@ class CreateDatabase extends React.Component {
                 </div>
                 <div>
                   <PrimaryButton
-                    label={isCreating ? <Spinner /> : "Create"}
                     className="CreateBtn"
                     onClick={this.handleSubmit}
-                  />
+                  >
+                    {isCreating ? <Spinner /> : "Create"}
+                  </PrimaryButton>
                 </div>
               </div>
             </div>

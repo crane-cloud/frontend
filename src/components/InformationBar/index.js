@@ -57,7 +57,7 @@ const InformationBar = ({
             </div>
             <div className="RoundAddButtonWrap">
               {/*<RoundAddButton onClick={btnAction} />*/}
-              <NewButton label={buttontext} type="new" onClick={btnAction}/>
+              <NewButton label={buttontext} type="new" onClick={btnAction} />
             </div>
           </div>
         </div>
@@ -66,26 +66,26 @@ const InformationBar = ({
           <div className="InfoHeader">{header}</div>
           <div className="RoundAddButtonWrap">
             {/*<RoundAddButton onClick={btnAction} />*/}
-            <NewButton label={buttontext}  type="new" onClick={btnAction}/>
+            <NewButton label={buttontext} type="new" onClick={btnAction} />
           </div>
         </div>
       ) : viewAppLink ? (
         <div className="InformationBarWithButton">
           <div className="InfoHeader">{header}</div>
           <a href={viewAppLink} rel="noopener noreferrer" target="_blank">
-            <PrimaryButton label="Open App" className="ViewAppBtn" />
+            <PrimaryButton className="ViewAppBtn">Open App</PrimaryButton>
           </a>
         </div>
-      ) :  credits ? (
+      ) : credits ? (
         <div className="InformationBarWithButton">
           <div className="InfoHeader">{header}</div>
           {/**appears if user has credits */}
           <div className="CreditsCorner" title="credits">
-            {(credits > 0)?credits:0}
-           <Coin/>
+            {credits > 0 ? credits : 0}
+            <Coin />
           </div>
         </div>
-      ):(
+      ) : (
         <div className="InfoHeader">{header}</div>
       )}
     </div>

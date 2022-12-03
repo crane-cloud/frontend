@@ -112,10 +112,9 @@ export default class CreateNewPassword extends React.Component {
                 />
                 {error && <div className="NewPasswordErrorDiv">{error}</div>}
 
-                <PrimaryButton
-                  label={loading ? <Spinner /> : "RESET"}
-                  onClick={this.handleSubmit}
-                />
+                <PrimaryButton onClick={this.handleSubmit}>
+                  {loading ? <Spinner /> : "RESET"}
+                </PrimaryButton>
               </div>
             </div>
           </>

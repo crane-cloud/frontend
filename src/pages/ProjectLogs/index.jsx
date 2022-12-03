@@ -70,7 +70,9 @@ const ProjectLogs = (props) => {
                   className={styles.field}
                   placeholder=" Filter by Status/Action/User"
                 />
-                <PrimaryButton label="Filter" className={styles.FilterButton} />
+                <PrimaryButton className={styles.FilterButton}>
+                  Filter
+                </PrimaryButton>
               </div>
             </div>
             <div className={styles.Table}>
@@ -99,7 +101,10 @@ const ProjectLogs = (props) => {
                 <Danger className={styles.Danger} />
                 <div className={styles.Row}>
                   <div className={styles.RowCell}>
-                    <Avatar name={data.username} className={styles.UserAvatar} />
+                    <Avatar
+                      name={data.username}
+                      className={styles.UserAvatar}
+                    />
                     <div>
                       <div className={styles.Bold}>Muwonge@gmail.com</div>
                       <div>Tuesday 12-12-2022 16:00:03</div>

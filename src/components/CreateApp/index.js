@@ -406,9 +406,9 @@ class CreateApp extends React.Component {
                 Deploy with mira
               </span>
             </div>
-            
+
             {currentDeploymentMethod === "default" && (
-                <div className={styles.CreateFormHolder}>
+              <div className={styles.CreateFormHolder}>
                 <div className={styles.ModalFormInputs}>
                   <div className={styles.FormHeading}>
                     Fields marked * are required
@@ -712,10 +712,11 @@ class CreateApp extends React.Component {
                       </div>
                       <div className={styles.EnvVarsAddBtn}>
                         <PrimaryButton
-                          label="add"
                           onClick={this.addEnvVar}
                           className={styles.EnvVarAddBtn}
-                        />
+                        >
+                          Add
+                        </PrimaryButton>
                       </div>
                     </div>
                   </div>
@@ -736,9 +737,10 @@ class CreateApp extends React.Component {
                     <div className={styles.ButtonSection}>
                       <PrimaryButton
                         className="AuthBtn FullWidth"
-                        label={isCreating ? <Spinner /> : "deploy"}
                         onClick={this.handleSubmit}
-                      />
+                      >
+                        {isCreating ? <Spinner /> : "deploy"}
+                      </PrimaryButton>
                     </div>
                   </div>
                 </div>

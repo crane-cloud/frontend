@@ -149,10 +149,9 @@ const ClusterPage = ({
           <div className={styles.CardHeaderSection}>
             <div className={styles.CardTitle}>Users</div>
             <Link to="/accounts">
-              <PrimaryButton
-                label="View accounts"
-                className={styles.ViewAccountsBtn}
-              />
+              <PrimaryButton className={styles.ViewAccountsBtn}>
+                View accounts
+              </PrimaryButton>
             </Link>
           </div>
           <div className={styles.UserSection}>
@@ -231,10 +230,9 @@ const ClusterPage = ({
         >
           <div className={styles.CardHeaderSection}>
             <div className={styles.CardTitle}>Apps</div>
-            <PrimaryButton
-              label="View apps"
-              className={styles.ViewAccountsBtn}
-            />
+            <PrimaryButton className={styles.ViewAccountsBtn}>
+              View Apps
+            </PrimaryButton>
           </div>
           <div className={styles.DBSection}>
             <div className={styles.LeftUserSide}>
@@ -413,15 +411,12 @@ const ClusterPage = ({
               {error && <Feedback type="error" message={error} />}
 
               <div className="ModalFormButtons AddAddButtons">
-                <PrimaryButton
-                  label="cancel"
-                  className="CancelBtn"
-                  onClick={hideForm}
-                />
-                <PrimaryButton
-                  label={creatingCluster ? <Spinner /> : "add"}
-                  onClick={handleSubmit}
-                />
+                <PrimaryButton className="CancelBtn" onClick={hideForm}>
+                  Cancel
+                </PrimaryButton>
+                <PrimaryButton onClick={handleSubmit}>
+                  {creatingCluster ? <Spinner /> : "add"}
+                </PrimaryButton>
               </div>
 
               {(isFailed || isAdded) && (

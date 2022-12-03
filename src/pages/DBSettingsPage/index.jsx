@@ -629,17 +629,17 @@ class DBSettingsPage extends React.Component {
                             <div className="DeleteProjectModalLowerSection">
                               <div className="DeleteProjectModelButtons">
                                 <PrimaryButton
-                                  label="cancel"
                                   className="CancelBtn"
                                   onClick={this.hideUpdateModal}
-                                />
+                                >
+                                  Cancel
+                                </PrimaryButton>
                                 <PrimaryButton
-                                  label={
-                                    updatingDBPassword ? <Spinner /> : "Update"
-                                  }
                                   className="ResetBtn"
                                   onClick={this.handleSubmitUpdate}
-                                />
+                                >
+                                  {updatingDBPassword ? <Spinner /> : "Update"}
+                                </PrimaryButton>
                               </div>
 
                               {databaseDeleteFailed && dbDeleteMessage && (
@@ -674,14 +674,12 @@ class DBSettingsPage extends React.Component {
                             <div className="DeleteProjectModalLowerSection">
                               <div className="DeleteProjectModelButtons">
                                 <PrimaryButton
-                                  label="cancel"
                                   className="CancelBtn"
                                   onClick={this.hideDeleteAlert}
-                                />
+                                >
+                                  Cancel
+                                </PrimaryButton>
                                 <PrimaryButton
-                                  label={
-                                    deletingDatabase ? <Spinner /> : "Delete"
-                                  }
                                   className="DeleteBtn"
                                   onClick={(e) =>
                                     this.handleDeleteDatabase(
@@ -690,7 +688,9 @@ class DBSettingsPage extends React.Component {
                                       databaseID
                                     )
                                   }
-                                />
+                                >
+                                  {deletingDatabase ? <Spinner /> : "Delete"}
+                                </PrimaryButton>
                               </div>
 
                               {databaseDeleteFailed && dbDeleteMessage && (
@@ -726,12 +726,12 @@ class DBSettingsPage extends React.Component {
                             <div className="DeleteProjectModalLowerSection">
                               <div className="DeleteProjectModelButtons">
                                 <PrimaryButton
-                                  label="cancel"
                                   className="CancelBtn"
                                   onClick={this.hideResetAlert}
-                                />
+                                >
+                                  Cancel
+                                </PrimaryButton>
                                 <PrimaryButton
-                                  label={isReseting ? <Spinner /> : "Reset"}
                                   className="ResetBtn"
                                   onClick={(e) =>
                                     this.handleResetDatabase(
@@ -740,7 +740,9 @@ class DBSettingsPage extends React.Component {
                                       databaseID
                                     )
                                   }
-                                />
+                                >
+                                  {isReseting ? <Spinner /> : "Reset"}
+                                </PrimaryButton>
                               </div>
                             </div>
                           </div>

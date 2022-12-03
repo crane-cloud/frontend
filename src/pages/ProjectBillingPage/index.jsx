@@ -314,7 +314,11 @@ const ProjectBillingPage = (props) => {
       color: "#FFBB28",
     },
     { name: "Storage/ $1 per GB", value: 0, color: "#FF8042" },
-    { name: "Database/ $1 per GB", value: 0, color: "var(--primary-light-color)" },
+    {
+      name: "Database/ $1 per GB",
+      value: 0,
+      color: "var(--primary-light-color)",
+    },
   ];
 
   const getProjectName = (id) => {
@@ -509,10 +513,9 @@ const ProjectBillingPage = (props) => {
                     </div>
                   </div>
                   <div className={styles.paymentButton}>
-                    <PrimaryButton
-                      label="Pay bill"
-                      onClick={openPaymentsOptions}
-                    />
+                    <PrimaryButton onClick={openPaymentsOptions}>
+                      Pay bill
+                    </PrimaryButton>
 
                     {/* <FlutterwaveHook
                       amount={
@@ -924,10 +927,11 @@ const ProjectBillingPage = (props) => {
                     <div className={styles.ViewFileLowerSection}>
                       <div className={styles.ViewFileModalButtons}>
                         <PrimaryButton
-                          label="cancel"
                           className="CancelBtn"
                           onClick={() => removePreview()}
-                        />
+                        >
+                          Cancel
+                        </PrimaryButton>
                         <Pdf
                           targetRef={ref}
                           options={options}
@@ -936,10 +940,11 @@ const ProjectBillingPage = (props) => {
                         >
                           {({ toPdf }) => (
                             <PrimaryButton
-                              label="download"
                               className={styles.DownloadButton}
                               onClick={toPdf}
-                            />
+                            >
+                              Download
+                            </PrimaryButton>
                           )}
                         </Pdf>
                       </div>
@@ -1015,10 +1020,11 @@ const ProjectBillingPage = (props) => {
                 <div className={styles.ViewFileLowerSection}>
                   <div className={styles.ViewFileModalButtons}>
                     <PrimaryButton
-                      label="cancel"
                       className="CancelBtn"
                       onClick={() => removePreview()}
-                    />
+                    >
+                      Cancel
+                    </PrimaryButton>
                     <Pdf
                       targetRef={ref}
                       options={options}
@@ -1027,10 +1033,11 @@ const ProjectBillingPage = (props) => {
                     >
                       {({ toPdf }) => (
                         <PrimaryButton
-                          label="download"
                           className={styles.DownloadButton}
                           onClick={toPdf}
-                        />
+                        >
+                          Download
+                        </PrimaryButton>
                       )}
                     </Pdf>
                   </div>
@@ -1093,10 +1100,11 @@ const ProjectBillingPage = (props) => {
 
                       <div className={styles.ReceiptButton}>
                         <PrimaryButton
-                          label="Close"
                           className="CancelBtn"
                           onClick={closeReceiptModal}
-                        />
+                        >
+                          Close
+                        </PrimaryButton>
                       </div>
                     </div>
                   </div>
@@ -1156,19 +1164,21 @@ const ProjectBillingPage = (props) => {
 
                     <div className={styles.OptionButtons}>
                       <PrimaryButton
-                        label="Close"
                         className="CancelBtn"
                         onClick={closePaymentsOptions}
-                      />
+                      >
+                        Close
+                      </PrimaryButton>
 
                       {choosenPaymentOption === "credits" && (
                         <PrimaryButton
-                          label={creditsSaving ? <Spinner /> : "Proceed"}
                           onClick={() => {
                             //add current invoice price
                             handleCreditsPayment(1);
                           }}
-                        />
+                        >
+                          {creditsSaving ? <Spinner /> : "Proceed"}
+                        </PrimaryButton>
                       )}
                       {choosenPaymentOption === "flutterwave" && (
                         <FlutterwaveHook

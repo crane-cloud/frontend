@@ -116,10 +116,9 @@ class AdminLoginPage extends React.Component {
                 </Link>
               </div>
 
-              <PrimaryButton
-                label={loading ? <Spinner /> : "login"}
-                onClick={this.handleSubmit}
-              />
+              <PrimaryButton onClick={this.handleSubmit}>
+                {loading ? <Spinner /> : "login"}
+              </PrimaryButton>
 
               <div className="LoginContentBottomLink LoginLinkContainer">
                 <Link to="/" className="LoginContentLink">

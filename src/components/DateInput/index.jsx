@@ -95,32 +95,35 @@ const DateInput = ({
           role="presentation"
         >
           {date
-            ? `${
-              date.year
-            } ${!months_only?date.day:""}, ${trimMonthName(monthNames[date.month])} `
-            : `${currentYear} ${!months_only ? today :""}, ${trimMonthName(
-              monthNames[currentMonth]
-            )}`}
+            ? `${date.year} ${!months_only ? date.day : ""}, ${trimMonthName(
+                monthNames[date.month]
+              )} `
+            : `${currentYear} ${!months_only ? today : ""}, ${trimMonthName(
+                monthNames[currentMonth]
+              )}`}
         </div>
       </div>
       {showCalendar && (
-        <div className={!months_only ? `DateInputCalendar ${position}`: `${SpendCalenderClass}`}>
-          {!months_only &&
-          <div className="TimeSection">
-            <TimeInput onChange={getTime} />
-          </div>}
+        <div
+          className={
+            !months_only
+              ? `DateInputCalendar ${position}`
+              : `${SpendCalenderClass}`
+          }
+        >
+          {!months_only && (
+            <div className="TimeSection">
+              <TimeInput onChange={getTime} />
+            </div>
+          )}
           <Calendar onChange={getDate} months_only={months_only} />
           <div className="CalendarModalButtons">
-            <PrimaryButton
-              label="Cancel"
-              className="CancelBtn ModalBtn"
-              onClick={onCancel}
-            />
-            <PrimaryButton
-              label="proceed"
-              className="ModalBtn"
-              onClick={onSubmit}
-            />
+            <PrimaryButton className="CancelBtn ModalBtn" onClick={onCancel}>
+              Cancel
+            </PrimaryButton>
+            <PrimaryButton className="ModalBtn" onClick={onSubmit}>
+              Proceed
+            </PrimaryButton>
           </div>
         </div>
       )}

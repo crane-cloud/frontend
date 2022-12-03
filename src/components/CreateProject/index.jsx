@@ -193,7 +193,11 @@ class CreateProject extends React.Component {
               <div className={styles.InfoHeader}>Create Project</div>
               <div className={styles.RoundAddButtonWrap}>
                 {/*<CancelButton onClick={this.props.closeComponent} />*/}
-                <NewButton label="close"  type="close" onClick={this.props.closeComponent}/>
+                <NewButton
+                  label="close"
+                  type="close"
+                  onClick={this.props.closeComponent}
+                />
               </div>
             </div>
           </div>
@@ -210,7 +214,7 @@ class CreateProject extends React.Component {
                     options={clusters}
                     onChange={this.handleDatacenterSelectChange}
                   />
-                 {/*  <div className={styles.ClusterCheckboxSection}>
+                  {/*  <div className={styles.ClusterCheckboxSection}>
                     <InfoIcon /> &nbsp; The above selection is for a single
                     cluster set up, for multi-cluster options check the box
                     below.
@@ -336,11 +340,9 @@ class CreateProject extends React.Component {
             </div>
             <div className={styles.CreateButtons}>
               <div className={styles.InnerContent}>
-                <PrimaryButton
-                  className="AuthBtn"
-                  label={isAdding ? <Spinner /> : "Create Project"}
-                  onClick={this.handleSubmit}
-                />
+                <PrimaryButton className="AuthBtn" onClick={this.handleSubmit}>
+                  {isAdding ? <Spinner /> : "Create Project"}
+                </PrimaryButton>
               </div>
             </div>
           </div>

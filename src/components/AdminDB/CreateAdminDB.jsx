@@ -67,9 +67,7 @@ class CreateAdminDB extends React.Component {
 
   handleSubmit() {
     const { databaseFlavour, dbName, projectId } = this.state;
-    const {
-      createAdminDB,
-    } = this.props;
+    const { createAdminDB } = this.props;
     if (!databaseFlavour) {
       this.setState({
         error: "Select a database flavour",
@@ -162,10 +160,11 @@ class CreateAdminDB extends React.Component {
                 </div>
                 <div>
                   <PrimaryButton
-                    label={isCreating ? <Spinner /> : "Create"}
                     className="CreateBtn"
                     onClick={this.handleSubmit}
-                  />
+                  >
+                    {isCreating ? <Spinner /> : "Create"}
+                  </PrimaryButton>
                 </div>
               </div>
             </div>

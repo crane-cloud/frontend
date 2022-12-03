@@ -69,6 +69,10 @@
 .LoginButton {
   width: 100%;
 }
+.LoginButton:hover{
+  background-color: var(--secondary-color);
+  color: #fff;
+}
 .GitLoginBtn {
   display: flex;
   justify-content: center;

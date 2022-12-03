@@ -772,13 +772,12 @@ class AppSettingsPage extends React.Component {
                                   </div>
                                   <div className={styles.SectionButtons}>
                                     <PrimaryButton
-                                      label={
-                                        isReverting ? <Spinner /> : "REVERT"
-                                      }
                                       className={styles.RevertButton}
                                       onClick={this.domainRevert}
                                       disable={urlReverted}
-                                    />
+                                    >
+                                      {isReverting ? <Spinner /> : "REVERT"}
+                                    </PrimaryButton>
                                   </div>
                                 </div>
                               </div>
@@ -851,17 +850,16 @@ class AppSettingsPage extends React.Component {
                         <div className={styles.APPButton}>
                           <div className={styles.UpperSection}>
                             <PrimaryButton
-                              label={
-                                isUpdating && updating_form ? (
-                                  <Spinner />
-                                ) : (
-                                  "UPDATE"
-                                )
-                              }
                               disable={isUpdating}
                               className={isUpdating && styles.deactivatedBtn}
                               onClick={this.handleSubmit}
-                            />
+                            >
+                              {isUpdating && updating_form ? (
+                                <Spinner />
+                              ) : (
+                                "UPDATE"
+                              )}
+                            </PrimaryButton>
                           </div>
                         </div>
                         {error && (
@@ -954,19 +952,19 @@ class AppSettingsPage extends React.Component {
                           />
                           <div className={styles.EnvVarsAddBtn}>
                             <PrimaryButton
-                              label="add"
                               onClick={this.addEnvVar}
                               className={styles.EnvVarAddBtn}
-                            />
+                            >
+                              Add
+                            </PrimaryButton>
                           </div>
                         </div>
                         {Object.keys(envVars).length > 0 && (
                           <div className={styles.APPButton}>
                             <div className={styles.UpperSection}>
-                              <PrimaryButton
-                                label={isUpdating ? <Spinner /> : "UPDATE"}
-                                onClick={this.handleEnvVarsSubmit}
-                              />
+                              <PrimaryButton onClick={this.handleEnvVarsSubmit}>
+                                {isUpdating ? <Spinner /> : "UPDATE"}
+                              </PrimaryButton>
                             </div>
                           </div>
                         )}
@@ -995,17 +993,16 @@ class AppSettingsPage extends React.Component {
                           </div>
                           <div className={styles.APPOptionsButton}>
                             <PrimaryButton
-                              label={
-                                isUpdating && updating_port ? (
-                                  <Spinner />
-                                ) : (
-                                  "UPDATE"
-                                )
-                              }
                               disable={isUpdating}
                               className={isUpdating && styles.deactivatedBtn}
                               onClick={this.handlePortSubmit}
-                            />
+                            >
+                              {isUpdating && updating_port ? (
+                                <Spinner />
+                              ) : (
+                                "UPDATE"
+                              )}
+                            </PrimaryButton>
                           </div>
                         </div>
                         <div className={styles.PortSection}>
@@ -1028,17 +1025,16 @@ class AppSettingsPage extends React.Component {
                           </div>
                           <div className={styles.APPOptionsButton}>
                             <PrimaryButton
-                              label={
-                                isUpdating && updating_command ? (
-                                  <Spinner />
-                                ) : (
-                                  "UPDATE"
-                                )
-                              }
                               disable={isUpdating}
                               className={isUpdating && styles.deactivatedBtn}
                               onClick={this.handleCommandSubmit}
-                            />
+                            >
+                              {isUpdating && updating_command ? (
+                                <Spinner />
+                              ) : (
+                                "UPDATE"
+                              )}
+                            </PrimaryButton>
                           </div>
                         </div>
                         {portError && (
@@ -1070,10 +1066,11 @@ class AppSettingsPage extends React.Component {
                         </div>
                         <div className={styles.DeleteButtonDiv}>
                           <PrimaryButton
-                            label="Delete App"
                             className={styles.DeleteBtn}
                             onClick={this.showDeleteAlert}
-                          />
+                          >
+                            Delete App
+                          </PrimaryButton>
                         </div>
                       </div>
                     </div>
@@ -1117,12 +1114,12 @@ class AppSettingsPage extends React.Component {
                             <div className={styles.DeleteModalLowerSection}>
                               <div className={styles.DeleteAppModelButtons}>
                                 <PrimaryButton
-                                  label="cancel"
                                   className="CancelBtn"
                                   onClick={this.hideDeleteAlert}
-                                />
+                                >
+                                  Cancel
+                                </PrimaryButton>
                                 <PrimaryButton
-                                  label={isDeleting ? <Spinner /> : "Delete"}
                                   className={
                                     disableDelete
                                       ? styles.InactiveDelete
@@ -1132,7 +1129,9 @@ class AppSettingsPage extends React.Component {
                                   onClick={(e) =>
                                     this.handleDeleteApp(e, appID)
                                   }
-                                />
+                                >
+                                  {isDeleting ? <Spinner /> : "Delete"}
+                                </PrimaryButton>
                               </div>
 
                               {message && (
