@@ -101,7 +101,7 @@ class DatabaseList extends React.Component {
                 <InformationBar
                   header="Databases"
                   showBtn
-                  buttontext="database"
+                  buttontext="+ new database"
                   btnAction={this.showCreateComponent}
                 />
               </div>

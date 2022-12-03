@@ -5,7 +5,6 @@ import { Redirect } from "react-router-dom";
 import PrimaryButton from "../PrimaryButton";
 import Select from "../Select";
 //import CancelButton from "../CancelButton";
-import NewButton from "../NewButton";
 import Header from "../Header";
 import Spinner from "../Spinner";
 import Feedback from "../Feedback";
@@ -193,11 +192,12 @@ class CreateProject extends React.Component {
               <div className={styles.InfoHeader}>Create Project</div>
               <div className={styles.RoundAddButtonWrap}>
                 {/*<CancelButton onClick={this.props.closeComponent} />*/}
-                <NewButton
-                  label="close"
-                  type="close"
+                <PrimaryButton
+                  btnType="close"
                   onClick={this.props.closeComponent}
-                />
+                >
+                  close
+                </PrimaryButton>
               </div>
             </div>
           </div>

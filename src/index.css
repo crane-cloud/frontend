@@ -155,6 +155,22 @@ input[type="password"] {
   z-index: 5;
 }
 
+.MobileView {
+  display: none;
+}
+.DesktopView {
+  display: block;
+}
+
+@media (max-width: 650px) {
+  .MobileView {
+    display: block;
+  }
+  .DesktopView {
+    display: none;
+  }
+}
+
 /*- ////////////////////////////////// */
 
 /*- ///// TABLE STYLING ///////// */

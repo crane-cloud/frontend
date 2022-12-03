@@ -34,6 +34,17 @@
   background-color: #000;
 }
 
+.Primary-Btn.DeleteBtn {
+  border: 1px solid #d63b3b;
+  color: #d63b3b;
+  background-color: transparent;
+}
+
+.Primary-Btn.DeleteBtn:hover {
+  color: #fff;
+  background-color: #d63b3b;
+}
+
 button:disabled,
 button[disabled]{
   cursor:not-allowed;

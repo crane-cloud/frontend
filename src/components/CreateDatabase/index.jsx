@@ -5,7 +5,6 @@ import { Redirect } from "react-router-dom";
 import PrimaryButton from "../PrimaryButton";
 import Select from "../Select";
 //import CancelButton from "../CancelButton";
-import NewButton from "../NewButton";
 import Spinner from "../Spinner";
 import Feedback from "../Feedback";
 import createDatabase, {
@@ -89,11 +88,12 @@ class CreateDatabase extends React.Component {
                 <div className="InfoHeader">Create database</div>
                 <div className="RoundAddButtonWrap">
                   {/* <CancelButton onClick={this.props.closeComponent} />*/}
-                  <NewButton
-                    label="close"
-                    type="close"
+                  <PrimaryButton
+                    btnType="close"
                     onClick={this.props.closeComponent}
-                  />
+                  >
+                    close
+                  </PrimaryButton>
                 </div>
               </div>
             </div>

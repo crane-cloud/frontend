@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 //import RoundAddButton from "../RoundAddButton";
-import NewButton from "../NewButton";
 import AppStatus from "../AppStatus";
 import PrimaryButton from "../PrimaryButton";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
@@ -39,10 +38,33 @@ const InformationBar = ({
           </div>
         </div>
       ) : showSearchBar ? (
-        <div className="InformationBarWithButton">
-          <div className="InfoHeader">{header}</div>
-          <div className="InfoContent">
-            <div className="SearchBar">
+        <div className="InformationBarColumnView">
+          <div className="InformationBarWithButton">
+            <div className="InfoHeader">{header}</div>
+            <div className="InfoContent">
+              <div className="SearchBar DesktopView">
+                <div className="SearchInput">
+                  <input
+                    type="text"
+                    className="searchTerm"
+                    name="Searchword"
+                    placeholder={placeholder}
+                    value={Searchword}
+                    onChange={callbackSearchWord}
+                  />
+                  <SearchButton className="SearchIcon" />
+                </div>
+              </div>
+              <div className="RoundAddButtonWrap">
+                {/*<RoundAddButton onClick={btnAction} />*/}
+                <PrimaryButton btnType="new" onClick={btnAction}>
+                  {buttontext}
+                </PrimaryButton>
+              </div>
+            </div>
+          </div>
+          <div className="InfoContent MobileView">
+            <div className="SearchBar ">
               <div className="SearchInput">
                 <input
                   type="text"
@@ -55,10 +77,6 @@ const InformationBar = ({
                 <SearchButton className="SearchIcon" />
               </div>
             </div>
-            <div className="RoundAddButtonWrap">
-              {/*<RoundAddButton onClick={btnAction} />*/}
-              <NewButton label={buttontext} type="new" onClick={btnAction} />
-            </div>
           </div>
         </div>
       ) : showBtn ? (
@@ -66,7 +84,9 @@ const InformationBar = ({
           <div className="InfoHeader">{header}</div>
           <div className="RoundAddButtonWrap">
             {/*<RoundAddButton onClick={btnAction} />*/}
-            <NewButton label={buttontext} type="new" onClick={btnAction} />
+            <PrimaryButton btnType="new" onClick={btnAction}>
+              {buttontext}
+            </PrimaryButton>
           </div>
         </div>
       ) : viewAppLink ? (

@@ -217,7 +217,7 @@ class UserProjectsPage extends React.Component {
               <InformationBar
                 header="Projects"
                 showBtn
-                buttontext="Project"
+                buttontext="+ New Project"
                 showSearchBar
                 placeholder="Search through projects"
                 btnAction={this.openProjectCreateComponent}

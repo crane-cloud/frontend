@@ -5,7 +5,6 @@ import { Redirect } from "react-router-dom";
 import PrimaryButton from "../PrimaryButton";
 import Select from "../Select";
 //import CancelButton from "../CancelButton";
-import NewButton from "../NewButton";
 import BlackInputText from "../BlackInputText";
 import { v4 as uuidv4 } from "uuid";
 // import Modal from "../Modal";
@@ -374,11 +373,12 @@ class CreateApp extends React.Component {
                 <div className={styles.InfoHeader}>Create App</div>
                 <div className={styles.RoundAddButtonWrap}>
                   {/* <CancelButton onClick={this.props.closeComponent} />*/}
-                  <NewButton
-                    label="close"
-                    type="close"
+                  <PrimaryButton
+                    btnType="close"
                     onClick={this.props.closeComponent}
-                  />
+                  >
+                    close
+                  </PrimaryButton>
                 </div>
               </div>
             </div>
