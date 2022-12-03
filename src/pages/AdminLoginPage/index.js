@@ -93,6 +93,7 @@ class AdminLoginPage extends React.Component {
                 required
                 placeholder="Email Address"
                 name="email"
+                type="email"
                 value={email}
                 onChange={(e) => {
                   this.handleChange(e);

@@ -204,7 +204,7 @@ class LoginPage extends React.Component {
                 this.handleChange(e);
               }}
             />
-            {error && <div className="LoginErrorDiv">{error}</div>}
+            {error && <div className="LoginErrorDiv">!{error}</div>}
 
             <div className="LoginLinkContainer">
               <Link to="/forgot-password" className="LoginContentLink">

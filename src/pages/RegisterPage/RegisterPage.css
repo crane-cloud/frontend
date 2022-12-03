@@ -12,6 +12,7 @@
   align-self: center;
   justify-content: center;
   flex: 1;
+  padding-bottom: 5rem;
 }
 
 .RegisterSuccessContent {
@@ -30,23 +31,14 @@
   color: var(--secondary-color);
 }
 
-.RegisterContentInputs {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-}
 
-.RegisterLinkContainer {
-  display: inline-block;
-}
 
-a.RegisterContentLink {
-  color: var(--secondary-color);
-  border-bottom: 1px solid var(--secondary-color);
-}
-
-.RegisterCheckbox {
+.RegisterTerms {
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  padding: 1rem 0;
 }
 
 .RegisterErrorDiv {
@@ -65,19 +57,7 @@ a.RegisterContentLink {
   color: #fff;
   text-transform: capitalize;
 }
-.SignupBtn{
-  width: 100%;
-}
-.SignupWith {
-  width: 100%;
-  text-align: center;
-  border-bottom: 1px solid #fff;
-  line-height: 0.1em;
-}
-.SignupWith span {
-  background-color: var(--primary-color);
-  padding: 0 1rem;
-}
+
 .LowerSignupSection {
   display: grid;
   grid-template-columns: 1fr;
