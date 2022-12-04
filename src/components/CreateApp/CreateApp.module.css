@@ -1,6 +1,6 @@
 .Page {
   margin: 0;
-  background: #f1f1f1;
+  background: var( --gray-bg-light-color);
   width: 100%;
 }
 
@@ -179,7 +179,7 @@
 }
 
 .ModalFormInputs::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var( --gray-bg-light-color);
 }
 
 .ModalFormInputs::-webkit-scrollbar-thumb {
@@ -397,7 +397,7 @@ li.ListStyle {
   }
 
   .MainContentSection {
-    background-color: #f1f1f1;
+    background-color: var( --gray-bg-light-color);
     flex-direction: column;
     display: flex;
     flex-shrink: 0;

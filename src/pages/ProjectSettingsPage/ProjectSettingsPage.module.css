@@ -112,7 +112,7 @@
 
 .Page {
   margin: 0;
-  background: #f1f1f1;
+  background: var( --gray-bg-light-color);
   height: 100vh;
   display: grid;
   grid-template-rows: 80px 4fr;
@@ -121,7 +121,7 @@
 
 .MainSection {
   /* divided into two columns */
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
   display: grid;
   grid-template-columns: 1.3fr 6fr;
   overflow: hidden;
@@ -426,7 +426,7 @@
 
 .DropDownLink:hover,
 .DropDownLink:active {
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
 }
 
 .DropDownLink,
@@ -469,14 +469,14 @@
 @media(max-width: 650px) {
   .MainSection {
     /*one column required */
-    background-color: #f1f1f1;
+    background-color: var( --gray-bg-light-color);
     display: flex;
     flex-shrink: 0;
     width: 100%;
   }
 
   .MainContentSection {
-    background-color: #f1f1f1;
+    background-color: var( --gray-bg-light-color);
     flex-direction: column;
     display: flex;
     flex-shrink: 0;

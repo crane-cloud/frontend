@@ -3,7 +3,7 @@
   grid-template-rows: 3rem 3rem auto;
   padding: 2rem;
   gap: 1rem;
-  background: #f1f1f1;
+  background: var( --gray-bg-light-color);
 }
 
 .field {

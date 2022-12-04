@@ -300,7 +300,7 @@ const ClusterPage = ({
       </div>
       <br />
       <div className={styles.OtherCards}>
-        <Link className={styles.Card}>
+        <Link className={styles.ResourceCard}>
           <>
             <div className={styles.CardHeader}>Projects</div>
             <div className={styles.DBStats}>
@@ -316,7 +316,7 @@ const ClusterPage = ({
             </div>
           </>
         </Link>
-        <Link to="/databases" className={styles.Card}>
+        <Link to="/databases" className={styles.ResourceCard}>
           <>
             <div className={styles.CardHeader}>Databases</div>
             <div className={styles.DBStats}>
@@ -338,7 +338,7 @@ const ClusterPage = ({
             </div>
           </>
         </Link>
-        <div className={styles.Card}>
+        <div className={styles.ResourceCard}>
           <div className={styles.CardHeader}>Clusters</div>
           <div className={styles.CardTop}>Count</div>
           <div className={styles.ResourceDigit}>

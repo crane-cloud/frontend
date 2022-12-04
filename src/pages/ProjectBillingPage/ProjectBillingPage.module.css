@@ -1,6 +1,6 @@
 .Page {
   margin: 0;
-  background: #f1f1f1;
+  background: var( --gray-bg-light-color);
   max-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -23,7 +23,7 @@
 
 .MainSection {
   /* divided into two columns */
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
   display: grid;
   grid-template-columns: 1.3fr 6fr;
   overflow: hidden;

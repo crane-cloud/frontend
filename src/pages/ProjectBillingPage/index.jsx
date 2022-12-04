@@ -1152,7 +1152,9 @@ const ProjectBillingPage = (props) => {
                           setChoosenPaymentOption("flutterwave");
                         }}
                       >
-                        <div className={styles.PaymentText}>Cash/Card</div>
+                        <div className={styles.PaymentText}>
+                          Cash/ResourceCard
+                        </div>
                         <div className={styles.Iconsection}>
                           Powered by
                           <div className={styles.FlutterWaveSize}>

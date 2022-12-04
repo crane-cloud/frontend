@@ -148,7 +148,7 @@
 }
 
 .MainRow {
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
   min-height: calc(100vh - 14rem);
 }
 
@@ -169,7 +169,7 @@
 
 .FooterRow {
   padding: 1rem 3rem;
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
 }
 
 .SearchBar {

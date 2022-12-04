@@ -1,7 +1,7 @@
 footer.LandingFooter {
   color: #555555;
   text-align: center;
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
 }
 
 .FooterParent {

@@ -45,6 +45,29 @@
   background-color: #d63b3b;
 }
 
+.Primary-Btn.BlackPrimaryBtn {
+  border: 1px solid #000;
+  color: #fff;
+  background-color: #000;
+}
+
+.Primary-Btn.BlackPrimaryBtn:hover {
+  border: 1px solid var(--primary-dark-color);
+  background-color: var(--primary-dark-color);
+}
+
+.Primary-Btn.PrimaryColorBtn {
+  border: 1px solid var(--primary-color);
+  color: #fff;
+  background-color: var(--primary-color);
+}
+
+.Primary-Btn.PrimaryColorBtn:hover {
+  border: 1px solid var(--primary-color);
+  background-color: var(--primary-light-color);
+  color: var(--primary-color);
+}
+
 button:disabled,
 button[disabled]{
   cursor:not-allowed;

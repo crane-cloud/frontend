@@ -1,6 +1,6 @@
 .Page {
   margin: 0;
-  background: #f1f1f1;
+  background: var( --gray-bg-light-color);
 }
 
 .ViewAccountsBtn {
@@ -110,7 +110,7 @@
   height: 10rem;
 }
 
-.Card {
+.ResourceCard {
   width: 100%;
   max-width: 385px;
   margin-left: 45px;
@@ -135,7 +135,7 @@
   padding-top: 4rem;
   text-align: center;
 }
-.Card .CardHeader {
+.ResourceCard .CardHeader {
   font-weight: bold;
   border: none;
   outline: 0;
@@ -150,18 +150,18 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 
-.Card .CardHeader::first-letter {
+.ResourceCard .CardHeader::first-letter {
   text-transform: uppercase;
 }
 
-.Card:hover {
+.ResourceCard:hover {
   opacity: 0.7;
   border: 1px solid var(--secondary-color);
 }
 
 .FooterRow {
   padding: 1rem 3rem;
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
 }
 
 .ContentSection {

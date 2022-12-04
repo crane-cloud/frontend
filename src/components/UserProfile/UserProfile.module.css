@@ -70,7 +70,7 @@
   }
   .FooterRow {
     padding: 1rem 3rem;
-    background-color: #f1f1f1;
+    background-color: var( --gray-bg-light-color);
   }
   .UserContainer{
     display: flex;

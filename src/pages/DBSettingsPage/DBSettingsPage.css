@@ -131,7 +131,7 @@
 }
 
 .DBAccessInfo {
-  background: #f1f1f1;
+  background: var( --gray-bg-light-color);
   padding: 0.5rem;
   font-family: "monaco";
 }

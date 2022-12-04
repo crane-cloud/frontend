@@ -38,7 +38,7 @@
 }
 .TurnLight:hover {
   transition: 0.4s;
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
   color: #000 !important;
 }
 /* remove focus from logo link - mozilla */
@@ -116,7 +116,7 @@
 }
 .DropDownLink:hover,
 .DropDownLink:active {
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
 }
 .DropDownLink,
 .DropDownLink:visited {
@@ -133,7 +133,7 @@
 }
 .UserInformation:hover,
 .UserInformation:active {
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
 }
 .UserInformation,
 .UserInformation:visited {
