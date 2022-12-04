@@ -9,6 +9,7 @@ import CreateDatabase from "../CreateDatabase";
 import getProjectDatabases from "../../redux/actions/databaseList";
 import styles from "./DatabaseList.module.css";
 import DashboardLayout from "../Layouts/DashboardLayout";
+import { getProjectName } from "../../helpers/projectName";
 
 class DatabaseList extends React.Component {
   constructor(props) {
@@ -59,6 +60,7 @@ class DatabaseList extends React.Component {
       match: { params },
       databases,
       isFetchingDatabases,
+      projects,
       databasesFetched,
     } = this.props;
     const { openCreateComponent } = this.state;
@@ -76,6 +78,7 @@ class DatabaseList extends React.Component {
             buttontext="close"
             btnAction={this.callbackCreateComponent}
             btntype="close"
+            name={getProjectName(projects, params.projectID)}
           >
             <CreateDatabase params={params} />
           </DashboardLayout>
@@ -85,6 +88,7 @@ class DatabaseList extends React.Component {
             showBtn
             buttontext="+ new database"
             btnAction={this.showCreateComponent}
+            name={getProjectName(projects, params.projectID)}
           >
             {isFetchingDatabases ? (
               <div className={styles.NoResourcesMessageSection}>
