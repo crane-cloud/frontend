@@ -24,10 +24,18 @@
 
 .SideBarTopSection {
   padding: 2rem 1rem;
-  display: grid;
-  gap: 1rem;
-  grid-auto-flow: column;
+  display: flex;
+  gap: 0.5rem;
+  transition: .3s;
+  align-items: center;
+  cursor: pointer;
+  color: white;
 }
+
+.SideBarTopSection:hover{
+  transform: scale(1.1);
+}
+
 
 .ProjectName {
   background-color: var(--primary-dark-color);

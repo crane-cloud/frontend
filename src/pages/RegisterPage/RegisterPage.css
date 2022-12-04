@@ -1,5 +1,5 @@
 .RegisterPageContainer {
-  background: var(--primary-color);
+  background: var(--primary-color)!important;
   color: #ffffff;
   display: flex;
   flex-direction: column;

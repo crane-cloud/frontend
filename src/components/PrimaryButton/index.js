@@ -3,7 +3,7 @@ import "./PrimaryButton.css";
 
 const PrimaryButton = (props) => {
   const { children, className, btnType, color } = props;
-  console.log(color);
+
   const getColorClass = () => {
     switch (color) {
       case "primary":
