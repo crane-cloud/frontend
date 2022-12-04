@@ -290,7 +290,7 @@ tr.TableLoading td {
 .SideBarSection {
   overflow: hidden;
   overflow-y: scroll;
-  height: calc(100vh - 5rem);
+  /* height: calc(100vh - 5rem); */
 }
 
 .SideBarSection::-webkit-scrollbar {
@@ -307,7 +307,7 @@ tr.TableLoading td {
   /* divided into two rows */
   display: grid;
   grid-template-rows: 80px 4fr;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .ContentSection {
@@ -355,7 +355,7 @@ tr.TableLoading td {
 .Page {
   margin: 0;
   background: var( --gray-bg-light-color);
-  max-height: 100vh;
+  min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
   /* overflow: hidden; */

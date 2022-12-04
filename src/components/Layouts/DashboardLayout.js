@@ -2,23 +2,26 @@ import React from "react";
 import Header from "../Header";
 import InformationBar from "../InformationBar";
 import SideBar from "../SideBar";
+import "./Layouts.css";
 
-const DashboardLayout = (params) => {
-  const { children, name, credits, header } = params;
+const DashboardLayout = (props) => {
+  const { children, name, credits, header } = props;
   return (
-    <div className="Page">
-      <div className="TopBarSection">
+    <div className="DashboardPage">
+      <div className="DashboardTopBarSection">
         <Header credits={credits?.amount} />
       </div>
-      <div className="MainSection">
-        <div className="SideBarSection">
+      <div className="DashboardMainSection">
+        <div className="DashboardSideBarSection">
           <SideBar name={name} />
         </div>
-        <div className="MainContentSection">
-          <div className="InformationBarSection">
-            <InformationBar header={header} />
+        <div className="DashboardMainContentSection">
+          <div>
+            <InformationBar header={header} {...props} />
           </div>
-          <div className="MainContent SmallContainer">{children}</div>
+          <div className="SmallContainer DasboardChildrenSection">
+            {children}
+          </div>
         </div>
       </div>
     </div>

@@ -80,54 +80,29 @@ class CreateDatabase extends React.Component {
       return <Redirect to={`/projects/${projectID}/databases`} noThrow />;
     }
     return (
-      <div className="CreatePage">
-        <div className="MainContentSection">
-          <div className="InformationBarSection ">
-            <div className="InformationBar">
-              <div className="InformationBarWithButton SmallContainer">
-                <div className="InfoHeader">Create database</div>
-                <div className="RoundAddButtonWrap">
-                  {/* <CancelButton onClick={this.props.closeComponent} />*/}
-                  <PrimaryButton
-                    btnType="close"
-                    onClick={this.props.closeComponent}
-                  >
-                    close
-                  </PrimaryButton>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="ContentSection SmallContainer">
-            <div className="DatabaseForm">
-              <div className="DBFormElements">
-                <Select
-                  required
-                  placeholder="Database Type"
-                  options={flavours}
-                  onChange={this.handleSelectChange}
-                />
-                <div />
-                <div className="CreateDBError">
-                  {error && <Feedback type="error" message={error} />}
+      <div className="DatabaseForm">
+        <div className="DBFormElements">
+          <Select
+            required
+            placeholder="Database Type"
+            options={flavours}
+            onChange={this.handleSelectChange}
+          />
+          <div />
+          <div className="CreateDBError">
+            {error && <Feedback type="error" message={error} />}
 
-                  {message && (
-                    <Feedback
-                      message={message !== "" ? message : null}
-                      type={isCreated ? "success" : "error"}
-                    />
-                  )}
-                </div>
-                <div>
-                  <PrimaryButton
-                    className="CreateBtn"
-                    onClick={this.handleSubmit}
-                  >
-                    {isCreating ? <Spinner /> : "Create"}
-                  </PrimaryButton>
-                </div>
-              </div>
-            </div>
+            {message && (
+              <Feedback
+                message={message !== "" ? message : null}
+                type={isCreated ? "success" : "error"}
+              />
+            )}
+          </div>
+          <div>
+            <PrimaryButton className="CreateBtn" onClick={this.handleSubmit}>
+              {isCreating ? <Spinner /> : "Create"}
+            </PrimaryButton>
           </div>
         </div>
       </div>

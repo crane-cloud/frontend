@@ -193,7 +193,7 @@ class CreateProject extends React.Component {
               <div className={styles.RoundAddButtonWrap}>
                 {/*<CancelButton onClick={this.props.closeComponent} />*/}
                 <PrimaryButton
-                  btnType="close"
+                  btntype="close"
                   onClick={this.props.closeComponent}
                 >
                   close

@@ -12,6 +12,7 @@ const InformationBar = ({
   status,
   showBtn,
   btnAction,
+  btntype = "new",
   viewAppLink,
   credits,
   showSearchBar,
@@ -57,7 +58,7 @@ const InformationBar = ({
               </div>
               <div className="RoundAddButtonWrap">
                 {/*<RoundAddButton onClick={btnAction} />*/}
-                <PrimaryButton btnType="new" onClick={btnAction}>
+                <PrimaryButton btntype={btntype} onClick={btnAction}>
                   {buttontext}
                 </PrimaryButton>
               </div>
@@ -84,7 +85,7 @@ const InformationBar = ({
           <div className="InfoHeader">{header}</div>
           <div className="RoundAddButtonWrap">
             {/*<RoundAddButton onClick={btnAction} />*/}
-            <PrimaryButton btnType="new" onClick={btnAction}>
+            <PrimaryButton btntype={btntype} onClick={btnAction}>
               {buttontext}
             </PrimaryButton>
           </div>

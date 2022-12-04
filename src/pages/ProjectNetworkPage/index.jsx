@@ -1,11 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import InformationBar from "../../components/InformationBar";
-import Header from "../../components/Header";
 import Spinner from "../../components/Spinner";
-import SideBar from "../../components/SideBar";
-import "./ProjectNetworkPage.css";
 import getProjectNetwork, {
   clearProjectNetwork,
 } from "../../redux/actions/projectNetwork";
@@ -18,6 +14,7 @@ import {
   subtractTime,
 } from "../../helpers/formatMetrics";
 import { getProjectName } from "../../helpers/projectName";
+import DashboardLayout from "../../components/Layouts/DashboardLayout";
 
 class ProjectNetworkPage extends React.Component {
   constructor(props) {
@@ -137,50 +134,29 @@ class ProjectNetworkPage extends React.Component {
     );
 
     return (
-      <div className="Page">
-        <div className="TopBarSection">
-          <Header />
-        </div>
-        <div className="MainSection">
-          <div className="SideBarSection">
-            <SideBar
-              name={getProjectName(projects, projectID)}
-              params={params}
-              pageRoute={this.props.location.pathname}
-              allMetricsLink={`/projects/${projectID}/metrics`}
-              cpuLink={`/projects/${projectID}/cpu/`}
-              memoryLink={`/projects/${projectID}/memory/`}
-              databaseLink={`/projects/${projectID}/databases`}
-              networkLink={`/projects/${projectID}/network/`}
+      <DashboardLayout
+        header="Project Network"
+        name={getProjectName(projects, projectID)}
+      >
+        <MetricsCard
+          className="MetricsCardGraph"
+          title={<PeriodSelector onChange={this.handlePeriodChange} />}
+        >
+          {isFetchingNetwork ? (
+            <div className="ContentSectionSpinner">
+              <Spinner />
+            </div>
+          ) : (
+            <LineChartComponent
+              yLabel="Network (KBs)"
+              xLabel="Time"
+              xDataKey="time"
+              lineDataKey="network"
+              data={formattedMetrics}
             />
-          </div>
-          <div className="MainContentSection">
-            <div className="InformationBarSection">
-              <InformationBar header="Network" />
-            </div>
-            <div className="ContentSection SmallContainer">
-              <MetricsCard
-                className="MetricsCardGraph"
-                title={<PeriodSelector onChange={this.handlePeriodChange} />}
-              >
-                {isFetchingNetwork ? (
-                  <div className="ContentSectionSpinner">
-                    <Spinner />
-                  </div>
-                ) : (
-                  <LineChartComponent
-                    yLabel="Network (KBs)"
-                    xLabel="Time"
-                    xDataKey="time"
-                    lineDataKey="network"
-                    data={formattedMetrics}
-                  />
-                )}
-              </MetricsCard>
-            </div>
-          </div>
-        </div>
-      </div>
+          )}
+        </MetricsCard>
+      </DashboardLayout>
     );
   }
 }

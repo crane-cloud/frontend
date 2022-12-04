@@ -365,169 +365,151 @@ class CreateApp extends React.Component {
       { id: 4, name: "4" },
     ];
     return (
-      <div className={styles.Page}>
-        <div className={styles.MainContentSection}>
-          <div className={styles.InformationBarSection}>
-            <div className={styles.InformationBar}>
-              <div className={styles.InformationBarWithButton}>
-                <div className={styles.InfoHeader}>Create App</div>
-                <div className={styles.RoundAddButtonWrap}>
-                  {/* <CancelButton onClick={this.props.closeComponent} />*/}
-                  <PrimaryButton
-                    btnType="close"
-                    onClick={this.props.closeComponent}
-                  >
-                    close
-                  </PrimaryButton>
-                </div>
+      <div>
+        <div className={styles.DeploymentMethodTabs}>
+          <span
+            className={
+              currentDeploymentMethod === "default"
+                ? styles.CurrentTab
+                : styles.Tab
+            }
+            onClick={this.toggleDefaultDeployment}
+          >
+            Deploy with Crane Cloud
+          </span>
+          <span
+            className={
+              currentDeploymentMethod === "mira"
+                ? styles.CurrentTab
+                : styles.Tab
+            }
+            onClick={this.toggleMiraDeployment}
+          >
+            Deploy with mira
+          </span>
+        </div>
+
+        {currentDeploymentMethod === "default" && (
+          <div className={styles.CreateFormHolder}>
+            <div className={styles.ModalFormInputs}>
+              <div className={styles.FormHeading}>
+                Fields marked * are required
               </div>
-            </div>
-          </div>
-          <div className={styles.ContentSection}>
-            <div className={styles.DeploymentMethodTabs}>
-              <span
-                className={
-                  currentDeploymentMethod === "default"
-                    ? styles.CurrentTab
-                    : styles.Tab
-                }
-                onClick={this.toggleDefaultDeployment}
-              >
-                Deploy with Crane Cloud
-              </span>
-              <span
-                className={
-                  currentDeploymentMethod === "mira"
-                    ? styles.CurrentTab
-                    : styles.Tab
-                }
-                onClick={this.toggleMiraDeployment}
-              >
-                Deploy with mira
-              </span>
-            </div>
+              <div className={styles.ModalFormInputsBasic}>
+                <BlackInputText
+                  required
+                  placeholder="Name"
+                  name="name"
+                  value={name}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+                  className="ReplicasSelect"
+                />
 
-            {currentDeploymentMethod === "default" && (
-              <div className={styles.CreateFormHolder}>
-                <div className={styles.ModalFormInputs}>
-                  <div className={styles.FormHeading}>
-                    Fields marked * are required
-                  </div>
-                  <div className={styles.ModalFormInputsBasic}>
-                    <BlackInputText
-                      required
-                      placeholder="Name"
-                      name="name"
-                      value={name}
-                      onChange={(e) => {
-                        this.handleChange(e);
-                      }}
-                      className="ReplicasSelect"
+                <div className={styles.ReplicasSelect}>
+                  <Select
+                    placeholder="Number of Replicas - defaults to 1"
+                    options={replicaOptions}
+                    onChange={this.handleSelectReplicas}
+                  />
+                </div>
+
+                <div className={styles.InputFieldWithTooltip}>
+                  <BlackInputText
+                    required
+                    placeholder="Image URI"
+                    name="uri"
+                    value={uri}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                  <div className={styles.InputTooltipContainer}>
+                    <Tooltip
+                      showIcon
+                      message="Image URI e.g for docker: ngnixdemos/hello with ngnixdemos being your username and hello being the image name"
+                      position="left"
                     />
+                  </div>
+                </div>
 
-                    <div className={styles.ReplicasSelect}>
-                      <Select
-                        placeholder="Number of Replicas - defaults to 1"
-                        options={replicaOptions}
-                        onChange={this.handleSelectReplicas}
-                      />
-                    </div>
+                <div className={styles.PrivateImageCheckField}>
+                  <Checkbox
+                    isBlack
+                    onClick={this.togglePrivateImage}
+                    isChecked={isPrivateImage}
+                  />
+                  &nbsp; Private Image
+                </div>
 
-                    <div className={styles.InputFieldWithTooltip}>
-                      <BlackInputText
-                        required
-                        placeholder="Image URI"
-                        name="uri"
-                        value={uri}
-                        onChange={(e) => {
-                          this.handleChange(e);
-                        }}
-                      />
-                      <div className={styles.InputTooltipContainer}>
-                        <Tooltip
-                          showIcon
-                          message="Image URI e.g for docker: ngnixdemos/hello with ngnixdemos being your username and hello being the image name"
-                          position="left"
-                        />
-                      </div>
-                    </div>
+                {isPrivateImage && (
+                  <div className={styles.PrivateImageTabContainer}>
+                    <Tabs>
+                      <div index={1} /* label={<DockerLogo />} */>
+                        <div className={styles.PrivateImageInputs}>
+                          <BlackInputText
+                            required
+                            placeholder="Username"
+                            name="username"
+                            value={username}
+                            onChange={(e) => {
+                              this.handleDockerCredentialsChange(e);
+                            }}
+                          />
 
-                    <div className={styles.PrivateImageCheckField}>
-                      <Checkbox
-                        isBlack
-                        onClick={this.togglePrivateImage}
-                        isChecked={isPrivateImage}
-                      />
-                      &nbsp; Private Image
-                    </div>
+                          <BlackInputText
+                            required
+                            placeholder="Email"
+                            name="email"
+                            value={email}
+                            onChange={(e) => {
+                              this.handleDockerCredentialsChange(e);
+                            }}
+                          />
 
-                    {isPrivateImage && (
-                      <div className={styles.PrivateImageTabContainer}>
-                        <Tabs>
-                          <div index={1} /* label={<DockerLogo />} */>
-                            <div className={styles.PrivateImageInputs}>
-                              <BlackInputText
-                                required
-                                placeholder="Username"
-                                name="username"
-                                value={username}
-                                onChange={(e) => {
-                                  this.handleDockerCredentialsChange(e);
-                                }}
+                          <BlackInputText
+                            required
+                            placeholder="Password"
+                            type="password"
+                            name="password"
+                            value={password}
+                            onChange={(e) => {
+                              this.handleDockerCredentialsChange(e);
+                            }}
+                          />
+                          <div className={styles.InputFieldWithTooltip}>
+                            <BlackInputText
+                              required
+                              placeholder="Registry Server"
+                              name="server"
+                              value={server}
+                              onChange={(e) => {
+                                this.handleDockerCredentialsChange(e);
+                              }}
+                            />
+                            <div className={styles.InputTooltipContainerDB}>
+                              <Tooltip
+                                showIcon
+                                message="Registry server for example: docker.io or gcr.io"
+                                position="left"
                               />
-
-                              <BlackInputText
-                                required
-                                placeholder="Email"
-                                name="email"
-                                value={email}
-                                onChange={(e) => {
-                                  this.handleDockerCredentialsChange(e);
-                                }}
-                              />
-
-                              <BlackInputText
-                                required
-                                placeholder="Password"
-                                type="password"
-                                name="password"
-                                value={password}
-                                onChange={(e) => {
-                                  this.handleDockerCredentialsChange(e);
-                                }}
-                              />
-                              <div className={styles.InputFieldWithTooltip}>
-                                <BlackInputText
-                                  required
-                                  placeholder="Registry Server"
-                                  name="server"
-                                  value={server}
-                                  onChange={(e) => {
-                                    this.handleDockerCredentialsChange(e);
-                                  }}
-                                />
-                                <div className={styles.InputTooltipContainerDB}>
-                                  <Tooltip
-                                    showIcon
-                                    message="Registry server for example: docker.io or gcr.io"
-                                    position="left"
-                                  />
-                                </div>
-                              </div>
-
-                              {dockerCredentials.error && (
-                                <Feedback
-                                  type="error"
-                                  message={dockerCredentials.error}
-                                />
-                              )}
                             </div>
                           </div>
-                        </Tabs>
-                      </div>
-                    )}
 
-                    {/** <div className={styles.ClusterSelectionSection}>
+                          {dockerCredentials.error && (
+                            <Feedback
+                              type="error"
+                              message={dockerCredentials.error}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </Tabs>
+                  </div>
+                )}
+
+                {/** <div className={styles.ClusterSelectionSection}>
                  <div className={styles.alignText}>Multicluster options</div>
                   <div className={styles.TooltipStyles}>
                     <Tooltip
@@ -542,216 +524,210 @@ class CreateApp extends React.Component {
                   />{" "}
                   &nbsp; Deploy app on the same datacenter(s) as project.
                 </div>*/}
-                    {multiCluster && (
-                      <div className={styles.ClustersSection}>
-                        <div className={styles.MultiSelectionText}>
-                          Please select a datacenter(s) you would like your app
-                          to be deployed to.
-                        </div>
-                        <div className={styles.Multipleclusters}>
-                          {clusters.map(({ name, id }, index) => {
-                            return (
-                              <li className={styles.ListStyle} key={index}>
-                                <div className={styles.clusterListItem}>
-                                  <div className={styles.leftsection}>
-                                    <input
-                                      type="checkbox"
-                                      id={id}
-                                      name={name}
-                                      value={name}
-                                      checked={SelectedClusters[index]}
-                                      onChange={() =>
-                                        this.handleOnChange(index)
-                                      }
-                                    />
-                                    <label
-                                      className={styles.ClusterLabel}
-                                      htmlFor={id}
-                                    >
-                                      {name}
-                                    </label>
-                                  </div>
-                                </div>
-                              </li>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-
-                    {beta && (
-                      <div className={styles.CustomDomainCheckField}>
-                        <Checkbox
-                          isBlack
-                          onClick={this.toggleCustomDomain}
-                          isChecked={isCustomDomain}
-                        />
-                        &nbsp; Custom Domain
-                      </div>
-                    )}
-
-                    {isCustomDomain && (
-                      <div className={styles.CustomDomainTabContainer}>
-                        <Tabs>
-                          <div index={1}>
-                            <div className={styles.InputFieldWithTooltip}>
-                              <BlackInputText
-                                required
-                                placeholder="Domain name"
-                                name="domainName"
-                                value={domainName}
-                                onChange={(e) => {
-                                  this.handleChange(e);
-                                }}
-                              />
-                              <div className={styles.InputTooltipContainer}>
-                                <Tooltip
-                                  showIcon
-                                  message="You will be given IP addresses to link your hosting provider DNS to our servers"
-                                  position="left"
+                {multiCluster && (
+                  <div className={styles.ClustersSection}>
+                    <div className={styles.MultiSelectionText}>
+                      Please select a datacenter(s) you would like your app to
+                      be deployed to.
+                    </div>
+                    <div className={styles.Multipleclusters}>
+                      {clusters.map(({ name, id }, index) => {
+                        return (
+                          <li className={styles.ListStyle} key={index}>
+                            <div className={styles.clusterListItem}>
+                              <div className={styles.leftsection}>
+                                <input
+                                  type="checkbox"
+                                  id={id}
+                                  name={name}
+                                  value={name}
+                                  checked={SelectedClusters[index]}
+                                  onChange={() => this.handleOnChange(index)}
                                 />
+                                <label
+                                  className={styles.ClusterLabel}
+                                  htmlFor={id}
+                                >
+                                  {name}
+                                </label>
                               </div>
                             </div>
+                          </li>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {beta && (
+                  <div className={styles.CustomDomainCheckField}>
+                    <Checkbox
+                      isBlack
+                      onClick={this.toggleCustomDomain}
+                      isChecked={isCustomDomain}
+                    />
+                    &nbsp; Custom Domain
+                  </div>
+                )}
+
+                {isCustomDomain && (
+                  <div className={styles.CustomDomainTabContainer}>
+                    <Tabs>
+                      <div index={1}>
+                        <div className={styles.InputFieldWithTooltip}>
+                          <BlackInputText
+                            required
+                            placeholder="Domain name"
+                            name="domainName"
+                            value={domainName}
+                            onChange={(e) => {
+                              this.handleChange(e);
+                            }}
+                          />
+                          <div className={styles.InputTooltipContainer}>
+                            <Tooltip
+                              showIcon
+                              message="You will be given IP addresses to link your hosting provider DNS to our servers"
+                              position="left"
+                            />
                           </div>
-                        </Tabs>
+                        </div>
                       </div>
-                    )}
-
-                    <div className={styles.InputFieldWithTooltip}>
-                      <BlackInputText
-                        placeholder="Entry Command"
-                        name="entryCommand"
-                        value={entryCommand}
-                        onChange={(e) => {
-                          this.handleChange(e);
-                        }}
-                      />
-                      <div className={styles.InputTooltipContainer}>
-                        <Tooltip
-                          showIcon
-                          message="Entrypoint or command for your container"
-                          position="left"
-                        />
-                      </div>
-                    </div>
-                    <div className={styles.InputFieldWithTooltip}>
-                      <BlackInputText
-                        placeholder="Port (optional) - defaults to 80"
-                        name="port"
-                        value={port}
-                        onChange={(e) => {
-                          this.handleChange(e);
-                        }}
-                      />
-                      <div className={styles.InputTooltipContainer}>
-                        <Tooltip
-                          showIcon
-                          message="Exposed port of your container"
-                          position="left"
-                        />
-                      </div>
-                    </div>
-
-                    {error && <Feedback type="error" message={error} />}
+                    </Tabs>
                   </div>
-                  <div className={styles.ModalFormInputsEnvVars}>
-                    <div className={styles.HeadingWithTooltip}>
-                      <h4>Environment Variables</h4>
-                      <Tooltip
-                        showIcon
-                        message="These are are key/value pairs which define aspects of your app’s environment that can vary"
-                      />
-                    </div>
-                    {Object.keys(envVars).length > 0 && (
-                      <div className={styles.EnvVarsTable}>
-                        <table>
-                          <thead>
-                            <tr>
-                              <td>Name</td>
-                              <td>Value</td>
-                              <td>Remove</td>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {Object.keys(envVars).map((envVar, index) => (
-                              <tr key={uuidv4()}>
-                                <td>{Object.keys(envVars)[index]}</td>
-                                <td>{envVars[Object.keys(envVars)[index]]}</td>
-                                <td>
-                                  <img
-                                    src={RemoveIcon}
-                                    alt="remove_ico"
-                                    onClick={() => this.removeEnvVar(index)}
-                                    role="presentation"
-                                  />
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    )}
-                    <div className={styles.EnvVarsInputGroup}>
-                      <div className={styles.EnvVarsInputs}>
-                        <BlackInputText
-                          placeholder="Name"
-                          name="varName"
-                          value={varName}
-                          onChange={(e) => {
-                            this.handleChange(e);
-                          }}
-                        />
-                        <BlackInputText
-                          placeholder="Value"
-                          name="varValue"
-                          value={varValue}
-                          onChange={(e) => {
-                            this.handleChange(e);
-                          }}
-                        />
-                      </div>
-                      <div className={styles.EnvVarsAddBtn}>
-                        <PrimaryButton
-                          onClick={this.addEnvVar}
-                          className={styles.EnvVarAddBtn}
-                        >
-                          Add
-                        </PrimaryButton>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.ModalFormButtons}>
-                    {message && (
-                      <Feedback
-                        message={
-                          errorCode === 409
-                            ? "Name already in use, please choose another and try again"
-                            : message
-                        }
-                        type={
-                          isCreated && errorCode !== 409 ? "success" : "error"
-                        }
-                      />
-                    )}
+                )}
 
-                    <div className={styles.ButtonSection}>
-                      <PrimaryButton
-                        className="AuthBtn FullWidth"
-                        onClick={this.handleSubmit}
-                      >
-                        {isCreating ? <Spinner /> : "deploy"}
-                      </PrimaryButton>
-                    </div>
+                <div className={styles.InputFieldWithTooltip}>
+                  <BlackInputText
+                    placeholder="Entry Command"
+                    name="entryCommand"
+                    value={entryCommand}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                  <div className={styles.InputTooltipContainer}>
+                    <Tooltip
+                      showIcon
+                      message="Entrypoint or command for your container"
+                      position="left"
+                    />
+                  </div>
+                </div>
+                <div className={styles.InputFieldWithTooltip}>
+                  <BlackInputText
+                    placeholder="Port (optional) - defaults to 80"
+                    name="port"
+                    value={port}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                  <div className={styles.InputTooltipContainer}>
+                    <Tooltip
+                      showIcon
+                      message="Exposed port of your container"
+                      position="left"
+                    />
+                  </div>
+                </div>
+
+                {error && <Feedback type="error" message={error} />}
+              </div>
+              <div className={styles.ModalFormInputsEnvVars}>
+                <div className={styles.HeadingWithTooltip}>
+                  <h4>Environment Variables</h4>
+                  <Tooltip
+                    showIcon
+                    message="These are are key/value pairs which define aspects of your app’s environment that can vary"
+                  />
+                </div>
+                {Object.keys(envVars).length > 0 && (
+                  <div className={styles.EnvVarsTable}>
+                    <table>
+                      <thead>
+                        <tr>
+                          <td>Name</td>
+                          <td>Value</td>
+                          <td>Remove</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {Object.keys(envVars).map((envVar, index) => (
+                          <tr key={uuidv4()}>
+                            <td>{Object.keys(envVars)[index]}</td>
+                            <td>{envVars[Object.keys(envVars)[index]]}</td>
+                            <td>
+                              <img
+                                src={RemoveIcon}
+                                alt="remove_ico"
+                                onClick={() => this.removeEnvVar(index)}
+                                role="presentation"
+                              />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+                <div className={styles.EnvVarsInputGroup}>
+                  <div className={styles.EnvVarsInputs}>
+                    <BlackInputText
+                      placeholder="Name"
+                      name="varName"
+                      value={varName}
+                      onChange={(e) => {
+                        this.handleChange(e);
+                      }}
+                    />
+                    <BlackInputText
+                      placeholder="Value"
+                      name="varValue"
+                      value={varValue}
+                      onChange={(e) => {
+                        this.handleChange(e);
+                      }}
+                    />
+                  </div>
+                  <div className={styles.EnvVarsAddBtn}>
+                    <PrimaryButton
+                      onClick={this.addEnvVar}
+                      className={styles.EnvVarAddBtn}
+                    >
+                      Add
+                    </PrimaryButton>
                   </div>
                 </div>
               </div>
-            )}
+              <div className={styles.ModalFormButtons}>
+                {message && (
+                  <Feedback
+                    message={
+                      errorCode === 409
+                        ? "Name already in use, please choose another and try again"
+                        : message
+                    }
+                    type={isCreated && errorCode !== 409 ? "success" : "error"}
+                  />
+                )}
 
-            {currentDeploymentMethod === "mira" && (
-              <MiraPage projectID={projectID} />
-            )}
+                <div className={styles.ButtonSection}>
+                  <PrimaryButton
+                    className="AuthBtn FullWidth"
+                    onClick={this.handleSubmit}
+                  >
+                    {isCreating ? <Spinner /> : "deploy"}
+                  </PrimaryButton>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
+
+        {currentDeploymentMethod === "mira" && (
+          <MiraPage projectID={projectID} />
+        )}
       </div>
     );
   }

@@ -4,12 +4,10 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // import { v4 as uuidv4 } from "uuid";
 import createApp, { clearState } from "../../redux/actions/createApp";
-import InformationBar from "../../components/InformationBar";
 import AppsList from "../../components/AppsList";
-import Header from "../../components/Header";
-import SideBar from "../../components/SideBar";
 import CreateApp from "../../components/CreateApp";
 import "./AppsPage.css";
+import DashboardLayout from "../../components/Layouts/DashboardLayout";
 
 class AppsPage extends React.Component {
   constructor(props) {
@@ -82,50 +80,37 @@ class AppsPage extends React.Component {
     localStorage.setItem("project", JSON.stringify(filteredDetails));
 
     return (
-      <div className="Page">
-        <div className="TopBarSection">
-          <Header />
-        </div>
-        <div className="MainSection">
-          <div className="SideBarSection">
-            <SideBar
-              name={projectDetails?.name}
+      <div>
+        {openModal ? (
+          <DashboardLayout
+            name={projectDetails?.name}
+            header="Create App"
+            showBtn
+            buttontext="Close"
+            btntype="close"
+            btnAction={this.hideForm}
+          >
+            <CreateApp params={params} />
+          </DashboardLayout>
+        ) : (
+          <DashboardLayout
+            name={projectDetails?.name}
+            header="Apps"
+            showBtn
+            buttontext="+ New App"
+            showSearchBar
+            placeholder="Search through apps"
+            searchAction={this.handleCallbackSearchword}
+            btnAction={this.showForm}
+          >
+            <AppsList
               params={params}
-              description={projectDetails?.description}
-              pageRoute={this.props.location?.pathname}
-              allMetricsLink={`/projects/${projectID}/metrics`}
-              cpuLink={`/projects/${projectID}/cpu/`}
-              memoryLink={`/projects/${projectID}/memory/`}
-              databaseLink={`/projects/${projectID}/databases`}
-              networkLink={`/projects/${projectID}/network/`}
+              newAppCreated={isCreated}
+              word={word}
+              openComponent={this.showForm}
             />
-          </div>
-          {openModal ? (
-            <CreateApp closeComponent={this.hideForm} params={params} />
-          ) : (
-            <div className="MainContentSection">
-              <div className="InformationBarSection">
-                <InformationBar
-                  header="Apps"
-                  showBtn
-                  buttontext="+ New App"
-                  showSearchBar
-                  placeholder="Search through apps"
-                  searchAction={this.handleCallbackSearchword}
-                  btnAction={this.showForm}
-                />
-              </div>
-              <div className="ContentSection AppsPage SmallContainer">
-                <AppsList
-                  params={params}
-                  newAppCreated={isCreated}
-                  word={word}
-                  openComponent={this.showForm}
-                />
-              </div>
-            </div>
-          )}
-        </div>
+          </DashboardLayout>
+        )}
       </div>
     );
   }
