@@ -41,23 +41,25 @@ describe("Admin <Login /> Component", () => {
       required: true,
       value: "",
       name: "email",
+      type: "email"
     });
   });
 
   it("should have a password field", () => {
     expect(
-      AdminLoginPageComponent.find('InputPassword[name="password"]').length
+      AdminLoginPageComponent.find('InputText[name="password"]').length
     ).toEqual(1);
   });
   it("should have proper props for password field", () => {
     expect(
-      AdminLoginPageComponent.find('InputPassword[name="password"]').props()
+      AdminLoginPageComponent.find('InputText[name="password"]').props()
     ).toEqual({
       onChange: expect.any(Function),
       placeholder: "Password",
       required: true,
       value: "",
       name: "password",
+      type: "password",
     });
   });
 });
