@@ -1,23 +1,19 @@
-import './AppCpuPage.css';
+import React from "react";
 
-import React from 'react';
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-
-import Header from '../../components/Header';
-import InformationBar from '../../components/InformationBar';
 import {
   formatAppCPUMetrics,
   getCurrentTimeStamp,
   subtractTime,
-} from '../../helpers/formatMetrics';
-import LineChartComponent from '../../components/LineChart';
-import MetricsCard from '../../components/MetricsCard';
-import PeriodSelector from '../../components/Period';
-import getAppCPU, { clearAppCPU } from '../../redux/actions/appCPU';
-import SideBar from '../../components/SideBar';
-import Spinner from '../../components/Spinner';
+} from "../../helpers/formatMetrics";
+import LineChartComponent from "../../components/LineChart";
+import MetricsCard from "../../components/MetricsCard";
+import PeriodSelector from "../../components/Period";
+import getAppCPU, { clearAppCPU } from "../../redux/actions/appCPU";
+import Spinner from "../../components/Spinner";
+import DashboardLayout from "../../components/Layouts/DashboardLayout";
 
 export class AppCpuPage extends React.Component {
   constructor(props) {
@@ -132,57 +128,32 @@ export class AppCpuPage extends React.Component {
       isFetchingCPU,
       appCPUMetrics,
     } = this.props;
-    const { projectID, appID } = params;
+    const { appID } = params;
     const { period } = this.state;
 
     const formattedMetrics = formatAppCPUMetrics(appID, appCPUMetrics, period);
 
     return (
-      <div className="Page">
-        <div className="TopBarSection">
-          <Header />
-        </div>
-        <div className="MainSection">
-          <div className="SideBarSection">
-            <SideBar
-              name={this.getAppName(appID)}
-              params={params}
-              pageRoute={this.props.location.pathname}
-              allMetricsLink={`/projects/${projectID}/apps/${appID}/dashboard`}
-              cpuLink={`/projects/${projectID}/apps/${appID}/cpu`}
-              memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
-              databaseLink={`/projects/${projectID}/databases`}
-              networkLink={`/projects/${projectID}/apps/${appID}/network/`}
-              appLogsLink={`/projects/${projectID}/apps/${appID}/logs/`}
+      <DashboardLayout name={this.getAppName(appID)} header="App CPU">
+        <MetricsCard
+          className="MetricsCardGraph"
+          title={<PeriodSelector onChange={this.handlePeriodChange} />}
+        >
+          {isFetchingCPU ? (
+            <div className="ContentSectionSpinner">
+              <Spinner />
+            </div>
+          ) : (
+            <LineChartComponent
+              yLabel="CPU(cores)"
+              xLabel="Time"
+              xDataKey="time"
+              lineDataKey="cpu"
+              data={formattedMetrics}
             />
-          </div>
-          <div className="MainContentSection">
-            <div className="InformationBarSection">
-              <InformationBar header="CPU" />
-            </div>
-            <div className="ContentSection SmallContainer">
-              <MetricsCard
-                className="MetricsCardGraph"
-                title={<PeriodSelector onChange={this.handlePeriodChange} />}
-              >
-                {isFetchingCPU ? (
-                  <div className="ContentSectionSpinner">
-                    <Spinner />
-                  </div>
-                ) : (
-                  <LineChartComponent
-                    yLabel="CPU(cores)"
-                    xLabel="Time"
-                    xDataKey="time"
-                    lineDataKey="cpu"
-                    data={formattedMetrics}
-                  />
-                )}
-              </MetricsCard>
-            </div>
-          </div>
-        </div>
-      </div>
+          )}
+        </MetricsCard>
+      </DashboardLayout>
     );
   }
 }

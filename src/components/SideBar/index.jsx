@@ -33,6 +33,7 @@ const SideBar = (props) => {
     // exact: true,
     strict: true,
   });
+
   const isDesktop = useMedia();
   const [OpenForsmallScreen, setopenForsmallScreen] = useState(false);
   const BarRef = useRef(null);
@@ -147,20 +148,32 @@ const SideBar = (props) => {
               </Link>
               <div>
                 <NavLink
-                  to={`/projects/${projectID}/cpu`}
+                  to={
+                    isAppPage
+                      ? `/projects/${projectID}/apps/${appID}/cpu`
+                      : `/projects/${projectID}/cpu`
+                  }
                   className={styles.SubBarListItem}
                 >
                   <Disk /> CPU
                 </NavLink>
                 <NavLink
-                  to={`/projects/${projectID}/memory`}
+                  to={
+                    isAppPage
+                      ? `/projects/${projectID}/apps/${appID}/memory`
+                      : `/projects/${projectID}/memory`
+                  }
                   className={styles.SubBarListItem}
                 >
                   <Memory /> Memory
                 </NavLink>
                 {/* <Link to={storageLink} className={styles.SubBarListItem}>Storage</Link> */}
                 <NavLink
-                  to={`/projects/${projectID}/network`}
+                  to={
+                    isAppPage
+                      ? `/projects/${projectID}/apps/${appID}/network`
+                      : `/projects/${projectID}/network`
+                  }
                   className={styles.SubBarListItem}
                 >
                   <Network /> Network
@@ -193,7 +206,6 @@ const SideBar = (props) => {
                         }}
                         className={styles.SubBarListItem}
                       >
-                        {" "}
                         <Setting />
                         App Settings
                       </NavLink>

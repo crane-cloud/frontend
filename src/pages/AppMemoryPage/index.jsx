@@ -1,10 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import InformationBar from "../../components/InformationBar";
-import Header from "../../components/Header";
 import Spinner from "../../components/Spinner";
-import SideBar from "../../components/SideBar";
 import getAppMemory, { clearAppMemory } from "../../redux/actions/appMemory";
 import MetricsCard from "../../components/MetricsCard";
 import PeriodSelector from "../../components/Period";
@@ -14,6 +11,7 @@ import {
   getCurrentTimeStamp,
   subtractTime,
 } from "../../helpers/formatMetrics";
+import DashboardLayout from "../../components/Layouts/DashboardLayout";
 
 class AppMemoryPage extends React.Component {
   constructor(props) {
@@ -129,7 +127,7 @@ class AppMemoryPage extends React.Component {
       isFetchingAppMemory,
       appMemoryMetrics,
     } = this.props;
-    const { projectID, appID } = params;
+    const { appID } = params;
     const { period } = this.state;
 
     const formattedMetrics = formatAppMemoryMetrics(
@@ -139,51 +137,26 @@ class AppMemoryPage extends React.Component {
     );
 
     return (
-      <div className="Page">
-        <div className="TopBarSection">
-          <Header />
-        </div>
-        <div className="MainSection">
-          <div className="SideBarSection">
-            <SideBar
-              name={this.getAppName(appID)}
-              params={params}
-              pageRoute={this.props.location?.pathname}
-              allMetricsLink={`/projects/${projectID}/apps/${appID}/dashboard`}
-              cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
-              memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
-              databaseLink={`/projects/${projectID}/databases`}
-              networkLink={`/projects/${projectID}/apps/${appID}/network/`}
-              appLogsLink={`/projects/${projectID}/apps/${appID}/logs/`}
+      <DashboardLayout header="App Memory" name={this.getAppName(appID)}>
+        <MetricsCard
+          className="MetricsCardGraph"
+          title={<PeriodSelector onChange={this.handlePeriodChange} />}
+        >
+          {isFetchingAppMemory ? (
+            <div className="ContentSectionSpinner">
+              <Spinner />
+            </div>
+          ) : (
+            <LineChartComponent
+              yLabel="Memory(MBs)"
+              xLabel="Time"
+              xDataKey="time"
+              lineDataKey="memory"
+              data={formattedMetrics}
             />
-          </div>
-          <div className="MainContentSection">
-            <div className="InformationBarSection">
-              <InformationBar header="Memory" />
-            </div>
-            <div className="ContentSection SmallContainer">
-              <MetricsCard
-                className="MetricsCardGraph"
-                title={<PeriodSelector onChange={this.handlePeriodChange} />}
-              >
-                {isFetchingAppMemory ? (
-                  <div className="ContentSectionSpinner">
-                    <Spinner />
-                  </div>
-                ) : (
-                  <LineChartComponent
-                    yLabel="Memory(MBs)"
-                    xLabel="Time"
-                    xDataKey="time"
-                    lineDataKey="memory"
-                    data={formattedMetrics}
-                  />
-                )}
-              </MetricsCard>
-            </div>
-          </div>
-        </div>
-      </div>
+          )}
+        </MetricsCard>
+      </DashboardLayout>
     );
   }
 }
