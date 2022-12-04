@@ -905,10 +905,7 @@ class AppSettingsPage extends React.Component {
                       }}
                     />
                     <div className={styles.EnvVarsAddBtn}>
-                      <PrimaryButton
-                        onClick={this.addEnvVar}
-                        className={styles.EnvVarAddBtn}
-                      >
+                      <PrimaryButton onClick={this.addEnvVar} color="primary">
                         Add
                       </PrimaryButton>
                     </div>
@@ -1013,10 +1010,7 @@ class AppSettingsPage extends React.Component {
                     <div>Deleting your app is irreversible.</div>
                   </div>
                   <div className={styles.DeleteButtonDiv}>
-                    <PrimaryButton
-                      className={styles.DeleteBtn}
-                      onClick={this.showDeleteAlert}
-                    >
+                    <PrimaryButton color="red" onClick={this.showDeleteAlert}>
                       Delete App
                     </PrimaryButton>
                   </div>
@@ -1066,11 +1060,8 @@ class AppSettingsPage extends React.Component {
                             Cancel
                           </PrimaryButton>
                           <PrimaryButton
-                            className={
-                              disableDelete
-                                ? styles.InactiveDelete
-                                : styles.DeleteBtn
-                            }
+                            className={disableDelete && styles.InactiveDelete}
+                            color={!disableDelete && "red"}
                             disable={disableDelete}
                             onClick={(e) => this.handleDeleteApp(e, appID)}
                           >

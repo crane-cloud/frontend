@@ -94,7 +94,7 @@ const InformationBar = ({
         <div className="InformationBarWithButton">
           <div className="InfoHeader">{header}</div>
           <a href={viewAppLink} rel="noopener noreferrer" target="_blank">
-            <PrimaryButton className="ViewAppBtn">Open App</PrimaryButton>
+            <PrimaryButton color="primary-outline">Open App</PrimaryButton>
           </a>
         </div>
       ) : credits ? (

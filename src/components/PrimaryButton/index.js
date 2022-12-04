@@ -8,10 +8,14 @@ const PrimaryButton = (props) => {
     switch (color) {
       case "primary":
         return "PrimaryColorBtn";
+      case "primary-outline":
+        return "PrimaryOutlineColorBtn";
       case "black":
         return "BlackPrimaryBtn";
       case "red":
         return "DeleteBtn";
+      case "red-outline":
+        return "DeleteBtnOutline";
       default:
         return "primary-button--blue";
     }
@@ -19,7 +23,7 @@ const PrimaryButton = (props) => {
   return (
     <button
       {...props}
-      className={`Primary-Btn ${className} ${btntype === "close" && "DeleteBtn"}
+      className={`Primary-Btn ${className} ${btntype === "close" && "DeleteBtnOutline"}
         ${color && getColorClass()}
       `}
     >

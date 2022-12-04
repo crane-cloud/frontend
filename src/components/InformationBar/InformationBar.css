@@ -34,16 +34,6 @@
   width: 3rem;
 }
 
-.ViewAppBtn {
-  color: var(--primary-color);
-  background-color: transparent;
-  outline: 2px solid var(--primary-color);
-}
-.ViewAppBtn:hover {
-  color: #fff;
-  background-color: var(--primary-color);
-  outline: 2px solid var(--primary-color);
-}
 
 .SearchInput{
   display:flex;

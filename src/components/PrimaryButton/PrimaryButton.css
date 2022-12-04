@@ -36,19 +36,30 @@
 
 .Primary-Btn.DeleteBtn {
   border: 1px solid #d63b3b;
-  color: #d63b3b;
-  background-color: transparent;
+  color: white;
+  background-color: #d63b3b;
 }
 
 .Primary-Btn.DeleteBtn:hover {
-  color: #fff;
-  background-color: #d63b3b;
+  color: #d63b3b;
+  background-color: transparent;
 }
 
 .Primary-Btn.BlackPrimaryBtn {
   border: 1px solid #000;
   color: #fff;
   background-color: #000;
+}
+
+.Primary-Btn.DeleteBtnOutline {
+  border: 1px solid #d63b3b;
+  color: #d63b3b;
+  background-color: transparent;
+}
+
+.Primary-Btn.DeleteBtnOutline:hover {
+  color: #fff;
+  background-color: #d63b3b;
 }
 
 .Primary-Btn.BlackPrimaryBtn:hover {
@@ -64,8 +75,21 @@
 
 .Primary-Btn.PrimaryColorBtn:hover {
   border: 1px solid var(--primary-color);
-  background-color: var(--primary-light-color);
+  background-color: transparent;
+  /* background-color: var(--primary-light-color); */
   color: var(--primary-color);
+}
+
+.Primary-Btn.PrimaryOutlineColorBtn {
+  border: 1px solid var(--primary-color);
+  background-color: transparent;
+  color: var(--primary-color);
+}
+
+.Primary-Btn.PrimaryOutlineColorBtn:hover {
+  border: 1px solid var(--primary-color);
+  background-color: var(--primary-color);
+  color: white;
 }
 
 button:disabled,
