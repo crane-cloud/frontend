@@ -28,7 +28,6 @@ import projectNetworkReducer from "./projectNetwork";
 import appNetworkReducer from "./appNetwork";
 import appCpuReducer from "./appCpu";
 import appMemoryReducer from "./appMemoryReducer";
-// import appLogsReducer from "./getAppLogs";
 import projectDatabasesReducer from "./databaseList";
 import deleteDatabaseReducer from "./deleteDatabase";
 import resetDatabaseReducer from "./resetDatabase";
@@ -57,10 +56,9 @@ import adminGetUserCreditsReducer from "./adminGetUserCredits";
 import updateProfileReducer from "./updateProfile";
 import creditsPaymentReducer from "./creditsPayments";
 import getGraphDataReducer from "./getGraphData";
-// import projectMembersReducer from "./getProjectMembers";
-import inviteMembersReducer from "./inviteMembers";
-import removeMemberReducer from "./removeMembers";
-import updateMemberRoleReducer from "./updateMemberRole";
+// import inviteMembersReducer from "./inviteMembers";
+//import removeMemberReducer from "./removeMembers";
+// import updateMemberRoleReducer from "./updateMemberRole";
 
 export default combineReducers({
   clusterResourcesReducer,
@@ -89,7 +87,6 @@ export default combineReducers({
   projectMemoryReducer,
   projectCPUReducer,
   projectNetworkReducer,
-  // appLogsReducer,
   appNetworkReducer,
   appCpuReducer,
   appMemoryReducer,
@@ -121,8 +118,7 @@ export default combineReducers({
   updateProfileReducer,
   creditsPaymentReducer,
   getGraphDataReducer,
-  // projectMembersReducer,
-  inviteMembersReducer,
-  removeMemberReducer,
-  updateMemberRoleReducer,
+  // inviteMembersReducer,
+ // removeMemberReducer,
+  // updateMemberRoleReducer,
 });
