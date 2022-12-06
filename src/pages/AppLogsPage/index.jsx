@@ -6,7 +6,7 @@ import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
 import "./AppLogsPage.css";
 import LogsFrame from "../../components/LogsFrame";
-import {handleAppMetricsPostRequest} from "../../apis/apis";
+import {handlePostRequestWithDataObject} from "../../apis/apis";
 import { useState } from "react";
 
 const AppLogsPage = () => {
@@ -18,7 +18,7 @@ const AppLogsPage = () => {
   const [logsError, setlogsError] = useState('')
 
   useEffect(() => {
-   handleAppMetricsPostRequest({ timestamps: true },
+    handlePostRequestWithDataObject({ timestamps: true },
     `/projects/${projectID}/apps/${appID}/logs`).then((response)=>{
       setLogs(response.data.data.pods_logs)
       setFetchinLogs(false)
