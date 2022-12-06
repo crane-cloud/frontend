@@ -1,5 +1,5 @@
 .LandingPage {
-  background: #008ac1;
+  background: var(--primary-color);
   flex-grow: 1;
   display: flex;
   flex-flow: column;
@@ -16,7 +16,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 9rem 3rem;
-  background: #008ac1;
+  background: var(--primary-color);
 
   /* height: calc(100vh - 5rem); */
 }
@@ -49,17 +49,18 @@
   font-weight: bold;
 }
 .LandingPageInfrastructurePic path {
-  fill: #99d2e9;
+  fill: var(--primary-light-color);
 }
+
 .FreeTrialButton {
-  background-color: #f7b21f;
+  background-color: var(--secondary-color);
   text-transform: uppercase;
   color: white;
   padding: 0.7rem;
   font-weight: bold;
   text-align: center;
   border: none;
-  outline: 2px solid #f7b21f;
+  border: 1px solid var(--secondary-color);
   display: grid;
   grid-auto-flow: column;
   gap: 1.5rem;
@@ -67,15 +68,18 @@
   justify-content: space-between;
   cursor: pointer;
   border-radius: 5px;
+  outline: none;
 }
 
 .FreeTrialButton:hover {
-  background: none;
-  color: #f7b21f;
+  background: white;
+  color: var(--primary-color);
+  border-color:  #fff;
+
 }
 
 .FreeTrialButton:hover path {
-  fill: #f7b21f;
+  fill: var(--primary-color);
 }
 
 .LandingPageMainContainer {
@@ -113,7 +117,7 @@
 
 .WhySectionItem {
   padding: 1rem;
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
   color: #555555;
   display: grid;
   grid-template-rows: max-content;
@@ -139,7 +143,7 @@
 }
 
 .PageBannerSection {
-  background-color: #f7b21f;
+  background-color: var(--secondary-color);
   color: #f8f7e5;
   display: flex;
   padding: 1rem 3rem;
@@ -227,16 +231,16 @@
 .ApplicationSection,
 .StackSection {
   /* height: 100vh; */
-  padding: 3rem 2rem 3rem 4rem;
+  padding: 6rem 2rem 6rem 4rem;
   display: grid;
   grid-template-columns: 45% auto;
 }
 .DatabaseSection {
-  background-color: #99d2e9;
+  background-color: var(--primary-light-color);
   gap: 2rem;
 }
 .ApplicationSection {
-  background: #008ac1;
+  background: var(--primary-color);
   gap: 2rem;
 }
 .StackSection {
@@ -246,8 +250,23 @@
 .IconSqure {
   border-radius: 10px;
   background-color: #fafafa;
-  height: 6rem;
-  padding: 0.2rem;
+  padding: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.IconSqure:hover {
+  transform: scale(1.06);
+  transition: ease-in-out 0.3s;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2); 
+}
+
+.IconSqure svg {
+  width: 5rem;
+  aspect-ratio: 3/2;
+  object-fit: contain;
 }
 
 .LeftInfoSection {
@@ -273,14 +292,14 @@
 
 .LeftInfoHeader {
   line-height: 2rem;
-  font-size: 1.5em;
+  font-size: 1.8em;
   font-weight: bold;
 }
 
 .AutoContainer {
-  background: #f7b21f;
+  background: var(--secondary-color);
   color: #000000;
-  border: 1px solid #f7b21f;
+  border: 1px solid var(--secondary-color);
 }
 
 .GridSide {
@@ -296,8 +315,12 @@
 }
 
 .DBIcons svg {
-  height: 15rem;
+  width: 8rem;
+  aspect-ratio: 3/4;
+  object-fit: contain;
+  cursor: pointer;
 }
+
 .DBContain {
   display: grid;
   grid-template-rows: auto 30%;
@@ -323,7 +346,7 @@
   justify-content: center;
   /* font-weight: bold; */
   border: 1px solid white;
-  color: #008ac1;
+  color: var(--primary-color);
   cursor: pointer;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }

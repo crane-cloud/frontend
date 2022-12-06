@@ -10,7 +10,7 @@
   width: 1rem;
   height: 1rem;
   border-radius: 100%;
-  border-top: 2px solid #f7b21f;
+  border-top: 2px solid var(--secondary-color);
   animation: spin 600ms linear infinite;
 }
 

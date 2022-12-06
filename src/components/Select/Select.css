@@ -31,6 +31,8 @@
   display: flex;
   flex-direction: column;
   z-index: 3;
+  border: 1px solid #8e8e8e;
+  border-radius: 0 0 0.4rem 0.4rem;
   box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
     0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
@@ -42,8 +44,9 @@
 }
 
 .SelectOptionsWrapper .SelectOption:hover {
-  background-color: #efefef;
+  background-color: var(--primary-color);
   cursor: pointer;
+  color: #ffffff;
 }
 
 .SelectArrow {

@@ -88,16 +88,12 @@ const GraphInput = ({
         <div className={`DateInputCalendar ${position}`}>
           <Calendar onChange={getDate} />
           <div className="CalendarModalButtons">
-            <PrimaryButton
-              label="Cancel"
-              className="CancelBtn ModalBtn"
-              onClick={onCancel}
-            />
-            <PrimaryButton
-              label="proceed"
-              className="ModalBtn"
-              onClick={onSubmit}
-            />
+            <PrimaryButton className="CancelBtn ModalBtn" onClick={onCancel}>
+              Cancel
+            </PrimaryButton>
+            <PrimaryButton className="ModalBtn" onClick={onSubmit}>
+              Proceed
+            </PrimaryButton>
           </div>
         </div>
       )}

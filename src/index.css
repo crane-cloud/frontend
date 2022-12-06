@@ -22,9 +22,11 @@
 html {
   --primary-color: #008ac1;
   --secondary-color: #f7b21f;
-  --color-gray-light: #ccc;
-  --primary-color-dark: #06222f;
-  --primary-color-light: #99d2e9;
+  --secondary-light-color: #ffcc5f;
+  --gray-light-color: #ccc;
+  --primary-dark-color: #06222f;
+  --primary-light-color: #b6e3f9;
+  --gray-bg-light-color: #e5ebf3;
 }
 
 body {
@@ -34,10 +36,13 @@ body {
   font-family: proxima-nova, sans-serif;
 }
 
-div#root {
-  height: 100vh;
+#root >div {
   display: flex;
   flex-flow: column;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var( --gray-bg-light-color);
 }
 
 textarea,
@@ -132,7 +137,7 @@ input[type="password"] {
 
 .DashboardContentWrap {
   flex: 1;
-  background: #f1f1f1;
+  background: var( --gray-bg-light-color);
 }
 
 .FailedToRetrieveMsg {
@@ -152,6 +157,22 @@ input[type="password"] {
   position: fixed;
   width: 100%;
   z-index: 5;
+}
+
+.MobileView {
+  display: none;
+}
+.DesktopView {
+  display: block;
+}
+
+@media (max-width: 650px) {
+  .MobileView {
+    display: block;
+  }
+  .DesktopView {
+    display: none;
+  }
 }
 
 /*- ////////////////////////////////// */
@@ -180,7 +201,7 @@ div.ResourcesTable.LoadingResourcesTable {
 
 .ResourcesTable table th {
   padding: 1rem;
-  color: #008ac1;
+  color: var(--primary-color);
   text-align: center;
 }
 
@@ -249,7 +270,7 @@ tr.TableLoading td {
 .MainPage {
   /* Divided into two rows */
   margin: 0;
-  background: #f1f1f1;
+  background: var( --gray-bg-light-color);
   height: 100vh;
   display: grid;
   grid-template-rows: 80px 4fr;
@@ -260,7 +281,7 @@ tr.TableLoading td {
 }
 .MainSection {
   /* divided into two columns */
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
   display: grid;
   grid-template-columns: 1.3fr 6fr;
   overflow: hidden;
@@ -269,7 +290,7 @@ tr.TableLoading td {
 .SideBarSection {
   overflow: hidden;
   overflow-y: scroll;
-  height: calc(100vh - 5rem);
+  /* height: calc(100vh - 5rem); */
 }
 
 .SideBarSection::-webkit-scrollbar {
@@ -286,7 +307,7 @@ tr.TableLoading td {
   /* divided into two rows */
   display: grid;
   grid-template-rows: 80px 4fr;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .ContentSection {
@@ -302,6 +323,9 @@ tr.TableLoading td {
   background-color: rgb(214, 59, 59, 0.5);
   text-align: center;
   padding: 0.7rem 0;
+  border-radius: 0.4rem;
+  border: 1px solid #ff0000;
+  color: #310303;
 }
 
 .SuccessOnWhite {
@@ -309,6 +333,9 @@ tr.TableLoading td {
   background-color: rgb(0, 128, 0, 0.5);
   text-align: center;
   padding: 0.7rem 0;
+  border-radius: 0.4rem;
+  border: 1px solid #16a416;
+
 }
 
 /* //////////////////////////////////////////// */
@@ -327,8 +354,8 @@ tr.TableLoading td {
 }
 .Page {
   margin: 0;
-  background: #f1f1f1;
-  max-height: 100vh;
+  background: var( --gray-bg-light-color);
+  min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
   /* overflow: hidden; */
@@ -350,13 +377,14 @@ tr.TableLoading td {
 @media(max-width: 650px) {
   .MainSection {
     /*one column required */
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
   display: flex;
   flex-shrink: 0;
   width:100%;
   }
+  
   .MainContentSection {
-    background-color: #f1f1f1;
+    background-color: var( --gray-bg-light-color);
     flex-direction: column;
     display: flex;
     flex-shrink: 0;
@@ -365,7 +393,7 @@ tr.TableLoading td {
   
   .Page {
     margin: 0;
-    background: #f1f1f1;
+    background: var( --gray-bg-light-color);
   }
   .ContentSection {
     display: flex;
@@ -381,3 +409,18 @@ tr.TableLoading td {
 
 
 /* //////////////////////////////////////////// */
+/* ////////////---- CARDS ---- ///////////// */
+
+.Card{
+  background-color: var(--white-color);
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  transition: .3s;
+}
+.Card:hover{
+  box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.2);
+}

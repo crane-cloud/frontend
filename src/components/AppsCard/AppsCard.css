@@ -74,7 +74,7 @@
 .AppUrl a {
   text-decoration: underline;
   font-size: 1rem;
-  color: #008ac1;
+  color: var(--primary-color);
 }
 
 .AppCardItem {
@@ -102,8 +102,8 @@
 }
 
 .AppCard:hover {
-  border: 1px solid #f7b21f;
-  box-shadow: 0 1px 2px 0 #f7b21f;
+  border: 1px solid var(--secondary-color);
+  box-shadow: 0 1px 2px 0 var(--secondary-color);
   transition: 0.5s;
 }
 .FailAppCard:hover {

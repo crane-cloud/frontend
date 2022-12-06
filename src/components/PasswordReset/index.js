@@ -37,8 +37,9 @@ export default class PasswordReset extends React.Component {
   }
 
   validateEmail(email) {
-    // eslint-disable-next-line no-useless-escape
-    const emailRegEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const emailRegEx =
+      // eslint-disable-next-line no-useless-escape
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegEx.test(String(email).toLowerCase());
   }
 
@@ -112,10 +113,9 @@ export default class PasswordReset extends React.Component {
                 />
                 {error && <div className="ResetPasswordErrorDiv">{error}</div>}
 
-                <PrimaryButton
-                  label={loading ? <Spinner /> : "RESET"}
-                  onClick={this.handleSubmit}
-                />
+                <PrimaryButton onClick={this.handleSubmit}>
+                  {loading ? <Spinner /> : "RESET"}
+                </PrimaryButton>
 
                 <div className="ResetPasswordContentBottomLink ResetPasswordLinkContainer">
                   <Link to="/" className="ResetPasswordContentLink">

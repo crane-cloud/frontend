@@ -20,7 +20,7 @@
   font-weight: 700;
   font-size: 17px;
   padding: 1.5rem 1rem 1rem 0;
-  border-bottom: 1px solid #008ac1;
+  border-bottom: 1px solid var(--primary-color);
 }
 .closeDrop{
   -webkit-transform: rotateX(180deg);
@@ -44,16 +44,16 @@
   padding: .3rem 1rem .3rem 0;
 }
 .ListItem:hover{
-  border-bottom: 4px solid #008ac1;
+  border-bottom: 4px solid var(--primary-color);
   cursor: pointer;
 }
 .SelectedListItem{
   display: flex;
   padding: .3rem 1rem .3rem 0;
-  color: #008ac1;
+  color: var(--primary-color);
 }
 .SelectedListItem:hover{
-  border-bottom: 4px solid #008ac1;
+  border-bottom: 4px solid var(--primary-color);
   cursor: pointer;
 }
 .ProjectFormErrorDiv {
@@ -107,14 +107,14 @@
   font-size: 2rem;
 }
 .BlueBtn:hover {
-  color: #008ac1;
+  color: var(--primary-color);
   background-color: #fff;
-  outline: 2px solid #008ac1;
+  outline: 2px solid var(--primary-color);
 }
 .BlueBtn {
   color: #fff;
-  background-color: #008ac1;
-  outline: 2px solid #008ac1;
+  background-color: var(--primary-color);
+  outline: 2px solid var(--primary-color);
   padding: 0.5rem;
   height: 2.5rem;
 }
@@ -148,7 +148,7 @@
 }
 
 .MainRow {
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
   min-height: calc(100vh - 14rem);
 }
 
@@ -169,7 +169,7 @@
 
 .FooterRow {
   padding: 1rem 3rem;
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
 }
 
 .SearchBar {

@@ -1,21 +1,17 @@
 import React, { useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import InformationBar from "../../components/InformationBar";
-import Header from "../../components/Header";
-import SideBar from "../../components/SideBar";
-import "./AppLogsPage.css";
 import LogsFrame from "../../components/LogsFrame";
 import {handlePostRequestWithDataObject} from "../../apis/apis";
 import { useState } from "react";
+import DashboardLayout from "../../components/Layouts/DashboardLayout";
 
 const AppLogsPage = () => {
-  const location = useLocation();
   const params = useParams();
   const { projectID, appID } = params;
-  const [ fetchingLogs, setFetchinLogs ] = useState(true);
-  const [logs, setLogs] = useState([])
-  const [logsError, setlogsError] = useState('')
+  const [fetchingLogs, setFetchinLogs] = useState(true);
+  const [logs, setLogs] = useState([]);
+  const [logsError, setlogsError] = useState("");
 
   useEffect(() => {
     handlePostRequestWithDataObject({ timestamps: true },
@@ -45,41 +41,18 @@ const AppLogsPage = () => {
   const appInfo = getAppInfo(appID);
 
   return (
-    <div className="Page">
-      <div className="TopBarSection">
-        <Header />
-      </div>
-      <div className="MainSection">
-        <div className="SideBarSection">
-          <SideBar
-            name={appInfo.name}
-            params={params}
-            pageRoute={location.pathname}
-            allMetricsLink={`/projects/${projectID}/apps/${appID}/dashboard`}
-            cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
-            memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
-            databaseLink={`/projects/${projectID}/databases`}
-            networkLink={`/projects/${projectID}/apps/${appID}/network/`}
-            appLogsLink={`/projects/${projectID}/apps/${appID}/logs/`}
-          />
-        </div>
-        <div className="MainContentSection">
-          <div className="InformationBarSection">
-            <InformationBar header={appInfo.url} status={appInfo.status} />
-          </div>
-          <div className="ContentSection SmallContainer">
-            <div className="LogsSection">
-              <LogsFrame
-                loading={fetchingLogs}
-                data={logs}
-                title={`${appInfo.name} logs`}
-                error={logsError}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <DashboardLayout
+      name={appInfo.name}
+      header={appInfo.url}
+      status={appInfo.status}
+    >
+      <LogsFrame
+        loading={fetchingLogs}
+        data={logs}
+        title={`${appInfo.name} logs`}
+        error={logsError}
+      />
+    </DashboardLayout>
   );
 };
 
