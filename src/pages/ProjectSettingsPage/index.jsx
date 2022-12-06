@@ -6,19 +6,15 @@ import PrimaryButton from "../../components/PrimaryButton";
 import deleteProject, {
   clearDeleteProjectState,
 } from "../../redux/actions/deleteProject";
-import { handleGetRequest } from "../../apis/apis.js";
+import {
+  handleGetRequest,
+  handlePostRequestWithOutDataObject,
+  handlePatchRequest,
+  handleDeleteRequest,
+} from "../../apis/apis.js";
 import updateProject, {
   clearUpdateProjectState,
 } from "../../redux/actions/updateProject";
-import inviteMembers, {
-  clearInvitingMembersState,
-} from "../../redux/actions/inviteMembers";
-import removeMember, {
-  clearRemovingMembersState,
-} from "../../redux/actions/removeMembers";
-import updateMemberRole, {
-  clearUpdateMemberRoleState,
-} from "../../redux/actions/updateMemberRole";
 import Spinner from "../../components/Spinner";
 import Avatar from "../../components/Avatar";
 import Modal from "../../components/Modal";
@@ -76,6 +72,12 @@ class ProjectSettingsPage extends React.Component {
       fetchingProjectMembersError: "",
       projectUnregisteredUsers: [],
       fetchingProjectMembers: true,
+      invitingMembers: false,
+      invitingMembersError: "",
+      updateMemberError: "",
+      updatingMemberRole: false,
+      removeMemberError: "",
+      removingMember: false,
       currentUserIsAdminOrMember: false,
       currentUserIsAdminOrOwner: false,
       currentUserIsMemberOnly: false,
@@ -111,15 +113,13 @@ class ProjectSettingsPage extends React.Component {
     this.showRemoveMemberModal = this.showRemoveMemberModal.bind(this);
     this.closeRemoveMemberModal = this.closeRemoveMemberModal.bind(this);
     this.getProjectMemberz = this.getProjectMemberz.bind(this);
+    this.inviteMember = this.inviteMember.bind(this);
+    this.updateMemberRoles = this.updateMemberRoles.bind(this);
+    this.removeMember = this.removeMember.bind(this);
   }
 
   componentDidMount() {
-    const { clearInvitingMembersState } = this.props;
-    clearInvitingMembersState();
-    // const projectID = this.props.match.params.projectID;
-    // getProjectMembers(projectID);
     this.getProjectMemberz();
-    // this.checkMembership();
   }
 
   getProjectMemberz() {
@@ -140,39 +140,73 @@ class ProjectSettingsPage extends React.Component {
         });
       });
   }
+
+  inviteMember() {
+    const { email, role } = this.state;
+    this.setState({
+      invitingMembers: true,
+    });
+    const projectID = this.props.match.params.projectID;
+    handlePostRequestWithOutDataObject(
+      { email: email, role: role },
+      `/projects/${projectID}/users`
+    )
+      .then(() => {
+        //page reset also resets loader
+        window.location.href = `/projects/${projectID}/settings`;
+      })
+      .catch((error) => {
+        this.setState({
+          invitingMembersError: "Failed to invite user",
+          invitingMembers: false,
+        });
+      });
+  }
+
+  updateMemberRoles() {
+    const { email, role } = this.state;
+    this.setState({
+      updatingMemberRole: true,
+    });
+    const projectID = this.props.match.params.projectID;
+    handlePatchRequest(`/projects/${projectID}/users`, {
+      email,
+      role,
+    })
+      .then(() => {
+        window.location.href = `/projects/${projectID}/settings`;
+      })
+      .catch((error) => {
+        this.setState({
+          updateMemberError: "Failed to update user",
+          updatingMemberRole: false,
+        });
+      });
+  }
+
+  removeMember(email) {
+    const projectID = this.props.match.params.projectID;
+    const data = { data: email };
+    this.setState({ removingMember: true });
+    handleDeleteRequest(`/projects/${projectID}/users`, data)
+      .then(() => {
+        window.location.href = `/projects/${projectID}/settings`;
+      })
+      .catch(() => {
+        this.setState({
+          removeMemberError: "Failed to remove user",
+          removingMember: false,
+        });
+      });
+  }
+
   componentDidUpdate(prevProps) {
-    const {
-      // getProjectMembers,
-      isDeleted,
-      isSent,
-      isRemoved,
-      isRoleUpdated,
-      clearRemovingMembersState,
-      clearUpdateMemberRoleState,
-    } = this.props;
+    const { isDeleted } = this.props;
 
     if (isDeleted !== prevProps.isDeleted) {
       this.hideDeleteAlert();
     }
-
-    if (isSent !== prevProps.isSent) {
-      clearInvitingMembersState();
-      // getProjectMembers();
-      this.getProjectMemberz();
-      this.hideInviteMenu();
-    }
-
-    if (isRemoved !== prevProps.isRemoved) {
-      clearRemovingMembersState();
-      this.closeRemoveMemberModal();
-    }
-
-    if (isRoleUpdated !== prevProps.isRoleUpdated) {
-      clearUpdateMemberRoleState();
-      this.hideRoleUpdateAlert();
-    }
   }
-
   handleClick = (e) => {
     if (this.state.actionsMenu) {
       return;
@@ -194,6 +228,7 @@ class ProjectSettingsPage extends React.Component {
   showRemoveMemberModal() {
     this.setState({
       removeMemberModal: true,
+      removeMemberError: "",
     });
   }
 
@@ -205,14 +240,12 @@ class ProjectSettingsPage extends React.Component {
 
   removeProjectMember(e) {
     e.preventDefault();
-    const { removeMember, data } = this.props;
+    const { data } = this.props;
     const { email } = this.state;
-    const projectID = this.props.match.params.projectID;
     const emailDetails = {
       email: email,
     };
-    removeMember(emailDetails, projectID);
-
+    this.removeMember(emailDetails);
     if (email === data.email) {
       this.setState({
         isCurrentUserRemoved: true,
@@ -223,34 +256,18 @@ class ProjectSettingsPage extends React.Component {
   handleMemberInvitation(e) {
     e.preventDefault();
     const { email, role } = this.state;
-    const { inviteMembers } = this.props;
-
-    const inviteInfo = {
-      email,
-      role,
-    };
-
     if (email !== "" && role !== "") {
       this.validateEmail(email);
-      const projectID = this.props.match.params.projectID;
-      inviteMembers(inviteInfo, projectID);
+      this.inviteMember();
     }
   }
 
   handleMemberRoleUpdate(e) {
     e.preventDefault();
     const { email, role } = this.state;
-    const { updateMemberRole } = this.props;
-
-    const memberDetails = {
-      email,
-      role,
-    };
-
     if (email !== "" && role !== "") {
       this.validateEmail(email);
-      const projectID = this.props.match.params.projectID;
-      updateMemberRole(memberDetails, projectID);
+      this.updateMemberRoles();
     }
   }
 
@@ -268,11 +285,9 @@ class ProjectSettingsPage extends React.Component {
     const {
       errorMessage,
       clearUpdateProjectState,
-      clearUpdateMemberRoleState,
       clearDeleteProjectState,
       isFailed,
       message,
-      updateMessage,
     } = this.props;
     this.setState({
       [e.target.name]: e.target.value,
@@ -280,9 +295,7 @@ class ProjectSettingsPage extends React.Component {
     if (errorMessage) {
       clearUpdateProjectState();
     }
-    if (updateMessage) {
-      clearUpdateMemberRoleState();
-    }
+
     if (error) {
       this.setState({
         error: "",
@@ -303,7 +316,7 @@ class ProjectSettingsPage extends React.Component {
   }
 
   showInviteMenu() {
-    this.setState({ showInviteModel: true });
+    this.setState({ showInviteModel: true, invitingMembersError: "" });
   }
 
   hideInviteMenu() {
@@ -551,23 +564,10 @@ class ProjectSettingsPage extends React.Component {
   }
 
   renderRedirect = () => {
-    const {
-      isDeleted,
-      isUpdated,
-      isSent,
-      isRemoved,
-      isRoleUpdated,
-      match: {
-        params: { projectID },
-      },
-    } = this.props;
+    const { isDeleted, isUpdated } = this.props;
     const { isCurrentUserRemoved } = this.state;
     if (isDeleted || isUpdated || isCurrentUserRemoved) {
       return <Redirect to={`/projects`} noThrow />;
-    }
-
-    if (isSent || isRemoved || isRoleUpdated) {
-      window.location.href = `/projects/${projectID}/settings`;
     }
   };
 
@@ -581,13 +581,6 @@ class ProjectSettingsPage extends React.Component {
       isFailed,
       isUpdated,
       errorMessage,
-      isSending,
-      isSent,
-      isRemoved,
-      isRemoving,
-      isRoleUpdated,
-      isRoleUpdating,
-      updateMessage,
       data,
     } = this.props;
 
@@ -626,6 +619,12 @@ class ProjectSettingsPage extends React.Component {
       currentUserIsAdminOrOwner,
       currentUserIsMemberOnly,
       fetchingProjectMembers,
+      invitingMembers,
+      invitingMembersError,
+      updateMemberError,
+      updatingMemberRole,
+      removingMember,
+      removeMemberError,
     } = this.state;
     const types = retrieveProjectTypes();
     const roles = retrieveMembershipRoles();
@@ -634,9 +633,7 @@ class ProjectSettingsPage extends React.Component {
 
     return (
       <DashboardLayout name={name} header="Project Settings">
-        {isUpdated || isDeleted || isSent || isRemoved || isRoleUpdated
-          ? this.renderRedirect()
-          : null}
+        {isUpdated || isDeleted ? this.renderRedirect() : null}
 
         <div className={styles.ProjectSectionTitle}>Project Details</div>
         <div className={styles.ProjectInstructions}>
@@ -921,9 +918,10 @@ class ProjectSettingsPage extends React.Component {
                       placeholder="Enter email here"
                       name="email"
                       value={email}
-                      onChange={(e) => {
-                        this.handleChange(e);
-                      }}
+                      // should not be editable
+                      // onChange={(e) => {
+                      //   this.handleChange(e);
+                      // }}
                     />
                   </div>
                   <div className={styles.UpdateInputSection}>
@@ -937,16 +935,15 @@ class ProjectSettingsPage extends React.Component {
                       onChange={this.handleInvitationRole}
                     />
                   </div>
-                  {updateMessage !== "" && message && (
-                    <Feedback message={message} type="error" />
+                  {updateMemberError && (
+                    <Feedback message={updateMemberError} type="error" />
                   )}
                   <div className={styles.SendInvitationButton}>
                     <PrimaryButton
+                      label={updatingMemberRole ? <Spinner /> : "Update Role"}
                       className={styles.BlueBtn}
                       onClick={this.handleMemberRoleUpdate}
-                    >
-                      {isRoleUpdating ? <Spinner /> : "Update Role"}
-                    </PrimaryButton>
+                    />
                   </div>
                 </div>
               </div>
@@ -1088,7 +1085,7 @@ class ProjectSettingsPage extends React.Component {
                         Cancel
                       </PrimaryButton>
                       <PrimaryButton onClick={this.handleSubmit}>
-                        {isUpdating ? <Spinner /> : "Update Project"}
+                        {isUpdating ? <Spinner /> : "update project"}
                       </PrimaryButton>
                     </div>
                   </div>
@@ -1130,20 +1127,15 @@ class ProjectSettingsPage extends React.Component {
                       onChange={this.handleInvitationRole}
                     />
                   </div>
-                  {(errorMessage || error) && (
-                    <Feedback
-                      type="error"
-                      message={
-                        errorMessage ? "Failed to send invitation" : error
-                      }
-                    />
+                  {invitingMembersError && (
+                    <Feedback type="error" message={invitingMembersError} />
                   )}
                   <div className={styles.SendInvitationButton}>
                     <PrimaryButton
-                      className={styles.BlueBtn}
+                      color="primary"
                       onClick={this.handleMemberInvitation}
                     >
-                      {isSending ? <Spinner /> : "Send Invitation"}
+                      {invitingMembers ? <Spinner /> : "Send Invitation"}
                     </PrimaryButton>
                   </div>
                 </div>
@@ -1200,7 +1192,6 @@ class ProjectSettingsPage extends React.Component {
                       className={
                         disableDelete ? styles.InactiveDelete : styles.DeleteBtn
                       }
-                      disable={disableDelete}
                       onClick={(e) =>
                         this.handleDeleteProject(e, params.projectID)
                       }
@@ -1247,10 +1238,13 @@ class ProjectSettingsPage extends React.Component {
                   type="button"
                   onClick={(e) => this.removeProjectMember(e)}
                 >
-                  {isRemoving ? <Spinner /> : "Confirm"}
+                  {removingMember ? <Spinner /> : "Confirm"}
                 </PrimaryButton>
               </div>
             </div>
+            {removeMemberError && (
+              <Feedback type="error" message={"Failed to remove member"} />
+            )}
           </div>
         </Modal>
       </DashboardLayout>
@@ -1269,15 +1263,6 @@ ProjectSettingsPage.propTypes = {
   message: PropTypes.string,
   isUpdated: PropTypes.bool,
   isDeleted: PropTypes.bool,
-  isSending: PropTypes.bool,
-  isSent: PropTypes.bool,
-  isRemoving: PropTypes.bool,
-  isRemoved: PropTypes.bool,
-  isRoleUpdated: PropTypes.bool,
-  isRoleUpdating: PropTypes.bool,
-  updateMessage: PropTypes.string,
-  clearUpdateMemberRoleState: PropTypes.func.isRequired,
-  clearRemovingMembersState: PropTypes.func.isRequired,
 };
 
 ProjectSettingsPage.defaultProps = {
@@ -1287,76 +1272,35 @@ ProjectSettingsPage.defaultProps = {
   name: "",
   description: "",
   isUpdating: false,
-  isSending: false,
-  isSent: false,
-  isRemoving: false,
-  isRemoved: false,
-  isRoleUpdating: false,
-  isRoleUpdated: false,
 };
 
 export const mapStateToProps = (state) => {
   const { isDeleting, isDeleted, isFailed, clearDeleteProjectState, message } =
     state.deleteProjectReducer;
 
-  // const { projectMembers } = state.projectMembersReducer;
   const { data } = state.user;
-  const { invitation, isSending, isSent, clearInvitingMembersState } =
-    state.inviteMembersReducer;
-
-  const { member, isRemoving, isRemoved, clearRemovingMembersState } =
-    state.removeMemberReducer;
-
-  const {
-    isRoleUpdated,
-    isRoleUpdating,
-    updateMessage,
-    isRoleUpdateFailed,
-    clearUpdateMemberRoleState,
-  } = state.updateMemberRoleReducer;
 
   const { isUpdated, isUpdating, errorMessage, clearUpdateProjectState } =
     state.updateProjectReducer;
   return {
     data,
-    isRoleUpdated,
-    isRoleUpdating,
-    updateMessage,
     isUpdated,
     isUpdating,
     message,
     isDeleting,
-    isSending,
-    isSent,
-    isRemoving,
-    isRemoved,
     isFailed,
-    isRoleUpdateFailed,
     isDeleted,
     errorMessage,
-    clearInvitingMembersState,
     clearDeleteProjectState,
     clearUpdateProjectState,
-    clearRemovingMembersState,
-    clearUpdateMemberRoleState,
-    // projectMembers,
-    invitation,
-    member,
   };
 };
 
 const mapDispatchToProps = {
   deleteProject,
   updateProject,
-  // getProjectMembers,
-  inviteMembers,
-  removeMember,
-  updateMemberRole,
-  clearUpdateMemberRoleState,
-  clearInvitingMembersState,
   clearDeleteProjectState,
   clearUpdateProjectState,
-  clearRemovingMembersState,
 };
 
 export default connect(

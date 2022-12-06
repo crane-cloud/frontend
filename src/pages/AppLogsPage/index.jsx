@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LogsFrame from "../../components/LogsFrame";
-import { handleAppMetricsPostRequest } from "../../apis/apis";
+import {handlePostRequestWithDataObject} from "../../apis/apis";
 import { useState } from "react";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
 
@@ -14,18 +14,14 @@ const AppLogsPage = () => {
   const [logsError, setlogsError] = useState("");
 
   useEffect(() => {
-    handleAppMetricsPostRequest(
-      { timestamps: true },
-      `/projects/${projectID}/apps/${appID}/logs`
-    )
-      .then((response) => {
-        setLogs(response.data.data.pods_logs);
-        setFetchinLogs(false);
-      })
-      .catch((error) => {
-        setlogsError("Failed to fetch logs");
-        setFetchinLogs(false);
-      });
+    handlePostRequestWithDataObject({ timestamps: true },
+    `/projects/${projectID}/apps/${appID}/logs`).then((response)=>{
+      setLogs(response.data.data.pods_logs)
+      setFetchinLogs(false)
+    }).catch((error)=>{
+      setlogsError("Failed to fetch logs")
+      setFetchinLogs(false)
+    })
   }, [projectID, appID]);
 
   const myApps = useSelector((state) => state.appsListReducer);
