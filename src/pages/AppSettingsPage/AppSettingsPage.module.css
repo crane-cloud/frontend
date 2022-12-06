@@ -513,17 +513,19 @@ ul li {
   height: 50vh;
 }
 
-.AppRevision,
+.AppRevision {
+  display: flex;
+  gap: 1.5rem;
+}
+
 .RevisionStatus {
   display: flex;
   justify-content: space-between;
-  gap: 1.5rem;
 }
 
 .Success {
   color: green;
-  width: 40px;
-  height: 40px;
+  height: 30px;
 }
 
 .Danger {
@@ -563,6 +565,11 @@ ul li {
 
 .AppDetails {
   padding-left: 1rem;
+}
+
+.AppRevisionsDetails {
+  display: grid;
+  gap: 1rem;
 }
 
 @media (max-width: 650px) {

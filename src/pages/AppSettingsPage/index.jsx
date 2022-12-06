@@ -27,7 +27,8 @@ import RemoveIcon from "../../assets/images/remove.svg";
 import { v4 as uuidv4 } from "uuid";
 import { validateDomain, validateDomainName } from "../../helpers/validation";
 import { ReactComponent as CheckMark } from "../../assets/images/check-circle.svg";
-import { ReactComponent as Danger } from "../../assets/images/alert-octagon.svg";
+import { handleGetRequest } from "../../apis/apis";
+import { DisplayDateTime } from "../../helpers/dateConstants";
 
 class AppSettingsPage extends React.Component {
   constructor(props) {
@@ -65,6 +66,7 @@ class AppSettingsPage extends React.Component {
       updating_command: false,
       updating_form: false,
       urlReverted: false,
+      revisions: [],
     };
 
     this.handleDeleteApp = this.handleDeleteApp.bind(this);
@@ -91,6 +93,8 @@ class AppSettingsPage extends React.Component {
     this.domainRevert = this.domainRevert.bind(this);
     this.disableRevert = this.disableRevert.bind(this);
     this.regenerate = this.regenerate.bind(this);
+    this.getAppRevisionDetails = this.getAppRevisionDetails.bind(this);
+    this.rollbackApp = this.rollbackApp.bind(this);
   }
 
   handleChange(e) {
@@ -133,7 +137,34 @@ class AppSettingsPage extends React.Component {
     clearUpdateAppState();
     clearUrlRevertState();
     getSingleApp(appID);
+    this.getAppRevisionDetails();
   }
+
+  getAppRevisionDetails() {
+    const {
+      match: { params },
+    } = this.props;
+    const { appID } = params;
+    handleGetRequest(`/apps/${appID}`)
+      .then((response) => {
+        this.setState({
+          revisions: response.data.data.revisions,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          error: error,
+        });
+      });
+  }
+
+  // rollbackApp(revisionId){
+  //   const {
+  //     match: { params },
+  //   } = this.props;
+  //   const { appID } = params;
+  //   const data = { data: revisionId }
+  // }
 
   componentDidUpdate(prevProps) {
     const {
@@ -547,6 +578,7 @@ class AppSettingsPage extends React.Component {
       updating_port,
       updating_form,
       urlReverted,
+      revisions,
       dockerCredentials: { username, email, password, server },
     } = this.state;
     // project name from line 105 disappears on refreash, another source of the name was needed
@@ -558,10 +590,10 @@ class AppSettingsPage extends React.Component {
       { id: 3, name: "3" },
       { id: 4, name: "4" },
     ];
-    console.log(app);
 
     return (
       <div className={styles.Page}>
+        {console.log(revisions)}
         {isDeleted || isReverted ? this.renderRedirect() : null}
         <div className="TopBarSection">
           <Header />
@@ -823,7 +855,7 @@ class AppSettingsPage extends React.Component {
                         </div>
                         <div className={styles.APPButtonRow}>
                           <div className={styles.AppLabel}>Revisions</div>
-                          <div className={styles.flexa}>{app.revisions}</div>
+                          <div className={styles.flexa}>{app.revision}</div>
                         </div>
                         <div className={styles.APPButtonRow}>
                           <div className={styles.AppLabel}>Link</div>
@@ -881,80 +913,40 @@ class AppSettingsPage extends React.Component {
                       <div className={styles.APPSectionTitle}>
                         Application Revisions
                       </div>
-                      <div className={styles.AppDeleteInstructions}>
-                        <div className={styles.APPInstruct}>
-                          <div className={styles.AppRevision}>
-                            <CheckMark className={styles.Success} />
-                            <div>
-                              <div>
-                                <span className={styles.Entity}>38438229</span>{" "}
-                                <span className={styles.Time}>
-                                  10:49am 09-13-2023
-                                </span>
-                                <span className={styles.AppDetails}>
-                                  <span className={styles.Entity}>
-                                    {app.name}
-                                  </span>{" "}
-                                  by rhodinemma
-                                </span>
-                              </div>
-                              <div className={styles.RevisionStatus}>
-                                <div className={styles.Success}>Successful</div>
-                                <div className={styles.Rollback__Option}>
-                                  Rollback here
-                                </div>
-                              </div>
-                            </div>
-                          </div>
 
-                          <div className={styles.AppRevision}>
-                            <Danger className={styles.Danger} />
-                            <div>
+                      <div className={styles.AppRevisionsDetails}>
+                        {revisions.map((entry, index) => (
+                          <div className={styles.APPInstruct} key={index}>
+                            <div className={styles.AppRevision}>
+                              <CheckMark className={styles.Success} />
                               <div>
-                                <span className={styles.Entity}>38438229</span>{" "}
-                                <span className={styles.Time}>
-                                  10:49am 09-13-2023
-                                </span>
-                                <span className={styles.AppDetails}>
+                                <div>
                                   <span className={styles.Entity}>
-                                    {app.name}
+                                    {entry.revision_id}
                                   </span>{" "}
-                                  by rhodinemma
-                                </span>
-                              </div>
-                              <div className={styles.RevisionStatus}>
-                                <div className={styles.Danger}>Failed</div>
-                                <div className={styles.Rollback__Option}>
-                                  Rollback here
+                                  <span className={styles.Time}>
+                                    {DisplayDateTime(
+                                      new Date(entry.created_at)
+                                    )}
+                                  </span>
+                                  <span className={styles.AppDetails}>
+                                    <span>{app.name}</span> - {entry.image}
+                                  </span>
+                                </div>
+                                <div className={styles.RevisionStatus}>
+                                  <div className={styles.Success}>
+                                    {JSON.stringify(entry.current)
+                                      ? "Current"
+                                      : "v" + entry.revision}
+                                  </div>
+                                  <div className={styles.Rollback__Option}>
+                                    Rollback here
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-
-                          <div className={styles.AppRevision}>
-                            <CheckMark className={styles.Success} />
-                            <div>
-                              <div>
-                                <span className={styles.Entity}>38438229</span>{" "}
-                                <span className={styles.Time}>
-                                  10:49am 09-13-2023
-                                </span>
-                                <span className={styles.AppDetails}>
-                                  <span className={styles.Entity}>
-                                    {app.name}
-                                  </span>{" "}
-                                  by rhodinemma
-                                </span>
-                              </div>
-                              <div className={styles.RevisionStatus}>
-                                <div className={styles.Success}>Successful</div>
-                                <div className={styles.Rollback__Option}>
-                                  Rollback here
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        ))}
                       </div>
                     </div>
 
