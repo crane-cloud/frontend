@@ -572,6 +572,28 @@ ul li {
   gap: 1rem;
 }
 
+.ReviseAppModal {
+  display: grid;
+  gap: 3rem;
+}
+
+.ReviseAppModalLowerSection {
+  display: grid;
+  gap: 1rem;
+}
+
+.ReviseAppDescription {
+  cursor: default;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.ReviseAppModalButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
 @media (max-width: 650px) {
   .APPSections {
     display: flex;
