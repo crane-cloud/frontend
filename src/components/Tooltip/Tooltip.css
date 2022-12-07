@@ -6,7 +6,7 @@
 }
 
 .TooltipPlaceholder {
-  color: #f7b21f;
+  color: var(--secondary-color);
   position: relative;
   overflow-y: unset;
   z-index: 2;

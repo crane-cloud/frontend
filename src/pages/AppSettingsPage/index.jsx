@@ -3,12 +3,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import deleteApp, { clearState } from "../../redux/actions/deleteApp";
-import InformationBar from "../../components/InformationBar";
-import Header from "../../components/Header";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
 import Modal from "../../components/Modal";
-import SideBar from "../../components/SideBar";
 import Feedback from "../../components/Feedback";
 import Checkbox from "../../components/Checkbox";
 import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
@@ -32,6 +29,7 @@ import {
   handlePostRequestWithOutDataObject,
 } from "../../apis/apis";
 import { DisplayDateTime } from "../../helpers/dateConstants";
+import DashboardLayout from "../../components/Layouts/DashboardLayout";
 
 class AppSettingsPage extends React.Component {
   constructor(props) {
@@ -636,7 +634,7 @@ class AppSettingsPage extends React.Component {
     } = this.state;
     // project name from line 105 disappears on refreash, another source of the name was needed
     //const { name } = this.props.location;
-    const { projectID, appID } = params;
+    const { appID } = params;
     const replicaOptions = [
       { id: 1, name: "1" },
       { id: 2, name: "2" },
@@ -645,786 +643,690 @@ class AppSettingsPage extends React.Component {
     ];
 
     return (
-      <div className={styles.Page}>
+      <DashboardLayout name={appDetail?.name} header="App Settings">
         {isDeleted || isReverted ? this.renderRedirect() : null}
-        <div className="TopBarSection">
-          <Header />
-        </div>
-        <div className="MainSection">
-          <div className="SideBarSection">
-            <SideBar
-              name={app?.name}
-              params={params}
-              // description={description}
-              pageRoute={this.props.location?.pathname}
-              allMetricsLink={`/projects/${projectID}/apps/${appID}/dashboard`}
-              cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
-              memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
-              databaseLink={`/projects/${projectID}/databases`}
-              networkLink={`/projects/${projectID}/apps/${appID}/network/`}
-              appLogsLink={`/projects/${projectID}/apps/${appID}/logs/`}
-            />
-          </div>
-          <div className="MainContentSection">
-            <div className="InformationBarSection">
-              <InformationBar header="Settings" />
+
+        {fetchingAppDetails ? (
+          <div className="NoResourcesMessage">
+            <div className="SpinnerWrapper">
+              <Spinner size="big" />
             </div>
-            <div className={`${styles.ContentSection} SmallContainer`}>
-              {fetchingAppDetails ? (
-                <div className="NoResourcesMessage">
-                  <div className="SpinnerWrapper">
-                    <Spinner size="big" />
+          </div>
+        ) : (
+          <>
+            <div className={styles.AppContainer}>
+              <div className={styles.APPSections}>
+                <div className={styles.APPSectionTitle}>App Information</div>
+                <div className={styles.APPInstructions}>
+                  <div className={styles.APPButtonRow}>
+                    <div className={styles.AppLabel}>Name</div>
+                    <div className={styles.flexa}>{appDetail?.name}</div>
                   </div>
-                </div>
-              ) : (
-                <>
-                  <div className={styles.AppContainer}>
-                    <div className={styles.APPSections}>
-                      <div className={styles.APPSectionTitle}>
-                        App Information
-                      </div>
-                      <div className={styles.APPInstructions}>
-                        <div className={styles.APPButtonRow}>
-                          <div className={styles.AppLabel}>Name</div>
-                          <div className={styles.flexa}>{appDetail?.name}</div>
-                        </div>
-                        <div className={styles.APPButtonRow}>
-                          <div className={styles.AppLabel}>Alias</div>
-                          <div className={styles.flexa}>{appDetail?.alias}</div>
-                        </div>
-                        <div className={styles.APPButtonRow}>
-                          <div className={styles.AppLabel}>Image</div>
-                          <div className={styles.flexa}>
-                            <BlackInputText
-                              required
-                              placeholder={appDetail?.image}
-                              name="newImage"
-                              value={newImage ? newImage : appDetail?.image}
-                              onChange={(e) => {
-                                this.handleChange(e);
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div className={styles.APPButtonRow}>
-                          <div className={styles.AppLabel}>Private Image</div>
-                          <Checkbox
-                            isBlack
-                            onClick={this.togglePrivateImage}
-                            isChecked={isPrivateImage}
-                          />
-                        </div>
+                  <div className={styles.APPButtonRow}>
+                    <div className={styles.AppLabel}>Alias</div>
+                    <div className={styles.flexa}>{appDetail?.alias}</div>
+                  </div>
+                  <div className={styles.APPButtonRow}>
+                    <div className={styles.AppLabel}>Image</div>
+                    <div className={styles.flexa}>
+                      <BlackInputText
+                        required
+                        placeholder={appDetail?.image}
+                        name="newImage"
+                        value={newImage ? newImage : appDetail?.image}
+                        onChange={(e) => {
+                          this.handleChange(e);
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className={styles.APPButtonRow}>
+                    <div className={styles.AppLabel}>Private Image</div>
+                    <Checkbox
+                      isBlack
+                      onClick={this.togglePrivateImage}
+                      isChecked={isPrivateImage}
+                    />
+                  </div>
 
-                        {isPrivateImage && (
-                          <div className={styles.PrivateImageTabContainer}>
-                            <div index={1} /* label={<DockerLogo />} */>
-                              <div className={styles.PrivateImageInputs}>
-                                <div className={styles.APPButtonRow}>
-                                  <div className={styles.AppLabel}>
-                                    Username
-                                  </div>
-                                  <div className={styles.flexa}>
-                                    <BlackInputText
-                                      required
-                                      placeholder={
-                                        app.username ? app.username : "Username"
-                                      }
-                                      name="username"
-                                      value={username}
-                                      onChange={(e) => {
-                                        this.handleDockerCredentialsChange(e);
-                                      }}
-                                    />
-                                  </div>
-                                </div>
-                                <div className={styles.APPButtonRow}>
-                                  <div className={styles.AppLabel}>Email</div>
-                                  <div className={styles.flexa}>
-                                    <BlackInputText
-                                      required
-                                      placeholder={
-                                        app.email ? app.email : "Email"
-                                      }
-                                      name="email"
-                                      value={email}
-                                      onChange={(e) => {
-                                        this.handleDockerCredentialsChange(e);
-                                      }}
-                                    />
-                                  </div>
-                                </div>
-                                <div className={styles.APPButtonRow}>
-                                  <div className={styles.AppLabel}>
-                                    Password
-                                  </div>
-                                  <div className={styles.flexa}>
-                                    <BlackInputText
-                                      required
-                                      placeholder={
-                                        app.password ? app.password : "Password"
-                                      }
-                                      name="password"
-                                      value={password}
-                                      onChange={(e) => {
-                                        this.handleDockerCredentialsChange(e);
-                                      }}
-                                    />
-                                  </div>
-                                </div>
-                                <div className={styles.APPButtonRow}>
-                                  <div className={styles.AppLabel}>
-                                    Registry Server
-                                  </div>
-                                  <div className={styles.flexa}>
-                                    <div
-                                      className={styles.InputFieldWithTooltip}
-                                    >
-                                      <BlackInputText
-                                        required
-                                        placeholder="Registry Server"
-                                        name="server"
-                                        value={server}
-                                        onChange={(e) => {
-                                          this.handleDockerCredentialsChange(e);
-                                        }}
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-
-                                {dockerCredentials.error && (
-                                  <Feedback
-                                    type="error"
-                                    message={dockerCredentials.error}
-                                  />
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        )}
-
-                        {beta && (
+                  {isPrivateImage && (
+                    <div className={styles.PrivateImageTabContainer}>
+                      <div index={1} /* label={<DockerLogo />} */>
+                        <div className={styles.PrivateImageInputs}>
                           <div className={styles.APPButtonRow}>
-                            <div className={styles.AppLabel}>Custom Domain</div>
-                            <Checkbox
-                              isBlack
-                              onClick={this.toggleCustomDomain}
-                              isChecked={isCustomDomain}
-                            />
-                          </div>
-                        )}
-
-                        {isCustomDomain && (
-                          <div className={styles.CustomDomainTabContainer}>
-                            <div index={1}>
-                              <div className={styles.CustomDomainInputs}>
-                                <div className={styles.APPButtonRow}>
-                                  <div className={styles.AppLabel}>
-                                    {app?.has_custom_domain === true && (
-                                      <span>Edit &nbsp;</span>
-                                    )}
-                                    Domain name
-                                  </div>
-                                  <div className={styles.flexa}>
-                                    <BlackInputText
-                                      required
-                                      placeholder="Domain name"
-                                      name="domainName"
-                                      value={domainName.toLowerCase()}
-                                      onChange={(e) => {
-                                        this.handleChange(e);
-                                      }}
-                                    />
-                                  </div>
-                                </div>
-                                <div
-                                  className={styles.Domain__Popup}
-                                  onClick={this.showDomainModal}
-                                >
-                                  Click for more instructions on how to set up
-                                  you custom domain.
-                                </div>
-                                <div className={styles.RevertSection}>
-                                  <div className={styles.FlexRevertSection}>
-                                    <div>
-                                      <strong>Revert to URL</strong>
-                                    </div>
-                                    <div>
-                                      Reverts to cranecloud's auto-generated
-                                      URL.
-                                    </div>
-                                  </div>
-                                  <div className={styles.SectionButtons}>
-                                    <PrimaryButton
-                                      label={
-                                        isReverting ? <Spinner /> : "REVERT"
-                                      }
-                                      className={styles.RevertButton}
-                                      onClick={this.domainRevert}
-                                      disable={urlReverted}
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-
-                        <div className={styles.APPButtonRow}>
-                          <div className={styles.AppLabel}>Replicas</div>
-                          <div className={styles.flexa}>
-                            <div className={styles.ReplicasSelect}>
-                              <Select
+                            <div className={styles.AppLabel}>Username</div>
+                            <div className={styles.flexa}>
+                              <BlackInputText
+                                required
                                 placeholder={
-                                  "App has " +
-                                  appDetail?.replicas +
-                                  " replica(s)"
+                                  app.username ? app.username : "Username"
                                 }
-                                options={replicaOptions}
-                                isSmall
-                                onChange={this.handleSelectReplicas}
+                                name="username"
+                                value={username}
+                                onChange={(e) => {
+                                  this.handleDockerCredentialsChange(e);
+                                }}
                               />
                             </div>
                           </div>
-                        </div>
-                        <div className={styles.APPButtonRow}>
-                          <div className={styles.AppLabel}>Status</div>
-                          <div className={styles.ShowStatus}>
-                            {app.app_running_status === "running" ? (
-                              <div className={styles.StatusIcon}>
-                                <AppStatus
-                                  appStatus={appDetail.app_running_status}
+                          <div className={styles.APPButtonRow}>
+                            <div className={styles.AppLabel}>Email</div>
+                            <div className={styles.flexa}>
+                              <BlackInputText
+                                required
+                                placeholder={app.email ? app.email : "Email"}
+                                name="email"
+                                value={email}
+                                onChange={(e) => {
+                                  this.handleDockerCredentialsChange(e);
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <div className={styles.APPButtonRow}>
+                            <div className={styles.AppLabel}>Password</div>
+                            <div className={styles.flexa}>
+                              <BlackInputText
+                                required
+                                placeholder={
+                                  app.password ? app.password : "Password"
+                                }
+                                name="password"
+                                value={password}
+                                onChange={(e) => {
+                                  this.handleDockerCredentialsChange(e);
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <div className={styles.APPButtonRow}>
+                            <div className={styles.AppLabel}>
+                              Registry Server
+                            </div>
+                            <div className={styles.flexa}>
+                              <div className={styles.InputFieldWithTooltip}>
+                                <BlackInputText
+                                  required
+                                  placeholder="Registry Server"
+                                  name="server"
+                                  value={server}
+                                  onChange={(e) => {
+                                    this.handleDockerCredentialsChange(e);
+                                  }}
                                 />
-                                <div>&nbsp;Ready</div>
-                              </div>
-                            ) : (
-                              <div className={styles.StatusIcon}>
-                                <AppStatus
-                                  appStatus={appDetail.app_running_status}
-                                />
-                                <div>&nbsp;Failing</div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        <div className={styles.APPButtonRow}>
-                          <div className={styles.AppLabel}>Age</div>
-                          <div className={styles.flexa}>{appDetail.age}</div>
-                        </div>
-                        <div className={styles.APPButtonRow}>
-                          <div className={styles.AppLabel}>
-                            Current Revision
-                          </div>
-                          <div className={styles.flexa}>
-                            {appDetail.revision !== ""
-                              ? appDetail.revision
-                              : "0"}
-                          </div>
-                        </div>
-                        <div className={styles.APPButtonRow}>
-                          <div className={styles.AppLabel}>Link</div>
-                          {app.url ? (
-                            <div className={styles.CopyDiv}>
-                              <div className="DBTDetail">{appDetail.url}</div>
-                              <div className={styles.CopyUrl}>
-                                <CopyText onClick={this.urlOnClick} />
-                                {urlChecked ? <Checked /> : null}
                               </div>
                             </div>
-                          ) : (
-                            <>
-                              {isReverting ? (
-                                <Spinner />
-                              ) : (
-                                <div
-                                  className={styles.InnerContentWarnText}
-                                  onClick={() => {
-                                    this.regenerate();
-                                  }}
-                                >
-                                  Click to re-generate url
-                                </div>
-                              )}
-                            </>
+                          </div>
+
+                          {dockerCredentials.error && (
+                            <Feedback
+                              type="error"
+                              message={dockerCredentials.error}
+                            />
                           )}
                         </div>
-                        <div className={styles.APPButton}>
-                          <div className={styles.UpperSection}>
-                            <PrimaryButton
-                              label={
-                                isUpdating && updating_form ? (
-                                  <Spinner />
-                                ) : (
-                                  "UPDATE"
-                                )
-                              }
-                              disable={isUpdating}
-                              className={isUpdating && styles.deactivatedBtn}
-                              onClick={this.handleSubmit}
-                            />
-                          </div>
-                        </div>
-                        {error && (
-                          <div className={styles.errorCenterDiv}>
-                            <Feedback type="error" message={error} />
-                          </div>
-                        )}
                       </div>
                     </div>
+                  )}
 
-                    <hr className={styles.HorizontalLine} />
-                    <div className={styles.APPSections}>
-                      <div className={styles.APPSectionTitle}>
-                        Application Revisions
-                      </div>
-
-                      <div className={styles.AppRevisionsDetails}>
-                        {revisions?.map((entry, index) => (
-                          <div className={styles.APPInstruct} key={index}>
-                            <div className={styles.AppRevision}>
-                              <Upload className={styles.Success} />
-                              <div>
-                                <div>
-                                  <span className={styles.Entity}>
-                                    {entry.revision_id}
-                                  </span>{" "}
-                                  <span className={styles.Time}>
-                                    {DisplayDateTime(
-                                      new Date(entry.created_at)
-                                    )}
-                                  </span>
-                                  <span className={styles.AppDetails}>
-                                    <span>{app.name}</span> - {entry.image}
-                                  </span>
-                                </div>
-                                <div className={styles.RevisionStatus}>
-                                  <div className={styles.Success}>
-                                    {JSON.stringify(entry.current)
-                                      ? "Current"
-                                      : "Revision: " + entry.revision}
-                                  </div>
-                                  <div
-                                    className={styles.Rollback__Option}
-                                    onClick={() =>
-                                      this.showAppRevisionModal(
-                                        entry.revision_id
-                                      )
-                                    }
-                                  >
-                                    {JSON.stringify(entry.current)
-                                      ? null
-                                      : "Rollback here"}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+                  {beta && (
+                    <div className={styles.APPButtonRow}>
+                      <div className={styles.AppLabel}>Custom Domain</div>
+                      <Checkbox
+                        isBlack
+                        onClick={this.toggleCustomDomain}
+                        isChecked={isCustomDomain}
+                      />
                     </div>
+                  )}
 
-                    <Modal
-                      showModal={rollBackConfirmationModal}
-                      onClickAway={this.hideAppRevisionModal}
-                    >
-                      <div className={styles.ReviseAppModal}>
-                        <div className={styles.DeleteProjectModalUpperSection}>
-                          <div className={styles.WarningContainer}>
-                            <div className={styles.ReviseAppDescription}>
-                              Are you sure you want to revise your app?
+                  {isCustomDomain && (
+                    <div className={styles.CustomDomainTabContainer}>
+                      <div index={1}>
+                        <div className={styles.CustomDomainInputs}>
+                          <div className={styles.APPButtonRow}>
+                            <div className={styles.AppLabel}>
+                              {app?.has_custom_domain === true && (
+                                <span>Edit &nbsp;</span>
+                              )}
+                              Domain name
                             </div>
-                          </div>
-                        </div>
-                        <div className={styles.ReviseAppModalLowerSection}>
-                          <div className={styles.ReviseAppModalButtons}>
-                            <PrimaryButton
-                              type="button"
-                              className="CancelBtn"
-                              label="Cancel"
-                              onClick={this.hideAppRevisionModal}
-                            >
-                              Cancel
-                            </PrimaryButton>
-                            <PrimaryButton
-                              type="button"
-                              label={revisingApp ? <Spinner /> : "Confirm"}
-                              onClick={(e) => this.rollbackApp(revisionId)}
-                            />
-                          </div>
-                        </div>
-                        {revisingAppError && (
-                          <Feedback
-                            type="error"
-                            message={"Failed to rollback"}
-                          />
-                        )}
-                      </div>
-                    </Modal>
-
-                    <hr className={styles.HorizontalLine} />
-                    <div className={styles.APPSections}>
-                      {/* <div className={styles.APPSectionPort}> */}
-                      <div className={styles.APPSectionTitle}>
-                        Environment Vars
-                      </div>
-                      <div className={styles.ModalFormInputsEnvVars}>
-                        {appDetail.env_vars && (
-                          <div className={styles.EnvData}>
-                            <div className={styles.EnvDataItem}>
-                              <div>Name</div>
-                              <div>Value</div>
-                              <div>Remove</div>
-                            </div>
-                            {Object.keys(appDetail.env_vars).map(
-                              (envVar, index) => (
-                                <div key={index} className={styles.EnvDataItem}>
-                                  <div>{envVar}</div>
-                                  <div>{appDetail.env_vars[envVar]}</div>
-                                  <div className={styles.RemoveIconBtn}>
-                                    <img
-                                      src={RemoveIcon}
-                                      alt="remove_ico"
-                                      onClick={() => this.removeEnvVar(index)}
-                                      role="presentation"
-                                    />
-                                  </div>
-                                </div>
-                              )
-                            )}
-                          </div>
-                        )}
-
-                        {Object.keys(envVars).length > 0 && (
-                          <div className={styles.EnvData}>
-                            {!app.env_vars && (
-                              <div className={styles.EnvDataItem}>
-                                <div>Name</div>
-                                <div>Value</div>
-                                <div>Remove</div>
-                              </div>
-                            )}
-
-                            {Object.keys(envVars).map((envVar, index) => (
-                              <div
-                                key={uuidv4()}
-                                className={styles.EnvDataItem}
-                              >
-                                <div>{Object.keys(envVars)[index]}</div>
-                                <div>
-                                  {envVars[Object.keys(envVars)[index]]}
-                                </div>
-                                <div className={styles.RemoveIconBtn}>
-                                  <img
-                                    src={RemoveIcon}
-                                    alt="remove_ico"
-                                    onClick={() => this.removeEnvVar(index)}
-                                    role="presentation"
-                                  />
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                        <div className={styles.EnvDataItem}>
-                          <input
-                            placeholder="Name"
-                            name="varName"
-                            value={varName}
-                            className={styles.varInput}
-                            onChange={(e) => {
-                              this.handleChange(e);
-                            }}
-                          />
-                          <input
-                            placeholder="Value"
-                            name="varValue"
-                            value={varValue}
-                            className={styles.varInput}
-                            onChange={(e) => {
-                              this.handleChange(e);
-                            }}
-                          />
-                          <div className={styles.EnvVarsAddBtn}>
-                            <PrimaryButton
-                              label="add"
-                              onClick={this.addEnvVar}
-                              className={styles.EnvVarAddBtn}
-                            />
-                          </div>
-                        </div>
-                        {Object.keys(envVars).length > 0 && (
-                          <div className={styles.APPButton}>
-                            <div className={styles.UpperSection}>
-                              <PrimaryButton
-                                label={isUpdating ? <Spinner /> : "UPDATE"}
-                                onClick={this.handleEnvVarsSubmit}
-                              />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    <hr className={styles.HorizontalLine} />
-                    <div className={styles.APPSections}>
-                      <div className={styles.APPSectionTitle}>
-                        Port & Entry commands
-                      </div>
-                      <div className={styles.AppOtherSection}>
-                        <div className={styles.PortSection}>
-                          <div>Port</div>
-                          <div>
-                            <input
-                              type="text"
-                              placeholder={appDetail.port}
-                              name="port"
-                              value={port}
-                              className={styles.portInput}
-                              onChange={(e) => {
-                                this.handleChange(e);
-                              }}
-                            />
-                          </div>
-                          <div className={styles.APPOptionsButton}>
-                            <PrimaryButton
-                              label={
-                                isUpdating && updating_port ? (
-                                  <Spinner />
-                                ) : (
-                                  "UPDATE"
-                                )
-                              }
-                              disable={isUpdating}
-                              className={isUpdating && styles.deactivatedBtn}
-                              onClick={this.handlePortSubmit}
-                            />
-                          </div>
-                        </div>
-                        <div className={styles.PortSection}>
-                          <div>Entry Command</div>
-                          <div className={styles.commandInputSection}>
-                            <div>
-                              <input
-                                type="text"
-                                placeholder={
-                                  appDetail.command
-                                    ? appDetail.command
-                                    : "command"
-                                }
-                                name="entryCommand"
-                                value={entryCommand}
-                                className={styles.portInput}
+                            <div className={styles.flexa}>
+                              <BlackInputText
+                                required
+                                placeholder="Domain name"
+                                name="domainName"
+                                value={domainName.toLowerCase()}
                                 onChange={(e) => {
                                   this.handleChange(e);
                                 }}
                               />
                             </div>
                           </div>
-                          <div className={styles.APPOptionsButton}>
-                            <PrimaryButton
-                              label={
-                                isUpdating && updating_command ? (
-                                  <Spinner />
-                                ) : (
-                                  "UPDATE"
-                                )
+                          <div
+                            className={styles.Domain__Popup}
+                            onClick={this.showDomainModal}
+                          >
+                            Click for more instructions on how to set up you
+                            custom domain.
+                          </div>
+                          <div className={styles.RevertSection}>
+                            <div className={styles.FlexRevertSection}>
+                              <div>
+                                <strong>Revert to URL</strong>
+                              </div>
+                              <div>
+                                Reverts to cranecloud's auto-generated URL.
+                              </div>
+                            </div>
+                            <div className={styles.SectionButtons}>
+                              <PrimaryButton
+                                className={styles.RevertButton}
+                                onClick={this.domainRevert}
+                                disable={urlReverted}
+                              >
+                                {isReverting ? <Spinner /> : "REVERT"}
+                              </PrimaryButton>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className={styles.APPButtonRow}>
+                    <div className={styles.AppLabel}>Replicas</div>
+                    <div className={styles.flexa}>
+                      <div className={styles.ReplicasSelect}>
+                        <Select
+                          placeholder={
+                            "App has " + appDetail?.replicas + " replica(s)"
+                          }
+                          options={replicaOptions}
+                          isSmall
+                          onChange={this.handleSelectReplicas}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className={styles.APPButtonRow}>
+                    <div className={styles.AppLabel}>Status</div>
+                    <div className={styles.ShowStatus}>
+                      {appDetail.app_running_status === "running" ? (
+                        <div className={styles.StatusIcon}>
+                          <AppStatus appStatus={appDetail.app_running_status} />
+                          <div>&nbsp;Ready</div>
+                        </div>
+                      ) : (
+                        <div className={styles.StatusIcon}>
+                          <AppStatus appStatus={appDetail.app_running_status} />
+                          <div>&nbsp;Failing</div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className={styles.APPButtonRow}>
+                    <div className={styles.AppLabel}>Age</div>
+                    <div className={styles.flexa}>{appDetail.age}</div>
+                  </div>
+                  <div className={styles.APPButtonRow}>
+                    <div className={styles.AppLabel}>Current Revision</div>
+                    <div className={styles.flexa}>
+                      {appDetail.revision !== "" ? appDetail.revision : "0"}
+                    </div>
+                  </div>
+                  <div className={styles.APPButtonRow}>
+                    <div className={styles.AppLabel}>Link</div>
+                    {app.url ? (
+                      <div className={styles.CopyDiv}>
+                        <div className="DBTDetail">{appDetail.url}</div>
+                        <div className={styles.CopyUrl}>
+                          <CopyText onClick={this.urlOnClick} />
+                          {urlChecked ? <Checked /> : null}
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        {isReverting ? (
+                          <Spinner />
+                        ) : (
+                          <div
+                            className={styles.InnerContentWarnText}
+                            onClick={() => {
+                              this.regenerate();
+                            }}
+                          >
+                            Click to re-generate url
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                  <div className={styles.APPButton}>
+                    <div className={styles.UpperSection}>
+                      <PrimaryButton
+                        disable={isUpdating}
+                        className={isUpdating && styles.deactivatedBtn}
+                        onClick={this.handleSubmit}
+                      >
+                        {isUpdating && updating_form ? <Spinner /> : "UPDATE"}
+                      </PrimaryButton>
+                    </div>
+                  </div>
+                  {error && (
+                    <div className={styles.errorCenterDiv}>
+                      <Feedback type="error" message={error} />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <hr className={styles.HorizontalLine} />
+              <div className={styles.APPSections}>
+                <div className={styles.APPSectionTitle}>App Revisions</div>
+
+                <div className={styles.AppRevisionsDetails}>
+                  {revisions?.map((entry, index) => (
+                    <div className={styles.APPInstruct} key={index}>
+                      <div className={styles.AppRevision}>
+                        <Upload className={styles.Success} />
+                        <div>
+                          <div>
+                            <span className={styles.Entity}>
+                              {entry.revision_id}
+                            </span>{" "}
+                            <span className={styles.Time}>
+                              {DisplayDateTime(new Date(entry.created_at))}
+                            </span>
+                            <span className={styles.AppDetails}>
+                              <span>{appDetail.name}</span> - {entry.image}
+                            </span>
+                          </div>
+                          <div className={styles.RevisionStatus}>
+                            <div className={styles.Success}>
+                              {JSON.stringify(entry.current)
+                                ? "Current"
+                                : "Revision: " + entry.revision}
+                            </div>
+                            <div
+                              className={styles.Rollback__Option}
+                              onClick={() =>
+                                this.showAppRevisionModal(entry.revision_id)
                               }
-                              disable={isUpdating}
-                              className={isUpdating && styles.deactivatedBtn}
-                              onClick={this.handleCommandSubmit}
+                            >
+                              {JSON.stringify(entry.current)
+                                ? null
+                                : "Rollback here"}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <Modal
+                showModal={rollBackConfirmationModal}
+                onClickAway={this.hideAppRevisionModal}
+              >
+                <div className={styles.ReviseAppModal}>
+                  <div className={styles.DeleteProjectModalUpperSection}>
+                    <div className={styles.WarningContainer}>
+                      <div className={styles.ReviseAppDescription}>
+                        Are you sure you want to revise your app?
+                      </div>
+                    </div>
+                  </div>
+                  <div className={styles.ReviseAppModalLowerSection}>
+                    <div className={styles.ReviseAppModalButtons}>
+                      <PrimaryButton
+                        className="CancelBtn"
+                        label="Cancel"
+                        onClick={this.hideAppRevisionModal}
+                      >
+                        Cancel
+                      </PrimaryButton>
+                      <PrimaryButton
+                        onClick={(e) => this.rollbackApp(revisionId)}
+                      >
+                        {revisingApp ? <Spinner /> : "Confirm"}
+                      </PrimaryButton>
+                    </div>
+                  </div>
+                  {revisingAppError && (
+                    <Feedback type="error" message={"Failed to rollback"} />
+                  )}
+                </div>
+              </Modal>
+
+              <hr className={styles.HorizontalLine} />
+              <div className={styles.APPSections}>
+                {/* <div className={styles.APPSectionPort}> */}
+                <div className={styles.APPSectionTitle}>Environment Vars</div>
+                <div className={styles.ModalFormInputsEnvVars}>
+                  {appDetail.env_vars && (
+                    <div className={styles.EnvData}>
+                      <div className={styles.EnvDataItem}>
+                        <div>Name</div>
+                        <div>Value</div>
+                        <div>Remove</div>
+                      </div>
+                      {Object.keys(appDetail.env_vars).map((envVar, index) => (
+                        <div key={index} className={styles.EnvDataItem}>
+                          <div>{envVar}</div>
+                          <div>{appDetail.env_vars[envVar]}</div>
+                          <div className={styles.RemoveIconBtn}>
+                            <img
+                              src={RemoveIcon}
+                              alt="remove_ico"
+                              onClick={() => this.removeEnvVar(index)}
+                              role="presentation"
                             />
                           </div>
                         </div>
-                        {portError && (
-                          <div className={styles.errorCenterDiv}>
-                            <Feedback type="error" message={portError} />
-                          </div>
-                        )}
-                        {errorMessage && (
-                          <div className={styles.errorCenterDiv}>
-                            <Feedback type="error" message={errorMessage} />
-                          </div>
-                        )}
-                        {commandError && (
-                          <div className={styles.errorCenterDiv}>
-                            <Feedback type="error" message={commandError} />
-                          </div>
-                        )}
-                      </div>
+                      ))}
                     </div>
+                  )}
 
-                    <hr className={styles.HorizontalLine} />
-                    <div className={styles.APPSections}>
-                      <div className={styles.APPSectionDelete}>
-                        Delete application
-                      </div>
-                      <div className={styles.AppDeleteInstructions}>
-                        <div className={styles.APPInstruct}>
-                          <div>Deleting your app is irreversible.</div>
+                  {Object.keys(envVars).length > 0 && (
+                    <div className={styles.EnvData}>
+                      {!appDetail.env_vars && (
+                        <div className={styles.EnvDataItem}>
+                          <div>Name</div>
+                          <div>Value</div>
+                          <div>Remove</div>
                         </div>
-                        <div className={styles.DeleteButtonDiv}>
-                          <PrimaryButton
-                            label="Delete App"
-                            className={styles.DeleteBtn}
-                            onClick={this.showDeleteAlert}
-                          />
+                      )}
+
+                      {Object.keys(envVars).map((envVar, index) => (
+                        <div key={uuidv4()} className={styles.EnvDataItem}>
+                          <div>{Object.keys(envVars)[index]}</div>
+                          <div>{envVars[Object.keys(envVars)[index]]}</div>
+                          <div className={styles.RemoveIconBtn}>
+                            <img
+                              src={RemoveIcon}
+                              alt="remove_ico"
+                              onClick={() => this.removeEnvVar(index)}
+                              role="presentation"
+                            />
+                          </div>
                         </div>
-                      </div>
+                      ))}
                     </div>
-                    {openDeleteAlert && (
-                      <div className={styles.AppDeleteModel}>
-                        <Modal
-                          showModal={openDeleteAlert}
-                          onClickAway={this.hideDeleteAlert}
-                        >
-                          <div className={styles.DeleteAppModel}>
-                            <div className={styles.DeleteModalUpperSection}>
-                              <div className={styles.WarningContainer}>
-                                <div className={styles.DeleteDescription}>
-                                  Are you sure you want to delete&nbsp;
-                                  <span>{appDetail.name}</span>
-                                  &nbsp;?
-                                </div>
-                                <div className={styles.DeleteSubDescription}>
-                                  This will permanently delete the application.
-                                  Please confirm by typing{" "}
-                                  <b className={styles.DeleteWarning}>
-                                    {appDetail.name}
-                                  </b>{" "}
-                                  below.
-                                </div>
-                                <div className={styles.InnerModalDescription}>
-                                  <BlackInputText
-                                    required
-                                    placeholder={appDetail.name}
-                                    name="ConfirmAppname"
-                                    value={ConfirmAppname}
-                                    onChange={(e) => {
-                                      this.handleChange(e);
-                                    }}
-                                  />
-                                  <DeleteWarning textAlignment="Left" />
-                                </div>
-                              </div>
-                            </div>
-
-                            <div className={styles.DeleteModalLowerSection}>
-                              <div className={styles.DeleteAppModelButtons}>
-                                <PrimaryButton
-                                  label="cancel"
-                                  className="CancelBtn"
-                                  onClick={this.hideDeleteAlert}
-                                />
-                                <PrimaryButton
-                                  label={isDeleting ? <Spinner /> : "Delete"}
-                                  className={
-                                    disableDelete
-                                      ? styles.InactiveDelete
-                                      : styles.DeleteBtn
-                                  }
-                                  disable={disableDelete}
-                                  onClick={(e) =>
-                                    this.handleDeleteApp(e, appID)
-                                  }
-                                />
-                              </div>
-
-                              {message && (
-                                <Feedback
-                                  type={isFailed ? "error" : "success"}
-                                  message={message}
-                                />
-                              )}
-                            </div>
-                          </div>
-                        </Modal>
-                      </div>
-                    )}
-                    {domainModal && (
-                      <div className={styles.AppDeleteModel}>
-                        <Modal
-                          showModal={domainModal}
-                          onClickAway={this.hideDomainModal}
-                        >
-                          <div className={styles.DomainModal__Main}>
-                            <div className={styles.DomainModal__Title}>
-                              Instructions on how to add an A-Record{" "}
-                            </div>
-                            <div className={styles.DomainModal__Description}>
-                              <div className={styles.Description__Step}>
-                                <div className={styles.Step__Title}>
-                                  Step 1.
-                                </div>
-                                <div className={styles.Step__Description}>
-                                  <div>
-                                    Login to your domain register account (e.g.
-                                    GoDaddy, NameCheap, Google Domains), then
-                                    locate
-                                  </div>
-                                  <div>
-                                    {" "}
-                                    the DNS settings or management page for your
-                                    domain.
-                                  </div>
-                                </div>
-                              </div>
-                              <div className={styles.Description__Step}>
-                                <div className={styles.Step__Title}>
-                                  Step 2.
-                                </div>
-                                <div className={styles.Step__Description}>
-                                  <div>
-                                    Add A-Records. Add A-records inorder to use
-                                    your root domain(i.e custom domain).
-                                  </div>
-                                  <div>
-                                    Edit any existing A Records with Host Name @
-                                  </div>
-                                  <div>
-                                    Do not edit or delete A-Records for Mail or
-                                    Email as it could interfere with your email
-                                    service.{" "}
-                                  </div>
-                                  <div>
-                                    An example of A-records with the IP address
-                                    we shall provide you;
-                                  </div>
-                                  <ul>
-                                    <li>A-Record: 3.209.XX.XX</li>
-                                    <li>Host or Name: @</li>
-                                    <li>Points To: 3.209.XX.XX</li>
-                                    <li>TTL: 1 Hour</li>
-                                    <li>Click: Save</li>
-                                  </ul>
-                                  <div>
-                                    <strong>Note:</strong> DNS settings may look
-                                    different for each
-                                  </div>
-                                </div>
-                              </div>
-                              <div className={styles.Description__button}>
-                                <button onClick={this.hideDomainModal}>
-                                  OK
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </Modal>
-                      </div>
-                    )}
+                  )}
+                  <div className={styles.EnvDataItem}>
+                    <input
+                      placeholder="Name"
+                      name="varName"
+                      value={varName}
+                      className={styles.varInput}
+                      onChange={(e) => {
+                        this.handleChange(e);
+                      }}
+                    />
+                    <input
+                      placeholder="Value"
+                      name="varValue"
+                      value={varValue}
+                      className={styles.varInput}
+                      onChange={(e) => {
+                        this.handleChange(e);
+                      }}
+                    />
+                    <div className={styles.EnvVarsAddBtn}>
+                      <PrimaryButton onClick={this.addEnvVar} color="primary">
+                        Add
+                      </PrimaryButton>
+                    </div>
                   </div>
-                </>
+                  {Object.keys(envVars).length > 0 && (
+                    <div className={styles.APPButton}>
+                      <div className={styles.UpperSection}>
+                        <PrimaryButton onClick={this.handleEnvVarsSubmit}>
+                          {isUpdating ? <Spinner /> : "UPDATE"}
+                        </PrimaryButton>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <hr className={styles.HorizontalLine} />
+              <div className={styles.APPSections}>
+                <div className={styles.APPSectionTitle}>
+                  Port & Entry commands
+                </div>
+                <div className={styles.AppOtherSection}>
+                  <div className={styles.PortSection}>
+                    <div>Port</div>
+                    <div>
+                      <input
+                        type="text"
+                        placeholder={appDetail.port}
+                        name="port"
+                        value={port}
+                        className={styles.portInput}
+                        onChange={(e) => {
+                          this.handleChange(e);
+                        }}
+                      />
+                    </div>
+                    <div className={styles.APPOptionsButton}>
+                      <PrimaryButton
+                        disable={isUpdating}
+                        className={isUpdating && styles.deactivatedBtn}
+                        onClick={this.handlePortSubmit}
+                      >
+                        {isUpdating && updating_port ? <Spinner /> : "UPDATE"}
+                      </PrimaryButton>
+                    </div>
+                  </div>
+                  <div className={styles.PortSection}>
+                    <div>Entry Command</div>
+                    <div className={styles.commandInputSection}>
+                      <div>
+                        <input
+                          type="text"
+                          placeholder={
+                            appDetail.command ? appDetail.command : "command"
+                          }
+                          name="entryCommand"
+                          value={entryCommand}
+                          className={styles.portInput}
+                          onChange={(e) => {
+                            this.handleChange(e);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className={styles.APPOptionsButton}>
+                      <PrimaryButton
+                        disable={isUpdating}
+                        className={isUpdating && styles.deactivatedBtn}
+                        onClick={this.handleCommandSubmit}
+                      >
+                        {isUpdating && updating_command ? (
+                          <Spinner />
+                        ) : (
+                          "UPDATE"
+                        )}
+                      </PrimaryButton>
+                    </div>
+                  </div>
+                  {portError && (
+                    <div className={styles.errorCenterDiv}>
+                      <Feedback type="error" message={portError} />
+                    </div>
+                  )}
+                  {errorMessage && (
+                    <div className={styles.errorCenterDiv}>
+                      <Feedback type="error" message={errorMessage} />
+                    </div>
+                  )}
+                  {commandError && (
+                    <div className={styles.errorCenterDiv}>
+                      <Feedback type="error" message={commandError} />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <hr className={styles.HorizontalLine} />
+              <div className={styles.APPSections}>
+                <div className={styles.APPSectionDelete}>
+                  Delete application
+                </div>
+                <div className={styles.AppDeleteInstructions}>
+                  <div className={styles.APPInstruct}>
+                    <div>Deleting your app is irreversible.</div>
+                  </div>
+                  <div className={styles.DeleteButtonDiv}>
+                    <PrimaryButton color="red" onClick={this.showDeleteAlert}>
+                      Delete App
+                    </PrimaryButton>
+                  </div>
+                </div>
+              </div>
+              {openDeleteAlert && (
+                <div className={styles.AppDeleteModel}>
+                  <Modal
+                    showModal={openDeleteAlert}
+                    onClickAway={this.hideDeleteAlert}
+                  >
+                    <div className={styles.DeleteAppModel}>
+                      <div className={styles.DeleteModalUpperSection}>
+                        <div className={styles.WarningContainer}>
+                          <div className={styles.DeleteDescription}>
+                            Are you sure you want to delete&nbsp;
+                            <span>{app.name}</span>
+                            &nbsp;?
+                          </div>
+                          <div className={styles.DeleteSubDescription}>
+                            This will permanently delete the application. Please
+                            confirm by typing{" "}
+                            <b className={styles.DeleteWarning}>
+                              {appDetail.name}
+                            </b>{" "}
+                            below.
+                          </div>
+                          <div className={styles.InnerModalDescription}>
+                            <BlackInputText
+                              required
+                              placeholder={appDetail.name}
+                              name="ConfirmAppname"
+                              value={ConfirmAppname}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />
+                            <DeleteWarning textAlignment="Left" />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className={styles.DeleteModalLowerSection}>
+                        <div className={styles.DeleteAppModelButtons}>
+                          <PrimaryButton
+                            className="CancelBtn"
+                            onClick={this.hideDeleteAlert}
+                          >
+                            Cancel
+                          </PrimaryButton>
+                          <PrimaryButton
+                            className={disableDelete && styles.InactiveDelete}
+                            color={!disableDelete && "red"}
+                            disable={disableDelete}
+                            onClick={(e) => this.handleDeleteApp(e, appID)}
+                          >
+                            {isDeleting ? <Spinner /> : "Delete"}
+                          </PrimaryButton>
+                        </div>
+
+                        {message && (
+                          <Feedback
+                            type={isFailed ? "error" : "success"}
+                            message={message}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
               )}
-              {!isRetrieving && !isFetched && (
-                <div className={styles.NoResourcesMessage}>
-                  Oops! Something went wrong! Failed to retrieve app
-                  information.
+              {domainModal && (
+                <div className={styles.AppDeleteModel}>
+                  <Modal
+                    showModal={domainModal}
+                    onClickAway={this.hideDomainModal}
+                  >
+                    <div className={styles.DomainModal__Main}>
+                      <div className={styles.DomainModal__Title}>
+                        Instructions on how to add an A-Record{" "}
+                      </div>
+                      <div className={styles.DomainModal__Description}>
+                        <div className={styles.Description__Step}>
+                          <div className={styles.Step__Title}>Step 1.</div>
+                          <div className={styles.Step__Description}>
+                            <div>
+                              Login to your domain register account (e.g.
+                              GoDaddy, NameCheap, Google Domains), then locate
+                            </div>
+                            <div>
+                              {" "}
+                              the DNS settings or management page for your
+                              domain.
+                            </div>
+                          </div>
+                        </div>
+                        <div className={styles.Description__Step}>
+                          <div className={styles.Step__Title}>Step 2.</div>
+                          <div className={styles.Step__Description}>
+                            <div>
+                              Add A-Records. Add A-records inorder to use your
+                              root domain(i.e custom domain).
+                            </div>
+                            <div>
+                              Edit any existing A Records with Host Name @
+                            </div>
+                            <div>
+                              Do not edit or delete A-Records for Mail or Email
+                              as it could interfere with your email service.{" "}
+                            </div>
+                            <div>
+                              An example of A-records with the IP address we
+                              shall provide you;
+                            </div>
+                            <ul>
+                              <li>A-Record: 3.209.XX.XX</li>
+                              <li>Host or Name: @</li>
+                              <li>Points To: 3.209.XX.XX</li>
+                              <li>TTL: 1 Hour</li>
+                              <li>Click: Save</li>
+                            </ul>
+                            <div>
+                              <strong>Note:</strong> DNS settings may look
+                              different for each
+                            </div>
+                          </div>
+                        </div>
+                        <div className={styles.Description__button}>
+                          <button onClick={this.hideDomainModal}>OK</button>
+                        </div>
+                      </div>
+                    </div>
+                  </Modal>
                 </div>
               )}
             </div>
+          </>
+        )}
+        {!isRetrieving && !isFetched && (
+          <div className={styles.NoResourcesMessage}>
+            Oops! Something went wrong! Failed to retrieve app information.
           </div>
-        </div>
-      </div>
+        )}
+      </DashboardLayout>
     );
   }
 }

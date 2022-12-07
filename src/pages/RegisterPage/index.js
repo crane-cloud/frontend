@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Header from "../../components/Header";
 import InputText from "../../components/InputText";
-import InputPassword from "../../components/InputPassword";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
 import { ReactComponent as LogoIcon } from "../../assets/images/githublogo.svg";
@@ -18,7 +17,7 @@ export default class RegisterPage extends Component {
 
     this.state = {
       name: "",
-      username:"",
+      username: "",
       email: "",
       password: "",
       passwordConfirm: "",
@@ -89,7 +88,8 @@ export default class RegisterPage extends Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    const { name,username, email, password, passwordConfirm, hasAgreed } = this.state;
+    const { name, username, email, password, passwordConfirm, hasAgreed } =
+      this.state;
 
     const userData = {
       name,
@@ -98,7 +98,7 @@ export default class RegisterPage extends Component {
       password,
     };
 
-    if (!email || !password || !name || !username ||!passwordConfirm) {
+    if (!email || !password || !name || !username || !passwordConfirm) {
       this.setState({
         error: "Please enter all fields",
       });
@@ -157,78 +157,106 @@ export default class RegisterPage extends Component {
       hasAgreed,
       gitLoading,
     } = this.state;
-
+    console.log(registered);
     return (
       <div className="RegisterPageContainer">
         <Header />
         <div className="RegisterContent">
           {!registered ? (
-            <>
+            <div>
               <div className="RegisterContentHeading">
                 <h1>Create an account</h1>
               </div>
-              <form onSubmit={this.handleSubmit}>
-                <div className="RegisterContentInputs">
-                  <InputText
-                    required
-                    placeholder="Name"
-                    name="name"
-                    value={name}
-                    onChange={this.handleOnChange}
-                  />
-                   <InputText
-                    required
-                    placeholder="Username"
-                    name="username"
-                    value={username}
-                    onChange={this.handleOnChange}
-                  />
-                  <InputText
-                    required
-                    placeholder="Email Address"
-                    name="email"
-                    value={email}
-                    onChange={this.handleOnChange}
-                  />
-                  <InputPassword
-                    required
-                    placeholder="Password"
-                    name="password"
-                    value={password}
-                    onChange={this.handleOnChange}
-                  />
-                  <InputPassword
-                    required
-                    placeholder="Repeat Password"
-                    name="passwordConfirm"
-                    value={passwordConfirm}
-                    onChange={this.handleOnChange}
-                  />
-                  {error && <div className="RegisterErrorDiv">{error}</div>}
-
-                  <div className="RegisterContentBottomLink RegisterLinkContainer RegisterCheckbox">
-                    <Checkbox
-                      onClick={this.toggleAgreed}
-                      isChecked={hasAgreed}
-                    />
-                    &nbsp; I agree to Crane Cloud&apos;s&nbsp;&nbsp;
+              <form onSubmit={this.handleSubmit} className="LoginContentInputs">
+                <InputText
+                  required
+                  placeholder="Name"
+                  name="name"
+                  value={name}
+                  onChange={this.handleOnChange}
+                />
+                <InputText
+                  required
+                  placeholder="Username"
+                  name="username"
+                  value={username}
+                  onChange={this.handleOnChange}
+                />
+                <InputText
+                  required
+                  placeholder="Email Address"
+                  name="email"
+                  type="email"
+                  value={email}
+                  onChange={this.handleOnChange}
+                />
+                <InputText
+                  required
+                  placeholder="Password"
+                  name="password"
+                  type="password"
+                  value={password}
+                  onChange={this.handleOnChange}
+                />
+                <InputText
+                  required
+                  placeholder="Repeat Password"
+                  name="passwordConfirm"
+                  type="password"
+                  value={passwordConfirm}
+                  onChange={this.handleOnChange}
+                />
+                {error && <div className="RegisterErrorDiv">{error}</div>}
+                <div className=" RegisterTerms">
+                  <Checkbox onClick={this.toggleAgreed} isChecked={hasAgreed} />
+                  <div>
+                    I agree to Crane Cloud{" "}
                     <Link
                       to="/terms-of-service"
                       target="_blank"
-                      className="RegisterContentLink"
+                      className="LoginContentLink"
                     >
                       Terms of service.
                     </Link>
                   </div>
-
-                  <PrimaryButton
-                    className="SignupBtn AuthBtn"
-                    label={loading ? <Spinner /> : "Register"}
-                    onClick={this.handleSubmit}
-                  />
                 </div>
+
+                <PrimaryButton
+                  className="LoginButton AuthBtn"
+                  type="submit"
+                  onClick={this.handleSubmit}
+                >
+                  {loading ? <Spinner /> : "Register"}
+                </PrimaryButton>
               </form>
-            </>
+              <div className="LowerLoginSection">
+                <div>
+                  <p className="LoginWith">
+                    <span>Or join with</span>
+                  </p>
+                </div>
+                <PrimaryButton
+                  className="GithubLoginBtn AuthBtn"
+                  disable={gitLoading}
+                  onClick={this.toGithubauth}
+                >
+                  {gitLoading ? (
+                    <Spinner />
+                  ) : (
+                    <div className="GitLoginBtn">
+                      <LogoIcon className="LogoIcon" />
+                      <div className="GitText">Github</div>
+                    </div>
+                  )}
+                </PrimaryButton>
+              </div>
+              <div className="LoginContentBottomLink LoginLinkContainer">
+                Already have an account? &nbsp;
+                <Link to="/login" className="LoginContentLink">
+                  Go to Login
+                </Link>
+              </div>
+            </div>
           ) : (
             <div className="RegisterSuccessContent">
               <div className="RegisteredMessage">
@@ -245,34 +273,6 @@ export default class RegisterPage extends Component {
               </div>
             </div>
           )}
-          <div className="LowerSignupSection">
-            <div>
-              <p className="SignupWith">
-                <span>Or Join with</span>
-              </p>
-            </div>
-            <PrimaryButton
-              label={
-                gitLoading ? (
-                  <Spinner />
-                ) : (
-                  <div className="GitLoginBtn">
-                    <LogoIcon className="LogoIcon" />
-                    <div className="GitText">Github</div>
-                  </div>
-                )
-              }
-              className="GithubLoginBtn AuthBtn"
-              disable={gitLoading}
-              onClick={this.toGithubauth}
-            />
-          </div>
-          <div className="LoginContentBottomLink LoginLinkContainer">
-            Already have an account? &nbsp;
-            <Link to="/" className="LoginContentLink">
-              Go to Login
-            </Link>
-          </div>
         </div>
       </div>
     );

@@ -2,9 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import InformationBar from "../../components/InformationBar";
-import Header from "../../components/Header";
-import SideBar from "../../components/SideBar";
 import Spinner from "../../components/Spinner";
 import { Redirect } from "react-router-dom";
 import MetricsCard from "../../components/MetricsCard";
@@ -25,6 +22,7 @@ import getAppNetwork from "../../redux/actions/appNetwork";
 import AppStatus from "../../components/AppStatus";
 import { ReactComponent as CopyText } from "../../assets/images/copytextblue.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
+import DashboardLayout from "../../components/Layouts/DashboardLayout";
 
 class AppMetricsPage extends React.Component {
   constructor(props) {
@@ -34,7 +32,7 @@ class AppMetricsPage extends React.Component {
       urlChecked: false,
       logs: [],
       fetchingLogs: true,
-      logsError: ''
+      logsError: "",
     };
 
     this.getAppMemoryMetrics = this.getAppMemoryMetrics.bind(this);
@@ -75,22 +73,21 @@ class AppMetricsPage extends React.Component {
       .then((response) => {
         this.setState({
           logs: response.data.data.pods_logs,
-          fetchingLogs: false
-        })
-      }).catch((error) => {
+          fetchingLogs: false,
+        });
+      })
+      .catch((error) => {
         this.setState({
           logsError: "Failed to fetch logs",
-          fetchingLogs: false
-        })
-      })
+          fetchingLogs: false,
+        });
+      });
 
     clearAppMemory();
     clearUrlRevertState();
     getAppMemory(projectID, appID, {});
     getAppCPU(projectID, appID, {});
     getAppNetwork(projectID, appID, {});
-
-
   }
 
   getAppMemoryMetrics() {
@@ -139,6 +136,7 @@ class AppMetricsPage extends React.Component {
   render() {
     const { params } = this.props.match;
     const { projectID, appID } = params;
+    // eslint-disable-next-line no-unused-vars
     const { isReverting, isReverted } = this.props;
     const { logs, logsError, fetchingLogs, urlChecked } = this.state;
 
@@ -148,198 +146,160 @@ class AppMetricsPage extends React.Component {
     const appInfo = this.getAppInfo(appID);
 
     return (
-      <div className={styles.Page}>
-        {isReverted ? this.renderRedirect() : null}
-        <div className={styles.TopBarSection}>
-          <Header />
-        </div>
-        <div className="MainSection">
-          <div className="SideBarSection">
-            <SideBar
-              name={appInfo.name}
-              params={params}
-              pageRoute={this.props.location?.pathname}
-              allMetricsLink={`/projects/${projectID}/apps/${appID}/dashboard`}
-              cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
-              memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
-              databaseLink={`/projects/${projectID}/databases`}
-              networkLink={`/projects/${projectID}/apps/${appID}/network/`}
-              appLogsLink={`/projects/${projectID}/apps/${appID}/logs/`}
-            />
+      <DashboardLayout
+        name={appInfo.name}
+        header={appInfo.name}
+        viewAppLink={appInfo.url}
+      >
+        <div
+          className={
+            styles.SummaryCardContainer + " " + styles.SummaryCardDimentions
+          }
+        >
+          <div className={styles.CardHeaderSection}>
+            <div className={styles.CardTitle}>App Summary</div>
           </div>
-          <div className="MainContentSection">
-            <div className={styles.InformationBarSection}>
-              <InformationBar header={appInfo.name} viewAppLink={appInfo.url} />
-            </div>
-            <div className={`${styles.ContentSection} SmallContainer`}>
-              <div
-                className={
-                  styles.SummaryCardContainer +
-                  " " +
-                  styles.SummaryCardDimentions
-                }
-              >
-                <div className={styles.CardHeaderSection}>
-                  <div className={styles.CardTitle}>App Summary</div>
+          <div className={styles.CardBodySection}>
+            <div className={styles.InnerCard}>
+              <div className={styles.InnerCardSections}>
+                <div className={styles.InnerContentGrid}>
+                  <div className={styles.InnerTitlesStart}>App Name</div>
+                  <div className={styles.InnerContentName}>{appInfo.name}</div>
                 </div>
-                <div className={styles.CardBodySection}>
-                  <div className={styles.InnerCard}>
-                    <div className={styles.InnerCardSections}>
-                      <div className={styles.InnerContentGrid}>
-                        <div className={styles.InnerTitlesStart}>App Name</div>
-                        <div className={styles.InnerContentName}>
-                          {appInfo.name}
-                        </div>
+                <div className={styles.InnerContentGrid}>
+                  <div className={styles.InnerTitlesStart}>App Url</div>
+                  {appInfo.url ? (
+                    <div className={styles.InnerContentLink}>
+                      <div className={styles.InnerContentLinkText}>
+                        <a
+                          href={appInfo.url}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          {appInfo.url}
+                        </a>
                       </div>
-                      <div className={styles.InnerContentGrid}>
-                        <div className={styles.InnerTitlesStart}>App Url</div>
-                        {appInfo.url ? (
-                          <div className={styles.InnerContentLink}>
-                            <div className={styles.InnerContentLinkText}>
-                              <a
-                                href={appInfo.url}
-                                rel="noopener noreferrer"
-                                target="_blank"
-                              >
-                                {appInfo.url}
-                              </a>
-                            </div>
-                            <div className={styles.CopierDiv}>
-                              <div className={styles.Icons}>
-                                <CopyText onClick={this.copyUrl} />
-                                {urlChecked === true ? <Checked /> : null}
-                              </div>
-                            </div>
-                          </div>
-                        ) : (
-                          <>
-                            {isReverting ? (
-                              <Spinner />
-                            ) : (
-                              <div
-                                className={styles.InnerContentWarnText}
-                                onClick={() => {
-                                  this.regenerate();
-                                }}
-                              >
-                                Click to re-generate url
-                              </div>
-                            )}
-                          </>
-                        )}
-                      </div>
-                    </div>
-                    <hr />
-                    <div className={styles.InnerCardSections}>
-                      <div className={styles.InnerContentGrid}>
-                        <div className={styles.InnerTitlesMiddle}>
-                          App Status
-                        </div>
-                        <div className={styles.InnerContentStatus}>
-                          <AppStatus appStatus={appInfo.status} />
-                          <div>
-                            {appInfo.status === "running" ? "Ready" : "Down"}
-                          </div>
-                        </div>
-                      </div>
-                      <div className={styles.InnerContentGrid}>
-                        <div className={styles.InnerTitlesMiddle}>
-                          Date Deployed
-                        </div>
-                        <div className={styles.InnerContentAge}>
-                          {appInfo.age}
+                      <div className={styles.CopierDiv}>
+                        <div className={styles.Icons}>
+                          <CopyText onClick={this.copyUrl} />
+                          {urlChecked === true ? <Checked /> : null}
                         </div>
                       </div>
                     </div>
-                    <hr />
-                    <div className={styles.InnerCardSections}>
-                      <div className={styles.InnerContentGrid}>
-                        <div className={styles.InnerTitlesEnd}>App Alias</div>
-                        <div className={styles.InnerContentEnd}>
-                          {appInfo.alias}
+                  ) : (
+                    <>
+                      {isReverting ? (
+                        <Spinner />
+                      ) : (
+                        <div
+                          className={styles.InnerContentWarnText}
+                          onClick={() => {
+                            this.regenerate();
+                          }}
+                        >
+                          Click to re-generate url
                         </div>
-                      </div>
-                      <div className={styles.InnerContentGrid}>
-                        <div className={styles.InnerTitlesEnd}>Port</div>
-                        <div className={styles.InnerContentEnd}>
-                          {appInfo.port}
-                        </div>
-                      </div>
-                    </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+              <hr />
+              <div className={styles.InnerCardSections}>
+                <div className={styles.InnerContentGrid}>
+                  <div className={styles.InnerTitlesMiddle}>App Status</div>
+                  <div className={styles.InnerContentStatus}>
+                    <AppStatus appStatus={appInfo.status} />
+                    <div>{appInfo.status === "running" ? "Ready" : "Down"}</div>
                   </div>
                 </div>
+                <div className={styles.InnerContentGrid}>
+                  <div className={styles.InnerTitlesMiddle}>Date Deployed</div>
+                  <div className={styles.InnerContentAge}>{appInfo.age}</div>
+                </div>
               </div>
-              <div className={styles.MetricCardsSection}>
-                <Link
-                  to={{
-                    pathname: `/projects/${projectID}/apps/${appID}/memory/`,
-                  }}
-                >
-                  <MetricsCard
-                    icon={<MetricIcon />}
-                    title="Memory"
-                    className="CardDimensions"
-                  >
-                    <LineChartComponent
-                      lineDataKey="memory"
-                      preview
-                      data={formattedMemoryMetrics}
-                    />
-                  </MetricsCard>
-                </Link>
-                <Link
-                  to={{
-                    pathname: `/projects/${projectID}/apps/${appID}/cpu/`,
-                  }}
-                >
-                  <MetricsCard
-                    icon={<MetricIcon />}
-                    title="CPU"
-                    className="CardDimensions"
-                  >
-                    <LineChartComponent
-                      lineDataKey="cpu"
-                      preview
-                      data={formattedCPUMetrics}
-                    />
-                  </MetricsCard>
-                </Link>
-                <Link
-                  to={{
-                    pathname: `/projects/${projectID}/apps/${appID}/network/`,
-                  }}
-                >
-                  <MetricsCard
-                    icon={<MetricIcon />}
-                    title="Network"
-                    className="CardDimensions"
-                  >
-                    <LineChartComponent
-                      lineDataKey="network"
-                      preview
-                      data={formattedNetworkMetrics}
-                    />
-                  </MetricsCard>
-                </Link>
-              </div>
-              <div className={styles.LogsSection}>
-                <Link
-                  to={{
-                    pathname: `/projects/${projectID}/apps/${appID}/logs/`,
-                  }}
-                >
-                  <LogsFrame
-                    loading={fetchingLogs}
-                    data={logs}
-                    title={`${appInfo.name} logs`}
-                    error={logsError}
-                  />
-                </Link>
+              <hr />
+              <div className={styles.InnerCardSections}>
+                <div className={styles.InnerContentGrid}>
+                  <div className={styles.InnerTitlesEnd}>App Alias</div>
+                  <div className={styles.InnerContentEnd}>{appInfo.alias}</div>
+                </div>
+                <div className={styles.InnerContentGrid}>
+                  <div className={styles.InnerTitlesEnd}>Port</div>
+                  <div className={styles.InnerContentEnd}>{appInfo.port}</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+        <div className={styles.MetricCardsSection}>
+          <Link
+            to={{
+              pathname: `/projects/${projectID}/apps/${appID}/memory/`,
+            }}
+          >
+            <MetricsCard
+              icon={<MetricIcon />}
+              title="Memory"
+              className="CardDimensions"
+            >
+              <LineChartComponent
+                lineDataKey="memory"
+                preview
+                data={formattedMemoryMetrics}
+              />
+            </MetricsCard>
+          </Link>
+          <Link
+            to={{
+              pathname: `/projects/${projectID}/apps/${appID}/cpu/`,
+            }}
+          >
+            <MetricsCard
+              icon={<MetricIcon />}
+              title="CPU"
+              className="CardDimensions"
+            >
+              <LineChartComponent
+                lineDataKey="cpu"
+                preview
+                data={formattedCPUMetrics}
+              />
+            </MetricsCard>
+          </Link>
+          <Link
+            to={{
+              pathname: `/projects/${projectID}/apps/${appID}/network/`,
+            }}
+          >
+            <MetricsCard
+              icon={<MetricIcon />}
+              title="Network"
+              className="CardDimensions"
+            >
+              <LineChartComponent
+                lineDataKey="network"
+                preview
+                data={formattedNetworkMetrics}
+              />
+            </MetricsCard>
+          </Link>
+        </div>
+        <div className={styles.LogsSection}>
+          <Link
+            to={{
+              pathname: `/projects/${projectID}/apps/${appID}/logs/`,
+            }}
+          >
+            <LogsFrame
+              loading={fetchingLogs}
+              data={logs}
+              title={`${appInfo.name} logs`}
+              error={logsError}
+            />
+          </Link>
+        </div>
+      </DashboardLayout>
     );
   }
 }

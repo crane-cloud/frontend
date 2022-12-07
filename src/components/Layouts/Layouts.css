@@ -1,0 +1,62 @@
+.DashboardPage {
+    margin: 0;
+    background: var( --gray-bg-light-color);
+    max-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    /* overflow: hidden; */
+}
+
+.DashboardTopBarSection {
+    background-color: black;
+}
+
+.DashboardMainSection {
+    /* divided into two columns */
+    background-color: var( --gray-bg-light-color);
+    display: grid;
+    grid-template-columns: 1.3fr 6fr;
+    overflow: hidden;
+}
+
+.DashboardSideBarSection {
+    overflow: hidden;
+    overflow-y: scroll;
+    height: calc(100vh - 4rem);
+}
+
+.DashboardSideBarSection::-webkit-scrollbar {
+    display: none;
+    min-width: fit-content;
+}
+
+.DashboardSideBarSection {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.DashboardMainContentSection {
+    /* divided into two rows */
+    display: grid;
+    grid-template-rows: 80px 4fr;
+    overflow: auto;
+}
+
+.DasboardChildrenSection{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-bottom: 4rem;
+}
+
+.DashboardSmallContainer {
+    padding: 0 2rem 2rem 2rem;
+}
+
+@media (max-width: 580px) {
+    .DashboardSmallContainer {
+        padding: 0 1rem 1rem 2rem;
+    }
+}
+  
+  

@@ -1,9 +1,9 @@
 .Header {
-  background-color: #008ac1;
+  background-color: var(--primary-color);
   color: #ffffff;
   display: flex;
   justify-content: space-between;
-  height: 5rem;
+  height: 4rem;
   position: relative;
 }
 .HeaderLinks {
@@ -19,15 +19,26 @@
   color: #fff;
 }
 .HeaderLinkLogin {
-  border: 2px solid #fff;
+  border: 1px solid #fff;
   padding: 1rem 3rem;
-  font-size: 0.9em;
+  font-size: 0.9rem;
   color: #fff;
-  border-radius: 10px;
+  border-radius: 5px;
+}
+
+@media(max-width: 460px) {
+  .HeaderLinkLogin {
+    padding: 0.5rem 1rem;
+  }
+}
+  
+.HeaderLinkLogin:hover {
+  background-color: #fff;
+  color: var(--primary-color);
 }
 .TurnLight:hover {
   transition: 0.4s;
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
   color: #000 !important;
 }
 /* remove focus from logo link - mozilla */
@@ -51,7 +62,7 @@
 }
 
 .OnHeader:hover .UserNames {
-  color: #f7b21f;
+  color: var(--secondary-color);
 }
 
 .BelowHeader {
@@ -78,7 +89,7 @@
   user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
 .Credits  {
-  color: #F7B21F;
+  color: var(--secondary-color);
   padding-right: 1rem;
 }
 .DropDownContent {
@@ -105,7 +116,7 @@
 }
 .DropDownLink:hover,
 .DropDownLink:active {
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
 }
 .DropDownLink,
 .DropDownLink:visited {
@@ -122,7 +133,7 @@
 }
 .UserInformation:hover,
 .UserInformation:active {
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
 }
 .UserInformation,
 .UserInformation:visited {

@@ -189,9 +189,10 @@ class VerificationSentPage extends React.Component {
                       {error && <div className="LoginErrorDiv">{error}</div>}
                       <PrimaryButton
                         className="ResendLinkBtn"
-                        label={loading ? <Spinner /> : "Resend Link"}
                         onClick={this.handleSubmit}
-                      />
+                      >
+                        {loading ? <Spinner /> : "Resend Link"}
+                      </PrimaryButton>
                     </div>
                   </div>
                 )}

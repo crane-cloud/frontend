@@ -48,7 +48,9 @@ const LandingPage = (props) => {
   return (
     <div className={styles.LandingPageMain}>
       <NewHeader />
-      <div className={styles.LandingPageMainContainer}>
+      <div
+        className={`${styles.LandingPageMainContainer} 'LandingPageDashboardContainer'`}
+      >
         <div className={styles.LandingPageMainContent}>
           <div className={styles.LandingPageMainContentInfo}>
             <div className={styles.LandingPageMainContentTitle}>
@@ -222,9 +224,8 @@ const LandingPage = (props) => {
               href="https://medium.com/cranecloud/working-with-databases-on-crane-cloud-466179c41a32"
               rel="noopener noreferrer"
               target="_blank"
-              className={styles.AlignButton}
             >
-              Read More
+              <SecondaryButton label={"Read More"}>Read More</SecondaryButton>
             </a>
           </div>
           <div className={styles.DBContain}>
@@ -249,13 +250,8 @@ const LandingPage = (props) => {
               Cloud. With the provision of project overview metrics, down to
               individual application metrics and logs.
             </div>
-            <a
-              href={`${DOCS_URL}`}
-              rel="noopener noreferrer"
-              target="_blank"
-              className={styles.AlignButton}
-            >
-              Read More
+            <a href={`${DOCS_URL}`} rel="noopener noreferrer" target="_blank">
+              <SecondaryButton label={"Read More"}>Read More</SecondaryButton>
             </a>
           </div>
           <div className={styles.GridSide}>
@@ -299,7 +295,7 @@ const LandingPage = (props) => {
             </div>
             <SecondaryButton
               label={"Read More"}
-              className={styles.AutoContainer}
+              // className={styles.AutoContainer}
             />
           </div>
           <div className={styles.GridSide}>

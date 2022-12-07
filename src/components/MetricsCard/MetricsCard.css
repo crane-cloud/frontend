@@ -26,5 +26,5 @@
 }
 
 .MetricsCardContainer:hover {
-  border: 1px solid #f7b21f;
+  border: 1px solid var(--secondary-color);
 }

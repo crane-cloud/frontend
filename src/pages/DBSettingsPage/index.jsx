@@ -2,12 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import InformationBar from "../../components/InformationBar";
-import Header from "../../components/Header";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
 import Modal from "../../components/Modal";
-import SideBar from "../../components/SideBar";
 import Feedback from "../../components/Feedback";
 import DeleteWarning from "../../components/DeleteWarning";
 import deleteDatabase, {
@@ -31,6 +28,7 @@ import BlackInputText from "../../components/BlackInputText";
 import SettingsButton from "../../components/SettingsButton";
 import "./DBSettingsPage.css";
 import { getProjectName } from "../../helpers/projectName";
+import DashboardLayout from "../../components/Layouts/DashboardLayout";
 
 class DBSettingsPage extends React.Component {
   constructor(props) {
@@ -302,458 +300,420 @@ class DBSettingsPage extends React.Component {
       error,
     } = this.state;
     return (
-      <div className="Page">
+      <DashboardLayout
+        header="Database Settings"
+        name={getProjectName(projects, projectID)}
+      >
         {dbDeleteMessage === "Database Deleted Successfully"
           ? this.renderRedirect()
           : null}
         {dbPasswordUpdated ? this.renderUpdateRedirect() : null}
-        <div className="TopBarSection">
-          <Header />
-        </div>
-        <div className="MainSection">
-          <div className="SideBarSection">
-            <SideBar
-              name={getProjectName(projects, projectID)}
-              params={this.props.match.params}
-              pageRoute={this.props.location.pathname}
-              allMetricsLink={`/projects/${projectID}/metrics`}
-              cpuLink={`/projects/${projectID}/cpu/`}
-              memoryLink={`/projects/${projectID}/memory/`}
-              databaseLink={`/projects/${projectID}/databases`}
-              networkLink={`/projects/${projectID}/network/`}
-            />
-          </div>
-          <div className="MainContentSection">
-            <div className="InformationBarSection">
-              <InformationBar header="Settings" />
+
+        {isRetrieving ? (
+          <div className="NoResourcesMessage">
+            <div className="SpinnerWrapper">
+              <Spinner size="big" />
             </div>
-            <div className="ContentSection SmallContainer">
-              {isRetrieving ? (
-                <div className="NoResourcesMessage">
-                  <div className="SpinnerWrapper">
-                    <Spinner size="big" />
+          </div>
+        ) : (
+          <div className="DatabaseSettingsInfo">
+            <div className="DBSectionTitle">Database information</div>
+            <div className="DatabaseDetail">
+              <div className="DBCardSection">
+                <div className="DBDetailRow">
+                  <div className="DBThead">Type</div>
+                  <div className="DBTDetail uppercase">
+                    {database?.database_flavour_name === "mysql"
+                      ? "MYSQL"
+                      : "POSTGRESQL"}
+                  </div>
+                </div>
+                <div className="DBDetailRow">
+                  <div className="DBThead">Name</div>
+                  <div className="DBTDetail">{database?.name}</div>
+                  <div className="DBIcon">
+                    <CopyText onClick={this.nameOnClick} />
+                    {nameChecked ? <Checked /> : null}
+                  </div>
+                </div>
+                <div className="DBDetailRow">
+                  <div className="DBThead">User</div>
+                  <div className="DBTDetail">{database?.user}</div>
+                  <div className="DBIcon">
+                    <CopyText onClick={this.userOnClick} />
+                    {userChecked ? <Checked /> : null}
+                  </div>
+                </div>
+                {passwordFetched ? (
+                  <div className="DBDetailRow">
+                    <div className="DBColumn1 DBThead">Password</div>
+                    <div className="DBColumn">
+                      {hidden ? (
+                        isRetrievingPassword ? (
+                          <Spinner />
+                        ) : (
+                          "***************************"
+                        )
+                      ) : (
+                        password
+                      )}
+                    </div>
+                    <div className="DBPasswordBtns">
+                      <div className="DBIcon">
+                        <CopyText onClick={this.passwordOnClick} />
+                        {passwordChecked ? <Checked /> : null}
+                      </div>
+                      <div className="DBPassword" onClick={this.togglePassword}>
+                        {hidden ? (
+                          isRetrievingPassword ? (
+                            <Spinner />
+                          ) : (
+                            <Open />
+                          )
+                        ) : (
+                          <Closed />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="DBDetailRow">
+                    <div className="DBColumn1 DBThead">Password</div>
+                    <div className="DBColumn">
+                      {hidden ? (
+                        isRetrievingPassword ? (
+                          <Spinner />
+                        ) : (
+                          "click to get password"
+                        )
+                      ) : (
+                        password
+                      )}
+                    </div>
+                    <div className="DBPasswordBtns">
+                      <div className="DBIcon">
+                        <CopyText onClick={this.passwordOnClick} />
+                        {passwordChecked ? <Checked /> : null}
+                      </div>
+                      <div className="DBPassword" onClick={this.togglePassword}>
+                        {hidden ? (
+                          isRetrievingPassword ? (
+                            <Spinner />
+                          ) : (
+                            <Open />
+                          )
+                        ) : (
+                          <Closed />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div className="DBDetailRow">
+                  <div className="DBThead">Host</div>
+                  <div className="DBTDetail">{database?.host}</div>
+                  <div className="DBIcon">
+                    <CopyText onClick={this.hostOnClick} />
+                    {hostChecked ? <Checked /> : null}
+                  </div>
+                </div>
+                <div className="DBDetailRow">
+                  <div className="DBThead">Port</div>
+                  <div className="DBTDetail">{database?.port}</div>
+                  <div className="DBIcon">
+                    <CopyText onClick={this.portOnClick} />
+                    {portChecked ? <Checked /> : null}
+                  </div>
+                </div>
+                <div className="DBDetailRow">
+                  <div className="DBThead">Size</div>
+                  <div className="DBTDetail">{database?.db_size}</div>
+                </div>
+                <div className="DBDetailRow">
+                  <div className="DBThead">Created</div>
+                  <div className="DBTDetail">{database?.age}</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="DBSections">
+              <div className="DBSectionTitle">Connect to database</div>
+              {database?.database_flavour_name === "mysql" ? (
+                <div className="DBInstructions">
+                  <div className="DBInfoTop">
+                    <div>
+                      To connect to the database, copy and paste the command
+                      below into your terminal. Refer to{" "}
+                      <a
+                        href="https://medium.com/cranecloud/connecting-to-a-remote-mysql-database-a6b3cc15c40b"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        className="MysqlArticle"
+                      >
+                        this article
+                      </a>
+                      , for a more comprehensive guide.
+                    </div>
+                  </div>
+                  <div className="DBInfoBottom">
+                    <div className="DBAccessInfo">{`mysql -u ${database?.user} -p -P ${database?.port} -h ${database?.host} -D ${database?.name}`}</div>
+                    <div className="DBAccessCopy">
+                      <CopyText onClick={this.uriOnClick} />
+                      {uriChecked ? <Checked /> : null}
+                    </div>
                   </div>
                 </div>
               ) : (
-                <div className="DatabaseSettingsInfo">
-                  <div className="DBSectionTitle">Database information</div>
-                  <div className="DatabaseDetail">
-                    <div className="DBCardSection">
-                      <div className="DBDetailRow">
-                        <div className="DBThead">Type</div>
-                        <div className="DBTDetail uppercase">
-                          {database?.database_flavour_name === "mysql"
-                            ? "MYSQL"
-                            : "POSTGRESQL"}
-                        </div>
-                      </div>
-                      <div className="DBDetailRow">
-                        <div className="DBThead">Name</div>
-                        <div className="DBTDetail">{database?.name}</div>
-                        <div className="DBIcon">
-                          <CopyText onClick={this.nameOnClick} />
-                          {nameChecked ? <Checked /> : null}
-                        </div>
-                      </div>
-                      <div className="DBDetailRow">
-                        <div className="DBThead">User</div>
-                        <div className="DBTDetail">{database?.user}</div>
-                        <div className="DBIcon">
-                          <CopyText onClick={this.userOnClick} />
-                          {userChecked ? <Checked /> : null}
-                        </div>
-                      </div>
-                      {passwordFetched ? (
-                        <div className="DBDetailRow">
-                          <div className="DBColumn1 DBThead">Password</div>
-                          <div className="DBColumn">
-                            {hidden ? (
-                              isRetrievingPassword ? (
-                                <Spinner />
-                              ) : (
-                                "***************************"
-                              )
-                            ) : (
-                              password
-                            )}
-                          </div>
-                          <div className="DBPasswordBtns">
-                            <div className="DBIcon">
-                              <CopyText onClick={this.passwordOnClick} />
-                              {passwordChecked ? <Checked /> : null}
-                            </div>
-                            <div
-                              className="DBPassword"
-                              onClick={this.togglePassword}
-                            >
-                              {hidden ? (
-                                isRetrievingPassword ? (
-                                  <Spinner />
-                                ) : (
-                                  <Open />
-                                )
-                              ) : (
-                                <Closed />
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="DBDetailRow">
-                          <div className="DBColumn1 DBThead">Password</div>
-                          <div className="DBColumn">
-                            {hidden ? (
-                              isRetrievingPassword ? (
-                                <Spinner />
-                              ) : (
-                                "click to get password"
-                              )
-                            ) : (
-                              password
-                            )}
-                          </div>
-                          <div className="DBPasswordBtns">
-                            <div className="DBIcon">
-                              <CopyText onClick={this.passwordOnClick} />
-                              {passwordChecked ? <Checked /> : null}
-                            </div>
-                            <div
-                              className="DBPassword"
-                              onClick={this.togglePassword}
-                            >
-                              {hidden ? (
-                                isRetrievingPassword ? (
-                                  <Spinner />
-                                ) : (
-                                  <Open />
-                                )
-                              ) : (
-                                <Closed />
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      <div className="DBDetailRow">
-                        <div className="DBThead">Host</div>
-                        <div className="DBTDetail">{database?.host}</div>
-                        <div className="DBIcon">
-                          <CopyText onClick={this.hostOnClick} />
-                          {hostChecked ? <Checked /> : null}
-                        </div>
-                      </div>
-                      <div className="DBDetailRow">
-                        <div className="DBThead">Port</div>
-                        <div className="DBTDetail">{database?.port}</div>
-                        <div className="DBIcon">
-                          <CopyText onClick={this.portOnClick} />
-                          {portChecked ? <Checked /> : null}
-                        </div>
-                      </div>
-                      <div className="DBDetailRow">
-                        <div className="DBThead">Size</div>
-                        <div className="DBTDetail">{database?.db_size}</div>
-                      </div>
-                      <div className="DBDetailRow">
-                        <div className="DBThead">Created</div>
-                        <div className="DBTDetail">{database?.age}</div>
-                      </div>
+                <div className="DBInstructions">
+                  <div className="DBInfoTop">
+                    <div>
+                      To connect to the database, copy and paste the command
+                      below into your terminal. Refer to{" "}
+                      <a
+                        href="https://medium.com/cranecloud/connecting-to-a-remote-postgresql-database-779637147abf"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        className="MysqlArticle"
+                      >
+                        this article
+                      </a>
+                      , for a more comprehensive guide.
                     </div>
                   </div>
-
-                  <div className="DBSections">
-                    <div className="DBSectionTitle">Connect to database</div>
-                    {database?.database_flavour_name === "mysql" ? (
-                      <div className="DBInstructions">
-                        <div className="DBInfoTop">
-                          <div>
-                            To connect to the database, copy and paste the
-                            command below into your terminal. Refer to{" "}
-                            <a
-                              href="https://medium.com/cranecloud/connecting-to-a-remote-mysql-database-a6b3cc15c40b"
-                              rel="noopener noreferrer"
-                              target="_blank"
-                              className="MysqlArticle"
-                            >
-                              this article
-                            </a>
-                            , for a more comprehensive guide.
-                          </div>
-                        </div>
-                        <div className="DBInfoBottom">
-                          <div className="DBAccessInfo">{`mysql -u ${database?.user} -p -P ${database?.port} -h ${database?.host} -D ${database?.name}`}</div>
-                          <div className="DBAccessCopy">
-                            <CopyText onClick={this.uriOnClick} />
-                            {uriChecked ? <Checked /> : null}
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="DBInstructions">
-                        <div className="DBInfoTop">
-                          <div>
-                            To connect to the database, copy and paste the
-                            command below into your terminal. Refer to{" "}
-                            <a
-                              href="https://medium.com/cranecloud/connecting-to-a-remote-postgresql-database-779637147abf"
-                              rel="noopener noreferrer"
-                              target="_blank"
-                              className="MysqlArticle"
-                            >
-                              this article
-                            </a>
-                            , for a more comprehensive guide.
-                          </div>
-                        </div>
-                        <div className="DBInfoBottom">
-                          <div className="DBAccessInfo">{`psql -h ${database?.host} -p ${database?.port} -d ${database?.name} -U ${database?.user} -W`}</div>
-                          <div className="DBAccessCopy">
-                            <div className="DBPassword">
-                              <CopyText onClick={this.uriCopyPostgresOnClick} />
-                              {uriChecked ? <Checked /> : null}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="DBSections">
-                    <div className="DBSectionTitle">More Options</div>
-                    <div className="DBInstructions">
-                      <div className="DBButtonRow">
-                        <div className="flexa">
-                          <div>
-                            <strong>Change password</strong>
-                          </div>
-                          <div>Update the password of this database.</div>
-                        </div>
-                        <div className="SectionButtons">
-                          <SettingsButton
-                            label="Change password"
-                            onClick={this.showUpdateModal}
-                          />
-                        </div>
-                      </div>
-                      <div className="DBButtonRow">
-                        <div className="flexa">
-                          <div>
-                            <strong>Reset database</strong>
-                          </div>
-                          <div>
-                            Delete all data inside this database and restore it
-                            to its initial state.
-                          </div>
-                        </div>
-                        <div className="SectionButtons">
-                          <SettingsButton
-                            label="Reset this database"
-                            className="Change-Btn"
-                            onClick={this.showResetAlert}
-                          />
-                        </div>
-                        {resetMessage !== "" && (
-                          <Feedback
-                            message={
-                              resetMessage !== ""
-                                ? "Database has been successfully reset."
-                                : null
-                            }
-                            type={isReset ? "success" : "error"}
-                          />
-                        )}
-                      </div>
-                      <div className="DBButtonRow">
-                        <div className="flexa">
-                          <div>
-                            <strong>Delete database</strong>
-                          </div>
-                          <div>
-                            Destroy the entire database, delete all tables and
-                            data inside them.
-                          </div>
-                        </div>
-                        <div className="SectionButtons">
-                          <SettingsButton
-                            label="Delete this database"
-                            className="Change-Btn"
-                            onClick={this.showDeleteAlert}
-                          />
-                        </div>
+                  <div className="DBInfoBottom">
+                    <div className="DBAccessInfo">{`psql -h ${database?.host} -p ${database?.port} -d ${database?.name} -U ${database?.user} -W`}</div>
+                    <div className="DBAccessCopy">
+                      <div className="DBPassword">
+                        <CopyText onClick={this.uriCopyPostgresOnClick} />
+                        {uriChecked ? <Checked /> : null}
                       </div>
                     </div>
-                  </div>
-
-                  <div className="DBButtons">
-                    {openUpdateModal && (
-                      <div className="ProjectDeleteModel">
-                        <Modal
-                          showModal={openUpdateModal}
-                          onClickAway={this.hideUpdateModal}
-                        >
-                          <div className="DeleteDatabaseModel">
-                            <div className="DeleteProjectModalUpperSection">
-                              <div className="ModalFormHeading">
-                                <h2>Update database password</h2>
-                              </div>
-                              <div className="InnerModalDescription">
-                                <BlackInputText
-                                  required
-                                  placeholder="New database Password"
-                                  name="newDatabasePassword"
-                                  value={newDatabasePassword}
-                                  onChange={(e) => {
-                                    this.handleChange(e);
-                                  }}
-                                />
-                                <BlackInputText
-                                  required
-                                  placeholder="Confirm New database Password"
-                                  name="confirmNewDatabasePassword"
-                                  value={confirmNewDatabasePassword}
-                                  onChange={(e) => {
-                                    this.handleChange(e);
-                                  }}
-                                />
-                              </div>
-                            </div>
-                            {(errorMessage || error) && (
-                              <Feedback
-                                type="error"
-                                message={
-                                  errorMessage
-                                    ? "Failed to update password"
-                                    : error
-                                }
-                              />
-                            )}
-                            <div className="DeleteProjectModalLowerSection">
-                              <div className="DeleteProjectModelButtons">
-                                <PrimaryButton
-                                  label="cancel"
-                                  className="CancelBtn"
-                                  onClick={this.hideUpdateModal}
-                                />
-                                <PrimaryButton
-                                  label={
-                                    updatingDBPassword ? <Spinner /> : "Update"
-                                  }
-                                  className="ResetBtn"
-                                  onClick={this.handleSubmitUpdate}
-                                />
-                              </div>
-
-                              {databaseDeleteFailed && dbDeleteMessage && (
-                                <Feedback
-                                  message={dbDeleteMessage}
-                                  type="error"
-                                />
-                              )}
-                            </div>
-                          </div>
-                        </Modal>
-                      </div>
-                    )}
-                    {openDeleteAlert && (
-                      <div className="ProjectDeleteModel">
-                        <Modal
-                          showModal={openDeleteAlert}
-                          onClickAway={this.hideDeleteAlert}
-                        >
-                          <div className="DeleteDatabaseModel">
-                            <div className="DeleteProjectModalUpperSection">
-                              <div className="InnerModalDescription">
-                                Are you sure you want to delete this database
-                                &nbsp;
-                                <span className="DatabaseName">
-                                  {database.name} ?
-                                </span>
-                                <DeleteWarning />
-                              </div>
-                            </div>
-
-                            <div className="DeleteProjectModalLowerSection">
-                              <div className="DeleteProjectModelButtons">
-                                <PrimaryButton
-                                  label="cancel"
-                                  className="CancelBtn"
-                                  onClick={this.hideDeleteAlert}
-                                />
-                                <PrimaryButton
-                                  label={
-                                    deletingDatabase ? <Spinner /> : "Delete"
-                                  }
-                                  className="DeleteBtn"
-                                  onClick={(e) =>
-                                    this.handleDeleteDatabase(
-                                      e,
-                                      projectID,
-                                      databaseID
-                                    )
-                                  }
-                                />
-                              </div>
-
-                              {databaseDeleteFailed && dbDeleteMessage && (
-                                <Feedback
-                                  message={dbDeleteMessage}
-                                  type="error"
-                                />
-                              )}
-                            </div>
-                          </div>
-                        </Modal>
-                      </div>
-                    )}
-
-                    {openResetAlert && (
-                      <div className="ProjectDeleteModel">
-                        <Modal
-                          showModal={openResetAlert}
-                          onClickAway={this.hideResetAlert}
-                        >
-                          <div className="DeleteDatabaseModel">
-                            <div className="DeleteProjectModalUpperSection">
-                              <div className="InnerModalDescription">
-                                Are you sure you want to reset this database
-                                &nbsp;
-                                <span className="DatabaseName">
-                                  {database.name} ?
-                                </span>
-                                <DeleteWarning />
-                              </div>
-                            </div>
-
-                            <div className="DeleteProjectModalLowerSection">
-                              <div className="DeleteProjectModelButtons">
-                                <PrimaryButton
-                                  label="cancel"
-                                  className="CancelBtn"
-                                  onClick={this.hideResetAlert}
-                                />
-                                <PrimaryButton
-                                  label={isReseting ? <Spinner /> : "Reset"}
-                                  className="ResetBtn"
-                                  onClick={(e) =>
-                                    this.handleResetDatabase(
-                                      e,
-                                      projectID,
-                                      databaseID
-                                    )
-                                  }
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </Modal>
-                      </div>
-                    )}
                   </div>
                 </div>
               )}
             </div>
+            <div className="DBSections">
+              <div className="DBSectionTitle">More Options</div>
+              <div className="DBInstructions">
+                <div className="DBButtonRow">
+                  <div className="flexa">
+                    <div>
+                      <strong>Change password</strong>
+                    </div>
+                    <div>Update the password of this database.</div>
+                  </div>
+                  <div className="SectionButtons">
+                    <SettingsButton
+                      label="Change password"
+                      onClick={this.showUpdateModal}
+                    />
+                  </div>
+                </div>
+                <div className="DBButtonRow">
+                  <div className="flexa">
+                    <div>
+                      <strong>Reset database</strong>
+                    </div>
+                    <div>
+                      Delete all data inside this database and restore it to its
+                      initial state.
+                    </div>
+                  </div>
+                  <div className="SectionButtons">
+                    <SettingsButton
+                      label="Reset this database"
+                      className="Change-Btn"
+                      onClick={this.showResetAlert}
+                    />
+                  </div>
+                  {resetMessage !== "" && (
+                    <Feedback
+                      message={
+                        resetMessage !== ""
+                          ? "Database has been successfully reset."
+                          : null
+                      }
+                      type={isReset ? "success" : "error"}
+                    />
+                  )}
+                </div>
+                <div className="DBButtonRow">
+                  <div className="flexa">
+                    <div>
+                      <strong>Delete database</strong>
+                    </div>
+                    <div>
+                      Destroy the entire database, delete all tables and data
+                      inside them.
+                    </div>
+                  </div>
+                  <div className="SectionButtons">
+                    <SettingsButton
+                      label="Delete this database"
+                      className="Change-Btn"
+                      onClick={this.showDeleteAlert}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="DBButtons">
+              {openUpdateModal && (
+                <div className="ProjectDeleteModel">
+                  <Modal
+                    showModal={openUpdateModal}
+                    onClickAway={this.hideUpdateModal}
+                  >
+                    <div className="DeleteDatabaseModel">
+                      <div className="DeleteProjectModalUpperSection">
+                        <div className="ModalFormHeading">
+                          <h2>Update database password</h2>
+                        </div>
+                        <div className="InnerModalDescription">
+                          <BlackInputText
+                            required
+                            placeholder="New database Password"
+                            name="newDatabasePassword"
+                            value={newDatabasePassword}
+                            onChange={(e) => {
+                              this.handleChange(e);
+                            }}
+                          />
+                          <BlackInputText
+                            required
+                            placeholder="Confirm New database Password"
+                            name="confirmNewDatabasePassword"
+                            value={confirmNewDatabasePassword}
+                            onChange={(e) => {
+                              this.handleChange(e);
+                            }}
+                          />
+                        </div>
+                      </div>
+                      {(errorMessage || error) && (
+                        <Feedback
+                          type="error"
+                          message={
+                            errorMessage ? "Failed to update password" : error
+                          }
+                        />
+                      )}
+                      <div className="DeleteProjectModalLowerSection">
+                        <div className="DeleteProjectModelButtons">
+                          <PrimaryButton
+                            className="CancelBtn"
+                            onClick={this.hideUpdateModal}
+                          >
+                            Cancel
+                          </PrimaryButton>
+                          <PrimaryButton
+                            className="ResetBtn"
+                            onClick={this.handleSubmitUpdate}
+                          >
+                            {updatingDBPassword ? <Spinner /> : "Update"}
+                          </PrimaryButton>
+                        </div>
+
+                        {databaseDeleteFailed && dbDeleteMessage && (
+                          <Feedback message={dbDeleteMessage} type="error" />
+                        )}
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+              )}
+              {openDeleteAlert && (
+                <div className="ProjectDeleteModel">
+                  <Modal
+                    showModal={openDeleteAlert}
+                    onClickAway={this.hideDeleteAlert}
+                  >
+                    <div className="DeleteDatabaseModel">
+                      <div className="DeleteProjectModalUpperSection">
+                        <div className="InnerModalDescription">
+                          Are you sure you want to delete this database &nbsp;
+                          <span className="DatabaseName">
+                            {database.name} ?
+                          </span>
+                          <DeleteWarning />
+                        </div>
+                      </div>
+
+                      <div className="DeleteProjectModalLowerSection">
+                        <div className="DeleteProjectModelButtons">
+                          <PrimaryButton
+                            className="CancelBtn"
+                            onClick={this.hideDeleteAlert}
+                          >
+                            Cancel
+                          </PrimaryButton>
+                          <PrimaryButton
+                            className="DeleteBtn"
+                            onClick={(e) =>
+                              this.handleDeleteDatabase(
+                                e,
+                                projectID,
+                                databaseID
+                              )
+                            }
+                          >
+                            {deletingDatabase ? <Spinner /> : "Delete"}
+                          </PrimaryButton>
+                        </div>
+
+                        {databaseDeleteFailed && dbDeleteMessage && (
+                          <Feedback message={dbDeleteMessage} type="error" />
+                        )}
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+              )}
+
+              {openResetAlert && (
+                <div className="ProjectDeleteModel">
+                  <Modal
+                    showModal={openResetAlert}
+                    onClickAway={this.hideResetAlert}
+                  >
+                    <div className="DeleteDatabaseModel">
+                      <div className="DeleteProjectModalUpperSection">
+                        <div className="InnerModalDescription">
+                          Are you sure you want to reset this database &nbsp;
+                          <span className="DatabaseName">
+                            {database.name} ?
+                          </span>
+                          <DeleteWarning />
+                        </div>
+                      </div>
+
+                      <div className="DeleteProjectModalLowerSection">
+                        <div className="DeleteProjectModelButtons">
+                          <PrimaryButton
+                            className="CancelBtn"
+                            onClick={this.hideResetAlert}
+                          >
+                            Cancel
+                          </PrimaryButton>
+                          <PrimaryButton
+                            className="ResetBtn"
+                            onClick={(e) =>
+                              this.handleResetDatabase(e, projectID, databaseID)
+                            }
+                          >
+                            {isReseting ? <Spinner /> : "Reset"}
+                          </PrimaryButton>
+                        </div>
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      </div>
+        )}
+      </DashboardLayout>
     );
   }
 }

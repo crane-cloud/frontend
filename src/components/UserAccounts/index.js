@@ -454,15 +454,17 @@ class UserAccounts extends Component {
                 <div className="ModalButtons">
                   <PrimaryButton
                     className="CancelBtn"
-                    label="Cancel"
                     onClick={() => this.hideCreditsModal()}
-                  />
+                  >
+                    Cancel
+                  </PrimaryButton>
 
                   <PrimaryButton
                     type="button"
-                    label={Adding ? <Spinner /> : "Add"}
                     onClick={() => this.handleCreditSubmittion()}
-                  />
+                  >
+                    {Adding ? <Spinner /> : "Add"}
+                  </PrimaryButton>
                 </div>
                 {Failed && (
                   <Feedback message={"failed to add credits"} type={"error"} />
@@ -486,16 +488,16 @@ class UserAccounts extends Component {
                   <PrimaryButton
                     type="button"
                     className="CancelBtn"
-                    label="Cancel"
                     onClick={this.closeBetaUserModal}
                   >
                     Cancel
                   </PrimaryButton>
                   <PrimaryButton
                     type="button"
-                    label={isAdding ? <Spinner /> : "Confirm"}
                     onClick={this.handleBetaUserSubmit}
-                  />
+                  >
+                    {isAdding ? <Spinner /> : "Confirm"}
+                  </PrimaryButton>
                 </div>
                 {isFailed && (
                   <Feedback

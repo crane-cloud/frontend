@@ -50,6 +50,7 @@ const NewHeader = (props) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   });
+  console.log("hey");
 
   return (
     <header className="NewHeader">
@@ -59,7 +60,8 @@ const NewHeader = (props) => {
           {(!token || token === "") && (
             <div className="HeaderLinksWrap">
               {(match.path === "/terms-of-service" ||
-                match.path === "/privacy-policy" || match.path === "/contact") && (
+                match.path === "/privacy-policy" ||
+                match.path === "/contact") && (
                 <div className="HeaderLink bold">
                   <Link to="/" className="HeaderLinkDocs">
                     Home

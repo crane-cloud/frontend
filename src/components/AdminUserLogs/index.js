@@ -37,7 +37,9 @@ const AdminUserLogs = () => {
                   className={styles.field}
                   placeholder=" Filter by Status"
                 />
-                <PrimaryButton label="Filter" className={styles.FilterButton} />
+                <PrimaryButton className={styles.FilterButton}>
+                  Filter
+                </PrimaryButton>
               </div>
             </div>
             <div className={styles.Table}>
