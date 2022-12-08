@@ -17,6 +17,12 @@
   text-transform: capitalize;
 }
 
+.SmallBtn {
+  padding: 0.3rem 0.5rem;
+  min-width: 4rem;
+  font-weight: 500;
+}
+
 .Primary-Btn:hover {
   background-color: transparent;
   color: var(--secondary-color);
@@ -90,6 +96,20 @@
   border: 1px solid var(--primary-color);
   background-color: var(--primary-color);
   color: white;
+}
+
+.TransparentBtn {
+  background-color: transparent;
+  color: var(--gray-color);
+  border: 1px solid transparent;
+  outline: none;
+  cursor: pointer;
+}
+
+.TransparentBtn:hover {
+  background-color: #f3f4f6;
+  color: #d63b3b;
+  border: 1px solid rgba(27,31,36,0.5);
 }
 
 button:disabled,

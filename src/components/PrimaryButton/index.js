@@ -2,7 +2,7 @@ import React from "react";
 import "./PrimaryButton.css";
 
 const PrimaryButton = (props) => {
-  const { children, className, btntype, color } = props;
+  const { children, className, btntype, color, small, transparent } = props;
 
   const getColorClass = () => {
     switch (color) {
@@ -24,7 +24,7 @@ const PrimaryButton = (props) => {
     <button
       {...props}
       className={`Primary-Btn ${className} ${btntype === "close" && "DeleteBtnOutline"}
-        ${color && getColorClass()}
+        ${color && getColorClass()} ${small && "SmallBtn"} ${transparent && "TransparentBtn"}
       `}
     >
       {children}

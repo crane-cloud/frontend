@@ -710,7 +710,7 @@ class ProjectSettingsPage extends React.Component {
                 </div>
                 <PrimaryButton
                   // className={styles.SettingsButton}
-                  color='primary-outline'
+                  color="primary-outline"
                   onClick={() => {
                     this.showInviteMenu();
                   }}
@@ -719,111 +719,131 @@ class ProjectSettingsPage extends React.Component {
                 </PrimaryButton>
               </div>
               <div className={styles.MemberTable}>
-                <div className={`${styles.MemberTableRow}`}>
-                  <div className={styles.MemberTableHead}>User</div>
-                  <div className={styles.MemberTableHead}>Role</div>
-                  <div className={styles.MemberTableHead}>
-                    Invitation Status
-                  </div>
-                  <div className={styles.MemberTableHead}>Options</div>
-                </div>
                 <div className={styles.MemberBody}>
                   {projectUsers?.map((entry, index) => (
                     <div className={styles.MemberTableRow} key={index}>
-                      <div className={styles.MemberTableCell}>
-                        <div className={styles.NameSecting}>
-                          <Avatar
-                            name={entry.user.name}
-                            className={styles.MemberAvatar}
-                          />
-                          <div className={styles.MemberNameEmail}>
-                            <div className={styles.Wrap}>{entry.user.name}</div>
-                            <div className={styles.Wrap}>
-                              {entry.user.email}
-                            </div>
+                      <div className={styles.MemberInfo}>
+                        <Avatar
+                          name={entry.user.name}
+                          className={styles.MemberAvatar}
+                        />
+                        <div className={styles.MemberNameEmail}>
+                          <div className={styles.UserHeader}>
+                            {entry.user.name}
                           </div>
+                          <div className={styles.Wrap}>{entry.user.email}</div>
                         </div>
                       </div>
-
-                      <div className={styles.MemberTableCell}>
-                        {this.updateRoleValue(entry.role.split("."))}
-                      </div>
-                      <div className={styles.MemberTableCell}>
-                        {entry.role !== "RolesList.owner" && (
-                          <>
-                            {entry.accepted_collaboration_invite === false
-                              ? "Pending"
-                              : "Accepted"}
-                          </>
+                      {entry.role !== "RolesList.owner" &&
+                        entry.accepted_collaboration_invite === false && (
+                          <div className="SubText">Pending Invitation</div>
                         )}
-                      </div>
-                      <div className={styles.MemberTableCell}>
+                      <div className={styles.MemberOptions}>
                         <div
-                          onClick={(e) => {
-                            this.showMenu(entry.user.email);
-                            this.handleClick(e);
-                          }}
+                          className={styles.MemberRole}
+                          onClick={this.updateRoleAlert}
+                          title="Change Role"
                         >
-                          {/* better represented nested */}
-                          {entry.role !== "RolesList.owner" && (
-                            <>
-                              {entry.user.email === currentUserEmail ? (
-                                <MoreIcon className={styles.MoreIcon} />
-                              ) : (
-                                entry.user.email !== currentUserEmail &&
-                                currentUserIsMemberOnly === false && (
-                                  <MoreIcon className={styles.MoreIcon} />
-                                )
-                              )}
-                            </>
-                          )}
-                          {/* options to be determined per user*/}
-                          {actionsMenu && entry.user.email === email && (
-                            <>
-                              <div className={styles.BelowHeader}>
-                                <div className={styles.contextMenu}>
-                                  {/* only if role current user is admin or owner */}
-                                  {entry.user.email !== currentUserEmail &&
-                                  currentUserIsAdminOrOwner === true ? (
-                                    <>
-                                      <div
-                                        className={styles.DropDownLink}
-                                        role="presentation"
-                                        onClick={this.updateRoleAlert}
-                                      >
-                                        Change role
-                                      </div>
-                                      <div
-                                        className={styles.DropDownLink}
-                                        role="presentation"
-                                        onClick={this.showRemoveMemberModal}
-                                      >
-                                        Remove member
-                                      </div>
-                                    </>
-                                  ) : (
-                                    <>
-                                      {entry.user.email ===
-                                        currentUserEmail && (
-                                        <>
-                                          <div
-                                            className={styles.DropDownLink}
-                                            role="presentation"
-                                            onClick={this.showRemoveMemberModal}
-                                          >
-                                            Remove yourself
-                                          </div>
-                                        </>
-                                      )}
-                                    </>
-                                  )}
-                                </div>
-                              </div>
-                            </>
-                          )}
+                          <span>Role:</span>
+                          {this.updateRoleValue(entry.role.split("."))}
+                        </div>
+                        <div>
+                          <PrimaryButton
+                            small
+                            transparent
+                            onClick={this.showRemoveMemberModal}
+                          >
+                            {entry.user.email === currentUserEmail
+                              ? "Leave"
+                              : "Remove"}
+                          </PrimaryButton>
                         </div>
                       </div>
                     </div>
+                    // <div className={styles.MemberTableRow} key={index}>
+                    //   <div className={styles.MemberTableCell}>
+                    //
+                    //   </div>
+
+                    //   <div className={styles.MemberTableCell}>
+                    //     {this.updateRoleValue(entry.role.split("."))}
+                    //   </div>
+                    //   <div className={styles.MemberTableCell}>
+                    //     {entry.role !== "RolesList.owner" && (
+                    //       <>
+                    //         {entry.accepted_collaboration_invite === false
+                    //           ? "Pending"
+                    //           : "Accepted"}
+                    //       </>
+                    //     )}
+                    //   </div>
+                    //   <div className={styles.MemberTableCell}>
+                    //     <div
+                    //       onClick={(e) => {
+                    //         this.showMenu(entry.user.email);
+                    //         this.handleClick(e);
+                    //       }}
+                    //     >
+                    //       {/* better represented nested */}
+                    //       {entry.role !== "RolesList.owner" && (
+                    //         <>
+                    //           {entry.user.email === currentUserEmail ? (
+                    //             <MoreIcon className={styles.MoreIcon} />
+                    //           ) : (
+                    //             entry.user.email !== currentUserEmail &&
+                    //             currentUserIsMemberOnly === false && (
+                    //               <MoreIcon className={styles.MoreIcon} />
+                    //             )
+                    //           )}
+                    //         </>
+                    //       )}
+                    //       {/* options to be determined per user*/}
+                    //       {actionsMenu && entry.user.email === email && (
+                    //         <>
+                    //           <div className={styles.BelowHeader}>
+                    //             <div className={styles.contextMenu}>
+                    //               {/* only if role current user is admin or owner */}
+                    //               {entry.user.email !== currentUserEmail &&
+                    //               currentUserIsAdminOrOwner === true ? (
+                    //                 <>
+                    //                   <div
+                    //                     className={styles.DropDownLink}
+                    //                     role="presentation"
+                    //                     onClick={this.updateRoleAlert}
+                    //                   >
+                    //                     Change role
+                    //                   </div>
+                    //                   <div
+                    //                     className={styles.DropDownLink}
+                    //                     role="presentation"
+                    //                     onClick={this.showRemoveMemberModal}
+                    //                   >
+                    //                     Remove member
+                    //                   </div>
+                    //                 </>
+                    //               ) : (
+                    //                 <>
+                    //                   {entry.user.email ===
+                    //                     currentUserEmail && (
+                    //                     <>
+                    //                       <div
+                    //                         className={styles.DropDownLink}
+                    //                         role="presentation"
+                    //                         onClick={this.showRemoveMemberModal}
+                    //                       >
+                    //                         Remove yourself
+                    //                       </div>
+                    //                     </>
+                    //                   )}
+                    //                 </>
+                    //               )}
+                    //             </div>
+                    //           </div>
+                    //         </>
+                    //       )}
+                    //     </div>
+                    //   </div>
+                    // </div>
                   ))}
                 </div>
               </div>
@@ -1240,6 +1260,7 @@ class ProjectSettingsPage extends React.Component {
                 </PrimaryButton>
                 <PrimaryButton
                   type="button"
+                  color="red"
                   onClick={(e) => this.removeProjectMember(e)}
                 >
                   {removingMember ? <Spinner /> : "Confirm"}

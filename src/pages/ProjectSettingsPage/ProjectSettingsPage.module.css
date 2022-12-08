@@ -187,7 +187,8 @@
 .MembershipHeader {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  gap: 1rem;
   align-items: center;
   justify-content: space-between;
 }
@@ -288,10 +289,6 @@
   color: #ff0000;
 }
 
-.MemberTable {
-  width: 80%;
-}
-
 .MemberTableHead {
   text-transform: uppercase;
   color: var(--primary-color);
@@ -303,19 +300,79 @@
 .MemberNameEmail {
   display: flex;
   flex-direction: column;
-  gap: .2rem;
+  font-size: 1.1rem;
+  gap: .13rem;
   font-weight: 400;
-  font-size: 14px;
 }
+
+.UserHeader {
+  font-weight: 600;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.UserHeader:hover {
+  text-decoration: underline;
+}
+
 .Wrap{
   word-break: break-all;
+  font-size: 0.9rem;
+}
+
+.MemberBody{
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background-color: var(--gray-light-color);
 }
 
 .MemberTableRow {
-  display: grid;
+  display: flex;
   color: #000000;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem ;
+  margin: 0;
+  background-color: white;
 }
+
+.MemberInfo{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.MemberOptions{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(7rem, 1fr));
+  gap: 2rem;
+  align-items: center;
+}
+.MemberRole{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0.3rem;
+  align-items: baseline;
+  font-weight: 600;
+  color: var(--primary-dark-color);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.MemberRole:hover{
+  color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+.MemberRole span{
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
 .MemberTableRowUnregistered {
   display: grid;
   color: #000000;
@@ -331,8 +388,8 @@
 }
 
 .MemberAvatar {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.3rem;
+  height: 2.3rem;
   border-radius: 50%;
   text-align: center;
   font-weight: bold;
