@@ -750,6 +750,7 @@ class ProjectSettingsPage extends React.Component {
                         <div>
                           <PrimaryButton
                             small
+                            noPadding
                             transparent
                             onClick={this.showRemoveMemberModal}
                           >
@@ -977,38 +978,40 @@ class ProjectSettingsPage extends React.Component {
 
         {currentUserIsAdminOrMember === false ? (
           <>
-            <div className="SectionTitle">Manage project</div>
+            <div className="SectionTitle">Danger Zone</div>
             <div className={styles.ProjectInstructions}>
-              <div className={styles.ProjectButtonRow}>
-                <div className={styles.SettingsSectionInfo}>
-                  <div className={styles.SettingsSectionInfoHeader}>
-                    Update project
+              <div className={styles.MemberBody}>
+                <div className={styles.MemberTableRow}>
+                  <div className={styles.SettingsSectionInfo}>
+                    <div className="SubTitle">Update project</div>
+                    <div>Modify the project name and description</div>
                   </div>
-                  <div>Modify the project name and description</div>
-                </div>
-                <div className={styles.SectionButtons}>
-                  <SettingsButton
-                    label="Update"
-                    className={styles.SettingsButtonUpdate}
-                    onClick={this.showUpdateAlert}
-                  />
-                </div>
-              </div>
-              <div className={styles.ProjectButtonRow}>
-                <div className={styles.SettingsSectionInfo}>
-                  <div className={styles.SettingsSectionInfoHeader}>
-                    Delete project
-                  </div>
-                  <div>
-                    Take down your entire project, delete all apps under it.
+                  <div className={styles.SectionButtons}>
+                    <PrimaryButton
+                      onClick={this.showUpdateAlert}
+                      small
+                      color="primary"
+                    >
+                      Update
+                    </PrimaryButton>
                   </div>
                 </div>
-                <div className={styles.SectionButtons}>
-                  <SettingsButton
-                    label="Delete"
-                    className={styles.DeleteBtn}
-                    onClick={this.showDeleteAlert}
-                  />
+                <div className={styles.MemberTableRow}>
+                  <div className={styles.SettingsSectionInfo}>
+                    <div className="SubTitle">Delete project</div>
+                    <div>
+                      Take down your entire project, delete all apps under it.
+                    </div>
+                  </div>
+                  <div className={styles.SectionButtons}>
+                    <PrimaryButton
+                      onClick={this.showDeleteAlert}
+                      small
+                      color="red"
+                    >
+                      Delete
+                    </PrimaryButton>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1108,7 +1111,10 @@ class ProjectSettingsPage extends React.Component {
                       >
                         Cancel
                       </PrimaryButton>
-                      <PrimaryButton onClick={this.handleSubmit}>
+                      <PrimaryButton
+                        onClick={this.handleSubmit}
+                        color="primary"
+                      >
                         {isUpdating ? <Spinner /> : "update project"}
                       </PrimaryButton>
                     </div>
@@ -1212,16 +1218,17 @@ class ProjectSettingsPage extends React.Component {
                     >
                       Cancel
                     </PrimaryButton>
-                    <PrimaryButton
+                    <button
                       className={
                         disableDelete ? styles.InactiveDelete : styles.DeleteBtn
                       }
+                      disabled={disableDelete}
                       onClick={(e) =>
                         this.handleDeleteProject(e, params.projectID)
                       }
                     >
                       {isDeleting ? <Spinner /> : "Delete"}
-                    </PrimaryButton>
+                    </button>
                   </div>
 
                   {isFailed && message && (

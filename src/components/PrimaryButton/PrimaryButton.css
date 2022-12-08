@@ -19,8 +19,11 @@
 
 .SmallBtn {
   padding: 0.3rem 0.5rem;
-  min-width: 4rem;
   font-weight: 500;
+}
+
+.NoPaddingBtn{
+  min-width: 4rem;
 }
 
 .Primary-Btn:hover {

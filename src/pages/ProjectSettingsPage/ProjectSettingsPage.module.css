@@ -166,6 +166,7 @@
   background-color: #fff;
   border: 1px  solid #ff9595;
   color: #ff9595;
+  min-width: 8rem;
 }
 
 .InactiveDelete:hover {
@@ -242,7 +243,8 @@
 .SettingsSectionInfo {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.3rem;
+  font-size: 0.95rem;
 }
 
 .SectionButtons {
@@ -281,6 +283,7 @@
   background-color: #ff0000;
   border: 1px solid #ff0000;
   outline: none;
+  min-width: 8rem;
 }
 
 .DeleteBtn:hover {
