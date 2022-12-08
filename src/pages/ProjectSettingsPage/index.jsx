@@ -632,60 +632,60 @@ class ProjectSettingsPage extends React.Component {
     const { projectID } = params;
 
     return (
-      <DashboardLayout name={name} header="Project Settings">
+      <DashboardLayout name={name} header="Project Settings" short>
         {isUpdated || isDeleted ? this.renderRedirect() : null}
-
-        <div className={styles.ProjectSectionTitle}>Project Details</div>
+        <div className="SectionTitle">Project Details</div>
         <div className={styles.ProjectInstructions}>
-          <div className={styles.ProjectButtonRow}>
-            <div className={styles.SettingsSectionInfo}>
-              <div className={styles.SettingsSectionInfoHeader}>Project ID</div>
-              <div>{projectID}</div>
-            </div>
-            <div className={styles.DBIcon}>
-              <CopyText onClick={this.projectIDOnClick} />
-              {idChecked ? <Checked /> : null}
-            </div>
-          </div>
-
-          <div className={styles.ProjectButtonRow}>
-            <div className={styles.SettingsSectionInfo}>
-              <div className={styles.SettingsSectionInfoHeader}>
-                Project Name
+          <div>
+            <div className="SectionSubTitle">Project ID</div>
+            <div className={styles.ProjectButtonRow}>
+              <div className={styles.SettingsSectionInfo}>
+                <div>{projectID}</div>
               </div>
-              <div>{projectName}</div>
-            </div>
-            <div className={styles.DBIcon}>
-              <CopyText onClick={this.nameOnClick} />
-              {nameChecked ? <Checked /> : null}
-            </div>
-          </div>
-
-          <div className={styles.ProjectButtonRow}>
-            <div className={styles.SettingsSectionInfo}>
-              <div className={styles.SettingsSectionInfoHeader}>
-                Project Description
+              <div className={styles.CopyIcon}>
+                <CopyText onClick={this.projectIDOnClick} />
+                {idChecked ? <Checked /> : null}
               </div>
-              <div>{projectDescription}</div>
-            </div>
-            <div className={styles.DBIcon}>
-              <CopyText onClick={this.projectDescriptionOnClick} />
-              {descriptionChecked ? <Checked /> : null}
             </div>
           </div>
-
-          <div className={styles.ProjectButtonRow}>
-            <div className={styles.SettingsSectionInfo}>
-              <div className={styles.SettingsSectionInfoHeader}>User Token</div>
-              <div className={styles.TokenItem}>{userToken}</div>
+          <div>
+            <div className="SectionSubTitle">Project Name</div>
+            <div className={styles.ProjectButtonRow}>
+              <div className={styles.SettingsSectionInfo}>
+                <div>{projectName}</div>
+              </div>
+              <div className={styles.CopyIcon}>
+                <CopyText onClick={this.nameOnClick} />
+                {nameChecked ? <Checked /> : null}
+              </div>
             </div>
-            <div className={styles.DBIcon}>
-              <CopyText onClick={this.userTokenOnClick} />
-              {tokenChecked ? <Checked /> : null}
+          </div>
+          <div>
+            <div className="SectionSubTitle">Project Description</div>
+            <div className={styles.ProjectButtonRow}>
+              <div className={styles.SettingsSectionInfo}>
+                <div>{projectDescription}</div>
+              </div>
+              <div className={styles.CopyIcon}>
+                <CopyText onClick={this.projectDescriptionOnClick} />
+                {descriptionChecked ? <Checked /> : null}
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="SectionSubTitle">User Token</div>
+            <div className={styles.ProjectButtonRow}>
+              <div className={styles.SettingsSectionInfo}>
+                <div className={styles.TokenItem}>{userToken}</div>
+              </div>
+              <div className={styles.CopyIcon}>
+                <CopyText onClick={this.userTokenOnClick} />
+                {tokenChecked ? <Checked /> : null}
+              </div>
             </div>
           </div>
         </div>
-        <div className={styles.ProjectSectionTitle}>Membership</div>
+        <div className="SectionTitle">Membership</div>
         <div className={styles.ProjectInstructions}>
           {fetchingProjectMembers ? (
             <Spinner />
@@ -695,24 +695,28 @@ class ProjectSettingsPage extends React.Component {
                 <div className={styles.MemberSection}>
                   <div className={styles.SettingsSectionInfoHeader}>
                     {projectUsers?.length === 1 ? (
-                      <div>Project has 1 Team Member</div>
+                      <div className="SectionSubTitle">
+                        Project has 1 Team Member
+                      </div>
                     ) : (
                       <div>Project has {projectUsers?.length} Team Members</div>
                     )}
                   </div>
-                  <div className={styles.MemberDescription}>
+                  <div className="SubText">
                     Members that have accounts on crane cloud can perform
                     different operations on the project depending on their
                     permission.
                   </div>
                 </div>
-                <SettingsButton
-                  label="Invite member"
-                  className={styles.SettingsButton}
+                <PrimaryButton
+                  // className={styles.SettingsButton}
+                  color='primary-outline'
                   onClick={() => {
                     this.showInviteMenu();
                   }}
-                />
+                >
+                  Invite member
+                </PrimaryButton>
               </div>
               <div className={styles.MemberTable}>
                 <div className={`${styles.MemberTableRow}`}>
@@ -953,7 +957,7 @@ class ProjectSettingsPage extends React.Component {
 
         {currentUserIsAdminOrMember === false ? (
           <>
-            <div className={styles.ProjectSectionTitle}>Manage project</div>
+            <div className="SectionTitle">Manage project</div>
             <div className={styles.ProjectInstructions}>
               <div className={styles.ProjectButtonRow}>
                 <div className={styles.SettingsSectionInfo}>
