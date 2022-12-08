@@ -23,6 +23,12 @@ import revertUrl, { clearUrlRevertState } from "../../redux/actions/revertUrl";
 import RemoveIcon from "../../assets/images/remove.svg";
 import { v4 as uuidv4 } from "uuid";
 import { validateDomain, validateDomainName } from "../../helpers/validation";
+import { ReactComponent as Upload } from "../../assets/images/upload-cloud.svg";
+import {
+  handleGetRequest,
+  handlePostRequestWithOutDataObject,
+} from "../../apis/apis";
+import { DisplayDateTime } from "../../helpers/dateConstants";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
 
 class AppSettingsPage extends React.Component {
@@ -61,6 +67,13 @@ class AppSettingsPage extends React.Component {
       updating_command: false,
       updating_form: false,
       urlReverted: false,
+      revisions: [],
+      appDetail: [],
+      fetchingAppDetails: true,
+      revisionId: "",
+      rollBackConfirmationModal: false,
+      revisingApp: false,
+      revisingAppError: "",
     };
 
     this.handleDeleteApp = this.handleDeleteApp.bind(this);
@@ -87,6 +100,10 @@ class AppSettingsPage extends React.Component {
     this.domainRevert = this.domainRevert.bind(this);
     this.disableRevert = this.disableRevert.bind(this);
     this.regenerate = this.regenerate.bind(this);
+    this.getAppRevisionDetails = this.getAppRevisionDetails.bind(this);
+    this.rollbackApp = this.rollbackApp.bind(this);
+    this.showAppRevisionModal = this.showAppRevisionModal.bind(this);
+    this.hideAppRevisionModal = this.hideAppRevisionModal.bind(this);
   }
 
   handleChange(e) {
@@ -129,6 +146,69 @@ class AppSettingsPage extends React.Component {
     clearUpdateAppState();
     clearUrlRevertState();
     getSingleApp(appID);
+    this.getAppRevisionDetails();
+  }
+
+  getAppRevisionDetails() {
+    const {
+      match: { params },
+    } = this.props;
+    const { appID } = params;
+    handleGetRequest(`/apps/${appID}`)
+      .then((response) => {
+        this.setState({
+          appDetail: response.data.data.apps,
+          revisions: response.data.data.revisions,
+          fetchingAppDetails: false,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          error: "Failed to fetch app revisions",
+          fetchingAppDetails: false,
+        });
+      });
+  }
+
+  rollbackApp(revisionId) {
+    const {
+      match: { params },
+    } = this.props;
+    const { appID } = params;
+    const { app } = this.props;
+    const projectID = app.project_id;
+    this.setState({
+      revisingApp: true,
+    });
+    handlePostRequestWithOutDataObject(
+      revisionId,
+      `/apps/${appID}/revise/${revisionId}`
+    )
+      .then(() => {
+        window.location.href = `/projects/${projectID}/apps/${appID}/settings`;
+        this.setState({
+          revisingApp: false,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          error: error,
+        });
+      });
+  }
+
+  showAppRevisionModal(revisionId) {
+    this.setState({
+      revisionId: revisionId,
+      rollBackConfirmationModal: true,
+      reviseAppError: "",
+    });
+  }
+
+  hideAppRevisionModal() {
+    this.setState({
+      rollBackConfirmationModal: false,
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -543,6 +623,13 @@ class AppSettingsPage extends React.Component {
       updating_port,
       updating_form,
       urlReverted,
+      revisions,
+      appDetail,
+      fetchingAppDetails,
+      revisionId,
+      rollBackConfirmationModal,
+      revisingApp,
+      revisingAppError,
       dockerCredentials: { username, email, password, server },
     } = this.state;
     // project name from line 105 disappears on refreash, another source of the name was needed
@@ -554,40 +641,39 @@ class AppSettingsPage extends React.Component {
       { id: 3, name: "3" },
       { id: 4, name: "4" },
     ];
-    console.log(app);
 
     return (
-      <DashboardLayout name={app?.name} header="App Settings">
+      <DashboardLayout name={appDetail?.name} header="App Settings">
         {isDeleted || isReverted ? this.renderRedirect() : null}
 
-        {isRetrieving ? (
+        {fetchingAppDetails ? (
           <div className="NoResourcesMessage">
             <div className="SpinnerWrapper">
               <Spinner size="big" />
             </div>
           </div>
         ) : (
-          isFetched && (
+          <>
             <div className={styles.AppContainer}>
               <div className={styles.APPSections}>
                 <div className={styles.APPSectionTitle}>App Information</div>
                 <div className={styles.APPInstructions}>
                   <div className={styles.APPButtonRow}>
                     <div className={styles.AppLabel}>Name</div>
-                    <div className={styles.flexa}>{app?.name}</div>
+                    <div className={styles.flexa}>{appDetail?.name}</div>
                   </div>
                   <div className={styles.APPButtonRow}>
                     <div className={styles.AppLabel}>Alias</div>
-                    <div className={styles.flexa}>{app?.alias}</div>
+                    <div className={styles.flexa}>{appDetail?.alias}</div>
                   </div>
                   <div className={styles.APPButtonRow}>
                     <div className={styles.AppLabel}>Image</div>
                     <div className={styles.flexa}>
                       <BlackInputText
                         required
-                        placeholder={app?.image}
+                        placeholder={appDetail?.image}
                         name="newImage"
-                        value={newImage ? newImage : app?.image}
+                        value={newImage ? newImage : appDetail?.image}
                         onChange={(e) => {
                           this.handleChange(e);
                         }}
@@ -684,15 +770,13 @@ class AppSettingsPage extends React.Component {
                   )}
 
                   {beta && (
-                    <div
-                      className={`${styles.CustomDomainCheckField}  ${styles.flexa}`}
-                    >
+                    <div className={styles.APPButtonRow}>
+                      <div className={styles.AppLabel}>Custom Domain</div>
                       <Checkbox
                         isBlack
                         onClick={this.toggleCustomDomain}
                         isChecked={isCustomDomain}
                       />
-                      Custom Domain
                     </div>
                   )}
 
@@ -756,7 +840,7 @@ class AppSettingsPage extends React.Component {
                       <div className={styles.ReplicasSelect}>
                         <Select
                           placeholder={
-                            "App has " + app.replicas + " replica(s)"
+                            "App has " + appDetail?.replicas + " replica(s)"
                           }
                           options={replicaOptions}
                           isSmall
@@ -768,14 +852,14 @@ class AppSettingsPage extends React.Component {
                   <div className={styles.APPButtonRow}>
                     <div className={styles.AppLabel}>Status</div>
                     <div className={styles.ShowStatus}>
-                      {app.app_running_status === "running" ? (
+                      {appDetail.app_running_status === "running" ? (
                         <div className={styles.StatusIcon}>
-                          <AppStatus appStatus={app.app_running_status} />
+                          <AppStatus appStatus={appDetail.app_running_status} />
                           <div>&nbsp;Ready</div>
                         </div>
                       ) : (
                         <div className={styles.StatusIcon}>
-                          <AppStatus appStatus={app.app_running_status} />
+                          <AppStatus appStatus={appDetail.app_running_status} />
                           <div>&nbsp;Failing</div>
                         </div>
                       )}
@@ -783,13 +867,19 @@ class AppSettingsPage extends React.Component {
                   </div>
                   <div className={styles.APPButtonRow}>
                     <div className={styles.AppLabel}>Age</div>
-                    <div className={styles.flexa}>{app.age}</div>
+                    <div className={styles.flexa}>{appDetail.age}</div>
+                  </div>
+                  <div className={styles.APPButtonRow}>
+                    <div className={styles.AppLabel}>Current Revision</div>
+                    <div className={styles.flexa}>
+                      {appDetail.revision !== "" ? appDetail.revision : "0"}
+                    </div>
                   </div>
                   <div className={styles.APPButtonRow}>
                     <div className={styles.AppLabel}>Link</div>
                     {app.url ? (
                       <div className={styles.CopyDiv}>
-                        <div className="DBTDetail">{app.url}</div>
+                        <div className="DBTDetail">{appDetail.url}</div>
                         <div className={styles.CopyUrl}>
                           <CopyText onClick={this.urlOnClick} />
                           {urlChecked ? <Checked /> : null}
@@ -830,22 +920,102 @@ class AppSettingsPage extends React.Component {
                   )}
                 </div>
               </div>
+
+              <hr className={styles.HorizontalLine} />
+              <div className={styles.APPSections}>
+                <div className={styles.APPSectionTitle}>App Revisions</div>
+
+                <div className={styles.AppRevisionsDetails}>
+                  {revisions?.map((entry, index) => (
+                    <div className={styles.APPInstruct} key={index}>
+                      <div className={styles.AppRevision}>
+                        <Upload className={styles.Success} />
+                        <div>
+                          <div>
+                            <span className={styles.Entity}>
+                              {entry.revision_id}
+                            </span>{" "}
+                            <span className={styles.Time}>
+                              {DisplayDateTime(new Date(entry.created_at))}
+                            </span>
+                            <span className={styles.AppDetails}>
+                              <span>{appDetail.name}</span> - {entry.image}
+                            </span>
+                          </div>
+                          <div className={styles.RevisionStatus}>
+                            <div className={styles.Success}>
+                              {JSON.stringify(entry.current)
+                                ? "Current"
+                                : "Revision: " + entry.revision}
+                            </div>
+                            <div
+                              className={styles.Rollback__Option}
+                              onClick={() =>
+                                this.showAppRevisionModal(entry.revision_id)
+                              }
+                            >
+                              {JSON.stringify(entry.current)
+                                ? null
+                                : "Rollback here"}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <Modal
+                showModal={rollBackConfirmationModal}
+                onClickAway={this.hideAppRevisionModal}
+              >
+                <div className={styles.ReviseAppModal}>
+                  <div className={styles.DeleteProjectModalUpperSection}>
+                    <div className={styles.WarningContainer}>
+                      <div className={styles.ReviseAppDescription}>
+                        Are you sure you want to revise your app?
+                      </div>
+                    </div>
+                  </div>
+                  <div className={styles.ReviseAppModalLowerSection}>
+                    <div className={styles.ReviseAppModalButtons}>
+                      <PrimaryButton
+                        className="CancelBtn"
+                        label="Cancel"
+                        onClick={this.hideAppRevisionModal}
+                      >
+                        Cancel
+                      </PrimaryButton>
+                      <PrimaryButton
+                        onClick={(e) => this.rollbackApp(revisionId)}
+                      >
+                        {revisingApp ? <Spinner /> : "Confirm"}
+                      </PrimaryButton>
+                    </div>
+                  </div>
+                  {revisingAppError && (
+                    <Feedback type="error" message={"Failed to rollback"} />
+                  )}
+                </div>
+              </Modal>
+
               <hr className={styles.HorizontalLine} />
               <div className={styles.APPSections}>
                 {/* <div className={styles.APPSectionPort}> */}
                 <div className={styles.APPSectionTitle}>Environment Vars</div>
                 <div className={styles.ModalFormInputsEnvVars}>
-                  {app.env_vars && (
+                  {appDetail.env_vars && (
                     <div className={styles.EnvData}>
                       <div className={styles.EnvDataItem}>
                         <div>Name</div>
                         <div>Value</div>
                         <div>Remove</div>
                       </div>
-                      {Object.keys(app.env_vars).map((envVar, index) => (
+                      {Object.keys(appDetail.env_vars).map((envVar, index) => (
                         <div key={index} className={styles.EnvDataItem}>
                           <div>{envVar}</div>
-                          <div>{app.env_vars[envVar]}</div>
+                          <div>{appDetail.env_vars[envVar]}</div>
                           <div className={styles.RemoveIconBtn}>
                             <img
                               src={RemoveIcon}
@@ -861,7 +1031,7 @@ class AppSettingsPage extends React.Component {
 
                   {Object.keys(envVars).length > 0 && (
                     <div className={styles.EnvData}>
-                      {!app.env_vars && (
+                      {!appDetail.env_vars && (
                         <div className={styles.EnvDataItem}>
                           <div>Name</div>
                           <div>Value</div>
@@ -933,7 +1103,7 @@ class AppSettingsPage extends React.Component {
                     <div>
                       <input
                         type="text"
-                        placeholder={app.port}
+                        placeholder={appDetail.port}
                         name="port"
                         value={port}
                         className={styles.portInput}
@@ -958,7 +1128,9 @@ class AppSettingsPage extends React.Component {
                       <div>
                         <input
                           type="text"
-                          placeholder={app.command ? app.command : "command"}
+                          placeholder={
+                            appDetail.command ? appDetail.command : "command"
+                          }
                           name="entryCommand"
                           value={entryCommand}
                           className={styles.portInput}
@@ -1033,13 +1205,15 @@ class AppSettingsPage extends React.Component {
                           <div className={styles.DeleteSubDescription}>
                             This will permanently delete the application. Please
                             confirm by typing{" "}
-                            <b className={styles.DeleteWarning}>{app.name}</b>{" "}
+                            <b className={styles.DeleteWarning}>
+                              {appDetail.name}
+                            </b>{" "}
                             below.
                           </div>
                           <div className={styles.InnerModalDescription}>
                             <BlackInputText
                               required
-                              placeholder={app.name}
+                              placeholder={appDetail.name}
                               name="ConfirmAppname"
                               value={ConfirmAppname}
                               onChange={(e) => {
@@ -1145,7 +1319,7 @@ class AppSettingsPage extends React.Component {
                 </div>
               )}
             </div>
-          )
+          </>
         )}
         {!isRetrieving && !isFetched && (
           <div className={styles.NoResourcesMessage}>
