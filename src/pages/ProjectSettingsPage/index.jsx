@@ -24,6 +24,7 @@ import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.sv
 import DeleteWarning from "../../components/DeleteWarning";
 import BlackInputText from "../../components/BlackInputText";
 import styles from "./ProjectSettingsPage.module.css";
+import "./ProjectSettingsPage.module.css";
 import SettingsButton from "../../components/SettingsButton";
 import Select from "../../components/Select";
 import { retrieveProjectTypes } from "../../helpers/projecttypes";

@@ -385,7 +385,7 @@ tr.TableLoading td {
   padding-right: 2rem;
   max-width: 60rem;
 }
-@media (max-width: 580px) {
+@media (max-width: 750px) {
   .SmallContainer{
     padding-left: 1rem;
     padding-right: 1rem;
@@ -467,4 +467,11 @@ tr.TableLoading td {
 }
 .Card:hover{
   box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.2);
+}
+
+.BigCard{
+  padding: 1.2rem;
+  background: #ffffff;
+  border-radius: 15px;
+  border: 1px solid var(--gray-light-color);
 }

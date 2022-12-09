@@ -88,7 +88,7 @@ class ProjectDashboardPage extends React.Component {
         name={projectDetails?.name}
         header="Project Dashboard"
       >
-        <h3>Project Metrics</h3>
+        <div className="SectionTitle">Project Metrics</div>
         <div className="MetricCardsSection">
           <MetricsCard
             icon={<MetricIcon />}
@@ -124,7 +124,7 @@ class ProjectDashboardPage extends React.Component {
             />
           </MetricsCard>
         </div>
-        <h3>Project Apps</h3>
+        <div className="SectionTitle">Project Apps</div>
         <AppsList
           params={params}
           word=""

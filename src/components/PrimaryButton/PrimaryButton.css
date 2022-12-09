@@ -43,13 +43,13 @@
   background-color: #000;
 }
 
-.Primary-Btn.DeleteBtn {
+.Primary-Btn.PrimaryDeleteBtn {
   border: 1px solid #d63b3b;
   color: white;
   background-color: #d63b3b;
 }
 
-.Primary-Btn.DeleteBtn:hover {
+.Primary-Btn.PrimaryDeleteBtn:hover {
   color: #d63b3b;
   background-color: transparent;
 }
@@ -60,13 +60,13 @@
   background-color: #000;
 }
 
-.Primary-Btn.DeleteBtnOutline {
+.Primary-Btn.PrimaryDeleteBtnOutline {
   border: 1px solid #d63b3b;
   color: #d63b3b;
   background-color: transparent;
 }
 
-.Primary-Btn.DeleteBtnOutline:hover {
+.Primary-Btn.PrimaryDeleteBtnOutline:hover {
   color: #fff;
   background-color: #d63b3b;
 }

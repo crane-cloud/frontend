@@ -13,9 +13,9 @@ const PrimaryButton = (props) => {
       case "black":
         return "BlackPrimaryBtn";
       case "red":
-        return "DeleteBtn";
+        return "PrimaryDeleteBtn";
       case "red-outline":
-        return "DeleteBtnOutline";
+        return "PrimaryDeleteBtnOutline";
       default:
         return "primary-button--blue";
     }
