@@ -6,7 +6,11 @@ import getProjectMemory from "../../redux/actions/projectMemory";
 import getProjectNetwork from "../../redux/actions/projectNetwork";
 import LineChartComponent from "../../components/LineChart";
 import MetricsCard from "../../components/MetricsCard";
-import { ReactComponent as MetricIcon } from "../../assets/images/resource-icon.svg";
+// import { ReactComponent as MetricIcon } from "../../assets/images/resource-icon.svg";
+
+import { ReactComponent as CPUIcon } from "../../assets/images/cpu.svg";
+import { ReactComponent as NetworkIcon } from "../../assets/images/wifi.svg";
+import { ReactComponent as MemoryIcon } from "../../assets/images/hard-drive.svg";
 import "./ProjectDashboardPage.css";
 import {
   formatCPUMetrics,
@@ -91,7 +95,7 @@ class ProjectDashboardPage extends React.Component {
         <div className="SectionTitle">Project Metrics</div>
         <div className="MetricCardsSection">
           <MetricsCard
-            icon={<MetricIcon />}
+            icon={<CPUIcon />}
             title="CPU"
             className="CardDimensions"
           >
@@ -102,7 +106,7 @@ class ProjectDashboardPage extends React.Component {
             />
           </MetricsCard>
           <MetricsCard
-            icon={<MetricIcon />}
+            icon={<MemoryIcon />}
             title="MEMORY"
             className="CardDimensions"
           >
@@ -113,7 +117,7 @@ class ProjectDashboardPage extends React.Component {
             />
           </MetricsCard>
           <MetricsCard
-            icon={<MetricIcon />}
+            icon={<NetworkIcon />}
             title="NETWORK"
             className="CardDimensions"
           >
