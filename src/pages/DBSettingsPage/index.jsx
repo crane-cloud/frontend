@@ -25,7 +25,6 @@ import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
 import BlackInputText from "../../components/BlackInputText";
-import SettingsButton from "../../components/SettingsButton";
 import "./DBSettingsPage.css";
 import { getProjectName } from "../../helpers/projectName";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
@@ -495,7 +494,7 @@ class DBSettingsPage extends React.Component {
                     </div>
                     <div className="DBInfoBottom">
                       <code className="DBAccessInfo">
-                        {`postgresql://${database.user}:${database.password}@${database.host}:${database.port}/${database.name}`}
+                        {`postgresql://${database?.user}:${database?.password}@${database?.host}:${database?.port}/${database?.name}`}
                       </code>
                       <div className="DBAccessCopy">
                         <div className="DBPassword">

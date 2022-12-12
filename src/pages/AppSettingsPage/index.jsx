@@ -21,7 +21,6 @@ import getSingleApp, {
 } from "../../redux/actions/getSingleApp";
 import updateApp, { clearUpdateAppState } from "../../redux/actions/updateApp";
 import revertUrl, { clearUrlRevertState } from "../../redux/actions/revertUrl";
-import RemoveIcon from "../../assets/images/remove.svg";
 import { v4 as uuidv4 } from "uuid";
 import { validateDomain, validateDomainName } from "../../helpers/validation";
 import { ReactComponent as Upload } from "../../assets/images/upload-cloud.svg";
