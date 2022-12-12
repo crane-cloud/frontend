@@ -226,10 +226,11 @@ class ProjectSettingsPage extends React.Component {
     this.setState({ email: userEmail });
   }
 
-  showRemoveMemberModal() {
+  showRemoveMemberModal(email) {
     this.setState({
       removeMemberModal: true,
       removeMemberError: "",
+      email: email,
     });
   }
 
@@ -487,8 +488,11 @@ class ProjectSettingsPage extends React.Component {
     this.setState({ openUpdateAlert: true });
   }
 
-  updateRoleAlert() {
-    this.setState({ openRoleUpdateAlert: true });
+  updateRoleAlert(email) {
+    this.setState({
+      openRoleUpdateAlert: true,
+      email: email,
+    });
   }
 
   showDeleteAlert() {
@@ -709,15 +713,17 @@ class ProjectSettingsPage extends React.Component {
                     permission.
                   </div>
                 </div>
-                <PrimaryButton
-                  // className={styles.SettingsButton}
-                  color="primary-outline"
-                  onClick={() => {
-                    this.showInviteMenu();
-                  }}
-                >
-                  Invite member
-                </PrimaryButton>
+                {currentUserIsAdminOrOwner && (
+                  <PrimaryButton
+                    // className={styles.SettingsButton}
+                    color="primary-outline"
+                    onClick={() => {
+                      this.showInviteMenu();
+                    }}
+                  >
+                    Invite member
+                  </PrimaryButton>
+                )}
               </div>
               <div className={styles.MemberTable}>
                 <div className={styles.MemberBody}>
@@ -742,23 +748,45 @@ class ProjectSettingsPage extends React.Component {
                       <div className={styles.MemberOptions}>
                         <div
                           className={styles.MemberRole}
-                          onClick={this.updateRoleAlert}
+                          onClick={() => {
+                            !currentUserIsMemberOnly &&
+                              this.updateRoleAlert(entry.user.email);
+                          }}
                           title="Change Role"
                         >
                           <span>Role:</span>
                           {this.updateRoleValue(entry.role.split("."))}
                         </div>
                         <div>
-                          <PrimaryButton
-                            small
-                            noPadding
-                            transparent
-                            onClick={this.showRemoveMemberModal}
-                          >
-                            {entry.user.email === currentUserEmail
-                              ? "Leave"
-                              : "Remove"}
-                          </PrimaryButton>
+                          {entry.user.email === currentUserEmail
+                            ? entry.role !== "RolesList.owner" && (
+                                <PrimaryButton
+                                  small
+                                  noPadding
+                                  transparent
+                                  onClick={() => {
+                                    this.showRemoveMemberModal(
+                                      entry.user.email
+                                    );
+                                  }}
+                                >
+                                  Leave
+                                </PrimaryButton>
+                              )
+                            : currentUserIsAdminOrOwner && (
+                                <PrimaryButton
+                                  small
+                                  noPadding
+                                  transparent
+                                  onClick={() => {
+                                    this.showRemoveMemberModal(
+                                      entry.user.email
+                                    );
+                                  }}
+                                >
+                                  Remove
+                                </PrimaryButton>
+                              )}
                         </div>
                       </div>
                     </div>
@@ -966,10 +994,11 @@ class ProjectSettingsPage extends React.Component {
                   )}
                   <div className={styles.SendInvitationButton}>
                     <PrimaryButton
-                      label={updatingMemberRole ? <Spinner /> : "Update Role"}
-                      className={styles.BlueBtn}
                       onClick={this.handleMemberRoleUpdate}
-                    />
+                      color="primary"
+                    >
+                      {updatingMemberRole ? <Spinner /> : "Update Role"}
+                    </PrimaryButton>
                   </div>
                 </div>
               </div>
@@ -1252,7 +1281,10 @@ class ProjectSettingsPage extends React.Component {
                   {currentUserEmail === email ? (
                     <>Are you sure you want to remove yourself?</>
                   ) : (
-                    <>Are you sure you want to remove this member?</>
+                    <>
+                      Are you sure you want to remove the member with
+                      <br /> email: {email}?
+                    </>
                   )}
                 </div>
               </div>

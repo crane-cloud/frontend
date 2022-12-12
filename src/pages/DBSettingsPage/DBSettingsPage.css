@@ -155,7 +155,7 @@
   background: var( --gray-bg-light-color);
   padding: 0.5rem;
   word-wrap: break-word;
-  width: 50rem;
+  width: 40rem;
   overflow-wrap: break-word;
   white-space: pre-wrap;
 }

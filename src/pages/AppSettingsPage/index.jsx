@@ -9,6 +9,7 @@ import Modal from "../../components/Modal";
 import Feedback from "../../components/Feedback";
 import Checkbox from "../../components/Checkbox";
 import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
+import { ReactComponent as DeleteIcon } from "../../assets/images/trash-2.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import Select from "../../components/Select";
 import DeleteWarning from "../../components/DeleteWarning";
@@ -643,7 +644,7 @@ class AppSettingsPage extends React.Component {
     ];
 
     return (
-      <DashboardLayout name={appDetail?.name} header="App Settings">
+      <DashboardLayout name={appDetail?.name} header="App Settings" short>
         {isDeleted || isReverted ? this.renderRedirect() : null}
 
         {fetchingAppDetails ? (
@@ -653,11 +654,11 @@ class AppSettingsPage extends React.Component {
             </div>
           </div>
         ) : (
-          <>
-            <div className={styles.AppContainer}>
+          <div>
+            <div className={styles.AppPageLayout}>
               <div className={styles.APPSections}>
-                <div className={styles.APPSectionTitle}>App Information</div>
-                <div className={styles.APPInstructions}>
+                <div className="SectionTitle">App Information</div>
+                <div className={`${styles.APPInstructions} BigCard`}>
                   <div className={styles.APPButtonRow}>
                     <div className={styles.AppLabel}>Name</div>
                     <div className={styles.flexa}>{appDetail?.name}</div>
@@ -909,7 +910,7 @@ class AppSettingsPage extends React.Component {
                         className={isUpdating && styles.deactivatedBtn}
                         onClick={this.handleSubmit}
                       >
-                        {isUpdating && updating_form ? <Spinner /> : "UPDATE"}
+                        {isUpdating && updating_form ? <Spinner /> : "Update"}
                       </PrimaryButton>
                     </div>
                   </div>
@@ -921,11 +922,10 @@ class AppSettingsPage extends React.Component {
                 </div>
               </div>
 
-              <hr className={styles.HorizontalLine} />
               <div className={styles.APPSections}>
-                <div className={styles.APPSectionTitle}>App Revisions</div>
+                <div className="SectionTitle">App Revisions</div>
 
-                <div className={styles.AppRevisionsDetails}>
+                <div className={`${styles.AppRevisionsDetails} BigCard`}>
                   {revisions?.map((entry, index) => (
                     <div className={styles.APPInstruct} key={index}>
                       <div className={styles.AppRevision}>
@@ -1000,62 +1000,70 @@ class AppSettingsPage extends React.Component {
                 </div>
               </Modal>
 
-              <hr className={styles.HorizontalLine} />
               <div className={styles.APPSections}>
                 {/* <div className={styles.APPSectionPort}> */}
-                <div className={styles.APPSectionTitle}>Environment Vars</div>
-                <div className={styles.ModalFormInputsEnvVars}>
-                  {appDetail.env_vars && (
-                    <div className={styles.EnvData}>
-                      <div className={styles.EnvDataItem}>
-                        <div>Name</div>
-                        <div>Value</div>
-                        <div>Remove</div>
-                      </div>
-                      {Object.keys(appDetail.env_vars).map((envVar, index) => (
-                        <div key={index} className={styles.EnvDataItem}>
-                          <div>{envVar}</div>
-                          <div>{appDetail.env_vars[envVar]}</div>
-                          <div className={styles.RemoveIconBtn}>
-                            <img
-                              src={RemoveIcon}
-                              alt="remove_ico"
-                              onClick={() => this.removeEnvVar(index)}
-                              role="presentation"
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {Object.keys(envVars).length > 0 && (
-                    <div className={styles.EnvData}>
-                      {!appDetail.env_vars && (
+                <div className="SectionTitle">Environment Variables</div>
+                <div className={`${styles.ModalFormInputsEnvVars} BigCard`}>
+                  <div>
+                    {appDetail.env_vars && (
+                      <div className={styles.EnvData}>
                         <div className={styles.EnvDataItem}>
                           <div>Name</div>
                           <div>Value</div>
-                          <div>Remove</div>
                         </div>
-                      )}
+                        {Object.keys(appDetail.env_vars).map(
+                          (envVar, index) => (
+                            <div key={index} className={styles.EnvDataItem}>
+                              <div>{envVar}</div>
+                              <div className={styles.EnvValue}>
+                                <div style={{ flex: 1 }}>
+                                  {appDetail.env_vars[envVar]}
+                                </div>
+                                <div
+                                  className={styles.RemoveIconBtn}
+                                  onClick={() => this.removeEnvVar(index)}
+                                  title="Remove Item"
+                                >
+                                  <DeleteIcon width={16} height={16} />
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    )}
 
-                      {Object.keys(envVars).map((envVar, index) => (
-                        <div key={uuidv4()} className={styles.EnvDataItem}>
-                          <div>{Object.keys(envVars)[index]}</div>
-                          <div>{envVars[Object.keys(envVars)[index]]}</div>
-                          <div className={styles.RemoveIconBtn}>
-                            <img
-                              src={RemoveIcon}
-                              alt="remove_ico"
-                              onClick={() => this.removeEnvVar(index)}
-                              role="presentation"
-                            />
+                    {Object.keys(envVars).length > 0 && (
+                      <div className={styles.EnvData}>
+                        {!appDetail.env_vars && (
+                          <div className={styles.EnvDataItem}>
+                            <div>key</div>
+                            <div>Value</div>
+                            <div></div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  <div className={styles.EnvDataItem}>
+                        )}
+
+                        {Object.keys(envVars).map((envVar, index) => (
+                          <div key={uuidv4()} className={styles.EnvDataItem}>
+                            <div>{Object.keys(envVars)[index]}</div>
+                            <div className={styles.EnvValue}>
+                              <div style={{ flex: 1 }}>
+                                {envVars[Object.keys(envVars)[index]]}
+                              </div>
+                              <div
+                                className={styles.RemoveIconBtn}
+                                onClick={() => this.removeEnvVar(index)}
+                                title="Remove Item"
+                              >
+                                <DeleteIcon width={16} height={16} />
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div className={styles.EnvInputItem}>
                     <input
                       placeholder="Name"
                       name="varName"
@@ -1070,12 +1078,17 @@ class AppSettingsPage extends React.Component {
                       name="varValue"
                       value={varValue}
                       className={styles.varInput}
+                      style={{ flex: 1 }}
                       onChange={(e) => {
                         this.handleChange(e);
                       }}
                     />
                     <div className={styles.EnvVarsAddBtn}>
-                      <PrimaryButton onClick={this.addEnvVar} color="primary">
+                      <PrimaryButton
+                        onClick={this.addEnvVar}
+                        color="primary"
+                        small
+                      >
                         Add
                       </PrimaryButton>
                     </div>
@@ -1083,8 +1096,8 @@ class AppSettingsPage extends React.Component {
                   {Object.keys(envVars).length > 0 && (
                     <div className={styles.APPButton}>
                       <div className={styles.UpperSection}>
-                        <PrimaryButton onClick={this.handleEnvVarsSubmit}>
-                          {isUpdating ? <Spinner /> : "UPDATE"}
+                        <PrimaryButton onClick={this.handleEnvVarsSubmit} small>
+                          {isUpdating ? <Spinner /> : "Update"}
                         </PrimaryButton>
                       </div>
                     </div>
@@ -1092,12 +1105,9 @@ class AppSettingsPage extends React.Component {
                 </div>
               </div>
 
-              <hr className={styles.HorizontalLine} />
               <div className={styles.APPSections}>
-                <div className={styles.APPSectionTitle}>
-                  Port & Entry commands
-                </div>
-                <div className={styles.AppOtherSection}>
+                <div className="SectionTitle">Port & Entry commands</div>
+                <div className={`${styles.AppOtherSection} BigCard`}>
                   <div className={styles.PortSection}>
                     <div>Port</div>
                     <div>
@@ -1115,10 +1125,10 @@ class AppSettingsPage extends React.Component {
                     <div className={styles.APPOptionsButton}>
                       <PrimaryButton
                         disable={isUpdating}
-                        className={isUpdating && styles.deactivatedBtn}
                         onClick={this.handlePortSubmit}
+                        small
                       >
-                        {isUpdating && updating_port ? <Spinner /> : "UPDATE"}
+                        {isUpdating && updating_port ? <Spinner /> : "Update"}
                       </PrimaryButton>
                     </div>
                   </div>
@@ -1143,13 +1153,14 @@ class AppSettingsPage extends React.Component {
                     <div className={styles.APPOptionsButton}>
                       <PrimaryButton
                         disable={isUpdating}
-                        className={isUpdating && styles.deactivatedBtn}
+                        // className={isUpdating && styles.deactivatedBtn}
                         onClick={this.handleCommandSubmit}
+                        small
                       >
                         {isUpdating && updating_command ? (
                           <Spinner />
                         ) : (
-                          "UPDATE"
+                          "Update"
                         )}
                       </PrimaryButton>
                     </div>
@@ -1172,17 +1183,19 @@ class AppSettingsPage extends React.Component {
                 </div>
               </div>
 
-              <hr className={styles.HorizontalLine} />
               <div className={styles.APPSections}>
-                <div className={styles.APPSectionDelete}>
-                  Delete application
-                </div>
-                <div className={styles.AppDeleteInstructions}>
+                <div className="SectionTitle">Danger Zone</div>
+                <div className={`${styles.AppDeleteInstructions} BigCard`}>
                   <div className={styles.APPInstruct}>
+                    <div className="SubTitle">Delete Application</div>
                     <div>Deleting your app is irreversible.</div>
                   </div>
                   <div className={styles.DeleteButtonDiv}>
-                    <PrimaryButton color="red" onClick={this.showDeleteAlert}>
+                    <PrimaryButton
+                      color="red"
+                      onClick={this.showDeleteAlert}
+                      small
+                    >
                       Delete App
                     </PrimaryButton>
                   </div>
@@ -1319,7 +1332,7 @@ class AppSettingsPage extends React.Component {
                 </div>
               )}
             </div>
-          </>
+          </div>
         )}
         {!isRetrieving && !isFetched && (
           <div className={styles.NoResourcesMessage}>
