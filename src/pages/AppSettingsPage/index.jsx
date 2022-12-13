@@ -59,7 +59,7 @@ class AppSettingsPage extends React.Component {
       uri: app?.uri ? app?.uri : "",
       varName: "",
       varValue: "",
-      envVars: "",
+      envVars: {},
       entryCommand: app?.command ? app?.command : "",
       port: app?.port ? app?.port : "",
       replicas: "",
@@ -104,6 +104,7 @@ class AppSettingsPage extends React.Component {
     this.rollbackApp = this.rollbackApp.bind(this);
     this.showAppRevisionModal = this.showAppRevisionModal.bind(this);
     this.hideAppRevisionModal = this.hideAppRevisionModal.bind(this);
+    this.removeExistingEnvVar = this.removeExistingEnvVar.bind(this);
   }
 
   handleChange(e) {
@@ -334,6 +335,7 @@ class AppSettingsPage extends React.Component {
   }
 
   removeEnvVar(index) {
+
     const { envVars } = this.state;
     const keyToRemove = Object.keys(envVars)[index];
     const newEnvVars = Object.keys(envVars).reduce((object, key) => {
@@ -342,8 +344,25 @@ class AppSettingsPage extends React.Component {
       }
       return object;
     }, {});
-
     this.setState({ envVars: newEnvVars });
+  }
+  removeExistingEnvVar(index){
+     const {
+      match: { params },
+      updateApp,
+     } = this.props;
+     const {
+      appDetail
+     } = this.state;
+    const { appID } = params;
+    const keyToRemove = Object.keys(appDetail.env_vars)[index];
+    const newEnvVars = Object.keys(appDetail.env_vars).reduce((object, key) => {
+      if (key !== keyToRemove) {
+        object[key] = appDetail.env_vars[key]; // eslint-disable-line no-param-reassign
+      }
+      return object;
+    }, {});
+     updateApp(appID, { env_vars: newEnvVars });
   }
 
   togglePrivateImage() {
@@ -1019,9 +1038,9 @@ class AppSettingsPage extends React.Component {
                                   {appDetail.env_vars[envVar]}
                                 </div>
                                 <div
-                                  className={styles.RemoveIconBtn}
-                                  onClick={() => this.removeEnvVar(index)}
-                                  title="Remove Item"
+                                  className={isUpdating  ? styles.RemoveIconUpdating : styles.RemoveIconBtn}
+                                  onClick={() => this.removeExistingEnvVar(index)}
+                                  title={isUpdating ? "Updating" :"Remove Item"}
                                 >
                                   <DeleteIcon width={16} height={16} />
                                 </div>

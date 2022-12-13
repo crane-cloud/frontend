@@ -403,6 +403,12 @@
   color: #fff;
   border: 1px solid #fb0c0c;
 }
+.RemoveIconUpdating {
+  background-color: #fb0c0c;
+  opacity: 0.2;
+  color: #fff;
+  border: 1px solid #fb0c0c;
+}
 
 
 /* .EnvVarsInputGroup input {
