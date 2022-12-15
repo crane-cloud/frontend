@@ -198,8 +198,8 @@ class UserProfile extends React.Component {
                     </section>
                     <section className={styles.ContainerSection}>
                       <div className={styles.HeaderSection}>
-                        <div className={styles.UserSectionTitle}>Information</div>
-                        <div className={styles.UserSectionSubTitle}>
+                        <div className={styles.SectionTitle}>Information</div>
+                        <div className={styles.SectionSubTitle}>
                           Your identity on crane cloud
                         </div>
                       </div>
@@ -280,10 +280,10 @@ class UserProfile extends React.Component {
                     </section>
                     <section className={styles.ContainerSection}>
                       <div className={styles.HeaderSection}>
-                        <div className={styles.UserSectionTitle}>
+                        <div className={styles.SectionTitle}>
                           More information
                         </div>
-                        <div className={styles.UserSectionSubTitle}>
+                        <div className={styles.SectionSubTitle}>
                           More information about a user
                         </div>
                       </div>
@@ -291,8 +291,8 @@ class UserProfile extends React.Component {
                         <div className={styles.ContainerCard}>
                           <div className={styles.ExtraContentDiv}>
                             <div>
-                              <div className={styles.UserSectionTitle}>Credits</div>
-                              <div className={styles.UserSectionSubTitle}>
+                              <div className={styles.SectionTitle}>Credits</div>
+                              <div className={styles.SectionSubTitle}>
                                 Assigned by Admin for billing purporses
                               </div>
                             </div>
@@ -311,7 +311,7 @@ class UserProfile extends React.Component {
                             </div>
                           </div>
                           <div className={styles.ExtraContentDiv}>
-                            <div className={styles.UserSectionTitle}>Beta User</div>
+                            <div className={styles.SectionTitle}>Beta User</div>
                             <div
                               className={
                                 user.is_beta_user === true

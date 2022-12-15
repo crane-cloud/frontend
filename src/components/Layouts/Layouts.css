@@ -52,16 +52,11 @@
 .DashboardSmallContainer {
     padding: 0 2rem 2rem 2rem;
 }
-@media (max-width: 740px) {
-    .DashboardMainSection {
-        grid-template-columns: 0 1fr;
-    }
-}
+
 @media (max-width: 580px) {
     .DashboardSmallContainer {
         padding: 0 1rem 1rem 2rem;
     }
 }
   
-
   

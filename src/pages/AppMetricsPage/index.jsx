@@ -5,9 +5,7 @@ import PropTypes from "prop-types";
 import Spinner from "../../components/Spinner";
 import { Redirect } from "react-router-dom";
 import MetricsCard from "../../components/MetricsCard";
-import { ReactComponent as CPUIcon } from "../../assets/images/cpu.svg";
-import { ReactComponent as NetworkIcon } from "../../assets/images/wifi.svg";
-import { ReactComponent as MemoryIcon } from "../../assets/images/hard-drive.svg";
+import { ReactComponent as MetricIcon } from "../../assets/images/resource-icon.svg";
 import styles from "./AppMetricsPage.module.css";
 import LineChartComponent from "../../components/LineChart";
 import LogsFrame from "../../components/LogsFrame";
@@ -70,10 +68,8 @@ class AppMetricsPage extends React.Component {
       match: { params },
     } = this.props;
     const { projectID, appID } = params;
-    handlePostRequestWithDataObject(
-      { timestamps: true },
-      `/projects/${projectID}/apps/${appID}/logs`
-    )
+    handlePostRequestWithDataObject({ timestamps: true },
+      `/projects/${projectID}/apps/${appID}/logs`)
       .then((response) => {
         this.setState({
           logs: response.data.data.pods_logs,
@@ -243,7 +239,7 @@ class AppMetricsPage extends React.Component {
             }}
           >
             <MetricsCard
-              icon={<MemoryIcon />}
+              icon={<MetricIcon />}
               title="Memory"
               className="CardDimensions"
             >
@@ -260,7 +256,7 @@ class AppMetricsPage extends React.Component {
             }}
           >
             <MetricsCard
-              icon={<CPUIcon />}
+              icon={<MetricIcon />}
               title="CPU"
               className="CardDimensions"
             >
@@ -277,7 +273,7 @@ class AppMetricsPage extends React.Component {
             }}
           >
             <MetricsCard
-              icon={<NetworkIcon />}
+              icon={<MetricIcon />}
               title="Network"
               className="CardDimensions"
             >

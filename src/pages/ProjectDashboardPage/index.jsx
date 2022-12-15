@@ -6,11 +6,7 @@ import getProjectMemory from "../../redux/actions/projectMemory";
 import getProjectNetwork from "../../redux/actions/projectNetwork";
 import LineChartComponent from "../../components/LineChart";
 import MetricsCard from "../../components/MetricsCard";
-// import { ReactComponent as MetricIcon } from "../../assets/images/resource-icon.svg";
-
-import { ReactComponent as CPUIcon } from "../../assets/images/cpu.svg";
-import { ReactComponent as NetworkIcon } from "../../assets/images/wifi.svg";
-import { ReactComponent as MemoryIcon } from "../../assets/images/hard-drive.svg";
+import { ReactComponent as MetricIcon } from "../../assets/images/resource-icon.svg";
 import "./ProjectDashboardPage.css";
 import {
   formatCPUMetrics,
@@ -92,10 +88,10 @@ class ProjectDashboardPage extends React.Component {
         name={projectDetails?.name}
         header="Project Dashboard"
       >
-        <div className="SectionTitle">Project Metrics</div>
+        <h3>Project Metrics</h3>
         <div className="MetricCardsSection">
           <MetricsCard
-            icon={<CPUIcon />}
+            icon={<MetricIcon />}
             title="CPU"
             className="CardDimensions"
           >
@@ -106,7 +102,7 @@ class ProjectDashboardPage extends React.Component {
             />
           </MetricsCard>
           <MetricsCard
-            icon={<MemoryIcon />}
+            icon={<MetricIcon />}
             title="MEMORY"
             className="CardDimensions"
           >
@@ -117,7 +113,7 @@ class ProjectDashboardPage extends React.Component {
             />
           </MetricsCard>
           <MetricsCard
-            icon={<NetworkIcon />}
+            icon={<MetricIcon />}
             title="NETWORK"
             className="CardDimensions"
           >
@@ -128,7 +124,7 @@ class ProjectDashboardPage extends React.Component {
             />
           </MetricsCard>
         </div>
-        <div className="SectionTitle">Project Apps</div>
+        <h3>Project Apps</h3>
         <AppsList
           params={params}
           word=""

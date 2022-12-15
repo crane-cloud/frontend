@@ -17,15 +17,6 @@
   text-transform: capitalize;
 }
 
-.SmallBtn {
-  padding: 0.3rem 0.5rem;
-  font-weight: 500;
-}
-
-.NoPaddingBtn{
-  min-width: 4rem;
-}
-
 .Primary-Btn:hover {
   background-color: transparent;
   color: var(--secondary-color);
@@ -43,13 +34,13 @@
   background-color: #000;
 }
 
-.Primary-Btn.PrimaryDeleteBtn {
+.Primary-Btn.DeleteBtn {
   border: 1px solid #d63b3b;
   color: white;
   background-color: #d63b3b;
 }
 
-.Primary-Btn.PrimaryDeleteBtn:hover {
+.Primary-Btn.DeleteBtn:hover {
   color: #d63b3b;
   background-color: transparent;
 }
@@ -60,13 +51,13 @@
   background-color: #000;
 }
 
-.Primary-Btn.PrimaryDeleteBtnOutline {
+.Primary-Btn.DeleteBtnOutline {
   border: 1px solid #d63b3b;
   color: #d63b3b;
   background-color: transparent;
 }
 
-.Primary-Btn.PrimaryDeleteBtnOutline:hover {
+.Primary-Btn.DeleteBtnOutline:hover {
   color: #fff;
   background-color: #d63b3b;
 }
@@ -99,20 +90,6 @@
   border: 1px solid var(--primary-color);
   background-color: var(--primary-color);
   color: white;
-}
-
-.TransparentBtn {
-  background-color: transparent;
-  color: var(--gray-color);
-  border: 1px solid transparent;
-  outline: none;
-  cursor: pointer;
-}
-
-.TransparentBtn:hover {
-  background-color: #f3f4f6;
-  color: #d63b3b;
-  border: 1px solid rgba(27,31,36,0.5);
 }
 
 button:disabled,
