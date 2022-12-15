@@ -50,23 +50,23 @@ const ProjectLogs = (props) => {
           <PrimaryButton className={styles.FilterButton}>Filter</PrimaryButton>
         </div>
       </div>
-      <div className={styles.Table}>
+      <div className="BigCard">
         <div className={styles.TableRow}>
           <CheckMark className={styles.Success} />
           <div className={styles.Row}>
             <div className={styles.RowCell}>
               <Avatar name={data.name} className={styles.UserAvatar} />
               <div>
-                <div className={styles.Bold}>{data.email}</div>
-                <div>Tuesday 12-12-2022 16:00:03</div>
+                <div className={styles.ActivityEmail}>{data.email}:</div>
+                <div className={styles.ActivityDate}>Tuesday 12-12-2022 16:00:03</div>
               </div>
-              <div>
+              <div >
                 Creating application{" "}
                 <span className={styles.Entity}>4344ewe23</span>{" "}
                 <span className={styles.Success}>Successful</span>
               </div>
             </div>
-            <div className={styles.LastCell}>
+            <div className={styles.ActivityDescription}>
               <div>Successfully created application</div>
             </div>
           </div>

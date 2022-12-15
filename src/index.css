@@ -23,6 +23,7 @@ html {
   --primary-color: #008ac1;
   --secondary-color: #f7b21f;
   --secondary-light-color: #ffcc5f;
+  --gray-color: #555;
   --gray-light-color: #ccc;
   --primary-dark-color: #06222f;
   --primary-light-color: #b6e3f9;
@@ -34,6 +35,7 @@ body {
   padding: 0;
   color: #000;
   font-family: proxima-nova, sans-serif;
+  font-size: 1rem;
 }
 
 #root >div {
@@ -177,6 +179,37 @@ input[type="password"] {
 
 /*- ////////////////////////////////// */
 
+/* ////////  FONT STYLING  ///////// */
+.SectionTitle{
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--primary-dark-color);
+  margin: 0;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--gray-light-color);
+}
+
+.SubTitle{
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primary-dark-color);
+  margin: 0;
+  padding: 0;
+}
+.SectionSubTitle{
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary-dark-color);
+  margin: 0;
+  padding:0;
+}
+.SubText{
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--primary-dark-color);
+  margin: 0;
+  padding:0;
+}
 /*- ///// TABLE STYLING ///////// */
 div.ResourcesTable {
   padding-top: 1rem;
@@ -346,12 +379,23 @@ tr.TableLoading td {
   padding-left: 2rem;
   padding-right: 2rem;
 }
-@media (max-width: 580px) {
+
+.ShortContainer{
+  padding-left: 4rem;
+  padding-right: 2rem;
+  max-width: 50rem;
+}
+@media (max-width: 750px) {
   .SmallContainer{
     padding-left: 1rem;
     padding-right: 1rem;
   }
+  .ShortContainer{
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
+
 .Page {
   margin: 0;
   background: var( --gray-bg-light-color);
@@ -423,4 +467,11 @@ tr.TableLoading td {
 }
 .Card:hover{
   box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.2);
+}
+
+.BigCard{
+  padding: 1.2rem;
+  background: #ffffff;
+  border-radius: 15px;
+  border: 1px solid var(--gray-light-color);
 }
