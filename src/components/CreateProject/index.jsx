@@ -5,7 +5,6 @@ import { Redirect } from "react-router-dom";
 import PrimaryButton from "../PrimaryButton";
 import Select from "../Select";
 //import CancelButton from "../CancelButton";
-import NewButton from "../NewButton";
 import Header from "../Header";
 import Spinner from "../Spinner";
 import Feedback from "../Feedback";
@@ -193,24 +192,30 @@ class CreateProject extends React.Component {
               <div className={styles.InfoHeader}>Create Project</div>
               <div className={styles.RoundAddButtonWrap}>
                 {/*<CancelButton onClick={this.props.closeComponent} />*/}
-                <NewButton label="close"  type="close" onClick={this.props.closeComponent}/>
+                <PrimaryButton
+                  btntype="close"
+                  onClick={this.props.closeComponent}
+                >
+                  close
+                </PrimaryButton>
               </div>
             </div>
           </div>
         </div>
         <div className={styles.ContentSection}>
           <div className={styles.FormsSection}>
-            <div className={styles.ProjectForm}>
-              <div className={styles.LeftFormElements}>
-                <div className={styles.ClusterElement}>
-                  <div className={styles.ElementTitle}>Datacenter</div>
-                  <Select
-                    required
-                    placeholder="Choose Datacenter location"
-                    options={clusters}
-                    onChange={this.handleDatacenterSelectChange}
-                  />
-                 {/*  <div className={styles.ClusterCheckboxSection}>
+            <div className="Card">
+              <div className={styles.ProjectForm}>
+                <div className={styles.LeftFormElements}>
+                  <div className={styles.Element}>
+                    <div className={styles.ElementTitle}>Datacenter</div>
+                    <Select
+                      required
+                      placeholder="Choose Datacenter location"
+                      options={clusters}
+                      onChange={this.handleDatacenterSelectChange}
+                    />
+                    {/*  <div className={styles.ClusterCheckboxSection}>
                     <InfoIcon /> &nbsp; The above selection is for a single
                     cluster set up, for multi-cluster options check the box
                     below.
@@ -225,137 +230,145 @@ class CreateProject extends React.Component {
                       &nbsp; Multi-cluster options
                     </div>
                   </div>*/}
-                  {multiCluster && (
-                    <div>
-                      <div className={styles.ClusterToggleSection}>
-                        <ToggleOnOffButton
-                          onClick={this.changeMultiSelectioOption}
-                        />{" "}
-                        &nbsp; Cranecloud automatically selects the rest of the
-                        clusters for this project.
-                      </div>
-                      {clusterchoices && (
-                        <div>
-                          <div className={styles.MultiSelectioOption}>
-                            Please any other cluster for this project.
-                          </div>
-                          <div className={styles.Multipleclusters}>
-                            {clusters.map(({ name, id }, index) => {
-                              return (
-                                <li className={styles.ListStyle} key={index}>
-                                  <div className={styles.clusterListItem}>
-                                    <div className={styles.leftsection}>
-                                      <input
-                                        type="checkbox"
-                                        id={id}
-                                        name={name}
-                                        value={name}
-                                        checked={SelectedClusters[index]}
-                                        onChange={() =>
-                                          this.handleOnChange(index)
-                                        }
-                                      />
-                                      <label
-                                        className={styles.ClusterLabel}
-                                        htmlFor={id}
-                                      >
-                                        {name}
-                                      </label>
-                                    </div>
-                                  </div>
-                                </li>
-                              );
-                            })}
-                          </div>
+                    {multiCluster && (
+                      <div>
+                        <div className={styles.ClusterToggleSection}>
+                          <ToggleOnOffButton
+                            onClick={this.changeMultiSelectioOption}
+                          />{" "}
+                          &nbsp; Cranecloud automatically selects the rest of
+                          the clusters for this project.
                         </div>
-                      )}
-                    </div>
-                  )}
-                </div>
+                        {clusterchoices && (
+                          <div>
+                            <div className={styles.MultiSelectioOption}>
+                              Please any other cluster for this project.
+                            </div>
+                            <div className={styles.Multipleclusters}>
+                              {clusters.map(({ name, id }, index) => {
+                                return (
+                                  <li className={styles.ListStyle} key={index}>
+                                    <div className={styles.clusterListItem}>
+                                      <div className={styles.leftsection}>
+                                        <input
+                                          type="checkbox"
+                                          id={id}
+                                          name={name}
+                                          value={name}
+                                          checked={SelectedClusters[index]}
+                                          onChange={() =>
+                                            this.handleOnChange(index)
+                                          }
+                                        />
+                                        <label
+                                          className={styles.ClusterLabel}
+                                          htmlFor={id}
+                                        >
+                                          {name}
+                                        </label>
+                                      </div>
+                                    </div>
+                                  </li>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
 
-                <div className={styles.Element}>
-                  <div className={styles.ElementTitle}>Name</div>
-                  <BlackInputText
-                    required
-                    placeholder="Project name"
-                    name="projectName"
-                    value={projectName}
-                    onChange={(e) => {
-                      this.handleChange(e);
-                    }}
-                  />
-                </div>
-                <div className={styles.Element}>
-                  <div className={styles.ElementTitle}>Organisation</div>
-                  <BlackInputText
-                    required
-                    placeholder="eg.Individual ,Makerere Universty..."
-                    name="projectOrganisation"
-                    value={projectOrganisation}
-                    onChange={(e) => {
-                      this.handleChange(e);
-                    }}
-                  />
-                </div>
-                <div className={styles.Element}>
-                  <div className={styles.ElementTitle}>Type</div>
-                  <Select
-                    required
-                    placeholder="Choose project type"
-                    options={types}
-                    onChange={this.handleTypeSelectChange}
-                  />
-                  {othersBool && (
+                  <div className={styles.Element}>
+                    <div className={styles.ElementTitle}>Name</div>
                     <BlackInputText
                       required
-                      placeholder="Type of project"
-                      name="otherType"
-                      value={otherType}
+                      placeholder="Project name"
+                      name="projectName"
+                      value={projectName}
                       onChange={(e) => {
                         this.handleChange(e);
                       }}
                     />
+                  </div>
+                  <div className={styles.Element}>
+                    <div className={styles.ElementTitle}>Organisation</div>
+                    <BlackInputText
+                      required
+                      placeholder="eg.Individual ,Makerere Universty..."
+                      name="projectOrganisation"
+                      value={projectOrganisation}
+                      onChange={(e) => {
+                        this.handleChange(e);
+                      }}
+                    />
+                  </div>
+                  <div className={styles.Element}>
+                    <div className={styles.ElementTitle}>Type</div>
+                    <Select
+                      required
+                      placeholder="Choose project type"
+                      options={types}
+                      onChange={this.handleTypeSelectChange}
+                    />
+                    {othersBool && (
+                      <BlackInputText
+                        required
+                        placeholder="Type of project"
+                        name="otherType"
+                        value={otherType}
+                        onChange={(e) => {
+                          this.handleChange(e);
+                        }}
+                      />
+                    )}
+                  </div>
+                  <div className={styles.Element}>
+                    <div className={styles.ElementTitle}>Description</div>
+                    <textarea
+                      className={styles.TextArea}
+                      type="text"
+                      placeholder="Project description"
+                      rows="4"
+                      cols="50"
+                      name="projectDescription"
+                      value={projectDescription}
+                      onChange={(e) => {
+                        this.handleChange(e);
+                      }}
+                    />
+                  </div>
+
+                  {error && (
+                    <div className={styles.CreateProjectError}>
+                      <Feedback type="error" message={error} />
+                    </div>
                   )}
-                </div>
-                <div className={styles.Element}>
-                  <div className={styles.ElementTitle}>Description</div>
-                  <textarea
-                    className={styles.TextArea}
-                    type="text"
-                    placeholder="Project description"
-                    rows="4"
-                    cols="50"
-                    name="projectDescription"
-                    value={projectDescription}
-                    onChange={(e) => {
-                      this.handleChange(e);
-                    }}
-                  />
+                  {message && (
+                    <div className={styles.CreateProjectError}>
+                      <Feedback
+                        message={
+                          errorCode === 409
+                            ? "Name already in use, please choose another"
+                            : message
+                        }
+                        type={
+                          isAdded && errorCode !== 409 ? "success" : "error"
+                        }
+                      />
+                    </div>
+                  )}
+                  <div className={styles.InnerContent}>
+                    <PrimaryButton
+                      className="AuthBtn"
+                      onClick={this.handleSubmit}
+                      color="primary"
+                    >
+                      {isAdding ? <Spinner /> : "Create Project"}
+                    </PrimaryButton>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className={styles.CreateButtons}>
-              <div className={styles.InnerContent}>
-                <PrimaryButton
-                  className="AuthBtn"
-                  label={isAdding ? <Spinner /> : "Create Project"}
-                  onClick={this.handleSubmit}
-                />
-              </div>
-            </div>
-          </div>
-          <div className={styles.CreateProjectError}>
-            {error && <Feedback type="error" message={error} />}
-            {message && (
-              <Feedback
-                message={
-                  errorCode === 409
-                    ? "Name already in use, please choose another"
-                    : message
-                }
-                type={isAdded && errorCode !== 409 ? "success" : "error"}
-              />
-            )}
           </div>
         </div>
       </div>

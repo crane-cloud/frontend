@@ -23,35 +23,37 @@ describe(" New password Component", () => {
   });
 
   it("should have an password field", () => {
-    expect(CreateNewPasswordComponent.find('InputPassword[name="password"]').length).toEqual(
-      1
-    );
+    expect(
+      CreateNewPasswordComponent.find('InputText[name="password"]').length
+    ).toEqual(1);
   });
 
   it("should have proper props for email field", () => {
-    expect(CreateNewPasswordComponent.find('InputPassword[name="password"]').props()).toEqual({
+    expect(
+      CreateNewPasswordComponent.find('InputText[name="password"]').props()
+    ).toEqual({
       onChange: expect.any(Function),
       placeholder: "Password",
-      required: false,
       value: "",
       name: "password",
+      type: "password",
     });
   });
 
   it("should have a password field", () => {
     expect(
-      CreateNewPasswordComponent.find('InputPassword[name="password"]').length
+      CreateNewPasswordComponent.find('InputText[name="password"]').length
     ).toEqual(1);
   });
   it("should have proper props for password field", () => {
     expect(
-      CreateNewPasswordComponent.find('InputPassword[name="password"]').props()
+      CreateNewPasswordComponent.find('InputText[name="password"]').props()
     ).toEqual({
       onChange: expect.any(Function),
       placeholder: "Password",
-      required: false,
-      value: "",
+      type: "password",
       name: "password",
+      value: "",
     });
   });
 });

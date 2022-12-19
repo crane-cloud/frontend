@@ -11,7 +11,27 @@ import { ReactComponent as Container } from "../../assets/images/container.svg";
 import { ReactComponent as Orch } from "../../assets/images/orcherstration.svg";
 import { ReactComponent as Registry } from "../../assets/images/registry.svg";
 import { ReactComponent as Cloud } from "../../assets/images/multicloud.svg";
+import { ReactComponent as Postgres } from "../../assets/images/postgre.svg";
+import { ReactComponent as Mysql } from "../../assets/images/mysql.svg";
+import { ReactComponent as Python } from "../../assets/images/python.svg";
+import { ReactComponent as ReactIcon } from "../../assets/images/react.svg";
+import { ReactComponent as Wordpress } from "../../assets/images/wordpress.svg";
+import { ReactComponent as Php } from "../../assets/images/php.svg";
+import { ReactComponent as Nodejs } from "../../assets/images/nodejs.svg";
+import { ReactComponent as Lara } from "../../assets/images/laravel.svg";
+import { ReactComponent as Java } from "../../assets/images/java.svg";
+import { ReactComponent as Javascript } from "../../assets/images/javascript.svg";
+import { ReactComponent as Flask } from "../../assets/images/flask.svg";
+import { ReactComponent as DockerIcon } from "../../assets/images/docker.svg";
+import { ReactComponent as Django } from "../../assets/images/django.svg";
+import { ReactComponent as Clang } from "../../assets/images/c.svg";
+import { ReactComponent as Angular } from "../../assets/images/angularjs.svg";
+import { ReactComponent as Html } from "../../assets/images/html.svg";
+import { ReactComponent as CSS } from "../../assets/images/css.svg";
+import { ReactComponent as Drupal } from "../../assets/images/drupal.svg";
 import { onUnload } from "../../helpers/localStorage";
+import SecondaryButton from "../../components/SecondaryButton";
+import { DOCS_URL } from "../../config";
 import styles from "./LandingPage.module.css";
 
 const LandingPage = (props) => {
@@ -28,7 +48,9 @@ const LandingPage = (props) => {
   return (
     <div className={styles.LandingPageMain}>
       <NewHeader />
-      <div className={styles.LandingPageMainContainer}>
+      <div
+        className={`${styles.LandingPageMainContainer} 'LandingPageDashboardContainer'`}
+      >
         <div className={styles.LandingPageMainContent}>
           <div className={styles.LandingPageMainContentInfo}>
             <div className={styles.LandingPageMainContentTitle}>
@@ -188,6 +210,118 @@ const LandingPage = (props) => {
             </div>
           </div>
         </div>
+        <section className={styles.DatabaseSection}>
+          <div className={styles.LeftInfoSection}>
+            <div className={styles.LeftInfoHeader}>
+              Access your database anywhere
+            </div>
+            <div>
+              Create your database at the click of a button. Crane Cloud enables
+              you to access and manage your database from anywhere, whether it
+              is filling in database details or managing it via a terminal.
+            </div>
+            <a
+              href="https://medium.com/cranecloud/working-with-databases-on-crane-cloud-466179c41a32"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <SecondaryButton label={"Read More"}>Read More</SecondaryButton>
+            </a>
+          </div>
+          <div className={styles.DBContain}>
+            <div className={styles.Flex}>
+              <div className={styles.DBIcons}>
+                <Mysql />
+              </div>
+              <div className={styles.DBIcons}>
+                <Postgres />
+              </div>
+            </div>
+            <div className={styles.DBChoose}>Choose your prefered choice.</div>
+          </div>
+        </section>
+        <section className={styles.ApplicationSection}>
+          <div className={styles.LeftInfoSection}>
+            <div className={styles.LeftInfoHeader}>
+              Applications in any stack
+            </div>
+            <div>
+              As long as your application is containerized, it can run on Crane
+              Cloud. With the provision of project overview metrics, down to
+              individual application metrics and logs.
+            </div>
+            <a href={`${DOCS_URL}`} rel="noopener noreferrer" target="_blank">
+              <SecondaryButton label={"Read More"}>Read More</SecondaryButton>
+            </a>
+          </div>
+          <div className={styles.GridSide}>
+            <div className={styles.IconSqure}>
+              <Python />
+            </div>
+            <div className={styles.IconSqure}>
+              <Php />
+            </div>
+            <div className={styles.IconSqure}>
+              <Java />
+            </div>
+            <div className={styles.IconSqure}>
+              <Javascript />
+            </div>
+            <div className={styles.IconSqure}>
+              <Wordpress />
+            </div>
+            <div className={styles.IconSqure}>
+              <Clang />
+            </div>
+            <div className={styles.IconSqure}>
+              <Html />
+            </div>
+            <div className={styles.IconSqure}>
+              <DockerIcon />
+            </div>
+            <div className={styles.IconSqure}>
+              <Drupal />
+            </div>
+          </div>
+        </section>
+        <section className={styles.StackSection}>
+          <div className={styles.LeftInfoSection}>
+            <div className={styles.LeftInfoHeader}>Auto-containerization</div>
+            <div>
+              Unfamiliar with containerization or dockerization? Zip your
+              application in any of these frameworks, upload it and Crane Cloud
+              will dockerize, host the subsequent image and host your
+              application.
+            </div>
+            <SecondaryButton
+              label={"Read More"}
+              // className={styles.AutoContainer}
+            />
+          </div>
+          <div className={styles.GridSide}>
+            <div className={styles.IconSqure}>
+              <Django />
+            </div>
+            <div className={styles.IconSqure}>
+              <Nodejs />
+            </div>
+            <div className={styles.IconSqure}>
+              <Flask />
+            </div>
+            <div className={styles.IconSqure}>
+              <ReactIcon />
+            </div>
+            <div className={styles.IconSqure}>
+              <Angular />
+            </div>
+            <div className={styles.IconSqure}>
+              <CSS />
+            </div>
+            <div className={styles.IconSqure}>
+              <Lara />
+            </div>
+          </div>
+        </section>
       </div>
       <div className={styles.LandingPageFooter}>
         <LandingFooter />

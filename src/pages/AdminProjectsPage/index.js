@@ -89,6 +89,7 @@ const AdminProjectsPage = () => {
                     <th>name</th>
                     <th>owner</th>
                     <th>description</th>
+                    <th>status</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -111,6 +112,9 @@ const AdminProjectsPage = () => {
                           <td>{project.name}</td>
                           <td>{getUserName(project.owner_id)}</td>
                           <td>{project.description}</td>
+                          <td>
+                            <span className="ProjectStatus">Active</span>
+                          </td>
                           <td
                             onClick={(e) => {
                               showContextMenu(project.id);
@@ -122,6 +126,18 @@ const AdminProjectsPage = () => {
                             {contextMenu && project.id === selectedProject && (
                               <div className="BelowHeader bg-light">
                                 <div className="context-menu">
+                                  <div
+                                    className="DropDownLink Section"
+                                    role="presentation"
+                                  >
+                                    Activate
+                                  </div>
+                                  <div
+                                    className="DropDownLink"
+                                    role="presentation"
+                                  >
+                                    Disable
+                                  </div>
                                   <div
                                     className="DropDownLink"
                                     role="presentation"
@@ -164,10 +180,13 @@ const AdminProjectsPage = () => {
                   <div className="ModalButtons">
                     <PrimaryButton
                       className="CancelBtn"
-                      label="Cancel"
                       onClick={() => hideModal()}
-                    />
-                    <PrimaryButton type="button" label="Add" />
+                    >
+                     Cancel                 
+                    </PrimaryButton>
+                    <PrimaryButton type="button"  >
+                      Add
+                    </PrimaryButton>
                   </div>
                 </div>
               </Modal> */}

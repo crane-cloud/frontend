@@ -11,10 +11,22 @@
     padding-top: 2rem;
 }
 
-.CreditsTitle{
+.CreditsTitle {
     padding-top: 1rem;
 }
 
-.TextArea > ::placeholder{
+.TextArea> ::placeholder {
     padding-left: 1rem;
+}
+
+.ProjectStatus {
+    padding: 0.3rem;
+    border-radius: 0.3rem;
+    background-color: #408140;
+    color: #ffffff;
+}
+
+.DropDownLink {
+    text-align: center;
+    justify-content: center;
 }

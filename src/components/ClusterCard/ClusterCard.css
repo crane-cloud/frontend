@@ -7,11 +7,12 @@
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
   transform: scale(0.95);
 }
+
 .CardImageDiv {
   margin: 0;
   width: 100%;
   height: 150px;
-  background-color: #008ac1;
+  background-color: var(--primary-color);
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -20,6 +21,7 @@
 .BottomContainer {
   padding: 10px;
   height: 80px;
+  display: block;
 }
 
 .ClusterCardName {
@@ -27,6 +29,7 @@
   font-size: 24px;
   padding-top: 5px;
 }
+
 .ClusterCardDesc {
   width: 100%;
   font-size: 16px;

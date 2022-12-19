@@ -5,11 +5,12 @@ import getProjectCPU, { clearProjectCPU } from "../../redux/actions/projectCPU";
 import getProjectMemory from "../../redux/actions/projectMemory";
 import getProjectNetwork from "../../redux/actions/projectNetwork";
 import LineChartComponent from "../../components/LineChart";
-import InformationBar from "../../components/InformationBar";
-import Header from "../../components/Header";
-import SideBar from "../../components/SideBar";
 import MetricsCard from "../../components/MetricsCard";
-import { ReactComponent as MetricIcon } from "../../assets/images/resource-icon.svg";
+// import { ReactComponent as MetricIcon } from "../../assets/images/resource-icon.svg";
+
+import { ReactComponent as CPUIcon } from "../../assets/images/cpu.svg";
+import { ReactComponent as NetworkIcon } from "../../assets/images/wifi.svg";
+import { ReactComponent as MemoryIcon } from "../../assets/images/hard-drive.svg";
 import "./ProjectDashboardPage.css";
 import {
   formatCPUMetrics,
@@ -21,6 +22,7 @@ import {
   getProjectName,
   getProjectDescription,
 } from "../../helpers/projectName";
+import DashboardLayout from "../../components/Layouts/DashboardLayout";
 
 class ProjectDashboardPage extends React.Component {
   constructor(props) {
@@ -85,75 +87,54 @@ class ProjectDashboardPage extends React.Component {
     const formattedNetworkMetrics = this.getNetworkMetrics();
 
     return (
-      <div className="Page">
-        <div className="TopBarSection">
-          <Header credits={credits?.amount} />
-        </div>
-        <div className="MainSection">
-          <div className="SideBarSection">
-            <SideBar
-              name={getProjectName(projects, params.projectID)}
-              params={params}
-              description={getProjectName(projects, params.projectID)}
-              pageRoute={this.props.location?.pathname}
-              allMetricsLink={`/projects/${projectID}/metrics`}
-              cpuLink={`/projects/${projectID}/cpu/`}
-              memoryLink={`/projects/${projectID}/memory/`}
-              databaseLink={`/projects/${projectID}/databases`}
-              networkLink={`/projects/${projectID}/network/`}
+      <DashboardLayout
+        credits={credits}
+        name={projectDetails?.name}
+        header="Project Dashboard"
+      >
+        <div className="SectionTitle">Project Metrics</div>
+        <div className="MetricCardsSection">
+          <MetricsCard
+            icon={<CPUIcon />}
+            title="CPU"
+            className="CardDimensions"
+          >
+            <LineChartComponent
+              lineDataKey="cpu"
+              preview
+              data={formattedCPUMetrics}
             />
-          </div>
-          <div className="MainContentSection">
-            <div className="InformationBarSection">
-              <InformationBar header="Project Dashboard" />
-            </div>
-            <div className="ProjectContentSection SmallContainer">
-              <h3>Project Metrics</h3>
-              <div className="MetricCardsSection">
-                <MetricsCard
-                  icon={<MetricIcon />}
-                  title="CPU"
-                  className="CardDimensions"
-                >
-                  <LineChartComponent
-                    lineDataKey="cpu"
-                    preview
-                    data={formattedCPUMetrics}
-                  />
-                </MetricsCard>
-                <MetricsCard
-                  icon={<MetricIcon />}
-                  title="MEMORY"
-                  className="CardDimensions"
-                >
-                  <LineChartComponent
-                    lineDataKey="memory"
-                    preview
-                    data={formattedMemoryMetrics}
-                  />
-                </MetricsCard>
-                <MetricsCard
-                  icon={<MetricIcon />}
-                  title="NETWORK"
-                  className="CardDimensions"
-                >
-                  <LineChartComponent
-                    lineDataKey="network"
-                    preview
-                    data={formattedNetworkMetrics}
-                  />
-                </MetricsCard>
-              </div>
-              <h3>Project Apps</h3>
-              <AppsList
-                params={params}
-                word=""
-                message="You have no apps currently, please go to Apps section on the sidebar to create one"
-              />
-            </div>
-          </div>
+          </MetricsCard>
+          <MetricsCard
+            icon={<MemoryIcon />}
+            title="MEMORY"
+            className="CardDimensions"
+          >
+            <LineChartComponent
+              lineDataKey="memory"
+              preview
+              data={formattedMemoryMetrics}
+            />
+          </MetricsCard>
+          <MetricsCard
+            icon={<NetworkIcon />}
+            title="NETWORK"
+            className="CardDimensions"
+          >
+            <LineChartComponent
+              lineDataKey="network"
+              preview
+              data={formattedNetworkMetrics}
+            />
+          </MetricsCard>
         </div>
-      </div>
+        <div className="SectionTitle">Project Apps</div>
+        <AppsList
+          params={params}
+          word=""
+          message="You have no apps currently, please go to Apps section on the sidebar to create one"
+        />
+      </DashboardLayout>
     );
   }
 }

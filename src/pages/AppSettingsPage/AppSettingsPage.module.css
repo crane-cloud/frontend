@@ -10,6 +10,12 @@
   background-color: rgba(112, 49, 49, 0.5);
 }
 
+.AppPageLayout{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .AppDeleteModel .ModalParentWrap {
   background-color: inherit;
 }
@@ -22,11 +28,12 @@
   display: grid;
   gap: 3rem;
 }
-.InnerContentWarnText{
+
+.InnerContentWarnText {
   overflow: hidden;
   color: #fb0c0c;
   text-overflow: ellipsis;
-  cursor:pointer;
+  cursor: pointer;
   text-decoration: underline;
 }
 
@@ -34,6 +41,7 @@
   display: grid;
   gap: 1rem;
 }
+
 .DeleteDescription {
   cursor: default;
   font-weight: 700;
@@ -58,6 +66,7 @@
   outline: 1px solid #ff0000;
   transform: scaleX(0.9);
 }
+
 .DeleteAppModelButtons .DeleteBtn:hover {
   background-color: #fff;
   outline: 1px solid #ff0000;
@@ -69,6 +78,7 @@
   outline: #ff9595;
   color: #ff9595;
 }
+
 .InactiveDelete:hover {
   background-color: #fff;
   outline: #ff9595;
@@ -77,12 +87,13 @@
 
 .Page {
   margin: 0;
-  background: #f1f1f1;
+  background: var(--gray-bg-light-color);
   max-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
   overflow: hidden;
 }
+
 .TopBarSection {
   background-color: black;
 }
@@ -91,6 +102,7 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 .SideBarSection {
   overflow: hidden;
   overflow-y: scroll;
@@ -101,6 +113,7 @@
   display: none;
   min-width: fit-content;
 }
+
 .MainContentSection {
   /* divided into two rows */
   display: grid;
@@ -120,13 +133,16 @@
 .DeleteWarning {
   color: #f00;
 }
+
 .InnerModalDescription {
   display: grid;
   gap: 0.5rem;
 }
+
 .DeleteSubDescription {
   font-weight: 500;
 }
+
 .WarningContainer {
   display: grid;
   gap: 0.8rem;
@@ -152,7 +168,7 @@
   gap: 1rem;
 }
 
-.APPButtonRow select{
+.APPButtonRow select {
   padding: 0.5rem;
 }
 
@@ -163,11 +179,17 @@
 }
 
 .APPSections {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
-  grid-template-columns: 1fr 5fr;
-  padding: 1rem 5rem;
 }
+
+@media(max-width: 965px) {
+  .APPSections {
+    padding: 0;
+  }
+}
+ 
 
 .APPSectionPort {
   display: grid;
@@ -186,7 +208,7 @@
 .APPSectionTitle {
   font-size: 1rem;
   font-weight: 700;
-  color: #008ac1;
+  color: var(--primary-color);
 }
 
 .APPSectionDelete {
@@ -195,19 +217,23 @@
   color: #ff0000;
 }
 
-.AppDeleteInstructions{
-  display:flex;
+.AppDeleteInstructions {
+  display: flex;
   gap: 1rem;
   justify-content: space-between;
 }
 
 .flexa input {
   border: 1px solid;
-  padding: 0.5rem;
+  padding: 0.3rem;
+}
+
+.APPButtonRow .SmallSelectElementValue{
+  padding: 0.3rem!important;
 }
 
 .AppLabel {
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .PrivateImageCheckField,
@@ -245,7 +271,7 @@
 }
 
 .CopyUrl {
-  /* color: #008ac1; */
+  /* color: var(--primary-color); */
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -253,7 +279,7 @@
 }
 
 .CopyUrl:hover {
-  color: #008ac1;
+  color: var(--primary-color);
   transform: scale(1.1);
 }
 
@@ -309,14 +335,13 @@
   padding: 0.5rem;
 }
 
-.AppOtherSection{
+.AppOtherSection {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  width: 100%;
 }
 
-.APPOptionsButton{
+.APPOptionsButton {
   display: flex;
   justify-content: flex-end;
 }
@@ -354,35 +379,35 @@
   grid-template-columns: 1fr 1fr;
 }
 
-.EnvVarsInputGroup .EnvVarsAddBtn {
-  position: relative;
-  display: flex;
-  align-items: center;
+.EnvVarsAddBtn > * {
+  height: 100%;
 }
 
-.ModalFormInputsEnvVars{
+.ModalFormInputsEnvVars {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.EnvVarsAddBtn button.EnvVarAddBtn {
-  /* position: absolute;
-  max-width: 100%; */
-  color: #fff;
-  background-color: #008ac1;
-  outline: 1px solid #008ac1;
-  padding: 0.5rem;
-  height: 2.5rem;
-}
 
-.EnvVarsInputGroup .EnvVarsAddBtn button.EnvVarAddBtn:hover {
-  color: #008ac1;
-  background-color: #fff;
-}
 
-.RemoveIconBtn{
+.RemoveIconBtn {
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.RemoveIconBtn:hover {
+  background-color: #fb0c0c;
+  color: #fff;
+  border: 1px solid #fb0c0c;
+}
+.RemoveIconUpdating {
+  background-color: #fb0c0c;
+  opacity: 0.2;
+  color: #fff;
+  border: 1px solid #fb0c0c;
 }
 
 
@@ -399,21 +424,38 @@
   flex-direction: column;
   gap: 1rem;
   width: 100%;
-  padding-bottom: 1rem ;
+  padding-bottom: 1rem;
+}
+
+.EnvInputItem{
+  display: flex;
+  gap: 1rem;
 }
 
 .EnvDataItem {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 2fr;
   gap: 1rem;
+  align-items: center;
 }
 
-.EnvDataItem div{
+
+.EnvDataItem div {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+.EnvValue{
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.EnvValue > div{
+  border: 1px solid #777;
+  padding: 0.3rem 0.5rem;
+  border-radius: 5px;
+}
 /* .VarsRow {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -430,17 +472,19 @@
 
 .deactivatedBtn {
   background-color: transparent;
-  color: #f7b21f;
+  color: var(--secondary-color);
 }
 
-.Domain__Popup {
-  color: #008ac1;
+.Domain__Popup,
+.Rollback__Option {
+  color: var(--primary-color);
   text-decoration: underline;
   cursor: pointer;
 }
 
+.Rollback__Option,
 .Domain__Popup:hover {
-  color: #f7b21f;
+  color: var(--secondary-color);
 }
 
 .DomainModal__Main {
@@ -461,7 +505,7 @@
 }
 
 .Description__button button {
-  background-color: #008ac1;
+  background-color: var(--primary-color);
   color: #fff;
   border: none;
   width: 9rem;
@@ -501,17 +545,100 @@ ul li {
   height: 50vh;
 }
 
+.AppRevision {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.RevisionStatus {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Success {
+  color: green;
+  height: 30px;
+}
+
+.Danger {
+  color: red;
+  width: 40px;
+  height: 40px;
+}
+
+.SeparatorDot {
+  width: 30px;
+  height: 20px;
+}
+
+.Entity {
+  color: #008ac1;
+}
+
+.Time {
+  padding-left: 1rem;
+  color: gray;
+}
+
+.Rollback__Option {
+  color: #008ac1;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.Rollback__Option:hover {
+  color: var(--secondary-color);
+}
+
+.TopSection {
+  display: flex;
+  justify-content: space-between;
+}
+
+.AppDetails {
+  padding-left: 1rem;
+}
+
+.AppRevisionsDetails {
+  display: grid;
+  gap: 1rem;
+}
+
+.ReviseAppModal {
+  display: grid;
+  gap: 3rem;
+}
+
+.ReviseAppModalLowerSection {
+  display: grid;
+  gap: 1rem;
+}
+
+.ReviseAppDescription {
+  cursor: default;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.ReviseAppModalButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
 @media (max-width: 650px) {
   .APPSections {
     display: flex;
     flex-direction: column;
     padding: 1rem 1rem;
   }
-  .EnvDataItem{
-   display: flex;
-   flex-wrap: wrap;
+
+  .EnvDataItem {
+    display: flex;
+    flex-wrap: wrap;
   }
-  .ContentSection{
+
+  .ContentSection {
     padding-top: 2.5rem;
   }
 }
