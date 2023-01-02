@@ -78,6 +78,7 @@ jobs:
     docker:
       - image: google/cloud-sdk
         environment:
+          USE_GKE_GCLOUD_AUTH_PLUGIN: True
           GOOGLE_APPLICATION_CREDENTIALS: /root/crane-cloud
           cluster: staging-cluster
           REACT_APP_API_BASE_URL: https://staging-api.cranecloud.io
