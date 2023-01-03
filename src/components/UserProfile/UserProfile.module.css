@@ -150,12 +150,12 @@
     gap:.5rem
   }
   
-  .SectionTitle{
+  .UserSectionTitle{
     font-weight: 700;
     font-size: 24px;
     color: #000;
   }
-  .SectionSubTitle{
+  .UserSectionSubTitle{
     font-style: normal;
     font-weight: 300;
     font-size: .8rem;
