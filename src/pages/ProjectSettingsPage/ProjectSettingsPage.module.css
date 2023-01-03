@@ -166,7 +166,6 @@
   background-color: #fff;
   border: 1px  solid #ff9595;
   color: #ff9595;
-  min-width: 8rem;
 }
 
 .InactiveDelete:hover {
@@ -188,8 +187,7 @@
 .MembershipHeader {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 1rem;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
 }
@@ -205,46 +203,26 @@
 }
 
 .ProjectInstructions {
-  padding: 1rem;
+  padding: 1rem 1rem;
   background: #ffffff;
   border-radius: 15px;
   border: 1px solid var(--gray-light-color);
   display: grid;
-  gap: 1rem;
+  gap: 2rem;
 }
 
-
 .ProjectButtonRow {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: auto 40%;
+  grid-auto-flow: column;
   align-items: center;
   column-gap: 1rem;
 }
-.ProjectButtonRow > div {
-  cursor: default;
-}
-
-
-.CopyIcon{
-  cursor: pointer!important;
-  display: flex;
-  gap: 0.3rem;
-  visibility: hidden;
-  align-items: center;
-  justify-content: center;
-}
-
-.ProjectButtonRow:hover .CopyIcon {
-  visibility: visible;
-}
-
-
 
 .SettingsSectionInfo {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
-  font-size: 0.95rem;
+  gap: 0.4rem;
 }
 
 .SectionButtons {
@@ -283,13 +261,16 @@
   background-color: #ff0000;
   border: 1px solid #ff0000;
   outline: none;
-  min-width: 8rem;
 }
 
 .DeleteBtn:hover {
   background-color: #fff;
   border: 1px solid #ff0000;
   color: #ff0000;
+}
+
+.MemberTable {
+  width: 80%;
 }
 
 .MemberTableHead {
@@ -303,79 +284,19 @@
 .MemberNameEmail {
   display: flex;
   flex-direction: column;
-  font-size: 1.1rem;
-  gap: .13rem;
+  gap: .2rem;
   font-weight: 400;
+  font-size: 14px;
 }
-
-.UserHeader {
-  font-weight: 600;
-  color: var(--primary-color);
-  cursor: pointer;
-}
-
-.UserHeader:hover {
-  text-decoration: underline;
-}
-
 .Wrap{
   word-break: break-all;
-  font-size: 0.9rem;
-}
-
-.MemberBody{
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  background-color: var(--gray-light-color);
 }
 
 .MemberTableRow {
-  display: flex;
-  color: #000000;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.8rem ;
-  margin: 0;
-  background-color: white;
-}
-
-.MemberInfo{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.MemberOptions{
   display: grid;
-  grid-template-columns: repeat(2, minmax(7rem, 1fr));
-  gap: 2rem;
-  align-items: center;
+  color: #000000;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
-.MemberRole{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 0.3rem;
-  align-items: baseline;
-  font-weight: 600;
-  color: var(--primary-dark-color);
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-
-.MemberRole:hover{
-  color: var(--primary-color);
-  transform: scale(1.1);
-}
-
-.MemberRole span{
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
 .MemberTableRowUnregistered {
   display: grid;
   color: #000000;
@@ -391,8 +312,8 @@
 }
 
 .MemberAvatar {
-  width: 2.3rem;
-  height: 2.3rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
   text-align: center;
   font-weight: bold;

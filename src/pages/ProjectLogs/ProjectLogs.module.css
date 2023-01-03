@@ -1,3 +1,11 @@
+.Page {
+  margin: 0;
+  background: var( --gray-bg-light-color);
+  max-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  /* overflow: hidden; */
+}
 
 .NoResourcesMesssage {
   flex-grow: 1;
@@ -97,6 +105,12 @@
   border: none;
 }
 
+.Table {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 1rem 2rem;
+}
+
 .TableRow {
   display: flex;
   align-items: center;
@@ -125,26 +139,18 @@
   width: -webkit-fill-available;
 }
 
-.ActivityEmail {
+.Bold {
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 17px;
 }
-.ActivityDate {
-  font-size: 0.8rem;
-  color: #555;
-}
-
 
 .RowCell {
   display: flex;
   gap: 1rem;
 }
 
-.ActivityDescription {
-  font-size: 0.99rem;
-  color: #555;
-  display: flex;
-  align-items: flex-end;
+.LastCell {
+  align-self: flex-end;
 }
 .UserAvatar {
   width: 2.8rem;

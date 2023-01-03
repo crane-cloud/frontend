@@ -6,7 +6,7 @@ const MetricsCard = ({ className, title, icon, children }) => {
     <div className={`MetricsCardContainer ${className}`}>
       <div className="CardHeaderSection">
         <div className="CardTitle">{title}</div>
-        <div className="MetricsCardIcon">{icon}</div>
+        <div className="CardIcon">{icon}</div>
       </div>
       <hr />
       <div className="CardBodySection">{children}</div>

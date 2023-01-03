@@ -2,7 +2,7 @@ import React from "react";
 import "./PrimaryButton.css";
 
 const PrimaryButton = (props) => {
-  const { children, className, btntype, color, small, transparent, noPadding } = props;
+  const { children, className, btntype, color } = props;
 
   const getColorClass = () => {
     switch (color) {
@@ -13,9 +13,9 @@ const PrimaryButton = (props) => {
       case "black":
         return "BlackPrimaryBtn";
       case "red":
-        return "PrimaryDeleteBtn";
+        return "DeleteBtn";
       case "red-outline":
-        return "PrimaryDeleteBtnOutline";
+        return "DeleteBtnOutline";
       default:
         return "primary-button--blue";
     }
@@ -24,8 +24,7 @@ const PrimaryButton = (props) => {
     <button
       {...props}
       className={`Primary-Btn ${className} ${btntype === "close" && "DeleteBtnOutline"}
-        ${color && getColorClass()} ${small && "SmallBtn"} ${transparent && "TransparentBtn"}
-        ${noPadding && "NoPaddingBtn"}
+        ${color && getColorClass()}
       `}
     >
       {children}
