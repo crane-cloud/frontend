@@ -26,3 +26,5 @@ yarn-error.log*
 .env
 
 debug.log
+src/assets/images/PostgreSQL.svg
+src/assets/images/postgreSQL.svg
