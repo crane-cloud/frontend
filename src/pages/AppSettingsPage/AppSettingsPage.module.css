@@ -357,7 +357,6 @@
 
 .commandInputSection {
   display: grid;
-  height: 100%;
 }
 
 .errorCenterDiv {
