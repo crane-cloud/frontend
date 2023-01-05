@@ -25,10 +25,10 @@ import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
 import BlackInputText from "../../components/BlackInputText";
-import SettingsButton from "../../components/SettingsButton";
 import "./DBSettingsPage.css";
 import { getProjectName } from "../../helpers/projectName";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
+import styles from "../ProjectSettingsPage/ProjectSettingsPage.module.css";
 
 class DBSettingsPage extends React.Component {
   constructor(props) {
@@ -303,6 +303,7 @@ class DBSettingsPage extends React.Component {
       <DashboardLayout
         header="Database Settings"
         name={getProjectName(projects, projectID)}
+        short
       >
         {dbDeleteMessage === "Database Deleted Successfully"
           ? this.renderRedirect()
@@ -317,175 +318,216 @@ class DBSettingsPage extends React.Component {
           </div>
         ) : (
           <div className="DatabaseSettingsInfo">
-            <div className="DBSectionTitle">Database information</div>
-            <div className="DatabaseDetail">
-              <div className="DBCardSection">
-                <div className="DBDetailRow">
-                  <div className="DBThead">Type</div>
-                  <div className="DBTDetail uppercase">
-                    {database?.database_flavour_name === "mysql"
-                      ? "MYSQL"
-                      : "POSTGRESQL"}
+            <div className="SectionTitle">Database information</div>
+            <div className="BigCard DetailsList">
+              <div>
+                <div className="SectionSubTitle">Type</div>
+                <div className="DetailRow">
+                  <div className="SettingsSectionInfo">
+                    <div>
+                      {database?.database_flavour_name === "mysql"
+                        ? "MYSQL"
+                        : "POSTGRESQL"}
+                    </div>
                   </div>
                 </div>
-                <div className="DBDetailRow">
-                  <div className="DBThead">Name</div>
-                  <div className="DBTDetail">{database?.name}</div>
-                  <div className="DBIcon">
+              </div>
+              <div>
+                <div className="SectionSubTitle">Name</div>
+                <div className="DetailRow">
+                  <div className="SettingsSectionInfo">
+                    <div>{database?.name}</div>
+                  </div>
+                  <div className="CopyIcon">
                     <CopyText onClick={this.nameOnClick} />
                     {nameChecked ? <Checked /> : null}
                   </div>
                 </div>
-                <div className="DBDetailRow">
-                  <div className="DBThead">User</div>
-                  <div className="DBTDetail">{database?.user}</div>
-                  <div className="DBIcon">
+              </div>
+              <div>
+                <div className="SectionSubTitle">User</div>
+                <div className="DetailRow">
+                  <div className="SettingsSectionInfo">
+                    <div>{database?.user}</div>
+                  </div>
+                  <div className="CopyIcon">
                     <CopyText onClick={this.userOnClick} />
                     {userChecked ? <Checked /> : null}
                   </div>
                 </div>
-                {passwordFetched ? (
-                  <div className="DBDetailRow">
-                    <div className="DBColumn1 DBThead">Password</div>
-                    <div className="DBColumn">
-                      {hidden ? (
-                        isRetrievingPassword ? (
-                          <Spinner />
-                        ) : (
-                          "***************************"
-                        )
-                      ) : (
-                        password
-                      )}
-                    </div>
-                    <div className="DBPasswordBtns">
-                      <div className="DBIcon">
-                        <CopyText onClick={this.passwordOnClick} />
-                        {passwordChecked ? <Checked /> : null}
-                      </div>
-                      <div className="DBPassword" onClick={this.togglePassword}>
-                        {hidden ? (
-                          isRetrievingPassword ? (
-                            <Spinner />
-                          ) : (
-                            <Open />
-                          )
-                        ) : (
-                          <Closed />
-                        )}
-                      </div>
-                    </div>
+              </div>
+              <div>
+                <div className="SectionSubTitle">Host</div>
+                <div className="DetailRow">
+                  <div className="SettingsSectionInfo">
+                    <div>{database?.host}</div>
                   </div>
-                ) : (
-                  <div className="DBDetailRow">
-                    <div className="DBColumn1 DBThead">Password</div>
-                    <div className="DBColumn">
-                      {hidden ? (
-                        isRetrievingPassword ? (
-                          <Spinner />
-                        ) : (
-                          "click to get password"
-                        )
-                      ) : (
-                        password
-                      )}
-                    </div>
-                    <div className="DBPasswordBtns">
-                      <div className="DBIcon">
-                        <CopyText onClick={this.passwordOnClick} />
-                        {passwordChecked ? <Checked /> : null}
-                      </div>
-                      <div className="DBPassword" onClick={this.togglePassword}>
-                        {hidden ? (
-                          isRetrievingPassword ? (
-                            <Spinner />
-                          ) : (
-                            <Open />
-                          )
-                        ) : (
-                          <Closed />
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
-                <div className="DBDetailRow">
-                  <div className="DBThead">Host</div>
-                  <div className="DBTDetail">{database?.host}</div>
-                  <div className="DBIcon">
+                  <div className="CopyIcon">
                     <CopyText onClick={this.hostOnClick} />
                     {hostChecked ? <Checked /> : null}
                   </div>
                 </div>
-                <div className="DBDetailRow">
-                  <div className="DBThead">Port</div>
-                  <div className="DBTDetail">{database?.port}</div>
-                  <div className="DBIcon">
+              </div>
+              <div>
+                <div className="SectionSubTitle">Port</div>
+                <div className="DetailRow">
+                  <div className="SettingsSectionInfo">
+                    <div>{database?.port}</div>
+                  </div>
+                  <div className="CopyIcon">
                     <CopyText onClick={this.portOnClick} />
                     {portChecked ? <Checked /> : null}
                   </div>
                 </div>
-                <div className="DBDetailRow">
-                  <div className="DBThead">Size</div>
-                  <div className="DBTDetail">{database?.db_size}</div>
+              </div>
+
+              {passwordFetched ? (
+                <div>
+                  <div className="SectionSubTitle">Password</div>
+                  <div className="DetailRow">
+                    <div className="SettingsSectionInfo">
+                      <div>
+                        {hidden ? "***************************" : password}
+                      </div>
+                    </div>
+                    <div className="CopyIcon">
+                      <CopyText onClick={this.passwordOnClick} />
+                      {passwordChecked ? <Checked /> : null}
+                    </div>
+                    <div className="DBPassword" onClick={this.togglePassword}>
+                      {hidden ? <Open /> : <Closed />}
+                    </div>
+                  </div>
                 </div>
-                <div className="DBDetailRow">
-                  <div className="DBThead">Created</div>
-                  <div className="DBTDetail">{database?.age}</div>
+              ) : (
+                <div>
+                  <div className="SectionSubTitle">Password</div>
+                  <div className="DetailRow">
+                    <div className="SettingsSectionInfo">
+                      <div>{hidden ? "click to get password" : password}</div>
+                    </div>
+                    <div className="CopyIcon">
+                      <CopyText onClick={this.passwordOnClick} />
+                      {passwordChecked ? <Checked /> : null}
+                    </div>
+                    <div className="DBPassword" onClick={this.togglePassword}>
+                      {hidden ? (
+                        isRetrievingPassword ? (
+                          <Spinner />
+                        ) : (
+                          <Open />
+                        )
+                      ) : (
+                        <Closed />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <div className="SectionSubTitle">Size</div>
+                <div className="DetailRow">
+                  <div className="SettingsSectionInfo">
+                    <div>{database?.db_size}</div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div className="SectionSubTitle">Created</div>
+                <div className="DetailRow">
+                  <div className="SettingsSectionInfo">
+                    <div>{database?.age}</div>
+                  </div>
                 </div>
               </div>
             </div>
 
             <div className="DBSections">
-              <div className="DBSectionTitle">Connect to database</div>
+              <div className="SectionTitle">Connect to database</div>
               {database?.database_flavour_name === "mysql" ? (
-                <div className="DBInstructions">
-                  <div className="DBInfoTop">
-                    <div>
-                      To connect to the database, copy and paste the command
-                      below into your terminal. Refer to{" "}
-                      <a
-                        href="https://medium.com/cranecloud/connecting-to-a-remote-mysql-database-a6b3cc15c40b"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        className="MysqlArticle"
-                      >
-                        this article
-                      </a>
-                      , for a more comprehensive guide.
+                <div className="BigCard DBInstructionsView">
+                  <div className="SubTitle">Connect with terminal</div>
+                  <div className="DBConnectionInfo">
+                    <div className="DBInfoTop">
+                      {/* TODO: Add mysql conncetion with DB URI */}
+                      <div>
+                        To connect to the database, copy and paste the command
+                        below into your terminal. Refer to{" "}
+                        <a
+                          href="https://medium.com/cranecloud/connecting-to-a-remote-mysql-database-a6b3cc15c40b"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                          className="MysqlArticle"
+                        >
+                          this article
+                        </a>
+                        , for a more comprehensive guide.
+                      </div>
                     </div>
-                  </div>
-                  <div className="DBInfoBottom">
-                    <div className="DBAccessInfo">{`mysql -u ${database?.user} -p -P ${database?.port} -h ${database?.host} -D ${database?.name}`}</div>
-                    <div className="DBAccessCopy">
-                      <CopyText onClick={this.uriOnClick} />
-                      {uriChecked ? <Checked /> : null}
+                    <div className="DBInfoBottom">
+                      <code className="DBAccessInfo">
+                        {`mysql -u ${database?.user} -p -P ${database?.port} -h ${database?.host} -D ${database?.name}`}
+                      </code>
+                      <div className="DBAccessCopy">
+                        <CopyText onClick={this.uriOnClick} />
+                        {uriChecked ? <Checked /> : null}
+                      </div>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="DBInstructions">
-                  <div className="DBInfoTop">
-                    <div>
-                      To connect to the database, copy and paste the command
-                      below into your terminal. Refer to{" "}
-                      <a
-                        href="https://medium.com/cranecloud/connecting-to-a-remote-postgresql-database-779637147abf"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        className="MysqlArticle"
-                      >
-                        this article
-                      </a>
-                      , for a more comprehensive guide.
+                <div className="BigCard DBInstructionsView">
+                  <div className="SubTitle">
+                    Connect with a connection string
+                  </div>
+                  <div className="DBConnectionInfo">
+                    <div className="DBInfoTop">
+                      <div>
+                        Followwing this format{" "}
+                        <code>
+                          postgresql://[user[:password]@][host][:port][/dbname]
+                        </code>{" "}
+                        <br />
+                        To connect to the database, copy and paste the following
+                      </div>
+                    </div>
+                    <div className="DBInfoBottom">
+                      <code className="DBAccessInfo">
+                        {`postgresql://${database?.user}:${database?.password}@${database?.host}:${database?.port}/${database?.name}`}
+                      </code>
+                      <div className="DBAccessCopy">
+                        <div className="DBPassword">
+                          <CopyText onClick={this.uriCopyPostgresOnClick} />
+                          {uriChecked ? <Checked /> : null}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="DBInfoBottom">
-                    <div className="DBAccessInfo">{`psql -h ${database?.host} -p ${database?.port} -d ${database?.name} -U ${database?.user} -W`}</div>
-                    <div className="DBAccessCopy">
-                      <div className="DBPassword">
-                        <CopyText onClick={this.uriCopyPostgresOnClick} />
-                        {uriChecked ? <Checked /> : null}
+                  <div className="SubTitle">Connect with terminal</div>
+                  <div className="DBConnectionInfo">
+                    <div className="DBInfoTop">
+                      <div>
+                        To connect to the database, copy and paste the command
+                        below into your terminal. Refer to{" "}
+                        <a
+                          href="https://medium.com/cranecloud/connecting-to-a-remote-postgresql-database-779637147abf"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                          className="MysqlArticle"
+                        >
+                          this article
+                        </a>
+                        , for a more comprehensive guide.
+                      </div>
+                    </div>
+                    <div className="DBInfoBottom">
+                      <code className="DBAccessInfo">{`psql -h ${database?.host} -p ${database?.port} -d ${database?.name} -U ${database?.user} -W`}</code>
+                      <div className="DBAccessCopy">
+                        <div className="DBPassword">
+                          <CopyText onClick={this.uriCopyPostgresOnClick} />
+                          {uriChecked ? <Checked /> : null}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -493,38 +535,41 @@ class DBSettingsPage extends React.Component {
               )}
             </div>
             <div className="DBSections">
-              <div className="DBSectionTitle">More Options</div>
-              <div className="DBInstructions">
-                <div className="DBButtonRow">
-                  <div className="flexa">
-                    <div>
-                      <strong>Change password</strong>
+              <div className="SectionTitle">More Options</div>
+              <div className={styles.ProjectInstructions}>
+                <div className={styles.MemberBody}>
+                  <div className={styles.MemberTableRow}>
+                    <div className={styles.SettingsSectionInfo}>
+                      <div className="SubTitle">Change password</div>
+                      <div>Update the password of this database.</div>
                     </div>
-                    <div>Update the password of this database.</div>
-                  </div>
-                  <div className="SectionButtons">
-                    <SettingsButton
-                      label="Change password"
-                      onClick={this.showUpdateModal}
-                    />
-                  </div>
-                </div>
-                <div className="DBButtonRow">
-                  <div className="flexa">
-                    <div>
-                      <strong>Reset database</strong>
-                    </div>
-                    <div>
-                      Delete all data inside this database and restore it to its
-                      initial state.
+                    <div className={styles.SectionButtons}>
+                      <PrimaryButton
+                        onClick={this.showUpdateModal}
+                        small
+                        color="primary-outline"
+                      >
+                        Change Password
+                      </PrimaryButton>
                     </div>
                   </div>
-                  <div className="SectionButtons">
-                    <SettingsButton
-                      label="Reset this database"
-                      className="Change-Btn"
-                      onClick={this.showResetAlert}
-                    />
+                  <div className={styles.MemberTableRow}>
+                    <div className={styles.SettingsSectionInfo}>
+                      <div className="SubTitle">Reset database</div>
+                      <div>
+                        Delete all data inside this database and restore it to
+                        its initial state.
+                      </div>
+                    </div>
+                    <div className={styles.SectionButtons}>
+                      <PrimaryButton
+                        onClick={this.showResetAlert}
+                        small
+                        color="red-outline"
+                      >
+                        Reset
+                      </PrimaryButton>
+                    </div>
                   </div>
                   {resetMessage !== "" && (
                     <Feedback
@@ -536,23 +581,23 @@ class DBSettingsPage extends React.Component {
                       type={isReset ? "success" : "error"}
                     />
                   )}
-                </div>
-                <div className="DBButtonRow">
-                  <div className="flexa">
-                    <div>
-                      <strong>Delete database</strong>
+                  <div className={styles.MemberTableRow}>
+                    <div className={styles.SettingsSectionInfo}>
+                      <div className="SubTitle">Delete database</div>
+                      <div>
+                        Destroy the entire database, delete all tables and data
+                        inside them.
+                      </div>
                     </div>
-                    <div>
-                      Destroy the entire database, delete all tables and data
-                      inside them.
+                    <div className={styles.SectionButtons}>
+                      <PrimaryButton
+                        onClick={this.showDeleteAlert}
+                        small
+                        color="red-outline"
+                      >
+                        Delete
+                      </PrimaryButton>
                     </div>
-                  </div>
-                  <div className="SectionButtons">
-                    <SettingsButton
-                      label="Delete this database"
-                      className="Change-Btn"
-                      onClick={this.showDeleteAlert}
-                    />
                   </div>
                 </div>
               </div>
@@ -608,7 +653,7 @@ class DBSettingsPage extends React.Component {
                             Cancel
                           </PrimaryButton>
                           <PrimaryButton
-                            className="ResetBtn"
+                            color="primary"
                             onClick={this.handleSubmitUpdate}
                           >
                             {updatingDBPassword ? <Spinner /> : "Update"}
@@ -649,7 +694,7 @@ class DBSettingsPage extends React.Component {
                             Cancel
                           </PrimaryButton>
                           <PrimaryButton
-                            className="DeleteBtn"
+                            color="red"
                             onClick={(e) =>
                               this.handleDeleteDatabase(
                                 e,
@@ -697,7 +742,7 @@ class DBSettingsPage extends React.Component {
                             Cancel
                           </PrimaryButton>
                           <PrimaryButton
-                            className="ResetBtn"
+                            color="red"
                             onClick={(e) =>
                               this.handleResetDatabase(e, projectID, databaseID)
                             }
