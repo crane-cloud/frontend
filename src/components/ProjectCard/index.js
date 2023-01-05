@@ -8,6 +8,7 @@ import getProjectMemory from "../../redux/actions/projectMemory";
 import { formatMemoryMetrics } from "../../helpers/formatMetrics";
 import { handleGetRequest } from "../../apis/apis.js";
 import { ReactComponent as Users } from "../../assets/images/users.svg";
+import Spinner from "../Spinner";
 
 class ProjectCard extends React.Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class ProjectCard extends React.Component {
       projecMembers: [],
       fetchMembersError: "",
       currentUserRecord: {},
+      fetchingProjectMembers:true
     };
     this.getProjectMemoryMetrics = this.getProjectMemoryMetrics.bind(this);
     this.getProjectMemberz = this.getProjectMemberz.bind(this);
@@ -36,17 +38,20 @@ class ProjectCard extends React.Component {
     return results;
   }
   getProjectMemberz() {
+    
     const { cardID } = this.props;
     handleGetRequest(`/projects/${cardID}/users`)
       .then((response) => {
         this.setState({
           projecMembers: response.data.data.project_users,
+          fetchingProjectMembers:false
         });
         this.getcurrentUserRecord();
       })
       .catch((error) => {
         this.setState({
           fetchMembersError: "Failed to fetch project members",
+          fetchingProjectMembers:false
         });
       });
   }
@@ -74,7 +79,7 @@ class ProjectCard extends React.Component {
       acceptInviteCallBackModel,
       ownerId,
     } = this.props;
-    const { currentUserRecord } = this.state;
+    const { currentUserRecord,fetchingProjectMembers } = this.state;
     const formattedMetrics = this.getProjectMemoryMetrics();
     return (
       <div className="ProjectsCard">
@@ -99,8 +104,9 @@ class ProjectCard extends React.Component {
               />
             </div>
           </Link>
+          
         ) : (
-          <div
+            <div
             onClick={() => {
               acceptInviteCallBackModel(
                 cardID,
@@ -109,19 +115,27 @@ class ProjectCard extends React.Component {
             }}
             className="PendingNote"
           >
-            Invitation to this project is pending acceptance
+            {fetchingProjectMembers ? <Spinner/>:
+            `Invitation to this project is pending acceptance`}
           </div>
+
         )}
         <div className="ProjectBottomContainer">
           <div className="ProjectInfor">
             <div className="ProjectInfoSection">
               <Link
-                to={{
+                to={ userID === ownerId || currentUserRecord[0]?.accepted_collaboration_invite === true ? { 
                   pathname: `/projects/${cardID}/dashboard`,
                   projectData: name,
+                }:null}
+                onClick={()=>{
+                  acceptInviteCallBackModel(
+                    cardID,
+                    this.updateRoleValue(currentUserRecord[0].role.split("."))
+                  );
                 }}
                 key={cardID}
-              >
+              > 
                 <div className="ProjectsCardName">{name}</div>
               </Link>
             </div>
