@@ -19,7 +19,7 @@ export const addProjectFail = (error) => ({
   type: ADD_PROJECT_FAILED,
   payload: {
     status: false,
-    errorCode: error.response.status,
+    errorCode: error.response?.status,
   },
 });
 

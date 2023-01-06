@@ -25,6 +25,8 @@ class UserProjectsPage extends React.Component {
       openCreateComponent: false,
       Searchword: "",
       SearchList: [],
+      myProjectsList: [],
+      sharedProjectsList: [],
       showInviteModel: false,
       selectProjectCategory: false,
       selectedProjects: "My projects",
@@ -46,6 +48,8 @@ class UserProjectsPage extends React.Component {
     this.handleInvitationAcceptence =
       this.handleInvitationAcceptence.bind(this);
     this.handleInvitationDecline = this.handleInvitationDecline.bind(this);
+    this.filterProjects = this.filterProjects.bind(this);
+
   }
 
   componentDidMount() {
@@ -70,6 +74,7 @@ class UserProjectsPage extends React.Component {
       isDeleted,
       isUpdated,
       clearUpdateProjectState,
+      isFetched
     } = this.props;
     const { Searchword } = this.state;
 
@@ -87,6 +92,14 @@ class UserProjectsPage extends React.Component {
     if (isAdded !== prevProps.isAdded) {
       getUserProjects();
       this.setState(this.initialState);
+    }
+    if(isFetched !== prevProps.isFetched){
+      //call filter
+      const filteredData = this.filterProjects();
+      this.setState({
+        myProjectsList: filteredData.myProjects,
+        sharedProjectsList: filteredData.sharedProjects,
+      })
     }
     if (Searchword !== prevState.Searchword) {
       this.searchThroughProjects();
@@ -178,6 +191,23 @@ class UserProjectsPage extends React.Component {
         this.hideInvitationModel();
       });
   }
+  filterProjects(){
+    const { projects, data } = this.props;
+    let myProjects = [];
+    let sharedProjects = [];
+    projects.forEach((element) => {
+      if (element.owner_id === data.id ) {
+        myProjects.push(element);
+      }else{
+        sharedProjects.push(element);
+      }
+    });
+    return {
+      sharedProjects,
+      myProjects
+    }
+
+  }
 
   render() {
     const {
@@ -191,6 +221,8 @@ class UserProjectsPage extends React.Component {
       decliningInvitation,
       acceptingInvitation,
       invitationError,
+      sharedProjectsList,
+      myProjectsList
     } = this.state;
     const {
       projects,
@@ -200,7 +232,8 @@ class UserProjectsPage extends React.Component {
       credits,
       data,
     } = this.props;
-    const sortedProjects = projects.sort((a, b) =>
+    const displayProjects = selectedProjects === "My projects" ? myProjectsList : sharedProjectsList
+    const sortedProjects = displayProjects.sort((a, b) =>
       b.date_created > a.date_created ? 1 : -1
     );
     return (
@@ -370,6 +403,19 @@ class UserProjectsPage extends React.Component {
                     </div>
                   </Modal>
                 </div>
+              )}
+              {displayProjects.length === 0 && (
+                <div className={styles.NoResourcesMessage}>
+               {selectedProjects === "My projects" ?  <>  
+                You haven’t created any projects yet. Click the &nbsp;{" "}
+                <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp;
+                button to add a project.
+                </>: 
+                <>  
+                 No project has been shared with you as yet.
+                </>
+                }
+              </div>
               )}
               {isFetched && projects.length === 0 && (
                 <div className={styles.NoResourcesMessage}>
