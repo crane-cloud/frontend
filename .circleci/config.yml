@@ -59,15 +59,14 @@ jobs:
             chmod +x ./cc-test-reporter
             ./cc-test-reporter before-build
 
-      - save_cache:  # special step to save the dependency cache
+      - save_cache: # special step to save the dependency cache
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
       - run: # run tests
           name: Run Test and Coverage
           no_output_timeout: 30m
-          command:
-            yarn test --detectOpenHandles
+          command: yarn test --detectOpenHandles
       - run: # send coverage
           name: Code Climate report
           command: ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
@@ -81,6 +80,7 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: /root/crane-cloud
           cluster: staging-cluster
           REACT_APP_API_BASE_URL: https://staging-api.cranecloud.io
+          REACT_APP_MIRA_API_URL: $REACT_APP_MIRA_API_URL
           namespace: cranecloud
           CC_TEST_REPORTER_ID: $CC_TEST_REPORTER_ID
     working_directory: ~/crane-cloud
@@ -105,6 +105,7 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: /root/crane-cloud
           cluster: staging-cluster
           REACT_APP_API_BASE_URL: https://api.cranecloud.io
+          REACT_APP_MIRA_API_URL: $REACT_APP_MIRA_API_URL
           namespace: cranecloud-prod
           CC_TEST_REPORTER_ID: $CC_TEST_REPORTER_ID
     working_directory: ~/crane-cloud
@@ -132,7 +133,8 @@ workflows:
             - test_and_report
           filters:
             branches:
-              only: develop
+              only: ft-add-ui-improvements
+              # only: develop
       - build_and_deploy_production:
           requires:
             - test_and_report
