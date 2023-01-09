@@ -3,18 +3,12 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import PrimaryButton from "../../components/PrimaryButton";
-import deleteProject, {
-  clearDeleteProjectState,
-} from "../../redux/actions/deleteProject";
 import {
   handleGetRequest,
   handlePostRequestWithOutDataObject,
   handlePatchRequest,
   handleDeleteRequest,
 } from "../../apis/apis.js";
-import updateProject, {
-  clearUpdateProjectState,
-} from "../../redux/actions/updateProject";
 import Spinner from "../../components/Spinner";
 import Avatar from "../../components/Avatar";
 import Modal from "../../components/Modal";
@@ -39,9 +33,8 @@ class ProjectSettingsPage extends React.Component {
     super(props);
     const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
     const userToken = localStorage.getItem("token", null);
-    const { name, description, organisation, project_type, project_id } =
+    const { name, description, organisation, project_type } =
       projectInfo;
-
     this.state = {
       openUpdateAlert: false,
       openRoleUpdateAlert: false,
@@ -49,9 +42,10 @@ class ProjectSettingsPage extends React.Component {
       openDropDown: false,
       userToken: userToken,
       projectName: name ? name : "",
-      projectID: project_id ? project_id : "",
+      projectID: this.props.match.params.projectID,
       projectDescription: description ? description : "",
       error: "",
+      updatingProjectDetails:false,
       nameChecked: false,
       idChecked: false,
       tokenChecked: false,
@@ -81,6 +75,8 @@ class ProjectSettingsPage extends React.Component {
       currentUserIsAdminOrMember: false,
       currentUserIsAdminOrOwner: false,
       currentUserIsMemberOnly: false,
+      deleteProjectError: "",
+      deletingProject: false,
     };
 
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
@@ -116,6 +112,8 @@ class ProjectSettingsPage extends React.Component {
     this.inviteMember = this.inviteMember.bind(this);
     this.updateMemberRoles = this.updateMemberRoles.bind(this);
     this.removeMember = this.removeMember.bind(this);
+    this.updateProjectDetails = this.updateProjectDetails.bind(this);
+    this.deleteThisProject = this.deleteThisProject.bind(this);
   }
 
   componentDidMount() {
@@ -283,28 +281,16 @@ class ProjectSettingsPage extends React.Component {
     const { error, openDeleteAlert } = this.state;
     const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
     const { name } = projectInfo;
-    const {
-      errorMessage,
-      clearUpdateProjectState,
-      clearDeleteProjectState,
-      isFailed,
-      message,
-    } = this.props;
+
     this.setState({
       [e.target.name]: e.target.value,
     });
-    if (errorMessage) {
-      clearUpdateProjectState();
-    }
-
     if (error) {
       this.setState({
         error: "",
       });
     }
-    if (isFailed && message) {
-      clearDeleteProjectState();
-    }
+
     if (e.target.value === name && openDeleteAlert) {
       this.setState({
         disableDelete: false,
@@ -334,7 +320,6 @@ class ProjectSettingsPage extends React.Component {
       othersBool,
     } = this.state;
     const {
-      updateProject,
       match: {
         params: { projectID },
       },
@@ -408,7 +393,8 @@ class ProjectSettingsPage extends React.Component {
                 organisation: trimedprojectOrganisation,
                 description: trimedprojectDescription,
               };
-              updateProject(projectID, newProject);
+              //updateProject(projectID, newProject);
+              this.updateProjectDetails(projectID, newProject)
             }
           }
         } else {
@@ -438,7 +424,8 @@ class ProjectSettingsPage extends React.Component {
               organisation: trimedprojectOrganisation,
               description: trimedprojectDescription,
             };
-            updateProject(projectID, newProject);
+            //updateProject(projectID, newProject);
+           this.updateProjectDetails(projectID, newProject)
           }
         }
       }
@@ -478,9 +465,9 @@ class ProjectSettingsPage extends React.Component {
   }
 
   handleDeleteProject(e, projectID) {
-    const { deleteProject } = this.props;
+    // const { deleteProject } = this.props;
     e.preventDefault();
-    deleteProject(projectID);
+     this.deleteThisProject(projectID)
   }
 
   showUpdateAlert() {
@@ -518,8 +505,6 @@ class ProjectSettingsPage extends React.Component {
   }
 
   hideDeleteAlert() {
-    const { clearDeleteProjectState } = this.props;
-    clearDeleteProjectState();
     this.setState({ openDeleteAlert: false });
   }
   handleTypeSelectChange(selected) {
@@ -574,15 +559,41 @@ class ProjectSettingsPage extends React.Component {
       return <Redirect to={`/projects`} noThrow />;
     }
   };
+  updateProjectDetails(projectID, data) {
+    this.setState({
+      updatingProjectDetails: true,
+    });
+    handlePatchRequest(`/projects/${projectID}`, 
+    data)
+      .then(() => {
+        window.location.href = `/projects`;
+      })
+      .catch((error) => {
+        this.setState({
+          error: "Failed to update project",
+          updatingProjectDetails: false,
+        });
+      });
+  }
+
+  deleteThisProject(projectID){
+    this.setState({ deletingProject: true, deleteProjectError:"" });
+    handleDeleteRequest(`/projects/${projectID}`,{})
+      .then(() => {
+        window.location.href = `/projects`;
+      })
+      .catch(() => {
+        this.setState({
+          deleteProjectError: "Failed to delete this project",
+          deletingProject: false,
+        })
+      });
+  }
 
   render() {
     const {
       match: { params },
-      isDeleting,
       isDeleted,
-      isUpdating,
-      message,
-      isFailed,
       isUpdated,
       errorMessage,
       data,
@@ -629,6 +640,9 @@ class ProjectSettingsPage extends React.Component {
       updatingMemberRole,
       removingMember,
       removeMemberError,
+      updatingProjectDetails,
+      deletingProject,
+      deleteProjectError
     } = this.state;
     const types = retrieveProjectTypes();
     const roles = retrieveMembershipRoles();
@@ -1144,7 +1158,7 @@ class ProjectSettingsPage extends React.Component {
                         onClick={this.handleSubmit}
                         color="primary"
                       >
-                        {isUpdating ? <Spinner /> : "update project"}
+                        {updatingProjectDetails ? <Spinner /> : "update project"}
                       </PrimaryButton>
                     </div>
                   </div>
@@ -1256,12 +1270,12 @@ class ProjectSettingsPage extends React.Component {
                         this.handleDeleteProject(e, params.projectID)
                       }
                     >
-                      {isDeleting ? <Spinner /> : "Delete"}
+                      {deletingProject ? <Spinner /> : "Delete"}
                     </button>
                   </div>
 
-                  {isFailed && message && (
-                    <Feedback message={message} type="error" />
+                  {deleteProjectError && (
+                    <Feedback message={deleteProjectError} type="error" />
                   )}
                 </div>
               </div>
@@ -1317,54 +1331,28 @@ class ProjectSettingsPage extends React.Component {
 }
 
 ProjectSettingsPage.propTypes = {
-  isFailed: PropTypes.bool,
-  clearDeleteProjectState: PropTypes.func.isRequired,
-  updateProject: PropTypes.func.isRequired,
-  deleteProject: PropTypes.func.isRequired,
   name: PropTypes.string,
-  isUpdating: PropTypes.bool,
   description: PropTypes.string,
-  message: PropTypes.string,
-  isUpdated: PropTypes.bool,
-  isDeleted: PropTypes.bool,
 };
 
 ProjectSettingsPage.defaultProps = {
   message: "",
-  isUpdated: false,
-  isDeleted: false,
   name: "",
   description: "",
-  isUpdating: false,
 };
 
 export const mapStateToProps = (state) => {
-  const { isDeleting, isDeleted, isFailed, clearDeleteProjectState, message } =
-    state.deleteProjectReducer;
+
 
   const { data } = state.user;
 
-  const { isUpdated, isUpdating, errorMessage, clearUpdateProjectState } =
-    state.updateProjectReducer;
+ 
   return {
     data,
-    isUpdated,
-    isUpdating,
-    message,
-    isDeleting,
-    isFailed,
-    isDeleted,
-    errorMessage,
-    clearDeleteProjectState,
-    clearUpdateProjectState,
   };
 };
 
 const mapDispatchToProps = {
-  deleteProject,
-  updateProject,
-  clearDeleteProjectState,
-  clearUpdateProjectState,
 };
 
 export default connect(

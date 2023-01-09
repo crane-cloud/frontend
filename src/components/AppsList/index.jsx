@@ -34,14 +34,10 @@ class AppsList extends Component {
     const {
       params: { projectID },
       getAppsList,
-      newAppCreated,
       word,
     } = this.props;
     const { rerender } = this.state;
 
-    if (newAppCreated !== prevProps.newAppCreated) {
-      getAppsList(projectID);
-    }
 
     if (rerender !== prevState.rerender) {
       getAppsList(projectID);
@@ -171,7 +167,6 @@ AppsList.propTypes = {
   isRetrieved: PropTypes.bool,
   isRetrieving: PropTypes.bool,
   getAppsList: PropTypes.func,
-  newAppCreated: PropTypes.bool,
   message: PropTypes.string,
   params: PropTypes.shape({
     projectID: PropTypes.string.isRequired,
