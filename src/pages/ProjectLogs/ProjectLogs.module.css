@@ -1,11 +1,3 @@
-.Page {
-  margin: 0;
-  background: #f1f1f1;
-  max-height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  /* overflow: hidden; */
-}
 
 .NoResourcesMesssage {
   flex-grow: 1;
@@ -23,7 +15,7 @@
 
 .MainSection {
   /* divided into two columns */
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
   display: grid;
   grid-template-columns: 1.3fr 6fr;
   overflow: hidden;
@@ -91,7 +83,7 @@
 }
 
 .BackButton {
-  background: #008ac1;
+  background: var(--primary-color);
   outline: none;
 }
 
@@ -103,12 +95,6 @@
 }
 .FilterButton:hover {
   border: none;
-}
-
-.Table {
-  background: #ffffff;
-  border-radius: 15px;
-  padding: 1rem 2rem;
 }
 
 .TableRow {
@@ -126,7 +112,7 @@
 }
 
 .Entity {
-  color: #008ac1;
+  color: var(--primary-color);
 }
 
 .hr {
@@ -139,18 +125,26 @@
   width: -webkit-fill-available;
 }
 
-.Bold {
+.ActivityEmail {
   font-weight: bold;
-  font-size: 17px;
+  font-size: 1rem;
 }
+.ActivityDate {
+  font-size: 0.8rem;
+  color: #555;
+}
+
 
 .RowCell {
   display: flex;
   gap: 1rem;
 }
 
-.LastCell {
-  align-self: flex-end;
+.ActivityDescription {
+  font-size: 0.99rem;
+  color: #555;
+  display: flex;
+  align-items: flex-end;
 }
 .UserAvatar {
   width: 2.8rem;

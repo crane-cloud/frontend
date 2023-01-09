@@ -13,9 +13,6 @@
   width: 100%;
 }
 
-.SelectOptionsWrapper {
-  border: 1px solid #000;
-}
 
 .DBFormElements {
   display: grid;
@@ -24,7 +21,7 @@
 .CreatePage{
   width: 100%;
   margin: 0;
-  background: #f1f1f1;
+  background: var( --gray-bg-light-color);
 }
 
 @media (max-width: 650px) {

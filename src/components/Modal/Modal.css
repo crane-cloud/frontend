@@ -63,7 +63,7 @@
   height: 0px;
 }
 .ModalChildWrap::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var( --gray-bg-light-color);
 }
 .ModalChildWrap::-webkit-scrollbar-thumb {
   background: #555;

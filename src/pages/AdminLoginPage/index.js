@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import saveUser from "../../redux/actions/saveUser";
 import Header from "../../components/Header";
 import InputText from "../../components/InputText";
-import InputPassword from "../../components/InputPassword";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
 import { API_BASE_URL } from "../../config";
@@ -94,15 +93,17 @@ class AdminLoginPage extends React.Component {
                 required
                 placeholder="Email Address"
                 name="email"
+                type="email"
                 value={email}
                 onChange={(e) => {
                   this.handleChange(e);
                 }}
               />
-              <InputPassword
+              <InputText
                 required
                 placeholder="Password"
                 name="password"
+                type="password"
                 value={password}
                 onChange={(e) => {
                   this.handleChange(e);
@@ -115,10 +116,9 @@ class AdminLoginPage extends React.Component {
                 </Link>
               </div>
 
-              <PrimaryButton
-                label={loading ? <Spinner /> : "login"}
-                onClick={this.handleSubmit}
-              />
+              <PrimaryButton onClick={this.handleSubmit}>
+                {loading ? <Spinner /> : "login"}
+              </PrimaryButton>
 
               <div className="LoginContentBottomLink LoginLinkContainer">
                 <Link to="/" className="LoginContentLink">

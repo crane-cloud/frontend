@@ -7,6 +7,7 @@
   border: 1px solid rgba(0, 0, 0, 0.125);
   height: 10rem;
   border-radius: 10px;
+  transition: all 0.3s ease-in-out;
 }
 .AlertIcon{
   display: flex;
@@ -74,7 +75,7 @@
 .AppUrl a {
   text-decoration: underline;
   font-size: 1rem;
-  color: #008ac1;
+  color: var(--primary-color);
 }
 
 .AppCardItem {
@@ -102,9 +103,7 @@
 }
 
 .AppCard:hover {
-  border: 1px solid #f7b21f;
-  box-shadow: 0 1px 2px 0 #f7b21f;
-  transition: 0.5s;
+  border: 1px solid var(--secondary-color);
 }
 .FailAppCard:hover {
   border: 1px solid #f71f1f;

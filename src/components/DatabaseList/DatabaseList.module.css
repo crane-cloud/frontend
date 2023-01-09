@@ -10,7 +10,7 @@
 
 .DatabaseTableHead {
   text-transform: uppercase;
-  color: #008ac1;
+  color: var(--primary-color);
   text-align: center;
   grid-row: 1;
   padding: 0.5rem 0;
@@ -32,8 +32,8 @@
 }
 
 .DatabaseBody .DatabaseTableRow:hover {
-  /* color: #f7b21f; */
-  background-color: var(--color-gray-light);
+  /* color: var(--secondary-color); */
+  background-color: var(--gray-light-color);
 }
 
 .DatabaseTableCell {
@@ -94,7 +94,7 @@
 .MainPage {
   /* Divided into two rows */
   margin: 0;
-  background: #f1f1f1;
+  background: var( --gray-bg-light-color);
   height: 100vh;
   display: grid;
   grid-template-rows: 80px 4fr;
@@ -103,7 +103,7 @@
 
 .MainSection {
   /* divided into two columns */
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
   display: grid;
   grid-template-columns: 1.3fr 6fr;
   overflow: hidden;
