@@ -15,7 +15,8 @@ import ProjectCard from "../../components/ProjectCard";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
 import { handlePatchRequest } from "../../apis/apis.js";
-import { ReactComponent as DownArrow } from "../../assets/images/down-arrow-black.svg";
+import { ReactComponent as User } from "../../assets/images/user.svg";
+import { ReactComponent as Users } from "../../assets/images/users.svg";
 import "../../index.css";
 
 class UserProjectsPage extends React.Component {
@@ -28,13 +29,13 @@ class UserProjectsPage extends React.Component {
       myProjectsList: [],
       sharedProjectsList: [],
       showInviteModel: false,
-      selectProjectCategory: false,
       selectedProjects: "My projects",
       inviteeProjectId: "",
       inviteeModelRole: "",
       decliningInvitation: false,
       acceptingInvitation: false,
       invitationError: "",
+      currentTab: "My Projects",
     };
     this.state = this.initialState;
     this.openProjectCreateComponent =
@@ -49,7 +50,6 @@ class UserProjectsPage extends React.Component {
       this.handleInvitationAcceptence.bind(this);
     this.handleInvitationDecline = this.handleInvitationDecline.bind(this);
     this.filterProjects = this.filterProjects.bind(this);
-
   }
 
   componentDidMount() {
@@ -74,7 +74,7 @@ class UserProjectsPage extends React.Component {
       isDeleted,
       isUpdated,
       clearUpdateProjectState,
-      isFetched
+      isFetched,
     } = this.props;
     const { Searchword } = this.state;
 
@@ -93,13 +93,13 @@ class UserProjectsPage extends React.Component {
       getUserProjects();
       this.setState(this.initialState);
     }
-    if(isFetched !== prevProps.isFetched){
+    if (isFetched !== prevProps.isFetched) {
       //call filter
       const filteredData = this.filterProjects();
       this.setState({
         myProjectsList: filteredData.myProjects,
         sharedProjectsList: filteredData.sharedProjects,
-      })
+      });
     }
     if (Searchword !== prevState.Searchword) {
       this.searchThroughProjects();
@@ -191,22 +191,21 @@ class UserProjectsPage extends React.Component {
         this.hideInvitationModel();
       });
   }
-  filterProjects(){
+  filterProjects() {
     const { projects, data } = this.props;
     let myProjects = [];
     let sharedProjects = [];
     projects.forEach((element) => {
-      if (element.owner_id === data.id ) {
+      if (element.owner_id === data.id) {
         myProjects.push(element);
-      }else{
+      } else {
         sharedProjects.push(element);
       }
     });
     return {
       sharedProjects,
-      myProjects
-    }
-
+      myProjects,
+    };
   }
 
   render() {
@@ -215,14 +214,14 @@ class UserProjectsPage extends React.Component {
       Searchword,
       SearchList,
       showInviteModel,
-      selectProjectCategory,
       selectedProjects,
       inviteeModelRole,
       decliningInvitation,
       acceptingInvitation,
       invitationError,
       sharedProjectsList,
-      myProjectsList
+      myProjectsList,
+      currentTab,
     } = this.state;
     const {
       projects,
@@ -232,7 +231,8 @@ class UserProjectsPage extends React.Component {
       credits,
       data,
     } = this.props;
-    const displayProjects = selectedProjects === "My projects" ? myProjectsList : sharedProjectsList
+    const displayProjects =
+      selectedProjects === "My projects" ? myProjectsList : sharedProjectsList;
     const sortedProjects = displayProjects.sort((a, b) =>
       b.date_created > a.date_created ? 1 : -1
     );
@@ -259,58 +259,47 @@ class UserProjectsPage extends React.Component {
             </div>
             <div className={styles.MainRow}>
               <div className={`${styles.SelectProjects} SmallContainer`}>
-                <div className={styles.ProjectsDropDown}>
-                  <div className={styles.TopItem}>
-                    <>{selectedProjects}</>
-                    <div
-                      onClick={() => {
-                        this.setState({
-                          selectProjectCategory: !selectProjectCategory,
-                        });
-                      }}
-                      className={
-                        selectProjectCategory
-                          ? styles.closeDrop
-                          : styles.dropdown
-                      }
-                    >
-                      <DownArrow />
+                <div className={styles.ProjectCategoryHeadings}>
+                  <span
+                    className={
+                      currentTab === "My Projects"
+                        ? styles.CurrentTab
+                        : styles.Tab
+                    }
+                    onClick={() => {
+                      this.setState({
+                        selectedProjects: "My projects",
+                        currentTab: "My Projects",
+                      });
+                    }}
+                  >
+                    <div className={styles.ProjectCategories}>
+                      <span>
+                        <User className={styles.SmallerIcon} />
+                      </span>
+                      <span>My Projects</span>
                     </div>
-                  </div>
-                  {selectProjectCategory && (
-                    <div className={styles.itemsList}>
-                      <div
-                        onClick={() => {
-                          this.setState({
-                            selectedProjects: "My projects",
-                            selectProjectCategory: false,
-                          });
-                        }}
-                        className={
-                          selectedProjects === "My projects"
-                            ? styles.SelectedListItem
-                            : styles.ListItem
-                        }
-                      >
-                        My projects
-                      </div>
-                      <div
-                        onClick={() => {
-                          this.setState({
-                            selectedProjects: "Projects shared with me",
-                            selectProjectCategory: false,
-                          });
-                        }}
-                        className={
-                          selectedProjects === "Projects shared with me"
-                            ? styles.SelectedListItem
-                            : styles.ListItem
-                        }
-                      >
-                        Projects shared with me
-                      </div>
+                  </span>
+                  <span
+                    className={
+                      currentTab === "Shared Projects"
+                        ? styles.CurrentTab
+                        : styles.Tab
+                    }
+                    onClick={() => {
+                      this.setState({
+                        selectedProjects: "Shared Projects",
+                        currentTab: "Shared Projects",
+                      });
+                    }}
+                  >
+                    <div className={styles.ProjectCategories}>
+                      <span>
+                        <Users className={styles.SmallerIcon} />
+                      </span>
+                      <span>Shared Projects</span>
                     </div>
-                  )}
+                  </span>
                 </div>
               </div>
               {isRetrieving ? (
@@ -406,16 +395,16 @@ class UserProjectsPage extends React.Component {
               )}
               {displayProjects.length === 0 && (
                 <div className={styles.NoResourcesMessage}>
-               {selectedProjects === "My projects" ?  <>  
-                You haven’t created any projects yet. Click the &nbsp;{" "}
-                <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp;
-                button to add a project.
-                </>: 
-                <>  
-                 No project has been shared with you as yet.
-                </>
-                }
-              </div>
+                  {selectedProjects === "My projects" ? (
+                    <div>
+                      You haven’t created any projects yet. Click the &nbsp;{" "}
+                      <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp;
+                      button to add a project.
+                    </div>
+                  ) : (
+                    <>No project has been shared with you as yet.</>
+                  )}
+                </div>
               )}
               {isFetched && projects.length === 0 && (
                 <div className={styles.NoResourcesMessage}>
