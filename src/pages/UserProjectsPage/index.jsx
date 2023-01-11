@@ -362,12 +362,12 @@ class UserProjectsPage extends React.Component {
                           </span>
                         </div>
                         <div className={styles.InformationWarning}>
-                          PS: If you decline, you will not be able to see this
+                          If you decline, you will not be able to see this
                           project again unless you are re-invited.
                         </div>
                         <div className={styles.UpdateProjectModelButtons}>
                           <PrimaryButton
-                            className="CancelBtn"
+                            color="red"
                             onClick={() => {
                               this.handleInvitationDecline();
                             }}
@@ -375,7 +375,7 @@ class UserProjectsPage extends React.Component {
                             {decliningInvitation ? <Spinner /> : "Decline"}
                           </PrimaryButton>
                           <PrimaryButton
-                            className={styles.BlueBtn}
+                            color="primary"
                             onClick={() => {
                               this.handleInvitationAcceptence();
                             }}
