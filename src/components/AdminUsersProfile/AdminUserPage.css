@@ -173,3 +173,61 @@
 .CreditsHeaderAttribute{
   padding: .3rem 0rem;
 }
+.ManageUser{
+  font-size: 20px;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: left;
+  border-bottom: 1px solid #999999;
+}
+.ManageUserContainer{
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+.DiasbleUserContent{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+.DiasbleUserContent{
+  font-weight: bold;
+  margin: 5px 0px 0px 10px;
+}
+.DisableWarning{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0px 10px 0px 10px;
+  padding: 0px 0px 10px 0px;
+  border-bottom: 1px solid #999999;
+}
+.DeleteUserContent{
+  font-weight: bold;
+  margin: 5px 0px 0px 10px;
+  padding: 5px 0px 0px 0px;
+}
+.Delete--Warning{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0px 10px 0px 10px;
+  padding: 0px 0px 10px 0px;
+  border-bottom: 1px solid #999999;
+}
+.DeleteWarning{
+  outline-color: red;
+  color: red;
+  background-color: #ffffff;
+}
+.DeleteWarning:hover{
+  background-color: red;
+  color: #ffffff;
+}
+.ManageUserContainer .DeleteWarning{
+  margin-bottom: 10px;
+}
+.MainPage{
+  height: 100%;
+}
