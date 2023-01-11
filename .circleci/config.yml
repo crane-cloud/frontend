@@ -133,7 +133,7 @@ workflows:
             - test_and_report
           filters:
             branches:
-              only: test-env-vars
+              only: develop
       - build_and_deploy_production:
           requires:
             - test_and_report

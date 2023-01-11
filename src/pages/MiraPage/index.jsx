@@ -78,8 +78,6 @@ const MiraPge = ({ projectID }) => {
 
   return (
     <div className={styles.CreateFormHolder}>
-      {console.log(MIRA_API_URL)}
-      {console.log(process.env.REACT_APP_MIRA_API_URL)}
       <div className={styles.FormInputs}>
         <div className={styles.FormHeading}>Fields marked * are required</div>
         <div className={styles.FrameworkSelect}>
