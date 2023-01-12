@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Modal from "../../components/Modal";
 import styles from "./UserProjectsPage.module.css";
-import { clearUpdateProjectState } from "../../redux/actions/updateProject";
 import InformationBar from "../../components/InformationBar";
 import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import Header from "../../components/Header";
@@ -57,12 +56,10 @@ class UserProjectsPage extends React.Component {
       getClustersList,
       getUserProjects,
       data,
-      clearUpdateProjectState,
       getUserCredits,
     } = this.props;
     getUserProjects(data.id);
     getClustersList();
-    clearUpdateProjectState();
     getUserCredits(data.id);
   }
 
@@ -110,6 +107,10 @@ class UserProjectsPage extends React.Component {
     this.setState({ openCreateComponent: true });
   }
   callbackProjectCreateComponent() {
+    const {
+      getUserProjects
+    } = this.props;
+    getUserProjects()
     this.setState(this.initialState);
   }
   searchThroughProjects() {
@@ -445,50 +446,29 @@ UserProjectsPage.propTypes = {
       userID: PropTypes.string,
     }).isRequired,
   }).isRequired,
-  isAdded: PropTypes.bool,
-  errorCode: PropTypes.number,
-  isAdding: PropTypes.bool,
   isFetched: PropTypes.bool,
-  message: PropTypes.string,
-  isUpdated: PropTypes.bool,
-  isDeleted: PropTypes.bool,
   isRetrieving: PropTypes.bool,
 };
 
 UserProjectsPage.defaultProps = {
   clusters: [],
-  isAdded: false,
-  isAdding: false,
-  errorCode: null,
   projects: [],
-  message: "",
   isFetched: false,
-  isUpdated: false,
-  isDeleted: false,
   isRetrieving: false,
 };
 
 export const mapStateToProps = (state) => {
   const { data } = state.user;
-  const { isAdded, isAdding, message, errorCode } = state.addProjectReducer;
+
   const { clusters } = state.clustersReducer;
-  const { isDeleted } = state.deleteProjectReducer;
   const { isRetrieving, projects, isFetched } = state.userProjectsReducer;
-  const { isUpdated, clearUpdateProjectState } = state.updateProjectReducer;
   const { credits } = state.userCreditsReducer;
   return {
-    isAdded,
     data,
     isRetrieving,
     projects,
     clusters,
-    isUpdated,
     isFetched,
-    isAdding,
-    message,
-    isDeleted,
-    errorCode,
-    clearUpdateProjectState,
     credits,
   };
 };
@@ -496,7 +476,6 @@ export const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   getUserProjects,
   getClustersList,
-  clearUpdateProjectState,
   getUserCredits,
 };
 

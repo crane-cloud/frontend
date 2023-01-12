@@ -438,11 +438,6 @@ class UserProfile extends React.Component {
 
 UserProfile.propTypes = {
   getUserDetail: PropTypes.func.isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      userID: PropTypes.string,
-    }).isRequired,
-  }).isRequired,
   data: PropTypes.shape({
     id: PropTypes.string,
   }).isRequired,

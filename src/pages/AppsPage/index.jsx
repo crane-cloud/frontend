@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // import { v4 as uuidv4 } from "uuid";
-import createApp, { clearState } from "../../redux/actions/createApp";
+
 import AppsList from "../../components/AppsList";
 import CreateApp from "../../components/CreateApp";
 import "./AppsPage.css";
@@ -28,18 +28,14 @@ class AppsPage extends React.Component {
     this.handleCallbackSearchword = this.handleCallbackSearchword.bind(this);
   }
 
-  componentDidMount() {
-    const { clearState } = this.props;
-    clearState();
-  }
+  // componentDidMount() {
+    
+  // }
 
-  componentDidUpdate(prevProps) {
-    const { isCreated } = this.props;
+  // componentDidUpdate(prevProps) {
+  
+  // }
 
-    if (isCreated !== prevProps.isCreated) {
-      this.hideForm();
-    }
-  }
   handleCallbackSearchword(word) {
     this.setState({ word: word });
   }
@@ -53,8 +49,6 @@ class AppsPage extends React.Component {
   }
 
   hideForm() {
-    const { clearState } = this.props;
-    clearState();
     this.setState(this.initialState);
   }
 
@@ -63,7 +57,6 @@ class AppsPage extends React.Component {
 
     const {
       match: { params },
-      isCreated,
       projects,
     } = this.props;
 
@@ -105,7 +98,6 @@ class AppsPage extends React.Component {
           >
             <AppsList
               params={params}
-              newAppCreated={isCreated}
               word={word}
               openComponent={this.showForm}
             />
@@ -117,23 +109,17 @@ class AppsPage extends React.Component {
 }
 
 AppsPage.propTypes = {
-  isCreated: PropTypes.bool,
-  clearState: PropTypes.func,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export const mapStateToProps = (state) => {
-  const { isCreated } = state.createAppReducer;
   const { projects } = state.userProjectsReducer;
   return {
-    isCreated,
     projects,
   };
 };
 
 const mapDispatchToProps = {
-  createApp,
-  clearState,
 };
 
 export default connect(

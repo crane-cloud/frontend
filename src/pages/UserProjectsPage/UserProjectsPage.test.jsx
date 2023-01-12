@@ -8,7 +8,6 @@ const UserProjectsPageProps = {
   match: { params: { projectID: "1" } },
   getUserProjects: jest.fn(),
   getClustersList: jest.fn(),
-  clearUpdateProjectState: jest.fn(),
   clusters: {},
   getUserCredits: jest.fn(),
 };
@@ -32,25 +31,16 @@ describe("Testing the exported mapstate to props and dispatch", () => {
         user:{
           data:[]
         },
-        addProjectReducer: { isAdded: false, isAdding: false, message:"" , errorCode: null },
         clustersReducer: { clusters: {} },
-        deleteProjectReducer:{ isDeleted: false },
         userProjectsReducer: { isRetrieving: false, projects: [], isFetched: false },
-        updateProjectReducer: { isUpdated: false, },
         userCreditsReducer: { credits: {} },
       })
     ).toEqual({
-      isAdded: false,
       data:[],
       isRetrieving: false,
       projects: [],
       clusters: {},
-      isUpdated: false,
       isFetched: false,
-      isAdding: false,
-      message: "",
-      isDeleted: false,
-      errorCode: null,
       credits: {},
     });
   });

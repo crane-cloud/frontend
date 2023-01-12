@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 import PrimaryButton from "../PrimaryButton";
 import Select from "../Select";
 //import CancelButton from "../CancelButton";
@@ -12,10 +12,8 @@ import BlackInputText from "../BlackInputText";
 //import Checkbox from "../Checkbox";
 import ToggleOnOffButton from "../ToggleOnOffButton";
 //import { ReactComponent as InfoIcon } from "../../assets/images/info-icon.svg";
-import addProject, {
-  clearAddProjectState,
-} from "../../redux/actions/addProject";
 import styles from "./CreateProject.module.css";
+import { handlePostRequestWithOutDataObject } from "../../apis/apis.js";
 import { retrieveProjectTypes } from "../../helpers/projecttypes";
 import handleProjectValidation from "../../helpers/validation";
 
@@ -38,6 +36,9 @@ class CreateProject extends React.Component {
       othersBool: false,
       SelectedClusters: new Array(clusters?.length).fill(false),
       otherType: "",
+      addingProject:false,
+      addProjectError:"",
+      addErrorCode:""
     };
 
     this.handleTypeSelectChange = this.handleTypeSelectChange.bind(this);
@@ -48,20 +49,16 @@ class CreateProject extends React.Component {
     this.changeMultiSelectioOption = this.changeMultiSelectioOption.bind(this);
     this.togglemultiCluster = this.togglemultiCluster.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.addNewProject  = this.addNewProject.bind(this);
   }
 
-  componentDidMount() {
-    const { clearAddProjectState } = this.props;
-    clearAddProjectState();
-  }
+  // componentDidMount() {
+    
+  // }
 
-  componentDidUpdate(prevProps) {
-    const { isAdded } = this.props;
-
-    if (isAdded !== prevProps.isAdded) {
-      return <Redirect to={`/projects`} noThrow />;
-    }
-  }
+  // componentDidUpdate(prevProps) {
+   
+  // }
   handleOnChange(position) {
     const { SelectedClusters } = this.state;
     this.setState({
@@ -101,7 +98,7 @@ class CreateProject extends React.Component {
     this.setState({ clusterID: selected.id });
   }
   handleChange(e) {
-    const { error } = this.state;
+    const { error, addProjectError } = this.state;
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -109,6 +106,11 @@ class CreateProject extends React.Component {
     if (error) {
       this.setState({
         error: "",
+      });
+    }
+    if(addProjectError){
+      this.setState({
+        addProjectError: "",
       });
     }
   }
@@ -123,7 +125,7 @@ class CreateProject extends React.Component {
       othersBool,
       projectOrganisation,
     } = this.state;
-    const { addProject, data } = this.props;
+    const { data } = this.props;
     const capitalizeFirstLetter = (input) =>
       input.charAt(0).toUpperCase() + input.slice(1);
     const approvedType = othersBool
@@ -156,16 +158,32 @@ class CreateProject extends React.Component {
         organisation: projectOrganisation,
         project_type: approvedType,
       };
-      addProject(newProject);
+     // addProject(newProject);
+     this.addNewProject(newProject)
     }
+  }
+  addNewProject(data) {
+    this.setState({
+      addingProject:true,
+      addProjectError:""
+    })
+    handlePostRequestWithOutDataObject(
+      data,
+      `/projects`
+    ).then(() => {
+        window.location.href = `/projects`;
+      })
+      .catch((error) => {
+        this.setState({
+          addProjectError: "Failed to add project. Try again later",
+          addingProject: false,
+          addErrorCode:error.response?.status
+        });
+      });
   }
 
   render() {
     const {
-      isAdded,
-      isAdding,
-      message,
-      errorCode,
       clusters: { clusters },
     } = this.props;
     const {
@@ -178,11 +196,12 @@ class CreateProject extends React.Component {
       multiCluster,
       clusterchoices,
       SelectedClusters,
+      addingProject,
+      addProjectError,
+      addErrorCode
     } = this.state;
     const types = retrieveProjectTypes();
-    if (isAdded) {
-      return <Redirect to={`/projects/`} noThrow />;
-    }
+   
     return (
       <div className={styles.MainContentSection}>
         <Header />
@@ -343,16 +362,16 @@ class CreateProject extends React.Component {
                       <Feedback type="error" message={error} />
                     </div>
                   )}
-                  {message && (
+                  {addProjectError && (
                     <div className={styles.CreateProjectError}>
                       <Feedback
                         message={
-                          errorCode === 409
+                          addErrorCode === 409
                             ? "Name already in use, please choose another"
-                            : message
+                            : addProjectError
                         }
                         type={
-                          isAdded && errorCode !== 409 ? "success" : "error"
+                          addProjectError==="" && addErrorCode !== 409 ? "success" : "error"
                         }
                       />
                     </div>
@@ -363,7 +382,7 @@ class CreateProject extends React.Component {
                       onClick={this.handleSubmit}
                       color="primary"
                     >
-                      {isAdding ? <Spinner /> : "Create Project"}
+                      {addingProject ? <Spinner /> : "Create Project"}
                     </PrimaryButton>
                   </div>
                 </div>
@@ -379,43 +398,26 @@ class CreateProject extends React.Component {
 CreateProject.propTypes = {
   clusters: PropTypes.object,
   getClustersList: PropTypes.func.isRequired,
-  clearAddProjectState: PropTypes.func.isRequired,
-  addProject: PropTypes.func.isRequired,
   data: PropTypes.shape({
     id: PropTypes.string.isRequired,
   }).isRequired,
-  isAdded: PropTypes.bool,
-  errorCode: PropTypes.number,
-  isAdding: PropTypes.bool,
-  message: PropTypes.string,
 };
 
 CreateProject.defaultProps = {
   clusters: [],
-  isAdded: false,
-  isAdding: false,
-  errorCode: null,
-  message: "",
   params: {},
 };
 
 export const mapStateToProps = (state) => {
   const { data } = state.user;
-  const { isAdded, isAdding, message, errorCode } = state.addProjectReducer;
   const { clusters } = state.clustersReducer;
   return {
-    isAdded,
     data,
     clusters,
-    errorCode,
-    isAdding,
-    message,
   };
 };
 
 const mapDispatchToProps = {
-  addProject,
-  clearAddProjectState,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateProject);

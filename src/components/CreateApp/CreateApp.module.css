@@ -18,9 +18,15 @@
   padding-left: 3rem;
   overflow: auto;
 }
+.FeedbackSection{
+  display: flex;
+  padding-top: .5rem;
+  align-items: center;
+  justify-content: center;
+}
 
 .ModalFormInputs {
-  background: #d9d9d9;
+  background: #ffffff;
   max-width: 40rem;
   padding: 1rem;
   border-bottom-left-radius: 0.7rem;
@@ -89,7 +95,6 @@
   height: 2.7rem;
   color: #fff;
   background-color: var(--primary-color);
-  outline: 2px solid var(--primary-color);
   padding: 1.3rem;
 }
 
@@ -363,7 +368,7 @@ li.ListStyle {
 }
 
 .CurrentTab {
-  background-color: #d9d9d9;
+  background-color: #ffffff;
   padding: 0.5rem;
   font-weight: bold;
   border-top-right-radius: 4px;

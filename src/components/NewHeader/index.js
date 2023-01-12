@@ -50,7 +50,6 @@ const NewHeader = (props) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   });
-  console.log("hey");
 
   return (
     <header className="NewHeader">
