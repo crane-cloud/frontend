@@ -149,7 +149,7 @@ const ClusterPage = ({
           <div className={styles.CardHeaderSection}>
             <div className={styles.CardTitle}>Users</div>
             <Link to="/accounts">
-              <PrimaryButton className={styles.ViewAccountsBtn}>
+              <PrimaryButton color="primary-outline">
                 View accounts
               </PrimaryButton>
             </Link>
@@ -230,9 +230,7 @@ const ClusterPage = ({
         >
           <div className={styles.CardHeaderSection}>
             <div className={styles.CardTitle}>Apps</div>
-            <PrimaryButton className={styles.ViewAccountsBtn}>
-              View Apps
-            </PrimaryButton>
+            <PrimaryButton color="primary-outline">View Apps</PrimaryButton>
           </div>
           <div className={styles.DBSection}>
             <div className={styles.LeftUserSide}>
@@ -351,6 +349,7 @@ const ClusterPage = ({
         <InformationBar
           header="Select Infrastructure"
           showBtn
+          buttontext="+ New Cluster"
           btnAction={showForm}
         />
       </div>
