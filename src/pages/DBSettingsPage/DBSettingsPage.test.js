@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
 import { shallow } from "enzyme";
-import DBSettingsPage, { mapStateToProps } from "./";
+import DBSettingsPage from "./";
 
 const SettingsPageProps = {
   match: { params: { projectID: "1" } },
@@ -11,7 +11,7 @@ const SettingsPageProps = {
 };
 
 describe("Testing the Project Settings Page component", () => {
-  const WrapperDBSettingsPage = DBSettingsPage.WrappedComponent;
+  const WrapperDBSettingsPage = DBSettingsPage;
   const DBSettingsPageComponent = shallow(
     <WrapperDBSettingsPage {...SettingsPageProps} />
   );
@@ -32,51 +32,11 @@ describe("Testing the Project Settings Page component", () => {
 //         userProjectsReducer: {
 //           projects: [],
 //         },
-//         singleDBReducer: {
-//           database: {},
-//           isRetrieving: false,
-//           isFetched: false,
-//         },
-//         deleteDatabaseReducer: {
-//           databaseDeleted: false,
-//           deletingDatabase: false,
-//           databaseDeleteFailed: false,
-//           dbDeleteMessage: "",
-//         },
-//         resetDatabaseReducer: {
-//           isReset: false,
-//           isReseting: false,
-//           resetFailed: false,
-//           resetMessage: "",
-//         },
-//         updateDatabasePasswordReducer: {
-//           updatingDBPassword: false,
-//           updateDBPasswordFailed: false,
-//           dbPasswordUpdated: false,
-//           errorMessage: "",
-//         },
-//         passwordReducer: {
-//           password: "",
-//           isRetrievingPassword: false,
-//           passwordFetched: false,
-//         },
+
+
 //       })
 //     ).toEqual({
 //       projects: [],
-//       database: {},
-//       isRetrieving: false,
-//       isFetched: false,
-//       databaseDeleted: false,
-//       deletingDatabase: false,
-//       databaseDeleteFailed: false,
-//       dbDeleteMessage: "",
-//       isReset: false,
-//       isReseting: false,
-//       resetFailed: false,
-//       resetMessage: "",
-//       updatingDBPassword: false,
-//       updateDBPasswordFailed: false,
-//       dbPasswordUpdated: false,
 //       errorMessage: "",
 //       password: "",
 //       isRetrievingPassword: false,

@@ -28,12 +28,10 @@ describe("test only map state to props", () => {
   it("matches the mapstostate", () => {
     expect(
       mapStateToProps({
-        createAppReducer: { isCreated: false },
         userProjectsReducer: { projects:[] }
       })
     ).toEqual({
       projects:[],
-      isCreated: false,
     });
   });
 });
