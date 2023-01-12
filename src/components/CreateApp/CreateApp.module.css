@@ -18,6 +18,12 @@
   padding-left: 3rem;
   overflow: auto;
 }
+.FeedbackSection{
+  display: flex;
+  padding-top: .5rem;
+  align-items: center;
+  justify-content: center;
+}
 
 .ModalFormInputs {
   background: #d9d9d9;
