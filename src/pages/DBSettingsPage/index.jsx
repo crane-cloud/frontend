@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import SettingsButton from "../../components/SettingsButton";
+import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
 import Modal from "../../components/Modal";
 import Feedback from "../../components/Feedback";
@@ -544,13 +544,13 @@ class DBSettingsPage extends React.Component {
                       <div>Update the password of this database.</div>
                     </div>
                     <div className={styles.SectionButtons}>
-                      <SettingsButton
+                      <PrimaryButton
                         onClick={this.showUpdateModal}
                         small
-                        color="Settings-outline"
+                        color="primary-outline"
                       >
                         Change Password
-                      </SettingsButton>
+                      </PrimaryButton>
                     </div>
                   </div>
                   <div className={styles.MemberTableRow}>
@@ -562,13 +562,13 @@ class DBSettingsPage extends React.Component {
                       </div>
                     </div>
                     <div className={styles.SectionButtons}>
-                      <SettingsButton
+                      <PrimaryButton
                         onClick={this.showResetAlert}
                         small
                         color="red-outline"
                       >
                         Reset
-                      </SettingsButton>
+                      </PrimaryButton>
                     </div>
                   </div>
                   {resetMessage !== "" && (
@@ -590,13 +590,13 @@ class DBSettingsPage extends React.Component {
                       </div>
                     </div>
                     <div className={styles.SectionButtons}>
-                      <SettingsButton
+                      <PrimaryButton
                         onClick={this.showDeleteAlert}
                         small
                         color="red-outline"
                       >
                         Delete
-                      </SettingsButton>
+                      </PrimaryButton>
                     </div>
                   </div>
                 </div>
@@ -646,18 +646,18 @@ class DBSettingsPage extends React.Component {
                       )}
                       <div className="DeleteProjectModalLowerSection">
                         <div className="DeleteProjectModelButtons">
-                          <SettingsButton
+                          <PrimaryButton
                             className="CancelBtn"
                             onClick={this.hideUpdateModal}
                           >
                             Cancel
-                          </SettingsButton>
-                          <SettingsButton
-                            color="Settings"
+                          </PrimaryButton>
+                          <PrimaryButton
+                            color="primary"
                             onClick={this.handleSubmitUpdate}
                           >
                             {updatingDBPassword ? <Spinner /> : "Update"}
-                          </SettingsButton>
+                          </PrimaryButton>
                         </div>
 
                         {databaseDeleteFailed && dbDeleteMessage && (
@@ -687,13 +687,13 @@ class DBSettingsPage extends React.Component {
 
                       <div className="DeleteProjectModalLowerSection">
                         <div className="DeleteProjectModelButtons">
-                          <SettingsButton
+                          <PrimaryButton
                             className="CancelBtn"
                             onClick={this.hideDeleteAlert}
                           >
                             Cancel
-                          </SettingsButton>
-                          <SettingsButton
+                          </PrimaryButton>
+                          <PrimaryButton
                             color="red"
                             onClick={(e) =>
                               this.handleDeleteDatabase(
@@ -704,7 +704,7 @@ class DBSettingsPage extends React.Component {
                             }
                           >
                             {deletingDatabase ? <Spinner /> : "Delete"}
-                          </SettingsButton>
+                          </PrimaryButton>
                         </div>
 
                         {databaseDeleteFailed && dbDeleteMessage && (
@@ -735,20 +735,20 @@ class DBSettingsPage extends React.Component {
 
                       <div className="DeleteProjectModalLowerSection">
                         <div className="DeleteProjectModelButtons">
-                          <SettingsButton
+                          <PrimaryButton
                             className="CancelBtn"
                             onClick={this.hideResetAlert}
                           >
                             Cancel
-                          </SettingsButton>
-                          <SettingsButton
+                          </PrimaryButton>
+                          <PrimaryButton
                             color="red"
                             onClick={(e) =>
                               this.handleResetDatabase(e, projectID, databaseID)
                             }
                           >
                             {isReseting ? <Spinner /> : "Reset"}
-                          </SettingsButton>
+                          </PrimaryButton>
                         </div>
                       </div>
                     </div>

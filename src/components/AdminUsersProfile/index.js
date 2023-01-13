@@ -358,23 +358,26 @@ class AdminUserPage extends Component {
                 <div className="DBSections">
                 <div className="SectionTitle">Manage User</div>
                  <div className="ProjectInstructions">
-                    <div className="SettingsSectionInfo">
-                     <div className="SubTitle">Disable User</div>
-                      <div className="ContainerSection">
-                          <div>This will temporary disable the user.</div>
-                          <div> 
+                    <div className="MemberBody">
+                     <div className="MemberTableRow">
+                      <div className="SettingsSectionInfo">
+                        <div className="SubTitle">Disable User<br/>
+                          <div className="SubTitleContent">This will temporary disable the user.</div>
+                        </div>
+                        <div className="SectionButtons"> 
                           <PrimaryButton 
                             color="red-outline"
                             onClick={this.showDisableAlert}
                             >Disable
                             </PrimaryButton>
-                          </div>
+                      </div>
                     </div>
-                    <div className="SettingsSectionInfo">
-                    <div className="SubTitle">Delete User</div>
-                    <div className="ContainerSection">
-                        <div>This will permanently delete the user-history , apps , database and settings.</div>
-                        <div>
+                    </div>
+                    <div className="SettingsSectionInfo1">
+                    <div className="SubTitle">Delete User<br />
+                        <div className="SubTitleContent">This will permanently delete the user-history , apps , database and settings.</div>
+                        </div>
+                        <div className="SectionButtons">
                         <PrimaryButton
                             color="red-outline"
                             onClick={this.showDeleteAlert}
@@ -382,7 +385,6 @@ class AdminUserPage extends Component {
                             </PrimaryButton>
                         </div>
                   </div>
-                </div>
               </div>
               </div>
                   {openDeleteAlert && (
