@@ -194,6 +194,10 @@
   padding: 4rem 0 4rem 0;
 }
 
+.LoadingArea {
+  padding: 4rem 0 4rem 0;
+}
+
 @media only screen and (max-width: 750px) {
   .StatusSectionContent {
     padding-left: 0rem;

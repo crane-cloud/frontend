@@ -53,7 +53,7 @@ class CreateApp extends React.Component {
       SelectedClusters: new Array(clusters?.length).fill(false),
       addingApp: false,
       addAppError: false,
-      addErrorCode:''
+      addErrorCode: "",
     };
 
     this.addEnvVar = this.addEnvVar.bind(this);
@@ -73,7 +73,7 @@ class CreateApp extends React.Component {
     this.changeMultiSelectionOption =
       this.changeMultiSelectionOption.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
-    this.createNewApp = this.createNewApp.bind(this);  
+    this.createNewApp = this.createNewApp.bind(this);
   }
   handleOnChange(position) {
     const { SelectedClusters } = this.state;
@@ -323,26 +323,24 @@ class CreateApp extends React.Component {
         }
         //change
         //createApp(appInfo, params.projectID);
-        this.createNewApp(appInfo, params.projectID)
+        this.createNewApp(appInfo, params.projectID);
       }
     }
   }
-  createNewApp(data,projectID) {
+  createNewApp(data, projectID) {
     this.setState({
-      addingApp:true,
-      addAppError:""
-    })
-    handlePostRequestWithOutDataObject(
-      data,
-      `/projects/${projectID}/apps`
-    ).then(() => {
+      addingApp: true,
+      addAppError: "",
+    });
+    handlePostRequestWithOutDataObject(data, `/projects/${projectID}/apps`)
+      .then(() => {
         window.location.href = `/projects/${projectID}/Apps`;
       })
       .catch((error) => {
         this.setState({
           addAppError: "Failed to add App. Try again later",
           addingApp: false,
-          addErrorCode:error.response?.status
+          addErrorCode: error.response?.status,
         });
       });
   }
@@ -372,9 +370,9 @@ class CreateApp extends React.Component {
       SelectedClusters,
       addingApp,
       addErrorCode,
-      addAppError
+      addAppError,
     } = this.state;
-    
+
     const replicaOptions = [
       { id: 1, name: "1" },
       { id: 2, name: "2" },
@@ -649,7 +647,12 @@ class CreateApp extends React.Component {
                   </div>
                 </div>
 
-                {error && <div className={styles.FeedbackSection}> <Feedback type="error" message={error} /> </div>}
+                {error && (
+                  <div className={styles.FeedbackSection}>
+                    {" "}
+                    <Feedback type="error" message={error} />{" "}
+                  </div>
+                )}
               </div>
               <div className={styles.ModalFormInputsEnvVars}>
                 <div className={styles.HeadingWithTooltip}>
@@ -720,15 +723,15 @@ class CreateApp extends React.Component {
               <div className={styles.ModalFormButtons}>
                 {addAppError && (
                   <div className={styles.FeedbackSection}>
-                     <Feedback
-                  className={styles.FeedbackSection}
-                    message={
-                      addErrorCode === 409
-                        ? "Name already in use, please choose another and try again"
-                        : addAppError
-                    }
-                    type={"error"}
-                  />
+                    <Feedback
+                      className={styles.FeedbackSection}
+                      message={
+                        addErrorCode === 409
+                          ? "Name already in use, please choose another and try again"
+                          : addAppError
+                      }
+                      type={"error"}
+                    />
                   </div>
                 )}
 
@@ -773,7 +776,6 @@ export const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = {
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateApp);
