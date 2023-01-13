@@ -59,15 +59,14 @@ jobs:
             chmod +x ./cc-test-reporter
             ./cc-test-reporter before-build
 
-      - save_cache:  # special step to save the dependency cache
+      - save_cache: # special step to save the dependency cache
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
       - run: # run tests
           name: Run Test and Coverage
           no_output_timeout: 30m
-          command:
-            yarn test --detectOpenHandles
+          command: yarn test --detectOpenHandles
       - run: # send coverage
           name: Code Climate report
           command: ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
