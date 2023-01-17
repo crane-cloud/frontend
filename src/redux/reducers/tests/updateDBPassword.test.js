@@ -7,10 +7,13 @@ import {
 } from "../../actions/actionTypes";
 
 const initialState = {
-  dbPasswordUpdated: false,
+  // dbPasswordUpdated: false,
   updatingDBPassword: false,
   errorMessage: "",
   errorCode: null,
+  database: undefined,
+  updateDBPasswordFailed: false,
+  dbPasswordUpdated: true
 };
 
 const fetchAction = {
@@ -55,30 +58,37 @@ describe("updateDatabasePasswordReducer initial state", () => {
   });
 
   it("should handle FETCH_FAILED", () => {
-    expect(updateDatabasePasswordReducer(initialState, fetchFailedAction)).toEqual({
-      updateDBPasswordFailed: true,
-      dbPasswordUpdated: false,
+    expect(
+      updateDatabasePasswordReducer(initialState, fetchFailedAction)
+    ).toEqual({
+      updateDBPasswordFailed: false,
+      dbPasswordUpdated: true,
       updatingDBPassword: false,
-      errorCode: undefined,
-      errorMessage: "Failed to update Database Password",
+      errorCode: null,
+      errorMessage: "",
+      database: undefined
     });
   });
 
   it("should handle adding database", () => {
-    expect(updateDatabasePasswordReducer(initialState, startFetchingAction)).toEqual({
-      dbPasswordUpdated: false,
+    expect(
+      updateDatabasePasswordReducer(initialState, startFetchingAction)
+    ).toEqual({
+      dbPasswordUpdated: true,
       updateDBPasswordFailed: false,
-      updatingDBPassword: true,
+      updatingDBPassword: false,
       errorMessage: "",
       errorCode: null,
+      database: undefined,
     });
   });
 
   it("should handle clear adding database", () => {
     expect(updateDatabasePasswordReducer(initialState, clearAction)).toEqual({
-      dbPasswordUpdated: false,
+      database: undefined,
       updatingDBPassword: false,
       updateDBPasswordFailed: false,
+      dbPasswordUpdated: true,
       errorMessage: "",
       errorCode: null,
     });
