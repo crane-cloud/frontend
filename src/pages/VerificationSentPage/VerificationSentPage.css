@@ -1,0 +1,46 @@
+.VerificationPageContainer {
+  background: var(--primary-color);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.VerificationPageHeader {
+  flex: 1;
+}
+
+.VerificationPageMain {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  align-items: center;
+}
+
+.VerificationPageContent {
+  padding: 2rem;
+}
+
+.VerificationPageContent h2 {
+  color: var(--secondary-color);
+}
+
+.VerificationPageContent p span {
+  color: var(--secondary-color);
+}
+
+.ResendLinkForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.ResendLinkForm .ResendFormInputs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.ResendLinkForm .ResendFormInputs .LoginErrorDiv {
+  width: 25rem;
+}

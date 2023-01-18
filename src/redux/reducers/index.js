@@ -15,27 +15,26 @@ import getDeployments from "./getDeployments";
 import adminProjectsReducer from "./adminProjects";
 import appsListReducer from "./appsList";
 import userProjectsReducer from "./userProjects";
-import addProjectReducer from "./addProject";
-import createAppReducer from "./createApp";
-import deleteProjectReducer from "./deleteProject";
+// import addProjectReducer from "./addProject";
+// import createAppReducer from "./createApp";
+// import deleteProjectReducer from "./deleteProject";
 import deleteAppReducer from "./deleteApp";
 import userDetailReducer from "./userDetails";
 import usersListReducer from "./usersList";
-import updateProjectReducer from "./updateProject";
+// import updateProjectReducer from "./updateProject";
 import projectMemoryReducer from "./projectMemory";
 import projectCPUReducer from "./projectCPU";
 import projectNetworkReducer from "./projectNetwork";
 import appNetworkReducer from "./appNetwork";
 import appCpuReducer from "./appCpu";
 import appMemoryReducer from "./appMemoryReducer";
-import appLogsReducer from "./getAppLogs";
 import projectDatabasesReducer from "./databaseList";
-import deleteDatabaseReducer from "./deleteDatabase";
-import resetDatabaseReducer from "./resetDatabase";
-import createDatabaseReducer from "./createDatabase";
-import updateDatabasePasswordReducer from "./updateDBPassword";
-import singleDBReducer from "./getSingleDB";
-import passwordReducer from "./getPassword";
+// import deleteDatabaseReducer from "./deleteDatabase";
+// import resetDatabaseReducer from "./resetDatabase";
+// import createDatabaseReducer from "./createDatabase";
+// import updateDatabasePasswordReducer from "./updateDBPassword";
+// import singleDBReducer from "./getSingleDB";
+// import passwordReducer from "./getPassword";
 import updateAppReducer from "./updateApp";
 import singleAppReducer from "./getSingleApp";
 import databasesReducer from "./getDatabases";
@@ -44,7 +43,7 @@ import usersSummaryReducer from "./usersSummary";
 import revertUrlReducer from "./revertUrl";
 import adminDatabasesReducer from "./adminGetDatabases";
 import adminCreateDBReducer from "./adminCreateDB";
-import getProjectBillReducer from "./getProjectBill"
+import getProjectBillReducer from "./getProjectBill";
 import savePaymentReducer from "./savePayment";
 import getTransactionsReducer from "./getTransactions";
 import addBetaUserReducer from "./addBetaUser";
@@ -57,6 +56,9 @@ import adminGetUserCreditsReducer from "./adminGetUserCredits";
 import updateProfileReducer from "./updateProfile";
 import creditsPaymentReducer from "./creditsPayments";
 import getGraphDataReducer from "./getGraphData";
+// import inviteMembersReducer from "./inviteMembers";
+//import removeMemberReducer from "./removeMembers";
+// import updateMemberRoleReducer from "./updateMemberRole";
 
 export default combineReducers({
   clusterResourcesReducer,
@@ -75,27 +77,26 @@ export default combineReducers({
   adminProjectsReducer,
   appsListReducer,
   userProjectsReducer,
-  addProjectReducer,
-  createAppReducer,
+  // addProjectReducer,
+  // createAppReducer,
   deleteAppReducer,
-  deleteProjectReducer,
+  // deleteProjectReducer,
   userDetailReducer,
   usersListReducer,
-  updateProjectReducer,
+  // updateProjectReducer,
   projectMemoryReducer,
   projectCPUReducer,
   projectNetworkReducer,
-  appLogsReducer,
   appNetworkReducer,
   appCpuReducer,
   appMemoryReducer,
   projectDatabasesReducer,
-  deleteDatabaseReducer,
-  resetDatabaseReducer,
-  createDatabaseReducer,
-  updateDatabasePasswordReducer,
-  singleDBReducer,
-  passwordReducer,
+  // deleteDatabaseReducer,
+  // resetDatabaseReducer,
+  // // createDatabaseReducer,
+  // updateDatabasePasswordReducer,
+  // singleDBReducer,
+  // passwordReducer,
   updateAppReducer,
   singleAppReducer,
   databasesReducer,
@@ -117,4 +118,7 @@ export default combineReducers({
   updateProfileReducer,
   creditsPaymentReducer,
   getGraphDataReducer,
+  // inviteMembersReducer,
+ // removeMemberReducer,
+  // updateMemberRoleReducer,
 });

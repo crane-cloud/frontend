@@ -2,8 +2,8 @@ header.NewHeader {
   background-color: #ffffff;
   display: flex;
   justify-content: space-between;
-  height: 5rem;
-  padding: 0 3rem;
+  /* height: 5rem; */
+  padding: 0.6rem 3rem;
 }
 
 .HeaderLink {
@@ -12,17 +12,18 @@ header.NewHeader {
 }
 
 .HeaderLink a {
-  padding: 0 3rem;
+  padding: 1rem 3rem;
   display: flex;
   align-items: center;
 }
 
 .HeaderLink a:hover {
-  background-color: #f7b21f;
+  transition: ease-in-out 0.2s;
+  background-color: var(--secondary-color);
 }
 
 .HeaderLink .active {
-  background-color: #f7b21f;
+  background-color: var(--secondary-color);
 }
 .LogoLink:focus {
   outline: none;
@@ -38,7 +39,7 @@ header.NewHeader {
 }
 
 .OnHead:hover .UserNames {
-  background-color: #f7b21f;
+  background-color: var(--secondary-color);
   color: #000000;
 }
 
@@ -104,7 +105,7 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
 
 .DropDownLink:hover,
 .DropDownLink:active {
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
 }
 
 .DropDownLink,
@@ -113,13 +114,14 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   text-decoration: none;
 }
 .HeaderLinkBack:hover {
-  background-color: #f7b21f;
+  background-color: var(--secondary-color);
 }
 a.HeaderLinkDocs {
   color: #000;
+  border-radius: 10px;
 }
 a.HeaderLinkDocs:hover {
-  background-color: #f7b21f;
+  background-color: var(--secondary-color);
 }
 
 .Headerarrow{
@@ -159,7 +161,7 @@ a.HeaderLinkDocs:hover {
 
 }
 .HeaderDropLinkDocs:hover {
-  background-color: #f7b21f;
+  background-color: var(--secondary-color);
 }
 @media only screen and (max-width: 640px) {
   .HeaderLinkPricing,

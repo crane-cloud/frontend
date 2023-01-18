@@ -1,9 +1,9 @@
 .InputText {
-  width: 25rem;
-  border: 2px solid #fff;
+  border: 1px solid #fff;
   box-sizing: border-box;
   font-size: inherit;
   padding: 1rem;
+  border-radius: 5px;
 }
 .InputText::placeholder {
   color: #fff;

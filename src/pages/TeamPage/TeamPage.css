@@ -1,0 +1,21 @@
+.TeamPageContainer {
+  background-color: var( --gray-bg-light-color);
+}
+.TeamImagesRow {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2.5rem 0;
+    gap: 1rem;
+    width: 100%;
+}
+
+img .TeamMemberImage {
+  border-radius: 50%;
+}
+
+footer.TeamFooter {
+  text-align: center;
+  cursor: pointer;
+}

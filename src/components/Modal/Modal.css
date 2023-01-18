@@ -17,11 +17,12 @@
   min-height: 100px;
   height: auto;
   max-height: 80%;
-  overflow-y: scroll;
+
   padding: 2rem;
   background: #fff;
   display: flex;
   flex-direction: column;
+  border-radius: 10px;
 }
 
 .ModalForm {
@@ -53,6 +54,8 @@
   display: flex;
   justify-content: space-between;
   gap: 1rem;
+
+  border-radius: 1.5rem;
 }
 
 .ModalChildWrap::-webkit-scrollbar {
@@ -60,7 +63,7 @@
   height: 0px;
 }
 .ModalChildWrap::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var( --gray-bg-light-color);
 }
 .ModalChildWrap::-webkit-scrollbar-thumb {
   background: #555;

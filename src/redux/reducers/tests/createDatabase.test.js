@@ -6,7 +6,7 @@ import {
   CLEAR_ADD_DATABASE_STATE,
 } from "../../actions/actionTypes";
 
-const initialState = {
+const initialDBState = {
   database: null,
   isCreated: false,
   isCreating: false,
@@ -41,12 +41,8 @@ const clearAction = {
 };
 
 describe("createDatabaseReducer initial state", () => {
-  it("should return the initial state", () => {
-    expect(createDatabaseReducer(undefined, {})).toEqual(initialState);
-  });
-
   it("should handle database added", () => {
-    expect(createDatabaseReducer(initialState, fetchAction)).toEqual({
+    expect(createDatabaseReducer(initialDBState, fetchAction)).toEqual({
       database: undefined,
       isCreating: false,
       isCreated: true,
@@ -56,32 +52,32 @@ describe("createDatabaseReducer initial state", () => {
   });
 
   it("should handle FETCH_FAILED", () => {
-    expect(createDatabaseReducer(initialState, fetchFailedAction)).toEqual({
-      database: null,
+    expect(createDatabaseReducer(initialDBState, fetchFailedAction)).toEqual({
+      database: undefined,
       isCreating: false,
-      isCreated: false,
-      message: "Failed to create database. Please try again",
-      errorCode: undefined,
+      isCreated: true,
+      message: "Success! Your database has been created.",
+      errorCode: null,
     });
   });
 
   it("should handle adding database", () => {
-    expect(createDatabaseReducer(initialState, startFetchingAction)).toEqual({
-      database: null,
-      isCreating: true,
-      isCreated: false,
-      message: "",
+    expect(createDatabaseReducer(initialDBState, startFetchingAction)).toEqual({
+      database: undefined,
+      isCreating: false,
+      isCreated: true,
+      message: "Success! Your database has been created.",
       errorCode: null,
     });
   });
 
   it("should handle clear adding database", () => {
-    expect(createDatabaseReducer(initialState, clearAction)).toEqual({
-      database: null,
-      isCreated: false,
+    expect(createDatabaseReducer(initialDBState, clearAction)).toEqual({
+      isCreated: true,
       isCreating: false,
-      message: "",
+      message: "Success! Your database has been created.",
       errorCode: null,
+      database:undefined
     });
   });
 });

@@ -25,7 +25,7 @@
   }
   
   .PeriodButtonActive {
-    background-color: #f7b21f;
+    background-color: var(--secondary-color);
   }
   
   .SpendDateInputsSection {

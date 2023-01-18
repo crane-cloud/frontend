@@ -22,9 +22,12 @@
 html {
   --primary-color: #008ac1;
   --secondary-color: #f7b21f;
-  --color-gray-light: #ccc;
-  --primary-color-dark: #06222f;
-  --primary-color-light: #99d2e9;
+  --secondary-light-color: #ffcc5f;
+  --gray-color: #555;
+  --gray-light-color: #ccc;
+  --primary-dark-color: #06222f;
+  --primary-light-color: #b6e3f9;
+  --gray-bg-light-color: #e5ebf3;
 }
 
 body {
@@ -32,12 +35,16 @@ body {
   padding: 0;
   color: #000;
   font-family: proxima-nova, sans-serif;
+  font-size: 1rem;
 }
 
-div#root {
-  height: 100vh;
+#root >div {
   display: flex;
   flex-flow: column;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var( --gray-bg-light-color);
 }
 
 textarea,
@@ -85,7 +92,7 @@ select,
 button {
   font-family: inherit;
   font-size: inherit;
-  border-radius: 0;
+  border-radius: 5px;
   margin: 0;
 }
 
@@ -132,7 +139,7 @@ input[type="password"] {
 
 .DashboardContentWrap {
   flex: 1;
-  background: #f1f1f1;
+  background: var( --gray-bg-light-color);
 }
 
 .FailedToRetrieveMsg {
@@ -154,8 +161,55 @@ input[type="password"] {
   z-index: 5;
 }
 
+.MobileView {
+  display: none;
+}
+.DesktopView {
+  display: block;
+}
+
+@media (max-width: 650px) {
+  .MobileView {
+    display: block;
+  }
+  .DesktopView {
+    display: none;
+  }
+}
+
 /*- ////////////////////////////////// */
 
+/* ////////  FONT STYLING  ///////// */
+.SectionTitle{
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--primary-dark-color);
+  margin: 0;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--gray-light-color);
+}
+
+.SubTitle{
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primary-dark-color);
+  margin: 0;
+  padding: 0;
+}
+.SectionSubTitle{
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary-dark-color);
+  margin: 0;
+  padding:0;
+}
+.SubText{
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--primary-dark-color);
+  margin: 0;
+  padding:0;
+}
 /*- ///// TABLE STYLING ///////// */
 div.ResourcesTable {
   padding-top: 1rem;
@@ -180,7 +234,7 @@ div.ResourcesTable.LoadingResourcesTable {
 
 .ResourcesTable table th {
   padding: 1rem;
-  color: #008ac1;
+  color: var(--primary-color);
   text-align: center;
 }
 
@@ -249,7 +303,7 @@ tr.TableLoading td {
 .MainPage {
   /* Divided into two rows */
   margin: 0;
-  background: #f1f1f1;
+  background: var( --gray-bg-light-color);
   height: 100vh;
   display: grid;
   grid-template-rows: 80px 4fr;
@@ -260,7 +314,7 @@ tr.TableLoading td {
 }
 .MainSection {
   /* divided into two columns */
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
   display: grid;
   grid-template-columns: 1.3fr 6fr;
   overflow: hidden;
@@ -269,7 +323,7 @@ tr.TableLoading td {
 .SideBarSection {
   overflow: hidden;
   overflow-y: scroll;
-  height: calc(100vh - 5rem);
+  /* height: calc(100vh - 5rem); */
 }
 
 .SideBarSection::-webkit-scrollbar {
@@ -286,7 +340,7 @@ tr.TableLoading td {
   /* divided into two rows */
   display: grid;
   grid-template-rows: 80px 4fr;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .ContentSection {
@@ -302,6 +356,9 @@ tr.TableLoading td {
   background-color: rgb(214, 59, 59, 0.5);
   text-align: center;
   padding: 0.7rem 0;
+  border-radius: 0.4rem;
+  border: 1px solid #ff0000;
+  color: #310303;
 }
 
 .SuccessOnWhite {
@@ -309,6 +366,9 @@ tr.TableLoading td {
   background-color: rgb(0, 128, 0, 0.5);
   text-align: center;
   padding: 0.7rem 0;
+  border-radius: 0.4rem;
+  border: 1px solid #16a416;
+
 }
 
 /* //////////////////////////////////////////// */
@@ -319,16 +379,27 @@ tr.TableLoading td {
   padding-left: 2rem;
   padding-right: 2rem;
 }
-@media (max-width: 580px) {
+
+.ShortContainer{
+  padding-left: 4rem;
+  padding-right: 2rem;
+  max-width: 50rem;
+}
+@media (max-width: 750px) {
   .SmallContainer{
     padding-left: 1rem;
     padding-right: 1rem;
   }
+  .ShortContainer{
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
+
 .Page {
   margin: 0;
-  background: #f1f1f1;
-  max-height: 100vh;
+  background: var( --gray-bg-light-color);
+  min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
   /* overflow: hidden; */
@@ -350,13 +421,14 @@ tr.TableLoading td {
 @media(max-width: 650px) {
   .MainSection {
     /*one column required */
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
   display: flex;
   flex-shrink: 0;
   width:100%;
   }
+  
   .MainContentSection {
-    background-color: #f1f1f1;
+    background-color: var( --gray-bg-light-color);
     flex-direction: column;
     display: flex;
     flex-shrink: 0;
@@ -365,7 +437,7 @@ tr.TableLoading td {
   
   .Page {
     margin: 0;
-    background: #f1f1f1;
+    background: var( --gray-bg-light-color);
   }
   .ContentSection {
     display: flex;
@@ -381,3 +453,25 @@ tr.TableLoading td {
 
 
 /* //////////////////////////////////////////// */
+/* ////////////---- CARDS ---- ///////////// */
+
+.Card{
+  background-color: var(--white-color);
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  transition: .3s;
+}
+.Card:hover{
+  box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.2);
+}
+
+.BigCard{
+  padding: 1.2rem;
+  background: #ffffff;
+  border-radius: 15px;
+  border: 1px solid var(--gray-light-color);
+}

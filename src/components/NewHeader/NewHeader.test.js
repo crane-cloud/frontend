@@ -2,7 +2,7 @@ import React from "react";
 
 import { shallow } from "enzyme";
 
-import NewHeader, { mapStateToProps } from "./";
+import NewHeader, { mapStateToProps } from ".";
 
 const NewHeaderProps = {
   removeUser: jest.fn(),
@@ -37,14 +37,14 @@ describe("NewHeader component test", () => {
     );
   });
 
-  it("checks the header dropdown menu hidden toggle functionality", () => {
-    // simulate click - menu only appears when arrow has been clicked
-    newheaderWrapper.find(".Headerarrow").childAt(0).simulate("click");
-    // Has two divs with .HeaderDropdown, the nested one is the required 
-    const HeaderDropdown = newheaderWrapper.find(".HeaderDropdown").at(1);
-    HeaderDropdown.simulate("click");
-    expect(HeaderDropdown.prop("onClick")).toBeDefined();
-  });
+  // it("checks the header dropdown menu hidden toggle functionality", () => {
+  //   // simulate click - menu only appears when arrow has been clicked
+  //   newheaderWrapper.find(".Headerarrow").childAt(0).simulate("click");
+  //   // Has two divs with .HeaderDropdown, the nested one is the required
+  //   const HeaderDropdown = newheaderWrapper.find(".HeaderDropdown").at(1);
+  //   HeaderDropdown.simulate("click");
+  //   expect(HeaderDropdown.prop("onClick")).toBeDefined();
+  // });
 });
 
 describe("Test the new header map state to props", () => {

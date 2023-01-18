@@ -1,27 +1,39 @@
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import styles from "./SideBar.module.css";
-import { Link, NavLink, matchPath } from "react-router-dom";
-import BackButton from "../../assets/images/backButton.svg";
+import {
+  Link,
+  NavLink,
+  matchPath,
+  useParams,
+  useLocation,
+} from "react-router-dom";
+import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
+import { ReactComponent as Setting } from "../../assets/images/setting.svg";
+import { ReactComponent as Credit } from "../../assets/images/credit-card.svg";
+import { ReactComponent as Clip } from "../../assets/images/clipboard.svg";
+import { ReactComponent as Network } from "../../assets/images/wifi.svg";
+import { ReactComponent as Disk } from "../../assets/images/server.svg";
+import { ReactComponent as Memory } from "../../assets/images/hard-drive.svg";
+import { ReactComponent as Database } from "../../assets/images/database.svg";
+import { ReactComponent as Activity } from "../../assets/images/activity.svg";
+import { ReactComponent as Apps } from "../../assets/images/grid.svg";
 import useMedia from "../../hooks/mediaquery";
 import Menu from "../../assets/images/menu.svg";
 
-const SideBar = ({
-  name,
-  params,
-  pageRoute,
-  cpuLink,
-  memoryLink,
-  databaseLink,
-  networkLink,
-  allMetricsLink,
-  appLogsLink,
-}) => {
+const SideBar = (props) => {
+  const { name } = props;
+  const params = useParams();
+  const { projectID, appID } = params;
+  const location = useLocation();
+  const pageRoute = location.pathname;
+
   const isAppPage = matchPath(pageRoute, {
     path: "/projects/:projectID/apps/:appID",
     // exact: true,
     strict: true,
   });
+
   const isDesktop = useMedia();
   const [OpenForsmallScreen, setopenForsmallScreen] = useState(false);
   const BarRef = useRef(null);
@@ -59,262 +71,207 @@ const SideBar = ({
   //   strict: true,
   // });
 
-  const { projectID, appID } = params;
-
   return (
     <>
       {isDesktop || OpenForsmallScreen ? (
-        <>
-          <div
-            ref={BarRef}
-            className={
-              OpenForsmallScreen ? styles.SmallSidebar : styles.SideBar
-            }
-          >
-            <div>
-              {/* {databaseLocation ? (
-          <div className={styles.SideBarTopSection}>
-            <Link
-              to={{
-                pathname: `/projects/${projectID}/databases`,
-              }}
-            >
-              <img src={BackButton} alt="Back Button" />
-              <span>&nbsp; &nbsp; &nbsp;</span>
-            </Link>
-            <Link
-              to={{
-                pathname: `/projects/${projectID}/databases`,
-              }}
-              className={styles.ProjectName}
-            >
-              {name}
-            </Link>
+        <div
+          ref={BarRef}
+          className={OpenForsmallScreen ? styles.SmallSidebar : styles.SideBar}
+        >
+          <div>
+            {isAppPage ? (
+              <Link
+                to={{ pathname: `/projects/${projectID}/dashboard` }}
+                className={styles.SideBarTopSection}
+              >
+                <BackButton color="#fff" />
+                {name}
+              </Link>
+            ) : (
+              <Link
+                to={{ pathname: `/projects` }}
+                className={styles.SideBarTopSection}
+              >
+                <BackButton color="#fff" />
+                {name}
+              </Link>
+            )}
           </div>
-        ) : isAppPage ? (
-          <div className={styles.SideBarTopSection}>
-            <Link to={{ pathname: `/projects/${projectID}/apps` }}>
-              <img src={BackButton} alt="Back Button" />
-              <span>&nbsp; &nbsp; &nbsp;</span>
-            </Link>
-            <Link
-              to={{
-                pathname: `/projects/${projectID}/apps/${appId}/dashboard`,
-              }}
-              className={styles.ProjectName}
-            >
-              {name}
-            </Link>
-          </div>
-        ) : isAppMetricsPage ? (
-          <div className={styles.SideBarTopSection}>
-            <Link
-              to={{
-                pathname: `/projects/${projectID}/apps/${appId}/dashboard`,
-              }}
-            >
-              <img src={BackButton} alt="Back Button" />
-              <span>&nbsp; &nbsp; &nbsp;</span>
-            </Link>
-            <Link
-              to={{
-                pathname: `/projects/${projectID}/apps/${appId}/dashboard`,
-              }}
-              className={styles.ProjectName}
-            >
-              {name}
-            </Link>
-          </div>
-        ) : pageLocation ? (
-          <div className={styles.SideBarTopSection}>
-            <Link to={{ pathname: `/projects/` }}>
-              <img src={BackButton} alt="Back Button" />
-              <span>&nbsp; &nbsp; &nbsp;</span>
-            </Link>
-            <Link
-              to={{ pathname: `/projects/${projectID}/apps` }}
-              className={styles.ProjectName}
-            >
-              {name}
-            </Link>
-          </div>
-        ) : (
-          <div className={styles.SideBarTopSection}>
-            <Link to={{ pathname: `/projects/${projectID}/apps` }}>
-              <img src={BackButton} alt="Back Button" />
-              <span>&nbsp; &nbsp; &nbsp;</span>
-            </Link>
-            <Link
-              to={{ pathname: `/projects/${projectID}/apps` }}
-              className={styles.ProjectName}
-            >
-              {name}
-            </Link>
-          </div>
-        )} */}
+
+          <div className={styles.SideBarBottomSection}>
+            <div className={styles.SideBarLinks}>
               {isAppPage ? (
-                <div className={styles.SideBarTopSection}>
-                  <Link to={{ pathname: `/projects/${projectID}/dashboard` }}>
-                    <img src={BackButton} alt="Back Button" />
-                    <span>&nbsp; &nbsp; &nbsp;</span>
-                  </Link>
-                  <Link
-                    to={{
-                      pathname: `/projects/${projectID}/apps/${appID}/dashboard`,
-                    }}
-                    className={styles.ProjectName}
-                  >
-                    {name}
-                  </Link>
-                </div>
+                <NavLink
+                  to={{
+                    pathname: `/projects/${projectID}/apps/${appID}/dashboard`,
+                  }}
+                  className={styles.SubBarListItem}
+                >
+                  Dashboard
+                </NavLink>
               ) : (
-                <div className={styles.SideBarTopSection}>
-                  <Link to={{ pathname: `/projects` }}>
-                    <img src={BackButton} alt="Back Button" />
-                    <span>&nbsp; &nbsp; &nbsp;</span>
-                  </Link>
+                <NavLink
+                  to={{ pathname: `/projects/${projectID}/dashboard` }}
+                  className={styles.SubBarListItem}
+                >
+                  Dashboard
+                </NavLink>
+              )}
+              {!isAppPage && (
+                <div>
                   <Link
-                    to={{ pathname: `/projects/${projectID}/dashboard` }}
-                    className={styles.ProjectName}
+                    to="#"
+                    className={`${styles.ListItem} ${styles.DisabledLink}`}
                   >
-                    {name}
+                    SERVICES
                   </Link>
+                  <NavLink
+                    to={{ pathname: `/projects/${projectID}/apps` }}
+                    className={styles.SubBarListItem}
+                  >
+                    <Apps /> Apps
+                  </NavLink>
+
+                  <NavLink
+                    to={`/projects/${projectID}/databases`}
+                    className={styles.SubBarListItem}
+                  >
+                    <Database /> Databases
+                  </NavLink>
                 </div>
               )}
-            </div>
-
-            <div className={styles.SideBarBottomSection}>
-              <div className={styles.SideBarLinks}>
-                {isAppPage ? (
-                  <NavLink
-                    to={{
-                      pathname: `/projects/${projectID}/apps/${appID}/dashboard`,
-                    }}
-                    className={styles.SubBarListItem}
-                  >
-                    Dashboard
-                  </NavLink>
-                ) : (
-                  <NavLink
-                    to={{ pathname: `/projects/${projectID}/dashboard` }}
-                    className={styles.SubBarListItem}
-                  >
-                    Dashboard
-                  </NavLink>
-                )}
-                <Link
-                  to="#"
-                  className={`${styles.ListItem} ${styles.DisabledLink}`}
+              <Link
+                to="#"
+                className={`${styles.ListItem} ${styles.DisabledLink}`}
+              >
+                METRICS
+              </Link>
+              <div>
+                <NavLink
+                  to={
+                    isAppPage
+                      ? `/projects/${projectID}/apps/${appID}/cpu`
+                      : `/projects/${projectID}/cpu`
+                  }
+                  className={styles.SubBarListItem}
                 >
-                  SERVICES
-                </Link>
-                <div>
-                  {!isAppPage && (
-                    <NavLink
-                      to={{ pathname: `/projects/${projectID}/apps` }}
-                      className={styles.SubBarListItem}
-                    >
-                      Apps
-                    </NavLink>
-                  )}
-
-                  <NavLink to={databaseLink} className={styles.SubBarListItem}>
-                    Databases
-                  </NavLink>
-                </div>
-                <Link
-                  to="#"
-                  className={`${styles.ListItem} ${styles.DisabledLink}`}
+                  <Disk /> CPU
+                </NavLink>
+                <NavLink
+                  to={
+                    isAppPage
+                      ? `/projects/${projectID}/apps/${appID}/memory`
+                      : `/projects/${projectID}/memory`
+                  }
+                  className={styles.SubBarListItem}
                 >
-                  METRICS
-                </Link>
-                <div>
-                  <NavLink to={cpuLink} className={styles.SubBarListItem}>
-                    CPU
-                  </NavLink>
-                  <NavLink to={memoryLink} className={styles.SubBarListItem}>
-                    Memory
-                  </NavLink>
-                  {/* <Link to={storageLink} className={styles.SubBarListItem}>Storage</Link> */}
-                  <NavLink to={networkLink} className={styles.SubBarListItem}>
-                    Network
-                  </NavLink>
-                  {(isAppMetricsPage || isAppPage) && (
-                    <>
-                      <>
-                        <div>
-                          <NavLink
-                            to={appLogsLink}
-                            className={styles.SubBarListItem}
-                          >
-                            Logs
-                          </NavLink>
-                        </div>
-                        <Link
-                          to="#"
-                          className={`${styles.ListItem} ${styles.DisabledLink}`}
-                        >
-                          OTHER
-                        </Link>
-                      </>
-                      <div>
-                        <NavLink
-                          to={{
-                            pathname: `/projects/${projectID}/apps/${appID}/settings`,
-                            name,
-                          }}
-                          className={styles.SubBarListItem}
-                        >
-                          App Settings
-                        </NavLink>
-                      </div>
-                    </>
-                  )}
-                </div>
-
-                {isAppPage || isAppMetricsPage ? null : (
+                  <Memory /> Memory
+                </NavLink>
+                {/* <Link to={storageLink} className={styles.SubBarListItem}>Storage</Link> */}
+                <NavLink
+                  to={
+                    isAppPage
+                      ? `/projects/${projectID}/apps/${appID}/network`
+                      : `/projects/${projectID}/network`
+                  }
+                  className={styles.SubBarListItem}
+                >
+                  <Network /> Network
+                </NavLink>
+                {(isAppMetricsPage || isAppPage) && (
                   <>
-                    <Link
-                      to="/"
-                      className={`${styles.ListItem} ${styles.DisabledLink}`}
-                    >
-                      OTHER
-                    </Link>
-                    <div>
+                    <>
                       <div>
                         <NavLink
-                          to={{
-                            pathname: `/projects/${projectID}/billing`,
-                          }}
+                          to={`/projects/${projectID}/apps/${appID}/logs`}
                           className={styles.SubBarListItem}
                         >
-                          Billing
+                          {" "}
+                          <Clip />
+                          Logs
                         </NavLink>
                       </div>
-                    </div>
+                      <Link
+                        to="#"
+                        className={`${styles.ListItem} ${styles.DisabledLink}`}
+                      >
+                        OTHER
+                      </Link>
+                    </>
                     <div>
                       <NavLink
                         to={{
-                          pathname: `/projects/${projectID}/settings`,
+                          pathname: `/projects/${projectID}/apps/${appID}/settings`,
+                          name,
                         }}
                         className={styles.SubBarListItem}
                       >
-                        Project settings
+                        <Setting />
+                        App Settings
                       </NavLink>
                     </div>
                   </>
                 )}
               </div>
 
-              <div className={styles.SideBarFooterSection}>
-                <div className={`${styles.SideFooter} ${styles.StickBottom}`}>
-                  Copyright {new Date().getFullYear()} Crane Cloud. All Rights
-                  Reserved.
-                </div>
+              {isAppPage || isAppMetricsPage ? null : (
+                <>
+                  <Link
+                    to="/"
+                    className={`${styles.ListItem} ${styles.DisabledLink}`}
+                  >
+                    OTHER
+                  </Link>
+                  <div>
+                    <div>
+                      <NavLink
+                        to={{
+                          pathname: `/projects/${projectID}/activity`,
+                        }}
+                        className={styles.SubBarListItem}
+                      >
+                        <Activity />
+                        Activity
+                      </NavLink>
+                    </div>
+                  </div>
+                  <div>
+                    <div>
+                      <NavLink
+                        to={{
+                          pathname: `/projects/${projectID}/billing`,
+                        }}
+                        className={styles.SubBarListItem}
+                      >
+                        <Credit />
+                        Billing
+                      </NavLink>
+                    </div>
+                  </div>
+                  <div>
+                    <NavLink
+                      to={{
+                        pathname: `/projects/${projectID}/settings`,
+                      }}
+                      className={styles.SubBarListItem}
+                    >
+                      {" "}
+                      <Setting />
+                      Project settings
+                    </NavLink>
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className={styles.SideBarFooterSection}>
+              <div className={`${styles.SideFooter} ${styles.StickBottom}`}>
+                Copyright {new Date().getFullYear()} Crane Cloud. All Rights
+                Reserved.
               </div>
             </div>
           </div>
-        </>
+        </div>
       ) : (
         <div
           className={styles.MenuIcon}

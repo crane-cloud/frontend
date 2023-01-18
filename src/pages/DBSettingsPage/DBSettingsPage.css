@@ -1,0 +1,282 @@
+.DatabaseSettingsInfo{
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-bottom: 2rem;
+}
+
+.ErrorOnWhite {
+  width: 25rem;
+}
+
+.DatabaseDetail {
+  width: 100%;
+}
+
+.DBButtons {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.DatabaseName{
+  font-weight: bold;
+}
+
+.ResetBtn {
+  background-color: #ff0000;
+  outline: none;
+  color: #fff;
+  float: left;
+}
+
+.DBDeleteBtn {
+  background-color: #ff0000;
+  outline: none;
+  color: #fff;
+  float: left;
+}
+
+.ResetBtn:hover {
+  background-color: #fff;
+  outline: 2px solid #e02626;
+  color: #e02626;
+}
+
+.DBDeleteBtn:hover {
+  background-color: #fff;
+  outline: 2px solid #e02626;
+  color: #e02626;
+}
+
+.rowDiv {
+  display: grid;
+}
+
+.DBDetailRow {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 15% 25% 10% auto;
+  padding-bottom: 1rem;
+  align-items: center;
+  cursor: default;
+}
+
+
+.DBIcon {
+  display: flex;
+  visibility:hidden;
+  gap: 0.8rem;
+  align-items: center;
+  cursor: pointer;
+}
+.DBPasswordBtns{
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  cursor: pointer; 
+}
+
+.DBDetailRow:hover {
+  color: var(--secondary-color);
+}
+
+.DBDetailRow:hover .DBIcon{
+  visibility: visible;
+}
+.DBThead {
+  font-weight: bold;
+}
+
+.DBPassword {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer!important;
+}
+
+.DeleteDatabaseModel {
+  display: grid;
+  gap: 1rem;
+}
+
+.InnerModalDescription {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.PasswordButton {
+  font-size: small;
+  height: 1.9rem;
+}
+
+.DBCardSection {
+  padding: 1rem;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+}
+
+.DBInstructions {
+  padding: 1rem;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.DBInstructionsView{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.DBConnectionInfo{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-left: 1rem;
+}
+
+.DBInfoTop code{
+  background-color: rgb(234, 234, 234);
+  padding: 0.1rem 0.4rem;
+  font-size: 0.9rem;
+}
+
+.DBInfoBottom {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.DBAccessInfo {
+  background: var( --gray-bg-light-color);
+  padding: 0.5rem;
+  word-wrap: break-word;
+  width: 40rem;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+@media(max-width: 1160px){
+  .DBAccessInfo {
+    width: 40rem;
+  }
+}
+@media(max-width: 1030px){
+  .DBAccessInfo {
+    width: 30rem;
+  }
+}
+@media(max-width: 850px){
+  .DBAccessInfo {
+    width: 20rem;
+  }
+}
+
+.DBAccessCopy {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.MysqlArticle {
+  color: var(--secondary-color);
+}
+
+.MysqlArticle:hover {
+  text-decoration: underline;
+}
+
+
+.SectionButtons{
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1rem;
+}
+
+.DBSections{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.DBSectionTitle{
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.DBButtonRow{
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.DetailsList {
+  padding: 1rem;
+  background: #ffffff;
+  border-radius: 15px;
+  border: 1px solid var(--gray-light-color);
+  display: grid;
+  gap: 1rem;
+}
+
+
+.DetailRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 1rem;
+}
+.DetailRow > div {
+  cursor: default;
+}
+
+
+.CopyIcon{
+  cursor: pointer!important;
+  display: flex;
+  gap: 0.3rem;
+  visibility: hidden;
+  align-items: center;
+  justify-content: center;
+}
+
+.DetailRow:hover .CopyIcon {
+  visibility: visible;
+}
+
+
+
+@media only screen and (min-device-width: 641px) and (max-width: 900px) {
+  .DBDetailRow {
+    grid-template-columns: 18% 40% 10% auto;
+  }
+  .DBButtonRow{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .DB-Btn{
+    width: 100%;
+  }
+}
+
+@media only screen and (min-device-width: 480px) and (max-width: 640px) {
+  .DBDetailRow {
+    grid-template-columns: 20% 55% 15%;
+    column-gap: .3rem;
+  }
+  .DBButtonRow{
+    grid-template-columns: 20% 80%;
+  }
+
+  .DB-Btn{
+    width: 100%;
+  }
+}
+

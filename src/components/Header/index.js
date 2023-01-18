@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, withRouter, matchPath } from "react-router-dom";
 import { connect } from "react-redux";
+import Avatar from "../Avatar";
 import PropTypes from "prop-types";
 import Logo from "../Logo";
 import { ReactComponent as DownArrow } from "../../assets/images/downarrow.svg";
+import { ReactComponent as Activity } from "../../assets/images/activity.svg";
+import { ReactComponent as LogOut } from "../../assets/images/log-out.svg";
+import { ReactComponent as User } from "../../assets/images/user.svg";
+import { ReactComponent as Book } from "../../assets/images/book.svg";
 import removeUser from "../../redux/actions/removeUser";
 import styles from "./Header.module.css";
 import { DOCS_URL } from "../../config";
@@ -11,6 +16,7 @@ import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 
 const Header = (props) => {
   const { user, match } = props;
+  const token = localStorage.getItem("token");
 
   const [hidden, setHidden] = useState(false);
   const dropdownRef = useRef(null);
@@ -53,10 +59,11 @@ const Header = (props) => {
   }, []);
 
   const { credits } = props;
+  let displayName = user.data.name ? user.data.name : user.data.username;
   return (
     <header className={`${styles.Header} SmallContainer`}>
       <Logo />
-      {(!user.accessToken || user.accessToken === "" || pageUrl !== null) && (
+      {(!token || token === "" || pageUrl !== null) && (
         <div className={styles.HeaderLinksWrap}>
           {match.path === "/login" && (
             <div className={styles.HeaderLinks}>
@@ -81,8 +88,7 @@ const Header = (props) => {
         </div>
       )}
 
-      {(user.accessToken && pageUrl === null) && (
-
+      {token && pageUrl === null && (
         <div className={styles.HeaderLinksWrap}>
           <div
             ref={dropdownRef}
@@ -97,29 +103,43 @@ const Header = (props) => {
                   <Coin />
                 </div>
               )}
-              <div className={styles.UserNames}>{user.data.name}</div>
+              <div className={styles.UserNames}>{displayName}</div>
             </>
 
             <DownArrow className={styles.DropdownArrowSvg} />
             {hidden && (
               <div className={styles.BelowHeader}>
+                <Link to={`/profile`} className={styles.UserInformation}>
+                  <Avatar name={displayName} className={styles.UserAvatar} />
+                  <div className={styles.UserDetails}>
+                    <div className={styles.HeaderUserName}>
+                      {displayName.split(" ").slice(-1).join(" ")}
+                    </div>
+                    <div className={styles.UserDetails}>{user.data.email}</div>
+                  </div>
+                </Link>
                 <div className={styles.DropDownContent}>
-                  <Link to={`/profile`} className={styles.DropDownLink}>
-                    Profile
-                  </Link>
                   <a
                     href={`${DOCS_URL}`}
                     className={styles.DropDownLink}
                     rel="noopener noreferrer"
                     target="_blank"
                   >
+                    <Book />
                     Docs
                   </a>
+                  <Link to={`/profile`} className={styles.DropDownLink}>
+                    <User /> Profile
+                  </Link>
+                  <Link to={`/activity`} className={styles.DropDownLink}>
+                    <Activity /> Activity
+                  </Link>
                   <div
-                    className={styles.DropDownLink}
+                    className={`${styles.DropDownLink} ${styles.RoundBottom}`}
                     role="presentation"
                     onClick={logout}
                   >
+                    <LogOut />
                     Logout
                   </div>
                 </div>

@@ -1,0 +1,159 @@
+
+.NoResourcesMesssage {
+  flex-grow: 1;
+  display: flex;
+  font-size: 1rem;
+  padding: 4rem;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.TopBarSection {
+  background-color: black;
+}
+
+.MainSection {
+  /* divided into two columns */
+  background-color: var( --gray-bg-light-color);
+  display: grid;
+  grid-template-columns: 1.3fr 6fr;
+  overflow: hidden;
+}
+
+.SideBarSection {
+  overflow: hidden;
+  overflow-y: scroll;
+  height: calc(100vh - 5rem);
+}
+
+.SideBarSection::-webkit-scrollbar {
+  display: none;
+  min-width: fit-content;
+}
+
+.SideBarSection {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.MainContentSection {
+  /* divided into two rows */
+  display: grid;
+  grid-template-rows: 80px 4fr;
+  overflow: auto;
+}
+
+.SmallContainer {
+  padding: 0 2rem;
+}
+
+@media (max-width: 580px) {
+  .SmallContainer {
+    padding: 0 1rem 1rem 2rem;
+  }
+}
+
+
+.field {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #000;
+  width: -webkit-fill-available;
+  border-radius: unset;
+}
+.Header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.Heading {
+  font-weight: bolder;
+  line-height: 1.8;
+  font-size: larger;
+}
+
+.SimpleForm {
+  display: flex;
+  width: 60%;
+  gap: 0.5rem;
+}
+
+.BackButton {
+  background: var(--primary-color);
+  outline: none;
+}
+
+.FilterButton {
+  outline: none;
+  background: unset;
+  border: 1px solid black;
+  color: #000;
+}
+.FilterButton:hover {
+  border: none;
+}
+
+.TableRow {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.Success {
+  color: green;
+}
+
+.Danger {
+  color: red;
+}
+
+.Entity {
+  color: var(--primary-color);
+}
+
+.hr {
+  margin: 0.5rem 0;
+}
+
+.Row {
+  display: flex;
+  justify-content: space-between;
+  width: -webkit-fill-available;
+}
+
+.ActivityEmail {
+  font-weight: bold;
+  font-size: 1rem;
+}
+.ActivityDate {
+  font-size: 0.8rem;
+  color: #555;
+}
+
+
+.RowCell {
+  display: flex;
+  gap: 1rem;
+}
+
+.ActivityDescription {
+  font-size: 0.99rem;
+  color: #555;
+  display: flex;
+  align-items: flex-end;
+}
+.UserAvatar {
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

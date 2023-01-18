@@ -1,0 +1,366 @@
+.LandingPage {
+  background: var(--primary-color);
+  flex-grow: 1;
+  display: flex;
+  flex-flow: column;
+}
+
+.LandingPageMain {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.LandingPageMainContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9rem 3rem;
+  background: var(--primary-color);
+
+  /* height: calc(100vh - 5rem); */
+}
+@media screen and (max-width: 768px) {
+  .LandingPageMainContent {
+    flex-direction: column;
+  }
+}
+
+.LandingPageMainContentInfo {
+  display: grid;
+  align-items: center;
+  grid-gap: 3rem;
+}
+
+.LandingPageMainContentImg {
+  display: grid;
+  align-items: center;
+}
+
+.LandingParagraph {
+  color: #ffffff;
+  width: 80%;
+  line-height: 2rem;
+}
+
+.LandingPageMainContentTitle {
+  color: #ffffff;
+  font-size: 4rem;
+  font-weight: bold;
+}
+.LandingPageInfrastructurePic path {
+  fill: var(--primary-light-color);
+}
+
+.FreeTrialButton {
+  background-color: var(--secondary-color);
+  text-transform: uppercase;
+  color: white;
+  padding: 0.7rem;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  border: 1px solid var(--secondary-color);
+  display: grid;
+  grid-auto-flow: column;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  border-radius: 5px;
+  outline: none;
+}
+
+.FreeTrialButton:hover {
+  background: white;
+  color: var(--primary-color);
+  border-color:  #fff;
+
+}
+
+.FreeTrialButton:hover path {
+  fill: var(--primary-color);
+}
+
+.LandingPageMainContainer {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.LandingPageWhySection {
+  background-color: #ffffff;
+  padding: 5rem;
+}
+
+.WhySectionContent {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1.5rem;
+}
+
+.DataCenterImage {
+  overflow: hidden;
+}
+
+.DataCenterImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.WhySectionChildContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.WhySectionItem {
+  padding: 1rem;
+  background-color: var( --gray-bg-light-color);
+  color: #555555;
+  display: grid;
+  grid-template-rows: max-content;
+  gap: 0.5rem;
+  border-radius: 10px;
+}
+
+.WhySectionCardTitle {
+  font-size: medium;
+  line-height: 2rem;
+  font-weight: bold;
+}
+
+.WhySectionAction {
+  color: #555555;
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 1.5rem;
+  gap: 0.6rem;
+  align-items: center;
+  justify-content: end;
+  cursor: pointer;
+}
+
+.PageBannerSection {
+  background-color: var(--secondary-color);
+  color: #f8f7e5;
+  display: flex;
+  padding: 1rem 3rem;
+}
+
+.LeftPageBannerSection {
+  flex: 6;
+  margin: auto;
+}
+
+.RightPageBannerSection {
+  flex: 1;
+  overflow: hidden;
+  margin: auto;
+}
+.BannerParagraph {
+  color: #000000;
+}
+.BannerButton {
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  padding: 0.5rem 2rem;
+}
+.LeftPageBannerInner {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: auto;
+}
+
+.PageBannerLearnMore {
+  text-transform: uppercase;
+  padding: 1rem 2rem;
+  border: 2px solid transparent;
+  background: #fefefe;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.PageBannerLearnMore:hover {
+  background: transparent;
+  border-color: #fefefe;
+  color: #fefefe;
+}
+
+.SolutionsSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 4rem;
+  padding: 1rem 0 3rem 0;
+}
+
+.SolutionsContainer {
+  display: flex;
+}
+
+.SolutionsIcon {
+  flex: 1;
+  padding-top: 1.1rem;
+}
+
+.SolutionsIcon svg {
+  height: 24px;
+}
+
+.SolutionsContent {
+  flex: 5;
+}
+
+@media only screen and (max-width: 900px) {
+  .LandingPageMainContentImg {
+    display: none;
+  }
+
+  .WhySectionContent {
+    grid-template-columns: 1fr;
+  }
+
+  .SolutionsSection {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.DatabaseSection,
+.ApplicationSection,
+.StackSection {
+  /* height: 100vh; */
+  padding: 6rem 2rem 6rem 4rem;
+  display: grid;
+  grid-template-columns: 45% auto;
+}
+.DatabaseSection {
+  background-color: var(--primary-light-color);
+  gap: 2rem;
+}
+.ApplicationSection {
+  background: var(--primary-color);
+  gap: 2rem;
+}
+.StackSection {
+  background: #cccccc;
+  gap: 2rem;
+}
+.IconSqure {
+  border-radius: 10px;
+  background-color: #fafafa;
+  padding: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.IconSqure:hover {
+  transform: scale(1.06);
+  transition: ease-in-out 0.3s;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2); 
+}
+
+.IconSqure svg {
+  width: 5rem;
+  aspect-ratio: 3/2;
+  object-fit: contain;
+}
+
+.LeftInfoSection {
+  display: grid;
+  grid-template-rows: 20% auto 30%;
+}
+
+.DatabaseSection .LeftInfoSection div:nth-child(1) {
+  color: #555555;
+}
+
+.ApplicationSection .LeftInfoSection div:nth-child(1) {
+  color: #ffffff;
+}
+
+.StackSection .LeftInfoSection div:nth-child(1) {
+  color: #000000;
+}
+
+.LeftInfoSection div:nth-child(2) {
+  line-height: 1.8;
+}
+
+.LeftInfoHeader {
+  line-height: 2rem;
+  font-size: 1.8em;
+  font-weight: bold;
+}
+
+.AutoContainer {
+  background: var(--secondary-color);
+  color: #000000;
+  border: 1px solid var(--secondary-color);
+}
+
+.GridSide {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+
+.Flex {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.DBIcons svg {
+  width: 8rem;
+  aspect-ratio: 3/4;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.DBContain {
+  display: grid;
+  grid-template-rows: auto 30%;
+  gap: 3rem;
+}
+
+.DBChoose {
+  line-height: 2rem;
+  font-size: 2em;
+  font-weight: bold;
+  color: #555555;
+  text-align: center;
+}
+.AlignButton {
+  /* align-self: end; */
+  display: grid;
+  background-color: white;
+  width: 9.7rem;
+  height: 2.9rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  /* font-weight: bold; */
+  border: 1px solid white;
+  color: var(--primary-color);
+  cursor: pointer;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.AlignButton:hover {
+  background-color: #dddddd;
+}
+@media only screen and (max-width: 640px) {
+  .LandingPageMainContentImg {
+    display: none;
+  }
+
+  .SolutionsSection {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+  }
+}

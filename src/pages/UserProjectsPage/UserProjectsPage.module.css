@@ -3,7 +3,87 @@
   gap: 1rem;
   justify-content: flex-start;
   flex-wrap: wrap;
-  padding: 2rem 0;
+  padding: 2rem;
+}
+
+.ProjectsDropDown {
+  display: flex;
+  flex-direction: column;
+}
+
+.SelectProjects {
+  padding-top: 1.5rem;
+}
+
+.TopItem {
+  display: flex;
+  width: 13rem;
+  flex-direction: row;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 17px;
+  background-color: #d9d9d9;
+  padding: 1rem;
+  border-radius: 0.4rem;
+}
+
+.closeDrop {
+  -webkit-transform: rotateX(180deg);
+  transform: rotateX(180deg);
+}
+
+.itemsList {
+  width: 12rem;
+  gap: 1rem;
+  padding-top: .5rem;
+  position: relative;
+  animation-name: example;
+  left: 2rem;
+  animation-duration: 1s;
+}
+
+@keyframes example {
+  0% {
+    left: 0px;
+  }
+
+  100% {
+    left: 2rem;
+  }
+}
+
+.ProjectCategoryHeadings {
+  padding: 0.3rem;
+  font-size: large;
+  display: flex;
+  gap: 1.3rem;
+}
+
+.ProjectCategories {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.CurrentTab {
+  background-color: #d9d9d9;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.CurrentTab:hover,
+.Tab:hover {
+  cursor: pointer;
+}
+
+.Tab {
+  padding: 0.5rem;
+}
+
+.SmallerIcon {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .ProjectFormErrorDiv {
@@ -12,6 +92,79 @@
   text-align: center;
   padding: 1rem 0;
   height: 1rem;
+}
+
+.ProjectDeleteModel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.Role {
+  font-weight: 600;
+}
+
+.ModelContent {
+  width: 23rem;
+}
+
+.ProjectDeleteModel .ModalParentWrap {
+  background-color: inherit;
+}
+
+.UpdateProjectModelButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.UpdateForm {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem 1.3rem;
+  grid-template-rows: 2fr;
+}
+
+.InformationText {
+  width: 20rem;
+}
+
+.InformationWarning {
+  color: #d63b3b;
+}
+
+.ModelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.BlueBtn:hover {
+  color: var(--primary-color);
+  background-color: #fff;
+  outline: 2px solid var(--primary-color);
+}
+
+.BlueBtn {
+  color: #fff;
+  background-color: var(--primary-color);
+  outline: 2px solid var(--primary-color);
+  padding: 0.5rem;
+  height: 2.5rem;
+}
+
+.ProjectDeleteModel .ModalChildWrap {
+  z-index: 3;
+}
+
+.ProjectDeleteModel .ModalChildWrap {
+  min-width: 21rem;
+  max-width: 25rem;
 }
 
 .ClusterDrop {
@@ -29,13 +182,13 @@
   font-weight: bold;
 }
 
-.MainRow > .ConnectModal {
+.MainRow>.ConnectModal {
   width: 100%;
   margin-left: 0;
 }
 
 .MainRow {
-  background-color: #f1f1f1;
+  background-color: var(--gray-bg-light-color);
   min-height: calc(100vh - 14rem);
 }
 
@@ -56,7 +209,7 @@
 
 .FooterRow {
   padding: 1rem 3rem;
-  background-color: #f1f1f1;
+  background-color: var(--gray-bg-light-color);
 }
 
 .SearchBar {
@@ -65,12 +218,12 @@
   padding: 2rem;
 }
 
-
 @media (max-width: 500px) {
-  .ProjectList > div{
-    width: 100%!important;
-  }  
+  .ProjectList>div {
+    width: 100% !important;
+  }
 }
+
 /* @media only screen and (max-width: 1100px) and (min-width: 901px) {
   .ProjectList {
     grid-template-columns: repeat(4, 1fr);

@@ -3,13 +3,14 @@
   display: flex;
   flex-direction: column;
   border: 1px solid #cccccc;
+  border-radius: 15px;
 }
 
 .CardHeaderSection {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   border-bottom: 1px solid #cccccc;
   font-size: 1rem;
 }
@@ -23,7 +24,12 @@
   flex-grow: 1;
   display: flex;
 }
-
+.MetricsCardIcon svg{
+  width: 1.3rem;
+  height: 1.3rem;
+  margin: 0;
+  color: #888;
+}
 .MetricsCardContainer:hover {
-  border: 1px solid #f7b21f;
+  border: 1px solid var(--secondary-color);
 }

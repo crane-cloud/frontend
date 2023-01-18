@@ -11,7 +11,6 @@ const CreateProjectProps = {
   data: { beta: true },
   clearState: jest.fn(),
   getClustersList: jest.fn(),
-  clearAddProjectState: jest.fn(),
 };
 // {} ={}
 describe("Testing the App Metrics Page component", () => {
@@ -34,20 +33,10 @@ describe("Testing the exported mapstate to props and dispatch", () => {
           clusters: [],
         },
         user: { data: [] },
-        addProjectReducer: {
-          isAdding: false,
-          isAdded: false,
-          message: "",
-          errorCode: "",
-        },
       })
     ).toEqual({
       clusters: [],
       data: [],
-      isAdding: false,
-      isAdded: false,
-      message: "",
-      errorCode: "",
     });
   });
 });

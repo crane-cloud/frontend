@@ -1,29 +1,39 @@
 .Primary-Btn {
-  background-color: #f7b21f;
+  background-color: var(--secondary-color);
   min-width: 8rem;
   padding: 0.6rem;
   color: white;
   font-size: 1rem;
   font-weight: bold;
-  line-height: 19px;
   text-align: center;
-  border: none;
-  outline: 1px solid #f7b21f;
+  border: 1px solid var(--secondary-color);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   white-space: nowrap;
+  border-radius: 5px;
+  outline: none;
+  text-transform: capitalize;
+}
+
+.SmallBtn {
+  padding: 0.3rem 0.5rem;
+  font-weight: 500;
+}
+
+.NoPaddingBtn{
+  min-width: 4rem;
 }
 
 .Primary-Btn:hover {
   background-color: transparent;
-  color: #f7b21f;
-  outline: 1px solid #f7b21f;
+  color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
 }
 
 .Primary-Btn.CancelBtn {
-  outline: 1px solid #000000;
+  border: 1px solid #000000;
   color: #000000;
   background-color: #ffffff;
 }
@@ -31,6 +41,78 @@
 .Primary-Btn.CancelBtn:hover {
   color: #fff;
   background-color: #000;
+}
+
+.Primary-Btn.PrimaryDeleteBtn {
+  border: 1px solid #d63b3b;
+  color: white;
+  background-color: #d63b3b;
+}
+
+.Primary-Btn.PrimaryDeleteBtn:hover {
+  color: #d63b3b;
+  background-color: transparent;
+}
+
+.Primary-Btn.BlackPrimaryBtn {
+  border: 1px solid #000;
+  color: #fff;
+  background-color: #000;
+}
+
+.Primary-Btn.PrimaryDeleteBtnOutline {
+  border: 1px solid #d63b3b;
+  color: #d63b3b;
+  background-color: transparent;
+}
+
+.Primary-Btn.PrimaryDeleteBtnOutline:hover {
+  color: #fff;
+  background-color: #d63b3b;
+}
+
+.Primary-Btn.BlackPrimaryBtn:hover {
+  border: 1px solid var(--primary-dark-color);
+  background-color: var(--primary-dark-color);
+}
+
+.Primary-Btn.PrimaryColorBtn {
+  border: 1px solid var(--primary-color);
+  color: #fff;
+  background-color: var(--primary-color);
+}
+
+.Primary-Btn.PrimaryColorBtn:hover {
+  border: 1px solid var(--primary-color);
+  background-color: transparent;
+  /* background-color: var(--primary-light-color); */
+  color: var(--primary-color);
+}
+
+.Primary-Btn.PrimaryOutlineColorBtn {
+  border: 1px solid var(--primary-color);
+  background-color: transparent;
+  color: var(--primary-color);
+}
+
+.Primary-Btn.PrimaryOutlineColorBtn:hover {
+  border: 1px solid var(--primary-color);
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.TransparentBtn {
+  background-color: transparent;
+  color: var(--gray-color);
+  border: 1px solid transparent;
+  outline: none;
+  cursor: pointer;
+}
+
+.TransparentBtn:hover {
+  background-color: #f3f4f6;
+  color: #d63b3b;
+  border: 1px solid rgba(27,31,36,0.5);
 }
 
 button:disabled,

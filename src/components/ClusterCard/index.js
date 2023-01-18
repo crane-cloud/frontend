@@ -9,7 +9,7 @@ const ClusterCard = ({ name, description, icon }) => {
         className="CardImageDiv"
         style={{ backgroundImage: `url(${icon})` }}
       />
-      <div className="BottomContainer">
+      <div className="ClusterBottomContainer">
         <div className="ClusterCardName">{name}</div>
         <div className="ClusterCardDesc">{description}</div>
       </div>

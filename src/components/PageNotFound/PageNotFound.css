@@ -9,7 +9,7 @@
 }
 
 .ErrorPageDigit {
-  color: #f7b21f;
+  color: var(--secondary-color);
   font-size: 12.5rem;
   line-height: 14rem;
 }
