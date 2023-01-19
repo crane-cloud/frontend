@@ -109,7 +109,6 @@
   display: none;
   min-width: fit-content;
 }
-
 .Page {
   margin: 0;
   background: var( --gray-bg-light-color);
@@ -570,7 +569,6 @@
   .UpdateInputSection {
     width: 20rem;
   }
-
 
   .TextArea {
     width: 20rem;

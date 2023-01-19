@@ -12,7 +12,6 @@ import Engineer from "../../assets/images/Engineer.png";
 import Greatest from "../../assets/images/Greatest.png";
 import Henry from "../../assets/images/Henry.png";
 import Inno from "../../assets/images/Inno.jpg";
-import James from "../../assets/images/James.jpg";
 import Steve from "../../assets/images/Steve.png";
 import Header from "../../components/Header";
 import MemberCard from "../../components/MemberCard";
@@ -42,9 +41,8 @@ const members = [
   { id: 7, name: "Colin Wagaba", title: "DevOps Engineer", icon: Colin },
   { id: 8, name: "Steve Araka", title: "DevOps Engineer", icon: Steve },
   { id: 9, name: "Derrick Sekidde", title: "DevOps Engineer", icon: Greatest },
-  { id: 10, name: "Allan Mubangizi", title: "Student Developer", icon: Allan },
-  { id: 11, name: "Henry Mutegeki", title: "Student Developer", icon: Henry },
-  { id: 12, name: "James Ssekamatte", title: "Researcher", icon: James },
+  { id: 10, name: "Allan Mubangizi", title: "DevOps Engineer", icon: Allan },
+  { id: 11, name: "Henry Mutegeki", title: "DevOps Engineer", icon: Henry },
 ];
 
 const TeamPage = () => (

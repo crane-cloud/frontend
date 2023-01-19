@@ -10,12 +10,12 @@ import { v4 as uuidv4 } from "uuid";
 // import Modal from "../Modal";
 import RemoveIcon from "../../assets/images/remove.svg";
 //import ToggleOnOffButton from "../ToggleOnOffButton";
+import { handlePostRequestWithOutDataObject } from "../../apis/apis.js";
 import Spinner from "../Spinner";
 import Feedback from "../Feedback";
 import Checkbox from "../Checkbox";
 import Tooltip from "../Tooltip";
 import Tabs from "../Tabs";
-import createApp, { clearState } from "../../redux/actions/createApp";
 import styles from "./CreateApp.module.css";
 import { validateName } from "../../helpers/validation";
 import MiraPage from "../../pages/MiraPage";
@@ -51,6 +51,9 @@ class CreateApp extends React.Component {
       replicas: 1,
       multiCluster: false,
       SelectedClusters: new Array(clusters?.length).fill(false),
+      addingApp: false,
+      addAppError: false,
+      addErrorCode: "",
     };
 
     this.addEnvVar = this.addEnvVar.bind(this);
@@ -70,6 +73,7 @@ class CreateApp extends React.Component {
     this.changeMultiSelectionOption =
       this.changeMultiSelectionOption.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.createNewApp = this.createNewApp.bind(this);
   }
   handleOnChange(position) {
     const { SelectedClusters } = this.state;
@@ -94,10 +98,8 @@ class CreateApp extends React.Component {
     this.setState({ currentDeploymentMethod: "mira" });
   }
 
-  componentDidMount() {
-    const { clearState } = this.props;
-    clearState();
-  }
+  // componentDidMount() {
+  // }
 
   componentDidUpdate(prevProps) {
     const {
@@ -115,8 +117,6 @@ class CreateApp extends React.Component {
   }
 
   hideForm() {
-    const { clearState } = this.props;
-    clearState();
     this.setState(this.initialState);
   }
 
@@ -321,18 +321,32 @@ class CreateApp extends React.Component {
             docker_server: server,
           };
         }
-
-        createApp(appInfo, params.projectID);
+        //change
+        //createApp(appInfo, params.projectID);
+        this.createNewApp(appInfo, params.projectID);
       }
     }
+  }
+  createNewApp(data, projectID) {
+    this.setState({
+      addingApp: true,
+      addAppError: "",
+    });
+    handlePostRequestWithOutDataObject(data, `/projects/${projectID}/apps`)
+      .then(() => {
+        window.location.href = `/projects/${projectID}/Apps`;
+      })
+      .catch((error) => {
+        this.setState({
+          addAppError: "Failed to add App. Try again later",
+          addingApp: false,
+          addErrorCode: error.response?.status,
+        });
+      });
   }
 
   render() {
     const {
-      isCreating,
-      isCreated,
-      message,
-      errorCode,
       params: { projectID },
       data: { beta },
       clusters: { clusters },
@@ -354,10 +368,11 @@ class CreateApp extends React.Component {
       domainName,
       multiCluster,
       SelectedClusters,
+      addingApp,
+      addErrorCode,
+      addAppError,
     } = this.state;
-    if (isCreated) {
-      return <Redirect to={`/projects/${projectID}/Apps`} noThrow />;
-    }
+
     const replicaOptions = [
       { id: 1, name: "1" },
       { id: 2, name: "2" },
@@ -632,7 +647,12 @@ class CreateApp extends React.Component {
                   </div>
                 </div>
 
-                {error && <Feedback type="error" message={error} />}
+                {error && (
+                  <div className={styles.FeedbackSection}>
+                    {" "}
+                    <Feedback type="error" message={error} />{" "}
+                  </div>
+                )}
               </div>
               <div className={styles.ModalFormInputsEnvVars}>
                 <div className={styles.HeadingWithTooltip}>
@@ -701,15 +721,18 @@ class CreateApp extends React.Component {
                 </div>
               </div>
               <div className={styles.ModalFormButtons}>
-                {message && (
-                  <Feedback
-                    message={
-                      errorCode === 409
-                        ? "Name already in use, please choose another and try again"
-                        : message
-                    }
-                    type={isCreated && errorCode !== 409 ? "success" : "error"}
-                  />
+                {addAppError && (
+                  <div className={styles.FeedbackSection}>
+                    <Feedback
+                      className={styles.FeedbackSection}
+                      message={
+                        addErrorCode === 409
+                          ? "Name already in use, please choose another and try again"
+                          : addAppError
+                      }
+                      type={"error"}
+                    />
+                  </div>
                 )}
 
                 <div className={styles.ButtonSection}>
@@ -717,7 +740,7 @@ class CreateApp extends React.Component {
                     className="AuthBtn FullWidth"
                     onClick={this.handleSubmit}
                   >
-                    {isCreating ? <Spinner /> : "deploy"}
+                    {addingApp ? <Spinner /> : "deploy"}
                   </PrimaryButton>
                 </div>
               </div>
@@ -733,42 +756,26 @@ class CreateApp extends React.Component {
   }
 }
 CreateApp.propTypes = {
-  isCreating: PropTypes.bool,
-  isCreated: PropTypes.bool,
-  message: PropTypes.string,
   clusters: PropTypes.object,
   getClustersList: PropTypes.func.isRequired,
   params: PropTypes.shape({}),
 };
 
 CreateApp.defaultProps = {
-  message: "",
   clusters: [],
-  isCreated: false,
-  isCreating: false,
   params: {},
 };
 
 export const mapStateToProps = (state) => {
-  const { isCreating, isCreated, clearAppCreateState, message, errorCode } =
-    state.createAppReducer;
   const { data } = state.user;
   const { clusters } = state.clustersReducer;
 
   return {
-    isCreating,
-    message,
-    isCreated,
-    clearAppCreateState,
-    errorCode,
     clusters,
     data,
   };
 };
 
-const mapDispatchToProps = {
-  createApp,
-  clearState,
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateApp);

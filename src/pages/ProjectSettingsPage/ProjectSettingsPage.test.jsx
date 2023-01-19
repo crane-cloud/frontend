@@ -7,9 +7,7 @@ const ProjectSettingsPageProps = {
   match: { params: { projectID: "1" } },
   location: { pathname: "path" },
   data: [],
-  deleteProject: jest.fn(),
-  updateProject: jest.fn(),
-  clearDeleteProjectState: jest.fn(),
+
 };
 
 
@@ -39,28 +37,9 @@ describe("Testing the exported mapstate to props and dispatch for ProjectSetting
   it("matches the ProjectSettingsPage mapstostate", () => {
     expect(
       mapStateToProps({
-        deleteProjectReducer: {
-          isDeleting: false,
-          isDeleted: false,
-          isFailed: false,
-          message: "",
-        },
-        updateProjectReducer: {
-          isUpdated: false,
-          isUpdating: false,
-          errorMessage: null,
-        },
         user: { data: [] },
       })
     ).toEqual({
-      isUpdated: false,
-      isUpdating: false,
-      message: "",
-      isDeleting: false,
-      isFailed: false,
-      isDeleted: false,
-      errorMessage: null,
-      clearDeleteProjectState: undefined,
       data: [],
     });
   });

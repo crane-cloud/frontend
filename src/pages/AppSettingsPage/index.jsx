@@ -105,6 +105,7 @@ class AppSettingsPage extends React.Component {
     this.showAppRevisionModal = this.showAppRevisionModal.bind(this);
     this.hideAppRevisionModal = this.hideAppRevisionModal.bind(this);
     this.removeExistingEnvVar = this.removeExistingEnvVar.bind(this);
+    this.getCurrentRevision = this.getCurrentRevision.bind(this);
   }
 
   handleChange(e) {
@@ -169,6 +170,13 @@ class AppSettingsPage extends React.Component {
           fetchingAppDetails: false,
         });
       });
+  }
+
+  getCurrentRevision(revisions) {
+    let currentRevision = revisions.find(
+      (revision) => revision.current === true
+    );
+    return currentRevision.revision_id;
   }
 
   rollbackApp(revisionId) {
@@ -335,7 +343,6 @@ class AppSettingsPage extends React.Component {
   }
 
   removeEnvVar(index) {
-
     const { envVars } = this.state;
     const keyToRemove = Object.keys(envVars)[index];
     const newEnvVars = Object.keys(envVars).reduce((object, key) => {
@@ -346,14 +353,12 @@ class AppSettingsPage extends React.Component {
     }, {});
     this.setState({ envVars: newEnvVars });
   }
-  removeExistingEnvVar(index){
-     const {
+  removeExistingEnvVar(index) {
+    const {
       match: { params },
       updateApp,
-     } = this.props;
-     const {
-      appDetail
-     } = this.state;
+    } = this.props;
+    const { appDetail } = this.state;
     const { appID } = params;
     const keyToRemove = Object.keys(appDetail.env_vars)[index];
     const newEnvVars = Object.keys(appDetail.env_vars).reduce((object, key) => {
@@ -362,7 +367,7 @@ class AppSettingsPage extends React.Component {
       }
       return object;
     }, {});
-     updateApp(appID, { env_vars: newEnvVars });
+    updateApp(appID, { env_vars: newEnvVars });
   }
 
   togglePrivateImage() {
@@ -653,6 +658,7 @@ class AppSettingsPage extends React.Component {
     } = this.state;
     // project name from line 105 disappears on refreash, another source of the name was needed
     //const { name } = this.props.location;
+    console.log(revisions);
     const { appID } = params;
     const replicaOptions = [
       { id: 1, name: "1" },
@@ -891,7 +897,7 @@ class AppSettingsPage extends React.Component {
                   <div className={styles.APPButtonRow}>
                     <div className={styles.AppLabel}>Current Revision</div>
                     <div className={styles.flexa}>
-                      {appDetail.revision !== "" ? appDetail.revision : "0"}
+                      {this.getCurrentRevision(revisions)}
                     </div>
                   </div>
                   <div className={styles.APPButtonRow}>
@@ -1038,9 +1044,17 @@ class AppSettingsPage extends React.Component {
                                   {appDetail.env_vars[envVar]}
                                 </div>
                                 <div
-                                  className={isUpdating  ? styles.RemoveIconUpdating : styles.RemoveIconBtn}
-                                  onClick={() => this.removeExistingEnvVar(index)}
-                                  title={isUpdating ? "Updating" :"Remove Item"}
+                                  className={
+                                    isUpdating
+                                      ? styles.RemoveIconUpdating
+                                      : styles.RemoveIconBtn
+                                  }
+                                  onClick={() =>
+                                    this.removeExistingEnvVar(index)
+                                  }
+                                  title={
+                                    isUpdating ? "Updating" : "Remove Item"
+                                  }
                                 >
                                   <DeleteIcon width={16} height={16} />
                                 </div>

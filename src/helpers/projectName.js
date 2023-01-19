@@ -7,6 +7,11 @@ export function getProjectDescription(projects, id) {
   let description = projects?.find((project) => project.id === id).description;
   return description
 }
+export function getProjectCurrentProject(projects, id) {
+  let project = projects?.find((project) => project.id === id);
+  return project
+}
+
 
 export function getDateCreated(projects, projectID) {
   let created = projects?.find((project) => project.id === projectID);

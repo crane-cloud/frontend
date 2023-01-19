@@ -11,6 +11,7 @@ import Spinner from "../Spinner";
 import InformationBar from "../InformationBar";
 import SideNav from "../SideNav";
 import Modal from "../Modal";
+import DeleteWarning from "../../components/DeleteWarning";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 import SettingsButton from "../SettingsButton";
 import BlackInputText from "../BlackInputText";
@@ -37,6 +38,11 @@ class AdminUserPage extends Component {
       credits: "",
       creditDescription: "",
       selectedUser: "",
+      openDeleteAlert : false,
+      openDisableAlert : false,
+      error : "",
+      hidden : true,
+
     };
     this.showMenu = this.showMenu.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -48,6 +54,12 @@ class AdminUserPage extends Component {
     this.showCreditsModal = this.showCreditsModal.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleCreditSubmittion = this.handleCreditSubmittion.bind(this);
+    this.handleDeleteAlert = this.handleDeleteAlert.bind(this);
+    this.showDeleteAlert = this.showDeleteAlert.bind(this);
+    this.hideDeleteAlert = this.hideDeleteAlert.bind(this);
+    this.handleDisableAlert = this.handleDisableAlert.bind(this);
+    this.showDisableAlert = this.showDisableAlert.bind(this);
+    this.hideDisableAlert = this.hideDisableAlert.bind(this);
   }
   componentDidMount() {
     const {
@@ -62,13 +74,41 @@ class AdminUserPage extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { Added } = this.props;
+    const { Added , isDeleteUser , isDisableUser } = this.props;
 
     if (Added !== prevProps.Added) {
       this.hideCreditsModal();
     }
+    if ( isDeleteUser !== prevProps.DeleteUser){
+      this.hideDeleteAlert();
+    }
+    if (isDisableUser !== prevProps.DisableUser){
+      this.hideDeleteAlert();
+    }
   }
 
+  handleDeleteAlert ( e , userID){
+    const { deleteUser } = this.props;
+    e.preventDefault();
+    deleteUser(userID);
+  }
+  showDeleteAlert(){
+    this.setState({openDeleteAlert : true});
+  }
+  hideDeleteAlert(){
+    this.setState({openDeleteAlert : false});
+  }
+  handleDisableAlert ( e , userID){
+    const { disableUser } = this.props;
+    e.preventDefault();
+    disableUser(userID);
+  }
+  showDisableAlert(){
+    this.setState({openDisableAlert : true});
+  }
+  hideDisableAlert(){
+    this.setState({openDisableAlert : false});
+  }
   handleClick = (e) => {
     if (this.state.actionsMenu) {
       // this.closeModal();
@@ -147,21 +187,47 @@ class AdminUserPage extends Component {
   }
 
   renderRedirect = () => {
-    const { Added } = this.props;
+    const { Added ,  isDeleteUser , isDisableUser } = this.props;
 
     if (Added) {
       return <Redirect to={`/accounts`} noThrow />;
     }
-  };
+    if (isDeleteUser === "User Deleted Successfully"){
+      this.hideDeleteAlert();
+      return <Redirect to= {`/accounts/&{user_id}`} noThrow />;
+    }
+    if (isDisableUser === "User Disabled Successfully"){
+      this.hideDisableAlert();
+      return <Redirect to= {`/accounts/&{user_id}`} noThrow />;
+  }
+};
 
   render() {
-    const { users, isFetched, isFetching, Adding, Failed, userCredits, Added } =
-      this.props;
+    const { users, 
+            isFetched, 
+            isFetching, 
+            Adding, 
+            Failed, 
+            userCredits, 
+            Added , 
+            isDeleteUser, 
+            isDisableUser, 
+            deletingUser, 
+            isDisablingUser, 
+            userDeleteFailed,
+            userDisableFailed,
+          } =this.props;
+      
     const clusterName = localStorage.getItem("clusterName");
+    const { userID } = this.props.match.params;
     const {
       match: { params },
     } = this.props;
-    const { credits, creditDescription } = this.state;
+    const { credits, 
+            creditDescription, 
+            openDeleteAlert,
+            openDisableAlert,
+          } = this.state;
     const user = getUser(users, params.userID);
     const { credit_assignment_records } = userCredits;
     return (
@@ -289,6 +355,130 @@ class AdminUserPage extends Component {
                     </div>
                   </div>
                 </div>
+                <div className="DBSections">
+                <div className="SectionTitle">Manage User</div>
+                 <div className="ProjectInstructions">
+                    <div className="MemberBody">
+                     <div className="MemberTableRow">
+                      <div className="SettingsSectionInfo">
+                        <div className="SubTitle">Disable User<br/>
+                          <div className="SubTitleContent">This will temporary disable the user.</div>
+                        </div>
+                        <div className="SectionButtons"> 
+                          <PrimaryButton 
+                            color="red-outline"
+                            onClick={this.showDisableAlert}
+                            >Disable
+                            </PrimaryButton>
+                      </div>
+                    </div>
+                    </div>
+                    <div className="SettingsSectionInfo1">
+                    <div className="SubTitle">Delete User<br />
+                        <div className="SubTitleContent">This will permanently delete the user-history , apps , database and settings.</div>
+                        </div>
+                        <div className="SectionButtons">
+                        <PrimaryButton
+                            color="red-outline"
+                            onClick={this.showDeleteAlert}
+                            >Delete
+                            </PrimaryButton>
+                        </div>
+                  </div>
+              </div>
+              </div>
+                  {openDeleteAlert && (
+                <div className="ProjectDeleteModel">
+                  <Modal
+                    showModal={openDeleteAlert}
+                    onClickAway={this.hideDeleteAlert}
+                  >
+                    <div className="DeleteDatabaseModel">
+                      <div className="DeleteProjectModalUpperSection">
+                        <div className="InnerModalDescription">
+                          Are you sure you want to delete this user &nbsp;
+                          <span className="DatabaseName">
+                            {user.name} ?
+                          </span>
+                          <DeleteWarning />
+                        </div>
+                      </div>
+
+                      <div className="DeleteProjectModalLowerSection">
+                        <div className="DeleteProjectModelButtons">
+                          <PrimaryButton
+                            className="CancelBtn"
+                            onClick={this.hideDeleteAlert}
+                          >
+                            Cancel
+                          </PrimaryButton>
+                          <PrimaryButton
+                            color="red"
+                            onClick={(e) =>
+                              this.handleDeleteAlert(
+                                e,
+                                userID,
+                              )
+                            }
+                          >
+                            {deletingUser ? <Spinner /> : "Delete"}
+                          </PrimaryButton>
+                        </div>
+
+                        {userDeleteFailed && isDeleteUser && (
+                          <Feedback message={isDeleteUser} type="error" />
+                        )}
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+              )}
+              {openDisableAlert && (
+                <div className="ProjectDeleteModel">
+                  <Modal
+                    showModal={openDisableAlert}
+                    onClickAway={this.hideDisableAlert}
+                  >
+                    <div className="DeleteDatabaseModel">
+                      <div className="DeleteProjectModalUpperSection">
+                        <div className="InnerModalDescription">
+                          Are you sure you want to disable this user &nbsp;
+                          <span className="DatabaseName">
+                            {user.name} ?
+                          </span>
+                          <DeleteWarning />
+                        </div>
+                      </div>
+
+                      <div className="DeleteProjectModalLowerSection">
+                        <div className="DeleteProjectModelButtons">
+                          <PrimaryButton
+                            className="CancelBtn"
+                            onClick={this.hideDisableAlert}
+                          >
+                            Cancel
+                          </PrimaryButton>
+                          <PrimaryButton
+                            color="red"
+                            onClick={(e) =>
+                              this.handleDisableAlert(
+                                e,
+                                userID,
+                              )
+                            }
+                          >
+                            {isDisablingUser ? <Spinner /> : "Disable"}
+                          </PrimaryButton>
+                        </div>
+
+                        {userDisableFailed && isDisableUser && (
+                          <Feedback message={isDisableUser} type="error" />
+                        )}
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+              )}
 
                 {!isFetching && !isFetched && (
                   <div className="NoResourcesMessage">
@@ -355,9 +545,10 @@ class AdminUserPage extends Component {
                 )}
               </div>
             </Modal>
+            </div>
           </div>
-        </div>
       </div>
+    </div>
     );
   }
 }

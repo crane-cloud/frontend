@@ -19,8 +19,7 @@ import {
 } from "../../helpers/formatMetrics";
 import AppsList from "../../components/AppsList";
 import {
-  getProjectName,
-  getProjectDescription,
+  getProjectCurrentProject,
 } from "../../helpers/projectName";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
 
@@ -76,11 +75,8 @@ class ProjectDashboardPage extends React.Component {
     } = this.props;
 
     const { projectID } = params;
-    const projectDetails = {
-      name: getProjectName(projects, projectID),
-      description: getProjectDescription(projects, projectID),
-    };
-
+    const projectDetails = {...getProjectCurrentProject(projects, projectID)}
+    
     localStorage.setItem("project", JSON.stringify(projectDetails));
     const formattedMemoryMetrics = this.getMemoryMetrics();
     const formattedCPUMetrics = this.getCPUMetrics();
