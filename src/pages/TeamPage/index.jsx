@@ -1,7 +1,5 @@
 import "./TeamPage.css";
-
 import React from "react";
-
 import Alex from "../../assets/images/Alex.png";
 import Allan from "../../assets/images/Allan.png";
 import Aminah from "../../assets/images/Aminah.png";

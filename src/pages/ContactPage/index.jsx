@@ -27,7 +27,6 @@ const ContactPage = () => {
         </div>
         <div className={styles.ContactGridContainer}>
           <div className={styles.ContactGrid}>
-            
             <div className={styles.InnerContactGird}>
               <div className={styles.InnerGridTitle}>
                 <Mail className={styles.MailSmall} />
@@ -129,6 +128,5 @@ const ContactPage = () => {
     </div>
   );
 };
-
 
 export default (withRouter(ContactPage));
