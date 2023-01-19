@@ -1,8 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
 import NewHeader from "../../components/NewHeader";
-import { ReactComponent as Telephone } from "../../assets/images/telephone.svg";
+// import { ReactComponent as Telephone } from "../../assets/images/telephone.svg";
 import { ReactComponent as Mail } from "../../assets/images/mail.svg";
 import { ReactComponent as Thumb } from "../../assets/images/thumb.svg";
 import { ReactComponent as TwitterIcon } from "../../assets/images/twitter.svg";
@@ -14,13 +13,9 @@ import { ReactComponent as Map } from "../../assets/images/map.svg";
 import LandingFooter from "../../components/LandingFooter";
 import styles from "./ContactPage.module.css";
 
-const ContactPage = (props) => {
-  let { user } = props;
-  if (user.data.id === undefined) {
-    user = false;
-  }
+const ContactPage = () => {
   return (
-    <>
+    <div className={styles.ContactPage}>
       <div className={styles.ContactPageMain}>
         <NewHeader />
         <div className={styles.InformationContainer}>
@@ -32,17 +27,7 @@ const ContactPage = (props) => {
         </div>
         <div className={styles.ContactGridContainer}>
           <div className={styles.ContactGrid}>
-            <div className={styles.InnerContactGird}>
-              <div className={styles.InnerGridTitle}>
-                <Telephone className={styles.TelephoneSmall} />
-              </div>
-              <div className={styles.InnerGridTitleText}>Contact Details</div>
-              <div className={styles.InnerGridContact}>
-                <div className={styles.ContactName}>Company</div>
-                <div className={styles.Contact}>+(256)-759419211</div>
-              </div>
-            </div>
-
+            
             <div className={styles.InnerContactGird}>
               <div className={styles.InnerGridTitle}>
                 <Mail className={styles.MailSmall} />
@@ -128,7 +113,7 @@ const ContactPage = (props) => {
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63836.05553771624!2d32.5617119312709!3d0.32667363868257215!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x177dbb0932c4cb69%3A0x8789ba0df5ad06e!2sCOCIS%20BLOCK%20B!5e0!3m2!1sen!2sug!4v1642592449504!5m2!1sen!2sug"
                   width={500}
-                  height={200}
+                  height={300}
                   allowfullscreen=""
                   loading="lazy"
                   title="craneCloud"
@@ -141,13 +126,9 @@ const ContactPage = (props) => {
       <div className={styles.PageFooter}>
         <LandingFooter />
       </div>
-    </>
+    </div>
   );
 };
 
-export const mapStateToProps = (state) => {
-  const { user } = state;
-  return { user };
-};
 
-export default connect(mapStateToProps)(withRouter(ContactPage));
+export default (withRouter(ContactPage));
