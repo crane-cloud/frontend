@@ -104,14 +104,6 @@ const NewHeader = (props) => {
                   >
                     Docs
                   </a>
-                  <a
-                    href={`${BLOG_URL}`}
-                    className="HeaderLinkDocs"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    Blog
-                  </a>
                   {/* <Link to="/pricing" className="HeaderLinkDocs">
                     Pricing
                   </Link> */}
