@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Modal from "../../components/Modal";
 import styles from "./UserProjectsPage.module.css";
-import { clearUpdateProjectState } from "../../redux/actions/updateProject";
 import InformationBar from "../../components/InformationBar";
 import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import Header from "../../components/Header";
@@ -14,8 +13,9 @@ import getUserCredits from "../../redux/actions/userCredits";
 import ProjectCard from "../../components/ProjectCard";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
-import { handlePatchRequest } from "../../apis/apis.js"
-import { ReactComponent as DownArrow } from "../../assets/images/down-arrow-black.svg";
+import { handlePatchRequest } from "../../apis/apis.js";
+import { ReactComponent as User } from "../../assets/images/user.svg";
+import { ReactComponent as Users } from "../../assets/images/users.svg";
 import "../../index.css";
 
 class UserProjectsPage extends React.Component {
@@ -25,14 +25,16 @@ class UserProjectsPage extends React.Component {
       openCreateComponent: false,
       Searchword: "",
       SearchList: [],
+      myProjectsList: [],
+      sharedProjectsList: [],
       showInviteModel: false,
-      selectProjectCategory: false,
-      selectedProjects:'My projects',
-      inviteeProjectId:'',
-      inviteeModelRole:'',
-      decliningInvitation:false,
-      acceptingInvitation:false,
-      invitationError:''
+      selectedProjects: "My projects",
+      inviteeProjectId: "",
+      inviteeModelRole: "",
+      decliningInvitation: false,
+      acceptingInvitation: false,
+      invitationError: "",
+      currentTab: "My Projects",
     };
     this.state = this.initialState;
     this.openProjectCreateComponent =
@@ -43,8 +45,10 @@ class UserProjectsPage extends React.Component {
     this.handleCallbackSearchword = this.handleCallbackSearchword.bind(this);
     this.showInvitationModel = this.showInvitationModel.bind(this);
     this.hideInvitationModel = this.hideInvitationModel.bind(this);
-    this.handleInvitationAcceptence = this.handleInvitationAcceptence.bind(this);
+    this.handleInvitationAcceptence =
+      this.handleInvitationAcceptence.bind(this);
     this.handleInvitationDecline = this.handleInvitationDecline.bind(this);
+    this.filterProjects = this.filterProjects.bind(this);
   }
 
   componentDidMount() {
@@ -52,12 +56,10 @@ class UserProjectsPage extends React.Component {
       getClustersList,
       getUserProjects,
       data,
-      clearUpdateProjectState,
       getUserCredits,
     } = this.props;
     getUserProjects(data.id);
     getClustersList();
-    clearUpdateProjectState();
     getUserCredits(data.id);
   }
 
@@ -69,6 +71,7 @@ class UserProjectsPage extends React.Component {
       isDeleted,
       isUpdated,
       clearUpdateProjectState,
+      isFetched,
     } = this.props;
     const { Searchword } = this.state;
 
@@ -87,6 +90,14 @@ class UserProjectsPage extends React.Component {
       getUserProjects();
       this.setState(this.initialState);
     }
+    if (isFetched !== prevProps.isFetched) {
+      //call filter
+      const filteredData = this.filterProjects();
+      this.setState({
+        myProjectsList: filteredData.myProjects,
+        sharedProjectsList: filteredData.sharedProjects,
+      });
+    }
     if (Searchword !== prevState.Searchword) {
       this.searchThroughProjects();
     }
@@ -96,6 +107,10 @@ class UserProjectsPage extends React.Component {
     this.setState({ openCreateComponent: true });
   }
   callbackProjectCreateComponent() {
+    const {
+      getUserProjects
+    } = this.props;
+    getUserProjects()
     this.setState(this.initialState);
   }
   searchThroughProjects() {
@@ -116,8 +131,8 @@ class UserProjectsPage extends React.Component {
   hideInvitationModel() {
     this.setState({ showInviteModel: false });
   }
-  showInvitationModel(inviteeProjectId,inviteeModelRole) {
-    this.setState({ 
+  showInvitationModel(inviteeProjectId, inviteeModelRole) {
+    this.setState({
       showInviteModel: true,
       inviteeProjectId: inviteeProjectId,
       inviteeModelRole: inviteeModelRole,
@@ -128,79 +143,98 @@ class UserProjectsPage extends React.Component {
       Searchword: word,
     });
   }
-  handleInvitationDecline(){
-    const {
-      getUserProjects,
-    } = this.props;
+  handleInvitationDecline() {
+    const { getUserProjects } = this.props;
     this.setState({
-      decliningInvitation:true
-    })
+      decliningInvitation: true,
+    });
     const { inviteeProjectId } = this.state;
-    handlePatchRequest(`/projects/${inviteeProjectId}/users/handle_invite`,
-    {
-      "accepted_collaboration_invite": false
-    }
-    ).then((response) => {
-      this.setState({
-        decliningInvitation:false
-      })
-      this.hideInvitationModel()
-      getUserProjects()
+    handlePatchRequest(`/projects/${inviteeProjectId}/users/handle_invite`, {
+      accepted_collaboration_invite: false,
     })
+      .then((response) => {
+        this.setState({
+          decliningInvitation: false,
+        });
+        this.hideInvitationModel();
+        getUserProjects();
+      })
       .catch((error) => {
         this.setState({
           invitationError: "Something went wrong",
-          decliningInvitation:false
-        })
-        this.hideInvitationModel()
-      })
+          decliningInvitation: false,
+        });
+        this.hideInvitationModel();
+      });
   }
-  handleInvitationAcceptence(){
-    const {
-      getUserProjects,
-    } = this.props;
+  handleInvitationAcceptence() {
+    const { getUserProjects } = this.props;
     this.setState({
-    acceptingInvitation:true
-  })
+      acceptingInvitation: true,
+    });
     const { inviteeProjectId } = this.state;
 
-    handlePatchRequest(`/projects/${inviteeProjectId}/users/handle_invite`,
-    {
-      "accepted_collaboration_invite": true
-    }
-    )
-    .then((response) => {
-      this.setState({
-        acceptingInvitation:false
-      })
-      this.hideInvitationModel()
-      getUserProjects()
+    handlePatchRequest(`/projects/${inviteeProjectId}/users/handle_invite`, {
+      accepted_collaboration_invite: true,
     })
-    .catch((error) => {
-      this.setState({
-        invitationError: "Something went wrong",
-        acceptingInvitation:false
+      .then((response) => {
+        this.setState({
+          acceptingInvitation: false,
+        });
+        this.hideInvitationModel();
+        getUserProjects();
       })
-      this.hideInvitationModel()
-    })
+      .catch((error) => {
+        this.setState({
+          invitationError: "Something went wrong",
+          acceptingInvitation: false,
+        });
+        this.hideInvitationModel();
+      });
   }
-  
+  filterProjects() {
+    const { projects, data } = this.props;
+    let myProjects = [];
+    let sharedProjects = [];
+    projects.forEach((element) => {
+      if (element.owner_id === data.id) {
+        myProjects.push(element);
+      } else {
+        sharedProjects.push(element);
+      }
+    });
+    return {
+      sharedProjects,
+      myProjects,
+    };
+  }
+
   render() {
-    const { openCreateComponent, Searchword, SearchList,
-       showInviteModel,selectProjectCategory,selectedProjects, 
-       inviteeModelRole, decliningInvitation,acceptingInvitation,
-       invitationError
-      } =
-      this.state;
+    const {
+      openCreateComponent,
+      Searchword,
+      SearchList,
+      showInviteModel,
+      selectedProjects,
+      inviteeModelRole,
+      decliningInvitation,
+      acceptingInvitation,
+      invitationError,
+      sharedProjectsList,
+      myProjectsList,
+      currentTab,
+    } = this.state;
     const {
       projects,
       isRetrieving,
       isFetched,
       match: { params },
       credits,
-      data
+      data,
     } = this.props;
-    const sortedProjects = projects.sort((a, b) =>
+    const displayProjects =
+      selectedProjects === "My projects" ? myProjectsList : sharedProjectsList;
+    const sortedProjects = displayProjects.sort((a, b) =>
       b.date_created > a.date_created ? 1 : -1
     );
     return (
@@ -217,7 +251,7 @@ class UserProjectsPage extends React.Component {
               <InformationBar
                 header="Projects"
                 showBtn
-                buttontext="Project"
+                buttontext="+ New Project"
                 showSearchBar
                 placeholder="Search through projects"
                 btnAction={this.openProjectCreateComponent}
@@ -226,44 +260,48 @@ class UserProjectsPage extends React.Component {
             </div>
             <div className={styles.MainRow}>
               <div className={`${styles.SelectProjects} SmallContainer`}>
-              <div className={styles.ProjectsDropDown}>
-                <div className={styles.TopItem}>
-                  <>
-                  {selectedProjects}
-                  </>
-                  <div onClick={()=>{this.setState(
-                    {selectProjectCategory:!selectProjectCategory}
-                    )}} 
-                    className={selectProjectCategory?styles.closeDrop: styles.dropdown}>
-                  <DownArrow/>
-                  </div>
+                <div className={styles.ProjectCategoryHeadings}>
+                  <span
+                    className={
+                      currentTab === "My Projects"
+                        ? styles.CurrentTab
+                        : styles.Tab
+                    }
+                    onClick={() => {
+                      this.setState({
+                        selectedProjects: "My projects",
+                        currentTab: "My Projects",
+                      });
+                    }}
+                  >
+                    <div className={styles.ProjectCategories}>
+                      <span>
+                        <User className={styles.SmallerIcon} />
+                      </span>
+                      <span>My Projects</span>
+                    </div>
+                  </span>
+                  <span
+                    className={
+                      currentTab === "Shared Projects"
+                        ? styles.CurrentTab
+                        : styles.Tab
+                    }
+                    onClick={() => {
+                      this.setState({
+                        selectedProjects: "Shared Projects",
+                        currentTab: "Shared Projects",
+                      });
+                    }}
+                  >
+                    <div className={styles.ProjectCategories}>
+                      <span>
+                        <Users className={styles.SmallerIcon} />
+                      </span>
+                      <span>Shared Projects</span>
+                    </div>
+                  </span>
                 </div>
-                {selectProjectCategory &&
-                <div className={styles.itemsList}>
-                <div
-                 onClick={()=>{this.setState({
-                  selectedProjects:'My projects',
-                  selectProjectCategory:false
-                })}}
-                 className={selectedProjects === 'My projects'? 
-                 styles.SelectedListItem
-                :styles.ListItem
-                }>
-                 My projects
-                </div>
-                <div
-                 onClick={()=>{this.setState({
-                  selectedProjects:'Projects shared with me',
-                  selectProjectCategory:false
-                })}}
-                 className={selectedProjects === 'Projects shared with me'? 
-                 styles.SelectedListItem
-                :styles.ListItem }>
-                 Projects shared with me
-                </div>
-                </div>
-                }
-              </div>
               </div>
               {isRetrieving ? (
                 <div className={styles.NoResourcesMessage}>
@@ -319,34 +357,54 @@ class UserProjectsPage extends React.Component {
                       <div className={styles.UpdateForm}>
                         <div className={styles.InformationText}>
                           You have been invited to join this project as (a/an)
-                          <span className={styles.Role}> {inviteeModelRole}.</span>
+                          <span className={styles.Role}>
+                            {" "}
+                            {inviteeModelRole}.
+                          </span>
                         </div>
                         <div className={styles.InformationWarning}>
-                          PS: If you decline, you will not be able to see this 
+                          If you decline, you will not be able to see this
                           project again unless you are re-invited.
                         </div>
                         <div className={styles.UpdateProjectModelButtons}>
                           <PrimaryButton
-                            label={decliningInvitation? <Spinner/>: "Decline"}
-                            className="CancelBtn"
-                            onClick={() => 
-                              {this.handleInvitationDecline()}}
-                          />
+                            color="red"
+                            onClick={() => {
+                              this.handleInvitationDecline();
+                            }}
+                          >
+                            {decliningInvitation ? <Spinner /> : "Decline"}
+                          </PrimaryButton>
                           <PrimaryButton
-                            label={acceptingInvitation? <Spinner/>: "Accept"}
-                            className={styles.BlueBtn}
-                            onClick={() => 
-                              {this.handleInvitationAcceptence()}}
-                          />
+                            color="primary"
+                            onClick={() => {
+                              this.handleInvitationAcceptence();
+                            }}
+                          >
+                            {acceptingInvitation ? <Spinner /> : "Accept"}
+                          </PrimaryButton>
                         </div>
-                        { invitationError &&
+                        {invitationError && (
                           <div className={styles.InformationWarning}>
-                          {invitationError}
-                         </div>
-                        }
+                            {invitationError}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </Modal>
+                </div>
+              )}
+              {displayProjects.length === 0 && (
+                <div className={styles.NoResourcesMessage}>
+                  {selectedProjects === "My projects" ? (
+                    <div>
+                      You haven’t created any projects yet. Click the &nbsp;{" "}
+                      <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp;
+                      button to add a project.
+                    </div>
+                  ) : (
+                    <>No project has been shared with you as yet.</>
+                  )}
                 </div>
               )}
               {isFetched && projects.length === 0 && (
@@ -388,50 +446,29 @@ UserProjectsPage.propTypes = {
       userID: PropTypes.string,
     }).isRequired,
   }).isRequired,
-  isAdded: PropTypes.bool,
-  errorCode: PropTypes.number,
-  isAdding: PropTypes.bool,
   isFetched: PropTypes.bool,
-  message: PropTypes.string,
-  isUpdated: PropTypes.bool,
-  isDeleted: PropTypes.bool,
   isRetrieving: PropTypes.bool,
 };
 
 UserProjectsPage.defaultProps = {
   clusters: [],
-  isAdded: false,
-  isAdding: false,
-  errorCode: null,
   projects: [],
-  message: "",
   isFetched: false,
-  isUpdated: false,
-  isDeleted: false,
   isRetrieving: false,
 };
 
 export const mapStateToProps = (state) => {
   const { data } = state.user;
-  const { isAdded, isAdding, message, errorCode } = state.addProjectReducer;
+
   const { clusters } = state.clustersReducer;
-  const { isDeleted } = state.deleteProjectReducer;
   const { isRetrieving, projects, isFetched } = state.userProjectsReducer;
-  const { isUpdated, clearUpdateProjectState } = state.updateProjectReducer;
   const { credits } = state.userCreditsReducer;
   return {
-    isAdded,
     data,
     isRetrieving,
     projects,
     clusters,
-    isUpdated,
     isFetched,
-    isAdding,
-    message,
-    isDeleted,
-    errorCode,
-    clearUpdateProjectState,
     credits,
   };
 };
@@ -439,7 +476,6 @@ export const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   getUserProjects,
   getClustersList,
-  clearUpdateProjectState,
   getUserCredits,
 };
 

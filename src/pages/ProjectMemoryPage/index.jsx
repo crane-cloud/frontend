@@ -1,11 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import InformationBar from "../../components/InformationBar";
-import Header from "../../components/Header";
 import Spinner from "../../components/Spinner";
-import SideBar from "../../components/SideBar";
-import "./ProjectMemoryPage.css";
 import getProjectMemory, {
   clearProjectMemory,
 } from "../../redux/actions/projectMemory";
@@ -18,6 +14,7 @@ import {
   subtractTime,
 } from "../../helpers/formatMetrics";
 import { getProjectName } from "../../helpers/projectName";
+import DashboardLayout from "../../components/Layouts/DashboardLayout";
 
 class ProjectMemoryPage extends React.Component {
   constructor(props) {
@@ -137,50 +134,29 @@ class ProjectMemoryPage extends React.Component {
     );
 
     return (
-      <div className="Page">
-        <div className="TopBarSection">
-          <Header />
-        </div>
-        <div className="MainSection">
-          <div className="SideBarSection">
-            <SideBar
-              name={getProjectName(projects, projectID)}
-              params={params}
-              pageRoute={this.props.location.pathname}
-              allMetricsLink={`/projects/${projectID}/metrics`}
-              cpuLink={`/projects/${projectID}/cpu/`}
-              memoryLink={`/projects/${projectID}/memory/`}
-              databaseLink={`/projects/${projectID}/databases`}
-              networkLink={`/projects/${projectID}/network/`}
+      <DashboardLayout
+        header="Project Memory"
+        name={getProjectName(projects, projectID)}
+      >
+        <MetricsCard
+          className="MetricsCardGraph"
+          title={<PeriodSelector onChange={this.handlePeriodChange} />}
+        >
+          {isFetchingMemory ? (
+            <div className="ContentSectionSpinner">
+              <Spinner />
+            </div>
+          ) : (
+            <LineChartComponent
+              yLabel="Memory(MBs)"
+              xLabel="Time"
+              xDataKey="time"
+              lineDataKey="memory"
+              data={formattedMetrics}
             />
-          </div>
-          <div className="MainContentSection">
-            <div className="InformationBarSection">
-              <InformationBar header="Memory" />
-            </div>
-            <div className="ContentSection SmallContainer">
-              <MetricsCard
-                className="MetricsCardGraph"
-                title={<PeriodSelector onChange={this.handlePeriodChange} />}
-              >
-                {isFetchingMemory ? (
-                  <div className="ContentSectionSpinner">
-                    <Spinner />
-                  </div>
-                ) : (
-                  <LineChartComponent
-                    yLabel="Memory(MBs)"
-                    xLabel="Time"
-                    xDataKey="time"
-                    lineDataKey="memory"
-                    data={formattedMetrics}
-                  />
-                )}
-              </MetricsCard>
-            </div>
-          </div>
-        </div>
-      </div>
+          )}
+        </MetricsCard>
+      </DashboardLayout>
     );
   }
 }

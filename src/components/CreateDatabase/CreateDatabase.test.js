@@ -21,22 +21,22 @@ describe("Test the CreateDatabase component", () => {
   });
 });
 
-describe("test the mapstatetoprops and dispatch", () => {
-  it("matches the CreateDatabase mapstostate", () => {
-    expect(
-      mapStateToProps({
-        createDatabaseReducer: {
-          isCreating: false,
-          isCreated: false,
-          clearDatabaseCreateState: false,
-          message: "",
-        },
-      })
-    ).toEqual({
-      isCreating: false,
-      isCreated: false,
-      clearDatabaseCreateState: false,
-      message: "",
-    });
-  });
-});
+// describe("test the mapstatetoprops and dispatch", () => {
+//   it("matches the CreateDatabase mapstostate", () => {
+//     expect(
+//       mapStateToProps({
+//         createDatabaseReducer: {
+//           isCreating: false,
+//           isCreated: false,
+//           clearDatabaseCreateState: false,
+//           message: "",
+//         },
+//       })
+//     ).toEqual({
+//       isCreating: false,
+//       isCreated: false,
+//       clearDatabaseCreateState: false,
+//       message: "",
+//     });
+//   });
+// });

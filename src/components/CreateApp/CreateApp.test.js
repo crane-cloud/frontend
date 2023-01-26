@@ -33,20 +33,10 @@ describe("Testing the exported mapstate to props and dispatch", () => {
           clusters: [],
         },
         user: { data: [] },
-        createAppReducer: {
-          isCreating: false,
-          isCreated: false,
-          message: "",
-          errorCode: "",
-        },
       })
     ).toEqual({
       clusters: [],
       data: [],
-      isCreating: false,
-      isCreated: false,
-      message: "",
-      errorCode: "",
     });
   });
 });

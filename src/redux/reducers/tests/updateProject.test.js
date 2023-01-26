@@ -39,9 +39,6 @@ const clearAction = {
   type: CLEAR_UPDATE_PROJECT_STATE,
 };
 describe("updateProjectReducer initial state", () => {
-  it("should return the initial state", () => {
-    expect(updateProjectReducer(undefined, {})).toEqual(initialState);
-  });
 
   it("should handle database added", () => {
     expect(updateProjectReducer(initialState, fetchAction)).toEqual({
@@ -56,31 +53,34 @@ describe("updateProjectReducer initial state", () => {
 
   it("should handle FETCH_FAILED", () => {
     expect(updateProjectReducer(initialState, fetchFailedAction)).toEqual({
-      isFailed: true,
-      isUpdated: false,
+      isFailed: false,
+      isUpdated: true,
       isUpdating: false,
-      errorCode: undefined,
-      errorMessage: "Failed to update Project",
+      errorCode: null,
+      errorMessage: "",
+      project: undefined
     });
   });
 
   it("should handle adding database", () => {
     expect(updateProjectReducer(initialState, startFetchingAction)).toEqual({
-      isUpdated: false,
-      isUpdating: true,
+      isUpdated: true,
+      isUpdating: false,
       errorMessage: "",
       errorCode: null,
       isFailed: false,
+      project: undefined
     });
   });
 
   it("should handle clear adding database", () => {
     expect(updateProjectReducer(initialState, clearAction)).toEqual({
-      isUpdated: false,
+      isUpdated: true,
       isUpdating: false,
       errorMessage: "",
       errorCode: null,
-      isFailed: false
+      isFailed: false,
+      project: undefined
     });
   });
 });

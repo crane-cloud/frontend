@@ -78,94 +78,92 @@ const MiraPge = ({ projectID }) => {
 
   return (
     <div className={styles.CreateFormHolder}>
-    <div className={styles.FormInputs}>
-      <div className={styles.FormHeading}>Fields marked * are required</div>
-      <div className={styles.FrameworkSelect}>
-        <Select
-          placeholder="Choose a framework"
-          options={frameworks}
-          onChange={handleDropdownChange}
-        />
-      </div>
-      {framework === "Django" && (
-        <div>
-          If deploying a Django app also see these additional pre-deployment
-          <a href="https://docs.google.com/document/d/1-zqaLC4x4yZflRS-LMhycVbhpCEvyId0smaqAwC5TBE/edit?usp=sharing">
-            instructions
-          </a>{" "}
-        </div>
-      )}
-      {framework === "Laravel-custom" && (
-        <div>
-          Please make sure your project has a custom dockerfile added in the
-          root of your Laravel app<br></br>
-          <a href="https://medium.com/cranecloud/dockerizing-a-laravel-application-36b5ccd23691">
-            Take an example
-          </a>{" "}
-          <br></br> Be sure to use your current version of laravel in your
-          dockerfile{" "}
-        </div>
-      )}
-      <div className={styles.RegistrySelect}>
-        <Select
-          placeholder="Select a registry"
-          options={registries}
-          onChange={handleRegistryDropdownChange}
-        />
-      </div>
-      <div className={styles.FormFieldWithTooltip}>
-        <BlackInputText
-          required
-          name="name"
-          placeholder="Image Name"
-          onChange={handleChange}
-          value={image.name}
-        />
-        <div className={styles.FormInputTooltipContainer}>
-          <Tooltip
-            showIcon
-            message="This is the image repository for your image"
-            position="left"
+      <div className={styles.FormInputs}>
+        <div className={styles.FormHeading}>Fields marked * are required</div>
+        <div className={styles.FrameworkSelect}>
+          <Select
+            placeholder="Choose a framework"
+            options={frameworks}
+            onChange={handleDropdownChange}
           />
         </div>
-      </div>
-      <div className={styles.FormFieldWithTooltip}>
-        <BlackInputText
-          placeholder="Version"
-          name="version"
-          onChange={handleChange}
-          value={image.version}
-        />
-        <div className={styles.FormInputTooltipContainer}>
-          <Tooltip
-            showIcon
-            message="This is preferably a tag for your image"
-            position="left"
+        {framework === "Django" && (
+          <div>
+            If deploying a Django app also see these additional pre-deployment
+            <a href="https://docs.google.com/document/d/1-zqaLC4x4yZflRS-LMhycVbhpCEvyId0smaqAwC5TBE/edit?usp=sharing">
+              instructions
+            </a>{" "}
+          </div>
+        )}
+        {framework === "Laravel-custom" && (
+          <div>
+            Please make sure your project has a custom dockerfile added in the
+            root of your Laravel app<br></br>
+            <a href="https://medium.com/cranecloud/dockerizing-a-laravel-application-36b5ccd23691">
+              Take an example
+            </a>{" "}
+            <br></br> Be sure to use your current version of laravel in your
+            dockerfile{" "}
+          </div>
+        )}
+        <div className={styles.RegistrySelect}>
+          <Select
+            placeholder="Select a registry"
+            options={registries}
+            onChange={handleRegistryDropdownChange}
           />
         </div>
-      </div>
+        <div className={styles.FormFieldWithTooltip}>
+          <BlackInputText
+            required
+            name="name"
+            placeholder="Image Name"
+            onChange={handleChange}
+            value={image.name}
+          />
+          <div className={styles.FormInputTooltipContainer}>
+            <Tooltip
+              showIcon
+              message="This is the image repository for your image"
+              position="left"
+            />
+          </div>
+        </div>
+        <div className={styles.FormFieldWithTooltip}>
+          <BlackInputText
+            placeholder="Version"
+            name="version"
+            onChange={handleChange}
+            value={image.version}
+          />
+          <div className={styles.FormInputTooltipContainer}>
+            <Tooltip
+              showIcon
+              message="This is preferably a tag for your image"
+              position="left"
+            />
+          </div>
+        </div>
 
-      <div className={styles.HeadingWithTooltip}>
-        <h4>Upload Zip file</h4>
-        <Tooltip
-          showIcon
-          message="This is the zipped folder containing your source code"
-        />
-      </div>
-      <div className={styles.DropSection}>
-        <div className={styles.Dropzone}>
-          <Dropzone handleDrop={(files) => setFiles(files)} />
+        <div className={styles.HeadingWithTooltip}>
+          <h4>Upload Zip file</h4>
+          <Tooltip
+            showIcon
+            message="This is the zipped folder containing your source code"
+          />
+        </div>
+        <div className={styles.DropSection}>
+          <div className={styles.Dropzone}>
+            <Dropzone handleDrop={(files) => setFiles(files)} />
+          </div>
+        </div>
+        {error && <div className="LoginErrorDiv">{error}</div>}
+        <div className={styles.ButtonSection}>
+          <PrimaryButton className="AuthBtn FullWidth" onClick={handleSubmit}>
+            {loading ? <Spinner /> : "Deploy"}
+          </PrimaryButton>
         </div>
       </div>
-      {error && <div className="LoginErrorDiv">{error}</div>}
-      <div className={styles.ButtonSection}>
-        <PrimaryButton
-          className="AuthBtn FullWidth"
-          label={loading ? <Spinner /> : "Deploy"}
-          onClick={handleSubmit}
-        />
-      </div>
-    </div>
     </div>
   );
 };

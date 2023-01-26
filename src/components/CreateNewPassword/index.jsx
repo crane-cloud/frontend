@@ -1,11 +1,11 @@
 import React from "react";
 import axios from "axios";
 import Header from "../Header";
-import InputPassword from "../InputPassword";
 import PrimaryButton from "../PrimaryButton";
 import Spinner from "../Spinner";
 import "./CreateNewPassword.css";
 import { API_BASE_URL } from "../../config";
+import InputText from "../InputText";
 
 export default class CreateNewPassword extends React.Component {
   constructor() {
@@ -96,24 +96,25 @@ export default class CreateNewPassword extends React.Component {
               </div>
               <div className="NewPasswordContentInputs">
                 {/* Input fields */}
-                <InputPassword
+                <InputText
                   placeholder="Password"
                   name="password"
+                  type="password"
                   value={password}
                   onChange={this.handleOnChange}
                 />
-                <InputPassword
+                <InputText
                   placeholder="Confirm Password"
                   name="confirmPassword"
+                  type="password"
                   value={confirmPassword}
                   onChange={this.handleOnChange}
                 />
                 {error && <div className="NewPasswordErrorDiv">{error}</div>}
 
-                <PrimaryButton
-                  label={loading ? <Spinner /> : "RESET"}
-                  onClick={this.handleSubmit}
-                />
+                <PrimaryButton onClick={this.handleSubmit}>
+                  {loading ? <Spinner /> : "RESET"}
+                </PrimaryButton>
               </div>
             </div>
           </>

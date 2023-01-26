@@ -6,21 +6,22 @@ import "./ProjectCard.css";
 import LineChartComponent from "../LineChart";
 import getProjectMemory from "../../redux/actions/projectMemory";
 import { formatMemoryMetrics } from "../../helpers/formatMetrics";
-import { handleGetRequest } from "../../apis/apis.js"
-import { ReactComponent as Users } from "../../assets/images/users.svg";
+import { handleGetRequest } from "../../apis/apis.js";
+import Spinner from "../Spinner";
 
 class ProjectCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      projecMembers:[],
-      fetchMembersError:'',
-      currentUserRecord:{}
-    }
+      projecMembers: [],
+      fetchMembersError: "",
+      currentUserRecord: {},
+      fetchingProjectMembers: true,
+    };
     this.getProjectMemoryMetrics = this.getProjectMemoryMetrics.bind(this);
     this.getProjectMemberz = this.getProjectMemberz.bind(this);
     this.getcurrentUserRecord = this.getcurrentUserRecord.bind(this);
-    this.updateRoleValue = this.updateRoleValue.bind(this)
+    this.updateRoleValue = this.updateRoleValue.bind(this);
   }
 
   componentDidMount() {
@@ -37,42 +38,56 @@ class ProjectCard extends React.Component {
   }
   getProjectMemberz() {
     const { cardID } = this.props;
-    handleGetRequest(`/projects/${cardID}/users`).then((response) => {
-      this.setState({
-        projecMembers: response.data.data.project_users,
+    handleGetRequest(`/projects/${cardID}/users`)
+      .then((response) => {
+        this.setState({
+          projecMembers: response.data.data.project_users,
+          fetchingProjectMembers: false,
+        });
+        this.getcurrentUserRecord();
       })
-     this.getcurrentUserRecord();
-    })
       .catch((error) => {
         this.setState({
           fetchMembersError: "Failed to fetch project members",
-        })
-      })
+          fetchingProjectMembers: false,
+        });
+      });
   }
   getcurrentUserRecord() {
     const { userID } = this.props;
     const { projecMembers } = this.state;
     //one object should be returned.
-    this.setState({currentUserRecord : 
-      projecMembers?.filter((item) => item.user?.id === userID) });
+    this.setState({
+      currentUserRecord: projecMembers?.filter(
+        (item) => item.user?.id === userID
+      ),
+    });
   }
   updateRoleValue(string) {
     let role = string[1];
     return role.charAt(0).toUpperCase() + role.slice(1);
   }
   render() {
-    const { name, description, cardID,apps_count,userID,acceptInviteCallBackModel,ownerId } = this.props;
-    const { currentUserRecord } = this.state;
+    const {
+      name,
+      description,
+      cardID,
+      apps_count,
+      userID,
+      acceptInviteCallBackModel,
+      ownerId,
+    } = this.props;
+    const { currentUserRecord, fetchingProjectMembers } = this.state;
     const formattedMetrics = this.getProjectMemoryMetrics();
     return (
-      <>
-        <div className="ProjectsCard">
-          <div className="appCount" title={`${apps_count} Apps in this project`}>{apps_count}</div>
-          {/**Check if user is not owner and invitation status */}
-          {(userID === ownerId || 
-          currentUserRecord[0]?.accepted_collaboration_invite === true
-          )?
-          (<Link
+      <div className="ProjectsCard">
+        <div className="appCount" title={`${apps_count} Apps in this project`}>
+          <div>{apps_count}</div>
+        </div>
+        {/**Check if user is not owner and invitation status */}
+        {userID === ownerId ||
+        currentUserRecord[0]?.accepted_collaboration_invite === true ? (
+          <Link
             to={{
               pathname: `/projects/${cardID}/dashboard`,
               projectData: name,
@@ -86,21 +101,42 @@ class ProjectCard extends React.Component {
                 data={formattedMetrics}
               />
             </div>
-          </Link>):
-          <div 
-          onClick={()=>{acceptInviteCallBackModel(cardID,
-            this.updateRoleValue(currentUserRecord[0].role.split(".")))}}
-          className="PendingNote">
-             Invitation to this project is pending acceptance
+          </Link>
+        ) : (
+          <div
+            onClick={() => {
+              acceptInviteCallBackModel(
+                cardID,
+                this.updateRoleValue(currentUserRecord[0].role.split("."))
+              );
+            }}
+            className="PendingNote"
+          >
+            {fetchingProjectMembers ? (
+              <Spinner />
+            ) : (
+              `Invitation to this project is pending acceptance`
+            )}
           </div>
-          }
-          <div className="BottomContainer">
-            <div className="ProjectInfor">
+        )}
+        <div className="ProjectBottomContainer">
+          <div className="ProjectInfor">
             <div className="ProjectInfoSection">
               <Link
-                to={{
-                  pathname: `/projects/${cardID}/dashboard`,
-                  projectData: name,
+                to={
+                  userID === ownerId ||
+                  currentUserRecord[0]?.accepted_collaboration_invite === true
+                    ? {
+                        pathname: `/projects/${cardID}/dashboard`,
+                        projectData: name,
+                      }
+                    : null
+                }
+                onClick={() => {
+                  acceptInviteCallBackModel(
+                    cardID,
+                    this.updateRoleValue(currentUserRecord[0].role.split("."))
+                  );
                 }}
                 key={cardID}
               >
@@ -108,14 +144,9 @@ class ProjectCard extends React.Component {
               </Link>
             </div>
             <div className="ProjectDescription">{description}</div>
-            </div>
-            {/* conditional for when the user project its shared */}
-            {userID !== ownerId &&
-              <Users title="This is a shared project"/>
-            }
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }

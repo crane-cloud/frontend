@@ -180,10 +180,13 @@ const AdminProjectsPage = () => {
                   <div className="ModalButtons">
                     <PrimaryButton
                       className="CancelBtn"
-                      label="Cancel"
                       onClick={() => hideModal()}
-                    />
-                    <PrimaryButton type="button" label="Add" />
+                    >
+                     Cancel                 
+                    </PrimaryButton>
+                    <PrimaryButton type="button"  >
+                      Add
+                    </PrimaryButton>
                   </div>
                 </div>
               </Modal> */}

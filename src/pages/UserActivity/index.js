@@ -41,7 +41,7 @@ const UserActivity = (props) => {
         </div>
         <div className={styles.SmallContainer}>
           <Link to={`/projects`}>
-            <PrimaryButton label="BACK" className={styles.BackButton} />
+            <PrimaryButton className={styles.BackButton}>BACK</PrimaryButton>
           </Link>
           <div className={styles.Header}>
             <div className={styles.Heading}>Activity Feed</div>
@@ -51,7 +51,9 @@ const UserActivity = (props) => {
                 className={styles.field}
                 placeholder=" Filter by Status"
               />
-              <PrimaryButton label="Filter" className={styles.FilterButton} />
+              <PrimaryButton className={styles.FilterButton}>
+                Filter
+              </PrimaryButton>
             </div>
           </div>
           <div className={styles.Table}>
@@ -64,7 +66,11 @@ const UserActivity = (props) => {
                     <div className={styles.Bold}>{data.email}</div>
                     <div>Tuesday 12-12-2022 16:00:03</div>
                   </div>
-                  <div>Creating project <span className={styles.Entity}>4344ewe23</span> <span className={styles.Success}>Successful</span></div>
+                  <div>
+                    Creating project{" "}
+                    <span className={styles.Entity}>4344ewe23</span>{" "}
+                    <span className={styles.Success}>Successful</span>
+                  </div>
                 </div>
                 <div className={styles.LastCell}>
                   <div>Successfully updated project description</div>
@@ -81,7 +87,11 @@ const UserActivity = (props) => {
                     <div className={styles.Bold}>{data.email}</div>
                     <div>Tuesday 12-12-2022 16:00:03</div>
                   </div>
-                  <div>Creating project <span className={styles.Entity}>dsesdwe23</span> <span className={styles.Danger}>Failed</span></div>
+                  <div>
+                    Creating project{" "}
+                    <span className={styles.Entity}>dsesdwe23</span>{" "}
+                    <span className={styles.Danger}>Failed</span>
+                  </div>
                 </div>
                 <div className={styles.LastCell}>
                   <div>Not right project description</div>
@@ -98,7 +108,11 @@ const UserActivity = (props) => {
                     <div className={styles.Bold}>{data.email}</div>
                     <div>Tuesday 12-12-2022 16:00:03</div>
                   </div>
-                  <div>Deploying app <span className={styles.Entity}>4344ewe23</span> <span className={styles.Danger}>Failed</span></div>
+                  <div>
+                    Deploying app{" "}
+                    <span className={styles.Entity}>4344ewe23</span>{" "}
+                    <span className={styles.Danger}>Failed</span>
+                  </div>
                 </div>
                 <div className={styles.LastCell}>
                   <div>App deployment has failed.</div>
@@ -115,7 +129,11 @@ const UserActivity = (props) => {
                     <div className={styles.Bold}>{data.email}</div>
                     <div>Tuesday 12-12-2022 16:00:03</div>
                   </div>
-                  <div>Deploying app <span className={styles.Entity}>4344ewe23</span> <span className={styles.Success}>Successful</span></div>
+                  <div>
+                    Deploying app{" "}
+                    <span className={styles.Entity}>4344ewe23</span>{" "}
+                    <span className={styles.Success}>Successful</span>
+                  </div>
                 </div>
                 <div className={styles.LastCell}>
                   <div>Successfully deployed application.</div>

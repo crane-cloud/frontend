@@ -2,16 +2,14 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import Header from "../Header";
-import InformationBar from "../InformationBar";
 import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
-import SideBar from "../SideBar";
 import Spinner from "../Spinner";
 import Status from "../Status";
 import CreateDatabase from "../CreateDatabase";
 import getProjectDatabases from "../../redux/actions/databaseList";
 import styles from "./DatabaseList.module.css";
-import {getProjectName} from "../../helpers/projectName"
+import DashboardLayout from "../Layouts/DashboardLayout";
+import { getProjectName } from "../../helpers/projectName";
 
 class DatabaseList extends React.Component {
   constructor(props) {
@@ -60,9 +58,9 @@ class DatabaseList extends React.Component {
   render() {
     const {
       match: { params },
-      projects,
       databases,
       isFetchingDatabases,
+      projects,
       databasesFetched,
     } = this.props;
     const { openCreateComponent } = this.state;
@@ -72,118 +70,102 @@ class DatabaseList extends React.Component {
       b.date_created > a.date_created ? 1 : -1
     );
     return (
-      <div className={styles.MainPage}>
-        <div className="TopBarSection">
-          <Header />
-        </div>
-        <div className={styles.MainSection}>
-          <div className="SideBarSection">
-            <SideBar
-              name={getProjectName(projects, params.projectID)}
-              params={params}
-              description={getProjectName(projects, params.projectID)}
-              pageRoute={this.props.location?.pathname}
-              allMetricsLink={`/projects/${projectID}/metrics`}
-              cpuLink={`/projects/${projectID}/cpu/`}
-              memoryLink={`/projects/${projectID}/memory/`}
-              databaseLink={`/projects/${projectID}/databases`}
-              networkLink={`/projects/${projectID}/network/`}
-            />
-          </div>
-          {openCreateComponent ? (
-            <CreateDatabase
-              closeComponent={this.callbackCreateComponent}
-              params={params}
-            />
-          ) : (
-            <div className={styles.MainContentSection}>
-              <div className={styles.InformationBarSection}>
-                <InformationBar
-                  header="Databases"
-                  showBtn
-                  buttontext="database"
-                  btnAction={this.showCreateComponent}
-                />
+      <div>
+        {openCreateComponent ? (
+          <DashboardLayout
+            header="Create Database"
+            showBtn
+            buttontext="close"
+            btnAction={this.callbackCreateComponent}
+            btntype="close"
+            name={getProjectName(projects, params.projectID)}
+          >
+            <CreateDatabase params={params} />
+          </DashboardLayout>
+        ) : (
+          <DashboardLayout
+            header="Databases"
+            showBtn
+            buttontext="+ new database"
+            btnAction={this.showCreateComponent}
+            name={getProjectName(projects, params.projectID)}
+          >
+            {isFetchingDatabases ? (
+              <div className={styles.NoResourcesMessageSection}>
+                <div className={styles.SpinnerWrapper}>
+                  <Spinner size="big" />
+                </div>
               </div>
-              <div className={styles.ContentSection}>
-                {isFetchingDatabases ? (
-                  <div className={styles.NoResourcesMessageSection}>
-                    <div className={styles.SpinnerWrapper}>
-                      <Spinner size="big" />
-                    </div>
+            ) : (
+              databasesFetched &&
+              databases.length > 0 && (
+                <div className={`${styles.DatabaseTable} MetricsCardContainer`}>
+                  <div
+                    className={`${styles.DatabaseTableRow} CardHeaderSection`}
+                  >
+                    <div className={styles.DatabaseTableHead}>Type</div>
+                    <div className={styles.DatabaseTableHead}>Name</div>
+                    <div className={styles.DatabaseTableHead}>Host</div>
+                    <div className={styles.DatabaseTableHead}>Status</div>
+                    <div className={styles.DatabaseTableHead}>Age</div>
                   </div>
-                ) : (
-                  databasesFetched &&
-                  databases.length > 0 && (
-                    <div
-                      className={`${styles.DatabaseTable} MetricsCardContainer`}
-                    >
-                      <div
-                        className={`${styles.DatabaseTableRow} CardHeaderSection`}
-                      >
-                        <div className={styles.DatabaseTableHead}>Type</div>
-                        <div className={styles.DatabaseTableHead}>Name</div>
-                        <div className={styles.DatabaseTableHead}>Host</div>
-                        <div className={styles.DatabaseTableHead}>Status</div>
-                        <div className={styles.DatabaseTableHead}>Age</div>
-                      </div>
-                      {
-                        databasesFetched &&
-                        sortedDbs !== undefined &&
-                        sortedDbs.map((database, index) => (
-                          <div className={styles.DatabaseBody} key={index}>
-                            <Link
-                              to={{
-                                pathname: `/projects/${projectID}/databases/${database.id}/settings`,
-                              }}
-                              key={database.id}
-                              className={styles.DatabaseTableRow}
-                            >
-                              <div className={styles.DatabaseTableCell}>
-                                {database.database_flavour_name}
-                              </div>
-                              <div className={styles.DatabaseTableCell}>
-                                {database.name}
-                              </div>
-                              <div className={styles.DatabaseTableCell}>
-                                {database.host}
-                              </div>
-                              <div className={styles.DatabaseTableCell}>
-                                <Status status={database.db_status} />
-                              </div>
-                              <div className={styles.DatabaseTableCell}>
-                                {database.age}
-                              </div>
-                            </Link>
+                  {databasesFetched &&
+                    sortedDbs !== undefined &&
+                    sortedDbs.map((database, index) => (
+                      <div className={styles.DatabaseBody} key={index}>
+                        <Link
+                          to={{
+                            pathname: `/projects/${projectID}/databases/${database.id}/settings`,
+                          }}
+                          key={database.id}
+                          className={styles.DatabaseTableRow}
+                        >
+                          <div className={styles.DatabaseTableCell}>
+                            {database.database_flavour_name}
                           </div>
-                        ))}
-                    </div>
-                  )
-                )}
+                          <div className={styles.DatabaseTableCell}>
+                            {database.name}
+                          </div>
+                          <div className={styles.DatabaseTableCell}>
+                            {database.host}
+                          </div>
+                          <div className={styles.DatabaseTableCell}>
+                            <Status status={database.db_status} />
+                          </div>
+                          <div className={styles.DatabaseTableCell}>
+                            {database.age}
+                          </div>
+                        </Link>
+                      </div>
+                    ))}
+                </div>
+              )
+            )}
 
-                {databasesFetched && databases.length === 0 && (
-                  <div className={styles.NoResourcesMessageSection}>
-                  <div className={styles.NoResourcesMessage}>
-                    You haven’t created any databases yet. 
-                  </div>
-                  <br></br>
-                  <div className={styles.NoResourcesMessage}>
-                    Click the &nbsp;{" "}
-                    <ButtonPlus className={styles.ButtonPlusSmall} onClick={this.showCreateComponent} /> &nbsp;
-                    button to create one.
-                  </div>
-                  </div>
-                )}
-
-                {!isFetchingDatabases && !databasesFetched && (
-                  <div className={styles.NoResourcesMessage}>
-                    Oops! Something went wrong! Failed to retrieve Databases.
-                  </div>
-                )}
+            {databasesFetched && databases.length === 0 && (
+              <div className={styles.NoResourcesMessageSection}>
+                <div className={styles.NoResourcesMessage}>
+                  You haven’t created any databases yet.
+                </div>
+                <br></br>
+                <div className={styles.NoResourcesMessage}>
+                  Click the &nbsp;{" "}
+                  <ButtonPlus
+                    className={styles.ButtonPlusSmall}
+                    onClick={this.showCreateComponent}
+                  />{" "}
+                  &nbsp; button to create one.
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+
+            {!isFetchingDatabases && !databasesFetched && (
+              <div className={styles.NoResourcesMessage}>
+                Oops! Something went wrong! Failed to retrieve Databases.
+              </div>
+            )}
+          </DashboardLayout>
+        )}
       </div>
     );
   }
@@ -208,11 +190,9 @@ export const mapStateToProps = (state) => {
   const { projects } = state.userProjectsReducer;
   const { databases, databasesFetched, isFetchingDatabases } =
     state.projectDatabasesReducer;
-  const { isCreated } = state.createDatabaseReducer;
   return {
     projects,
     databases,
-    isCreated,
     databasesFetched,
     isFetchingDatabases,
   };

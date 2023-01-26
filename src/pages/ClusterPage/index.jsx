@@ -149,10 +149,9 @@ const ClusterPage = ({
           <div className={styles.CardHeaderSection}>
             <div className={styles.CardTitle}>Users</div>
             <Link to="/accounts">
-              <PrimaryButton
-                label="View accounts"
-                className={styles.ViewAccountsBtn}
-              />
+              <PrimaryButton color="primary-outline">
+                View accounts
+              </PrimaryButton>
             </Link>
           </div>
           <div className={styles.UserSection}>
@@ -231,10 +230,7 @@ const ClusterPage = ({
         >
           <div className={styles.CardHeaderSection}>
             <div className={styles.CardTitle}>Apps</div>
-            <PrimaryButton
-              label="View apps"
-              className={styles.ViewAccountsBtn}
-            />
+            <PrimaryButton color="primary-outline">View Apps</PrimaryButton>
           </div>
           <div className={styles.DBSection}>
             <div className={styles.LeftUserSide}>
@@ -302,7 +298,7 @@ const ClusterPage = ({
       </div>
       <br />
       <div className={styles.OtherCards}>
-        <Link className={styles.Card}>
+        <Link className={styles.ResourceCard}>
           <>
             <div className={styles.CardHeader}>Projects</div>
             <div className={styles.DBStats}>
@@ -318,7 +314,7 @@ const ClusterPage = ({
             </div>
           </>
         </Link>
-        <Link to="/databases" className={styles.Card}>
+        <Link to="/databases" className={styles.ResourceCard}>
           <>
             <div className={styles.CardHeader}>Databases</div>
             <div className={styles.DBStats}>
@@ -340,7 +336,7 @@ const ClusterPage = ({
             </div>
           </>
         </Link>
-        <div className={styles.Card}>
+        <div className={styles.ResourceCard}>
           <div className={styles.CardHeader}>Clusters</div>
           <div className={styles.CardTop}>Count</div>
           <div className={styles.ResourceDigit}>
@@ -353,6 +349,7 @@ const ClusterPage = ({
         <InformationBar
           header="Select Infrastructure"
           showBtn
+          buttontext="+ New Cluster"
           btnAction={showForm}
         />
       </div>
@@ -413,15 +410,12 @@ const ClusterPage = ({
               {error && <Feedback type="error" message={error} />}
 
               <div className="ModalFormButtons AddAddButtons">
-                <PrimaryButton
-                  label="cancel"
-                  className="CancelBtn"
-                  onClick={hideForm}
-                />
-                <PrimaryButton
-                  label={creatingCluster ? <Spinner /> : "add"}
-                  onClick={handleSubmit}
-                />
+                <PrimaryButton className="CancelBtn" onClick={hideForm}>
+                  Cancel
+                </PrimaryButton>
+                <PrimaryButton onClick={handleSubmit}>
+                  {creatingCluster ? <Spinner /> : "add"}
+                </PrimaryButton>
               </div>
 
               {(isFailed || isAdded) && (

@@ -1,6 +1,6 @@
 .InformationBar {
   background: #f8f7e5;
-  height: 4rem;
+  min-height: 4rem;
   display: flex;
   align-items: center;
 }
@@ -29,51 +29,51 @@
   display: grid;
   align-items: center;
   grid-template-columns: 1fr 1fr;
-  color: #F7B21F;
+  color: var(--secondary-color);
   grid-gap: .5rem;
   width: 3rem;
 }
 
-.ViewAppBtn {
-  color: #008ac1;
-  background-color: transparent;
-  outline: 2px solid #008ac1;
-}
-.ViewAppBtn:hover {
-  color: #fff;
-  background-color: #008ac1;
-  outline: 2px solid #008ac1;
-}
 
 .SearchInput{
   display:flex;
+  align-items: center;
+  height : 2.5rem;
+  background-color: #EBEAD5;
+  border-radius: 5px;
 }
 
 .SearchInput input{
-  background-color: #EBEAD5;
+  background-color: transparent;
   color: #000;
-  border: 0;
-  border-top-left-radius: 4px 2px;
-  border-bottom-left-radius: 3px 4px;
+  border: none;
   font-size: 1rem;
   padding: 1rem;
-  height : 45.5px;
-  max-width: 21rem;
+  height: 100%;
+  /* max-width: 21rem; */
+}
+
+.InformationBarColumnView{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  padding: 0.5rem 0;
+  width: 100%;
 }
 
 .SearchIcon{
-  background-color: #EBEAD5;
-  padding: 0.42rem;
-  border-bottom-right-radius: 6px 2px;
-  border-top-right-radius: 3px 4px;
+  background-color: transparent;
+  height: 100%;
+  padding: 0 0.4rem;
+  width: 1.3rem;
 }
 
 
-
-@media only screen and (max-width: 650px) {
-  .RoundAddButtonWrap {
-    position: absolute;
-    top: 9rem;
-    right: 1rem;
+@media (max-width: 650px) {
+  
+  .SearchInput input{
+    width: 100%;
   }
 }
+  

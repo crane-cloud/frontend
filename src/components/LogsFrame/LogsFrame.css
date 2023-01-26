@@ -10,7 +10,7 @@
   border-radius: 15px;
 }
 .LogsFrameContainer:hover{
-  border: 1px solid #f7b21f;
+  border: 1px solid var(--secondary-color);
 }
 
 .LogsHeaderSection {
@@ -66,5 +66,5 @@
 }
 
 .LogsBodySection.Dark {
-  color: #99d2e9;
+  color: var(--primary-light-color);
 }

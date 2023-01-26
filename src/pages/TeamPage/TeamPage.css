@@ -1,5 +1,5 @@
 .TeamPageContainer {
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
 }
 .TeamImagesRow {
     align-items: center;

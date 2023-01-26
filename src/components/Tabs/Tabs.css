@@ -7,7 +7,7 @@
 
 .TabHeadingList {
   margin-top: 0;
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
   display: flex;
   justify-content: space-between;
   padding-left: 0;
