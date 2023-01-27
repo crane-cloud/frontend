@@ -274,19 +274,19 @@
   grid-template-rows: 20% auto 30%;
 }
 
-.DatabaseSection .LeftInfoSection div:nth-child(1) {
+.DatabaseSection .LeftInfoSection .DatabaseLeftInfoSection div:nth-child(1) {
   color: #555555;
 }
 
-.ApplicationSection .LeftInfoSection div:nth-child(1) {
+.ApplicationSection .LeftInfoSection .DatabaseLeftInfoSection div:nth-child(1) {
   color: #ffffff;
 }
 
-.StackSection .LeftInfoSection div:nth-child(1) {
+.StackSection .LeftInfoSection .DatabaseLeftInfoSection div:nth-child(1) {
   color: #000000;
 }
 
-.LeftInfoSection div:nth-child(2) {
+.LeftInfoSection .DatabaseLeftInfoSection div:nth-child(2) {
   line-height: 1.8;
 }
 
@@ -305,6 +305,7 @@
 .GridSide {
   display: grid;
   gap: 2rem;
+  transition: all;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
 }
@@ -354,6 +355,11 @@
 .AlignButton:hover {
   background-color: #dddddd;
 }
+.DatabaseLeftInfoSection{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
 @media only screen and (max-width: 640px) {
   .LandingPageMainContentImg {
     display: none;
@@ -362,5 +368,16 @@
   .SolutionsSection {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
+  }
+  .WhySectionChildContainer{
+    display: flex;
+    flex-direction: column;
+  }
+  .DatabaseSection, .ApplicationSection, .StackSection  {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .GridSide{
+    display: none;
   }
 }
