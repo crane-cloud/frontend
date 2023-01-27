@@ -11,32 +11,51 @@ import { ReactComponent as CloudOff } from "../../assets/images/cloud-off.svg";
 import { ReactComponent as Upload } from "../../assets/images/upload-cloud(1).svg";
 import { ReactComponent as Trash } from "../../assets/images/trash-2.svg";
 import { ReactComponent as Startup } from "../../assets/images/trending-up.svg";
+import { handleGetRequest } from "../../apis/apis.js";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import Spinner from "../../components/Spinner";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
 // import axios from "axios";
 // import Spinner from "../Spinner";
 
 const ProjectLogs = (props) => {
+  const [loading, setLoading] = useState(false)
+  const [logs, setLogs] = useState([])
+  const [feedback, setFeedback] = useState("")
   const { projects } = useSelector((state) => state.userProjectsReducer);
   const { data } = useSelector((state) => state.user);
   const { projectID } = useParams();
+
   const getProjectName = (id) => {
     return projects?.find((project) => project.id === id).name;
   };
-  // const handleConversion = () => {
-  //   axios
-  //     .get(LIVE_EXCHANGE_RATE_API)
-  //     .then((response) => {
-  //       if (response.status !== 200) {
-  //         return false;
-  //       }
-  //       setRate(response.data.rates.UGX);
-  //     })
-  //     .catch((e) => {
-  //       //failed to load current rate
-  //       setInUgx(false);
-  //     });
+  useEffect(() => {
+    fetchActivityLogs()
+  }, []); 
+
+  const fetchActivityLogs = () => {
+    setLoading(true)
+    //projectID
+    handleGetRequest(`/users/activities?a_project_id=${projectID}`)
+      .then((response) => { 
+        if(response.data.data.activity.length > 0 ){
+          setLogs(response.data.data.activity)
+        } else {
+          setFeedback("No logs for this project")
+        }
+        setLoading(false)
+      })
+      .catch((error) => {
+        setFeedback("Failed to fetch logs, please try again")
+        setLoading(false)
+      });
+  };
+
+  // const handleEndpointCustomisation = () => {
+    
   // };
+
   return (
     <DashboardLayout header="Project Activity" name={getProjectName(projectID)}>
       <div className={styles.Header}>
@@ -50,8 +69,40 @@ const ProjectLogs = (props) => {
           <PrimaryButton className={styles.FilterButton}>Filter</PrimaryButton>
         </div>
       </div>
-      <div className="BigCard">
-        <div className={styles.TableRow}>
+      <div className="BigCard">{
+        loading ? <Spinner/> : 
+        feedback !=="" ? 
+        <div className={styles.NoResourcesMessage}>
+          {feedback}
+          </div>:
+        logs.map((item,index)=>{
+          <div key={index}>
+          <div className={styles.TableRow}>
+          <CheckMark className={styles.Success} />
+          <div className={styles.Row}>
+            <div className={styles.RowCell}>
+              <Avatar name={data.name} className={styles.UserAvatar} />
+              <div>
+                <div className={styles.ActivityEmail}>{data.email}:</div>
+                <div className={styles.ActivityDate}>Tuesday 12-12-2022 16:00:03</div>
+              </div>
+              <div >
+                Creating application{" "}
+                <span className={styles.Entity}>4344ewe23</span>{" "}
+                <span className={styles.Success}>Successful</span>
+              </div>
+            </div>
+            <div className={styles.ActivityDescription}>
+              <div>Successfully created application</div>
+            </div>
+          </div>
+           </div>
+        <hr className={styles.hr} />
+          </div>
+        })
+      }
+
+        {/* <div className={styles.TableRow}>
           <CheckMark className={styles.Success} />
           <div className={styles.Row}>
             <div className={styles.RowCell}>
@@ -72,6 +123,7 @@ const ProjectLogs = (props) => {
           </div>
         </div>
         <hr className={styles.hr} />
+
         <div className={styles.TableRow}>
           <Danger className={styles.Danger} />
           <div className={styles.Row}>
@@ -172,7 +224,7 @@ const ProjectLogs = (props) => {
             </div>
           </div>
         </div>
-        <hr className={styles.hr} />
+        <hr className={styles.hr} /> */}
       </div>
     </DashboardLayout>
   );
