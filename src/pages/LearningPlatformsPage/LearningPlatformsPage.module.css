@@ -1,0 +1,58 @@
+.LearningPage {
+    background-color: #e5f3f9;
+}
+
+.PageContainer {
+    padding: 0 20px;
+}
+
+.CardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row !important;
+    justify-content: space-between;
+    padding: 1.5rem 2rem 0 2rem;
+}
+
+.CardSection {
+    width: 20.8rem;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 7px;
+    padding: 20px;
+}
+
+.Brand {
+    width: 18.75rem;
+    height: 18.75rem;
+}
+
+.ButtonSection {
+    padding-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.GetStartedButton {
+    background-color: var(--primary-color);
+    text-transform: uppercase;
+    color: white !important;
+    padding: 0.7rem;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    border: 1px solid var(--primary-color);
+    display: grid;
+    grid-auto-flow: column;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    border-radius: 5px;
+    outline: none;
+}
+
+.GetStartedButton:hover {
+    color: var(--primary-color);
+    border-color: #fff;
+}
