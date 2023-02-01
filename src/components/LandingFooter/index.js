@@ -102,9 +102,6 @@ const LandingFooter = () => (
                     Docs
                   </a>
                 </li>
-                <li className="TextDivSpacing">
-                  <Link to="/learning-platforms">Learning Platforms</Link>
-                </li>
               </ul>
             </div>
             <div className="FooterChildTwo">
@@ -112,7 +109,7 @@ const LandingFooter = () => (
               <ul className="FooterList">
                 <li className="TextDivSpacing">Contribute</li>
                 <li className="TextDivSpacing">
-                <a
+                  <a
                     href="https://medium.com/cranecloud"
                     rel="noopener noreferrer"
                     target="_blank"

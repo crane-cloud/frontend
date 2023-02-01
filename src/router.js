@@ -60,7 +60,6 @@ import ProjectSettingsPage from "./pages/ProjectSettingsPage";
 import UserProjectsPage from "./pages/UserProjectsPage";
 import UserActivity from "./pages/UserActivity";
 import ProjectLogs from "./pages/ProjectLogs";
-import LearningPlatformsPage from "./pages/LearningPlatformsPage";
 import store from "./redux/store";
 
 // Protected route should have token. If not, login.
@@ -88,7 +87,6 @@ const Routes = () => (
       <Route path="/terms-of-service" component={Terms} />
       <Route path="/privacy-policy" component={Privacy} />
       <Route path="/status" component={MonitoringPage} />
-      <Route path="/learning-platforms" component={LearningPlatformsPage} />
       {/* projects */}
       <ProtectedRoute
         isAllowed={hasToken}
