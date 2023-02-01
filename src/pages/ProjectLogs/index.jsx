@@ -1,23 +1,21 @@
 import React from "react";
 // import { Link } from "react-router-dom";
-// import moment from "moment";
 import { useSelector } from "react-redux";
 import Avatar from "../../components/Avatar";
 import PrimaryButton from "../../components/PrimaryButton";
 import styles from "./ProjectLogs.module.css";
 import { ReactComponent as CheckMark } from "../../assets/images/check-circle.svg";
 import { ReactComponent as Danger } from "../../assets/images/alert-octagon.svg";
-import { ReactComponent as CloudOff } from "../../assets/images/cloud-off.svg";
-import { ReactComponent as Upload } from "../../assets/images/upload-cloud(1).svg";
-import { ReactComponent as Trash } from "../../assets/images/trash-2.svg";
-import { ReactComponent as Startup } from "../../assets/images/trending-up.svg";
+// import { ReactComponent as CloudOff } from "../../assets/images/cloud-off.svg";
+// import { ReactComponent as Upload } from "../../assets/images/upload-cloud(1).svg";
+// import { ReactComponent as Trash } from "../../assets/images/trash-2.svg";
+// import { ReactComponent as Startup } from "../../assets/images/trending-up.svg";
 import { handleGetRequest } from "../../apis/apis.js";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
-// import axios from "axios";
-// import Spinner from "../Spinner";
+import { DisplayDateTime } from "../../helpers/dateConstants";
 
 const ProjectLogs = (props) => {
   const [loading, setLoading] = useState(false)
@@ -55,9 +53,14 @@ const ProjectLogs = (props) => {
   // const handleEndpointCustomisation = () => {
     
   // };
+  // api needs to factor inproject collaboration, (who did what? not only current user)
+  // no logs for database creations, app creations and updates, basically only logs 
+  // for project creation available
+
 
   return (
     <DashboardLayout header="Project Activity" name={getProjectName(projectID)}>
+      {console.log(logs)}
       <div className={styles.Header}>
         <div className={styles.Heading}>Activity Feed</div>
         <div className={styles.SimpleForm}>
@@ -75,33 +78,37 @@ const ProjectLogs = (props) => {
         <div className={styles.NoResourcesMessage}>
           {feedback}
           </div>:
-        logs.map((item,index)=>{
+        logs.map((item,index)=>(
           <div key={index}>
           <div className={styles.TableRow}>
-          <CheckMark className={styles.Success} />
+          {item.status==='Success' ? <CheckMark className={styles.Success} />:  
+           <Danger className={styles.Danger} />
+          }
           <div className={styles.Row}>
             <div className={styles.RowCell}>
               <Avatar name={data.name} className={styles.UserAvatar} />
               <div>
                 <div className={styles.ActivityEmail}>{data.email}:</div>
-                <div className={styles.ActivityDate}>Tuesday 12-12-2022 16:00:03</div>
+                <div className={styles.ActivityDate}>{DisplayDateTime(new Date(item.creation_date))}</div>
               </div>
               <div >
-                Creating application{" "}
-                <span className={styles.Entity}>4344ewe23</span>{" "}
-                <span className={styles.Success}>Successful</span>
+                {item.operation}
+                <span className={styles.Entity}>{item._id.$oid}</span>{" "}
+                <span className={item.status==='Success'? styles.Success: styles.Danger}>
+                {item.status}</span>
               </div>
             </div>
             <div className={styles.ActivityDescription}>
-              <div>Successfully created application</div>
+              <div>{item.description}</div>
             </div>
           </div>
            </div>
-        <hr className={styles.hr} />
+          {index !== (logs.length -1) && <hr className={styles.hr} />}
           </div>
-        })
+        ))
       }
-
+      {/* comment section below should be kept
+       as a guide on how to render different types of logs */}
         {/* <div className={styles.TableRow}>
           <CheckMark className={styles.Success} />
           <div className={styles.Row}>

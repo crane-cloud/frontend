@@ -5,7 +5,13 @@
   gap: 1rem;
   background: var( --gray-bg-light-color);
 }
-
+.Page{
+  display: flex;
+  flex-flow: column;
+  min-height: 100vh;
+  flex-direction: column;
+  background-color: var(--gray-bg-light-color);
+}
 .field {
   background: transparent;
   border: none;
