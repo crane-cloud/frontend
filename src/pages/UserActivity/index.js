@@ -27,7 +27,7 @@ const UserActivity = (props) => {
   const fetchActivityLogs = () => {
     setLoading(true);
     //projectID
-    handleGetRequest(`/users/activities?a_user_id=${data.id}`)
+    handleGetRequest(`/users/activities`)
       .then((response) => {
         if (response.data.data.activity.length > 0) {
           setLogs(response.data.data.activity);

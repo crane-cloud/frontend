@@ -60,7 +60,6 @@ const ProjectLogs = (props) => {
 
   return (
     <DashboardLayout header="Project Activity" name={getProjectName(projectID)}>
-      {console.log(logs)}
       <div className={styles.Header}>
         <div className={styles.Heading}>Activity Feed</div>
         <div className={styles.SimpleForm}>
