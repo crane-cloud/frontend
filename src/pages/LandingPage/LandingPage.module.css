@@ -375,13 +375,13 @@
 
 .CardContainer {
   display: flex;
-  gap: 9rem;
-  flex-direction: row !important;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 7rem;
+  justify-content: space-evenly;
 }
 
 .CardSection {
-  width: 22rem;
+  width: 17rem;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 7px;
@@ -389,8 +389,8 @@
 }
 
 .Brand {
-  width: 16rem;
-  height: 14rem;
+  width: 13rem;
+  height: 13rem;
 }
 
 .ButtonSection {
@@ -423,11 +423,16 @@
   border-color: #fff;
 }
 
-.DatabaseLeftInfoSection{
+.DatabaseLeftInfoSection {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
 }
+
+.LearningSection {
+  display: flex !important;
+}
+
 @media only screen and (max-width: 640px) {
   .LandingPageMainContentImg {
     display: none;
@@ -437,15 +442,26 @@
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
   }
-  .WhySectionChildContainer{
+
+  .WhySectionChildContainer {
     display: flex;
     flex-direction: column;
   }
-  .DatabaseSection, .ApplicationSection, .StackSection  {
+
+  .DatabaseSection,
+  .ApplicationSection,
+  .StackSection,
+  .LearningSection {
     display: flex;
     flex-direction: column-reverse;
   }
-  .GridSide{
+
+  .CardSection {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .GridSide {
     display: none;
   }
 }
