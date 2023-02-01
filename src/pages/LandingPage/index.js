@@ -211,7 +211,7 @@ const LandingPage = (props) => {
           </div>
         </div>
         <section className={styles.DatabaseSection}>
-          <div className={styles.LeftInfoSection}>
+          <div className={styles.DatabaseLeftInfoSection}>
             <div className={styles.LeftInfoHeader}>
               Access your database anywhere
             </div>
@@ -241,7 +241,7 @@ const LandingPage = (props) => {
           </div>
         </section>
         <section className={styles.ApplicationSection}>
-          <div className={styles.LeftInfoSection}>
+          <div className={styles.DatabaseLeftInfoSection}>
             <div className={styles.LeftInfoHeader}>
               Applications in any stack
             </div>
@@ -285,7 +285,7 @@ const LandingPage = (props) => {
           </div>
         </section>
         <section className={styles.StackSection}>
-          <div className={styles.LeftInfoSection}>
+          <div className={styles.DatabaseLeftInfoSection}>
             <div className={styles.LeftInfoHeader}>Auto-containerization</div>
             <div>
               Unfamiliar with containerization or dockerization? Zip your

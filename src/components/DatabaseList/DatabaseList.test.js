@@ -33,14 +33,12 @@ describe("Testing the exported mapstate to props and dispatch", () => {
           databasesFetched: false,
           isFetchingDatabases: false,
         },
-        createDatabaseReducer: { isCreated: false },
       })
     ).toEqual({
       databases: [],
       projects: [],
       databasesFetched: false,
       isFetchingDatabases: false,
-      isCreated: false,
     });
   });
 });

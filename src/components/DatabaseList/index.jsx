@@ -190,11 +190,9 @@ export const mapStateToProps = (state) => {
   const { projects } = state.userProjectsReducer;
   const { databases, databasesFetched, isFetchingDatabases } =
     state.projectDatabasesReducer;
-  const { isCreated } = state.createDatabaseReducer;
   return {
     projects,
     databases,
-    isCreated,
     databasesFetched,
     isFetchingDatabases,
   };
