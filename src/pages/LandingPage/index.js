@@ -326,6 +326,10 @@ const LandingPage = (props) => {
             </div>
           </div>
         </section>
+
+        <div className={styles.LearningSectionTitle}>
+          <h2>Explore Crane Cloud Learning Tools</h2>
+        </div>
         <section className={styles.LearningSection}>
           <div className={styles.CardContainer}>
             <div className={styles.CardSection}>
