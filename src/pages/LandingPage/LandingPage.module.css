@@ -20,6 +20,7 @@
 
   /* height: calc(100vh - 5rem); */
 }
+
 @media screen and (max-width: 768px) {
   .LandingPageMainContent {
     flex-direction: column;
@@ -48,6 +49,7 @@
   font-size: 4rem;
   font-weight: bold;
 }
+
 .LandingPageInfrastructurePic path {
   fill: var(--primary-light-color);
 }
@@ -74,7 +76,7 @@
 .FreeTrialButton:hover {
   background: white;
   color: var(--primary-color);
-  border-color:  #fff;
+  border-color: #fff;
 
 }
 
@@ -108,6 +110,7 @@
   height: 100%;
   object-fit: cover;
 }
+
 .WhySectionChildContainer {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -117,7 +120,7 @@
 
 .WhySectionItem {
   padding: 1rem;
-  background-color: var( --gray-bg-light-color);
+  background-color: var(--gray-bg-light-color);
   color: #555555;
   display: grid;
   grid-template-rows: max-content;
@@ -159,15 +162,18 @@
   overflow: hidden;
   margin: auto;
 }
+
 .BannerParagraph {
   color: #000000;
 }
+
 .BannerButton {
   background-color: #ffffff;
   color: #000000;
   border: none;
   padding: 0.5rem 2rem;
 }
+
 .LeftPageBannerInner {
   display: grid;
   grid-template-rows: auto;
@@ -227,26 +233,41 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
 .DatabaseSection,
 .ApplicationSection,
-.StackSection {
+.StackSection,
+.LearningSection {
   /* height: 100vh; */
   padding: 6rem 2rem 6rem 4rem;
   display: grid;
   grid-template-columns: 45% auto;
 }
+
 .DatabaseSection {
   background-color: var(--primary-light-color);
   gap: 2rem;
 }
+
 .ApplicationSection {
   background: var(--primary-color);
   gap: 2rem;
 }
+
 .StackSection {
   background: #cccccc;
   gap: 2rem;
 }
+
+.LearningSection {
+  padding-top: 1rem !important;
+  gap: 2rem;
+}
+
+.LearningSectionTitle {
+  padding: 6rem 0rem 1rem 4rem !important;
+}
+
 .IconSqure {
   border-radius: 10px;
   background-color: #fafafa;
@@ -260,7 +281,7 @@
 .IconSqure:hover {
   transform: scale(1.06);
   transition: ease-in-out 0.3s;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2); 
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
 
 .IconSqure svg {
@@ -335,6 +356,7 @@
   color: #555555;
   text-align: center;
 }
+
 .AlignButton {
   /* align-self: end; */
   display: grid;
@@ -349,17 +371,73 @@
   border: 1px solid white;
   color: var(--primary-color);
   cursor: pointer;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .AlignButton:hover {
   background-color: #dddddd;
 }
-.DatabaseLeftInfoSection{
+
+.CardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4.6rem;
+  justify-content: space-evenly;
+}
+
+.CardSection {
+  width: 17rem;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 7px;
+  padding: 20px;
+}
+
+.Brand {
+  width: 13rem;
+  height: 13rem;
+}
+
+.ButtonSection {
+  padding-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.GetStartedButton {
+  background-color: var(--secondary-color);
+  text-transform: uppercase;
+  color: white !important;
+  padding: 0.7rem;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  border: 1px solid var(--secondary-color);
+  display: grid;
+  grid-auto-flow: column;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  border-radius: 5px;
+  outline: none;
+}
+
+.GetStartedButton:hover {
+  color: var(--secondary-color);
+  border-color: #fff;
+}
+
+.DatabaseLeftInfoSection {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
 }
+
+.LearningSection {
+  display: flex !important;
+}
+
 @media only screen and (max-width: 640px) {
   .LandingPageMainContentImg {
     display: none;
@@ -369,15 +447,26 @@
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
   }
-  .WhySectionChildContainer{
+
+  .WhySectionChildContainer {
     display: flex;
     flex-direction: column;
   }
-  .DatabaseSection, .ApplicationSection, .StackSection  {
+
+  .DatabaseSection,
+  .ApplicationSection,
+  .StackSection,
+  .LearningSection {
     display: flex;
     flex-direction: column-reverse;
   }
-  .GridSide{
+
+  .CardSection {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .GridSide {
     display: none;
   }
 }

@@ -14,3 +14,8 @@ export const LIVE_EXCHANGE_RATE_API = `https://openexchangerates.org/api/latest.
 //crane cloud status
 export const CRANE_CLOUD_STATUS =
   "https://status-api.cranecloud.io/api/v1/statuses";
+export const GITLAB_URL =
+  "https://gitlab-ce-32b64b3f-fc91-4331-bf7e.cranecloud.io/users/sign_in";
+export const GOPLAYGROUND_URL = "https://go.dev.cranecloud.io/";
+export const JUPYTERHUB_URL =
+  "https://jupiter-a13faf8e-83e0-4930-8898.cranecloud.io";
