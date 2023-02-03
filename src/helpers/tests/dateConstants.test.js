@@ -1,4 +1,6 @@
-import { DisplayDateTime, getBackDate } from "../dateConstants";
+import { DisplayDateTime, 
+  // getBackDate
+ } from "../dateConstants";
 var assert = require("assert");
 var today = new Date();
 var thisYear = today.getFullYear();
@@ -10,6 +12,7 @@ describe("data constants helper", () => {
   // it("test fomart changer with get back date funtion", () => {
   //   //function returns date amonth ago for this test
   //   //get the year
+  //   thisYear = thisMonth - 1 <= 0 ? thisYear - 1 : thisYear;
   //   thisYear = thisMonth - 1 <= 0 ? thisYear + 1 : thisYear;
   //   //get the month
   //   thisMonth = thisMonth - 1 <= 0 ? 12 + (thisMonth - 1) : thisMonth - 1;
