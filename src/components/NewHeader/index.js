@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import NewLogo from "../NewLogo";
 import removeUser from "../../redux/actions/removeUser";
 import "./NewHeader.css";
-import { DOCS_URL, BLOG_URL } from "../../config";
+import { DOCS_URL } from "../../config";
 import useMedia from "../../hooks/mediaquery";
 import { ReactComponent as DownArrow } from "../../assets/images/down-arrow-black.svg";
 import { ReactComponent as UpArrow } from "../../assets/images/up-arrow.svg";
@@ -77,14 +77,6 @@ const NewHeader = (props) => {
                   >
                     Docs
                   </a>
-                  <a
-                    href={`${BLOG_URL}`}
-                    className="HeaderLinkDocs"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    Blog
-                  </a>
                   {/* <Link to="/pricing" className="HeaderLinkDocs">
                     Pricing
                   </Link> */}
@@ -111,14 +103,6 @@ const NewHeader = (props) => {
                     target="_blank"
                   >
                     Docs
-                  </a>
-                  <a
-                    href={`${BLOG_URL}`}
-                    className="HeaderLinkDocs"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    Blog
                   </a>
                   {/* <Link to="/pricing" className="HeaderLinkDocs">
                     Pricing
@@ -159,18 +143,11 @@ const NewHeader = (props) => {
                       >
                         Docs
                       </a>
-                      <a
-                        href={`${BLOG_URL}`}
-                        className="HeaderDropLinkDocs"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        Blog
-                      </a>
+                      
                       {/* <Link to="/pricing" className="HeaderDropLinkDocs">
                         Pricing
                       </Link> */}
-                      <Link to="/" className="HeaderDropLinkDocs">
+                      <Link to="/login" className="HeaderDropLinkDocs">
                         Login
                       </Link>
                     </div>
@@ -194,14 +171,6 @@ const NewHeader = (props) => {
                           target="_blank"
                         >
                           Docs
-                        </a>
-                        <a
-                          href={`${BLOG_URL}`}
-                          className="HeaderDropLinkDocs"
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          Blog
                         </a>
                         {/* <Link to="/pricing" className="HeaderDropLinkDocs">
                           Pricing
