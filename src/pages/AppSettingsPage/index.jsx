@@ -160,7 +160,7 @@ class AppSettingsPage extends React.Component {
       .then((response) => {
         this.setState({
           appDetail: response.data.data.apps,
-          revisions: response.data.data.revisions,
+          revisions: response?.data?.data?.revisions,
           fetchingAppDetails: false,
         });
       })
@@ -173,11 +173,11 @@ class AppSettingsPage extends React.Component {
   }
 
   getCurrentRevision(revisions) {
-    let currentRevision = revisions.find(
-      (revision) => revision.current === true
+    let currentRevision = (revisions || []).find(
+       (revision) => revision.current === true
     );
-    return currentRevision.revision_id;
-  }
+    return currentRevision ? currentRevision.revision_id : null;
+ }
 
   rollbackApp(revisionId) {
     const {
@@ -658,7 +658,7 @@ class AppSettingsPage extends React.Component {
     } = this.state;
     // project name from line 105 disappears on refreash, another source of the name was needed
     //const { name } = this.props.location;
-    console.log(revisions);
+    // console.log(revisions);
     const { appID } = params;
     const replicaOptions = [
       { id: 1, name: "1" },
