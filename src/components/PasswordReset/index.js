@@ -118,7 +118,7 @@ export default class PasswordReset extends React.Component {
                 </PrimaryButton>
 
                 <div className="ResetPasswordContentBottomLink ResetPasswordLinkContainer">
-                  <Link to="/" className="ResetPasswordContentLink">
+                  <Link to="/login" className="ResetPasswordContentLink">
                     Back to Login.
                   </Link>
                 </div>
