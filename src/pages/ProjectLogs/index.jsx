@@ -2,7 +2,7 @@ import React from "react";
 // import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Avatar from "../../components/Avatar";
-import PrimaryButton from "../../components/PrimaryButton";
+// import PrimaryButton from "../../components/PrimaryButton";
 import styles from "./ProjectLogs.module.css";
 import { ReactComponent as CheckMark } from "../../assets/images/check-circle.svg";
 import { ReactComponent as Danger } from "../../assets/images/alert-octagon.svg";
@@ -11,6 +11,11 @@ import { ReactComponent as Danger } from "../../assets/images/alert-octagon.svg"
 // import { ReactComponent as Trash } from "../../assets/images/trash-2.svg";
 // import { ReactComponent as Startup } from "../../assets/images/trending-up.svg";
 import { handleGetRequest } from "../../apis/apis.js";
+import DateInput from "../../components/DateInput";
+import getUserProjects from "../../redux/actions/projectsList";
+import { ReactComponent as DownArrow } from "../../assets/images/downarrow.svg";
+import { ReactComponent as FilterIcon } from "../../assets/images/filterIcon.svg";
+import { ReactComponent as ArrowUpDDown } from "../../assets/images/ArrowUp&Down.svg";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Spinner from "../../components/Spinner";
@@ -18,95 +23,373 @@ import DashboardLayout from "../../components/Layouts/DashboardLayout";
 import { DisplayDateTime } from "../../helpers/dateConstants";
 
 const ProjectLogs = (props) => {
-  const [loading, setLoading] = useState(false)
-  const [logs, setLogs] = useState([])
-  const [feedback, setFeedback] = useState("")
-  const { projects } = useSelector((state) => state.userProjectsReducer);
+  const [loading, setLoading] = useState(false);
+  const [logs, setLogs] = useState([]);
+  const [feedback, setFeedback] = useState("");
   const { data } = useSelector((state) => state.user);
   const { projectID } = useParams();
+  const { projects, isFetched } = useSelector(
+    (state) => state.userProjectsReducer
+  );
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [showFromCalendar, setShowFromCalendar] = useState(false);
+  const [showToCalendar, setShowToCalendar] = useState(false);
+  //filter states
+  //status
+  const [showStatusFilter, setShowStatusFilter] = useState(false);
+  const [statusField, setStatusField] = useState("none");
+  //operation
+  const [showOperation, setShowOperation] = useState(false);
+  const [operationField, setOperationField] = useState("none");
+  //model
+  const [showModel, setShowModel] = useState(false);
+  const [modelField, setModelField] = useState("none");
+  //projects
+  const [showProjects, setShowProjects] = useState(false);
+  const [projectsField, setProjectsField] = useState("none");
+
+  //constant lists
+  const statusList = ["success", "fail"];
+  const operationsList = ["create", "update", "delete"];
+  const modelsList = ["projects", "apps", "databases"];
 
   const getProjectName = (id) => {
     return projects?.find((project) => project.id === id).name;
   };
   useEffect(() => {
-    fetchActivityLogs()
-  }, []); 
+    fetchActivityLogs();
+    getUserProjects(data.id);
+  }, [data]);
 
   const fetchActivityLogs = () => {
-    setLoading(true)
+    setLoading(true);
     //projectID
     handleGetRequest(`/users/activities?a_project_id=${projectID}`)
-      .then((response) => { 
-        if(response.data.data.activity.length > 0 ){
-          setLogs(response.data.data.activity)
+      .then((response) => {
+        if (response.data.data.activity.length > 0) {
+          setLogs(response.data.data.activity);
         } else {
-          setFeedback("No logs for this project")
+          setFeedback("No logs for this project");
         }
-        setLoading(false)
+        setLoading(false);
       })
       .catch((error) => {
-        setFeedback("Failed to fetch logs, please try again")
-        setLoading(false)
+        setFeedback("Failed to fetch logs, please try again");
+        setLoading(false);
       });
+  };
+  const switchCalendars = ({ target }) => {
+    const calendar = target.getAttribute("value");
+
+    if (calendar === "from" && !showFromCalendar) {
+      setShowFromCalendar(true);
+      setShowToCalendar(false);
+    }
+
+    if (calendar === "to" && !showToCalendar) {
+      setShowToCalendar(true);
+      setShowFromCalendar(false);
+    }
+  };
+  const closeCalendar = () => {
+    setShowFromCalendar(false);
+    setShowToCalendar(false);
+  };
+  const handleCalenderSubmission = () => {
+    // const { onChange } = props;
+    // const customTime = {
+    //   start: fromTimeStamp,
+    //   end: toTimeStamp,
+    // };
+
+    // onChange("custom", customTime);
+    closeCalendar();
   };
 
   // const handleEndpointCustomisation = () => {
-    
+
   // };
   // api needs to factor inproject collaboration, (who did what? not only current user)
-  // no logs for database creations, app creations and updates, basically only logs 
+  // no logs for database creations, app creations and updates, basically only logs
   // for project creation available
-
 
   return (
     <DashboardLayout header="Project Activity" name={getProjectName(projectID)}>
       <div className={styles.Header}>
         <div className={styles.Heading}>Activity Feed</div>
         <div className={styles.SimpleForm}>
-          <input
-            type="text"
-            className={styles.field}
-            placeholder=" Filter by Status/Action/User"
-          />
-          <PrimaryButton className={styles.FilterButton}>Filter</PrimaryButton>
+          <div className={styles.OuterFilterItem}>
+            <div className={styles.DateSection}>
+              <div className={styles.DateItem}>
+                <div>From:</div>
+                <DateInput
+                  handleChange={() => {}}
+                  showCalendar={showFromCalendar}
+                  className={styles.dateField}
+                  position={styles.CalenderFromposition}
+                  onClick={switchCalendars}
+                  onCancel={closeCalendar}
+                  onSubmit={handleCalenderSubmission}
+                  value="from"
+                />
+              </div>
+              <div className={styles.DateItem}>
+                <div>To:</div>
+                <DateInput
+                  handleChange={() => {}}
+                  showCalendar={showToCalendar}
+                  position={styles.CalenderToposition}
+                  className={styles.dateField}
+                  onClick={switchCalendars}
+                  onCancel={closeCalendar}
+                  onSubmit={handleCalenderSubmission}
+                  value="to"
+                />
+              </div>
+            </div>
+          </div>
+          <div className={styles.Filter}>
+            <FilterIcon />
+            <div className={styles.FilterText}>Filter</div>
+            <DownArrow
+              onClick={() => {
+                setFilterOpen(!filterOpen);
+              }}
+              className={styles.DropdownArrowSvg}
+            />
+          </div>
+          {filterOpen && (
+            <div className={styles.RelativeContainer}>
+              <div className={styles.FilterDropdown}>
+                <div className={styles.FilterItemContainer}>
+                  <div className={styles.FilterItem}>
+                    Status
+                    <div className={styles.SelectorBox}>
+                      <div className={styles.SelectOption}>{statusField}</div>
+                      <ArrowUpDDown
+                        onClick={() => {
+                          setShowStatusFilter(!showStatusFilter);
+                        }}
+                      />
+                    </div>
+                    {showStatusFilter && (
+                      <div className={styles.InnerDropDown}>
+                        <div
+                          onClick={() => {
+                            setStatusField("none");
+                            setShowStatusFilter(false);
+                          }}
+                          className={styles.InnerDropDownItem}
+                        >
+                          none
+                        </div>
+                        {statusList.map((item) => (
+                          <div
+                            className={styles.InnerDropDownItem}
+                            onClick={() => {
+                              setStatusField(item);
+                              setShowStatusFilter(false);
+                            }}
+                          >
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className={styles.FilterItemContainer}>
+                  <div className={styles.FilterItem}>
+                    Operation
+                    <div className={styles.SelectorBox}>
+                      <div className={styles.SelectOption}>
+                        {operationField}
+                      </div>
+                      <ArrowUpDDown
+                        onClick={() => {
+                          setShowOperation(!showOperation);
+                        }}
+                      />
+                    </div>
+                    {showOperation && (
+                      <div className={styles.InnerDropDown}>
+                        <div
+                          onClick={() => {
+                            setOperationField("none");
+                            setShowOperation(false);
+                          }}
+                          className={styles.InnerDropDownItem}
+                        >
+                          none
+                        </div>
+                        {operationsList.map((item) => (
+                          <div
+                            className={styles.InnerDropDownItem}
+                            onClick={() => {
+                              setOperationField(item);
+                              setShowOperation(false);
+                            }}
+                          >
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className={styles.FilterItemContainer}>
+                  <div className={styles.FilterItem}>
+                    Model
+                    <div className={styles.SelectorBox}>
+                      <div className={styles.SelectOption}>{modelField}</div>
+                      <ArrowUpDDown
+                        onClick={() => {
+                          setShowModel(!showModel);
+                        }}
+                      />
+                    </div>
+                    {showModel && (
+                      <div className={styles.InnerDropDownLowerhalf}>
+                        <div
+                          onClick={() => {
+                            setModelField("none");
+                            setShowModel(false);
+                          }}
+                          className={styles.InnerDropDownItem}
+                        >
+                          none
+                        </div>
+                        {modelsList.map((item) => (
+                          <div
+                            className={styles.InnerDropDownItem}
+                            onClick={() => {
+                              setModelField(item);
+                              setShowModel(false);
+                            }}
+                          >
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className={styles.FilterItemContainer}>
+                  <div className={styles.FilterItem}>
+                    Project
+                    <div className={styles.SelectorBox}>
+                      <div className={styles.SelectOption}>{projectsField}</div>
+                      <ArrowUpDDown
+                        onClick={() => {
+                          setShowProjects(!showProjects);
+                        }}
+                      />
+                    </div>
+                    {showProjects && (
+                      <div className={styles.InnerDropDownLowerhalf}>
+                        <div
+                          onClick={() => {
+                            setProjectsField("none");
+                            setShowProjects(false);
+                          }}
+                          className={styles.InnerDropDownItem}
+                        >
+                          none
+                        </div>
+                        {!isFetched && (
+                          <div className={styles.InnerDropDownItem}>
+                            loading...
+                          </div>
+                        )}
+                        {projects.length > 0 &&
+                          isFetched &&
+                          projects?.map((item) => (
+                            <div
+                              className={styles.InnerDropDownItem}
+                              onClick={() => {
+                                setProjectsField(item.name);
+                                setShowProjects(false);
+                              }}
+                            >
+                              {item.name}
+                            </div>
+                          ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className={styles.FilterItemContainer}>
+                  <div className={styles.FilterItem}>
+                    Applications
+                    <div className={styles.SelectorBox}>
+                      <div className={styles.SelectOption}>none</div>
+                      <ArrowUpDDown />
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.FilterItemContainer}>
+                  <div className={styles.FilterItem}>
+                    Databases
+                    <div className={styles.SelectorBox}>
+                      <div className={styles.SelectOption}>none</div>
+                      <ArrowUpDDown />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
-      <div className="BigCard">{
-        loading ? <Spinner/> : 
-        feedback !=="" ? 
-        <div className={styles.NoResourcesMessage}>
-          {feedback}
-          </div>:
-        logs.map((item,index)=>(
-          <div key={index}>
-          <div className={styles.TableRow}>
-          {item.status==='Success' ? <CheckMark className={styles.Success} />:  
-           <Danger className={styles.Danger} />
-          }
-          <div className={styles.Row}>
-            <div className={styles.RowCell}>
-              <Avatar name={data.name} className={styles.UserAvatar} />
-              <div>
-                <div className={styles.ActivityEmail}>{data.email}:</div>
-                <div className={styles.ActivityDate}>{DisplayDateTime(new Date(item.creation_date))}</div>
+      <div className="BigCard">
+        {loading ? (
+          <Spinner />
+        ) : feedback !== "" ? (
+          <div className={styles.NoResourcesMessage}>{feedback}</div>
+        ) : (
+          logs.map((item, index) => (
+            <div key={index}>
+              <div className={styles.TableRow}>
+                {item.status === "Success" ? (
+                  <CheckMark className={styles.Success} />
+                ) : (
+                  <Danger className={styles.Danger} />
+                )}
+                <div className={styles.Row}>
+                  <div className={styles.RowCell}>
+                    <Avatar name={data.name} className={styles.UserAvatar} />
+                    <div>
+                      <div className={styles.ActivityEmail}>{data.email}:</div>
+                      <div className={styles.ActivityDate}>
+                        {DisplayDateTime(new Date(item.creation_date))}
+                      </div>
+                    </div>
+                    <div>
+                      {item.operation}
+                      <span className={styles.Entity}>
+                        {item._id.$oid}
+                      </span>{" "}
+                      <span
+                        className={
+                          item.status === "Success"
+                            ? styles.Success
+                            : styles.Danger
+                        }
+                      >
+                        {item.status}
+                      </span>
+                    </div>
+                  </div>
+                  <div className={styles.ActivityDescription}>
+                    <div>{item.description}</div>
+                  </div>
+                </div>
               </div>
-              <div >
-                {item.operation}
-                <span className={styles.Entity}>{item._id.$oid}</span>{" "}
-                <span className={item.status==='Success'? styles.Success: styles.Danger}>
-                {item.status}</span>
-              </div>
+              {index !== logs.length - 1 && <hr className={styles.hr} />}
             </div>
-            <div className={styles.ActivityDescription}>
-              <div>{item.description}</div>
-            </div>
-          </div>
-           </div>
-          {index !== (logs.length -1) && <hr className={styles.hr} />}
-          </div>
-        ))
-      }
-      {/* comment section below should be kept
+          ))
+        )}
+        {/* comment section below should be kept
        as a guide on how to render different types of logs */}
         {/* <div className={styles.TableRow}>
           <CheckMark className={styles.Success} />
