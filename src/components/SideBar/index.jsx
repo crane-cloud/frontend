@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 import { ReactComponent as Setting } from "../../assets/images/setting.svg";
-import { ReactComponent as Credit } from "../../assets/images/credit-card.svg";
+// import { ReactComponent as Credit } from "../../assets/images/credit-card.svg";
 import { ReactComponent as Clip } from "../../assets/images/clipboard.svg";
 import { ReactComponent as Network } from "../../assets/images/wifi.svg";
 import { ReactComponent as Disk } from "../../assets/images/server.svg";
@@ -236,7 +236,7 @@ const SideBar = (props) => {
                     </div>
                   </div> */}
                   <div>
-                    <div>
+                    {/* <div>
                       <NavLink
                         to={{
                           pathname: `/projects/${projectID}/billing`,
@@ -246,7 +246,7 @@ const SideBar = (props) => {
                         <Credit />
                         Billing
                       </NavLink>
-                    </div>
+                    </div> */}
                   </div>
                   <div>
                     <NavLink
