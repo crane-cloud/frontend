@@ -358,3 +358,6 @@
   left: 3rem;
   width: fit-content;
 }
+.opacityClass{
+  opacity: .2;
+}

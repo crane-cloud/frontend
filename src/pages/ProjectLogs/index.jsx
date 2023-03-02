@@ -12,7 +12,8 @@ import { ReactComponent as Danger } from "../../assets/images/alert-octagon.svg"
 // import { ReactComponent as Startup } from "../../assets/images/trending-up.svg";
 import { handleGetRequest } from "../../apis/apis.js";
 import DateInput from "../../components/DateInput";
-import getUserProjects from "../../redux/actions/projectsList";
+import getProjectDatabases from "../../redux/actions/databaseList";
+import getAppsList from "../../redux/actions/appsList";
 import { ReactComponent as DownArrow } from "../../assets/images/downarrow.svg";
 import { ReactComponent as FilterIcon } from "../../assets/images/filterIcon.svg";
 import { ReactComponent as ArrowUpDDown } from "../../assets/images/ArrowUp&Down.svg";
@@ -28,10 +29,17 @@ const ProjectLogs = (props) => {
   const [feedback, setFeedback] = useState("");
   const { data } = useSelector((state) => state.user);
   const { projectID } = useParams();
-  const { projects, isFetched } = useSelector(
-    (state) => state.userProjectsReducer
+  const { projects } = useSelector((state) => state.userProjectsReducer);
+  const { databases, databasesFetched } = useSelector(
+    (state) => state.projectDatabasesReducer
   );
+  const { apps, isRetrieved } = useSelector((state) => state.appsListReducer);
+  const getProjectName = (id) => {
+    return projects?.find((project) => project.id === id).name;
+  };
+  const baseLink = `/users/activities?a_project_id=${projectID}&`;
   const [filterOpen, setFilterOpen] = useState(false);
+  const [queryParams, setQueryParams] = useState("");
   const [showFromCalendar, setShowFromCalendar] = useState(false);
   const [showToCalendar, setShowToCalendar] = useState(false);
   //filter states
@@ -44,32 +52,46 @@ const ProjectLogs = (props) => {
   //model
   const [showModel, setShowModel] = useState(false);
   const [modelField, setModelField] = useState("none");
-  //projects
-  const [showProjects, setShowProjects] = useState(false);
-  const [projectsField, setProjectsField] = useState("none");
+
+  //dates
+  const [toTS, setToTS] = useState("none");
+  const [fromTS, setFromTS] = useState("none");
+
+  //apps
+  const [showApps, setShowApps] = useState(false);
+  const [appsField, setAppsField] = useState("none");
+
+  //databases
+  const [showDatabases, setShowDatabases] = useState(false);
+  const [databasesField, setDatabasesField] = useState("none");
 
   //constant lists
-  const statusList = ["success", "fail"];
-  const operationsList = ["create", "update", "delete"];
-  const modelsList = ["projects", "apps", "databases"];
+  const statusList = ["Success", "Failed"];
+  const operationsList = ["Create", "Update", "Delete"];
+  const modelsList = ["Project"];
 
-  const getProjectName = (id) => {
-    return projects?.find((project) => project.id === id).name;
-  };
   useEffect(() => {
-    fetchActivityLogs();
-    getUserProjects(data.id);
-  }, [data]);
+    fetchActivityLogs(baseLink);
+    // fetch apps
+    // fetch dbs
+    getProjectDatabases(projectID);
+    getAppsList(projectID);
+  }, [projectID,baseLink]);
 
-  const fetchActivityLogs = () => {
+  useEffect(() => {
+    fetchActivityLogs(`${baseLink}${queryParams}`);
+    setFeedback("");
+  }, [queryParams,baseLink]);
+
+  const fetchActivityLogs = (link) => {
     setLoading(true);
     //projectID
-    handleGetRequest(`/users/activities?a_project_id=${projectID}`)
+    handleGetRequest(link)
       .then((response) => {
         if (response.data.data.activity.length > 0) {
           setLogs(response.data.data.activity);
         } else {
-          setFeedback("No logs for this project");
+          setFeedback("No logs for you");
         }
         setLoading(false);
       })
@@ -77,6 +99,22 @@ const ProjectLogs = (props) => {
         setFeedback("Failed to fetch logs, please try again");
         setLoading(false);
       });
+  };
+  const handleFromDate = (fromTS) => {
+    const date = new Date(fromTS);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const formattedDate = `${year}-${month}-${day}`;
+    setFromTS(formattedDate);
+  };
+  const handleToDate = (toTS) => {
+    const date = new Date(toTS);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const formattedDate = `${year}-${month}-${day}`;
+    setToTS(formattedDate);
   };
   const switchCalendars = ({ target }) => {
     const calendar = target.getAttribute("value");
@@ -92,26 +130,205 @@ const ProjectLogs = (props) => {
     }
   };
   const closeCalendar = () => {
-    setShowFromCalendar(false);
-    setShowToCalendar(false);
+    if (showToCalendar) {
+      setToTS("none");
+      setShowToCalendar(false);
+      if (queryParams.includes("&end=")) {
+        setQueryParams(queryParams.replace(/&end=.+?(&|$)/, ""));
+      } else if (queryParams.includes("end=")) {
+        setQueryParams(queryParams.replace(/end=.+?(&|$)/, ""));
+      }
+    }
+    if (showFromCalendar) {
+      setFromTS("none");
+      setShowFromCalendar(false);
+      if (queryParams.includes("&start=")) {
+        setQueryParams(queryParams.replace(/&start=.+?(&|$)/, ""));
+      } else if (queryParams.includes("start=")) {
+        setQueryParams(queryParams.replace(/start=.+?(&|$)/, ""));
+      }
+    }
   };
   const handleCalenderSubmission = () => {
-    // const { onChange } = props;
-    // const customTime = {
-    //   start: fromTimeStamp,
-    //   end: toTimeStamp,
-    // };
-
-    // onChange("custom", customTime);
+    //add to link
+    if (toTS !== "none") {
+      if (queryParams === "") {
+        setQueryParams(`end=${toTS}`);
+      } else {
+        setQueryParams(`${queryParams}&end=${toTS}`);
+      }
+    }
+    if (fromTS !== "none") {
+      if (queryParams === "") {
+        setQueryParams(`start=${fromTS}`);
+      } else {
+        setQueryParams(`${queryParams}&start=${fromTS}`);
+      }
+    }
     closeCalendar();
   };
+  const handleStatusFilter = (item) => {
+    setStatusField(item);
+    if (item === "none") {
+      if (queryParams.includes("&status=")) {
+        setQueryParams(queryParams.replace(/&status=[^&]+/, ""));
+      } else if (queryParams.includes("status=")) {
+        setQueryParams(queryParams.replace(/status=.+?(&|$)/, ""));
+      }
+    } else {
+      const NewParameter = `status=${item}`;
+      if (queryParams.includes("&status=")) {
+        let value = queryParams;
+        value = value.replace(/&status=.[^&]+/, "");
+        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
+        setQueryParams(value);
+        //setQueryParams(queryParams.replace(/&status=.+?(&|$)/, `&${NewParameter}`))
+      } else if (queryParams.includes("status=")) {
+        let value = queryParams;
+        value = value.replace(/status=.+?(&|$)/, "");
+        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
+        setQueryParams(value);
+      } else if (queryParams === "") {
+        setQueryParams(NewParameter);
+      } else {
+        setQueryParams(`${queryParams}&${NewParameter}`);
+      }
+    }
+    setShowStatusFilter(false);
+  };
+  const handleOperationFilter = (item) => {
+    setOperationField(item);
+    if (item === "none") {
+      if (queryParams.includes("&operation=")) {
+        setQueryParams(queryParams.replace(/&operation=[^&]+/, ""));
+      } else if (queryParams.includes("operation=")) {
+        setQueryParams(queryParams.replace(/operation=.+?(&|$)/, ""));
+      }
+    } else {
+      const NewParameter = `operation=${item}`;
+      if (queryParams.includes("&operation=")) {
+        let value = queryParams;
+        value = value.replace(/&operation=[^&]+/, "");
+        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
+        setQueryParams(value);
+        //setQueryParams(queryParams.replace(/&operation=.+?(&|$)/, `&${NewParameter}`))
+      } else if (queryParams.includes("operation=")) {
+        let value = queryParams;
+        value = value.replace(/operation=.+?(&|$)/, ``);
+        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
+        setQueryParams(value);
+      } else if (queryParams === "") {
+        setQueryParams(NewParameter);
+      } else {
+        setQueryParams(`${queryParams}&${NewParameter}`);
+      }
+    }
+    setShowOperation(false);
+  };
+  const handleModelFilter = (item) => {
+    setModelField(item);
 
-  // const handleEndpointCustomisation = () => {
+    if (item === "none") {
+      if (queryParams.includes("&model=")) {
+        setQueryParams(queryParams.replace(/&model=[^&]+/, ""));
+      } else if (queryParams.includes("model=")) {
+        setQueryParams(queryParams.replace(/model=.+?(&|$)/, ""));
+      }
+    } else {
+      const NewParameter = `model=${item}`;
+      if (queryParams.includes("&model=")) {
+        let value = queryParams;
+        value = value.replace(/&model=[^&]+/, "");
+        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
+        setQueryParams(value);
+        // setQueryParams(queryParams.replace(/&model=.+?(&|$)/, `&${NewParameter}`))
+      } else if (queryParams.includes("model=")) {
+        let value = queryParams;
+        value = value.replace(/model=.+?(&|$)/, ``);
+        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
+        setQueryParams(value);
+      } else if (queryParams === "") {
+        setQueryParams(NewParameter);
+      } else {
+        setQueryParams(`${queryParams}&${NewParameter}`);
+      }
+    }
+    setShowModel(false);
+  };
+  const handleAppsFilter = (item) => {
+    setAppsField(item.name);
+    setShowApps(false);
+    if (item.name === "none") {
+      if (queryParams.includes("&a_app_id=")) {
+        setQueryParams(queryParams.replace(/&a_app_id=[^&]+/, ""));
+      } else if (queryParams.includes("a_app_id=")) {
+        setQueryParams(queryParams.replace(/a_app_id=.+?(&|$)/, ""));
+      }
+    } else {
+      let currentParams = queryParams;
+      const NewParameter = `a_app_id=${projects[item.index].id}`;
+      if (currentParams.includes("&a_db_id=")) {
+        setQueryParams(queryParams.replace(/&a_db_id=[^&]+/, ""));
+      }
+      if (currentParams.includes("a_db_id=")) {
+        setQueryParams(queryParams.replace(/a_db_id=.+?(&|$)/, ""));
+      }
+      if (currentParams.includes("&a_app_id=")) {
+        let value = currentParams;
+        value = value.replace(/&a_app_id=[^&]+/, "");
+        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
+        setQueryParams(value);
+        // setQueryParams(queryParams.replace(/&a_app_id=.+?(&|$)/, `&${NewParameter}`))
+      } else if (currentParams.includes("a_app_id=")) {
+        let value = currentParams;
+        value = value.replace(/a_app_id=.+?(&|$)/, ``);
+        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
+        setQueryParams(value);
+      } else if (currentParams === "") {
+        setQueryParams(NewParameter);
+      } else {
+        setQueryParams(`${queryParams}&${NewParameter}`);
+      }
+    }
+  };
+  const handleDataBasesFilter = (item) => {
+    setDatabasesField(item.name);
+    setShowDatabases(false);
+    if (item.name === "none") {
+      if (queryParams.includes("&a_db_id=")) {
+        setQueryParams(queryParams.replace(/&a_db_id=[^&]+/, ""));
+      } else if (queryParams.includes("a_db_id=")) {
+        setQueryParams(queryParams.replace(/a_db_id=.+?(&|$)/, ""));
+      }
+    } else {
+      // remove spacified app
+      let currentParams = queryParams;
+      const NewParameter = `a_db_id=${projects[item.index].id}`;
+      if (currentParams.includes("&a_app_id=")) {
+        setQueryParams(queryParams.replace(/&a_app_id=[^&]+/, ""));
+      }
+      if (currentParams.includes("a_app_id=")) {
+        setQueryParams(queryParams.replace(/a_app_id=.+?(&|$)/, ""));
+      }
 
-  // };
-  // api needs to factor inproject collaboration, (who did what? not only current user)
-  // no logs for database creations, app creations and updates, basically only logs
-  // for project creation available
+      if (currentParams.includes("&a_db_id=")) {
+        let value = currentParams;
+        value = value.replace(/&a_db_id=[^&]+/, "");
+        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
+        setQueryParams(value);
+        // setQueryParams(queryParams.replace(/&a_db_id=.+?(&|$)/, `&${NewParameter}`))
+      } else if (currentParams.includes("a_db_id=")) {
+        let value = currentParams;
+        value = value.replace(/a_db_id=.+?(&|$)/, ``);
+        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
+        setQueryParams(value);
+      } else if (currentParams === "") {
+        setQueryParams(NewParameter);
+      } else {
+        setQueryParams(`${queryParams}&${NewParameter}`);
+      }
+    }
+  };
 
   return (
     <DashboardLayout header="Project Activity" name={getProjectName(projectID)}>
@@ -123,7 +340,7 @@ const ProjectLogs = (props) => {
               <div className={styles.DateItem}>
                 <div>From:</div>
                 <DateInput
-                  handleChange={() => {}}
+                  handleChange={handleFromDate}
                   showCalendar={showFromCalendar}
                   className={styles.dateField}
                   position={styles.CalenderFromposition}
@@ -136,7 +353,7 @@ const ProjectLogs = (props) => {
               <div className={styles.DateItem}>
                 <div>To:</div>
                 <DateInput
-                  handleChange={() => {}}
+                  handleChange={handleToDate}
                   showCalendar={showToCalendar}
                   position={styles.CalenderToposition}
                   className={styles.dateField}
@@ -176,19 +393,18 @@ const ProjectLogs = (props) => {
                       <div className={styles.InnerDropDown}>
                         <div
                           onClick={() => {
-                            setStatusField("none");
-                            setShowStatusFilter(false);
+                            handleStatusFilter("none");
                           }}
                           className={styles.InnerDropDownItem}
                         >
                           none
                         </div>
-                        {statusList.map((item) => (
+                        {statusList.map((item, i) => (
                           <div
+                            key={i}
                             className={styles.InnerDropDownItem}
                             onClick={() => {
-                              setStatusField(item);
-                              setShowStatusFilter(false);
+                              handleStatusFilter(item);
                             }}
                           >
                             {item}
@@ -215,19 +431,18 @@ const ProjectLogs = (props) => {
                       <div className={styles.InnerDropDown}>
                         <div
                           onClick={() => {
-                            setOperationField("none");
-                            setShowOperation(false);
+                            handleOperationFilter("none");
                           }}
                           className={styles.InnerDropDownItem}
                         >
                           none
                         </div>
-                        {operationsList.map((item) => (
+                        {operationsList.map((item, i) => (
                           <div
+                            key={i}
                             className={styles.InnerDropDownItem}
                             onClick={() => {
-                              setOperationField(item);
-                              setShowOperation(false);
+                              handleOperationFilter(item);
                             }}
                           >
                             {item}
@@ -252,19 +467,18 @@ const ProjectLogs = (props) => {
                       <div className={styles.InnerDropDownLowerhalf}>
                         <div
                           onClick={() => {
-                            setModelField("none");
-                            setShowModel(false);
+                            handleModelFilter("none");
                           }}
                           className={styles.InnerDropDownItem}
                         >
                           none
                         </div>
-                        {modelsList.map((item) => (
+                        {modelsList.map((item, i) => (
                           <div
+                            key={i}
                             className={styles.InnerDropDownItem}
                             onClick={() => {
-                              setModelField(item);
-                              setShowModel(false);
+                              handleModelFilter(item);
                             }}
                           >
                             {item}
@@ -274,41 +488,67 @@ const ProjectLogs = (props) => {
                     )}
                   </div>
                 </div>
-                <div className={styles.FilterItemContainer}>
+                <div
+                  className={`${styles.FilterItemContainer} ${styles.opacityClass}`}
+                >
                   <div className={styles.FilterItem}>
                     Project
                     <div className={styles.SelectorBox}>
-                      <div className={styles.SelectOption}>{projectsField}</div>
+                      <div className={styles.SelectOption}>
+                        {getProjectName(projectID)}
+                      </div>
+                      <ArrowUpDDown />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className={
+                    databasesField !== "none"
+                      ? `${styles.FilterItemContainer} ${styles.opacityClass}`
+                      : styles.FilterItemContainer
+                  }
+                >
+                  <div className={styles.FilterItem}>
+                    Applications
+                    <div className={styles.SelectorBox}>
+                      <div className={styles.SelectOption}>{appsField}</div>
                       <ArrowUpDDown
                         onClick={() => {
-                          setShowProjects(!showProjects);
+                          if (databasesField === "none") {
+                            setShowApps(!showApps);
+                          }
                         }}
                       />
                     </div>
-                    {showProjects && (
+                    {showApps && databasesField === "none" && (
                       <div className={styles.InnerDropDownLowerhalf}>
                         <div
                           onClick={() => {
-                            setProjectsField("none");
-                            setShowProjects(false);
+                            handleAppsFilter({
+                              name: "none",
+                              index: -1,
+                            });
                           }}
                           className={styles.InnerDropDownItem}
                         >
                           none
                         </div>
-                        {!isFetched && (
+                        {!isRetrieved && (
                           <div className={styles.InnerDropDownItem}>
                             loading...
                           </div>
                         )}
-                        {projects.length > 0 &&
-                          isFetched &&
-                          projects?.map((item) => (
+                        {apps.apps.length > 0 &&
+                          isRetrieved &&
+                          apps?.apps?.map((item, index) => (
                             <div
+                              key={index}
                               className={styles.InnerDropDownItem}
                               onClick={() => {
-                                setProjectsField(item.name);
-                                setShowProjects(false);
+                                handleAppsFilter({
+                                  name: item.name,
+                                  index: index,
+                                });
                               }}
                             >
                               {item.name}
@@ -318,22 +558,63 @@ const ProjectLogs = (props) => {
                     )}
                   </div>
                 </div>
-                <div className={styles.FilterItemContainer}>
-                  <div className={styles.FilterItem}>
-                    Applications
-                    <div className={styles.SelectorBox}>
-                      <div className={styles.SelectOption}>none</div>
-                      <ArrowUpDDown />
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.FilterItemContainer}>
+                <div
+                  className={
+                    appsField !== "none"
+                      ? `${styles.FilterItemContainer} ${styles.opacityClass}`
+                      : styles.FilterItemContainer
+                  }
+                >
                   <div className={styles.FilterItem}>
                     Databases
                     <div className={styles.SelectorBox}>
-                      <div className={styles.SelectOption}>none</div>
-                      <ArrowUpDDown />
+                      <div className={styles.SelectOption}>
+                        {databasesField}
+                      </div>
+                      <ArrowUpDDown
+                        onClick={() => {
+                          if (appsField === "none") {
+                            setShowDatabases(!showDatabases);
+                          }
+                        }}
+                      />
                     </div>
+                    {showDatabases && appsField === "none" && (
+                      <div className={styles.InnerDropDownLowerhalf}>
+                        <div
+                          onClick={() => {
+                            handleDataBasesFilter({
+                              name: "none",
+                              index: -1,
+                            });
+                          }}
+                          className={styles.InnerDropDownItem}
+                        >
+                          none
+                        </div>
+                        {!databasesFetched && (
+                          <div className={styles.InnerDropDownItem}>
+                            loading...
+                          </div>
+                        )}
+                        {databases.length > 0 &&
+                          databasesFetched &&
+                          databases?.map((item, index) => (
+                            <div
+                              key={index}
+                              className={styles.InnerDropDownItem}
+                              onClick={() => {
+                                handleDataBasesFilter({
+                                  name: item.name,
+                                  index: index,
+                                });
+                              }}
+                            >
+                              {item.name}
+                            </div>
+                          ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

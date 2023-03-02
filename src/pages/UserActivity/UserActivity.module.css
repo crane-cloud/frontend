@@ -38,6 +38,9 @@
   align-items: flex-end;
   position: relative;
 }
+.opacityClass{
+  opacity: .2;
+}
 
 .BackButton{
   background:var(--primary-color);

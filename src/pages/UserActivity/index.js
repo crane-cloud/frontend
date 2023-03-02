@@ -24,10 +24,12 @@ const UserActivity = (props) => {
   const { projects, isFetched } = useSelector(
     (state) => state.userProjectsReducer
   );
+  const baseLink = "/users/activities?";
   const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [feedback, setFeedback] = useState("");
+  const [queryParams, setQueryParams] = useState("");
   const [showFromCalendar, setShowFromCalendar] = useState(false);
   const [showToCalendar, setShowToCalendar] = useState(false);
   //filter states
@@ -43,21 +45,29 @@ const UserActivity = (props) => {
   //projects
   const [showProjects, setShowProjects] = useState(false);
   const [projectsField, setProjectsField] = useState("none");
+  //dates
+  const [toTS, setToTS] = useState("none");
+  const [fromTS, setFromTS] = useState("none");
 
   //constant lists
-  const statusList = ["success", "fail"];
-  const operationsList = ["create", "update", "delete"];
-  const modelsList = ["projects", "apps", "databases"];
+  const statusList = ["Success", "Failed"];
+  const operationsList = ["Create", "Update", "Delete"];
+  const modelsList = ["Project", "App", "Database"];
 
   useEffect(() => {
-    fetchActivityLogs();
+    fetchActivityLogs(baseLink);
     getUserProjects(data.id);
   }, [data]);
 
-  const fetchActivityLogs = () => {
+  useEffect(() => {
+    fetchActivityLogs(`${baseLink}${queryParams}`);
+    setFeedback("");
+  }, [queryParams]);
+
+  const fetchActivityLogs = (link) => {
     setLoading(true);
     //projectID
-    handleGetRequest(`/users/activities`)
+    handleGetRequest(link)
       .then((response) => {
         if (response.data.data.activity.length > 0) {
           setLogs(response.data.data.activity);
@@ -70,6 +80,22 @@ const UserActivity = (props) => {
         setFeedback("Failed to fetch logs, please try again");
         setLoading(false);
       });
+  };
+  const handleFromDate = (fromTS) => {
+    const date = new Date(fromTS);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const formattedDate = `${year}-${month}-${day}`;
+    setFromTS(formattedDate);
+  };
+  const handleToDate = (toTS) => {
+    const date = new Date(toTS);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const formattedDate = `${year}-${month}-${day}`;
+    setToTS(formattedDate);
   };
   const switchCalendars = ({ target }) => {
     const calendar = target.getAttribute("value");
@@ -85,19 +111,162 @@ const UserActivity = (props) => {
     }
   };
   const closeCalendar = () => {
-    setShowFromCalendar(false);
-    setShowToCalendar(false);
+    if (showToCalendar) {
+      setToTS("none");
+      setShowToCalendar(false);
+      if (queryParams.includes("&end=")) {
+        setQueryParams(queryParams.replace(/&end=.+?(&|$)/, ""));
+      } else if (queryParams.includes("end=")) {
+        setQueryParams(queryParams.replace(/end=.+?(&|$)/, ""));
+      }
+    }
+    if (showFromCalendar) {
+      setFromTS("none");
+      setShowFromCalendar(false);
+      if (queryParams.includes("&start=")) {
+        setQueryParams(queryParams.replace(/&start=.+?(&|$)/, ""));
+      } else if (queryParams.includes("start=")) {
+        setQueryParams(queryParams.replace(/start=.+?(&|$)/, ""));
+      }
+    }
   };
   const handleCalenderSubmission = () => {
-    // const { onChange } = props;
-    // const customTime = {
-    //   start: fromTimeStamp,
-    //   end: toTimeStamp,
-    // };
-
-    // onChange("custom", customTime);
+    //add to link
+    if (toTS !== "none") {
+      if (queryParams === "") {
+        setQueryParams(`end=${toTS}`);
+      } else {
+        setQueryParams(`${queryParams}&end=${toTS}`);
+      }
+    }
+    if (fromTS !== "none") {
+      if (queryParams === "") {
+        setQueryParams(`start=${fromTS}`);
+      } else {
+        setQueryParams(`${queryParams}&start=${fromTS}`);
+      }
+    }
     closeCalendar();
   };
+  const handleStatusFilter = (item) => {
+    setStatusField(item);
+    if (item === "none") {
+      if (queryParams.includes("&status=")) {
+        setQueryParams(queryParams.replace(/&status=[^&]+/, ""));
+      } else if (queryParams.includes("status=")) {
+        setQueryParams(queryParams.replace(/status=.+?(&|$)/, ""));
+      }
+    } else {
+      const NewParameter = `status=${item}`;
+      if (queryParams.includes("&status=")) {
+        let value = queryParams;
+        value = value.replace(/&status=.[^&]+/, "");
+        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
+        setQueryParams(value);
+        //setQueryParams(queryParams.replace(/&status=.+?(&|$)/, `&${NewParameter}`))
+      } else if (queryParams.includes("status=")) {
+        let value = queryParams;
+        value = value.replace(/status=.+?(&|$)/, "");
+        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
+        setQueryParams(value);
+      } else if (queryParams === "") {
+        setQueryParams(NewParameter);
+      } else {
+        setQueryParams(`${queryParams}&${NewParameter}`);
+      }
+    }
+    setShowStatusFilter(false);
+  };
+  const handleOperationFilter = (item) => {
+    setOperationField(item);
+    if (item === "none") {
+      if (queryParams.includes("&operation=")) {
+        setQueryParams(queryParams.replace(/&operation=[^&]+/, ""));
+      } else if (queryParams.includes("operation=")) {
+        setQueryParams(queryParams.replace(/operation=.+?(&|$)/, ""));
+      }
+    } else {
+      const NewParameter = `operation=${item}`;
+      if (queryParams.includes("&operation=")) {
+        let value = queryParams;
+        value = value.replace(/&operation=[^&]+/, "");
+        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
+        setQueryParams(value);
+        //setQueryParams(queryParams.replace(/&operation=.+?(&|$)/, `&${NewParameter}`))
+      } else if (queryParams.includes("operation=")) {
+        let value = queryParams;
+        value = value.replace(/operation=.+?(&|$)/, ``);
+        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
+        setQueryParams(value);
+      } else if (queryParams === "") {
+        setQueryParams(NewParameter);
+      } else {
+        setQueryParams(`${queryParams}&${NewParameter}`);
+      }
+    }
+    setShowOperation(false);
+  };
+  const handleModelFilter = (item) => {
+    setModelField(item);
+
+    if (item === "none") {
+      if (queryParams.includes("&model=")) {
+        setQueryParams(queryParams.replace(/&model=[^&]+/, ""));
+      } else if (queryParams.includes("model=")) {
+        setQueryParams(queryParams.replace(/model=.+?(&|$)/, ""));
+      }
+    } else {
+      const NewParameter = `model=${item}`;
+      if (queryParams.includes("&model=")) {
+        let value = queryParams;
+        value = value.replace(/&model=[^&]+/, "");
+        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
+        setQueryParams(value);
+        // setQueryParams(queryParams.replace(/&model=.+?(&|$)/, `&${NewParameter}`))
+      } else if (queryParams.includes("model=")) {
+        let value = queryParams;
+        value = value.replace(/model=.+?(&|$)/, ``);
+        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
+        setQueryParams(value);
+      } else if (queryParams === "") {
+        setQueryParams(NewParameter);
+      } else {
+        setQueryParams(`${queryParams}&${NewParameter}`);
+      }
+    }
+    setShowModel(false);
+  };
+  const handleProjectFilter = (item) => {
+    setProjectsField(item.name);
+    setShowProjects(false);
+
+    if (item.name === "none") {
+      if (queryParams.includes("&a_project_id=")) {
+        setQueryParams(queryParams.replace(/&a_project_id=[^&]+/, ""));
+      } else if (queryParams.includes("a_project_id=")) {
+        setQueryParams(queryParams.replace(/a_project_id=.+?(&|$)/, ""));
+      }
+    } else {
+      const NewParameter = `a_project_id=${projects[item.index].id}`;
+      if (queryParams.includes("&a_project_id=")) {
+        let value = queryParams;
+        value = value.replace(/&a_project_id=[^&]+/, "");
+        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
+        setQueryParams(value);
+        // setQueryParams(queryParams.replace(/&a_project_id=.+?(&|$)/, `&${NewParameter}`))
+      } else if (queryParams.includes("a_project_id=")) {
+        let value = queryParams;
+        value = value.replace(/a_project_id=.+?(&|$)/, ``);
+        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
+        setQueryParams(value);
+      } else if (queryParams === "") {
+        setQueryParams(NewParameter);
+      } else {
+        setQueryParams(`${queryParams}&${NewParameter}`);
+      }
+    }
+  };
+
   return (
     // empty a div to fix root justification on this page
     <div>
@@ -121,7 +290,7 @@ const UserActivity = (props) => {
                     <div className={styles.DateItem}>
                       <div>From:</div>
                       <DateInput
-                        handleChange={() => {}}
+                        handleChange={handleFromDate}
                         showCalendar={showFromCalendar}
                         className={styles.dateField}
                         position={styles.CalenderFromposition}
@@ -134,7 +303,7 @@ const UserActivity = (props) => {
                     <div className={styles.DateItem}>
                       <div>To:</div>
                       <DateInput
-                        handleChange={() => {}}
+                        handleChange={handleToDate}
                         showCalendar={showToCalendar}
                         position={styles.CalenderToposition}
                         className={styles.dateField}
@@ -176,19 +345,18 @@ const UserActivity = (props) => {
                             <div className={styles.InnerDropDown}>
                               <div
                                 onClick={() => {
-                                  setStatusField("none");
-                                  setShowStatusFilter(false);
+                                  handleStatusFilter("none");
                                 }}
                                 className={styles.InnerDropDownItem}
                               >
                                 none
                               </div>
-                              {statusList.map((item) => (
+                              {statusList.map((item, i) => (
                                 <div
+                                  key={i}
                                   className={styles.InnerDropDownItem}
                                   onClick={() => {
-                                    setStatusField(item);
-                                    setShowStatusFilter(false);
+                                    handleStatusFilter(item);
                                   }}
                                 >
                                   {item}
@@ -215,19 +383,18 @@ const UserActivity = (props) => {
                             <div className={styles.InnerDropDown}>
                               <div
                                 onClick={() => {
-                                  setOperationField("none");
-                                  setShowOperation(false);
+                                  handleOperationFilter("none");
                                 }}
                                 className={styles.InnerDropDownItem}
                               >
                                 none
                               </div>
-                              {operationsList.map((item) => (
+                              {operationsList.map((item, i) => (
                                 <div
+                                  key={i}
                                   className={styles.InnerDropDownItem}
                                   onClick={() => {
-                                    setOperationField(item);
-                                    setShowOperation(false);
+                                    handleOperationFilter(item);
                                   }}
                                 >
                                   {item}
@@ -237,7 +404,13 @@ const UserActivity = (props) => {
                           )}
                         </div>
                       </div>
-                      <div className={styles.FilterItemContainer}>
+                      <div
+                        className={
+                          projectsField !== "none"
+                            ? `${styles.FilterItemContainer} ${styles.opacityClass}`
+                            : styles.FilterItemContainer
+                        }
+                      >
                         <div className={styles.FilterItem}>
                           Model
                           <div className={styles.SelectorBox}>
@@ -246,27 +419,28 @@ const UserActivity = (props) => {
                             </div>
                             <ArrowUpDDown
                               onClick={() => {
-                                setShowModel(!showModel);
+                                if (projectsField === "none") {
+                                  setShowModel(!showModel);
+                                }
                               }}
                             />
                           </div>
-                          {showModel && (
+                          {showModel && projectsField === "none" && (
                             <div className={styles.InnerDropDownLowerhalf}>
                               <div
                                 onClick={() => {
-                                  setModelField("none");
-                                  setShowModel(false);
+                                  handleModelFilter("none");
                                 }}
                                 className={styles.InnerDropDownItem}
                               >
                                 none
                               </div>
-                              {modelsList.map((item) => (
+                              {modelsList.map((item, i) => (
                                 <div
+                                  key={i}
                                   className={styles.InnerDropDownItem}
                                   onClick={() => {
-                                    setModelField(item);
-                                    setShowModel(false);
+                                    handleModelFilter(item);
                                   }}
                                 >
                                   {item}
@@ -276,7 +450,13 @@ const UserActivity = (props) => {
                           )}
                         </div>
                       </div>
-                      <div className={styles.FilterItemContainer}>
+                      <div
+                        className={
+                          modelField === "App" || modelField === "Database"
+                            ? `${styles.FilterItemContainer} ${styles.opacityClass}`
+                            : styles.FilterItemContainer
+                        }
+                      >
                         <div className={styles.FilterItem}>
                           Project
                           <div className={styles.SelectorBox}>
@@ -285,41 +465,53 @@ const UserActivity = (props) => {
                             </div>
                             <ArrowUpDDown
                               onClick={() => {
-                                setShowProjects(!showProjects);
+                                if (
+                                  modelField === "none" ||
+                                  modelField === "Project"
+                                ) {
+                                  setShowProjects(!showProjects);
+                                }
                               }}
                             />
                           </div>
-                          {showProjects && (
-                            <div className={styles.InnerDropDownLowerhalf}>
-                              <div
-                                onClick={() => {
-                                  setProjectsField("none");
-                                  setShowProjects(false);
-                                }}
-                                className={styles.InnerDropDownItem}
-                              >
-                                none
-                              </div>
-                              {!isFetched && (
-                                <div className={styles.InnerDropDownItem}>
-                                  loading...
+                          {showProjects &&
+                            (modelField === "none" ||
+                              modelField === "Project") && (
+                              <div className={styles.InnerDropDownLowerhalf}>
+                                <div
+                                  onClick={() => {
+                                    handleProjectFilter({
+                                      name: "none",
+                                      index: -1,
+                                    });
+                                  }}
+                                  className={styles.InnerDropDownItem}
+                                >
+                                  none
                                 </div>
-                              )}
-                              {projects.length > 0 &&
-                                isFetched &&
-                                projects?.map((item) => (
-                                  <div
-                                    className={styles.InnerDropDownItem}
-                                    onClick={() => {
-                                      setProjectsField(item.name);
-                                      setShowProjects(false);
-                                    }}
-                                  >
-                                    {item.name}
+                                {!isFetched && (
+                                  <div className={styles.InnerDropDownItem}>
+                                    loading...
                                   </div>
-                                ))}
-                            </div>
-                          )}
+                                )}
+                                {projects.length > 0 &&
+                                  isFetched &&
+                                  projects?.map((item, index) => (
+                                    <div
+                                      key={index}
+                                      className={styles.InnerDropDownItem}
+                                      onClick={() => {
+                                        handleProjectFilter({
+                                          name: item.name,
+                                          index: index,
+                                        });
+                                      }}
+                                    >
+                                      {item.name}
+                                    </div>
+                                  ))}
+                              </div>
+                            )}
                         </div>
                       </div>
                       {/* <div className={styles.FilterItemContainer}>
@@ -461,8 +653,7 @@ const UserActivity = (props) => {
                 </div>
               </div>
             </div> 
-            <hr className={styles.hr} />
-            */}
+            <hr className={styles.hr} /> */}
             </div>
           </div>
         </div>
