@@ -106,7 +106,7 @@ const DateInput = ({
       {showCalendar && (
         <div
           className={
-            !months_only
+            (!SpendCalenderClass)
               ? `DateInputCalendar ${position}`
               : `${SpendCalenderClass}`
           }
