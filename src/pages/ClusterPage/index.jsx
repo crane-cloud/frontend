@@ -140,6 +140,54 @@ const ClusterPage = ({
         <InformationBar header="Overview" />
       </div>
 
+      <div className={styles.OtherCards}>
+        <Link className={styles.ResourceCard}>
+          <>
+            <div className={styles.CardHeader}>Projects</div>
+            <div className={styles.DBStats}>
+              <div className={styles.In}>
+                <div className={styles.InnerTitlesStart}>Active</div>
+                <div className={styles.ResourceDigit}>50</div>
+              </div>
+              <div className={styles.verticalLine}></div>
+              <div className={styles.In}>
+                <div className={styles.InnerTitlesMiddle}>Disabled</div>
+                <div className={styles.ResourceDigit}>0</div>
+              </div>
+            </div>
+          </>
+        </Link>
+        <Link to="/databases" className={styles.ResourceCard}>
+          <>
+            <div className={styles.CardHeader}>Databases</div>
+            <div className={styles.DBStats}>
+              <div className={styles.In}>
+                <div className={styles.InnerTitlesStart}>Mysql</div>
+                <div className={styles.ResourceDigit}>
+                  {databases &&
+                    databases?.dbs_stats_per_flavour?.mysql_db_count}
+                </div>
+              </div>
+              <div className={styles.verticalLine}></div>
+              <div className={styles.In}>
+                <div className={styles.InnerTitlesMiddle}>Postgresql</div>
+                <div className={styles.ResourceDigit}>
+                  {databases &&
+                    databases.dbs_stats_per_flavour?.postgres_db_count}
+                </div>
+              </div>
+            </div>
+          </>
+        </Link>
+        <div className={styles.ResourceCard}>
+          <div className={styles.CardHeader}>Clusters</div>
+          <div className={styles.CardTop}>Count</div>
+          <div className={styles.ResourceDigit}>
+            {clusters.metadata?.cluster_count}
+          </div>
+        </div>
+      </div>
+
       <div className={styles.ContentSection}>
         <div
           className={
@@ -178,7 +226,7 @@ const ClusterPage = ({
                     </div>
                   ) : (
                     <AreaChart
-                      width={600}
+                      width={800}
                       height={300}
                       syncId="anyId"
                       data={usersSummary?.graph_data}
@@ -256,7 +304,7 @@ const ClusterPage = ({
                     </div>
                   ) : (
                     <AreaChart
-                      width={600}
+                      width={800}
                       height={300}
                       syncId="anyId"
                       position="outside"
@@ -297,53 +345,7 @@ const ClusterPage = ({
         </div>
       </div>
       <br />
-      <div className={styles.OtherCards}>
-        <Link className={styles.ResourceCard}>
-          <>
-            <div className={styles.CardHeader}>Projects</div>
-            <div className={styles.DBStats}>
-              <div className={styles.In}>
-                <div className={styles.InnerTitlesStart}>Active</div>
-                <div className={styles.ResourceDigit}>50</div>
-              </div>
-              <div className={styles.verticalLine}></div>
-              <div className={styles.In}>
-                <div className={styles.InnerTitlesMiddle}>Disabled</div>
-                <div className={styles.ResourceDigit}>0</div>
-              </div>
-            </div>
-          </>
-        </Link>
-        <Link to="/databases" className={styles.ResourceCard}>
-          <>
-            <div className={styles.CardHeader}>Databases</div>
-            <div className={styles.DBStats}>
-              <div className={styles.In}>
-                <div className={styles.InnerTitlesStart}>Mysql</div>
-                <div className={styles.ResourceDigit}>
-                  {databases &&
-                    databases?.dbs_stats_per_flavour?.mysql_db_count}
-                </div>
-              </div>
-              <div className={styles.verticalLine}></div>
-              <div className={styles.In}>
-                <div className={styles.InnerTitlesMiddle}>Postgresql</div>
-                <div className={styles.ResourceDigit}>
-                  {databases &&
-                    databases.dbs_stats_per_flavour?.postgres_db_count}
-                </div>
-              </div>
-            </div>
-          </>
-        </Link>
-        <div className={styles.ResourceCard}>
-          <div className={styles.CardHeader}>Clusters</div>
-          <div className={styles.CardTop}>Count</div>
-          <div className={styles.ResourceDigit}>
-            {clusters.metadata?.cluster_count}
-          </div>
-        </div>
-      </div>
+
 
       <div className="TopRow">
         <InformationBar
