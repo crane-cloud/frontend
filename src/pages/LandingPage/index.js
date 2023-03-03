@@ -330,76 +330,74 @@ const LandingPage = (props) => {
         <div className={styles.LearningSectionTitle}>
           <h2>Explore Crane Cloud Learning Tools</h2>
         </div>
-        <section className={styles.LearningSection}>
-          <div className={styles.CardContainer}>
-            <div className={styles.CardSection}>
-              <div>
-                <GitLab className={styles.Brand} />
-                <h3>Self Managed GitLab</h3>
-                <div>
-                  GitLab is a web-based Git repository manager that provides
-                  source code management (SCM), continuous integration, and
-                  more. It's used for version control and code collaboration.
-                </div>
-                <div className={styles.ButtonSection}>
-                  <a
-                    href={`${GITLAB_URL}`}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    <button className={styles.GetStartedButton}>
-                      <div>Get Started</div>
-                      <RightArrow />
-                    </button>
-                  </a>
-                </div>
+        <section className={styles.CardContainer}>
+          <div className={styles.CardSection}>
+            <GitLab className={styles.Brand} />
+            <div>
+              <h3 className={styles.textCenter}>Self Managed GitLab</h3>
+              <div className={styles.textJustify}>
+                GitLab is a web-based Git repository manager that provides
+                source code management (SCM), continuous integration, and more.
+                It's used for version control and code collaboration.
               </div>
             </div>
-            <div className={styles.CardSection}>
-              <div>
-                <GoPlayground className={styles.Brand} />
-                <h3>Go Playground</h3>
-                <div>
-                  Online tool for executing and testing Go code snippets in a
-                  browser, without having to install Go or set up a local
-                  development environment. It allows sharing code with others.
-                </div>
-                <div className={styles.ButtonSection}>
-                  <a
-                    href={`${GOPLAYGROUND_URL}`}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    <button className={styles.GetStartedButton}>
-                      <div>Get Started</div>
-                      <RightArrow />
-                    </button>
-                  </a>
-                </div>
+            <div className={styles.ButtonSection}>
+              <a
+                href={`${GITLAB_URL}`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <button className={styles.GetStartedButton}>
+                  <div>Get Started</div>
+                  <RightArrow />
+                </button>
+              </a>
+            </div>
+          </div>
+          <div className={styles.CardSection}>
+            <GoPlayground className={styles.Brand} />
+            <div>
+              <h3 className={styles.textCenter}>Go Playground</h3>
+              <div className={styles.textJustify}>
+                Online tool for executing and testing Go code snippets in a
+                browser, without having to install Go or set up a local
+                development environment. It allows sharing code with others.
               </div>
             </div>
-            <div className={styles.CardSection}>
-              <div>
-                <Jupyterhub className={styles.Brand} />
-                <h3>JupyterHub</h3>
-                <div>
-                  JupyterHub brings the power of notebooks to groups of users.
-                  It gives users access to computational environments and
-                  resources without burdening the users
-                </div>
-                <div className={styles.ButtonSection}>
-                  <a
-                    href={`${JUPYTERHUB_URL}`}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    <button className={styles.GetStartedButton}>
-                      <div>Get Started</div>
-                      <RightArrow />
-                    </button>
-                  </a>
-                </div>
+            <div className={styles.ButtonSection}>
+              <a
+                href={`${GOPLAYGROUND_URL}`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <button className={styles.GetStartedButton}>
+                  <div>Get Started</div>
+                  <RightArrow />
+                </button>
+              </a>
+            </div>
+          </div>
+          <div className={styles.CardSection}>
+            <Jupyterhub className={styles.Brand} />
+            <div>
+              <h3 className={styles.textCenter}>JupyterHub</h3>
+              <div className={styles.textJustify}>
+                JupyterHub brings the power of notebooks to groups of users. It
+                gives users access to computational environments and resources
+                without burdening the users
               </div>
+            </div>
+            <div className={styles.ButtonSection}>
+              <a
+                href={`${JUPYTERHUB_URL}`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <button className={styles.GetStartedButton}>
+                  <div>Get Started</div>
+                  <RightArrow />
+                </button>
+              </a>
             </div>
           </div>
         </section>

@@ -260,12 +260,12 @@
 }
 
 .LearningSection {
-  padding-top: 1rem !important;
+  padding-top: 1rem;
   gap: 2rem;
 }
 
 .LearningSectionTitle {
-  padding: 6rem 0rem 1rem 4rem !important;
+  padding: 2rem 4rem;
 }
 
 .IconSqure {
@@ -381,8 +381,9 @@
 .CardContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 4.6rem;
-  justify-content: space-evenly;
+  gap: 2rem;
+  justify-content: space-around;
+  padding-bottom: 3rem;
 }
 
 .CardSection {
@@ -391,17 +392,28 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 7px;
   padding: 20px;
+  display: grid;
+  grid-template-rows: auto 3fr 1fr;
+  align-items: center;
 }
 
 .Brand {
   width: 13rem;
   height: 13rem;
+  justify-self: center;
+}
+
+.textJustify{
+  text-align: justify;
+}
+.textCenter{
+  text-align: center;
 }
 
 .ButtonSection {
-  padding-top: 1rem;
+  padding-bottom: 1.5rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .GetStartedButton {
@@ -435,7 +447,7 @@
 }
 
 .LearningSection {
-  display: flex !important;
+  display: flex;
 }
 
 @media only screen and (max-width: 640px) {
