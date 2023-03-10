@@ -169,7 +169,7 @@ AppCpuPage.propTypes = {
   appCPUMetrics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getAppCPU: PropTypes.func.isRequired,
   clearAppCPU: PropTypes.func.isRequired,
-  apps: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  apps: PropTypes.shape({}).isRequired,
 };
 
 export const mapStateToProps = (state) => {

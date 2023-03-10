@@ -848,7 +848,7 @@ class AppSettingsPage extends React.Component {
                               <PrimaryButton
                                 className={styles.RevertButton}
                                 onClick={this.domainRevert}
-                                disable={urlReverted}
+                                disabled={urlReverted}
                               >
                                 {isReverting ? <Spinner /> : "REVERT"}
                               </PrimaryButton>
@@ -930,7 +930,7 @@ class AppSettingsPage extends React.Component {
                   <div className={styles.APPButton}>
                     <div className={styles.UpperSection}>
                       <PrimaryButton
-                        disable={isUpdating}
+                        disabled={isUpdating}
                         className={isUpdating && styles.deactivatedBtn}
                         onClick={this.handleSubmit}
                       >
@@ -1156,7 +1156,7 @@ class AppSettingsPage extends React.Component {
                     </div>
                     <div className={styles.APPOptionsButton}>
                       <PrimaryButton
-                        disable={isUpdating}
+                        disabled={isUpdating}
                         onClick={this.handlePortSubmit}
                         small
                       >
@@ -1184,7 +1184,7 @@ class AppSettingsPage extends React.Component {
                     </div>
                     <div className={styles.APPOptionsButton}>
                       <PrimaryButton
-                        disable={isUpdating}
+                        disabled={isUpdating}
                         // className={isUpdating && styles.deactivatedBtn}
                         onClick={this.handleCommandSubmit}
                         small
@@ -1281,7 +1281,7 @@ class AppSettingsPage extends React.Component {
                           <PrimaryButton
                             className={disableDelete && styles.InactiveDelete}
                             color={!disableDelete && "red"}
-                            disable={disableDelete}
+                            disabled={disableDelete}
                             onClick={(e) => this.handleDeleteApp(e, appID)}
                           >
                             {isDeleting ? <Spinner /> : "Delete"}
