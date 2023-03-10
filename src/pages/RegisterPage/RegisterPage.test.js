@@ -59,7 +59,7 @@ describe("<RegisterPage/> Component", () => {
   });
 
   it("should have proper props for submit button", () => {
-    expect(RegisterPageComponent.find(".LoginButton").props()).toEqual({
+    expect(RegisterPageComponent.find(".LoginButton").props()).toBe({
       onClick: expect.any(Function),
       className: "LoginButton AuthBtn",
       type: "submit",
