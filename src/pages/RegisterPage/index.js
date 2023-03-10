@@ -157,7 +157,6 @@ export default class RegisterPage extends Component {
       hasAgreed,
       gitLoading,
     } = this.state;
-    console.log(registered);
     return (
       <div className="RegisterPageContainer">
         <Header />

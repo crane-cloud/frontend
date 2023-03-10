@@ -63,30 +63,6 @@ const Header = (props) => {
   return (
     <header className={`${styles.Header} SmallContainer`}>
       <Logo />
-      {(!token || token === "" || pageUrl !== null) && (
-        <div className={styles.HeaderLinksWrap}>
-          {match.path === "/login" && (
-            <div className={styles.HeaderLinks}>
-              <Link
-                to="/register"
-                className={`${styles.HeaderLinkLogin} ${styles.TurnLight}`}
-              >
-                Register
-              </Link>
-            </div>
-          )}
-          {match.path === "/register" && (
-            <div className={styles.HeaderLinks}>
-              <Link
-                to="/login"
-                className={`${styles.HeaderLinkLogin} ${styles.TurnLight}`}
-              >
-                Login
-              </Link>
-            </div>
-          )}
-        </div>
-      )}
 
       {token && pageUrl === null && (
         <div className={styles.HeaderLinksWrap}>
