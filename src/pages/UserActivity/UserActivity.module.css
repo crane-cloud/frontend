@@ -1,17 +1,19 @@
-.SmallContainer{
+.SmallContainer {
   display: grid;
   grid-template-rows: 3rem 3rem auto;
   padding: 2rem;
   gap: 1rem;
-  background: var( --gray-bg-light-color);
+  background: var(--gray-bg-light-color);
 }
-.Page{
+
+.Page {
   display: flex;
   flex-flow: column;
   min-height: 100vh;
   flex-direction: column;
   background-color: var(--gray-bg-light-color);
 }
+
 .field {
   background: transparent;
   border: none;
@@ -19,91 +21,118 @@
   width: -webkit-fill-available;
   border-radius: unset;
 }
-.Header{
+
+.Header {
   display: flex;
   position: relative;
   justify-content: space-between;
   flex-direction: row;
 }
 
-.Heading{
+.Heading {
   font-weight: bolder;
   line-height: 1.8;
   font-size: larger;
 }
 
-.SimpleForm{
+.ActivityHeader {
+  display: flex;
+  gap: 1rem;
+}
+
+.BackIconArea {
+  padding-top: 4px;
+}
+
+.BackIconSize {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.ActivityPageTitle {
+  color: #000;
+  padding-top: 0.5rem;
+}
+
+/* .ActivityHeader {
+  padding-top: 0.5rem;
+} */
+
+.SimpleForm {
   display: flex;
   flex-direction: row;
   align-items: flex-end;
   position: relative;
 }
-.opacityClass{
+
+.opacityClass {
   opacity: .2;
 }
 
-.BackButton{
-  background:var(--primary-color);
+.BackButton {
+  background: var(--primary-color);
   outline: none;
 }
 
-.FilterButton{
+.FilterButton {
   outline: none;
   background: unset;
   border: 1px solid black;
   color: #000;
 }
-.FilterButton:hover{
+
+.FilterButton:hover {
   border: none;
 }
 
-.Table{
+.Table {
   background: #ffffff;
   border-radius: 15px;
   padding: 1rem 2rem;
 }
 
-.TableRow{
+.TableRow {
   display: flex;
   align-items: center;
   gap: 1.5rem;
 }
 
-.Success{
+.Success {
   color: green;
 }
 
-.Danger{
+.Danger {
   color: red;
 }
 
-.Entity{
+.Entity {
   color: var(--primary-color);
 }
 
-.hr{
+.hr {
   margin: .5rem 0;
 }
 
-.Row{
+.Row {
   display: flex;
   justify-content: space-between;
   width: -webkit-fill-available;
 }
 
-.Bold{
+.Bold {
   font-weight: bold;
   font-size: 17px;
 }
 
-.RowCell{
+.RowCell {
   display: flex;
   gap: 1rem;
 }
 
-.LastCell{
+.LastCell {
   align-self: flex-end;
 }
+
 .UserAvatar {
   width: 2.8rem;
   height: 2.8rem;
@@ -115,28 +144,32 @@
   align-items: center;
   justify-content: center;
 }
-.Filter{
-  width: 20rem;
+
+.Filter {
+  width: 10rem;
   height: 40px;
   border: 1px solid #000000;
   display: flex;
   padding-left: 7px;
   padding-right: 7px;
   z-index: 1;
-  background-color:  #fff;
+  background-color: #fff;
   justify-content: space-between;
   align-items: center;
   border-radius: 9px;
 }
-.RelativeContainer{
+
+.RelativeContainer {
   position: relative;
 }
+
 .BelowHeader {
   background-color: #f9f9f9;
   position: relative;
   left: -2rem;
   z-index: 999;
 }
+
 .contextMenu {
   color: #000;
   background-color: #f9f9f9;
@@ -158,7 +191,8 @@
   cursor: pointer;
   /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
-.FilterDropdown{
+
+.FilterDropdown {
   width: 21rem;
   right: 0;
   overflow-y: auto;
@@ -171,41 +205,60 @@
   overflow: visible;
   border: 1px solid #000000;
   display: flex;
-  background-color:  #fff;
+  background-color: #fff;
   flex-direction: column;
   align-items: center;
   border-radius: 9px;
 }
-.DropdownArrowSvg {
+
+.DownArrow {
   width: 2rem;
   height: 2rem;
   display: flex;
   align-self: center;
   fill: black;
 }
-.FilterText{
+
+.UpArrow {
+  width: 2rem;
+  display: flex;
+  align-self: center;
+  fill: black;
+}
+
+.DoubleArrow,
+.UpArrow,
+.DownArrow:hover {
+  cursor: pointer;
+}
+
+.FilterText {
   font-weight: 400;
   font-size: 15px;
   text-align: center;
   color: #555555;
 }
+
 .OnHeader:hover .DropdownArrowSvg {
   fill: var(--secondary-color);
 }
-.FilterItemContainer{
+
+.FilterItemContainer {
   width: 21rem;
   font-size: 15px;
   font-weight: 500;
   border-bottom: 1px solid #ccc;
 }
-.FilterItem{
+
+.FilterItem {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: .4rem 1rem .8rem 1rem;
   position: relative;
 }
-.OuterFilterItem{
+
+.OuterFilterItem {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -216,12 +269,14 @@
   border-radius: 9px;
   border: 1px solid #000000;
 }
-.dateField{
+
+.dateField {
   width: 6rem;
 }
-.InnerDropDown{
+
+.InnerDropDown {
   position: absolute;
-  width: 7rem;
+  width: 10rem;
   max-height: 15rem;
   background-color: #e2f5ff;
   z-index: 11;
@@ -229,14 +284,16 @@
   overflow-x: hidden;
   right: 30px;
   border: 1px solid #ccc;
+  border-radius: 5px;
   top: 46px;
   display: flex;
   box-shadow: 0 4px 4px 0 rgb(117 117 117 / 20%);
   flex-direction: column;
 }
-.InnerDropDownLowerhalf{
+
+.InnerDropDownLowerhalf {
   position: absolute;
-  max-width: 10rem;
+  width: 10rem;
   max-height: 15rem;
   background-color: #e2f5ff;
   z-index: 11;
@@ -244,26 +301,31 @@
   overflow-x: hidden;
   right: 37px;
   border: 1px solid #ccc;
+  border-radius: 5px;
   bottom: 46px;
   display: flex;
   box-shadow: 0 4px 4px 0 rgb(117 117 117 / 20%);
   flex-direction: column;
 }
-.InnerDropDownItem{
+
+.InnerDropDownItem {
   display: flex;
   text-align: start;
   padding: 10px 10px 2px 10px;
   border-bottom: 1px solid #ccc;
   text-transform: capitalize;
 }
-.InnerDropDownItem:hover{
- cursor: pointer;
- background-color: #c1e6fa;
+
+.InnerDropDownItem:hover {
+  cursor: pointer;
+  background-color: #c1e6fa;
 }
-.SelectOption{
+
+.SelectOption {
   font-size: 13px;
 }
-.SelectorBox{
+
+.SelectorBox {
   width: 95%;
   display: flex;
   flex-direction: row;
@@ -276,7 +338,8 @@
   border: 2px solid #000000;
   text-transform: capitalize;
 }
-.DateSection{
+
+.DateSection {
   padding: 2px 0px 2px 0px;
   display: flex;
   flex-direction: row;
@@ -287,34 +350,28 @@
   gap: .5rem;
   margin-top: 3px;
 }
-.DateItem{
+
+.DateItem {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
-.DateSection:hover{
+
+.DateSection:hover {
   cursor: pointer;
 }
-.CalenderFromposition{
+
+.CalenderToposition,
+.CalenderFromposition {
   background-color: #ffffff;
   border: 1px solid #cccccc;
+  border-radius: 5px;
   padding: 0.5rem;
   display: grid;
   gap: 1rem;
   position: absolute;
   z-index: 10;
-  left: 1rem;
-  width: fit-content;
-}
-.CalenderToposition{
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
-  padding: 0.5rem;
-  display: grid;
-  gap: 1rem;
-  position: absolute;
-  z-index: 10;
-  left: 3rem;
-  width: fit-content;
+  left: 0.1rem;
+  width: 58%;
 }

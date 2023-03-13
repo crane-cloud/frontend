@@ -391,7 +391,7 @@
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 7px;
-  padding: 20px;
+  padding: 2rem;
   display: grid;
   grid-template-rows: auto 3fr 1fr;
   align-items: center;
@@ -403,10 +403,16 @@
   justify-self: center;
 }
 
-.textJustify{
+.BrandLogo {
+  width: 18rem;
+  height: 13rem;
+}
+
+.textJustify {
   text-align: justify;
 }
-.textCenter{
+
+.textCenter {
   text-align: center;
 }
 
