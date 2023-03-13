@@ -757,7 +757,6 @@ class CreateApp extends React.Component {
 }
 CreateApp.propTypes = {
   clusters: PropTypes.object,
-  getClustersList: PropTypes.func.isRequired,
   params: PropTypes.shape({}),
 };
 

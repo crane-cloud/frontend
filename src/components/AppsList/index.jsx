@@ -178,7 +178,7 @@ AppsList.defaultProps = {
   apps: { apps: [] },
   isRetrieved: false,
   isRetrieving: true,
-  message: false,
+  message: "",
 };
 
 export const mapStateToProps = (state) => {

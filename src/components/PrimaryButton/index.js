@@ -1,5 +1,6 @@
 import React from "react";
 import "./PrimaryButton.css";
+import PropTypes from "prop-types";
 
 const PrimaryButton = (props) => {
   const { children, className, btntype, color, small, transparent, noPadding } = props;
@@ -24,13 +25,19 @@ const PrimaryButton = (props) => {
     <button
       {...props}
       className={`Primary-Btn ${className} ${btntype === "close" && "DeleteBtnOutline"}
-        ${color && getColorClass()} ${small && "SmallBtn"} ${transparent && "TransparentBtn"}
+        ${color && getColorClass()} ${small===true ? "SmallBtn" : ""} ${transparent && "TransparentBtn"}
         ${noPadding && "NoPaddingBtn"}
       `}
     >
       {children}
     </button>
   );
+};
+PrimaryButton.propTypes = {
+  small: PropTypes.bool,
+};
+PrimaryButton.defaultProps = {
+  small: false,
 };
 
 export default PrimaryButton;
