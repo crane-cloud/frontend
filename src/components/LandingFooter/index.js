@@ -32,7 +32,7 @@ const LandingFooter = () => (
                 <TwitterIcon />
               </a>
               <a
-                href="https://www.facebook.com/CraneCloud.io"
+                href="https://www.linkedin.com/company/cranecloud/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
