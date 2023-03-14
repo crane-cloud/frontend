@@ -31,8 +31,12 @@ import { ReactComponent as CSS } from "../../assets/images/css.svg";
 import { ReactComponent as Drupal } from "../../assets/images/drupal.svg";
 import { ReactComponent as GitLab } from "../../assets/images/gitlab.svg";
 import { ReactComponent as GoPlayground } from "../../assets/images/go.svg";
-import { ReactComponent as Jupyterhub } from "../../assets/images/py.svg";
-import { GITLAB_URL, GOPLAYGROUND_URL, JUPYTERHUB_URL } from "../../config";
+import {
+  GITLAB_URL,
+  GOPLAYGROUND_URL,
+  JUPYTERHUB_URL,
+  MIRA_DOCS_URL,
+} from "../../config";
 import { onUnload } from "../../helpers/localStorage";
 import SecondaryButton from "../../components/SecondaryButton";
 import { DOCS_URL } from "../../config";
@@ -112,8 +116,8 @@ const LandingPage = (props) => {
                 <div className={styles.WhySectionItem}>
                   <div className={styles.WhySectionCardTitle}>Support</div>
                   <div>
-                    Create a ticket, chat, or call a specialist regarding any
-                    queries.
+                    We offer round-the-clock support to our clients. Create a
+                    ticket, chat, or call a specialist regarding any queries.
                   </div>
                 </div>
               </div>
@@ -124,8 +128,15 @@ const LandingPage = (props) => {
               <div className={styles.LeftPageBannerInner}>
                 <h2>Migrate to the cloud</h2>
                 <p className={styles.BannerParagraph}>
-                  Governments and institutions are urged to begin digital
-                  transformation.
+                  Institutions, students, and ICT practitioners looking for a
+                  reliable and efficient cloud computing solution should
+                  consider migrating to managed cloud services provided by Crane
+                  Cloud. With Crane Cloud's managed cloud services, you can be
+                  assured of unparalleled scalability, security, and
+                  availability of your cloud deployment. Whether you are looking
+                  to deploy an application, store data, or manage your computing
+                  resources, Crane Cloud provides a comprehensive suite of cloud
+                  services that can cater to your needs.
                 </p>
               </div>
             </div>
@@ -297,10 +308,13 @@ const LandingPage = (props) => {
               will dockerize, host the subsequent image and host your
               application.
             </div>
-            <SecondaryButton
-              label={"Read More"}
-              // className={styles.AutoContainer}
-            />
+            <a
+              href={`${MIRA_DOCS_URL}`}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <SecondaryButton label={"Read More"}>Read More</SecondaryButton>
+            </a>
           </div>
           <div className={styles.GridSide}>
             <div className={styles.IconSqure}>
@@ -378,7 +392,11 @@ const LandingPage = (props) => {
             </div>
           </div>
           <div className={styles.CardSection}>
-            <Jupyterhub className={styles.Brand} />
+            <img
+              className={styles.BrandLogo}
+              alt="jupyterhub_logo"
+              src={require("../../assets/images/jupyterhub.png")}
+            />
             <div>
               <h3 className={styles.textCenter}>JupyterHub</h3>
               <div className={styles.textJustify}>

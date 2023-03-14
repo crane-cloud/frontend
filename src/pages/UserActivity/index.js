@@ -3,14 +3,15 @@ import { Link } from "react-router-dom";
 // import moment from "moment";
 import { useSelector } from "react-redux";
 import Avatar from "../../components/Avatar";
-import PrimaryButton from "../../components/PrimaryButton";
 import Header from "../../components/Header";
 import { handleGetRequest } from "../../apis/apis.js";
 import InformationBar from "../../components/InformationBar";
 import styles from "./UserActivity.module.css";
 import DateInput from "../../components/DateInput";
 import getUserProjects from "../../redux/actions/projectsList";
+import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 import { ReactComponent as DownArrow } from "../../assets/images/downarrow.svg";
+import { ReactComponent as UpArrow } from "../../assets/images/up-arrow.svg";
 import { ReactComponent as CheckMark } from "../../assets/images/check-circle.svg";
 import { ReactComponent as Danger } from "../../assets/images/alert-octagon.svg";
 // import { ReactComponent as CloudOff } from "../../assets/images/cloud-off.svg";
@@ -279,11 +280,22 @@ const UserActivity = (props) => {
             <InformationBar header="User Activity" />
           </div>
           <div className={styles.SmallContainer}>
-            <Link to={`/projects`}>
-              <PrimaryButton className={styles.BackButton}>BACK</PrimaryButton>
-            </Link>
             <div className={styles.Header}>
-              <div className={styles.Heading}>Activity Feed</div>
+              <div className={styles.Heading}>
+                <div className={styles.ActivityHeader}>
+                  <span className={styles.BackIconArea}>
+                    <Link to={`/projects`}>
+                      <BackButton
+                        color="#f7b21f"
+                        className={styles.BackIconSize}
+                      />
+                    </Link>
+                  </span>
+                  <span className={styles.ActivityPageTitle}>
+                    Activity Feed
+                  </span>
+                </div>
+              </div>
               <div className={styles.SimpleForm}>
                 <div className={styles.OuterFilterItem}>
                   <div className={styles.DateSection}>
@@ -318,12 +330,22 @@ const UserActivity = (props) => {
                 <div className={styles.Filter}>
                   <FilterIcon />
                   <div className={styles.FilterText}>Filter</div>
-                  <DownArrow
-                    onClick={() => {
-                      setFilterOpen(!filterOpen);
-                    }}
-                    className={styles.DropdownArrowSvg}
-                  />
+                  {!filterOpen && (
+                    <DownArrow
+                      className={styles.DownArrow}
+                      onClick={() => {
+                        setFilterOpen(!filterOpen);
+                      }}
+                    />
+                  )}
+                  {filterOpen && (
+                    <UpArrow
+                      className={styles.UpArrow}
+                      onClick={() => {
+                        setFilterOpen(!filterOpen);
+                      }}
+                    />
+                  )}
                 </div>
                 {filterOpen && (
                   <div className={styles.RelativeContainer}>
@@ -336,6 +358,7 @@ const UserActivity = (props) => {
                               {statusField}
                             </div>
                             <ArrowUpDDown
+                              className={styles.DoubleArrow}
                               onClick={() => {
                                 setShowStatusFilter(!showStatusFilter);
                               }}
@@ -374,6 +397,7 @@ const UserActivity = (props) => {
                               {operationField}
                             </div>
                             <ArrowUpDDown
+                              className={styles.DoubleArrow}
                               onClick={() => {
                                 setShowOperation(!showOperation);
                               }}
@@ -418,6 +442,7 @@ const UserActivity = (props) => {
                               {modelField}
                             </div>
                             <ArrowUpDDown
+                              className={styles.DoubleArrow}
                               onClick={() => {
                                 if (projectsField === "none") {
                                   setShowModel(!showModel);
@@ -464,6 +489,7 @@ const UserActivity = (props) => {
                               {projectsField}
                             </div>
                             <ArrowUpDDown
+                              className={styles.DoubleArrow}
                               onClick={() => {
                                 if (
                                   modelField === "none" ||
