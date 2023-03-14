@@ -1,5 +1,5 @@
 .LoginPageContainer {
-  background: var(--primary-color)!important;
+  background: var(--primary-color) !important;
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -15,7 +15,7 @@
   justify-content: center;
 }
 
-.AuthBtn{
+.AuthBtn {
   padding: 0.9rem;
   height: auto;
 }
@@ -30,7 +30,6 @@
 .LoginContentInputs > * {
   width: 100%;
 }
-
 
 .LowerLoginSection {
   display: flex;
@@ -47,7 +46,6 @@
   color: var(--secondary-light-color);
   border-bottom: 1px solid var(--secondary-light-color);
 }
-
 
 .LoginErrorDiv {
   background-color: rgba(255, 255, 255, 0.597);
@@ -69,7 +67,7 @@
 .LoginButton {
   width: 100%;
 }
-.LoginButton:hover{
+.LoginButton:hover {
   background-color: var(--secondary-color);
   color: #fff;
 }
@@ -115,4 +113,35 @@
   .LoginContentInputs {
     width: 100%;
   }
+}
+.password-wrapper {
+  display: flex;
+  align-items: center;
+  height: 2.5rem;
+  background-color: #ebead5;
+  border-radius: 5px;
+}
+.password-wrapper input {
+  background-color: transparent;
+  color: #000;
+  border: none;
+  font-size: 1rem;
+  padding: 1rem;
+  height: 100%;
+  /* max-width: 21rem; */
+}
+
+.password-wrapper .toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.CopyIcon {
+  background-color: transparent;
+  height: 100%;
+  padding: 0 0.4rem;
+  width: 1.3rem;
 }

@@ -8,6 +8,10 @@ import Spinner from "../../components/Spinner";
 import { ReactComponent as LogoIcon } from "../../assets/images/githublogo.svg";
 import { API_BASE_URL, GIT_REDIRECT_URL } from "../../config";
 import Checkbox from "../../components/Checkbox";
+import { ReactComponent as Open } from "../../assets/images/open.svg";
+import { ReactComponent as Closed } from "../../assets/images/close.svg";
+import { ReactComponent as Checked } from "../../assets/images/checked.svg";
+import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 
 import "./RegisterPage.css";
 
@@ -26,6 +30,8 @@ export default class RegisterPage extends Component {
       registered: false,
       gitLoading: false,
       error: "",
+      passwordShown: false,
+      passwordChecked: false,
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -33,6 +39,7 @@ export default class RegisterPage extends Component {
     this.toggleAgreed = this.toggleAgreed.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
     this.toGithubauth = this.toGithubauth.bind(this);
+    this.togglePassword = this.togglePassword.bind(this);
   }
 
   toggleAgreed() {
@@ -83,6 +90,11 @@ export default class RegisterPage extends Component {
     const emailRegEx =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegEx.test(String(email).toLowerCase());
+  }
+  togglePassword() {
+    //this.setState({ hidden: !this.state.hidden });
+    this.setState({ passwordShown: !this.state.passwordShown });
+    this.fetchPassword();
   }
 
   handleSubmit(e) {
@@ -152,6 +164,8 @@ export default class RegisterPage extends Component {
       passwordConfirm,
       loading,
       registered,
+      passwordChecked,
+      passwordShown,
       username,
       error,
       hasAgreed,
@@ -190,14 +204,25 @@ export default class RegisterPage extends Component {
                   value={email}
                   onChange={this.handleOnChange}
                 />
-                <InputText
-                  required
-                  placeholder="Password"
-                  name="password"
-                  type="password"
-                  value={password}
-                  onChange={this.handleOnChange}
-                />
+                <div className="password-wrapper">
+                  <InputText
+                    required
+                    placeholder="Password"
+                    name="password"
+                    type={passwordShown ? "text" : "password"}
+                    value={password}
+                    onChange={this.handleOnChange}
+                  />
+                  <div className="CopyIcon">
+                    <CopyText onClick={this.passwordOnClick} />
+                    {passwordChecked ? <Checked /> : null}
+                  </div>
+
+                  <div className="password" onClick={this.togglePassword}>
+                    {passwordShown ? <Open /> : <Closed />}
+                  </div>
+                </div>
+
                 <InputText
                   required
                   placeholder="Repeat Password"
