@@ -6,6 +6,7 @@ import styles from "./UserProjectsPage.module.css";
 import InformationBar from "../../components/InformationBar";
 import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import Header from "../../components/Header";
+import Pagination from "../../components/Pagination";
 import getClustersList from "../../redux/actions/clusters";
 import CreateProject from "../../components/CreateProject";
 import getUserProjects from "../../redux/actions/projectsList";
@@ -344,6 +345,7 @@ class UserProjectsPage extends React.Component {
                     ))}
                 </div>
               )}
+              
               {showInviteModel === true && (
                 <div className={styles.ProjectDeleteModel}>
                   <Modal
@@ -417,6 +419,13 @@ class UserProjectsPage extends React.Component {
               {!isRetrieving && !isFetched && (
                 <div className={styles.NoResourcesMessage}>
                   Oops! Something went wrong! Failed to retrieve Projects.
+                </div>
+              )}
+              {Searchword === ""  && (
+                <div className={styles.PaginationSection}>
+                  <Pagination
+                  
+                  />
                 </div>
               )}
             </div>

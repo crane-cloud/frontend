@@ -1,0 +1,29 @@
+.NavigatorSection{
+    display: flex;
+    flex-direction: row;
+    gap: .2rem;
+    align-items: center;
+    justify-content: center;
+  }
+.ArrowDiv{
+    color: #fff;
+  }
+  .PaginationItem{
+    background-color: #fff;
+    display: flex;
+    border: .5px solid #000;
+    width: 2rem;
+    height: 2rem;
+    font-size: 12px;
+    align-items: center;
+    justify-content: center;
+  }
+  .PaginationItem:hover{
+    cursor: pointer;
+  }
+  .PaginationItemcontainer{
+    display: flex;
+    flex-direction: row;
+    gap: 1px;
+  }
+  

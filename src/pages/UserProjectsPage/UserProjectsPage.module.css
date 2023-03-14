@@ -3,7 +3,7 @@
   gap: 1rem;
   justify-content: flex-start;
   flex-wrap: wrap;
-  padding: 2rem;
+  padding: 2rem 2rem 4rem 2rem;
 }
 
 .ProjectsDropDown {
@@ -190,6 +190,7 @@
 .MainRow {
   background-color: var(--gray-bg-light-color);
   min-height: calc(100vh - 14rem);
+  position: relative;
 }
 
 .NoResourcesMessage {
@@ -217,6 +218,13 @@
   display: flex;
   padding: 2rem;
 }
+.PaginationSection{
+  position: absolute;
+  bottom: .0001rem;
+  left: 43%;
+}
+
+
 
 @media (max-width: 500px) {
   .ProjectList>div {
