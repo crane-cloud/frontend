@@ -113,6 +113,7 @@ const AdminProjectsPage = () => {
                           <td>{getUserName(project.owner_id)}</td>
                           <td>{project.description}</td>
                           <td>
+                            {/* optional chai */}
                             <span className="ProjectStatus">Active</span>
                           </td>
                           <td
@@ -126,7 +127,7 @@ const AdminProjectsPage = () => {
                             {contextMenu && project.id === selectedProject && (
                               <div className="BelowHeader bg-light">
                                 <div className="context-menu">
-                                  <div
+                                  {/* <div
                                     className="DropDownLink Section"
                                     role="presentation"
                                   >
@@ -137,17 +138,17 @@ const AdminProjectsPage = () => {
                                     role="presentation"
                                   >
                                     Disable
-                                  </div>
+                                  </div> */}
                                   <div
                                     className="DropDownLink"
                                     role="presentation"
                                   >
                                     <Link
                                       to={{
-                                        pathname: `/projects/${selectedProject}/logs`,
+                                        pathname: `/projects/${selectedProject}/details`,
                                       }}
                                     >
-                                      View Project Logs
+                                      View Project Details
                                     </Link>
                                   </div>
                                 </div>
