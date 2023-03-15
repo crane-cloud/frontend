@@ -286,20 +286,21 @@ const SideBar = (props) => {
   );
 };
 
-SideBar.defaultProps = {
-  appLogsLink: "",
-};
+// SideBar.defaultProps = {
+//   appLogsLink: "",
+// };
 
 SideBar.propTypes = {
   name: PropTypes.string,
-  params: PropTypes.shape({}).isRequired,
+  // params: PropTypes.shape({}).isRequired,
+  // now from a use hook for params
   pageRoute: PropTypes.string,
-  cpuLink: PropTypes.string.isRequired,
-  memoryLink: PropTypes.string.isRequired,
-  databaseLink: PropTypes.string.isRequired,
-  networkLink: PropTypes.string.isRequired,
-  allMetricsLink: PropTypes.string.isRequired,
-  appLogsLink: PropTypes.string,
+  // cpuLink: PropTypes.string.isRequired,
+  // memoryLink: PropTypes.string.isRequired,
+  // databaseLink: PropTypes.string.isRequired,
+  // networkLink: PropTypes.string.isRequired,
+  // allMetricsLink: PropTypes.string.isRequired,
+  // appLogsLink: PropTypes.string,
 };
 
 export default SideBar;
