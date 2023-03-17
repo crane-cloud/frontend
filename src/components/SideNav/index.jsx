@@ -153,6 +153,14 @@ const SideNav = ({ clusterId, clusterName }) => {
             <div>
               <NavLink
                 to={{
+                  pathname: `${BASE_URL}/logs`,
+                }}
+                className="SubListItem"
+              >
+                Activity Logs
+              </NavLink>
+              <NavLink
+                to={{
                   pathname: `${BASE_URL}/clusterSettings`,
                 }}
                 className="SubListItem"
