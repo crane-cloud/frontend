@@ -74,7 +74,6 @@ class LoginPage extends React.Component {
   togglePassword() {
     //this.setState({ hidden: !this.state.hidden });
     this.setState({ passwordShown: !this.state.passwordShown });
-    this.fetchPassword();
   }
 
   handleSubmit(e) {
