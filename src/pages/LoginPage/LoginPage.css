@@ -118,30 +118,30 @@
   display: flex;
   align-items: center;
   height: 2.5rem;
-  background-color: #ebead5;
+  background-color: #ffffff;
   border-radius: 5px;
+  position: relative;
 }
 .password-wrapper input {
-  background-color: transparent;
-  color: #000;
+  background-color: #ffffff;
+  color: #abead5;
   border: none;
   font-size: 1rem;
   padding: 1rem;
   height: 100%;
-  /* max-width: 21rem; */
 }
 
-.password-wrapper .toggle-password {
+.CopyIcon {
+  background-color: #abead5;
+  height: 100%;
+  padding: 0 0.4rem;
+  width: 1.3rem;
+}
+
+.password {
   position: absolute;
   top: 50%;
   right: 1rem;
   transform: translateY(-50%);
   cursor: pointer;
-}
-
-.CopyIcon {
-  background-color: transparent;
-  height: 100%;
-  padding: 0 0.4rem;
-  width: 1.3rem;
 }
