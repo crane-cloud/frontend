@@ -218,11 +218,14 @@
   display: flex;
   padding: 2rem;
 }
+
 .PaginationSection{
-  position: absolute;
-  bottom: .0001rem;
-  left: 43%;
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 
 
 

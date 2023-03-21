@@ -12,7 +12,7 @@ export const startTheFetch = () => ({
 
 export const getUserProjectsSuccess = (response) => ({
   type: FETCH_USER_PROJECTS_SUCCESS,
-  payload: response.data.data.projects,
+  payload: response.data.data,
 });
 
 export const getUserProjectsFailed = (error) => ({
@@ -23,10 +23,10 @@ export const getUserProjectsFailed = (error) => ({
   },
 });
 
-const getUserProjects = () => (dispatch) => {
+const getUserProjects = (page) => (dispatch) => {
   dispatch(startTheFetch());
   return axios
-    .get(`/projects`)
+    .get(`/projects?page=${page}`)
     .then((response) => dispatch(getUserProjectsSuccess(response)))
     .catch((error) => {
       dispatch(getUserProjectsFailed(error));

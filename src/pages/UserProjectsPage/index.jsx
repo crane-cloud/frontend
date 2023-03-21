@@ -36,6 +36,7 @@ class UserProjectsPage extends React.Component {
       acceptingInvitation: false,
       invitationError: "",
       currentTab: "My Projects",
+      currentPaginationPage: 1,
     };
     this.state = this.initialState;
     this.openProjectCreateComponent =
@@ -50,16 +51,14 @@ class UserProjectsPage extends React.Component {
       this.handleInvitationAcceptence.bind(this);
     this.handleInvitationDecline = this.handleInvitationDecline.bind(this);
     this.filterProjects = this.filterProjects.bind(this);
+    this.onPageChange = this.onPageChange.bind(this);
   }
 
   componentDidMount() {
-    const {
-      getClustersList,
-      getUserProjects,
-      data,
-      getUserCredits,
-    } = this.props;
-    getUserProjects(data.id);
+    const { getClustersList, getUserProjects, data, getUserCredits } =
+      this.props;
+    //add page 1
+    getUserProjects(this.state.currentPaginationPage);
     getClustersList();
     getUserCredits(data.id);
   }
@@ -77,18 +76,18 @@ class UserProjectsPage extends React.Component {
     const { Searchword } = this.state;
 
     if (isDeleted !== prevProps.isDeleted) {
-      getUserProjects();
+      getUserProjects(this.state.currentPaginationPage);
       getClustersList();
     }
 
     if (isUpdated !== prevProps.isUpdated) {
       clearUpdateProjectState();
-      getUserProjects();
+      getUserProjects(this.state.currentPaginationPage);
       getClustersList();
     }
 
     if (isAdded !== prevProps.isAdded) {
-      getUserProjects();
+      getUserProjects(this.state.currentPaginationPage);
       this.setState(this.initialState);
     }
     if (isFetched !== prevProps.isFetched) {
@@ -108,11 +107,9 @@ class UserProjectsPage extends React.Component {
     this.setState({ openCreateComponent: true });
   }
   callbackProjectCreateComponent() {
-    const {
-      getUserProjects
-    } = this.props;
-    getUserProjects()
+    const { getUserProjects } = this.props;
     this.setState(this.initialState);
+    getUserProjects(this.state.currentPaginationPage);
   }
   searchThroughProjects() {
     const { Searchword } = this.state;
@@ -158,7 +155,7 @@ class UserProjectsPage extends React.Component {
           decliningInvitation: false,
         });
         this.hideInvitationModel();
-        getUserProjects();
+        getUserProjects(this.state.currentPaginationPage);
       })
       .catch((error) => {
         this.setState({
@@ -183,7 +180,7 @@ class UserProjectsPage extends React.Component {
           acceptingInvitation: false,
         });
         this.hideInvitationModel();
-        getUserProjects();
+        getUserProjects(this.state.currentPaginationPage);
       })
       .catch((error) => {
         this.setState({
@@ -209,6 +206,13 @@ class UserProjectsPage extends React.Component {
       myProjects,
     };
   }
+  onPageChange(page) {
+    const { getUserProjects } = this.props;
+    this.setState({
+      currentPaginationPage: page,
+    });
+    getUserProjects(page);
+  }
 
   render() {
     const {
@@ -227,6 +231,7 @@ class UserProjectsPage extends React.Component {
     } = this.state;
     const {
       projects,
+      pagination,
       isRetrieving,
       isFetched,
       match: { params },
@@ -345,7 +350,7 @@ class UserProjectsPage extends React.Component {
                     ))}
                 </div>
               )}
-              
+
               {showInviteModel === true && (
                 <div className={styles.ProjectDeleteModel}>
                   <Modal
@@ -421,17 +426,19 @@ class UserProjectsPage extends React.Component {
                   Oops! Something went wrong! Failed to retrieve Projects.
                 </div>
               )}
-              {Searchword === ""  && (
-                <div className={styles.PaginationSection}>
-                  <Pagination
-                  
-                  />
-                </div>
-              )}
             </div>
           </div>
         )}
         <div className={styles.FooterRow}>
+        {pagination.pages > 1 && (
+          <div className={styles.PaginationSection}>
+            <Pagination
+              total={pagination.pages}
+              current={this.state.currentPaginationPage}
+              onPageChange={this.onPageChange}
+            />
+          </div>
+        )}
           <div>
             Copyright {new Date().getFullYear()} Crane Cloud. All Rights
             Reserved.
@@ -445,6 +452,7 @@ class UserProjectsPage extends React.Component {
 UserProjectsPage.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.shape({})),
   clusters: PropTypes.object,
+  pagination: PropTypes.shape({}),
   getClustersList: PropTypes.func.isRequired,
   getUserProjects: PropTypes.func.isRequired,
   data: PropTypes.shape({
@@ -462,6 +470,7 @@ UserProjectsPage.propTypes = {
 UserProjectsPage.defaultProps = {
   clusters: [],
   projects: [],
+  pagination: {},
   isFetched: false,
   isRetrieving: false,
 };
@@ -470,12 +479,14 @@ export const mapStateToProps = (state) => {
   const { data } = state.user;
 
   const { clusters } = state.clustersReducer;
-  const { isRetrieving, projects, isFetched } = state.userProjectsReducer;
+  const { isRetrieving, projects, isFetched, pagination } =
+    state.userProjectsReducer;
   const { credits } = state.userCreditsReducer;
   return {
     data,
     isRetrieving,
     projects,
+    pagination,
     clusters,
     isFetched,
     credits,
