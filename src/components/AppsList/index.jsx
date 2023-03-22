@@ -164,7 +164,7 @@ class AppsList extends Component {
             Oops! Something went wrong! Failed to retrieve Apps.
           </div>
         )}
-        {apps.pagination.pages  > 1  && (
+        {apps?.pagination.pages  > 1  && (
           <div className={styles.PaginationSection}>
             <Pagination
               total={apps.pagination.pages}
@@ -182,6 +182,7 @@ class AppsList extends Component {
 AppsList.propTypes = {
   apps: PropTypes.shape({
     apps: PropTypes.arrayOf(PropTypes.object),
+    pagination: PropTypes.object
   }),
   isRetrieved: PropTypes.bool,
   isRetrieving: PropTypes.bool,
@@ -194,7 +195,7 @@ AppsList.propTypes = {
 
 // assigning defaults
 AppsList.defaultProps = {
-  apps: { apps: [] },
+  apps: { apps: [],pagination:{} },
   isRetrieved: false,
   isRetrieving: true,
   message: "",
