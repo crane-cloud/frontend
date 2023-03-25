@@ -60,7 +60,7 @@ export const validateProjectName = (name) => {
   }
 
   if (validateName(name) === "false_convention") {
-    return "No spaces in Project name can only contain letters and a hypen -";
+    return "Project name can only contain letters and a hypen but no spaces.";
   }
 
   if (validateName(name) === false) {
@@ -82,7 +82,7 @@ export const validateProjectType = (projectType) => {
   }
 
   if (validateName(projectType) === "false_convention") {
-    return "Remove spaces Project Type may only contain letters and a hypen -";
+    return "Project Type may only contain letters and a hypen but no spaces.";
   }
 
   if (validateName(projectType) === false) {
