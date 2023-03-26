@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { handleGetRequest } from "../../apis/apis.js";
 import InformationBar from "../../components/InformationBar";
 import Header from "../../components/Header";
-import Avatar from "../../components/Avatar";
 import SideNav from "../../components/SideNav";
 import styles from "./AdminLogsPage.module.css";
 import DateInput from "../../components/DateInput";
@@ -11,6 +10,7 @@ import { ReactComponent as DownArrow } from "../../assets/images/downarrow.svg";
 import { ReactComponent as UpArrow } from "../../assets/images/up-arrow.svg";
 import { ReactComponent as CheckMark } from "../../assets/images/check-circle.svg";
 import { ReactComponent as Danger } from "../../assets/images/alert-octagon.svg";
+import { ReactComponent as User } from "../../assets/images/user.svg";
 // import { ReactComponent as CloudOff } from "../../assets/images/cloud-off.svg";
 import { ReactComponent as FilterIcon } from "../../assets/images/filterIcon.svg";
 import { ReactComponent as ArrowUpDDown } from "../../assets/images/ArrowUp&Down.svg";
@@ -23,6 +23,7 @@ const AdminLogsPage = () => {
   const baseLink = "/users/activities?";
   const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState([]);
+  const [users, setUsers] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [queryParams, setQueryParams] = useState("");
@@ -45,8 +46,39 @@ const AdminLogsPage = () => {
 
   useEffect(() => {
     fetchActivityLogs(`${baseLink}${queryParams}`);
+    fetchUsersList();
     setFeedback("");
   }, [queryParams]);
+
+  const fetchUsersList = () => {
+    handleGetRequest("/users")
+      .then((response) => {
+        if (response.data.data.users.length > 0) {
+          let totalNumberOfUsers = response.data.data.pagination.total;
+          handleGetRequest("/users?per_page=" + totalNumberOfUsers)
+            .then((response) => {
+              if (response.data.data.users.length > 0) {
+                setUsers(response.data.data.users);
+              } else {
+                setFeedback("No users found");
+              }
+            })
+            .catch((error) => {
+              setFeedback("Failed to fetch all users, please try again");
+            });
+        } else {
+          setFeedback("No users found");
+        }
+      })
+      .catch((error) => {
+        setFeedback("Failed to fetch users, please try again");
+      });
+  };
+
+  const getUserEmail = (id) => {
+    const user = users?.find((user) => user.id === id);
+    return user ? user?.email : null;
+  };
 
   const fetchActivityLogs = (link) => {
     setLoading(true);
@@ -347,47 +379,6 @@ const AdminLogsPage = () => {
                             )}
                           </div>
                         </div>
-                        {/* <div className={styles.FilterItemContainer}>
-                        <div className={styles.FilterItem}>
-                          Model
-                          <div className={styles.SelectorBox}>
-                            <div className={styles.SelectOption}>
-                              {modelField}
-                            </div>
-                            <ArrowUpDDown
-                              className={styles.DoubleArrow}
-                              onClick={() => {
-                                if (projectsField === "none") {
-                                  setShowModel(!showModel);
-                                }
-                              }}
-                            />
-                          </div>
-                          {showModel && projectsField === "none" && (
-                            <div className={styles.InnerDropDownLowerhalf}>
-                              <div
-                                onClick={() => {
-                                  handleModelFilter("none");
-                                }}
-                                className={styles.InnerDropDownItem}
-                              >
-                                none
-                              </div>
-                              {modelsList.map((item, i) => (
-                                <div
-                                  key={i}
-                                  className={styles.InnerDropDownItem}
-                                  onClick={() => {
-                                    handleModelFilter(item);
-                                  }}
-                                >
-                                  {item}
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </div> */}
                       </div>
                     </div>
                   )}
@@ -409,10 +400,10 @@ const AdminLogsPage = () => {
                         )}
                         <div className={styles.Row}>
                           <div className={styles.RowCell}>
-                            <Avatar name="Demo" className={styles.UserAvatar} />
+                            <User name="Demo" className={styles.UserAvatar} />
                             <div>
                               <div className={styles.ActivityEmail}>
-                                <b>{item.user_id}</b>:
+                                <b>{getUserEmail(item.user_id)}</b>:
                               </div>
                               <div className={styles.ActivityDate}>
                                 {DisplayDateTime(new Date(item.creation_date))}
