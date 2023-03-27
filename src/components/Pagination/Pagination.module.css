@@ -16,7 +16,7 @@
     flex-wrap: wrap;
     color: white;
     gap: 2px;
-    max-width: 20rem;
+    max-width: 25rem;
   }
   .paginationBox:hover{
     cursor: pointer;

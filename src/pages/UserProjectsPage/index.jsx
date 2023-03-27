@@ -430,7 +430,7 @@ class UserProjectsPage extends React.Component {
           </div>
         )}
         <div className={styles.FooterRow}>
-        {pagination.pages > 1 && (
+        {pagination?.pages > 1 && (
           <div className={styles.PaginationSection}>
             <Pagination
               total={pagination.pages}
