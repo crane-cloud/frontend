@@ -215,7 +215,7 @@ class LoginPage extends React.Component {
                 this.handleChange(e);
               }}
             />
-            <div className="password-wrapper">
+            <div className="password-wrappers">
               <InputText
                 required
                 placeholder="Password"
@@ -226,10 +226,7 @@ class LoginPage extends React.Component {
                   this.handleChange(e);
                 }}
               />
-              <div className="CopyIcon">
-                <CopyText onClick={this.passwordOnClick} />
-                {passwordChecked ? <Checked /> : null}
-              </div>
+
               <div className="password" onClick={this.togglePassword}>
                 {passwordShown ? <Open /> : <Closed />}
               </div>

@@ -83,19 +83,9 @@
 }
 .password-wrapper {
   position: relative;
-  display: flex;
+  display: grid;
   align-items: center;
 }
-.password-wrapper input {
-  background-color: transparent;
-  color: #000;
-  border: none;
-  font-size: 1rem;
-  padding: 1rem;
-  height: 100%;
-  /* max-width: 21rem; */
-}
-
 .password-wrapper .toggle-password {
   position: absolute;
   top: 50%;
@@ -103,18 +93,31 @@
   transform: translateY(-50%);
   cursor: pointer;
 }
-
 .password-input-container {
   position: relative;
 }
-
-.CopyIcon {
-  background-color: transparent;
-  height: 100%;
-  padding: 0 0.4rem;
-  width: 1.3rem;
-}
 .password {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.password-repeat {
+  position: relative;
+  display: grid;
+  align-items: center;
+}
+
+.passwordConfirm.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.passwordConfirm {
   position: absolute;
   top: 50%;
   right: 1rem;

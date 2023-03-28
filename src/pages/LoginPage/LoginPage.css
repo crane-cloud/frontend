@@ -114,22 +114,13 @@
     width: 100%;
   }
 }
-.password-wrapper {
-  display: flex;
+.password-wrappers {
+  display: grid;
   align-items: center;
-  height: 2.5rem;
-  background-color: #ffffff;
   border-radius: 5px;
   position: relative;
 }
-.password-wrapper input {
-  background-color: #ffffff;
-  color: #abead5;
-  border: none;
-  font-size: 1rem;
-  padding: 1rem;
-  height: 100%;
-}
+
 
 .CopyIcon {
   background-color: #abead5;

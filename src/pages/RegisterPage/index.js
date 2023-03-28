@@ -25,6 +25,7 @@ export default class RegisterPage extends Component {
       email: "",
       password: "",
       passwordConfirm: "",
+      passwordConfirmShown: false,
       hasAgreed: false,
       loading: false,
       registered: false,
@@ -40,6 +41,7 @@ export default class RegisterPage extends Component {
     this.validateEmail = this.validateEmail.bind(this);
     this.toGithubauth = this.toGithubauth.bind(this);
     this.togglePassword = this.togglePassword.bind(this);
+    this.togglePasswordConfirm = this.togglePasswordConfirm.bind(this);
   }
 
   toggleAgreed() {
@@ -92,9 +94,10 @@ export default class RegisterPage extends Component {
     return emailRegEx.test(String(email).toLowerCase());
   }
   togglePassword() {
-    //this.setState({ hidden: !this.state.hidden });
     this.setState({ passwordShown: !this.state.passwordShown });
-    this.fetchPassword();
+  }
+  togglePasswordConfirm() {
+    this.setState({ passwordConfirmShown: !this.state.passwordConfirmShown });
   }
 
   handleSubmit(e) {
@@ -166,6 +169,7 @@ export default class RegisterPage extends Component {
       registered,
       passwordChecked,
       passwordShown,
+      passwordConfirmShown,
       username,
       error,
       hasAgreed,
@@ -213,24 +217,28 @@ export default class RegisterPage extends Component {
                     value={password}
                     onChange={this.handleOnChange}
                   />
-                  <div className="CopyIcon">
-                    <CopyText onClick={this.passwordOnClick} />
-                    {passwordChecked ? <Checked /> : null}
-                  </div>
 
                   <div className="password" onClick={this.togglePassword}>
                     {passwordShown ? <Open /> : <Closed />}
                   </div>
                 </div>
+                <div className="password-repeat">
+                  <InputText
+                    required
+                    placeholder="Repeat Password"
+                    name="passwordConfirm"
+                    type={passwordConfirmShown ? "text" : "password"}
+                    value={passwordConfirm}
+                    onChange={this.handleOnChange}
+                  />
+                  <div
+                    className="password"
+                    onClick={this.togglePasswordConfirm}
+                  >
+                    {passwordConfirmShown ? <Open /> : <Closed />}
+                  </div>
+                </div>
 
-                <InputText
-                  required
-                  placeholder="Repeat Password"
-                  name="passwordConfirm"
-                  type="password"
-                  value={passwordConfirm}
-                  onChange={this.handleOnChange}
-                />
                 {error && <div className="RegisterErrorDiv">{error}</div>}
                 <div className=" RegisterTerms">
                   <Checkbox onClick={this.toggleAgreed} isChecked={hasAgreed} />

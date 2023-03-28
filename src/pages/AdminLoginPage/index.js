@@ -123,10 +123,6 @@ class AdminLoginPage extends React.Component {
                     this.handleChange(e);
                   }}
                 />
-                <div className="CopyIcon">
-                  <CopyText onClick={this.passwordOnClick} />
-                  {passwordChecked ? <Checked /> : null}
-                </div>
 
                 <div className="password" onClick={this.togglePassword}>
                   {passwordShown ? <Open /> : <Closed />}
