@@ -6,6 +6,7 @@ import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg
 import AppsCard from "../AppsCard";
 import Spinner from "../Spinner";
 import styles from "./AppsList.module.css";
+import Pagination from "../Pagination";
 
 class AppsList extends Component {
   constructor(props) {
@@ -14,11 +15,14 @@ class AppsList extends Component {
       rerender: false,
       Searchword: props.word,
       SearchList: [],
+      currentPaginationPage: 1,
+      appsPerPage: 8,
     };
 
     this.renderAfterDelete = this.renderAfterDelete.bind(this);
     this.searchThroughApps = this.searchThroughApps.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.onPageChange = this.onPageChange.bind(this);
   }
 
   componentDidMount() {
@@ -26,8 +30,8 @@ class AppsList extends Component {
       params: { projectID },
       getAppsList,
     } = this.props;
-
-    getAppsList(projectID);
+    const { currentPaginationPage, appsPerPage } = this.state;
+    getAppsList(projectID, currentPaginationPage, appsPerPage );
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -36,11 +40,10 @@ class AppsList extends Component {
       getAppsList,
       word,
     } = this.props;
-    const { rerender } = this.state;
-
+    const { rerender,currentPaginationPage, appsPerPage } = this.state;
 
     if (rerender !== prevState.rerender) {
-      getAppsList(projectID);
+      getAppsList(projectID, currentPaginationPage , appsPerPage);
     }
     if (word !== prevProps.word) {
       this.searchThroughApps();
@@ -73,6 +76,13 @@ class AppsList extends Component {
       rerender: !rerender,
     });
   }
+  onPageChange(page) {
+    const { getAppsList, params: { projectID }, } = this.props;
+    this.setState({
+      currentPaginationPage: page,
+    });
+    getAppsList(projectID , page , this.state.appsPerPage);
+  }
 
   render() {
     const { SearchList } = this.state;
@@ -90,9 +100,9 @@ class AppsList extends Component {
       b.date_created < a.date_created ? 1 : -1
     );
     return (
-      <div>
+      <div >
         {isRetrieving ? (
-          <div className={styles.NoAppsResourcesMessage}>
+          <div className={`${styles.NoAppsResourcesMessage} ${styles.Spinnerheight}`}>
             <div className={styles.SpinnerWrapper}>
               <Spinner size="big" />
             </div>
@@ -154,6 +164,15 @@ class AppsList extends Component {
             Oops! Something went wrong! Failed to retrieve Apps.
           </div>
         )}
+        {apps?.pagination?.pages  > 1  && (
+          <div className={styles.PaginationSection}>
+            <Pagination
+              total={apps.pagination.pages}
+              current={this.state.currentPaginationPage}
+              onPageChange={this.onPageChange}
+            />
+          </div>
+        )}
       </div>
     );
   }
@@ -163,6 +182,7 @@ class AppsList extends Component {
 AppsList.propTypes = {
   apps: PropTypes.shape({
     apps: PropTypes.arrayOf(PropTypes.object),
+    pagination: PropTypes.object
   }),
   isRetrieved: PropTypes.bool,
   isRetrieving: PropTypes.bool,
@@ -175,7 +195,7 @@ AppsList.propTypes = {
 
 // assigning defaults
 AppsList.defaultProps = {
-  apps: { apps: [] },
+  apps: { apps: [],pagination:{} },
   isRetrieved: false,
   isRetrieving: true,
   message: "",
