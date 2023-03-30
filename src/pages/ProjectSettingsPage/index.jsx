@@ -496,7 +496,7 @@ class ProjectSettingsPage extends React.Component {
       })
       .catch((error) => {
         this.setState({
-          disableProjectError: "Failed to invite user",
+          disableProjectError: "Process failed, please try again.",
           disablingProject: false,
         });
       });
