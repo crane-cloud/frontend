@@ -1,5 +1,5 @@
 .RegisterPageContainer {
-  background: var(--primary-color)!important;
+  background: var(--primary-color) !important;
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -30,8 +30,6 @@
 .RegisterSuccessContent p span {
   color: var(--secondary-color);
 }
-
-
 
 .RegisterTerms {
   display: flex;
@@ -82,4 +80,47 @@
   .VerificationCodeInput .InputText {
     width: 100%;
   } */
+}
+.password-wrapper {
+  position: relative;
+  display: grid;
+  align-items: center;
+}
+.password-wrapper .toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.password-input-container {
+  position: relative;
+}
+.password {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.password-repeat {
+  position: relative;
+  display: grid;
+  align-items: center;
+}
+
+.passwordConfirm.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.passwordConfirm {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
 }

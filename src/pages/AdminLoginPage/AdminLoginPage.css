@@ -1,0 +1,24 @@
+.password-wrapper .toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+x .password-input-container {
+  position: relative;
+}
+
+.CopyIcon {
+  background-color: transparent;
+  height: 100%;
+  padding: 0 0.4rem;
+  width: 1.3rem;
+}
+.password {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
