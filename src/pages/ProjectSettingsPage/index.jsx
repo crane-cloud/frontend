@@ -77,6 +77,9 @@ class ProjectSettingsPage extends React.Component {
       currentUserIsMemberOnly: false,
       deleteProjectError: "",
       deletingProject: false,
+      disableProjectError: "",
+      disablingProject: false,
+      openDisableProjectModel: false
     };
 
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
@@ -114,6 +117,7 @@ class ProjectSettingsPage extends React.Component {
     this.removeMember = this.removeMember.bind(this);
     this.updateProjectDetails = this.updateProjectDetails.bind(this);
     this.deleteThisProject = this.deleteThisProject.bind(this);
+    this.handleDisableProject = this.handleDisableProject.bind(this);
   }
 
   componentDidMount() {
@@ -470,6 +474,35 @@ class ProjectSettingsPage extends React.Component {
      this.deleteThisProject(projectID)
   }
 
+  handleDisableProject(e,disabled) {
+    // /projects/d1e9954c-7a3b-437f-8611-9c0045815afe/disable
+    e.preventDefault();
+    this.setState({
+      disablingProject: true,
+    });
+    const projectID = this.props.match.params.projectID;
+    let apiEndpoint
+    if(disabled){
+      apiEndpoint = `/projects/${projectID}/enable`;
+    }else{
+      apiEndpoint = `/projects/${projectID}/disable`;
+    }
+    handlePostRequestWithOutDataObject(
+      {},
+      apiEndpoint
+    ).then(() => {
+        //reset to projects page to re populate redux
+        window.location.href = `/projects`;
+      })
+      .catch((error) => {
+        this.setState({
+          disableProjectError: "Failed to invite user",
+          disablingProject: false,
+        });
+      });
+    
+  }
+
   showUpdateAlert() {
     this.setState({ openUpdateAlert: true });
   }
@@ -603,7 +636,7 @@ class ProjectSettingsPage extends React.Component {
 
     let currentUserEmail = data.email;
 
-    const { name } = projectInfo;
+    const { name,disabled } = projectInfo;
 
     const {
       openUpdateAlert,
@@ -642,7 +675,10 @@ class ProjectSettingsPage extends React.Component {
       removeMemberError,
       updatingProjectDetails,
       deletingProject,
-      deleteProjectError
+      deleteProjectError,
+      disableProjectError,
+      disablingProject,
+      openDisableProjectModel
     } = this.state;
     const types = retrieveProjectTypes();
     const roles = retrieveMembershipRoles();
@@ -687,6 +723,14 @@ class ProjectSettingsPage extends React.Component {
               <div className={styles.CopyIcon}>
                 <CopyText onClick={this.projectDescriptionOnClick} />
                 {descriptionChecked ? <Checked /> : null}
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="SectionSubTitle">Project Status</div>
+            <div className={styles.ProjectButtonRow}>
+              <div className={styles.SettingsSectionInfo}>
+                <div>{disabled === true ? <span style={{color:'red'}}>Disabled</span>:"Enabled"}</div>
               </div>
             </div>
           </div>
@@ -803,90 +847,6 @@ class ProjectSettingsPage extends React.Component {
                         </div>
                       </div>
                     </div>
-                    // <div className={styles.MemberTableRow} key={index}>
-                    //   <div className={styles.MemberTableCell}>
-                    //
-                    //   </div>
-
-                    //   <div className={styles.MemberTableCell}>
-                    //     {this.updateRoleValue(entry.role.split("."))}
-                    //   </div>
-                    //   <div className={styles.MemberTableCell}>
-                    //     {entry.role !== "RolesList.owner" && (
-                    //       <>
-                    //         {entry.accepted_collaboration_invite === false
-                    //           ? "Pending"
-                    //           : "Accepted"}
-                    //       </>
-                    //     )}
-                    //   </div>
-                    //   <div className={styles.MemberTableCell}>
-                    //     <div
-                    //       onClick={(e) => {
-                    //         this.showMenu(entry.user.email);
-                    //         this.handleClick(e);
-                    //       }}
-                    //     >
-                    //       {/* better represented nested */}
-                    //       {entry.role !== "RolesList.owner" && (
-                    //         <>
-                    //           {entry.user.email === currentUserEmail ? (
-                    //             <MoreIcon className={styles.MoreIcon} />
-                    //           ) : (
-                    //             entry.user.email !== currentUserEmail &&
-                    //             currentUserIsMemberOnly === false && (
-                    //               <MoreIcon className={styles.MoreIcon} />
-                    //             )
-                    //           )}
-                    //         </>
-                    //       )}
-                    //       {/* options to be determined per user*/}
-                    //       {actionsMenu && entry.user.email === email && (
-                    //         <>
-                    //           <div className={styles.BelowHeader}>
-                    //             <div className={styles.contextMenu}>
-                    //               {/* only if role current user is admin or owner */}
-                    //               {entry.user.email !== currentUserEmail &&
-                    //               currentUserIsAdminOrOwner === true ? (
-                    //                 <>
-                    //                   <div
-                    //                     className={styles.DropDownLink}
-                    //                     role="presentation"
-                    //                     onClick={this.updateRoleAlert}
-                    //                   >
-                    //                     Change role
-                    //                   </div>
-                    //                   <div
-                    //                     className={styles.DropDownLink}
-                    //                     role="presentation"
-                    //                     onClick={this.showRemoveMemberModal}
-                    //                   >
-                    //                     Remove member
-                    //                   </div>
-                    //                 </>
-                    //               ) : (
-                    //                 <>
-                    //                   {entry.user.email ===
-                    //                     currentUserEmail && (
-                    //                     <>
-                    //                       <div
-                    //                         className={styles.DropDownLink}
-                    //                         role="presentation"
-                    //                         onClick={this.showRemoveMemberModal}
-                    //                       >
-                    //                         Remove yourself
-                    //                       </div>
-                    //                     </>
-                    //                   )}
-                    //                 </>
-                    //               )}
-                    //             </div>
-                    //           </div>
-                    //         </>
-                    //       )}
-                    //     </div>
-                    //   </div>
-                    // </div>
                   ))}
                 </div>
               </div>
@@ -1035,6 +995,24 @@ class ProjectSettingsPage extends React.Component {
                       color="primary"
                     >
                       Update
+                    </PrimaryButton>
+                  </div>
+                </div>
+                <div className={styles.MemberTableRow}>
+                  <div className={styles.SettingsSectionInfo}>
+                    <div className="SubTitle">{disabled ? "Enable" :"Disable"} project</div>
+                    <div>
+                      {disabled?"Allow access to project resources and enable billing":
+                      "Prevent project from being billed by blocking access to it's resources."}
+                    </div>
+                  </div>
+                  <div className={styles.SectionButtons}>
+                    <PrimaryButton
+                      onClick={()=>{this.setState({openDisableProjectModel:true})}}
+                      small
+                      color={disabled?"primary":"red"}
+                    >
+                    {disabled?"Enable":"Disable"}
                     </PrimaryButton>
                   </div>
                 </div>
@@ -1275,6 +1253,51 @@ class ProjectSettingsPage extends React.Component {
 
                   {deleteProjectError && (
                     <Feedback message={deleteProjectError} type="error" />
+                  )}
+                </div>
+              </div>
+            </Modal>
+          </div>
+        )}
+        {openDisableProjectModel && (
+          <div className={styles.ProjectDeleteModel}>
+            <Modal
+              showModal={openDisableProjectModel}
+              onClickAway={()=>{this.setState({openDisableProjectModel:false})}}
+            >
+              <div className={styles.DeleteProjectModel}>
+                <div className={styles.DeleteProjectModalUpperSection}>
+                  <div className={styles.WarningContainer}>
+                    <div className={styles.DeleteDescription}>
+                      Are you sure you want to {disabled?"enable":"disable"}&nbsp;
+                      <span>{name}</span>
+                      &nbsp;?
+                    </div>
+                    <div className={styles.DisableSubDescription}>
+                      This will {disabled? "enable" :"disable"}  billing and external access of resources in this project.
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.DeleteProjectModalLowerSection}>
+                  <div className={styles.DeleteProjectModelButtons}>
+                    <PrimaryButton
+                      className="CancelBtn"
+                      onClick={()=>{this.setState({openDisableProjectModel:false})}}
+                    >
+                      Cancel
+                    </PrimaryButton>
+                    <PrimaryButton
+                      color={disabled?"primary":"red"}
+                      onClick={(e) =>
+                        this.handleDisableProject(e, disabled)
+                      }
+                    >
+                      {disablingProject ? <Spinner /> : disabled===true ? "Enable" :"Disable"}
+                    </PrimaryButton>
+                  </div>
+
+                  {disableProjectError && (
+                    <Feedback message={disableProjectError} type="error" />
                   )}
                 </div>
               </div>

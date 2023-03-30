@@ -183,6 +183,10 @@
 .DeleteSubDescription {
   font-weight: 500;
 }
+.DisableSubDescription {
+  font-weight: 500;
+  width: 20rem;
+}
 
 .MembershipHeader {
   display: flex;
