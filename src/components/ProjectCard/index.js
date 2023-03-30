@@ -76,11 +76,12 @@ class ProjectCard extends React.Component {
       userID,
       acceptInviteCallBackModel,
       ownerId,
+      disabled
     } = this.props;
     const { currentUserRecord, fetchingProjectMembers } = this.state;
     const formattedMetrics = this.getProjectMemoryMetrics();
     return (
-      <div className="ProjectsCard">
+      <div className={`ProjectsCard ${disabled === true ? "opequeCard":""}`} title={disabled === true && "Disabled project"}>
         <div className="appCount" title={`${apps_count} Apps in this project`}>
           <div>{apps_count}</div>
         </div>

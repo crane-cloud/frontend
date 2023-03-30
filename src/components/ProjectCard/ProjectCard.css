@@ -21,6 +21,9 @@
   font-size: 1rem;
   height: 7rem;
 }
+.opequeCard{
+  opacity: .7;
+}
 
 .ProjectImageDiv {
   margin: 0;
