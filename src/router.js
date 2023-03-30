@@ -22,6 +22,7 @@ import AppsPage from "./pages/AppsPage";
 import ClusterPage from "./pages/ClusterPage";
 import ClusterResourcesPage from "./pages/ClusterResourcesPage";
 import ClusterSettingsPage from "./pages/ClusterSettingsPage";
+import AdminLogsPage from "./pages/AdminLogsPage";
 // import PricingPage from "./components/PricingPage";
 import ContactPage from "./pages/ContactPage";
 import CreateDatabase from "./components/CreateDatabase";
@@ -287,6 +288,12 @@ const Routes = () => (
         exact
         path="/databases"
         component={AdminDBList}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        exact
+        path="/clusters/:clusterID/logs"
+        component={AdminLogsPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}

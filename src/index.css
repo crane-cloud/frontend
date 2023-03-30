@@ -474,4 +474,5 @@ tr.TableLoading td {
   background: #ffffff;
   border-radius: 15px;
   border: 1px solid var(--gray-light-color);
+  height: fit-content;
 }
