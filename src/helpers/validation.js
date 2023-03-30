@@ -50,7 +50,7 @@ export const validateOrganizationName = (name) => {
     validateName(name) === false ||
     validateName(name) === "false_convention"
   ) {
-    return "Project organisation must start with a letter and may only contain letters and a hypen -";
+    return "Remove spaces and Project organisation must start with a letter and may only contain letters and a hypen -";
   }
 };
 
@@ -60,7 +60,7 @@ export const validateProjectName = (name) => {
   }
 
   if (validateName(name) === "false_convention") {
-    return "Project name may only contain letters and a hypen -";
+    return "Project name can only contain letters and a hypen but no spaces.";
   }
 
   if (validateName(name) === false) {
@@ -82,7 +82,7 @@ export const validateProjectType = (projectType) => {
   }
 
   if (validateName(projectType) === "false_convention") {
-    return "Project Type may only contain letters and a hypen -";
+    return "Project Type may only contain letters and a hypen but no spaces.";
   }
 
   if (validateName(projectType) === false) {
