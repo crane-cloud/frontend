@@ -163,7 +163,6 @@ AppNetworkPage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       appID: PropTypes.string.isRequired,
-      userID: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
   isFetchingAppNetwork: PropTypes.bool.isRequired,

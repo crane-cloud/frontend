@@ -35,6 +35,9 @@ export default class PasswordReset extends React.Component {
       });
     }
   }
+  componentDidMount() {
+    localStorage.clear();
+  }
 
   validateEmail(email) {
     const emailRegEx =

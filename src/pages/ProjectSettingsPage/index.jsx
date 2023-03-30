@@ -1018,7 +1018,6 @@ class ProjectSettingsPage extends React.Component {
             </Modal>
           </div>
         )}
-
         {currentUserIsAdminOrMember === false ? (
           <>
             <div className="SectionTitle">Danger Zone</div>

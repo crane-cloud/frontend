@@ -22,10 +22,10 @@ export const getAppsFail = (error) => ({
   },
 });
 
-const getAppsList = (projectID) => (dispatch) => {
+const getAppsList = (projectID,page,per_page) => (dispatch) => {
   dispatch(startFetchingApps());
   return axios
-    .get(`/projects/${projectID}/apps`)
+    .get(`/projects/${projectID}/apps?per_page=${per_page}&&page=${page}`)
     .then((response) => {   
       dispatch(getAppsSuccess(response))     
     })

@@ -160,7 +160,6 @@ ProjectCPUPage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       projectID: PropTypes.string.isRequired,
-      userID: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
   isFetchingCPU: PropTypes.bool.isRequired,

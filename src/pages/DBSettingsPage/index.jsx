@@ -600,7 +600,7 @@ class DBSettingsPage extends React.Component {
                     <div className={styles.SectionButtons}>
                       <PrimaryButton
                         onClick={this.showUpdateModal}
-                        small
+                        small={true}
                         color="primary-outline"
                       >
                         Change Password
@@ -618,7 +618,7 @@ class DBSettingsPage extends React.Component {
                     <div className={styles.SectionButtons}>
                       <PrimaryButton
                         onClick={this.showResetAlert}
-                        small
+                        small={true}
                         color="red-outline"
                       >
                         Reset
@@ -650,7 +650,7 @@ class DBSettingsPage extends React.Component {
                     <div className={styles.SectionButtons}>
                       <PrimaryButton
                         onClick={this.showDeleteAlert}
-                        small
+                        small={true}
                         color="red-outline"
                       >
                         Delete

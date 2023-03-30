@@ -23,6 +23,7 @@ const LineChartComponent = ({
   if (preview) {
     return (
       <ResponsiveContainer className="GraphSection" width="100%" height="100%">
+        {data && data.length > 0 ? (
         <LineChart data={data}>
           <Line
             dot={false}
@@ -31,13 +32,16 @@ const LineChartComponent = ({
             stroke="#008AC1"
           />
         </LineChart>
+        ): (
+          <div className="NoGraphData">Graph Data Unavailable</div>
+        )}
       </ResponsiveContainer>
     );
   }
 
   return (
     <ResponsiveContainer className="GraphSection" width="100%" height="100%">
-      {data.length > 0 ? (
+      { data && data.length > 0 ? (
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3" />
           <XAxis dataKey={xDataKey}>

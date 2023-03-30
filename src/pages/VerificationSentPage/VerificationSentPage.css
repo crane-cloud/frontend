@@ -1,12 +1,8 @@
 .VerificationPageContainer {
-  background: var(--primary-color);
+  background: var(--primary-color)!important;
   color: #ffffff;
   display: flex;
   flex-direction: column;
-  flex: 1;
-}
-
-.VerificationPageHeader {
   flex: 1;
 }
 

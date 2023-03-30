@@ -20,10 +20,7 @@
 }
 
 .ProjectStatus {
-    padding: 0.3rem;
-    border-radius: 0.3rem;
-    background-color: #408140;
-    color: #ffffff;
+    color: #408140;
 }
 
 .DropDownLink {

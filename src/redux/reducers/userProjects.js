@@ -6,6 +6,7 @@ import {
 
 const initialState = {
   projects: [],
+  pagination: {},
   isRetrieving: false,
   isFetched: false,
   message: "You have Projects Yet.",
@@ -16,7 +17,8 @@ const userProjectsReducer = (state = initialState, action) => {
     case FETCH_USER_PROJECTS_SUCCESS:
       return {
         ...state,
-        projects: action.payload,
+        projects: action.payload.projects,
+        pagination: action.payload.pagination,
         isFetched: true,
         isRetrieving: false,
         message: "All your Projects are fetched",

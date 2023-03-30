@@ -253,7 +253,7 @@ class LoginPage extends React.Component {
               </div>
               <PrimaryButton
                 className="GithubLoginBtn AuthBtn"
-                disable={gitLoading}
+                disabled={gitLoading}
                 onClick={this.toGithubauth}
               >
                 {gitLoading ? (

@@ -175,7 +175,6 @@ export default class RegisterPage extends Component {
       hasAgreed,
       gitLoading,
     } = this.state;
-    console.log(registered);
     return (
       <div className="RegisterPageContainer">
         <Header />
@@ -270,7 +269,7 @@ export default class RegisterPage extends Component {
                 </div>
                 <PrimaryButton
                   className="GithubLoginBtn AuthBtn"
-                  disable={gitLoading}
+                  disabled={gitLoading}
                   onClick={this.toGithubauth}
                 >
                   {gitLoading ? (
