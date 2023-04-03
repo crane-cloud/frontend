@@ -6,6 +6,7 @@ import {
 
 const initialState = {
   projects: [],
+  pagination:{},
   isRetrieving: false,
   isRetrieved: false,
   message: "No Projects Yet.",
@@ -16,7 +17,8 @@ const adminProjectsReducer = (state = initialState, action) => {
     case FETCH_ADMIN_PROJECTS_SUCCESS:
       return {
         ...state,
-        projects: action.payload,
+        projects: action.payload.projects,
+        pagination: action.payload.pagination,
         isRetrieved: true,
         isRetrieving: false,
         message: "All Projects fetched",
@@ -35,6 +37,7 @@ const adminProjectsReducer = (state = initialState, action) => {
         message: action.payload,
         isRetrieved: false,
         isRetrieving: false,
+        pagination: {},
       };
 
     default:

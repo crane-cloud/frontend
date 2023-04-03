@@ -11,7 +11,7 @@ export const startTheFetch = () => ({
 
 export const getAdminProjectsSuccess = (response) => ({
   type: FETCH_ADMIN_PROJECTS_SUCCESS,
-  payload: response.data.data.projects,
+  payload: response.data.data,
 });
 
 export const getAdminProjectsFailed = (error) => ({
@@ -22,10 +22,10 @@ export const getAdminProjectsFailed = (error) => ({
   },
 });
 
-const getAdminProjects = () => (dispatch) => {
+const getAdminProjects = (page) => (dispatch) => {
   dispatch(startTheFetch());
   return axios
-    .get(`/projects`)
+    .get(`/projects?page=${page}`)
     .then((response) => dispatch(getAdminProjectsSuccess(response)))
     .catch((error) => {
       dispatch(getAdminProjectsFailed(error));

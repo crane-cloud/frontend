@@ -3,10 +3,9 @@ import "./AdminProjectsPage.css";
 import InformationBar from "../../components/InformationBar";
 import Header from "../../components/Header";
 import SideNav from "../../components/SideNav";
-// import Modal from "../Modal";
-// import BlackInputText from "../BlackInputText";
+
 import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
-// import PrimaryButton from "../PrimaryButton";
+
 import getAdminProjects from "../../redux/actions/adminProjects";
 import getUsersList from "../../redux/actions/users";
 import Spinner from "../../components/Spinner";
@@ -14,14 +13,17 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./AdminProjectsPage.css";
 import { Link } from "react-router-dom";
+import usePaginator from "../../hooks/usePaginator";
+import Pagination from "../../components/Pagination"
 
 const AdminProjectsPage = () => {
+  const [currentPage, handleChangePage] = usePaginator();
   const { clusterID } = useParams();
   const dispatch = useDispatch();
 
   const getAdminProps = useCallback(
-    () => dispatch(getAdminProjects()),
-    [dispatch]
+    () => dispatch(getAdminProjects(currentPage)),
+    [dispatch,currentPage]
   );
   const getUsersProps = useCallback(() => dispatch(getUsersList), [dispatch]);
   const adminProjects = useSelector((state) => state.adminProjectsReducer);
@@ -55,12 +57,17 @@ const AdminProjectsPage = () => {
   //   //setAddCredits(false);
   //   setContextMenu(false);
   // };
+
   const showContextMenu = (id) => {
     setContextMenu(true);
     setSelectedProject(id);
   };
-
   const clusterName = localStorage.getItem("clusterName");
+
+  const handlePageChange = (currentPage) => {
+    handleChangePage(currentPage);
+    getAdminProps()
+  };
 
   return (
     <div className="MainPage">
@@ -205,6 +212,15 @@ const AdminProjectsPage = () => {
                 </div>
               )}
             </div>
+            {adminProjects.pagination?.pages > 1 && (
+              <div className="AdminPaginationSection">
+                <Pagination
+                  total={adminProjects.pagination.pages}
+                  current={currentPage}
+                  onPageChange={handlePageChange}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

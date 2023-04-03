@@ -11,7 +11,7 @@ export const startTheFetch = () => ({
 
 export const getPvsSuccess = (response) => ({
   type: FETCH_PVS_SUCCESS,
-  payload: response.data.data.pvs,
+  payload: response.data.data,
 });
 
 export const getPvsFailed = (error) => ({
@@ -22,10 +22,10 @@ export const getPvsFailed = (error) => ({
   },
 });
 
-const getPvs = (clusterId) => (dispatch) => {
+const getPvs = (clusterId,page) => (dispatch) => {
   dispatch(startTheFetch());
   return axios
-    .get(`/clusters/${clusterId}/pvs`)
+    .get(`/clusters/${clusterId}/pvs?page=${page}`)
     .then((response) => dispatch(getPvsSuccess(response)))
     .catch((error) => {
       dispatch(getPvsFailed(error));

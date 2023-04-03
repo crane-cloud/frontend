@@ -7,21 +7,24 @@ import InformationBar from "../InformationBar";
 import Spinner from "../Spinner";
 import SideNav from "../SideNav";
 import getServices from "../../redux/actions/services";
+import usePaginator from "../../hooks/usePaginator";
+import Pagination from "../../components/Pagination";
 
 const ServicesListPage = () => {
   const { clusterID } = useParams();
   const dispatch = useDispatch();
+  const [currentPage, handleChangePage] = usePaginator();
 
   const serviceResources = useCallback(
-    () => dispatch(getServices(clusterID)),
-    [dispatch, clusterID]
+    () => dispatch(getServices(clusterID,currentPage)),
+    [dispatch, clusterID,currentPage]
   );
 
   useEffect(() => {
     serviceResources();
   }, [serviceResources]);
 
-  const { isRetrieving, services, isFetched } = useSelector(
+  const { isRetrieving, services, isFetched,pagination } = useSelector(
     (state) => state.servicesReducer
   );
 
@@ -41,6 +44,10 @@ const ServicesListPage = () => {
       return portValue;
     });
     return portValue;
+  };
+  const handlePageChange = (currentPage) => {
+    handleChangePage(currentPage);
+    serviceResources()
   };
 
   return (
@@ -112,6 +119,15 @@ const ServicesListPage = () => {
                 </div>
               )}
             </div>
+            {pagination?.pages > 1 && (
+            <div className="AdminPaginationSection">
+              <Pagination
+                total={pagination.pages}
+                current={currentPage}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          )}
           </div>
         </div>
       </div>

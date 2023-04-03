@@ -306,7 +306,7 @@ tr.TableLoading td {
   background: var( --gray-bg-light-color);
   height: 100vh;
   display: grid;
-  grid-template-rows: 80px 4fr;
+  grid-template-rows: 80px 4fr !important;
   overflow-x: hidden;
 }
 .TopBarSection {
@@ -341,6 +341,7 @@ tr.TableLoading td {
   display: grid;
   grid-template-rows: 80px 4fr;
   overflow: auto;
+  
 }
 
 .ContentSection {
@@ -476,3 +477,12 @@ tr.TableLoading td {
   border: 1px solid var(--gray-light-color);
   height: fit-content;
 }
+
+/* ////////////---- Pagination ---- ///////////// */
+.AdminPaginationSection{
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+

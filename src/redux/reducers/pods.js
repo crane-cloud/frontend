@@ -14,6 +14,7 @@ const initialState = {
 const PodsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_PODS_SUCCESS:
+      console.log(action.payload)
       return {
         ...state,
         pods: action.payload,

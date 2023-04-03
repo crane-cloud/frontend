@@ -45,7 +45,6 @@ const SideNav = ({ clusterId, clusterName }) => {
                 {clusterName}
               </Link>
             </div>
-
             <Link
               to={{ pathname: `${BASE_URL}/resources` }}
               className="ListItem"
