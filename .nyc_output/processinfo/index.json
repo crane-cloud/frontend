@@ -1,0 +1,1 @@
+{"processes":{"0fd583dd-f2a6-4908-a1ae-00d6ef79103d":{"parent":null,"children":["58030a86-198d-4cee-b398-6d264ee16064"]},"58030a86-198d-4cee-b398-6d264ee16064":{"parent":"0fd583dd-f2a6-4908-a1ae-00d6ef79103d","children":[]}},"files":{"/home/greatest/Desktop/code/cranecloud/frontend/em/frontend/cypress.config.js":["58030a86-198d-4cee-b398-6d264ee16064"]},"externalIds":{}}
