@@ -7,6 +7,7 @@ import {
 
 const initialState = {
   pvs: [],
+  pagination:{},
   isRetrieving: false,
   isFetched: false,
   message: "Cluster Volumes Not Available",
@@ -14,10 +15,10 @@ const initialState = {
 
 const fetchAction = {
   type: FETCH_PVS_SUCCESS,
-  pvs: undefined,
-  isRetrieving: false,
-  isFetched: true,
-  message: "All Cluster Volumes fetched",
+  payload: {
+    pvs:[],
+    pagination:{},
+  }
 };
 
 const fetchFailedAction = {
@@ -37,9 +38,10 @@ describe("pvsReducer initial state", () => {
 
   it("should handle pvs added", () => {
     expect(pvsReducer(initialState, fetchAction)).toEqual({
-      pvs: undefined,
+      pvs: [],
       isRetrieving: false,
       isFetched: true,
+      pagination:{},
       message: "All Cluster Volumes fetched",
     });
   });
@@ -49,6 +51,7 @@ describe("pvsReducer initial state", () => {
       message: undefined,
       isFetched: false,
       isRetrieving: false,
+      pagination:{},
       pvs: [],
     });
   });
@@ -58,6 +61,7 @@ describe("pvsReducer initial state", () => {
       pvs: [],
       isRetrieving: true,
       isFetched: false,
+      pagination:{},
       message: "Cluster Volumes Not Available",
     });
   });

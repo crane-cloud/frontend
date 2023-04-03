@@ -7,6 +7,7 @@ import {
 
 const initialState = {
   users: [],
+  pagination:{},
   isFetched: false,
   isFetching: false,
   message: "No users yet.",
@@ -14,10 +15,10 @@ const initialState = {
 
 const fetchAction = {
   type: GET_USERS_SUCCESS,
-  users: undefined,
-  isFetching: false,
-  isFetched: true,
-  message: "Users successfully fetched",
+  payload: {
+    users: [],
+    pagination:{},
+  }
 };
 
 const fetchFailedAction = {
@@ -37,8 +38,9 @@ describe("usersListReducer initial state", () => {
 
   it("should handle database added", () => {
     expect(usersListReducer(initialState, fetchAction)).toEqual({
-      users: undefined,
+      users: [],
       isFetching: false,
+      pagination:{},
       isFetched: true,
       message: "Users successfully fetched",
     });
@@ -49,6 +51,7 @@ describe("usersListReducer initial state", () => {
       message: undefined,
       isFetching: false,
       isFetched: false,
+      pagination:{},
       users: []
     });
   });
@@ -58,6 +61,7 @@ describe("usersListReducer initial state", () => {
       users: [],
       isFetched: false,
       isFetching: true,
+      pagination:{},
       message: "No users yet.",
     });
   });

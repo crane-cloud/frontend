@@ -7,6 +7,7 @@ import {
 
 const initialState = {
   pvcs: [],
+  pagination:{},
   isRetrieving: false,
   isFetched: false,
   message: "Cluster pvcs Not Available",
@@ -14,16 +15,17 @@ const initialState = {
 
 const fetchAction = {
   type: FETCH_PVCS_SUCCESS,
-  pvcs: undefined,
-  isRetrieving: false,
-  isFetched: true,
-  message: "All Cluster pvcs fetched",
+  payload: {
+    pvcs:[],
+    pagination:{},
+  }
 };
 
 const fetchFailedAction = {
   type: FETCH_PVCS_FAILED,
   message: undefined,
   isFetched: false,
+  pagination:{},
   isRetrieving: false,
 };
 
@@ -37,8 +39,9 @@ describe("pvcsReducer initial state", () => {
 
   it("should handle pvcs added", () => {
     expect(pvcsReducer(initialState, fetchAction)).toEqual({
-      pvcs: undefined,
+      pvcs: [],
       isRetrieving: false,
+      pagination:{},
       isFetched: true,
       message: "All Cluster Pvcs fetched",
     });
@@ -48,6 +51,7 @@ describe("pvcsReducer initial state", () => {
     expect(pvcsReducer(initialState, fetchFailedAction)).toEqual({
       message: undefined,
       isFetched: false,
+      pagination:{},
       isRetrieving: false,
       pvcs: [],
     });
@@ -57,6 +61,7 @@ describe("pvcsReducer initial state", () => {
     expect(pvcsReducer(initialState, startFetchingAction)).toEqual({
       pvcs: [],
       isRetrieving: true,
+      pagination:{},
       isFetched: false,
       message: "Cluster pvcs Not Available",
     });
