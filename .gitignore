@@ -4,10 +4,10 @@
 /node_modules
 /.pnp
 .pnp.js
-
+/instrumented/
 # testing
 /coverage
-
+.nyc_output/
 # production
 /build
 
