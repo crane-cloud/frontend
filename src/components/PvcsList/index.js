@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import usePaginator from "../../hooks/usePaginator";
 import { useParams } from "react-router-dom";
 
-const  PvcsListPage =(props)=> {
+const  PvcsListPage =()=> {
   const { isRetrieving, pvcs, isFetched, pagination } = useSelector(
     (state) => state.pvcsReducer
   );

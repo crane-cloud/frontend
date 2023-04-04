@@ -14,13 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 import usePaginator from "../../hooks/usePaginator";
 import { useParams } from "react-router-dom";
 
-const PodsList =(props)=>{
-  // constructor(props) {
-  //   super(props);
-
-  //   calculatePercentage = calculatePercentage.bind(this);
-  //   displayFraction = displayFraction.bind(this);
-  // }
+const PodsList =()=>{
   const { isRetrieving, pods, isFetched } = useSelector(
     (state) => state.podsReducer
   );
@@ -38,13 +32,6 @@ const PodsList =(props)=>{
     handleChangePage(currentPage);
     dispatch(getPodsList(clusterID, currentPage));
   };
-  // componentDidMount() {
-  //   const { getPodsList } = props;
-  //   const {
-  //     match: { params },
-  //   } = props;
-  //   getPodsList(params.clusterID);
-  // }
 
   const podStatus =(conditions)=> {
     let status = "";
@@ -93,12 +80,6 @@ const PodsList =(props)=>{
     );
   }
 
-  // render() {
-  //   const { pods, isFetched, isRetrieving } = props;
-  //   const clusterName = localStorage.getItem("clusterName");
-  //   const {
-  //     match: { params },
-  //   } = props;
 
     return (
       <div className="MainPage">
@@ -187,36 +168,5 @@ const PodsList =(props)=>{
     );
   
 }
-
-// inititate props
-// PodsList.propTypes = {
-//   pods: PropTypes.shape({
-//     pods: PropTypes.arrayOf(PropTypes.object),
-//   }),
-//   isRetrieving: PropTypes.bool,
-//   isFetched: PropTypes.bool,
-//   getPodsList: PropTypes.func,
-//   match: PropTypes.shape({
-//     params: PropTypes.shape({
-//       clusterID: PropTypes.string,
-//     }),
-//   }),
-// };
-
-// // assigning defaults
-// PodsList.defaultProps = {
-//   pods: {},
-//   isRetrieving: false,
-//   isFetched: false,
-// };
-
-// export const mapStateToProps = (state) => {
-//   const { isRetrieving, pods, isFetched } = state.podsReducer;
-//   return { isRetrieving, pods, isFetched };
-// };
-
-// const mapDispatchToProps = {
-//   getPodsList,
-// };
 
 export default PodsList;
