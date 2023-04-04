@@ -20,7 +20,8 @@ describe("UserList component", () => {
     // Mock useSelector hook
     spyOnUseSelector = jest.spyOn(redux, "useSelector");
     spyOnUseSelector.mockReturnValue({ 
-      users: { pagination: { pages: 1 }, pods: [] }, 
+      users: [], 
+      pagination: { pages: 1 },
       isRetrieving: false, 
       isFetched: false 
     });
