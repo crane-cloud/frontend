@@ -11,7 +11,7 @@ const startGettingDeployments = () => ({
 
 const getDeploymentsSuccess = (response) => ({
   type: GET_DEPLOYMENTS_SUCCESS,
-  payload: response.data.data.deployments,
+  payload: response.data.data,
 });
 
 const getDeploymentsFail = (error) => ({
@@ -22,11 +22,11 @@ const getDeploymentsFail = (error) => ({
   },
 });
 
-const getDeployments = (clusterID) => (dispatch) => {
+const getDeployments = (clusterID,page) => (dispatch) => {
   dispatch(startGettingDeployments());
 
   axios
-    .get(`/clusters/${clusterID}/deployments`)
+    .get(`/clusters/${clusterID}/deployments?page=${page}`)
     .then((response) => dispatch(getDeploymentsSuccess(response)))
     .catch((error) => {
       dispatch(getDeploymentsFail(error));

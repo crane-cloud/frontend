@@ -6,6 +6,7 @@ import {
 
 const initialState = {
   deployments: [],
+  pagination:{},
   isFetchingDeployments: false,
   isFetched: false,
   message: "",
@@ -22,8 +23,9 @@ const getDeployments = (state = initialState, action) => {
     case GET_DEPLOYMENTS_SUCCESS:
       return {
         ...state,
-        deployments: action.payload,
+        deployments: action.payload.deployments,
         isFetchingDeployments: false,
+        pagination:action.payload.pagination,
         isFetched: true,
       };
 
@@ -33,6 +35,7 @@ const getDeployments = (state = initialState, action) => {
         message: action.payload,
         isFetched: false,
         isFetchingDeployments: false,
+        pagination:{},
       };
 
     default:

@@ -11,7 +11,7 @@ export const startTheFetch = () => ({
 
 export const getServicesSuccess = (response) => ({
   type: FETCH_SERVICES_SUCCESS,
-  payload: response.data.data.services,
+  payload: response.data.data,
 });
 
 export const getServicesFailed = (error) => ({
@@ -22,10 +22,10 @@ export const getServicesFailed = (error) => ({
   },
 });
 
-const getServices = (clusterId) => (dispatch) => {
+const getServices = (clusterId,page) => (dispatch) => {
   dispatch(startTheFetch());
   return axios
-    .get(`/clusters/${clusterId}/services`)
+    .get(`/clusters/${clusterId}/services?page=${page}`)
     .then((response) => dispatch(getServicesSuccess(response)))
     .catch((error) => {
       dispatch(getServicesFailed(error));

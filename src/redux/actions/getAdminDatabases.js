@@ -11,7 +11,7 @@ const startFetchingDatabases = () => ({
 
 const adminGetDatabasesSuccess = (response) => ({
   type: ADMIN_ALL_DATABASES_SUCCESS,
-  payload: response.data.data.databases,
+  payload: response.data.data,
 });
 
 const adminGetDatabasesFailed = (error) => ({
@@ -22,11 +22,11 @@ const adminGetDatabasesFailed = (error) => ({
   },
 });
 
-const adminGetDatabases = () => (dispatch) => {
+const adminGetDatabases = (page) => (dispatch) => {
   dispatch(startFetchingDatabases());
 
   return axios
-    .get(`/databases`)
+    .get(`/databases?page=${page}`)
     .then((response) => {
       dispatch(adminGetDatabasesSuccess(response));
     })

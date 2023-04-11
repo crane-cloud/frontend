@@ -10,22 +10,30 @@ import ProgressBar from "../../components/ProgressBar";
 import Spinner from "../../components/Spinner";
 import tellAge from "../../helpers/ageUtility";
 import "./DeploymentsPage.css";
+import usePaginator from "../../hooks/usePaginator";
+import Pagination from "../../components/Pagination";
 
 const DeploymentsPage = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const { clusterID } = params;
+  const [currentPage, handleChangePage] = usePaginator();
 
   const clusterDeploys = useCallback(
-    () => dispatch(getDeployments(clusterID)),
-    [clusterID, dispatch]
+    () => dispatch(getDeployments(clusterID,currentPage)),
+    [clusterID, dispatch,currentPage]
   );
 
   useEffect(() => {
     clusterDeploys();
   }, [clusterDeploys]);
 
-  const { deployments, isFetchingDeployments, isFetched } = useSelector(
+  const handlePageChange = (currentPage) => {
+    handleChangePage(currentPage);
+    clusterDeploys();
+  };
+
+  const { deployments, isFetchingDeployments, isFetched,pagination } = useSelector(
     (state) => state.deployments
   );
 
@@ -156,6 +164,15 @@ const DeploymentsPage = () => {
                 </div>
               )}
             </div>
+            {pagination?.pages > 1 && (
+            <div className="AdminPaginationSection">
+              <Pagination
+                total={pagination.pages}
+                current={currentPage}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          )}
           </div>
         </div>
       </div>

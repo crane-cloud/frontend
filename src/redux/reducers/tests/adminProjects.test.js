@@ -7,6 +7,7 @@ import {
 
 const initialState = {
   projects: [],
+  pagination:{},
   isRetrieving: false,
   isRetrieved: false,
   message: "No Projects Yet.",
@@ -14,15 +15,16 @@ const initialState = {
 
 const fetchAction = {
   type: FETCH_ADMIN_PROJECTS_SUCCESS,
-  projects: undefined,
-  isRetrieved: true,
-  isRetrieving: false,
-  message: "All Projects fetched",
+  payload: {
+    projects:[],
+    pagination:{}
+  }
 };
 
 const fetchFailedAction = {
   type: FETCH_ADMIN_PROJECTS_FAILED,
   message: [],
+  pagination:{},
   isRetrieved: false,
   isRetrieving: false,
 };
@@ -38,9 +40,10 @@ describe("adminProjectsReducer initial state", () => {
 
   it("should handle cluster added", () => {
     expect(adminProjectsReducer(initialState, fetchAction)).toEqual({
-      projects: undefined,
+      projects: [],
       isRetrieved: true,
       isRetrieving: false,
+      pagination:{},
       message: "All Projects fetched",
     });
   });
@@ -50,6 +53,7 @@ describe("adminProjectsReducer initial state", () => {
       message: undefined,
       isRetrieved: false,
       isRetrieving: false,
+      pagination:{},
       projects: []
     });
   });
@@ -59,7 +63,9 @@ describe("adminProjectsReducer initial state", () => {
       isRetrieved: false,
       isRetrieving: true,
       message: "No Projects Yet.",
+      pagination:{},
       projects: [],
+
     });
   });
 });
