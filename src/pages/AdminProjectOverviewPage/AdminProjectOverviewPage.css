@@ -24,6 +24,21 @@
     padding: 0.5rem 0 1rem 1rem;
 }
 
+.PeriodButton {
+    height: 1.7rem;
+    width: 3rem;
+    background-color: #eeeeee;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.PeriodButtonActive {
+    background-color: var(--secondary-color);
+}
+
 @media only screen and (min-width: 750px) {
     .ClusterContainer {
         grid-template-columns: repeat(2, 1fr);

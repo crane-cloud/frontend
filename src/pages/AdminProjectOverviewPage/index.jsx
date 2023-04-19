@@ -8,7 +8,6 @@ import Header from "../../components/Header";
 import InformationBar from "../../components/InformationBar";
 import MetricsCard from "../../components/MetricsCard";
 import { Line, CartesianGrid, XAxis, YAxis, AreaChart, Area } from "recharts";
-import AdminPeriod from "../../components/AdminPeriod";
 import { retrieveProjectTypes } from "../../helpers/projecttypes.js";
 import "./AdminProjectOverviewPage.css";
 
@@ -17,9 +16,11 @@ const AdminProjectOverviewPage = () => {
   const [projects, setProjects] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
+  const [period, setPeriod] = useState("all");
   const projectTypeCounts = {};
   const graphDataArray = [];
   const graphData = {};
+  let filteredGraphData = [];
 
   useEffect(() => {
     getAllProjects();
@@ -118,7 +119,44 @@ const AdminProjectOverviewPage = () => {
     return graphDataArray;
   };
 
+  // this function call will creates the graph data
   createGraphData();
+
+  const filterGraphData = (graphDataArray, period) => {
+    // Get the latest year from the graphDataArray
+    let latestYear = graphDataArray[graphDataArray.length - 1]?.Year;
+
+    // Define the period of months you want to filter for (3, 4, or 6 etc)
+    let periodMonths = period;
+
+    // Calculate the start and end index for the period
+    let endIndex = graphDataArray?.findIndex(
+      (data) => data.Year === latestYear
+    );
+
+    // this value caters for months for latest year that are not in the period
+    let numberOfMonthsInLatestYear = graphDataArray?.filter(
+      (record) => record.Year === latestYear
+    )?.length;
+
+    let startIndex = endIndex - periodMonths + numberOfMonthsInLatestYear;
+
+    // Use the slice() method to extract the period of data from the graphDataArray
+    let filteredData = graphDataArray?.slice(
+      startIndex,
+      endIndex + numberOfMonthsInLatestYear
+    );
+
+    // return the filtered data
+    return (filteredGraphData = filteredData);
+  };
+
+  // this function call will filter the graph data basing on a particular period
+  filterGraphData(graphDataArray, period);
+
+  const handleChange = ({ target }) => {
+    setPeriod(target.getAttribute("value"));
+  };
 
   return (
     <div className="MainPage">
@@ -170,7 +208,76 @@ const AdminProjectOverviewPage = () => {
                             Projects Created
                           </span>
                           <span>
-                            <AdminPeriod />
+                            <div className="PeriodContainer">
+                              <div className="PeriodButtonsSection">
+                                <div
+                                  className={`${
+                                    period === "3" && "PeriodButtonActive"
+                                  } PeriodButton`}
+                                  name="3month"
+                                  value="3"
+                                  role="presentation"
+                                  onClick={handleChange}
+                                >
+                                  3m
+                                </div>
+                                <div
+                                  className={`${
+                                    period === "4" && "PeriodButtonActive"
+                                  } PeriodButton`}
+                                  name="4months"
+                                  value="4"
+                                  role="presentation"
+                                  onClick={handleChange}
+                                >
+                                  4m
+                                </div>
+                                <div
+                                  className={`${
+                                    period === "6" && "PeriodButtonActive"
+                                  } PeriodButton`}
+                                  name="6months"
+                                  value="6"
+                                  role="presentation"
+                                  onClick={handleChange}
+                                >
+                                  6m
+                                </div>
+                                <div
+                                  className={`${
+                                    period === "8" && "PeriodButtonActive"
+                                  } PeriodButton`}
+                                  name="8months"
+                                  value="8"
+                                  role="presentation"
+                                  onClick={handleChange}
+                                >
+                                  8m
+                                </div>
+                                <div
+                                  className={`${
+                                    period === "12" && "PeriodButtonActive"
+                                  } PeriodButton`}
+                                  name="1year"
+                                  value="12"
+                                  role="presentation"
+                                  onClick={handleChange}
+                                >
+                                  1y
+                                </div>
+                                <div
+                                  className={`${
+                                    period === "all" && "PeriodButtonActive"
+                                  } PeriodButton`}
+                                  name="all"
+                                  value="all"
+                                  role="presentation"
+                                  onClick={handleChange}
+                                >
+                                  all
+                                </div>
+                              </div>
+                            </div>
                           </span>
                         </div>
                       }
@@ -179,7 +286,9 @@ const AdminProjectOverviewPage = () => {
                         width={800}
                         height={300}
                         syncId="anyId"
-                        data={graphDataArray}
+                        data={
+                          period !== "all" ? filteredGraphData : graphDataArray
+                        }
                       >
                         <Line
                           type="monotone"
