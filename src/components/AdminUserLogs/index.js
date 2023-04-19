@@ -9,6 +9,7 @@ import { ReactComponent as Upload } from "../../assets/images/upload-cloud.svg";
 import styles from "./AdminUserLogs.module.css";
 import { useParams } from "react-router-dom";
 import PrimaryButton from "../../components/PrimaryButton";
+import { Link } from "react-router-dom";
 
 const AdminUserLogs = () => {
   const { clusterID } = useParams();
@@ -25,7 +26,8 @@ const AdminUserLogs = () => {
         </div>
         <div className={styles.MainContentSection}>
           <div className="InformationBarSection">
-            <InformationBar header="Accounts/Logs" showBtn={false} />
+            <InformationBar header={<><Link className="breadcrumb" 
+            to={`/accounts`}>Accounts</Link><span> / Logs</span></>} showBtn={false} />
           </div>
 
           <div className={styles.SmallContainer}>
