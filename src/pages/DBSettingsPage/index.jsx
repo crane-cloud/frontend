@@ -4,6 +4,7 @@ import Spinner from "../../components/Spinner";
 import Modal from "../../components/Modal";
 import Feedback from "../../components/Feedback";
 import DeleteWarning from "../../components/DeleteWarning";
+import { Link } from "react-router-dom";
 import {
   handleGetRequest,
   handlePostRequestWithOutDataObject,
@@ -359,7 +360,8 @@ class DBSettingsPage extends React.Component {
     } = this.state;
     return (
       <DashboardLayout
-        header="Database Settings"
+        header={<><Link className="breadcrumb" 
+        to={`/projects/${projectID}/databases/`}>Databases</Link><span> / DB settings</span></>}
         name={getProjectName(projects, projectID)}
         short
       >

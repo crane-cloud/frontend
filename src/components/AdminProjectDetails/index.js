@@ -14,6 +14,7 @@ import React, { useState } from "react";
 import { ReactComponent as DownArrow } from "../../assets/images/downarrow.svg";
 import { ReactComponent as FilterIcon } from "../../assets/images/filterIcon.svg";
 import { ReactComponent as ArrowUpDDown } from "../../assets/images/ArrowUp&Down.svg";
+import { Link } from "react-router-dom";
 
 const projectUsers = [
   {
@@ -187,7 +188,8 @@ const AdminProjectLogs = () => {
         </div>
         <div className={styles.MainContentSection}>
           <div className="InformationBarSection">
-            <InformationBar header="Projects/Details" showBtn={false} />
+            <InformationBar header={<><Link className="breadcrumb" 
+            to={`/clusters/${clusterID}/projects`}>Projects</Link><span> / Details</span></>} showBtn={false} />
           </div>
 
           <div className={styles.CustomSmallContainer}>
