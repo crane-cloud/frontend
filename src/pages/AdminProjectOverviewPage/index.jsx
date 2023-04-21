@@ -7,8 +7,17 @@ import Spinner from "../../components/Spinner";
 import Header from "../../components/Header";
 import InformationBar from "../../components/InformationBar";
 import MetricsCard from "../../components/MetricsCard";
-import { Line, CartesianGrid, XAxis, YAxis, AreaChart, Area } from "recharts";
+import {
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  AreaChart,
+  Area,
+  Tooltip,
+} from "recharts";
 import { retrieveProjectTypes } from "../../helpers/projecttypes.js";
+import { retrieveMonthNames } from "../../helpers/monthNames.js";
 import "./AdminProjectOverviewPage.css";
 
 const AdminProjectOverviewPage = () => {
@@ -335,6 +344,16 @@ const AdminProjectOverviewPage = () => {
                           dataKey="Value"
                           stroke="#82ca9d"
                           fill="#82ca9d"
+                        />
+                        <Tooltip
+                          labelFormatter={(value) => {
+                            const monthNames = retrieveMonthNames();
+                            const month = parseInt(value) - 1;
+                            return monthNames[month].name;
+                          }}
+                          formatter={(value) => {
+                            return [`${value} projects`];
+                          }}
                         />
                       </AreaChart>
                     </MetricsCard>
