@@ -27,6 +27,7 @@ import {
   avatarName,
 } from "../../helpers/projectName";
 import { DisplayDateTime } from "../../helpers/dateConstants";
+import { Link } from "react-router-dom";
 
 class AdminUserPage extends Component {
   constructor() {
@@ -242,10 +243,8 @@ class AdminUserPage extends Component {
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
-              <InformationBar
-                header={`Accounts/${user?.name}`}
-                showBtn={false}
-              />
+            <InformationBar header={<><Link className="breadcrumb" 
+            to={`/accounts`}>Accounts</Link><span> / ${user?.name}</span></>} showBtn={false} />
             </div>
             <div className="ContentSection">
               <div className="AdminUserPageContainer">

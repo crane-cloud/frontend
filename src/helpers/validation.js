@@ -46,11 +46,9 @@ export const validateProjectDescription = (description) => {
 
 export const validateOrganizationName = (name) => {
   if (
-    !name ||
-    validateName(name) === false ||
-    validateName(name) === "false_convention"
+    !name
   ) {
-    return "Remove spaces and Project organisation must start with a letter and may only contain letters and a hypen -";
+    return "Organisation field can't be an empty";
   }
 };
 
