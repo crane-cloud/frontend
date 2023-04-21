@@ -14,7 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 import "./AdminProjectsPage.css";
 import { Link } from "react-router-dom";
 import usePaginator from "../../hooks/usePaginator";
-import Pagination from "../../components/Pagination"
+import Pagination from "../../components/Pagination";
 
 const AdminProjectsPage = () => {
   const [currentPage, handleChangePage] = usePaginator();
@@ -23,7 +23,7 @@ const AdminProjectsPage = () => {
 
   const getAdminProps = useCallback(
     () => dispatch(getAdminProjects(currentPage)),
-    [dispatch,currentPage]
+    [dispatch, currentPage]
   );
   const getUsersProps = useCallback(() => dispatch(getUsersList), [dispatch]);
   const adminProjects = useSelector((state) => state.adminProjectsReducer);
@@ -66,7 +66,7 @@ const AdminProjectsPage = () => {
 
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);
-    getAdminProps()
+    getAdminProps();
   };
 
   return (
@@ -80,7 +80,20 @@ const AdminProjectsPage = () => {
         </div>
         <div className="MainContentSection">
           <div className="InformationBarSection">
-            <InformationBar header="Projects" showBtn={false} />
+            <InformationBar
+              header={
+                <>
+                  <Link
+                    className="breadcrumb"
+                    to={`/clusters/${clusterID}/projects`}
+                  >
+                    Overview
+                  </Link>
+                  <span> / Projects Listing</span>
+                </>
+              }
+              showBtn={false}
+            />
           </div>
           <div className="ContentSection">
             <div

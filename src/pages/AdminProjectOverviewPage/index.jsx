@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { handleGetRequest } from "../../apis/apis.js";
 import SideNav from "../../components/SideNav";
 import ResourceCard from "../../components/ResourceCard";
@@ -12,6 +12,7 @@ import { retrieveProjectTypes } from "../../helpers/projecttypes.js";
 import "./AdminProjectOverviewPage.css";
 
 const AdminProjectOverviewPage = () => {
+  const history = useHistory();
   const { clusterID } = useParams();
   const [projects, setProjects] = useState([]);
   const [feedback, setFeedback] = useState("");
@@ -158,6 +159,11 @@ const AdminProjectOverviewPage = () => {
     setPeriod(target.getAttribute("value"));
   };
 
+  // view project listing
+  const viewProjectListing = () => {
+    history.push(`/clusters/${clusterID}/projects-listing`);
+  };
+
   return (
     <div className="MainPage">
       <div className="TopBarSection">
@@ -169,7 +175,12 @@ const AdminProjectOverviewPage = () => {
         </div>
         <div className="MainContentSection">
           <div className="InformationBarSection">
-            <InformationBar header="Projects Overview" showBtn={false} />
+            <InformationBar
+              header="Projects Overview"
+              showBtn
+              buttontext="View Listing"
+              btnAction={viewProjectListing}
+            />
           </div>
           <div className="ContentSection">
             <div className="TitleArea">
