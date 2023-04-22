@@ -104,7 +104,7 @@ const AdminProjectLogs = () => {
   const closeCalendar = () => {
     if (showToCalendar) {
       setToTS("none");
-       setShowToCalendar(false);
+      setShowToCalendar(false);
       // if (queryParams.includes("&end=")) {
       //   setQueryParams(queryParams.replace(/&end=.+?(&|$)/, ""));
       // } else if (queryParams.includes("end=")) {
@@ -113,7 +113,7 @@ const AdminProjectLogs = () => {
     }
     if (showFromCalendar) {
       setFromTS("none");
-       setShowFromCalendar(false);
+      setShowFromCalendar(false);
       // if (queryParams.includes("&start=")) {
       //   setQueryParams(queryParams.replace(/&start=.+?(&|$)/, ""));
       // } else if (queryParams.includes("start=")) {
@@ -188,8 +188,20 @@ const AdminProjectLogs = () => {
         </div>
         <div className={styles.MainContentSection}>
           <div className="InformationBarSection">
-            <InformationBar header={<><Link className="breadcrumb" 
-            to={`/clusters/${clusterID}/projects`}>Projects</Link><span> / Details</span></>} showBtn={false} />
+            <InformationBar
+              header={
+                <>
+                  <Link
+                    className="breadcrumb"
+                    to={`/clusters/${clusterID}/projects-listing`}
+                  >
+                    Projects
+                  </Link>
+                  <span> / Details</span>
+                </>
+              }
+              showBtn={false}
+            />
           </div>
 
           <div className={styles.CustomSmallContainer}>
@@ -305,7 +317,7 @@ const AdminProjectLogs = () => {
               </div>
             </section>
             <section className={styles.DetailsSection}>
-            <div className="SectionTitle">Project logs</div>
+              <div className="SectionTitle">Project logs</div>
               <div className={styles.Header}>
                 <div className={styles.Heading}>Activity Feed</div>
                 <div className={styles.SimpleForm}>

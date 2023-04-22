@@ -10,6 +10,7 @@ import {
 import AdminDBList from "./components/AdminDB";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminProjectsPage from "./pages/AdminProjectsPage";
+import AdminProjectOverviewPage from "./pages/AdminProjectOverviewPage";
 import AdminUsersProfile from "./components/AdminUsersProfile";
 import AdminUserLogs from "./components/AdminUserLogs";
 import AdminProjectDetails from "./components/AdminProjectDetails";
@@ -225,6 +226,11 @@ const Routes = () => (
       <ProtectedRoute
         isAllowed={hasToken}
         path="/clusters/:clusterID/projects"
+        component={AdminProjectOverviewPage}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        path="/clusters/:clusterID/projects-listing"
         component={AdminProjectsPage}
       />
       <ProtectedRoute
