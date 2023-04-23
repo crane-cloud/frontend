@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { handleGetRequest } from "../../apis/apis.js";
 import InformationBar from "../../components/InformationBar";
 import Header from "../../components/Header";
@@ -18,7 +18,7 @@ import { DisplayDateTime } from "../../helpers/dateConstants";
 import Spinner from "../../components/Spinner";
 
 const AdminLogsPage = () => {
-  const { clusterID } = useParams();
+  const  clusterID  = localStorage.getItem("clusterID");
 
   const baseLink = "/users/activities?";
   const [loading, setLoading] = useState(false);

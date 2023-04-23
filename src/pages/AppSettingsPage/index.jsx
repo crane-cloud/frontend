@@ -678,7 +678,9 @@ class AppSettingsPage extends React.Component {
             </div>
           </div>
         ) : (
+
           <div>
+            {isFetched &&
             <div className={styles.AppPageLayout}>
               <div className={styles.APPSections}>
                 <div className="SectionTitle">App Information</div>
@@ -1364,6 +1366,7 @@ class AppSettingsPage extends React.Component {
                 </div>
               )}
             </div>
+            }
           </div>
         )}
         {!isRetrieving && !isFetched && (

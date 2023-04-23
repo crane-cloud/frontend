@@ -20,11 +20,11 @@ import Feedback from "../Feedback";
 import usePaginator from "../../hooks/usePaginator";
 import Pagination from "../../components/Pagination"
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 
 const UserAccounts = () => {
   const clusterName = localStorage.getItem("clusterName");
-  const { clusterID } = useParams();
+  const  clusterID  = localStorage.getItem("clusterID");
   const [currentPage, handleChangePage] = usePaginator();
 
   const [actionsMenu, setActionsMenu] = useState(false)

@@ -164,7 +164,7 @@ class AppsList extends Component {
             Oops! Something went wrong! Failed to retrieve Apps.
           </div>
         )}
-        {apps?.pagination?.pages  > 1  && (
+        {(apps?.pagination?.pages  > 1 && isRetrieved && !isRetrieving  ) && (
           <div className={styles.PaginationSection}>
             <Pagination
               total={apps.pagination.pages}

@@ -16,6 +16,7 @@ const AdminDBList = () => {
   const dispatch = useDispatch();
   const [currentPage, handleChangePage] = usePaginator();
   const clusterName = localStorage.getItem("clusterName");
+  const clusterID = localStorage.getItem("clusterID");
   const databaseResources = useCallback(
     () => dispatch(adminGetDatabases(currentPage)),
     [dispatch, currentPage]
@@ -34,7 +35,7 @@ const AdminDBList = () => {
   useEffect(() => {
     callbackCreateComponent();
     dispatch(adminGetDatabases(currentPage))
-  }, [currentPage,isCreated]);
+  }, [currentPage,isCreated,dispatch]);
   
   const showCreateComponent = () => {
     setOpenCreateComponent(true)
@@ -60,7 +61,7 @@ const AdminDBList = () => {
       </div>
       <div className={styles.MainSection}>
         <div className="SideBarSection">
-          <SideNav clusterName={clusterName} clusterId={"123"} />
+          <SideNav clusterName={clusterName} clusterId={clusterID} />
         </div>
         {openCreateComponent ? (
           <CreateAdminDB closeComponent={callbackCreateComponent} />

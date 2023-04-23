@@ -12,7 +12,7 @@ import ProgressBar from "../ProgressBar";
 import Pagination from "../../components/Pagination";
 import { useSelector, useDispatch } from "react-redux";
 import usePaginator from "../../hooks/usePaginator";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 
 const PodsList =()=>{
   const { isRetrieving, pods, isFetched } = useSelector(
@@ -20,13 +20,13 @@ const PodsList =()=>{
   );
 
   const dispatch = useDispatch();
-  const params = useParams();
+  const clusterID = localStorage.getItem("clusterID");
   const clusterName = localStorage.getItem("clusterName");
   const [currentPage, handleChangePage] = usePaginator();
-  const { clusterID } = params;
+
   useEffect(() => {
     dispatch(getPodsList(clusterID, currentPage));
-  }, []);
+  }, [currentPage,clusterID,dispatch]);
 
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);
@@ -88,7 +88,7 @@ const PodsList =()=>{
         </div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
+            <SideNav clusterName={clusterName} clusterId={clusterID} />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">

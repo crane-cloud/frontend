@@ -661,7 +661,7 @@ class DBSettingsPage extends React.Component {
               </div>
             </div>
 
-            <div className="DBButtons">
+  
               {openUpdateModal && (
                 <div className="ProjectDeleteModel">
                   <Modal
@@ -811,7 +811,7 @@ class DBSettingsPage extends React.Component {
                   </Modal>
                 </div>
               )}
-            </div>
+            
           </div>
         )}
       </DashboardLayout>

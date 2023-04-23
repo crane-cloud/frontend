@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./ServicesList.css";
 import Header from "../Header";
@@ -11,7 +11,7 @@ import usePaginator from "../../hooks/usePaginator";
 import Pagination from "../../components/Pagination";
 
 const ServicesListPage = () => {
-  const { clusterID } = useParams();
+  const  clusterID  = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
   const [currentPage, handleChangePage] = usePaginator();
 

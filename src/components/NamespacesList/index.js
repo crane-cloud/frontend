@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Header from "../Header";
 import InformationBar from "../InformationBar";
@@ -10,7 +10,7 @@ import tellAge from "../../helpers/ageUtility";
 import Spinner from "../Spinner";
 
 const NamespacesListPage = () => {
-  const { clusterID } = useParams();
+  const { clusterID } = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
 
   const adminNamespaces = useCallback(

@@ -7,11 +7,12 @@ import { ReactComponent as Danger } from "../../assets/images/alert-octagon.svg"
 import { ReactComponent as CloudOff } from "../../assets/images/cloud-off.svg";
 import { ReactComponent as Upload } from "../../assets/images/upload-cloud.svg";
 import styles from "./AdminUserLogs.module.css";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import PrimaryButton from "../../components/PrimaryButton";
 
 const AdminUserLogs = () => {
-  const { clusterID } = useParams();
+  const clusterID = localStorage.getItem("clusterID");
+
   const clusterName = localStorage.getItem("clusterName");
 
   return (

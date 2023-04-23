@@ -45,9 +45,10 @@ class NodesList extends Component {
   render() {
     const { nodes, isFetched, isRetrieving } = this.props;
     const clusterName = localStorage.getItem("clusterName");
-    const {
-      match: { params },
-    } = this.props;
+    const clusterID = localStorage.getItem("clusterID");
+    // const {
+    //   match: { params },
+    // } = this.props;
 
     return (
       <div className="MainPage">
@@ -56,7 +57,7 @@ class NodesList extends Component {
         </div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
+            <SideNav clusterName={clusterName} clusterId={clusterID} />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">

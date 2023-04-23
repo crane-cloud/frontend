@@ -147,7 +147,7 @@ class ClusterSettingsPage extends React.Component {
     const { clusterID } = params;
 
     return (
-      <div className={styles.Page}>
+      <section className={styles.Page}>
         {isUpdated ? this.renderRedirect() : null}
         <div className={styles.TopBarSection}>
           <Header />
@@ -266,7 +266,7 @@ class ClusterSettingsPage extends React.Component {
             </div>
           </div>
         </div>
-      </div>
+      </section>
     );
   }
 }
