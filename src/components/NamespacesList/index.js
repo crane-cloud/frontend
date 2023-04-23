@@ -10,7 +10,7 @@ import tellAge from "../../helpers/ageUtility";
 import Spinner from "../Spinner";
 
 const NamespacesListPage = () => {
-  const { clusterID } = localStorage.getItem("clusterID");
+  const  clusterID  = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
 
   const adminNamespaces = useCallback(
