@@ -1,6 +1,6 @@
 /* eslint-disable linebreak-style */
 import React, { useEffect, useCallback } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams,useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./ClusterResourcesPage.css";
 import Header from "../../components/Header";
@@ -13,6 +13,9 @@ import getClusterResourcesCount from "../../redux/actions/clusterResources";
 const ClusterResourcesPage = () => {
   const { clusterID } = useParams();
   const dispatch = useDispatch();
+  
+  const location = useLocation();
+  const clusterName = location.state?.clusterName;
 
   const clusterResources = useCallback(
     () => dispatch(getClusterResourcesCount(clusterID)),
@@ -23,10 +26,13 @@ const ClusterResourcesPage = () => {
     clusterResources();
   }, [clusterResources]);
 
-  const { isRetrieving, isRetrieved, resourceCount, clusterName } = useSelector(
+  const { isRetrieving, isRetrieved, resourceCount } = useSelector(
     (state) => state.clusterResourcesReducer
   );
+  //global cluster access
   localStorage.setItem("clusterName", clusterName);
+  localStorage.setItem("clusterID", clusterID);
+  console.log(location)
   return (
     <div className="MainPage">
       <div className="TopBarSection">

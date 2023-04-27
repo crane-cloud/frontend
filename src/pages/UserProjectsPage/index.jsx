@@ -201,6 +201,18 @@ class UserProjectsPage extends React.Component {
         sharedProjects.push(element);
       }
     });
+    //by default show category with more  projects
+    if(myProjects.length < sharedProjects.length){
+      this.setState({
+        selectedProjects: "Shared Projects",
+        currentTab: "Shared Projects",
+      });
+    }else {
+      this.setState({
+        selectedProjects: "My projects",
+        currentTab: "My projects",
+      });
+    }
     return {
       sharedProjects,
       myProjects,
@@ -284,7 +296,7 @@ class UserProjectsPage extends React.Component {
                       <span>
                         <User className={styles.SmallerIcon} />
                       </span>
-                      <span>My Projects</span>
+                      <span>My Projects <span title="Projects">{`(${myProjectsList?.length})`}</span></span>
                     </div>
                   </span>
                   <span
@@ -304,7 +316,7 @@ class UserProjectsPage extends React.Component {
                       <span>
                         <Users className={styles.SmallerIcon} />
                       </span>
-                      <span>Shared Projects</span>
+                      <span>Shared Projects <span title="Projects">{`(${sharedProjectsList?.length})`}</span> </span>
                     </div>
                   </span>
                 </div>
@@ -405,14 +417,29 @@ class UserProjectsPage extends React.Component {
               )}
               {displayProjects.length === 0 && (
                 <div className={styles.NoResourcesMessage}>
-                  {selectedProjects === "My projects" ? (
-                    <div>
+                  
+                  {selectedProjects === "My projects"  ? (
+                    <>
+                    {this.state.currentPaginationPage === 1 ? 
+                      <div>
                       You haven’t created any projects yet. Click the &nbsp;{" "}
                       <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp;
                       button to add a project.
+                    </div>: 
+                      <div>
+                      This page of you personal projects contains no projects, switch tabs to shared to see Projects &nbsp; Or click 
+                      {" "} <ButtonPlus className={styles.ButtonPlusSmall} />&nbsp;
+                      button to add a project.
                     </div>
+                    }
+                    </>
                   ) : (
-                    <>No project has been shared with you as yet.</>
+                    <>
+                    {this.state.currentPaginationPage === 1 ? 
+                    <>No project has been shared with you as yet.</>:
+                    <>This page contains no shared projects.</>
+                    }
+                    </>
                   )}
                 </div>
               )}
@@ -432,12 +459,13 @@ class UserProjectsPage extends React.Component {
           </div>
         )}
         <div className={styles.FooterRow}>
-        {pagination?.pages > 1 && (
+        {(pagination?.pages > 1 && !isRetrieving && isFetched && !openCreateComponent) && (
           <div className={styles.PaginationSection}>
+            {/* customise pagination for shared and personal projects */}
             <Pagination
-              total={pagination.pages}
+              total={pagination?.pages}
               current={this.state.currentPaginationPage}
-              onPageChange={this.onPageChange}
+              onPageChange={this.onPageChange} 
             />
           </div>
         )}

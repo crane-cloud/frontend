@@ -2,7 +2,7 @@ import InformationBar from "../InformationBar";
 import Header from "../Header";
 import SideNav from "../SideNav";
 import styles from "./AdminProjectDetails.module.css";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import PrimaryButton from "../PrimaryButton";
 import { ReactComponent as CheckMark } from "../../assets/images/check-circle.svg";
 import { ReactComponent as Danger } from "../../assets/images/alert-octagon.svg";
@@ -36,7 +36,7 @@ const projectUsers = [
 ];
 
 const AdminProjectLogs = () => {
-  const { clusterID } = useParams();
+  const  clusterID  = localStorage.getItem("clusterID");
   const clusterName = localStorage.getItem("clusterName");
   const [toTS, setToTS] = useState("none");
   const [fromTS, setFromTS] = useState("none");

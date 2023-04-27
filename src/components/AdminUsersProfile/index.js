@@ -220,6 +220,7 @@ class AdminUserPage extends Component {
           } =this.props;
       
     const clusterName = localStorage.getItem("clusterName");
+    const clusterID = localStorage.getItem("clusterID");
     const { userID } = this.props.match.params;
     const {
       match: { params },
@@ -239,7 +240,7 @@ class AdminUserPage extends Component {
         </div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
+            <SideNav clusterName={clusterName} clusterId={clusterID} />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
@@ -354,7 +355,7 @@ class AdminUserPage extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="DBSections">
+                <div className="AdminDBSections">
                 <div className="SectionTitle">Manage User</div>
                  <div className="ProjectInstructions">
                     <div className="MemberBody">

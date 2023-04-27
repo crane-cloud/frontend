@@ -265,7 +265,7 @@
   margin: 0;
   background-color: white;
 }
-.DBSections{
+.AdminDBSections{
   display: flex;
   flex-direction: column;
   gap: 1rem;

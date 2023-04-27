@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import getDeployments from "../../redux/actions/getDeployments";
 import Header from "../../components/Header";
@@ -14,9 +14,8 @@ import usePaginator from "../../hooks/usePaginator";
 import Pagination from "../../components/Pagination";
 
 const DeploymentsPage = () => {
-  const params = useParams();
   const dispatch = useDispatch();
-  const { clusterID } = params;
+  const  clusterID  = localStorage.getItem("clusterID");
   const [currentPage, handleChangePage] = usePaginator();
 
   const clusterDeploys = useCallback(
@@ -68,7 +67,7 @@ const DeploymentsPage = () => {
       </div>
       <div className="MainSection">
         <div className="SideBarSection">
-          <SideNav clusterName={clusterName} clusterId={params.clusterID} />
+          <SideNav clusterName={clusterName} clusterId={clusterID} />
         </div>
         <div className="MainContentSection">
           <div className="InformationBarSection">

@@ -8,20 +8,20 @@ import Status from "../../components/Status";
 import Pagination from "../../components/Pagination";
 import { useSelector, useDispatch } from "react-redux";
 import usePaginator from "../../hooks/usePaginator";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 
 const PvsListPage = (props) => {
   const { isRetrieving, pvs, isFetched, pagination } = useSelector(
     (state) => state.pvsReducer
   );
   const dispatch = useDispatch();
-  const params = useParams();
+  
   const clusterName = localStorage.getItem("clusterName");
   const [currentPage, handleChangePage] = usePaginator();
-  const { clusterID } = params;
+  const  clusterID  = localStorage.getItem("clusterID");
   useEffect(() => {
     dispatch(getPvs(clusterID, currentPage));
-  }, []);
+  }, [clusterID, currentPage,dispatch]);
 
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);

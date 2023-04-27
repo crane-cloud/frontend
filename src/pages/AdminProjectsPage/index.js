@@ -9,7 +9,7 @@ import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.sv
 import getAdminProjects from "../../redux/actions/adminProjects";
 import getUsersList from "../../redux/actions/users";
 import Spinner from "../../components/Spinner";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./AdminProjectsPage.css";
 import { Link } from "react-router-dom";
@@ -18,7 +18,7 @@ import Pagination from "../../components/Pagination";
 
 const AdminProjectsPage = () => {
   const [currentPage, handleChangePage] = usePaginator();
-  const { clusterID } = useParams();
+  const  clusterID  = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
 
   const getAdminProps = useCallback(

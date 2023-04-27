@@ -22,9 +22,11 @@
   height: 7rem;
 }
 .opequeCard{
-  opacity: .7;
+  opacity: .4;
 }
-
+.opequeCard:hover{
+  box-shadow: none;
+}
 .ProjectImageDiv {
   margin: 0;
   width: 100%;
