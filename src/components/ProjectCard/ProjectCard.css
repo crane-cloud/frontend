@@ -24,6 +24,12 @@
 .opequeCard{
   opacity: .4;
 }
+.unclickable{
+  cursor: not-allowed;
+}
+.killPointerActions{
+  pointer-events: none;
+}
 .opequeCard:hover{
   box-shadow: none;
 }

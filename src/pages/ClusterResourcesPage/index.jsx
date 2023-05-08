@@ -32,7 +32,6 @@ const ClusterResourcesPage = () => {
   //global cluster access
   localStorage.setItem("clusterName", clusterName);
   localStorage.setItem("clusterID", clusterID);
-  console.log(location)
   return (
     <div className="MainPage">
       <div className="TopBarSection">
