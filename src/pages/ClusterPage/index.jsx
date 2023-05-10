@@ -29,6 +29,7 @@ import {
   twoYearBack,
   oneYearBack,
 } from "../../helpers/dateConstants";
+import { handleGetRequest } from "../../apis/apis.js";
 
 const ClusterPage = ({
   getDatabases,
@@ -55,6 +56,10 @@ const ClusterPage = ({
   const [description, setDescription] = useState("");
   const [begin, setBegin] = useState("");
   const [prometheus_url, setPrometheus_url] = useState("");
+  const [projects, setProjects] = useState([]);
+
+  let disabledProjectsCount = 0;
+  let enabledProjectsCount = 0;
 
   useEffect(() => {
     let details = { begin: "2021-03-01", end: currentDate, set_by: "month" };
@@ -62,7 +67,40 @@ const ClusterPage = ({
     appSummary(details);
     getClustersList();
     getDatabases();
+    getAllProjects();
   }, [userSummary, appSummary, getDatabases]);
+
+  const getAllProjects = async () => {
+    try {
+      const response = await handleGetRequest("/projects");
+      if (response.data.data.projects.length > 0) {
+        const totalNumberOfProjects = response.data.data.pagination.total;
+        handleGetRequest(`/projects?per_page=${totalNumberOfProjects}`)
+          .then((response) => {
+            if (response.data.data.projects.length > 0) {
+              setProjects(response.data.data.projects);
+            } else {
+              throw new Error("No projects found");
+            }
+          })
+          .catch(() => {
+            throw new Error("Failed to fetch all projects, please try again");
+          });
+      } else {
+        throw new Error("No projects found");
+      }
+    } catch (error) {
+      throw new Error("Failed to fetch projects, please try again");
+    }
+  };
+
+  projects.forEach((project) => {
+    if (project.disabled) {
+      disabledProjectsCount++;
+    } else {
+      enabledProjectsCount++;
+    }
+  });
 
   const showForm = () => setOpenModal(true);
 
@@ -147,12 +185,16 @@ const ClusterPage = ({
             <div className={styles.DBStats}>
               <div className={styles.In}>
                 <div className={styles.InnerTitlesStart}>Active</div>
-                <div className={styles.ResourceDigit}>50</div>
+                <div className={styles.ResourceDigit}>
+                  {enabledProjectsCount}
+                </div>
               </div>
               <div className={styles.verticalLine}></div>
               <div className={styles.In}>
                 <div className={styles.InnerTitlesMiddle}>Disabled</div>
-                <div className={styles.ResourceDigit}>0</div>
+                <div className={styles.ResourceDigit}>
+                  {disabledProjectsCount}
+                </div>
               </div>
             </div>
           </>
@@ -345,7 +387,6 @@ const ClusterPage = ({
         </div>
       </div>
       <br />
-
 
       <div className="TopRow">
         <InformationBar

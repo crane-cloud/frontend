@@ -39,6 +39,12 @@
     background-color: var(--secondary-color);
 }
 
+.ChartsArea {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
 @media only screen and (min-width: 750px) {
     .ClusterContainer {
         grid-template-columns: repeat(2, 1fr);

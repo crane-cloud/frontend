@@ -18,6 +18,7 @@ import {
 } from "recharts";
 import { retrieveProjectTypes } from "../../helpers/projecttypes.js";
 import { retrieveMonthNames } from "../../helpers/monthNames.js";
+import { filterGraphData } from "../../helpers/filterGraphData.js";
 import "./AdminProjectOverviewPage.css";
 
 const AdminProjectOverviewPage = () => {
@@ -30,7 +31,10 @@ const AdminProjectOverviewPage = () => {
   const projectTypeCounts = {};
   const graphDataArray = [];
   const graphData = {};
+  const newGraphData = {};
+  const newGraphDataArray = [];
   let filteredGraphData = [];
+  let newFilteredGraphData = [];
 
   useEffect(() => {
     getAllProjects();
@@ -84,6 +88,7 @@ const AdminProjectOverviewPage = () => {
     projectTypeCounts["Others"] = othersCount;
   }
 
+  // create graph data for first graph
   const createGraphData = () => {
     if (!projects) {
       return [];
@@ -129,40 +134,70 @@ const AdminProjectOverviewPage = () => {
     return graphDataArray;
   };
 
-  // this function call will creates the graph data
-  createGraphData();
+  // create graph data for second graph
+  const createNewGraphData = () => {
+    if (!projects) {
+      return [];
+    }
 
-  const filterGraphData = (graphDataArray, period) => {
-    // Get the latest year from the graphDataArray
-    let latestYear = graphDataArray[graphDataArray.length - 1]?.Year;
+    projects.forEach((project) => {
+      const date = new Date(project.date_created);
+      const year = date.getFullYear();
+      const month = parseInt(
+        date.toLocaleString("default", { month: "2-digit" }),
+        10
+      );
 
-    // Define the period of months you want to filter for (3, 4, or 6 etc)
-    let periodMonths = period;
+      const projectType = project.project_type;
+      if (!newGraphData[year]) {
+        newGraphData[year] = {};
+      }
+      if (!newGraphData[year][month]) {
+        newGraphData[year][month] = {};
+      }
+      if (!newGraphData[year][month][projectType]) {
+        newGraphData[year][month][projectType] = 1;
+      } else {
+        newGraphData[year][month][projectType]++;
+      }
+    });
 
-    // Calculate the start and end index for the period
-    let endIndex = graphDataArray?.findIndex(
-      (data) => data.Year === latestYear
-    );
+    Object.keys(newGraphData).forEach((year) => {
+      Object.keys(newGraphData[year]).forEach((month) => {
+        const monthData = newGraphData[year][month];
 
-    // this value caters for months for latest year that are not in the period
-    let numberOfMonthsInLatestYear = graphDataArray?.filter(
-      (record) => record.Year === latestYear
-    )?.length;
+        const personalCount = monthData["Personal"] || 0;
+        const researchCount = monthData["Research"] || 0;
+        const studentCount = monthData["Student"] || 0;
+        const commercialCount = monthData["Commercial"] || 0;
+        const charityCount = monthData["Charity"] || 0;
+        const otherCount = monthData["Other"] || 0;
 
-    let startIndex = endIndex - periodMonths + numberOfMonthsInLatestYear;
+        newGraphDataArray.push({
+          Month: `${month}`,
+          Year: year,
+          Personal: personalCount,
+          Research: researchCount,
+          Student: studentCount,
+          Commercial: commercialCount,
+          Charity: charityCount,
+          Other: otherCount,
+        });
+      });
+    });
 
-    // Use the slice() method to extract the period of data from the graphDataArray
-    let filteredData = graphDataArray?.slice(
-      startIndex,
-      endIndex + numberOfMonthsInLatestYear
-    );
-
-    // return the filtered data
-    return (filteredGraphData = filteredData);
+    return newGraphDataArray;
   };
 
-  // this function call will filter the graph data basing on a particular period
-  filterGraphData(graphDataArray, period);
+  // this function call will creates the graph data for first graph
+  createGraphData();
+
+  // this function call will creates the graph data for second graph
+  createNewGraphData();
+
+  // these function calls will filter the first & second graph data basing on a particular period
+  filteredGraphData = filterGraphData(graphDataArray, period);
+  newFilteredGraphData = filterGraphData(newGraphDataArray, period);
 
   const handleChange = ({ target }) => {
     setPeriod(target.getAttribute("value"));
@@ -213,7 +248,7 @@ const AdminProjectOverviewPage = () => {
               </div>
             ) : null}
             <div className="TitleArea">
-              <div className="SectionTitle">Graph Summary</div>
+              <div className="SectionTitle">Graph Summaries</div>
             </div>
 
             <div className="SummaryCardContainer">
@@ -225,7 +260,7 @@ const AdminProjectOverviewPage = () => {
                       title={
                         <div className="GraphSummaryTitle">
                           <span className="SummaryTitleText">
-                            Projects Created
+                            Projects Created and Category Analytics
                           </span>
                           <span>
                             <div className="PeriodContainer">
@@ -302,60 +337,149 @@ const AdminProjectOverviewPage = () => {
                         </div>
                       }
                     >
-                      <AreaChart
-                        width={800}
-                        height={300}
-                        syncId="anyId"
-                        data={
-                          period !== "all" ? filteredGraphData : graphDataArray
-                        }
-                      >
-                        <Line
-                          type="monotone"
-                          dataKey="Value"
-                          stroke="#8884d8"
-                        />
-                        <CartesianGrid stroke="#ccc" />
-                        <XAxis dataKey="Month" />
-                        <XAxis
-                          xAxisId={1}
-                          dx={10}
-                          label={{
-                            value: "Time",
-                            angle: 0,
-                            position: "bottom",
-                          }}
-                          interval={12}
-                          dataKey="Year"
-                          tickLine={false}
-                          tick={{ fontSize: 12, angle: 0 }}
-                        />
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <YAxis
-                          label={{
-                            value: "Number of Projects",
-                            angle: 270,
-                            position: "outside",
-                          }}
-                          width={100}
-                        />
-                        <Area
-                          type="monotone"
-                          dataKey="Value"
-                          stroke="#82ca9d"
-                          fill="#82ca9d"
-                        />
-                        <Tooltip
-                          labelFormatter={(value) => {
-                            const monthNames = retrieveMonthNames();
-                            const month = parseInt(value) - 1;
-                            return monthNames[month].name;
-                          }}
-                          formatter={(value) => {
-                            return [`${value} projects`];
-                          }}
-                        />
-                      </AreaChart>
+                      <div className="ChartsArea">
+                        <div>
+                          <AreaChart
+                            width={800}
+                            height={300}
+                            syncId="anyId"
+                            data={
+                              period !== "all"
+                                ? filteredGraphData
+                                : graphDataArray
+                            }
+                          >
+                            <Line
+                              type="monotone"
+                              dataKey="Value"
+                              stroke="#8884d8"
+                            />
+                            <CartesianGrid stroke="#ccc" />
+                            <XAxis dataKey="Month" />
+                            <XAxis
+                              xAxisId={1}
+                              dx={10}
+                              label={{
+                                value: "Time",
+                                angle: 0,
+                                position: "bottom",
+                              }}
+                              interval={12}
+                              dataKey="Year"
+                              tickLine={false}
+                              tick={{ fontSize: 12, angle: 0 }}
+                            />
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <YAxis
+                              label={{
+                                value: "Number of Projects",
+                                angle: 270,
+                                position: "outside",
+                              }}
+                              width={100}
+                            />
+                            <Area
+                              type="monotone"
+                              dataKey="Value"
+                              stroke="#82ca9d"
+                              fill="#82ca9d"
+                            />
+                            <Tooltip
+                              labelFormatter={(value) => {
+                                const monthNames = retrieveMonthNames();
+                                const month = parseInt(value) - 1;
+                                return monthNames[month].name;
+                              }}
+                              formatter={(value) => {
+                                return [`${value} projects`];
+                              }}
+                            />
+                          </AreaChart>
+                        </div>
+                        <div>
+                          <AreaChart
+                            width={830}
+                            height={300}
+                            data={
+                              period !== "all"
+                                ? newFilteredGraphData
+                                : newGraphDataArray
+                            }
+                            margin={{
+                              top: 10,
+                              right: 30,
+                              left: 0,
+                              bottom: 0,
+                            }}
+                          >
+                            <CartesianGrid stroke="#ccc" />
+                            <XAxis dataKey="Month" />
+                            <XAxis
+                              xAxisId={1}
+                              dx={10}
+                              label={{
+                                value: "Time",
+                                angle: 0,
+                                position: "bottom",
+                              }}
+                              interval={12}
+                              dataKey="Year"
+                              tickLine={false}
+                              tick={{ fontSize: 12, angle: 0 }}
+                            />
+                            <YAxis
+                              label={{
+                                value: "Numbers per Project Type",
+                                angle: 270,
+                                position: "outside",
+                              }}
+                              width={100}
+                            />
+                            <Tooltip
+                              labelFormatter={(value) => {
+                                const monthNames = retrieveMonthNames();
+                                const month = parseInt(value) - 1;
+                                return monthNames[month].name;
+                              }}
+                            />
+                            <Area
+                              type="monotone"
+                              dataKey="Personal"
+                              stackId="1"
+                              stroke="#8884d8"
+                              fill="#8884d8"
+                            />
+                            <Area
+                              type="monotone"
+                              dataKey="Research"
+                              stackId="1"
+                              stroke="#82ca9d"
+                              fill="#82ca9d"
+                            />
+                            <Area
+                              type="monotone"
+                              dataKey="Student"
+                              stackId="1"
+                              stroke="#ffc658"
+                              fill="#ffc658"
+                            />
+                            <Area
+                              type="monotone"
+                              dataKey="Commercial"
+                              stackId="1"
+                              stroke="#ffc999"
+                              fill="#ffc999"
+                            />
+                            <Area
+                              type="monotone"
+                              dataKey="Charity"
+                              stackId="1"
+                              stroke="#ffc302"
+                              fill="#ffc302"
+                            />
+                          </AreaChart>
+                        </div>
+                      </div>
                     </MetricsCard>
                   </div>
                 </div>

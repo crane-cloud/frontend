@@ -15,10 +15,11 @@ import "./AdminProjectsPage.css";
 import { Link } from "react-router-dom";
 import usePaginator from "../../hooks/usePaginator";
 import Pagination from "../../components/Pagination";
+import { handleGetRequest } from "../../apis/apis.js";
 
 const AdminProjectsPage = () => {
   const [currentPage, handleChangePage] = usePaginator();
-  const  clusterID  = localStorage.getItem("clusterID");
+  const clusterID = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
 
   const getAdminProps = useCallback(
@@ -27,27 +28,51 @@ const AdminProjectsPage = () => {
   );
   const getUsersProps = useCallback(() => dispatch(getUsersList), [dispatch]);
   const adminProjects = useSelector((state) => state.adminProjectsReducer);
-  const usersList = useSelector((state) => state.usersListReducer);
+  // const usersList = useSelector((state) => state.usersListReducer);
   const [contextMenu, setContextMenu] = useState(false);
   const [selectedProject, setSelectedProject] = useState("");
   // const [addCredits, setAddCredits] = useState(false);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     getAdminProps();
     getUsersProps();
+    fetchUsersList();
   }, [getAdminProps, getUsersProps]);
 
-  const getUserName = (userId) => {
-    let username = "";
-    if (usersList.isFetched) {
-      usersList.users.map((user) => {
-        if (userId === user.id) {
-          username = user.name;
+  const fetchUsersList = () => {
+    handleGetRequest("/users")
+      .then((response) => {
+        if (response.data.data.users.length > 0) {
+          let totalNumberOfUsers = response.data.data.pagination.total;
+          handleGetRequest("/users?per_page=" + totalNumberOfUsers)
+            .then((response) => {
+              if (response.data.data.users.length > 0) {
+                setUsers(response.data.data.users);
+              } else {
+                throw new Error("No users found");
+              }
+            })
+            .catch((error) => {
+              throw new Error("Failed to fetch all users, please try again");
+            });
+        } else {
+          throw new Error("No users found");
         }
-        return null;
+      })
+      .catch((error) => {
+        throw new Error("Failed to fetch users, please try again");
       });
-    }
-    return username;
+  };
+
+  const getUserName = (id) => {
+    let userName = "";
+    users.forEach((user) => {
+      if (user.id === id) {
+        userName = user.name;
+      }
+    });
+    return userName;
   };
 
   // const showModal = () => {
@@ -134,7 +159,11 @@ const AdminProjectsPage = () => {
                           <td>{project.description}</td>
                           <td>
                             {/* optional chai */}
-                            <span className="ProjectStatus">Active</span>
+                            <span className="ProjectStatus">
+                              {project.disabled !== false
+                                ? "Active"
+                                : "Disabled"}
+                            </span>
                           </td>
                           <td
                             onClick={(e) => {
