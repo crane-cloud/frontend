@@ -92,3 +92,36 @@ export const DisplayDateTime = (date) => {
     return (date.getMonth()+1) + "-" + date.getDate() + "-" + date.getFullYear() + "  " + strTime;
 
 }
+
+// words date format
+export const dateInWords = (dateString)  =>{
+  const months = monthNames
+
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const suffix = getSuffix(day);
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+  const weekday = getWeekday(date.getDay());
+
+  return `${weekday}, ${day}${suffix} ${month}, ${year}`;
+}
+
+function getSuffix(day) {
+  if (day >= 11 && day <= 13) {
+    return "th";
+  }
+  switch (day % 10) {
+    case 1:  return "st";
+    case 2:  return "nd";
+    case 3:  return "rd";
+    default: return "th";
+  }
+}
+
+function getWeekday(day) {
+  const weekdays = dayNames
+  return weekdays[day];
+}
+
+

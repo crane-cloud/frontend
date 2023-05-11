@@ -342,6 +342,7 @@ class UserProjectsPage extends React.Component {
                         ownerId={project.owner_id}
                         apps_count={project.apps_count}
                         disabled={project.disabled}
+                        admin_disabled={project.admin_disabled}
                       />
                     ))}
                 </div>
@@ -360,6 +361,7 @@ class UserProjectsPage extends React.Component {
                         acceptInviteCallBackModel={this.showInvitationModel}
                         apps_count={project.apps_count}
                         disabled={project.disabled}
+                        admin_disabled={project.admin_disabled}
                       />
                     ))}
                 </div>
