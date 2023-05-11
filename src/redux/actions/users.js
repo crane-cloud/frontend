@@ -11,7 +11,7 @@ export const startGettingUsers = () => ({
 
 export const getUsersSuccess = (response) => ({
   type: GET_USERS_SUCCESS,
-  payload: response.data.data.users,
+  payload: response.data.data,
 });
 
 export const getUsersFail = (error) => ({
@@ -22,10 +22,10 @@ export const getUsersFail = (error) => ({
   },
 });
 
-const getUsersList = () => async (dispatch) => {
+const getUsersList = (page) => async (dispatch) => {
   dispatch(startGettingUsers());
   try {
-    const response = await axios.get(`/users`);
+    const response = await axios.get(`/users?page=${page}`);
     return dispatch(getUsersSuccess(response));
   } catch (error) {
     dispatch(getUsersFail(error));

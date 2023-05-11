@@ -17,7 +17,7 @@ const PageNotFound = () => {
           </div>
           <div className="ErrorPageButton">
             <Link to="/">
-              <PrimaryButton label="Home" />
+              <PrimaryButton>Home</PrimaryButton>
             </Link>
           </div>
         </div>

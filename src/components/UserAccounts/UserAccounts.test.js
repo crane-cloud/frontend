@@ -1,67 +1,51 @@
-/* eslint-disable no-undef */
 import React from "react";
 import { shallow } from "enzyme";
-import UserAccounts, { mapStateToProps } from "./";
+import UserAccounts from "./";
+import * as redux from "react-redux";
 
-const UserAccountsProps = {
-  match: { params: { projectID: "1" } },
-  location: { pathname: "path" },
-  getUsersList: jest.fn(),
-};
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useParams: () => ({
+    clusterID: "12",
+  }),
+}));
 
-describe("Testing the User Accounts Page component", () => {
-  const WrapperUserAccounts = UserAccounts.WrappedComponent;
-  const UserAccountsComponent = shallow(
-    <WrapperUserAccounts {...UserAccountsProps} />
-  );
+describe("UserList component", () => {
+  let spyOnUseSelector;
+  let spyOnUseDispatch;
+  let mockDispatch;
 
-  it("should match the snapshot for UserAccounts after adding props", () => {
-    UserAccountsComponent.setProps(UserAccounts);
-    expect(UserAccountsComponent).toBeDefined();
-  });
-  it("matchs the UserAccounts component snapshot", () => {
-    expect(UserAccountsComponent).toMatchSnapshot();
-  });
-  it("should check the search input field", () => {
-    UserAccountsComponent.find("input")
-      .props()
-      .onChange({
-        target: {
-          name: "rhod",
-          value: "rhodin",
-        },
-      });
-    expect(UserAccountsComponent.state("input")).toBeUndefined();
-  });
-});
-
-describe("Testing the exported mapstate to props and dispatch for UserAccounts", () => {
-  it("matches the UserAccounts mapstostate", () => {
-    expect(
-      mapStateToProps({
-        usersListReducer: { isFetching: false, isFetched: false },
-        addBetaUserReducer: {
-          isAdded: false,
-          isAdding: false,
-          isFailed: false,
-          error: "",
-        },
-        addUserCreditsReducer: {
-          Added: false,
-          Adding: false,
-          Failed: false,
-        },
-      })
-    ).toEqual({
-      isAdded: false,
-      isAdding: false,
-      isFetching: false,
-      isFailed: false,
-      isFetched: false,
-      Added: false,
-      Adding: false,
-      Failed: false,
-      error: "",
+  beforeEach(() => {
+    jest.spyOn(React, "useEffect").mockImplementationOnce((cb) => cb()());
+    // Mock useSelector hook
+    spyOnUseSelector = jest.spyOn(redux, "useSelector");
+    spyOnUseSelector.mockReturnValue({ 
+      users: [], 
+      pagination: { pages: 1 },
+      isRetrieving: false, 
+      isFetched: false 
     });
+    // Mock useDispatch hook
+    const useDispatchSpy = jest.spyOn(redux, "useDispatch");
+    // Mock dispatch function returned from useDispatch
+    mockDispatch = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatch);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("renders without crashing", () => {
+    const wrapper = shallow(<UserAccounts />);
+
+    expect(wrapper.exists()).toBe(true);
+  });
+  it("should mock dispatch", function () {
+    //arrange
+    const useDispatchSpy = jest.spyOn(redux, "useDispatch");
+    const mockDispatchFn = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatchFn);
+    useDispatchSpy.mockClear();
   });
 });

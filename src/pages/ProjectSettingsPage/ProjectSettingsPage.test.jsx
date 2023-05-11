@@ -7,12 +7,9 @@ const ProjectSettingsPageProps = {
   match: { params: { projectID: "1" } },
   location: { pathname: "path" },
   data: [],
-  deleteProject: jest.fn(),
-  updateProject: jest.fn(),
-  clearInvitingMembersState: jest.fn(),
-  clearDeleteProjectState: jest.fn(),
-  clearUpdateProjectState: jest.fn(),
+
 };
+
 
 describe("Testing the Project Settings Page component", () => {
   const WrapperProjectSettingsPage = ProjectSettingsPage.WrappedComponent;
@@ -27,60 +24,22 @@ describe("Testing the Project Settings Page component", () => {
   it("matchs the ProjectSettingsPage component snapshot", () => {
     expect(ProjectSettingsPageComponent).toMatchSnapshot();
   });
+  it("test functions inside components",()=>{
+   // const spy = jest.spyOn(ProjectSettingsPageComponent, 'getProjectMemberz');
+   // const getMembers = ProjectSettingsPageComponent.instance().getProjectMemberz();
+   // expect(spy)
+    // .toBeCalled();
+  })
+
 });
 
 describe("Testing the exported mapstate to props and dispatch for ProjectSettingsPage", () => {
   it("matches the ProjectSettingsPage mapstostate", () => {
     expect(
       mapStateToProps({
-        deleteProjectReducer: {
-          isDeleting: false,
-          isDeleted: false,
-          isFailed: false,
-          message: "",
-        },
-        updateProjectReducer: {
-          isUpdated: false,
-          isUpdating: false,
-          errorMessage: null,
-        },
-        inviteMembersReducer: {
-          invitation: null,
-          isSending: false,
-          isSent: false,
-        },
-        removeMemberReducer: {
-          member: null,
-          isRemoving: false,
-          isRemoved: false,
-        },
-        updateMemberRoleReducer: {
-          isRoleUpdated: false,
-          isRoleUpdating: false,
-          updateMessage: "",
-          isRoleUpdateFailed: false,
-        },
         user: { data: [] },
       })
     ).toEqual({
-      isUpdated: false,
-      isUpdating: false,
-      message: "",
-      isDeleting: false,
-      isFailed: false,
-      isDeleted: false,
-      errorMessage: null,
-      invitation: null,
-      isSending: false,
-      isSent: false,
-      member: null,
-      isRemoving: false,
-      isRoleUpdated: false,
-      isRoleUpdating: false,
-      isRoleUpdateFailed: false,
-      isRemoved: false,
-      updateMessage: "",
-      clearDeleteProjectState: undefined,
       data: [],
     });
   });

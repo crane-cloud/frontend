@@ -32,7 +32,7 @@ const LandingFooter = () => (
                 <TwitterIcon />
               </a>
               <a
-                href="https://www.facebook.com/CraneCloud.io"
+                href="https://www.linkedin.com/company/cranecloud/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -64,10 +64,14 @@ const LandingFooter = () => (
                   <Link to="/team">Team</Link>
                 </li>
                 <li className="TextDivSpacing">
-                  <Link to="/terms-of-service" target="_blank">Terms of service</Link>
+                  <Link to="/terms-of-service" target="_blank">
+                    Terms of service
+                  </Link>
                 </li>
                 <li className="TextDivSpacing">
-                  <Link to="/privacy-policy" target="_blank">Privacy policy</Link>
+                  <Link to="/privacy-policy" target="_blank">
+                    Privacy policy
+                  </Link>
                 </li>
                 {/* <li className="TextDivSpacing">
                   <Link to="/pricing">Pricing</Link>

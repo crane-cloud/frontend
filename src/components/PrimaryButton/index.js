@@ -1,17 +1,43 @@
 import React from "react";
 import "./PrimaryButton.css";
+import PropTypes from "prop-types";
 
 const PrimaryButton = (props) => {
-  const { label, className,disable } = props;
+  const { children, className, btntype, color, small, transparent, noPadding } = props;
+
+  const getColorClass = () => {
+    switch (color) {
+      case "primary":
+        return "PrimaryColorBtn";
+      case "primary-outline":
+        return "PrimaryOutlineColorBtn";
+      case "black":
+        return "BlackPrimaryBtn";
+      case "red":
+        return "PrimaryDeleteBtn";
+      case "red-outline":
+        return "PrimaryDeleteBtnOutline";
+      default:
+        return "primary-button--blue";
+    }
+  };
   return (
     <button
-      disabled={disable}
-      className={`Primary-Btn uppercase ${className}`}
-      onClick={props.onClick}
+      {...props}
+      className={`Primary-Btn ${className} ${btntype === "close" && "DeleteBtnOutline"}
+        ${color && getColorClass()} ${small===true ? "SmallBtn" : ""} ${transparent && "TransparentBtn"}
+        ${noPadding && "NoPaddingBtn"}
+      `}
     >
-      {label}
+      {children}
     </button>
   );
+};
+PrimaryButton.propTypes = {
+  small: PropTypes.bool,
+};
+PrimaryButton.defaultProps = {
+  small: false,
 };
 
 export default PrimaryButton;

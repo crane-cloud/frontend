@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React, { useEffect } from "react";
+// import PropTypes from "prop-types";
+// import { connect } from "react-redux";
 import getPodsList from "../../redux/actions/pods";
 import tellAge from "../../helpers/ageUtility";
 import Header from "../Header";
@@ -9,24 +9,31 @@ import Spinner from "../Spinner";
 import InformationBar from "../InformationBar";
 import SideNav from "../SideNav";
 import ProgressBar from "../ProgressBar";
+import Pagination from "../../components/Pagination";
+import { useSelector, useDispatch } from "react-redux";
+import usePaginator from "../../hooks/usePaginator";
+// import { useParams } from "react-router-dom";
 
-class PodsList extends Component {
-  constructor(props) {
-    super(props);
+const PodsList =()=>{
+  const { isRetrieving, pods, isFetched } = useSelector(
+    (state) => state.podsReducer
+  );
 
-    this.calculatePercentage = this.calculatePercentage.bind(this);
-    this.displayFraction = this.displayFraction.bind(this);
-  }
+  const dispatch = useDispatch();
+  const clusterID = localStorage.getItem("clusterID");
+  const clusterName = localStorage.getItem("clusterName");
+  const [currentPage, handleChangePage] = usePaginator();
 
-  componentDidMount() {
-    const { getPodsList } = this.props;
-    const {
-      match: { params },
-    } = this.props;
-    getPodsList(params.clusterID);
-  }
+  useEffect(() => {
+    dispatch(getPodsList(clusterID, currentPage));
+  }, [currentPage,clusterID,dispatch]);
 
-  podStatus(conditions) {
+  const handlePageChange = (currentPage) => {
+    handleChangePage(currentPage);
+    dispatch(getPodsList(clusterID, currentPage));
+  };
+
+  const podStatus =(conditions)=> {
     let status = "";
     conditions.map((condition) => {
       if (condition.type === "Ready") {
@@ -40,15 +47,15 @@ class PodsList extends Component {
     return false;
   }
 
-  calculatePercentage(proportion, total) {
+  const calculatePercentage = (proportion, total) => {
     return Math.round((proportion / total) * 100);
   }
 
-  displayFraction(numerator, denominator) {
+  const displayFraction = (numerator, denominator) => {
     return `${numerator}/${denominator}`;
   }
 
-  podReady(containerlist) {
+  const podReady = (containerlist) => {
     if (typeof containerlist !== "undefined") {
       const count = containerlist.length;
       let ready = 0;
@@ -60,25 +67,19 @@ class PodsList extends Component {
       });
       return (
         <ProgressBar
-          percentage={this.calculatePercentage(ready, count)}
-          fractionLabel={this.displayFraction(ready, count)}
+          percentage={calculatePercentage(ready, count)}
+          fractionLabel={displayFraction(ready, count)}
         />
       );
     }
     return (
       <ProgressBar
-        percentage={this.calculatePercentage(0, 0)}
-        fractionLabel={this.displayFraction(0, 0)}
+        percentage={calculatePercentage(0, 0)}
+        fractionLabel={displayFraction(0, 0)}
       />
     );
   }
 
-  render() {
-    const { pods, isFetched, isRetrieving } = this.props;
-    const clusterName = localStorage.getItem("clusterName");
-    const {
-      match: { params },
-    } = this.props;
 
     return (
       <div className="MainPage">
@@ -87,7 +88,7 @@ class PodsList extends Component {
         </div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
+            <SideNav clusterName={clusterName} clusterId={clusterID} />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
@@ -128,11 +129,11 @@ class PodsList extends Component {
                           <tr key={pods.pods.indexOf(pod)}>
                             <td>{pod.metadata.name}</td>
                             <td>
-                              {this.podReady(pod.status.containerStatuses)}
+                              {podReady(pod.status.containerStatuses)}
                             </td>
                             <td>
                               <Status
-                                status={this.podStatus(pod.status.conditions)}
+                                status={podStatus(pod.status.conditions)}
                               />
                             </td>
                             <td>{tellAge(pod.metadata.creationTimestamp)}</td>
@@ -152,43 +153,20 @@ class PodsList extends Component {
                   </div>
                 )}
               </div>
+              {pods.pagination?.pages > 1 && (
+            <div className="AdminPaginationSection">
+              <Pagination
+                total={pods.pagination.pages}
+                current={currentPage}
+                onPageChange={handlePageChange}
+              />
+            </div>)}
             </div>
           </div>
         </div>
       </div>
     );
-  }
+  
 }
 
-// inititate props
-PodsList.propTypes = {
-  pods: PropTypes.shape({
-    pods: PropTypes.arrayOf(PropTypes.object),
-  }),
-  isRetrieving: PropTypes.bool,
-  isFetched: PropTypes.bool,
-  getPodsList: PropTypes.func,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      clusterID: PropTypes.string,
-    }),
-  }),
-};
-
-// assigning defaults
-PodsList.defaultProps = {
-  pods: {},
-  isRetrieving: false,
-  isFetched: false,
-};
-
-export const mapStateToProps = (state) => {
-  const { isRetrieving, pods, isFetched } = state.podsReducer;
-  return { isRetrieving, pods, isFetched };
-};
-
-const mapDispatchToProps = {
-  getPodsList,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PodsList);
+export default PodsList;

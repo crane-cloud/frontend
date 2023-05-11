@@ -1,0 +1,74 @@
+.FormHeading {
+    padding: .3rem 0rem;
+    font-weight: 600;
+}
+
+.FormFieldWithTooltip {
+    /* width: 60%; same as input field */
+    display: flex;
+    position: relative;
+}
+
+.FormInputTooltipContainer {
+    position: absolute;
+    right: 0%;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.HeadingWithTooltip {
+    display: flex;
+}
+
+.HeadingWithTooltip h4 {
+    margin: 0;
+    padding: 0.5rem 0;
+}
+
+.Dropzone {
+    width: 570px;
+    color: #808080;
+    padding: 1rem 2rem;
+    height: 16rem;
+    background-color: whitesmoke;
+    border: 3px dashed #aeaeae;
+    cursor: pointer;
+}
+
+.DropSection {
+    padding-bottom: 2rem;
+}
+
+.FormInputs {
+    height: calc(100vh - 12rem);
+    max-width: 40rem;
+}
+
+.FormInputs::-webkit-scrollbar {
+    width: 4px;
+    height: 0px;
+}
+
+.FormInputs::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.FormInputs::-webkit-scrollbar-thumb {
+    background: #555;
+}
+
+.FormInputs::-webkit-scrollbar-thumb:hover {
+    background: #000;
+}
+
+.FrameworkSelect,
+.RegistrySelect,
+.FormFieldWithTooltip {
+    padding-bottom: 1.5rem;
+}
+
+.ButtonSection {
+    padding-bottom: 5rem;
+}

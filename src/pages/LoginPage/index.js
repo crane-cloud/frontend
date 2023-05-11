@@ -5,13 +5,16 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import saveUser from "../../redux/actions/saveUser";
 import removeUser from "../../redux/actions/removeUser";
-import Header from "../../components/Header";
 import InputText from "../../components/InputText";
-import InputPassword from "../../components/InputPassword";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
+import Header from "../../components/Header";
+import { ReactComponent as Open } from "../../assets/images/open.svg";
+import { ReactComponent as Closed } from "../../assets/images/close.svg";
+import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import { API_BASE_URL, GIT_REDIRECT_URL } from "../../config";
 import { ReactComponent as LogoIcon } from "../../assets/images/githublogo.svg";
+import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import "./LoginPage.css";
 
 class LoginPage extends React.Component {
@@ -24,6 +27,9 @@ class LoginPage extends React.Component {
       error: "",
       gitLoading: false,
       feedbackMessage: "",
+      passwordShown: false,
+      passwordChecked: false,
+      hidden: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -31,6 +37,7 @@ class LoginPage extends React.Component {
     this.validateEmail = this.validateEmail.bind(this);
     this.initiateGitHubLogin = this.initiateGitHubLogin.bind(this);
     this.toGithubauth = this.toGithubauth.bind(this);
+    this.togglePassword = this.togglePassword.bind(this);
   }
 
   componentDidMount() {
@@ -63,6 +70,10 @@ class LoginPage extends React.Component {
       // eslint-disable-next-line no-useless-escape
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegEx.test(String(email).toLowerCase());
+  }
+  togglePassword() {
+    //this.setState({ hidden: !this.state.hidden });
+    this.setState({ passwordShown: !this.state.passwordShown });
   }
 
   handleSubmit(e) {
@@ -175,8 +186,17 @@ class LoginPage extends React.Component {
   };
 
   render() {
-    const { error, email, password, loading, gitLoading, feedbackMessage } =
-      this.state;
+    const {
+      error,
+      email,
+      password,
+      loading,
+      gitLoading,
+      // hidden,
+      passwordChecked,
+      feedbackMessage,
+      passwordShown,
+    } = this.state;
     return (
       <div className="LoginPageContainer">
         <Header />
@@ -184,75 +204,79 @@ class LoginPage extends React.Component {
           <div className="LoginContentHeading">
             <h1>Login to the cloud</h1>
           </div>
-          <form onSubmit={this.handleSubmit}>
-            <div className="LoginContentInputs">
-              {/* Input fields */}
+          <form onSubmit={this.handleSubmit} className="LoginContentInputs">
+            <InputText
+              required
+              placeholder="Email Address"
+              type="email"
+              name="email"
+              value={email}
+              onChange={(e) => {
+                this.handleChange(e);
+              }}
+            />
+            <div className="password-wrappers">
               <InputText
-                required
-                placeholder="Email Address"
-                name="email"
-                value={email}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
-              />
-              <InputPassword
                 required
                 placeholder="Password"
                 name="password"
+                type={passwordShown ? "text" : "password"}
                 value={password}
                 onChange={(e) => {
                   this.handleChange(e);
                 }}
               />
 
-              {error && <div className="LoginErrorDiv">{error}</div>}
-
-              <div className="LoginLinkContainer">
-                <Link to="/forgot-password" className="LoginContentLink">
-                  Forgot your password?
-                </Link>
+              <div className="password" onClick={this.togglePassword}>
+                {passwordShown ? <Open /> : <Closed />}
               </div>
-
-              <PrimaryButton
-                label={loading ? <Spinner /> : "login"}
-                className="LoginButton AuthBtn"
-                onClick={this.handleSubmit}
-              />
             </div>
-          </form>
-          <div className="LowerLoginSection">
-            <div>
-              <p className="LoginWith">
-                <span>Or Login with</span>
-              </p>
+
+            {error && <div className="LoginErrorDiv">!{error}</div>}
+            <div className="LoginLinkContainer">
+              <Link to="/forgot-password" className="LoginContentLink">
+                Forgot your password?
+              </Link>
             </div>
             <PrimaryButton
-              label={
-                gitLoading ? (
+              className="LoginButton AuthBtn"
+              onClick={this.handleSubmit}
+              type="submit"
+            >
+              {loading ? <Spinner /> : "login"}
+            </PrimaryButton>
+            <div className="LowerLoginSection">
+              <div>
+                <p className="LoginWith">
+                  <span>Or Login with</span>
+                </p>
+              </div>
+              <PrimaryButton
+                className="GithubLoginBtn AuthBtn"
+                disabled={gitLoading}
+                onClick={this.toGithubauth}
+              >
+                {gitLoading ? (
                   <Spinner />
                 ) : (
                   <div className="GitLoginBtn">
                     <LogoIcon className="LogoIcon" />
                     <div className="GitText">Github</div>
                   </div>
-                )
-              }
-              className="GithubLoginBtn AuthBtn"
-              disable={gitLoading}
-              onClick={this.toGithubauth}
-            />
+                )}
+              </PrimaryButton>
 
-            {feedbackMessage && (
-              <div className="LoginFeedBackDiv">{feedbackMessage}</div>
-            )}
-            <div className="LoginContentBottomLink LoginLinkContainer">
-              Not signed up? &nbsp;
-              <Link to="/register" className="LoginContentLink">
-                Create an account.
-              </Link>
+              {feedbackMessage && (
+                <div className="LoginFeedBackDiv">{feedbackMessage}</div>
+              )}
+              <div className="LoginContentBottomLink LoginLinkContainer">
+                Not signed up? &nbsp;
+                <Link to="/register" className="LoginContentLink">
+                  Create an account.
+                </Link>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     );
@@ -273,5 +297,6 @@ LoginPage.propTypes = {
 
 export default connect(
   mapStateToProps,
+
   mapDispatchToProps
 )(withRouter(LoginPage));

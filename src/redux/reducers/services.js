@@ -8,6 +8,7 @@ const initialState = {
   services: [],
   isFetched: false,
   isRetrieving: false,
+  pagination:{},
   message: "Cluster Services Not Available",
 };
 
@@ -16,7 +17,8 @@ const servicesReducer = (state = initialState, action) => {
     case FETCH_SERVICES_SUCCESS:
       return {
         ...state,
-        services: action.payload,
+        services: action.payload.services,
+        pagination: action.payload.pagination,
         isFetched: true,
         isRetrieving: false,
         message: "All Cluster Services fetched",
@@ -34,6 +36,7 @@ const servicesReducer = (state = initialState, action) => {
         isFetched: false,
         message: action.payload,
         isRetrieving: false,
+        pagination:{},
       };
 
     default:

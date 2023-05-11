@@ -33,7 +33,7 @@
 }
 .Page {
   margin: 0;
-  background: #f1f1f1;
+  background: var( --gray-bg-light-color);
   max-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -164,7 +164,7 @@
 .InnerContentLinkText {
   white-space: nowrap;
   overflow: hidden;
-  color: #008ac1;
+  color: var(--primary-color);
   text-overflow: ellipsis;
 }
 

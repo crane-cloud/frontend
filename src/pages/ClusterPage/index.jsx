@@ -29,6 +29,7 @@ import {
   twoYearBack,
   oneYearBack,
 } from "../../helpers/dateConstants";
+import { handleGetRequest } from "../../apis/apis.js";
 
 const ClusterPage = ({
   getDatabases,
@@ -55,6 +56,10 @@ const ClusterPage = ({
   const [description, setDescription] = useState("");
   const [begin, setBegin] = useState("");
   const [prometheus_url, setPrometheus_url] = useState("");
+  const [projects, setProjects] = useState([]);
+
+  let disabledProjectsCount = 0;
+  let enabledProjectsCount = 0;
 
   useEffect(() => {
     let details = { begin: "2021-03-01", end: currentDate, set_by: "month" };
@@ -62,7 +67,40 @@ const ClusterPage = ({
     appSummary(details);
     getClustersList();
     getDatabases();
+    getAllProjects();
   }, [userSummary, appSummary, getDatabases]);
+
+  const getAllProjects = async () => {
+    try {
+      const response = await handleGetRequest("/projects");
+      if (response.data.data.projects.length > 0) {
+        const totalNumberOfProjects = response.data.data.pagination.total;
+        handleGetRequest(`/projects?per_page=${totalNumberOfProjects}`)
+          .then((response) => {
+            if (response.data.data.projects.length > 0) {
+              setProjects(response.data.data.projects);
+            } else {
+              throw new Error("No projects found");
+            }
+          })
+          .catch(() => {
+            throw new Error("Failed to fetch all projects, please try again");
+          });
+      } else {
+        throw new Error("No projects found");
+      }
+    } catch (error) {
+      throw new Error("Failed to fetch projects, please try again");
+    }
+  };
+
+  projects.forEach((project) => {
+    if (project.disabled) {
+      disabledProjectsCount++;
+    } else {
+      enabledProjectsCount++;
+    }
+  });
 
   const showForm = () => setOpenModal(true);
 
@@ -140,6 +178,58 @@ const ClusterPage = ({
         <InformationBar header="Overview" />
       </div>
 
+      <div className={styles.OtherCards}>
+        <Link className={styles.ResourceCard}>
+          <>
+            <div className={styles.CardHeader}>Projects</div>
+            <div className={styles.DBStats}>
+              <div className={styles.In}>
+                <div className={styles.InnerTitlesStart}>Active</div>
+                <div className={styles.ResourceDigit}>
+                  {enabledProjectsCount}
+                </div>
+              </div>
+              <div className={styles.verticalLine}></div>
+              <div className={styles.In}>
+                <div className={styles.InnerTitlesMiddle}>Disabled</div>
+                <div className={styles.ResourceDigit}>
+                  {disabledProjectsCount}
+                </div>
+              </div>
+            </div>
+          </>
+        </Link>
+        <Link to="/databases" className={styles.ResourceCard}>
+          <>
+            <div className={styles.CardHeader}>Databases</div>
+            <div className={styles.DBStats}>
+              <div className={styles.In}>
+                <div className={styles.InnerTitlesStart}>Mysql</div>
+                <div className={styles.ResourceDigit}>
+                  {databases &&
+                    databases?.dbs_stats_per_flavour?.mysql_db_count}
+                </div>
+              </div>
+              <div className={styles.verticalLine}></div>
+              <div className={styles.In}>
+                <div className={styles.InnerTitlesMiddle}>Postgresql</div>
+                <div className={styles.ResourceDigit}>
+                  {databases &&
+                    databases.dbs_stats_per_flavour?.postgres_db_count}
+                </div>
+              </div>
+            </div>
+          </>
+        </Link>
+        <div className={styles.ResourceCard}>
+          <div className={styles.CardHeader}>Clusters</div>
+          <div className={styles.CardTop}>Count</div>
+          <div className={styles.ResourceDigit}>
+            {clusters.metadata?.cluster_count}
+          </div>
+        </div>
+      </div>
+
       <div className={styles.ContentSection}>
         <div
           className={
@@ -149,10 +239,9 @@ const ClusterPage = ({
           <div className={styles.CardHeaderSection}>
             <div className={styles.CardTitle}>Users</div>
             <Link to="/accounts">
-              <PrimaryButton
-                label="View accounts"
-                className={styles.ViewAccountsBtn}
-              />
+              <PrimaryButton color="primary-outline">
+                View accounts
+              </PrimaryButton>
             </Link>
           </div>
           <div className={styles.UserSection}>
@@ -179,7 +268,7 @@ const ClusterPage = ({
                     </div>
                   ) : (
                     <AreaChart
-                      width={600}
+                      width={800}
                       height={300}
                       syncId="anyId"
                       data={usersSummary?.graph_data}
@@ -231,10 +320,7 @@ const ClusterPage = ({
         >
           <div className={styles.CardHeaderSection}>
             <div className={styles.CardTitle}>Apps</div>
-            <PrimaryButton
-              label="View apps"
-              className={styles.ViewAccountsBtn}
-            />
+            <PrimaryButton color="primary-outline">View Apps</PrimaryButton>
           </div>
           <div className={styles.DBSection}>
             <div className={styles.LeftUserSide}>
@@ -260,7 +346,7 @@ const ClusterPage = ({
                     </div>
                   ) : (
                     <AreaChart
-                      width={600}
+                      width={800}
                       height={300}
                       syncId="anyId"
                       position="outside"
@@ -301,58 +387,12 @@ const ClusterPage = ({
         </div>
       </div>
       <br />
-      <div className={styles.OtherCards}>
-        <Link className={styles.Card}>
-          <>
-            <div className={styles.CardHeader}>Projects</div>
-            <div className={styles.DBStats}>
-              <div className={styles.In}>
-                <div className={styles.InnerTitlesStart}>Active</div>
-                <div className={styles.ResourceDigit}>50</div>
-              </div>
-              <div className={styles.verticalLine}></div>
-              <div className={styles.In}>
-                <div className={styles.InnerTitlesMiddle}>Disabled</div>
-                <div className={styles.ResourceDigit}>0</div>
-              </div>
-            </div>
-          </>
-        </Link>
-        <Link to="/databases" className={styles.Card}>
-          <>
-            <div className={styles.CardHeader}>Databases</div>
-            <div className={styles.DBStats}>
-              <div className={styles.In}>
-                <div className={styles.InnerTitlesStart}>Mysql</div>
-                <div className={styles.ResourceDigit}>
-                  {databases &&
-                    databases?.dbs_stats_per_flavour?.mysql_db_count}
-                </div>
-              </div>
-              <div className={styles.verticalLine}></div>
-              <div className={styles.In}>
-                <div className={styles.InnerTitlesMiddle}>Postgresql</div>
-                <div className={styles.ResourceDigit}>
-                  {databases &&
-                    databases.dbs_stats_per_flavour?.postgres_db_count}
-                </div>
-              </div>
-            </div>
-          </>
-        </Link>
-        <div className={styles.Card}>
-          <div className={styles.CardHeader}>Clusters</div>
-          <div className={styles.CardTop}>Count</div>
-          <div className={styles.ResourceDigit}>
-            {clusters.metadata?.cluster_count}
-          </div>
-        </div>
-      </div>
 
       <div className="TopRow">
         <InformationBar
           header="Select Infrastructure"
           showBtn
+          buttontext="+ New Cluster"
           btnAction={showForm}
         />
       </div>
@@ -413,15 +453,12 @@ const ClusterPage = ({
               {error && <Feedback type="error" message={error} />}
 
               <div className="ModalFormButtons AddAddButtons">
-                <PrimaryButton
-                  label="cancel"
-                  className="CancelBtn"
-                  onClick={hideForm}
-                />
-                <PrimaryButton
-                  label={creatingCluster ? <Spinner /> : "add"}
-                  onClick={handleSubmit}
-                />
+                <PrimaryButton className="CancelBtn" onClick={hideForm}>
+                  Cancel
+                </PrimaryButton>
+                <PrimaryButton onClick={handleSubmit}>
+                  {creatingCluster ? <Spinner /> : "add"}
+                </PrimaryButton>
               </div>
 
               {(isFailed || isAdded) && (

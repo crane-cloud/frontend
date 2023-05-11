@@ -7,6 +7,7 @@ import {
 const initialState = {
   pvs: [],
   isRetrieving: false,
+  pagination: {},
   isFetched: false,
   message: "Cluster Volumes Not Available",
 };
@@ -16,7 +17,8 @@ const pvsReducer = (state = initialState, action) => {
     case FETCH_PVS_SUCCESS:
       return {
         ...state,
-        pvs: action.payload,
+        pvs: action.payload.pvs,
+        pagination: action.payload.pagination,
         isFetched: true,
         isRetrieving: false,
         message: "All Cluster Volumes fetched",
@@ -34,6 +36,7 @@ const pvsReducer = (state = initialState, action) => {
         message: action.payload,
         isFetched: false,
         isRetrieving: false,
+        pagination: {}
       };
 
     default:

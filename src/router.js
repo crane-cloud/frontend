@@ -10,9 +10,10 @@ import {
 import AdminDBList from "./components/AdminDB";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminProjectsPage from "./pages/AdminProjectsPage";
+import AdminProjectOverviewPage from "./pages/AdminProjectOverviewPage";
 import AdminUsersProfile from "./components/AdminUsersProfile";
 import AdminUserLogs from "./components/AdminUserLogs";
-import AdminProjectLogs from "./components/AdminProjectLogs";
+import AdminProjectDetails from "./components/AdminProjectDetails";
 import App from "./components/App";
 import AppLogsPage from "./pages/AppLogsPage";
 import AppMemoryPage from "./pages/AppMemoryPage";
@@ -22,6 +23,7 @@ import AppsPage from "./pages/AppsPage";
 import ClusterPage from "./pages/ClusterPage";
 import ClusterResourcesPage from "./pages/ClusterResourcesPage";
 import ClusterSettingsPage from "./pages/ClusterSettingsPage";
+import AdminLogsPage from "./pages/AdminLogsPage";
 // import PricingPage from "./components/PricingPage";
 import ContactPage from "./pages/ContactPage";
 import CreateDatabase from "./components/CreateDatabase";
@@ -33,34 +35,34 @@ import Privacy from "./components/Documents/privacy";
 import Terms from "./components/Documents/terms";
 import JobsListPage from "./pages/JobsListPage";
 // import App from "./components/App";
-import LoginPage from './pages/LoginPage';
-import MonitoringPage from './pages/MonitoringPage';
-import NamespacesListPage from './components/NamespacesList';
-import ClusterNodes from './components/NodesList';
-import PageNotFound from './components/PageNotFound';
-import PasswordReset from './components/PasswordReset';
-import PodsList from './components/PodsList';
-import ProjectBillingPage from './pages/ProjectBillingPage';
-import ProjectCPUPage from './pages/ProjectCPUPage';
-import ProjectDashboardPage from './pages/ProjectDashboardPage';
-import ProjectMemoryPage from './pages/ProjectMemoryPage';
-import ProjectNetworkPage from './pages/ProjectNetworkPage';
-import PvcsList from './components/PvcsList';
-import PvsListPage from './pages/PvsListPage';
-import RegisterPage from './pages/RegisterPage';
-import ServicesListPage from './components/ServicesList';
-import StorageClassList from './components/StorageClassList';
-import TeamPage from './pages/TeamPage';
-import UsersAccounts from './components/UserAccounts';
-import UserProfile from './components/UserProfile';
-import VerificationSentPage from './pages/VerificationSentPage';
-import AppCpuPage from './pages/AppCpuPage';
-import AppMetricsPage from './pages/AppMetricsPage';
-import ProjectSettingsPage from './pages/ProjectSettingsPage';
-import UserProjectsPage from './pages/UserProjectsPage';
-import UserActivity from './pages/UserActivity'
+import LoginPage from "./pages/LoginPage";
+import MonitoringPage from "./pages/MonitoringPage";
+import NamespacesListPage from "./components/NamespacesList";
+import ClusterNodes from "./components/NodesList";
+import PageNotFound from "./components/PageNotFound";
+import PasswordReset from "./components/PasswordReset";
+import PodsList from "./components/PodsList";
+import ProjectBillingPage from "./pages/ProjectBillingPage";
+import ProjectCPUPage from "./pages/ProjectCPUPage";
+import ProjectDashboardPage from "./pages/ProjectDashboardPage";
+import ProjectMemoryPage from "./pages/ProjectMemoryPage";
+import ProjectNetworkPage from "./pages/ProjectNetworkPage";
+import PvcsList from "./components/PvcsList";
+import PvsListPage from "./pages/PvsListPage";
+import RegisterPage from "./pages/RegisterPage";
+import ServicesListPage from "./components/ServicesList";
+import StorageClassList from "./components/StorageClassList";
+import TeamPage from "./pages/TeamPage";
+import UsersAccounts from "./components/UserAccounts";
+import UserProfile from "./components/UserProfile";
+import VerificationSentPage from "./pages/VerificationSentPage";
+import AppCpuPage from "./pages/AppCpuPage";
+import AppMetricsPage from "./pages/AppMetricsPage";
+import ProjectSettingsPage from "./pages/ProjectSettingsPage";
+import UserProjectsPage from "./pages/UserProjectsPage";
+import UserActivity from "./pages/UserActivity";
 import ProjectLogs from "./pages/ProjectLogs";
-import store from './redux/store';
+import store from "./redux/store";
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
@@ -218,12 +220,17 @@ const Routes = () => (
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/projects/:projectID/logs"
-        component={AdminProjectLogs}
+        path="/projects/:projectID/details"
+        component={AdminProjectDetails}
       />
       <ProtectedRoute
         isAllowed={hasToken}
         path="/clusters/:clusterID/projects"
+        component={AdminProjectOverviewPage}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        path="/clusters/:clusterID/projects-listing"
         component={AdminProjectsPage}
       />
       <ProtectedRoute
@@ -287,6 +294,12 @@ const Routes = () => (
         exact
         path="/databases"
         component={AdminDBList}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        exact
+        path="/clusters/:clusterID/logs"
+        component={AdminLogsPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}

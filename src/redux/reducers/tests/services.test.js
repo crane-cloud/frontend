@@ -7,6 +7,7 @@ import {
 
 const initialState = {
   services: [],
+  pagination:{},
   isFetched: false,
   isRetrieving: false,
   message: "Cluster Services Not Available",
@@ -14,10 +15,10 @@ const initialState = {
 
 const fetchAction = {
   type: FETCH_SERVICES_SUCCESS,
-  services: undefined,
-  isFetched: true,
-  isRetrieving: false,
-  message: "All Cluster Services fetched",
+  payload: {
+    services: [],
+    pagination:{},
+  }
 };
 
 const fetchFailedAction = {
@@ -37,8 +38,9 @@ describe("servicesReducer initial state", () => {
 
   it("should handle database added", () => {
     expect(servicesReducer(initialState, fetchAction)).toEqual({
-      services: undefined,
+      services: [],
       isRetrieving: false,
+      pagination:{},
       isFetched: true,
       message: "All Cluster Services fetched",
     });
@@ -49,6 +51,7 @@ describe("servicesReducer initial state", () => {
       isFetched: false,
       message: undefined,
       isRetrieving: false,
+      pagination:{},
       services: []
     });
   });
@@ -57,6 +60,7 @@ describe("servicesReducer initial state", () => {
     expect(servicesReducer(initialState, startFetchingAction)).toEqual({
       services: [],
       isFetched: false,
+      pagination:{},
       isRetrieving: true,
       message: "Cluster Services Not Available",
     });

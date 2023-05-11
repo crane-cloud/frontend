@@ -1,12 +1,8 @@
 .VerificationPageContainer {
-  background: #008ac1;
+  background: var(--primary-color)!important;
   color: #ffffff;
   display: flex;
   flex-direction: column;
-  flex: 1;
-}
-
-.VerificationPageHeader {
   flex: 1;
 }
 
@@ -23,11 +19,11 @@
 }
 
 .VerificationPageContent h2 {
-  color: #f7b21f;
+  color: var(--secondary-color);
 }
 
 .VerificationPageContent p span {
-  color: #f7b21f;
+  color: var(--secondary-color);
 }
 
 .ResendLinkForm {

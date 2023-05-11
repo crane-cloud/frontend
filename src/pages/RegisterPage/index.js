@@ -3,12 +3,15 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Header from "../../components/Header";
 import InputText from "../../components/InputText";
-import InputPassword from "../../components/InputPassword";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
 import { ReactComponent as LogoIcon } from "../../assets/images/githublogo.svg";
 import { API_BASE_URL, GIT_REDIRECT_URL } from "../../config";
 import Checkbox from "../../components/Checkbox";
+import { ReactComponent as Open } from "../../assets/images/open.svg";
+import { ReactComponent as Closed } from "../../assets/images/close.svg";
+import { ReactComponent as Checked } from "../../assets/images/checked.svg";
+import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 
 import "./RegisterPage.css";
 
@@ -18,15 +21,18 @@ export default class RegisterPage extends Component {
 
     this.state = {
       name: "",
-      username:"",
+      username: "",
       email: "",
       password: "",
       passwordConfirm: "",
+      passwordConfirmShown: false,
       hasAgreed: false,
       loading: false,
       registered: false,
       gitLoading: false,
       error: "",
+      passwordShown: false,
+      passwordChecked: false,
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -34,6 +40,8 @@ export default class RegisterPage extends Component {
     this.toggleAgreed = this.toggleAgreed.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
     this.toGithubauth = this.toGithubauth.bind(this);
+    this.togglePassword = this.togglePassword.bind(this);
+    this.togglePasswordConfirm = this.togglePasswordConfirm.bind(this);
   }
 
   toggleAgreed() {
@@ -85,11 +93,18 @@ export default class RegisterPage extends Component {
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegEx.test(String(email).toLowerCase());
   }
+  togglePassword() {
+    this.setState({ passwordShown: !this.state.passwordShown });
+  }
+  togglePasswordConfirm() {
+    this.setState({ passwordConfirmShown: !this.state.passwordConfirmShown });
+  }
 
   handleSubmit(e) {
     e.preventDefault();
 
-    const { name,username, email, password, passwordConfirm, hasAgreed } = this.state;
+    const { name, username, email, password, passwordConfirm, hasAgreed } =
+      this.state;
 
     const userData = {
       name,
@@ -98,7 +113,7 @@ export default class RegisterPage extends Component {
       password,
     };
 
-    if (!email || !password || !name || !username ||!passwordConfirm) {
+    if (!email || !password || !name || !username || !passwordConfirm) {
       this.setState({
         error: "Please enter all fields",
       });
@@ -152,83 +167,128 @@ export default class RegisterPage extends Component {
       passwordConfirm,
       loading,
       registered,
+      passwordChecked,
+      passwordShown,
+      passwordConfirmShown,
       username,
       error,
       hasAgreed,
       gitLoading,
     } = this.state;
-
     return (
       <div className="RegisterPageContainer">
         <Header />
         <div className="RegisterContent">
           {!registered ? (
-            <>
+            <div>
               <div className="RegisterContentHeading">
                 <h1>Create an account</h1>
               </div>
-              <form onSubmit={this.handleSubmit}>
-                <div className="RegisterContentInputs">
+              <form onSubmit={this.handleSubmit} className="LoginContentInputs">
+                <InputText
+                  required
+                  placeholder="Name"
+                  name="name"
+                  value={name}
+                  onChange={this.handleOnChange}
+                />
+                <InputText
+                  required
+                  placeholder="Username"
+                  name="username"
+                  value={username}
+                  onChange={this.handleOnChange}
+                />
+                <InputText
+                  required
+                  placeholder="Email Address"
+                  name="email"
+                  type="email"
+                  value={email}
+                  onChange={this.handleOnChange}
+                />
+                <div className="password-wrapper">
                   <InputText
-                    required
-                    placeholder="Name"
-                    name="name"
-                    value={name}
-                    onChange={this.handleOnChange}
-                  />
-                   <InputText
-                    required
-                    placeholder="Username"
-                    name="username"
-                    value={username}
-                    onChange={this.handleOnChange}
-                  />
-                  <InputText
-                    required
-                    placeholder="Email Address"
-                    name="email"
-                    value={email}
-                    onChange={this.handleOnChange}
-                  />
-                  <InputPassword
                     required
                     placeholder="Password"
                     name="password"
+                    type={passwordShown ? "text" : "password"}
                     value={password}
                     onChange={this.handleOnChange}
                   />
-                  <InputPassword
+
+                  <div className="password" onClick={this.togglePassword}>
+                    {passwordShown ? <Open /> : <Closed />}
+                  </div>
+                </div>
+                <div className="password-repeat">
+                  <InputText
                     required
                     placeholder="Repeat Password"
                     name="passwordConfirm"
+                    type={passwordConfirmShown ? "text" : "password"}
                     value={passwordConfirm}
                     onChange={this.handleOnChange}
                   />
-                  {error && <div className="RegisterErrorDiv">{error}</div>}
+                  <div
+                    className="password"
+                    onClick={this.togglePasswordConfirm}
+                  >
+                    {passwordConfirmShown ? <Open /> : <Closed />}
+                  </div>
+                </div>
 
-                  <div className="RegisterContentBottomLink RegisterLinkContainer RegisterCheckbox">
-                    <Checkbox
-                      onClick={this.toggleAgreed}
-                      isChecked={hasAgreed}
-                    />
-                    &nbsp; I agree to Crane Cloud&apos;s&nbsp;&nbsp;
+                {error && <div className="RegisterErrorDiv">{error}</div>}
+                <div className=" RegisterTerms">
+                  <Checkbox onClick={this.toggleAgreed} isChecked={hasAgreed} />
+                  <div>
+                    I agree to Crane Cloud{" "}
                     <Link
                       to="/terms-of-service"
                       target="_blank"
-                      className="RegisterContentLink"
+                      className="LoginContentLink"
                     >
                       Terms of service.
                     </Link>
                   </div>
-
-                  <PrimaryButton
-                    className="SignupBtn AuthBtn"
-                    label={loading ? <Spinner /> : "Register"}
-                    onClick={this.handleSubmit}
-                  />
                 </div>
+
+                <PrimaryButton
+                  className="LoginButton AuthBtn"
+                  type="submit"
+                  onClick={this.handleSubmit}
+                >
+                  {loading ? <Spinner /> : "Register"}
+                </PrimaryButton>
               </form>
-            </>
+              <div className="LowerLoginSection">
+                <div>
+                  <p className="LoginWith">
+                    <span>Or join with</span>
+                  </p>
+                </div>
+                <PrimaryButton
+                  className="GithubLoginBtn AuthBtn"
+                  disabled={gitLoading}
+                  onClick={this.toGithubauth}
+                >
+                  {gitLoading ? (
+                    <Spinner />
+                  ) : (
+                    <div className="GitLoginBtn">
+                      <LogoIcon className="LogoIcon" />
+                      <div className="GitText">Github</div>
+                    </div>
+                  )}
+                </PrimaryButton>
+              </div>
+              <div className="LoginContentBottomLink LoginLinkContainer">
+                Already have an account? &nbsp;
+                <Link to="/login" className="LoginContentLink">
+                  Go to Login
+                </Link>
+              </div>
+            </div>
           ) : (
             <div className="RegisterSuccessContent">
               <div className="RegisteredMessage">
@@ -245,34 +305,6 @@ export default class RegisterPage extends Component {
               </div>
             </div>
           )}
-          <div className="LowerSignupSection">
-            <div>
-              <p className="SignupWith">
-                <span>Or Join with</span>
-              </p>
-            </div>
-            <PrimaryButton
-              label={
-                gitLoading ? (
-                  <Spinner />
-                ) : (
-                  <div className="GitLoginBtn">
-                    <LogoIcon className="LogoIcon" />
-                    <div className="GitText">Github</div>
-                  </div>
-                )
-              }
-              className="GithubLoginBtn AuthBtn"
-              disable={gitLoading}
-              onClick={this.toGithubauth}
-            />
-          </div>
-          <div className="LoginContentBottomLink LoginLinkContainer">
-            Already have an account? &nbsp;
-            <Link to="/" className="LoginContentLink">
-              Go to Login
-            </Link>
-          </div>
         </div>
       </div>
     );

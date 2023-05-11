@@ -1,5 +1,5 @@
 .RegisterPageContainer {
-  background: #008ac1;
+  background: var(--primary-color) !important;
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -12,6 +12,7 @@
   align-self: center;
   justify-content: center;
   flex: 1;
+  padding-bottom: 5rem;
 }
 
 .RegisterSuccessContent {
@@ -23,30 +24,19 @@
 }
 
 .RegisterSuccessContent h2 {
-  color: #f7b21f;
+  color: var(--secondary-color);
 }
 
 .RegisterSuccessContent p span {
-  color: #f7b21f;
+  color: var(--secondary-color);
 }
 
-.RegisterContentInputs {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-}
-
-.RegisterLinkContainer {
-  display: inline-block;
-}
-
-a.RegisterContentLink {
-  color: #f7b21f;
-  border-bottom: 1px solid #f7b21f;
-}
-
-.RegisterCheckbox {
+.RegisterTerms {
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  padding: 1rem 0;
 }
 
 .RegisterErrorDiv {
@@ -55,44 +45,17 @@ a.RegisterContentLink {
   text-align: center;
   padding: 1rem 0;
 }
-.GitLoginBtn {
-  display: grid;
-  grid-gap: 0.2rem;
-  grid-auto-flow: column;
-  align-items: center;
-}
+
 .LogoIcon {
   width: 1.5rem;
   height: 1.5rem;
 }
-.GithubLoginBtn {
-  width: 100%;
-  color: #fff;
-  background-color: #000;
-  outline: 2px solid #000000;
-}
 
-.GithubLoginBtn:hover {
-  outline: 2px solid #06222f;
-  background-color: #06222f;
-}
 .GitText {
   color: #fff;
   text-transform: capitalize;
 }
-.SignupBtn{
-  width: 100%;
-}
-.SignupWith {
-  width: 100%;
-  text-align: center;
-  border-bottom: 1px solid #fff;
-  line-height: 0.1em;
-}
-.SignupWith span {
-  background-color: #008ac1;
-  padding: 0 1rem;
-}
+
 .LowerSignupSection {
   display: grid;
   grid-template-columns: 1fr;
@@ -101,7 +64,7 @@ a.RegisterContentLink {
 }
 
 @media only screen and (max-width: 640px) {
-  .RegisterContent {
+  /* .RegisterContent {
     width: 90%;
   }
 
@@ -116,5 +79,48 @@ a.RegisterContentLink {
 
   .VerificationCodeInput .InputText {
     width: 100%;
-  }
+  } */
+}
+.password-wrapper {
+  position: relative;
+  display: grid;
+  align-items: center;
+}
+.password-wrapper .toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.password-input-container {
+  position: relative;
+}
+.password {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.password-repeat {
+  position: relative;
+  display: grid;
+  align-items: center;
+}
+
+.passwordConfirm.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.passwordConfirm {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
 }

@@ -7,6 +7,7 @@ import {
 
 const initialState = {
   deployments: [],
+  pagination:{},
   isFetchingDeployments: false,
   isFetched: false,
   message: "",
@@ -14,9 +15,10 @@ const initialState = {
 
 const fetchAction = {
   type: GET_DEPLOYMENTS_SUCCESS,
-  deployments: undefined,
-  isFetchingDeployments: false,
-  isFetched: true,
+  payload : {
+     deployments:[],
+     pagination:{},
+  }
 };
 
 const fetchFailedAction = {
@@ -36,8 +38,9 @@ describe("getDeployments initial state", () => {
 
   it("should handle database added", () => {
     expect(getDeployments(initialState, fetchAction)).toEqual({
-      deployments: undefined,
+      deployments: [],
       isFetchingDeployments: false,
+      pagination:{},
       isFetched: true,
       message: ""
     });
@@ -47,6 +50,7 @@ describe("getDeployments initial state", () => {
     expect(getDeployments(initialState, fetchFailedAction)).toEqual({
       message: undefined,
       isFetched: false,
+      pagination:{},
       isFetchingDeployments: false,
       deployments: []
     });
@@ -56,6 +60,7 @@ describe("getDeployments initial state", () => {
     expect(getDeployments(initialState, startFetchingAction)).toEqual({
       deployments: [],
       isFetchingDeployments: true,
+      pagination:{},
       isFetched: false,
       message: "",
     });

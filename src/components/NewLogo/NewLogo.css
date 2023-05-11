@@ -19,7 +19,7 @@
 }
 
 .BrandLogoType {
-  color: #008ac1;
+  color: var(--primary-color);
   font-weight: 600;
   font-size: 1.5rem;
 }

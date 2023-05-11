@@ -25,7 +25,7 @@ class ClusterSettingsPage extends React.Component {
       name: "",
       host: "",
       prometheus_url: "",
-      costmodal_url:"",
+      costmodal_url: "",
       token: "",
       description: "",
       error: "",
@@ -78,7 +78,8 @@ class ClusterSettingsPage extends React.Component {
   }
 
   handleSubmit() {
-    const { host, prometheus_url, costmodal_url, name, token, currentCluster } = this.state;
+    const { host, prometheus_url, costmodal_url, name, token, currentCluster } =
+      this.state;
     const {
       match: {
         params: { clusterID },
@@ -93,8 +94,8 @@ class ClusterSettingsPage extends React.Component {
     if (currentCluster.prometheus_url !== prometheus_url) {
       updateObject = { ...updateObject, prometheus_url };
     }
-    if(currentCluster.costmodal_url !== costmodal_url){
-      updateObject = { ...updateObject, costmodal_url}
+    if (currentCluster.costmodal_url !== costmodal_url) {
+      updateObject = { ...updateObject, costmodal_url };
     }
     if (currentCluster.host !== host) {
       updateObject = { ...updateObject, host: host };
@@ -146,7 +147,7 @@ class ClusterSettingsPage extends React.Component {
     const { clusterID } = params;
 
     return (
-      <div className={styles.Page}>
+      <section className={styles.Page}>
         {isUpdated ? this.renderRedirect() : null}
         <div className={styles.TopBarSection}>
           <Header />
@@ -171,10 +172,9 @@ class ClusterSettingsPage extends React.Component {
                       <div>Modify the cluster Information</div>
                     </div>
                     <div className={styles.SectionButtons}>
-                      <PrimaryButton
-                        label="Update"
-                        onClick={this.showUpdateAlert}
-                      />
+                      <PrimaryButton onClick={this.showUpdateAlert}>
+                        Update
+                      </PrimaryButton>
                     </div>
                   </div>
                 </div>
@@ -241,14 +241,14 @@ class ClusterSettingsPage extends React.Component {
 
                       <div className={styles.UpdateProjectModelButtons}>
                         <PrimaryButton
-                          label="cancel"
                           className="CancelBtn"
                           onClick={this.hideUpdateAlert}
-                        />
-                        <PrimaryButton
-                          label={isUpdating ? <Spinner /> : "Update"}
-                          onClick={this.handleSubmit}
-                        />
+                        >
+                          Cancel
+                        </PrimaryButton>
+                        <PrimaryButton onClick={this.handleSubmit}>
+                          {isUpdating ? <Spinner /> : "Update"}
+                        </PrimaryButton>
                       </div>
 
                       {(isFailed || isUpdated) && (
@@ -266,7 +266,7 @@ class ClusterSettingsPage extends React.Component {
             </div>
           </div>
         </div>
-      </div>
+      </section>
     );
   }
 }

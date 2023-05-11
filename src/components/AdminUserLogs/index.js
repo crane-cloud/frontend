@@ -7,11 +7,13 @@ import { ReactComponent as Danger } from "../../assets/images/alert-octagon.svg"
 import { ReactComponent as CloudOff } from "../../assets/images/cloud-off.svg";
 import { ReactComponent as Upload } from "../../assets/images/upload-cloud.svg";
 import styles from "./AdminUserLogs.module.css";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import PrimaryButton from "../../components/PrimaryButton";
+import { Link } from "react-router-dom";
 
 const AdminUserLogs = () => {
-  const { clusterID } = useParams();
+  const clusterID = localStorage.getItem("clusterID");
+
   const clusterName = localStorage.getItem("clusterName");
 
   return (
@@ -25,7 +27,8 @@ const AdminUserLogs = () => {
         </div>
         <div className={styles.MainContentSection}>
           <div className="InformationBarSection">
-            <InformationBar header="Accounts/Logs" showBtn={false} />
+            <InformationBar header={<><Link className="breadcrumb" 
+            to={`/accounts`}>Accounts</Link><span> / Logs</span></>} showBtn={false} />
           </div>
 
           <div className={styles.SmallContainer}>
@@ -37,7 +40,9 @@ const AdminUserLogs = () => {
                   className={styles.field}
                   placeholder=" Filter by Status"
                 />
-                <PrimaryButton label="Filter" className={styles.FilterButton} />
+                <PrimaryButton className={styles.FilterButton}>
+                  Filter
+                </PrimaryButton>
               </div>
             </div>
             <div className={styles.Table}>

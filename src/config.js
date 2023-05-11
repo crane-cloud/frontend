@@ -4,7 +4,7 @@ export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 export const DOCS_URL = process.env.REACT_APP_DOCS_URL;
 export const BLOG_URL = process.env.REACT_APP_BLOG_URL;
 //mira Url
-export const  MIRA_API_URL= process.env.REACT_APP_MIRA_API_URL;
+export const MIRA_API_URL = process.env.REACT_APP_MIRA_API_URL;
 //github auth urls
 export const GIT_REDIRECT_URL = `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GITHUB_CLEINT_ID}&scope=read:user,user:email`;
 export const FLUTTER_WAVE_PUBLIC_KEY =
@@ -14,3 +14,10 @@ export const LIVE_EXCHANGE_RATE_API = `https://openexchangerates.org/api/latest.
 //crane cloud status
 export const CRANE_CLOUD_STATUS =
   "https://status-api.cranecloud.io/api/v1/statuses";
+export const GITLAB_URL =
+  "https://gitlab-ce-32b64b3f-fc91-4331-bf7e.cranecloud.io/users/sign_in";
+export const GOPLAYGROUND_URL = "https://go.dev.cranecloud.io/";
+export const JUPYTERHUB_URL =
+  "https://jupiter-a13faf8e-83e0-4930-8898.cranecloud.io";
+export const MIRA_DOCS_URL =
+  "https://docs.cranecloud.io/applications/deployWithMira/";

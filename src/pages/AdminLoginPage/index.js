@@ -6,11 +6,14 @@ import PropTypes from "prop-types";
 import saveUser from "../../redux/actions/saveUser";
 import Header from "../../components/Header";
 import InputText from "../../components/InputText";
-import InputPassword from "../../components/InputPassword";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
 import { API_BASE_URL } from "../../config";
 import "../../pages/LoginPage/LoginPage.css";
+import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
+import { ReactComponent as Open } from "../../assets/images/open.svg";
+import { ReactComponent as Closed } from "../../assets/images/close.svg";
+import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 
 class AdminLoginPage extends React.Component {
   constructor() {
@@ -19,17 +22,25 @@ class AdminLoginPage extends React.Component {
       email: "",
       password: "",
       loading: false,
+      passwordShown: false,
+      passwordChecked: false,
       feedbackMessage: "",
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.togglePassword = this.togglePassword.bind(this);
   }
 
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value,
     });
+  }
+  togglePassword() {
+    //this.setState({ hidden: !this.state.hidden });
+    this.setState({ passwordShown: !this.state.passwordShown });
+    this.fetchPassword();
   }
 
   handleSubmit(e) {
@@ -78,7 +89,8 @@ class AdminLoginPage extends React.Component {
   }
 
   render() {
-    const { email, password, loading } = this.state;
+    const { email, password, loading, passwordChecked, passwordShown } =
+      this.state;
 
     return (
       <div className="LoginPageContainer">
@@ -94,20 +106,28 @@ class AdminLoginPage extends React.Component {
                 required
                 placeholder="Email Address"
                 name="email"
+                type="email"
                 value={email}
                 onChange={(e) => {
                   this.handleChange(e);
                 }}
               />
-              <InputPassword
-                required
-                placeholder="Password"
-                name="password"
-                value={password}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
-              />
+              <div className="password-wrapper">
+                <InputText
+                  required
+                  placeholder="Password"
+                  name="password"
+                  type={passwordShown ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+                />
+
+                <div className="password" onClick={this.togglePassword}>
+                  {passwordShown ? <Open /> : <Closed />}
+                </div>
+              </div>
 
               <div className="LoginLinkContainer">
                 <Link to="/forgot-password" className="LoginContentLink">
@@ -115,10 +135,9 @@ class AdminLoginPage extends React.Component {
                 </Link>
               </div>
 
-              <PrimaryButton
-                label={loading ? <Spinner /> : "login"}
-                onClick={this.handleSubmit}
-              />
+              <PrimaryButton onClick={this.handleSubmit}>
+                {loading ? <Spinner /> : "login"}
+              </PrimaryButton>
 
               <div className="LoginContentBottomLink LoginLinkContainer">
                 <Link to="/" className="LoginContentLink">

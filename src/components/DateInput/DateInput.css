@@ -1,7 +1,7 @@
 .DateInputContainer {
   display: inline-block;
   width: 100%;
-  z-index: 2;
+  z-index: 50;
 }
 
 .DateInputWrapper {
@@ -29,7 +29,7 @@
 }
 
 .DisplayActive {
-  border: 2px solid #f7b21f;
+  border: 2px solid var(--secondary-color);
 }
 
 .DateInputCalendar {

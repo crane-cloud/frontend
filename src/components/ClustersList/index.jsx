@@ -34,14 +34,15 @@ class ClustersList extends Component {
             </div>
           </div>
         ) : (
-          <div className="ClusterList">
+          <div className="ClusterList"> 
             {isRetrieved &&
               clusters !== undefined &&
               clusters.map((cluster) => (
                 <Link
-                  to={{ pathname: `/clusters/${cluster.id}/resources` }}
+                  to={{ pathname: `/clusters/${cluster.id}/resources`,
+                  state: { clusterName: cluster.name},
+                }}
                   key={cluster.id}
-                  state={{ clusterName: cluster.name }}
                 >
                   <div key={cluster.id} className="ClusterCardItem">
                     <ClusterCard

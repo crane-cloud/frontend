@@ -1,48 +1,72 @@
 .ProjectsCard {
   background-color: #ffffff;
-  border: 1px solid #f1f1f1;
+  border: 1px solid #e0dddd;
   width: 15rem;
   height: min-content;
-  border-radius: .4rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: box-shadow .3s;
 }
 
 .ProjectsCard:hover {
-  margin: 0;
-  border-color: #f7b21f;
+  box-shadow: 0 0 11px rgba(33,33,33,.2); 
 }
 .PendingNote{
   display: flex;
-  color: #ccc;
+  color: rgb(175, 175, 175);
   text-align: center;
   align-items: center;
-  width:  15rem;
+  justify-content: center;
+  padding: 0 1rem;
   font-size: 1rem;
   height: 7rem;
 }
-
+.opequeCard{
+  opacity: .4;
+}
+.unclickable{
+  cursor: not-allowed;
+}
+.killPointerActions{
+  pointer-events: none;
+}
+.opequeCard:hover{
+  box-shadow: none;
+}
 .ProjectImageDiv {
   margin: 0;
   width: 100%;
   height: 7rem;
 }
+
 .appCount{
  display: flex;
  justify-content: flex-end;
- padding-right:.5rem;
- padding-top:.1rem;
- color: #ccc;
+ border-radius: 0.4rem 0.4rem 0 0;
 }
 
-.BottomContainer {
-  /* padding: 1rem 0.7rem; */
+.appCount>div{
+  padding:0.1rem .5rem;
+  border-radius: 0 0.4rem 0 0;
+  background-color: rgb(235, 235, 235);
+  color: rgb(155, 155, 155);
+}
+
+
+.ProjectBottomContainer {
+  padding: 0.5rem;
   height: 4rem;
   display: flex;
   flex-direction: row;
+  background-color: #ffedc7;
   background-color: #f6fbe5;
+  justify-content: space-between;
+  border-radius: 0 0 .4rem .4rem;
 }
 .ProjectInfor{
   display: flex;
   flex-direction: column;
+  gap: 0.2rem;
 }
 
 .ProjectsCardName {
@@ -50,7 +74,8 @@
   flex-grow: 1;
   color: #000;
   text-overflow: ellipsis;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
   overflow: hidden;
   white-space: nowrap;
 }
@@ -67,6 +92,8 @@
 
 .ProjectDescription {
   text-overflow: ellipsis;
+  font-size: 0.9rem;
+  color: rgb(60, 60, 60);
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -83,6 +110,11 @@
 
 .HeadingWithTooltip {
   display: inline;
+}
+
+.SharedUsersIcon{
+  width: 1.3rem;
+  color: rgb(60, 60, 60);
 }
 
 /*///////////// Delete Model //////////////////*/
@@ -155,7 +187,7 @@
   position: absolute;
   top: 1.5rem;
   right: 0.5rem;
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
   min-width: 6.875rem;
   z-index: 1;
 }

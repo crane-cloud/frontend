@@ -1,16 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import PrimaryButton from "../PrimaryButton";
 import Select from "../Select";
-//import CancelButton from "../CancelButton";
-import NewButton from "../NewButton";
+import { handlePostRequestWithOutDataObject } from "../../apis/apis.js";
 import Spinner from "../Spinner";
 import Feedback from "../Feedback";
-import createDatabase, {
-  clearDatabaseCreateState,
-} from "../../redux/actions/createDatabase";
 import "./CreateDatabase.css";
 
 const flavours = [
@@ -25,27 +18,22 @@ class CreateDatabase extends React.Component {
     this.state = {
       databaseFlavour: "",
       error: "",
+      addingDatabase:false,
+      addDatabaseError:"",
     };
 
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.addNewDatabase = this.addNewDatabase.bind(this)
   }
 
-  componentDidMount() {
-    const { clearDatabaseCreateState } = this.props;
-    clearDatabaseCreateState();
-  }
+  // componentDidMount() {
+   
+  // }
 
-  componentDidUpdate(prevProps) {
-    const {
-      isCreated,
-      params: { projectID },
-    } = this.props;
-
-    if (isCreated !== prevProps.isCreated) {
-      return <Redirect to={`/projects/${projectID}/databases`} noThrow />;
-    }
-  }
+  // componentDidUpdate(prevProps) {
+   
+  // }
 
   handleSelectChange(selected) {
     this.setState({ databaseFlavour: selected.value });
@@ -54,7 +42,6 @@ class CreateDatabase extends React.Component {
   handleSubmit() {
     const { databaseFlavour } = this.state;
     const {
-      createDatabase,
       params: { projectID },
     } = this.props;
     if (!databaseFlavour) {
@@ -65,99 +52,61 @@ class CreateDatabase extends React.Component {
       const newDBType = {
         database_flavour_name: databaseFlavour,
       };
-      createDatabase(newDBType, projectID);
+      //createDatabase(newDBType, projectID);
+      this.addNewDatabase(newDBType, projectID)
     }
+  }
+  addNewDatabase(data,projectID) {
+    this.setState({
+      addingDatabase:true,
+      addDatabaseError:"",
+    })
+    handlePostRequestWithOutDataObject(
+      data,
+      `/projects/${projectID}/databases`
+    ).then(() => {
+        window.location.href = `/projects/${projectID}/databases`;
+      })
+      .catch((error) => {
+        this.setState({
+          addDatabaseError: "Failed to add Database. Try again later",
+          addingDatabase: false
+        });
+      });
   }
 
   render() {
-    const {
-      isCreating,
-      isCreated,
-      message,
-      params: { projectID },
-    } = this.props;
-    const { error } = this.state;
-    if (isCreated) {
-      return <Redirect to={`/projects/${projectID}/databases`} noThrow />;
-    }
+    
+    const { error,addDatabaseError,addingDatabase } = this.state;
     return (
-      <div className="CreatePage">
-        <div className="MainContentSection">
-          <div className="InformationBarSection ">
-            <div className="InformationBar">
-              <div className="InformationBarWithButton SmallContainer">
-                <div className="InfoHeader">Create database</div>
-                <div className="RoundAddButtonWrap">
-                 {/* <CancelButton onClick={this.props.closeComponent} />*/}
-                  <NewButton label="close"  type="close" onClick={this.props.closeComponent}/>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="ContentSection SmallContainer">
-            <div className="DatabaseForm">
-              <div className="DBFormElements">
-                <Select
-                  required
-                  placeholder="Database Type"
-                  options={flavours}
-                  onChange={this.handleSelectChange}
-                />
-                <div />
-                <div className="CreateDBError">
-                  {error && <Feedback type="error" message={error} />}
+      <div className="DatabaseForm">
+        <div className="DBFormElements">
+          <Select
+            required
+            placeholder="Database Type"
+            options={flavours}
+            onChange={this.handleSelectChange}
+          />
+          <div />
+          <div className="CreateDBError">
+            {error && <Feedback type="error" message={error} />}
 
-                  {message && (
-                    <Feedback
-                      message={message !== "" ? message : null}
-                      type={isCreated ? "success" : "error"}
-                    />
-                  )}
-                </div>
-                <div>
-                  <PrimaryButton
-                    label={isCreating ? <Spinner /> : "Create"}
-                    className="CreateBtn"
-                    onClick={this.handleSubmit}
-                  />
-                </div>
-              </div>
-            </div>
+            {addDatabaseError && (
+              <Feedback
+                message={addDatabaseError}
+                type={"error"}
+              />
+            )}
+          </div>
+          <div>
+            <PrimaryButton className="CreateBtn" onClick={this.handleSubmit}>
+              {addingDatabase ? <Spinner /> : "Create"}
+            </PrimaryButton>
           </div>
         </div>
       </div>
     );
   }
-}
-CreateDatabase.propTypes = {
-  isCreating: PropTypes.bool,
-  isCreated: PropTypes.bool,
-  message: PropTypes.string,
-  params: PropTypes.shape({}),
 };
 
-CreateDatabase.defaultProps = {
-  message: "",
-  isCreated: false,
-  isCreating: false,
-  params: {},
-};
-
-export const mapStateToProps = (state) => {
-  const { isCreating, isCreated, clearDatabaseCreateState, message } =
-    state.createDatabaseReducer;
-
-  return {
-    isCreating,
-    message,
-    isCreated,
-    clearDatabaseCreateState,
-  };
-};
-
-const mapDispatchToProps = {
-  createDatabase,
-  clearDatabaseCreateState,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateDatabase);
+export default CreateDatabase;

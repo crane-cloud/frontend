@@ -59,15 +59,14 @@ jobs:
             chmod +x ./cc-test-reporter
             ./cc-test-reporter before-build
 
-      - save_cache:  # special step to save the dependency cache
+      - save_cache: # special step to save the dependency cache
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
       - run: # run tests
           name: Run Test and Coverage
           no_output_timeout: 30m
-          command:
-            yarn test --detectOpenHandles
+          command: yarn test --detectOpenHandles
       - run: # send coverage
           name: Code Climate report
           command: ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
@@ -78,6 +77,7 @@ jobs:
     docker:
       - image: google/cloud-sdk
         environment:
+          USE_GKE_GCLOUD_AUTH_PLUGIN: True
           GOOGLE_APPLICATION_CREDENTIALS: /root/crane-cloud
           cluster: staging-cluster
           REACT_APP_API_BASE_URL: https://staging-api.cranecloud.io

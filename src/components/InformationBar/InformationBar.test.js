@@ -16,9 +16,9 @@ describe("Test the information bar component", () => {
     placeholder: undefined,
     searchAction: searchAction,
   };
-  const appStatusProps = { 
-    ...defaultProps, 
-    status: "success" 
+  const appStatusProps = {
+    ...defaultProps,
+    status: "success",
   };
   const searchBarProps = {
     ...defaultProps,
@@ -30,16 +30,20 @@ describe("Test the information bar component", () => {
 
   const InformationBarDefault = shallow(<InformationBar {...defaultProps} />);
   const InformationBarSearch = shallow(<InformationBar {...searchBarProps} />);
-  const InformationBarAppLink = shallow(<InformationBar {...addAppLinkProps} />);
+  const InformationBarAppLink = shallow(
+    <InformationBar {...addAppLinkProps} />
+  );
   const InformationBarStatus = shallow(<InformationBar {...appStatusProps} />);
   const InformationBarAddBtn = shallow(<InformationBar {...addBtnProps} />);
-  
+
   it("checks if the information bar component matches the snapshot", () => {
     expect(InformationBarDefault).toMatchSnapshot();
   });
 
   it("checks if search in information bar is funtional", () => {
-    const SearchInput = InformationBarSearch.find(".SearchInput input");
+    const SearchInput = InformationBarSearch.find(
+      ".DesktopView .SearchInput input"
+    );
     SearchInput.simulate("change", {
       target: { name: "Searchword", value: "sample search" },
     });

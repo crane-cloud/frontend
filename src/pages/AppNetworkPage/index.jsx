@@ -1,11 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import InformationBar from "../../components/InformationBar";
-import Header from "../../components/Header";
 import Spinner from "../../components/Spinner";
-import SideBar from "../../components/SideBar";
-import "./AppNetworkPage.css";
 import getAppNetwork, { clearAppNetwork } from "../../redux/actions/appNetwork";
 import MetricsCard from "../../components/MetricsCard";
 import PeriodSelector from "../../components/Period";
@@ -15,6 +11,7 @@ import {
   getCurrentTimeStamp,
   subtractTime,
 } from "../../helpers/formatMetrics";
+import DashboardLayout from "../../components/Layouts/DashboardLayout";
 
 class AppNetworkPage extends React.Component {
   constructor(props) {
@@ -128,7 +125,7 @@ class AppNetworkPage extends React.Component {
       isFetchingAppNetwork,
       appNetworkMetrics,
     } = this.props;
-    const { projectID, appID } = params;
+    const { appID } = params;
     const { period } = this.state;
 
     const formattedMetrics = formatAppNetworkMetrics(
@@ -138,51 +135,26 @@ class AppNetworkPage extends React.Component {
     );
 
     return (
-      <div className="Page">
-        <div className="TopBarSection">
-          <Header />
-        </div>
-        <div className="MainSection">
-          <div className="SideBarSection">
-            <SideBar
-              name={this.getAppName(appID)}
-              params={params}
-              pageRoute={this.props.location.pathname}
-              allMetricsLink={`/projects/${projectID}/apps/${appID}/dashboard`}
-              cpuLink={`/projects/${projectID}/apps/${appID}/cpu/`}
-              memoryLink={`/projects/${projectID}/apps/${appID}/memory/`}
-              databaseLink={`/projects/${projectID}/databases`}
-              networkLink={`/projects/${projectID}/apps/${appID}/network/`}
-              appLogsLink={`/projects/${projectID}/apps/${appID}/logs/`}
+      <DashboardLayout header="App Network" name={this.getAppName(appID)}>
+        <MetricsCard
+          className="MetricsCardGraph"
+          title={<PeriodSelector onChange={this.handlePeriodChange} />}
+        >
+          {isFetchingAppNetwork ? (
+            <div className="ContentSectionSpinner">
+              <Spinner />
+            </div>
+          ) : (
+            <LineChartComponent
+              yLabel="Network(MBs)"
+              xLabel="Time"
+              xDataKey="time"
+              lineDataKey="network"
+              data={formattedMetrics}
             />
-          </div>
-          <div className="MainContentSection">
-            <div className="InformationBarSection">
-              <InformationBar header="Network" />
-            </div>
-            <div className="ContentSection SmallContainer">
-              <MetricsCard
-                className="MetricsCardGraph"
-                title={<PeriodSelector onChange={this.handlePeriodChange} />}
-              >
-                {isFetchingAppNetwork ? (
-                  <div className="ContentSectionSpinner">
-                    <Spinner />
-                  </div>
-                ) : (
-                  <LineChartComponent
-                    yLabel="Network(MBs)"
-                    xLabel="Time"
-                    xDataKey="time"
-                    lineDataKey="network"
-                    data={formattedMetrics}
-                  />
-                )}
-              </MetricsCard>
-            </div>
-          </div>
-        </div>
-      </div>
+          )}
+        </MetricsCard>
+      </DashboardLayout>
     );
   }
 }
@@ -191,7 +163,6 @@ AppNetworkPage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       appID: PropTypes.string.isRequired,
-      userID: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
   isFetchingAppNetwork: PropTypes.bool.isRequired,

@@ -14,13 +14,13 @@
 }
 
 .CardImageDiv:hover {
-  border: 1px solid #008ac1;
+  border: 1px solid var(--primary-color);
 }
 
 .BottomContainer {
   padding: 10px;
   height: 80px;
-  background-color: #f1f1f1;
+  background-color: var( --gray-bg-light-color);
 }
 
 .MemberCardName {

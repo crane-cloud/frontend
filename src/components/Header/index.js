@@ -16,7 +16,7 @@ import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 
 const Header = (props) => {
   const { user, match } = props;
-  const token = localStorage.getItem("token")
+  const token = localStorage.getItem("token");
 
   const [hidden, setHidden] = useState(false);
   const dropdownRef = useRef(null);
@@ -59,36 +59,12 @@ const Header = (props) => {
   }, []);
 
   const { credits } = props;
-  let displayName = user.data.name ? user.data.name : user.data.username
+  let displayName = user.data.name ? user.data.name : user.data.username;
   return (
     <header className={`${styles.Header} SmallContainer`}>
       <Logo />
-      {(!token || token === "" || pageUrl !== null) && (
-        <div className={styles.HeaderLinksWrap}>
-          {match.path === "/login" && (
-            <div className={styles.HeaderLinks}>
-              <Link
-                to="/register"
-                className={`${styles.HeaderLinkLogin} ${styles.TurnLight}`}
-              >
-                Register
-              </Link>
-            </div>
-          )}
-          {match.path === "/register" && (
-            <div className={styles.HeaderLinks}>
-              <Link
-                to="/login"
-                className={`${styles.HeaderLinkLogin} ${styles.TurnLight}`}
-              >
-                Login
-              </Link>
-            </div>
-          )}
-        </div>
-      )}
 
-      {(token && pageUrl === null) && (
+      {token && pageUrl === null && (
         <div className={styles.HeaderLinksWrap}>
           <div
             ref={dropdownRef}
@@ -109,20 +85,23 @@ const Header = (props) => {
             <DownArrow className={styles.DropdownArrowSvg} />
             {hidden && (
               <div className={styles.BelowHeader}>
-                <div className={styles.UserInformation}>
-                <Avatar name={displayName} className={styles.UserAvatar} />
-                  <div className={styles.UserDetails}>{
-                    displayName.split(' ').slice(-1).join(' ')}</div>
+                <Link to={`/profile`} className={styles.UserInformation}>
+                  <Avatar name={displayName} className={styles.UserAvatar} />
                   <div className={styles.UserDetails}>
-                    {user.data.email}</div>
-                </div>
+                    <div className={styles.HeaderUserName}>
+                      {displayName.split(" ").slice(-1).join(" ")}
+                    </div>
+                    <div className={styles.UserDetails}>{user.data.email}</div>
+                  </div>
+                </Link>
                 <div className={styles.DropDownContent}>
                   <a
                     href={`${DOCS_URL}`}
                     className={styles.DropDownLink}
                     rel="noopener noreferrer"
                     target="_blank"
-                  > <Book />
+                  >
+                    <Book />
                     Docs
                   </a>
                   <Link to={`/profile`} className={styles.DropDownLink}>
@@ -132,10 +111,11 @@ const Header = (props) => {
                     <Activity /> Activity
                   </Link>
                   <div
-                    className={styles.DropDownLink}
+                    className={`${styles.DropDownLink} ${styles.RoundBottom}`}
                     role="presentation"
                     onClick={logout}
-                  > <LogOut/>
+                  >
+                    <LogOut />
                     Logout
                   </div>
                 </div>

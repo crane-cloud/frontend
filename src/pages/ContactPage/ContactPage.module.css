@@ -6,7 +6,7 @@
 }
 
 .PrimaryTitle {
-  color: #008ac1;
+  color: var(--primary-color);
   font-size: 44px;
   font-weight: bold;
   text-align: center;
@@ -26,7 +26,7 @@
 
 .ContactGrid {
   display: grid;
-  grid-template-columns: 3fr 3fr 3fr;
+  grid-template-columns: 3fr 3fr;
   grid-template-rows: 3;
   grid-gap: 0.1rem;
   overflow-x: auto;
@@ -34,7 +34,7 @@
 .InnerContactGird {
   width: 90%;
   max-width: 1240px;
-  border: 2px solid #008ac1;
+  border: 1px solid var(--primary-color);
   border-radius: 15px;
   display: grid;
   grid-template-columns: 1fr;
@@ -94,7 +94,7 @@
 .TelephoneSmall, .MailSmall, .ThumbSmall, .LocationSmall, .MapSmall {
   width: 3rem;
   height: 3rem;
-  border: 2px solid #008ac1;
+  border: 1px solid var(--primary-color);
   border-radius: 15px;
   padding: 1rem;
 }
@@ -111,7 +111,7 @@
   grid-gap: 0.1rem;
   overflow-x: auto;
   background-color: #fbfbfb;
-  border: 2px solid #008ac1;
+  border: 1px solid var(--primary-color);
   border-radius: 15px;
   width: 97%;
 }
@@ -132,15 +132,15 @@
   cursor: pointer;
 }
 
-.LocationIcon {
-  padding-bottom: 1.3rem;
+.ContactPage {
+  height: 100vh;
 }
 
 .InnerGridTitle {
   color: #000000;
   font-size: 26px;
   font-weight: bold;
-  padding: 2rem 1rem;
+  padding: 1rem;
   text-align: center;
   justify-items: center;
 }
@@ -157,7 +157,7 @@
 }
 
 .verticalLine {
-  border-left: 2px solid #008ac1;
+  border-left: 1px solid var(--primary-color);
   height: 100%;
 }
 

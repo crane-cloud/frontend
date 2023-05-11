@@ -2,42 +2,30 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import InformationBar from "../../components/InformationBar";
-import Header from "../../components/Header";
 import PrimaryButton from "../../components/PrimaryButton";
-import deleteProject, {
-  clearDeleteProjectState,
-} from "../../redux/actions/deleteProject";
-import { handleGetRequest } from "../../apis/apis.js"
-import updateProject, {
-  clearUpdateProjectState,
-} from "../../redux/actions/updateProject";
-import inviteMembers, {
-  clearInvitingMembersState,
-} from "../../redux/actions/inviteMembers";
-import removeMember, {
-  clearRemovingMembersState,
-} from "../../redux/actions/removeMembers";
-import updateMemberRole, {
-  clearUpdateMemberRoleState,
-} from "../../redux/actions/updateMemberRole";
+import {
+  handleGetRequest,
+  handlePostRequestWithOutDataObject,
+  handlePatchRequest,
+  handleDeleteRequest,
+} from "../../apis/apis.js";
 import Spinner from "../../components/Spinner";
 import Avatar from "../../components/Avatar";
 import Modal from "../../components/Modal";
-import SideBar from "../../components/SideBar";
 import TextArea from "../../components/TextArea";
 import Feedback from "../../components/Feedback";
 import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
 import DeleteWarning from "../../components/DeleteWarning";
 import BlackInputText from "../../components/BlackInputText";
 import styles from "./ProjectSettingsPage.module.css";
-import SettingsButton from "../../components/SettingsButton";
+import "./ProjectSettingsPage.module.css";
 import Select from "../../components/Select";
 import { retrieveProjectTypes } from "../../helpers/projecttypes";
 import { validateName } from "../../helpers/validation";
 import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import { retrieveMembershipRoles } from "../../helpers/membershipRoles";
+import DashboardLayout from "../../components/Layouts/DashboardLayout";
 // import "./../../components/DBSettingsPage/DBSettingsPage.css"
 
 class ProjectSettingsPage extends React.Component {
@@ -45,9 +33,8 @@ class ProjectSettingsPage extends React.Component {
     super(props);
     const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
     const userToken = localStorage.getItem("token", null);
-    const { name, description, organisation, project_type, project_id } =
+    const { name, description, organisation, project_type } =
       projectInfo;
-
     this.state = {
       openUpdateAlert: false,
       openRoleUpdateAlert: false,
@@ -55,9 +42,10 @@ class ProjectSettingsPage extends React.Component {
       openDropDown: false,
       userToken: userToken,
       projectName: name ? name : "",
-      projectID: project_id ? project_id : "",
+      projectID: this.props.match.params.projectID,
       projectDescription: description ? description : "",
       error: "",
+      updatingProjectDetails:false,
       nameChecked: false,
       idChecked: false,
       tokenChecked: false,
@@ -78,9 +66,20 @@ class ProjectSettingsPage extends React.Component {
       fetchingProjectMembersError: "",
       projectUnregisteredUsers: [],
       fetchingProjectMembers: true,
-      currentUserIsAdminOrMember: false, 
-      currentUserIsAdminOrOwner: false, 
-      currentUserIsMemberOnly:false
+      invitingMembers: false,
+      invitingMembersError: "",
+      updateMemberError: "",
+      updatingMemberRole: false,
+      removeMemberError: "",
+      removingMember: false,
+      currentUserIsAdminOrMember: false,
+      currentUserIsAdminOrOwner: false,
+      currentUserIsMemberOnly: false,
+      deleteProjectError: "",
+      deletingProject: false,
+      disableProjectError: "",
+      disablingProject: false,
+      openDisableProjectModel: false
     };
 
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
@@ -113,67 +112,103 @@ class ProjectSettingsPage extends React.Component {
     this.showRemoveMemberModal = this.showRemoveMemberModal.bind(this);
     this.closeRemoveMemberModal = this.closeRemoveMemberModal.bind(this);
     this.getProjectMemberz = this.getProjectMemberz.bind(this);
+    this.inviteMember = this.inviteMember.bind(this);
+    this.updateMemberRoles = this.updateMemberRoles.bind(this);
+    this.removeMember = this.removeMember.bind(this);
+    this.updateProjectDetails = this.updateProjectDetails.bind(this);
+    this.deleteThisProject = this.deleteThisProject.bind(this);
+    this.handleDisableProject = this.handleDisableProject.bind(this);
   }
 
   componentDidMount() {
-    const { clearInvitingMembersState } = this.props;
-    clearInvitingMembersState();
-    // const projectID = this.props.match.params.projectID;
-    // getProjectMembers(projectID);
     this.getProjectMemberz();
-    // this.checkMembership();
   }
 
   getProjectMemberz() {
     const projectID = this.props.match.params.projectID;
-    handleGetRequest(`/projects/${projectID}/users`).then((response) => {
-      this.setState({
-        projectUsers: response.data.data.project_users,
-        projectUnregisteredUsers: response.data.data.project_anonymous_users,
-        fetchingProjectMembers: false
+    handleGetRequest(`/projects/${projectID}/users`)
+      .then((response) => {
+        this.setState({
+          projectUsers: response.data.data.project_users,
+          projectUnregisteredUsers: response.data.data.project_anonymous_users,
+          fetchingProjectMembers: false,
+        });
+        this.checkMembership();
       })
-      this.checkMembership();
-    })
       .catch((error) => {
         this.setState({
           fetchingProjectMembersError: "Failed to fetch project members",
-          fetchingProjectMembers: false
-        })
-      })
+          fetchingProjectMembers: false,
+        });
+      });
   }
+
+  inviteMember() {
+    const { email, role } = this.state;
+    this.setState({
+      invitingMembers: true,
+    });
+    const projectID = this.props.match.params.projectID;
+    handlePostRequestWithOutDataObject(
+      { email: email, role: role },
+      `/projects/${projectID}/users`
+    )
+      .then(() => {
+        //page reset also resets loader
+        window.location.href = `/projects/${projectID}/settings`;
+      })
+      .catch((error) => {
+        this.setState({
+          invitingMembersError: "Failed to invite user",
+          invitingMembers: false,
+        });
+      });
+  }
+
+  updateMemberRoles() {
+    const { email, role } = this.state;
+    this.setState({
+      updatingMemberRole: true,
+    });
+    const projectID = this.props.match.params.projectID;
+    handlePatchRequest(`/projects/${projectID}/users`, {
+      email,
+      role,
+    })
+      .then(() => {
+        window.location.href = `/projects/${projectID}/settings`;
+      })
+      .catch((error) => {
+        this.setState({
+          updateMemberError: "Failed to update user",
+          updatingMemberRole: false,
+        });
+      });
+  }
+
+  removeMember(email) {
+    const projectID = this.props.match.params.projectID;
+    const data = { data: email };
+    this.setState({ removingMember: true });
+    handleDeleteRequest(`/projects/${projectID}/users`, data)
+      .then(() => {
+        window.location.href = `/projects/${projectID}/settings`;
+      })
+      .catch(() => {
+        this.setState({
+          removeMemberError: "Failed to remove user",
+          removingMember: false,
+        });
+      });
+  }
+
   componentDidUpdate(prevProps) {
-    const {
-      // getProjectMembers,
-      isDeleted,
-      isSent,
-      isRemoved,
-      isRoleUpdated,
-      clearRemovingMembersState,
-      clearUpdateMemberRoleState,
-    } = this.props;
+    const { isDeleted } = this.props;
 
     if (isDeleted !== prevProps.isDeleted) {
       this.hideDeleteAlert();
     }
-
-    if (isSent !== prevProps.isSent) {
-      clearInvitingMembersState();
-      // getProjectMembers();
-      this.getProjectMemberz();
-      this.hideInviteMenu();
-    }
-
-    if (isRemoved !== prevProps.isRemoved) {
-      clearRemovingMembersState();
-      this.closeRemoveMemberModal();
-    }
-
-    if (isRoleUpdated !== prevProps.isRoleUpdated) {
-      clearUpdateMemberRoleState();
-      this.hideRoleUpdateAlert();
-    }
   }
-
   handleClick = (e) => {
     if (this.state.actionsMenu) {
       return;
@@ -192,9 +227,11 @@ class ProjectSettingsPage extends React.Component {
     this.setState({ email: userEmail });
   }
 
-  showRemoveMemberModal() {
+  showRemoveMemberModal(email) {
     this.setState({
       removeMemberModal: true,
+      removeMemberError: "",
+      email: email,
     });
   }
 
@@ -206,14 +243,12 @@ class ProjectSettingsPage extends React.Component {
 
   removeProjectMember(e) {
     e.preventDefault();
-    const { removeMember, data } = this.props;
+    const { data } = this.props;
     const { email } = this.state;
-    const projectID = this.props.match.params.projectID;
     const emailDetails = {
       email: email,
     };
-    removeMember(emailDetails, projectID);
-
+    this.removeMember(emailDetails);
     if (email === data.email) {
       this.setState({
         isCurrentUserRemoved: true,
@@ -224,34 +259,18 @@ class ProjectSettingsPage extends React.Component {
   handleMemberInvitation(e) {
     e.preventDefault();
     const { email, role } = this.state;
-    const { inviteMembers } = this.props;
-
-    const inviteInfo = {
-      email,
-      role,
-    };
-
     if (email !== "" && role !== "") {
       this.validateEmail(email);
-      const projectID = this.props.match.params.projectID;
-      inviteMembers(inviteInfo, projectID);
+      this.inviteMember();
     }
   }
 
   handleMemberRoleUpdate(e) {
     e.preventDefault();
     const { email, role } = this.state;
-    const { updateMemberRole } = this.props;
-
-    const memberDetails = {
-      email,
-      role,
-    };
-
     if (email !== "" && role !== "") {
       this.validateEmail(email);
-      const projectID = this.props.match.params.projectID;
-      updateMemberRole(memberDetails, projectID);
+      this.updateMemberRoles();
     }
   }
 
@@ -266,32 +285,16 @@ class ProjectSettingsPage extends React.Component {
     const { error, openDeleteAlert } = this.state;
     const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
     const { name } = projectInfo;
-    const {
-      errorMessage,
-      clearUpdateProjectState,
-      clearUpdateMemberRoleState,
-      clearDeleteProjectState,
-      isFailed,
-      message,
-      updateMessage,
-    } = this.props;
+
     this.setState({
       [e.target.name]: e.target.value,
     });
-    if (errorMessage) {
-      clearUpdateProjectState();
-    }
-    if (updateMessage) {
-      clearUpdateMemberRoleState();
-    }
     if (error) {
       this.setState({
         error: "",
       });
     }
-    if (isFailed && message) {
-      clearDeleteProjectState();
-    }
+
     if (e.target.value === name && openDeleteAlert) {
       this.setState({
         disableDelete: false,
@@ -304,7 +307,7 @@ class ProjectSettingsPage extends React.Component {
   }
 
   showInviteMenu() {
-    this.setState({ showInviteModel: true });
+    this.setState({ showInviteModel: true, invitingMembersError: "" });
   }
 
   hideInviteMenu() {
@@ -321,7 +324,6 @@ class ProjectSettingsPage extends React.Component {
       othersBool,
     } = this.state;
     const {
-      updateProject,
       match: {
         params: { projectID },
       },
@@ -395,7 +397,8 @@ class ProjectSettingsPage extends React.Component {
                 organisation: trimedprojectOrganisation,
                 description: trimedprojectDescription,
               };
-              updateProject(projectID, newProject);
+              //updateProject(projectID, newProject);
+              this.updateProjectDetails(projectID, newProject)
             }
           }
         } else {
@@ -425,7 +428,8 @@ class ProjectSettingsPage extends React.Component {
               organisation: trimedprojectOrganisation,
               description: trimedprojectDescription,
             };
-            updateProject(projectID, newProject);
+            //updateProject(projectID, newProject);
+           this.updateProjectDetails(projectID, newProject)
           }
         }
       }
@@ -465,17 +469,49 @@ class ProjectSettingsPage extends React.Component {
   }
 
   handleDeleteProject(e, projectID) {
-    const { deleteProject } = this.props;
+    // const { deleteProject } = this.props;
     e.preventDefault();
-    deleteProject(projectID);
+     this.deleteThisProject(projectID)
+  }
+
+  handleDisableProject(e,disabled) {
+    // /projects/d1e9954c-7a3b-437f-8611-9c0045815afe/disable
+    e.preventDefault();
+    this.setState({
+      disablingProject: true,
+    });
+    const projectID = this.props.match.params.projectID;
+    let apiEndpoint
+    if(disabled){
+      apiEndpoint = `/projects/${projectID}/enable`;
+    }else{
+      apiEndpoint = `/projects/${projectID}/disable`;
+    }
+    handlePostRequestWithOutDataObject(
+      {},
+      apiEndpoint
+    ).then(() => {
+        //reset to projects page to re populate redux
+        window.location.href = `/projects`;
+      })
+      .catch((error) => {
+        this.setState({
+          disableProjectError: "Process failed, please try again.",
+          disablingProject: false,
+        });
+      });
+    
   }
 
   showUpdateAlert() {
     this.setState({ openUpdateAlert: true });
   }
 
-  updateRoleAlert() {
-    this.setState({ openRoleUpdateAlert: true });
+  updateRoleAlert(email) {
+    this.setState({
+      openRoleUpdateAlert: true,
+      email: email,
+    });
   }
 
   showDeleteAlert() {
@@ -502,8 +538,6 @@ class ProjectSettingsPage extends React.Component {
   }
 
   hideDeleteAlert() {
-    const { clearDeleteProjectState } = this.props;
-    clearDeleteProjectState();
     this.setState({ openDeleteAlert: false });
   }
   handleTypeSelectChange(selected) {
@@ -535,17 +569,15 @@ class ProjectSettingsPage extends React.Component {
       this.setState({ currentUserIsAdminOrMember: true });
     }
     //either owner or admin
-    if(
+    if (
       result[0]?.role === "RolesList.owner" ||
       result[0]?.role === "RolesList.admin"
-    ){
+    ) {
       this.setState({ currentUserIsAdminOrOwner: true });
-    } 
-    if(
-      result[0]?.role === "RolesList.member" 
-    ){
+    }
+    if (result[0]?.role === "RolesList.member") {
       this.setState({ currentUserIsMemberOnly: true });
-    } 
+    }
   }
 
   updateRoleValue(string) {
@@ -554,53 +586,57 @@ class ProjectSettingsPage extends React.Component {
   }
 
   renderRedirect = () => {
-    const {
-      isDeleted,
-      isUpdated,
-      isSent,
-      isRemoved,
-      isRoleUpdated,
-      match: {
-        params: { projectID },
-      },
-    } = this.props;
+    const { isDeleted, isUpdated } = this.props;
     const { isCurrentUserRemoved } = this.state;
     if (isDeleted || isUpdated || isCurrentUserRemoved) {
       return <Redirect to={`/projects`} noThrow />;
     }
-
-    if (isSent || isRemoved || isRoleUpdated) {
-      window.location.href = `/projects/${projectID}/settings`;
-    }
   };
+  updateProjectDetails(projectID, data) {
+    this.setState({
+      updatingProjectDetails: true,
+    });
+    handlePatchRequest(`/projects/${projectID}`, 
+    data)
+      .then(() => {
+        window.location.href = `/projects`;
+      })
+      .catch((error) => {
+        this.setState({
+          error: "Failed to update project",
+          updatingProjectDetails: false,
+        });
+      });
+  }
+
+  deleteThisProject(projectID){
+    this.setState({ deletingProject: true, deleteProjectError:"" });
+    handleDeleteRequest(`/projects/${projectID}`,{})
+      .then(() => {
+        window.location.href = `/projects`;
+      })
+      .catch(() => {
+        this.setState({
+          deleteProjectError: "Failed to delete this project",
+          deletingProject: false,
+        })
+      });
+  }
 
   render() {
     const {
       match: { params },
-      isDeleting,
-      location,
       isDeleted,
-      isUpdating,
-      message,
-      isFailed,
       isUpdated,
       errorMessage,
-      isSending,
-      isSent,
-      isRemoved,
-      isRemoving,
-      isRoleUpdated,
-      isRoleUpdating,
-      updateMessage,
       data,
     } = this.props;
-
 
     const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
 
     let currentUserEmail = data.email;
 
-    const { name, description } = projectInfo;
+    const { name,disabled } = projectInfo;
 
     const {
       openUpdateAlert,
@@ -630,7 +666,19 @@ class ProjectSettingsPage extends React.Component {
       projectUnregisteredUsers,
       currentUserIsAdminOrOwner,
       currentUserIsMemberOnly,
-      fetchingProjectMembers
+      fetchingProjectMembers,
+      invitingMembers,
+      invitingMembersError,
+      updateMemberError,
+      updatingMemberRole,
+      removingMember,
+      removeMemberError,
+      updatingProjectDetails,
+      deletingProject,
+      deleteProjectError,
+      disableProjectError,
+      disablingProject,
+      openDisableProjectModel
     } = this.state;
     const types = retrieveProjectTypes();
     const roles = retrieveMembershipRoles();
@@ -638,230 +686,180 @@ class ProjectSettingsPage extends React.Component {
     const { projectID } = params;
 
     return (
-      <div className={styles.Page}>
-        {isUpdated || isDeleted || isSent || isRemoved || isRoleUpdated
-          ? this.renderRedirect()
-          : null}
-        <div className={styles.TopBarSection}>
-          <Header />
-        </div>
-        <div className={styles.MainSection}>
-          <div className={styles.SideBarSection}>
-            <SideBar
-              name={name}
-              params={params}
-              description={description}
-              pageRoute={location.pathname}
-              allMetricsLink={`/projects/${projectID}/metrics`}
-              cpuLink={`/projects/${projectID}/cpu/`}
-              memoryLink={`/projects/${projectID}/memory/`}
-              databaseLink={`/projects/${projectID}/databases`}
-              networkLink={`/projects/${projectID}/network/`}
-            />
-          </div>
-          <div className={styles.MainContentSection}>
-            <div className={styles.InformationBarSection}>
-              <InformationBar header="Settings" />
+      <DashboardLayout name={name} header="Project Settings" short>
+        {isUpdated || isDeleted ? this.renderRedirect() : null}
+        <div className="SectionTitle">Project Details</div>
+        <div className={styles.ProjectInstructions}>
+          <div>
+            <div className="SectionSubTitle">Project ID</div>
+            <div className={styles.ProjectButtonRow}>
+              <div className={styles.SettingsSectionInfo}>
+                <div>{projectID}</div>
+              </div>
+              <div className={styles.CopyIcon}>
+                <CopyText onClick={this.projectIDOnClick} />
+                {idChecked ? <Checked /> : null}
+              </div>
             </div>
-            <div className={styles.ContentSection}>
-              <div className={`${styles.ProjectSections} SmallContainer`}>
-                <div className={styles.ProjectSectionTitle}>
-                  Project Details
+          </div>
+          <div>
+            <div className="SectionSubTitle">Project Name</div>
+            <div className={styles.ProjectButtonRow}>
+              <div className={styles.SettingsSectionInfo}>
+                <div>{projectName}</div>
+              </div>
+              <div className={styles.CopyIcon}>
+                <CopyText onClick={this.nameOnClick} />
+                {nameChecked ? <Checked /> : null}
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="SectionSubTitle">Project Description</div>
+            <div className={styles.ProjectButtonRow}>
+              <div className={styles.SettingsSectionInfo}>
+                <div>{projectDescription}</div>
+              </div>
+              <div className={styles.CopyIcon}>
+                <CopyText onClick={this.projectDescriptionOnClick} />
+                {descriptionChecked ? <Checked /> : null}
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="SectionSubTitle">Project Status</div>
+            <div className={styles.ProjectButtonRow}>
+              <div className={styles.SettingsSectionInfo}>
+                <div>{disabled === true ? <span style={{color:'red'}}>Disabled</span>:"Enabled"}</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="SectionSubTitle">User Token</div>
+            <div className={styles.ProjectButtonRow}>
+              <div className={styles.SettingsSectionInfo}>
+                <div className={styles.TokenItem}>{userToken}</div>
+              </div>
+              <div className={styles.CopyIcon}>
+                <CopyText onClick={this.userTokenOnClick} />
+                {tokenChecked ? <Checked /> : null}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="SectionTitle">Membership</div>
+        <div className={styles.ProjectInstructions}>
+          {fetchingProjectMembers ? (
+            <Spinner />
+          ) : (
+            <>
+              <div className={styles.MembershipHeader}>
+                <div className={styles.MemberSection}>
+                  <div className={styles.SettingsSectionInfoHeader}>
+                    {projectUsers?.length === 1 ? (
+                      <div className="SectionSubTitle">
+                        Project has 1 Team Member
+                      </div>
+                    ) : (
+                      <div>Project has {projectUsers?.length} Team Members</div>
+                    )}
+                  </div>
+                  <div className="SubText">
+                    Members that have accounts on crane cloud can perform
+                    different operations on the project depending on their
+                    permission.
+                  </div>
                 </div>
-                <div className={styles.ProjectInstructions}>
-                  <div className={styles.ProjectButtonRow}>
-                    <div className={styles.SettingsSectionInfo}>
-                      <div className={styles.SettingsSectionInfoHeader}>
-                        Project ID
-                      </div>
-                      <div>{projectID}</div>
-                    </div>
-                    <div className={styles.DBIcon}>
-                      <CopyText onClick={this.projectIDOnClick} />
-                      {idChecked ? <Checked /> : null}
-                    </div>
-                  </div>
-
-                  <div className={styles.ProjectButtonRow}>
-                    <div className={styles.SettingsSectionInfo}>
-                      <div className={styles.SettingsSectionInfoHeader}>
-                        Project Name
-                      </div>
-                      <div>{projectName}</div>
-                    </div>
-                    <div className={styles.DBIcon}>
-                      <CopyText onClick={this.nameOnClick} />
-                      {nameChecked ? <Checked /> : null}
-                    </div>
-                  </div>
-
-                  <div className={styles.ProjectButtonRow}>
-                    <div className={styles.SettingsSectionInfo}>
-                      <div className={styles.SettingsSectionInfoHeader}>
-                        Project Description
-                      </div>
-                      <div>{projectDescription}</div>
-                    </div>
-                    <div className={styles.DBIcon}>
-                      <CopyText onClick={this.projectDescriptionOnClick} />
-                      {descriptionChecked ? <Checked /> : null}
-                    </div>
-                  </div>
-
-                  <div className={styles.ProjectButtonRow}>
-                    <div className={styles.SettingsSectionInfo}>
-                      <div className={styles.SettingsSectionInfoHeader}>
-                        User Token
-                      </div>
-                      <div className={styles.TokenItem}>{userToken}</div>
-                    </div>
-                    <div className={styles.DBIcon}>
-                      <CopyText onClick={this.userTokenOnClick} />
-                      {tokenChecked ? <Checked /> : null}
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.ProjectSectionTitle}>Membership</div>
-                <div className={styles.ProjectInstructions}>
-                 {fetchingProjectMembers ? 
-                 <Spinner/>
-                 : <>
-                  <div className={styles.MembershipHeader}>
-                    <div className={styles.MemberSection}>
-                      <div className={styles.SettingsSectionInfoHeader}>
-                        {projectUsers?.length === 1 ? (
-                          <div>Project has 1 Team Member</div>
-                        ) : (
-                          <div>
-                            Project has {projectUsers?.length} Team Members
+                {currentUserIsAdminOrOwner && (
+                  <PrimaryButton
+                    // className={styles.SettingsButton}
+                    color="primary-outline"
+                    onClick={() => {
+                      this.showInviteMenu();
+                    }}
+                  >
+                    Invite member
+                  </PrimaryButton>
+                )}
+              </div>
+              <div className={styles.MemberTable}>
+                <div className={styles.MemberBody}>
+                  {projectUsers?.map((entry, index) => (
+                    <div className={styles.MemberTableRow} key={index}>
+                      <div className={styles.MemberInfo}>
+                        <Avatar
+                          name={entry.user.name}
+                          className={styles.MemberAvatar}
+                        />
+                        <div className={styles.MemberNameEmail}>
+                          <div className={styles.UserHeader}>
+                            {entry.user.name}
                           </div>
-                        )}
-                      </div>
-                      <div className={styles.MemberDescription}>
-                        Members that have accounts on crane cloud can perform
-                        different operations on the project depending on their
-                        permission.
-                      </div>
-                    </div>
-                    <SettingsButton
-                      label="Invite member"
-                      className={styles.SettingsButton}
-                      onClick={() => {
-                        this.showInviteMenu();
-                      }}
-                    />
-                  </div>
-                  <div className={styles.MemberTable}>
-                    <div className={`${styles.MemberTableRow}`}>
-                      <div className={styles.MemberTableHead}>User</div>
-                      <div className={styles.MemberTableHead}>Role</div>
-                      <div className={styles.MemberTableHead}>Invitation Status</div>
-                      <div className={styles.MemberTableHead}>Options</div>
-                    </div>
-                    <div className={styles.MemberBody}>
-                      {projectUsers?.map((entry, index) => (
-                        <div className={styles.MemberTableRow} key={index}>
-                          <div className={styles.MemberTableCell}>
-                            <div className={styles.NameSecting}>
-                              <Avatar
-                                name={entry.user.name}
-                                className={styles.MemberAvatar}
-                              />
-                              <div className={styles.MemberNameEmail}>
-                                <div className={styles.Wrap}>{entry.user.name}</div>
-                                <div className={styles.Wrap}>{entry.user.email}</div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className={styles.MemberTableCell}>
-                            {this.updateRoleValue(entry.role.split("."))}
-                          </div>
-                          <div className={styles.MemberTableCell}>
-                            {entry.role !=="RolesList.owner" && <>{
-                            entry.accepted_collaboration_invite===false
-                            ?
-                            "Pending": "Accepted"}
-                            </>}
-                          </div>
-                          <div className={styles.MemberTableCell}>
-                            <div
-                              onClick={(e) => {
-                                this.showMenu(entry.user.email);
-                                this.handleClick(e);
-                              }}
-                            >
-                               {/* better represented nested */}
-                              {entry.role !=="RolesList.owner" &&
-                               <>
-                                {entry.user.email === currentUserEmail?
-                                 <MoreIcon className={styles.MoreIcon} />:
-                                 (entry.user.email !== currentUserEmail && currentUserIsMemberOnly === false)&&
-                                 <MoreIcon className={styles.MoreIcon} />
-                                }
-                               </>
-                              }
-                              {/* options to be determined per user*/}
-                              {actionsMenu && entry.user.email === email && (
-                                <>
-                                  <div className={styles.BelowHeader}>
-                                    <div className={styles.contextMenu}>
-                                      {/* only if role current user is admin or owner */}
-                                      { (entry.user.email !== currentUserEmail &&
-                                        currentUserIsAdminOrOwner === true
-                                      ) ? (
-                                        <>
-                                          <div
-                                            className={styles.DropDownLink}
-                                            role="presentation"
-                                            onClick={this.updateRoleAlert}
-                                          >
-                                            Change role
-                                          </div>
-                                          <div
-                                            className={styles.DropDownLink}
-                                            role="presentation"
-                                            onClick={this.showRemoveMemberModal}
-                                          >
-                                            Remove member
-                                          </div>
-                                        </>
-                                      ) : (
-                                        <>
-                                          {entry.user.email ===
-                                            currentUserEmail && (
-                                              <>
-                                                <div
-                                                  className={styles.DropDownLink}
-                                                  role="presentation"
-                                                  onClick={
-                                                    this.showRemoveMemberModal
-                                                  }
-                                                >
-                                                  Remove yourself
-                                                </div>
-                                              </>
-                                            )}
-                                        </>
-                                      )}
-                                    </div>
-                                  </div>
-                                </>
-                              )}
-                            </div>
-                          </div>
+                          <div className={styles.Wrap}>{entry.user.email}</div>
                         </div>
-                      ))}
+                      </div>
+                      {entry.role !== "RolesList.owner" &&
+                        entry.accepted_collaboration_invite === false && (
+                          <div className="SubText">Pending Invitation</div>
+                        )}
+                      <div className={styles.MemberOptions}>
+                        <div
+                          className={styles.MemberRole}
+                          onClick={() => {
+                            !currentUserIsMemberOnly &&
+                              this.updateRoleAlert(entry.user.email);
+                          }}
+                          title="Change Role"
+                        >
+                          <span>Role:</span>
+                          {this.updateRoleValue(entry.role.split("."))}
+                        </div>
+                        <div>
+                          {entry.user.email === currentUserEmail
+                            ? entry.role !== "RolesList.owner" && (
+                                <PrimaryButton
+                                  small
+                                  noPadding
+                                  transparent
+                                  onClick={() => {
+                                    this.showRemoveMemberModal(
+                                      entry.user.email
+                                    );
+                                  }}
+                                >
+                                  Leave
+                                </PrimaryButton>
+                              )
+                            : currentUserIsAdminOrOwner && (
+                                <PrimaryButton
+                                  small
+                                  noPadding
+                                  transparent
+                                  onClick={() => {
+                                    this.showRemoveMemberModal(
+                                      entry.user.email
+                                    );
+                                  }}
+                                >
+                                  Remove
+                                </PrimaryButton>
+                              )}
+                        </div>
+                      </div>
                     </div>
+                  ))}
+                </div>
+              </div>
+              {projectUnregisteredUsers.length > 0 && (
+                <div className={styles.LowerSection}>
+                  <div className={styles.SettingsSectionInfoHeader}>
+                    Unregistered Members
                   </div>
-                  {projectUnregisteredUsers.length > 0 && <div className={styles.LowerSection}>
-                   <div className={styles.SettingsSectionInfoHeader}>
-                      Unregistered Members
-                    </div>
-                    <div className={styles.MemberDescription}>
-                      Members invited to this project by email but have no crane cloud accounts.
-                    </div>
-                    <div className={`${styles.MemberTable}`}>
+                  <div className={styles.MemberDescription}>
+                    Members invited to this project by email but have no crane
+                    cloud accounts.
+                  </div>
+                  <div className={`${styles.MemberTable}`}>
                     <div className={`${styles.MemberTableRowUnregistered}`}>
                       <div className={styles.MemberTableHead}>User</div>
                       <div className={styles.MemberTableHead}>Role</div>
@@ -869,7 +867,10 @@ class ProjectSettingsPage extends React.Component {
                     </div>
                     <div className={styles.MemberBody}>
                       {projectUnregisteredUsers?.map((entry, index) => (
-                        <div className={styles.MemberTableRowUnregistered} key={index}>
+                        <div
+                          className={styles.MemberTableRowUnregistered}
+                          key={index}
+                        >
                           <div className={styles.MemberTableCell}>
                             <div className={styles.NameSecting}>
                               <Avatar
@@ -877,7 +878,6 @@ class ProjectSettingsPage extends React.Component {
                                 className={styles.MemberAvatar}
                               />
                               <div className={styles.MemberNameEmail}>
-
                                 <div className={styles.Wrap}>{entry.email}</div>
                               </div>
                             </div>
@@ -902,20 +902,16 @@ class ProjectSettingsPage extends React.Component {
                                       <div
                                         className={styles.DropDownLink}
                                         role="presentation"
-                                        onClick={
-                                          () => {}
-                                        }
+                                        onClick={() => {}}
                                       >
-                                       Remove Member
+                                        Remove Member
                                       </div>
                                       <div
                                         className={styles.DropDownLink}
                                         role="presentation"
-                                        onClick={
-                                          () => {}
-                                        }
+                                        onClick={() => {}}
                                       >
-                                       Resend Invite
+                                        Resend Invite
                                       </div>
                                     </div>
                                   </div>
@@ -926,480 +922,459 @@ class ProjectSettingsPage extends React.Component {
                         </div>
                       ))}
                     </div>
-                    </div>
-                  </div>}
-                    </>}
+                  </div>
                 </div>
-                {openRoleUpdateAlert && (
-                  <div className={styles.ProjectDeleteModel}>
-                    <Modal
-                      showModal={openRoleUpdateAlert}
-                      onClickAway={this.hideRoleUpdateAlert}
+              )}
+            </>
+          )}
+        </div>
+        {openRoleUpdateAlert && (
+          <div className={styles.ProjectDeleteModel}>
+            <Modal
+              showModal={openRoleUpdateAlert}
+              onClickAway={this.hideRoleUpdateAlert}
+            >
+              <div>
+                <div className={styles.ModelHeader}>Change Member Role</div>
+                <div className={styles.UpdateForm}>
+                  <div className={styles.UpdateInputSection}>
+                    <div className={styles.DeleteDescription}>
+                      Search member (by email)
+                    </div>
+                    <BlackInputText
+                      placeholder="Enter email here"
+                      name="email"
+                      value={email}
+                      // should not be editable
+                      // onChange={(e) => {
+                      //   this.handleChange(e);
+                      // }}
+                    />
+                  </div>
+                  <div className={styles.UpdateInputSection}>
+                    <div className={styles.DeleteDescription}>
+                      Member Role (in connection with user permission)
+                    </div>
+                    <Select
+                      required
+                      placeholder={role ? role : "Choose membership role"}
+                      options={roles}
+                      onChange={this.handleInvitationRole}
+                    />
+                  </div>
+                  {updateMemberError && (
+                    <Feedback message={updateMemberError} type="error" />
+                  )}
+                  <div className={styles.SendInvitationButton}>
+                    <PrimaryButton
+                      onClick={this.handleMemberRoleUpdate}
+                      color="primary"
                     >
-                      <div>
-                        <div className={styles.ModelHeader}>
-                          Change Member Role
-                        </div>
-                        <div className={styles.UpdateForm}>
-                          <div className={styles.UpdateInputSection}>
-                            <div className={styles.DeleteDescription}>
-                              Search member (by email)
-                            </div>
-                            <BlackInputText
-                              placeholder="Enter email here"
-                              name="email"
-                              value={email}
-                              onChange={(e) => {
-                                this.handleChange(e);
-                              }}
-                            />
-                          </div>
-                          <div className={styles.UpdateInputSection}>
-                            <div className={styles.DeleteDescription}>
-                              Member Role (in connection with user permission)
-                            </div>
-                            <Select
-                              required
-                              placeholder={
-                                role ? role : "Choose membership role"
-                              }
-                              options={roles}
-                              onChange={this.handleInvitationRole}
-                            />
-                          </div>
-                          {updateMessage !== "" && message && (
-                            <Feedback message={message} type="error" />
-                          )}
-                          <div className={styles.SendInvitationButton}>
-                            <PrimaryButton
-                              label={
-                                isRoleUpdating ? <Spinner /> : "Update Role"
-                              }
-                              className={styles.BlueBtn}
-                              onClick={this.handleMemberRoleUpdate}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </Modal>
+                      {updatingMemberRole ? <Spinner /> : "Update Role"}
+                    </PrimaryButton>
                   </div>
-                )}
-
-                {currentUserIsAdminOrMember === false ? (
-                  <>
-                    <div className={styles.ProjectSectionTitle}>
-                      Manage project
-                    </div>
-                    <div className={styles.ProjectInstructions}>
-                      <div className={styles.ProjectButtonRow}>
-                        <div className={styles.SettingsSectionInfo}>
-                          <div className={styles.SettingsSectionInfoHeader}>
-                            Update project
-                          </div>
-                          <div>Modify the project name and description</div>
-                        </div>
-                        <div className={styles.SectionButtons}>
-                          <SettingsButton
-                            label="Update"
-                            className={styles.SettingsButtonUpdate}
-                            onClick={this.showUpdateAlert}
-                          />
-                        </div>
-                      </div>
-                      <div className={styles.ProjectButtonRow}>
-                        <div className={styles.SettingsSectionInfo}>
-                          <div className={styles.SettingsSectionInfoHeader}>
-                            Delete project
-                          </div>
-                          <div>
-                            Take down your entire project, delete all apps under
-                            it.
-                          </div>
-                        </div>
-                        <div className={styles.SectionButtons}>
-                          <SettingsButton
-                            label="Delete"
-                            className={styles.DeleteBtn}
-                            onClick={this.showDeleteAlert}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                ) : null}
+                </div>
               </div>
-
-              {openUpdateAlert && (
-                <div className={styles.ProjectDeleteModel}>
-                  <Modal
-                    showModal={openUpdateAlert}
-                    onClickAway={this.hideUpdateAlert}
-                  >
+            </Modal>
+          </div>
+        )}
+        {currentUserIsAdminOrMember === false ? (
+          <>
+            <div className="SectionTitle">Danger Zone</div>
+            <div className={styles.ProjectInstructions}>
+              <div className={styles.MemberBody}>
+                <div className={styles.MemberTableRow}>
+                  <div className={styles.SettingsSectionInfo}>
+                    <div className="SubTitle">Update project</div>
+                    <div>Modify the project name and description</div>
+                  </div>
+                  <div className={styles.SectionButtons}>
+                    <PrimaryButton
+                      onClick={this.showUpdateAlert}
+                      small
+                      color="primary"
+                    >
+                      Update
+                    </PrimaryButton>
+                  </div>
+                </div>
+                <div className={styles.MemberTableRow}>
+                  <div className={styles.SettingsSectionInfo}>
+                    <div className="SubTitle">{disabled ? "Enable" :"Disable"} project</div>
                     <div>
-                      <div
-                        onSubmit={(e) => {
-                          this.handleSubmit();
-                          e.preventDefault();
-                        }}
-                      >
-                        <div className={styles.UpdateForm}>
-                          <div className={styles.UpdateInputSection}>
-                            <div className={styles.DeleteDescription}>
-                              Project name
-                            </div>
-                            <BlackInputText
-                              placeholder="Project Name"
-                              name="projectName"
-                              value={projectName}
-                              onChange={(e) => {
-                                this.handleChange(e);
-                              }}
-                            />
-                          </div>
-                          <div className={styles.UpdateInputSection}>
-                            <div className={styles.DeleteDescription}>
-                              Organisation
-                            </div>
-                            <BlackInputText
-                              placeholder="Organisation"
-                              name="projectOrganisation"
-                              value={projectOrganisation}
-                              onChange={(e) => {
-                                this.handleChange(e);
-                              }}
-                            />
-                          </div>
-                          <div className={styles.UpdateInputSection}>
-                            <div className={styles.DeleteDescription}>
-                              Project type
-                            </div>
-                            <Select
-                              required
-                              placeholder={
-                                projectType
-                                  ? projectType
-                                  : "Update project type"
-                              }
-                              options={types}
-                              onChange={this.handleTypeSelectChange}
-                            />
-                            {othersBool && (
-                              <BlackInputText
-                                required
-                                placeholder="Type of project"
-                                name="otherType"
-                                value={otherType}
-                                onChange={(e) => {
-                                  this.handleChange(e);
-                                }}
-                              />
-                            )}
-                          </div>
-                          <div className={styles.UpdateInputSection}>
-                            <div className={styles.DeleteDescription}>
-                              Project description
-                            </div>
-                            <TextArea
-                              placeholder="Description"
-                              name="projectDescription"
-                              style={styles.TextArea}
-                              value={projectDescription}
-                              onChange={(e) => {
-                                this.handleChange(e);
-                              }}
-                            />
-                          </div>
-                          {(errorMessage || error) && (
-                            <Feedback
-                              type="error"
-                              message={
-                                errorMessage
-                                  ? "Failed to update Project"
-                                  : error
-                              }
-                            />
-                          )}
-                          <div className={styles.UpdateProjectModelButtons}>
-                            <PrimaryButton
-                              label="cancel"
-                              className="CancelBtn"
-                              onClick={this.hideUpdateAlert}
-                            />
-                            <PrimaryButton
-                              label={
-                                isUpdating ? <Spinner /> : "update project"
-                              }
-                              onClick={this.handleSubmit}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Modal>
-                </div>
-              )}
-              {showInviteModel === true && (
-                <div className={styles.ProjectDeleteModel}>
-                  <Modal
-                    showModal={showInviteModel}
-                    onClickAway={this.hideInviteMenu}
-                  >
-                    <div>
-                      <div className={styles.ModelHeader}>Invite Member </div>
-                      <div className={styles.UpdateForm}>
-                        <div className={styles.UpdateInputSection}>
-                          <div className={styles.DeleteDescription}>
-                            Search member (by email)
-                          </div>
-                          <BlackInputText
-                            placeholder="Enter email here"
-                            name="email"
-                            value={email}
-                            onChange={(e) => {
-                              this.handleChange(e);
-                            }}
-                          />
-                        </div>
-                        <div className={styles.UpdateInputSection}>
-                          <div className={styles.DeleteDescription}>
-                            Member Role (in connection with user permission)
-                          </div>
-                          <Select
-                            required
-                            placeholder={role ? role : "Choose membership role"}
-                            options={roles}
-                            onChange={this.handleInvitationRole}
-                          />
-                        </div>
-                        {(errorMessage || error) && (
-                          <Feedback
-                            type="error"
-                            message={
-                              errorMessage ? "Failed to send invitation" : error
-                            }
-                          />
-                        )}
-                        <div className={styles.SendInvitationButton}>
-                          <PrimaryButton
-                            label={isSending ? <Spinner /> : "Send Invitation"}
-                            className={styles.BlueBtn}
-                            onClick={this.handleMemberInvitation}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </Modal>
-                </div>
-              )}
-              {openDeleteAlert && (
-                <div className={styles.ProjectDeleteModel}>
-                  <Modal
-                    showModal={openDeleteAlert}
-                    onClickAway={this.hideDeleteAlert}
-                  >
-                    <div className={styles.DeleteProjectModel}>
-                      <div className={styles.DeleteProjectModalUpperSection}>
-                        <div className={styles.WarningContainer}>
-                          <div className={styles.DeleteDescription}>
-                            Are you sure you want to delete&nbsp;
-                            <span>{name}</span>
-                            &nbsp;?
-                          </div>
-                          <div className={styles.DeleteSubDescription}>
-                            This will permanently delete the project and all its
-                            resources.
-                            <br />
-                            <br />
-                            Please confirm by typing &nbsp;
-                            <b className={styles.DeleteWarning}>{name}</b>{" "}
-                            &nbsp; below.
-                          </div>
-                          <div className={styles.InnerModalDescription}>
-                            <BlackInputText
-                              required
-                              placeholder={name}
-                              name="Confirmprojectname"
-                              value={Confirmprojectname}
-                              onChange={(e) => {
-                                this.handleChange(e);
-                              }}
-                            />
-                            <DeleteWarning textAlignment="Left" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className={styles.DeleteProjectModalLowerSection}>
-                        <div className={styles.DeleteProjectModelButtons}>
-                          <PrimaryButton
-                            label="cancel"
-                            className="CancelBtn"
-                            onClick={this.hideDeleteAlert}
-                          />
-                          <PrimaryButton
-                            label={isDeleting ? <Spinner /> : "Delete"}
-                            className={
-                              disableDelete
-                                ? styles.InactiveDelete
-                                : styles.DeleteBtn
-                            }
-                            disable={disableDelete}
-                            onClick={(e) =>
-                              this.handleDeleteProject(e, params.projectID)
-                            }
-                          />
-                        </div>
-
-                        {isFailed && message && (
-                          <Feedback message={message} type="error" />
-                        )}
-                      </div>
-                    </div>
-                  </Modal>
-                </div>
-              )}
-
-              <Modal
-                showModal={removeMemberModal}
-                onClickAway={this.closeRemoveMemberModal}
-              >
-                <div className={styles.DeleteProjectModel}>
-                  <div className={styles.DeleteProjectModalUpperSection}>
-                    <div className={styles.WarningContainer}>
-                      <div className={styles.DeleteDescription}>
-                        {currentUserEmail === email ? (
-                          <>Are you sure you want to remove yourself?</>
-                        ) : (
-                          <>Are you sure you want to remove this member?</>
-                        )}
-                      </div>
+                      {disabled?"Allow access to project resources and enable billing":
+                      "Prevent project from being billed by blocking access to it's resources."}
                     </div>
                   </div>
-                  <div className={styles.DeleteProjectModalLowerSection}>
-                    <div className={styles.DeleteProjectModelButtons}>
+                  <div className={styles.SectionButtons}>
+                    <PrimaryButton
+                      onClick={()=>{this.setState({openDisableProjectModel:true})}}
+                      small
+                      color={disabled?"primary":"red"}
+                    >
+                    {disabled?"Enable":"Disable"}
+                    </PrimaryButton>
+                  </div>
+                </div>
+                <div className={styles.MemberTableRow}>
+                  <div className={styles.SettingsSectionInfo}>
+                    <div className="SubTitle">Delete project</div>
+                    <div>
+                      Take down your entire project, delete all apps under it.
+                    </div>
+                  </div>
+                  <div className={styles.SectionButtons}>
+                    <PrimaryButton
+                      onClick={this.showDeleteAlert}
+                      small
+                      color="red"
+                    >
+                      Delete
+                    </PrimaryButton>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : null}
+
+        {openUpdateAlert && (
+          <div className={styles.ProjectDeleteModel}>
+            <Modal
+              showModal={openUpdateAlert}
+              onClickAway={this.hideUpdateAlert}
+            >
+              <div>
+                <div
+                  onSubmit={(e) => {
+                    this.handleSubmit();
+                    e.preventDefault();
+                  }}
+                >
+                  <div className={styles.UpdateForm}>
+                    <div className={styles.UpdateInputSection}>
+                      <div className={styles.DeleteDescription}>
+                        Project name
+                      </div>
+                      <BlackInputText
+                        placeholder="Project Name"
+                        name="projectName"
+                        value={projectName}
+                        onChange={(e) => {
+                          this.handleChange(e);
+                        }}
+                      />
+                    </div>
+                    <div className={styles.UpdateInputSection}>
+                      <div className={styles.DeleteDescription}>
+                        Organisation
+                      </div>
+                      <BlackInputText
+                        placeholder="Organisation"
+                        name="projectOrganisation"
+                        value={projectOrganisation}
+                        onChange={(e) => {
+                          this.handleChange(e);
+                        }}
+                      />
+                    </div>
+                    <div className={styles.UpdateInputSection}>
+                      <div className={styles.DeleteDescription}>
+                        Project type
+                      </div>
+                      <Select
+                        required
+                        placeholder={
+                          projectType ? projectType : "Update project type"
+                        }
+                        options={types}
+                        onChange={this.handleTypeSelectChange}
+                      />
+                      {othersBool && (
+                        <BlackInputText
+                          required
+                          placeholder="Type of project"
+                          name="otherType"
+                          value={otherType}
+                          onChange={(e) => {
+                            this.handleChange(e);
+                          }}
+                        />
+                      )}
+                    </div>
+                    <div className={styles.UpdateInputSection}>
+                      <div className={styles.DeleteDescription}>
+                        Project description
+                      </div>
+                      <TextArea
+                        placeholder="Description"
+                        name="projectDescription"
+                        style={styles.TextArea}
+                        value={projectDescription}
+                        onChange={(e) => {
+                          this.handleChange(e);
+                        }}
+                      />
+                    </div>
+                    {(errorMessage || error) && (
+                      <Feedback
+                        type="error"
+                        message={
+                          errorMessage ? "Failed to update Project" : error
+                        }
+                      />
+                    )}
+                    <div className={styles.UpdateProjectModelButtons}>
                       <PrimaryButton
-                        type="button"
                         className="CancelBtn"
-                        label="Cancel"
-                        onClick={this.closeRemoveMemberModal}
+                        onClick={this.hideUpdateAlert}
                       >
                         Cancel
                       </PrimaryButton>
                       <PrimaryButton
-                        type="button"
-                        label={isRemoving ? <Spinner /> : "Confirm"}
-                        onClick={(e) => this.removeProjectMember(e)}
-                      />
+                        onClick={this.handleSubmit}
+                        color="primary"
+                      >
+                        {updatingProjectDetails ? <Spinner /> : "update project"}
+                      </PrimaryButton>
                     </div>
                   </div>
                 </div>
-              </Modal>
-            </div>
+              </div>
+            </Modal>
           </div>
-        </div>
-      </div>
+        )}
+        {showInviteModel === true && (
+          <div className={styles.ProjectDeleteModel}>
+            <Modal
+              showModal={showInviteModel}
+              onClickAway={this.hideInviteMenu}
+            >
+              <div>
+                <div className={styles.ModelHeader}>Invite Member </div>
+                <div className={styles.UpdateForm}>
+                  <div className={styles.UpdateInputSection}>
+                    <div className={styles.DeleteDescription}>
+                      Search member (by email)
+                    </div>
+                    <BlackInputText
+                      placeholder="Enter email here"
+                      name="email"
+                      value={email}
+                      onChange={(e) => {
+                        this.handleChange(e);
+                      }}
+                    />
+                  </div>
+                  <div className={styles.UpdateInputSection}>
+                    <div className={styles.DeleteDescription}>
+                      Member Role (in connection with user permission)
+                    </div>
+                    <Select
+                      required
+                      placeholder={role ? role : "Choose membership role"}
+                      options={roles}
+                      onChange={this.handleInvitationRole}
+                    />
+                  </div>
+                  {invitingMembersError && (
+                    <Feedback type="error" message={invitingMembersError} />
+                  )}
+                  <div className={styles.SendInvitationButton}>
+                    <PrimaryButton
+                      color="primary"
+                      onClick={this.handleMemberInvitation}
+                    >
+                      {invitingMembers ? <Spinner /> : "Send Invitation"}
+                    </PrimaryButton>
+                  </div>
+                </div>
+              </div>
+            </Modal>
+          </div>
+        )}
+        {openDeleteAlert && (
+          <div className={styles.ProjectDeleteModel}>
+            <Modal
+              showModal={openDeleteAlert}
+              onClickAway={this.hideDeleteAlert}
+            >
+              <div className={styles.DeleteProjectModel}>
+                <div className={styles.DeleteProjectModalUpperSection}>
+                  <div className={styles.WarningContainer}>
+                    <div className={styles.DeleteDescription}>
+                      Are you sure you want to delete&nbsp;
+                      <span>{name}</span>
+                      &nbsp;?
+                    </div>
+                    <div className={styles.DeleteSubDescription}>
+                      This will permanently delete the project and all its
+                      resources.
+                      <br />
+                      <br />
+                      Please confirm by typing &nbsp;
+                      <b className={styles.DeleteWarning}>{name}</b> &nbsp;
+                      below.
+                    </div>
+                    <div className={styles.InnerModalDescription}>
+                      <BlackInputText
+                        required
+                        placeholder={name}
+                        name="Confirmprojectname"
+                        value={Confirmprojectname}
+                        onChange={(e) => {
+                          this.handleChange(e);
+                        }}
+                      />
+                      <DeleteWarning textAlignment="Left" />
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.DeleteProjectModalLowerSection}>
+                  <div className={styles.DeleteProjectModelButtons}>
+                    <PrimaryButton
+                      className="CancelBtn"
+                      onClick={this.hideDeleteAlert}
+                    >
+                      Cancel
+                    </PrimaryButton>
+                    <button
+                      className={
+                        disableDelete ? styles.InactiveDelete : styles.DeleteBtn
+                      }
+                      disabled={disableDelete}
+                      onClick={(e) =>
+                        this.handleDeleteProject(e, params.projectID)
+                      }
+                    >
+                      {deletingProject ? <Spinner /> : "Delete"}
+                    </button>
+                  </div>
+
+                  {deleteProjectError && (
+                    <Feedback message={deleteProjectError} type="error" />
+                  )}
+                </div>
+              </div>
+            </Modal>
+          </div>
+        )}
+        {openDisableProjectModel && (
+          <div className={styles.ProjectDeleteModel}>
+            <Modal
+              showModal={openDisableProjectModel}
+              onClickAway={()=>{this.setState({openDisableProjectModel:false})}}
+            >
+              <div className={styles.DeleteProjectModel}>
+                <div className={styles.DeleteProjectModalUpperSection}>
+                  <div className={styles.WarningContainer}>
+                    <div className={styles.DeleteDescription}>
+                      Are you sure you want to {disabled?"enable":"disable"}&nbsp;
+                      <span>{name}</span>
+                      &nbsp;?
+                    </div>
+                    <div className={styles.DisableSubDescription}>
+                      This will {disabled? "enable" :"disable"}  billing and external access of resources in this project.
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.DeleteProjectModalLowerSection}>
+                  <div className={styles.DeleteProjectModelButtons}>
+                    <PrimaryButton
+                      className="CancelBtn"
+                      onClick={()=>{this.setState({openDisableProjectModel:false})}}
+                    >
+                      Cancel
+                    </PrimaryButton>
+                    <PrimaryButton
+                      color={disabled?"primary":"red"}
+                      onClick={(e) =>
+                        this.handleDisableProject(e, disabled)
+                      }
+                    >
+                      {disablingProject ? <Spinner /> : disabled===true ? "Enable" :"Disable"}
+                    </PrimaryButton>
+                  </div>
+
+                  {disableProjectError && (
+                    <Feedback message={disableProjectError} type="error" />
+                  )}
+                </div>
+              </div>
+            </Modal>
+          </div>
+        )}
+
+        <Modal
+          showModal={removeMemberModal}
+          onClickAway={this.closeRemoveMemberModal}
+        >
+          <div className={styles.DeleteProjectModel}>
+            <div className={styles.DeleteProjectModalUpperSection}>
+              <div className={styles.WarningContainer}>
+                <div className={styles.DeleteDescription}>
+                  {currentUserEmail === email ? (
+                    <>Are you sure you want to remove yourself?</>
+                  ) : (
+                    <>
+                      Are you sure you want to remove the member with
+                      <br /> email: {email}?
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className={styles.DeleteProjectModalLowerSection}>
+              <div className={styles.DeleteProjectModelButtons}>
+                <PrimaryButton
+                  type="button"
+                  className="CancelBtn"
+                  onClick={this.closeRemoveMemberModal}
+                >
+                  Cancel
+                </PrimaryButton>
+                <PrimaryButton
+                  type="button"
+                  color="red"
+                  onClick={(e) => this.removeProjectMember(e)}
+                >
+                  {removingMember ? <Spinner /> : "Confirm"}
+                </PrimaryButton>
+              </div>
+            </div>
+            {removeMemberError && (
+              <Feedback type="error" message={"Failed to remove member"} />
+            )}
+          </div>
+        </Modal>
+      </DashboardLayout>
     );
   }
 }
 
 ProjectSettingsPage.propTypes = {
-  isFailed: PropTypes.bool,
-  clearDeleteProjectState: PropTypes.func.isRequired,
-  updateProject: PropTypes.func.isRequired,
-  deleteProject: PropTypes.func.isRequired,
   name: PropTypes.string,
-  isUpdating: PropTypes.bool,
   description: PropTypes.string,
-  message: PropTypes.string,
-  isUpdated: PropTypes.bool,
-  isDeleted: PropTypes.bool,
-  isSending: PropTypes.bool,
-  isSent: PropTypes.bool,
-  isRemoving: PropTypes.bool,
-  isRemoved: PropTypes.bool,
-  isRoleUpdated: PropTypes.bool,
-  isRoleUpdating: PropTypes.bool,
-  updateMessage: PropTypes.string,
-  clearUpdateMemberRoleState: PropTypes.func.isRequired,
-  clearRemovingMembersState: PropTypes.func.isRequired,
 };
 
 ProjectSettingsPage.defaultProps = {
   message: "",
-  isUpdated: false,
-  isDeleted: false,
   name: "",
   description: "",
-  isUpdating: false,
-  isSending: false,
-  isSent: false,
-  isRemoving: false,
-  isRemoved: false,
-  isRoleUpdating: false,
-  isRoleUpdated: false,
 };
 
 export const mapStateToProps = (state) => {
-  const { isDeleting, isDeleted, isFailed, clearDeleteProjectState, message } =
-    state.deleteProjectReducer;
 
-  // const { projectMembers } = state.projectMembersReducer;
+
   const { data } = state.user;
-  const { invitation, isSending, isSent, clearInvitingMembersState } =
-    state.inviteMembersReducer;
 
-  const { member, isRemoving, isRemoved, clearRemovingMembersState } =
-    state.removeMemberReducer;
-
-  const {
-    isRoleUpdated,
-    isRoleUpdating,
-    updateMessage,
-    isRoleUpdateFailed,
-    clearUpdateMemberRoleState,
-  } = state.updateMemberRoleReducer;
-
-  const { isUpdated, isUpdating, errorMessage, clearUpdateProjectState } =
-    state.updateProjectReducer;
+ 
   return {
     data,
-    isRoleUpdated,
-    isRoleUpdating,
-    updateMessage,
-    isUpdated,
-    isUpdating,
-    message,
-    isDeleting,
-    isSending,
-    isSent,
-    isRemoving,
-    isRemoved,
-    isFailed,
-    isRoleUpdateFailed,
-    isDeleted,
-    errorMessage,
-    clearInvitingMembersState,
-    clearDeleteProjectState,
-    clearUpdateProjectState,
-    clearRemovingMembersState,
-    clearUpdateMemberRoleState,
-    // projectMembers,
-    invitation,
-    member,
   };
 };
 
 const mapDispatchToProps = {
-  deleteProject,
-  updateProject,
-  // getProjectMembers,
-  inviteMembers,
-  removeMember,
-  updateMemberRole,
-  clearUpdateMemberRoleState,
-  clearInvitingMembersState,
-  clearDeleteProjectState,
-  clearUpdateProjectState,
-  clearRemovingMembersState,
 };
 
 export default connect(

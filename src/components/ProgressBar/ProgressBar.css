@@ -29,7 +29,7 @@
 }
 
 .ProgressBarFillQuarter3 {
-  background-color: #f7b21f;
+  background-color: var(--secondary-color);
 }
 
 .ProgressBarFillQuarter4 {

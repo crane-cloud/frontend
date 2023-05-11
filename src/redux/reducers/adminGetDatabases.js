@@ -6,6 +6,7 @@ import {
 
 const initialState = {
   databases: [],
+  pagination:{},
   isFetchingDatabases: false,
   databasesFetched: false,
   databasesMessage: "Database information Not Available",
@@ -16,7 +17,8 @@ const adminDatabasesReducer = (state = initialState, action) => {
     case ADMIN_ALL_DATABASES_SUCCESS:
       return {
         ...state,
-        databases: action.payload,
+        databases: action.payload.databases,
+        pagination:action.payload.pagination,
         isFetchingDatabases: false,
         databasesFetched: true,
         databasesMessage: "Fetched databases",
@@ -34,6 +36,7 @@ const adminDatabasesReducer = (state = initialState, action) => {
         ...state,
         isFetchingDatabases: false,
         databasesFetched: false,
+        pagination:{},
         databasesMessage: "Error fetching databases",
       };
     default:

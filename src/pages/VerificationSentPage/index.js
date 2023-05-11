@@ -35,8 +35,7 @@ class VerificationSentPage extends React.Component {
     // remove the current state from local storage
     // so that when a person doesnt access the panel of another
     // from the previous state which wasnt cleared
-    localStorage.removeItem("state");
-    localStorage.removeItem("project");
+    localStorage.clear();
 
     axios
       .get(`${API_BASE_URL}/users/verify/${token}`)
@@ -189,9 +188,10 @@ class VerificationSentPage extends React.Component {
                       {error && <div className="LoginErrorDiv">{error}</div>}
                       <PrimaryButton
                         className="ResendLinkBtn"
-                        label={loading ? <Spinner /> : "Resend Link"}
                         onClick={this.handleSubmit}
-                      />
+                      >
+                        {loading ? <Spinner /> : "Resend Link"}
+                      </PrimaryButton>
                     </div>
                   </div>
                 )}

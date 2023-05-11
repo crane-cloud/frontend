@@ -29,6 +29,14 @@ import { ReactComponent as Angular } from "../../assets/images/angularjs.svg";
 import { ReactComponent as Html } from "../../assets/images/html.svg";
 import { ReactComponent as CSS } from "../../assets/images/css.svg";
 import { ReactComponent as Drupal } from "../../assets/images/drupal.svg";
+import { ReactComponent as GitLab } from "../../assets/images/gitlab.svg";
+import { ReactComponent as GoPlayground } from "../../assets/images/go.svg";
+import {
+  GITLAB_URL,
+  GOPLAYGROUND_URL,
+  JUPYTERHUB_URL,
+  MIRA_DOCS_URL,
+} from "../../config";
 import { onUnload } from "../../helpers/localStorage";
 import SecondaryButton from "../../components/SecondaryButton";
 import { DOCS_URL } from "../../config";
@@ -48,7 +56,9 @@ const LandingPage = (props) => {
   return (
     <div className={styles.LandingPageMain}>
       <NewHeader />
-      <div className={styles.LandingPageMainContainer}>
+      <div
+        className={`${styles.LandingPageMainContainer} 'LandingPageDashboardContainer'`}
+      >
         <div className={styles.LandingPageMainContent}>
           <div className={styles.LandingPageMainContentInfo}>
             <div className={styles.LandingPageMainContentTitle}>
@@ -106,8 +116,8 @@ const LandingPage = (props) => {
                 <div className={styles.WhySectionItem}>
                   <div className={styles.WhySectionCardTitle}>Support</div>
                   <div>
-                    Create a ticket, chat, or call a specialist regarding any
-                    queries.
+                    We offer round-the-clock support to our clients. Create a
+                    ticket, chat, or call a specialist regarding any queries.
                   </div>
                 </div>
               </div>
@@ -118,8 +128,15 @@ const LandingPage = (props) => {
               <div className={styles.LeftPageBannerInner}>
                 <h2>Migrate to the cloud</h2>
                 <p className={styles.BannerParagraph}>
-                  Governments and institutions are urged to begin digital
-                  transformation.
+                  Institutions, students, and ICT practitioners looking for a
+                  reliable and efficient cloud computing solution should
+                  consider migrating to managed cloud services provided by Crane
+                  Cloud. With Crane Cloud's managed cloud services, you can be
+                  assured of unparalleled scalability, security, and
+                  availability of your cloud deployment. Whether you are looking
+                  to deploy an application, store data, or manage your computing
+                  resources, Crane Cloud provides a comprehensive suite of cloud
+                  services that can cater to your needs.
                 </p>
               </div>
             </div>
@@ -209,7 +226,7 @@ const LandingPage = (props) => {
           </div>
         </div>
         <section className={styles.DatabaseSection}>
-          <div className={styles.LeftInfoSection}>
+          <div className={styles.DatabaseLeftInfoSection}>
             <div className={styles.LeftInfoHeader}>
               Access your database anywhere
             </div>
@@ -222,9 +239,8 @@ const LandingPage = (props) => {
               href="https://medium.com/cranecloud/working-with-databases-on-crane-cloud-466179c41a32"
               rel="noopener noreferrer"
               target="_blank"
-              className={styles.AlignButton}
             >
-              Read More
+              <SecondaryButton label={"Read More"}>Read More</SecondaryButton>
             </a>
           </div>
           <div className={styles.DBContain}>
@@ -240,7 +256,7 @@ const LandingPage = (props) => {
           </div>
         </section>
         <section className={styles.ApplicationSection}>
-          <div className={styles.LeftInfoSection}>
+          <div className={styles.DatabaseLeftInfoSection}>
             <div className={styles.LeftInfoHeader}>
               Applications in any stack
             </div>
@@ -249,13 +265,8 @@ const LandingPage = (props) => {
               Cloud. With the provision of project overview metrics, down to
               individual application metrics and logs.
             </div>
-            <a
-              href={`${DOCS_URL}`}
-              rel="noopener noreferrer"
-              target="_blank"
-              className={styles.AlignButton}
-            >
-              Read More
+            <a href={`${DOCS_URL}`} rel="noopener noreferrer" target="_blank">
+              <SecondaryButton label={"Read More"}>Read More</SecondaryButton>
             </a>
           </div>
           <div className={styles.GridSide}>
@@ -289,7 +300,7 @@ const LandingPage = (props) => {
           </div>
         </section>
         <section className={styles.StackSection}>
-          <div className={styles.LeftInfoSection}>
+          <div className={styles.DatabaseLeftInfoSection}>
             <div className={styles.LeftInfoHeader}>Auto-containerization</div>
             <div>
               Unfamiliar with containerization or dockerization? Zip your
@@ -297,10 +308,13 @@ const LandingPage = (props) => {
               will dockerize, host the subsequent image and host your
               application.
             </div>
-            <SecondaryButton
-              label={"Read More"}
-              className={styles.AutoContainer}
-            />
+            <a
+              href={`${MIRA_DOCS_URL}`}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <SecondaryButton label={"Read More"}>Read More</SecondaryButton>
+            </a>
           </div>
           <div className={styles.GridSide}>
             <div className={styles.IconSqure}>
@@ -323,6 +337,85 @@ const LandingPage = (props) => {
             </div>
             <div className={styles.IconSqure}>
               <Lara />
+            </div>
+          </div>
+        </section>
+
+        <div className={styles.LearningSectionTitle}>
+          <h2>Explore Crane Cloud Learning Tools</h2>
+        </div>
+        <section className={styles.CardContainer}>
+          <div className={styles.CardSection}>
+            <GitLab className={styles.Brand} />
+            <div>
+              <h3 className={styles.textCenter}>Self Managed GitLab</h3>
+              <div className={styles.textJustify}>
+                GitLab is a web-based Git repository manager that provides
+                source code management (SCM), continuous integration, and more.
+                It's used for version control and code collaboration.
+              </div>
+            </div>
+            <div className={styles.ButtonSection}>
+              <a
+                href={`${GITLAB_URL}`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <button className={styles.GetStartedButton}>
+                  <div>Get Started</div>
+                  <RightArrow />
+                </button>
+              </a>
+            </div>
+          </div>
+          <div className={styles.CardSection}>
+            <GoPlayground className={styles.Brand} />
+            <div>
+              <h3 className={styles.textCenter}>Go Playground</h3>
+              <div className={styles.textJustify}>
+                Online tool for executing and testing Go code snippets in a
+                browser, without having to install Go or set up a local
+                development environment. It allows sharing code with others.
+              </div>
+            </div>
+            <div className={styles.ButtonSection}>
+              <a
+                href={`${GOPLAYGROUND_URL}`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <button className={styles.GetStartedButton}>
+                  <div>Get Started</div>
+                  <RightArrow />
+                </button>
+              </a>
+            </div>
+          </div>
+          <div className={styles.CardSection}>
+            <img
+              className={styles.BrandLogo}
+              alt="jupyterhub_logo"
+              src={require("../../assets/images/jupyterhub.png")}
+            />
+            <div>
+              <h3 className={styles.textCenter}>JupyterHub</h3>
+              <div className={styles.textJustify}>
+                JupyterHub brings the power of notebooks to groups of users. It
+                gives users access to computational environments and resources
+                without burdening the users
+              </div>
+            </div>
+            <div className={styles.ButtonSection}>
+              <a
+                href={`${JUPYTERHUB_URL}`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <button className={styles.GetStartedButton}>
+                  <div>Get Started</div>
+                  <RightArrow />
+                </button>
+              </a>
             </div>
           </div>
         </section>

@@ -1,0 +1,50 @@
+
+  .selectedPaginationBox{
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    border: 1px solid #000;
+    color: #000;
+    background-color: #fff;
+    align-items: center;
+    justify-content: center;
+  }
+  .paginationContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    color: white;
+    gap: 2px;
+    max-width: 25rem;
+  }
+  .paginationBox:hover{
+    cursor: pointer;
+  }
+  .selectedPaginationBox:hover{
+    cursor: pointer;
+  }
+
+  .paginationBox{
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    border: 1px solid #F7B21F;
+    color: #F7B21F;
+    background-color: #fff;
+    align-items: center;
+    justify-content: center;
+  }
+  .navArrow{
+    font-size: 27px;
+    outline: none;
+    border-color: transparent;
+  }
+  .navArrow:hover{
+    cursor: pointer;
+  }
+  .dotsMargin{
+    margin-left: 1px;
+    margin-right: 1px;
+    color: #000;
+  }

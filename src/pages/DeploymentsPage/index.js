@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import getDeployments from "../../redux/actions/getDeployments";
 import Header from "../../components/Header";
@@ -10,22 +10,29 @@ import ProgressBar from "../../components/ProgressBar";
 import Spinner from "../../components/Spinner";
 import tellAge from "../../helpers/ageUtility";
 import "./DeploymentsPage.css";
+import usePaginator from "../../hooks/usePaginator";
+import Pagination from "../../components/Pagination";
 
 const DeploymentsPage = () => {
-  const params = useParams();
   const dispatch = useDispatch();
-  const { clusterID } = params;
+  const  clusterID  = localStorage.getItem("clusterID");
+  const [currentPage, handleChangePage] = usePaginator();
 
   const clusterDeploys = useCallback(
-    () => dispatch(getDeployments(clusterID)),
-    [clusterID, dispatch]
+    () => dispatch(getDeployments(clusterID,currentPage)),
+    [clusterID, dispatch,currentPage]
   );
 
   useEffect(() => {
     clusterDeploys();
   }, [clusterDeploys]);
 
-  const { deployments, isFetchingDeployments, isFetched } = useSelector(
+  const handlePageChange = (currentPage) => {
+    handleChangePage(currentPage);
+    clusterDeploys();
+  };
+
+  const { deployments, isFetchingDeployments, isFetched,pagination } = useSelector(
     (state) => state.deployments
   );
 
@@ -60,7 +67,7 @@ const DeploymentsPage = () => {
       </div>
       <div className="MainSection">
         <div className="SideBarSection">
-          <SideNav clusterName={clusterName} clusterId={params.clusterID} />
+          <SideNav clusterName={clusterName} clusterId={clusterID} />
         </div>
         <div className="MainContentSection">
           <div className="InformationBarSection">
@@ -156,6 +163,15 @@ const DeploymentsPage = () => {
                 </div>
               )}
             </div>
+            {pagination?.pages > 1 && (
+            <div className="AdminPaginationSection">
+              <Pagination
+                total={pagination.pages}
+                current={currentPage}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          )}
           </div>
         </div>
       </div>
