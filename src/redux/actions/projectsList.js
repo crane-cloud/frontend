@@ -23,10 +23,16 @@ export const getUserProjectsFailed = (error) => ({
   },
 });
 
-const getUserProjects = (page) => (dispatch) => {
+const getUserProjects = (page,keyword="") => (dispatch) => {
   dispatch(startTheFetch());
+  let link;
+  if(keyword){
+    link = `/projects?page=${page}&keywords=${keyword}`;
+  }else{
+    link = `/projects?page=${page}`;
+  }
   return axios
-    .get(`/projects?page=${page}`)
+    .get(link)
     .then((response) => dispatch(getUserProjectsSuccess(response)))
     .catch((error) => {
       dispatch(getUserProjectsFailed(error));
