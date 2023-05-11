@@ -25,7 +25,7 @@ class UserProjectsPage extends React.Component {
     this.initialState = {
       openCreateComponent: false,
       Searchword: "",
-      SearchList: [],
+      // SearchList: [],
       myProjectsList: [],
       sharedProjectsList: [],
       showInviteModel: false,
@@ -62,7 +62,6 @@ class UserProjectsPage extends React.Component {
     getClustersList();
     getUserCredits(data.id);
   }
-
   componentDidUpdate(prevProps, prevState) {
     const {
       isAdded,
@@ -113,18 +112,22 @@ class UserProjectsPage extends React.Component {
   }
   searchThroughProjects() {
     const { Searchword } = this.state;
-    const { projects } = this.props;
-    let searchResult = [];
-    projects.forEach((element) => {
-      if (element.name.toLowerCase().includes(Searchword.toLowerCase())) {
-        searchResult.push(element);
-      }
-    });
-    this.setState({
-      SearchList: searchResult.sort((a, b) =>
-        b.date_created > a.date_created ? 1 : -1
-      ),
-    });
+    const { getUserProjects } = this.props;
+    //reset pagination
+    this.setState({currentPaginationPage:1})
+    getUserProjects(1,Searchword);
+    // ?keywords=black
+    // let searchResult = [];
+    // projects.forEach((element) => {
+    //   if (element.name.toLowerCase().includes(Searchword.toLowerCase())) {
+    //     searchResult.push(element);
+    //   }
+    // });
+    // this.setState({
+    //   SearchList: searchResult.sort((a, b) =>
+    //     b.date_created > a.date_created ? 1 : -1
+    //   ),
+    // });
   }
   hideInvitationModel() {
     this.setState({ showInviteModel: false });
@@ -230,7 +233,7 @@ class UserProjectsPage extends React.Component {
     const {
       openCreateComponent,
       Searchword,
-      SearchList,
+      // SearchList,
       showInviteModel,
       selectedProjects,
       inviteeModelRole,
@@ -330,8 +333,8 @@ class UserProjectsPage extends React.Component {
               ) : Searchword !== "" ? (
                 <div className={`${styles.ProjectList}  SmallContainer`}>
                   {isFetched &&
-                    SearchList !== undefined &&
-                    SearchList.map((project) => (
+                    sortedProjects !== undefined &&
+                    sortedProjects.map((project) => (
                       <ProjectCard
                         key={project.id}
                         name={project.name}
