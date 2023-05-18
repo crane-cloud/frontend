@@ -156,7 +156,7 @@ const AdminProjectsPage = () => {
                         <tr key={adminProjects.projects.indexOf(project)}>
                           <td>{project.name}</td>
                           <td>{getUserName(project.owner_id)}</td>
-                          <td>{project.description}</td>
+                          <td className="CollapseText">{project.description}</td>
                           <td>
                             {/* optional chai */}
                             <span className="ProjectStatus">
