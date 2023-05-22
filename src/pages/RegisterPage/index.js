@@ -10,8 +10,6 @@ import { API_BASE_URL, GIT_REDIRECT_URL } from "../../config";
 import Checkbox from "../../components/Checkbox";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
-import { ReactComponent as Checked } from "../../assets/images/checked.svg";
-import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 
 import "./RegisterPage.css";
 
@@ -167,7 +165,6 @@ export default class RegisterPage extends Component {
       passwordConfirm,
       loading,
       registered,
-      passwordChecked,
       passwordShown,
       passwordConfirmShown,
       username,
