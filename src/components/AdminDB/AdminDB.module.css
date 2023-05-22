@@ -12,7 +12,8 @@
   color: var(--primary-color);
   text-align: center;
   grid-row: 1;
-  padding: 0.5rem 0;
+  width: 100%;
+  padding: 1rem 0;
 }
 
 .DatabaseTableRow {

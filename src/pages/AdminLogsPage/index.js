@@ -14,7 +14,7 @@ import { ReactComponent as User } from "../../assets/images/user.svg";
 // import { ReactComponent as CloudOff } from "../../assets/images/cloud-off.svg";
 import { ReactComponent as FilterIcon } from "../../assets/images/filterIcon.svg";
 import { ReactComponent as ArrowUpDDown } from "../../assets/images/ArrowUp&Down.svg";
-import { DisplayDateTime } from "../../helpers/dateConstants";
+import { dateInWords } from "../../helpers/dateConstants";
 import Spinner from "../../components/Spinner";
 
 const AdminLogsPage = () => {
@@ -406,7 +406,7 @@ const AdminLogsPage = () => {
                                 <b>{getUserEmail(item.user_id)}</b>:
                               </div>
                               <div className={styles.ActivityDate}>
-                                {DisplayDateTime(new Date(item.creation_date))}
+                                {dateInWords(new Date(item.creation_date))}
                               </div>
                             </div>
                             <div>

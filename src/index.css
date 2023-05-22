@@ -213,6 +213,8 @@ input[type="password"] {
 /*- ///// TABLE STYLING ///////// */
 div.ResourcesTable {
   padding-top: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 div.ResourcesTable.LoadingResourcesTable {
@@ -223,6 +225,10 @@ div.ResourcesTable.LoadingResourcesTable {
   text-transform: uppercase;
 }
 
+/* .ResourcesTable  tr:nth-child(even){
+  background-color: #d0e0f8;
+} */
+
 .ResourcesTable table {
   position: relative;
   table-layout: fixed;
@@ -231,28 +237,36 @@ div.ResourcesTable.LoadingResourcesTable {
   width: 100%;
   height: 100%;
 }
-
 .ResourcesTable table th {
   padding: 1rem;
-  color: var(--primary-color);
   text-align: center;
 }
 
 .ResourcesTable table th:first-child,
 .ResourcesTable table td:first-child {
   text-align: left;
-  padding-left: 2rem;
+  padding-left: 1rem;
 }
 
 .ResourcesTable table th:last-child,
 .ResourcesTable table td:last-child {
   text-align: right;
-  padding-right: 2rem;
+  padding-right: 1rem;
 }
 
 .ResourcesTable table td {
   padding: 0.8rem 1rem;
   font-weight: normal;
+}
+.ResourcesTable td {
+  border: 1px solid #fff;
+}
+.ResourcesTable th {
+  color: #fff;
+  border: 1px solid white;
+  border-top: none;
+  border-bottom: none;
+  background-color: var(--primary-color);
 }
 
 div.TableLoading {
@@ -281,8 +295,45 @@ tr.TableLoading td {
 }
 
 .ResourcesTable table tr:hover {
-  background-color: #e0e0e0;
+  background-color: #d0e0f8;
   cursor: pointer;
+}
+.TableTdSpinner{
+  border: none !important;
+}
+.ResourcesTable td{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 70px;
+}
+.ResourcesTable td:hover {
+    white-space: normal;
+    word-wrap: break-word;
+    overflow: visible;
+}
+/* remove outer borders */
+.ResourcesTable tr:first-child td {
+  border-top: none;
+}
+
+.ResourcesTable tr:last-child td {
+  border-bottom: none;
+}
+
+.ResourcesTable td:first-child {
+  border-left: none;
+}
+
+.ResourcesTable td:last-child {
+  border-right: none;
+}
+.ResourcesTable th:first-child {
+  border-left: none;
+}
+
+.ResourcesTable th:last-child {
+  border-right: none;
 }
 
 /*- ////////////////////////////////// */
@@ -488,6 +539,7 @@ tr.TableLoading td {
 /* ////////////---- Pagination ---- ///////////// */
 .AdminPaginationSection{
   margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
