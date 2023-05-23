@@ -6,7 +6,6 @@ import Spinner from "../Spinner";
 import "./CreateNewPassword.css";
 import { API_BASE_URL } from "../../config";
 import InputText from "../InputText";
-import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
 

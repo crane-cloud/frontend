@@ -11,10 +11,9 @@ import Spinner from "../../components/Spinner";
 import Header from "../../components/Header";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
-// import { ReactComponent as Checked } from "../../assets/images/checked.svg";
+
 import { API_BASE_URL, GIT_REDIRECT_URL } from "../../config";
 import { ReactComponent as LogoIcon } from "../../assets/images/githublogo.svg";
-// import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import "./LoginPage.css";
 
 class LoginPage extends React.Component {
@@ -28,7 +27,6 @@ class LoginPage extends React.Component {
       gitLoading: false,
       feedbackMessage: "",
       passwordShown: false,
-      passwordChecked: false,
       hidden: true,
     };
 
@@ -192,8 +190,6 @@ class LoginPage extends React.Component {
       password,
       loading,
       gitLoading,
-      // hidden,
-      //passwordChecked,
       feedbackMessage,
       passwordShown,
     } = this.state;
