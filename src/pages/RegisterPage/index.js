@@ -23,7 +23,7 @@ export default class RegisterPage extends Component {
       email: "",
       password: "",
       passwordConfirm: "",
-      passwordConfirmShown: false,
+      displayPassword: false,
       hasAgreed: false,
       loading: false,
       registered: false,
@@ -95,7 +95,7 @@ export default class RegisterPage extends Component {
     this.setState({ passwordShown: !this.state.passwordShown });
   }
   togglePasswordConfirm() {
-    this.setState({ passwordConfirmShown: !this.state.passwordConfirmShown });
+    this.setState({ displayPassword: !this.state.displayPassword });
   }
 
   handleSubmit(e) {
@@ -166,7 +166,7 @@ export default class RegisterPage extends Component {
       loading,
       registered,
       passwordShown,
-      passwordConfirmShown,
+      displayPassword,
       username,
       error,
       hasAgreed,
@@ -223,7 +223,7 @@ export default class RegisterPage extends Component {
                     required
                     placeholder="Repeat Password"
                     name="passwordConfirm"
-                    type={passwordConfirmShown ? "text" : "password"}
+                    type={displayPassword ? "text" : "password"}
                     value={passwordConfirm}
                     onChange={this.handleOnChange}
                   />
@@ -231,7 +231,7 @@ export default class RegisterPage extends Component {
                     className="password"
                     onClick={this.togglePasswordConfirm}
                   >
-                    {passwordConfirmShown ? <Open /> : <Closed />}
+                    {displayPassword ? <Open /> : <Closed />}
                   </div>
                 </div>
 

@@ -308,7 +308,9 @@ class AdminUserPage extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="CreditsAlotted">
+               {/* Credential history */}
+                {credit_assignment_records?.length > 0 &&
+                 <div className="CreditsAlotted">
                   <div className="CreditsTable">
                     <div className="CreditsHeader">
                       Credits Assignment History
@@ -354,7 +356,8 @@ class AdminUserPage extends Component {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div>}
+
                 <div className="AdminDBSections">
                 <div className="SectionTitle">Manage User</div>
                  <div className="ProjectInstructions">

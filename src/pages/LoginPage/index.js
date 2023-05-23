@@ -11,6 +11,7 @@ import Spinner from "../../components/Spinner";
 import Header from "../../components/Header";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
+
 import { API_BASE_URL, GIT_REDIRECT_URL } from "../../config";
 import { ReactComponent as LogoIcon } from "../../assets/images/githublogo.svg";
 import "./LoginPage.css";

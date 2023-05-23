@@ -6,14 +6,14 @@ import { ReactComponent as Danger } from "../../assets/images/alert-octagon.svg"
 // import { ReactComponent as Upload } from "../../assets/images/upload-cloud.svg";
 import { ReactComponent as User } from "../../assets/images/user.svg";
 import DateInput from "../../components/DateInput";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ReactComponent as DownArrow } from "../../assets/images/downarrow.svg";
 import { ReactComponent as FilterIcon } from "../../assets/images/filterIcon.svg";
 import { ReactComponent as ArrowUpDDown } from "../../assets/images/ArrowUp&Down.svg";
 import { DisplayDateTime } from "../../helpers/dateConstants";
 import Spinner from "../Spinner";
 
-const ActivityLogs = ( projectID ) => {
+const ActivityLogs = ({ projectID }) => {
   const [toTS, setToTS] = useState("none");
   const [fromTS, setFromTS] = useState("none");
   const [showStatusFilter, setShowStatusFilter] = useState(false);
@@ -31,20 +31,20 @@ const ActivityLogs = ( projectID ) => {
   //api
   const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState([]);
-  let baseLink = `/users/activities?`;
-
-  useEffect(() => {
-    fetchActivityLogs(`${baseLink}${queryParams}`);
-    setFeedback("");
-  }, [queryParams]);
-
+  const baseLinkRef = useRef(`/users/activities?`);
+  // const baseLink = baseLinkRef.current;
   useEffect(() => {
     if (projectID) {
       // logs based on a project
       // set filters available per page here
-      baseLink = `${baseLink}a_project_id=${projectID}&`;
+      baseLinkRef.current = `${baseLinkRef.current}a_project_id=${projectID}&`;
     }
   }, [projectID]);
+
+  useEffect(() => {
+    fetchActivityLogs(`${baseLinkRef.current}${queryParams}`);
+    setFeedback("");
+  }, [queryParams]);
 
   const fetchActivityLogs = (link) => {
     setLoading(true);
@@ -215,6 +215,7 @@ const ActivityLogs = ( projectID ) => {
                 </div>
                 <div className={styles.DateItem}>
                   <div>To:</div>
+
                   <DateInput
                     handleChange={handleToDate}
                     showCalendar={showToCalendar}
