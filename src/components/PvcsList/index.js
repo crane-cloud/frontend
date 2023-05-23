@@ -61,11 +61,11 @@ const  PvcsListPage =()=> {
                   {isRetrieving ? (
                     <tbody>
                       <tr className="TableLoading">
-                        <td>
-                          <div className="SpinnerWrapper">
-                            <Spinner size="big" />
-                          </div>
-                        </td>
+                      <td className="TableTdSpinner">
+                        <div className="SpinnerWrapper">
+                          <Spinner size="big" />
+                        </div>
+                      </td>
                       </tr>
                     </tbody>
                   ) : (

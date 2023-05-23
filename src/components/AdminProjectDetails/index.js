@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import PrimaryButton from "../PrimaryButton";
 import { handleGetRequest,handlePostRequestWithOutDataObject } from "../../apis/apis.js";
 import Avatar from "../Avatar";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useCallback } from "react";
 import ActivityLogs from "../ActivityLogs";
 import Spinner from "../Spinner";
 import { dateInWords } from "../../helpers/dateConstants";
@@ -30,11 +30,9 @@ const AdminProjectLogs = () => {
   //need to get all current project details
   const { projectID } = useParams();
 
-  useEffect(() => {
-    fetchProjectDetails();
-  }, []);
+ 
 
-  const fetchProjectDetails = () => {
+  const fetchProjectDetails = useCallback(() => {
     setLoading(true);
     handleGetRequest(`/projects/${projectID}`)
       .then((response) => {
@@ -42,10 +40,15 @@ const AdminProjectLogs = () => {
         setLoading(false);
       })
       .catch((error) => {
-        setError("Failed to fetch project detail please refreash");
+        setError("Failed to fetch project detail please refresh");
         setLoading(false);
       });
-  };
+  }, [projectID]);
+  
+
+  useEffect(() => {
+    fetchProjectDetails();
+  }, [fetchProjectDetails]);
 
   const handleDisableProject =(e,disabled) =>{
     e.preventDefault();
