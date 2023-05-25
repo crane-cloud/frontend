@@ -15,6 +15,9 @@ import {
   AreaChart,
   Area,
   Tooltip,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
 import { retrieveProjectTypes } from "../../helpers/projecttypes.js";
 import { retrieveMonthNames } from "../../helpers/monthNames.js";
@@ -33,8 +36,11 @@ const AdminProjectOverviewPage = () => {
   const graphData = {};
   const newGraphData = {};
   const newGraphDataArray = [];
+  let createPieChartData = [];
   let filteredGraphData = [];
   let newFilteredGraphData = [];
+
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042','#000000','#800080'];
 
   useEffect(() => {
     getAllProjects();
@@ -208,6 +214,31 @@ const AdminProjectOverviewPage = () => {
     history.push(`/clusters/${clusterID}/projects-listing`);
   };
 
+  createPieChartData = () => {
+    const degrees = {};
+    if (!projectTypeCounts) {
+      return [];
+    }
+    const totalCount = Object.values(projectTypeCounts).reduce(
+      (total, count) => total + count,
+      0
+    );
+    for (const type in projectTypeCounts) {
+      const count = projectTypeCounts[type];
+      const degree = (count / totalCount) * 100;
+      degrees[type]= degree.toFixed(1);
+    }
+    const pieChartData = Object.entries(degrees).map(
+      ([type, degrees]) => ({
+        category: type,
+        value: parseFloat(degrees),
+      })
+    );
+    return pieChartData;
+  };
+
+  createPieChartData();
+
   return (
     <div className="MainPage">
       <div className="TopBarSection">
@@ -247,6 +278,35 @@ const AdminProjectOverviewPage = () => {
                 ))}
               </div>
             ) : null}
+            <div className="TitleArea">
+              <div className="SectionTitle">Project Categories Summary</div>
+            </div>
+            <div className="UserSection">
+              <div className="piechart">
+                <PieChart width={400} height={400}>
+                  <Pie
+                      data={createPieChartData()}
+                      dataKey="value"
+                      nameKey="category"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={140}
+                      paddingAngle={3}
+                      fill="#8884d8"
+                      label={({ value }) => `${value}%`}
+                    >
+                        {createPieChartData().map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                            label={({ value }) => `${value}°`}
+                          />
+                        ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </div>
+            </div>
             <div className="TitleArea">
               <div className="SectionTitle">Graph Summaries</div>
             </div>

@@ -44,7 +44,10 @@
     flex-direction: column;
     gap: 2rem;
 }
-
+.piechart{
+    display: grid;
+    justify-items: center;
+}
 @media only screen and (min-width: 750px) {
     .ClusterContainer {
         grid-template-columns: repeat(2, 1fr);
