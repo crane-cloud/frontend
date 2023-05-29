@@ -10,6 +10,8 @@ import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
 import { API_BASE_URL } from "../../config";
 import "../../pages/LoginPage/LoginPage.css";
+import { ReactComponent as Open } from "../../assets/images/open.svg";
+import { ReactComponent as Closed } from "../../assets/images/close.svg";
 
 class AdminLoginPage extends React.Component {
   constructor() {
@@ -18,17 +20,24 @@ class AdminLoginPage extends React.Component {
       email: "",
       password: "",
       loading: false,
+      passwordShown: false,
       feedbackMessage: "",
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.togglePassword = this.togglePassword.bind(this);
   }
 
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value,
     });
+  }
+  togglePassword() {
+    //this.setState({ hidden: !this.state.hidden });
+    this.setState({ passwordShown: !this.state.passwordShown });
+    this.fetchPassword();
   }
 
   handleSubmit(e) {
@@ -77,7 +86,8 @@ class AdminLoginPage extends React.Component {
   }
 
   render() {
-    const { email, password, loading } = this.state;
+    const { email, password, loading, passwordShown } =
+      this.state;
 
     return (
       <div className="LoginPageContainer">
@@ -99,16 +109,22 @@ class AdminLoginPage extends React.Component {
                   this.handleChange(e);
                 }}
               />
-              <InputText
-                required
-                placeholder="Password"
-                name="password"
-                type="password"
-                value={password}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
-              />
+              <div className="password-wrapper">
+                <InputText
+                  required
+                  placeholder="Password"
+                  name="password"
+                  type={passwordShown ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+                />
+
+                <div className="password" onClick={this.togglePassword}>
+                  {passwordShown ? <Open /> : <Closed />}
+                </div>
+              </div>
 
               <div className="LoginLinkContainer">
                 <Link to="/forgot-password" className="LoginContentLink">

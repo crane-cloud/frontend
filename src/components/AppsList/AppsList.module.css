@@ -2,17 +2,22 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 1rem;
+  min-height: 40vh;
 }
 
 .NoAppsResourcesMessage {
   flex-grow: 1;
   display: flex;
   font-size: 1rem;
-  padding-top: 8rem;
+  padding-top: 1rem;
   text-align: center;
   justify-content: center;
   align-items: center;
 }
+.Spinnerheight{
+  min-height: 40vh;
+}
+
 
 .NoAppsError {
   text-align: center;
@@ -25,6 +30,13 @@
   height: 1rem;
   cursor: pointer;
 }
+.PaginationSection{
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 @media only screen and (max-width: 1100px) and (min-width: 901px) {
   .AppList {

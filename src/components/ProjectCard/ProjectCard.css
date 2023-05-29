@@ -21,7 +21,18 @@
   font-size: 1rem;
   height: 7rem;
 }
-
+.opequeCard{
+  opacity: .4;
+}
+.unclickable{
+  cursor: not-allowed;
+}
+.killPointerActions{
+  pointer-events: none;
+}
+.opequeCard:hover{
+  box-shadow: none;
+}
 .ProjectImageDiv {
   margin: 0;
   width: 100%;

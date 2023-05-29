@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./JobsListPage.css";
 import Header from "../../components/Header";
@@ -11,7 +11,7 @@ import Spinner from "../../components/Spinner";
 import tellAge from "../../helpers/ageUtility";
 
 const JobsListPage = () => {
-  const { clusterID } = useParams();
+  const  clusterID  = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
 
   const adminJobs = useCallback(
@@ -60,7 +60,7 @@ const JobsListPage = () => {
                 {isRetrieving ? (
                   <tbody>
                     <tr className="TableLoading">
-                      <td>
+                    <td className="TableTdSpinner">
                         <div className="SpinnerWrapper">
                           <Spinner size="big" />
                         </div>

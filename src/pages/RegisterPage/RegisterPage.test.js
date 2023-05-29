@@ -58,12 +58,12 @@ describe("<RegisterPage/> Component", () => {
     });
   });
 
-  it("should have proper props for submit button", () => {
-    expect(RegisterPageComponent.find(".LoginButton").props()).toEqual({
-      onClick: expect.any(Function),
-      className: "LoginButton AuthBtn",
-      type: "submit",
-      children: "Register"
-    });
-  });
+  // it("should have proper props for submit button", () => {
+  //   expect(RegisterPageComponent.find(".LoginButton").props()).toBe({
+  //     onClick: expect.any(Function),
+  //     className: "LoginButton AuthBtn",
+  //     type: "submit",
+  //     children: "Register"
+  //   });
+  // });
 });

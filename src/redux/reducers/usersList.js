@@ -8,6 +8,7 @@ const initialState = {
   users: [],
   isFetched: false,
   isFetching: false,
+  pagination:{},
   message: "No users yet.",
 };
 
@@ -16,7 +17,8 @@ const usersListReducer = (state = initialState, action) => {
     case GET_USERS_SUCCESS:
       return {
         ...state,
-        users: action.payload,
+        users: action.payload.users,
+        pagination: action.payload.pagination,
         isFetching: false,
         isFetched: true,
         message: "Users successfully fetched",
@@ -35,6 +37,7 @@ const usersListReducer = (state = initialState, action) => {
         message: action.payload,
         isFetching: false,
         isFetched: false,
+        pagination: {},
       };
 
     default:

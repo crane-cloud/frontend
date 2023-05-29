@@ -20,6 +20,9 @@ import styles from "./CreateApp.module.css";
 import { validateName } from "../../helpers/validation";
 import MiraPage from "../../pages/MiraPage";
 
+const dockerEmail = process.env.REACT_APP_DOCKER_EMAIL;
+const dockerPassword = process.env.REACT_APP_DOCKER_PASSWORD;
+
 class CreateApp extends React.Component {
   constructor(props) {
     super(props);
@@ -285,8 +288,12 @@ class CreateApp extends React.Component {
         image: uri,
         name,
         project_id: params.projectID,
-        private_image: isPrivateImage,
+        private_image: true,
         replicas,
+        docker_email: dockerEmail,
+        docker_username: "cranecloud",
+        docker_password: dockerPassword,
+        docker_server: "docker.io",
       };
 
       if (isCustomDomain === true) {
@@ -757,7 +764,6 @@ class CreateApp extends React.Component {
 }
 CreateApp.propTypes = {
   clusters: PropTypes.object,
-  getClustersList: PropTypes.func.isRequired,
   params: PropTypes.shape({}),
 };
 

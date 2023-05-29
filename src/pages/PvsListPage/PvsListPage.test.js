@@ -1,42 +1,51 @@
-/* eslint-disable no-undef */
 import React from "react";
 import { shallow } from "enzyme";
-import PvsListPage, { mapStateToProps } from "./";
+import PvsList from "./";
+import * as redux from "react-redux";
 
-const PvsListPageProps = {
-  clusters: { log1: 1, log2: 2 },
-  match: { params: { projectId: "1" } },
-  getPvs: jest.fn(),
-};
-// {} ={}
-describe("Testing the PVs Page component", () => {
-  const WrapperPvsListPage = PvsListPage.WrappedComponent;
-  const PvsListPageComponent = shallow(
-    <WrapperPvsListPage {...PvsListPageProps} />
-  );
-  it("should match the snapshot for PvsListPage after adding props", () => {
-    PvsListPageComponent.setProps(PvsListPageProps);
-    expect(PvsListPageComponent).toBeDefined();
-  });
-  it("matchs the PvsListPage component snapshot", () => {
-    expect(PvsListPageComponent).toMatchSnapshot();
-  });
-});
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useParams: () => ({
+    clusterID: "12",
+  }),
+}));
 
-describe("Testing the exported mapstate to props and dispatch", () => {
-  it("matches the mapstostate", () => {
-    expect(
-      mapStateToProps({
-        pvsReducer: {
-          isFetched: false,
-          pvs: [],
-          isRetrieving: false,
-        },
-      })
-    ).toEqual({
-      isFetched: false,
-      pvs: [],
-      isRetrieving: false,
+describe("Pvs component", () => {
+  let spyOnUseSelector;
+  let spyOnUseDispatch;
+  let mockDispatch;
+
+  beforeEach(() => {
+    jest.spyOn(React, "useEffect").mockImplementationOnce((cb) => cb()());
+    // Mock useSelector hook
+    spyOnUseSelector = jest.spyOn(redux, "useSelector");
+    spyOnUseSelector.mockReturnValue({ 
+      pvs:  [],
+      pagination: { pages: 1 }, 
+      isRetrieving: false, 
+      isFetched: false 
     });
+    // Mock useDispatch hook
+    const useDispatchSpy = jest.spyOn(redux, "useDispatch");
+    // Mock dispatch function returned from useDispatch
+    mockDispatch = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatch);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("renders without crashing", () => {
+    const wrapper = shallow(<PvsList />);
+
+    expect(wrapper.exists()).toBe(true);
+  });
+  it("should mock dispatch", function () {
+    //arrange
+    const useDispatchSpy = jest.spyOn(redux, "useDispatch");
+    const mockDispatchFn = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatchFn);
+    useDispatchSpy.mockClear();
   });
 });

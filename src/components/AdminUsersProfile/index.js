@@ -27,6 +27,7 @@ import {
   avatarName,
 } from "../../helpers/projectName";
 import { DisplayDateTime } from "../../helpers/dateConstants";
+import { Link } from "react-router-dom";
 
 class AdminUserPage extends Component {
   constructor() {
@@ -219,6 +220,7 @@ class AdminUserPage extends Component {
           } =this.props;
       
     const clusterName = localStorage.getItem("clusterName");
+    const clusterID = localStorage.getItem("clusterID");
     const { userID } = this.props.match.params;
     const {
       match: { params },
@@ -238,14 +240,12 @@ class AdminUserPage extends Component {
         </div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
+            <SideNav clusterName={clusterName} clusterId={clusterID} />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
-              <InformationBar
-                header={`Accounts/${user?.name}`}
-                showBtn={false}
-              />
+            <InformationBar header={<><Link className="breadcrumb" 
+            to={`/accounts`}>Accounts</Link><span> / ${user?.name}</span></>} showBtn={false} />
             </div>
             <div className="ContentSection">
               <div className="AdminUserPageContainer">
@@ -308,7 +308,9 @@ class AdminUserPage extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="CreditsAlotted">
+               {/* Credential history */}
+                {credit_assignment_records?.length > 0 &&
+                 <div className="CreditsAlotted">
                   <div className="CreditsTable">
                     <div className="CreditsHeader">
                       Credits Assignment History
@@ -354,8 +356,9 @@ class AdminUserPage extends Component {
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="DBSections">
+                </div>}
+
+                <div className="AdminDBSections">
                 <div className="SectionTitle">Manage User</div>
                  <div className="ProjectInstructions">
                     <div className="MemberBody">

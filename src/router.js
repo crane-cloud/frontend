@@ -10,9 +10,10 @@ import {
 import AdminDBList from "./components/AdminDB";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminProjectsPage from "./pages/AdminProjectsPage";
+import AdminProjectOverviewPage from "./pages/AdminProjectOverviewPage";
 import AdminUsersProfile from "./components/AdminUsersProfile";
 import AdminUserLogs from "./components/AdminUserLogs";
-import AdminProjectLogs from "./components/AdminProjectLogs";
+import AdminProjectDetails from "./components/AdminProjectDetails";
 import App from "./components/App";
 import AppLogsPage from "./pages/AppLogsPage";
 import AppMemoryPage from "./pages/AppMemoryPage";
@@ -22,6 +23,7 @@ import AppsPage from "./pages/AppsPage";
 import ClusterPage from "./pages/ClusterPage";
 import ClusterResourcesPage from "./pages/ClusterResourcesPage";
 import ClusterSettingsPage from "./pages/ClusterSettingsPage";
+import AdminLogsPage from "./pages/AdminLogsPage";
 // import PricingPage from "./components/PricingPage";
 import ContactPage from "./pages/ContactPage";
 import CreateDatabase from "./components/CreateDatabase";
@@ -218,12 +220,17 @@ const Routes = () => (
       <ProtectedRoute
         isAllowed={hasToken}
         exact
-        path="/projects/:projectID/logs"
-        component={AdminProjectLogs}
+        path="/projects/:projectID/details"
+        component={AdminProjectDetails}
       />
       <ProtectedRoute
         isAllowed={hasToken}
         path="/clusters/:clusterID/projects"
+        component={AdminProjectOverviewPage}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        path="/clusters/:clusterID/projects-listing"
         component={AdminProjectsPage}
       />
       <ProtectedRoute
@@ -287,6 +294,12 @@ const Routes = () => (
         exact
         path="/databases"
         component={AdminDBList}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        exact
+        path="/clusters/:clusterID/logs"
+        component={AdminLogsPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}

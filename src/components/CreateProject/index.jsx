@@ -397,7 +397,6 @@ class CreateProject extends React.Component {
 
 CreateProject.propTypes = {
   clusters: PropTypes.object,
-  getClustersList: PropTypes.func.isRequired,
   data: PropTypes.shape({
     id: PropTypes.string.isRequired,
   }).isRequired,

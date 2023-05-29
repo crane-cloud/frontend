@@ -3,49 +3,76 @@ import "./AdminProjectsPage.css";
 import InformationBar from "../../components/InformationBar";
 import Header from "../../components/Header";
 import SideNav from "../../components/SideNav";
-// import Modal from "../Modal";
-// import BlackInputText from "../BlackInputText";
+
 import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
-// import PrimaryButton from "../PrimaryButton";
+
 import getAdminProjects from "../../redux/actions/adminProjects";
 import getUsersList from "../../redux/actions/users";
 import Spinner from "../../components/Spinner";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./AdminProjectsPage.css";
 import { Link } from "react-router-dom";
+import usePaginator from "../../hooks/usePaginator";
+import Pagination from "../../components/Pagination";
+import { handleGetRequest } from "../../apis/apis.js";
 
 const AdminProjectsPage = () => {
-  const { clusterID } = useParams();
+  const [currentPage, handleChangePage] = usePaginator();
+  const clusterID = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
 
   const getAdminProps = useCallback(
-    () => dispatch(getAdminProjects()),
-    [dispatch]
+    () => dispatch(getAdminProjects(currentPage)),
+    [dispatch, currentPage]
   );
   const getUsersProps = useCallback(() => dispatch(getUsersList), [dispatch]);
   const adminProjects = useSelector((state) => state.adminProjectsReducer);
-  const usersList = useSelector((state) => state.usersListReducer);
+  // const usersList = useSelector((state) => state.usersListReducer);
   const [contextMenu, setContextMenu] = useState(false);
   const [selectedProject, setSelectedProject] = useState("");
   // const [addCredits, setAddCredits] = useState(false);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     getAdminProps();
     getUsersProps();
+    fetchUsersList();
   }, [getAdminProps, getUsersProps]);
 
-  const getUserName = (userId) => {
-    let username = "";
-    if (usersList.isFetched) {
-      usersList.users.map((user) => {
-        if (userId === user.id) {
-          username = user.name;
+  const fetchUsersList = () => {
+    handleGetRequest("/users")
+      .then((response) => {
+        if (response.data.data.users.length > 0) {
+          let totalNumberOfUsers = response.data.data.pagination.total;
+          handleGetRequest("/users?per_page=" + totalNumberOfUsers)
+            .then((response) => {
+              if (response.data.data.users.length > 0) {
+                setUsers(response.data.data.users);
+              } else {
+                throw new Error("No users found");
+              }
+            })
+            .catch((error) => {
+              throw new Error("Failed to fetch all users, please try again");
+            });
+        } else {
+          throw new Error("No users found");
         }
-        return null;
+      })
+      .catch((error) => {
+        throw new Error("Failed to fetch users, please try again");
       });
-    }
-    return username;
+  };
+
+  const getUserName = (id) => {
+    let userName = "";
+    users.forEach((user) => {
+      if (user.id === id) {
+        userName = user.name;
+      }
+    });
+    return userName;
   };
 
   // const showModal = () => {
@@ -55,12 +82,17 @@ const AdminProjectsPage = () => {
   //   //setAddCredits(false);
   //   setContextMenu(false);
   // };
+
   const showContextMenu = (id) => {
     setContextMenu(true);
     setSelectedProject(id);
   };
-
   const clusterName = localStorage.getItem("clusterName");
+
+  const handlePageChange = (currentPage) => {
+    handleChangePage(currentPage);
+    getAdminProps();
+  };
 
   return (
     <div className="MainPage">
@@ -73,7 +105,20 @@ const AdminProjectsPage = () => {
         </div>
         <div className="MainContentSection">
           <div className="InformationBarSection">
-            <InformationBar header="Projects" showBtn={false} />
+            <InformationBar
+              header={
+                <>
+                  <Link
+                    className="breadcrumb"
+                    to={`/clusters/${clusterID}/projects`}
+                  >
+                    Overview
+                  </Link>
+                  <span> / Projects Listing</span>
+                </>
+              }
+              showBtn={false}
+            />
           </div>
           <div className="ContentSection">
             <div
@@ -96,7 +141,7 @@ const AdminProjectsPage = () => {
                 {adminProjects.isRetrieving ? (
                   <tbody>
                     <tr className="TableLoading">
-                      <td>
+                    <td className="TableTdSpinner">
                         <div className="SpinnerWrapper">
                           <Spinner size="big" />
                         </div>
@@ -111,9 +156,14 @@ const AdminProjectsPage = () => {
                         <tr key={adminProjects.projects.indexOf(project)}>
                           <td>{project.name}</td>
                           <td>{getUserName(project.owner_id)}</td>
-                          <td>{project.description}</td>
+                          <td >{project.description}</td>
                           <td>
-                            <span className="ProjectStatus">Active</span>
+                            {/* optional chai */}
+                            <span className={project.disabled !== false ? "ProjectStatus":"ProjectStatusDisabled"}>
+                              {project.disabled !== false
+                                ? "Active"
+                                : "Disabled"}
+                            </span>
                           </td>
                           <td
                             onClick={(e) => {
@@ -126,7 +176,7 @@ const AdminProjectsPage = () => {
                             {contextMenu && project.id === selectedProject && (
                               <div className="BelowHeader bg-light">
                                 <div className="context-menu">
-                                  <div
+                                  {/* <div
                                     className="DropDownLink Section"
                                     role="presentation"
                                   >
@@ -137,17 +187,17 @@ const AdminProjectsPage = () => {
                                     role="presentation"
                                   >
                                     Disable
-                                  </div>
+                                  </div> */}
                                   <div
                                     className="DropDownLink"
                                     role="presentation"
                                   >
                                     <Link
                                       to={{
-                                        pathname: `/projects/${selectedProject}/logs`,
+                                        pathname: `/projects/${selectedProject}/details`,
                                       }}
                                     >
-                                      View Project Logs
+                                      View Project Details
                                     </Link>
                                   </div>
                                 </div>
@@ -204,6 +254,15 @@ const AdminProjectsPage = () => {
                 </div>
               )}
             </div>
+            {adminProjects.pagination?.pages > 1 && (
+              <div className="AdminPaginationSection">
+                <Pagination
+                  total={adminProjects.pagination.pages}
+                  current={currentPage}
+                  onPageChange={handlePageChange}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

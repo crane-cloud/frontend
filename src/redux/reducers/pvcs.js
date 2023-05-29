@@ -6,6 +6,7 @@ import {
 
 const initialState = {
   pvcs: [],
+  pagination: {},
   isRetrieving: false,
   isFetched: false,
   message: "Cluster pvcs Not Available",
@@ -16,7 +17,8 @@ const pvcsReducer = (state = initialState, action) => {
     case FETCH_PVCS_SUCCESS:
       return {
         ...state,
-        pvcs: action.payload,
+        pvcs: action.payload.pvcs,
+        pagination: action.payload.pagination,
         isRetrieving: false,
         isFetched: true,
         message: "All Cluster Pvcs fetched",
@@ -34,6 +36,7 @@ const pvcsReducer = (state = initialState, action) => {
         message: action.payload,
         isFetched: false,
         isRetrieving: false,
+        pagination: {},
       };
 
     default:

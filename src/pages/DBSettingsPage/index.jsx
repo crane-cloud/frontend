@@ -4,6 +4,7 @@ import Spinner from "../../components/Spinner";
 import Modal from "../../components/Modal";
 import Feedback from "../../components/Feedback";
 import DeleteWarning from "../../components/DeleteWarning";
+import { Link } from "react-router-dom";
 import {
   handleGetRequest,
   handlePostRequestWithOutDataObject,
@@ -359,7 +360,8 @@ class DBSettingsPage extends React.Component {
     } = this.state;
     return (
       <DashboardLayout
-        header="Database Settings"
+        header={<><Link className="breadcrumb" 
+        to={`/projects/${projectID}/databases/`}>Databases</Link><span> / DB settings</span></>}
         name={getProjectName(projects, projectID)}
         short
       >
@@ -600,7 +602,7 @@ class DBSettingsPage extends React.Component {
                     <div className={styles.SectionButtons}>
                       <PrimaryButton
                         onClick={this.showUpdateModal}
-                        small
+                        small={true}
                         color="primary-outline"
                       >
                         Change Password
@@ -618,7 +620,7 @@ class DBSettingsPage extends React.Component {
                     <div className={styles.SectionButtons}>
                       <PrimaryButton
                         onClick={this.showResetAlert}
-                        small
+                        small={true}
                         color="red-outline"
                       >
                         Reset
@@ -650,7 +652,7 @@ class DBSettingsPage extends React.Component {
                     <div className={styles.SectionButtons}>
                       <PrimaryButton
                         onClick={this.showDeleteAlert}
-                        small
+                        small={true}
                         color="red-outline"
                       >
                         Delete
@@ -661,7 +663,7 @@ class DBSettingsPage extends React.Component {
               </div>
             </div>
 
-            <div className="DBButtons">
+  
               {openUpdateModal && (
                 <div className="ProjectDeleteModel">
                   <Modal
@@ -811,7 +813,7 @@ class DBSettingsPage extends React.Component {
                   </Modal>
                 </div>
               )}
-            </div>
+            
           </div>
         )}
       </DashboardLayout>

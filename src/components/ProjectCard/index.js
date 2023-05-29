@@ -7,6 +7,7 @@ import LineChartComponent from "../LineChart";
 import getProjectMemory from "../../redux/actions/projectMemory";
 import { formatMemoryMetrics } from "../../helpers/formatMetrics";
 import { handleGetRequest } from "../../apis/apis.js";
+import {  ReactComponent as AlertWarning }  from "../../assets/images/alert.svg";
 import Spinner from "../Spinner";
 
 class ProjectCard extends React.Component {
@@ -76,11 +77,13 @@ class ProjectCard extends React.Component {
       userID,
       acceptInviteCallBackModel,
       ownerId,
+      disabled,
+      admin_disabled
     } = this.props;
     const { currentUserRecord, fetchingProjectMembers } = this.state;
     const formattedMetrics = this.getProjectMemoryMetrics();
     return (
-      <div className="ProjectsCard">
+      <div  className={`ProjectsCard ${admin_disabled ? "unclickable":""}  ${disabled || admin_disabled ? "opequeCard":""}`} title={(disabled === true && !admin_disabled) ? "Disabled project": admin_disabled ? "Admin disabled this project": name  }>
         <div className="appCount" title={`${apps_count} Apps in this project`}>
           <div>{apps_count}</div>
         </div>
@@ -92,6 +95,7 @@ class ProjectCard extends React.Component {
               pathname: `/projects/${cardID}/dashboard`,
               projectData: name,
             }}
+            className={`${admin_disabled ? "killPointerActions":""}`}
             key={cardID}
           >
             <div className="ProjectImageDiv">
@@ -132,6 +136,7 @@ class ProjectCard extends React.Component {
                       }
                     : null
                 }
+                className={`${admin_disabled ? "killPointerActions":""}`}
                 onClick={() => {
                   acceptInviteCallBackModel(
                     cardID,
@@ -140,8 +145,11 @@ class ProjectCard extends React.Component {
                 }}
                 key={cardID}
               >
-                <div className="ProjectsCardName">{name}</div>
+                <div className={`ProjectsCardName`}>{name}</div>
               </Link>
+              {admin_disabled && <div className="AlertIcon" title="Project disabled by Admin">
+              <AlertWarning/>
+              </div> }
             </div>
             <div className="ProjectDescription">{description}</div>
           </div>

@@ -1,6 +1,4 @@
-import React from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import React, { useEffect, useState, useCallback } from "react";
 import Header from "../Header";
 import InformationBar from "../InformationBar";
 import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
@@ -9,176 +7,164 @@ import Spinner from "../Spinner";
 import CreateAdminDB from "./CreateAdminDB";
 import adminGetDatabases from "../../redux/actions/getAdminDatabases";
 import styles from "./AdminDB.module.css";
+import usePaginator from "../../hooks/usePaginator";
+import Pagination from "../../components/Pagination"
+import { useSelector, useDispatch } from "react-redux";
 
-class AdminDBList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.initialState = {
-      openCreateComponent: false,
-    };
-    this.state = this.initialState;
-    this.showCreateComponent = this.showCreateComponent.bind(this);
-    this.callbackCreateComponent = this.callbackCreateComponent.bind(this);
-  }
+const AdminDBList = () => {
+  const [openCreateComponent, setOpenCreateComponent] = useState(false)
+  const dispatch = useDispatch();
+  const [currentPage, handleChangePage] = usePaginator();
+  const clusterName = localStorage.getItem("clusterName");
+  const clusterID = localStorage.getItem("clusterID");
+  const databaseResources = useCallback(
+    () => dispatch(adminGetDatabases(currentPage)),
+    [dispatch, currentPage]
+  );
+  useEffect(() => {
+    databaseResources();
+  }, [databaseResources]);
 
-  componentDidMount() {
-    const { adminGetDatabases } = this.props;
-    adminGetDatabases();
-  }
+  const { databases, databasesFetched, isFetchingDatabases, pagination } = useSelector(
+    (state) => state.adminDatabasesReducer
+  );
+  const { isCreated } = useSelector(
+    (state) => state.adminCreateDBReducer
+  );
 
-  componentDidUpdate(prevProps) {
-    const { isCreated, adminGetDatabases } = this.props;
-
-    if (isCreated !== prevProps.isCreated) {
-      adminGetDatabases();
-      this.callbackCreateComponent();
-    }
-  }
+  useEffect(() => {
+    callbackCreateComponent();
+    dispatch(adminGetDatabases(currentPage))
+  }, [currentPage,isCreated,dispatch]);
   
-
-  showCreateComponent() {
-    this.setState({ openCreateComponent: true });
+  const showCreateComponent = () => {
+    setOpenCreateComponent(true)
   }
 
-  callbackCreateComponent() {
-    this.setState({ openCreateComponent: false });
+  const callbackCreateComponent = () => {
+    setOpenCreateComponent(false)
   }
 
-  render() {
-    const { databases, isFetchingDatabases, databasesFetched } = this.props;
-    const { openCreateComponent } = this.state;
+  const handlePageChange = (currentPage) => {
+    handleChangePage(currentPage);
+    databaseResources()
+  };
 
-    const sortedDbs = databases.sort((a, b) =>
-      b.date_created > a.date_created ? 1 : -1
-    );
-    const clusterName = localStorage.getItem("clusterName");
-    return (
-      <div className={styles.MainPage}>
-        <div className="TopBarSection">
-          <Header />
+
+  const sortedDbs = databases.sort((a, b) =>
+    b.date_created > a.date_created ? 1 : -1
+  );
+  return (
+    <div className={styles.MainPage}>
+      <div className="TopBarSection">
+        <Header />
+      </div>
+      <div className={styles.MainSection}>
+        <div className="SideBarSection">
+          <SideNav clusterName={clusterName} clusterId={clusterID} />
         </div>
-        <div className={styles.MainSection}>
-          <div className="SideBarSection">
-            <SideNav clusterName={clusterName} clusterId={"123"} />
-          </div>
-          {openCreateComponent ? (
-            <CreateAdminDB closeComponent={this.callbackCreateComponent} />
-          ) : (
-            <div className={styles.MainContentSection}>
-              <div className={styles.InformationBarSection}>
-                <InformationBar
-                  header="Databases"
-                  showBtn
-                  btnAction={this.showCreateComponent}
-                />
-              </div>
-              <div className={styles.ContentSection}>
-                {isFetchingDatabases ? (
-                  <div className={styles.NoResourcesMessageSection}>
-                    <div className={styles.SpinnerWrapper}>
-                      <Spinner size="big" />
-                    </div>
+        {openCreateComponent ? (
+          <CreateAdminDB closeComponent={callbackCreateComponent} />
+        ) : (
+          <div className={styles.MainContentSection}>
+            <div className={styles.InformationBarSection}>
+              <InformationBar
+                header="Databases"
+                showBtn
+                buttontext="+ new database"
+                btnAction={showCreateComponent}
+              />
+            </div>
+            <div className={styles.ContentSection}>
+              {isFetchingDatabases ? (
+                <div className={styles.NoResourcesMessageSection}>
+                  <div className={styles.SpinnerWrapper}>
+                    <Spinner size="big" />
                   </div>
-                ) : (
-                  databasesFetched &&
-                  databases.length > 0 && (
+                </div>
+              ) : (
+                databasesFetched &&
+                databases.length > 0 && (
+                  <div
+                    className={`${styles.DatabaseTable} MetricsCardContainer`}
+                  >
                     <div
-                      className={`${styles.DatabaseTable} MetricsCardContainer`}
+                      className={`${styles.DatabaseTableRow} CardHeaderSection`}
                     >
-                      <div
-                        className={`${styles.DatabaseTableRow} CardHeaderSection`}
-                      >
-                        <div className={styles.DatabaseTableHead}>Type</div>
-                        <div className={styles.DatabaseTableHead}>Name</div>
-                        <div className={styles.DatabaseTableHead}>Host</div>
-                        <div className={styles.DatabaseTableHead}>Age</div>
-                      </div>
-                      {databasesFetched &&
-                        sortedDbs !== undefined &&
-                        sortedDbs.map((database, index) => (
-                          <div className={styles.DatabaseBody} key={index}>
-                            <div
-                              key={database.id}
-                              className={styles.DatabaseTableRow}
-                            >
-                              <div className={styles.DatabaseTableCell}>
-                                {database.database_flavour_name}
-                              </div>
-                              <div className={styles.DatabaseTableCell}>
-                                {database.name}
-                              </div>
-                              <div className={styles.DatabaseTableCell}>
-                                {database.host}
-                              </div>
-                              <div className={styles.DatabaseTableCell}>
-                                {database.age}
-                              </div>
+                      <div className={styles.DatabaseTableHead}>
+                        Type
+                        </div>
+                      <div className={styles.DatabaseTableHead}>Name</div>
+                      <div className={styles.DatabaseTableHead}>Host</div>
+                      <div className={styles.DatabaseTableHead}>Age</div>
+                    </div>
+                    {databasesFetched &&
+                      sortedDbs !== undefined &&
+                      sortedDbs.map((database, index) => (
+                        <div className={styles.DatabaseBody} key={index}>
+                          <div
+                            key={database.id}
+                            className={styles.DatabaseTableRow}
+                          >
+                            <div className={styles.DatabaseTableCell}>
+                              {database.database_flavour_name}
+                            </div>
+                            <div className={styles.DatabaseTableCell}>
+                              {database.name}
+                            </div>
+                            <div className={styles.DatabaseTableCell}>
+                              {database.host}
+                            </div>
+                            <div className={styles.DatabaseTableCell}>
+                              {database.age}
                             </div>
                           </div>
-                        ))}
-                    </div>
-                  )
-                )}
-
-                {databasesFetched && databases.length === 0 && (
-                  <div className={styles.NoResourcesMessageSection}>
-                    <div className={styles.NoResourcesMessage}>
-                      You haven’t created any databases yet.
-                    </div>
-                    <br></br>
-                    <div className={styles.NoResourcesMessage}>
-                      Click the &nbsp;{" "}
-                      <ButtonPlus
-                        className={styles.ButtonPlusSmall}
-                        onClick={this.showCreateComponent}
-                      />{" "}
-                      &nbsp; button to create one.
-                    </div>
+                        </div>
+                      ))}
                   </div>
-                )}
+                )
+              )}
 
-                {!isFetchingDatabases && !databasesFetched && (
+              {databasesFetched && databases.length === 0 && (
+                <div className={styles.NoResourcesMessageSection}>
                   <div className={styles.NoResourcesMessage}>
-                    Oops! Something went wrong! Failed to retrieve Databases.
+                    You haven’t created any databases yet.
                   </div>
-                )}
-              </div>
+                  <br></br>
+                  <div className={styles.NoResourcesMessage}>
+                    Click the &nbsp;{" "}
+                    <ButtonPlus
+                      className={styles.ButtonPlusSmall}
+                      onClick={showCreateComponent}
+                    />{" "}
+                    &nbsp; button to create one.
+                  </div>
+                </div>
+              )}
+
+              {!isFetchingDatabases && !databasesFetched && (
+                <div className={styles.NoResourcesMessage}>
+                  Oops! Something went wrong! Failed to retrieve Databases.
+                </div>
+              )}
+              {pagination?.pages > 1 && (
+                <div className="AdminPaginationSection">
+                  <Pagination
+                    total={pagination.pages}
+                    current={currentPage}
+                    onPageChange={handlePageChange}
+                  />
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
-    );
-  }
+    </div>
+  );
+
 }
 
-AdminDBList.propTypes = {
-  databases: PropTypes.arrayOf(PropTypes.shape({})),
-  getProjectDatabases: PropTypes.func,
-  isFetchingDatabases: PropTypes.bool,
-  databasesFetched: PropTypes.bool,
-  isCreated: PropTypes.bool,
-};
 
-AdminDBList.defaultProps = {
-  databases: [],
-  isFetchingDatabases: false,
-  databasesFetched: false,
-};
 
-export const mapStateToProps = (state) => {
-  const { databases, databasesFetched, isFetchingDatabases } =
-    state.adminDatabasesReducer;
-  const { isCreated } = state.adminCreateDBReducer;
-  return {
-    databases,
-    isCreated,
-    databasesFetched,
-    isFetchingDatabases,
-  };
-};
-
-const mapDispatchToProps = {
-  adminGetDatabases,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AdminDBList);
+export default AdminDBList;

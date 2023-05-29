@@ -60,6 +60,7 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   position: absolute;
   top: 100%;
   width: 10rem;
+  z-index: 20px;
   right: 0;
 }
 
@@ -87,7 +88,7 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   background-color: #f9f9f9;
   display: flex;
   flex-direction: column;
-  z-index: 1;
+  z-index: 10px;
   box-shadow: 0 4px 4px 0 rgba(117, 117, 117, 0.2);
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */

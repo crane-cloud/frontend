@@ -9,21 +9,23 @@ const initialState = {
   databases: [],
   isFetchingDatabases: false,
   databasesFetched: false,
+  pagination:{},
   databasesMessage: "Database information Not Available",
 };
 
 const fetchAction = {
   type: ADMIN_ALL_DATABASES_SUCCESS,
-  databases: undefined,
-  isFetchingDatabases: false,
-  databasesFetched: true,
-  databasesMessage: "Fetched databases",
+  payload: {
+    databases:[],
+    pagination:{}
+  }
 };
 
 const fetchFailedAction = {
   type: ADMIN_ALL_DATABASES_FAIL,
   isFetchingDatabases: false,
   databasesFetched: false,
+  pagination:{},
   databasesMessage: "Error fetching databases",
 };
 
@@ -38,9 +40,10 @@ describe("adminDatabasesReducer initial state", () => {
 
   it("should handle database added", () => {
     expect(adminDatabasesReducer(initialState, fetchAction)).toEqual({
-      databases: undefined,
+      databases: [],
       isFetchingDatabases: false,
       databasesFetched: true,
+      pagination:{},
       databasesMessage: "Fetched databases",
     });
   });
@@ -50,6 +53,7 @@ describe("adminDatabasesReducer initial state", () => {
       isFetchingDatabases: false,
       databasesFetched: false,
       databasesMessage: "Error fetching databases",
+      pagination:{},
       databases: []
     });
   });
@@ -59,6 +63,7 @@ describe("adminDatabasesReducer initial state", () => {
       databasesFetched: false,
       isFetchingDatabases: true,
       databases: [],
+      pagination:{},
       databasesMessage: "Database information Not Available"
     });
   });

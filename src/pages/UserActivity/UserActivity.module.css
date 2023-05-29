@@ -1,9 +1,17 @@
-.SmallContainer{
+.SmallContainer {
   display: grid;
   grid-template-rows: 3rem 3rem auto;
   padding: 2rem;
   gap: 1rem;
-  background: var( --gray-bg-light-color);
+  background: var(--gray-bg-light-color);
+}
+
+.Page {
+  display: flex;
+  flex-flow: column;
+  min-height: 100vh;
+  flex-direction: column;
+  background-color: var(--gray-bg-light-color);
 }
 .Page{
   display: flex;
@@ -19,87 +27,118 @@
   width: -webkit-fill-available;
   border-radius: unset;
 }
-.Header{
+
+.Header {
   display: flex;
-  align-items: center;
+  position: relative;
   justify-content: space-between;
-  flex-wrap: wrap;
+  flex-direction: row;
 }
 
-.Heading{
+.Heading {
   font-weight: bolder;
   line-height: 1.8;
   font-size: larger;
 }
 
-.SimpleForm{
+.ActivityHeader {
   display: flex;
-  width: 60%;
-  gap: .5rem;
+  gap: 1rem;
 }
 
-.BackButton{
-  background:var(--primary-color);
+.BackIconArea {
+  padding-top: 4px;
+}
+
+.BackIconSize {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.ActivityPageTitle {
+  color: #000;
+  padding-top: 0.5rem;
+}
+
+/* .ActivityHeader {
+  padding-top: 0.5rem;
+} */
+
+.SimpleForm {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  position: relative;
+}
+
+.opacityClass {
+  opacity: .2;
+}
+
+.BackButton {
+  background: var(--primary-color);
   outline: none;
 }
 
-.FilterButton{
+.FilterButton {
   outline: none;
   background: unset;
   border: 1px solid black;
   color: #000;
 }
-.FilterButton:hover{
+
+.FilterButton:hover {
   border: none;
 }
 
-.Table{
+.Table {
   background: #ffffff;
   border-radius: 15px;
   padding: 1rem 2rem;
 }
 
-.TableRow{
+.TableRow {
   display: flex;
   align-items: center;
   gap: 1.5rem;
 }
 
-.Success{
+.Success {
   color: green;
 }
 
-.Danger{
+.Danger {
   color: red;
 }
 
-.Entity{
+.Entity {
   color: var(--primary-color);
 }
 
-.hr{
+.hr {
   margin: .5rem 0;
 }
 
-.Row{
+.Row {
   display: flex;
   justify-content: space-between;
   width: -webkit-fill-available;
 }
 
-.Bold{
+.Bold {
   font-weight: bold;
   font-size: 17px;
 }
 
-.RowCell{
+.RowCell {
   display: flex;
   gap: 1rem;
 }
 
-.LastCell{
+.LastCell {
   align-self: flex-end;
 }
+
 .UserAvatar {
   width: 2.8rem;
   height: 2.8rem;
@@ -110,4 +149,235 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.Filter {
+  width: 10rem;
+  height: 40px;
+  border: 1px solid #000000;
+  display: flex;
+  padding-left: 7px;
+  padding-right: 7px;
+  z-index: 1;
+  background-color: #fff;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 9px;
+}
+
+.RelativeContainer {
+  position: relative;
+}
+
+.BelowHeader {
+  background-color: #f9f9f9;
+  position: relative;
+  left: -2rem;
+  z-index: 999;
+}
+
+.contextMenu {
+  color: #000;
+  background-color: #f9f9f9;
+  /* display: flex;
+  flex-direction: column; */
+  z-index: 1;
+  box-shadow: 0 4px 4px 0 rgba(117, 117, 117, 0.2);
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  cursor: pointer;
+  /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+
+.FilterDropdown {
+  width: 21rem;
+  right: 0;
+  overflow-y: auto;
+  position: absolute;
+  top: 3px;
+  transition: all;
+  z-index: 5;
+  overflow-x: hidden;
+  /* max-height: 23rem; */
+  overflow: visible;
+  border: 1px solid #000000;
+  display: flex;
+  background-color: #fff;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 9px;
+}
+
+.DownArrow {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-self: center;
+  fill: black;
+}
+
+.UpArrow {
+  width: 2rem;
+  display: flex;
+  align-self: center;
+  fill: black;
+}
+
+.DoubleArrow,
+.UpArrow,
+.DownArrow:hover {
+  cursor: pointer;
+}
+
+.FilterText {
+  font-weight: 400;
+  font-size: 15px;
+  text-align: center;
+  color: #555555;
+}
+
+.OnHeader:hover .DropdownArrowSvg {
+  fill: var(--secondary-color);
+}
+
+.FilterItemContainer {
+  width: 21rem;
+  font-size: 15px;
+  font-weight: 500;
+  border-bottom: 1px solid #ccc;
+}
+
+.FilterItem {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: .4rem 1rem .8rem 1rem;
+  position: relative;
+}
+
+.OuterFilterItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  width: 20rem;
+  height: 40px;
+  margin-right: 1rem;
+  border-radius: 9px;
+  border: 1px solid #000000;
+}
+
+.dateField {
+  width: 6rem;
+}
+
+.InnerDropDown {
+  position: absolute;
+  width: 10rem;
+  max-height: 15rem;
+  background-color: #e2f5ff;
+  z-index: 11;
+  overflow-y: auto;
+  overflow-x: hidden;
+  right: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  top: 46px;
+  display: flex;
+  box-shadow: 0 4px 4px 0 rgb(117 117 117 / 20%);
+  flex-direction: column;
+}
+
+.InnerDropDownLowerhalf {
+  position: absolute;
+  width: 10rem;
+  max-height: 15rem;
+  background-color: #e2f5ff;
+  z-index: 11;
+  overflow-y: auto;
+  overflow-x: hidden;
+  right: 37px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  bottom: 46px;
+  display: flex;
+  box-shadow: 0 4px 4px 0 rgb(117 117 117 / 20%);
+  flex-direction: column;
+}
+
+.InnerDropDownItem {
+  display: flex;
+  text-align: start;
+  padding: 10px 10px 2px 10px;
+  border-bottom: 1px solid #ccc;
+  text-transform: capitalize;
+}
+
+.InnerDropDownItem:hover {
+  cursor: pointer;
+  background-color: #c1e6fa;
+}
+
+.SelectOption {
+  font-size: 13px;
+}
+
+.SelectorBox {
+  width: 95%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 29px;
+  padding: 2px 3px 2px 5px;
+  margin-top: 3px;
+  border-radius: 9px;
+  border: 2px solid #000000;
+  text-transform: capitalize;
+}
+
+.DateSection {
+  padding: 2px 0px 2px 0px;
+  display: flex;
+  flex-direction: row;
+  font-size: 15px;
+  justify-content: space-between;
+  align-items: center;
+  height: 25px;
+  gap: .5rem;
+  margin-top: 3px;
+}
+
+.DateItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.DateSection:hover {
+  cursor: pointer;
+}
+
+.CalenderToposition,
+.CalenderFromposition {
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  padding: 0.5rem;
+  display: grid;
+  gap: 1rem;
+  position: absolute;
+  z-index: 10;
+  left: 0.1rem;
+  width: 58%;
 }

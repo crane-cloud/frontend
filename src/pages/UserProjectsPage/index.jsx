@@ -6,6 +6,7 @@ import styles from "./UserProjectsPage.module.css";
 import InformationBar from "../../components/InformationBar";
 import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import Header from "../../components/Header";
+import Pagination from "../../components/Pagination";
 import getClustersList from "../../redux/actions/clusters";
 import CreateProject from "../../components/CreateProject";
 import getUserProjects from "../../redux/actions/projectsList";
@@ -24,7 +25,7 @@ class UserProjectsPage extends React.Component {
     this.initialState = {
       openCreateComponent: false,
       Searchword: "",
-      SearchList: [],
+      // SearchList: [],
       myProjectsList: [],
       sharedProjectsList: [],
       showInviteModel: false,
@@ -35,6 +36,7 @@ class UserProjectsPage extends React.Component {
       acceptingInvitation: false,
       invitationError: "",
       currentTab: "My Projects",
+      currentPaginationPage: 1,
     };
     this.state = this.initialState;
     this.openProjectCreateComponent =
@@ -49,20 +51,17 @@ class UserProjectsPage extends React.Component {
       this.handleInvitationAcceptence.bind(this);
     this.handleInvitationDecline = this.handleInvitationDecline.bind(this);
     this.filterProjects = this.filterProjects.bind(this);
+    this.onPageChange = this.onPageChange.bind(this);
   }
 
   componentDidMount() {
-    const {
-      getClustersList,
-      getUserProjects,
-      data,
-      getUserCredits,
-    } = this.props;
-    getUserProjects(data.id);
+    const { getClustersList, getUserProjects, data, getUserCredits } =
+      this.props;
+    //add page 1
+    getUserProjects(this.state.currentPaginationPage);
     getClustersList();
     getUserCredits(data.id);
   }
-
   componentDidUpdate(prevProps, prevState) {
     const {
       isAdded,
@@ -76,18 +75,18 @@ class UserProjectsPage extends React.Component {
     const { Searchword } = this.state;
 
     if (isDeleted !== prevProps.isDeleted) {
-      getUserProjects();
+      getUserProjects(this.state.currentPaginationPage);
       getClustersList();
     }
 
     if (isUpdated !== prevProps.isUpdated) {
       clearUpdateProjectState();
-      getUserProjects();
+      getUserProjects(this.state.currentPaginationPage);
       getClustersList();
     }
 
     if (isAdded !== prevProps.isAdded) {
-      getUserProjects();
+      getUserProjects(this.state.currentPaginationPage);
       this.setState(this.initialState);
     }
     if (isFetched !== prevProps.isFetched) {
@@ -107,26 +106,28 @@ class UserProjectsPage extends React.Component {
     this.setState({ openCreateComponent: true });
   }
   callbackProjectCreateComponent() {
-    const {
-      getUserProjects
-    } = this.props;
-    getUserProjects()
+    const { getUserProjects } = this.props;
     this.setState(this.initialState);
+    getUserProjects(this.state.currentPaginationPage);
   }
   searchThroughProjects() {
     const { Searchword } = this.state;
-    const { projects } = this.props;
-    let searchResult = [];
-    projects.forEach((element) => {
-      if (element.name.toLowerCase().includes(Searchword.toLowerCase())) {
-        searchResult.push(element);
-      }
-    });
-    this.setState({
-      SearchList: searchResult.sort((a, b) =>
-        b.date_created > a.date_created ? 1 : -1
-      ),
-    });
+    const { getUserProjects } = this.props;
+    //reset pagination
+    this.setState({currentPaginationPage:1})
+    getUserProjects(1,Searchword);
+    // ?keywords=black
+    // let searchResult = [];
+    // projects.forEach((element) => {
+    //   if (element.name.toLowerCase().includes(Searchword.toLowerCase())) {
+    //     searchResult.push(element);
+    //   }
+    // });
+    // this.setState({
+    //   SearchList: searchResult.sort((a, b) =>
+    //     b.date_created > a.date_created ? 1 : -1
+    //   ),
+    // });
   }
   hideInvitationModel() {
     this.setState({ showInviteModel: false });
@@ -157,7 +158,7 @@ class UserProjectsPage extends React.Component {
           decliningInvitation: false,
         });
         this.hideInvitationModel();
-        getUserProjects();
+        getUserProjects(this.state.currentPaginationPage);
       })
       .catch((error) => {
         this.setState({
@@ -182,7 +183,7 @@ class UserProjectsPage extends React.Component {
           acceptingInvitation: false,
         });
         this.hideInvitationModel();
-        getUserProjects();
+        getUserProjects(this.state.currentPaginationPage);
       })
       .catch((error) => {
         this.setState({
@@ -203,17 +204,36 @@ class UserProjectsPage extends React.Component {
         sharedProjects.push(element);
       }
     });
+    //by default show category with more  projects
+    if(myProjects.length < sharedProjects.length){
+      this.setState({
+        selectedProjects: "Shared Projects",
+        currentTab: "Shared Projects",
+      });
+    }else {
+      this.setState({
+        selectedProjects: "My projects",
+        currentTab: "My projects",
+      });
+    }
     return {
       sharedProjects,
       myProjects,
     };
+  }
+  onPageChange(page) {
+    const { getUserProjects } = this.props;
+    this.setState({
+      currentPaginationPage: page,
+    });
+    getUserProjects(page);
   }
 
   render() {
     const {
       openCreateComponent,
       Searchword,
-      SearchList,
+      // SearchList,
       showInviteModel,
       selectedProjects,
       inviteeModelRole,
@@ -226,6 +246,7 @@ class UserProjectsPage extends React.Component {
     } = this.state;
     const {
       projects,
+      pagination,
       isRetrieving,
       isFetched,
       match: { params },
@@ -278,7 +299,7 @@ class UserProjectsPage extends React.Component {
                       <span>
                         <User className={styles.SmallerIcon} />
                       </span>
-                      <span>My Projects</span>
+                      <span>My Projects <span title="Projects">{`(${myProjectsList?.length})`}</span></span>
                     </div>
                   </span>
                   <span
@@ -298,7 +319,7 @@ class UserProjectsPage extends React.Component {
                       <span>
                         <Users className={styles.SmallerIcon} />
                       </span>
-                      <span>Shared Projects</span>
+                      <span>Shared Projects <span title="Projects">{`(${sharedProjectsList?.length})`}</span> </span>
                     </div>
                   </span>
                 </div>
@@ -312,8 +333,8 @@ class UserProjectsPage extends React.Component {
               ) : Searchword !== "" ? (
                 <div className={`${styles.ProjectList}  SmallContainer`}>
                   {isFetched &&
-                    SearchList !== undefined &&
-                    SearchList.map((project) => (
+                    sortedProjects !== undefined &&
+                    sortedProjects.map((project) => (
                       <ProjectCard
                         key={project.id}
                         name={project.name}
@@ -323,6 +344,8 @@ class UserProjectsPage extends React.Component {
                         userID={data.id}
                         ownerId={project.owner_id}
                         apps_count={project.apps_count}
+                        disabled={project.disabled}
+                        admin_disabled={project.admin_disabled}
                       />
                     ))}
                 </div>
@@ -340,10 +363,13 @@ class UserProjectsPage extends React.Component {
                         ownerId={project.owner_id}
                         acceptInviteCallBackModel={this.showInvitationModel}
                         apps_count={project.apps_count}
+                        disabled={project.disabled}
+                        admin_disabled={project.admin_disabled}
                       />
                     ))}
                 </div>
               )}
+
               {showInviteModel === true && (
                 <div className={styles.ProjectDeleteModel}>
                   <Modal
@@ -396,14 +422,29 @@ class UserProjectsPage extends React.Component {
               )}
               {displayProjects.length === 0 && (
                 <div className={styles.NoResourcesMessage}>
-                  {selectedProjects === "My projects" ? (
-                    <div>
+                  
+                  {selectedProjects === "My projects"  ? (
+                    <>
+                    {this.state.currentPaginationPage === 1 ? 
+                      <div>
                       You haven’t created any projects yet. Click the &nbsp;{" "}
                       <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp;
                       button to add a project.
+                    </div>: 
+                      <div>
+                      This page of you personal projects contains no projects, switch tabs to shared to see Projects &nbsp; Or click 
+                      {" "} <ButtonPlus className={styles.ButtonPlusSmall} />&nbsp;
+                      button to add a project.
                     </div>
+                    }
+                    </>
                   ) : (
-                    <>No project has been shared with you as yet.</>
+                    <>
+                    {this.state.currentPaginationPage === 1 ? 
+                    <>No project has been shared with you as yet.</>:
+                    <>This page contains no shared projects.</>
+                    }
+                    </>
                   )}
                 </div>
               )}
@@ -423,6 +464,16 @@ class UserProjectsPage extends React.Component {
           </div>
         )}
         <div className={styles.FooterRow}>
+        {(pagination?.pages > 1 && !isRetrieving && isFetched && !openCreateComponent) && (
+          <div className={styles.PaginationSection}>
+            {/* customise pagination for shared and personal projects */}
+            <Pagination
+              total={pagination?.pages}
+              current={this.state.currentPaginationPage}
+              onPageChange={this.onPageChange} 
+            />
+          </div>
+        )}
           <div>
             Copyright {new Date().getFullYear()} Crane Cloud. All Rights
             Reserved.
@@ -436,6 +487,7 @@ class UserProjectsPage extends React.Component {
 UserProjectsPage.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.shape({})),
   clusters: PropTypes.object,
+  pagination: PropTypes.shape({}),
   getClustersList: PropTypes.func.isRequired,
   getUserProjects: PropTypes.func.isRequired,
   data: PropTypes.shape({
@@ -453,6 +505,7 @@ UserProjectsPage.propTypes = {
 UserProjectsPage.defaultProps = {
   clusters: [],
   projects: [],
+  pagination: {},
   isFetched: false,
   isRetrieving: false,
 };
@@ -461,12 +514,14 @@ export const mapStateToProps = (state) => {
   const { data } = state.user;
 
   const { clusters } = state.clustersReducer;
-  const { isRetrieving, projects, isFetched } = state.userProjectsReducer;
+  const { isRetrieving, projects, isFetched, pagination } =
+    state.userProjectsReducer;
   const { credits } = state.userCreditsReducer;
   return {
     data,
     isRetrieving,
     projects,
+    pagination,
     clusters,
     isFetched,
     credits,

@@ -1,6 +1,4 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React, {useEffect} from "react";
 import Header from "../Header";
 import InformationBar from "../InformationBar";
 import SideNav from "../SideNav";
@@ -8,31 +6,37 @@ import getPvcs from "../../redux/actions/pvcs";
 import Status from "../Status";
 import tellAge from "../../helpers/ageUtility";
 import Spinner from "../Spinner";
+import Pagination from "../../components/Pagination";
+import { useSelector, useDispatch } from "react-redux";
+import usePaginator from "../../hooks/usePaginator";
+// import { useParams } from "react-router-dom";
 
-class PvcsListPage extends React.Component {
-  componentDidMount() {
-    const { getPvcs } = this.props;
-    const {
-      match: { params },
-    } = this.props;
-    getPvcs(params.clusterID);
-  }
+const  PvcsListPage =()=> {
+  const { isRetrieving, pvcs, isFetched, pagination } = useSelector(
+    (state) => state.pvcsReducer
+  );
+  const dispatch = useDispatch();
+  const clusterID = localStorage.getItem("clusterID");
+  const clusterName = localStorage.getItem("clusterName");
+  const [currentPage, handleChangePage] = usePaginator();
+  
+  useEffect(() => {
+    dispatch(getPvcs(clusterID, currentPage));
+  }, [currentPage,clusterID,dispatch]);
 
-  render() {
-    const { pvcs, isRetrieving, isFetched } = this.props;
-    const clusterName = localStorage.getItem("clusterName");
-    const {
-      match: { params },
-    } = this.props;
-
+  const handlePageChange = (currentPage) => {
+    handleChangePage(currentPage);
+    dispatch(getPvcs(clusterID, currentPage));
+  };
     return (
+      <>
       <div className="MainPage">
         <div className="TopBarSection">
           <Header />
         </div>
         <div className="MainSection">
           <div className="SideBarSection">
-            <SideNav clusterName={clusterName} clusterId={params.clusterID} />
+            <SideNav clusterName={clusterName} clusterId={clusterID} />
           </div>
           <div className="MainContentSection">
             <div className="InformationBarSection">
@@ -57,11 +61,11 @@ class PvcsListPage extends React.Component {
                   {isRetrieving ? (
                     <tbody>
                       <tr className="TableLoading">
-                        <td>
-                          <div className="SpinnerWrapper">
-                            <Spinner size="big" />
-                          </div>
-                        </td>
+                      <td className="TableTdSpinner">
+                        <div className="SpinnerWrapper">
+                          <Spinner size="big" />
+                        </div>
+                      </td>
                       </tr>
                     </tbody>
                   ) : (
@@ -81,7 +85,7 @@ class PvcsListPage extends React.Component {
                   )}
                 </table>
 
-                {isFetched && pvcs.length === 0 && (
+                {isFetched && pvcs?.length === 0 && (
                   <div className="NoResourcesMessage">
                     <p>No Volume Claims Available</p>
                   </div>
@@ -95,39 +99,22 @@ class PvcsListPage extends React.Component {
                   </div>
                 )}
               </div>
+              {pagination?.pages > 1 && (
+            <div className="AdminPaginationSection">
+              <Pagination
+                total={pagination.pages}
+                current={currentPage}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          )}
             </div>
           </div>
         </div>
       </div>
+      </>
     );
-  }
+  
 }
 
-PvcsListPage.propTypes = {
-  getPvcs: PropTypes.func,
-  pvcs: PropTypes.arrayOf(PropTypes.object),
-  isRetrieving: PropTypes.bool,
-  isFetched: PropTypes.bool,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      clusterID: PropTypes.string,
-    }),
-  }),
-};
-
-PvcsListPage.defaultProps = {
-  pvcs: [],
-  isRetrieving: false,
-  isFetched: false,
-};
-
-export const mapStateToProps = (state) => {
-  const { isRetrieving, pvcs, isFetched } = state.pvcsReducer;
-  return { isRetrieving, pvcs, isFetched };
-};
-
-const mapDispatchToProps = {
-  getPvcs,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PvcsListPage);
+export default PvcsListPage;

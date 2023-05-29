@@ -6,11 +6,11 @@ import Spinner from "../Spinner";
 import InformationBar from "../InformationBar";
 import SideNav from "../SideNav";
 import React, { useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 const StorageClassList = () => {
-  const { clusterID } = useParams();
+  const  clusterID  = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
 
   const storageResources = useCallback(
@@ -58,7 +58,7 @@ const StorageClassList = () => {
                 {isRetrieving ? (
                   <tbody>
                     <tr className="TableLoading">
-                      <td>
+                    <td className="TableTdSpinner">
                         <div className="SpinnerWrapper">
                           <Spinner size="big" />
                         </div>

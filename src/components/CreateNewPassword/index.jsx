@@ -6,6 +6,8 @@ import Spinner from "../Spinner";
 import "./CreateNewPassword.css";
 import { API_BASE_URL } from "../../config";
 import InputText from "../InputText";
+import { ReactComponent as Open } from "../../assets/images/open.svg";
+import { ReactComponent as Closed } from "../../assets/images/close.svg";
 
 export default class CreateNewPassword extends React.Component {
   constructor() {
@@ -15,10 +17,20 @@ export default class CreateNewPassword extends React.Component {
       confirmPassword: "",
       loading: false,
       passreset: false,
+      passwordConfirmShown: false,
+      passwordShown: "",
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.togglePassword = this.togglePassword.bind(this);
+    this.togglePasswordConfirm = this.togglePasswordConfirm.bind(this);
+  }
+  togglePassword() {
+    this.setState({ passwordShown: !this.state.passwordShown });
+  }
+  togglePasswordConfirm() {
+    this.setState({ passwordConfirmShown: !this.state.passwordConfirmShown });
   }
 
   handleOnChange(e) {
@@ -82,7 +94,15 @@ export default class CreateNewPassword extends React.Component {
   }
 
   render() {
-    const { password, confirmPassword, loading, error, passreset } = this.state;
+    const {
+      password,
+      confirmPassword,
+      loading,
+      error,
+      passreset,
+      passwordShown,
+      passwordConfirmShown,
+    } = this.state;
 
     return (
       <div className="NewPasswordPageContainer">
@@ -96,20 +116,35 @@ export default class CreateNewPassword extends React.Component {
               </div>
               <div className="NewPasswordContentInputs">
                 {/* Input fields */}
-                <InputText
-                  placeholder="Password"
-                  name="password"
-                  type="password"
-                  value={password}
-                  onChange={this.handleOnChange}
-                />
-                <InputText
-                  placeholder="Confirm Password"
-                  name="confirmPassword"
-                  type="password"
-                  value={confirmPassword}
-                  onChange={this.handleOnChange}
-                />
+                <div className="password-wrap">
+                  <InputText
+                    placeholder="Password"
+                    name="password"
+                    type={passwordShown ? "text" : "password"}
+                    value={password}
+                    onChange={this.handleOnChange}
+                  />
+                  <div className="password" onClick={this.togglePassword}>
+                    {passwordShown ? <Open /> : <Closed />}
+                  </div>
+                </div>
+
+                <div className="password-repeat">
+                  <InputText
+                    placeholder="Confirm Password"
+                    name="confirmPassword"
+                    type={passwordConfirmShown ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={this.handleOnChange}
+                  />
+                  <div
+                    className="password"
+                    onClick={this.togglePasswordConfirm}
+                  >
+                    {passwordConfirmShown ? <Open /> : <Closed />}
+                  </div>
+                </div>
+
                 {error && <div className="NewPasswordErrorDiv">{error}</div>}
 
                 <PrimaryButton onClick={this.handleSubmit}>

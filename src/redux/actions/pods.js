@@ -23,11 +23,11 @@ export const getPodsFail = (error) => ({
   },
 });
 
-const getPodsList = (clusterId) => (dispatch) => {
+const getPodsList = (clusterId,page) => (dispatch) => {
   dispatch(startFetchingPods());
 
   return axios
-    .get(`/clusters/${clusterId}/pods`)
+    .get(`/clusters/${clusterId}/pods?page=${page}`)
     .then((response) => dispatch(getPodsSuccess(response)))
     .catch((error) => {
       dispatch(getPodsFail(error));
