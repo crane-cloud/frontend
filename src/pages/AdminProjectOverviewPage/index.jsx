@@ -22,6 +22,7 @@ import {
 import { retrieveProjectTypes } from "../../helpers/projecttypes.js";
 import { retrieveMonthNames } from "../../helpers/monthNames.js";
 import { filterGraphData } from "../../helpers/filterGraphData.js";
+import { namedOrganisations } from "../../helpers/projectOrganisations.js";
 import "./AdminProjectOverviewPage.css";
 
 const AdminProjectOverviewPage = () => {
@@ -32,15 +33,24 @@ const AdminProjectOverviewPage = () => {
   const [loading, setLoading] = useState(false);
   const [period, setPeriod] = useState("all");
   const projectTypeCounts = {};
+  const projectOrganisationCount = {};
   const graphDataArray = [];
   const graphData = {};
   const newGraphData = {};
   const newGraphDataArray = [];
+  let createNewPieChartData = [];
   let createPieChartData = [];
   let filteredGraphData = [];
   let newFilteredGraphData = [];
 
-  const COLORS = ['#0088FE', '#0DBC00', '#F9991A', '#AE0000','#000000','#800080'];
+  const COLORS = [
+    "#0088FE",
+    "#0DBC00",
+    "#F9991A",
+    "#AE0000",
+    "#000000",
+    "#800080",
+  ];
 
   useEffect(() => {
     getAllProjects();
@@ -94,6 +104,29 @@ const AdminProjectOverviewPage = () => {
     projectTypeCounts["Others"] = othersCount;
   }
 
+  const filteredOrganisationData = projects.filter((project) => {
+    const defaultProjectOrganisations = namedOrganisations().map(
+      (organisation) => organisation.value
+    );
+    return defaultProjectOrganisations.includes(project.organisation);
+  });
+
+  filteredOrganisationData.forEach((project) => {
+    const projectOrganisation = project.organisation;
+
+    if (!projectOrganisationCount[projectOrganisation]) {
+      projectOrganisationCount[projectOrganisation] = 1;
+    } else {
+      projectOrganisationCount[projectOrganisation]++;
+    }
+  });
+
+  const otherOrganisationCount =
+    projects.length - filteredOrganisationData.length;
+  if (otherOrganisationCount > 0) {
+    projectOrganisationCount["Others"] = otherOrganisationCount;
+  }
+   console.log(projectOrganisationCount);
   // create graph data for first graph
   const createGraphData = () => {
     if (!projects) {
@@ -226,18 +259,44 @@ const AdminProjectOverviewPage = () => {
     for (const type in projectTypeCounts) {
       const count = projectTypeCounts[type];
       const degree = (count / totalCount) * 100;
-      degrees[type]= degree.toFixed(1);
+      degrees[type] = degree.toFixed(1);
     }
-    const pieChartData = Object.entries(degrees).map(
-      ([type, degrees]) => ({
-        category: type,
-        value: parseFloat(degrees),
-      })
-    );
+    const pieChartData = Object.entries(degrees).map(([type, degrees]) => ({
+      category: type,
+      value: parseFloat(degrees),
+    }));
     return pieChartData;
   };
 
   createPieChartData();
+
+  createNewPieChartData = () => {
+    const percentage = {};
+    if (!projectOrganisationCount) {
+      return [];
+    }
+
+    const totalCount = Object.entries(projectOrganisationCount).reduce(
+      (totalCount, [ organisation , countOrganisation]) =>
+        totalCount + countOrganisation,
+      0
+    );
+    for (const organisation in projectOrganisationCount) {
+      const countOrganisation = projectOrganisationCount[organisation];
+      const percentages = (countOrganisation / totalCount) * 100;
+      percentage[organisation] = percentages.toFixed(2);
+    }
+
+    const newPieChartData = Object.entries(percentage).map(
+      ([organisation, percentage]) => ({
+        category: organisation,
+        value: parseFloat(percentage),
+      })
+    );
+    return newPieChartData;
+  };
+  createNewPieChartData();
+  console.log(createNewPieChartData());
 
   return (
     <div className="MainPage">
@@ -279,37 +338,106 @@ const AdminProjectOverviewPage = () => {
               </div>
             ) : null}
             <div className="TitleArea">
+              <div className="SectionTitle">Organisation Categories</div>
+            </div>
+            {loading ? (
+              <div className="ResourceSpinnerWrapper">
+                <Spinner size="big" />
+              </div>
+            ) : feedback !== "" ? (
+              <div className="NoResourcesMessage">{feedback}</div>
+            ) : Object.keys(projectOrganisationCount).length > 0 ? (
+              <div className="ClusterContainer">
+                {Object.keys(projectOrganisationCount).map(
+                  (projectOrganisation) => (
+                    <ResourceCard
+                      key={projectOrganisation}
+                      title={projectOrganisation}
+                      count={projectOrganisationCount[projectOrganisation]}
+                    />
+                  )
+                )}
+              </div>
+            ) : null}
+            <div className="TitleArea">
               <div className="SectionTitle">Project Categories Summary</div>
             </div>
             <div className="UserSection">
               <div className="piechart">
                 <PieChart width={350} height={350}>
                   <Pie
-                      data={createPieChartData()}
-                      dataKey="value"
-                      nameKey="category"
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={140}
-                      paddingAngle={3}
-                      fill="#8884d8"
-                      label={true}
-                    >
-                        {createPieChartData().map((entry, index) => (
-                          <Cell
-                            key={`cell-${index}`}
-                            fill={COLORS[index % COLORS.length]}
-                            
-                          />
-                        ))}
+                    data={createPieChartData()}
+                    dataKey="value"
+                    nameKey="category"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={140}
+                    paddingAngle={3}
+                    fill="#8884d8"
+                    label={true}
+                  >
+                    {createPieChartData().map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
                   </Pie>
                   <Tooltip />
                 </PieChart>
                 <div>
-                  <ul style={{display:'block'}}>
+                  <ul style={{ display: "block" }}>
                     {createPieChartData().map((entry, index) => (
-                      <li key={`list-item-${index}`} style={{padding: '10px'}}>
-                        <span style={{ color: COLORS[index % COLORS.length]}}>{entry.category} : </span>
+                      <li
+                        key={`list-item-${index}`}
+                        style={{ padding: "10px" }}
+                      >
+                        <span style={{ color: COLORS[index % COLORS.length] }}>
+                          {entry.category} :{" "}
+                        </span>
+                        {entry.value} %
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div className="TitleArea">
+              <div className="SectionTitle">Orgaisation Categories Summary</div>
+            </div>
+            <div className="UserSection">
+              <div className="piechart">
+                <PieChart width={350} height={350}>
+                  <Pie
+                    data={createNewPieChartData()}
+                    dataKey="value"
+                    nameKey="category"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={140}
+                    paddingAngle={3}
+                    fill="#8884d8"
+                    label={true}
+                  >
+                    {createNewPieChartData().map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+                <div>
+                  <ul style={{ display: "block" }}>
+                    {createNewPieChartData().map((entry, index) => (
+                      <li
+                        key={`list-item-${index}`}
+                        style={{ padding: "10px" }}
+                      >
+                        <span style={{ color: COLORS[index % COLORS.length] }}>
+                          {entry.category} :{" "}
+                        </span>
                         {entry.value} %
                       </li>
                     ))}
