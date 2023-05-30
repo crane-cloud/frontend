@@ -40,7 +40,7 @@ const AdminProjectOverviewPage = () => {
   let filteredGraphData = [];
   let newFilteredGraphData = [];
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042','#000000','#800080'];
+  const COLORS = ['#0088FE', '#0DBC00', '#F9991A', '#AE0000','#000000','#800080'];
 
   useEffect(() => {
     getAllProjects();
@@ -283,7 +283,7 @@ const AdminProjectOverviewPage = () => {
             </div>
             <div className="UserSection">
               <div className="piechart">
-                <PieChart width={400} height={400}>
+                <PieChart width={350} height={350}>
                   <Pie
                       data={createPieChartData()}
                       dataKey="value"
@@ -293,18 +293,28 @@ const AdminProjectOverviewPage = () => {
                       outerRadius={140}
                       paddingAngle={3}
                       fill="#8884d8"
-                      label={({ value }) => `${value}%`}
+                      label={true}
                     >
                         {createPieChartData().map((entry, index) => (
                           <Cell
                             key={`cell-${index}`}
                             fill={COLORS[index % COLORS.length]}
-                            label={({ value }) => `${value}°`}
+                            
                           />
                         ))}
                   </Pie>
                   <Tooltip />
                 </PieChart>
+                <div>
+                  <ul style={{display:'block'}}>
+                    {createPieChartData().map((entry, index) => (
+                      <li key={`list-item-${index}`} style={{padding: '10px'}}>
+                        <span style={{ color: COLORS[index % COLORS.length]}}>{entry.category} : </span>
+                        {entry.value} %
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
             <div className="TitleArea">
