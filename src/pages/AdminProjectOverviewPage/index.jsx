@@ -386,7 +386,7 @@ const AdminProjectOverviewPage = () => {
                   <Tooltip />
                 </PieChart>
                 <div>
-                  <ul style={{ display: "block" }}>
+                  <ul style={{display:'flex'}}>
                     {createPieChartData().map((entry, index) => (
                       <li
                         key={`list-item-${index}`}
@@ -429,7 +429,7 @@ const AdminProjectOverviewPage = () => {
                   <Tooltip />
                 </PieChart>
                 <div>
-                  <ul style={{ display: "block" }}>
+                  <ul style={{ display: "flex" }}>
                     {createNewPieChartData().map((entry, index) => (
                       <li
                         key={`list-item-${index}`}
