@@ -22,10 +22,16 @@ export const getAppsFail = (error) => ({
   },
 });
 
-const getAppsList = (projectID,page,per_page) => (dispatch) => {
+const getAppsList = (projectID,page,per_page,keyword="") => (dispatch) => {
   dispatch(startFetchingApps());
+  let link;
+  if(keyword){
+    link = `/projects/${projectID}/apps?per_page=${per_page}&page=${page}&keywords=${keyword}`;
+  }else{
+    link = `/projects/${projectID}/apps?per_page=${per_page}&page=${page}`;
+  }
   return axios
-    .get(`/projects/${projectID}/apps?per_page=${per_page}&&page=${page}`)
+    .get(link)
     .then((response) => {   
       dispatch(getAppsSuccess(response))     
     })

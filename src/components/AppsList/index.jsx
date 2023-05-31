@@ -51,19 +51,15 @@ class AppsList extends Component {
   }
 
   searchThroughApps() {
-    const { apps, word } = this.props;
-    let searchResult = [];
-    apps.apps.forEach((element) => {
-      if (element.name.toLowerCase().includes(word.toLowerCase())) {
-        searchResult.push(element);
-      }
-    });
-    this.setState({
-      SearchList: searchResult.sort((a, b) =>
-        b.date_created > a.date_created ? 1 : -1
-      ),
-    });
+  
+    const { getAppsList,word,params: { projectID } } = this.props;
+    const { appsPerPage } = this.state;
+    //reset pagination
+    this.setState({currentPaginationPage:1});
+
+    getAppsList(projectID,1,appsPerPage,word);
   }
+
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value,
@@ -101,6 +97,7 @@ class AppsList extends Component {
     );
     return (
       <div >
+        {console.log(allApps)}
         {isRetrieving ? (
           <div className={`${styles.NoAppsResourcesMessage} ${styles.Spinnerheight}`}>
             <div className={styles.SpinnerWrapper}>
@@ -111,7 +108,7 @@ class AppsList extends Component {
           <div className={styles.AppList}>
             {isRetrieved &&
               !isRetrieving &&
-              SearchList.map((app) => (
+              allApps.map((app) => (
                 <div key={app.id} className="AppCardItem">
                   <AppsCard
                     name={app.name}
