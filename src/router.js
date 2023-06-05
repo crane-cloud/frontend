@@ -63,6 +63,7 @@ import UserProjectsPage from "./pages/UserProjectsPage";
 import UserActivity from "./pages/UserActivity";
 import ProjectLogs from "./pages/ProjectLogs";
 import store from "./redux/store";
+import AdminUserOverviewPage from "./pages/AdminUserOverviewPage";
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
@@ -197,7 +198,7 @@ const Routes = () => (
         isAllowed={hasToken}
         exact
         path="/accounts"
-        component={UsersAccounts}
+        component={AdminUserOverviewPage}
       />
       <ProtectedRoute
         isAllowed={hasToken}
@@ -232,6 +233,11 @@ const Routes = () => (
         isAllowed={hasToken}
         path="/clusters/:clusterID/projects-listing"
         component={AdminProjectsPage}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        path="/clusters/:clusterID/users-listing"
+        component={UsersAccounts}
       />
       <ProtectedRoute
         isAllowed={hasToken}
