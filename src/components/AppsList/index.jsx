@@ -14,7 +14,7 @@ class AppsList extends Component {
     this.state = {
       rerender: false,
       Searchword: props.word,
-      SearchList: [],
+      // SearchList: [],
       currentPaginationPage: 1,
       appsPerPage: 8,
     };
@@ -85,7 +85,7 @@ class AppsList extends Component {
   }
 
   render() {
-    const { SearchList } = this.state;
+    // const { SearchList } = this.state;
     const {
       apps,
       isRetrieved,

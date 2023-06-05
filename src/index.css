@@ -239,7 +239,7 @@ div.ResourcesTable.LoadingResourcesTable {
 }
 .ResourcesTable table th {
   padding: 1rem;
-  text-align: center;
+  text-align: left;
 }
 
 .ResourcesTable table th:first-child,
@@ -256,6 +256,7 @@ div.ResourcesTable.LoadingResourcesTable {
 
 .ResourcesTable table td {
   padding: 0.8rem 1rem;
+  text-align: left;
   font-weight: normal;
 }
 .ResourcesTable td {
