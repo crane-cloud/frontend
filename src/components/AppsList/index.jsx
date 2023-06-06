@@ -13,8 +13,8 @@ class AppsList extends Component {
     super(props);
     this.state = {
       rerender: false,
-      Searchword: props.word,
-      SearchList: [],
+      // Searchword: props.word,
+      // SearchList: [],
       currentPaginationPage: 1,
       appsPerPage: 8,
     };
@@ -73,15 +73,19 @@ class AppsList extends Component {
     });
   }
   onPageChange(page) {
-    const { getAppsList, params: { projectID }, } = this.props;
+    const { getAppsList,word, params: { projectID }, } = this.props;
     this.setState({
       currentPaginationPage: page,
     });
-    getAppsList(projectID , page , this.state.appsPerPage);
+    if(word){
+      getAppsList(projectID , page , this.state.appsPerPage,word);
+    }else{
+      getAppsList(projectID , page , this.state.appsPerPage);
+    }
   }
 
   render() {
-    const { SearchList } = this.state;
+    // const { SearchList } = this.state;
     const {
       apps,
       isRetrieved,
@@ -142,6 +146,9 @@ class AppsList extends Component {
         )}
         {isRetrieved && sortedApps?.length === 0 && (
           <div className={styles.NoAppsError}>
+            {word ? <div className={styles.NoAppsResourcesMessage}>
+                No results for "{word}"
+              </div> :<>
             {message ? (
               message
             ) : (
@@ -154,6 +161,7 @@ class AppsList extends Component {
                 &nbsp; button to deploy an app.
               </div>
             )}
+            </>}
           </div>
         )}
         {!isRetrieving && !isRetrieved && (
