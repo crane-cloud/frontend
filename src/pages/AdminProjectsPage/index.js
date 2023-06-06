@@ -168,7 +168,7 @@ const AdminProjectsPage = () => {
                           <td
                             onClick={(e) => {
                               showContextMenu(project.id);
-                              this.handleClick(e);
+                              //handleClick(e);
                             }}
                           >
                             <MoreIcon />
