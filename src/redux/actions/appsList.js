@@ -5,11 +5,11 @@ import {
   START_GETTING_APPS,
 } from "./actionTypes";
 //to limit memory
-import {LRUCache } from "lru-cache";
+import LRU  from "lru-cache";
 
-const cache = new LRUCache({
-  max: 50, // Maximum number of entries in the cache
-  maxAge: 60 * 60 * 1000, // Entry expiration time (in milliseconds)
+const cache = new LRU({
+  max: 50, 
+  ttl: 60 * 60 * 1000, 
 });
 
 let currentCacheKey = null;
