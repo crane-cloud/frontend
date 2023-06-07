@@ -13,8 +13,8 @@ class AppsList extends Component {
     super(props);
     this.state = {
       rerender: false,
-      Searchword: props.word,
-      SearchList: [],
+      // Searchword: props.word,
+      // SearchList: [],
       currentPaginationPage: 1,
       appsPerPage: 8,
     };
@@ -51,19 +51,15 @@ class AppsList extends Component {
   }
 
   searchThroughApps() {
-    const { apps, word } = this.props;
-    let searchResult = [];
-    apps.apps.forEach((element) => {
-      if (element.name.toLowerCase().includes(word.toLowerCase())) {
-        searchResult.push(element);
-      }
-    });
-    this.setState({
-      SearchList: searchResult.sort((a, b) =>
-        b.date_created > a.date_created ? 1 : -1
-      ),
-    });
+  
+    const { getAppsList,word,params: { projectID } } = this.props;
+    const { appsPerPage } = this.state;
+    //reset pagination
+    this.setState({currentPaginationPage:1});
+
+    getAppsList(projectID,1,appsPerPage,word);
   }
+
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value,
@@ -77,15 +73,19 @@ class AppsList extends Component {
     });
   }
   onPageChange(page) {
-    const { getAppsList, params: { projectID }, } = this.props;
+    const { getAppsList,word, params: { projectID }, } = this.props;
     this.setState({
       currentPaginationPage: page,
     });
-    getAppsList(projectID , page , this.state.appsPerPage);
+    if(word){
+      getAppsList(projectID , page , this.state.appsPerPage,word);
+    }else{
+      getAppsList(projectID , page , this.state.appsPerPage);
+    }
   }
 
   render() {
-    const { SearchList } = this.state;
+    // const { SearchList } = this.state;
     const {
       apps,
       isRetrieved,
@@ -101,6 +101,7 @@ class AppsList extends Component {
     );
     return (
       <div >
+        {console.log(allApps)}
         {isRetrieving ? (
           <div className={`${styles.NoAppsResourcesMessage} ${styles.Spinnerheight}`}>
             <div className={styles.SpinnerWrapper}>
@@ -111,7 +112,7 @@ class AppsList extends Component {
           <div className={styles.AppList}>
             {isRetrieved &&
               !isRetrieving &&
-              SearchList.map((app) => (
+              allApps.map((app) => (
                 <div key={app.id} className="AppCardItem">
                   <AppsCard
                     name={app.name}
@@ -145,6 +146,9 @@ class AppsList extends Component {
         )}
         {isRetrieved && sortedApps?.length === 0 && (
           <div className={styles.NoAppsError}>
+            {word ? <div className={styles.NoAppsResourcesMessage}>
+                No results for "{word}"
+              </div> :<>
             {message ? (
               message
             ) : (
@@ -157,6 +161,7 @@ class AppsList extends Component {
                 &nbsp; button to deploy an app.
               </div>
             )}
+            </>}
           </div>
         )}
         {!isRetrieving && !isRetrieved && (
