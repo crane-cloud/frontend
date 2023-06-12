@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import getAppsList from "../../redux/actions/appsList";
-import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
+import {ReactComponent as ButtonPlus} from "../../assets/images/buttonplus.svg";
 import AppsCard from "../AppsCard";
 import Spinner from "../Spinner";
 import styles from "./AppsList.module.css";
@@ -27,23 +27,23 @@ class AppsList extends Component {
 
   componentDidMount() {
     const {
-      params: { projectID },
+      params: {projectID},
       getAppsList,
     } = this.props;
-    const { currentPaginationPage, appsPerPage } = this.state;
-    getAppsList(projectID, currentPaginationPage, appsPerPage );
+    const {currentPaginationPage, appsPerPage} = this.state;
+    getAppsList(projectID, currentPaginationPage, appsPerPage);
   }
 
   componentDidUpdate(prevProps, prevState) {
     const {
-      params: { projectID },
+      params: {projectID},
       getAppsList,
       word,
     } = this.props;
-    const { rerender,currentPaginationPage, appsPerPage } = this.state;
+    const {rerender, currentPaginationPage, appsPerPage} = this.state;
 
     if (rerender !== prevState.rerender) {
-      getAppsList(projectID, currentPaginationPage , appsPerPage);
+      getAppsList(projectID, currentPaginationPage, appsPerPage);
     }
     if (word !== prevProps.word) {
       this.searchThroughApps();
@@ -51,13 +51,16 @@ class AppsList extends Component {
   }
 
   searchThroughApps() {
-  
-    const { getAppsList,word,params: { projectID } } = this.props;
-    const { appsPerPage } = this.state;
+    const {
+      getAppsList,
+      word,
+      params: {projectID},
+    } = this.props;
+    const {appsPerPage} = this.state;
     //reset pagination
-    this.setState({currentPaginationPage:1});
+    this.setState({currentPaginationPage: 1});
 
-    getAppsList(projectID,1,appsPerPage,word);
+    getAppsList(projectID, 1, appsPerPage, word);
   }
 
   handleChange(e) {
@@ -67,25 +70,24 @@ class AppsList extends Component {
   }
 
   renderAfterDelete() {
-    const { rerender } = this.state;
+    const {rerender} = this.state;
     this.setState({
       rerender: !rerender,
     });
   }
   onPageChange(page) {
-    const { getAppsList,word, params: { projectID }, } = this.props;
+    const {
+      getAppsList,
+      params: {projectID},
+    } = this.props;
     this.setState({
       currentPaginationPage: page,
     });
-    if(word){
-      getAppsList(projectID , page , this.state.appsPerPage,word);
-    }else{
-      getAppsList(projectID , page , this.state.appsPerPage);
-    }
+    getAppsList(projectID, page, this.state.appsPerPage);
   }
 
   render() {
-    // const { SearchList } = this.state;
+    const {SearchList} = this.state;
     const {
       apps,
       isRetrieved,
@@ -100,10 +102,11 @@ class AppsList extends Component {
       b.date_created < a.date_created ? 1 : -1
     );
     return (
-      <div >
-        {console.log(allApps)}
+      <div>
         {isRetrieving ? (
-          <div className={`${styles.NoAppsResourcesMessage} ${styles.Spinnerheight}`}>
+          <div
+            className={`${styles.NoAppsResourcesMessage} ${styles.Spinnerheight}`}
+          >
             <div className={styles.SpinnerWrapper}>
               <Spinner size="big" />
             </div>
@@ -169,7 +172,7 @@ class AppsList extends Component {
             Oops! Something went wrong! Failed to retrieve Apps.
           </div>
         )}
-        {(apps?.pagination?.pages  > 1 && isRetrieved && !isRetrieving  ) && (
+        {apps?.pagination?.pages > 1 && isRetrieved && !isRetrieving && (
           <div className={styles.PaginationSection}>
             <Pagination
               total={apps.pagination.pages}
@@ -187,7 +190,7 @@ class AppsList extends Component {
 AppsList.propTypes = {
   apps: PropTypes.shape({
     apps: PropTypes.arrayOf(PropTypes.object),
-    pagination: PropTypes.object
+    pagination: PropTypes.object,
   }),
   isRetrieved: PropTypes.bool,
   isRetrieving: PropTypes.bool,
@@ -200,15 +203,15 @@ AppsList.propTypes = {
 
 // assigning defaults
 AppsList.defaultProps = {
-  apps: { apps: [],pagination:{} },
+  apps: {apps: [], pagination: {}},
   isRetrieved: false,
   isRetrieving: true,
   message: "",
 };
 
 export const mapStateToProps = (state) => {
-  const { isRetrieving, apps, isRetrieved } = state.appsListReducer;
-  return { isRetrieving, apps, isRetrieved };
+  const {isRetrieving, apps, isRetrieved} = state.appsListReducer;
+  return {isRetrieving, apps, isRetrieved};
 };
 
 const mapDispatchToProps = {
