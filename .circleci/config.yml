@@ -66,7 +66,7 @@ jobs:
       - run: # run tests
           name: Run Test and Coverage
           no_output_timeout: 30m
-          command: yarn test --detectOpenHandles --coverage --coveragePathIgnorePatterns "src/assets" ".*\\.css$"
+          command: yarn test --detectOpenHandles
       - run: # send coverage
           name: Code Climate report
           command: ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
