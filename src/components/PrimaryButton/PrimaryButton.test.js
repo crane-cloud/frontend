@@ -33,10 +33,8 @@ describe("PrimaryButton Component", () => {
       </PrimaryButton>
     );
 
-    // Verify that the additional class names are applied
     expect(ButtonComponent.hasClass(className)).toBe(true);
 
-    // Verify that additional props are applied
     expect(ButtonComponent.prop("disabled")).toBe(true);
   });
 });
