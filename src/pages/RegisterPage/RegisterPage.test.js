@@ -23,6 +23,7 @@ describe("<RegisterPage/> Component", () => {
       username: "",
       email: "",
       password: "",
+      organisation:"",
       passwordConfirm: "",
       displayPassword: false,
       hasAgreed: false,
