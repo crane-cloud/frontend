@@ -1,9 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { Link } from "react-router-dom";
 import RegisterPage from "./index";
-import Checkbox from "../../components/Checkbox";
-import Spinner from "../../components/Spinner";
 import axios from "axios";
 
 describe("<RegisterPage/> Component", () => {

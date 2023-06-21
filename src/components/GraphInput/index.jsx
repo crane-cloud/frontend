@@ -112,7 +112,7 @@ GraphInput.propTypes = {
   handleChange: PropTypes.func.isRequired,
   showCalendar: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
 };
 
 export default GraphInput;
