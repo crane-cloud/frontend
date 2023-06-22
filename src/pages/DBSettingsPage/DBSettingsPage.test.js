@@ -17,6 +17,7 @@ describe("Testing the Project Settings Page component", () => {
     userProjectsReducer: {
       projects: [],
     },
+    
   }; 
   let store; 
 
