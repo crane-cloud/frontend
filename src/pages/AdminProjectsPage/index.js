@@ -141,7 +141,7 @@ const AdminProjectsPage = () => {
                 {adminProjects.isRetrieving ? (
                   <tbody>
                     <tr className="TableLoading">
-                      <td>
+                    <td className="TableTdSpinner">
                         <div className="SpinnerWrapper">
                           <Spinner size="big" />
                         </div>
@@ -156,10 +156,10 @@ const AdminProjectsPage = () => {
                         <tr key={adminProjects.projects.indexOf(project)}>
                           <td>{project.name}</td>
                           <td>{getUserName(project.owner_id)}</td>
-                          <td className="CollapseText">{project.description}</td>
+                          <td >{project.description}</td>
                           <td>
                             {/* optional chai */}
-                            <span className="ProjectStatus">
+                            <span className={project.disabled !== false ? "ProjectStatus":"ProjectStatusDisabled"}>
                               {project.disabled !== false
                                 ? "Active"
                                 : "Disabled"}
@@ -168,7 +168,7 @@ const AdminProjectsPage = () => {
                           <td
                             onClick={(e) => {
                               showContextMenu(project.id);
-                              this.handleClick(e);
+                              //handleClick(e);
                             }}
                           >
                             <MoreIcon />

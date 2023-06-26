@@ -10,10 +10,8 @@ import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
 import { API_BASE_URL } from "../../config";
 import "../../pages/LoginPage/LoginPage.css";
-import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
-import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 
 class AdminLoginPage extends React.Component {
   constructor() {
@@ -23,7 +21,6 @@ class AdminLoginPage extends React.Component {
       password: "",
       loading: false,
       passwordShown: false,
-      passwordChecked: false,
       feedbackMessage: "",
     };
 
@@ -89,7 +86,7 @@ class AdminLoginPage extends React.Component {
   }
 
   render() {
-    const { email, password, loading, passwordChecked, passwordShown } =
+    const { email, password, loading, passwordShown } =
       this.state;
 
     return (

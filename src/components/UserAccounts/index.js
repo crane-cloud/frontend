@@ -18,23 +18,23 @@ import PrimaryButton from "../PrimaryButton";
 import addBetaUser from "../../redux/actions/addBetaUser";
 import Feedback from "../Feedback";
 import usePaginator from "../../hooks/usePaginator";
-import Pagination from "../../components/Pagination"
+import Pagination from "../../components/Pagination";
 import { useSelector, useDispatch } from "react-redux";
 // import { useParams } from "react-router-dom";
 
 const UserAccounts = () => {
   const clusterName = localStorage.getItem("clusterName");
-  const  clusterID  = localStorage.getItem("clusterID");
+  const clusterID = localStorage.getItem("clusterID");
   const [currentPage, handleChangePage] = usePaginator();
 
-  const [actionsMenu, setActionsMenu] = useState(false)
-  const [betaUserModal, setBetaUserModal] = useState(false)
-  const [addCredits, setAddCredits] = useState(false)
-  const [credits, setCredits] = useState("")
-  const [creditDescription, setCreditDescription] = useState("")
-  const [selectedUser, setSelectedUser] = useState("")
-  const [word, setWord] = useState("")
-  const [searchList, setSearchList] = useState([])
+  const [actionsMenu, setActionsMenu] = useState(false);
+  const [betaUserModal, setBetaUserModal] = useState(false);
+  const [addCredits, setAddCredits] = useState(false);
+  const [credits, setCredits] = useState("");
+  const [creditDescription, setCreditDescription] = useState("");
+  const [selectedUser, setSelectedUser] = useState("");
+  const [word, setWord] = useState("");
+  const [searchList, setSearchList] = useState([]);
 
   const { isFetching, users, isFetched, pagination } = useSelector(
     (state) => state.usersListReducer
@@ -61,52 +61,49 @@ const UserAccounts = () => {
     hideCreditsModal();
   }, [gettingUsers, isAdded, Added, currentPage]);
 
-
-
   const searchThroughAccounts = () => {
-
     let resultsList = [];
     users.forEach((element) => {
       if (element.name.toLowerCase().includes(word.toLowerCase())) {
         resultsList.push(element);
       }
     });
-    setSearchList(resultsList)
-  }
+    setSearchList(resultsList);
+  };
 
   const handleCallbackSearchword = ({ target }) => {
     const { value } = target;
-    setWord(value)
+    setWord(value);
     if (value !== "") {
-      searchThroughAccounts()
+      searchThroughAccounts();
     }
     if (value === "") {
-      setSearchList([])
+      setSearchList([]);
     }
-  }
+  };
 
   const handleClick = (e) => {
     if (actionsMenu) {
       // this.closeModal();
       return;
     }
-    setActionsMenu(true)
+    setActionsMenu(true);
     e.stopPropagation();
     document.addEventListener("click", hideModal);
   };
 
   const hideModal = () => {
-    setActionsMenu(false)
+    setActionsMenu(false);
     document.removeEventListener("click", hideModal);
   };
 
   const showMenu = (id) => {
-    setSelectedUser(id)
-  }
+    setSelectedUser(id);
+  };
 
   const showBetaUserModal = () => {
-    setBetaUserModal(true)
-  }
+    setBetaUserModal(true);
+  };
   const handleCreditSubmittion = () => {
     // const { addUserCredits } = this.props;
     if (credits !== "" && creditDescription !== "") {
@@ -117,27 +114,27 @@ const UserAccounts = () => {
       };
       dispatch(addUserCredits(creditsObject));
     }
-  }
+  };
   const showCreditsModal = () => {
-    setAddCredits(true)
-  }
+    setAddCredits(true);
+  };
   const hideCreditsModal = () => {
     setAddCredits(false);
-    setCredits('');
+    setCredits("");
     setActionsMenu(false);
-    setCreditDescription('')
-    setSelectedUser('')
+    setCreditDescription("");
+    setSelectedUser("");
   };
   const closeBetaUserModal = () => {
-    setBetaUserModal(false)
-  }
+    setBetaUserModal(false);
+  };
   const handleBetaUserSubmit = () => {
     const betaUser = {
       is_beta_user: true,
       user_id: selectedUser,
     };
     dispatch(addBetaUser(betaUser));
-  }
+  };
   const renderRedirect = () => {
     // const { isAdded } = this.props;
     if (isAdded) {
@@ -147,7 +144,7 @@ const UserAccounts = () => {
 
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);
-    gettingUsers()
+    gettingUsers();
   };
 
   return (
@@ -162,7 +159,17 @@ const UserAccounts = () => {
         </div>
         <div className="MainContentSection">
           <div className="InformationBarSection">
-            <InformationBar header="User Accounts" showBtn={false} />
+            <InformationBar
+              header={
+                <>
+                  <Link className="breadcrumb" to={`/accounts`}>
+                    Overview
+                  </Link>
+                  <span> / Users Listing</span>
+                </>
+              }
+              showBtn={false}
+            />
           </div>
           <div className="ContentSection">
             <div className="SearchBar">
@@ -173,7 +180,9 @@ const UserAccounts = () => {
                   name="Searchword"
                   placeholder="Search for account"
                   value={word}
-                  onChange={(e) => { handleCallbackSearchword(e) }}
+                  onChange={(e) => {
+                    handleCallbackSearchword(e);
+                  }}
                 />
                 <SearchButton className="SearchIcon" />
               </div>
@@ -198,7 +207,7 @@ const UserAccounts = () => {
                 {isFetching ? (
                   <tbody>
                     <tr className="TableLoading">
-                      <td>
+                      <td className="TableTdSpinner">
                         <div className="SpinnerWrapper">
                           <Spinner size="big" />
                         </div>
@@ -239,14 +248,18 @@ const UserAccounts = () => {
                                   <div
                                     className="DropDownLink"
                                     role="presentation"
-                                    onClick={() => { showBetaUserModal() }}
+                                    onClick={() => {
+                                      showBetaUserModal();
+                                    }}
                                   >
                                     Add Beta User
                                   </div>
                                   <div
                                     className="DropDownLink"
                                     role="presentation"
-                                    onClick={() => { showCreditsModal() }}
+                                    onClick={() => {
+                                      showCreditsModal();
+                                    }}
                                   >
                                     Assign Credits
                                   </div>
@@ -316,14 +329,18 @@ const UserAccounts = () => {
                                   <div
                                     className="DropDownLink"
                                     role="presentation"
-                                    onClick={() => { showBetaUserModal() }}
+                                    onClick={() => {
+                                      showBetaUserModal();
+                                    }}
                                   >
                                     Add Beta User
                                   </div>
                                   <div
                                     className="DropDownLink"
                                     role="presentation"
-                                    onClick={() => { showCreditsModal() }}
+                                    onClick={() => {
+                                      showCreditsModal();
+                                    }}
                                   >
                                     Assign Credits
                                   </div>
@@ -384,10 +401,7 @@ const UserAccounts = () => {
               </div>
             )}
           </div>
-          <Modal
-            showModal={addCredits}
-            onClickAway={() => hideCreditsModal()}
-          >
+          <Modal showModal={addCredits} onClickAway={() => hideCreditsModal()}>
             <div className="ModalHeader">
               <h5 className="ModalTitle">Add Credits</h5>
 
@@ -400,7 +414,7 @@ const UserAccounts = () => {
                   type="number"
                   value={credits}
                   onChange={(e) => {
-                    setCredits(e.target.value)
+                    setCredits(e.target.value);
                   }}
                 />
               </div>
@@ -414,7 +428,7 @@ const UserAccounts = () => {
                 name="creditDescription"
                 value={creditDescription}
                 onChange={(e) => {
-                  setCreditDescription(e.target.value)
+                  setCreditDescription(e.target.value);
                 }}
               />
             </div>
@@ -439,16 +453,10 @@ const UserAccounts = () => {
               )}
             </div>
           </Modal>
-          <Modal
-            showModal={betaUserModal}
-            onClickAway={closeBetaUserModal}
-          >
+          <Modal showModal={betaUserModal} onClickAway={closeBetaUserModal}>
             <div class="modal-content">
               <div class="modal-header">
-                <h5
-                  class="modal-title BetaUserText"
-                  id="exampleModalLongTitle"
-                >
+                <h5 class="modal-title BetaUserText" id="exampleModalLongTitle">
                   Add user as Beta user?
                 </h5>
               </div>
@@ -456,13 +464,17 @@ const UserAccounts = () => {
                 <PrimaryButton
                   type="button"
                   className="CancelBtn"
-                  onClick={() => { closeBetaUserModal() }}
+                  onClick={() => {
+                    closeBetaUserModal();
+                  }}
                 >
                   Cancel
                 </PrimaryButton>
                 <PrimaryButton
                   type="button"
-                  onClick={() => { handleBetaUserSubmit() }}
+                  onClick={() => {
+                    handleBetaUserSubmit();
+                  }}
                 >
                   {isAdding ? <Spinner /> : "Confirm"}
                 </PrimaryButton>
@@ -479,8 +491,6 @@ const UserAccounts = () => {
       </div>
     </div>
   );
-
-}
-
+};
 
 export default UserAccounts;

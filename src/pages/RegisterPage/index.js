@@ -10,8 +10,6 @@ import { API_BASE_URL, GIT_REDIRECT_URL } from "../../config";
 import Checkbox from "../../components/Checkbox";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
-import { ReactComponent as Checked } from "../../assets/images/checked.svg";
-import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 
 import "./RegisterPage.css";
 
@@ -22,10 +20,11 @@ export default class RegisterPage extends Component {
     this.state = {
       name: "",
       username: "",
+      organisation:"",
       email: "",
       password: "",
       passwordConfirm: "",
-      passwordConfirmShown: false,
+      displayPassword: false,
       hasAgreed: false,
       loading: false,
       registered: false,
@@ -97,13 +96,13 @@ export default class RegisterPage extends Component {
     this.setState({ passwordShown: !this.state.passwordShown });
   }
   togglePasswordConfirm() {
-    this.setState({ passwordConfirmShown: !this.state.passwordConfirmShown });
+    this.setState({ displayPassword: !this.state.displayPassword });
   }
 
   handleSubmit(e) {
     e.preventDefault();
 
-    const { name, username, email, password, passwordConfirm, hasAgreed } =
+    const { name, username, organisation, email, password, passwordConfirm, hasAgreed } =
       this.state;
 
     const userData = {
@@ -167,10 +166,10 @@ export default class RegisterPage extends Component {
       passwordConfirm,
       loading,
       registered,
-      passwordChecked,
       passwordShown,
-      passwordConfirmShown,
+      displayPassword,
       username,
+      organisation,
       error,
       hasAgreed,
       gitLoading,
@@ -201,6 +200,13 @@ export default class RegisterPage extends Component {
                 />
                 <InputText
                   required
+                  placeholder="Organisation"
+                  name="organisation"
+                  value={organisation}
+                  onChange={this.handleOnChange}
+                />
+                <InputText
+                  required
                   placeholder="Email Address"
                   name="email"
                   type="email"
@@ -226,7 +232,7 @@ export default class RegisterPage extends Component {
                     required
                     placeholder="Repeat Password"
                     name="passwordConfirm"
-                    type={passwordConfirmShown ? "text" : "password"}
+                    type={displayPassword ? "text" : "password"}
                     value={passwordConfirm}
                     onChange={this.handleOnChange}
                   />
@@ -234,7 +240,7 @@ export default class RegisterPage extends Component {
                     className="password"
                     onClick={this.togglePasswordConfirm}
                   >
-                    {passwordConfirmShown ? <Open /> : <Closed />}
+                    {displayPassword ? <Open /> : <Closed />}
                   </div>
                 </div>
 

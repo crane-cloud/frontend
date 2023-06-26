@@ -170,6 +170,12 @@
   padding: .5rem 1rem;
 }
 
+.CreditsRowAttribute:hover {
+    white-space: normal;
+    word-wrap: break-word;
+    overflow: visible;
+}
+
 .CreditsRowAttribute:first-child {
   padding-left: 2rem;
 }

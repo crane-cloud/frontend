@@ -22,19 +22,12 @@
 .ProjectStatus {
     color: #408140;
 }
+.ProjectStatusDisabled{
+    color: red;
+}
 
 .DropDownLink {
     text-align: center;
     justify-content: center;
 }
-.CollapseText{
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 70px;
-}
-.CollapseText:hover {
-    white-space: normal;
-    word-wrap: break-word;
-    overflow: visible;
-}
+

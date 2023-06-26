@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
-import { handleGetRequest } from "../../apis/apis.js";
+import React, {useState, useEffect} from "react";
+import {useParams, useHistory} from "react-router-dom";
+import {handleGetRequest} from "../../apis/apis.js";
 import SideNav from "../../components/SideNav";
 import ResourceCard from "../../components/ResourceCard";
 import Spinner from "../../components/Spinner";
@@ -15,26 +15,42 @@ import {
   AreaChart,
   Area,
   Tooltip,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
-import { retrieveProjectTypes } from "../../helpers/projecttypes.js";
-import { retrieveMonthNames } from "../../helpers/monthNames.js";
-import { filterGraphData } from "../../helpers/filterGraphData.js";
+import {retrieveProjectTypes} from "../../helpers/projecttypes.js";
+import {retrieveMonthNames} from "../../helpers/monthNames.js";
+import {filterGraphData} from "../../helpers/filterGraphData.js";
+import {namedOrganisations} from "../../helpers/projectOrganisations.js";
 import "./AdminProjectOverviewPage.css";
 
 const AdminProjectOverviewPage = () => {
   const history = useHistory();
-  const { clusterID } = useParams();
+  const {clusterID} = useParams();
   const [projects, setProjects] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
   const [period, setPeriod] = useState("all");
   const projectTypeCounts = {};
+  const projectOrganisationCount = {};
   const graphDataArray = [];
   const graphData = {};
   const newGraphData = {};
   const newGraphDataArray = [];
+  let createNewPieChartData = [];
+  let createPieChartData = [];
   let filteredGraphData = [];
   let newFilteredGraphData = [];
+
+  const COLORS = [
+    "#0088FE",
+    "#0DBC00",
+    "#F9991A",
+    "#AE0000",
+    "#000000",
+    "#800080",
+  ];
 
   useEffect(() => {
     getAllProjects();
@@ -88,6 +104,29 @@ const AdminProjectOverviewPage = () => {
     projectTypeCounts["Others"] = othersCount;
   }
 
+  const filteredOrganisationData = projects.filter((project) => {
+    const defaultProjectOrganisations = namedOrganisations().map(
+      (organisation) => organisation.value
+    );
+    return defaultProjectOrganisations.includes(project.organisation);
+  });
+
+  filteredOrganisationData.forEach((project) => {
+    const projectOrganisation = project.organisation;
+
+    if (!projectOrganisationCount[projectOrganisation]) {
+      projectOrganisationCount[projectOrganisation] = 1;
+    } else {
+      projectOrganisationCount[projectOrganisation]++;
+    }
+  });
+
+  const otherOrganisationCount =
+    projects.length - filteredOrganisationData.length;
+  if (otherOrganisationCount > 0) {
+    projectOrganisationCount["Others"] = otherOrganisationCount;
+  }
+
   // create graph data for first graph
   const createGraphData = () => {
     if (!projects) {
@@ -98,7 +137,7 @@ const AdminProjectOverviewPage = () => {
       const date = new Date(project.date_created);
       const year = date.getFullYear();
       const month = parseInt(
-        date.toLocaleString("default", { month: "2-digit" }),
+        date.toLocaleString("default", {month: "2-digit"}),
         10
       );
 
@@ -144,7 +183,7 @@ const AdminProjectOverviewPage = () => {
       const date = new Date(project.date_created);
       const year = date.getFullYear();
       const month = parseInt(
-        date.toLocaleString("default", { month: "2-digit" }),
+        date.toLocaleString("default", {month: "2-digit"}),
         10
       );
 
@@ -199,7 +238,7 @@ const AdminProjectOverviewPage = () => {
   filteredGraphData = filterGraphData(graphDataArray, period);
   newFilteredGraphData = filterGraphData(newGraphDataArray, period);
 
-  const handleChange = ({ target }) => {
+  const handleChange = ({target}) => {
     setPeriod(target.getAttribute("value"));
   };
 
@@ -207,6 +246,56 @@ const AdminProjectOverviewPage = () => {
   const viewProjectListing = () => {
     history.push(`/clusters/${clusterID}/projects-listing`);
   };
+
+  createPieChartData = () => {
+    const degrees = {};
+    if (!projectTypeCounts) {
+      return [];
+    }
+    const totalCount = Object.values(projectTypeCounts).reduce(
+      (total, count) => total + count,
+      0
+    );
+    for (const type in projectTypeCounts) {
+      const count = projectTypeCounts[type];
+      const degree = (count / totalCount) * 100;
+      degrees[type] = degree.toFixed(1);
+    }
+    const pieChartData = Object.entries(degrees).map(([type, degrees]) => ({
+      category: type,
+      value: parseFloat(degrees),
+    }));
+    return pieChartData;
+  };
+
+  createPieChartData();
+
+  createNewPieChartData = () => {
+    const percentage = {};
+    if (!projectOrganisationCount) {
+      return [];
+    }
+
+    const totalCount = Object.entries(projectOrganisationCount).reduce(
+      (totalCount, [organisation, countOrganisation]) =>
+        totalCount + countOrganisation,
+      0
+    );
+    for (const organisation in projectOrganisationCount) {
+      const countOrganisation = projectOrganisationCount[organisation];
+      const percentages = (countOrganisation / totalCount) * 100;
+      percentage[organisation] = percentages.toFixed(1);
+    }
+
+    const newPieChartData = Object.entries(percentage).map(
+      ([organisation, percentage]) => ({
+        category: organisation,
+        value: parseFloat(percentage),
+      })
+    );
+    return newPieChartData;
+  };
+  createNewPieChartData();
 
   return (
     <div className="MainPage">
@@ -247,6 +336,108 @@ const AdminProjectOverviewPage = () => {
                 ))}
               </div>
             ) : null}
+            <div className="TitleArea">
+              <div className="SectionTitle">Organisation Categories</div>
+            </div>
+            {loading ? (
+              <div className="ResourceSpinnerWrapper">
+                <Spinner size="big" />
+              </div>
+            ) : feedback !== "" ? (
+              <div className="NoResourcesMessage">{feedback}</div>
+            ) : Object.keys(projectOrganisationCount).length > 0 ? (
+              <div className="ClusterContainer">
+                {Object.keys(projectOrganisationCount).map(
+                  (projectOrganisation) => (
+                    <ResourceCard
+                      key={projectOrganisation}
+                      title={projectOrganisation}
+                      count={projectOrganisationCount[projectOrganisation]}
+                    />
+                  )
+                )}
+              </div>
+            ) : null}
+            <div className="TitleArea">
+              <div className="SectionTitle">Project Categories Summary</div>
+            </div>
+            <div className="UserSection">
+              <div className="piechart">
+                <PieChart width={350} height={350}>
+                  <Pie
+                    data={createPieChartData()}
+                    dataKey="value"
+                    nameKey="category"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={140}
+                    paddingAngle={3}
+                    fill="#8884d8"
+                    label={true}
+                  >
+                    {createPieChartData().map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+                <div>
+                  <ul style={{display: "flex"}}>
+                    {createPieChartData().map((entry, index) => (
+                      <li key={`list-item-${index}`} style={{padding: "10px"}}>
+                        <span style={{color: COLORS[index % COLORS.length]}}>
+                          {entry.category} :{" "}
+                        </span>
+                        {entry.value} %
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div className="TitleArea">
+              <div className="SectionTitle">Orgaisation Categories Summary</div>
+            </div>
+            <div className="UserSection">
+              <div className="piechart">
+                <PieChart width={350} height={350}>
+                  <Pie
+                    data={createNewPieChartData()}
+                    dataKey="value"
+                    nameKey="category"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={140}
+                    paddingAngle={3}
+                    fill="#8884d8"
+                    label={true}
+                  >
+                    {createNewPieChartData().map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+                <div>
+                  <ul style={{display: "flex"}}>
+                    {createNewPieChartData().map((entry, index) => (
+                      <li key={`list-item-${index}`} style={{padding: "10px"}}>
+                        <span style={{color: COLORS[index % COLORS.length]}}>
+                          {entry.category} :{" "}
+                        </span>
+                        {entry.value} %
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
             <div className="TitleArea">
               <div className="SectionTitle">Graph Summaries</div>
             </div>
@@ -367,7 +558,7 @@ const AdminProjectOverviewPage = () => {
                               interval={12}
                               dataKey="Year"
                               tickLine={false}
-                              tick={{ fontSize: 12, angle: 0 }}
+                              tick={{fontSize: 12, angle: 0}}
                             />
                             <CartesianGrid strokeDasharray="3 3" />
                             <YAxis
@@ -425,7 +616,7 @@ const AdminProjectOverviewPage = () => {
                               interval={12}
                               dataKey="Year"
                               tickLine={false}
-                              tick={{ fontSize: 12, angle: 0 }}
+                              tick={{fontSize: 12, angle: 0}}
                             />
                             <YAxis
                               label={{

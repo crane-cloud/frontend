@@ -32,7 +32,7 @@ const AdminDBList = () => {
     (state) => state.adminCreateDBReducer
   );
 
-  useEffect(() => {
+  useEffect(() => { 
     callbackCreateComponent();
     dispatch(adminGetDatabases(currentPage))
   }, [currentPage,isCreated,dispatch]);
@@ -71,6 +71,7 @@ const AdminDBList = () => {
               <InformationBar
                 header="Databases"
                 showBtn
+                buttontext="+ new database"
                 btnAction={showCreateComponent}
               />
             </div>
@@ -90,7 +91,9 @@ const AdminDBList = () => {
                     <div
                       className={`${styles.DatabaseTableRow} CardHeaderSection`}
                     >
-                      <div className={styles.DatabaseTableHead}>Type</div>
+                      <div className={styles.DatabaseTableHead}>
+                        Type
+                        </div>
                       <div className={styles.DatabaseTableHead}>Name</div>
                       <div className={styles.DatabaseTableHead}>Host</div>
                       <div className={styles.DatabaseTableHead}>Age</div>
@@ -161,7 +164,5 @@ const AdminDBList = () => {
   );
 
 }
-
-
 
 export default AdminDBList;

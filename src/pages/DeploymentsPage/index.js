@@ -93,7 +93,7 @@ const DeploymentsPage = () => {
                 {isFetchingDeployments ? (
                   <tbody>
                     <tr className="TableLoading">
-                      <td>
+                    <td className="TableTdSpinner">
                         <div className="SpinnerWrapper">
                           <Spinner size="big" />
                         </div>

@@ -232,6 +232,23 @@ class UserProfile extends React.Component {
                               <div>{user.name}</div>
                             )}
                           </div>
+                          <div className={styles.InputDiv}>
+                            <div className={styles.Title2}>Organisation</div>
+                            {/* {editMode ? (
+                              <BlackInputText
+                                className={styles.CustomInput}
+                                placeholder=""
+                                name="organisation"
+                                value={organisation}
+                                onChange={(e) => {
+                                  this.handleChange(e);
+                                }}
+                              />
+                            ) : (
+                              <div>{user.organisation}</div>
+                            )} */}
+                            <div>Not                      Addded</div>
+                          </div>
                           {editMode && (
                             <div className={styles.PasswordChange}>
                               <div>Change Password</div>

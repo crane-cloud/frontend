@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import Modal from "../../components/Modal";
 import styles from "./UserProjectsPage.module.css";
 import InformationBar from "../../components/InformationBar";
-import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
+import {ReactComponent as ButtonPlus} from "../../assets/images/buttonplus.svg";
 import Header from "../../components/Header";
 import Pagination from "../../components/Pagination";
 import getClustersList from "../../redux/actions/clusters";
@@ -14,9 +14,9 @@ import getUserCredits from "../../redux/actions/userCredits";
 import ProjectCard from "../../components/ProjectCard";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
-import { handlePatchRequest } from "../../apis/apis.js";
-import { ReactComponent as User } from "../../assets/images/user.svg";
-import { ReactComponent as Users } from "../../assets/images/users.svg";
+import {handlePatchRequest} from "../../apis/apis.js";
+import {ReactComponent as User} from "../../assets/images/user.svg";
+import {ReactComponent as Users} from "../../assets/images/users.svg";
 import "../../index.css";
 
 class UserProjectsPage extends React.Component {
@@ -55,8 +55,7 @@ class UserProjectsPage extends React.Component {
   }
 
   componentDidMount() {
-    const { getClustersList, getUserProjects, data, getUserCredits } =
-      this.props;
+    const {getClustersList, getUserProjects, data, getUserCredits} = this.props;
     //add page 1
     getUserProjects(this.state.currentPaginationPage);
     getClustersList();
@@ -72,7 +71,7 @@ class UserProjectsPage extends React.Component {
       clearUpdateProjectState,
       isFetched,
     } = this.props;
-    const { Searchword } = this.state;
+    const {Searchword} = this.state;
 
     if (isDeleted !== prevProps.isDeleted) {
       getUserProjects(this.state.currentPaginationPage);
@@ -103,19 +102,19 @@ class UserProjectsPage extends React.Component {
   }
 
   openProjectCreateComponent() {
-    this.setState({ openCreateComponent: true });
+    this.setState({openCreateComponent: true});
   }
   callbackProjectCreateComponent() {
-    const { getUserProjects } = this.props;
+    const {getUserProjects} = this.props;
     this.setState(this.initialState);
     getUserProjects(this.state.currentPaginationPage);
   }
   searchThroughProjects() {
-    const { Searchword } = this.state;
-    const { getUserProjects } = this.props;
+    const {Searchword} = this.state;
+    const {getUserProjects} = this.props;
     //reset pagination
-    this.setState({currentPaginationPage:1})
-    getUserProjects(1,Searchword);
+    this.setState({currentPaginationPage: 1});
+    getUserProjects(1, Searchword);
     // ?keywords=black
     // let searchResult = [];
     // projects.forEach((element) => {
@@ -130,7 +129,7 @@ class UserProjectsPage extends React.Component {
     // });
   }
   hideInvitationModel() {
-    this.setState({ showInviteModel: false });
+    this.setState({showInviteModel: false});
   }
   showInvitationModel(inviteeProjectId, inviteeModelRole) {
     this.setState({
@@ -145,11 +144,11 @@ class UserProjectsPage extends React.Component {
     });
   }
   handleInvitationDecline() {
-    const { getUserProjects } = this.props;
+    const {getUserProjects} = this.props;
     this.setState({
       decliningInvitation: true,
     });
-    const { inviteeProjectId } = this.state;
+    const {inviteeProjectId} = this.state;
     handlePatchRequest(`/projects/${inviteeProjectId}/users/handle_invite`, {
       accepted_collaboration_invite: false,
     })
@@ -169,11 +168,11 @@ class UserProjectsPage extends React.Component {
       });
   }
   handleInvitationAcceptence() {
-    const { getUserProjects } = this.props;
+    const {getUserProjects} = this.props;
     this.setState({
       acceptingInvitation: true,
     });
-    const { inviteeProjectId } = this.state;
+    const {inviteeProjectId} = this.state;
 
     handlePatchRequest(`/projects/${inviteeProjectId}/users/handle_invite`, {
       accepted_collaboration_invite: true,
@@ -194,7 +193,7 @@ class UserProjectsPage extends React.Component {
       });
   }
   filterProjects() {
-    const { projects, data } = this.props;
+    const {projects, data} = this.props;
     let myProjects = [];
     let sharedProjects = [];
     projects.forEach((element) => {
@@ -205,12 +204,12 @@ class UserProjectsPage extends React.Component {
       }
     });
     //by default show category with more  projects
-    if(myProjects.length < sharedProjects.length){
+    if (myProjects.length < sharedProjects.length) {
       this.setState({
         selectedProjects: "Shared Projects",
         currentTab: "Shared Projects",
       });
-    }else {
+    } else {
       this.setState({
         selectedProjects: "My projects",
         currentTab: "My projects",
@@ -222,7 +221,7 @@ class UserProjectsPage extends React.Component {
     };
   }
   onPageChange(page) {
-    const { getUserProjects } = this.props;
+    const {getUserProjects} = this.props;
     this.setState({
       currentPaginationPage: page,
     });
@@ -249,7 +248,7 @@ class UserProjectsPage extends React.Component {
       pagination,
       isRetrieving,
       isFetched,
-      match: { params },
+      match: {params},
       credits,
       data,
     } = this.props;
@@ -299,7 +298,10 @@ class UserProjectsPage extends React.Component {
                       <span>
                         <User className={styles.SmallerIcon} />
                       </span>
-                      <span>My Projects <span title="Projects">{`(${myProjectsList?.length})`}</span></span>
+                      <span>
+                        My Projects{" "}
+                        <span title="Projects">{`(${myProjectsList?.length})`}</span>
+                      </span>
                     </div>
                   </span>
                   <span
@@ -319,7 +321,10 @@ class UserProjectsPage extends React.Component {
                       <span>
                         <Users className={styles.SmallerIcon} />
                       </span>
-                      <span>Shared Projects <span title="Projects">{`(${sharedProjectsList?.length})`}</span> </span>
+                      <span>
+                        Shared Projects{" "}
+                        <span title="Projects">{`(${sharedProjectsList?.length})`}</span>{" "}
+                      </span>
                     </div>
                   </span>
                 </div>
@@ -422,33 +427,36 @@ class UserProjectsPage extends React.Component {
               )}
               {displayProjects.length === 0 && (
                 <div className={styles.NoResourcesMessage}>
-                  
-                  {selectedProjects === "My projects"  ? (
+                  {selectedProjects === "My projects" ? (
                     <>
-                    {this.state.currentPaginationPage === 1 ? 
-                      <div>
-                      You haven’t created any projects yet. Click the &nbsp;{" "}
-                      <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp;
-                      button to add a project.
-                    </div>: 
-                      <div>
-                      This page of you personal projects contains no projects, switch tabs to shared to see Projects &nbsp; Or click 
-                      {" "} <ButtonPlus className={styles.ButtonPlusSmall} />&nbsp;
-                      button to add a project.
-                    </div>
-                    }
+                      {this.state.currentPaginationPage === 1 ? (
+                        <div>
+                          You haven’t created any projects yet. Click the &nbsp;{" "}
+                          <ButtonPlus className={styles.ButtonPlusSmall} />{" "}
+                          &nbsp; button to add a project.
+                        </div>
+                      ) : (
+                        <div>
+                          This page of you personal projects contains no
+                          projects, switch tabs to shared to see Projects &nbsp;
+                          Or click{" "}
+                          <ButtonPlus className={styles.ButtonPlusSmall} />
+                          &nbsp; button to add a project.
+                        </div>
+                      )}
                     </>
                   ) : (
                     <>
-                    {this.state.currentPaginationPage === 1 ? 
-                    <>No project has been shared with you as yet.</>:
-                    <>This page contains no shared projects.</>
-                    }
+                      {this.state.currentPaginationPage === 1 ? (
+                        <>No project has been shared with you as yet.</>
+                      ) : (
+                        <>This page contains no shared projects.</>
+                      )}
                     </>
                   )}
                 </div>
               )}
-              {isFetched && projects.length === 0 && (
+              {!isFetched && !projects.length === 0 && (
                 <div className={styles.NoResourcesMessage}>
                   You haven’t created any projects yet. Click the &nbsp;{" "}
                   <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp;
@@ -464,16 +472,19 @@ class UserProjectsPage extends React.Component {
           </div>
         )}
         <div className={styles.FooterRow}>
-        {(pagination?.pages > 1 && !isRetrieving && isFetched && !openCreateComponent) && (
-          <div className={styles.PaginationSection}>
-            {/* customise pagination for shared and personal projects */}
-            <Pagination
-              total={pagination?.pages}
-              current={this.state.currentPaginationPage}
-              onPageChange={this.onPageChange} 
-            />
-          </div>
-        )}
+          {pagination?.pages > 1 &&
+            !isRetrieving &&
+            isFetched &&
+            !openCreateComponent && (
+              <div className={styles.PaginationSection}>
+                {/* customise pagination for shared and personal projects */}
+                <Pagination
+                  total={pagination?.pages}
+                  current={this.state.currentPaginationPage}
+                  onPageChange={this.onPageChange}
+                />
+              </div>
+            )}
           <div>
             Copyright {new Date().getFullYear()} Crane Cloud. All Rights
             Reserved.
@@ -511,12 +522,12 @@ UserProjectsPage.defaultProps = {
 };
 
 export const mapStateToProps = (state) => {
-  const { data } = state.user;
+  const {data} = state.user;
 
-  const { clusters } = state.clustersReducer;
-  const { isRetrieving, projects, isFetched, pagination } =
+  const {clusters} = state.clustersReducer;
+  const {isRetrieving, projects, isFetched, pagination} =
     state.userProjectsReducer;
-  const { credits } = state.userCreditsReducer;
+  const {credits} = state.userCreditsReducer;
   return {
     data,
     isRetrieving,
