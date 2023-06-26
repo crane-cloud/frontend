@@ -17,18 +17,7 @@ import Feedback from "../../components/Feedback";
 import styles from "./ClusterPage.module.css";
 import getDatabases from "../../redux/actions/getDatabases";
 import getClustersList from "../../redux/actions/clusters";
-import { Line, CartesianGrid, XAxis, YAxis, AreaChart, Area } from "recharts";
-import MetricsCard from "../../components/MetricsCard";
-import AdminPeriod from "../../components/AdminPeriod";
-import {
-  currentDate,
-  // fourMonthbackdate,
-  // threeMonthbackdate,
-  // eightMonthbackdate,
-  getBackDate,
-  twoYearBack,
-  oneYearBack,
-} from "../../helpers/dateConstants";
+import { currentDate } from "../../helpers/dateConstants";
 import { handleGetRequest } from "../../apis/apis.js";
 
 const ClusterPage = ({
@@ -54,7 +43,6 @@ const ClusterPage = ({
   const [openModal, setOpenModal] = useState(false);
   const [error, setError] = useState("");
   const [description, setDescription] = useState("");
-  const [begin, setBegin] = useState("");
   const [prometheus_url, setPrometheus_url] = useState("");
   const [projects, setProjects] = useState([]);
 
@@ -108,51 +96,6 @@ const ClusterPage = ({
     clearAddClusterState();
     setOpenModal(false);
   };
-  const handlePeriodChange = async (period) => {
-    let startTimeStamp;
-    const threeMonthbackdate = getBackDate(3);
-    const fourMonthbackdate = getBackDate(4);
-    const eightMonthbackdate = getBackDate(8);
-
-    if (period === "3m") {
-      startTimeStamp = threeMonthbackdate;
-    } else if (period === "4m") {
-      startTimeStamp = fourMonthbackdate;
-    } else if (period === "8m") {
-      startTimeStamp = eightMonthbackdate;
-    } else if (period === "1y") {
-      startTimeStamp = oneYearBack;
-    } else if (period === "2y") {
-      startTimeStamp = twoYearBack;
-    } else if (period === "all") {
-      startTimeStamp = "2018-01-01";
-    }
-
-    await setBegin(startTimeStamp);
-
-    userSummary({ end: currentDate, set_by: "month", start: begin });
-  };
-
-  const appsHandlePeriodChange = async (period) => {
-    let startTimeStamp;
-
-    if (period === "3m") {
-      startTimeStamp = getBackDate(3);
-    } else if (period === "4m") {
-      startTimeStamp = getBackDate(4);
-    } else if (period === "8m") {
-      startTimeStamp = getBackDate(8);
-    } else if (period === "1y") {
-      startTimeStamp = oneYearBack;
-    } else if (period === "2y") {
-      startTimeStamp = twoYearBack;
-    } else if (period === "all") {
-      startTimeStamp = "2018-01-01";
-    }
-
-    await setBegin(startTimeStamp);
-    appSummary({ end: currentDate, set_by: "month", start: begin });
-  };
 
   const handleSubmit = () => {
     // input validation
@@ -175,7 +118,12 @@ const ClusterPage = ({
     <div className={styles.Page}>
       <div className="TopRow">
         <Header />
-        <InformationBar header="Overview" />
+        <InformationBar
+          header="Overview"
+          showBtn
+          buttontext="+ New Cluster"
+          btnAction={showForm}
+        />
       </div>
 
       <div className={styles.OtherCards}>
@@ -228,177 +176,32 @@ const ClusterPage = ({
             {clusters.metadata?.cluster_count}
           </div>
         </div>
-      </div>
-
-      <div className={styles.ContentSection}>
-        <div
-          className={
-            styles.SummaryCardContainer + " " + styles.SummaryCardDimentions
-          }
-        >
-          <div className={styles.CardHeaderSection}>
-            <div className={styles.CardTitle}>Users</div>
-            <Link to="/accounts">
-              <PrimaryButton color="primary-outline">
-                View accounts
-              </PrimaryButton>
-            </Link>
+        <div className={styles.ResourceCard}>
+          <div className={styles.CardHeader}>Users</div>
+          <div className={styles.CardTop}>Count</div>
+          <div className={styles.ResourceDigit}>
+            {usersSummary.metadata?.total_users}
           </div>
-          <div className={styles.UserSection}>
-            <div className={styles.LeftUserSide}>
-              <div className={styles.TopTitle}>Count</div>
-              <div>
-                <div>
-                  <div className={styles.ResourceDigit}>
-                    {usersSummary && usersSummary.metadata?.total_users}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={styles.LeftDBSide}>
-              <div className={styles.TopTitle}>Metrics</div>
-              <div className={styles.MetricsGraph}>
-                <MetricsCard
-                  className="ClusterMetricsCardGraph"
-                  title={<AdminPeriod onChange={handlePeriodChange} />}
-                >
-                  {isFetchingUsersSummary ? (
-                    <div className="ContentSectionSpinner">
-                      <Spinner />
-                    </div>
-                  ) : (
-                    <AreaChart
-                      width={800}
-                      height={300}
-                      syncId="anyId"
-                      data={usersSummary?.graph_data}
-                    >
-                      <Line type="monotone" dataKey="value" stroke="#8884d8" />
-                      <CartesianGrid stroke="#ccc" />
-                      <XAxis dataKey="month" xAxisId={0} />
-                      <XAxis
-                        xAxisId={1}
-                        dx={10}
-                        label={{
-                          value: "Time",
-                          angle: 0,
-                          position: "bottom",
-                        }}
-                        interval={12}
-                        dataKey="year"
-                        tickLine={false}
-                        tick={{ fontSize: 12, angle: 0 }}
-                      />
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <YAxis
-                        label={{
-                          value: "Number of Users",
-                          angle: 270,
-                          position: "outside",
-                        }}
-                      />
-                      <Area
-                        type="monotone"
-                        dataKey="value"
-                        stroke="#82ca9d"
-                        fill="#82ca9d"
-                      />
-                    </AreaChart>
-                  )}
-                </MetricsCard>
-              </div>
-            </div>
+        </div>
+        <div className={styles.ResourceCard}>
+          <div className={styles.CardHeader}>Apps</div>
+          <div className={styles.CardTop}>Count</div>
+          <div className={styles.ResourceDigit}>
+            {summary.metadata?.total_apps}
           </div>
         </div>
       </div>
 
-      <div className={styles.ContentSection}>
-        <div
-          className={
-            styles.SummaryCardContainer + " " + styles.SummaryCardDimentions
-          }
-        >
-          <div className={styles.CardHeaderSection}>
-            <div className={styles.CardTitle}>Apps</div>
-            <PrimaryButton color="primary-outline">View Apps</PrimaryButton>
-          </div>
-          <div className={styles.DBSection}>
-            <div className={styles.LeftUserSide}>
-              <div className={styles.TopTitle}>Count</div>
-              <div>
-                <div>
-                  <div className={styles.ResourceDigit}>
-                    {usersSummary && summary?.metadata?.total_apps}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={styles.LeftDBSide}>
-              <div className={styles.TopTitle}>Metrics</div>
-              <div className={styles.MetricsGraph}>
-                <MetricsCard
-                  className="ClusterMetricsCardGraph"
-                  title={<AdminPeriod onChange={appsHandlePeriodChange} />}
-                >
-                  {isFetchingAppsSummary ? (
-                    <div className="ContentSectionSpinner">
-                      <Spinner />
-                    </div>
-                  ) : (
-                    <AreaChart
-                      width={800}
-                      height={300}
-                      syncId="anyId"
-                      position="outside"
-                      data={summary?.graph_data}
-                    >
-                      <Line type="monotone" dataKey="value" stroke="#8884d8" />
-                      <CartesianGrid stroke="#ccc" />
-                      <XAxis dataKey="month" xAxisId={0} />
-                      <XAxis
-                        xAxisId={1}
-                        dx={10}
-                        label={{ value: "Time", angle: 0, position: "bottom" }}
-                        interval={12}
-                        dataKey="year"
-                        tickLine={false}
-                        tick={{ fontSize: 12, angle: 0 }}
-                      />
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <YAxis
-                        label={{
-                          value: "Number of Apps",
-                          angle: 270,
-                          position: "outside",
-                        }}
-                      />
-                      <Area
-                        type="monotone"
-                        dataKey="value"
-                        stroke="#82ca9d"
-                        fill="#82ca9d"
-                      />
-                    </AreaChart>
-                  )}
-                </MetricsCard>
-              </div>
-            </div>
-          </div>
+      <div className="ContentSection">
+        <div className="TitleArea">
+          <div className="SectionTitle">Select Infrastructure</div>
         </div>
       </div>
-      <br />
 
-      <div className="TopRow">
-        <InformationBar
-          header="Select Infrastructure"
-          showBtn
-          buttontext="+ New Cluster"
-          btnAction={showForm}
-        />
-      </div>
       <div className="MainRow">
         <ClustersList newClusterAdded={isAdded} />
       </div>
+
       <div className="FooterRow">
         <p>
           Copyright {new Date().getFullYear()} Crane Cloud. All Rights Reserved.
