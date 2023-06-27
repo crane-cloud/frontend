@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from "react";
-import {connect} from "react-redux";
-import {Link} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import InformationBar from "../../components/InformationBar";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
@@ -8,15 +8,17 @@ import BlackInputText from "../../components/BlackInputText";
 import Modal from "../../components/Modal";
 import ClustersList from "../../components/ClustersList";
 import Header from "../../components/Header";
-import addCluster, {clearAddClusterState} from "../../redux/actions/addCluster";
+import addCluster, {
+  clearAddClusterState,
+} from "../../redux/actions/addCluster";
 import userSummary from "../../redux/actions/usersSummary";
 import appSummary from "../../redux/actions/appsSummary";
 import Feedback from "../../components/Feedback";
 import styles from "./ClusterPage.module.css";
 import getDatabases from "../../redux/actions/getDatabases";
 import getClustersList from "../../redux/actions/clusters";
-import {currentDate} from "../../helpers/dateConstants";
-import {handleGetRequest} from "../../apis/apis.js";
+import { currentDate } from "../../helpers/dateConstants";
+import { handleGetRequest } from "../../apis/apis.js";
 
 const ClusterPage = ({
   getDatabases,
@@ -48,7 +50,7 @@ const ClusterPage = ({
   let enabledProjectsCount = 0;
 
   useEffect(() => {
-    let details = {begin: "2021-03-01", end: currentDate, set_by: "month"};
+    let details = { begin: "2021-03-01", end: currentDate, set_by: "month" };
     userSummary(details);
     appSummary(details);
     getClustersList();
@@ -129,7 +131,7 @@ const ClusterPage = ({
           <div className={styles.CardHeader}>Users</div>
           <div className={styles.CardTop}>Count</div>
           <div className={styles.ResourceDigit}>
-            {usersSummary.metadata?.total_users}
+            {usersSummary?.metadata?.total_users}
           </div>
         </Link>
         <div className={styles.ResourceCard}>
@@ -168,7 +170,7 @@ const ClusterPage = ({
                 <div className={styles.InnerTitlesMiddle}>Postgresql</div>
                 <div className={styles.ResourceDigit}>
                   {databases &&
-                    databases.dbs_stats_per_flavour?.postgres_db_count}
+                    databases?.dbs_stats_per_flavour?.postgres_db_count}
                 </div>
               </div>
             </div>
@@ -178,7 +180,7 @@ const ClusterPage = ({
           <div className={styles.CardHeader}>Clusters</div>
           <div className={styles.CardTop}>Count</div>
           <div className={styles.ResourceDigit}>
-            {clusters.metadata?.cluster_count}
+            {clusters?.metadata?.cluster_count}
           </div>
         </div>
 
@@ -186,14 +188,14 @@ const ClusterPage = ({
           <div className={styles.CardHeader}>Apps</div>
           <div className={styles.CardTop}>Count</div>
           <div className={styles.ResourceDigit}>
-            {summary.metadata?.total_apps}
+            {summary?.metadata?.total_apps}
           </div>
         </div>
       </div>
 
       <div className="ContentSection">
         <div className="TitleArea">
-          <div className="SectionTitle" style={{paddingTop: "2rem"}}>
+          <div className="SectionTitle" style={{ paddingTop: "2rem" }}>
             <b>Select Infrastructure</b>
           </div>
         </div>
@@ -280,16 +282,16 @@ const ClusterPage = ({
 };
 
 export const mapStateToProps = (state) => {
-  const {isFetchingDatabases, databasesFetched, databases} =
+  const { isFetchingDatabases, databasesFetched, databases } =
     state.databasesReducer;
-  const {creatingCluster, isAdded, isFailed, errorOccured, message} =
+  const { creatingCluster, isAdded, isFailed, errorOccured, message } =
     state.addClusterReducer;
-  const {user} = state.user;
-  const {summary, FetchedAppsSummary, isFetchingAppsSummary} =
+  const { user } = state.user;
+  const { summary, FetchedAppsSummary, isFetchingAppsSummary } =
     state.appsSummaryReducer;
-  const {usersSummary, FetchedUsersSummary, isFetchingUsersSummary} =
+  const { usersSummary, FetchedUsersSummary, isFetchingUsersSummary } =
     state.usersSummaryReducer;
-  const {clusters} = state.clustersReducer;
+  const { clusters } = state.clustersReducer;
 
   return {
     isFetchingDatabases,
