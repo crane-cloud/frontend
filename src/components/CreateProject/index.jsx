@@ -15,6 +15,7 @@ import ToggleOnOffButton from "../ToggleOnOffButton";
 import styles from "./CreateProject.module.css";
 import { handlePostRequestWithOutDataObject } from "../../apis/apis.js";
 import { retrieveProjectTypes } from "../../helpers/projecttypes";
+import { namedOrganisations } from "../../helpers/projectOrganisations";
 import handleProjectValidation from "../../helpers/validation";
 
 class CreateProject extends React.Component {
@@ -34,6 +35,7 @@ class CreateProject extends React.Component {
       multiCluster: false,
       clusterchoices: false,
       othersBool: false,
+      otherOrgType: false,
       SelectedClusters: new Array(clusters?.length).fill(false),
       otherType: "",
       addingProject:false,
@@ -42,6 +44,7 @@ class CreateProject extends React.Component {
     };
 
     this.handleTypeSelectChange = this.handleTypeSelectChange.bind(this);
+    this.handleOrganisationSelectChange = this.handleOrganisationSelectChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleDatacenterSelectChange =
@@ -93,6 +96,21 @@ class CreateProject extends React.Component {
         this.setState({ othersBool: false });
       }
     }
+  }
+
+  handleOrganisationSelectChange(selected) {
+    // const { otherOrgType } = this.state;
+    // if (selected.id === 6) {
+    //   if (!otherOrgType) {
+    //     this.setState({ otherOrgType: true });
+    //   }
+    // } else {
+    //   this.setState({ projectType: selected.value });
+    //   if (otherOrgType) {
+    //     this.setState({ otherOrgType: false });
+    //   }
+    // }
+    this.setState({ projectOrganisation: selected.value})
   }
   handleDatacenterSelectChange(selected) {
     this.setState({ clusterID: selected.id });
@@ -190,7 +208,7 @@ class CreateProject extends React.Component {
       projectName,
       projectDescription,
       error,
-      projectOrganisation,
+      // projectOrganisation,
       othersBool,
       otherType,
       multiCluster,
@@ -201,6 +219,7 @@ class CreateProject extends React.Component {
       addErrorCode
     } = this.state;
     const types = retrieveProjectTypes();
+    const presetOrganisations = namedOrganisations();
    
     return (
       <div className={styles.MainContentSection}>
@@ -311,7 +330,7 @@ class CreateProject extends React.Component {
                   </div>
                   <div className={styles.Element}>
                     <div className={styles.ElementTitle}>Organisation</div>
-                    <BlackInputText
+                    {/* <BlackInputText
                       required
                       placeholder="eg.Individual ,Makerere Universty..."
                       name="projectOrganisation"
@@ -319,7 +338,24 @@ class CreateProject extends React.Component {
                       onChange={(e) => {
                         this.handleChange(e);
                       }}
+                    /> */}
+                    <Select
+                      required
+                      placeholder="Choose Organisation type"
+                      options={presetOrganisations}
+                      onChange={this.handleOrganisationSelectChange}
                     />
+                    {othersBool && (
+                      <BlackInputText
+                        required
+                        placeholder="Type of project"
+                        name="otherType"
+                        value={otherType}
+                        onChange={(e) => {
+                          this.handleChange(e);
+                        }}
+                      />
+                    )}
                   </div>
                   <div className={styles.Element}>
                     <div className={styles.ElementTitle}>Type</div>
