@@ -99,17 +99,6 @@ class CreateProject extends React.Component {
   }
 
   handleOrganisationSelectChange(selected) {
-    // const { otherOrgType } = this.state;
-    // if (selected.id === 6) {
-    //   if (!otherOrgType) {
-    //     this.setState({ otherOrgType: true });
-    //   }
-    // } else {
-    //   this.setState({ projectType: selected.value });
-    //   if (otherOrgType) {
-    //     this.setState({ otherOrgType: false });
-    //   }
-    // }
     this.setState({ projectOrganisation: selected.value})
   }
   handleDatacenterSelectChange(selected) {
