@@ -110,9 +110,11 @@ export default class RegisterPage extends Component {
       username,
       email,
       password,
+      organisation,
     };
 
-    if (!email || !password || !name || !username || !passwordConfirm) {
+    const isValidOrgName = /^[a-zA-Z0-9\s]{1,50}$/.test(organisation.trim());
+    if (!email || !password || !name || !username || !passwordConfirm || !organisation) {
       this.setState({
         error: "Please enter all fields",
       });
@@ -129,6 +131,11 @@ export default class RegisterPage extends Component {
       this.setState({
         loading: false,
         error: "Passwords do not match",
+      });
+    } else if (!isValidOrgName) {
+      this.setState({
+        loading: false,
+        error: "Provide a valid organisation name.",
       });
     } else if (!hasAgreed) {
       this.setState({
