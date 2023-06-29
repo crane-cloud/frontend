@@ -117,6 +117,7 @@ describe("<RegisterPage/> Component", () => {
       email: "test@example.com",
       password: "password",
       passwordConfirm: "password",
+      organisation: "USAID",
       hasAgreed: true,
     });
 
