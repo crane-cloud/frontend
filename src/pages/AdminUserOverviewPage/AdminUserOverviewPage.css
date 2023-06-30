@@ -1,9 +1,71 @@
 .OverviewContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
 }
 
 .TitleArea {
-    padding: 0 2rem;
+  padding: 0 2rem;
+}
+
+/* ////////////---- calendar styles ---- ///////////// */
+.DateSection {
+  padding: 2px 0px 2px 0px;
+  display: flex;
+  flex-direction: row;
+  font-size: 15px;
+  justify-content: space-between;
+  align-items: center;
+  height: 25px;
+  gap: 0.5rem;
+  margin-top: 3px;
+}
+
+.DateItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.DateSection:hover {
+  cursor: pointer;
+}
+
+.CalenderToposition,
+.CalenderFromposition {
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  padding: 0.5rem;
+  display: grid;
+  gap: 1rem;
+  position: absolute;
+  z-index: 10;
+  left: 0.1rem;
+  width: 58%;
+}
+
+.dateField {
+  width: 7rem;
+}
+
+.OuterFilterItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  width: 20rem;
+  height: 40px;
+  border-radius: 9px;
+  border: 1px solid #000000;
+}
+
+.CalendarSection{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: end;
+  padding-top: 1rem;
+  position: relative;
 }

@@ -6,6 +6,7 @@ import InformationBar from "../../components/InformationBar";
 import { handleGetRequest } from "../../apis/apis.js";
 import ResourceCard from "../../components/ResourceCard";
 import Spinner from "../../components/Spinner";
+import DateInput from "../../components/DateInput";
 import {
   Line,
   CartesianGrid,
@@ -25,11 +26,17 @@ const AdminUserOverviewPage = () => {
   const history = useHistory();
   const clusterID = localStorage.getItem("clusterID");
   const clusterName = localStorage.getItem("clusterName");
-
+  const [queryParams, setQueryParams] = useState("");
   const [users, setUsers] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
   const [period, setPeriod] = useState("all");
+
+  const [showToCalendar, setShowToCalendar] = useState(false);
+  const [showFromCalendar, setShowFromCalendar] = useState(false);
+  const [toTS, setToTS] = useState("none");
+  const [fromTS, setFromTS] = useState("none");
+
   const graphDataArray = [];
   let filteredGraphData = [];
 
@@ -147,7 +154,73 @@ const AdminUserOverviewPage = () => {
   const viewUsersListing = () => {
     history.push(`/clusters/${clusterID}/users-listing`);
   };
+  const handleFromDate = (fromTS) => {
+    const date = new Date(fromTS);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const formattedDate = `${year}-${month}-${day}`;
+    setFromTS(formattedDate);
+  };
+  const handleToDate = (toTS) => {
+    const date = new Date(toTS);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const formattedDate = `${year}-${month}-${day}`;
+    setToTS(formattedDate);
+  };
+  const switchCalendars = ({ target }) => {
+    const calendar = target.getAttribute("value");
 
+    if (calendar === "from" && !showFromCalendar) {
+      setShowFromCalendar(true);
+      setShowToCalendar(false);
+    }
+
+    if (calendar === "to" && !showToCalendar) {
+      setShowToCalendar(true);
+      setShowFromCalendar(false);
+    }
+  };
+  const closeCalendar = () => {
+    if (showToCalendar) {
+      setToTS("none");
+      setShowToCalendar(false);
+      if (queryParams.includes("&end=")) {
+        setQueryParams(queryParams.replace(/&end=.+?(&|$)/, ""));
+      } else if (queryParams.includes("end=")) {
+        setQueryParams(queryParams.replace(/end=.+?(&|$)/, ""));
+      }
+    }
+    if (showFromCalendar) {
+      setFromTS("none");
+      setShowFromCalendar(false);
+      if (queryParams.includes("&start=")) {
+        setQueryParams(queryParams.replace(/&start=.+?(&|$)/, ""));
+      } else if (queryParams.includes("start=")) {
+        setQueryParams(queryParams.replace(/start=.+?(&|$)/, ""));
+      }
+    }
+  };
+  const handleCalenderSubmission = () => {
+    //add to link
+    if (toTS !== "none") {
+      if (queryParams === "") {
+        setQueryParams(`end=${toTS}`);
+      } else {
+        setQueryParams(`${queryParams}&end=${toTS}`);
+      }
+      if (fromTS !== "none") {
+        if (queryParams === "") {
+          setQueryParams(`start=${fromTS}`);
+        } else {
+          setQueryParams(`${queryParams}&start=${fromTS}`);
+        }
+      }
+      closeCalendar();
+    }
+  };
   return (
     <div className="MainPage">
       <div className="TopBarSection">
@@ -350,8 +423,39 @@ const AdminUserOverviewPage = () => {
 
             <div className="TitleArea">
               <div className="SectionTitle">Active Users</div>
-            </div>
+              <div className="CalendarSection">
+              <div className="OuterFilterItem">
 
+                <div className="DateItem">
+                  <div>From:</div>
+                  <DateInput
+                    handleChange={handleFromDate}
+                    showCalendar={showFromCalendar}
+                    className="dateField"
+                    position="CalenderFromposition"
+                    onClick={switchCalendars}
+                    onCancel={closeCalendar}
+                    onSubmit={handleCalenderSubmission}
+                    value="from"
+                  />
+                </div>
+                <div className="DateItem">
+                  <div>To:</div>
+                  <DateInput
+                    handleChange={handleToDate}
+                    showCalendar={showToCalendar}
+                    position="CalenderToposition"
+                    className="dateField"
+                    onClick={switchCalendars}
+                    onCancel={closeCalendar}
+                    onSubmit={handleCalenderSubmission}
+                    value="to"
+                  />
+                </div>
+              </div>
+              </div>
+            </div>
+            
             <div className="ResourcesTable">
               <table>
                 <thead>
