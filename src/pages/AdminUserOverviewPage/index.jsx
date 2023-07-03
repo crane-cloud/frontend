@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React, {useState, useEffect} from "react";
+import {useHistory} from "react-router-dom";
 import SideNav from "../../components/SideNav";
 import Header from "../../components/Header";
 import InformationBar from "../../components/InformationBar";
-import { handleGetRequest } from "../../apis/apis.js";
+import {handleGetRequest} from "../../apis/apis.js";
 import ResourceCard from "../../components/ResourceCard";
 import Spinner from "../../components/Spinner";
 import DateInput from "../../components/DateInput";
@@ -17,10 +17,10 @@ import {
   Tooltip,
 } from "recharts";
 import MetricsCard from "../../components/MetricsCard";
-import { filterGraphData } from "../../helpers/filterGraphData.js";
-import { dateInWords } from "../../helpers/dateConstants";
-import { retrieveMonthNames } from "../../helpers/monthNames.js";
-import "./AdminUserOverviewPage.css";
+import {filterGraphData} from "../../helpers/filterGraphData.js";
+import {dateInWords} from "../../helpers/dateConstants";
+import {retrieveMonthNames} from "../../helpers/monthNames.js";
+import styles from "./AdminUserOverviewPage.css";
 
 const AdminUserOverviewPage = () => {
   const history = useHistory();
@@ -78,7 +78,7 @@ const AdminUserOverviewPage = () => {
     beta: users.filter((user) => user.is_beta_user === true).length,
   };
 
-  const handleChange = ({ target }) => {
+  const handleChange = ({target}) => {
     setPeriod(target.getAttribute("value"));
   };
 
@@ -91,7 +91,7 @@ const AdminUserOverviewPage = () => {
       const date = new Date(user.date_created);
       const year = date.getFullYear();
       const month = parseInt(
-        date.toLocaleString("default", { month: "2-digit" }),
+        date.toLocaleString("default", {month: "2-digit"}),
         10
       );
 
@@ -105,7 +105,7 @@ const AdminUserOverviewPage = () => {
         graphDataArray[existingEntryIndex].Value += 1;
       } else {
         // Otherwise, create a new entry
-        graphDataArray.push({ Year: year.toString(), Month: month, Value: 1 });
+        graphDataArray.push({Year: year.toString(), Month: month, Value: 1});
       }
     });
 
@@ -131,8 +131,8 @@ const AdminUserOverviewPage = () => {
   );
 
   const activeUsersSummary = activeUsers.map((activeUser) => {
-    const { name, email, date_created, last_seen } = activeUser;
-    return { name, email, date_created, last_seen };
+    const {name, email, date_created, last_seen} = activeUser;
+    return {name, email, date_created, last_seen};
   });
 
   const sortedActiveUsers = activeUsersSummary.sort((a, b) => {
@@ -170,7 +170,7 @@ const AdminUserOverviewPage = () => {
     const formattedDate = `${year}-${month}-${day}`;
     setToTS(formattedDate);
   };
-  const switchCalendars = ({ target }) => {
+  const switchCalendars = ({target}) => {
     const calendar = target.getAttribute("value");
 
     if (calendar === "from" && !showFromCalendar) {
@@ -381,7 +381,7 @@ const AdminUserOverviewPage = () => {
                               interval={12}
                               dataKey="Year"
                               tickLine={false}
-                              tick={{ fontSize: 12, angle: 0 }}
+                              tick={{fontSize: 12, angle: 0}}
                             />
                             <CartesianGrid strokeDasharray="3 3" />
                             <YAxis
@@ -424,38 +424,37 @@ const AdminUserOverviewPage = () => {
             <div className="TitleArea">
               <div className="SectionTitle">Active Users</div>
               <div className="CalendarSection">
-              <div className="OuterFilterItem">
-
-                <div className="DateItem">
-                  <div>From:</div>
-                  <DateInput
-                    handleChange={handleFromDate}
-                    showCalendar={showFromCalendar}
-                    className="dateField"
-                    position="CalenderFromposition"
-                    onClick={switchCalendars}
-                    onCancel={closeCalendar}
-                    onSubmit={handleCalenderSubmission}
-                    value="from"
-                  />
+                <div className="OuterFilterItem">
+                  <div className="DateItem">
+                    <div>From:</div>
+                    <DateInput
+                      handleChange={handleFromDate}
+                      showCalendar={showFromCalendar}
+                      className={styles.dateField}
+                      position={styles.CalenderFromposition}
+                      onClick={switchCalendars}
+                      onCancel={closeCalendar}
+                      onSubmit={handleCalenderSubmission}
+                      value="from"
+                    />
+                  </div>
+                  <div className="DateItem">
+                    <div>To:</div>
+                    <DateInput
+                      handleChange={handleToDate}
+                      showCalendar={showToCalendar}
+                      className={styles.dateField}
+                      position={styles.CalenderToposition}
+                      onClick={switchCalendars}
+                      onCancel={closeCalendar}
+                      onSubmit={handleCalenderSubmission}
+                      value="to"
+                    />
+                  </div>
                 </div>
-                <div className="DateItem">
-                  <div>To:</div>
-                  <DateInput
-                    handleChange={handleToDate}
-                    showCalendar={showToCalendar}
-                    position="CalenderToposition"
-                    className="dateField"
-                    onClick={switchCalendars}
-                    onCancel={closeCalendar}
-                    onSubmit={handleCalenderSubmission}
-                    value="to"
-                  />
-                </div>
-              </div>
               </div>
             </div>
-            
+
             <div className="ResourcesTable">
               <table>
                 <thead>

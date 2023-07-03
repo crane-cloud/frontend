@@ -52,7 +52,7 @@
 
 .OuterFilterItem {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   background-color: #fff;
   width: 20rem;
@@ -64,8 +64,8 @@
 .CalendarSection{
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
-  justify-content: end;
+  align-items: center;
   padding-top: 1rem;
   position: relative;
+  float: right;
 }
