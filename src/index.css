@@ -446,7 +446,7 @@ tr.TableLoading td {
 .ShortContainer{
   padding-left: 4rem;
   padding-right: 2rem;
-  max-width: 50rem;
+  max-width: 80%;
 }
 @media (max-width: 750px) {
   .SmallContainer{
