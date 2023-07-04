@@ -1,4 +1,4 @@
-  
+ 
 # use an official node runtime as the base image
 FROM node:10.16.0-alpine
 
