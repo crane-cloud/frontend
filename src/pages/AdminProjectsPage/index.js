@@ -16,18 +16,27 @@ import { Link } from "react-router-dom";
 import usePaginator from "../../hooks/usePaginator";
 import Pagination from "../../components/Pagination";
 import { handleGetRequest } from "../../apis/apis.js";
+import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
+
 
 const AdminProjectsPage = () => {
   const [currentPage, handleChangePage] = usePaginator();
   const clusterID = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
+  const [word, setWord] = useState("");
+  const [searchProjectList, setSearchProjectList] = useState([]);
+
+  const { isRetrieved , isRetrieving, projects, pagination} = useSelector(
+    (state) => state.adminProjectsReducer
+  );
 
   const getAdminProps = useCallback(
     () => dispatch(getAdminProjects(currentPage)),
     [dispatch, currentPage]
   );
   const getUsersProps = useCallback(() => dispatch(getUsersList), [dispatch]);
-  const adminProjects = useSelector((state) => state.adminProjectsReducer);
+ 
+  // const adminProjects = useSelector((state) => state.adminProjectsReducer);
   // const usersList = useSelector((state) => state.usersListReducer);
   const [contextMenu, setContextMenu] = useState(false);
   const [selectedProject, setSelectedProject] = useState("");
@@ -64,6 +73,28 @@ const AdminProjectsPage = () => {
         throw new Error("Failed to fetch users, please try again");
       });
   };
+
+  const searchThroughProjects = () => {
+    let resultsProjectList = [];
+    projects.forEach((element) => {
+      if (element.name.toLowerCase().includes(word.toLowerCase())) {
+        resultsProjectList.push(element);
+      }
+    });
+    setSearchProjectList(resultsProjectList);
+  };
+
+  const handleCallbackSearchword = ({ target }) => {
+    const { value } = target;
+    setWord(value);
+    if (value !== "") {
+      searchThroughProjects();
+    }
+    if (value === "") {
+      setSearchProjectList([]);
+    }
+  };
+
 
   const getUserName = (id) => {
     let userName = "";
@@ -121,9 +152,24 @@ const AdminProjectsPage = () => {
             />
           </div>
           <div className="ContentSection">
+            <div className="SearchBar">
+              <div className="AdminSearchInput">
+                <input
+                  type="text"
+                  className="searchTerm"
+                  name="Searchword"
+                  placeholder="Search for project"
+                  value={word}
+                  onChange={(e) => {
+                    handleCallbackSearchword(e);
+                  }}
+                />
+                <SearchButton className="SearchIcon" />
+              </div>
+            </div>
             <div
               className={
-                adminProjects.isRetrieving
+                projects.isRetrieving
                   ? "ResourcesTable LoadingResourcesTable"
                   : "ResourcesTable"
               }
@@ -138,7 +184,7 @@ const AdminProjectsPage = () => {
                     <th>Actions</th>
                   </tr>
                 </thead>
-                {adminProjects.isRetrieving ? (
+                {projects.isRetrieving ? (
                   <tbody>
                     <tr className="TableLoading">
                     <td className="TableTdSpinner">
@@ -148,12 +194,60 @@ const AdminProjectsPage = () => {
                       </td>
                     </tr>
                   </tbody>
+                ) : word !== "" ? (
+                  <tbody>
+                    {isRetrieved &&
+                       searchProjectList.map((project) =>(
+                        <tr key={projects.indexOf(project)}>
+                           <td>{project?.name}</td>
+                            <td>{getUserName(project?.owner_id)}</td>
+                            <td >{project?.description}</td>
+                            <td>
+                              {/* optional chai */}
+                              <span className={project.disabled !== false ? "ProjectStatus":"ProjectStatusDisabled"}>
+                                {project.disabled !== false
+                                  ? "Active"
+                                  : "Disabled"}
+                              </span>
+                            </td>
+                            <td
+                              onClick={(e) => {
+                                showContextMenu(project.id);
+                              }}
+                            >
+                              <MoreIcon />
+
+                              {contextMenu && project.id === selectedProject && (
+                                <div className="BelowHeader bg-light">
+                                  <div className="context-menu">
+                                    <div
+                                      className="DropDownLink"
+                                      role="presentation"
+                                    >
+                                      <Link
+                                        to={{
+                                          pathname: `/projects/${selectedProject}/details`,
+                                        }}
+                                      >
+                                        View Project Details
+                                      </Link>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                            </td>
+                        </tr>
+                       ))
+
+                    }
+                  </tbody>
                 ) : (
                   <tbody>
-                    {adminProjects.projects !== 0 &&
-                      adminProjects.projects !== undefined &&
-                      adminProjects.projects.map((project) => (
-                        <tr key={adminProjects.projects.indexOf(project)}>
+                    {isRetrieved &&
+                      projects !== 0 &&
+                      projects !== undefined &&
+                      projects.map((project) => (
+                        <tr key={projects.indexOf(project)}>
                           <td>{project.name}</td>
                           <td>{getUserName(project.owner_id)}</td>
                           <td >{project.description}</td>
@@ -240,13 +334,13 @@ const AdminProjectsPage = () => {
                   </div>
                 </div>
               </Modal> */}
-              {adminProjects.isRetrieved &&
-                adminProjects.projects.length === 0 && (
+              {isRetrieved &&
+                projects.length === 0 && (
                   <div className="NoResourcesMessage">
                     <p>No projects available</p>
                   </div>
                 )}
-              {!adminProjects.isRetrieving && !adminProjects.isRetrieved && (
+              {!isRetrieving && !isRetrieved && (
                 <div className="NoResourcesMessage">
                   <p>
                     Oops! Something went wrong! Failed to retrieve projects.
@@ -254,10 +348,10 @@ const AdminProjectsPage = () => {
                 </div>
               )}
             </div>
-            {adminProjects.pagination?.pages > 1 && (
+            {pagination?.pages > 1 && (
               <div className="AdminPaginationSection">
                 <Pagination
-                  total={adminProjects.pagination.pages}
+                  total={pagination.pages}
                   current={currentPage}
                   onPageChange={handlePageChange}
                 />
