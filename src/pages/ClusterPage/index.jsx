@@ -123,6 +123,8 @@ const ClusterPage = ({
           showBtn
           buttontext="+ New Cluster"
           btnAction={showForm}
+          adminRoute={true}
+          adminProjects={true}
         />
       </div>
 
