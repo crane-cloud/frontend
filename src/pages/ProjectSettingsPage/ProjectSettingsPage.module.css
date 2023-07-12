@@ -329,8 +329,7 @@
   align-items: center;
   width: 200px;
   white-space: nowrap;
-  
-}
+  }
 
  .Wrap:hover{
   word-wrap: break-word;
@@ -407,7 +406,6 @@
   grid-template-columns: 1fr 3fr; 
   gap: .4rem;
  }
-
 .MemberAvatar {
   width: 2.3rem;
   height: 2.3rem;
@@ -419,7 +417,6 @@
   align-items: center;
   justify-content: center;
   
- 
 }
 
 .MemberTableRow:not(a) {
@@ -540,9 +537,7 @@
   text-align: center;
   grid-row: 0;
  
- 
- }
-
+}
 /* .MemberTableCell div {
  
 } */
@@ -550,7 +545,7 @@
 .MemberTableHead:first-child,
 .MemberTableCell:first-child {
   text-align: left;
-
+ 
 }
 
 /* .MemberTableCell:first-child {
