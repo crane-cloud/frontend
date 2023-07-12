@@ -309,6 +309,7 @@
   font-size: 1.1rem;
   gap: .13rem;
   font-weight: 400;
+ 
 }
 
 .UserHeader {
@@ -326,14 +327,16 @@
   text-overflow: ellipsis;
   text-align: left;
   align-items: center;
-  max-width: 200px;
-  display: flex;
- }
+  width: 200px;
+  white-space: nowrap;
+  
+}
 
  .Wrap:hover{
-  white-space: normal;
   word-wrap: break-word;
   overflow: visible;
+  cursor: pointer;
+  white-space: normal;
  }
 
 .MemberBody{
@@ -351,6 +354,7 @@
   padding: 0.8rem ;
   margin: 0;
   background-color: white;
+ 
 }
 
 .MemberInfo{
@@ -400,15 +404,9 @@
 .NameSecting { 
   display: grid; 
   justify-content: flex-start;
-   grid-template-columns: 1fr 3fr; 
+  grid-template-columns: 1fr 3fr; 
   gap: .4rem;
-  /* text-overflow: ellipsis; */
-  /* white-space: nowrap; */
-  /* display: flex; */
-  /* overflow: hidden; */
-  /* align-items: center; */
- 
-}
+ }
 
 .MemberAvatar {
   width: 2.3rem;
@@ -420,6 +418,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  
+ 
 }
 
 .MemberTableRow:not(a) {
@@ -540,7 +540,8 @@
   text-align: center;
   grid-row: 0;
  
-}
+ 
+ }
 
 /* .MemberTableCell div {
  
@@ -549,7 +550,7 @@
 .MemberTableHead:first-child,
 .MemberTableCell:first-child {
   text-align: left;
- 
+
 }
 
 /* .MemberTableCell:first-child {
