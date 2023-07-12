@@ -300,7 +300,7 @@ class CreateApp extends React.Component {
         private_image: true,
         replicas,
         docker_email: dockerEmail,
-        docker_username: "cranecloud",
+        docker_username: "cranecloudplatform",
         docker_password: dockerPassword,
         docker_server: "docker.io",
       };
@@ -338,7 +338,7 @@ class CreateApp extends React.Component {
           };
         }
         //change
-        //createApp(appInfo, params.projectID);
+
         this.createNewApp(appInfo, params.projectID);
       }
     }
@@ -396,6 +396,7 @@ class CreateApp extends React.Component {
       { id: 3, name: "3" },
       { id: 4, name: "4" },
     ];
+
     return (
       <div>
         <div className={styles.DeploymentMethodTabs}>

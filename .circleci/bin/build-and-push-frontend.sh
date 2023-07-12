@@ -26,6 +26,8 @@ function create_env_file
     echo REACT_APP_EXCHANGE_RATE_KEY=$REACT_APP_EXCHANGE_RATE_KEY >> .env
     echo REACT_APP_BLOG_URL=$REACT_APP_BLOG_URL >> .env
     echo REACT_APP_MIRA_API_URL=$REACT_APP_MIRA_API_URL >> .env
+    echo REACT_APP_DOCKER_EMAIL=$REACT_APP_DOCKER_EMAIL >> .env
+    echo REACT_APP_DOCKER_PASSWORD=$REACT_APP_DOCKER_PASSWORD >> .env
 
     if [ $branch == 'master' ]
     then
