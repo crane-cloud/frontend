@@ -34,7 +34,7 @@ class ProjectSettingsPage extends React.Component {
     const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
     const userToken = localStorage.getItem("token", null);
     const { name, description, organisation, project_type } =
-      projectInfo;
+     projectInfo;
     this.state = {
       openUpdateAlert: false,
       openRoleUpdateAlert: false,
@@ -79,9 +79,10 @@ class ProjectSettingsPage extends React.Component {
       deletingProject: false,
       disableProjectError: "",
       disablingProject: false,
-      openDisableProjectModel: false
+      openDisableProjectModel: false,
+     
     };
-
+    
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
     this.showUpdateAlert = this.showUpdateAlert.bind(this);
     this.updateRoleAlert = this.updateRoleAlert.bind(this);
@@ -398,7 +399,7 @@ class ProjectSettingsPage extends React.Component {
                 description: trimedprojectDescription,
               };
               //updateProject(projectID, newProject);
-              this.updateProjectDetails(projectID, newProject)
+              this.updateProjectDetails(projectID, newProject);
             }
           }
         } else {
@@ -429,7 +430,7 @@ class ProjectSettingsPage extends React.Component {
               description: trimedprojectDescription,
             };
             //updateProject(projectID, newProject);
-           this.updateProjectDetails(projectID, newProject)
+            this.updateProjectDetails(projectID, newProject);
           }
         }
       }
@@ -471,26 +472,24 @@ class ProjectSettingsPage extends React.Component {
   handleDeleteProject(e, projectID) {
     // const { deleteProject } = this.props;
     e.preventDefault();
-     this.deleteThisProject(projectID)
+    this.deleteThisProject(projectID);
   }
 
-  handleDisableProject(e,disabled) {
+  handleDisableProject(e, disabled) {
     // /projects/d1e9954c-7a3b-437f-8611-9c0045815afe/disable
     e.preventDefault();
     this.setState({
       disablingProject: true,
     });
     const projectID = this.props.match.params.projectID;
-    let apiEndpoint
-    if(disabled){
+    let apiEndpoint;
+    if (disabled) {
       apiEndpoint = `/projects/${projectID}/enable`;
-    }else{
+    } else {
       apiEndpoint = `/projects/${projectID}/disable`;
     }
-    handlePostRequestWithOutDataObject(
-      {},
-      apiEndpoint
-    ).then(() => {
+    handlePostRequestWithOutDataObject({}, apiEndpoint)
+      .then(() => {
         //reset to projects page to re populate redux
         window.location.href = `/projects`;
       })
@@ -500,7 +499,6 @@ class ProjectSettingsPage extends React.Component {
           disablingProject: false,
         });
       });
-    
   }
 
   showUpdateAlert() {
@@ -596,8 +594,7 @@ class ProjectSettingsPage extends React.Component {
     this.setState({
       updatingProjectDetails: true,
     });
-    handlePatchRequest(`/projects/${projectID}`, 
-    data)
+    handlePatchRequest(`/projects/${projectID}`, data)
       .then(() => {
         window.location.href = `/projects`;
       })
@@ -609,9 +606,9 @@ class ProjectSettingsPage extends React.Component {
       });
   }
 
-  deleteThisProject(projectID){
-    this.setState({ deletingProject: true, deleteProjectError:"" });
-    handleDeleteRequest(`/projects/${projectID}`,{})
+  deleteThisProject(projectID) {
+    this.setState({ deletingProject: true, deleteProjectError: "" });
+    handleDeleteRequest(`/projects/${projectID}`, {})
       .then(() => {
         window.location.href = `/projects`;
       })
@@ -619,7 +616,7 @@ class ProjectSettingsPage extends React.Component {
         this.setState({
           deleteProjectError: "Failed to delete this project",
           deletingProject: false,
-        })
+        });
       });
   }
 
@@ -636,7 +633,7 @@ class ProjectSettingsPage extends React.Component {
 
     let currentUserEmail = data.email;
 
-    const { name,disabled } = projectInfo;
+    const { name, disabled } = projectInfo;
 
     const {
       openUpdateAlert,
@@ -678,7 +675,8 @@ class ProjectSettingsPage extends React.Component {
       deleteProjectError,
       disableProjectError,
       disablingProject,
-      openDisableProjectModel
+      openDisableProjectModel,
+     
     } = this.state;
     const types = retrieveProjectTypes();
     const roles = retrieveMembershipRoles();
@@ -730,7 +728,13 @@ class ProjectSettingsPage extends React.Component {
             <div className="SectionSubTitle">Project Status</div>
             <div className={styles.ProjectButtonRow}>
               <div className={styles.SettingsSectionInfo}>
-                <div>{disabled === true ? <span style={{color:'red'}}>Disabled</span>:"Enabled"}</div>
+                <div>
+                  {disabled === true ? (
+                    <span style={{ color: "red" }}>Disabled</span>
+                  ) : (
+                    "Enabled"
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -859,71 +863,74 @@ class ProjectSettingsPage extends React.Component {
                     Members invited to this project by email but have no crane
                     cloud accounts.
                   </div>
-                  <div className={`${styles.MemberTable}`}>
-                    <div className={`${styles.MemberTableRowUnregistered}`}>
-                      <div className={styles.MemberTableHead}>User</div>
-                      <div className={styles.MemberTableHead}>Role</div>
-                      <div className={styles.MemberTableHead}>Options</div>
-                    </div>
-                    <div className={styles.MemberBody}>
-                      {projectUnregisteredUsers?.map((entry, index) => (
-                        <div
-                          className={styles.MemberTableRowUnregistered}
-                          key={index}
-                        >
-                          <div className={styles.MemberTableCell}>
-                            <div className={styles.NameSecting}>
-                              <Avatar
-                                name={entry.email}
-                                className={styles.MemberAvatar}
-                              />
-                              <div className={styles.MemberNameEmail}>
-                                <div className={styles.Wrap}>{entry.email}</div>
+                  
+                    <div className={`${styles.MemberTable}`}>
+                      <div className={`${styles.MemberTableRowUnregistered}`}>
+                        <div className={styles.MemberTableHead}>User</div>
+                        <div className={styles.MemberTableHead}>Role</div>
+                        <div className={styles.MemberTableHead}>Options</div>
+                      </div>
+                      <div className={styles.MemberBody}>
+                        {projectUnregisteredUsers?.map((entry, index) => (
+                          <div
+                            className={styles.MemberTableRowUnregistered}
+                            key={index}
+                          >
+                            <div className={styles.MemberTableCell}>
+                              <div className={styles.NameSecting}>
+                                <Avatar
+                                  name={entry.email}
+                                  className={styles.MemberAvatar}
+                                />
+                                {/* <div className={styles.MemberNameEmail}> */}
+                                  <div className={styles.Wrap}>{entry.email}</div>
+                                  
+                                {/* </div> */}
+                              </div>
+                            </div>
+
+                            <div className={styles.MemberTableCell}>
+                              {entry.role}
+                            </div>
+                            <div className={styles.MemberTableCell}>
+                              <div
+                                onClick={(e) => {
+                                  this.showMenu(entry.email);
+                                  this.handleClick(e);
+                                }}
+                              >
+                                <MoreIcon className={styles.MoreIcon} />
+                                {/* options to be determined per user*/}
+                                {actionsMenu && entry.email === email && (
+                                  <>
+                                    <div className={styles.BelowHeader}>
+                                      <div className={styles.contextMenu}>
+                                        <div
+                                          className={styles.DropDownLink}
+                                          role="presentation"
+                                          onClick={() => {}}
+                                        >
+                                          Remove Member
+                                        </div>
+                                        <div
+                                          className={styles.DropDownLink}
+                                          role="presentation"
+                                          onClick={() => {}}
+                                        >
+                                          Resend Invite
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </>
+                                )}
                               </div>
                             </div>
                           </div>
-
-                          <div className={styles.MemberTableCell}>
-                            {entry.role}
-                          </div>
-                          <div className={styles.MemberTableCell}>
-                            <div
-                              onClick={(e) => {
-                                this.showMenu(entry.email);
-                                this.handleClick(e);
-                              }}
-                            >
-                              <MoreIcon className={styles.MoreIcon} />
-                              {/* options to be determined per user*/}
-                              {actionsMenu && entry.email === email && (
-                                <>
-                                  <div className={styles.BelowHeader}>
-                                    <div className={styles.contextMenu}>
-                                      <div
-                                        className={styles.DropDownLink}
-                                        role="presentation"
-                                        onClick={() => {}}
-                                      >
-                                        Remove Member
-                                      </div>
-                                      <div
-                                        className={styles.DropDownLink}
-                                        role="presentation"
-                                        onClick={() => {}}
-                                      >
-                                        Resend Invite
-                                      </div>
-                                    </div>
-                                  </div>
-                                </>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
+              
               )}
             </>
           )}
@@ -1000,19 +1007,24 @@ class ProjectSettingsPage extends React.Component {
                 </div>
                 <div className={styles.MemberTableRow}>
                   <div className={styles.SettingsSectionInfo}>
-                    <div className="SubTitle">{disabled ? "Enable" :"Disable"} project</div>
+                    <div className="SubTitle">
+                      {disabled ? "Enable" : "Disable"} project
+                    </div>
                     <div>
-                      {disabled?"Allow access to project resources and enable billing":
-                      "Prevent project from being billed by blocking access to it's resources."}
+                      {disabled
+                        ? "Allow access to project resources and enable billing"
+                        : "Prevent project from being billed by blocking access to it's resources."}
                     </div>
                   </div>
                   <div className={styles.SectionButtons}>
                     <PrimaryButton
-                      onClick={()=>{this.setState({openDisableProjectModel:true})}}
+                      onClick={() => {
+                        this.setState({ openDisableProjectModel: true });
+                      }}
                       small
-                      color={disabled?"primary":"red"}
+                      color={disabled ? "primary" : "red"}
                     >
-                    {disabled?"Enable":"Disable"}
+                      {disabled ? "Enable" : "Disable"}
                     </PrimaryButton>
                   </div>
                 </div>
@@ -1135,7 +1147,11 @@ class ProjectSettingsPage extends React.Component {
                         onClick={this.handleSubmit}
                         color="primary"
                       >
-                        {updatingProjectDetails ? <Spinner /> : "update project"}
+                        {updatingProjectDetails ? (
+                          <Spinner />
+                        ) : (
+                          "update project"
+                        )}
                       </PrimaryButton>
                     </div>
                   </div>
@@ -1263,18 +1279,22 @@ class ProjectSettingsPage extends React.Component {
           <div className={styles.ProjectDeleteModel}>
             <Modal
               showModal={openDisableProjectModel}
-              onClickAway={()=>{this.setState({openDisableProjectModel:false})}}
+              onClickAway={() => {
+                this.setState({ openDisableProjectModel: false });
+              }}
             >
               <div className={styles.DeleteProjectModel}>
                 <div className={styles.DeleteProjectModalUpperSection}>
                   <div className={styles.WarningContainer}>
                     <div className={styles.DeleteDescription}>
-                      Are you sure you want to {disabled?"enable":"disable"}&nbsp;
+                      Are you sure you want to {disabled ? "enable" : "disable"}
+                      &nbsp;
                       <span>{name}</span>
                       &nbsp;?
                     </div>
                     <div className={styles.DisableSubDescription}>
-                      This will {disabled? "enable" :"disable"}  billing and external access of resources in this project.
+                      This will {disabled ? "enable" : "disable"} billing and
+                      external access of resources in this project.
                     </div>
                   </div>
                 </div>
@@ -1282,17 +1302,23 @@ class ProjectSettingsPage extends React.Component {
                   <div className={styles.DeleteProjectModelButtons}>
                     <PrimaryButton
                       className="CancelBtn"
-                      onClick={()=>{this.setState({openDisableProjectModel:false})}}
+                      onClick={() => {
+                        this.setState({ openDisableProjectModel: false });
+                      }}
                     >
                       Cancel
                     </PrimaryButton>
                     <PrimaryButton
-                      color={disabled?"primary":"red"}
-                      onClick={(e) =>
-                        this.handleDisableProject(e, disabled)
-                      }
+                      color={disabled ? "primary" : "red"}
+                      onClick={(e) => this.handleDisableProject(e, disabled)}
                     >
-                      {disablingProject ? <Spinner /> : disabled===true ? "Enable" :"Disable"}
+                      {disablingProject ? (
+                        <Spinner />
+                      ) : disabled === true ? (
+                        "Enable"
+                      ) : (
+                        "Disable"
+                      )}
                     </PrimaryButton>
                   </div>
 
@@ -1364,18 +1390,14 @@ ProjectSettingsPage.defaultProps = {
 };
 
 export const mapStateToProps = (state) => {
-
-
   const { data } = state.user;
 
- 
   return {
     data,
   };
 };
 
-const mapDispatchToProps = {
-};
+const mapDispatchToProps = {};
 
 export default connect(
   mapStateToProps,

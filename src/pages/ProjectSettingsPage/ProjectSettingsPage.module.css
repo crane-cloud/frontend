@@ -322,9 +322,19 @@
 }
 
 .Wrap{
-  word-break: break-all;
-  font-size: 0.9rem;
-}
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  align-items: center;
+  max-width: 200px;
+  display: flex;
+ }
+
+ .Wrap:hover{
+  white-space: normal;
+  word-wrap: break-word;
+  overflow: visible;
+ }
 
 .MemberBody{
   display: flex;
@@ -356,8 +366,8 @@
   grid-template-columns: repeat(2, minmax(7rem, 1fr));
   gap: 2rem;
   align-items: center;
-}
-.MemberRole{
+ }
+ .MemberRole{
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -383,14 +393,21 @@
   display: grid;
   color: #000000;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  background-color: white;
+ 
 }
 
-.NameSecting {
-  display: grid;
+.NameSecting { 
+  display: grid; 
   justify-content: flex-start;
-  grid-template-columns: 1fr 3fr;
+   grid-template-columns: 1fr 3fr; 
   gap: .4rem;
-  align-items: center;
+  /* text-overflow: ellipsis; */
+  /* white-space: nowrap; */
+  /* display: flex; */
+  /* overflow: hidden; */
+  /* align-items: center; */
+ 
 }
 
 .MemberAvatar {
@@ -408,7 +425,6 @@
 .MemberTableRow:not(a) {
   border-bottom-width: 2px;
 }
-
 
 .CardBodySection .MemberTableRow {
   width: 100%;
@@ -520,11 +536,10 @@
 
 .MemberTableCell {
   font-weight: normal;
-  padding: 1rem 0;
+  padding: 1rem 0 ;
   text-align: center;
-  grid-row: 1;
-  overflow: hidden;
-  overflow-wrap: break-word;
+  grid-row: 0;
+ 
 }
 
 /* .MemberTableCell div {
@@ -534,7 +549,7 @@
 .MemberTableHead:first-child,
 .MemberTableCell:first-child {
   text-align: left;
-
+ 
 }
 
 /* .MemberTableCell:first-child {
