@@ -1,12 +1,11 @@
-import React, {useState, useEffect} from "react";
-import {useHistory} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import SideNav from "../../components/SideNav";
 import Header from "../../components/Header";
 import InformationBar from "../../components/InformationBar";
-import {handleGetRequest} from "../../apis/apis.js";
+import { handleGetRequest } from "../../apis/apis.js";
 import ResourceCard from "../../components/ResourceCard";
 import Spinner from "../../components/Spinner";
-import DateInput from "../../components/DateInput";
 import {
   Line,
   CartesianGrid,
@@ -17,25 +16,18 @@ import {
   Tooltip,
 } from "recharts";
 import MetricsCard from "../../components/MetricsCard";
-import {filterGraphData} from "../../helpers/filterGraphData.js";
-import {dateInWords} from "../../helpers/dateConstants";
-import {retrieveMonthNames} from "../../helpers/monthNames.js";
-import styles from "./AdminUserOverviewPage.css";
+import { filterGraphData } from "../../helpers/filterGraphData.js";
+import { retrieveMonthNames } from "../../helpers/monthNames.js";
+import AdminInactiveUsers from "../../components/AdminInactiveUsers";
 
 const AdminUserOverviewPage = () => {
   const history = useHistory();
   const clusterID = localStorage.getItem("clusterID");
   const clusterName = localStorage.getItem("clusterName");
-  const [queryParams, setQueryParams] = useState("");
   const [users, setUsers] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
   const [period, setPeriod] = useState("all");
-
-  const [showToCalendar, setShowToCalendar] = useState(false);
-  const [showFromCalendar, setShowFromCalendar] = useState(false);
-  const [toTS, setToTS] = useState("none");
-  const [fromTS, setFromTS] = useState("none");
 
   const graphDataArray = [];
   let filteredGraphData = [];
@@ -78,7 +70,7 @@ const AdminUserOverviewPage = () => {
     beta: users.filter((user) => user.is_beta_user === true).length,
   };
 
-  const handleChange = ({target}) => {
+  const handleChange = ({ target }) => {
     setPeriod(target.getAttribute("value"));
   };
 
@@ -91,7 +83,7 @@ const AdminUserOverviewPage = () => {
       const date = new Date(user.date_created);
       const year = date.getFullYear();
       const month = parseInt(
-        date.toLocaleString("default", {month: "2-digit"}),
+        date.toLocaleString("default", { month: "2-digit" }),
         10
       );
 
@@ -105,7 +97,7 @@ const AdminUserOverviewPage = () => {
         graphDataArray[existingEntryIndex].Value += 1;
       } else {
         // Otherwise, create a new entry
-        graphDataArray.push({Year: year.toString(), Month: month, Value: 1});
+        graphDataArray.push({ Year: year.toString(), Month: month, Value: 1 });
       }
     });
 
@@ -126,101 +118,11 @@ const AdminUserOverviewPage = () => {
   // calling the filterGraphData() to filter basing on period
   filteredGraphData = filterGraphData(graphDataArray, period);
 
-  const activeUsers = users.filter(
-    (user) => user.verified === true && user.last_seen !== null
-  );
-
-  const activeUsersSummary = activeUsers.map((activeUser) => {
-    const {name, email, date_created, last_seen} = activeUser;
-    return {name, email, date_created, last_seen};
-  });
-
-  const sortedActiveUsers = activeUsersSummary.sort((a, b) => {
-    const yearA = new Date(a.last_seen).getFullYear();
-    const yearB = new Date(b.last_seen).getFullYear();
-    const monthA = new Date(a.last_seen).getMonth();
-    const monthB = new Date(b.last_seen).getMonth();
-
-    // Sort by year in descending order
-    if (yearA !== yearB) {
-      return yearB - yearA;
-    }
-
-    // If the years are the same, sort by month in descending order
-    return monthB - monthA;
-  });
-
   // view user account listing
   const viewUsersListing = () => {
     history.push(`/clusters/${clusterID}/users-listing`);
   };
-  const handleFromDate = (fromTS) => {
-    const date = new Date(fromTS);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const formattedDate = `${year}-${month}-${day}`;
-    setFromTS(formattedDate);
-  };
-  const handleToDate = (toTS) => {
-    const date = new Date(toTS);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const formattedDate = `${year}-${month}-${day}`;
-    setToTS(formattedDate);
-  };
-  const switchCalendars = ({target}) => {
-    const calendar = target.getAttribute("value");
 
-    if (calendar === "from" && !showFromCalendar) {
-      setShowFromCalendar(true);
-      setShowToCalendar(false);
-    }
-
-    if (calendar === "to" && !showToCalendar) {
-      setShowToCalendar(true);
-      setShowFromCalendar(false);
-    }
-  };
-  const closeCalendar = () => {
-    if (showToCalendar) {
-      setToTS("none");
-      setShowToCalendar(false);
-      if (queryParams.includes("&end=")) {
-        setQueryParams(queryParams.replace(/&end=.+?(&|$)/, ""));
-      } else if (queryParams.includes("end=")) {
-        setQueryParams(queryParams.replace(/end=.+?(&|$)/, ""));
-      }
-    }
-    if (showFromCalendar) {
-      setFromTS("none");
-      setShowFromCalendar(false);
-      if (queryParams.includes("&start=")) {
-        setQueryParams(queryParams.replace(/&start=.+?(&|$)/, ""));
-      } else if (queryParams.includes("start=")) {
-        setQueryParams(queryParams.replace(/start=.+?(&|$)/, ""));
-      }
-    }
-  };
-  const handleCalenderSubmission = () => {
-    //add to link
-    if (toTS !== "none") {
-      if (queryParams === "") {
-        setQueryParams(`end=${toTS}`);
-      } else {
-        setQueryParams(`${queryParams}&end=${toTS}`);
-      }
-      if (fromTS !== "none") {
-        if (queryParams === "") {
-          setQueryParams(`start=${fromTS}`);
-        } else {
-          setQueryParams(`${queryParams}&start=${fromTS}`);
-        }
-      }
-      closeCalendar();
-    }
-  };
   return (
     <div className="MainPage">
       <div className="TopBarSection">
@@ -381,7 +283,7 @@ const AdminUserOverviewPage = () => {
                               interval={12}
                               dataKey="Year"
                               tickLine={false}
-                              tick={{fontSize: 12, angle: 0}}
+                              tick={{ fontSize: 12, angle: 0 }}
                             />
                             <CartesianGrid strokeDasharray="3 3" />
                             <YAxis
@@ -421,62 +323,7 @@ const AdminUserOverviewPage = () => {
               </div>
             </div>
 
-            <div className="TitleArea">
-              <div className="SectionTitle">Active Users</div>
-              <div className="CalendarSection">
-                <div className="OuterFilterItem">
-                  <div className="DateItem">
-                    <div>From:</div>
-                    <DateInput
-                      handleChange={handleFromDate}
-                      showCalendar={showFromCalendar}
-                      className={styles.dateField}
-                      position={styles.CalenderFromposition}
-                      onClick={switchCalendars}
-                      onCancel={closeCalendar}
-                      onSubmit={handleCalenderSubmission}
-                      value="from"
-                    />
-                  </div>
-                  <div className="DateItem">
-                    <div>To:</div>
-                    <DateInput
-                      handleChange={handleToDate}
-                      showCalendar={showToCalendar}
-                      className={styles.dateField}
-                      position={styles.CalenderToposition}
-                      onClick={switchCalendars}
-                      onCancel={closeCalendar}
-                      onSubmit={handleCalenderSubmission}
-                      value="to"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="ResourcesTable">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Date Created</th>
-                    <th>Last Login</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sortedActiveUsers?.map((activeUser) => (
-                    <tr key={sortedActiveUsers.indexOf(activeUser)}>
-                      <td>{activeUser.name}</td>
-                      <td>{activeUser.email}</td>
-                      <td>{dateInWords(new Date(activeUser.date_created))}</td>
-                      <td>{dateInWords(new Date(activeUser.last_seen))}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <AdminInactiveUsers />
           </div>
         </div>
       </div>
