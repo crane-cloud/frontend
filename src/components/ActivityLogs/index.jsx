@@ -25,6 +25,7 @@ const ActivityLogs = ({ projectID }) => {
   const [statusField, setStatusField] = useState("none");
   const [feedback, setFeedback] = useState("none");
   const [queryParams, setQueryParams] = useState("");
+  const [dateError, setDateError] = useState("");
 
   const statusList = ["Success", "Failed"];
   const operationsList = ["Create", "Update", "Delete"];
@@ -100,6 +101,7 @@ const ActivityLogs = ({ projectID }) => {
     const day = date.getDate();
     const formattedDate = `${year}-${month}-${day}`;
     setFromTS(formattedDate);
+    setDateError("");
   };
   const switchCalendars = ({ target }) => {
     const calendar = target.getAttribute("value");
@@ -116,7 +118,7 @@ const ActivityLogs = ({ projectID }) => {
   };
   const closeCalendar = () => {
     if (showToCalendar) {
-      setToTS("none");
+      //setToTS("none");
       setShowToCalendar(false);
       if (queryParams.includes("&end=")) {
         setQueryParams(queryParams.replace(/&end=.+?(&|$)/, ""));
@@ -125,7 +127,7 @@ const ActivityLogs = ({ projectID }) => {
       }
     }
     if (showFromCalendar) {
-      setFromTS("none");
+      //setFromTS("none");
       setShowFromCalendar(false);
       if (queryParams.includes("&start=")) {
         setQueryParams(queryParams.replace(/&start=.+?(&|$)/, ""));
@@ -136,6 +138,15 @@ const ActivityLogs = ({ projectID }) => {
   };
   const handleCalenderSubmission = () => {
     //add to link
+    const toDate = new Date(toTS) 
+    const fromDate = new Date(fromTS)
+    if(toTS !== "none" && fromTS !== "none" && (toDate < fromDate )){
+      setDateError("The 'end' date must be greater than the 'start' date");
+      setFromTS("none");
+      setToTS("none");
+      closeCalendar();
+      return;
+    }
     if (toTS !== "none") {
       if (queryParams === "") {
         setQueryParams(`end=${toTS}`);
@@ -159,6 +170,7 @@ const ActivityLogs = ({ projectID }) => {
     const day = date.getDate();
     const formattedDate = `${year}-${month}-${day}`;
     setToTS(formattedDate);
+    setDateError("");
   };
   const handleOperationFilter = (item) => {
     setOperationField(item);
@@ -199,35 +211,37 @@ const ActivityLogs = ({ projectID }) => {
           <div className={styles.Heading}>Activity Feed</div>
           <div className={styles.SimpleForm}>
             <div className={styles.OuterFilterItem}>
-              <div className={styles.DateSection}>
-                <div className={styles.DateItem}>
-                  <div>From:</div>
-                  <DateInput
-                    handleChange={handleFromDate}
-                    showCalendar={showFromCalendar}
-                    className={styles.dateField}
-                    position={styles.CalenderFromposition}
-                    onClick={switchCalendars}
-                    onCancel={closeCalendar}
-                    onSubmit={handleCalenderSubmission}
-                    value="from"
-                  />
-                </div>
-                <div className={styles.DateItem}>
-                  <div>To:</div>
-
-                  <DateInput
-                    handleChange={handleToDate}
-                    showCalendar={showToCalendar}
-                    position={styles.CalenderToposition}
-                    className={styles.dateField}
-                    onClick={switchCalendars}
-                    onCancel={closeCalendar}
-                    onSubmit={handleCalenderSubmission}
-                    value="to"
-                  />
-                </div>
-              </div>
+            <div className={styles.DateSection}>
+                  <div className={styles.DateItem}>
+                      <div>Start:</div>
+                      <DateInput
+                        handleChange={handleFromDate}
+                        showCalendar={showFromCalendar}
+                        className={styles.dateField}
+                        position={styles.CalenderFromposition}
+                        dateValue={fromTS}
+                        onClick={switchCalendars}
+                        onCancel={closeCalendar}
+                        onSubmit={handleCalenderSubmission}
+                        value="from"
+                      />
+                    </div>
+                    <div className={styles.DateItem}>
+                      <div>End:</div>
+                      <DateInput
+                        handleChange={handleToDate}
+                        showCalendar={showToCalendar}
+                        position={styles.CalenderToposition}
+                        className={styles.dateField}
+                        dateValue={toTS}
+                        onClick={switchCalendars}
+                        onCancel={closeCalendar}
+                        onSubmit={handleCalenderSubmission}
+                        value="to"
+                      />
+                    </div>
+                  </div>
+                  <div className={styles.errorSection}>{dateError}</div>
             </div>
             <div className={styles.Filter}>
               <FilterIcon />

@@ -22,10 +22,20 @@ const DateInput = ({
   value,
   months_only,
   SpendCalenderClass,
+  dateValue,
   onCancel,
   onSubmit,
 }) => {
-  const [date, setDate] = useState({
+  const parseDate = (dateValue) => {
+    const [year, month, day] = dateValue.split("-");
+    return {
+      day: parseInt(day),
+      month: parseInt(month),
+      year: parseInt(year),
+    };
+  };
+
+  const [date, setDate] = useState((dateValue && dateValue !== "none")?{...parseDate(dateValue)} :{
     day: today,
     month: currentMonth,
     year: currentYear,
@@ -94,13 +104,14 @@ const DateInput = ({
           onClick={onClick}
           role="presentation"
         >
-          {date
+          {dateValue ? dateValue :date
             ? `${date.year} ${!months_only ? date.day : ""}, ${trimMonthName(
                 monthNames[date.month]
               )} `
             : `${currentYear} ${!months_only ? today : ""}, ${trimMonthName(
                 monthNames[currentMonth]
-              )}`}
+              )}`
+              }
         </div>
       </div>
       {showCalendar && (

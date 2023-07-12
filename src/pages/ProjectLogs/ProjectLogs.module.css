@@ -159,7 +159,6 @@
 }
 .Filter{
   width: 20rem;
-  height: 40px;
   border: 1px solid #000000;
   display: flex;
   padding-left: 7px;
@@ -169,6 +168,7 @@
   justify-content: space-between;
   align-items: center;
   border-radius: 9px;
+  padding: .3rem;
 }
 .RelativeContainer{
   position: relative;
@@ -250,10 +250,11 @@
 .OuterFilterItem{
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  padding: .3rem;
   align-items: center;
   background-color: #fff;
   width: 20rem;
-  height: 40px;
   margin-right: 1rem;
   border-radius: 9px;
   border: 1px solid #000000;
@@ -360,4 +361,8 @@
 }
 .opacityClass{
   opacity: .2;
+}
+.errorSection{
+  font-size: 11px;
+  color: red;
 }
