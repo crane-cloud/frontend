@@ -222,7 +222,7 @@ div.ResourcesTable.LoadingResourcesTable {
 }
 
 .ResourcesTable table thead {
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 /* .ResourcesTable  tr:nth-child(even){
@@ -246,6 +246,7 @@ div.ResourcesTable.LoadingResourcesTable {
 .ResourcesTable table td:first-child {
   text-align: left;
   padding-left: 1rem;
+  text-transform: capitalize;
 }
 
 .ResourcesTable table th:last-child,
