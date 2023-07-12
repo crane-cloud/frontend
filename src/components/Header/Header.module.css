@@ -90,6 +90,7 @@
   font-weight: bold;
   color: #fff;
   cursor: default;
+  text-transform: capitalize;
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
@@ -179,6 +180,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   color:#000;
+  text-transform: capitalize;
 }
 
 .UserAvatar {
