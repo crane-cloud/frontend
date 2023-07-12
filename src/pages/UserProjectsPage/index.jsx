@@ -257,6 +257,7 @@ class UserProjectsPage extends React.Component {
     const sortedProjects = displayProjects.sort((a, b) =>
       b.date_created > a.date_created ? 1 : -1
     );
+    const adminCheck = (data.username === 'admin')
     return (
       <div className={styles.Page}>
         {openCreateComponent ? (
@@ -276,6 +277,7 @@ class UserProjectsPage extends React.Component {
                 placeholder="Search through projects"
                 btnAction={this.openProjectCreateComponent}
                 searchAction={this.handleCallbackSearchword}
+                adminRoute={adminCheck}
               />
             </div>
             <div className={styles.MainRow}>
