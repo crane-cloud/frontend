@@ -222,7 +222,7 @@ div.ResourcesTable.LoadingResourcesTable {
 }
 
 .ResourcesTable table thead {
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 /* .ResourcesTable  tr:nth-child(even){
@@ -246,6 +246,7 @@ div.ResourcesTable.LoadingResourcesTable {
 .ResourcesTable table td:first-child {
   text-align: left;
   padding-left: 1rem;
+  text-transform: capitalize;
 }
 
 .ResourcesTable table th:last-child,
@@ -446,7 +447,7 @@ tr.TableLoading td {
 .ShortContainer{
   padding-left: 4rem;
   padding-right: 2rem;
-  max-width: 50rem;
+  max-width: 80%;
 }
 @media (max-width: 750px) {
   .SmallContainer{
@@ -475,7 +476,7 @@ tr.TableLoading td {
 .MainRow {
   display: flex;
   flex-direction: column;
-  padding: 3rem;
+  padding-top: 2rem;
 }
 
 .FooterRow {

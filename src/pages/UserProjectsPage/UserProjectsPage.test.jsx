@@ -24,6 +24,7 @@ describe("Testing the user projects Page component", () => {
   });
 });
 
+
 describe("Testing the exported mapstate to props and dispatch", () => {
   it("matches the Appmetricspage mapstostate", () => {
     expect(

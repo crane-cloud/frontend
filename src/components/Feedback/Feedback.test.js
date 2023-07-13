@@ -10,5 +10,6 @@ describe('Feedback Component', () => {
     const FeedbackComponent = shallow(<Feedback className="success" type='Succes SuccessOnWhite' message='Failed'/>);
     expect(FeedbackComponent).toMatchSnapshot();
 
+    
   });
 });
