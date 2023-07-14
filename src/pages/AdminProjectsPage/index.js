@@ -184,7 +184,7 @@ const AdminProjectsPage = () => {
                     <th>Actions</th>
                   </tr>
                 </thead>
-                {projects.isRetrieving ? (
+                {isRetrieving ? (
                   <tbody>
                     <tr className="TableLoading">
                     <td className="TableTdSpinner">
