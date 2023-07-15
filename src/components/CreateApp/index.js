@@ -19,6 +19,8 @@ import Tabs from "../Tabs";
 import styles from "./CreateApp.module.css";
 import { validateName } from "../../helpers/validation";
 import MiraPage from "../../pages/MiraPage";
+import { ReactComponent as Open } from "../../assets/images/open.svg";
+import { ReactComponent as Closed } from "../../assets/images/close.svg";
 
 const dockerEmail = process.env.REACT_APP_DOCKER_EMAIL;
 const dockerPassword = process.env.REACT_APP_DOCKER_PASSWORD;
@@ -50,6 +52,7 @@ class CreateApp extends React.Component {
         password: "",
         server: "",
         error: "",
+        passwordShown: false,
       },
       replicas: 1,
       multiCluster: false,
@@ -77,6 +80,7 @@ class CreateApp extends React.Component {
       this.changeMultiSelectionOption.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
     this.createNewApp = this.createNewApp.bind(this);
+    this.togglePassword = this.togglePassword.bind(this);
   }
   handleOnChange(position) {
     const { SelectedClusters } = this.state;
@@ -121,6 +125,11 @@ class CreateApp extends React.Component {
 
   hideForm() {
     this.setState(this.initialState);
+  }
+
+  togglePassword() {
+    //this.setState({ hidden: !this.state.hidden });
+    this.setState({ passwordShown: !this.state.passwordShown });
   }
 
   validateDomainName(domainName) {
@@ -291,7 +300,7 @@ class CreateApp extends React.Component {
         private_image: true,
         replicas,
         docker_email: dockerEmail,
-        docker_username: "cranecloud",
+        docker_username: "cranecloudplatform",
         docker_password: dockerPassword,
         docker_server: "docker.io",
       };
@@ -329,7 +338,7 @@ class CreateApp extends React.Component {
           };
         }
         //change
-        //createApp(appInfo, params.projectID);
+
         this.createNewApp(appInfo, params.projectID);
       }
     }
@@ -378,6 +387,7 @@ class CreateApp extends React.Component {
       addingApp,
       addErrorCode,
       addAppError,
+      passwordShown,
     } = this.state;
 
     const replicaOptions = [
@@ -386,6 +396,7 @@ class CreateApp extends React.Component {
       { id: 3, name: "3" },
       { id: 4, name: "4" },
     ];
+
     return (
       <div>
         <div className={styles.DeploymentMethodTabs}>
@@ -489,17 +500,25 @@ class CreateApp extends React.Component {
                               this.handleDockerCredentialsChange(e);
                             }}
                           />
+                          <div className="password-wrappers">
+                            <BlackInputText
+                              required
+                              placeholder="Password"
+                              name="password"
+                              type={passwordShown ? "text" : "password"}
+                              value={password}
+                              onChange={(e) => {
+                                this.handleDockerCredentialsChange(e);
+                              }}
+                            />
 
-                          <BlackInputText
-                            required
-                            placeholder="Password"
-                            type="password"
-                            name="password"
-                            value={password}
-                            onChange={(e) => {
-                              this.handleDockerCredentialsChange(e);
-                            }}
-                          />
+                            <div
+                              className="password"
+                              onClick={this.togglePassword}
+                            >
+                              {passwordShown ? <Open /> : <Closed />}
+                            </div>
+                          </div>
                           <div className={styles.InputFieldWithTooltip}>
                             <BlackInputText
                               required

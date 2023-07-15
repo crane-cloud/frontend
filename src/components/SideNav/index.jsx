@@ -84,9 +84,9 @@ const SideNav = ({ clusterId, clusterName }) => {
                 Namespaces
               </NavLink>
             </div>
-            <Link to={{ pathname: `${BASE_URL}/pods` }} className="ListItem">
+            {/* <Link to={{ pathname: `${BASE_URL}/pods` }} className="ListItem">
               Pods
-            </Link>
+            </Link> */}
             <div>
               <NavLink
                 to={{ pathname: `${BASE_URL}/pods` }}
@@ -128,11 +128,11 @@ const SideNav = ({ clusterId, clusterName }) => {
             <Link to={{ pathname: "/databases" }} className="ListItem">
               Databases
             </Link>
-            <div>
+            {/* <div>
               <NavLink to={{ pathname: "/databases" }} className="SubListItem">
                 Databases
               </NavLink>
-            </div>
+            </div> */}
             <Link to={{ pathname: "/accounts" }} className="ListItem">
               Users
             </Link>

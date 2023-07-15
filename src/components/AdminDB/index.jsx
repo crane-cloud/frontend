@@ -32,7 +32,7 @@ const AdminDBList = () => {
     (state) => state.adminCreateDBReducer
   );
 
-  useEffect(() => {
+  useEffect(() => { 
     callbackCreateComponent();
     dispatch(adminGetDatabases(currentPage))
   }, [currentPage,isCreated,dispatch]);
@@ -164,7 +164,5 @@ const AdminDBList = () => {
   );
 
 }
-
-
 
 export default AdminDBList;

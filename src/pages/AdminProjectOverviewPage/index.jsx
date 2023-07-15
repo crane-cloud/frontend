@@ -42,6 +42,7 @@ const AdminProjectOverviewPage = () => {
   let createPieChartData = [];
   let filteredGraphData = [];
   let newFilteredGraphData = [];
+  const clusterName = localStorage.getItem('clusterName')
 
   const COLORS = [
     "#0088FE",
@@ -296,7 +297,6 @@ const AdminProjectOverviewPage = () => {
     return newPieChartData;
   };
   createNewPieChartData();
-
   return (
     <div className="MainPage">
       <div className="TopBarSection">
@@ -304,7 +304,7 @@ const AdminProjectOverviewPage = () => {
       </div>
       <div className="MainSection">
         <div className="SideBarSection">
-          <SideNav clusterName="cis-dev" clusterId={clusterID} />
+          <SideNav clusterName={clusterName} clusterId={clusterID} />
         </div>
         <div className="MainContentSection">
           <div className="InformationBarSection">
@@ -313,6 +313,7 @@ const AdminProjectOverviewPage = () => {
               showBtn
               buttontext="View Listing"
               btnAction={viewProjectListing}
+              
             />
           </div>
           <div className="ContentSection">

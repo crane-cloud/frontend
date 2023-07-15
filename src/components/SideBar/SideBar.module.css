@@ -74,7 +74,7 @@
   margin-top: 20px;
   cursor: pointer;
   padding-left: 18px;
-  text-transform: uppercase;
+  text-transform: capitalize;
   display: block;
 }
 
@@ -91,6 +91,7 @@
   display: flex;
   gap: .5rem;
   align-items: center;
+  text-transform: capitalize;
 }
 
 .SubBarListItem > svg {

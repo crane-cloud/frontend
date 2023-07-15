@@ -3,7 +3,8 @@ import "./PrimaryButton.css";
 import PropTypes from "prop-types";
 
 const PrimaryButton = (props) => {
-  const { children, className, btntype, color, small, transparent, noPadding } = props;
+  const { children, className, btntype, color, small, transparent, noPadding } =
+    props;
 
   const getColorClass = () => {
     switch (color) {
@@ -24,8 +25,12 @@ const PrimaryButton = (props) => {
   return (
     <button
       {...props}
-      className={`Primary-Btn ${className} ${btntype === "close" && "DeleteBtnOutline"}
-        ${color && getColorClass()} ${small===true ? "SmallBtn" : ""} ${transparent && "TransparentBtn"}
+      className={`Primary-Btn ${className} ${
+        btntype === "close" && "DeleteBtnOutline"
+      }
+        ${color && getColorClass()} ${
+        small === true ? "SmallBtn" : undefined
+      } ${transparent && "TransparentBtn"}
         ${noPadding && "NoPaddingBtn"}
       `}
     >
