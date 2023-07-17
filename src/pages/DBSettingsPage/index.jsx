@@ -123,8 +123,6 @@ class DBSettingsPage extends React.Component {
   }
 
   hideDeleteAlert() {
-    const { clearDeleteDatabaseState } = this.props;
-    clearDeleteDatabaseState();
     this.setState({ openDeleteAlert: false });
   }
 
