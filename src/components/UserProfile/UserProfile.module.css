@@ -24,7 +24,7 @@
 
   }
   .MainColumn{
-    padding: .5rem 5rem 0rem 4rem;
+    /* padding: .5rem 5rem 0rem 4rem; */
   }
   .BackButton {
     color: #fff;
@@ -76,9 +76,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding-bottom: 3rem;
-    padding-left: 5rem;
-    padding-top: 1rem;
+    width: 100%;
   }
 
   .UserAvatar {
@@ -174,21 +172,21 @@
   }
   .ContainerHeadSection{
     display: flex;
-    width: 50rem;
+    /* width: 50rem; */
     border-bottom: 1px solid rgba(204, 204, 204, 0.69);
     padding-bottom: 2rem;
   }
 /*increased width to 48rem from 30rem*/
   .ProfileCard{
     display: flex;
-    width: 48rem;
+    /* width: 48rem; */
     height: 12rem;
     gap:1rem;
     flex-direction: column;
     border-radius: 10px;
     background-color: #fff;
     min-width: 20rem;
-    padding: 1.3rem 1rem 1rem 2.5rem;
+    /* padding: 1.3rem 1rem 1rem 2.5rem; */
   }
   .AvatarDiv{
     display: flex;
@@ -200,8 +198,7 @@
   .ProfileContainer{
     display: flex;
     justify-content: center;
-    margin-left: 4rem;
-    margin-right: 4rem;
+    width: 100%;
   }
   .Title2{
    padding: .4rem;

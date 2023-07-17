@@ -159,7 +159,7 @@ class UserProfile extends React.Component {
                 </div>
               </div>
             ) : isFetched ? (
-              <div className={`${styles.ProfileContainer}  SmallContainer`}>
+              <div className={`${styles.ProfileContainer}`}>
                 {isFetched && (
                   <div className={styles.UserContainer}>
                     <section className={styles.ContainerHeadSection}>

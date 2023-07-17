@@ -41,6 +41,7 @@
   height : 2.5rem;
   background-color: #EBEAD5;
   border-radius: 5px;
+  border: 1px solid #ffffff;
 }
 
 .SearchInput input{
