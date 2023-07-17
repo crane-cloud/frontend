@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from "react";
-import {useParams, useHistory} from "react-router-dom";
-import {handleGetRequest} from "../../apis/apis.js";
+import React, { useState, useEffect, useCallback } from "react";
+import { useParams, useHistory } from "react-router-dom";
+import { handleGetRequest } from "../../apis/apis.js";
 import SideNav from "../../components/SideNav";
 import ResourceCard from "../../components/ResourceCard";
 import Spinner from "../../components/Spinner";
@@ -19,15 +19,15 @@ import {
   Pie,
   Cell,
 } from "recharts";
-import {retrieveProjectTypes} from "../../helpers/projecttypes.js";
-import {retrieveMonthNames} from "../../helpers/monthNames.js";
-import {filterGraphData} from "../../helpers/filterGraphData.js";
-import {namedOrganisations} from "../../helpers/projectOrganisations.js";
+import { retrieveProjectTypes } from "../../helpers/projecttypes.js";
+import { retrieveMonthNames } from "../../helpers/monthNames.js";
+import { filterGraphData } from "../../helpers/filterGraphData.js";
+import { namedOrganisations } from "../../helpers/projectOrganisations.js";
 import "./AdminProjectOverviewPage.css";
 
 const AdminProjectOverviewPage = () => {
   const history = useHistory();
-  const {clusterID} = useParams();
+  const { clusterID } = useParams();
   const [projects, setProjects] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
@@ -53,17 +53,17 @@ const AdminProjectOverviewPage = () => {
     "#800080",
   ];
 
-  useEffect(() => {
-    getAllProjects();
-  }, []);
-
-  const getAllProjects = async () => {
+  const getAllProjects = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await handleGetRequest("/projects");
+      const response = await handleGetRequest(
+        `/clusters/${clusterID}/projects`
+      );
       if (response.data.data.projects.length > 0) {
         const totalNumberOfProjects = response.data.data.pagination.total;
-        handleGetRequest(`/projects?per_page=${totalNumberOfProjects}`)
+        handleGetRequest(
+          `/clusters/${clusterID}/projects?per_page=${totalNumberOfProjects}`
+        )
           .then((response) => {
             if (response.data.data.projects.length > 0) {
               setProjects(response.data.data.projects);
@@ -81,7 +81,11 @@ const AdminProjectOverviewPage = () => {
     } catch (error) {
       setFeedback("Failed to fetch projects, please try again");
     }
-  };
+  }, [clusterID, setProjects, setLoading, setFeedback]);
+
+  useEffect(() => {
+    getAllProjects();
+  }, [getAllProjects]);
 
   const filteredData = projects.filter((project) => {
     const allowedProjectTypes = retrieveProjectTypes().map(
@@ -138,7 +142,7 @@ const AdminProjectOverviewPage = () => {
       const date = new Date(project.date_created);
       const year = date.getFullYear();
       const month = parseInt(
-        date.toLocaleString("default", {month: "2-digit"}),
+        date.toLocaleString("default", { month: "2-digit" }),
         10
       );
 
@@ -184,7 +188,7 @@ const AdminProjectOverviewPage = () => {
       const date = new Date(project.date_created);
       const year = date.getFullYear();
       const month = parseInt(
-        date.toLocaleString("default", {month: "2-digit"}),
+        date.toLocaleString("default", { month: "2-digit" }),
         10
       );
 
@@ -239,7 +243,7 @@ const AdminProjectOverviewPage = () => {
   filteredGraphData = filterGraphData(graphDataArray, period);
   newFilteredGraphData = filterGraphData(newGraphDataArray, period);
 
-  const handleChange = ({target}) => {
+  const handleChange = ({ target }) => {
     setPeriod(target.getAttribute("value"));
   };
 
@@ -386,10 +390,13 @@ const AdminProjectOverviewPage = () => {
                   <Tooltip />
                 </PieChart>
                 <div>
-                  <ul style={{display: "flex"}}>
+                  <ul style={{ display: "flex" }}>
                     {createPieChartData().map((entry, index) => (
-                      <li key={`list-item-${index}`} style={{padding: "10px"}}>
-                        <span style={{color: COLORS[index % COLORS.length]}}>
+                      <li
+                        key={`list-item-${index}`}
+                        style={{ padding: "10px" }}
+                      >
+                        <span style={{ color: COLORS[index % COLORS.length] }}>
                           {entry.category} :{" "}
                         </span>
                         {entry.value} %
@@ -426,10 +433,13 @@ const AdminProjectOverviewPage = () => {
                   <Tooltip />
                 </PieChart>
                 <div>
-                  <ul style={{display: "flex"}}>
+                  <ul style={{ display: "flex" }}>
                     {createNewPieChartData().map((entry, index) => (
-                      <li key={`list-item-${index}`} style={{padding: "10px"}}>
-                        <span style={{color: COLORS[index % COLORS.length]}}>
+                      <li
+                        key={`list-item-${index}`}
+                        style={{ padding: "10px" }}
+                      >
+                        <span style={{ color: COLORS[index % COLORS.length] }}>
                           {entry.category} :{" "}
                         </span>
                         {entry.value} %
@@ -559,7 +569,7 @@ const AdminProjectOverviewPage = () => {
                               interval={12}
                               dataKey="Year"
                               tickLine={false}
-                              tick={{fontSize: 12, angle: 0}}
+                              tick={{ fontSize: 12, angle: 0 }}
                             />
                             <CartesianGrid strokeDasharray="3 3" />
                             <YAxis
@@ -617,7 +627,7 @@ const AdminProjectOverviewPage = () => {
                               interval={12}
                               dataKey="Year"
                               tickLine={false}
-                              tick={{fontSize: 12, angle: 0}}
+                              tick={{ fontSize: 12, angle: 0 }}
                             />
                             <YAxis
                               label={{
