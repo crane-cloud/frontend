@@ -26,6 +26,7 @@ import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import { retrieveMembershipRoles } from "../../helpers/membershipRoles";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
+import { namedOrganisations } from "../../helpers/projectOrganisations";
 // import "./../../components/DBSettingsPage/DBSettingsPage.css"
 
 class ProjectSettingsPage extends React.Component {
@@ -119,6 +120,7 @@ class ProjectSettingsPage extends React.Component {
     this.updateProjectDetails = this.updateProjectDetails.bind(this);
     this.deleteThisProject = this.deleteThisProject.bind(this);
     this.handleDisableProject = this.handleDisableProject.bind(this);
+    this.handleOrganisationSelectChange = this.handleOrganisationSelectChange.bind(this);
   }
 
   componentDidMount() {
@@ -555,6 +557,10 @@ class ProjectSettingsPage extends React.Component {
     this.setState({ role: selected.value });
   }
 
+  handleOrganisationSelectChange(selected) {
+    this.setState({ projectOrganisation: selected.value})
+  }
+
   checkMembership() {
     const { data } = this.props;
     const { projectUsers } = this.state;
@@ -682,7 +688,7 @@ class ProjectSettingsPage extends React.Component {
     const roles = retrieveMembershipRoles();
 
     const { projectID } = params;
-
+    const presetOrganisations = namedOrganisations();
     return (
       <DashboardLayout name={name} header="Project Settings" short>
         {isUpdated || isDeleted ? this.renderRedirect() : null}
@@ -1081,6 +1087,15 @@ class ProjectSettingsPage extends React.Component {
                       <div className={styles.DeleteDescription}>
                         Organisation
                       </div>
+                      <Select
+                        required
+                        placeholder={
+                          projectOrganisation ? projectOrganisation : "Update project Organization"
+                        }
+                        options={presetOrganisations}
+                        onChange={this.handleOrganisationSelectChange}
+                      />
+                      {othersBool && (
                       <BlackInputText
                         placeholder="Organisation"
                         name="projectOrganisation"
@@ -1089,6 +1104,7 @@ class ProjectSettingsPage extends React.Component {
                           this.handleChange(e);
                         }}
                       />
+                      )}
                     </div>
                     <div className={styles.UpdateInputSection}>
                       <div className={styles.DeleteDescription}>
