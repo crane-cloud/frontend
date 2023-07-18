@@ -31,8 +31,8 @@ const AdminProjectsPage = () => {
   );
 
   const getAdminProps = useCallback(
-    () => dispatch(getAdminProjects(currentPage)),
-    [dispatch, currentPage]
+    () => dispatch(getAdminProjects(clusterID, currentPage)),
+    [dispatch, clusterID, currentPage]
   );
   const getUsersProps = useCallback(() => dispatch(getUsersList), [dispatch]);
  
@@ -187,7 +187,7 @@ const AdminProjectsPage = () => {
                 {isRetrieving ? (
                   <tbody>
                     <tr className="TableLoading">
-                    <td className="TableTdSpinner">
+                      <td className="TableTdSpinner">
                         <div className="SpinnerWrapper">
                           <Spinner size="big" />
                         </div>
@@ -250,10 +250,16 @@ const AdminProjectsPage = () => {
                         <tr key={projects.indexOf(project)}>
                           <td>{project.name}</td>
                           <td>{getUserName(project.owner_id)}</td>
-                          <td >{project.description}</td>
+                          <td>{project.description}</td>
                           <td>
                             {/* optional chai */}
-                            <span className={project.disabled !== false ? "ProjectStatus":"ProjectStatusDisabled"}>
+                            <span
+                              className={
+                                project.disabled !== false
+                                  ? "ProjectStatus"
+                                  : "ProjectStatusDisabled"
+                              }
+                            >
                               {project.disabled !== false
                                 ? "Active"
                                 : "Disabled"}

@@ -22,14 +22,16 @@ export const getAdminProjectsFailed = (error) => ({
   },
 });
 
-const getAdminProjects = (page) => (dispatch) => {
+const getAdminProjects = (clusterID, page) => async (dispatch) => {
   dispatch(startTheFetch());
-  return axios
-    .get(`/projects?page=${page}`)
-    .then((response) => dispatch(getAdminProjectsSuccess(response)))
-    .catch((error) => {
-      dispatch(getAdminProjectsFailed(error));
-    });
+  try {
+    const response = await axios.get(
+      `/clusters/${clusterID}/projects?page=${page}`
+    );
+    return dispatch(getAdminProjectsSuccess(response));
+  } catch (error) {
+    dispatch(getAdminProjectsFailed(error));
+  }
 };
 
 export default getAdminProjects;

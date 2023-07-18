@@ -34,7 +34,7 @@ const UserAccounts = () => {
   const [creditDescription, setCreditDescription] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
   const [word, setWord] = useState("");
-  const [searchList, setSearchList] = useState([]);
+  // const [searchList, setSearchList] = useState([]);
 
   const { isFetching, users, isFetched, pagination } = useSelector(
     (state) => state.usersListReducer
@@ -47,8 +47,8 @@ const UserAccounts = () => {
   );
   const dispatch = useDispatch();
   const gettingUsers = useCallback(
-    () => dispatch(getUsersList(currentPage)),
-    [dispatch, currentPage]
+    (page,keyword='') => dispatch(getUsersList(page,keyword)),
+    [dispatch]
   );
 
   useEffect(() => {
@@ -61,24 +61,22 @@ const UserAccounts = () => {
     hideCreditsModal();
   }, [gettingUsers, isAdded, Added, currentPage]);
 
-  const searchThroughAccounts = () => {
-    let resultsList = [];
-    users.forEach((element) => {
-      if (element.name.toLowerCase().includes(word.toLowerCase())) {
-        resultsList.push(element);
-      }
-    });
-    setSearchList(resultsList);
+  const searchThroughAccounts = (keyword) => {
+    // use api
+    handleChangePage(1);
+    gettingUsers(1, keyword);
   };
 
   const handleCallbackSearchword = ({ target }) => {
     const { value } = target;
     setWord(value);
     if (value !== "") {
-      searchThroughAccounts();
+      searchThroughAccounts(value);
     }
     if (value === "") {
-      setSearchList([]);
+      // setSearchList([]);
+      handleChangePage(1);
+      gettingUsers(1);
     }
   };
 
@@ -214,87 +212,7 @@ const UserAccounts = () => {
                       </td>
                     </tr>
                   </tbody>
-                ) : word !== "" ? (
-                  <tbody>
-                    {isFetched &&
-                      searchList.map((user) => (
-                        <tr key={users.indexOf(user)}>
-                          <td>{user?.name}</td>
-                          <td>{user.is_beta_user ? "True" : "False"}</td>
-                          <td>
-                            {user?.credits.length === 0 ? (
-                              "No credits"
-                            ) : (
-                              <div className="creditSection">
-                                {user?.credits[0]?.amount}
-                                <div className="creditCoin">
-                                  {" "}
-                                  <Coin title="credits" />
-                                </div>
-                              </div>
-                            )}
-                          </td>
-                          <td>{user?.email}</td>
-                          <td
-                            onClick={(e) => {
-                              showMenu(user.id);
-                              handleClick(e);
-                            }}
-                          >
-                            <MoreIcon />
-                            {actionsMenu && user.id === selectedUser && (
-                              <div className="BelowHeader bg-light">
-                                <div className="context-menu">
-                                  <div
-                                    className="DropDownLink"
-                                    role="presentation"
-                                    onClick={() => {
-                                      showBetaUserModal();
-                                    }}
-                                  >
-                                    Add Beta User
-                                  </div>
-                                  <div
-                                    className="DropDownLink"
-                                    role="presentation"
-                                    onClick={() => {
-                                      showCreditsModal();
-                                    }}
-                                  >
-                                    Assign Credits
-                                  </div>
-                                  <div
-                                    className="DropDownLink"
-                                    role="presentation"
-                                  >
-                                    <Link
-                                      to={{
-                                        pathname: `/accounts/${selectedUser}`,
-                                      }}
-                                    >
-                                      View User Profile
-                                    </Link>
-                                  </div>
-                                  <div
-                                    className="DropDownLink"
-                                    role="presentation"
-                                  >
-                                    <Link
-                                      to={{
-                                        pathname: `/accounts/${selectedUser}/logs`,
-                                      }}
-                                    >
-                                      View User Logs
-                                    </Link>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                ) : (
+                )  : (
                   <tbody>
                     {isFetched &&
                       users !== undefined &&

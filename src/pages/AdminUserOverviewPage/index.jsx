@@ -17,19 +17,18 @@ import {
 } from "recharts";
 import MetricsCard from "../../components/MetricsCard";
 import { filterGraphData } from "../../helpers/filterGraphData.js";
-import { dateInWords } from "../../helpers/dateConstants";
 import { retrieveMonthNames } from "../../helpers/monthNames.js";
-import "./AdminUserOverviewPage.css";
+import AdminInactiveUsers from "../../components/AdminInactiveUsers";
 
 const AdminUserOverviewPage = () => {
   const history = useHistory();
   const clusterID = localStorage.getItem("clusterID");
   const clusterName = localStorage.getItem("clusterName");
-
   const [users, setUsers] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
   const [period, setPeriod] = useState("all");
+
   const graphDataArray = [];
   let filteredGraphData = [];
 
@@ -118,30 +117,6 @@ const AdminUserOverviewPage = () => {
 
   // calling the filterGraphData() to filter basing on period
   filteredGraphData = filterGraphData(graphDataArray, period);
-
-  const activeUsers = users.filter(
-    (user) => user.verified === true && user.last_seen !== null
-  );
-
-  const activeUsersSummary = activeUsers.map((activeUser) => {
-    const { name, email, date_created, last_seen } = activeUser;
-    return { name, email, date_created, last_seen };
-  });
-
-  const sortedActiveUsers = activeUsersSummary.sort((a, b) => {
-    const yearA = new Date(a.last_seen).getFullYear();
-    const yearB = new Date(b.last_seen).getFullYear();
-    const monthA = new Date(a.last_seen).getMonth();
-    const monthB = new Date(b.last_seen).getMonth();
-
-    // Sort by year in descending order
-    if (yearA !== yearB) {
-      return yearB - yearA;
-    }
-
-    // If the years are the same, sort by month in descending order
-    return monthB - monthA;
-  });
 
   // view user account listing
   const viewUsersListing = () => {
@@ -348,32 +323,7 @@ const AdminUserOverviewPage = () => {
               </div>
             </div>
 
-            <div className="TitleArea">
-              <div className="SectionTitle">Active Users</div>
-            </div>
-
-            <div className="ResourcesTable">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Date Created</th>
-                    <th>Last Login</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sortedActiveUsers?.map((activeUser) => (
-                    <tr key={sortedActiveUsers.indexOf(activeUser)}>
-                      <td>{activeUser.name}</td>
-                      <td>{activeUser.email}</td>
-                      <td>{dateInWords(new Date(activeUser.date_created))}</td>
-                      <td>{dateInWords(new Date(activeUser.last_seen))}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <AdminInactiveUsers />
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 //import RoundAddButton from "../RoundAddButton";
 import AppStatus from "../AppStatus";
 import PrimaryButton from "../PrimaryButton";
@@ -18,6 +19,8 @@ const InformationBar = ({
   showSearchBar,
   placeholder,
   searchAction,
+  adminRoute,
+  adminProjects,
 }) => {
   const [Searchword, setSearchword] = useState("");
   const callbackSearchWord = ({ target }) => {
@@ -56,8 +59,29 @@ const InformationBar = ({
                   <SearchButton className="SearchIcon" />
                 </div>
               </div>
-              <div className="RoundAddButtonWrap">
-                {/*<RoundAddButton onClick={btnAction} />*/}
+              <div className="ButtonWrap">
+                {adminRoute &&
+                  (adminProjects ? (
+                    <Link
+                      to={{
+                        pathname: `/projects`,
+                      }}
+                    >
+                      <PrimaryButton color="primary" >
+                        Admin Projects
+                      </PrimaryButton>
+                    </Link>
+                  ) : (
+                    <Link
+                      to={{
+                        pathname: `/clusters`,
+                      }}
+                    >
+                      <PrimaryButton color="primary">
+                        Dashboard
+                      </PrimaryButton>
+                    </Link>
+                  ))}
                 <PrimaryButton btntype={btntype} onClick={btnAction}>
                   {buttontext}
                 </PrimaryButton>
@@ -83,8 +107,29 @@ const InformationBar = ({
       ) : showBtn ? (
         <div className="InformationBarWithButton">
           <div className="InfoHeader">{header}</div>
-          <div className="RoundAddButtonWrap">
-            {/*<RoundAddButton onClick={btnAction} />*/}
+          <div className="ButtonWrap">
+            {adminRoute &&
+              (adminProjects ? (
+                <Link
+                  to={{
+                    pathname: `/projects`,
+                  }}
+                >
+                  <PrimaryButton color="primary" >
+                    Admin Projects
+                  </PrimaryButton>
+                </Link>
+              ) : (
+                <Link
+                  to={{
+                    pathname: `/clusters`,
+                  }}
+                >
+                  <PrimaryButton color="primary" >
+                    Dashboard
+                  </PrimaryButton>
+                </Link>
+              ))}
             <PrimaryButton btntype={btntype} onClick={btnAction}>
               {buttontext}
             </PrimaryButton>

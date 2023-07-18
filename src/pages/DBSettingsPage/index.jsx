@@ -5,6 +5,7 @@ import Modal from "../../components/Modal";
 import Feedback from "../../components/Feedback";
 import DeleteWarning from "../../components/DeleteWarning";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import {
   handleGetRequest,
   handlePostRequestWithOutDataObject,
@@ -122,8 +123,6 @@ class DBSettingsPage extends React.Component {
   }
 
   hideDeleteAlert() {
-    const { clearDeleteDatabaseState } = this.props;
-    clearDeleteDatabaseState();
     this.setState({ openDeleteAlert: false });
   }
 
@@ -821,4 +820,13 @@ class DBSettingsPage extends React.Component {
   }
 }
 
-export default (DBSettingsPage);
+export const mapStateToProps = (state) => {
+  const { projects } = state.userProjectsReducer;
+  return {
+    projects,
+  };
+};
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DBSettingsPage);
