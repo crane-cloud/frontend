@@ -76,7 +76,7 @@
   margin-top: 20px;
   cursor: pointer;
   padding-left: 18px;
-  text-transform: uppercase;
+  text-transform: capitalize;
   display: block;
 }
 
@@ -90,6 +90,7 @@
   padding: 8px 0px 8px 20px;
   cursor: pointer;
   display: block;
+  text-transform: capitalize;
 }
 
 .List {

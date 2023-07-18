@@ -116,7 +116,7 @@
 .ResourceCard {
   width: 100%;
   max-width: 385px;
-  margin-left: 45px;
+  margin-left: 20px;
   text-align: left;
   margin-bottom: 1rem;
   background: #fff;
@@ -184,8 +184,10 @@
 }
 
 .OtherCards {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: flex-end;
+  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  overflow-x: hidden;
   padding-top: 3rem;
 }

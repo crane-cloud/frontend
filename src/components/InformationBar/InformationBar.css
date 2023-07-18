@@ -69,6 +69,10 @@
   width: 1.3rem;
 }
 
+.ButtonWrap{
+  display: flex;
+  gap: 1rem;
+}
 
 @media (max-width: 650px) {
   

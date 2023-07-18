@@ -20,6 +20,7 @@ export default class RegisterPage extends Component {
     this.state = {
       name: "",
       username: "",
+      organisation:"",
       email: "",
       password: "",
       passwordConfirm: "",
@@ -101,7 +102,7 @@ export default class RegisterPage extends Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    const { name, username, email, password, passwordConfirm, hasAgreed } =
+    const { name, username, organisation, email, password, passwordConfirm, hasAgreed } =
       this.state;
 
     const userData = {
@@ -168,6 +169,7 @@ export default class RegisterPage extends Component {
       passwordShown,
       displayPassword,
       username,
+      organisation,
       error,
       hasAgreed,
       gitLoading,
@@ -194,6 +196,13 @@ export default class RegisterPage extends Component {
                   placeholder="Username"
                   name="username"
                   value={username}
+                  onChange={this.handleOnChange}
+                />
+                <InputText
+                  required
+                  placeholder="Organisation"
+                  name="organisation"
+                  value={organisation}
                   onChange={this.handleOnChange}
                 />
                 <InputText

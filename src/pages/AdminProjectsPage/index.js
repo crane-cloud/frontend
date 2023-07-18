@@ -7,6 +7,7 @@ import SideNav from "../../components/SideNav";
 import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
 
 import getAdminProjects from "../../redux/actions/adminProjects";
+import getAdminProjectsList from "../../redux/actions/adminProjectsList";
 import getUsersList from "../../redux/actions/users";
 import Spinner from "../../components/Spinner";
 // import { useParams } from "react-router-dom";
@@ -24,15 +25,21 @@ const AdminProjectsPage = () => {
   const clusterID = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
   const [word, setWord] = useState("");
-  const [searchProjectList, setSearchProjectList] = useState([]);
+  // const [searchProjectList, setSearchProjectList] = useState([]);
 
   const { isRetrieved , isRetrieving, projects, pagination} = useSelector(
     (state) => state.adminProjectsReducer
   );
 
+  const AdminProjects = useCallback(
+    (page, keyword='') => dispatch(getAdminProjectsList(page,keyword)),
+    [dispatch]
+    );
+
+
   const getAdminProps = useCallback(
-    () => dispatch(getAdminProjects(currentPage)),
-    [dispatch, currentPage]
+    () => dispatch(getAdminProjects(clusterID, currentPage)),
+    [dispatch, clusterID, currentPage]
   );
   const getUsersProps = useCallback(() => dispatch(getUsersList), [dispatch]);
  
@@ -43,11 +50,17 @@ const AdminProjectsPage = () => {
   // const [addCredits, setAddCredits] = useState(false);
   const [users, setUsers] = useState([]);
 
+  useEffect(()=>{
+    AdminProjects(currentPage);
+    getAdminProps(currentPage);
+  },[AdminProjects,currentPage,getAdminProps]);
+
   useEffect(() => {
     getAdminProps();
     getUsersProps();
     fetchUsersList();
-  }, [getAdminProps, getUsersProps]);
+    AdminProjects(currentPage);
+  }, [getAdminProps, getUsersProps, AdminProjects,currentPage]);
 
   const fetchUsersList = () => {
     handleGetRequest("/users")
@@ -74,24 +87,21 @@ const AdminProjectsPage = () => {
       });
   };
 
-  const searchThroughProjects = () => {
-    let resultsProjectList = [];
-    projects.forEach((element) => {
-      if (element.name.toLowerCase().includes(word.toLowerCase())) {
-        resultsProjectList.push(element);
-      }
-    });
-    setSearchProjectList(resultsProjectList);
+  const searchThroughProjects = (keyword) => {
+    handleChangePage(1);
+    AdminProjects(1, keyword);
   };
 
   const handleCallbackSearchword = ({ target }) => {
     const { value } = target;
     setWord(value);
     if (value !== "") {
-      searchThroughProjects();
+      searchThroughProjects(value);
     }
     if (value === "") {
-      setSearchProjectList([]);
+      // setSearchProjectList([]);
+      handleChangePage(1);
+      AdminProjects(1);
     }
   };
 
@@ -106,14 +116,6 @@ const AdminProjectsPage = () => {
     return userName;
   };
 
-  // const showModal = () => {
-  //   setAddCredits(true);
-  // };
-  // const hideModal = () => {
-  //   //setAddCredits(false);
-  //   setContextMenu(false);
-  // };
-
   const showContextMenu = (id) => {
     setContextMenu(true);
     setSelectedProject(id);
@@ -123,6 +125,7 @@ const AdminProjectsPage = () => {
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);
     getAdminProps();
+    AdminProjects();
   };
 
   return (
@@ -187,17 +190,18 @@ const AdminProjectsPage = () => {
                 {isRetrieving ? (
                   <tbody>
                     <tr className="TableLoading">
-                    <td className="TableTdSpinner">
+                      <td className="TableTdSpinner">
                         <div className="SpinnerWrapper">
                           <Spinner size="big" />
                         </div>
                       </td>
                     </tr>
                   </tbody>
-                ) : word !== "" ? (
+                ) : (
                   <tbody>
                     {isRetrieved &&
-                       searchProjectList.map((project) =>(
+                      projects !== undefined &&
+                       projects.map((project) =>(
                         <tr key={projects.indexOf(project)}>
                            <td>{project?.name}</td>
                             <td>{getUserName(project?.owner_id)}</td>
@@ -238,102 +242,10 @@ const AdminProjectsPage = () => {
                             </td>
                         </tr>
                        ))
-
                     }
-                  </tbody>
-                ) : (
-                  <tbody>
-                    {isRetrieved &&
-                      projects !== 0 &&
-                      projects !== undefined &&
-                      projects.map((project) => (
-                        <tr key={projects.indexOf(project)}>
-                          <td>{project.name}</td>
-                          <td>{getUserName(project.owner_id)}</td>
-                          <td >{project.description}</td>
-                          <td>
-                            {/* optional chai */}
-                            <span className={project.disabled !== false ? "ProjectStatus":"ProjectStatusDisabled"}>
-                              {project.disabled !== false
-                                ? "Active"
-                                : "Disabled"}
-                            </span>
-                          </td>
-                          <td
-                            onClick={(e) => {
-                              showContextMenu(project.id);
-                              //handleClick(e);
-                            }}
-                          >
-                            <MoreIcon />
-
-                            {contextMenu && project.id === selectedProject && (
-                              <div className="BelowHeader bg-light">
-                                <div className="context-menu">
-                                  {/* <div
-                                    className="DropDownLink Section"
-                                    role="presentation"
-                                  >
-                                    Activate
-                                  </div>
-                                  <div
-                                    className="DropDownLink"
-                                    role="presentation"
-                                  >
-                                    Disable
-                                  </div> */}
-                                  <div
-                                    className="DropDownLink"
-                                    role="presentation"
-                                  >
-                                    <Link
-                                      to={{
-                                        pathname: `/projects/${selectedProject}/details`,
-                                      }}
-                                    >
-                                      View Project Details
-                                    </Link>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
                   </tbody>
                 )}
               </table>
-              {/* <Modal showModal={addCredits} onClickAway={() => hideModal()}>
-                <div className="ModalHeader">
-                  <h5 className="ModalTitle">Add Credits</h5>
-
-                  <div className="">Number of credits</div>
-                  <div className="ModalContent">
-                    <BlackInputText required placeholder="Number of credits" />
-                  </div>
-                  <div className="CreditsTitle">Description</div>
-                  <textarea
-                    className="TextArea"
-                    type="text"
-                    placeholder="Credits description"
-                    rows="4"
-                    cols="50"
-                  />
-                </div>
-                <div className="ModalFooter">
-                  <div className="ModalButtons">
-                    <PrimaryButton
-                      className="CancelBtn"
-                      onClick={() => hideModal()}
-                    >
-                     Cancel                 
-                    </PrimaryButton>
-                    <PrimaryButton type="button"  >
-                      Add
-                    </PrimaryButton>
-                  </div>
-                </div>
-              </Modal> */}
               {isRetrieved &&
                 projects.length === 0 && (
                   <div className="NoResourcesMessage">
