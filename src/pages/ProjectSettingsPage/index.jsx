@@ -114,7 +114,8 @@ class ProjectSettingsPage extends React.Component {
     this.updateProjectDetails = this.updateProjectDetails.bind(this);
     this.deleteThisProject = this.deleteThisProject.bind(this);
     this.handleDisableProject = this.handleDisableProject.bind(this);
-    this.handleOrganisationSelectChange = this.handleOrganisationSelectChange.bind(this);
+    this.handleOrganisationSelectChange =
+      this.handleOrganisationSelectChange.bind(this);
   }
 
   componentDidMount() {
@@ -546,7 +547,7 @@ class ProjectSettingsPage extends React.Component {
   }
 
   handleOrganisationSelectChange(selected) {
-    this.setState({ projectOrganisation: selected.value})
+    this.setState({ projectOrganisation: selected.value });
   }
 
   checkMembership() {
@@ -867,12 +868,16 @@ class ProjectSettingsPage extends React.Component {
                           </div>
 
                           <div className={styles.OptionButtons}>
-                            <Send className={styles.SendButton} />
+                            <Send
+                              className={styles.SendButton}
+                              title="Resend Invite"
+                            />
                             <Bin
                               className={styles.BinButton}
                               onClick={() => {
                                 this.showRemoveMemberModal(entry.email);
                               }}
+                              title="Delete Invite"
                             />
                           </div>
                         </div>
@@ -1033,20 +1038,22 @@ class ProjectSettingsPage extends React.Component {
                       <Select
                         required
                         placeholder={
-                          projectOrganisation ? projectOrganisation : "Update project Organization"
+                          projectOrganisation
+                            ? projectOrganisation
+                            : "Update project Organization"
                         }
                         options={presetOrganisations}
                         onChange={this.handleOrganisationSelectChange}
                       />
                       {othersBool && (
-                      <BlackInputText
-                        placeholder="Organisation"
-                        name="projectOrganisation"
-                        value={projectOrganisation}
-                        onChange={(e) => {
-                          this.handleChange(e);
-                        }}
-                      />
+                        <BlackInputText
+                          placeholder="Organisation"
+                          name="projectOrganisation"
+                          value={projectOrganisation}
+                          onChange={(e) => {
+                            this.handleChange(e);
+                          }}
+                        />
                       )}
                     </div>
                     <div className={styles.UpdateInputSection}>
