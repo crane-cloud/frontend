@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import "./AdminProjectsPage.css";
+import "./ProjectList.css";
 import InformationBar from "../../components/InformationBar";
 import Header from "../../components/Header";
 import SideNav from "../../components/SideNav";
@@ -7,12 +7,10 @@ import SideNav from "../../components/SideNav";
 import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
 
 import getAdminProjects from "../../redux/actions/adminProjects";
-import getAdminProjectsList from "../../redux/actions/adminProjectsList";
 import getUsersList from "../../redux/actions/users";
 import Spinner from "../../components/Spinner";
 // import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import "./AdminProjectsPage.css";
 import { Link } from "react-router-dom";
 import usePaginator from "../../hooks/usePaginator";
 import Pagination from "../../components/Pagination";
@@ -20,25 +18,20 @@ import { handleGetRequest } from "../../apis/apis.js";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 
 
-const AdminProjectsPage = () => {
+const AdminProjectsList = () => {
   const [currentPage, handleChangePage] = usePaginator();
   const clusterID = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
   const [word, setWord] = useState("");
-  // const [searchProjectList, setSearchProjectList] = useState([]);
+  const [searchProjectList, setSearchProjectList] = useState([]);
 
   const { isRetrieved , isRetrieving, projects, pagination} = useSelector(
     (state) => state.adminProjectsReducer
   );
 
-  const AdminProjects = useCallback(
-    (page, keyword='') => dispatch(getAdminProjectsList(page,keyword)),
-    [dispatch]
-    );
-
   const getAdminProps = useCallback(
-    () => dispatch(getAdminProjects(clusterID, currentPage)),
-    [dispatch, clusterID, currentPage]
+    () => dispatch(getAdminProjects(currentPage)),
+    [dispatch, currentPage]
   );
   const getUsersProps = useCallback(() => dispatch(getUsersList), [dispatch]);
  
@@ -49,17 +42,11 @@ const AdminProjectsPage = () => {
   // const [addCredits, setAddCredits] = useState(false);
   const [users, setUsers] = useState([]);
 
-  useEffect(()=>{
-    AdminProjects(currentPage);
-    getAdminProps(currentPage);
-  },[AdminProjects,currentPage,getAdminProps]);
-
   useEffect(() => {
     getAdminProps();
     getUsersProps();
     fetchUsersList();
-    AdminProjects(currentPage);
-  }, [getAdminProps, getUsersProps, AdminProjects,currentPage]);
+  }, [getAdminProps, getUsersProps]);
 
   const fetchUsersList = () => {
     handleGetRequest("/users")
@@ -85,22 +72,25 @@ const AdminProjectsPage = () => {
         throw new Error("Failed to fetch users, please try again");
       });
   };
-  
-  const searchThroughProjects = (keyword) => {
-    handleChangePage(1);
-    AdminProjects(1, keyword);
+
+  const searchThroughProjects = () => {
+    let resultsProjectList = [];
+    projects.forEach((element) => {
+      if (element.name.toLowerCase().includes(word.toLowerCase())) {
+        resultsProjectList.push(element);
+      }
+    });
+    setSearchProjectList(resultsProjectList);
   };
 
   const handleCallbackSearchword = ({ target }) => {
     const { value } = target;
     setWord(value);
     if (value !== "") {
-      searchThroughProjects(value);
+      searchThroughProjects();
     }
     if (value === "") {
-      // setSearchProjectList([]);
-      handleChangePage(1);
-      AdminProjects(1);
+      setSearchProjectList([]);
     }
   };
 
@@ -115,6 +105,14 @@ const AdminProjectsPage = () => {
     return userName;
   };
 
+  // const showModal = () => {
+  //   setAddCredits(true);
+  // };
+  // const hideModal = () => {
+  //   //setAddCredits(false);
+  //   setContextMenu(false);
+  // };
+
   const showContextMenu = (id) => {
     setContextMenu(true);
     setSelectedProject(id);
@@ -124,7 +122,6 @@ const AdminProjectsPage = () => {
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);
     getAdminProps();
-    AdminProjects();
   };
 
   return (
@@ -141,13 +138,7 @@ const AdminProjectsPage = () => {
             <InformationBar
               header={
                 <>
-                  <Link
-                    className="breadcrumb"
-                    to={`/clusters/${clusterID}/projects`}
-                  >
-                    Overview
-                  </Link>
-                  <span> / Projects Listing</span>
+                  <span> Projects Listing</span>
                 </>
               }
               showBtn={false}
@@ -189,7 +180,7 @@ const AdminProjectsPage = () => {
                 {isRetrieving ? (
                   <tbody>
                     <tr className="TableLoading">
-                      <td className="TableTdSpinner">
+                    <td className="TableTdSpinner">
                         <div className="SpinnerWrapper">
                           <Spinner size="big" />
                         </div>
@@ -246,49 +237,50 @@ const AdminProjectsPage = () => {
                 ) : (
                   <tbody>
                     {isRetrieved &&
+                      projects !== 0 &&
                       projects !== undefined &&
-                       projects.map((project) =>(
+                      projects.map((project) => (
                         <tr key={projects.indexOf(project)}>
-                           <td>{project?.name}</td>
-                            <td>{getUserName(project?.owner_id)}</td>
-                            <td >{project?.description}</td>
-                            <td>
-                              {/* optional chai */}
-                              <span className={project.disabled !== false ? "ProjectStatus":"ProjectStatusDisabled"}>
-                                {project.disabled !== false
-                                  ? "Active"
-                                  : "Disabled"}
-                              </span>
-                            </td>
-                            <td
-                              onClick={(e) => {
-                                showContextMenu(project.id);
-                              }}
-                            >
-                              <MoreIcon />
+                          <td>{project.name}</td>
+                          <td>{getUserName(project.owner_id)}</td>
+                          <td >{project.description}</td>
+                          <td>
+                            {/* optional chai */}
+                            <span className={project.disabled !== false ? "ProjectStatus":"ProjectStatusDisabled"}>
+                              {project.disabled !== false
+                                ? "Active"
+                                : "Disabled"}
+                            </span>
+                          </td>
+                          <td
+                            onClick={(e) => {
+                              showContextMenu(project.id);
+                              //handleClick(e);
+                            }}
+                          >
+                            <MoreIcon />
 
-                              {contextMenu && project.id === selectedProject && (
-                                <div className="BelowHeader bg-light">
-                                  <div className="context-menu">
-                                    <div
-                                      className="DropDownLink"
-                                      role="presentation"
+                            {contextMenu && project.id === selectedProject && (
+                              <div className="BelowHeader bg-light">
+                                <div className="context-menu">
+                                  <div
+                                    className="DropDownLink"
+                                    role="presentation"
+                                  >
+                                    <Link
+                                      to={{
+                                        pathname: `/projects/${selectedProject}/details`,
+                                      }}
                                     >
-                                      <Link
-                                        to={{
-                                          pathname: `/projects/${selectedProject}/details`,
-                                        }}
-                                      >
-                                        View Project Details
-                                      </Link>
-                                    </div>
+                                      View Project Details
+                                    </Link>
                                   </div>
                                 </div>
-                              )}
-                            </td>
+                              </div>
+                            )}
+                          </td>
                         </tr>
-                       ))
-                    }
+                      ))}
                   </tbody>
                 )}
               </table>
@@ -322,4 +314,4 @@ const AdminProjectsPage = () => {
   );
 };
 
-export default AdminProjectsPage;
+export default AdminProjectsList;

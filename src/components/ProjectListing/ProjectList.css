@@ -1,0 +1,33 @@
+.ModalTitle {
+    display: flex;
+    align-items: flex-start;
+    font-size: large;
+}
+
+.ModalButtons {
+    display: flex;
+    gap: 3rem;
+    justify-content: space-between;
+    padding-top: 2rem;
+}
+
+.CreditsTitle {
+    padding-top: 1rem;
+}
+
+.TextArea> ::placeholder {
+    padding-left: 1rem;
+}
+
+.ProjectStatus {
+    color: #408140;
+}
+.ProjectStatusDisabled{
+    color: red;
+}
+
+.DropDownLink {
+    text-align: center;
+    justify-content: center;
+}
+
