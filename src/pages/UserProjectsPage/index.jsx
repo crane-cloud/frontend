@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import Modal from "../../components/Modal";
 import styles from "./UserProjectsPage.module.css";
 import InformationBar from "../../components/InformationBar";
-import {ReactComponent as ButtonPlus} from "../../assets/images/buttonplus.svg";
+import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import Header from "../../components/Header";
 import Pagination from "../../components/Pagination";
 import getClustersList from "../../redux/actions/clusters";
@@ -14,9 +14,7 @@ import getUserCredits from "../../redux/actions/userCredits";
 import ProjectCard from "../../components/ProjectCard";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
-import {handlePatchRequest} from "../../apis/apis.js";
-import {ReactComponent as User} from "../../assets/images/user.svg";
-import {ReactComponent as Users} from "../../assets/images/users.svg";
+import { handlePatchRequest } from "../../apis/apis.js";
 import "../../index.css";
 
 class UserProjectsPage extends React.Component {
@@ -52,10 +50,26 @@ class UserProjectsPage extends React.Component {
     this.handleInvitationDecline = this.handleInvitationDecline.bind(this);
     this.filterProjects = this.filterProjects.bind(this);
     this.onPageChange = this.onPageChange.bind(this);
+    this.handleTabChange = this.handleTabChange.bind(this);
+    this.handleSharedProjectsTabChange =
+      this.handleSharedProjectsTabChange.bind(this);
+  }
+  handleSharedProjectsTabChange() {
+    this.setState({
+      selectedProjects: "Shared Projects",
+      currentTab: "Shared Projects",
+    });
+  }
+  handleTabChange() {
+    this.setState({
+      selectedProjects: "My projects",
+      currentTab: "My Projects",
+    });
   }
 
   componentDidMount() {
-    const {getClustersList, getUserProjects, data, getUserCredits} = this.props;
+    const { getClustersList, getUserProjects, data, getUserCredits } =
+      this.props;
     //add page 1
     getUserProjects(this.state.currentPaginationPage);
     getClustersList();
@@ -71,7 +85,7 @@ class UserProjectsPage extends React.Component {
       clearUpdateProjectState,
       isFetched,
     } = this.props;
-    const {Searchword} = this.state;
+    const { Searchword } = this.state;
 
     if (isDeleted !== prevProps.isDeleted) {
       getUserProjects(this.state.currentPaginationPage);
@@ -102,18 +116,18 @@ class UserProjectsPage extends React.Component {
   }
 
   openProjectCreateComponent() {
-    this.setState({openCreateComponent: true});
+    this.setState({ openCreateComponent: true });
   }
   callbackProjectCreateComponent() {
-    const {getUserProjects} = this.props;
+    const { getUserProjects } = this.props;
     this.setState(this.initialState);
     getUserProjects(this.state.currentPaginationPage);
   }
   searchThroughProjects() {
-    const {Searchword} = this.state;
-    const {getUserProjects} = this.props;
+    const { Searchword } = this.state;
+    const { getUserProjects } = this.props;
     //reset pagination
-    this.setState({currentPaginationPage: 1});
+    this.setState({ currentPaginationPage: 1 });
     getUserProjects(1, Searchword);
     // ?keywords=black
     // let searchResult = [];
@@ -129,7 +143,7 @@ class UserProjectsPage extends React.Component {
     // });
   }
   hideInvitationModel() {
-    this.setState({showInviteModel: false});
+    this.setState({ showInviteModel: false });
   }
   showInvitationModel(inviteeProjectId, inviteeModelRole) {
     this.setState({
@@ -144,11 +158,11 @@ class UserProjectsPage extends React.Component {
     });
   }
   handleInvitationDecline() {
-    const {getUserProjects} = this.props;
+    const { getUserProjects } = this.props;
     this.setState({
       decliningInvitation: true,
     });
-    const {inviteeProjectId} = this.state;
+    const { inviteeProjectId } = this.state;
     handlePatchRequest(`/projects/${inviteeProjectId}/users/handle_invite`, {
       accepted_collaboration_invite: false,
     })
@@ -168,11 +182,11 @@ class UserProjectsPage extends React.Component {
       });
   }
   handleInvitationAcceptence() {
-    const {getUserProjects} = this.props;
+    const { getUserProjects } = this.props;
     this.setState({
       acceptingInvitation: true,
     });
-    const {inviteeProjectId} = this.state;
+    const { inviteeProjectId } = this.state;
 
     handlePatchRequest(`/projects/${inviteeProjectId}/users/handle_invite`, {
       accepted_collaboration_invite: true,
@@ -193,7 +207,7 @@ class UserProjectsPage extends React.Component {
       });
   }
   filterProjects() {
-    const {projects, data} = this.props;
+    const { projects, data } = this.props;
     let myProjects = [];
     let sharedProjects = [];
     projects.forEach((element) => {
@@ -221,7 +235,7 @@ class UserProjectsPage extends React.Component {
     };
   }
   onPageChange(page) {
-    const {getUserProjects} = this.props;
+    const { getUserProjects } = this.props;
     this.setState({
       currentPaginationPage: page,
     });
@@ -241,14 +255,13 @@ class UserProjectsPage extends React.Component {
       invitationError,
       sharedProjectsList,
       myProjectsList,
-      currentTab,
     } = this.state;
     const {
       projects,
       pagination,
       isRetrieving,
       isFetched,
-      match: {params},
+      match: { params },
       credits,
       data,
     } = this.props;
@@ -257,7 +270,7 @@ class UserProjectsPage extends React.Component {
     const sortedProjects = displayProjects.sort((a, b) =>
       b.date_created > a.date_created ? 1 : -1
     );
-    const adminCheck = (data.username === 'admin')
+    const adminCheck = data.username === "admin";
     return (
       <div className={styles.Page}>
         {openCreateComponent ? (
@@ -274,6 +287,13 @@ class UserProjectsPage extends React.Component {
                 showBtn
                 buttontext="+ New Project"
                 showSearchBar
+                handleTabChange={this.handleTabChange}
+                handleSharedProjectsTabChange={
+                  this.handleSharedProjectsTabChange
+                }
+                selectedProjects={selectedProjects}
+                myProjectsList={myProjectsList}
+                sharedProjectsList={sharedProjectsList}
                 placeholder="Search through projects"
                 btnAction={this.openProjectCreateComponent}
                 searchAction={this.handleCallbackSearchword}
@@ -281,56 +301,7 @@ class UserProjectsPage extends React.Component {
               />
             </div>
             <div className={styles.MainRow}>
-              <div className={`${styles.SelectProjects} SmallContainer`}>
-                <div className={styles.ProjectCategoryHeadings}>
-                  <span
-                    className={
-                      currentTab === "My Projects"
-                        ? styles.CurrentTab
-                        : styles.Tab
-                    }
-                    onClick={() => {
-                      this.setState({
-                        selectedProjects: "My projects",
-                        currentTab: "My Projects",
-                      });
-                    }}
-                  >
-                    <div className={styles.ProjectCategories}>
-                      <span>
-                        <User className={styles.SmallerIcon} />
-                      </span>
-                      <span>
-                        My Projects{" "}
-                        <span title="Projects">{`(${myProjectsList?.length})`}</span>
-                      </span>
-                    </div>
-                  </span>
-                  <span
-                    className={
-                      currentTab === "Shared Projects"
-                        ? styles.CurrentTab
-                        : styles.Tab
-                    }
-                    onClick={() => {
-                      this.setState({
-                        selectedProjects: "Shared Projects",
-                        currentTab: "Shared Projects",
-                      });
-                    }}
-                  >
-                    <div className={styles.ProjectCategories}>
-                      <span>
-                        <Users className={styles.SmallerIcon} />
-                      </span>
-                      <span>
-                        Shared Projects{" "}
-                        <span title="Projects">{`(${sharedProjectsList?.length})`}</span>{" "}
-                      </span>
-                    </div>
-                  </span>
-                </div>
-              </div>
+              <div className={`${styles.SelectProjects} SmallContainer`}></div>
               {isRetrieving ? (
                 <div className={styles.NoResourcesMessage}>
                   <div className={styles.SpinnerWrapper}>
@@ -524,12 +495,12 @@ UserProjectsPage.defaultProps = {
 };
 
 export const mapStateToProps = (state) => {
-  const {data} = state.user;
+  const { data } = state.user;
 
-  const {clusters} = state.clustersReducer;
-  const {isRetrieving, projects, isFetched, pagination} =
+  const { clusters } = state.clustersReducer;
+  const { isRetrieving, projects, isFetched, pagination } =
     state.userProjectsReducer;
-  const {credits} = state.userCreditsReducer;
+  const { credits } = state.userCreditsReducer;
   return {
     data,
     isRetrieving,
