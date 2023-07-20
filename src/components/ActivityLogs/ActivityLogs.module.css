@@ -46,7 +46,7 @@
   }
   .Filter{
     width: 20rem;
-    height: 40px;
+    padding: .3rem;
     border: 1px solid #000000;
     display: flex;
     padding-left: 7px;
@@ -56,6 +56,20 @@
     justify-content: space-between;
     align-items: center;
     border-radius: 9px;
+  }
+  .SimpleForm {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    position: relative;
+    align-items: center;
+    gap:.7rem;
+  }
+  .errorSection{
+    font-size: 11px;
+    color: red;
+    display: block;
+    align-self: center;
   }
   .FilterDropdown{
     width: 21rem;

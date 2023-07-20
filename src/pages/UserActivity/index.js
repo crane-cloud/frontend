@@ -49,7 +49,8 @@ const UserActivity = (props) => {
   //dates
   const [toTS, setToTS] = useState("none");
   const [fromTS, setFromTS] = useState("none");
-
+  const [dateError, setDateError] = useState("");
+  
   //constant lists
   const statusList = ["Success", "Failed"];
   const operationsList = ["Create", "Update", "Delete"];
@@ -89,6 +90,7 @@ const UserActivity = (props) => {
     const day = date.getDate();
     const formattedDate = `${year}-${month}-${day}`;
     setFromTS(formattedDate);
+    setDateError("");
   };
   const handleToDate = (toTS) => {
     const date = new Date(toTS);
@@ -97,6 +99,7 @@ const UserActivity = (props) => {
     const day = date.getDate();
     const formattedDate = `${year}-${month}-${day}`;
     setToTS(formattedDate);
+    setDateError("");
   };
   const switchCalendars = ({ target }) => {
     const calendar = target.getAttribute("value");
@@ -113,7 +116,7 @@ const UserActivity = (props) => {
   };
   const closeCalendar = () => {
     if (showToCalendar) {
-      setToTS("none");
+      //setToTS("none");
       setShowToCalendar(false);
       if (queryParams.includes("&end=")) {
         setQueryParams(queryParams.replace(/&end=.+?(&|$)/, ""));
@@ -122,7 +125,7 @@ const UserActivity = (props) => {
       }
     }
     if (showFromCalendar) {
-      setFromTS("none");
+      //setFromTS("none");
       setShowFromCalendar(false);
       if (queryParams.includes("&start=")) {
         setQueryParams(queryParams.replace(/&start=.+?(&|$)/, ""));
@@ -133,6 +136,15 @@ const UserActivity = (props) => {
   };
   const handleCalenderSubmission = () => {
     //add to link
+    const toDate = new Date(toTS) 
+    const fromDate = new Date(fromTS)
+    if(toTS !== "none" && fromTS !== "none" && (toDate < fromDate )){
+      setDateError("The 'end' date must be greater than the 'start' date");
+      setFromTS("none");
+      setToTS("none");
+      closeCalendar();
+      return;
+    }
     if (toTS !== "none") {
       if (queryParams === "") {
         setQueryParams(`end=${toTS}`);
@@ -300,12 +312,13 @@ const UserActivity = (props) => {
                 <div className={styles.OuterFilterItem}>
                   <div className={styles.DateSection}>
                     <div className={styles.DateItem}>
-                      <div>From:</div>
+                      <div>Start:</div>
                       <DateInput
                         handleChange={handleFromDate}
                         showCalendar={showFromCalendar}
                         className={styles.dateField}
                         position={styles.CalenderFromposition}
+                        dateValue={fromTS}
                         onClick={switchCalendars}
                         onCancel={closeCalendar}
                         onSubmit={handleCalenderSubmission}
@@ -313,12 +326,13 @@ const UserActivity = (props) => {
                       />
                     </div>
                     <div className={styles.DateItem}>
-                      <div>To:</div>
+                      <div>End:</div>
                       <DateInput
                         handleChange={handleToDate}
                         showCalendar={showToCalendar}
                         position={styles.CalenderToposition}
                         className={styles.dateField}
+                        dateValue={toTS}
                         onClick={switchCalendars}
                         onCancel={closeCalendar}
                         onSubmit={handleCalenderSubmission}
@@ -326,6 +340,7 @@ const UserActivity = (props) => {
                       />
                     </div>
                   </div>
+                  <div className={styles.errorSection}>{dateError}</div>
                 </div>
                 <div className={styles.Filter}>
                   <FilterIcon />
