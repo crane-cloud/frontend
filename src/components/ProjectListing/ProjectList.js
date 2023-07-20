@@ -3,13 +3,11 @@ import "./ProjectList.css";
 import InformationBar from "../../components/InformationBar";
 import Header from "../../components/Header";
 import SideNav from "../../components/SideNav";
-
 import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
-
+import getAdminProjectsList from "../../redux/actions/adminProjectsList";
 import getAdminProjects from "../../redux/actions/adminProjects";
 import getUsersList from "../../redux/actions/users";
 import Spinner from "../../components/Spinner";
-// import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import usePaginator from "../../hooks/usePaginator";
@@ -23,16 +21,21 @@ const AdminProjectsList = () => {
   const clusterID = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
   const [word, setWord] = useState("");
-  const [searchProjectList, setSearchProjectList] = useState([]);
 
   const { isRetrieved , isRetrieving, projects, pagination} = useSelector(
     (state) => state.adminProjectsReducer
   );
 
-  const getAdminProps = useCallback(
-    () => dispatch(getAdminProjects(currentPage)),
-    [dispatch, currentPage]
-  );
+
+  const AdminProjects = useCallback(
+    (page, keyword='') => dispatch(getAdminProjectsList(page,keyword)),
+    [dispatch]
+    );
+
+    const getAdminProps = useCallback(
+      () => dispatch(getAdminProjects(clusterID, currentPage)),
+      [dispatch, clusterID, currentPage]
+    );
   const getUsersProps = useCallback(() => dispatch(getUsersList), [dispatch]);
  
   // const adminProjects = useSelector((state) => state.adminProjectsReducer);
@@ -42,11 +45,18 @@ const AdminProjectsList = () => {
   // const [addCredits, setAddCredits] = useState(false);
   const [users, setUsers] = useState([]);
 
+  useEffect(()=>{
+    AdminProjects(currentPage);
+    getAdminProps(currentPage);
+  },[AdminProjects,currentPage,getAdminProps]);
+
+
   useEffect(() => {
     getAdminProps();
     getUsersProps();
     fetchUsersList();
-  }, [getAdminProps, getUsersProps]);
+    AdminProjects(currentPage);
+  }, [getAdminProps, getUsersProps,AdminProjects,currentPage]);
 
   const fetchUsersList = () => {
     handleGetRequest("/users")
@@ -73,24 +83,20 @@ const AdminProjectsList = () => {
       });
   };
 
-  const searchThroughProjects = () => {
-    let resultsProjectList = [];
-    projects.forEach((element) => {
-      if (element.name.toLowerCase().includes(word.toLowerCase())) {
-        resultsProjectList.push(element);
-      }
-    });
-    setSearchProjectList(resultsProjectList);
+  const searchThroughProjects = (keyword) => {
+    handleChangePage(1);
+    AdminProjects(1, keyword);
   };
 
   const handleCallbackSearchword = ({ target }) => {
     const { value } = target;
     setWord(value);
     if (value !== "") {
-      searchThroughProjects();
+      searchThroughProjects(value);
     }
     if (value === "") {
-      setSearchProjectList([]);
+      handleChangePage(1);
+      AdminProjects(1);
     }
   };
 
@@ -122,6 +128,7 @@ const AdminProjectsList = () => {
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);
     getAdminProps();
+    AdminProjects();
   };
 
   return (
@@ -187,10 +194,11 @@ const AdminProjectsList = () => {
                       </td>
                     </tr>
                   </tbody>
-                ) : word !== "" ? (
+                ) : (
                   <tbody>
                     {isRetrieved &&
-                       searchProjectList.map((project) =>(
+                      projects !== undefined &&
+                       projects.map((project) =>(
                         <tr key={projects.indexOf(project)}>
                            <td>{project?.name}</td>
                             <td>{getUserName(project?.owner_id)}</td>
@@ -233,54 +241,6 @@ const AdminProjectsList = () => {
                        ))
 
                     }
-                  </tbody>
-                ) : (
-                  <tbody>
-                    {isRetrieved &&
-                      projects !== 0 &&
-                      projects !== undefined &&
-                      projects.map((project) => (
-                        <tr key={projects.indexOf(project)}>
-                          <td>{project.name}</td>
-                          <td>{getUserName(project.owner_id)}</td>
-                          <td >{project.description}</td>
-                          <td>
-                            {/* optional chai */}
-                            <span className={project.disabled !== false ? "ProjectStatus":"ProjectStatusDisabled"}>
-                              {project.disabled !== false
-                                ? "Active"
-                                : "Disabled"}
-                            </span>
-                          </td>
-                          <td
-                            onClick={(e) => {
-                              showContextMenu(project.id);
-                              //handleClick(e);
-                            }}
-                          >
-                            <MoreIcon />
-
-                            {contextMenu && project.id === selectedProject && (
-                              <div className="BelowHeader bg-light">
-                                <div className="context-menu">
-                                  <div
-                                    className="DropDownLink"
-                                    role="presentation"
-                                  >
-                                    <Link
-                                      to={{
-                                        pathname: `/projects/${selectedProject}/details`,
-                                      }}
-                                    >
-                                      View Project Details
-                                    </Link>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
                   </tbody>
                 )}
               </table>
