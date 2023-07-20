@@ -17,6 +17,7 @@
   align-items: center;
   font-weight: bold;
   font-size: 1.5rem;
+  gap: 2rem;
 }
 
 .InfoContent{
@@ -72,6 +73,38 @@
 .ButtonWrap{
   display: flex;
   gap: 1rem;
+}
+.InfoProjectCategories{
+  display: flex;
+  gap: 1rem;
+}
+
+.InfoProjectCategories button{
+  outline: none;
+  border: none;
+  font-size: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem 0.3rem;
+  cursor: pointer;
+  background-color: #d9d9d9; 
+}
+.InfoProjectCategories svg{
+  height: 1rem;
+  width: 1rem;
+}
+
+ .InfoCurrentTab { 
+  background-color: #d9d9d9;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.InfoTab{
+  padding: 0.5rem;
+  border-radius: 4px;
 }
 
 @media (max-width: 650px) {

@@ -6,7 +6,8 @@ import PrimaryButton from "../PrimaryButton";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 import "./InformationBar.css";
-
+import { ReactComponent as User } from "../../assets/images/user.svg";
+import { ReactComponent as Users } from "../../assets/images/users.svg";
 const InformationBar = ({
   header,
   buttontext,
@@ -21,14 +22,22 @@ const InformationBar = ({
   searchAction,
   adminRoute,
   adminProjects,
+  selectedProjects,
+  handleTabChange,
+  handleSharedProjectsTabChange,
+  myProjectsList = [],
+  sharedProjectsList = [],
+  onFilterSelect,
+  viewFilter = "False",
 }) => {
+  //const [selectedTab, setSelectedTab] = useState("MyProjects");
   const [Searchword, setSearchword] = useState("");
   const callbackSearchWord = ({ target }) => {
     const { value } = target;
     setSearchword(value);
     searchAction(value);
   };
-  return (
+return (
     <div className="InformationBar SmallContainer">
       {status ? (
         <div className="InformationBarWithButton">
@@ -44,7 +53,44 @@ const InformationBar = ({
       ) : showSearchBar ? (
         <div className="InformationBarColumnView">
           <div className="InformationBarWithButton">
-            <div className="InfoHeader">{header}</div>
+            <div className="InfoHeader">
+              {header}
+              {viewFilter && (
+                <div className="InfoProjectCategories">
+                  <button
+                    className={
+                      selectedProjects === "My projects"
+                        ? "InfoCurrentTab"
+                        : "InfoTab"
+                    }
+                    onClick={() => handleTabChange("MyProjects")}
+                  >
+                    <User className="SmallerIcon" />
+                    <span>
+                      MyProjects{" "}
+                      <span title="Projects">{`(${myProjectsList.length})`}</span>
+                    </span>
+                  </button>
+                  <button
+                    className={
+                      selectedProjects === "Shared Projects"
+                        ? "InfoCurrentTab"
+                        : "InfoTab"
+                    }
+                    onClick={() => handleSharedProjectsTabChange("SharedProjects")}
+                  >
+                    <span>
+                      <Users className="SmallerIcon" />
+                    </span>
+                    <span>
+                      {" "}
+                      Shared Projects{" "}
+                      <span title="Projects">{`(${sharedProjectsList.length})`}</span>{" "}
+                    </span>
+                  </button>
+                </div>
+              )}
+            </div>
             <div className="InfoContent">
               <div className="SearchBar DesktopView">
                 <div className="SearchInput">
@@ -67,7 +113,7 @@ const InformationBar = ({
                         pathname: `/projects`,
                       }}
                     >
-                      <PrimaryButton color="primary" >
+                      <PrimaryButton color="primary">
                         Admin Projects
                       </PrimaryButton>
                     </Link>
@@ -77,9 +123,7 @@ const InformationBar = ({
                         pathname: `/clusters`,
                       }}
                     >
-                      <PrimaryButton color="primary">
-                        Dashboard
-                      </PrimaryButton>
+                      <PrimaryButton color="primary">Dashboard</PrimaryButton>
                     </Link>
                   ))}
                 <PrimaryButton btntype={btntype} onClick={btnAction}>
@@ -115,9 +159,7 @@ const InformationBar = ({
                     pathname: `/projects`,
                   }}
                 >
-                  <PrimaryButton color="primary" >
-                    Admin Projects
-                  </PrimaryButton>
+                  <PrimaryButton color="primary">Admin Projects</PrimaryButton>
                 </Link>
               ) : (
                 <Link
@@ -125,9 +167,7 @@ const InformationBar = ({
                     pathname: `/clusters`,
                   }}
                 >
-                  <PrimaryButton color="primary" >
-                    Dashboard
-                  </PrimaryButton>
+                  <PrimaryButton color="primary">Dashboard</PrimaryButton>
                 </Link>
               ))}
             <PrimaryButton btntype={btntype} onClick={btnAction}>
