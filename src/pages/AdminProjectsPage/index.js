@@ -36,6 +36,7 @@ const AdminProjectsPage = () => {
     [dispatch]
     );
 
+
   const getAdminProps = useCallback(
     () => dispatch(getAdminProjects(clusterID, currentPage)),
     [dispatch, clusterID, currentPage]
@@ -85,7 +86,7 @@ const AdminProjectsPage = () => {
         throw new Error("Failed to fetch users, please try again");
       });
   };
-  
+
   const searchThroughProjects = (keyword) => {
     handleChangePage(1);
     AdminProjects(1, keyword);
@@ -195,53 +196,6 @@ const AdminProjectsPage = () => {
                         </div>
                       </td>
                     </tr>
-                  </tbody>
-                ) : word !== "" ? (
-                  <tbody>
-                    {isRetrieved &&
-                       searchProjectList.map((project) =>(
-                        <tr key={projects.indexOf(project)}>
-                           <td>{project?.name}</td>
-                            <td>{getUserName(project?.owner_id)}</td>
-                            <td >{project?.description}</td>
-                            <td>
-                              {/* optional chai */}
-                              <span className={project.disabled !== false ? "ProjectStatus":"ProjectStatusDisabled"}>
-                                {project.disabled !== false
-                                  ? "Active"
-                                  : "Disabled"}
-                              </span>
-                            </td>
-                            <td
-                              onClick={(e) => {
-                                showContextMenu(project.id);
-                              }}
-                            >
-                              <MoreIcon />
-
-                              {contextMenu && project.id === selectedProject && (
-                                <div className="BelowHeader bg-light">
-                                  <div className="context-menu">
-                                    <div
-                                      className="DropDownLink"
-                                      role="presentation"
-                                    >
-                                      <Link
-                                        to={{
-                                          pathname: `/projects/${selectedProject}/details`,
-                                        }}
-                                      >
-                                        View Project Details
-                                      </Link>
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
-                            </td>
-                        </tr>
-                       ))
-
-                    }
                   </tbody>
                 ) : (
                   <tbody>
