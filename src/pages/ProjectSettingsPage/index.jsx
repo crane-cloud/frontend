@@ -14,7 +14,6 @@ import Avatar from "../../components/Avatar";
 import Modal from "../../components/Modal";
 import TextArea from "../../components/TextArea";
 import Feedback from "../../components/Feedback";
-import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
 import DeleteWarning from "../../components/DeleteWarning";
 import BlackInputText from "../../components/BlackInputText";
 import styles from "./ProjectSettingsPage.module.css";
@@ -24,29 +23,27 @@ import { retrieveProjectTypes } from "../../helpers/projecttypes";
 import { validateName } from "../../helpers/validation";
 import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
+import { ReactComponent as Bin } from "../../assets/images/bin.svg";
+import { ReactComponent as Send } from "../../assets/images/send.svg";
 import { retrieveMembershipRoles } from "../../helpers/membershipRoles";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
 import { namedOrganisations } from "../../helpers/projectOrganisations";
-// import "./../../components/DBSettingsPage/DBSettingsPage.css"
 
 class ProjectSettingsPage extends React.Component {
   constructor(props) {
     super(props);
     const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
-    const userToken = localStorage.getItem("token", null);
-    const { name, description, organisation, project_type } =
-     projectInfo;
+    const { name, description, organisation, project_type } = projectInfo;
     this.state = {
       openUpdateAlert: false,
       openRoleUpdateAlert: false,
       openDeleteAlert: false,
       openDropDown: false,
-      userToken: userToken,
       projectName: name ? name : "",
       projectID: this.props.match.params.projectID,
       projectDescription: description ? description : "",
       error: "",
-      updatingProjectDetails:false,
+      updatingProjectDetails: false,
       nameChecked: false,
       idChecked: false,
       tokenChecked: false,
@@ -57,7 +54,6 @@ class ProjectSettingsPage extends React.Component {
       projectType: project_type ? project_type : "",
       othersBool: false,
       otherType: "",
-      actionsMenu: false,
       showInviteModel: false,
       role: "",
       email: "",
@@ -81,9 +77,8 @@ class ProjectSettingsPage extends React.Component {
       disableProjectError: "",
       disablingProject: false,
       openDisableProjectModel: false,
-     
     };
-    
+
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
     this.showUpdateAlert = this.showUpdateAlert.bind(this);
     this.updateRoleAlert = this.updateRoleAlert.bind(this);
@@ -94,7 +89,6 @@ class ProjectSettingsPage extends React.Component {
     this.nameOnClick = this.nameOnClick.bind(this);
     this.projectIDOnClick = this.projectIDOnClick.bind(this);
     this.projectDescriptionOnClick = this.projectDescriptionOnClick.bind(this);
-    this.userTokenOnClick = this.userTokenOnClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.checkProjectInputValidity = this.checkProjectInputValidity.bind(this);
@@ -120,7 +114,8 @@ class ProjectSettingsPage extends React.Component {
     this.updateProjectDetails = this.updateProjectDetails.bind(this);
     this.deleteThisProject = this.deleteThisProject.bind(this);
     this.handleDisableProject = this.handleDisableProject.bind(this);
-    this.handleOrganisationSelectChange = this.handleOrganisationSelectChange.bind(this);
+    this.handleOrganisationSelectChange =
+      this.handleOrganisationSelectChange.bind(this);
   }
 
   componentDidMount() {
@@ -465,12 +460,6 @@ class ProjectSettingsPage extends React.Component {
     this.setState({ descriptionChecked: true });
   }
 
-  userTokenOnClick() {
-    const token = localStorage.getItem("token");
-    navigator.clipboard.writeText(token);
-    this.setState({ tokenChecked: true });
-  }
-
   handleDeleteProject(e, projectID) {
     // const { deleteProject } = this.props;
     e.preventDefault();
@@ -558,7 +547,7 @@ class ProjectSettingsPage extends React.Component {
   }
 
   handleOrganisationSelectChange(selected) {
-    this.setState({ projectOrganisation: selected.value})
+    this.setState({ projectOrganisation: selected.value });
   }
 
   checkMembership() {
@@ -645,7 +634,6 @@ class ProjectSettingsPage extends React.Component {
       openUpdateAlert,
       openDeleteAlert,
       openRoleUpdateAlert,
-      userToken,
       projectName,
       projectDescription,
       error,
@@ -658,11 +646,9 @@ class ProjectSettingsPage extends React.Component {
       nameChecked,
       idChecked,
       descriptionChecked,
-      tokenChecked,
       showInviteModel,
       email,
       role,
-      actionsMenu,
       currentUserIsAdminOrMember,
       removeMemberModal,
       projectUsers,
@@ -682,7 +668,6 @@ class ProjectSettingsPage extends React.Component {
       disableProjectError,
       disablingProject,
       openDisableProjectModel,
-     
     } = this.state;
     const types = retrieveProjectTypes();
     const roles = retrieveMembershipRoles();
@@ -741,18 +726,6 @@ class ProjectSettingsPage extends React.Component {
                     "Enabled"
                   )}
                 </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="SectionSubTitle">User Token</div>
-            <div className={styles.ProjectButtonRow}>
-              <div className={styles.SettingsSectionInfo}>
-                <div className={styles.TokenItem}>{userToken}</div>
-              </div>
-              <div className={styles.CopyIcon}>
-                <CopyText onClick={this.userTokenOnClick} />
-                {tokenChecked ? <Checked /> : null}
               </div>
             </div>
           </div>
@@ -865,78 +838,53 @@ class ProjectSettingsPage extends React.Component {
                   <div className={styles.SettingsSectionInfoHeader}>
                     Unregistered Members
                   </div>
-                  <div className={styles.MemberDescription}>
+                  <div className="SubText">
                     Members invited to this project by email but have no crane
                     cloud accounts.
                   </div>
-                  
-                    <div className={`${styles.MemberTable}`}>
-                      <div className={`${styles.MemberTableRowUnregistered}`}>
-                        <div className={styles.MemberTableHead}>User</div>
-                        <div className={styles.MemberTableHead}>Role</div>
-                        <div className={styles.MemberTableHead}>Options</div>
-                      </div>
-                      <div className={styles.MemberBody}>
-                        {projectUnregisteredUsers?.map((entry, index) => (
-                          <div
-                            className={styles.MemberTableRowUnregistered}
-                            key={index}
-                          >
-                            <div className={styles.MemberTableCell}>
-                              <div className={styles.NameSecting}>
-                                <Avatar
-                                  name={entry.email}
-                                  className={styles.MemberAvatar}
-                                />
-                                {/* <div className={styles.MemberNameEmail}> */}
-                                  <div className={styles.Wrap}>{entry.email}</div>
-                                  
-                                {/* </div> */}
-                              </div>
-                            </div>
 
-                            <div className={styles.MemberTableCell}>
-                              {entry.role}
-                            </div>
-                            <div className={styles.MemberTableCell}>
-                              <div
-                                onClick={(e) => {
-                                  this.showMenu(entry.email);
-                                  this.handleClick(e);
-                                }}
-                              >
-                                <MoreIcon className={styles.MoreIcon} />
-                                {/* options to be determined per user*/}
-                                {actionsMenu && entry.email === email && (
-                                  <>
-                                    <div className={styles.BelowHeader}>
-                                      <div className={styles.contextMenu}>
-                                        <div
-                                          className={styles.DropDownLink}
-                                          role="presentation"
-                                          onClick={() => {}}
-                                        >
-                                          Remove Member
-                                        </div>
-                                        <div
-                                          className={styles.DropDownLink}
-                                          role="presentation"
-                                          onClick={() => {}}
-                                        >
-                                          Resend Invite
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </>
-                                )}
-                              </div>
+                  <div className={styles.MemberTable}>
+                    <div className={styles.MemberBody}>
+                      {projectUnregisteredUsers?.map((entry, index) => (
+                        <div className={styles.MemberTableRow} key={index}>
+                          <div className={styles.MemberTableCell}>
+                            <div className={styles.NameSecting}>
+                              <Avatar
+                                name={entry.email}
+                                className={styles.MemberAvatar}
+                              />
+                              {/* <div className={styles.MemberNameEmail}> */}
+                              <div className={styles.Wrap}>{entry.email}</div>
+
+                              {/* </div> */}
                             </div>
                           </div>
-                        ))}
-                      </div>
+
+                          <div className={styles.MemberTableCell}>
+                            <div className={styles.MemberRole}>
+                              <span>Role:</span>
+                              {entry.role}
+                            </div>
+                          </div>
+
+                          <div className={styles.OptionButtons}>
+                            <Send
+                              className={styles.SendButton}
+                              title="Resend Invite"
+                            />
+                            <Bin
+                              className={styles.BinButton}
+                              onClick={() => {
+                                this.showRemoveMemberModal(entry.email);
+                              }}
+                              title="Delete Invite"
+                            />
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-              
+                </div>
               )}
             </>
           )}
@@ -1090,20 +1038,22 @@ class ProjectSettingsPage extends React.Component {
                       <Select
                         required
                         placeholder={
-                          projectOrganisation ? projectOrganisation : "Update project Organization"
+                          projectOrganisation
+                            ? projectOrganisation
+                            : "Update project Organization"
                         }
                         options={presetOrganisations}
                         onChange={this.handleOrganisationSelectChange}
                       />
                       {othersBool && (
-                      <BlackInputText
-                        placeholder="Organisation"
-                        name="projectOrganisation"
-                        value={projectOrganisation}
-                        onChange={(e) => {
-                          this.handleChange(e);
-                        }}
-                      />
+                        <BlackInputText
+                          placeholder="Organisation"
+                          name="projectOrganisation"
+                          value={projectOrganisation}
+                          onChange={(e) => {
+                            this.handleChange(e);
+                          }}
+                        />
                       )}
                     </div>
                     <div className={styles.UpdateInputSection}>
