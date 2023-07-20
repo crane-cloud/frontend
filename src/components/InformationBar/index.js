@@ -30,6 +30,7 @@ const InformationBar = ({
   onFilterSelect,
   viewFilter = "False",
 }) => {
+  //const [selectedTab, setSelectedTab] = useState("MyProjects");
   const [Searchword, setSearchword] = useState("");
   const callbackSearchWord = ({ target }) => {
     const { value } = target;
@@ -58,7 +59,7 @@ return (
                 <div className="InfoProjectCategories">
                   <button
                     className={
-                      selectedProjects === "MyProjects"
+                      selectedProjects === "My projects"
                         ? "InfoCurrentTab"
                         : "InfoTab"
                     }
@@ -72,9 +73,9 @@ return (
                   </button>
                   <button
                     className={
-                      selectedProjects === "SharedProjects"
-                        ? "CurrentTab"
-                        : "Tab"
+                      selectedProjects === "Shared Projects"
+                        ? "InfoCurrentTab"
+                        : "InfoTab"
                     }
                     onClick={() => handleSharedProjectsTabChange("SharedProjects")}
                   >
