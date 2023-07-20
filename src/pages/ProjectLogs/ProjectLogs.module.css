@@ -345,8 +345,11 @@
   gap: 1rem;
   position: absolute;
   z-index: 10;
-  left: 1rem;
-  width: fit-content;
+  left: 0;
+  width: 45%;
+  padding: 10px;
+  border-radius: 10px;
+
 }
 .CalenderToposition{
   background-color: #ffffff;
@@ -356,8 +359,10 @@
   gap: 1rem;
   position: absolute;
   z-index: 10;
-  left: 3rem;
-  width: fit-content;
+  left: 0;
+  width: 45%;
+  padding: 10px;
+  border-radius: 10px;
 }
 .opacityClass{
   opacity: .2;

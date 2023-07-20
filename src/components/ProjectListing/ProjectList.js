@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import "./AdminProjectsPage.css";
+import "./ProjectList.css";
 import InformationBar from "../../components/InformationBar";
 import Header from "../../components/Header";
 import SideNav from "../../components/SideNav";
@@ -11,7 +11,6 @@ import getUsersList from "../../redux/actions/users";
 import Spinner from "../../components/Spinner";
 // import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import "./AdminProjectsPage.css";
 import { Link } from "react-router-dom";
 import usePaginator from "../../hooks/usePaginator";
 import Pagination from "../../components/Pagination";
@@ -19,7 +18,7 @@ import { handleGetRequest } from "../../apis/apis.js";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 
 
-const AdminProjectsPage = () => {
+const AdminProjectsList = () => {
   const [currentPage, handleChangePage] = usePaginator();
   const clusterID = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
@@ -31,8 +30,8 @@ const AdminProjectsPage = () => {
   );
 
   const getAdminProps = useCallback(
-    () => dispatch(getAdminProjects(clusterID, currentPage)),
-    [dispatch, clusterID, currentPage]
+    () => dispatch(getAdminProjects(currentPage)),
+    [dispatch, currentPage]
   );
   const getUsersProps = useCallback(() => dispatch(getUsersList), [dispatch]);
  
@@ -139,13 +138,7 @@ const AdminProjectsPage = () => {
             <InformationBar
               header={
                 <>
-                  <Link
-                    className="breadcrumb"
-                    to={`/clusters/${clusterID}/projects`}
-                  >
-                    Overview
-                  </Link>
-                  <span> / Projects Listing</span>
+                  <span> Projects Listing</span>
                 </>
               }
               showBtn={false}
@@ -187,7 +180,7 @@ const AdminProjectsPage = () => {
                 {isRetrieving ? (
                   <tbody>
                     <tr className="TableLoading">
-                      <td className="TableTdSpinner">
+                    <td className="TableTdSpinner">
                         <div className="SpinnerWrapper">
                           <Spinner size="big" />
                         </div>
@@ -250,16 +243,10 @@ const AdminProjectsPage = () => {
                         <tr key={projects.indexOf(project)}>
                           <td>{project.name}</td>
                           <td>{getUserName(project.owner_id)}</td>
-                          <td>{project.description}</td>
+                          <td >{project.description}</td>
                           <td>
                             {/* optional chai */}
-                            <span
-                              className={
-                                project.disabled !== false
-                                  ? "ProjectStatus"
-                                  : "ProjectStatusDisabled"
-                              }
-                            >
+                            <span className={project.disabled !== false ? "ProjectStatus":"ProjectStatusDisabled"}>
                               {project.disabled !== false
                                 ? "Active"
                                 : "Disabled"}
@@ -276,18 +263,6 @@ const AdminProjectsPage = () => {
                             {contextMenu && project.id === selectedProject && (
                               <div className="BelowHeader bg-light">
                                 <div className="context-menu">
-                                  {/* <div
-                                    className="DropDownLink Section"
-                                    role="presentation"
-                                  >
-                                    Activate
-                                  </div>
-                                  <div
-                                    className="DropDownLink"
-                                    role="presentation"
-                                  >
-                                    Disable
-                                  </div> */}
                                   <div
                                     className="DropDownLink"
                                     role="presentation"
@@ -309,37 +284,6 @@ const AdminProjectsPage = () => {
                   </tbody>
                 )}
               </table>
-              {/* <Modal showModal={addCredits} onClickAway={() => hideModal()}>
-                <div className="ModalHeader">
-                  <h5 className="ModalTitle">Add Credits</h5>
-
-                  <div className="">Number of credits</div>
-                  <div className="ModalContent">
-                    <BlackInputText required placeholder="Number of credits" />
-                  </div>
-                  <div className="CreditsTitle">Description</div>
-                  <textarea
-                    className="TextArea"
-                    type="text"
-                    placeholder="Credits description"
-                    rows="4"
-                    cols="50"
-                  />
-                </div>
-                <div className="ModalFooter">
-                  <div className="ModalButtons">
-                    <PrimaryButton
-                      className="CancelBtn"
-                      onClick={() => hideModal()}
-                    >
-                     Cancel                 
-                    </PrimaryButton>
-                    <PrimaryButton type="button"  >
-                      Add
-                    </PrimaryButton>
-                  </div>
-                </div>
-              </Modal> */}
               {isRetrieved &&
                 projects.length === 0 && (
                   <div className="NoResourcesMessage">
@@ -370,4 +314,4 @@ const AdminProjectsPage = () => {
   );
 };
 
-export default AdminProjectsPage;
+export default AdminProjectsList;
