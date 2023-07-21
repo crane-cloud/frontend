@@ -7,19 +7,16 @@ import { API_BASE_URL } from "../../config";
 import axios from "axios";
 import Modal from "../../components/Modal";
 import InformationBar from "../../components/InformationBar";
-import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import BlackInputText from "../BlackInputText";
 import Spinner from "../../components/Spinner";
 import PrimaryButton from "../PrimaryButton";
 import getUserDetail from "../../redux/actions/userDetails";
-import BackButton from "../../assets/images/backButton.svg";
 import {
   updateProfile,
   clearUpdateProfileState,
 } from "../../redux/actions/updateProfile";
 import "../../index.css";
-import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 
 class UserProfile extends React.Component {
   constructor(props) {
