@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 //import RoundAddButton from "../RoundAddButton";
 import AppStatus from "../AppStatus";
 import PrimaryButton from "../PrimaryButton";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
+import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 import "./InformationBar.css";
 
 const InformationBar = ({
@@ -21,6 +22,7 @@ const InformationBar = ({
   searchAction,
   adminRoute,
   adminProjects,
+  showBackBtn = false,
 }) => {
   const [Searchword, setSearchword] = useState("");
   const callbackSearchWord = ({ target }) => {
@@ -28,8 +30,18 @@ const InformationBar = ({
     setSearchword(value);
     searchAction(value);
   };
+  const history = useHistory();
+  const goToBackPage = () => {
+    history.goBack();
+  };
   return (
     <div className="InformationBar SmallContainer">
+      {showBackBtn && (
+        <button className="InfoBackBtn" onClick={goToBackPage}>
+          <BackButton color="#000" />
+        </button>
+      )}
+
       {status ? (
         <div className="InformationBarWithButton">
           <div className="AppUrl">
@@ -67,7 +79,7 @@ const InformationBar = ({
                         pathname: `/projects`,
                       }}
                     >
-                      <PrimaryButton color="primary" >
+                      <PrimaryButton color="primary">
                         Admin Projects
                       </PrimaryButton>
                     </Link>
@@ -77,9 +89,7 @@ const InformationBar = ({
                         pathname: `/clusters`,
                       }}
                     >
-                      <PrimaryButton color="primary">
-                        Dashboard
-                      </PrimaryButton>
+                      <PrimaryButton color="primary">Dashboard</PrimaryButton>
                     </Link>
                   ))}
                 <PrimaryButton btntype={btntype} onClick={btnAction}>
@@ -115,9 +125,7 @@ const InformationBar = ({
                     pathname: `/projects`,
                   }}
                 >
-                  <PrimaryButton color="primary" >
-                    Admin Projects
-                  </PrimaryButton>
+                  <PrimaryButton color="primary">Admin Projects</PrimaryButton>
                 </Link>
               ) : (
                 <Link
@@ -125,9 +133,7 @@ const InformationBar = ({
                     pathname: `/clusters`,
                   }}
                 >
-                  <PrimaryButton color="primary" >
-                    Dashboard
-                  </PrimaryButton>
+                  <PrimaryButton color="primary">Dashboard</PrimaryButton>
                 </Link>
               ))}
             <PrimaryButton btntype={btntype} onClick={btnAction}>
