@@ -18,14 +18,14 @@
     font-size: larger;
 }
 .DateSection{
-    padding: 2px 0px 2px 0px;
+    padding: 5px 0px 2px 0px;
     display: flex;
     flex-direction: row;
     font-size: 15px;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
-    height: 25px;
-    gap: .5rem;
+    /* height: 25px; */
+    /* gap: .5rem; */
     margin-top: 3px;
     position: relative;
   }
@@ -46,7 +46,7 @@
   }
   .Filter{
     width: 20rem;
-    height: 40px;
+    padding: .3rem;
     border: 1px solid #000000;
     display: flex;
     padding-left: 7px;
@@ -56,6 +56,20 @@
     justify-content: space-between;
     align-items: center;
     border-radius: 9px;
+  }
+  .SimpleForm {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    position: relative;
+    align-items: center;
+    gap:.7rem;
+  }
+  .errorSection{
+    font-size: 11px;
+    color: red;
+    display: block;
+    align-self: center;
   }
   .FilterDropdown{
     width: 21rem;
@@ -207,25 +221,34 @@
 .CalenderFromposition{
   background-color: #ffffff;
   border: 1px solid #cccccc;
-  padding: 0.5rem;
+  /* padding: 0.5rem; */
   display: grid;
-  gap: 1rem;
+  /* gap: 1rem; */
   position: absolute;
   z-index: 10;
   left: 1rem;
+  border-radius: 10px;
 }
 .CalenderToposition{
   background-color: #ffffff;
   border: 1px solid #cccccc;
-  padding: 0.5rem;
+  /* padding: 0.5rem; */
   display: grid;
-  gap: 1rem;
+  /* gap: 1rem; */
   position: absolute;
   z-index: 10;
   left: 6rem;
+  border-radius: 10px;
 }
 .NoResourcesMessage{
   display: flex;
   justify-content: center;
   width: 100%;
+}
+.OuterFilterItem{
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 9px;
+  height: 40px;
+  margin-bottom: 10px;
 }

@@ -153,8 +153,8 @@
 
 .Filter {
   width: 10rem;
-  height: 40px;
   border: 1px solid #000000;
+  padding: .3rem;
   display: flex;
   padding-left: 7px;
   padding-right: 7px;
@@ -266,14 +266,20 @@
 
 .OuterFilterItem {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #fff;
   width: 20rem;
-  height: 40px;
+  padding: .3rem;
   margin-right: 1rem;
   border-radius: 9px;
   border: 1px solid #000000;
+}
+
+.errorSection{
+  font-size: 11px;
+  color: red;
 }
 
 .dateField {
