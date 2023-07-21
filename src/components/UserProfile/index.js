@@ -181,7 +181,7 @@ class UserProfile extends React.Component {
                             </div>
                             <div className={styles.BackgroundInfor}>
                               <div>
-                                Joined crane cloud on{" "}
+                                Joined Crane Cloud on{" "}
                                 {new Date(user.date_created).toLocaleDateString(
                                   "en-US",
                                   options
@@ -247,7 +247,7 @@ class UserProfile extends React.Component {
                                 }}
                               />
                             ) : (
-                              <div>{user.name}</div>
+                              <div className={styles.Title2Name}>{user.name}</div>
                             )}
                           </div>
                           <div className={styles.InputDiv}>
