@@ -238,7 +238,7 @@ const Routes = () => (
       />
       <ProtectedRoute
         isAllowed={hasToken}
-        path="/clusters/:clusterID/users-listing"
+        path="/users-listing"
         component={UsersAccounts}
       />
       <ProtectedRoute

@@ -21,6 +21,7 @@ const InformationBar = ({
   placeholder,
   searchAction,
   adminRoute,
+  dashboard,
   adminProjects,
   selectedProjects,
   handleTabChange,
@@ -37,7 +38,7 @@ const InformationBar = ({
     setSearchword(value);
     searchAction(value);
   };
-return (
+  return (
     <div className="InformationBar SmallContainer">
       {status ? (
         <div className="InformationBarWithButton">
@@ -77,7 +78,9 @@ return (
                         ? "InfoCurrentTab"
                         : "InfoTab"
                     }
-                    onClick={() => handleSharedProjectsTabChange("SharedProjects")}
+                    onClick={() =>
+                      handleSharedProjectsTabChange("SharedProjects")
+                    }
                   >
                     <span>
                       <Users className="SmallerIcon" />
@@ -106,29 +109,30 @@ return (
                 </div>
               </div>
               <div className="ButtonWrap">
-                {adminRoute &&
-                  (adminProjects ? (
-                    <Link
-                      to={{
-                        pathname: `/projects`,
-                      }}
-                    >
-                      <PrimaryButton color="primary">
-                        Admin Projects
-                      </PrimaryButton>
-                    </Link>
-                  ) : (
-                    <Link
-                      to={{
-                        pathname: `/clusters`,
-                      }}
-                    >
-                      <PrimaryButton color="primary">Dashboard</PrimaryButton>
-                    </Link>
-                  ))}
-                <PrimaryButton btntype={btntype} onClick={btnAction}>
-                  {buttontext}
-                </PrimaryButton>
+                {adminRoute && adminProjects ? (
+                  <Link
+                    to={{
+                      pathname: `/projects`,
+                    }}
+                  >
+                    <PrimaryButton color="primary">
+                      Admin Projects
+                    </PrimaryButton>
+                  </Link>
+                ) : (
+                  <>
+                  <Link
+                    to={{
+                      pathname: `/clusters`,
+                    }}
+                  >
+                    <PrimaryButton color="primary">Dashboard</PrimaryButton>
+                  </Link>
+                  <PrimaryButton btntype={btntype} onClick={btnAction}>
+                            {buttontext}
+                                </PrimaryButton></>
+                )}
+
               </div>
             </div>
           </div>
