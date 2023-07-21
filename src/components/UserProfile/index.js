@@ -7,19 +7,16 @@ import { API_BASE_URL } from "../../config";
 import axios from "axios";
 import Modal from "../../components/Modal";
 import InformationBar from "../../components/InformationBar";
-import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import BlackInputText from "../BlackInputText";
 import Spinner from "../../components/Spinner";
 import PrimaryButton from "../PrimaryButton";
 import getUserDetail from "../../redux/actions/userDetails";
-import BackButton from "../../assets/images/backButton.svg";
 import {
   updateProfile,
   clearUpdateProfileState,
 } from "../../redux/actions/updateProfile";
 import "../../index.css";
-import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -146,12 +143,9 @@ class UserProfile extends React.Component {
         <div>
           <div className={styles.TopRow}>
             <Header />
-            <InformationBar header="Profile" />
+            <InformationBar header="Profile Page" showBackBtn />
           </div>
           <div className={styles.MainColumn}>
-            <Link to={`/projects`}>
-              <img src={BackButton} alt="Back Button" />
-            </Link>
             {isFetching ? (
               <div className={styles.NoResourcesMessage}>
                 <div className={styles.SpinnerWrapper}>
@@ -163,53 +157,77 @@ class UserProfile extends React.Component {
                 {isFetched && (
                   <div className={styles.UserContainer}>
                     <section className={styles.ContainerHeadSection}>
-                      <div className={styles.ProfileCard}>
-                        <div className={styles.AvatarDiv}>
-                          <Avatar
-                            name={user.name}
-                            className={styles.UserAvatar}
-                          />
-                          <div className={styles.Identity}>
-                            <div className={styles.IdentityName}>
-                              {user.name}
-                            </div>
-                            <div className={styles.IdentityInfor}>
-                              <div>
-                                {user.name.split(" ").slice(-1).join(" ")}
+                      <div className={styles.UserProfileCard}>
+                        <div>
+                          <div>
+                            <div className={styles.AvatarDiv}>
+                              <Avatar
+                                name={user.name}
+                                className={styles.UserAvatar}
+                              />
+                              <div className={styles.Identity}>
+                                <div className={styles.IdentityName}>
+                                  {user.name}
+                                  {user.is_beta_user === true && (
+                                    <div className={styles.BetaUserDiv}>
+                                      Beta User
+                                    </div>
+                                  )}
+                                </div>
+                                <div className={styles.IdentityEmail}>
+                                  {user.email}
+                                </div>
                               </div>
-                              {user.email}
+                            </div>
+                            <div className={styles.BackgroundInfor}>
+                              <div>
+                                Joined Crane Cloud on{" "}
+                                {new Date(user.date_created).toLocaleDateString(
+                                  "en-US",
+                                  options
+                                )}
+                              </div>
+                              <div className={styles.CardInfor}>
+                                <div>Created 3 projects</div>
+                                {"|"}
+                                <div>Shares 2 projects</div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className={styles.BackgroundInfor}>
-                          <div>
-                            Joined crane cloud on{" "}
-                            {new Date(user.date_created).toLocaleDateString(
-                              "en-US",
-                              options
+                          <div
+                            className={styles.RowContent}
+                            title="Assigned by Admin for billing purporses"
+                          >
+                            {user.credits.length === 0 ? (
+                              "0 credits"
+                            ) : (
+                              <div className={styles.CreditsContainer}>
+                                {user.credits[0].amount}
+                                credits
+                              </div>
                             )}
                           </div>
-                          <div className={styles.CardInfor}>
-                            <div>Created 3 projects</div>{" "}
-                            <div>Shares 2 projects</div>
-                          </div>
+                        </div>
+                        <div>
+                          <Avatar
+                            name={user.name}
+                            className={styles.UserAvatarLarge}
+                          />
                         </div>
                       </div>
                     </section>
-                    <section className={styles.ContainerSection}>
-                      <div className={styles.HeaderSection}>
-                        <div className={styles.UserSectionTitle}>Information</div>
-                        <div className={styles.UserSectionSubTitle}>
-                          Your identity on crane cloud
+                    <div className={styles.SecondMainSection}>
+                      <section className={styles.ContainerSection}>
+                        <div className={styles.HeaderSection}>
+                          <div className={styles.UserSectionTitle}>
+                            Information
+                          </div>
+                          <div className={styles.UserSectionSubTitle}>
+                            Your identity on crane cloud
+                          </div>
                         </div>
-                      </div>
-                      <aside>
                         <div className={styles.ContainerCard}>
                           <div className={styles.EmailHead}>
-                            <Avatar
-                              name={user.name}
-                              className={styles.UserAvatar}
-                            />
                             {/* not editable */}
                             <div className={styles.InputDiv}>
                               <div className={styles.Title2}>Email</div>
@@ -229,7 +247,7 @@ class UserProfile extends React.Component {
                                 }}
                               />
                             ) : (
-                              <div>{user.name}</div>
+                              <div className={styles.Title2Name}>{user.name}</div>
                             )}
                           </div>
                           <div className={styles.InputDiv}>
@@ -247,9 +265,9 @@ class UserProfile extends React.Component {
                             ) : (
                               <div>{user.organisation}</div>
                             )} */}
-                            <div>Not                      Addded</div>
+                            <div>Not Addded</div>
                           </div>
-                          {editMode && (
+                          <div className={styles.ProfileActionBtns}>
                             <div className={styles.PasswordChange}>
                               <div>Change Password</div>
                               <PrimaryButton
@@ -261,87 +279,41 @@ class UserProfile extends React.Component {
                                 Reset password by email
                               </PrimaryButton>
                             </div>
-                          )}
-                          {editMode ? (
-                            <div className={styles.ButtonsDiv}>
+
+                            {editMode ? (
+                              <div className={styles.ButtonsDiv}>
+                                <PrimaryButton
+                                  onClick={() => {
+                                    user.name !== username &&
+                                      this.showSaveChangesModel();
+                                  }}
+                                  className={styles.BackButton}
+                                >
+                                  Save
+                                </PrimaryButton>
+                                <PrimaryButton
+                                  onClick={() => {
+                                    this.closeEditMode();
+                                  }}
+                                  className={styles.PairButtonCancel}
+                                >
+                                  Cancel
+                                </PrimaryButton>
+                              </div>
+                            ) : (
                               <PrimaryButton
                                 onClick={() => {
-                                  user.name !== username &&
-                                    this.showSaveChangesModel();
+                                  this.openEditMode();
                                 }}
                                 className={styles.BackButton}
                               >
-                                Save
+                                Edit profile
                               </PrimaryButton>
-                              <PrimaryButton
-                                onClick={() => {
-                                  this.closeEditMode();
-                                }}
-                                className={styles.PairButtonCancel}
-                              >
-                                Cancel
-                              </PrimaryButton>
-                            </div>
-                          ) : (
-                            <PrimaryButton
-                              onClick={() => {
-                                this.openEditMode();
-                              }}
-                              className={styles.BackButton}
-                            >
-                              Edit profile
-                            </PrimaryButton>
-                          )}
-                        </div>
-                      </aside>
-                    </section>
-                    <section className={styles.ContainerSection}>
-                      <div className={styles.HeaderSection}>
-                        <div className={styles.UserSectionTitle}>
-                          More information
-                        </div>
-                        <div className={styles.UserSectionSubTitle}>
-                          More information about a user
-                        </div>
-                      </div>
-                      <aside>
-                        <div className={styles.ContainerCard}>
-                          <div className={styles.ExtraContentDiv}>
-                            <div>
-                              <div className={styles.UserSectionTitle}>Credits</div>
-                              <div className={styles.UserSectionSubTitle}>
-                                Assigned by Admin for billing purporses
-                              </div>
-                            </div>
-                            <div className={styles.RowContent}>
-                              {user.credits.length === 0 ? (
-                                "0 credits"
-                              ) : (
-                                <div className={styles.CreditsContainer}>
-                                  {" "}
-                                  {user.credits[0].amount}
-                                  <div className={styles.CoinSize}>
-                                    <Coin />
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                          <div className={styles.ExtraContentDiv}>
-                            <div className={styles.UserSectionTitle}>Beta User</div>
-                            <div
-                              className={
-                                user.is_beta_user === true
-                                  ? styles.rowContentYes
-                                  : styles.rowContentNo
-                              }
-                            >
-                              {user.is_beta_user === true ? "Yes" : "No"}
-                            </div>
+                            )}
                           </div>
                         </div>
-                      </aside>
-                    </section>
+                      </section>
+                    </div>
                   </div>
                 )}
               </div>

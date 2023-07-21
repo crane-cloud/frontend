@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 //import RoundAddButton from "../RoundAddButton";
 import AppStatus from "../AppStatus";
 import PrimaryButton from "../PrimaryButton";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
+import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 import "./InformationBar.css";
 import { ReactComponent as User } from "../../assets/images/user.svg";
 import { ReactComponent as Users } from "../../assets/images/users.svg";
@@ -22,6 +23,7 @@ const InformationBar = ({
   searchAction,
   adminRoute,
   adminProjects,
+  showBackBtn = false,
   selectedProjects,
   handleTabChange,
   handleSharedProjectsTabChange,
@@ -37,8 +39,18 @@ const InformationBar = ({
     setSearchword(value);
     searchAction(value);
   };
-return (
+  const history = useHistory();
+  const goToBackPage = () => {
+    history.goBack();
+  };
+  return (
     <div className="InformationBar SmallContainer">
+      {showBackBtn && (
+        <button className="InfoBackBtn" onClick={goToBackPage}>
+          <BackButton color="#000" />
+        </button>
+      )}
+
       {status ? (
         <div className="InformationBarWithButton">
           <div className="AppUrl">
@@ -77,7 +89,9 @@ return (
                         ? "InfoCurrentTab"
                         : "InfoTab"
                     }
-                    onClick={() => handleSharedProjectsTabChange("SharedProjects")}
+                    onClick={() =>
+                      handleSharedProjectsTabChange("SharedProjects")
+                    }
                   >
                     <span>
                       <Users className="SmallerIcon" />

@@ -107,6 +107,23 @@
   border-radius: 4px;
 }
 
+.InfoBackBtn{
+  border: none;
+  outline: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.3rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  margin-right: .5rem;
+  transition: ease-in;
+}
+
+.InfoBackBtn:hover{
+  transform: scale(1.2);
+}
+
 @media (max-width: 650px) {
   
   .SearchInput input{
