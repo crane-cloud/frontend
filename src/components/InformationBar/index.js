@@ -9,6 +9,7 @@ import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg
 import "./InformationBar.css";
 import { ReactComponent as User } from "../../assets/images/user.svg";
 import { ReactComponent as Users } from "../../assets/images/users.svg";
+import useMedia from "../../hooks/mediaquery";
 const InformationBar = ({
   header,
   buttontext,
@@ -30,7 +31,7 @@ const InformationBar = ({
   myProjectsList = [],
   sharedProjectsList = [],
   onFilterSelect,
-  viewFilter = "False",
+  viewFilter = false,
 }) => {
   //const [selectedTab, setSelectedTab] = useState("MyProjects");
   const [Searchword, setSearchword] = useState("");
@@ -40,6 +41,7 @@ const InformationBar = ({
     searchAction(value);
   };
   const history = useHistory();
+  const isDesktop = useMedia();
   const goToBackPage = () => {
     history.goBack();
   };
@@ -67,7 +69,7 @@ const InformationBar = ({
           <div className="InformationBarWithButton">
             <div className="InfoHeader">
               {header}
-              {viewFilter && (
+              {(viewFilter && isDesktop)  && (
                 <div className="InfoProjectCategories">
                   <button
                     className={
@@ -161,6 +163,41 @@ const InformationBar = ({
               </div>
             </div>
           </div>
+          {(viewFilter && !isDesktop) && (
+            <div className="MobileInfoProjectCategories">
+              <button
+                className={
+                  selectedProjects === "My projects"
+                    ? "InfoCurrentTab"
+                    : "InfoTab"
+                }
+                onClick={() => handleTabChange("MyProjects")}
+              >
+                <User className="SmallerIcon" />
+                <span>
+                  MyProjects{" "}
+                  <span title="Projects">{`(${myProjectsList.length})`}</span>
+                </span>
+              </button>
+              <button
+                className={
+                  selectedProjects === "Shared Projects"
+                    ? "InfoCurrentTab"
+                    : "InfoTab"
+                }
+                onClick={() => handleSharedProjectsTabChange("SharedProjects")}
+              >
+                <span>
+                  <Users className="SmallerIcon" />
+                </span>
+                <span>
+                  {" "}
+                  Shared Projects{" "}
+                  <span title="Projects">{`(${sharedProjectsList.length})`}</span>{" "}
+                </span>
+              </button>
+            </div>
+          )}
         </div>
       ) : showBtn ? (
         <div className="InformationBarWithButton">

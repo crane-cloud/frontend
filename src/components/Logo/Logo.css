@@ -5,7 +5,9 @@
   align-items: center;
 }
 
-.LogoWrapper {
+.LogoWrapper ,
+.homeLogoWrapper
+{
   display: flex;
 }
 
@@ -22,4 +24,18 @@
   color: #fff;
   font-weight: 600;
   font-size: 1.5rem;
+}
+
+@media (max-width: 650px) {
+
+  .LogoType{
+    font-size: 16px;
+  }
+  .Logo {
+    grid-gap: .6rem;
+  }
+  .LogoWrapper {
+    position: relative;
+    left: 30%;
+  }
 }

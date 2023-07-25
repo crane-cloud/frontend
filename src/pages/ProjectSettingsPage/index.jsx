@@ -747,7 +747,7 @@ class ProjectSettingsPage extends React.Component {
                       <div>Project has {projectUsers?.length} Team Members</div>
                     )}
                   </div>
-                  <div className="SubText">
+                  <div className="SubText" style={{maxWidth:'90%'}}>
                     Members that have accounts on crane cloud can perform
                     different operations on the project depending on their
                     permission.

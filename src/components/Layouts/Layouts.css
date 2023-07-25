@@ -56,6 +56,9 @@
     .DashboardMainSection {
         grid-template-columns: 0 1fr;
     }
+    .DashboardMainContentSection {
+        grid-template-rows: 100px 4fr;
+    }
 }
 @media (max-width: 580px) {
     .DashboardSmallContainer {

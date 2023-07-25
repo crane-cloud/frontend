@@ -294,6 +294,7 @@ class UserProjectsPage extends React.Component {
                 selectedProjects={selectedProjects}
                 myProjectsList={myProjectsList}
                 sharedProjectsList={sharedProjectsList}
+                viewFilter={true}
                 placeholder="Search through projects"
                 btnAction={this.openProjectCreateComponent}
                 searchAction={this.handleCallbackSearchword}
