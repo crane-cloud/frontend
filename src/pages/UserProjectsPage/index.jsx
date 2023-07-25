@@ -287,6 +287,7 @@ class UserProjectsPage extends React.Component {
                 showBtn
                 buttontext="+ New Project"
                 showSearchBar
+                viewFilter={true}
                 handleTabChange={this.handleTabChange}
                 handleSharedProjectsTabChange={
                   this.handleSharedProjectsTabChange

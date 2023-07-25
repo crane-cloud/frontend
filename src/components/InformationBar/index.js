@@ -30,7 +30,7 @@ const InformationBar = ({
   myProjectsList = [],
   sharedProjectsList = [],
   onFilterSelect,
-  viewFilter = "False",
+  viewFilter,
 }) => {
   //const [selectedTab, setSelectedTab] = useState("MyProjects");
   const [Searchword, setSearchword] = useState("");
