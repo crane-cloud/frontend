@@ -35,6 +35,7 @@ class UserProjectsPage extends React.Component {
       invitationError: "",
       currentTab: "My Projects",
       currentPaginationPage: 1,
+      displayProjects: [],
     };
     this.state = this.initialState;
     this.openProjectCreateComponent =
@@ -53,6 +54,8 @@ class UserProjectsPage extends React.Component {
     this.handleTabChange = this.handleTabChange.bind(this);
     this.handleSharedProjectsTabChange =
       this.handleSharedProjectsTabChange.bind(this);
+    this.handleTabAll = this.handleTabAll.bind(this);
+    this.onFilterSelect = this.onFilterSelect.bind(this);
   }
   handleSharedProjectsTabChange() {
     this.setState({
@@ -67,6 +70,25 @@ class UserProjectsPage extends React.Component {
     });
   }
 
+
+  handleTabAll(selectedOption) {
+    const { myProjectsList, sharedProjectsList } = this.state;
+    let displayProjects;
+    if (selectedOption === "All") {
+      displayProjects = myProjectsList.concat(sharedProjectsList);
+    } else if (selectedOption === "My Projects") {
+      displayProjects = myProjectsList;
+    } else if (selectedOption === "Shared Projects") {
+      displayProjects = sharedProjectsList;
+    } else {
+      displayProjects = myProjectsList.concat(sharedProjectsList);
+    }
+    this.setState({
+      selectedProjects: selectedOption,
+      currentTab: selectedOption,
+      displayProjects: displayProjects,
+    });
+  }
   componentDidMount() {
     const { getClustersList, getUserProjects, data, getUserCredits } =
       this.props;
@@ -112,6 +134,16 @@ class UserProjectsPage extends React.Component {
     }
     if (Searchword !== prevState.Searchword) {
       this.searchThroughProjects();
+    }
+
+    if (isFetched && !prevProps.isFetched) {
+      const { myProjectsList, sharedProjectsList } = this.state;
+      const displayProjects = myProjectsList.concat(sharedProjectsList);
+      this.setState({
+        selectedProjects: "All",
+        currentTab: "All",
+        displayProjects: displayProjects,
+      });
     }
   }
 
@@ -241,6 +273,23 @@ class UserProjectsPage extends React.Component {
     });
     getUserProjects(page);
   }
+  /*onFilterSelect(selectedOption, displayProjects) {
+    this.setState({
+      selectedProjects: selectedOption,
+      displayProjects: displayProjects,
+    });
+  }*/
+  onFilterSelect(selectedOption) {
+    this.setState((prevState) => ({
+      selectedProjects: selectedOption,
+      displayProjects:
+        selectedOption === "All"
+          ? prevState.myProjectsList.concat(prevState.sharedProjectsList)
+          : selectedOption === "Shared Projects"
+          ? prevState.sharedProjectsList
+          : prevState.myProjectsList,
+    }));
+  }
 
   render() {
     const {
@@ -266,7 +315,12 @@ class UserProjectsPage extends React.Component {
       data,
     } = this.props;
     const displayProjects =
-      selectedProjects === "My projects" ? myProjectsList : sharedProjectsList;
+      selectedProjects === "All"
+        ? myProjectsList.concat(sharedProjectsList)
+        : selectedProjects === "Shared Projects"
+        ? sharedProjectsList
+        : myProjectsList;
+
     const sortedProjects = displayProjects.sort((a, b) =>
       b.date_created > a.date_created ? 1 : -1
     );
@@ -287,10 +341,6 @@ class UserProjectsPage extends React.Component {
                 showBtn
                 buttontext="+ New Project"
                 showSearchBar
-                handleTabChange={this.handleTabChange}
-                handleSharedProjectsTabChange={
-                  this.handleSharedProjectsTabChange
-                }
                 selectedProjects={selectedProjects}
                 myProjectsList={myProjectsList}
                 sharedProjectsList={sharedProjectsList}
@@ -298,6 +348,8 @@ class UserProjectsPage extends React.Component {
                 btnAction={this.openProjectCreateComponent}
                 searchAction={this.handleCallbackSearchword}
                 adminRoute={adminCheck}
+                onFilterSelect={this.onFilterSelect}
+                viewFilter
               />
             </div>
             <div className={styles.MainRow}>

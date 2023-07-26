@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-//import RoundAddButton from "../RoundAddButton";
 import AppStatus from "../AppStatus";
 import PrimaryButton from "../PrimaryButton";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 import "./InformationBar.css";
-import { ReactComponent as User } from "../../assets/images/user.svg";
-import { ReactComponent as Users } from "../../assets/images/users.svg";
 const InformationBar = ({
   header,
   buttontext,
@@ -24,20 +21,32 @@ const InformationBar = ({
   adminRoute,
   adminProjects,
   showBackBtn = false,
-  selectedProjects,
-  handleTabChange,
-  handleSharedProjectsTabChange,
   myProjectsList = [],
   sharedProjectsList = [],
   onFilterSelect,
-  viewFilter = "False",
+  viewFilter = false,
 }) => {
-  //const [selectedTab, setSelectedTab] = useState("MyProjects");
   const [Searchword, setSearchword] = useState("");
   const callbackSearchWord = ({ target }) => {
     const { value } = target;
     setSearchword(value);
     searchAction(value);
+  };
+  const [selectedOption, setSelectedOption] = useState("All");
+  const allProjects = myProjectsList.concat(sharedProjectsList);
+  console.log(viewFilter, typeof viewFilter);
+  const handleDropdownChange = (event) => {
+    const selectedOption = event.target.value;
+    let displayProjects;
+    if (selectedOption === "My Projects") {
+      displayProjects = myProjectsList;
+    } else if (selectedOption === "Shared Projects") {
+      displayProjects = sharedProjectsList;
+    } else {
+      displayProjects = allProjects;
+    }
+    setSelectedOption(selectedOption);
+    onFilterSelect(selectedOption, displayProjects);
   };
   const history = useHistory();
   const goToBackPage = () => {
@@ -69,39 +78,19 @@ const InformationBar = ({
               {header}
               {viewFilter && (
                 <div className="InfoProjectCategories">
-                  <button
-                    className={
-                      selectedProjects === "My projects"
-                        ? "InfoCurrentTab"
-                        : "InfoTab"
-                    }
-                    onClick={() => handleTabChange("MyProjects")}
+                  <select
+                    className="InfoFilterOption"
+                    value={selectedOption}
+                    onChange={handleDropdownChange}
                   >
-                    <User className="SmallerIcon" />
-                    <span>
-                      MyProjects{" "}
-                      <span title="Projects">{`(${myProjectsList.length})`}</span>
-                    </span>
-                  </button>
-                  <button
-                    className={
-                      selectedProjects === "Shared Projects"
-                        ? "InfoCurrentTab"
-                        : "InfoTab"
-                    }
-                    onClick={() =>
-                      handleSharedProjectsTabChange("SharedProjects")
-                    }
-                  >
-                    <span>
-                      <Users className="SmallerIcon" />
-                    </span>
-                    <span>
-                      {" "}
-                      Shared Projects{" "}
-                      <span title="Projects">{`(${sharedProjectsList.length})`}</span>{" "}
-                    </span>
-                  </button>
+                    <option value="My Projects">
+                      My Projects ({myProjectsList.length})
+                    </option>
+                    <option value="Shared Projects">
+                      Shared Projects ({sharedProjectsList.length})
+                    </option>
+                    <option value="All">All ({allProjects.length})</option>
+                  </select>
                 </div>
               )}
             </div>
