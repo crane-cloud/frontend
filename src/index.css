@@ -416,13 +416,12 @@ tr.TableLoading td {
 }
 
 .ErrorWhite {
-  color: rgb(0, 0, 0, 0.8);
-  background-color: rgb(214, 59, 59, 0.5);
+  color: #fff;
+  background-color: #dc3545;
   text-align: center;
-  padding: 0.7rem 0;
+  padding: 0.7rem;
   border-radius: 0.4rem;
   border: 1px solid #ff0000;
-  color: #310303;
 }
 
 .SuccessOnWhite {
