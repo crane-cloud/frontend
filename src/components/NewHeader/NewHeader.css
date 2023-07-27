@@ -6,6 +6,14 @@ header.NewHeader {
   padding: 0.6rem 3rem;
 }
 
+.DownArrowWrapper:hover {
+  cursor: pointer;
+}
+
+.UpArrowWrapper:hover {
+  cursor: pointer;
+}
+
 .HeaderLink {
   display: grid;
   grid-auto-flow: column;
@@ -25,9 +33,11 @@ header.NewHeader {
 .HeaderLink .active {
   background-color: var(--secondary-color);
 }
+
 .LogoLink:focus {
   outline: none;
 }
+
 .LogoLink::-moz-focus-inner {
   border: 0;
 }
@@ -51,6 +61,7 @@ div.DropDownGrid {
   display: flex;
   flex-direction: column;
 }
+
 .HeaderLinksWrap {
   display: flex;
 }
@@ -75,12 +86,18 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   color: #000;
   cursor: default;
   text-transform: capitalize;
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Old versions of Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
                                     supported by Chrome, Edge, Opera and Firefox */
 }
 
@@ -91,12 +108,18 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   flex-direction: column;
   z-index: 10px;
   box-shadow: 0 4px 4px 0 rgba(117, 117, 117, 0.2);
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Old versions of Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
                                     supported by Chrome, Edge, Opera and Firefox */
 }
 
@@ -107,7 +130,8 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
 
 .DropDownLink:hover,
 .DropDownLink:active {
-  background-color: var( --gray-bg-light-color);
+  background-color: var(--gray-bg-light-color);
+  cursor: pointer;
 }
 
 .DropDownLink,
@@ -115,18 +139,21 @@ div.HeaderLinksWrap.LoggedIn .BelowHeader {
   color: #000;
   text-decoration: none;
 }
+
 .HeaderLinkBack:hover {
   background-color: var(--secondary-color);
 }
+
 a.HeaderLinkDocs {
   color: #000;
   border-radius: 10px;
 }
+
 a.HeaderLinkDocs:hover {
   background-color: var(--secondary-color);
 }
 
-.Headerarrow{
+.Headerarrow {
   display: flex;
   height: 4rem;
   width: 4rem;
@@ -136,24 +163,63 @@ a.HeaderLinkDocs:hover {
   justify-content: center;
 
 }
-.HeaderDropdown{
+
+.HeaderDropdown {
   position: absolute;
-  top: 3rem;
-  right: 0rem;
+  top: 2rem;
+  right: 0.5rem;
 }
-.HeaderDropItems{
+
+.HeaderDropdown .HeaderDropLinkOption {
+  padding: 0 2rem 0 2rem;
+  line-height: 2.5rem;
+  height: 2.5rem;
+  color: #000000
+}
+
+.HeaderDropdown .HeaderDropLinkOption:hover {
+  background-color: var(--primary-color);
+  cursor: pointer;
+  color: #ffffff;
+}
+
+.HeaderDropItems {
   display: flex;
   border: #000;
   flex-direction: column;
 }
-.HeaderDropLinks{
+
+.HeaderDropLinks {
   display: flex;
   background-color: #fff;
   width: 7rem;
   flex-direction: column;
-  border: #000 solid 1px;
+  border-radius: 0.3rem;
+  border: 1px solid #8e8e8e;
+  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
-.HeaderDropLinkDocs{
+
+.HeaderDropLinks .HeaderDropLinkOption {
+  position: relative;
+  padding: 0 1rem 0 1rem;
+}
+
+.HeaderDropLinks .HeaderDropLinkOption::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #ccc;
+}
+
+.HeaderDropLinks .HeaderDropLinkOption:last-child::after {
+  display: none;
+}
+
+.HeaderDropLinkDocs {
   text-align: end;
   padding-right: 2rem;
   padding-top: .5rem;
@@ -162,10 +228,13 @@ a.HeaderLinkDocs:hover {
   border-bottom: #000 solid 1px;
 
 }
+
 .HeaderDropLinkDocs:hover {
   background-color: var(--secondary-color);
 }
+
 @media only screen and (max-width: 640px) {
+
   .HeaderLinkPricing,
   .HeaderLinkDocs {
     display: none;
