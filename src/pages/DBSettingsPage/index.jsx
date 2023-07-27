@@ -35,6 +35,7 @@ class DBSettingsPage extends React.Component {
       userChecked: false,
       hostChecked: false,
       uriChecked: false,
+      newUriChecked: false,
       passwordChecked: false,
       openUpdateModal: false,
       newDatabasePassword: "",
@@ -72,6 +73,7 @@ class DBSettingsPage extends React.Component {
     this.userOnClick = this.userOnClick.bind(this);
     this.hostOnClick = this.hostOnClick.bind(this);
     this.uriOnClick = this.uriOnClick.bind(this);
+    this.uriCopyPostgresOnClickString = this.uriCopyPostgresOnClickString.bind(this);
     this.uriCopyPostgresOnClick = this.uriCopyPostgresOnClick.bind(this);
     this.passwordOnClick = this.passwordOnClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -197,6 +199,15 @@ class DBSettingsPage extends React.Component {
       `${`mysql -u ${currentDB.user} -p -P ${currentDB.port} -h ${currentDB.host} -D ${currentDB.name}`}`
     );
     this.setState({ uriChecked: true });
+  }
+
+  uriCopyPostgresOnClickString() {
+    const {currentDB } = this.state;
+    navigator.clipboard.writeText(
+      `postgresql://${currentDB.user}:${currentDB.password}@${currentDB.host}:${currentDB.port}/${currentDB.name}`
+      // `postgresql://${currentDB?.user}:${currentDB?.password}@${currentDB?.host}:${currentDB?.port}/${currentDB?.name}`
+    );
+    this.setState({ newUriChecked: true });
   }
 
   uriCopyPostgresOnClick() {
@@ -342,6 +353,7 @@ class DBSettingsPage extends React.Component {
       hostChecked,
       userChecked,
       uriChecked,
+      newUriChecked,
       passwordChecked,
       openUpdateModal,
       newDatabasePassword,
@@ -360,7 +372,7 @@ class DBSettingsPage extends React.Component {
     return (
       <DashboardLayout
         header={<><Link className="breadcrumb" 
-        to={`/projects/${projectID}/databases/`}>Databases</Link><span> / DB settings</span></>}
+        to={`/projects/${projectID}/databases/`}>Databases</Link><span>/ DB settings</span></>}
         name={getProjectName(projects, projectID)}
         short
       >
@@ -553,8 +565,8 @@ class DBSettingsPage extends React.Component {
                       </code>
                       <div className="DBAccessCopy">
                         <div className="DBPassword">
-                          <CopyText onClick={this.uriCopyPostgresOnClick} />
-                          {uriChecked ? <Checked /> : null}
+                          <CopyText onClick={this.uriCopyPostgresOnClickString} />
+                          {newUriChecked ? <Checked /> : null}
                         </div>
                       </div>
                     </div>
