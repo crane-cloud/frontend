@@ -159,12 +159,12 @@ const UserAccounts = () => {
           <div className="InformationBarSection">
             <InformationBar
               header={
-                <>
+                <span>
                   <Link className="breadcrumb" to={`/accounts`}>
                     Overview
                   </Link>
-                  <span> / Users Listing</span>
-                </>
+                  / Users Listing
+                </span>
               }
               showBtn={false}
             />
