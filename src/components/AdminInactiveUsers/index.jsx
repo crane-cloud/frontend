@@ -1,126 +1,77 @@
-import React, { useState, useEffect } from "react";
-import { handleGetRequest } from "../../apis/apis.js";
+import React, { useState } from "react";
 import Spinner from "../../components/Spinner";
 import { dateInWords } from "../../helpers/dateConstants";
-import DateInput from "../../components/DateInput";
-import styles from "./AdminInactiveUsers.css";
-import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
+import { retrieveDefaultDateRanges } from "../../helpers/dateRanges.js";
+import "./AdminInactiveUsers.css";
 import PrimaryButton from "../PrimaryButton";
+import Select from "../Select";
+import usePaginator from "../../hooks/usePaginator";
+import Pagination from "../../components/Pagination";
+import { useSelector, useDispatch } from "react-redux";
+import adminGetInactiveUsers from "../../redux/actions/getInactiveUsers.js";
+import { useCallback } from "react";
+import { useEffect } from "react";
+import { compareLastSeen } from "../../helpers/compareLastSeen";
+import BlackInputText from "../BlackInputText";
 
 const AdminInactiveUsers = () => {
-  const baseLink = "/users/inactive_users?";
-  const [loading, setLoading] = useState(false);
-  const [feedback, setFeedback] = useState("");
-  const [queryParams, setQueryParams] = useState("");
-  const [inactiveUsers, setInactiveUsers] = useState([]);
+  const dispatch = useDispatch();
+  const [selectedDateRange, setSelectedDateRange] = useState("7");
+  const [customDateRange, setCustomDateRange] = useState("");
+  const [customDateRangePage, setCustomDateRangePage] = useState(1);
+  const [currentPage, handleChangePage] = usePaginator();
+  const defaultDateRanges = retrieveDefaultDateRanges();
 
-  const [showToCalendar, setShowToCalendar] = useState(false);
-  const [showFromCalendar, setShowFromCalendar] = useState(false);
-  const [toTS, setToTS] = useState("none");
-  const [fromTS, setFromTS] = useState("none");
-
-  const range = 30;
-
-  useEffect(() => {
-    getInactiveUsers(`${baseLink}range=${range}`);
-  }, []);
+  const inactiveUsersList = useCallback(
+    () => dispatch(adminGetInactiveUsers(currentPage, selectedDateRange)),
+    [dispatch, currentPage, selectedDateRange]
+  );
 
   useEffect(() => {
-    if (queryParams !== "" && toTS !== "none") {
-      getInactiveUsers(`${baseLink}${queryParams}`);
-    }
-  }, [queryParams, toTS]);
+    inactiveUsersList();
+  }, [inactiveUsersList]);
 
-  const getInactiveUsers = async (link) => {
-    console.log(link);
-    setLoading(true);
-    try {
-      const response = await handleGetRequest(link);
-      if (response.data.data.users.length > 0) {
-        setInactiveUsers(response.data.data.users);
-        setLoading(false);
-      }
-    } catch (error) {
-      setLoading(false);
-      setFeedback("No active users found, please try again");
-    }
-  };
+  const {
+    inactiveUsers,
+    pagination,
+    isFetchingInactiveUsers,
+    inactiveUsersFetched,
+  } = useSelector((state) => state.adminGetInactiveUsersReducer);
 
-  const handleFromDate = (fromTS) => {
-    const date = new Date(fromTS);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const formattedDate = `${year}-${month}-${day}`;
-    setFromTS(formattedDate);
-    console.log(setFromTS(formattedDate));
-  };
-  const handleToDate = (toTS) => {
-    const date = new Date(toTS);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const formattedDate = `${year}-${month}-${day}`;
-    setToTS(formattedDate);
-    console.log(formattedDate);
-  };
-  const switchCalendars = ({ target }) => {
-    const calendar = target.getAttribute("value");
+  useEffect(() => {
+    dispatch(adminGetInactiveUsers(currentPage));
+  }, [currentPage, dispatch]);
 
-    if (calendar === "from" && !showFromCalendar) {
-      setShowFromCalendar(true);
-      setShowToCalendar(false);
-    }
-
-    if (calendar === "to" && !showToCalendar) {
-      setShowToCalendar(true);
-      setShowFromCalendar(false);
-    }
-  };
-  const closeCalendar = () => {
-    if (showToCalendar) {
-      setToTS("none");
-      setShowToCalendar(false);
-      if (queryParams.includes("&end=")) {
-        setQueryParams(queryParams.replace(/&end=.+?(&|$)/, ""));
-      } else if (queryParams.includes("end=")) {
-        setQueryParams(queryParams.replace(/end=.+?(&|$)/, ""));
-      }
-    }
-    if (showFromCalendar) {
-      setFromTS("none");
-      setShowFromCalendar(false);
-      if (queryParams.includes("&start=")) {
-        setQueryParams(queryParams.replace(/&start=.+?(&|$)/, ""));
-      } else if (queryParams.includes("start=")) {
-        setQueryParams(queryParams.replace(/start=.+?(&|$)/, ""));
-      }
-    }
-  };
-  const handleCalenderSubmission = () => {
-    //add to link
-    if (toTS !== "none") {
-      if (queryParams === "") {
-        setQueryParams(`end=${toTS}`);
-      } else {
-        setQueryParams(`${queryParams}&end=${toTS}`);
-      }
-    }
-    if (fromTS !== "none") {
-      if (queryParams === "") {
-        setQueryParams(`start=${fromTS}`);
-      } else {
-        setQueryParams(`${queryParams}&start=${fromTS}`);
-      }
-    }
-    closeCalendar();
+  const handlePageChange = (currentPage) => {
+    handleChangePage(currentPage);
+    inactiveUsersList();
   };
 
   const handleReload = () => {
-    getInactiveUsers(`${baseLink}range=${range}`);
+    inactiveUsersList();
   };
 
-  console.log(inactiveUsers);
+  const handleDateRangeChange = (selectedOption) => {
+    const selectedValue = selectedOption.value;
+    setSelectedDateRange(selectedValue);
+
+    if (selectedValue !== "custom") {
+      setCustomDateRange("");
+      setCustomDateRangePage(1);
+    }
+  };
+
+  const handleApplyCustomDateRange = () => {
+    dispatch(adminGetInactiveUsers(currentPage, customDateRange));
+  };
+
+  const handleCustomDateRangePageChange = (currentPage) => {
+    setCustomDateRangePage(currentPage);
+    dispatch(adminGetInactiveUsers(currentPage, customDateRange));
+  };
+
+  // Sort the user list in descending order of "last_seen"
+  const sortedUserList = inactiveUsers.slice().sort(compareLastSeen);
 
   return (
     <>
@@ -133,59 +84,38 @@ const AdminInactiveUsers = () => {
         </div>
       </div>
 
-      {loading ? (
+      {isFetchingInactiveUsers ? (
         <div className="SpinnerArea">
           <Spinner />
         </div>
-      ) : feedback !== "" ? (
-        <div className="NoResourcesMessage">{feedback}</div>
-      ) : inactiveUsers.length === 0 ? (
+      ) : inactiveUsersFetched && inactiveUsers.length === 0 ? (
         <div className="NoResourcesMessage">No inactive users found.</div>
       ) : (
         <>
           <div className="TableHeader">
-            <div className="SearchArea">
-              <div className="SearchBar">
-                <div className="AdminSearchInput">
-                  <input
+            <div className="DateRangeSection">
+              <Select
+                placeholder="Choose Date Range"
+                options={defaultDateRanges}
+                onChange={(selectedOption) =>
+                  handleDateRangeChange(selectedOption)
+                }
+              />
+              {selectedDateRange === "custom" && (
+                <div className="CustomDateRangeSection">
+                  <BlackInputText
                     type="text"
-                    className="searchTerm"
-                    name="Searchword"
-                    placeholder="Search for account"
+                    value={customDateRange}
+                    onChange={(e) => setCustomDateRange(e.target.value)}
+                    placeholder="Enter custom date range"
                   />
-                  <SearchButton className="SearchIcon" />
+                  <div className="DateRangeButton">
+                    <PrimaryButton onClick={handleApplyCustomDateRange}>
+                      Apply
+                    </PrimaryButton>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div className="CalendarSection">
-              <div className="OuterFilterItem">
-                <div className="DateItem">
-                  <div>From:</div>
-                  <DateInput
-                    handleChange={handleFromDate}
-                    showCalendar={showFromCalendar}
-                    className={styles.dateField}
-                    position={styles.CalenderFromposition}
-                    onClick={switchCalendars}
-                    onCancel={closeCalendar}
-                    onSubmit={handleCalenderSubmission}
-                    value="from"
-                  />
-                </div>
-                <div className="DateItem">
-                  <div>To:</div>
-                  <DateInput
-                    handleChange={handleToDate}
-                    showCalendar={showToCalendar}
-                    className={styles.dateField}
-                    position={styles.CalenderToposition}
-                    onClick={switchCalendars}
-                    onCancel={closeCalendar}
-                    onSubmit={handleCalenderSubmission}
-                    value="to"
-                  />
-                </div>
-              </div>
+              )}
             </div>
           </div>
 
@@ -200,17 +130,35 @@ const AdminInactiveUsers = () => {
                 </tr>
               </thead>
               <tbody>
-                {inactiveUsers.map((inactiveUser) => (
-                  <tr key={inactiveUser.id}>
-                    <td>{inactiveUser.name}</td>
-                    <td>{inactiveUser.email}</td>
-                    <td>{dateInWords(new Date(inactiveUser.date_created))}</td>
-                    <td>{dateInWords(new Date(inactiveUser.last_seen))}</td>
+                {sortedUserList?.map((user) => (
+                  <tr key={user?.id}>
+                    <td>{user?.name}</td>
+                    <td>{user?.email}</td>
+                    <td>{dateInWords(new Date(user?.date_created))}</td>
+                    <td>{dateInWords(new Date(user?.last_seen))}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          {pagination?.pages > 1 && selectedDateRange !== "custom" && (
+            <div className="AdminPaginationSection">
+              <Pagination
+                total={pagination.pages}
+                current={currentPage}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          )}
+          {pagination?.pages > 1 && selectedDateRange === "custom" && (
+            <div className="AdminPaginationSection">
+              <Pagination
+                total={pagination.pages}
+                current={customDateRangePage}
+                onPageChange={handleCustomDateRangePageChange}
+              />
+            </div>
+          )}
         </>
       )}
     </>
