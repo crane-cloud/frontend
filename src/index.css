@@ -284,9 +284,9 @@ tr.TableLoading {
 }
 
 tr.TableLoading td {
-  position: absolute;
+  position: relative;
   left: 50%;
-  top: 50%;
+  top: 4rem;
   transform: translate(-50%, -50%);
 }
 
@@ -534,7 +534,7 @@ tr.TableLoading td {
 .breadcrumb{
   color: var(--primary-color);
   transition: all;
-  text-decoration: underline;
+  text-decoration: none;
 }
 .breadcrumb:hover{
   font-size: 1.6rem;

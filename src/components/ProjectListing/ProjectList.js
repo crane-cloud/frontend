@@ -2,10 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import "./ProjectList.css";
 import InformationBar from "../../components/InformationBar";
 import Header from "../../components/Header";
-import SideNav from "../../components/SideNav";
-import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
 import getAdminProjectsList from "../../redux/actions/adminProjectsList";
-import getAdminProjects from "../../redux/actions/adminProjects";
 import getUsersList from "../../redux/actions/users";
 import Spinner from "../../components/Spinner";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,7 +15,6 @@ import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 
 const AdminProjectsList = () => {
   const [currentPage, handleChangePage] = usePaginator();
-  const clusterID = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
   const [word, setWord] = useState("");
 
@@ -26,37 +22,25 @@ const AdminProjectsList = () => {
     (state) => state.adminProjectsReducer
   );
 
-
   const AdminProjects = useCallback(
     (page, keyword='') => dispatch(getAdminProjectsList(page,keyword)),
     [dispatch]
     );
 
-    const getAdminProps = useCallback(
-      () => dispatch(getAdminProjects(clusterID, currentPage)),
-      [dispatch, clusterID, currentPage]
-    );
   const getUsersProps = useCallback(() => dispatch(getUsersList), [dispatch]);
  
-  // const adminProjects = useSelector((state) => state.adminProjectsReducer);
-  // const usersList = useSelector((state) => state.usersListReducer);
-  const [contextMenu, setContextMenu] = useState(false);
-  const [selectedProject, setSelectedProject] = useState("");
-  // const [addCredits, setAddCredits] = useState(false);
   const [users, setUsers] = useState([]);
 
   useEffect(()=>{
     AdminProjects(currentPage);
-    getAdminProps(currentPage);
-  },[AdminProjects,currentPage,getAdminProps]);
+  },[currentPage,AdminProjects]);
 
 
   useEffect(() => {
-    getAdminProps();
     getUsersProps();
     fetchUsersList();
     AdminProjects(currentPage);
-  }, [getAdminProps, getUsersProps,AdminProjects,currentPage]);
+  }, [getUsersProps,AdminProjects,currentPage]);
 
   const fetchUsersList = () => {
     handleGetRequest("/users")
@@ -111,23 +95,8 @@ const AdminProjectsList = () => {
     return userName;
   };
 
-  // const showModal = () => {
-  //   setAddCredits(true);
-  // };
-  // const hideModal = () => {
-  //   //setAddCredits(false);
-  //   setContextMenu(false);
-  // };
-
-  const showContextMenu = (id) => {
-    setContextMenu(true);
-    setSelectedProject(id);
-  };
-  const clusterName = localStorage.getItem("clusterName");
-
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);
-    getAdminProps();
     AdminProjects();
   };
 
@@ -136,16 +105,22 @@ const AdminProjectsList = () => {
       <div className="TopBarSection">
         <Header />
       </div>
-      <div className="MainSection">
-        <div className="SideBarSection">
-          <SideNav clusterName={clusterName} clusterId={clusterID} />
-        </div>
+      <div className="MainSection1">
         <div className="MainContentSection">
           <div className="InformationBarSection">
             <InformationBar
               header={
                 <>
-                  <span> Projects Listing</span>
+                  <span>
+                    <Link
+                      to={{ pathname: `/clusters` }}
+                      className="breadcrumb"
+                    >
+                      Dashboard
+                    </Link>
+                      / Projects Listing
+                  </span>
+                 
                 </>
               }
               showBtn={false}
@@ -181,13 +156,12 @@ const AdminProjectsList = () => {
                     <th>owner</th>
                     <th>description</th>
                     <th>status</th>
-                    <th>Actions</th>
                   </tr>
                 </thead>
                 {isRetrieving ? (
                   <tbody>
                     <tr className="TableLoading">
-                    <td className="TableTdSpinner">
+                      <td className="TableTdSpinner">
                         <div className="SpinnerWrapper">
                           <Spinner size="big" />
                         </div>
@@ -204,38 +178,11 @@ const AdminProjectsList = () => {
                             <td>{getUserName(project?.owner_id)}</td>
                             <td >{project?.description}</td>
                             <td>
-                              {/* optional chai */}
-                              <span className={project.disabled !== false ? "ProjectStatus":"ProjectStatusDisabled"}>
-                                {project.disabled !== false
+                              <span className={project?.disabled === false ? "ProjectStatus":"ProjectStatusDisabled"}>
+                                {project?.disabled === false
                                   ? "Active"
                                   : "Disabled"}
                               </span>
-                            </td>
-                            <td
-                              onClick={(e) => {
-                                showContextMenu(project.id);
-                              }}
-                            >
-                              <MoreIcon />
-
-                              {contextMenu && project.id === selectedProject && (
-                                <div className="BelowHeader bg-light">
-                                  <div className="context-menu">
-                                    <div
-                                      className="DropDownLink"
-                                      role="presentation"
-                                    >
-                                      <Link
-                                        to={{
-                                          pathname: `/projects/${selectedProject}/details`,
-                                        }}
-                                      >
-                                        View Project Details
-                                      </Link>
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
                             </td>
                         </tr>
                        ))
