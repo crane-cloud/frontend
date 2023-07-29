@@ -40,8 +40,8 @@
   gap: 1rem;
   position: absolute; /*relative */
   top: 3rem;
-  z-index: 3;
-  left: -.5rem;
+  /* z-index: 3; */
+  left: -.2rem;
   width: 21rem;
   border-radius: 10px;
   margin-top: 0.8rem;
