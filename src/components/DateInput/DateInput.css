@@ -16,6 +16,7 @@
   justify-content: center;
   text-transform: capitalize;
   align-items: center;
+  border-radius: 0.3rem;
 }
 
 .DateInputDisplay {
@@ -41,7 +42,7 @@
   position: absolute; /*relative */
   top: 3rem;
   /* z-index: 3; */
-  left: -.2rem;
+  left: 0rem;
   width: 21rem;
   border-radius: 10px;
   margin-top: 0.8rem;
