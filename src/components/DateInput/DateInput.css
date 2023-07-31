@@ -41,11 +41,11 @@
   gap: 1rem;
   position: absolute; /*relative */
   top: 3rem;
-  /* z-index: 3; */
-  left: 0rem;
-  width: 21rem;
+  z-index: 1;
+  left: 1rem;
+  width: 20rem;
   border-radius: 10px;
-  margin-top: 0.8rem;
+  /* margin-top: 0.8rem; */
 }
 
 .CalendarModalButtons {

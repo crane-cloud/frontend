@@ -81,13 +81,14 @@
 }
 
 .FilterDropdown {
-  width: 21rem;
-  right: 0;
+  width: 12.5rem;
+  right: 0.65rem;
+  height: 7rem;
   overflow-y: auto;
   position: absolute;
-  top: 3px;
+  top: 1.5rem;
   transition: all;
-  z-index: 5;
+  z-index: 1;
   overflow-x: hidden;
   /* max-height: 23rem; */
   overflow: visible;
@@ -107,8 +108,8 @@
 }
 
 .FilterItemContainer {
-  width: 21rem;
-  font-size: 15px;
+  width: 12rem;
+  font-size: 12px;
   font-weight: 500;
   border-bottom: 1px solid #ccc;
 }
@@ -143,9 +144,9 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: 29px;
-  padding: 2px 3px 2px 5px;
-  margin-top: 3px;
+  height: 20px;
+  padding: 1px 1px 0 3px;
+  /* margin-top: 3px; */
   border-radius: 9px;
   border: 2px solid #000000;
 }
@@ -270,6 +271,7 @@
   display: flex;
   justify-content: center;
   width: 100%;
+
 }
 
 .OuterFilterItem {
@@ -278,4 +280,5 @@
   border-radius: 9px;
   height: 40px;
   width: 100%;
+  z-index: 1;
 }
