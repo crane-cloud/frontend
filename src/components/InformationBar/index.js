@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import AppStatus from "../AppStatus";
 import PrimaryButton from "../PrimaryButton";
+import Select from "../Select";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 import "./InformationBar.css";
+import { projectCategories } from "../../helpers/projectCategories";
 const InformationBar = ({
   header,
   buttontext,
@@ -32,26 +34,28 @@ const InformationBar = ({
     setSearchword(value);
     searchAction(value);
   };
-  const [selectedOption, setSelectedOption] = useState("All");
   const allProjects = myProjectsList.concat(sharedProjectsList);
-  console.log(viewFilter, typeof viewFilter);
-  const handleDropdownChange = (event) => {
-    const selectedOption = event.target.value;
+
+  const [selectedOption, setSelectedOption] = useState("All");
+
+  const handleDropdownChange = (selectedOption) => {
+    const selectedCategory = selectedOption.value;
     let displayProjects;
-    if (selectedOption === "My Projects") {
+    if (selectedCategory === "My Projects") {
       displayProjects = myProjectsList;
-    } else if (selectedOption === "Shared Projects") {
+    } else if (selectedCategory === "Shared Projects") {
       displayProjects = sharedProjectsList;
     } else {
       displayProjects = allProjects;
     }
-    setSelectedOption(selectedOption);
-    onFilterSelect(selectedOption, displayProjects);
+    setSelectedOption(selectedOption.value);
+    onFilterSelect(selectedOption.value, displayProjects);
   };
   const history = useHistory();
   const goToBackPage = () => {
     history.goBack();
   };
+  const availabeCategories = projectCategories();
   return (
     <div className="InformationBar SmallContainer">
       {showBackBtn && (
@@ -59,7 +63,6 @@ const InformationBar = ({
           <BackButton color="#000" />
         </button>
       )}
-
       {status ? (
         <div className="InformationBarWithButton">
           <div className="AppUrl">
@@ -78,19 +81,15 @@ const InformationBar = ({
               {header}
               {viewFilter && (
                 <div className="InfoProjectCategories">
-                  <select
+                  <Select
                     className="InfoFilterOption"
+                    placeholder={selectedOption}
                     value={selectedOption}
-                    onChange={handleDropdownChange}
-                  >
-                    <option value="My Projects">
-                      My Projects ({myProjectsList.length})
-                    </option>
-                    <option value="Shared Projects">
-                      Shared Projects ({sharedProjectsList.length})
-                    </option>
-                    <option value="All">All ({allProjects.length})</option>
-                  </select>
+                    options={availabeCategories}
+                    onChange={(selectedOption) =>
+                      handleDropdownChange(selectedOption)
+                    }
+                  />
                 </div>
               )}
             </div>
@@ -200,5 +199,4 @@ const InformationBar = ({
     </div>
   );
 };
-
 export default InformationBar;

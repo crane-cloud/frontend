@@ -77,7 +77,16 @@
 .InfoProjectCategories{
   display: flex;
   gap: 1rem;
+  font-weight: normal ;
+  font-size: 1.1rem;
+  width: 11rem;
+  padding: 0.5rem;
 }
+
+.InfoProjectCategories:hover{
+  cursor: pointer;
+}
+
 
 .InfoProjectCategories button{
   outline: none;
@@ -124,12 +133,11 @@
   transform: scale(1.2);
 }
 
-.InfoFilterOption{
-  font-size: 1rem;
-  padding: 0.2rem 0.5rem;
-  background-color:  transparent;
-}
 
+
+.selectOptions{
+  cursor: pointer;
+}
 
 @media (max-width: 650px) {
   

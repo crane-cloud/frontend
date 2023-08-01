@@ -132,22 +132,22 @@ const NewHeader = (props) => {
           {open && (
             <div className="HeaderDropdown">
               {(!token || token === "") && (
-                <div className="HeaderDropItems">
+                <div className="HeaderDropdown">
                   {match.path !== "/admin-login" && (
-                    <div className="HeaderDropLinks bold">
+                    <div className="HeaderDropLinks">
                       <a
                         href={`${DOCS_URL}`}
-                        className="HeaderDropLinkDocs"
+                        className="HeaderDropLinkOption"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
                         Docs
                       </a>
-                      
+
                       {/* <Link to="/pricing" className="HeaderDropLinkDocs">
                         Pricing
                       </Link> */}
-                      <Link to="/login" className="HeaderDropLinkDocs">
+                      <Link to="/login" className="HeaderDropLinkOption">
                         Login
                       </Link>
                     </div>
@@ -166,7 +166,7 @@ const NewHeader = (props) => {
                       <>
                         <a
                           href={`${DOCS_URL}`}
-                          className="HeaderDropLinkDocs"
+                          className="HeaderDropLinkOption"
                           rel="noopener noreferrer"
                           target="_blank"
                         >
@@ -175,7 +175,7 @@ const NewHeader = (props) => {
                         {/* <Link to="/pricing" className="HeaderDropLinkDocs">
                           Pricing
                         </Link> */}
-                        <Link to={`/projects`} className="HeaderDropLinkDocs">
+                        <Link to={`/projects`} className="HeaderDropLinkOption">
                           Dashboard
                         </Link>
                       </>
