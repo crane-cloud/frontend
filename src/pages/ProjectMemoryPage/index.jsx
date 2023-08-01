@@ -27,6 +27,8 @@ class ProjectMemoryPage extends React.Component {
         step: "",
       },
       period: "1d",
+      showErrorMessage: false,
+      dateError: "",
     };
 
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
@@ -87,6 +89,19 @@ class ProjectMemoryPage extends React.Component {
     } else if (period === "custom" && customTime !== null) {
       startTimeStamp = customTime.start;
       endTimeStamp = customTime.end;
+      const { start, end } = customTime;
+      if (end <= start) {
+        this.setState({
+          showErrorMessage: true,
+          dateError: "End date must be greater than start date.",
+        });
+        // return;
+      } else if (endTimeStamp > startTimeStamp) {
+        this.setState({
+          showErrorMessage: false,
+          dateError: "",
+        });
+      }
     } else {
       startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
     }
@@ -140,8 +155,15 @@ class ProjectMemoryPage extends React.Component {
         name={getProjectName(projects, projectID)}
       >
         <MetricsCard
-          className="MetricsCardGraph"
-          title={<PeriodSelector onChange={this.handlePeriodChange} />}
+         className="MetricsCardGraph"
+         title={
+           <div className="PeriodContainer">
+             <PeriodSelector onChange={this.handlePeriodChange} />
+             {period === "custom" && this.state.showErrorMessage && (
+               <div className="ErrorMessage"> {this.state.dateError}</div>
+             )}
+           </div>
+         }
         >
           {isFetchingMemory ? (
             <div className="ContentSectionSpinner">

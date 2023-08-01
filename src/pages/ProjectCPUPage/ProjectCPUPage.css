@@ -4,6 +4,18 @@
   margin-bottom: 2rem;
 }
 
+.PeriodContainer {
+  display: flex;
+  align-items: center;
+}
+
+.ErrorMessage {
+  /* margin-left: 15px;  */
+  color: red; 
+  font-size: 0.9rem;
+  margin-right: 15px;
+}
+
 @media (min-width:1366px) {
   .MetricsCardGraph {
     height: 32rem;
