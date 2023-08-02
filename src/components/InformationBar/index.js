@@ -55,7 +55,11 @@ const InformationBar = ({
   const goToBackPage = () => {
     history.goBack();
   };
-  const availabeCategories = projectCategories();
+  const availabeCategories = projectCategories(
+    allProjects,
+    myProjectsList,
+    sharedProjectsList
+  );
   return (
     <div className="InformationBar SmallContainer">
       {showBackBtn && (
