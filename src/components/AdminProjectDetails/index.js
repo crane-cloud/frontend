@@ -84,14 +84,14 @@ const AdminProjectLogs = () => {
           <div className="InformationBarSection">
             <InformationBar
               header={
-                <>
+                <span>
                   <Link
                     className="breadcrumb"
                     to={`/clusters/${clusterID}/projects`}
                   >
                     Overview
                   </Link>
-                  /
+                   /
                   <Link
                     className="breadcrumb"
                     to={`/clusters/${clusterID}/projects-listing`}
@@ -99,7 +99,7 @@ const AdminProjectLogs = () => {
                     Projects
                   </Link>
                   <span> / Details</span>
-                </>
+                </span>
               }
               showBtn={false}
             />

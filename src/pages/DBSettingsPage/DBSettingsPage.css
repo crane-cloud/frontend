@@ -94,6 +94,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer!important;
+  gap: 0.75rem;
 }
 
 .DeleteDatabaseModel {

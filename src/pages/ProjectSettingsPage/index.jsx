@@ -859,26 +859,27 @@ class ProjectSettingsPage extends React.Component {
                               {/* </div> */}
                             </div>
                           </div>
-
-                          <div className={styles.MemberTableCell}>
-                            <div className={styles.MemberRole}>
-                              <span>Role:</span>
-                              {entry.role}
+                          <div className={styles.MemberActionArea}>
+                            <div className={styles.MemberTableCell}>
+                              <div className={styles.MemberRole}>
+                                <span>Role:</span>
+                                {entry.role}
+                              </div>
                             </div>
-                          </div>
 
-                          <div className={styles.OptionButtons}>
-                            <Send
-                              className={styles.SendButton}
-                              title="Resend Invite"
-                            />
-                            <Bin
-                              className={styles.BinButton}
-                              onClick={() => {
-                                this.showRemoveMemberModal(entry.email);
-                              }}
-                              title="Delete Invite"
-                            />
+                            <div className={styles.OptionButtons}>
+                              <Send
+                                className={styles.SendButton}
+                                title="Resend Invite"
+                              />
+                              <Bin
+                                className={styles.BinButton}
+                                onClick={() => {
+                                  this.showRemoveMemberModal(entry.email);
+                                }}
+                                title="Delete Invite"
+                              />
+                            </div>
                           </div>
                         </div>
                       ))}

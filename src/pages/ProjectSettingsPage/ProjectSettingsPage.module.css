@@ -330,7 +330,7 @@
   text-overflow: ellipsis;
   text-align: left;
   align-items: center;
-  width: 200px;
+  /* max-width: 300px; */
   white-space: nowrap;
 }
 
@@ -356,7 +356,15 @@
   padding: 0.8rem;
   margin: 0;
   background-color: white;
+  gap: 1rem;
+}
 
+.MemberActionArea{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 4rem;
+  align-items: center;
 }
 
 .MemberInfo {
@@ -405,10 +413,10 @@
 }
 
 .NameSecting {
-  display: grid;
+  display: flex;
   justify-content: flex-start;
-  grid-template-columns: 1fr 3fr;
   gap: .4rem;
+  align-items: center;
 }
 
 .MemberAvatar {
@@ -541,7 +549,7 @@
   padding: 1rem 0;
   text-align: center;
   grid-row: 0;
-
+  flex: 1;
 }
 
 /* .MemberTableCell div {
@@ -566,7 +574,7 @@
 
 .OptionButtons {
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .SendButton,

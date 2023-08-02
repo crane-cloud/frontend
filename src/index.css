@@ -19,6 +19,7 @@
   font-family: monaco;
   src: url("./assets/fonts/monaco.ttf") format("truetype");
 }
+
 html {
   --primary-color: #008ac1;
   --secondary-color: #f7b21f;
@@ -38,7 +39,7 @@ body {
   font-size: 1rem;
 }
 
-#root >div {
+#root>div {
   display: flex;
   flex-flow: column;
   min-height: 100vh;
@@ -63,9 +64,10 @@ button:focus {
   outline: none;
 }
 
-.FullWidth{
+.FullWidth {
   width: 100%;
 }
+
 .uppercase {
   text-transform: uppercase;
 }
@@ -115,7 +117,7 @@ input[type="password"] {
   box-sizing: border-box;
 }
 
-.Terms{
+.Terms {
   padding: 2rem;
   line-height: 18px;
 }
@@ -128,7 +130,8 @@ input[type="password"] {
 }
 
 .DashboardMainContainer {
-  margin-top: 80px; /* Height of the hedaer */
+  margin-top: 80px;
+  /* Height of the hedaer */
   display: flex;
   flex-direction: row;
 }
@@ -139,7 +142,7 @@ input[type="password"] {
 
 .DashboardContentWrap {
   flex: 1;
-  background: var( --gray-bg-light-color);
+  background: var(--gray-bg-light-color);
 }
 
 .FailedToRetrieveMsg {
@@ -164,6 +167,7 @@ input[type="password"] {
 .MobileView {
   display: none;
 }
+
 .DesktopView {
   display: block;
 }
@@ -172,6 +176,7 @@ input[type="password"] {
   .MobileView {
     display: block;
   }
+
   .DesktopView {
     display: none;
   }
@@ -180,7 +185,7 @@ input[type="password"] {
 /*- ////////////////////////////////// */
 
 /* ////////  FONT STYLING  ///////// */
-.SectionTitle{
+.SectionTitle {
   font-size: 1.3rem;
   font-weight: 500;
   color: var(--primary-dark-color);
@@ -189,32 +194,35 @@ input[type="password"] {
   border-bottom: 1px solid var(--gray-light-color);
 }
 
-.SubTitle{
+.SubTitle {
   font-size: 1.2rem;
   font-weight: 600;
   color: var(--primary-dark-color);
   margin: 0;
   padding: 0;
 }
-.SectionSubTitle{
+
+.SectionSubTitle {
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--primary-dark-color);
   margin: 0;
-  padding:0;
+  padding: 0;
 }
-.SubText{
+
+.SubText {
   font-size: 0.85rem;
   font-weight: 400;
   color: var(--primary-dark-color);
   margin: 0;
-  padding:0;
+  padding: 0;
 }
+
 /*- ///// TABLE STYLING ///////// */
 div.ResourcesTable {
   padding-top: 1rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 div.ResourcesTable.LoadingResourcesTable {
@@ -237,6 +245,7 @@ div.ResourcesTable.LoadingResourcesTable {
   width: 100%;
   height: 100%;
 }
+
 .ResourcesTable table th {
   padding: 1rem;
   text-align: left;
@@ -260,9 +269,11 @@ div.ResourcesTable.LoadingResourcesTable {
   text-align: left;
   font-weight: normal;
 }
+
 .ResourcesTable td {
   border: 1px solid #fff;
 }
+
 .ResourcesTable th {
   color: #fff;
   border: 1px solid white;
@@ -284,9 +295,9 @@ tr.TableLoading {
 }
 
 tr.TableLoading td {
-  position: absolute;
+  position: relative;
   left: 50%;
-  top: 50%;
+  top: 4rem;
   transform: translate(-50%, -50%);
 }
 
@@ -300,20 +311,24 @@ tr.TableLoading td {
   background-color: #d0e0f8;
   cursor: pointer;
 }
-.TableTdSpinner{
+
+.TableTdSpinner {
   border: none !important;
 }
-.ResourcesTable td{
+
+.ResourcesTable td {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 70px;
 }
+
 .ResourcesTable td:hover {
-    white-space: normal;
-    word-wrap: break-word;
-    overflow: visible;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow: visible;
 }
+
 /* remove outer borders */
 .ResourcesTable tr:first-child td {
   border-top: none;
@@ -330,6 +345,7 @@ tr.TableLoading td {
 .ResourcesTable td:last-child {
   border-right: none;
 }
+
 .ResourcesTable th:first-child {
   border-left: none;
 }
@@ -356,18 +372,20 @@ tr.TableLoading td {
 .MainPage {
   /* Divided into two rows */
   margin: 0;
-  background: var( --gray-bg-light-color);
+  background: var(--gray-bg-light-color);
   height: 100vh;
   display: grid;
   grid-template-rows: 80px 4fr !important;
   overflow-x: hidden;
 }
+
 .TopBarSection {
   background-color: black;
 }
+
 .MainSection {
   /* divided into two columns */
-  background-color: var( --gray-bg-light-color);
+  background-color: var(--gray-bg-light-color);
   display: grid;
   grid-template-columns: 1.3fr 6fr;
   overflow: hidden;
@@ -394,7 +412,7 @@ tr.TableLoading td {
   display: grid;
   grid-template-rows: 80px 4fr;
   overflow: auto;
-  
+
 }
 
 .ContentSection {
@@ -416,13 +434,12 @@ tr.TableLoading td {
 }
 
 .ErrorWhite {
-  color: rgb(0, 0, 0, 0.8);
-  background-color: rgb(214, 59, 59, 0.5);
+  color: #fff;
+  background-color: #dc3545;
   text-align: center;
-  padding: 0.7rem 0;
+  padding: 0.7rem;
   border-radius: 0.4rem;
   border: 1px solid #ff0000;
-  color: #310303;
 }
 
 .SuccessOnWhite {
@@ -439,22 +456,24 @@ tr.TableLoading td {
 
 /* //////////--- PAGE STYLES ---//////////// */
 
-.SmallContainer{
+.SmallContainer {
   padding-left: 2rem;
   padding-right: 2rem;
 }
 
-.ShortContainer{
+.ShortContainer {
   padding-left: 4rem;
   padding-right: 2rem;
   max-width: 80%;
 }
+
 @media (max-width: 750px) {
-  .SmallContainer{
+  .SmallContainer {
     padding-left: 1rem;
     padding-right: 1rem;
   }
-  .ShortContainer{
+
+  .ShortContainer {
     padding-left: 1rem;
     padding-right: 1rem;
   }
@@ -462,7 +481,7 @@ tr.TableLoading td {
 
 .Page {
   margin: 0;
-  background: var( --gray-bg-light-color);
+  background: var(--gray-bg-light-color);
   min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -482,27 +501,29 @@ tr.TableLoading td {
 .FooterRow {
   padding: 3rem;
 }
+
 @media(max-width: 650px) {
   .MainSection {
     /*one column required */
-  background-color: var( --gray-bg-light-color);
-  display: flex;
-  flex-shrink: 0;
-  width:100%;
+    background-color: var(--gray-bg-light-color);
+    display: flex;
+    flex-shrink: 0;
+    width: 100%;
   }
-  
+
   .MainContentSection {
-    background-color: var( --gray-bg-light-color);
+    background-color: var(--gray-bg-light-color);
     flex-direction: column;
     display: flex;
     flex-shrink: 0;
-    width:100%;
+    width: 100%;
   }
-  
+
   .Page {
     margin: 0;
-    background: var( --gray-bg-light-color);
+    background: var(--gray-bg-light-color);
   }
+
   .ContentSection {
     display: flex;
     padding-top: 2.5rem;
@@ -528,7 +549,7 @@ tr.TableLoading td {
 /* //////////////////////////////////////////// */
 /* ////////////---- CARDS ---- ///////////// */
 
-.Card{
+.Card {
   background-color: var(--white-color);
   border-radius: 0.5rem;
   box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.1);
@@ -538,18 +559,22 @@ tr.TableLoading td {
   border: 1px solid #e0e0e0;
   transition: .3s;
 }
-.Card:hover{
+
+.Card:hover {
   box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.2);
 }
-.breadcrumb{
+
+.breadcrumb {
   color: var(--primary-color);
   transition: all;
-  text-decoration: underline;
+  text-decoration: none;
 }
-.breadcrumb:hover{
+
+.breadcrumb:hover {
   font-size: 1.6rem;
 }
-.BigCard{
+
+.BigCard {
   padding: 1.2rem;
   background: #ffffff;
   border-radius: 15px;
@@ -558,11 +583,10 @@ tr.TableLoading td {
 }
 
 /* ////////////---- Pagination ---- ///////////// */
-.AdminPaginationSection{
+.AdminPaginationSection {
   margin-bottom: 1.5rem;
   margin-top: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-

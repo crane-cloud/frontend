@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-//import RoundAddButton from "../RoundAddButton";
 import AppStatus from "../AppStatus";
 import PrimaryButton from "../PrimaryButton";
+import Select from "../Select";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 import "./InformationBar.css";
-import { ReactComponent as User } from "../../assets/images/user.svg";
-import { ReactComponent as Users } from "../../assets/images/users.svg";
+// import { ReactComponent as User } from "../../assets/images/user.svg";
+// import { ReactComponent as Users } from "../../assets/images/users.svg";
 import useMedia from "../../hooks/mediaquery";
+import { projectCategories } from "../../helpers/projectCategories";
 const InformationBar = ({
   header,
   buttontext,
@@ -25,26 +26,40 @@ const InformationBar = ({
   adminRoute,
   adminProjects,
   showBackBtn = false,
-  selectedProjects,
-  handleTabChange,
-  handleSharedProjectsTabChange,
   myProjectsList = [],
   sharedProjectsList = [],
   onFilterSelect,
   viewFilter = false,
 }) => {
-  //const [selectedTab, setSelectedTab] = useState("MyProjects");
   const [Searchword, setSearchword] = useState("");
   const callbackSearchWord = ({ target }) => {
     const { value } = target;
     setSearchword(value);
     searchAction(value);
   };
+  const allProjects = myProjectsList.concat(sharedProjectsList);
+
+  const [selectedOption, setSelectedOption] = useState("All");
+
+  const handleDropdownChange = (selectedOption) => {
+    const selectedCategory = selectedOption.value;
+    let displayProjects;
+    if (selectedCategory === "My Projects") {
+      displayProjects = myProjectsList;
+    } else if (selectedCategory === "Shared Projects") {
+      displayProjects = sharedProjectsList;
+    } else {
+      displayProjects = allProjects;
+    }
+    setSelectedOption(selectedOption.value);
+    onFilterSelect(selectedOption.value, displayProjects);
+  };
   const history = useHistory();
   const isDesktop = useMedia();
   const goToBackPage = () => {
     history.goBack();
   };
+  const availabeCategories = projectCategories();
   return (
     <div className="InformationBar SmallContainer">
       {showBackBtn && (
@@ -52,7 +67,6 @@ const InformationBar = ({
           <BackButton color="#000" />
         </button>
       )}
-
       {status ? (
         <div className="InformationBarWithButton">
           <div className="AppUrl">
@@ -71,39 +85,15 @@ const InformationBar = ({
               {header}
               {(viewFilter && isDesktop)  && (
                 <div className="InfoProjectCategories">
-                  <button
-                    className={
-                      selectedProjects === "My projects"
-                        ? "InfoCurrentTab"
-                        : "InfoTab"
+                  <Select
+                    className="InfoFilterOption"
+                    placeholder={selectedOption}
+                    value={selectedOption}
+                    options={availabeCategories}
+                    onChange={(selectedOption) =>
+                      handleDropdownChange(selectedOption)
                     }
-                    onClick={() => handleTabChange("MyProjects")}
-                  >
-                    <User className="SmallerIcon" />
-                    <span>
-                      MyProjects{" "}
-                      <span title="Projects">{`(${myProjectsList.length})`}</span>
-                    </span>
-                  </button>
-                  <button
-                    className={
-                      selectedProjects === "Shared Projects"
-                        ? "InfoCurrentTab"
-                        : "InfoTab"
-                    }
-                    onClick={() =>
-                      handleSharedProjectsTabChange("SharedProjects")
-                    }
-                  >
-                    <span>
-                      <Users className="SmallerIcon" />
-                    </span>
-                    <span>
-                      {" "}
-                      Shared Projects{" "}
-                      <span title="Projects">{`(${sharedProjectsList.length})`}</span>{" "}
-                    </span>
-                  </button>
+                  />
                 </div>
               )}
             </div>
@@ -163,41 +153,20 @@ const InformationBar = ({
               </div>
             </div>
           </div>
-          {(viewFilter && !isDesktop) && (
-            <div className="MobileInfoProjectCategories">
-              <button
-                className={
-                  selectedProjects === "My projects"
-                    ? "InfoCurrentTab"
-                    : "InfoTab"
-                }
-                onClick={() => handleTabChange("MyProjects")}
-              >
-                <User className="SmallerIcon" />
-                <span>
-                  MyProjects{" "}
-                  <span title="Projects">{`(${myProjectsList.length})`}</span>
-                </span>
-              </button>
-              <button
-                className={
-                  selectedProjects === "Shared Projects"
-                    ? "InfoCurrentTab"
-                    : "InfoTab"
-                }
-                onClick={() => handleSharedProjectsTabChange("SharedProjects")}
-              >
-                <span>
-                  <Users className="SmallerIcon" />
-                </span>
-                <span>
-                  {" "}
-                  Shared Projects{" "}
-                  <span title="Projects">{`(${sharedProjectsList.length})`}</span>{" "}
-                </span>
-              </button>
-            </div>
-          )}
+          
+            {(viewFilter && !isDesktop)  && (
+                <div className="InfoProjectCategories">
+                  <Select
+                    className="InfoFilterOption"
+                    placeholder={selectedOption}
+                    value={selectedOption}
+                    options={availabeCategories}
+                    onChange={(selectedOption) =>
+                      handleDropdownChange(selectedOption)
+                    }
+                  />
+                </div>
+              )}
         </div>
       ) : showBtn ? (
         <div className="InformationBarWithButton">
@@ -248,5 +217,4 @@ const InformationBar = ({
     </div>
   );
 };
-
 export default InformationBar;

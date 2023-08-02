@@ -3,16 +3,12 @@ import "./AdminProjectsPage.css";
 import InformationBar from "../../components/InformationBar";
 import Header from "../../components/Header";
 import SideNav from "../../components/SideNav";
-
 import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
-
 import getAdminProjects from "../../redux/actions/adminProjects";
 import getAdminProjectsList from "../../redux/actions/adminProjectsList";
 import getUsersList from "../../redux/actions/users";
 import Spinner from "../../components/Spinner";
-// import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import "./AdminProjectsPage.css";
 import { Link } from "react-router-dom";
 import usePaginator from "../../hooks/usePaginator";
 import Pagination from "../../components/Pagination";
@@ -38,7 +34,7 @@ const AdminProjectsPage = () => {
 
 
   const getAdminProps = useCallback(
-    () => dispatch(getAdminProjects(clusterID, currentPage)),
+    (page, keyword='') => dispatch(getAdminProjects(clusterID, currentPage, page, keyword)),
     [dispatch, clusterID, currentPage]
   );
   const getUsersProps = useCallback(() => dispatch(getUsersList), [dispatch]);
@@ -53,14 +49,14 @@ const AdminProjectsPage = () => {
   useEffect(()=>{
     AdminProjects(currentPage);
     getAdminProps(currentPage);
-  },[AdminProjects,currentPage,getAdminProps]);
+  },[currentPage,getAdminProps,AdminProjects]);
 
   useEffect(() => {
-    getAdminProps();
+    getAdminProps(currentPage);
     getUsersProps();
     fetchUsersList();
     AdminProjects(currentPage);
-  }, [getAdminProps, getUsersProps, AdminProjects,currentPage]);
+  }, [getAdminProps, getUsersProps,currentPage,AdminProjects]);
 
   const fetchUsersList = () => {
     handleGetRequest("/users")
@@ -89,7 +85,7 @@ const AdminProjectsPage = () => {
 
   const searchThroughProjects = (keyword) => {
     handleChangePage(1);
-    AdminProjects(1, keyword);
+    AdminProjects(1,keyword);
   };
 
   const handleCallbackSearchword = ({ target }) => {
@@ -99,7 +95,6 @@ const AdminProjectsPage = () => {
       searchThroughProjects(value);
     }
     if (value === "") {
-      // setSearchProjectList([]);
       handleChangePage(1);
       AdminProjects(1);
     }
@@ -124,7 +119,6 @@ const AdminProjectsPage = () => {
 
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);
-    getAdminProps();
     AdminProjects();
   };
 
@@ -141,15 +135,15 @@ const AdminProjectsPage = () => {
           <div className="InformationBarSection">
             <InformationBar
               header={
-                <>
+                <span>
                   <Link
                     className="breadcrumb"
                     to={`/clusters/${clusterID}/projects`}
                   >
                     Overview
                   </Link>
-                  <span> / Projects Listing</span>
-                </>
+                  / Projects Listing
+                </span>
               }
               showBtn={false}
             />
@@ -207,9 +201,8 @@ const AdminProjectsPage = () => {
                             <td>{getUserName(project?.owner_id)}</td>
                             <td >{project?.description}</td>
                             <td>
-                              {/* optional chai */}
-                              <span className={project.disabled !== false ? "ProjectStatus":"ProjectStatusDisabled"}>
-                                {project.disabled !== false
+                              <span className={project?.disabled === false ? "ProjectStatus":"ProjectStatusDisabled"}>
+                                {project?.disabled === false
                                   ? "Active"
                                   : "Disabled"}
                               </span>

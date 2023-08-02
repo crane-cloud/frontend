@@ -30,4 +30,150 @@
     text-align: center;
     justify-content: center;
 }
-
+.MainSection1{
+    background-color: var( --gray-bg-light-color);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px,1fr));
+    overflow: hidden;
+    position: absolute;
+    place-items: center;
+    top: 4rem;
+    left: 0;
+    width: 100%;
+}
+@media (min-width : 768px),(max-width: 1280px){
+    span .breadcrumb{
+        font-size: 24px;
+    }
+    .InfoHeader {
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+        font-size: 24px;
+        gap: 10px;
+    }
+    .InformationBar {
+        background: #f8f7e5;
+        min-height: 4rem;
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+    .MainSection1{
+        background-color: var( --gray-bg-light-color);
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px,1fr));
+        overflow: hidden;
+        position: absolute;
+        place-items: center;
+        top: 4rem;
+        left: 0;
+        width: 100%;
+    }
+    .uppercase{
+        font-size: 20px;
+        text-transform: capitalize;
+        text-align: left;
+        font-weight: bolder;
+        position: relative;
+        width: 100%;
+    }
+    .ContentSection {
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: 100%;
+      }
+    .ResourcesTable table td {
+        padding: 0.8rem 1rem;
+        text-align: left;
+        font-weight: normal;
+        font-size: 18px;
+    }
+}
+@media (max-width: 412px){
+    span .breadcrumb{
+        font-size: 14px;
+    }
+    .InfoHeader {
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+        font-size: 14px;
+        gap: 5px;
+    }
+    .MainSection1{
+        background-color: var( --gray-bg-light-color);
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+        overflow: hidden;
+        position: absolute;
+        place-items: center;
+        top: 4rem;
+        left: 0;
+        width: 100%;
+    }
+    .ResourcesTable table th {
+        padding: 0.5rem 0.3rem;
+        text-align: left;
+    }
+    .uppercase{
+        font-size: 10px;
+        text-transform: capitalize;
+        text-align: left;
+        font-weight: bolder;
+    }
+    .ContentSection {
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding: 0.5rem;
+        height: calc(100vh - 4rem);
+      }
+    .ResourcesTable table td {
+        padding: 0.5rem 0.8rem;
+        text-align: left;
+        font-weight: normal;
+        font-size: 12px;
+    }
+    .AdminSearchInput {
+        display: flex;
+        flex-direction: row;
+        padding-left: 0.7rem;
+        align-items: center;
+        height: 2rem;
+        border-radius: 5px;
+        place-items: center;
+    }
+    .LogoType {
+        color: #fff;
+        font-weight: 600;
+        font-size: 1.2rem;
+    }
+    .Header_OnHeader__9Jr22 {
+        display: grid;
+        gap: 0.3rem;
+        grid-auto-flow: column;
+        align-items: center;
+        position: relative;
+        cursor: pointer;
+    }
+    .Header_UserNames__VEaft {
+        font-weight: bold;
+        color: #fff;
+        cursor: default;
+        text-transform: capitalize;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+        font-size: 12px;
+    }
+    .Logo {
+        display: grid;
+        grid-gap: 0.5rem;
+        grid-auto-flow: column;
+        align-items: center;
+    }
+}

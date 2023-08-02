@@ -940,11 +940,6 @@ class AppSettingsPage extends React.Component {
                       </PrimaryButton>
                     </div>
                   </div>
-                  {error && (
-                    <div className={styles.errorCenterDiv}>
-                      <Feedback type="error" message={error} />
-                    </div>
-                  )}
                 </div>
               </div>
 
@@ -1129,6 +1124,11 @@ class AppSettingsPage extends React.Component {
                       </PrimaryButton>
                     </div>
                   </div>
+                  {error && (
+                    <div className={styles.errorCenterDiv}>
+                      <Feedback type="error" message={error} />
+                    </div>
+                  )}
                   {Object.keys(envVars).length > 0 && (
                     <div className={styles.APPButton}>
                       <div className={styles.UpperSection}>

@@ -27,7 +27,6 @@ const getAdminProjectsList = (page , keyword) => async (dispatch) => {
   try {
     const response = await axios.get(
      `/projects?keywords=${keyword}&page=${page}`
-    // `projects?keywords=crane&page=1`
     );
     return dispatch(getAdminProjectsSuccess(response));
   } catch (error) {

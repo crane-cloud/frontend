@@ -1,6 +1,6 @@
 .TableHeader {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     padding: 1rem 1rem 0 0;
 }
 
@@ -26,64 +26,27 @@
     justify-items: center;
 }
 
-/* ////////////---- calendar styles ---- ///////////// */
-.DateSection {
-    padding: 2px 0px 2px 0px;
+.CalendarSection {
     display: flex;
-    flex-direction: row;
-    font-size: 15px;
+    gap: 2rem;
     justify-content: space-between;
-    align-items: center;
-    height: 25px;
-    gap: 0.5rem;
-    margin-top: 3px;
 }
 
-.DateItem {
+.DateRangeSection {
+    padding-right: 1rem;
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-.DateSection:hover {
+.DateRangeButton {
+    padding-top: 1rem;
+}
+
+.DateRangeSection:hover {
     cursor: pointer;
 }
 
-.CalenderToposition,
-.CalenderFromposition {
-    background-color: #ffffff;
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-    padding: 0.5rem;
-    display: grid;
-    gap: 1rem;
-    position: absolute;
-    z-index: 10;
-    left: 0.1rem;
-    width: 58%;
-}
-
-.dateField {
-    width: 7rem;
-}
-
-.OuterFilterItem {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    background-color: #fff;
-    width: 20rem;
-    height: 40px;
-    border-radius: 9px;
-    border: 1px solid #000000;
-}
-
-.CalendarSection {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding-top: 1rem;
-    position: relative;
-    float: right;
+.SelectElementValue {
+    gap: 1rem !important;
 }
