@@ -350,7 +350,6 @@ class UserProjectsPage extends React.Component {
                 searchAction={this.handleCallbackSearchword}
                 adminRoute={adminCheck}
                 onFilterSelect={this.onFilterSelect}
-                viewFilter
               />
             </div>
             <div className={styles.MainRow}>
