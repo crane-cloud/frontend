@@ -399,7 +399,7 @@ class UserProjectsPage extends React.Component {
                   </Modal>
                 </div>
               )}
-              {displayProjects.length === 0 && (
+              {displayProjects.length === 0 && isFetched && (
                 <div className={styles.NoResourcesMessage}>
                   {selectedProjects === "My projects" ? (
                     <>

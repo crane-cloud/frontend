@@ -1098,6 +1098,7 @@ class AppSettingsPage extends React.Component {
                     )}
                   </div>
                   <div className={styles.EnvInputItem}>
+                    <div className={styles.VarInputGroup}>
                     <input
                       placeholder="Name"
                       name="varName"
@@ -1117,6 +1118,7 @@ class AppSettingsPage extends React.Component {
                         this.handleChange(e);
                       }}
                     />
+                    </div>
                     <div className={styles.EnvVarsAddBtn}>
                       <PrimaryButton
                         onClick={this.addEnvVar}
