@@ -9,10 +9,10 @@ const Period = (props) => {
   const [showFromCalendar, setShowFromCalendar] = useState(true);
   const [showToCalendar, setShowToCalendar] = useState(false);
   const timeNow = new Date().getTime();
-const [toTimeStamp, setToTimeStamp] = useState(timeNow);
-const [fromTimeStamp, setFromTimeStamp] = useState(
+  const [toTimeStamp, setToTimeStamp] = useState(timeNow);
+  const [fromTimeStamp, setFromTimeStamp] = useState(
     timeNow - 24 * 60 * 60 * 1000
-); 
+  );
   const openModalRef = useRef(null);
 
   const switchCalendars = ({ target }) => {
