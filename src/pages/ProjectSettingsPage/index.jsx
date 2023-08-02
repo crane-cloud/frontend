@@ -849,10 +849,10 @@ class ProjectSettingsPage extends React.Component {
                         <div className={styles.MemberTableRow} key={index}>
                           <div className={styles.MemberTableCell}>
                             <div className={styles.NameSecting}>
-                              <Avatar
+                             { <Avatar
                                 name={entry.email}
                                 className={styles.MemberAvatar}
-                              />
+                              />}
                               {/* <div className={styles.MemberNameEmail}> */}
                               <div className={styles.Wrap}>{entry.email}</div>
 

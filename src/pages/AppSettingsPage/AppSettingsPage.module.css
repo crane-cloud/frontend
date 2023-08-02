@@ -427,7 +427,11 @@
   padding-bottom: 1rem;
 }
 
-.EnvInputItem {}
+.EnvInputItem {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
 
 .VarInputGroup {
   display: flex;
@@ -635,6 +639,7 @@ ul li {
     display: flex;
     flex-direction: column;
     padding: 1rem 1rem;
+    min-width: 25rem;
   }
 
   .EnvDataItem {
@@ -645,8 +650,9 @@ ul li {
   .ContentSection {
     padding-top: 2.5rem;
   }
-
-  .VarInputGroup {}
+  .varInput {
+    width: 10rem;
+  }
 
   .EnvInputItem {
     display: flex;

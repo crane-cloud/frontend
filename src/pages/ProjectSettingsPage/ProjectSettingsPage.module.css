@@ -635,5 +635,11 @@
     flex-direction: column-reverse;
     align-items: start;
   }
+  .MemberAvatar {
+    display: none;
+  }
+  .ProjectInstructions {
+     min-width: 44rem
+  }
 
 }

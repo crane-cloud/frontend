@@ -46,12 +46,14 @@
 
 @media only screen and (max-width: 900px) and (min-width: 481px) {
   .AppList {
+    padding-top: 3rem;
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media only screen and (max-width: 480px) {
   .AppList {
+    padding-top: 3rem;
     grid-template-columns: repeat(1, 1fr);
   }
 }
