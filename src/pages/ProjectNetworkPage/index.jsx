@@ -91,7 +91,7 @@ class ProjectNetworkPage extends React.Component {
       if (end <= start) {
         this.setState({
           showErrorMessage: true,
-          dateError: "end date must be greater than start date.",
+          dateError: "End date must be greater than start date.",
         });
       } else if (endTimeStamp > startTimeStamp) {
         this.setState({

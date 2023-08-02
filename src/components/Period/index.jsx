@@ -8,8 +8,11 @@ const Period = (props) => {
   const [period, setPeriod] = useState("1d");
   const [showFromCalendar, setShowFromCalendar] = useState(true);
   const [showToCalendar, setShowToCalendar] = useState(false);
-  const [toTimeStamp, setToTimeStamp] = useState(0);
-  const [fromTimeStamp, setFromTimeStamp] = useState(0);
+  const timeNow = new Date().getTime();
+const [toTimeStamp, setToTimeStamp] = useState(timeNow);
+const [fromTimeStamp, setFromTimeStamp] = useState(
+    timeNow - 24 * 60 * 60 * 1000
+); 
   const openModalRef = useRef(null);
 
   const switchCalendars = ({ target }) => {
