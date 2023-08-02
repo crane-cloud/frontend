@@ -156,3 +156,10 @@ li.ListStyle{
   display: flex;
   padding-left: 2rem;
 }
+@media(max-width: 650px) {
+
+  .FormsSection {
+    width: 90%;
+  }
+
+}
