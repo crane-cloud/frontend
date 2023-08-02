@@ -9,7 +9,7 @@
 .Page{
   display: flex;
   flex-flow: column;
-  max-height: 100vh;
+  height: 100vh;
   flex-direction: column;
   background-color: var(--gray-bg-light-color);
 }
@@ -415,7 +415,7 @@
 }
 .Page {
   min-width: 50rem;
-  height: 100vh;
+  height: 200vh;
 }
 
 }
