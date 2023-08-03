@@ -5,7 +5,9 @@
   align-items: center;
 }
 
-.LogoWrapper {
+.LogoWrapper ,
+.homeLogoWrapper
+{
   display: flex;
 }
 
@@ -32,6 +34,9 @@
   .LogoIcon {
     width: 1rem;
     height: auto;
+  }
+  .BrandLogoType{
+    font-size: 16px;
   }
 }
 

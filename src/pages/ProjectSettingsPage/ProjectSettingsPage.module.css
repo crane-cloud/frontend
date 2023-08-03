@@ -631,5 +631,15 @@
     font-size: inherit;
     padding: 1rem;
   }
+  .MembershipHeader {
+    flex-direction: column-reverse;
+    align-items: start;
+  }
+  .MemberAvatar {
+    display: none;
+  }
+  .ProjectInstructions {
+     min-width: 44rem
+  }
 
 }

@@ -6,17 +6,10 @@
   background: var(--gray-bg-light-color);
 }
 
-.Page {
-  display: flex;
-  flex-flow: column;
-  min-height: 100vh;
-  flex-direction: column;
-  background-color: var(--gray-bg-light-color);
-}
 .Page{
   display: flex;
   flex-flow: column;
-  min-height: 100vh;
+  height: 100vh;
   flex-direction: column;
   background-color: var(--gray-bg-light-color);
 }
@@ -387,3 +380,44 @@
   left: 0.1rem;
   width: 58%;
 }
+.LogsContainer{
+  padding: 1.2rem;
+  background: #ffffff;
+  border-radius: 15px;
+  border: 1px solid var(--gray-light-color);
+  height: fit-content;
+}
+
+@media(max-width: 650px) {
+.Header{
+  flex-direction: column;
+}
+.TableRow {
+  
+}
+.LogsContainer{
+  margin-top: 5rem;
+}
+.ActivityPageTitle {
+  font-size: 15px;
+  padding-top: 0.1rem;
+}
+.BackIconSize {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.DateSection {
+  padding: 2px 0px 2px 0px;
+  gap: .2rem;
+}
+.OuterFilterItem {
+  width: auto;
+}
+.Page {
+  min-width: 50rem;
+  height: 200vh;
+}
+
+}
+
+

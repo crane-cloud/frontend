@@ -7,6 +7,9 @@ import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 import "./InformationBar.css";
+// import { ReactComponent as User } from "../../assets/images/user.svg";
+// import { ReactComponent as Users } from "../../assets/images/users.svg";
+import useMedia from "../../hooks/mediaquery";
 import { projectCategories } from "../../helpers/projectCategories";
 const InformationBar = ({
   header,
@@ -52,6 +55,7 @@ const InformationBar = ({
     onFilterSelect(selectedOption.value, displayProjects);
   };
   const history = useHistory();
+  const isDesktop = useMedia();
   const goToBackPage = () => {
     history.goBack();
   };
@@ -79,7 +83,7 @@ const InformationBar = ({
           <div className="InformationBarWithButton">
             <div className="InfoHeader">
               {header}
-              {viewFilter && (
+              {(viewFilter && isDesktop)  && (
                 <div className="InfoProjectCategories">
                   <Select
                     className="InfoFilterOption"
@@ -149,6 +153,20 @@ const InformationBar = ({
               </div>
             </div>
           </div>
+          
+            {(viewFilter && !isDesktop)  && (
+                <div className="InfoProjectCategories">
+                  <Select
+                    className="InfoFilterOption"
+                    placeholder={selectedOption}
+                    value={selectedOption}
+                    options={availabeCategories}
+                    onChange={(selectedOption) =>
+                      handleDropdownChange(selectedOption)
+                    }
+                  />
+                </div>
+              )}
         </div>
       ) : showBtn ? (
         <div className="InformationBarWithButton">

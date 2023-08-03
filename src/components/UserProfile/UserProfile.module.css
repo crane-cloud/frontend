@@ -12,6 +12,7 @@
   }
   .Page{
     background-color: #F1F1F1;
+    position: relative;
   }
   .ButtonPlusSmall {
     width: 1rem;
@@ -73,6 +74,9 @@
   .FooterRow {
     padding: 1rem 3rem;
     background-color: var( --gray-bg-light-color);
+    position: absolute;
+    bottom: 10px;
+    left: 0;
   }
 
   .UserContainer{
@@ -376,6 +380,8 @@
     }
     .ContainerHeadSection{
       width: auto;
+      margin-left: 2rem;
+      margin-right: 1rem;
     }
     .ProfileCard{
       width: auto;
@@ -389,8 +395,32 @@
     .InputDiv{
       gap: 2rem;
     }
+    .SecondMainSection{
+      flex: 0;
+      margin-left: 2rem;
+      margin-right: 1rem;
+    }
     aside{
       width: 23rem;
+    }
+    .Page{
+      min-width: 40rem;
+      height: 180vh;
+    }
+    .UserAvatar {
+      display:  none;
+    }
+    .UserAvatarLarge {
+      display:  none;
+    }
+    .IdentityName{
+      font-size: 22px;
+    }
+    .FooterRow {
+      font-size: 14px;
+    }
+    .ProfileActionBtns {
+      flex-direction: column-reverse;
     }
   }
   

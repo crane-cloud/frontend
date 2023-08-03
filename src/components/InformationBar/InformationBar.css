@@ -76,11 +76,26 @@
 }
 .InfoProjectCategories{
   display: flex;
+  flex-direction: row;
   gap: 1rem;
   font-weight: normal ;
   font-size: 1.1rem;
   width: 11rem;
   padding: 0.5rem;
+}
+.MobileInfoProjectCategories {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.MobileInfoProjectCategories button {
+  outline: none;
+  border: none;
+  gap: 1.5rem;
+  font-size: 14px;
+  padding: 0.5rem 0.3rem;
+  cursor: pointer;
+  background-color: #d9d9d9; 
 }
 
 .InfoProjectCategories:hover{
@@ -99,7 +114,9 @@
   cursor: pointer;
   background-color: #d9d9d9; 
 }
-.InfoProjectCategories svg{
+.InfoProjectCategories svg,
+.MobileInfoProjectCategories svg
+{
   height: 1rem;
   width: 1rem;
  }
@@ -142,6 +159,12 @@
 @media (max-width: 650px) {
   
   .SearchInput input{
+    width: 100%;
+  }
+  .InfoHeader {
+    font-size: 15px;
+  }
+  .InfoProjectCategories{
     width: 100%;
   }
 }

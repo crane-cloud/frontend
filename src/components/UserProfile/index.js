@@ -140,7 +140,7 @@ class UserProfile extends React.Component {
 
     return (
       <div className={styles.Page}>
-        <div>
+        
           <div className={styles.TopRow}>
             <Header />
             <InformationBar header="Profile Page" showBackBtn />
@@ -325,7 +325,7 @@ class UserProfile extends React.Component {
               </div>
             )}
           </div>
-        </div>
+       
         {showSaveModel === true && (
           <div className={styles.ProjectDeleteModel}>
             <Modal

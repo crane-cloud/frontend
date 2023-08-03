@@ -487,4 +487,7 @@
   .GridSide {
     display: none;
   }
+  .LandingPageWhySection{
+    padding: 2rem;
+  }
 }

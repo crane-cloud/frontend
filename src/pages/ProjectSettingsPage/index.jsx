@@ -747,7 +747,7 @@ class ProjectSettingsPage extends React.Component {
                       <div>Project has {projectUsers?.length} Team Members</div>
                     )}
                   </div>
-                  <div className="SubText">
+                  <div className="SubText" style={{maxWidth:'90%'}}>
                     Members that have accounts on crane cloud can perform
                     different operations on the project depending on their
                     permission.
@@ -849,10 +849,10 @@ class ProjectSettingsPage extends React.Component {
                         <div className={styles.MemberTableRow} key={index}>
                           <div className={styles.MemberTableCell}>
                             <div className={styles.NameSecting}>
-                              <Avatar
+                             { <Avatar
                                 name={entry.email}
                                 className={styles.MemberAvatar}
-                              />
+                              />}
                               {/* <div className={styles.MemberNameEmail}> */}
                               <div className={styles.Wrap}>{entry.email}</div>
 
