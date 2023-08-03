@@ -47,6 +47,6 @@
     cursor: pointer;
 }
 
-.SelectElementValue {
-    gap: 1rem !important;
+.TableHeader .SelectElementValue {
+    gap: 1rem;
 }
