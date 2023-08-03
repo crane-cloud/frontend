@@ -344,12 +344,12 @@ class UserProjectsPage extends React.Component {
                 selectedProjects={selectedProjects}
                 myProjectsList={myProjectsList}
                 sharedProjectsList={sharedProjectsList}
+                viewFilter={true}
                 placeholder="Search through projects"
                 btnAction={this.openProjectCreateComponent}
                 searchAction={this.handleCallbackSearchword}
                 adminRoute={adminCheck}
                 onFilterSelect={this.onFilterSelect}
-                viewFilter
               />
             </div>
             <div className={styles.MainRow}>
@@ -450,7 +450,7 @@ class UserProjectsPage extends React.Component {
                   </Modal>
                 </div>
               )}
-              {displayProjects.length === 0 && (
+              {displayProjects.length === 0 && isFetched && (
                 <div className={styles.NoResourcesMessage}>
                   {selectedProjects === "My projects" ? (
                     <>

@@ -126,9 +126,14 @@
   height: 3rem;
   width: 3rem;
   position: absolute;
-  top: 9rem;
-  left: 1rem;
+  top: .5rem;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  justify-content: center;
+  display: flex;
+  z-index: 40;
 }
+
 
 .SmallSidebar {
   height: inherit;

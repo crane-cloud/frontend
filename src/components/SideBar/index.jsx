@@ -20,6 +20,7 @@ import { ReactComponent as Database } from "../../assets/images/database.svg";
 import { ReactComponent as Apps } from "../../assets/images/grid.svg";
 import useMedia from "../../hooks/mediaquery";
 import Menu from "../../assets/images/menu.svg";
+import CloseIcon from "../../assets/images/cancel-icon.svg";
 
 const SideBar = (props) => {
   const { name } = props;
@@ -85,7 +86,7 @@ const SideBar = (props) => {
                 className={styles.SideBarTopSection}
               >
                 <BackButton color="#fff" />
-                {name}
+                <div className={styles.SideBarProjectName}>{name}</div>
               </Link>
             ) : (
               <Link
@@ -93,7 +94,7 @@ const SideBar = (props) => {
                 className={styles.SideBarTopSection}
               >
                 <BackButton color="#fff" />
-                {name}
+                <div className={styles.SideBarProjectName}>{name}</div>
               </Link>
             )}
           </div>
@@ -282,6 +283,14 @@ const SideBar = (props) => {
           <img src={Menu} alt="menu" />
         </div>
       )}
+       {!isDesktop && OpenForsmallScreen &&<div
+          className="CloseMenuIcon"
+          onClick={() => {
+            setopenForsmallScreen(false)
+          }}
+        >
+        <img src={CloseIcon} alt="menu" />  
+        </div>}
     </>
   );
 };

@@ -28,14 +28,6 @@ class AppsPage extends React.Component {
     this.handleCallbackSearchword = this.handleCallbackSearchword.bind(this);
   }
 
-  // componentDidMount() {
-    
-  // }
-
-  // componentDidUpdate(prevProps) {
-  
-  // }
-
   handleCallbackSearchword(word) {
     this.setState({ word: word });
   }

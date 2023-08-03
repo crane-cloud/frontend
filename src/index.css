@@ -44,8 +44,8 @@ body {
   flex-flow: column;
   min-height: 100vh;
   flex-direction: column;
-  justify-content: space-between;
-  background-color: var(--gray-bg-light-color);
+  /* justify-content: space-between; */
+  background-color: var( --gray-bg-light-color);
 }
 
 textarea,
@@ -531,6 +531,15 @@ tr.TableLoading td {
     overflow-x: hidden;
     overflow-y: auto;
     height: 100%;
+  }
+  .CloseMenuIcon{
+    height: 1.8rem;
+    width: 3rem;
+    position: absolute;
+    top: 1rem;
+    justify-content: center;
+    display: flex;
+    z-index: 40;
   }
 
 }

@@ -45,6 +45,10 @@
   border-left: none;
 }
 
+.CalendarArrow {
+  cursor: pointer;
+}
+
 .CalendarSingleDay:hover {
   background-color: #f8f7e5;
 }

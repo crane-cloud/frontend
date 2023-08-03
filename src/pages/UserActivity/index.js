@@ -281,8 +281,6 @@ const UserActivity = (props) => {
   };
 
   return (
-    // empty a div to fix root justification on this page
-    <div>
       <div className={styles.Page}>
         <div className={styles.TopBarSection}>
           <Header />
@@ -578,7 +576,7 @@ const UserActivity = (props) => {
                 )}
               </div>
             </div>
-            <div className="BigCard">
+            <div className={`${styles.LogsContainer}`}>
               {loading ? (
                 <Spinner />
               ) : feedback !== "" ? (
@@ -699,7 +697,6 @@ const UserActivity = (props) => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 export default UserActivity;
