@@ -21,7 +21,16 @@
   flex-direction: column;
   position: fixed;
 }
-
+.SideBarProjectName{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+  font-size: 1rem;
+}
 .SideBarTopSection {
   padding: 2rem 1rem;
   display: flex;

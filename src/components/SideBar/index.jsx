@@ -86,7 +86,7 @@ const SideBar = (props) => {
                 className={styles.SideBarTopSection}
               >
                 <BackButton color="#fff" />
-                {name}
+                <div className={styles.SideBarProjectName}>{name}</div>
               </Link>
             ) : (
               <Link
@@ -94,7 +94,7 @@ const SideBar = (props) => {
                 className={styles.SideBarTopSection}
               >
                 <BackButton color="#fff" />
-                {name}
+                <div className={styles.SideBarProjectName}>{name}</div>
               </Link>
             )}
           </div>
