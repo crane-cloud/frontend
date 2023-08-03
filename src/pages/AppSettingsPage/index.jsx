@@ -658,7 +658,6 @@ class AppSettingsPage extends React.Component {
     } = this.state;
     // project name from line 105 disappears on refreash, another source of the name was needed
     //const { name } = this.props.location;
-    // console.log(revisions);
     const { appID } = params;
     const replicaOptions = [
       { id: 1, name: "1" },

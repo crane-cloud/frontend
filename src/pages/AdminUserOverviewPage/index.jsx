@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import SideNav from "../../components/SideNav";
 import Header from "../../components/Header";
 import InformationBar from "../../components/InformationBar";
 import { handleGetRequest } from "../../apis/apis.js";
@@ -22,8 +21,6 @@ import AdminInactiveUsers from "../../components/AdminInactiveUsers";
 
 const AdminUserOverviewPage = () => {
   const history = useHistory();
-  const clusterID = localStorage.getItem("clusterID");
-  const clusterName = localStorage.getItem("clusterName");
   const [users, setUsers] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
@@ -120,211 +117,203 @@ const AdminUserOverviewPage = () => {
 
   // view user account listing
   const viewUsersListing = () => {
-    history.push(`/clusters/${clusterID}/users-listing`);
+    history.push(`/users-listing`);
   };
 
   return (
-    <div className="MainPage">
-      <div className="TopBarSection">
+    <div className="APage">
+      <div className="TopRow">
         <Header />
+        <InformationBar
+          header="Users Overview"
+          showBtn
+          buttontext="View Listing"
+          btnAction={viewUsersListing}
+          showBackBtn
+        />
       </div>
-      <div className="MainSection">
-        <div className="SideBarSection">
-          <SideNav clusterName={clusterName} clusterId={clusterID} />
-        </div>
-        <div className="MainContentSection">
-          <div className="InformationBarSection">
-            <InformationBar
-              header="Users Overview"
-              showBtn
-              buttontext="View Listing"
-              btnAction={viewUsersListing}
-            />
+      <div className="AMainSection">
+        <div className="ContentSection">
+          <div className="TitleArea">
+            <div className="SectionTitle">Users Summary</div>
           </div>
-          <div className="ContentSection">
-            <div className="TitleArea">
-              <div className="SectionTitle">Users Summary</div>
+          {loading ? (
+            <div className="ResourceSpinnerWrapper">
+              <Spinner size="big" />
             </div>
-            {loading ? (
-              <div className="ResourceSpinnerWrapper">
-                <Spinner size="big" />
-              </div>
-            ) : feedback !== "" ? (
-              <div className="NoResourcesMessage">{feedback}</div>
-            ) : Object.keys(userCounts).length > 0 ? (
-              <div className="ClusterContainer">
-                {Object.keys(userCounts).map((countType) => (
-                  <ResourceCard
-                    key={countType}
-                    title={countType}
-                    count={userCounts[countType]}
-                  />
-                ))}
-              </div>
-            ) : null}
-
-            <div className="TitleArea">
-              <div className="SectionTitle">Graph Summary</div>
+          ) : feedback !== "" ? (
+            <div className="NoResourcesMessage">{feedback}</div>
+          ) : Object.keys(userCounts).length > 0 ? (
+            <div className="ClusterContainer">
+              {Object.keys(userCounts).map((countType) => (
+                <ResourceCard
+                  key={countType}
+                  title={countType}
+                  count={userCounts[countType]}
+                />
+              ))}
             </div>
+          ) : null}
 
-            <div className="SummaryCardContainer">
-              <div className="UserSection">
-                <div className="LeftDBSide">
-                  <div className="MetricsGraph">
-                    <MetricsCard
-                      className="ClusterMetricsCardGraph"
-                      title={
-                        <div className="GraphSummaryTitle">
-                          <span className="SummaryTitleText">
-                            Verified Users
-                          </span>
-                          <span>
-                            <div className="PeriodContainer">
-                              <div className="PeriodButtonsSection">
-                                <div
-                                  className={`${
-                                    period === "3" && "PeriodButtonActive"
-                                  } PeriodButton`}
-                                  name="3month"
-                                  value="3"
-                                  role="presentation"
-                                  onClick={handleChange}
-                                >
-                                  3m
-                                </div>
-                                <div
-                                  className={`${
-                                    period === "4" && "PeriodButtonActive"
-                                  } PeriodButton`}
-                                  name="4months"
-                                  value="4"
-                                  role="presentation"
-                                  onClick={handleChange}
-                                >
-                                  4m
-                                </div>
-                                <div
-                                  className={`${
-                                    period === "6" && "PeriodButtonActive"
-                                  } PeriodButton`}
-                                  name="6months"
-                                  value="6"
-                                  role="presentation"
-                                  onClick={handleChange}
-                                >
-                                  6m
-                                </div>
-                                <div
-                                  className={`${
-                                    period === "8" && "PeriodButtonActive"
-                                  } PeriodButton`}
-                                  name="8months"
-                                  value="8"
-                                  role="presentation"
-                                  onClick={handleChange}
-                                >
-                                  8m
-                                </div>
-                                <div
-                                  className={`${
-                                    period === "12" && "PeriodButtonActive"
-                                  } PeriodButton`}
-                                  name="1year"
-                                  value="12"
-                                  role="presentation"
-                                  onClick={handleChange}
-                                >
-                                  1y
-                                </div>
-                                <div
-                                  className={`${
-                                    period === "all" && "PeriodButtonActive"
-                                  } PeriodButton`}
-                                  name="all"
-                                  value="all"
-                                  role="presentation"
-                                  onClick={handleChange}
-                                >
-                                  all
-                                </div>
+          <div className="TitleArea">
+            <div className="SectionTitle">Graph Summary</div>
+          </div>
+
+          <div className="SummaryCardContainer">
+            <div className="UserSection">
+              <div className="LeftDBSide">
+                <div className="MetricsGraph">
+                  <MetricsCard
+                    className="ClusterMetricsCardGraph"
+                    title={
+                      <div className="GraphSummaryTitle">
+                        <span className="SummaryTitleText">Verified Users</span>
+                        <span>
+                          <div className="PeriodContainer">
+                            <div className="PeriodButtonsSection">
+                              <div
+                                className={`${
+                                  period === "3" && "PeriodButtonActive"
+                                } PeriodButton`}
+                                name="3month"
+                                value="3"
+                                role="presentation"
+                                onClick={handleChange}
+                              >
+                                3m
+                              </div>
+                              <div
+                                className={`${
+                                  period === "4" && "PeriodButtonActive"
+                                } PeriodButton`}
+                                name="4months"
+                                value="4"
+                                role="presentation"
+                                onClick={handleChange}
+                              >
+                                4m
+                              </div>
+                              <div
+                                className={`${
+                                  period === "6" && "PeriodButtonActive"
+                                } PeriodButton`}
+                                name="6months"
+                                value="6"
+                                role="presentation"
+                                onClick={handleChange}
+                              >
+                                6m
+                              </div>
+                              <div
+                                className={`${
+                                  period === "8" && "PeriodButtonActive"
+                                } PeriodButton`}
+                                name="8months"
+                                value="8"
+                                role="presentation"
+                                onClick={handleChange}
+                              >
+                                8m
+                              </div>
+                              <div
+                                className={`${
+                                  period === "12" && "PeriodButtonActive"
+                                } PeriodButton`}
+                                name="1year"
+                                value="12"
+                                role="presentation"
+                                onClick={handleChange}
+                              >
+                                1y
+                              </div>
+                              <div
+                                className={`${
+                                  period === "all" && "PeriodButtonActive"
+                                } PeriodButton`}
+                                name="all"
+                                value="all"
+                                role="presentation"
+                                onClick={handleChange}
+                              >
+                                all
                               </div>
                             </div>
-                          </span>
-                        </div>
-                      }
-                    >
-                      <div className="ChartsArea">
-                        <div>
-                          <AreaChart
-                            width={800}
-                            height={300}
-                            syncId="anyId"
-                            data={
-                              period !== "all"
-                                ? filteredGraphData
-                                : graphDataArray
-                            }
-                          >
-                            <Line
-                              type="monotone"
-                              dataKey="Value"
-                              stroke="#8884d8"
-                            />
-                            <CartesianGrid stroke="#ccc" />
-                            <XAxis dataKey="Month" />
-                            <XAxis
-                              xAxisId={1}
-                              dx={10}
-                              label={{
-                                value: "Time",
-                                angle: 0,
-                                position: "bottom",
-                              }}
-                              interval={12}
-                              dataKey="Year"
-                              tickLine={false}
-                              tick={{ fontSize: 12, angle: 0 }}
-                            />
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <YAxis
-                              label={{
-                                value: "Number of Users",
-                                angle: 270,
-                                position: "outside",
-                              }}
-                              width={100}
-                            />
-                            <Area
-                              type="monotone"
-                              dataKey="Value"
-                              stroke="#82ca9d"
-                              fill="#82ca9d"
-                            />
-                            <Tooltip
-                              labelFormatter={(value) => {
-                                const monthNames = retrieveMonthNames();
-                                const month = parseInt(value) - 1;
-                                return monthNames[month].name;
-                              }}
-                              formatter={(value) => {
-                                if (value === 1) {
-                                  return [`${value} user`];
-                                } else {
-                                  return [`${value} users`];
-                                }
-                              }}
-                            />
-                          </AreaChart>
-                        </div>
+                          </div>
+                        </span>
                       </div>
-                    </MetricsCard>
-                  </div>
+                    }
+                  >
+                    <div className="AChartsArea">
+                      <div>
+                        <AreaChart
+                          width={1100}
+                          height={300}
+                          syncId="anyId"
+                          data={
+                            period !== "all"
+                              ? filteredGraphData
+                              : graphDataArray
+                          }
+                        >
+                          <Line
+                            type="monotone"
+                            dataKey="Value"
+                            stroke="#8884d8"
+                          />
+                          <CartesianGrid stroke="#ccc" />
+                          <XAxis dataKey="Month" />
+                          <XAxis
+                            xAxisId={1}
+                            dx={10}
+                            label={{
+                              value: "Time",
+                              angle: 0,
+                              position: "bottom",
+                            }}
+                            interval={12}
+                            dataKey="Year"
+                            tickLine={false}
+                            tick={{ fontSize: 12, angle: 0 }}
+                          />
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <YAxis
+                            label={{
+                              value: "Number of Users",
+                              angle: 270,
+                              position: "outside",
+                            }}
+                            width={100}
+                          />
+                          <Area
+                            type="monotone"
+                            dataKey="Value"
+                            stroke="#82ca9d"
+                            fill="#82ca9d"
+                          />
+                          <Tooltip
+                            labelFormatter={(value) => {
+                              const monthNames = retrieveMonthNames();
+                              const month = parseInt(value) - 1;
+                              return monthNames[month].name;
+                            }}
+                            formatter={(value) => {
+                              if (value === 1) {
+                                return [`${value} user`];
+                              } else {
+                                return [`${value} users`];
+                              }
+                            }}
+                          />
+                        </AreaChart>
+                      </div>
+                    </div>
+                  </MetricsCard>
                 </div>
               </div>
             </div>
-
-            <AdminInactiveUsers />
           </div>
+
+          <AdminInactiveUsers />
         </div>
       </div>
     </div>
