@@ -1,52 +1,52 @@
 .TableHeader {
-    display: flex;
-    justify-content: flex-end;
-    padding: 1rem 1rem 0 0;
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 1rem 0 0;
 }
 
 .SectionTitle {
-    display: flex !important;
-    justify-content: space-between !important;
+  display: flex !important;
+  justify-content: space-between !important;
 }
 
 .SearchArea,
 .SectionTitle {
-    display: grid;
-    align-items: center;
-    padding-top: 1rem;
+  display: grid;
+  align-items: center;
+  padding-top: 1rem;
 }
 
 .RefreshButton:hover {
-    cursor: pointer;
-    display: inline;
+  cursor: pointer;
+  display: inline;
 }
 
 .SpinnerArea {
-    align-items: center;
-    justify-items: center;
+  align-items: center;
+  justify-items: center;
 }
 
 .CalendarSection {
-    display: flex;
-    gap: 2rem;
-    justify-content: space-between;
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
 }
 
 .DateRangeSection {
-    padding-right: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  padding-right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .DateRangeButton {
-    padding-top: 1rem;
+  padding-top: 1rem;
 }
 
 .DateRangeSection:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .TableHeader .SelectElementValue {
-    gap: 1rem;
+  gap: 1rem;
 }

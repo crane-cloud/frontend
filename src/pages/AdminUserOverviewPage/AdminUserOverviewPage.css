@@ -7,3 +7,13 @@
 .TitleArea {
   padding: 0 2rem;
 }
+
+.APage {
+  margin: 0;
+  background: var(--gray-bg-light-color);
+}
+
+.AChartsArea{
+  
+  width: 100%;
+}
