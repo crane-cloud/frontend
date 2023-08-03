@@ -108,11 +108,12 @@ export default class RegisterPage extends Component {
     const userData = {
       name,
       username,
+      organisation,
       email,
       password,
     };
 
-    if (!email || !password || !name || !username || !passwordConfirm) {
+    if (!email || !password || !name || !username || !passwordConfirm || !organisation) {
       this.setState({
         error: "Please enter all fields",
       });
