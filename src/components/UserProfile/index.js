@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Avatar from "../Avatar";
 import styles from "./UserProfile.module.css";
+import { handleGetRequest } from "../../apis/apis.js";
 import { API_BASE_URL } from "../../config";
 import axios from "axios";
 import Modal from "../../components/Modal";
@@ -30,12 +31,16 @@ class UserProfile extends React.Component {
       passwordChangeLoading: false,
       passwordChangeError: "",
       passwordChangeSuccess: "",
+      projectsCount: 0,
+      activeProjectsCount: 0,
+      disabledProjectsCount: 0,
     };
     this.state = this.initialState;
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeSaving = this.handleChangeSaving.bind(this);
     this.closeEditMode = this.closeEditMode.bind(this);
     this.openEditMode = this.openEditMode.bind(this);
+    this.getUserProjects = this.getUserProjects.bind(this);
     this.showSaveChangesModel = this.showSaveChangesModel.bind(this);
     this.hideSaveChangesModel = this.hideSaveChangesModel.bind(this);
     this.showPasswordWarningModel = this.showPasswordWarningModel.bind(this);
@@ -47,7 +52,38 @@ class UserProfile extends React.Component {
     const { getUserDetail, data } = this.props;
     clearUpdateProfileState();
     getUserDetail(data.id);
+    this.getUserProjects(data.id);
   }
+
+  getUserProjects = async (userID) => {
+    const response = await handleGetRequest(`/users/${userID}/projects`);
+
+    if (response.data.data?.projects.length > 0) {
+      const projectsList = response.data.data?.projects;
+
+      let activeProjects = projectsList.filter(
+        (project) => !project.name.includes("deleted")
+      );
+      let disabledProjects = activeProjects?.filter(
+        (project) => project?.disabled === true
+      );
+
+      this.setState({
+        projectsCount: activeProjects.length,
+        activeProjectsCount: activeProjects.length - disabledProjects.length,
+        disabledProjectsCount: disabledProjects.length,
+      });
+    } else {
+      this.setState({
+        projectsCount: 0,
+        activeProjectsCount: 0,
+        disabledProjectsCount: 0,
+      });
+
+      throw new Error("No projects found for user");
+    }
+  };
+
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
@@ -135,124 +171,128 @@ class UserProfile extends React.Component {
       passwordChangeError,
       passwordChangeSuccess,
       passwordChangeLoading,
+      projectsCount,
+      activeProjectsCount,
+      disabledProjectsCount,
     } = this.state;
     const { user, isFetching, isFetched, profileUpdating } = this.props;
 
     return (
       <div className={styles.Page}>
-        
-          <div className={styles.TopRow}>
-            <Header />
-            <InformationBar header="Profile Page" showBackBtn />
-          </div>
-          <div className={styles.MainColumn}>
-            {isFetching ? (
-              <div className={styles.NoResourcesMessage}>
-                <div className={styles.SpinnerWrapper}>
-                  <Spinner size="big" />
-                </div>
+        <div className={styles.TopRow}>
+          <Header />
+          <InformationBar header="Profile Page" showBackBtn />
+        </div>
+        <div className={styles.MainColumn}>
+          {isFetching ? (
+            <div className={styles.NoResourcesMessage}>
+              <div className={styles.SpinnerWrapper}>
+                <Spinner size="big" />
               </div>
-            ) : isFetched ? (
-              <div className={`${styles.ProfileContainer}  SmallContainer`}>
-                {isFetched && (
-                  <div className={styles.UserContainer}>
-                    <section className={styles.ContainerHeadSection}>
-                      <div className={styles.UserProfileCard}>
+            </div>
+          ) : isFetched ? (
+            <div className={`${styles.ProfileContainer}  SmallContainer`}>
+              {isFetched && (
+                <div className={styles.UserContainer}>
+                  <section className={styles.ContainerHeadSection}>
+                    <div className={styles.UserProfileCard}>
+                      <div>
                         <div>
-                          <div>
-                            <div className={styles.AvatarDiv}>
-                              <Avatar
-                                name={user.name}
-                                className={styles.UserAvatar}
-                              />
-                              <div className={styles.Identity}>
-                                <div className={styles.IdentityName}>
-                                  {user.name}
-                                  {user.is_beta_user === true && (
-                                    <div className={styles.BetaUserDiv}>
-                                      Beta User
-                                    </div>
-                                  )}
-                                </div>
-                                <div className={styles.IdentityEmail}>
-                                  {user.email}
-                                </div>
-                              </div>
-                            </div>
-                            <div className={styles.BackgroundInfor}>
-                              <div>
-                                Joined Crane Cloud on{" "}
-                                {new Date(user.date_created).toLocaleDateString(
-                                  "en-US",
-                                  options
+                          <div className={styles.AvatarDiv}>
+                            <Avatar
+                              name={user.name}
+                              className={styles.UserAvatar}
+                            />
+                            <div className={styles.Identity}>
+                              <div className={styles.IdentityName}>
+                                {user.name}
+                                {user.is_beta_user === true && (
+                                  <div className={styles.BetaUserDiv}>
+                                    Beta User
+                                  </div>
                                 )}
                               </div>
-                              <div className={styles.CardInfor}>
-                                <div>Created 3 projects</div>
-                                {"|"}
-                                <div>Shares 2 projects</div>
+                              <div className={styles.IdentityEmail}>
+                                {user.email}
                               </div>
                             </div>
                           </div>
-                          <div
-                            className={styles.RowContent}
-                            title="Assigned by Admin for billing purporses"
-                          >
-                            {user.credits.length === 0 ? (
-                              "0 credits"
-                            ) : (
-                              <div className={styles.CreditsContainer}>
-                                {user.credits[0].amount}
-                                credits
-                              </div>
-                            )}
+                          <div className={styles.BackgroundInfor}>
+                            <div>
+                              Joined Crane Cloud on{" "}
+                              {new Date(user.date_created).toLocaleDateString(
+                                "en-US",
+                                options
+                              )}
+                            </div>
+                            <div className={styles.CardInfor}>
+                              <span>Has {projectsCount} Projects </span>
+                              {"|"}
+                              <span>{activeProjectsCount} Active</span>
+                              {"|"}
+                              <span>{disabledProjectsCount} Disabled</span>
+                            </div>
                           </div>
                         </div>
-                        <div>
-                          <Avatar
-                            name={user.name}
-                            className={styles.UserAvatarLarge}
-                          />
+                        <div
+                          className={styles.RowContent}
+                          title="Assigned by Admin for billing purporses"
+                        >
+                          {user.credits.length === 0 ? (
+                            "0 credits"
+                          ) : (
+                            <div className={styles.CreditsContainer}>
+                              {user.credits[0].amount}
+                              credits
+                            </div>
+                          )}
                         </div>
                       </div>
-                    </section>
-                    <div className={styles.SecondMainSection}>
-                      <section className={styles.ContainerSection}>
-                        <div className={styles.HeaderSection}>
-                          <div className={styles.UserSectionTitle}>
-                            Information
-                          </div>
-                          <div className={styles.UserSectionSubTitle}>
-                            Your identity on crane cloud
+                      <div>
+                        <Avatar
+                          name={user.name}
+                          className={styles.UserAvatarLarge}
+                        />
+                      </div>
+                    </div>
+                  </section>
+                  <div className={styles.SecondMainSection}>
+                    <section className={styles.ContainerSection}>
+                      <div className={styles.HeaderSection}>
+                        <div className={styles.UserSectionTitle}>
+                          Information
+                        </div>
+                        <div className={styles.UserSectionSubTitle}>
+                          Your identity on crane cloud
+                        </div>
+                      </div>
+                      <div className={styles.ContainerCard}>
+                        <div className={styles.EmailHead}>
+                          {/* not editable */}
+                          <div className={styles.InputDiv}>
+                            <div className={styles.Title2}>Email</div>
+                            <div>{user.email}</div>
                           </div>
                         </div>
-                        <div className={styles.ContainerCard}>
-                          <div className={styles.EmailHead}>
-                            {/* not editable */}
-                            <div className={styles.InputDiv}>
-                              <div className={styles.Title2}>Email</div>
-                              <div>{user.email}</div>
-                            </div>
-                          </div>
-                          <div className={styles.InputDiv}>
-                            <div className={styles.Title2}>Name</div>
-                            {editMode ? (
-                              <BlackInputText
-                                className={styles.CustomInput}
-                                placeholder=""
-                                name="username"
-                                value={username}
-                                onChange={(e) => {
-                                  this.handleChange(e);
-                                }}
-                              />
-                            ) : (
-                              <div className={styles.Title2Name}>{user.name}</div>
-                            )}
-                          </div>
-                          <div className={styles.InputDiv}>
-                            <div className={styles.Title2}>Organisation</div>
-                            {/* {editMode ? (
+                        <div className={styles.InputDiv}>
+                          <div className={styles.Title2}>Name</div>
+                          {editMode ? (
+                            <BlackInputText
+                              className={styles.CustomInput}
+                              placeholder=""
+                              name="username"
+                              value={username}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />
+                          ) : (
+                            <div className={styles.Title2Name}>{user.name}</div>
+                          )}
+                        </div>
+                        <div className={styles.InputDiv}>
+                          <div className={styles.Title2}>Organisation</div>
+                          {/* {editMode ? (
                               <BlackInputText
                                 className={styles.CustomInput}
                                 placeholder=""
@@ -265,67 +305,67 @@ class UserProfile extends React.Component {
                             ) : (
                               <div>{user.organisation}</div>
                             )} */}
-                            <div>Not Addded</div>
+                          <div>Not Addded</div>
+                        </div>
+                        <div className={styles.ProfileActionBtns}>
+                          <div className={styles.PasswordChange}>
+                            <div>Change Password</div>
+                            <PrimaryButton
+                              onClick={() => {
+                                this.showPasswordWarningModel();
+                              }}
+                              className={styles.BackButton}
+                            >
+                              Reset password by email
+                            </PrimaryButton>
                           </div>
-                          <div className={styles.ProfileActionBtns}>
-                            <div className={styles.PasswordChange}>
-                              <div>Change Password</div>
+
+                          {editMode ? (
+                            <div className={styles.ButtonsDiv}>
                               <PrimaryButton
                                 onClick={() => {
-                                  this.showPasswordWarningModel();
+                                  user.name !== username &&
+                                    this.showSaveChangesModel();
                                 }}
                                 className={styles.BackButton}
                               >
-                                Reset password by email
+                                Save
+                              </PrimaryButton>
+                              <PrimaryButton
+                                onClick={() => {
+                                  this.closeEditMode();
+                                }}
+                                className={styles.PairButtonCancel}
+                              >
+                                Cancel
                               </PrimaryButton>
                             </div>
-
-                            {editMode ? (
-                              <div className={styles.ButtonsDiv}>
-                                <PrimaryButton
-                                  onClick={() => {
-                                    user.name !== username &&
-                                      this.showSaveChangesModel();
-                                  }}
-                                  className={styles.BackButton}
-                                >
-                                  Save
-                                </PrimaryButton>
-                                <PrimaryButton
-                                  onClick={() => {
-                                    this.closeEditMode();
-                                  }}
-                                  className={styles.PairButtonCancel}
-                                >
-                                  Cancel
-                                </PrimaryButton>
-                              </div>
-                            ) : (
-                              <PrimaryButton
-                                onClick={() => {
-                                  this.openEditMode();
-                                }}
-                                className={styles.BackButton}
-                              >
-                                Edit profile
-                              </PrimaryButton>
-                            )}
-                          </div>
+                          ) : (
+                            <PrimaryButton
+                              onClick={() => {
+                                this.openEditMode();
+                              }}
+                              className={styles.BackButton}
+                            >
+                              Edit profile
+                            </PrimaryButton>
+                          )}
                         </div>
-                      </section>
-                    </div>
+                      </div>
+                    </section>
                   </div>
-                )}
-              </div>
-            ) : null}
+                </div>
+              )}
+            </div>
+          ) : null}
 
-            {!isFetching && !isFetched && (
-              <div className={styles.NoResourcesMessage}>
-                Oops! Something went wrong! Failed to retrieve user.
-              </div>
-            )}
-          </div>
-       
+          {!isFetching && !isFetched && (
+            <div className={styles.NoResourcesMessage}>
+              Oops! Something went wrong! Failed to retrieve user.
+            </div>
+          )}
+        </div>
+
         {showSaveModel === true && (
           <div className={styles.ProjectDeleteModel}>
             <Modal
