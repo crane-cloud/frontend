@@ -3,8 +3,8 @@
 .ClusterContainer {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  grid-gap: 1rem;
-  padding: 2rem 1.4rem;
+  /* grid-gap: 1rem; */
+  padding: 1.4rem;
 }
 
 .ContentSection .ResourceSpinnerWrapper {
@@ -18,14 +18,16 @@
   margin: 15px 15px;
   text-align: center;
 }
+
 @media only screen and (min-width: 750px) {
   .ClusterContainer {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
 /* Bigger than Phones(laptop / desktop) */
 @media only screen and (min-width: 970px) {
   .ClusterContainer {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
