@@ -279,7 +279,7 @@ class AdminUserPage extends Component {
                     <div className="ProfileInfoRow">
                       <div className="ProfileInfoAttribute">Projects:</div>
                       <div className="ProfileInfoValue">
-                        {this.state.projectsCount} Projects |{" "}
+                        Has {this.state.projectsCount} Projects |{" "}
                         {this.state.activeProjectsCount} Active |{" "}
                         {this.state.disabledProjectsCount} Disabled
                       </div>
