@@ -172,9 +172,8 @@ const AdminUserOverviewPage = () => {
                           <div className="PeriodContainer">
                             <div className="PeriodButtonsSection">
                               <div
-                                className={`${
-                                  period === "3" && "PeriodButtonActive"
-                                } PeriodButton`}
+                                className={`${period === "3" && "PeriodButtonActive"
+                                  } PeriodButton`}
                                 name="3month"
                                 value="3"
                                 role="presentation"
@@ -183,9 +182,8 @@ const AdminUserOverviewPage = () => {
                                 3m
                               </div>
                               <div
-                                className={`${
-                                  period === "4" && "PeriodButtonActive"
-                                } PeriodButton`}
+                                className={`${period === "4" && "PeriodButtonActive"
+                                  } PeriodButton`}
                                 name="4months"
                                 value="4"
                                 role="presentation"
@@ -194,9 +192,8 @@ const AdminUserOverviewPage = () => {
                                 4m
                               </div>
                               <div
-                                className={`${
-                                  period === "6" && "PeriodButtonActive"
-                                } PeriodButton`}
+                                className={`${period === "6" && "PeriodButtonActive"
+                                  } PeriodButton`}
                                 name="6months"
                                 value="6"
                                 role="presentation"
@@ -205,9 +202,8 @@ const AdminUserOverviewPage = () => {
                                 6m
                               </div>
                               <div
-                                className={`${
-                                  period === "8" && "PeriodButtonActive"
-                                } PeriodButton`}
+                                className={`${period === "8" && "PeriodButtonActive"
+                                  } PeriodButton`}
                                 name="8months"
                                 value="8"
                                 role="presentation"
@@ -216,9 +212,8 @@ const AdminUserOverviewPage = () => {
                                 8m
                               </div>
                               <div
-                                className={`${
-                                  period === "12" && "PeriodButtonActive"
-                                } PeriodButton`}
+                                className={`${period === "12" && "PeriodButtonActive"
+                                  } PeriodButton`}
                                 name="1year"
                                 value="12"
                                 role="presentation"
@@ -227,9 +222,8 @@ const AdminUserOverviewPage = () => {
                                 1y
                               </div>
                               <div
-                                className={`${
-                                  period === "all" && "PeriodButtonActive"
-                                } PeriodButton`}
+                                className={`${period === "all" && "PeriodButtonActive"
+                                  } PeriodButton`}
                                 name="all"
                                 value="all"
                                 role="presentation"
@@ -244,68 +238,66 @@ const AdminUserOverviewPage = () => {
                     }
                   >
                     <div className="AChartsArea">
-                      <div>
-                        <AreaChart
-                          width={1100}
-                          height={300}
-                          syncId="anyId"
-                          data={
-                            period !== "all"
-                              ? filteredGraphData
-                              : graphDataArray
-                          }
-                        >
-                          <Line
-                            type="monotone"
-                            dataKey="Value"
-                            stroke="#8884d8"
-                          />
-                          <CartesianGrid stroke="#ccc" />
-                          <XAxis dataKey="Month" />
-                          <XAxis
-                            xAxisId={1}
-                            dx={10}
-                            label={{
-                              value: "Time",
-                              angle: 0,
-                              position: "bottom",
-                            }}
-                            interval={12}
-                            dataKey="Year"
-                            tickLine={false}
-                            tick={{ fontSize: 12, angle: 0 }}
-                          />
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <YAxis
-                            label={{
-                              value: "Number of Users",
-                              angle: 270,
-                              position: "outside",
-                            }}
-                            width={100}
-                          />
-                          <Area
-                            type="monotone"
-                            dataKey="Value"
-                            stroke="#82ca9d"
-                            fill="#82ca9d"
-                          />
-                          <Tooltip
-                            labelFormatter={(value) => {
-                              const monthNames = retrieveMonthNames();
-                              const month = parseInt(value) - 1;
-                              return monthNames[month].name;
-                            }}
-                            formatter={(value) => {
-                              if (value === 1) {
-                                return [`${value} user`];
-                              } else {
-                                return [`${value} users`];
-                              }
-                            }}
-                          />
-                        </AreaChart>
-                      </div>
+                      <AreaChart
+                        width={1200}
+                        height={300}
+                        syncId="anyId"
+                        data={
+                          period !== "all"
+                            ? filteredGraphData
+                            : graphDataArray
+                        }
+                      >
+                        <Line
+                          type="monotone"
+                          dataKey="Value"
+                          stroke="#8884d8"
+                        />
+                        <CartesianGrid stroke="#ccc" />
+                        <XAxis dataKey="Month" />
+                        <XAxis
+                          xAxisId={1}
+                          dx={10}
+                          label={{
+                            value: "Time",
+                            angle: 0,
+                            position: "bottom",
+                          }}
+                          interval={10}
+                          dataKey="Year"
+                          tickLine={false}
+                          tick={{ fontSize: 12, angle: 0 }}
+                        />
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <YAxis
+                          label={{
+                            value: "Number of Users",
+                            angle: 270,
+                            position: "outside",
+                          }}
+                          width={100}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="Value"
+                          stroke="#82ca9d"
+                          fill="#82ca9d"
+                        />
+                        <Tooltip
+                          labelFormatter={(value) => {
+                            const monthNames = retrieveMonthNames();
+                            const month = parseInt(value) - 1;
+                            return monthNames[month].name;
+                          }}
+                          formatter={(value) => {
+                            if (value === 1) {
+                              return [`${value} user`];
+                            } else {
+                              return [`${value} users`];
+                            }
+                          }}
+                        />
+                      </AreaChart>
                     </div>
                   </MetricsCard>
                 </div>
