@@ -1,9 +1,9 @@
 .ResourceCard {
   /* width: 100%; */
   width: 18rem;
-  margin: auto;
+  margin: 0.5rem;
   /* text-align: left; */
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
   background: #fff;
   /* position: relative; */
   /* color: #000000; */
