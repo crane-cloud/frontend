@@ -14,6 +14,12 @@
 }
 
 .AChartsArea{
-  
-  width: 100%;
+  height: 30rem;
+  width: 116rem;
+  /* overflow-x: scroll; */
+}
+
+.AreaChart {
+  height: 100%;
+  width: 80%;
 }

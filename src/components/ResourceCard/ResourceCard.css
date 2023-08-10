@@ -1,28 +1,29 @@
 .ResourceCard {
-  width: 100%;
-  max-width: 338px;
+  /* width: 100%; */
+  width: 18rem;
   margin: auto;
-  text-align: left;
+  /* text-align: left; */
   margin-bottom: 1rem;
   background: #fff;
-  position: relative;
-  color: #000000;
+  /* position: relative; */
+  /* color: #000000; */
   word-wrap: break-word;
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
-  height: 200px;
 }
 
 .ResourceDigit {
   /* color: grey; */
   flex: 1 1 auto;
   padding: 1.25rem;
-  font-size: 32px;
+  font-size: 1.5rem;
   font-weight: normal;
   box-sizing: border-box;
-  padding-top: 4rem;
+  text-align: right;
+  color: rgb(153, 153, 153);
 }
+
 .ResourceCard .CardHeader {
   border: none;
   outline: 0;
@@ -35,7 +36,6 @@
   font-size: 16px;
   border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
   padding: 0.75rem 1.25rem;
-  margin-bottom: 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 
