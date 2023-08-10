@@ -246,7 +246,7 @@ const AdminUserOverviewPage = () => {
                     <div className="AChartsArea">
                       <div>
                         <AreaChart
-                          width={1100}
+                          width={1200}
                           height={300}
                           syncId="anyId"
                           data={
