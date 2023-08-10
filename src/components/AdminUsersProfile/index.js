@@ -1,7 +1,7 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {Redirect} from "react-router-dom";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import addUserCredits, {
   clearCreditsState,
 } from "../../redux/actions/addCredits";
@@ -9,10 +9,9 @@ import "./AdminUserPage.css";
 import Header from "../Header";
 import Spinner from "../Spinner";
 import InformationBar from "../InformationBar";
-import SideNav from "../SideNav";
 import Modal from "../Modal";
 import DeleteWarning from "../../components/DeleteWarning";
-import {ReactComponent as Coin} from "../../assets/images/coin.svg";
+import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 import SettingsButton from "../SettingsButton";
 import BlackInputText from "../BlackInputText";
 import PrimaryButton from "../PrimaryButton";
@@ -26,9 +25,9 @@ import {
   nameStringToHslColor,
   avatarName,
 } from "../../helpers/projectName";
-import {DisplayDateTime} from "../../helpers/dateConstants";
-import {Link} from "react-router-dom";
-
+import { DisplayDateTime } from "../../helpers/dateConstants";
+import { Link } from "react-router-dom";
+import { getUserProjects } from "../../helpers/projectCount";
 class AdminUserPage extends Component {
   constructor() {
     super();
@@ -66,16 +65,22 @@ class AdminUserPage extends Component {
       adminGetUserCredits,
       clearUserCredits,
       clearCreditsState,
-      match: {params},
+      match: { params },
     } = this.props;
-    clearCreditsState();
+    getUserProjects(params.userID).then((projectsCount) => {
+      this.setState({
+        projectsCount: projectsCount.projectsCount,
+        activeProjectsCount: projectsCount.activeProjectsCount,
+        disabledProjectsCount: projectsCount.disabledProjectsCount,
+      });
+    });
+   clearCreditsState();
     clearUserCredits();
     adminGetUserCredits(params.userID);
   }
 
   componentDidUpdate(prevProps) {
-    const {Added, isDeleteUser, isDisableUser} = this.props;
-
+    const { Added, isDeleteUser, isDisableUser } = this.props;
     if (Added !== prevProps.Added) {
       this.hideCreditsModal();
     }
@@ -88,39 +93,39 @@ class AdminUserPage extends Component {
   }
 
   handleDeleteAlert(e, userID) {
-    const {deleteUser} = this.props;
+    const { deleteUser } = this.props;
     e.preventDefault();
     deleteUser(userID);
   }
   showDeleteAlert() {
-    this.setState({openDeleteAlert: true});
+    this.setState({ openDeleteAlert: true });
   }
   hideDeleteAlert() {
-    this.setState({openDeleteAlert: false});
+    this.setState({ openDeleteAlert: false });
   }
   handleDisableAlert(e, userID) {
-    const {disableUser} = this.props;
+    const { disableUser } = this.props;
     e.preventDefault();
     disableUser(userID);
   }
   showDisableAlert() {
-    this.setState({openDisableAlert: true});
+    this.setState({ openDisableAlert: true });
   }
   hideDisableAlert() {
-    this.setState({openDisableAlert: false});
+    this.setState({ openDisableAlert: false });
   }
   handleClick = (e) => {
     if (this.state.actionsMenu) {
       // this.closeModal();
       return;
     }
-    this.setState({actionsMenu: true});
+    this.setState({ actionsMenu: true });
     e.stopPropagation();
     document.addEventListener("click", this.hideModal);
   };
 
   hideModal = () => {
-    this.setState({actionsMenu: false});
+    this.setState({ actionsMenu: false });
     document.removeEventListener("click", this.hideModal);
   };
 
@@ -136,10 +141,10 @@ class AdminUserPage extends Component {
     });
   }
   handleCreditSubmittion() {
-    const {credits, creditDescription} = this.state;
+    const { credits, creditDescription } = this.state;
     const {
       addUserCredits,
-      match: {params},
+      match: { params },
     } = this.props;
     if (credits !== "" && creditDescription !== "") {
       const creditsObject = {
@@ -156,7 +161,7 @@ class AdminUserPage extends Component {
     });
   }
   hideCreditsModal = () => {
-    const {clearCreditsState} = this.props;
+    const { clearCreditsState } = this.props;
     clearCreditsState();
     this.setState({
       addCredits: false,
@@ -177,8 +182,8 @@ class AdminUserPage extends Component {
     });
   }
   handleBetaUserSubmit() {
-    const {selectedUser} = this.state;
-    const {addBetaUser} = this.props;
+    const { selectedUser } = this.state;
+    const { addBetaUser } = this.props;
     const betaUser = {
       is_beta_user: true,
       user_id: selectedUser,
@@ -187,7 +192,7 @@ class AdminUserPage extends Component {
   }
 
   renderRedirect = () => {
-    const {Added, isDeleteUser, isDisableUser} = this.props;
+    const { Added, isDeleteUser, isDisableUser } = this.props;
 
     if (Added) {
       return <Redirect to={`/accounts`} noThrow />;
@@ -218,27 +223,21 @@ class AdminUserPage extends Component {
       userDeleteFailed,
       userDisableFailed,
     } = this.props;
-
-    const clusterName = localStorage.getItem("clusterName");
-    const clusterID = localStorage.getItem("clusterID");
-    const {userID} = this.props.match.params;
+    const { userID } = this.props.match.params;
     const {
-      match: {params},
+      match: { params },
     } = this.props;
-    const {credits, creditDescription, openDeleteAlert, openDisableAlert} =
+    const { credits, creditDescription, openDeleteAlert, openDisableAlert } =
       this.state;
     const user = getUser(users, params.userID);
-    const {credit_assignment_records} = userCredits;
+    const { credit_assignment_records } = userCredits;
     return (
       <div className="MainPage">
         {Added ? this.renderRedirect() : null}
         <div className="TopBarSection">
           <Header />
         </div>
-        <div className="MainSection">
-          <div className="SideBarSection">
-            <SideNav clusterName={clusterName} clusterId={clusterID} />
-          </div>
+        <div className="Mainsection">
           <div className="MainContentSection">
             <div className="InformationBarSection">
               <InformationBar
@@ -251,6 +250,7 @@ class AdminUserPage extends Component {
                   </span>
                 }
                 showBtn={false}
+                showBackBtn
               />
             </div>
             <div className="ContentSection">
@@ -275,6 +275,14 @@ class AdminUserPage extends Component {
                     <div className="ProfileInfoRow">
                       <div className="ProfileInfoAttribute">Email:</div>
                       <div className="ProfileInfoValue">{user?.email}</div>
+                    </div>
+                    <div className="ProfileInfoRow">
+                      <div className="ProfileInfoAttribute">Projects:</div>
+                      <div className="ProfileInfoValue">
+                        {this.state.projectsCount} Projects |{" "}
+                        {this.state.activeProjectsCount} Active |{" "}
+                        {this.state.disabledProjectsCount} Disabled
+                      </div>
                     </div>
                     <div className="ProfileInfoRow">
                       <div className="ProfileInfoAttribute">User Role:</div>
@@ -588,10 +596,10 @@ AdminUserPage.defaultProps = {
 };
 
 export const mapStateToProps = (state) => {
-  const {isFetching, users, isFetched} = state.usersListReducer;
-  const {isAdded, isAdding, isFailed, error} = state.addBetaUserReducer;
-  const {Added, Adding, Failed} = state.addUserCreditsReducer;
-  const {userCredits, creditsFetched, isFetchingCredits, clearUserCredits} =
+  const { isFetching, users, isFetched } = state.usersListReducer;
+  const { isAdded, isAdding, isFailed, error } = state.addBetaUserReducer;
+  const { Added, Adding, Failed } = state.addUserCreditsReducer;
+  const { userCredits, creditsFetched, isFetchingCredits, clearUserCredits } =
     state.adminGetUserCreditsReducer;
   return {
     isFetching,
