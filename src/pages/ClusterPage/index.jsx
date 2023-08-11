@@ -176,13 +176,13 @@ const ClusterPage = ({
             </div>
           </>
         </Link>
-        <div className={styles.ResourceCard}>
+        <Link to="/allclusters" className={styles.ResourceCard}>
           <div className={styles.CardHeader}>Clusters</div>
           <div className={styles.CardTop}>Count</div>
           <div className={styles.ResourceDigit}>
             {clusters?.metadata?.cluster_count}
           </div>
-        </div>
+        </Link>
 
         <div className={styles.ResourceCard}>
           <div className={styles.CardHeader}>Apps</div>
