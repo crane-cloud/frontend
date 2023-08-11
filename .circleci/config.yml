@@ -132,7 +132,7 @@ workflows:
             - test_and_report
           filters:
             branches:
-              only: develop
+              only: fx-monitoring-env
       - build_and_deploy_production:
           requires:
             - test_and_report
