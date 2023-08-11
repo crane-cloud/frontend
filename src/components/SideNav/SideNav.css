@@ -66,28 +66,28 @@
 }
 
 .ListItem {
-  height: 21px;
+  height: 2.5rem;
   background-color: var(--primary-dark-color);
   font-style: normal;
   font-weight: bold;
-  font-size: 16px;
-  line-height: 19px;
+  font-size: 1.3rem;
+  /* line-height: 19px; */
   color: var(--secondary-color);
-  margin-top: 20px;
+  margin-top: 2rem;
   cursor: pointer;
-  padding-left: 18px;
+  padding-left: 1.5rem;
   text-transform: capitalize;
   display: block;
 }
 
 .SubListItem {
-  height: 21px;
+  /* height: 21px; */
   font-style: normal;
   font-weight: normal;
-  font-size: 16px;
-  line-height: 19px;
+  font-size: 1.2rem;
+  /* line-height: 19px; */
   color: var(--primary-light-color);
-  padding: 8px 0px 8px 20px;
+  padding: 1rem 1.5rem;
   cursor: pointer;
   display: block;
   text-transform: capitalize;
