@@ -68,14 +68,12 @@
   /* horizontal */
   justify-content: center;
   /* vertical */
-  margin-left: 250px;
-}
+ }
 
 .UserProfileInfo {
   display: grid;
   grid-template-rows: repeat(6, 1fr);
-  margin-left: 100px;
-}
+ }
 
 .ProfileInfoRow { 
   display: grid;
@@ -279,9 +277,7 @@
   gap: 1rem;
   padding : 1rem 0 3rem 0;
   width: 100%;
-  margin: auto;
-  margin-left: 30px;
-}
+  }
 .ProjectInstructions {
   padding: 1rem;
   background: #ffffff;
