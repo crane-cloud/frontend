@@ -13,7 +13,79 @@
   background: var(--gray-bg-light-color);
 }
 
-.AChartsArea{
-  
+.AChartsArea {
   width: 100%;
+}
+
+.TitleArea .SelectElementValue {
+  gap: 1.5rem;
+  padding: 0.8rem;
+  font-weight: bold;
+}
+
+.TitleArea .SelectElementValue:hover {
+  cursor: pointer;
+}
+
+.TitleArea .XSearchBar {
+  padding-bottom: 0.5rem;
+}
+
+.VisualArea .SectionTitle {
+  font-weight: bold;
+  border-bottom: none;
+}
+
+.ChartContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  padding: 2rem;
+  gap: 20px;
+}
+
+.VisualArea {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  border: 1px solid #ccc;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 0.6rem;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.VisualAreaHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+}
+
+.VisualAreaText {
+  padding-top: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.PieContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.ChartColumn {
+  flex: 1;
+  padding-right: 20px;
+  /* Add spacing between the columns */
+}
+
+.PercentageColumn {
+  padding-right: 3rem;
+}
+
+.KeyItems {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }

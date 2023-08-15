@@ -145,38 +145,8 @@ const UserAccounts = () => {
   return (
     <div className="APage">
       {isAdded ? renderRedirect() : null}
-      <div className="TopRow">
-        <Header />
-        <InformationBar
-          header={
-            <span>
-              <Link className="breadcrumb" to={`/accounts`}>
-                Overview
-              </Link>
-              / Users Listing
-            </span>
-          }
-          showBackBtn
-          
-        />
-      </div>
       <div className="AMainSection">
         <div className="ContentSection">
-          <div className="XSearchBar">
-            <div className="AdminSearchInput">
-              <input
-                type="text"
-                className="searchTerm"
-                name="Searchword"
-                placeholder="Search for account"
-                value={word}
-                onChange={(e) => {
-                  handleCallbackSearchword(e);
-                }}
-              />
-              <SearchButton className="SearchIcon" />
-            </div>
-          </div>
           <div
             className={
               isFetching
