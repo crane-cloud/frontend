@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Spinner from "../../components/Spinner";
 import { dateInWords } from "../../helpers/dateConstants";
 import { retrieveDefaultDateRanges } from "../../helpers/dateRanges.js";
@@ -9,8 +9,6 @@ import usePaginator from "../../hooks/usePaginator";
 import Pagination from "../../components/Pagination";
 import { useSelector, useDispatch } from "react-redux";
 import adminGetInactiveUsers from "../../redux/actions/getInactiveUsers.js";
-import { useCallback } from "react";
-import { useEffect } from "react";
 import { compareLastSeen } from "../../helpers/compareLastSeen";
 import BlackInputText from "../BlackInputText";
 
@@ -47,10 +45,6 @@ const AdminInactiveUsers = () => {
     inactiveUsersList();
   };
 
-  const handleReload = () => {
-    inactiveUsersList();
-  };
-
   const handleDateRangeChange = (selectedOption) => {
     const selectedValue = selectedOption.value;
     setSelectedDateRange(selectedValue);
@@ -75,18 +69,11 @@ const AdminInactiveUsers = () => {
 
   return (
     <>
-      <div className="TitleArea">
-        <div className="SectionTitle">
-          Active Users{" "}
-          <PrimaryButton onClick={handleReload} className="RefreshButton">
-            Refresh List
-          </PrimaryButton>
-        </div>
-      </div>
-
       {isFetchingInactiveUsers ? (
         <div className="SpinnerArea">
-          <Spinner />
+          <div className="SpinnerWrapper">
+            <Spinner size="big" />
+          </div>
         </div>
       ) : inactiveUsersFetched && inactiveUsers.length === 0 ? (
         <div className="NoResourcesMessage">No inactive users found.</div>
@@ -125,7 +112,7 @@ const AdminInactiveUsers = () => {
                 <tr>
                   <th>Name</th>
                   <th>Email</th>
-                  <th>Date Created</th>
+                  <th>Date Joined</th>
                   <th>Last Login</th>
                 </tr>
               </thead>

@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useDispatch } from "react-redux";
+import getUsersList from "../../redux/actions/users";
 import Header from "../../components/Header";
 import InformationBar from "../../components/InformationBar";
 import { handleGetRequest } from "../../apis/apis.js";
@@ -18,22 +20,25 @@ import {
 } from "recharts";
 import { filterGraphData } from "../../helpers/filterGraphData.js";
 import { retrieveMonthNames } from "../../helpers/monthNames.js";
-import AdminInactiveUsers from "../../components/AdminInactiveUsers";
 import NewResourceCard from "../../components/NewResourceCard";
 import { getUserCategories } from "../../helpers/userCategories";
+import AdminInactiveUsers from "../../components/AdminInactiveUsers";
 import "./AdminUserOverviewPage.css";
 import { createUsersPieChartData } from "../../helpers/usersPieChartData";
 import { createUserGraphData } from "../../helpers/usersGraphData";
-import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
-import UserAccounts from "../../components/UserAccounts";
+import UserListing from "../../components/UserListing";
+import usePaginator from "../../hooks/usePaginator";
 
 const AdminUserOverviewPage = () => {
   const [users, setUsers] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
   const [period, setPeriod] = useState("all");
-  const [sectionValue, setSectionValue] = useState("");
+  const [sectionValue, setSectionValue] = useState("all");
+  const [word, setWord] = useState("");
+  const [currentPage, handleChangePage] = usePaginator();
+  const dispatch = useDispatch();
 
   const COLORS = ["#0088FE", "#0DBC00", "#F9991A"];
 
@@ -96,6 +101,35 @@ const AdminUserOverviewPage = () => {
   const handleSectionChange = (selectedOption) => {
     const selectedValue = selectedOption.value;
     setSectionValue(selectedValue);
+  };
+
+  const gettingUsers = useCallback(
+    (page, keyword = "") => dispatch(getUsersList(page, keyword)),
+    [dispatch]
+  );
+
+  const searchThroughAccounts = (keyword) => {
+    // use api
+    handleChangePage(1);
+    gettingUsers(1, keyword);
+  };
+
+  const handleCallbackSearchword = ({ target }) => {
+    const { value } = target;
+    setWord(value);
+    if (value !== "") {
+      searchThroughAccounts(value);
+    }
+    if (value === "") {
+      // setSearchList([]);
+      handleChangePage(1);
+      gettingUsers(1);
+    }
+  };
+
+  const handlePageChange = (currentPage) => {
+    handleChangePage(currentPage);
+    gettingUsers();
   };
 
   return (
@@ -229,7 +263,7 @@ const AdminUserOverviewPage = () => {
                   xAxisId={1}
                   dx={10}
                   label={{
-                    value: "Months in a Year",
+                    value: "Months",
                     angle: 0,
                     position: "outside",
                   }}
@@ -343,10 +377,10 @@ const AdminUserOverviewPage = () => {
                       className="searchTerm"
                       name="Searchword"
                       placeholder="Search for account"
-                      //value={word}
-                      // onChange={(e) => {
-                      //   handleCallbackSearchword(e);
-                      // }}
+                      value={word}
+                      onChange={(e) => {
+                        handleCallbackSearchword(e);
+                      }}
                     />
                     <SearchButton className="SearchIcon" />
                   </div>
@@ -355,9 +389,18 @@ const AdminUserOverviewPage = () => {
             </div>
           </div>
 
-          <UserAccounts />
-
-          {/* <AdminInactiveUsers /> */}
+          {sectionValue === "active" ? (
+            <AdminInactiveUsers />
+          ) : (
+            <>
+              <UserListing
+                tableType={sectionValue}
+                gettingUsers={gettingUsers}
+                handlePageChange={handlePageChange}
+                currentPage={currentPage}
+              />
+            </>
+          )}
         </div>
       </div>
     </div>
