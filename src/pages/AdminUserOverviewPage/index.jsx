@@ -172,9 +172,8 @@ const AdminUserOverviewPage = () => {
                           <div className="PeriodContainer">
                             <div className="PeriodButtonsSection">
                               <div
-                                className={`${
-                                  period === "3" && "PeriodButtonActive"
-                                } PeriodButton`}
+                                className={`${period === "3" && "PeriodButtonActive"
+                                  } PeriodButton`}
                                 name="3month"
                                 value="3"
                                 role="presentation"
@@ -183,9 +182,8 @@ const AdminUserOverviewPage = () => {
                                 3m
                               </div>
                               <div
-                                className={`${
-                                  period === "4" && "PeriodButtonActive"
-                                } PeriodButton`}
+                                className={`${period === "4" && "PeriodButtonActive"
+                                  } PeriodButton`}
                                 name="4months"
                                 value="4"
                                 role="presentation"
@@ -194,9 +192,8 @@ const AdminUserOverviewPage = () => {
                                 4m
                               </div>
                               <div
-                                className={`${
-                                  period === "6" && "PeriodButtonActive"
-                                } PeriodButton`}
+                                className={`${period === "6" && "PeriodButtonActive"
+                                  } PeriodButton`}
                                 name="6months"
                                 value="6"
                                 role="presentation"
@@ -205,9 +202,8 @@ const AdminUserOverviewPage = () => {
                                 6m
                               </div>
                               <div
-                                className={`${
-                                  period === "8" && "PeriodButtonActive"
-                                } PeriodButton`}
+                                className={`${period === "8" && "PeriodButtonActive"
+                                  } PeriodButton`}
                                 name="8months"
                                 value="8"
                                 role="presentation"
@@ -216,9 +212,8 @@ const AdminUserOverviewPage = () => {
                                 8m
                               </div>
                               <div
-                                className={`${
-                                  period === "12" && "PeriodButtonActive"
-                                } PeriodButton`}
+                                className={`${period === "12" && "PeriodButtonActive"
+                                  } PeriodButton`}
                                 name="1year"
                                 value="12"
                                 role="presentation"
@@ -227,9 +222,8 @@ const AdminUserOverviewPage = () => {
                                 1y
                               </div>
                               <div
-                                className={`${
-                                  period === "all" && "PeriodButtonActive"
-                                } PeriodButton`}
+                                className={`${period === "all" && "PeriodButtonActive"
+                                  } PeriodButton`}
                                 name="all"
                                 value="all"
                                 role="presentation"
@@ -246,7 +240,7 @@ const AdminUserOverviewPage = () => {
                     <div className="AChartsArea">
                       <div>
                         <AreaChart
-                          width={1100}
+                          width={1220}
                           height={300}
                           syncId="anyId"
                           data={
@@ -270,7 +264,7 @@ const AdminUserOverviewPage = () => {
                               angle: 0,
                               position: "bottom",
                             }}
-                            interval={12}
+                            interval={10}
                             dataKey="Year"
                             tickLine={false}
                             tick={{ fontSize: 12, angle: 0 }}
