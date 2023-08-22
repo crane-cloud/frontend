@@ -68,14 +68,14 @@
   /* horizontal */
   justify-content: center;
   /* vertical */
-}
+ }
 
 .UserProfileInfo {
   display: grid;
   grid-template-rows: repeat(6, 1fr);
-}
+ }
 
-.ProfileInfoRow {
+.ProfileInfoRow { 
   display: grid;
   grid-template-columns: 20% auto;
 }
@@ -276,7 +276,8 @@
   flex-direction: column;
   gap: 1rem;
   padding : 1rem 0 3rem 0;
-}
+  width: 100%;
+  }
 .ProjectInstructions {
   padding: 1rem;
   background: #ffffff;
@@ -284,7 +285,9 @@
   border: 1px solid var(--gray-light-color);
   display: grid;
   gap: 1rem;
-}
+ 
+  }
+
 .SettingsSectionInfo {
   display: flex;
   align-items: center;
