@@ -349,18 +349,18 @@ class AdminUserPage extends Component {
                               credit_assignment_records.map((credit) => (
                                 <div className="CreditsHeaderRow">
                                   <div className="CreditsRowAttribute">
-                                    {credit.id}
+                                    {credit?.id}
                                   </div>
                                   <div className="CreditsRowAttribute">
                                     {DisplayDateTime(
-                                      new Date(credit.date_created)
+                                      new Date(credit?.date_created)
                                     )}
                                   </div>
                                   <div className="CreditsRowAttribute">
-                                    {credit.amount}
+                                    {credit?.amount}
                                   </div>
                                   <div className="CreditsRowAttribute">
-                                    {credit.description}
+                                    {credit?.description}
                                   </div>
                                 </div>
                               ))
@@ -396,7 +396,7 @@ class AdminUserPage extends Component {
                         key={1}
                         title="Credits"
                         count={
-                          user.credits.length === 0 ? 0 : user.credits[0].amount
+                          user?.credits.length === 0 ? 0 : user?.credits[0].amount
                         }
                       />
                     </div>
@@ -474,7 +474,7 @@ class AdminUserPage extends Component {
                               <div className="InnerModalDescription">
                                 Are you sure you want to delete this user &nbsp;
                                 <span className="DatabaseName">
-                                  {user.name} ?
+                                  {user?.name} ?
                                 </span>
                                 <DeleteWarning />
                               </div>
@@ -518,7 +518,7 @@ class AdminUserPage extends Component {
                                 Are you sure you want to disable this user
                                 &nbsp;
                                 <span className="DatabaseName">
-                                  {user.name} ?
+                                  {user?.name} ?
                                 </span>
                                 <DeleteWarning />
                               </div>
