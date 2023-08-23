@@ -28,6 +28,7 @@ import {
 import { DisplayDateTime } from "../../helpers/dateConstants";
 import { Link } from "react-router-dom";
 import { getUserProjects } from "../../helpers/projectCount";
+import NewResourceCard from "../NewResourceCard";
 class AdminUserPage extends Component {
   constructor() {
     super();
@@ -74,7 +75,7 @@ class AdminUserPage extends Component {
         disabledProjectsCount: projectsCount.disabledProjectsCount,
       });
     });
-   clearCreditsState();
+    clearCreditsState();
     clearUserCredits();
     adminGetUserCredits(params.userID);
   }
@@ -374,7 +375,19 @@ class AdminUserPage extends Component {
                     </div>
                   </div>
                 )}
-
+                <div>
+                  <div className="SectionTitle">User Platform Metrics</div>
+                  <div className="ClusterContainer">
+                    <NewResourceCard key={1} title="Projects Owned" count={4} />
+                    <NewResourceCard key={1} title="Apps Deployed" count={6} />
+                    <NewResourceCard
+                      key={1}
+                      title="Databases Created"
+                      count={3}
+                    />
+                    <NewResourceCard key={1} title="Credits" count={43} />
+                  </div>
+                </div>
                 <div className="AdminDBSections">
                   <div className="SectionTitle">Manage User</div>
                   <div className="ProjectInstructions">
