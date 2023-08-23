@@ -1,0 +1,33 @@
+.project_details {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.details_styles {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.flex_details {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.status_dot_red {
+  height: 0.1rem;
+  width: 0.1rem;
+  border-radius: 50%;
+  background-color: #ff0000;
+}
+
+.status_dot_green {
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 50%;
+  background-color: #00ff00;
+}
