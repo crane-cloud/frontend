@@ -29,6 +29,10 @@ import { DisplayDateTime } from "../../helpers/dateConstants";
 import { Link } from "react-router-dom";
 import { getUserProjects } from "../../helpers/projectCount";
 import NewResourceCard from "../NewResourceCard";
+import userProfleStyles from "../UserProfile/UserProfile.module.css";
+import Avatar from "../Avatar";
+import moment from "moment";
+
 class AdminUserPage extends Component {
   constructor() {
     super();
@@ -141,6 +145,7 @@ class AdminUserPage extends Component {
       betaUserModal: true,
     });
   }
+
   handleCreditSubmittion() {
     const { credits, creditDescription } = this.state;
     const {
@@ -256,73 +261,65 @@ class AdminUserPage extends Component {
             </div>
             <div className="ContentSection">
               <div className="AdminUserPageContainer">
-                <div className="UserProfile">
-                  <div className="UserProfileIcon">
-                    <div
-                      className="UserAvatar"
-                      style={{
-                        backgroundColor: nameStringToHslColor(user?.name),
-                        color: "#555",
-                      }}
-                    >
-                      {avatarName(user?.name)}
-                    </div>
-                  </div>
-                  <div className="UserProfileInfo">
-                    <div className="ProfileInfoRow">
-                      <div className="ProfileInfoAttribute">Name:</div>
-                      <div className="ProfileInfoValue">{user?.name}</div>
-                    </div>
-                    <div className="ProfileInfoRow">
-                      <div className="ProfileInfoAttribute">Email:</div>
-                      <div className="ProfileInfoValue">{user?.email}</div>
-                    </div>
-                    <div className="ProfileInfoRow">
-                      <div className="ProfileInfoAttribute">Projects:</div>
-                      <div className="ProfileInfoValue">
-                        Has {this.state.projectsCount} Projects |{" "}
-                        {this.state.activeProjectsCount} Active |{" "}
-                        {this.state.disabledProjectsCount} Disabled
-                      </div>
-                    </div>
-                    <div className="ProfileInfoRow">
-                      <div className="ProfileInfoAttribute">User Role:</div>
-                      <div className="ProfileInfoValue">
-                        {user?.roles?.length > 0 ? user?.roles[0].name : "None"}
-                      </div>
-                    </div>
-                    <div className="ProfileInfoRow">
-                      <div className="ProfileInfoAttribute">Beta User:</div>
-                      <div className="ProfileInfoValue">
-                        {user?.is_beta_user ? "True" : "False"}
-                      </div>
-                    </div>
-                    <div className="ProfileInfoRow">
-                      <div className="ProfileInfoAttribute">Verified:</div>
-                      <div className="ProfileInfoValue">
-                        {user?.verified ? "True" : "False"}
-                      </div>
-                    </div>
-                    <div className="ProfileInfoRow">
-                      <div className="ProfileInfoAttribute">Credits:</div>
-                      <div className=" CreditsButton">
-                        <div className="CreditsWrap">
-                          {user?.credits.length > 0
-                            ? user?.credits[0].amount
-                            : 0}
-                          <Coin />
+                <section>
+                  <div className="SectionTitle">Personal information</div>
+
+                  <div className="AdminUserProfileInfoSect">
+                    <div className="AdminUserProfileInfoHeader">
+                      <Avatar
+                        name={user.name}
+                        className={userProfleStyles.UserAvatarLarge}
+                      />
+                      <div className={userProfleStyles.Identity}>
+                        <div className={userProfleStyles.IdentityName}>
+                          {user.name}
+                          {user.is_beta_user === true && (
+                            <div className={userProfleStyles.BetaUserDiv}>
+                              Beta User
+                            </div>
+                          )}
                         </div>
-                        <>
-                          <SettingsButton
-                            label="Add Credits"
-                            className="BlueButton"
-                            onClick={this.showCreditsModal}
-                          />
-                        </>
+                        <div className={userProfleStyles.IdentityEmail}>
+                          {user.email}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="AdminProfileRowInfo">
+                      <div className="AdminProfileRowItem">
+                        Verified:
+                        <span>{user?.verified ? "True" : "False"}</span>
+                      </div>
+                      |
+                      <div className="AdminProfileRowItem">
+                        Role:
+                        <span>
+                          {user?.roles?.length > 0
+                            ? user?.roles[0].name
+                            : "None"}
+                        </span>
+                      </div>
+                      |
+                      <div className="AdminProfileRowItem">
+                        Date Joined:
+                        <span>
+                          {moment(user.date_created)
+                            .utc()
+                            .format("ddd, MMMM DD, yyyy")}
+                        </span>
+                      </div>
+                      |
+                      <div className="AdminProfileRowItem">
+                        Last Seen:
+                        <span>
+                          {moment(user.last_seen)
+                            .utc()
+                            .format("ddd, MMMM DD, yyyy")}
+                        </span>
                       </div>
                     </div>
                   </div>
-                </div>
+                </section>
                 {/* Credential history */}
                 {credit_assignment_records?.length > 0 && (
                   <div className="CreditsAlotted">
@@ -385,13 +382,38 @@ class AdminUserPage extends Component {
                       title="Databases Created"
                       count={3}
                     />
-                    <NewResourceCard key={1} title="Credits" count={43} />
+                    <NewResourceCard
+                      key={1}
+                      title="Credits"
+                      count={
+                        user.credits.length === 0 ? 0 : user.credits[0].amount
+                      }
+                    />
                   </div>
                 </div>
                 <div className="AdminDBSections">
                   <div className="SectionTitle">Manage User</div>
                   <div className="ProjectInstructions">
                     <div className="MemberBody">
+                      <div className="MemberTableRow">
+                        <div className="SettingsSectionInfo">
+                          <div className="SubTitle">
+                            Add Credits to User
+                            <br />
+                            <div className="SubTitleContent">
+                              This will add credits to the user.
+                            </div>
+                          </div>
+                          <div className="SectionButtons">
+                            <PrimaryButton
+                              color="primary-outline"
+                              onClick={this.showCreditsModal}
+                            >
+                              Add Credits
+                            </PrimaryButton>
+                          </div>
+                        </div>
+                      </div>
                       <div className="MemberTableRow">
                         <div className="SettingsSectionInfo">
                           <div className="SubTitle">
