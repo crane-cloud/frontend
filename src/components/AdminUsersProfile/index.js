@@ -375,7 +375,11 @@ class AdminUserPage extends Component {
                 <div>
                   <div className="SectionTitle">User Platform Metrics</div>
                   <div className="ClusterContainer">
-                    <NewResourceCard key={1} title="Projects Owned" count={4} />
+                    <NewResourceCard
+                      key={1}
+                      title="Projects Owned"
+                      count={this.state.projectsCount}
+                    />
                     <NewResourceCard key={1} title="Apps Deployed" count={6} />
                     <NewResourceCard
                       key={1}
