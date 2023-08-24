@@ -25,6 +25,10 @@
 .ProjectStatusDisabled{
     color: red;
 }
+.SearchBar , .AdminSearchInput{
+    float : right;
+    padding-right: 1.5rem;
+}
 
 .DropDownLink {
     text-align: center;

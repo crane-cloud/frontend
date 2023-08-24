@@ -1,46 +1,285 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import "./ProjectList.css";
 import InformationBar from "../../components/InformationBar";
 import Header from "../../components/Header";
 import getAdminProjectsList from "../../redux/actions/adminProjectsList";
 import getUsersList from "../../redux/actions/users";
 import Spinner from "../../components/Spinner";
-import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import {useSelector, useDispatch} from "react-redux";
+// import { Link } from "react-router-dom";
 import usePaginator from "../../hooks/usePaginator";
 import Pagination from "../../components/Pagination";
-import { handleGetRequest } from "../../apis/apis.js";
-import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
-
+import {handleGetRequest} from "../../apis/apis.js";
+import {ReactComponent as SearchButton} from "../../assets/images/search.svg";
+import {namedOrganisations} from "../../helpers/projectOrganisations.js";
+import {retrieveProjectTypes} from "../../helpers/projecttypes.js";
+import {filterGraphData} from "../../helpers/filterGraphData.js";
+import MetricsCard from "../../components/MetricsCard";
+import {retrieveMonthNames} from "../../helpers/monthNames.js";
+import NewResourceCard from "../../components/NewResourceCard";
+import Select from "../../components/Select";
+import {projectPieCategories} from "../../helpers/projectPieCat";
+import {
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  AreaChart,
+  Area,
+  Tooltip,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
 
 const AdminProjectsList = () => {
   const [currentPage, handleChangePage] = usePaginator();
   const dispatch = useDispatch();
   const [word, setWord] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [sectionValue, setSectionValue] = useState(
+    "Project Categories Summary"
+  );
+  const projectTypeCounts = {};
+  const projectOrganisationCount = {};
+  const [project, setProject] = useState([]);
+  const [period, setPeriod] = useState("all");
+  const graphDataArray = [];
+  const graphData = {};
+  const newGraphData = {};
+  const newGraphDataArray = [];
+  let createPieChartData = [];
+  let createNewPieChartData = [];
+  let filteredGraphData = [];
+  let newFilteredGraphData = [];
 
-  const { isRetrieved , isRetrieving, projects, pagination} = useSelector(
+  const COLORS = [
+    "#0088FE",
+    "#0DBC00",
+    "#F9991A",
+    "#AE0000",
+    "#000000",
+    "#800080",
+  ];
+
+  const availablePieChartCategories = projectPieCategories();
+
+  const handleSectionChange = (selectedOption) => {
+    const selectedValue = selectedOption.value;
+    console.log("Selected Value:", selectedValue);
+    setSectionValue(selectedValue);
+  };
+
+  const {isRetrieved, isRetrieving, projects, pagination} = useSelector(
     (state) => state.adminProjectsReducer
   );
 
   const AdminProjects = useCallback(
-    (page, keyword='') => dispatch(getAdminProjectsList(page,keyword)),
+    (page, keyword = "") => dispatch(getAdminProjectsList(page, keyword)),
     [dispatch]
-    );
+  );
 
   const getUsersProps = useCallback(() => dispatch(getUsersList), [dispatch]);
- 
+
   const [users, setUsers] = useState([]);
 
-  useEffect(()=>{
-    AdminProjects(currentPage);
-  },[currentPage,AdminProjects]);
+  const getAllProjects = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await handleGetRequest(`/projects`);
+      if (response.data.data.projects.length > 0) {
+        const totalNumberOfProjects = response.data.data.pagination.total;
+        handleGetRequest(`/projects?per_page=${totalNumberOfProjects}`)
+          .then((response) => {
+            if (response.data.data.projects.length > 0) {
+              setProject(response.data.data.projects);
+              setLoading(false);
+            } else {
+              throw new Error("No projects found");
+            }
+          })
+          .catch(() => {
+            setFeedback("Failed to fetch all projects, please try again");
+          });
+      } else {
+        setFeedback("No projects found");
+      }
+    } catch (error) {
+      setFeedback("Failed to fetch projects, please try again");
+    }
+  }, [setProject, setLoading, setFeedback]);
 
+  // create graph data for first graph
+  const createGraphData = () => {
+    if (!project) {
+      return [];
+    }
+
+    project.forEach((p) => {
+      const date = new Date(p.date_created);
+      const year = date.getFullYear();
+      const month = parseInt(
+        date.toLocaleString("default", {month: "2-digit"}),
+        10
+      );
+
+      const projectType = p.project_type;
+      if (!graphData[year]) {
+        graphData[year] = {};
+      }
+      if (!graphData[year][month]) {
+        graphData[year][month] = {};
+      }
+      if (!graphData[year][month][projectType]) {
+        graphData[year][month][projectType] = 1;
+      } else {
+        graphData[year][month][projectType]++;
+      }
+    });
+
+    Object.keys(graphData).forEach((year) => {
+      Object.keys(graphData[year]).forEach((month) => {
+        const monthData = graphData[year][month];
+        const totalProjects = Object.values(monthData).reduce(
+          (acc, val) => acc + val,
+          0
+        );
+        graphDataArray.push({
+          Month: `${month}`,
+          Year: year,
+          Value: totalProjects,
+        });
+      });
+    });
+
+    return graphDataArray;
+  };
+
+  // create graph data for second graph
+  const createNewGraphData = () => {
+    if (!project) {
+      return [];
+    }
+
+    project.forEach((p) => {
+      const date = new Date(p.date_created);
+      const year = date.getFullYear();
+      const month = parseInt(
+        date.toLocaleString("default", {month: "2-digit"}),
+        10
+      );
+
+      const projectType = p.project_type;
+      if (!newGraphData[year]) {
+        newGraphData[year] = {};
+      }
+      if (!newGraphData[year][month]) {
+        newGraphData[year][month] = {};
+      }
+      if (!newGraphData[year][month][projectType]) {
+        newGraphData[year][month][projectType] = 1;
+      } else {
+        newGraphData[year][month][projectType]++;
+      }
+    });
+
+    Object.keys(newGraphData).forEach((year) => {
+      Object.keys(newGraphData[year]).forEach((month) => {
+        const monthData = newGraphData[year][month];
+
+        const personalCount = monthData["Personal"] || 0;
+        const researchCount = monthData["Research"] || 0;
+        const studentCount = monthData["Student"] || 0;
+        const commercialCount = monthData["Commercial"] || 0;
+        const charityCount = monthData["Charity"] || 0;
+        const otherCount = monthData["Other"] || 0;
+
+        newGraphDataArray.push({
+          Month: `${month}`,
+          Year: year,
+          Personal: personalCount,
+          Research: researchCount,
+          Student: studentCount,
+          Commercial: commercialCount,
+          Charity: charityCount,
+          Other: otherCount,
+        });
+      });
+    });
+
+    return newGraphDataArray;
+  };
+
+  // this function call will creates the graph data for first graph
+  createGraphData();
+
+  // this function call will creates the graph data for second graph
+  createNewGraphData();
+
+  // these function calls will filter the first & second graph data basing on a particular period
+  filteredGraphData = filterGraphData(graphDataArray, period);
+  newFilteredGraphData = filterGraphData(newGraphDataArray, period);
+
+  const handleChange = ({target}) => {
+    setPeriod(target.getAttribute("value"));
+  };
+
+  useEffect(() => {
+    AdminProjects(currentPage);
+  }, [currentPage, AdminProjects]);
 
   useEffect(() => {
     getUsersProps();
     fetchUsersList();
     AdminProjects(currentPage);
-  }, [getUsersProps,AdminProjects,currentPage]);
+    getAllProjects();
+  }, [getUsersProps, AdminProjects, getAllProjects, currentPage]);
+
+  const filteredData = project.filter((p) => {
+    const allowedProjectTypes = retrieveProjectTypes().map(
+      (type) => type.value
+    );
+    return allowedProjectTypes.includes(p.project_type);
+  });
+
+  filteredData.forEach((p) => {
+    const projectType = p.project_type;
+    if (!projectTypeCounts[projectType]) {
+      projectTypeCounts[projectType] = 1;
+    } else {
+      projectTypeCounts[projectType]++;
+    }
+  });
+
+  const othersCount = project.length - filteredData.length;
+
+  if (othersCount > 0) {
+    projectTypeCounts["Others"] = othersCount;
+  }
+
+  const filteredOrganisationData = project.filter((p) => {
+    const defaultProjectOrganisations = namedOrganisations().map(
+      (organisation) => organisation.value
+    );
+    return defaultProjectOrganisations.includes(p.organisation);
+  });
+
+  filteredOrganisationData.forEach((p) => {
+    const projectOrganisation = p.organisation;
+
+    if (!projectOrganisationCount[projectOrganisation]) {
+      projectOrganisationCount[projectOrganisation] = 1;
+    } else {
+      projectOrganisationCount[projectOrganisation]++;
+    }
+  });
+
+  const otherOrganisationCount =
+    project.length - filteredOrganisationData.length;
+  if (otherOrganisationCount > 0) {
+    projectOrganisationCount["Others"] = otherOrganisationCount;
+  }
 
   const fetchUsersList = () => {
     handleGetRequest("/users")
@@ -72,8 +311,8 @@ const AdminProjectsList = () => {
     AdminProjects(1, keyword);
   };
 
-  const handleCallbackSearchword = ({ target }) => {
-    const { value } = target;
+  const handleCallbackSearchword = ({target}) => {
+    const {value} = target;
     setWord(value);
     if (value !== "") {
       searchThroughProjects(value);
@@ -83,7 +322,6 @@ const AdminProjectsList = () => {
       AdminProjects(1);
     }
   };
-
 
   const getUserName = (id) => {
     let userName = "";
@@ -100,6 +338,60 @@ const AdminProjectsList = () => {
     AdminProjects();
   };
 
+  createPieChartData = () => {
+    const degrees = {};
+    if (!projectTypeCounts) {
+      return [];
+    }
+    const totalCount = Object.values(projectTypeCounts).reduce(
+      (total, count) => total + count,
+      0
+    );
+    for (const type in projectTypeCounts) {
+      const count = projectTypeCounts[type];
+      const degree = (count / totalCount) * 100;
+      degrees[type] = degree.toFixed(1);
+    }
+    const pieChartData = Object.entries(degrees).map(([type, degrees]) => ({
+      category: type,
+      value: parseFloat(degrees),
+    }));
+    return pieChartData;
+  };
+
+  const pieChartData1 = createPieChartData();
+  // console.log(pieChartData1);
+
+  createNewPieChartData = () => {
+    const percentage = {};
+    if (!projectOrganisationCount) {
+      return [];
+    }
+
+    const totalCount = Object.entries(projectOrganisationCount).reduce(
+      (totalCount, [organisation, countOrganisation]) =>
+        totalCount + countOrganisation,
+      0
+    );
+    for (const organisation in projectOrganisationCount) {
+      const countOrganisation = projectOrganisationCount[organisation];
+      const percentages = (countOrganisation / totalCount) * 100;
+      percentage[organisation] = percentages.toFixed(1);
+    }
+
+    const newPieChartData = Object.entries(percentage).map(
+      ([organisation, percentage]) => ({
+        category: organisation,
+        value: parseFloat(percentage),
+      })
+    );
+    return newPieChartData;
+  };
+
+  const pieChartData = createNewPieChartData();
+  // createNewPieChartData();
+  // console.log(pieChartData);
+
   return (
     <div className="MainPage">
       <div className="TopBarSection">
@@ -111,20 +403,372 @@ const AdminProjectsList = () => {
             <InformationBar
               header={
                 <>
-                  <span>
-                    <Link
-                      to={{ pathname: `/clusters` }}
-                      className="breadcrumb"
-                    >
-                      Dashboard
-                    </Link>
-                      / Projects Listing
-                  </span>
-                 
+                  <span>Projects Listing</span>
                 </>
               }
-              showBtn={false}
+              showBackBtn={true}
             />
+          </div>
+          <div className="TitleArea">
+            <div className="SectionTitle">Project Categories</div>
+          </div>
+          {loading ? (
+            <div className="ResourceSpinnerWrapper">
+              <Spinner size="big" />
+            </div>
+          ) : feedback !== "" ? (
+            <div className="NoResourcesMessage">{feedback}</div>
+          ) : Object.keys(projectTypeCounts).length > 0 ? (
+            <div className="ClusterContainer">
+              {Object.keys(projectTypeCounts).map((projectType) => (
+                <NewResourceCard
+                  key={projectType}
+                  title={projectType}
+                  count={projectTypeCounts[projectType]}
+                />
+              ))}
+            </div>
+          ) : null}
+          <div className="TitleArea">
+            <div className="SectionTitle">Organisation Categories</div>
+          </div>
+          {loading ? (
+            <div className="ResourceSpinnerWrapper">
+              <Spinner size="big" />
+            </div>
+          ) : feedback !== "" ? (
+            <div className="NoResourcesMessage">{feedback}</div>
+          ) : Object.keys(projectOrganisationCount).length > 0 ? (
+            <div className="ClusterContainer">
+              {Object.keys(projectOrganisationCount).map(
+                (projectOrganisation) => (
+                  <NewResourceCard
+                    key={projectOrganisation}
+                    title={projectOrganisation}
+                    count={projectOrganisationCount[projectOrganisation]}
+                  />
+                )
+              )}
+            </div>
+          ) : null}
+          <div className="TitleArea">
+            <div className="SectionTitle">Project Categories Summary</div>
+          </div>
+
+          <div className="UserSection">
+            <span>
+              <Select
+                placeholder="Project Types"
+                options={availablePieChartCategories}
+                onChange={(selectedOption) =>
+                  handleSectionChange(selectedOption)
+                }
+              />
+            </span>
+            <div className="piechart">
+              <PieChart width={350} height={350}>
+                <Pie
+                  data={
+                    sectionValue === "active" ? pieChartData1 : pieChartData
+                  }
+                  dataKey="value"
+                  nameKey="category"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={140}
+                  paddingAngle={3}
+                  fill="#8884d8"
+                  label={true}
+                >
+                  {sectionValue === "active"
+                    ? pieChartData1.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={COLORS[index % COLORS.length]}
+                        />
+                      ))
+                    : pieChartData.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={COLORS[index % COLORS.length]}
+                        />
+                      ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+              <div>
+                <ul style={{display: "flex"}}>
+                  {sectionValue === "active"
+                    ? pieChartData1.map((entry, index) => (
+                        <li
+                          key={`list-item-${index}`}
+                          style={{padding: "10px"}}
+                        >
+                          <span
+                            style={{
+                              color: COLORS[index % COLORS.length],
+                            }}
+                          >
+                            {entry.category} :{" "}
+                          </span>
+                          {entry.value} %
+                        </li>
+                      ))
+                    : pieChartData.map((entry, index) => (
+                        <li
+                          key={`list-item-${index}`}
+                          style={{padding: "10px"}}
+                        >
+                          <span
+                            style={{
+                              color: COLORS[index % COLORS.length],
+                            }}
+                          >
+                            {entry.category} :{" "}
+                          </span>
+                          {entry.value} %
+                        </li>
+                      ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="TitleArea">
+            <div className="SectionTitle">Graph Summaries</div>
+          </div>
+          <div className="SummaryCardContainer">
+            <div className="UserSection">
+              <div className="LeftDBSide">
+                <div className="MetricsGraph">
+                  <MetricsCard
+                    className="ClusterMetricsCardGraph"
+                    title={
+                      <div className="GraphSummaryTitle">
+                        <span className="SummaryTitleText">
+                          Projects Created and Category Analytics
+                        </span>
+                        <span>
+                          <div className="PeriodContainer">
+                            <div className="PeriodButtonsSection">
+                              <div
+                                className={`${
+                                  period === "3" && "PeriodButtonActive"
+                                } PeriodButton`}
+                                name="3month"
+                                value="3"
+                                role="presentation"
+                                onClick={handleChange}
+                              >
+                                3m
+                              </div>
+                              <div
+                                className={`${
+                                  period === "4" && "PeriodButtonActive"
+                                } PeriodButton`}
+                                name="4months"
+                                value="4"
+                                role="presentation"
+                                onClick={handleChange}
+                              >
+                                4m
+                              </div>
+                              <div
+                                className={`${
+                                  period === "6" && "PeriodButtonActive"
+                                } PeriodButton`}
+                                name="6months"
+                                value="6"
+                                role="presentation"
+                                onClick={handleChange}
+                              >
+                                6m
+                              </div>
+                              <div
+                                className={`${
+                                  period === "8" && "PeriodButtonActive"
+                                } PeriodButton`}
+                                name="8months"
+                                value="8"
+                                role="presentation"
+                                onClick={handleChange}
+                              >
+                                8m
+                              </div>
+                              <div
+                                className={`${
+                                  period === "12" && "PeriodButtonActive"
+                                } PeriodButton`}
+                                name="1year"
+                                value="12"
+                                role="presentation"
+                                onClick={handleChange}
+                              >
+                                1y
+                              </div>
+                              <div
+                                className={`${
+                                  period === "all" && "PeriodButtonActive"
+                                } PeriodButton`}
+                                name="all"
+                                value="all"
+                                role="presentation"
+                                onClick={handleChange}
+                              >
+                                all
+                              </div>
+                            </div>
+                          </div>
+                        </span>
+                      </div>
+                    }
+                  >
+                    <div className="ChartsArea">
+                      <div>
+                        <AreaChart
+                          width={800}
+                          height={300}
+                          syncId="anyId"
+                          data={
+                            period !== "all"
+                              ? filteredGraphData
+                              : graphDataArray
+                          }
+                        >
+                          <Line
+                            type="monotone"
+                            dataKey="Value"
+                            stroke="#8884d8"
+                          />
+                          <CartesianGrid stroke="#ccc" />
+                          <XAxis dataKey="Month" />
+                          <XAxis
+                            xAxisId={1}
+                            dx={10}
+                            label={{
+                              value: "Time",
+                              angle: 0,
+                              position: "bottom",
+                            }}
+                            interval={12}
+                            dataKey="Year"
+                            tickLine={false}
+                            tick={{fontSize: 12, angle: 0}}
+                          />
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <YAxis
+                            label={{
+                              value: "Number of Projects",
+                              angle: 270,
+                              position: "outside",
+                            }}
+                            width={100}
+                          />
+                          <Area
+                            type="monotone"
+                            dataKey="Value"
+                            stroke="#82ca9d"
+                            fill="#82ca9d"
+                          />
+                          <Tooltip
+                            labelFormatter={(value) => {
+                              const monthNames = retrieveMonthNames();
+                              const month = parseInt(value) - 1;
+                              return monthNames[month].name;
+                            }}
+                            formatter={(value) => {
+                              return [`${value} projects`];
+                            }}
+                          />
+                        </AreaChart>
+                      </div>
+                      <div>
+                        <AreaChart
+                          width={830}
+                          height={300}
+                          data={
+                            period !== "all"
+                              ? newFilteredGraphData
+                              : newGraphDataArray
+                          }
+                          margin={{
+                            top: 10,
+                            right: 30,
+                            left: 0,
+                            bottom: 0,
+                          }}
+                        >
+                          <CartesianGrid stroke="#ccc" />
+                          <XAxis dataKey="Month" />
+                          <XAxis
+                            xAxisId={1}
+                            dx={10}
+                            label={{
+                              value: "Time",
+                              angle: 0,
+                              position: "bottom",
+                            }}
+                            interval={12}
+                            dataKey="Year"
+                            tickLine={false}
+                            tick={{fontSize: 12, angle: 0}}
+                          />
+                          <YAxis
+                            label={{
+                              value: "Numbers per Project Type",
+                              angle: 270,
+                              position: "outside",
+                            }}
+                            width={100}
+                          />
+                          <Tooltip
+                            labelFormatter={(value) => {
+                              const monthNames = retrieveMonthNames();
+                              const month = parseInt(value) - 1;
+                              return monthNames[month].name;
+                            }}
+                          />
+                          <Area
+                            type="monotone"
+                            dataKey="Personal"
+                            stackId="1"
+                            stroke="#8884d8"
+                            fill="#8884d8"
+                          />
+                          <Area
+                            type="monotone"
+                            dataKey="Research"
+                            stackId="1"
+                            stroke="#82ca9d"
+                            fill="#82ca9d"
+                          />
+                          <Area
+                            type="monotone"
+                            dataKey="Student"
+                            stackId="1"
+                            stroke="#ffc658"
+                            fill="#ffc658"
+                          />
+                          <Area
+                            type="monotone"
+                            dataKey="Commercial"
+                            stackId="1"
+                            stroke="#ffc999"
+                            fill="#ffc999"
+                          />
+                          <Area
+                            type="monotone"
+                            dataKey="Charity"
+                            stackId="1"
+                            stroke="#ffc302"
+                            fill="#ffc302"
+                          />
+                        </AreaChart>
+                      </div>
+                    </div>
+                  </MetricsCard>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="ContentSection">
             <div className="SearchBar">
@@ -172,31 +816,34 @@ const AdminProjectsList = () => {
                   <tbody>
                     {isRetrieved &&
                       projects !== undefined &&
-                       projects.map((project) =>(
+                      projects.map((project) => (
                         <tr key={projects.indexOf(project)}>
-                           <td>{project?.name}</td>
-                            <td>{getUserName(project?.owner_id)}</td>
-                            <td >{project?.description}</td>
-                            <td>
-                              <span className={project?.disabled === false ? "ProjectStatus":"ProjectStatusDisabled"}>
-                                {project?.disabled === false
-                                  ? "Active"
-                                  : "Disabled"}
-                              </span>
-                            </td>
+                          <td>{project?.name}</td>
+                          <td>{getUserName(project?.owner_id)}</td>
+                          <td>{project?.description}</td>
+                          <td>
+                            <span
+                              className={
+                                project?.disabled === false
+                                  ? "ProjectStatus"
+                                  : "ProjectStatusDisabled"
+                              }
+                            >
+                              {project?.disabled === false
+                                ? "Active"
+                                : "Disabled"}
+                            </span>
+                          </td>
                         </tr>
-                       ))
-
-                    }
+                      ))}
                   </tbody>
                 )}
               </table>
-              {isRetrieved &&
-                projects.length === 0 && (
-                  <div className="NoResourcesMessage">
-                    <p>No projects available</p>
-                  </div>
-                )}
+              {isRetrieved && projects.length === 0 && (
+                <div className="NoResourcesMessage">
+                  <p>No projects available</p>
+                </div>
+              )}
               {!isRetrieving && !isRetrieved && (
                 <div className="NoResourcesMessage">
                   <p>
