@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Pagination from "../../components/Pagination";
 import Spinner from "../Spinner";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
-import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const UserListing = (props) => {
   const { currentPage, gettingUsers, handlePageChange } = props;
+  const [actionsMenu, setActionsMenu] = useState(false);
+ 
 
   const { isFetching, users, isFetched, pagination } = useSelector(
     (state) => state.usersListReducer
@@ -15,6 +17,17 @@ const UserListing = (props) => {
   useEffect(() => {
     gettingUsers(currentPage);
   }, [gettingUsers, currentPage]);
+
+  const history = useHistory();
+
+  
+
+  const hideModal = () => {
+    setActionsMenu(false);
+    document.removeEventListener("click", hideModal);
+  };
+
+  
 
   return (
     <div className="APage">
@@ -34,7 +47,6 @@ const UserListing = (props) => {
                   <th>Beta User</th>
                   <th>Credits</th>
                   <th>Email</th>
-                  <th>Actions</th>
                 </tr>
               </thead>
               {isFetching ? (
@@ -52,7 +64,12 @@ const UserListing = (props) => {
                   {isFetched &&
                     users !== undefined &&
                     users?.map((user) => (
-                      <tr key={users.indexOf(user)}>
+                      <tr
+                        key={users.indexOf(user)}
+                        onClick={() => {
+                          history.push(`/accounts/${user.id}`);
+                        }}
+                      >
                         <td>{user?.name}</td>
                         <td>{user.is_beta_user ? "True" : "False"}</td>
                         <td>
@@ -69,14 +86,7 @@ const UserListing = (props) => {
                           )}
                         </td>
                         <td>{user?.email}</td>
-                        <td
-                        //   onClick={(e) => {
-                        //     showMenu(user.id);
-                        //     handleClick(e);
-                        //   }}
-                        >
-                          <MoreIcon />
-                        </td>
+                        
                       </tr>
                     ))}
                 </tbody>
