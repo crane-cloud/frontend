@@ -1,8 +1,46 @@
+.breadcrumb {
+  padding: 0 0.5rem;
+}
+
+.flex_back_link {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: #000;
+}
+
 .project_details {
   background-color: #fff;
   padding: 1rem;
   border-radius: 0.5rem;
   margin: 1rem 0;
+}
+
+.flex_details {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  justify-content: space-evenly;
+}
+
+.flex_author {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-direction: column;
+}
+
+.avatar_author {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  /* text-align: center; */
+  font-weight: bold;
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .details_styles {
@@ -12,7 +50,7 @@
   margin-bottom: 1rem;
 }
 
-.flex_details {
+.flex_detail {
   display: flex;
   gap: 0.5rem;
   align-items: center;

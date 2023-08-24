@@ -1,100 +1,101 @@
 .Page {
-    margin: 0;
-    background: var( --gray-bg-light-color);
-    max-height: 100vh;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    /* overflow: hidden; */
+  margin: 0;
+  background: var(--gray-bg-light-color);
+  max-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  /* overflow: hidden; */
 }
 
 .TopBarSection {
-    background-color: black;
+  background-color: black;
 }
+
 .ProjectSectionTitle {
-    font-size: 1.3rem;
-    font-weight: bold;
+  font-size: 1.3rem;
+  font-weight: bold;
 }
 
 .MainSection {
-    /* divided into two columns */
-    background-color: var( --gray-bg-light-color);
-    display: grid;
-    grid-template-columns: 1.3fr 6fr;
-    overflow: hidden;
+  /* divided into two columns */
+  background-color: var(--gray-bg-light-color);
+  display: grid;
+  grid-template-columns: 1.3fr 6fr;
+  overflow: hidden;
 }
 
 .SideBarSection {
-    overflow: hidden;
-    overflow-y: scroll;
-    height: calc(100vh - 5rem);
+  overflow: hidden;
+  overflow-y: scroll;
+  height: calc(100vh - 5rem);
 }
 
 .SideBarSection::-webkit-scrollbar {
-    display: none;
-    min-width: fit-content;
+  display: none;
+  min-width: fit-content;
 }
 
 .SideBarSection {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .MainContentSection {
-    /* divided into two rows */
-    display: grid;
-    grid-template-rows: 80px 4fr;
-    overflow: auto;
+  /* divided into two rows */
+  display: grid;
+  grid-template-rows: 80px 4fr;
+  overflow: auto;
 }
 
 
 @media (max-width: 580px) {
-    .CustomSmallContainer {
-        padding: 0 1rem 1rem 2rem;
-    }
+  .CustomSmallContainer {
+    padding: 0 1rem 1rem 2rem;
+  }
 }
 
 .field {
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid #000;
-    width: -webkit-fill-available;
-    border-radius: unset;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #000;
+  width: -webkit-fill-available;
+  border-radius: unset;
 }
 
 .Header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
 }
 
 .Heading {
-    font-weight: bolder;
-    line-height: 1.8;
-    font-size: larger;
+  font-weight: bolder;
+  line-height: 1.8;
+  font-size: larger;
 }
 
 .SimpleForm {
-    display: flex;
-    width: 80%;
-    gap: 0.5rem;
+  display: flex;
+  width: 80%;
+  gap: 0.5rem;
 }
 
 .CustomSmallContainer {
-    /* padding: 2rem; */
-    background: var( --gray-bg-light-color);
-    max-width: 50rem;
-    padding-left: 4rem;
-    padding-right: 2rem;
+  /* padding: 2rem; */
+  background: var(--gray-bg-light-color);
+  max-width: 50rem;
+  padding-left: 4rem;
+  padding-right: 2rem;
 }
 
 .field {
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid #000;
-    width: -webkit-fill-available;
-    border-radius: unset;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #000;
+  width: -webkit-fill-available;
+  border-radius: unset;
 }
 
 /* .Header {
@@ -110,18 +111,21 @@
   flex-wrap: wrap;
   margin-bottom: 2rem;
 }
+
 .Heading {
   font-weight: bolder;
   line-height: 1.8;
   font-size: larger;
 }
-.SimpleForm{
+
+.SimpleForm {
   display: flex;
   flex-direction: row;
   align-items: flex-end;
   position: relative;
 }
-.OuterFilterItem{
+
+.OuterFilterItem {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -137,313 +141,367 @@
 
 
 .Heading {
-    font-weight: bolder;
-    line-height: 1.8;
-    font-size: larger;
+  font-weight: bolder;
+  line-height: 1.8;
+  font-size: larger;
 }
 
 
 
 .BackButton {
-    background: var(--primary-color);
-    outline: none;
+  background: var(--primary-color);
+  outline: none;
 }
 
 .FilterButton {
-    outline: none;
-    background: unset;
-    border: 1px solid black;
-    color: #000;
+  outline: none;
+  background: unset;
+  border: 1px solid black;
+  color: #000;
 }
 
 
 .Table {
-    background: #ffffff;
-    border-radius: 15px;
-    padding: 1rem 2rem;
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 1rem 2rem;
 }
 
 .TableRow {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .Success {
-    color: green;
+  color: green;
 }
 
 .Danger {
-    color: red;
+  color: red;
 }
 
 .Entity {
-    color: var(--primary-color);
+  color: var(--primary-color);
 }
 
 .hr {
-    margin: .5rem 0;
+  margin: .5rem 0;
 }
 
 .Row {
-    display: flex;
-    justify-content: space-between;
-    width: -webkit-fill-available;
+  display: flex;
+  justify-content: space-between;
+  width: -webkit-fill-available;
 }
 
 .Bold {
-    font-weight: bold;
-    font-size: 17px;
+  font-weight: bold;
+  font-size: 17px;
 }
 
 .RowCell {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 1rem;
 }
 
 .LastCell {
-    align-self: flex-end;
+  align-self: flex-end;
 }
 
 .UserAvatar {
-    width: 2.8rem;
-    height: 2.8rem;
-    border-radius: 50%;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.6rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .ProjectInstructions {
-    padding: 1rem;
-    background: #ffffff;
-    border-radius: 15px;
-    border: 1px solid var(--gray-light-color);
-    display: grid;
-    gap: 1rem;
-  }
-  .ProjectButtonRow {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    column-gap: 1rem;
-  }
-  .ProjectButtonRow > div {
-    cursor: default;
-  }
-  .ProjectButtonRow:hover .CopyIcon {
-    visibility: visible;
-  }
-  
+  padding: 1rem;
+  background: #ffffff;
+  border-radius: 15px;
+  border: 1px solid var(--gray-light-color);
+  display: grid;
+  gap: 1rem;
+}
+
+.ProjectButtonRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 1rem;
+}
+
+.ProjectButtonRow > div {
+  cursor: default;
+}
+
+.ProjectButtonRow:hover .CopyIcon {
+  visibility: visible;
+}
+
 .SettingsSectionInfo {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    font-size: 0.95rem;
-  }
-  .SettingsSectionInfoHeader {
-    font-weight: 600;
-    font-size: 1.1rem;
-  }
-  .DetailsSection{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-  .MembershipHeader {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 1rem;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .MemberSection {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-  .SettingsSectionInfoHeader {
-    font-weight: 600;
-    font-size: 1.1rem;
-  }
-  .MemberTableRow:not(a) {
-    border-bottom-width: 2px;
-  }
-  .CardBodySection .MemberTableRow {
-    width: 100%;
-  }
-  .MemberTableCell {
-    font-weight: normal;
-    padding: 1rem 0;
-    text-align: center;
-    grid-row: 1;
-    overflow: hidden;
-    overflow-wrap: break-word;
-  }
-  .MemberTableHead:first-child,
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.95rem;
+}
+
+.SettingsSectionInfoHeader {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.DetailsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.MembershipHeader {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.MemberSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.SettingsSectionInfoHeader {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.MemberTableRow:not(a) {
+  border-bottom-width: 2px;
+}
+
+.CardBodySection .MemberTableRow {
+  width: 100%;
+}
+
+.MemberTableCell {
+  font-weight: normal;
+  padding: 1rem 0;
+  text-align: center;
+  grid-row: 1;
+  overflow: hidden;
+  overflow-wrap: break-word;
+}
+
+.MemberTableHead:first-child,
 .MemberTableCell:first-child {
   text-align: left;
 }
+
 .MemberTableHead:last-child,
 .MemberTableCell:last-child {
   text-align: right;
   padding-right: 1rem !important;
 }
-.MemberTableHead {
-    text-transform: uppercase;
-    color: var(--primary-color);
-    text-align: center;
-    grid-row: 1;
-    padding: 0.5rem 0;
-  }
-  .MemberTableRow {
-    display: flex;
-    color: #000000;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.8rem ;
-    margin: 0;
-    background-color: white;
-  }
-  .MemberTableRowUnregistered {
-    display: grid;
-    color: #000000;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .MemberBody{
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    background-color: var(--gray-light-color);
-  }
-  .MemberTableRow {
-    display: flex;
-    color: #000000;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.8rem ;
-    margin: 0;
-    background-color: white;
-  }
-  .MemberInfo{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 0.5rem;
-    align-items: center;
-  }
 
-  .MemberNameEmail {
-    display: flex;
-    flex-direction: column;
-    font-size: 1.1rem;
-    gap: .13rem;
-    font-weight: 400;
-  }
-  .UserHeader {
-    font-weight: 600;
-    color: var(--primary-color);
-    cursor: pointer;
-  }
-  .UserHeader:hover {
-    text-decoration: underline;
-  }
-  .Wrap{
-    word-break: break-all;
-    font-size: 0.9rem;
-  }
-  .MemberOptions{
-    display: flex; 
-    padding-right: 7rem;   
-    align-items: center;
-  }
-  .MemberRole{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 0.3rem;
-    align-items: baseline;
-    font-weight: 600;
-    color: var(--primary-dark-color);
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-  }
-  
-  .MemberRole:hover{
-    color: var(--primary-color);
-    transform: scale(1.1);
-  }
-  .MemberRole span{
-    font-size: 0.9rem;
-    font-weight: 500;
-  }
-  .MemberAvatar {
-    width: 2.3rem;
-    height: 2.3rem;
-    border-radius: 50%;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .SectionButtons {
-    display: flex;
-    justify-content: flex-end;
-    padding-right: 1rem;
-  }
-  .CentralSpinner{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .ProjectDeleteModel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  .DeleteProjectModel {
-    display: grid;
-    gap: 3rem;
-  }
-  .WarningContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .DeleteDescription {
-    cursor: default;
-    font-weight: 700;
-    font-size: 1.1rem;
-  
-  }
-  .DeleteDescription span {
-    padding: 0.2rem 0.4rem;
-    margin: 0;
-    font-weight: bold;
-    font-size: 90%;
-    background-color: rgba(27, 31, 35, 0.1);
-    border-radius: 3px;
-  }
-  .DisableSubDescription {
-    font-weight: 500;
-    width: 20rem;
-  }
-  .DeleteProjectModalLowerSection {
-    display: grid;
-    gap: 1rem;
-  }
-  .DeleteProjectModelButtons {
-    display: flex;
-    justify-content: space-between;
-  }
+.MemberTableHead {
+  text-transform: uppercase;
+  color: var(--primary-color);
+  text-align: center;
+  grid-row: 1;
+  padding: 0.5rem 0;
+}
+
+.MemberTableRow {
+  display: flex;
+  color: #000000;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem;
+  margin: 0;
+  background-color: white;
+}
+
+.MemberTableRowUnregistered {
+  display: grid;
+  color: #000000;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.MemberBody {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background-color: var(--gray-light-color);
+}
+
+.MemberTableRow {
+  display: flex;
+  color: #000000;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem;
+  margin: 0;
+  background-color: white;
+}
+
+.MemberInfo {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.MemberNameEmail {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.1rem;
+  gap: .13rem;
+  font-weight: 400;
+}
+
+.UserHeader {
+  font-weight: 600;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.UserHeader:hover {
+  text-decoration: underline;
+}
+
+.Wrap {
+  word-break: break-all;
+  font-size: 0.9rem;
+}
+
+.MemberOptions {
+  display: flex;
+  padding-right: 7rem;
+  align-items: center;
+}
+
+.MemberRole {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0.3rem;
+  align-items: baseline;
+  font-weight: 600;
+  color: var(--primary-dark-color);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.MemberRole:hover {
+  color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+.MemberRole span {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.MemberAvatar {
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.SectionButtons {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1rem;
+}
+
+.CentralSpinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ProjectDeleteModel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.DeleteProjectModel {
+  display: grid;
+  gap: 3rem;
+}
+
+.WarningContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.DeleteDescription {
+  cursor: default;
+  font-weight: 700;
+  font-size: 1.1rem;
+
+}
+
+.DeleteDescription span {
+  padding: 0.2rem 0.4rem;
+  margin: 0;
+  font-weight: bold;
+  font-size: 90%;
+  background-color: rgba(27, 31, 35, 0.1);
+  border-radius: 3px;
+}
+
+.DisableSubDescription {
+  font-weight: 500;
+  width: 20rem;
+}
+
+.DeleteProjectModalLowerSection {
+  display: grid;
+  gap: 1rem;
+}
+
+.DeleteProjectModelButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ProjectDetailsDisplay {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ProjectAvatar {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -2,7 +2,7 @@ import InformationBar from "../InformationBar";
 import Header from "../Header";
 import SideNav from "../SideNav";
 import styles from "./AdminProjectDetails.module.css";
-import "./newDesignAdminProjectDetails.css"
+import './newDesignAdminProjectDetails.css'
 import { useParams } from "react-router-dom";
 import PrimaryButton from "../PrimaryButton";
 import { handleGetRequest, handlePostRequestWithOutDataObject } from "../../apis/apis.js";
@@ -12,6 +12,7 @@ import ActivityLogs from "../ActivityLogs";
 import Spinner from "../Spinner";
 import { dateInWords } from "../../helpers/dateConstants";
 import Modal from "../Modal";
+import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 import Feedback from "../Feedback";
 
 import { Link } from "react-router-dom";
@@ -87,19 +88,12 @@ const AdminProjectLogs = () => {
               header={
                 <span>
                   <Link
-                    className="breadcrumb"
-                    to={ `/clusters/${ clusterID }/projects` }
-                  >
-                    Overview
-                  </Link>
-                  /
-                  <Link
-                    className="breadcrumb"
+                    className="breadcrumb flex_back_link"
                     to={ `/clusters/${ clusterID }/projects-listing` }
                   >
-                    Projects
+                    <BackButton />
+                    <div>Project Detail</div>
                   </Link>
-                  <span> / Details</span>
                 </span>
               }
               showBtn={ false }
@@ -116,71 +110,31 @@ const AdminProjectLogs = () => {
                   {/* Project information */ }
                   <section className={ styles.DetailsSection }>
                     <div className="SectionTitle">Project Details</div>
-                    <div>
-                      <div></div>
-                      <div className="project_details">
-                        <div className="details_styles">
-                          <div className="SectionSubTitle">Name</div>
-                          {/* <div className={styles.ProjectButtonRow}>
-                      <div className={styles.SettingsSectionInfo}> */}
-                          <div>{ details.name }</div>
-                          {/* </div>
-                    </div> */}
-                        </div>
-
-                        <div className="details_styles">
-                          <div className="SectionSubTitle">Description</div>
-                          {/* <div className={styles.ProjectButtonRow}>
-                      <div className={styles.SettingsSectionInfo}> */}
-                          <div>{ details.description }</div>
-                          {/* </div>
-                    </div> */}
-                        </div>
-                        <div className="details_styles">
-                          <div className="SectionSubTitle">Date Of Creation</div>
-                          {/* <div className={styles.ProjectButtonRow}>
-                      <div className={styles.SettingsSectionInfo}> */}
-                          <div>{ dateInWords( details.date_created ) } </div>
-                          {/* </div>
-                    </div> */}
-                        </div>
-                        <div className="details_styles">
-                          <div className="SectionSubTitle">Status</div>
-                          <div>
-                            { details.admin_disabled ? (
-                              <>
-                                <div className="text_status">Disable</div>
-                                <div className="status_dot_red"></div>
-                              </>
-                            ) : (
-                              <div className="flex_details">
-                                <div className="text_status">Enable</div>
-                                <div className="status_dot_green"></div>
-                              </div>
-                            ) }
-
-                          </div>
-                        </div>
-                        {/* <div>
-                        <div className="SectionSubTitle">Applications</div>
+                    <div className={ styles.ProjectInstructions }>
+                      <div>
+                        <div className="SectionSubTitle">Name</div>
                         <div className={ styles.ProjectButtonRow }>
                           <div className={ styles.SettingsSectionInfo }>
-                            <div>
-                              Project has { details.apps_count } application
-                            </div>
+                            <div>{ details.name }</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="SectionSubTitle">Description</div>
+                        <div className={ styles.ProjectButtonRow }>
+                          <div className={ styles.SettingsSectionInfo }>
+                            <div>{ details.description }</div>
                           </div>
                         </div>
                       </div>
                       <div>
-                        <div className="SectionSubTitle">Databases</div>
+                        <div className="SectionSubTitle">Date Of Creation</div>
                         <div className={ styles.ProjectButtonRow }>
                           <div className={ styles.SettingsSectionInfo }>
-                            <div>
-                              Project has { details?.databases?.length } databases
-                            </div>
+                            <div>{ dateInWords( details.date_created ) } </div>
                           </div>
                         </div>
-                      </div> */}
                       </div>
                     </div>
                   </section>
