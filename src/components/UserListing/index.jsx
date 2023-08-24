@@ -1,43 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import Pagination from "../../components/Pagination";
 import Spinner from "../Spinner";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
-import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
- 
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+
 const UserListing = (props) => {
   const { currentPage, gettingUsers, handlePageChange } = props;
   const [actionsMenu, setActionsMenu] = useState(false);
-  const [selectedUser, setSelectedUser] = useState("");
  
+
   const { isFetching, users, isFetched, pagination } = useSelector(
     (state) => state.usersListReducer
   );
- 
+
   useEffect(() => {
     gettingUsers(currentPage);
   }, [gettingUsers, currentPage]);
- 
-  const handleClick = (e) => {
-    if (actionsMenu) {
-      // this.closeModal();
-      return;
-    }
-    setActionsMenu(true);
-    e.stopPropagation();
-    document.addEventListener("click", hideModal);
-  };
- 
+
+  const history = useHistory();
+
+  
+
   const hideModal = () => {
     setActionsMenu(false);
     document.removeEventListener("click", hideModal);
   };
- 
-  const showMenu = (id) => {
-    setSelectedUser(id);
-  };
- 
+
+  
+
   return (
     <div className="APage">
       <div className="AMainSection">
@@ -56,7 +47,6 @@ const UserListing = (props) => {
                   <th>Beta User</th>
                   <th>Credits</th>
                   <th>Email</th>
-                  <th>Actions</th>
                 </tr>
               </thead>
               {isFetching ? (
@@ -74,7 +64,12 @@ const UserListing = (props) => {
                   {isFetched &&
                     users !== undefined &&
                     users?.map((user) => (
-                      <tr key={users.indexOf(user)}>
+                      <tr
+                        key={users.indexOf(user)}
+                        onClick={() => {
+                          history.push(`/accounts/${user.id}`);
+                        }}
+                      >
                         <td>{user?.name}</td>
                         <td>{user.is_beta_user ? "True" : "False"}</td>
                         <td>
@@ -91,32 +86,7 @@ const UserListing = (props) => {
                           )}
                         </td>
                         <td>{user?.email}</td>
-                        <td
-                          onClick={(e) => {
-                            showMenu(user.id);
-                            handleClick(e);
-                          }}
-                        >
-                          <MoreIcon />
-                          {actionsMenu && user.id === selectedUser && (
-                            <div className="BelowHeader bg-light">
-                              <div className="context-menu">
-                                <div
-                                  className="DropDownLink"
-                                  role="presentation"
-                                >
-                                  <Link
-                                    to={{
-                                      pathname: `/accounts/${selectedUser}`,
-                                    }}
-                                  >
-                                    View User Profile
-                                  </Link>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                        </td>
+                        
                       </tr>
                     ))}
                 </tbody>
@@ -150,7 +120,5 @@ const UserListing = (props) => {
     </div>
   );
 };
- 
-export default UserListing;
- 
 
+export default UserListing;
