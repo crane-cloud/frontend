@@ -93,7 +93,7 @@ const AdminProjectDetails = () => {
                     to={ `/clusters/${ clusterID }/projects-listing` }
                   >
                     <BackButton />
-                    <div>Project Detail</div>
+                    <div>Project Details</div>
                   </Link>
                 </span>
               }
@@ -151,6 +151,43 @@ const AdminProjectDetails = () => {
                           </div>
                         </div>
                       </div>
+                    </div>
+                  </section>
+                  {/* Project Metrics */ }
+                  <section className={ styles.DetailsSection }>
+                    <div className="SectionTitle">Project Metrics</div>
+                    <div className="flex_metrics">
+                      <div className="project_instructions">
+                        <div className="project_metrics">
+                          <div className="project_metrics_header">
+                            Applications
+                          </div>
+                          <div className="project_metrics_body">
+                            { details?.apps_count }
+                          </div>
+                        </div>
+                      </div>
+                      <div className="project_instructions">
+                        <div className="project_metrics">
+                          <div className="project_metrics_header">
+                            Databases
+                          </div>
+                          <div className="project_metrics_body">
+                            { details?.databases?.length }
+                          </div>
+                        </div>
+                      </div>
+                      <div className="project_instructions">
+                        <div className="project_metrics">
+                          <div className="project_metrics_header">
+                            Members
+                          </div>
+                          <div className="project_metrics_body">
+                            { details?.users?.length }
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
                   </section>
                   {/* Membership */ }

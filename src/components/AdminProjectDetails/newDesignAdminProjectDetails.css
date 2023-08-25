@@ -97,6 +97,49 @@
   color: #008ac1;
 }
 
+.flex_metrics {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.project_instructions {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  width: 8rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.project_instructions:hover {
+  cursor: pointer;
+  box-shadow: 0.2rem 0.2rem 0.5rem rgba(4, 130, 161, 0.2);
+  transform: scale(1.01);
+  background-color: aliceblue;
+}
+
+.project_metrics {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.project_metrics_header {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #000;
+}
+
+.project_metrics_body {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #008ac1;
+}
+
 @media screen and (max-width: 768px) {
   .flex_details {
     flex-direction: column;
@@ -127,5 +170,9 @@
   }
   .font_status {
     font-size: 1.5rem;
+  }
+  .flex_metrics {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
