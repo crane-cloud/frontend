@@ -1,21 +1,20 @@
+import React, { useState, useEffect, useCallback } from "react";
+import { Link, useParams } from "react-router-dom";
 import InformationBar from "../InformationBar";
 import Header from "../Header";
 import SideNav from "../SideNav";
 import styles from "./AdminProjectDetails.module.css";
 import './newDesignAdminProjectDetails.css';
-import { useParams } from "react-router-dom";
 import PrimaryButton from "../PrimaryButton";
 import { handleGetRequest, handlePostRequestWithOutDataObject } from "../../apis/apis.js";
 import Avatar from "../Avatar";
-import React, { useState, useEffect, useCallback } from "react";
-import ActivityLogs from "../ActivityLogs";
+// import ActivityLogs from "../ActivityLogs";
 import Spinner from "../Spinner";
 import { dateInWords } from "../../helpers/dateConstants";
 import Modal from "../Modal";
 import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 import Feedback from "../Feedback";
 
-import { Link } from "react-router-dom";
 
 const AdminProjectDetails = () => {
   const clusterID = localStorage.getItem( "clusterID" );
@@ -93,7 +92,7 @@ const AdminProjectDetails = () => {
                     to={ `/clusters/${ clusterID }/projects-listing` }
                   >
                     <BackButton />
-                    <div>Project Details</div>
+                    <div className="back_link">Project Details</div>
                   </Link>
                 </span>
               }
@@ -124,7 +123,7 @@ const AdminProjectDetails = () => {
                               </div>
                               <div className={ styles.ProjectStatus }>
                                 { details?.disabled ? (
-                                  <div className="font_status disable">Disabled</div>
+                                  <div className="font_status disabled">Disabled</div>
                                 ) : (
                                   <div className="font_status active">Active</div>
                                 ) }
@@ -255,7 +254,7 @@ const AdminProjectDetails = () => {
                       </>
                     </div>
                   </section>
-                  <ActivityLogs projectID={ projectID } />
+                  {/* <ActivityLogs projectID={ projectID } /> */}
                   {/* Management */ }
                   <section className={ styles.DetailsSection }>
                     <>
@@ -275,7 +274,8 @@ const AdminProjectDetails = () => {
                               <PrimaryButton
                                 onClick={ () => { setOpenDisableProjectModel( true ) } }
                                 small
-                                color={ details?.disabled ? "primary" : "red" }
+                                // color={ details?.disabled ? "primary" : "red" }
+                                className={ details?.admin_disabled ? "enableBtn" : "disableBtn" }
                               >
                                 { details?.admin_disabled ? "Enable" : "Disable" }
                               </PrimaryButton>

@@ -51,7 +51,7 @@
 }
 
 .font_status {
-  color: #000;
+  color: #fff;
   padding: 0.1rem 0.5rem;
   border-radius: 0.3rem;
   font-weight: 400;
@@ -138,6 +138,32 @@
   font-size: 1.5rem;
   font-weight: 700;
   color: #008ac1;
+}
+
+.enableBtn {
+  background-color: #fff;
+  color: #008ac1;
+  border: 0.1rem #008ac1 solid;
+}
+
+.enableBtn:hover {
+  cursor: pointer;
+  background-color: #008ac1;
+  color: #fff;
+  border: none;
+}
+
+.disableBtn {
+  background-color: #fff;
+  color: #ff0000;
+  border: 0.1rem #ff0000 solid;
+}
+
+.disableBtn:hover {
+  cursor: pointer;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
 }
 
 @media screen and (max-width: 768px) {
