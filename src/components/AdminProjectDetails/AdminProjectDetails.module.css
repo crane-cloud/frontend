@@ -222,7 +222,7 @@
 }
 
 .ProjectInstructions {
-  padding: 1rem;
+  padding: 2rem;
   background: #ffffff;
   border-radius: 15px;
   border: 1px solid var(--gray-light-color);
@@ -504,4 +504,42 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.ProjectInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.ProjectInfoHeader {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  gap: 3rem;
+}
+
+.ProjectName {
+  font-weight: 600;
+  font-size: 1.5rem;
+  /* color: var(--primary-color); */
+}
+
+.ProjectDescription {
+  font-weight: 400;
+  font-size: 1.1rem;
+  color: var(--primary-dark-color);
+}
+
+.ProjectInfoBody {
+  margin: 0;
+}
+
+.ProjectInfoOwner {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: center;
 }

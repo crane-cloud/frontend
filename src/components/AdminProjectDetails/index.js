@@ -2,7 +2,7 @@ import InformationBar from "../InformationBar";
 import Header from "../Header";
 import SideNav from "../SideNav";
 import styles from "./AdminProjectDetails.module.css";
-import './newDesignAdminProjectDetails.css'
+import './newDesignAdminProjectDetails.css';
 import { useParams } from "react-router-dom";
 import PrimaryButton from "../PrimaryButton";
 import { handleGetRequest, handlePostRequestWithOutDataObject } from "../../apis/apis.js";
@@ -17,7 +17,7 @@ import Feedback from "../Feedback";
 
 import { Link } from "react-router-dom";
 
-const AdminProjectLogs = () => {
+const AdminProjectDetails = () => {
   const clusterID = localStorage.getItem( "clusterID" );
   const clusterName = localStorage.getItem( "clusterName" );
 
@@ -73,6 +73,7 @@ const AdminProjectLogs = () => {
         setDisablingProject( false )
       } );
   }
+  // console.log('Details:', details?.users[0].user.name);
   return (
     <section className={ styles.Page }>
       <div className={ styles.TopBarSection }>
@@ -109,30 +110,45 @@ const AdminProjectLogs = () => {
                 { !error && <>
                   {/* Project information */ }
                   <section className={ styles.DetailsSection }>
-                    <div className="SectionTitle">Project Details</div>
+                    <div className="SectionTitle">Project Information</div>
                     <div className={ styles.ProjectInstructions }>
-                      <div>
-                        <div className="SectionSubTitle">Name</div>
-                        <div className={ styles.ProjectButtonRow }>
-                          <div className={ styles.SettingsSectionInfo }>
-                            <div>{ details.name }</div>
+                      <div className={ styles.ProjectInfo }>
+                        <div className={ styles.ProjectInfoHeader }>
+                          <div className={ styles.AvatarName }>
+                            <Avatar name={ details?.name } className="avatar_author" />
                           </div>
-                        </div>
-                      </div>
+                          <div>
+                            <div className="flex_name_status">
+                              <div className={ styles.ProjectName }>
+                                { details?.name }
+                              </div>
+                              <div className={ styles.ProjectStatus }>
+                                { details?.disabled ? (
+                                  <div className="font_status disable">Disabled</div>
+                                ) : (
+                                  <div className="font_status active">Active</div>
+                                ) }
+                              </div>
+                            </div>
 
-                      <div>
-                        <div className="SectionSubTitle">Description</div>
-                        <div className={ styles.ProjectButtonRow }>
-                          <div className={ styles.SettingsSectionInfo }>
-                            <div>{ details.description }</div>
+                            <div className={ styles.ProjectDescription }>
+                              { details?.description }
+                            </div>
+
                           </div>
+
                         </div>
-                      </div>
-                      <div>
-                        <div className="SectionSubTitle">Date Of Creation</div>
-                        <div className={ styles.ProjectButtonRow }>
-                          <div className={ styles.SettingsSectionInfo }>
-                            <div>{ dateInWords( details.date_created ) } </div>
+                        <div className={ styles.ProjectInfoBody }>
+                          <div className={ styles.ProjectInfoOwner }>
+                            <div className={ styles.ProjectType }>
+                              Project Type: { details?.project_type }
+                            </div>
+                            <div className={ styles.ProjectOrganization }>
+                              Organization: { details?.organisation }
+                            </div>
+                            <div className={ styles.dateCreated }>
+                              Created: { dateInWords( details?.date_created ) }
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -149,7 +165,7 @@ const AdminProjectLogs = () => {
                         <div className={ styles.MembershipHeader }>
                           <div className={ styles.MemberSection }>
                             <div className={ styles.SettingsSectionInfoHeader }>
-                              { details.users?.length === 1 ? (
+                              { details?.users?.length === 1 ? (
                                 <div className="SectionSubTitle">
                                   Project has 1 Team Member
                                 </div>
@@ -212,9 +228,9 @@ const AdminProjectLogs = () => {
                         <div className={ styles.MemberBody }>
                           <div className={ styles.MemberTableRow }>
                             <div className={ styles.SettingsSectionInfo }>
-                              <div className="SubTitle">{ details.admin_disabled ? "Enable" : "Disable" } project</div>
+                              <div className="SubTitle">{ details?.admin_disabled ? "Enable" : "Disable" } project</div>
                               <div>
-                                { details.admin_disabled ? "Enable and make all project resources accessible (apps, and databases) to the user." :
+                                { details?.admin_disabled ? "Enable and make all project resources accessible (apps, and databases) to the user." :
                                   "Disable and make all project resources inaccessible (apps, and databases) to the user."
                                 }
                               </div>
@@ -223,9 +239,9 @@ const AdminProjectLogs = () => {
                               <PrimaryButton
                                 onClick={ () => { setOpenDisableProjectModel( true ) } }
                                 small
-                                color={ details.disabled ? "primary" : "red" }
+                                color={ details?.disabled ? "primary" : "red" }
                               >
-                                { details.admin_disabled ? "Enable" : "Disable" }
+                                { details?.admin_disabled ? "Enable" : "Disable" }
                               </PrimaryButton>
                             </div>
                           </div>
@@ -251,12 +267,12 @@ const AdminProjectLogs = () => {
               <div className={ styles.DeleteProjectModalUpperSection }>
                 <div className={ styles.WarningContainer }>
                   <div className={ styles.DeleteDescription }>
-                    Are you sure you want to { details.admin_disabled ? "enable" : "disable" }&nbsp;
-                    <span>{ details.name }</span>
+                    Are you sure you want to { details?.admin_disabled ? "enable" : "disable" }&nbsp;
+                    <span>{ details?.name }</span>
                     &nbsp;?
                   </div>
                   <div className={ styles.DisableSubDescription }>
-                    This will { details.disabled ? "enable" : "disable" }  billing and external access of resources in this project.
+                    This will { details?.disabled ? "enable" : "disable" }  billing and external access of resources in this project.
                   </div>
                 </div>
               </div>
@@ -269,12 +285,12 @@ const AdminProjectLogs = () => {
                     Cancel
                   </PrimaryButton>
                   <PrimaryButton
-                    color={ details.disabled ? "primary" : "red" }
+                    color={ details?.disabled ? "primary" : "red" }
                     onClick={ ( e ) =>
-                      handleDisableProject( e, details.disabled )
+                      handleDisableProject( e, details?.disabled )
                     }
                   >
-                    { disablingProject ? <Spinner /> : details.disabled === true ? "Enable" : "Disable" }
+                    { disablingProject ? <Spinner /> : details?.disabled === true ? "Enable" : "Disable" }
                   </PrimaryButton>
                 </div>
 
@@ -290,4 +306,4 @@ const AdminProjectLogs = () => {
   );
 };
 
-export default AdminProjectLogs;
+export default AdminProjectDetails;
