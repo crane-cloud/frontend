@@ -130,24 +130,23 @@ const AdminProjectDetails = () => {
                                 ) }
                               </div>
                             </div>
-
                             <div className={ styles.ProjectDescription }>
                               { details?.description }
                             </div>
-
                           </div>
-
                         </div>
                         <div className={ styles.ProjectInfoBody }>
                           <div className={ styles.ProjectInfoOwner }>
-                            <div className={ styles.ProjectType }>
-                              Project Type: { details?.project_type }
+                            <div className="project_details_type">
+                              Project Type: <span className="boldStyle">{ details?.project_type }</span>
                             </div>
-                            <div className={ styles.ProjectOrganization }>
-                              Organization: { details?.organisation }
+                            <div className="line_between"></div>
+                            <div className="project_details_type">
+                              Organization: <span className="boldStyle">{ details?.organisation }</span>
                             </div>
-                            <div className={ styles.dateCreated }>
-                              Created: { dateInWords( details?.date_created ) }
+                            <div className="line_between"></div>
+                            <div className="project_details_type">
+                              Created: <span className="boldStyle">{ dateInWords( details?.date_created ) }</span>
                             </div>
                           </div>
                         </div>
