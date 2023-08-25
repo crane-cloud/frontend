@@ -144,33 +144,43 @@
   .flex_details {
     flex-direction: column;
   }
+
   .flex_author {
     flex-direction: row;
   }
+
   .flex_back_link {
     flex-direction: column;
   }
+
   .line_between {
     display: none;
   }
+
   .project_details_type {
     font-size: 1rem;
   }
+
   .avatar_author {
     display: none;
   }
+
   .flex_detail {
     flex-direction: column;
   }
+
   .details_styles {
     flex-direction: column;
   }
+
   .boldStyle {
     font-size: 1rem;
   }
+
   .font_status {
     font-size: 1.5rem;
   }
+
   .flex_metrics {
     flex-direction: column;
     align-items: flex-start;
