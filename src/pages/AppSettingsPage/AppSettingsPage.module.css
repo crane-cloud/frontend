@@ -10,7 +10,7 @@
   background-color: rgba(112, 49, 49, 0.5);
 }
 
-.AppPageLayout{
+.AppPageLayout {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -189,7 +189,7 @@
     padding: 0;
   }
 }
- 
+
 
 .APPSectionPort {
   display: grid;
@@ -228,8 +228,8 @@
   padding: 0.3rem;
 }
 
-.APPButtonRow .SmallSelectElementValue{
-  padding: 0.3rem!important;
+.APPButtonRow .SmallSelectElementValue {
+  padding: 0.3rem !important;
 }
 
 .AppLabel {
@@ -362,7 +362,7 @@
 .errorCenterDiv {
   display: flex;
   justify-content: center;
-  padding: 1rem 0rem;
+  padding: 1rem 0;
 }
 
 .EnvVarsInputGroup {
@@ -378,7 +378,7 @@
   grid-template-columns: 1fr 1fr;
 }
 
-.EnvVarsAddBtn > * {
+.EnvVarsAddBtn>* {
   height: 100%;
 }
 
@@ -402,6 +402,7 @@
   color: #fff;
   border: 1px solid #fb0c0c;
 }
+
 .RemoveIconUpdating {
   background-color: #fb0c0c;
   opacity: 0.2;
@@ -426,7 +427,13 @@
   padding-bottom: 1rem;
 }
 
-.EnvInputItem{
+.EnvInputItem {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.VarInputGroup {
   display: flex;
   gap: 1rem;
 }
@@ -445,16 +452,18 @@
   text-overflow: ellipsis;
 }
 
-.EnvValue{
+.EnvValue {
   display: flex;
   flex-direction: row;
   gap: 1rem;
 }
-.EnvValue > div{
+
+.EnvValue>div {
   border: 1px solid #777;
   padding: 0.3rem 0.5rem;
   border-radius: 5px;
 }
+
 /* .VarsRow {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -630,6 +639,7 @@ ul li {
     display: flex;
     flex-direction: column;
     padding: 1rem 1rem;
+    min-width: 25rem;
   }
 
   .EnvDataItem {
@@ -639,5 +649,13 @@ ul li {
 
   .ContentSection {
     padding-top: 2.5rem;
+  }
+  .varInput {
+    width: 10rem;
+  }
+
+  .EnvInputItem {
+    display: flex;
+    flex-wrap: wrap;
   }
 }

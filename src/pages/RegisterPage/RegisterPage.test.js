@@ -118,6 +118,7 @@ describe("<RegisterPage/> Component", () => {
       password: "password",
       passwordConfirm: "password",
       hasAgreed: true,
+      organisation : 'crane-cloud',
     });
 
     RegisterPageComponent.instance().handleSubmit(mockEvent);
@@ -131,6 +132,7 @@ describe("<RegisterPage/> Component", () => {
         username: "johndoe",
         email: "test@example.com",
         password: "password",
+        organisation : 'crane-cloud',
       })
     );
     // You can add more expectations based on the specific behavior you want to test

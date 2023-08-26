@@ -17,6 +17,9 @@
   /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
 
+.XSearchBar{
+  padding-top: 1rem;
+}
 .AdminSearchInput {
   display: flex;
   flex-direction: row;

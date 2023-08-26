@@ -12,6 +12,7 @@
   }
   .Page{
     background-color: #F1F1F1;
+    position: relative;
   }
   .ButtonPlusSmall {
     width: 1rem;
@@ -26,17 +27,19 @@
   .MainColumn{
     padding: .5rem 5rem 0rem 4rem;
   }
+
   .BackButton {
-    color: #fff;
     width: fit-content;
-    height: 2rem;
-    background-color: var(--primary-color);
-    outline: 1px solid var(--primary-color);
-  }
-  .BackButton:hover {
     color: var(--primary-color);
+    height: 2rem;
     background-color: #fff;
-    outline: 1px solid var(--primary-color);
+    border: 1px solid var(--primary-color);
+  }
+
+  .BackButton:hover {
+    color: #fff;
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
   }
   .PairButtonCancel{
     color: #fff;
@@ -44,12 +47,12 @@
     height: 2rem;
     padding-bottom: .5rem;
     background-color: #000;
-    outline: 1px solid #000;
+    border: 1px solid #000;
   }
   .PairButtonCancel:hover{
     color: #000;
     background-color: #fff;
-    outline: 1px solid #000;
+    border: 1px solid #000;
   }
   .CreditsContainer{
     display: flex;
@@ -71,14 +74,21 @@
   .FooterRow {
     padding: 1rem 3rem;
     background-color: var( --gray-bg-light-color);
+    position: absolute;
+    bottom: 10px;
+    left: 0;
   }
+
   .UserContainer{
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    padding-bottom: 3rem;
-    padding-left: 5rem;
-    padding-top: 1rem;
+    gap: 1rem;
+    flex: 1;
+    max-width: 51rem;
+  }
+
+  .SecondMainSection{
+    flex: 1;
   }
 
   .UserAvatar {
@@ -91,12 +101,28 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+  }
+
+  .UserAvatarLarge {
+    width: 7rem;
+    height: 7rem;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 2.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
   }
   .CardInfor{
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding-top: 5px;
+    flex-direction: row;
+    justify-content: flex-start;
+    font-size: 0.95rem;
+    gap: 0.5rem;
+    color: #4d4d4d;
   }
 
   .CustomInput{
@@ -111,18 +137,17 @@
     width: 70%;
   }
   .InputDiv{
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
     align-items: center;
-    gap: 6rem;
+    gap: 1rem;
     width: 100%;
-    padding: .3rem .3rem .7rem .3rem;
+    padding: .3rem .3rem .3rem 0;
   }
   .PasswordChange{
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: .3rem;
+    align-items: center;
+    gap: 4em;
     width: 100%;
     padding: .3rem .3rem .7rem .3rem;
   }
@@ -141,7 +166,7 @@
     gap:.4rem;
     flex-direction: column;
     border-radius: 10px;
-    padding: .5rem 1rem 1rem 2.5rem;
+    padding: 1rem 2rem;
     background-color: #fff;
   }
   .ButtonsDiv{
@@ -162,49 +187,64 @@
     color: #000;
   }
   
+  .ProfileActionBtns{
+    display: flex;
+    justify-content: flex-end;
+  }
 
   .ContainerSection{
     display: flex;
-    width: 50rem;
-    padding-top: 2rem;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
+    gap: 1rem;
     padding-bottom: 2rem;
     border-bottom: 1px solid rgba(204, 204, 204, 0.69);
+    margin-bottom: 1rem;
   }
   .ContainerHeadSection{
-    display: flex;
-    width: 50rem;
+    /* display: flex; */
     border-bottom: 1px solid rgba(204, 204, 204, 0.69);
     padding-bottom: 2rem;
   }
 /*increased width to 48rem from 30rem*/
   .ProfileCard{
     display: flex;
-    width: 48rem;
-    height: 12rem;
     gap:1rem;
     flex-direction: column;
     border-radius: 10px;
     background-color: #fff;
-    min-width: 20rem;
     padding: 1.3rem 1rem 1rem 2.5rem;
   }
+
+  .UserProfileCard{
+    display: flex;
+    gap:1rem;
+    flex-direction: row;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 2rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   .AvatarDiv{
     display: flex;
     flex-direction: row;
-    padding-top: .5rem;
     height: 5rem;
     align-items: center;
+    margin-bottom: 0.3rem;
   }
   .ProfileContainer{
     display: flex;
     justify-content: center;
-    margin-left: 4rem;
-    margin-right: 4rem;
+    margin-top: 1rem;
   }
   .Title2{
    padding: .4rem;
+  }
+  .Title2Name{
+    text-transform: capitalize;
+    padding: .4rem;
   }
   .Identity{
     display: flex;
@@ -212,9 +252,13 @@
     padding-left: 1rem;
   }
   .IdentityName{
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: #000;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    text-transform: capitalize;
   }
   .BackgroundInfor{
     display: flex;
@@ -263,9 +307,7 @@
 .InformationText {
   width: 20rem;
 }
-  aside{
-    width: 30rem;
-  }
+
   .HeaderSection{
     display: flex;
     align-items: flex-start;
@@ -284,6 +326,21 @@
   }
   .ErrorDiv{
     color: red;
+  }
+
+  .BetaUserDiv{
+    display: inline;
+    padding: 0.3rem 0.5rem;
+    border-radius: 999px;
+    background-color: rgba(128, 0, 128, 0.217);
+    color: purple;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: normal;
+  }
+  .IdentityEmail{
+    color: #686868;
+    font-size: 0.95rem;
   }
   
   
@@ -323,6 +380,8 @@
     }
     .ContainerHeadSection{
       width: auto;
+      margin-left: 2rem;
+      margin-right: 1rem;
     }
     .ProfileCard{
       width: auto;
@@ -336,8 +395,32 @@
     .InputDiv{
       gap: 2rem;
     }
+    .SecondMainSection{
+      flex: 0;
+      margin-left: 2rem;
+      margin-right: 1rem;
+    }
     aside{
       width: 23rem;
+    }
+    .Page{
+      min-width: 40rem;
+      height: 180vh;
+    }
+    .UserAvatar {
+      display:  none;
+    }
+    .UserAvatarLarge {
+      display:  none;
+    }
+    .IdentityName{
+      font-size: 22px;
+    }
+    .FooterRow {
+      font-size: 14px;
+    }
+    .ProfileActionBtns {
+      flex-direction: column-reverse;
     }
   }
   

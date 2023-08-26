@@ -4,7 +4,7 @@ import { ReactComponent as NewLogoIcon } from "../../assets/images/NewLogo.svg";
 import "./NewLogo.css";
 
 const NewLogo = () => (
-  <Link to="/" className="LogoWrapper">
+  <Link to="/" className={`${window.location.pathname === '/'  ? 'homeLogoWrapper' : 'LogoWrapper'}`}>
     <div className="Logo">
       <NewLogoIcon className="NewLogoIcon" />
       <div className="BrandLogoType">Crane Cloud</div>

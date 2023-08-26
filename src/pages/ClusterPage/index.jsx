@@ -128,77 +128,119 @@ const ClusterPage = ({
         />
       </div>
 
-      <div className={styles.OtherCards}>
-        <Link to="/accounts" className={styles.ResourceCard}>
-          <div className={styles.CardHeader}>Users</div>
-          <div className={styles.CardTop}>Count</div>
-          <div className={styles.ResourceDigit}>
-            {usersSummary?.metadata?.total_users}
-          </div>
-        </Link>
-        <div className={styles.ResourceCard}>
-          <>
-            <div className={styles.CardHeader}>Projects</div>
-            <div className={styles.DBStats}>
-              <div className={styles.In}>
-                <div className={styles.InnerTitlesStart}>Active</div>
-                <div className={styles.ResourceDigit}>
-                  {enabledProjectsCount}
-                </div>
-              </div>
-              <div className={styles.verticalLine}></div>
-              <div className={styles.In}>
-                <div className={styles.InnerTitlesMiddle}>Disabled</div>
-                <div className={styles.ResourceDigit}>
-                  {disabledProjectsCount}
-                </div>
-              </div>
-            </div>
-          </>
-        </div>
-        <Link to="/databases" className={styles.ResourceCard}>
-          <>
-            <div className={styles.CardHeader}>Databases</div>
-            <div className={styles.DBStats}>
-              <div className={styles.In}>
-                <div className={styles.InnerTitlesStart}>Mysql</div>
-                <div className={styles.ResourceDigit}>
-                  {databases &&
-                    databases?.dbs_stats_per_flavour?.mysql_db_count}
-                </div>
-              </div>
-              <div className={styles.verticalLine}></div>
-              <div className={styles.In}>
-                <div className={styles.InnerTitlesMiddle}>Postgresql</div>
-                <div className={styles.ResourceDigit}>
-                  {databases &&
-                    databases?.dbs_stats_per_flavour?.postgres_db_count}
-                </div>
-              </div>
-            </div>
-          </>
-        </Link>
-        <div className={styles.ResourceCard}>
-          <div className={styles.CardHeader}>Clusters</div>
-          <div className={styles.CardTop}>Count</div>
-          <div className={styles.ResourceDigit}>
-            {clusters?.metadata?.cluster_count}
-          </div>
-        </div>
-
-        <div className={styles.ResourceCard}>
-          <div className={styles.CardHeader}>Apps</div>
-          <div className={styles.CardTop}>Count</div>
-          <div className={styles.ResourceDigit}>
-            {summary?.metadata?.total_apps}
+      <div>
+        <div className="TitleArea">
+          <div className="SectionTitle" style={{ paddingTop: "1rem" }}>
+            <b>Resource usage summary</b>
           </div>
         </div>
       </div>
 
-      <div className="ContentSection">
+      <div className={styles.OtherCards}>
+        <Link to="/accounts" className={styles.ResourceCard}>
+          <div className={styles.columnCardSection}>
+            <div className={styles.CardHeader}>Users</div>
+            <div className={styles.ResourceDigit}>
+              {usersSummary?.metadata?.total_users}
+            </div>
+          </div>
+          <div className={styles.rowCardSection}>
+            <div className={styles.columnCardSection}>
+              <div className={styles.innerCardHeader}>Verified</div>
+              <div className={styles.rowResourceDigit}>
+                {parseInt(parseInt(usersSummary?.metadata?.total_users) / 2)}
+              </div>
+            </div>
+            <div className={styles.columnCardSection}>
+              <div className={styles.innerCardHeader}>Unverified</div>
+              <div
+                className={`${styles.rowResourceDigit} ${styles.rightTextAlign}`}
+              >
+                {parseInt(parseInt(usersSummary?.metadata?.total_users) / 2)}
+              </div>
+            </div>
+          </div>
+        </Link>
+        <Link to="projectsListing" className={styles.ResourceCard}>
+          <div className={styles.columnCardSection}>
+            <div className={styles.CardHeader}>Projects</div>
+            <div className={styles.ResourceDigit}>
+              {Number(enabledProjectsCount) + Number(disabledProjectsCount)}
+            </div>
+          </div>
+          <div className={styles.rowCardSection}>
+            <div className={styles.columnCardSection}>
+              <div className={styles.innerCardHeader}>Active</div>
+              <div className={styles.rowResourceDigit}>
+                {enabledProjectsCount}
+              </div>
+            </div>
+            <div className={styles.columnCardSection}>
+              <div className={styles.innerCardHeader}>Disabled</div>
+              <div
+                className={`${styles.rowResourceDigit} ${styles.rightTextAlign}`}
+              >
+                {disabledProjectsCount}
+              </div>
+            </div>
+          </div>
+        </Link>
+        <Link to="/databases" className={styles.ResourceCard}>
+          <div className={styles.columnCardSection}>
+            <div className={styles.CardHeader}>Databases</div>
+            <div className={styles.ResourceDigit}>
+              {databases &&
+                databases?.total_database_count }
+            </div>
+          </div>
+          <div className={styles.rowCardSection}>
+            <div className={styles.columnCardSection}>
+              <div className={styles.innerCardHeader}>MySql</div>
+              <div className={styles.rowResourceDigit}>
+                {databases && databases?.dbs_stats_per_flavour?.mysql_db_count}
+              </div>
+            </div>
+            <div className={styles.columnCardSection}>
+              <div className={styles.innerCardHeader}>Postgresql</div>
+              <div
+                className={`${styles.rowResourceDigit} ${styles.rightTextAlign}`}
+              >
+                {databases &&
+                  databases?.dbs_stats_per_flavour?.postgres_db_count}
+              </div>
+            </div>
+          </div>
+        </Link>
+        <div className={styles.ResourceCard}>
+          <div className={styles.columnCardSection}>
+            <div className={styles.CardHeader}>Apps</div>
+            <div className={styles.ResourceDigit}>
+              {summary?.metadata?.total_apps}
+            </div>
+          </div>
+          <div className={styles.rowCardSection}>
+            <div className={styles.columnCardSection}>
+              <div className={styles.innerCardHeader}>Up</div>
+              <div className={styles.rowResourceDigit}>
+                {parseInt(parseInt(summary?.metadata?.total_apps) / 2)}
+              </div>
+            </div>
+            <div className={styles.columnCardSection}>
+              <div className={styles.innerCardHeader}>Down</div>
+              <div
+                className={`${styles.rowResourceDigit} ${styles.rightTextAlign}`}
+              >
+                {parseInt(parseInt(summary?.metadata?.total_apps) / 2)}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
         <div className="TitleArea">
           <div className="SectionTitle" style={{ paddingTop: "2rem" }}>
-            <b>Select Infrastructure</b>
+            <b>Select Infrastructure ({clusters?.metadata?.cluster_count})</b>
           </div>
         </div>
       </div>
@@ -213,8 +255,6 @@ const ClusterPage = ({
         </p>
       </div>
 
-      {/* Modal for creating a new project
-        Its triggered by the value of state.openModal */}
       <Modal showModal={openModal} onClickAway={hideForm}>
         <div className="ModalForm">
           <div className="ModalFormHeading">

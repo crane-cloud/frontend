@@ -10,7 +10,7 @@ const Avatar = ({ name,className }) => {
       hash = name.charCodeAt(i) + ((hash << 5) - hash); // eslint-disable-line no-bitwise
     }
     const h = hash % 360;
-    return `hsl(${h}, 80%, 30%)`; // syntax: hsl(h, s%, l%)
+    return `hsl(${h}, 80%, 70%)`; // syntax: hsl(h, s%, l%)
   };
 
   return (

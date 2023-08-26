@@ -9,7 +9,6 @@ import "./UserAccounts.css";
 import Header from "../Header";
 import Spinner from "../Spinner";
 import InformationBar from "../InformationBar";
-import SideNav from "../SideNav";
 import Modal from "../Modal";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
@@ -23,8 +22,6 @@ import { useSelector, useDispatch } from "react-redux";
 // import { useParams } from "react-router-dom";
 
 const UserAccounts = () => {
-  const clusterName = localStorage.getItem("clusterName");
-  const clusterID = localStorage.getItem("clusterID");
   const [currentPage, handleChangePage] = usePaginator();
 
   const [actionsMenu, setActionsMenu] = useState(false);
@@ -47,7 +44,7 @@ const UserAccounts = () => {
   );
   const dispatch = useDispatch();
   const gettingUsers = useCallback(
-    (page,keyword='') => dispatch(getUsersList(page,keyword)),
+    (page, keyword = "") => dispatch(getUsersList(page, keyword)),
     [dispatch]
   );
 
@@ -146,266 +143,227 @@ const UserAccounts = () => {
   };
 
   return (
-    <div className="MainPage">
+    <div className="APage">
       {isAdded ? renderRedirect() : null}
-      <div className="TopBarSection">
-        <Header />
-      </div>
-      <div className="MainSection">
-        <div className="SideBarSection">
-          <SideNav clusterName={clusterName} clusterId={clusterID} />
-        </div>
-        <div className="MainContentSection">
-          <div className="InformationBarSection">
-            <InformationBar
-              header={
-                <>
-                  <Link className="breadcrumb" to={`/accounts`}>
-                    Overview
-                  </Link>
-                  <span> / Users Listing</span>
-                </>
-              }
-              showBtn={false}
-            />
-          </div>
-          <div className="ContentSection">
-            <div className="SearchBar">
-              <div className="AdminSearchInput">
-                <input
-                  type="text"
-                  className="searchTerm"
-                  name="Searchword"
-                  placeholder="Search for account"
-                  value={word}
-                  onChange={(e) => {
-                    handleCallbackSearchword(e);
-                  }}
-                />
-                <SearchButton className="SearchIcon" />
-              </div>
-            </div>
-            <div
-              className={
-                isFetching
-                  ? "ResourcesTable LoadingResourcesTable"
-                  : "ResourcesTable"
-              }
-            >
-              <table className="UsersTable">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Beta User</th>
-                    <th>Credits</th>
-                    <th>Email</th>
-                    <th>Actions</th>
+      <div className="AMainSection">
+        <div className="ContentSection">
+          <div
+            className={
+              isFetching
+                ? "ResourcesTable LoadingResourcesTable"
+                : "ResourcesTable"
+            }
+          >
+            <table className="UsersTable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Beta User</th>
+                  <th>Credits</th>
+                  <th>Email</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              {isFetching ? (
+                <tbody>
+                  <tr className="TableLoading">
+                    <td className="TableTdSpinner">
+                      <div className="SpinnerWrapper">
+                        <Spinner size="big" />
+                      </div>
+                    </td>
                   </tr>
-                </thead>
-                {isFetching ? (
-                  <tbody>
-                    <tr className="TableLoading">
-                      <td className="TableTdSpinner">
-                        <div className="SpinnerWrapper">
-                          <Spinner size="big" />
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                )  : (
-                  <tbody>
-                    {isFetched &&
-                      users !== undefined &&
-                      users?.map((user) => (
-                        <tr key={users.indexOf(user)}>
-                          <td>{user?.name}</td>
-                          <td>{user.is_beta_user ? "True" : "False"}</td>
-                          <td>
-                            {user?.credits.length === 0 ? (
-                              "No credits"
-                            ) : (
-                              <div className="creditSection">
-                                {user?.credits[0]?.amount}
-                                <div className="creditCoin">
-                                  {" "}
-                                  <Coin title="credits" />
-                                </div>
+                </tbody>
+              ) : (
+                <tbody>
+                  {isFetched &&
+                    users !== undefined &&
+                    users?.map((user) => (
+                      <tr key={users.indexOf(user)}>
+                        <td>{user?.name}</td>
+                        <td>{user.is_beta_user ? "True" : "False"}</td>
+                        <td>
+                          {user?.credits.length === 0 ? (
+                            "No credits"
+                          ) : (
+                            <div className="creditSection">
+                              {user?.credits[0]?.amount}
+                              <div className="creditCoin">
+                                {" "}
+                                <Coin title="credits" />
                               </div>
-                            )}
-                          </td>
-                          <td>{user?.email}</td>
-                          <td
-                            onClick={(e) => {
-                              showMenu(user.id);
-                              handleClick(e);
-                            }}
-                          >
-                            <MoreIcon />
-                            {actionsMenu && user.id === selectedUser && (
-                              <div className="BelowHeader bg-light">
-                                <div className="context-menu">
-                                  <div
-                                    className="DropDownLink"
-                                    role="presentation"
-                                    onClick={() => {
-                                      showBetaUserModal();
+                            </div>
+                          )}
+                        </td>
+                        <td>{user?.email}</td>
+                        <td
+                          onClick={(e) => {
+                            showMenu(user.id);
+                            handleClick(e);
+                          }}
+                        >
+                          <MoreIcon />
+                          {actionsMenu && user.id === selectedUser && (
+                            <div className="BelowHeader bg-light">
+                              <div className="context-menu">
+                                <div
+                                  className="DropDownLink"
+                                  role="presentation"
+                                  onClick={() => {
+                                    showBetaUserModal();
+                                  }}
+                                >
+                                  Add Beta User
+                                </div>
+                                <div
+                                  className="DropDownLink"
+                                  role="presentation"
+                                  onClick={() => {
+                                    showCreditsModal();
+                                  }}
+                                >
+                                  Assign Credits
+                                </div>
+                                <div
+                                  className="DropDownLink"
+                                  role="presentation"
+                                >
+                                  <Link
+                                    to={{
+                                      pathname: `/accounts/${selectedUser}`,
                                     }}
                                   >
-                                    Add Beta User
-                                  </div>
-                                  <div
-                                    className="DropDownLink"
-                                    role="presentation"
-                                    onClick={() => {
-                                      showCreditsModal();
+                                    View User Profile
+                                  </Link>
+                                </div>
+                                <div
+                                  className="DropDownLink"
+                                  role="presentation"
+                                >
+                                  <Link
+                                    to={{
+                                      pathname: `/accounts/${selectedUser}/logs`,
                                     }}
                                   >
-                                    Assign Credits
-                                  </div>
-                                  <div
-                                    className="DropDownLink"
-                                    role="presentation"
-                                  >
-                                    <Link
-                                      to={{
-                                        pathname: `/accounts/${selectedUser}`,
-                                      }}
-                                    >
-                                      View User Profile
-                                    </Link>
-                                  </div>
-                                  <div
-                                    className="DropDownLink"
-                                    role="presentation"
-                                  >
-                                    <Link
-                                      to={{
-                                        pathname: `/accounts/${selectedUser}/logs`,
-                                      }}
-                                    >
-                                      View User Logs
-                                    </Link>
-                                  </div>
+                                    View User Logs
+                                  </Link>
                                 </div>
                               </div>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                )}
-              </table>
-              {isFetched && users.length === 0 && (
-                <div className="AdminNoResourcesMessage">
-                  <p>No Users Available</p>
-                </div>
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
               )}
-              {!isFetching && !isFetched && (
-                <div className="AdminNoResourcesMessage">
-                  <p>
-                    Oops! Something went wrong! Failed to retrieve Available
-                    Users.
-                  </p>
-                </div>
-              )}
-            </div>
-            {pagination?.pages > 1 && (
-              <div className="AdminPaginationSection">
-                <Pagination
-                  total={pagination.pages}
-                  current={currentPage}
-                  onPageChange={handlePageChange}
-                />
+            </table>
+            {isFetched && users.length === 0 && (
+              <div className="AdminNoResourcesMessage">
+                <p>No Users Available</p>
+              </div>
+            )}
+            {!isFetching && !isFetched && (
+              <div className="AdminNoResourcesMessage">
+                <p>
+                  Oops! Something went wrong! Failed to retrieve Available
+                  Users.
+                </p>
               </div>
             )}
           </div>
-          <Modal showModal={addCredits} onClickAway={() => hideCreditsModal()}>
-            <div className="ModalHeader">
-              <h5 className="ModalTitle">Add Credits</h5>
+          {pagination?.pages > 1 && (
+            <div className="AdminPaginationSection">
+              <Pagination
+                total={pagination.pages}
+                current={currentPage}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          )}
+        </div>
+        <Modal showModal={addCredits} onClickAway={() => hideCreditsModal()}>
+          <div className="ModalHeader">
+            <h5 className="ModalTitle">Add Credits</h5>
 
-              <div className="">Number of credits</div>
-              <div className="ModalContent">
-                <BlackInputText
-                  required
-                  placeholder="Number of credits"
-                  name="credits"
-                  type="number"
-                  value={credits}
-                  onChange={(e) => {
-                    setCredits(e.target.value);
-                  }}
-                />
-              </div>
-              <div className="CreditsTitle">Description</div>
-              <textarea
-                className="TextArea"
-                type="text"
-                placeholder="Credits description"
-                rows="4"
-                cols="50"
-                name="creditDescription"
-                value={creditDescription}
+            <div className="">Number of credits</div>
+            <div className="ModalContent">
+              <BlackInputText
+                required
+                placeholder="Number of credits"
+                name="credits"
+                type="number"
+                value={credits}
                 onChange={(e) => {
-                  setCreditDescription(e.target.value);
+                  setCredits(e.target.value);
                 }}
               />
             </div>
-            <div className="ModalFooter">
-              <div className="ModalButtons">
-                <PrimaryButton
-                  className="CancelBtn"
-                  onClick={() => hideCreditsModal()}
-                >
-                  Cancel
-                </PrimaryButton>
+            <div className="CreditsTitle">Description</div>
+            <textarea
+              className="TextArea"
+              type="text"
+              placeholder="Credits description"
+              rows="4"
+              cols="50"
+              name="creditDescription"
+              value={creditDescription}
+              onChange={(e) => {
+                setCreditDescription(e.target.value);
+              }}
+            />
+          </div>
+          <div className="ModalFooter">
+            <div className="ModalButtons">
+              <PrimaryButton
+                className="CancelBtn"
+                onClick={() => hideCreditsModal()}
+              >
+                Cancel
+              </PrimaryButton>
 
-                <PrimaryButton
-                  type="button"
-                  onClick={() => handleCreditSubmittion()}
-                >
-                  {Adding ? <Spinner /> : "Add"}
-                </PrimaryButton>
-              </div>
-              {Failed && (
-                <Feedback message={"failed to add credits"} type={"error"} />
-              )}
+              <PrimaryButton
+                type="button"
+                onClick={() => handleCreditSubmittion()}
+              >
+                {Adding ? <Spinner /> : "Add"}
+              </PrimaryButton>
             </div>
-          </Modal>
-          <Modal showModal={betaUserModal} onClickAway={closeBetaUserModal}>
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title BetaUserText" id="exampleModalLongTitle">
-                  Add user as Beta user?
-                </h5>
-              </div>
-              <div class="modal-footer BetaUser">
-                <PrimaryButton
-                  type="button"
-                  className="CancelBtn"
-                  onClick={() => {
-                    closeBetaUserModal();
-                  }}
-                >
-                  Cancel
-                </PrimaryButton>
-                <PrimaryButton
-                  type="button"
-                  onClick={() => {
-                    handleBetaUserSubmit();
-                  }}
-                >
-                  {isAdding ? <Spinner /> : "Confirm"}
-                </PrimaryButton>
-              </div>
-              {isFailed && (
-                <Feedback
-                  message={error !== "" ? error : null}
-                  type={"error"}
-                />
-              )}
+            {Failed && (
+              <Feedback message={"failed to add credits"} type={"error"} />
+            )}
+          </div>
+        </Modal>
+        <Modal showModal={betaUserModal} onClickAway={closeBetaUserModal}>
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title BetaUserText" id="exampleModalLongTitle">
+                Add user as Beta user?
+              </h5>
             </div>
-          </Modal>
-        </div>
+            <div class="modal-footer BetaUser">
+              <PrimaryButton
+                type="button"
+                className="CancelBtn"
+                onClick={() => {
+                  closeBetaUserModal();
+                }}
+              >
+                Cancel
+              </PrimaryButton>
+              <PrimaryButton
+                type="button"
+                onClick={() => {
+                  handleBetaUserSubmit();
+                }}
+              >
+                {isAdding ? <Spinner /> : "Confirm"}
+              </PrimaryButton>
+            </div>
+            {isFailed && (
+              <Feedback message={error !== "" ? error : null} type={"error"} />
+            )}
+          </div>
+        </Modal>
       </div>
     </div>
   );

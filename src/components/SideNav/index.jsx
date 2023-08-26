@@ -4,6 +4,7 @@ import { NavLink, Link } from "react-router-dom";
 import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 import Menu from "../../assets/images/menu.svg";
 import useMedia from "../../hooks/mediaquery";
+import CloseIcon from "../../assets/images/cancel-icon.svg";
 
 const SideNav = ({ clusterId, clusterName }) => {
   const BASE_URL = `/clusters/${clusterId}`;
@@ -128,18 +129,7 @@ const SideNav = ({ clusterId, clusterName }) => {
             <Link to={{ pathname: "/databases" }} className="ListItem">
               Databases
             </Link>
-            {/* <div>
-              <NavLink to={{ pathname: "/databases" }} className="SubListItem">
-                Databases
-              </NavLink>
-            </div> */}
-            <Link to={{ pathname: "/accounts" }} className="ListItem">
-              Users
-            </Link>
             <div>
-              <NavLink to={{ pathname: "/accounts" }} className="SubListItem">
-                Accounts
-              </NavLink>
               <NavLink
                 to={{ pathname: `${BASE_URL}/projects` }}
                 className="SubListItem"
@@ -185,6 +175,14 @@ const SideNav = ({ clusterId, clusterName }) => {
           <img src={Menu} alt="menu" />
         </div>
       )}
+      {!isDesktop && OpenForsmallScreen &&<div
+          className="CloseMenuIcon"
+          onClick={() => {
+            setopenForsmallScreen(false)
+          }}
+        >
+        <img src={CloseIcon} alt="menu" />  
+        </div>}
     </>
   );
 };

@@ -87,7 +87,7 @@ class AppsList extends Component {
   }
 
   render() {
-    const {SearchList} = this.state;
+    // const {SearchList} = this.state;
     const {
       apps,
       isRetrieved,
@@ -149,22 +149,26 @@ class AppsList extends Component {
         )}
         {isRetrieved && sortedApps?.length === 0 && (
           <div className={styles.NoAppsError}>
-            {word ? <div className={styles.NoAppsResourcesMessage}>
-                No results for "{word}"
-              </div> :<>
-            {message ? (
-              message
-            ) : (
+            {word ? (
               <div className={styles.NoAppsResourcesMessage}>
-                You haven’t created any apps yet. Click the &nbsp;{" "}
-                <ButtonPlus
-                  className={styles.ButtonPlusSmall}
-                  onClick={openComponent}
-                />{" "}
-                &nbsp; button to deploy an app.
+                No results for "{word}"
               </div>
+            ) : (
+              <>
+                {message ? (
+                  message
+                ) : (
+                  <div className={styles.NoAppsResourcesMessage}>
+                    You haven’t created any apps yet. Click the &nbsp;{" "}
+                    <ButtonPlus
+                      className={styles.ButtonPlusSmall}
+                      onClick={openComponent}
+                    />{" "}
+                    &nbsp; button to deploy an app.
+                  </div>
+                )}
+              </>
             )}
-            </>}
           </div>
         )}
         {!isRetrieving && !isRetrieved && (

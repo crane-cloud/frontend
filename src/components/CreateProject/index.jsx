@@ -1,17 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-// import { Redirect } from "react-router-dom";
 import PrimaryButton from "../PrimaryButton";
 import Select from "../Select";
-//import CancelButton from "../CancelButton";
 import Header from "../Header";
 import Spinner from "../Spinner";
 import Feedback from "../Feedback";
 import BlackInputText from "../BlackInputText";
-//import Checkbox from "../Checkbox";
 import ToggleOnOffButton from "../ToggleOnOffButton";
-//import { ReactComponent as InfoIcon } from "../../assets/images/info-icon.svg";
 import styles from "./CreateProject.module.css";
 import { handlePostRequestWithOutDataObject } from "../../apis/apis.js";
 import { retrieveProjectTypes } from "../../helpers/projecttypes";
@@ -38,13 +34,14 @@ class CreateProject extends React.Component {
       otherOrgType: false,
       SelectedClusters: new Array(clusters?.length).fill(false),
       otherType: "",
-      addingProject:false,
-      addProjectError:"",
-      addErrorCode:""
+      addingProject: false,
+      addProjectError: "",
+      addErrorCode: "",
     };
 
     this.handleTypeSelectChange = this.handleTypeSelectChange.bind(this);
-    this.handleOrganisationSelectChange = this.handleOrganisationSelectChange.bind(this);
+    this.handleOrganisationSelectChange =
+      this.handleOrganisationSelectChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleDatacenterSelectChange =
@@ -52,16 +49,9 @@ class CreateProject extends React.Component {
     this.changeMultiSelectioOption = this.changeMultiSelectioOption.bind(this);
     this.togglemultiCluster = this.togglemultiCluster.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
-    this.addNewProject  = this.addNewProject.bind(this);
+    this.addNewProject = this.addNewProject.bind(this);
   }
 
-  // componentDidMount() {
-    
-  // }
-
-  // componentDidUpdate(prevProps) {
-   
-  // }
   handleOnChange(position) {
     const { SelectedClusters } = this.state;
     this.setState({
@@ -99,7 +89,7 @@ class CreateProject extends React.Component {
   }
 
   handleOrganisationSelectChange(selected) {
-    this.setState({ projectOrganisation: selected.value})
+    this.setState({ projectOrganisation: selected.value });
   }
   handleDatacenterSelectChange(selected) {
     this.setState({ clusterID: selected.id });
@@ -115,7 +105,7 @@ class CreateProject extends React.Component {
         error: "",
       });
     }
-    if(addProjectError){
+    if (addProjectError) {
       this.setState({
         addProjectError: "",
       });
@@ -165,26 +155,24 @@ class CreateProject extends React.Component {
         organisation: projectOrganisation,
         project_type: approvedType,
       };
-     // addProject(newProject);
-     this.addNewProject(newProject)
+      // addProject(newProject);
+      this.addNewProject(newProject);
     }
   }
   addNewProject(data) {
     this.setState({
-      addingProject:true,
-      addProjectError:""
-    })
-    handlePostRequestWithOutDataObject(
-      data,
-      `/projects`
-    ).then(() => {
+      addingProject: true,
+      addProjectError: "",
+    });
+    handlePostRequestWithOutDataObject(data, `/projects`)
+      .then(() => {
         window.location.href = `/projects`;
       })
       .catch((error) => {
         this.setState({
           addProjectError: "Failed to add project. Try again later",
           addingProject: false,
-          addErrorCode:error.response?.status
+          addErrorCode: error.response?.status,
         });
       });
   }
@@ -197,7 +185,6 @@ class CreateProject extends React.Component {
       projectName,
       projectDescription,
       error,
-      // projectOrganisation,
       othersBool,
       otherType,
       multiCluster,
@@ -205,11 +192,11 @@ class CreateProject extends React.Component {
       SelectedClusters,
       addingProject,
       addProjectError,
-      addErrorCode
+      addErrorCode,
     } = this.state;
     const types = retrieveProjectTypes();
     const presetOrganisations = namedOrganisations();
-   
+
     return (
       <div className={styles.MainContentSection}>
         <Header />
@@ -218,7 +205,6 @@ class CreateProject extends React.Component {
             <div className={styles.InformationBarWithButton}>
               <div className={styles.InfoHeader}>Create Project</div>
               <div className={styles.RoundAddButtonWrap}>
-                {/*<CancelButton onClick={this.props.closeComponent} />*/}
                 <PrimaryButton
                   btntype="close"
                   onClick={this.props.closeComponent}
@@ -242,21 +228,6 @@ class CreateProject extends React.Component {
                       options={clusters}
                       onChange={this.handleDatacenterSelectChange}
                     />
-                    {/*  <div className={styles.ClusterCheckboxSection}>
-                    <InfoIcon /> &nbsp; The above selection is for a single
-                    cluster set up, for multi-cluster options check the box
-                    below.
-                  </div>
-                  <div className={styles.ClusterCheckboxSection}>
-                    <Checkbox
-                      isBlack
-                      onClick={this.togglemultiCluster}
-                      isChecked={multiCluster}
-                    />
-                    <div className={styles.NormalText}>
-                      &nbsp; Multi-cluster options
-                    </div>
-                  </div>*/}
                     {multiCluster && (
                       <div>
                         <div className={styles.ClusterToggleSection}>
@@ -319,32 +290,12 @@ class CreateProject extends React.Component {
                   </div>
                   <div className={styles.Element}>
                     <div className={styles.ElementTitle}>Organisation</div>
-                    {/* <BlackInputText
-                      required
-                      placeholder="eg.Individual ,Makerere Universty..."
-                      name="projectOrganisation"
-                      value={projectOrganisation}
-                      onChange={(e) => {
-                        this.handleChange(e);
-                      }}
-                    /> */}
                     <Select
                       required
                       placeholder="Choose Organisation type"
                       options={presetOrganisations}
                       onChange={this.handleOrganisationSelectChange}
                     />
-                    {othersBool && (
-                      <BlackInputText
-                        required
-                        placeholder="Type of project"
-                        name="otherType"
-                        value={otherType}
-                        onChange={(e) => {
-                          this.handleChange(e);
-                        }}
-                      />
-                    )}
                   </div>
                   <div className={styles.Element}>
                     <div className={styles.ElementTitle}>Type</div>
@@ -396,7 +347,9 @@ class CreateProject extends React.Component {
                             : addProjectError
                         }
                         type={
-                          addProjectError==="" && addErrorCode !== 409 ? "success" : "error"
+                          addProjectError === "" && addErrorCode !== 409
+                            ? "success"
+                            : "error"
                         }
                       />
                     </div>
@@ -441,7 +394,6 @@ export const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = {
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateProject);

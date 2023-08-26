@@ -14,7 +14,6 @@ import {
 } from "../../helpers/formatMetrics";
 import { getProjectName } from "../../helpers/projectName";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
-
 class ProjectCPUPage extends React.Component {
   constructor(props) {
     super(props);
@@ -25,14 +24,15 @@ class ProjectCPUPage extends React.Component {
         step: "",
       },
       period: "1d",
+      showErrorMessage: false,
+      dateError: "",
     };
-
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
     this.fetchCPU = this.fetchCPU.bind(this);
     this.getDateCreated = this.getDateCreated.bind(this);
   }
 
-  componentDidMount() {
+  /*componentDidMount() {
     const {
       match: { params },
       getProjectCPU,
@@ -41,7 +41,29 @@ class ProjectCPUPage extends React.Component {
     const { projectID } = params;
     clearProjectCPU();
     getProjectCPU(projectID, { step: "2h" });
+  }*/
+  componentDidMount() {
+    const {
+      match: { params },
+      getProjectCPU,
+      clearProjectCPU,
+    } = this.props;
+    const { projectID } = params;
+    clearProjectCPU();
+  
+    const endTimeStamp = getCurrentTimeStamp(); // Set the end date to the current timestamp
+  
+    this.setState({
+      time: {
+        start: 0,
+        end: endTimeStamp,
+        step: "2h", // You can adjust the default step value here if needed
+      },
+    });
+  
+    getProjectCPU(projectID, { step: "2h" });
   }
+  
 
   getDateCreated() {
     const {
@@ -53,11 +75,12 @@ class ProjectCPUPage extends React.Component {
   }
 
   async handlePeriodChange(period, customTime = null) {
-    let days;
+    
+let days;
     let step;
     let startTimeStamp;
-    let endTimeStamp = getCurrentTimeStamp();
-
+    let endTimeStamp;
+  
     if (period === "1d") {
       days = 1;
       step = "2h";
@@ -76,32 +99,47 @@ class ProjectCPUPage extends React.Component {
     } else if (period === "custom") {
       step = "1d";
     }
-
-    this.setState({ period }); // this period state will be used to format x-axis values accordingly
-
+  
+    this.setState({ period });
+  
     if (period === "all") {
       startTimeStamp = await Date.parse(this.getDateCreated());
-      step = "1d"; // TODO: make dynamic depending on the all-time metrics
+      endTimeStamp = getCurrentTimeStamp();
     } else if (period === "custom" && customTime !== null) {
       startTimeStamp = customTime.start;
       endTimeStamp = customTime.end;
+      const { start, end } = customTime;
+      if (end <= start) {
+        this.setState({
+          showErrorMessage: true,
+          dateError: "End date must be greater than start date.",
+        });
+        return; // Exit the function early to prevent further processing
+      } else {
+        this.setState({
+          showErrorMessage: false,
+          dateError: "",
+        });
+      }
     } else {
       startTimeStamp = await subtractTime(getCurrentTimeStamp(), days);
+      endTimeStamp = getCurrentTimeStamp();
     }
-
+  
     this.setState((prevState) => ({
       time: {
         ...prevState.time,
-        end: endTimeStamp,
         start: startTimeStamp,
+        end: endTimeStamp,
         step,
       },
     }));
-
+  
     if (endTimeStamp > startTimeStamp) {
       this.fetchCPU();
     }
   }
+  
 
   fetchCPU() {
     const { time } = this.state;
@@ -125,7 +163,6 @@ class ProjectCPUPage extends React.Component {
     } = this.props;
     const { projectID } = params;
     const { period } = this.state;
-
     const formattedMetrics = formatCPUMetrics(projectID, cpuMetrics, period);
 
     return (
@@ -135,7 +172,14 @@ class ProjectCPUPage extends React.Component {
       >
         <MetricsCard
           className="MetricsCardGraph"
-          title={<PeriodSelector onChange={this.handlePeriodChange} />}
+          title={
+            <div className="PeriodContainer">
+              <PeriodSelector onChange={this.handlePeriodChange} />
+              {this.state.showErrorMessage && (
+                <div className="ErrorMessage"> {this.state.dateError}</div>
+              )}
+            </div>
+          }
         >
           {isFetchingCPU ? (
             <div className="ContentSectionSpinner">
@@ -155,7 +199,6 @@ class ProjectCPUPage extends React.Component {
     );
   }
 }
-
 ProjectCPUPage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
@@ -168,7 +211,6 @@ ProjectCPUPage.propTypes = {
   clearProjectCPU: PropTypes.func.isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
-
 export const mapStateToProps = (state) => {
   const { isFetchingCPU, cpuMetrics, cpuMessage } = state.projectCPUReducer;
   const { projects } = state.userProjectsReducer;
@@ -184,5 +226,4 @@ const mapDispatchToProps = {
   getProjectCPU,
   clearProjectCPU,
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectCPUPage);

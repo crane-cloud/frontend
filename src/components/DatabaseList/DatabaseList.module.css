@@ -120,5 +120,9 @@
 .ContentSection {
    padding-top: 3.5rem;
 }
+.NoResourcesMessageSection{
+  padding: .2rem;
+}
+
 
 }

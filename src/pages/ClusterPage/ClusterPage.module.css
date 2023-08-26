@@ -80,12 +80,12 @@
   padding: 1rem 0rem 1rem 0rem;
 }
 
-.DBStats,
+/* .DBStats,
 .UserStats {
   display: grid;
   grid-template-columns: 49% auto 49%;
   padding-bottom: 1rem;
-}
+} */
 
 .MetricsGraph {
   border-left: 1px solid #cccccc;
@@ -100,59 +100,98 @@
   padding: 3rem 1rem 3rem 9rem;
 }
 
-.InnerTitlesStart,
+/* .InnerTitlesStart,
 .InnerTitlesMiddle,
 .CardTop {
   font-weight: bold;
   text-align: center;
   padding-top: 1rem;
-}
+} */
 
-.verticalLine {
+/* .verticalLine {
   border-left: 1px solid #cccccc;
   height: 10rem;
-}
+} */
 
 .ResourceCard {
   width: 100%;
-  max-width: 385px;
-  margin-left: 20px;
-  text-align: left;
+  max-width: 17rem;
+  margin-left: 10px;
+  align-items: left;
   margin-bottom: 1rem;
   background: #fff;
   position: relative;
   color: #000000;
   word-wrap: break-word;
   background-clip: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.125);
-  border-radius: 0.25rem;
-  height: 250px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  min-height: 10rem;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
 .ResourceDigit {
   flex: 1 1 auto;
-  font-size: 32px;
-  font-weight: normal;
+  font-size: 40px;
+  font-weight: 600;
   box-sizing: border-box;
-  padding-top: 2rem;
-  text-align: center;
-}
-.ResourceCard .CardHeader {
-  font-weight: bold;
-  border: none;
-  outline: 0;
-  padding: 12px;
-  text-transform: lowercase;
+  padding-top: 0.2rem;
   text-align: left;
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
-  padding: 1rem;
-  margin-bottom: 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  color: #008AC1;
+  padding-left: 8px;
+}
+.columnCardSection{
+  display: flex;
+  flex-direction: column;
+}
+.rowCardSection{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 12px;
+}
+.rowResourceDigit{
+  flex: 1 1 auto;
+  font-size: 28px;
+  font-weight: 500;
+  box-sizing: border-box;
+  padding-top: 0.2rem;
+  text-align: left;
+  color: #008AC1;
+}
+.rightTextAlign{
+  text-align: right;
+  padding-right: 10px;
+  padding-left: 0;
 }
 
-.ResourceCard .CardHeader::first-letter {
+.ResourceCard .CardHeader {
+  color: #000;
+  text-align: left;
+  font-size: 21px;
+  font-weight: 500;
+  line-height: normal;
+  padding-left: 12px;
+  padding-top: 12px;
+  text-transform: lowercase;
+  cursor: pointer;
+}
+.innerCardHeader{
+  color: #000;
+  text-align: left;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: lowercase;
+  cursor: pointer;
+}
+.innerCardHeader::first-letter{
+  text-transform: uppercase;
+}
+
+.ResourceCard .CardHeader::first-letter  {
   text-transform: uppercase;
 }
 
@@ -186,8 +225,8 @@
 .OtherCards {
   align-items: center;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: .3rem;
   overflow-x: hidden;
-  padding-top: 3rem;
+  padding: 3rem 1rem 0 1rem;
 }

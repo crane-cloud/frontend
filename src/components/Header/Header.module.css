@@ -1,3 +1,4 @@
+
 .Header {
   background-color: var(--primary-color);
   color: #ffffff;
@@ -221,4 +222,15 @@ a.HeaderLinkBackToConsole {
   .HeaderLinkDocs {
     display: none;
   }
+  .UserNames{
+    font-size: 14px;
+    display: none;
+  }
+  .OnHeader {
+    gap: .3rem;
+  }
+  .Credits{
+    display: none;
+  }
+  
 }

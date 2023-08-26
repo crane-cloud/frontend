@@ -32,8 +32,6 @@ const revertUrl = (appID) => (dispatch) => {
       dispatch(revertUrlSuccess(response))
     })
     .catch((error) => {
-      console.log(appID)
-      console.log(error)
       dispatch(revertUrlFail(error));
     });
 };

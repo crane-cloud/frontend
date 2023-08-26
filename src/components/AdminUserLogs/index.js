@@ -2,14 +2,14 @@ import InformationBar from "../InformationBar";
 import Header from "../Header";
 import SideNav from "../SideNav";
 import Avatar from "../../components/Avatar";
-import { ReactComponent as CheckMark } from "../../assets/images/check-circle.svg";
-import { ReactComponent as Danger } from "../../assets/images/alert-octagon.svg";
-import { ReactComponent as CloudOff } from "../../assets/images/cloud-off.svg";
-import { ReactComponent as Upload } from "../../assets/images/upload-cloud.svg";
+import {ReactComponent as CheckMark} from "../../assets/images/check-circle.svg";
+import {ReactComponent as Danger} from "../../assets/images/alert-octagon.svg";
+import {ReactComponent as CloudOff} from "../../assets/images/cloud-off.svg";
+import {ReactComponent as Upload} from "../../assets/images/upload-cloud.svg";
 import styles from "./AdminUserLogs.module.css";
 // import { useParams } from "react-router-dom";
 import PrimaryButton from "../../components/PrimaryButton";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const AdminUserLogs = () => {
   const clusterID = localStorage.getItem("clusterID");
@@ -27,8 +27,17 @@ const AdminUserLogs = () => {
         </div>
         <div className={styles.MainContentSection}>
           <div className="InformationBarSection">
-            <InformationBar header={<><Link className="breadcrumb" 
-            to={`/accounts`}>Accounts</Link><span> / Logs</span></>} showBtn={false} />
+            <InformationBar
+              header={
+                <span>
+                  <Link className="breadcrumb" to={`/accounts`}>
+                    Accounts
+                  </Link>
+                   / Logs
+                </span>
+              }
+              showBtn={false}
+            />
           </div>
 
           <div className={styles.SmallContainer}>

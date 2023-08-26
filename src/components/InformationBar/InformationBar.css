@@ -17,15 +17,17 @@
   align-items: center;
   font-weight: bold;
   font-size: 1.5rem;
+  gap: 0.5rem;
 }
 
-.InfoContent{
+.InfoContent {
   display: flex;
   justify-content: flex-end;
   gap: 4rem;
   align-items: center;
 }
-.CreditsCorner{
+
+.CreditsCorner {
   display: grid;
   align-items: center;
   grid-template-columns: 1fr 1fr;
@@ -35,15 +37,15 @@
 }
 
 
-.SearchInput{
-  display:flex;
+.SearchInput {
+  display: flex;
   align-items: center;
-  height : 2.5rem;
+  height: 2.5rem;
   background-color: #EBEAD5;
   border-radius: 5px;
 }
 
-.SearchInput input{
+.SearchInput input {
   background-color: transparent;
   color: #000;
   border: none;
@@ -53,7 +55,7 @@
   /* max-width: 21rem; */
 }
 
-.InformationBarColumnView{
+.InformationBarColumnView {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -62,22 +64,121 @@
   width: 100%;
 }
 
-.SearchIcon{
+.SearchIcon {
   background-color: transparent;
   height: 100%;
   padding: 0 0.4rem;
   width: 1.3rem;
 }
 
-.ButtonWrap{
+.ButtonWrap {
   display: flex;
   gap: 1rem;
 }
 
+.InfoProjectCategories {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  font-weight: normal;
+  font-size: 1.1rem;
+  width: 11rem;
+}
+.MobileInfoProjectCategories {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.MobileInfoProjectCategories button {
+  outline: none;
+  border: none;
+  gap: 1.5rem;
+  font-size: 14px;
+  padding: 0.5rem 0.3rem;
+  cursor: pointer;
+  background-color: #d9d9d9; 
+}
+
+.InfoProjectCategories:hover {
+  cursor: pointer;
+}
+
+
+.InfoProjectCategories button {
+  outline: none;
+  border: none;
+  font-size: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem 0.3rem;
+  cursor: pointer;
+  background-color: #d9d9d9;
+}
+
+.InfoProjectCategories svg,
+.MobileInfoProjectCategories svg {
+  height: 1rem;
+  width: 1rem;
+}
+
+.InfoCurrentTab {
+  background-color: #d9d9d9;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.InfoTab {
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.InfoBackBtn {
+  border: none;
+  outline: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.3rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  margin-right: .5rem;
+  transition: ease-in;
+}
+
+.InfoBackBtn:hover {
+  transform: scale(1.2);
+}
+
+.InfoHeader .SelectElementValue {
+  white-space: nowrap;
+  padding: 0.4rem;
+  gap: 0.6rem;
+}
+
+.InfoHeader .SelectOptionsWrapper {
+  white-space: nowrap;
+}
+
+.InfoHeader .SelectWrapper {
+  padding-bottom: 0.9rem;
+  max-height: 20px;
+}
+
+.selectOptions {
+  cursor: pointer;
+}
+
 @media (max-width: 650px) {
-  
-  .SearchInput input{
+
+  .SearchInput input {
+    width: 100%;
+  }
+  .InfoHeader {
+    font-size: 15px;
+  }
+  .InfoProjectCategories{
     width: 100%;
   }
 }
-  

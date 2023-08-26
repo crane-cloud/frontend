@@ -658,7 +658,6 @@ class AppSettingsPage extends React.Component {
     } = this.state;
     // project name from line 105 disappears on refreash, another source of the name was needed
     //const { name } = this.props.location;
-    // console.log(revisions);
     const { appID } = params;
     const replicaOptions = [
       { id: 1, name: "1" },
@@ -940,11 +939,6 @@ class AppSettingsPage extends React.Component {
                       </PrimaryButton>
                     </div>
                   </div>
-                  {error && (
-                    <div className={styles.errorCenterDiv}>
-                      <Feedback type="error" message={error} />
-                    </div>
-                  )}
                 </div>
               </div>
 
@@ -1098,6 +1092,7 @@ class AppSettingsPage extends React.Component {
                     )}
                   </div>
                   <div className={styles.EnvInputItem}>
+                    <div className={styles.VarInputGroup}>
                     <input
                       placeholder="Name"
                       name="varName"
@@ -1117,6 +1112,7 @@ class AppSettingsPage extends React.Component {
                         this.handleChange(e);
                       }}
                     />
+                    </div>
                     <div className={styles.EnvVarsAddBtn}>
                       <PrimaryButton
                         onClick={this.addEnvVar}
@@ -1127,6 +1123,11 @@ class AppSettingsPage extends React.Component {
                       </PrimaryButton>
                     </div>
                   </div>
+                  {error && (
+                    <div className={styles.errorCenterDiv}>
+                      <Feedback type="error" message={error} />
+                    </div>
+                  )}
                   {Object.keys(envVars).length > 0 && (
                     <div className={styles.APPButton}>
                       <div className={styles.UpperSection}>
