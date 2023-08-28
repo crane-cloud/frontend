@@ -14,6 +14,7 @@ import { dateInWords } from "../../helpers/dateConstants";
 import Modal from "../Modal";
 import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 import Feedback from "../Feedback";
+import NewResourceCard from "../NewResourceCard";
 
 
 const AdminProjectDetails = () => {
@@ -31,7 +32,11 @@ const AdminProjectDetails = () => {
   //need to get all current project details
   const { projectID } = useParams();
 
-
+  const projectCount = {
+    apps: details?.apps_count,
+    databases: details?.databases?.length,
+    members: details?.users?.length,
+  }
 
   const fetchProjectDetails = useCallback( () => {
     setLoading( true );
@@ -72,7 +77,7 @@ const AdminProjectDetails = () => {
         setDisablingProject( false )
       } );
   }
-  // console.log('Details:', details?.users[0].user.name);
+
   return (
     <section className={ styles.Page }>
       <div className={ styles.TopBarSection }>
@@ -156,37 +161,13 @@ const AdminProjectDetails = () => {
                   <section className={ styles.DetailsSection }>
                     <div className="SectionTitle">Project Metrics</div>
                     <div className="flex_metrics">
-                      <div className="project_instructions">
-                        <div className="project_metrics">
-                          <div className="project_metrics_header">
-                            Applications
-                          </div>
-                          <div className="project_metrics_body">
-                            { details?.apps_count }
-                          </div>
-                        </div>
-                      </div>
-                      <div className="project_instructions">
-                        <div className="project_metrics">
-                          <div className="project_metrics_header">
-                            Databases
-                          </div>
-                          <div className="project_metrics_body">
-                            { details?.databases?.length }
-                          </div>
-                        </div>
-                      </div>
-                      <div className="project_instructions">
-                        <div className="project_metrics">
-                          <div className="project_metrics_header">
-                            Members
-                          </div>
-                          <div className="project_metrics_body">
-                            { details?.users?.length }
-                          </div>
-                        </div>
-                      </div>
-
+                      { Object.keys( projectCount ).map( ( key, index ) => (
+                        <NewResourceCard
+                          key={ index }
+                          title={ key }
+                          count={ projectCount[ key ] }
+                        />
+                      ) ) }
                     </div>
                   </section>
                   {/* Membership */ }
@@ -254,7 +235,7 @@ const AdminProjectDetails = () => {
                       </>
                     </div>
                   </section>
-                  {/* <ActivityLogs projectID={ projectID } /> */}
+                  {/* <ActivityLogs projectID={ projectID } /> */ }
                   {/* Management */ }
                   <section className={ styles.DetailsSection }>
                     <>
