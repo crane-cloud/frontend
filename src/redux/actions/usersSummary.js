@@ -24,10 +24,9 @@ export const getUsersFailSummary = (error) => ({
 
 const userSummary = (details) => (dispatch) => {
   dispatch(startFetchingUsersSummary());
-
+  
   return axios
-    .post(`/users/summary`, details)
-
+    .get(`/users/graph?start=${details.begin}&&end=${details.end}&&set_by=${details.set_by}`)
     .then((response) => dispatch(getUsersSuccessSummary(response)))
     .catch((error) => {
       dispatch(getUsersFailSummary(error));
