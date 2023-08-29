@@ -213,15 +213,10 @@
   overflow-x: hidden;
   overflow-y: auto;
 }
-
-.ClusterMetricsCardGraph {
-  max-height: 12rem;
-}
 .AllUsers {
   display: flex;
   margin: auto;
 }
-
 .OtherCards {
   align-items: center;
   display: grid;

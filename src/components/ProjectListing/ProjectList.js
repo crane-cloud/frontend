@@ -14,11 +14,15 @@ import {ReactComponent as SearchButton} from "../../assets/images/search.svg";
 import {namedOrganisations} from "../../helpers/projectOrganisations.js";
 import {retrieveProjectTypes} from "../../helpers/projecttypes.js";
 import {filterGraphData} from "../../helpers/filterGraphData.js";
-import MetricsCard from "../../components/MetricsCard";
+// import MetricsCard from "../../components/MetricsCard";
 import {retrieveMonthNames} from "../../helpers/monthNames.js";
 import NewResourceCard from "../../components/NewResourceCard";
 import Select from "../../components/Select";
-import {projectPieCategories} from "../../helpers/projectPieCat";
+import {
+  projectPieCategories,
+  projectGraphCategories,
+  projectLists,
+} from "../../helpers/projectPieCat";
 import {
   Line,
   CartesianGrid,
@@ -32,15 +36,16 @@ import {
   Cell,
 } from "recharts";
 
-const AdminProjectsList = () => {
+const AdminProjectsOverview = () => {
   const [currentPage, handleChangePage] = usePaginator();
   const dispatch = useDispatch();
   const [word, setWord] = useState("");
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
-  const [sectionValue, setSectionValue] = useState(
-    "Project Categories Summary"
-  );
+  const [disabledProjects, setDisabledProjects] = useState([]);
+  const [sectionValue, setSectionValue] = useState("Projects");
+  const [sectionValue1, setSectionValue1] = useState("Projects");
+  const [sectionValue2, setSectionValue2] = useState("Project Lists");
   const projectTypeCounts = {};
   const projectOrganisationCount = {};
   const [project, setProject] = useState([]);
@@ -64,11 +69,22 @@ const AdminProjectsList = () => {
   ];
 
   const availablePieChartCategories = projectPieCategories();
+  const availableGraphCategories = projectGraphCategories();
+  const availableProjectListings = projectLists();
 
   const handleSectionChange = (selectedOption) => {
     const selectedValue = selectedOption.value;
-    console.log("Selected Value:", selectedValue);
     setSectionValue(selectedValue);
+  };
+
+  const handleGraphChange = (selectedOption) => {
+    const selectedValue = selectedOption.value;
+    setSectionValue1(selectedValue);
+  };
+
+  const handleListChange = (selectedOption) => {
+    const selectedList = selectedOption.value;
+    setSectionValue2(selectedList);
   };
 
   const {isRetrieved, isRetrieving, projects, pagination} = useSelector(
@@ -226,6 +242,28 @@ const AdminProjectsList = () => {
   };
 
   useEffect(() => {
+    const getDisabledProjects = async () => {
+      try {
+        const response = await handleGetRequest("/projects?disabled=true");
+        if (response.data.data.projects.length > 0) {
+          const totalNumberOfDisabledProjects =
+            response.data.data.pagination.total;
+          const response2 = await handleGetRequest(
+            `/projects?per_page=${totalNumberOfDisabledProjects}&disabled=true`
+          );
+          if (response2.data.data.projects.length > 0) {
+            setDisabledProjects(response2.data.data.projects);
+          } else {
+            throw new Error("No disabled Projects");
+          }
+        } else {
+          throw new Error("No disabled projects found");
+        }
+      } catch (error) {
+        setFeedback("Failed to fetch disabled projects, please try again");
+      }
+    };
+    getDisabledProjects();
     AdminProjects(currentPage);
   }, [currentPage, AdminProjects]);
 
@@ -359,8 +397,7 @@ const AdminProjectsList = () => {
     return pieChartData;
   };
 
-  const pieChartData1 = createPieChartData();
-  // console.log(pieChartData1);
+  createPieChartData();
 
   createNewPieChartData = () => {
     const percentage = {};
@@ -388,27 +425,19 @@ const AdminProjectsList = () => {
     return newPieChartData;
   };
 
-  const pieChartData = createNewPieChartData();
-  // createNewPieChartData();
-  // console.log(pieChartData);
+  createNewPieChartData();
 
   return (
-    <div className="MainPage">
-      <div className="TopBarSection">
+    <div className="APage">
+      <div className="TopRow">
         <Header />
       </div>
-      <div className="MainSection1">
-        <div className="MainContentSection">
+      <div className="AMainSection">
+        <div className="ContentSection">
           <div className="InformationBarSection">
-            <InformationBar
-              header={
-                <>
-                  <span>Projects Listing</span>
-                </>
-              }
-              showBackBtn={true}
-            />
+            <InformationBar header={<>Projects Listing</>} showBackBtn={true} />
           </div>
+
           <div className="TitleArea">
             <div className="SectionTitle">Project Categories</div>
           </div>
@@ -429,6 +458,7 @@ const AdminProjectsList = () => {
               ))}
             </div>
           ) : null}
+
           <div className="TitleArea">
             <div className="SectionTitle">Organisation Categories</div>
           </div>
@@ -451,421 +481,479 @@ const AdminProjectsList = () => {
               )}
             </div>
           ) : null}
-          <div className="TitleArea">
-            <div className="SectionTitle">Project Categories Summary</div>
-          </div>
 
-          <div className="UserSection">
-            <span>
-              <Select
-                placeholder="Project Types"
-                options={availablePieChartCategories}
-                onChange={(selectedOption) =>
-                  handleSectionChange(selectedOption)
-                }
-              />
-            </span>
-            <div className="piechart">
-              <PieChart width={350} height={350}>
-                <Pie
-                  data={
-                    sectionValue === "active" ? pieChartData1 : pieChartData
+          <div className="TitleArea">
+            <div className="SectionTitle">
+              Project Categories And PieChart Summary
+              <span>
+                <Select
+                  placeholder="Project Categories"
+                  options={availablePieChartCategories}
+                  onChange={(selectedOption) =>
+                    handleSectionChange(selectedOption)
                   }
-                  dataKey="value"
-                  nameKey="category"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={140}
-                  paddingAngle={3}
-                  fill="#8884d8"
-                  label={true}
-                >
-                  {sectionValue === "active"
-                    ? pieChartData1.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))
-                    : pieChartData.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-              <div>
-                <ul style={{display: "flex"}}>
-                  {sectionValue === "active"
-                    ? pieChartData1.map((entry, index) => (
-                        <li
-                          key={`list-item-${index}`}
-                          style={{padding: "10px"}}
-                        >
-                          <span
-                            style={{
-                              color: COLORS[index % COLORS.length],
-                            }}
-                          >
-                            {entry.category} :{" "}
-                          </span>
-                          {entry.value} %
-                        </li>
-                      ))
-                    : pieChartData.map((entry, index) => (
-                        <li
-                          key={`list-item-${index}`}
-                          style={{padding: "10px"}}
-                        >
-                          <span
-                            style={{
-                              color: COLORS[index % COLORS.length],
-                            }}
-                          >
-                            {entry.category} :{" "}
-                          </span>
-                          {entry.value} %
-                        </li>
-                      ))}
-                </ul>
-              </div>
+                />
+              </span>
             </div>
           </div>
-          <div className="TitleArea">
-            <div className="SectionTitle">Graph Summaries</div>
-          </div>
-          <div className="SummaryCardContainer">
-            <div className="UserSection">
-              <div className="LeftDBSide">
-                <div className="MetricsGraph">
-                  <MetricsCard
-                    className="ClusterMetricsCardGraph"
-                    title={
-                      <div className="GraphSummaryTitle">
-                        <span className="SummaryTitleText">
-                          Projects Created and Category Analytics
-                        </span>
-                        <span>
-                          <div className="PeriodContainer">
-                            <div className="PeriodButtonsSection">
-                              <div
-                                className={`${
-                                  period === "3" && "PeriodButtonActive"
-                                } PeriodButton`}
-                                name="3month"
-                                value="3"
-                                role="presentation"
-                                onClick={handleChange}
-                              >
-                                3m
-                              </div>
-                              <div
-                                className={`${
-                                  period === "4" && "PeriodButtonActive"
-                                } PeriodButton`}
-                                name="4months"
-                                value="4"
-                                role="presentation"
-                                onClick={handleChange}
-                              >
-                                4m
-                              </div>
-                              <div
-                                className={`${
-                                  period === "6" && "PeriodButtonActive"
-                                } PeriodButton`}
-                                name="6months"
-                                value="6"
-                                role="presentation"
-                                onClick={handleChange}
-                              >
-                                6m
-                              </div>
-                              <div
-                                className={`${
-                                  period === "8" && "PeriodButtonActive"
-                                } PeriodButton`}
-                                name="8months"
-                                value="8"
-                                role="presentation"
-                                onClick={handleChange}
-                              >
-                                8m
-                              </div>
-                              <div
-                                className={`${
-                                  period === "12" && "PeriodButtonActive"
-                                } PeriodButton`}
-                                name="1year"
-                                value="12"
-                                role="presentation"
-                                onClick={handleChange}
-                              >
-                                1y
-                              </div>
-                              <div
-                                className={`${
-                                  period === "all" && "PeriodButtonActive"
-                                } PeriodButton`}
-                                name="all"
-                                value="all"
-                                role="presentation"
-                                onClick={handleChange}
-                              >
-                                all
-                              </div>
-                            </div>
-                          </div>
-                        </span>
-                      </div>
+          <div className="ChartContainer">
+            <div className="VisualArea">
+              <div className="VisualAreaHeader">
+                <span className="SectionTitle">
+                  <Select
+                    placeholder="Project Categories"
+                    options={availableGraphCategories}
+                    onChange={(selectedOption) =>
+                      handleGraphChange(selectedOption)
                     }
-                  >
-                    <div className="ChartsArea">
-                      <div>
-                        <AreaChart
-                          width={800}
-                          height={300}
-                          syncId="anyId"
-                          data={
-                            period !== "all"
-                              ? filteredGraphData
-                              : graphDataArray
-                          }
-                        >
-                          <Line
-                            type="monotone"
-                            dataKey="Value"
-                            stroke="#8884d8"
-                          />
-                          <CartesianGrid stroke="#ccc" />
-                          <XAxis dataKey="Month" />
-                          <XAxis
-                            xAxisId={1}
-                            dx={10}
-                            label={{
-                              value: "Time",
-                              angle: 0,
-                              position: "bottom",
-                            }}
-                            interval={12}
-                            dataKey="Year"
-                            tickLine={false}
-                            tick={{fontSize: 12, angle: 0}}
-                          />
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <YAxis
-                            label={{
-                              value: "Number of Projects",
-                              angle: 270,
-                              position: "outside",
-                            }}
-                            width={100}
-                          />
-                          <Area
-                            type="monotone"
-                            dataKey="Value"
-                            stroke="#82ca9d"
-                            fill="#82ca9d"
-                          />
-                          <Tooltip
-                            labelFormatter={(value) => {
-                              const monthNames = retrieveMonthNames();
-                              const month = parseInt(value) - 1;
-                              return monthNames[month].name;
-                            }}
-                            formatter={(value) => {
-                              return [`${value} projects`];
-                            }}
-                          />
-                        </AreaChart>
+                  />
+                </span>
+                <span>
+                  <div className="PeriodContainer">
+                    <div className="PeriodButtonsSection">
+                      <div
+                        className={`${
+                          period === "3" && "PeriodButtonActive"
+                        } PeriodButton`}
+                        name="3month"
+                        value="3"
+                        role="presentation"
+                        onClick={handleChange}
+                      >
+                        3m
                       </div>
-                      <div>
-                        <AreaChart
-                          width={830}
-                          height={300}
-                          data={
-                            period !== "all"
-                              ? newFilteredGraphData
-                              : newGraphDataArray
-                          }
-                          margin={{
-                            top: 10,
-                            right: 30,
-                            left: 0,
-                            bottom: 0,
-                          }}
-                        >
-                          <CartesianGrid stroke="#ccc" />
-                          <XAxis dataKey="Month" />
-                          <XAxis
-                            xAxisId={1}
-                            dx={10}
-                            label={{
-                              value: "Time",
-                              angle: 0,
-                              position: "bottom",
-                            }}
-                            interval={12}
-                            dataKey="Year"
-                            tickLine={false}
-                            tick={{fontSize: 12, angle: 0}}
-                          />
-                          <YAxis
-                            label={{
-                              value: "Numbers per Project Type",
-                              angle: 270,
-                              position: "outside",
-                            }}
-                            width={100}
-                          />
-                          <Tooltip
-                            labelFormatter={(value) => {
-                              const monthNames = retrieveMonthNames();
-                              const month = parseInt(value) - 1;
-                              return monthNames[month].name;
-                            }}
-                          />
-                          <Area
-                            type="monotone"
-                            dataKey="Personal"
-                            stackId="1"
-                            stroke="#8884d8"
-                            fill="#8884d8"
-                          />
-                          <Area
-                            type="monotone"
-                            dataKey="Research"
-                            stackId="1"
-                            stroke="#82ca9d"
-                            fill="#82ca9d"
-                          />
-                          <Area
-                            type="monotone"
-                            dataKey="Student"
-                            stackId="1"
-                            stroke="#ffc658"
-                            fill="#ffc658"
-                          />
-                          <Area
-                            type="monotone"
-                            dataKey="Commercial"
-                            stackId="1"
-                            stroke="#ffc999"
-                            fill="#ffc999"
-                          />
-                          <Area
-                            type="monotone"
-                            dataKey="Charity"
-                            stackId="1"
-                            stroke="#ffc302"
-                            fill="#ffc302"
-                          />
-                        </AreaChart>
+                      <div
+                        className={`${
+                          period === "4" && "PeriodButtonActive"
+                        } PeriodButton`}
+                        name="4months"
+                        value="4"
+                        role="presentation"
+                        onClick={handleChange}
+                      >
+                        4m
+                      </div>
+                      <div
+                        className={`${
+                          period === "6" && "PeriodButtonActive"
+                        } PeriodButton`}
+                        name="6months"
+                        value="6"
+                        role="presentation"
+                        onClick={handleChange}
+                      >
+                        6m
+                      </div>
+                      <div
+                        className={`${
+                          period === "8" && "PeriodButtonActive"
+                        } PeriodButton`}
+                        name="8months"
+                        value="8"
+                        role="presentation"
+                        onClick={handleChange}
+                      >
+                        8m
+                      </div>
+                      <div
+                        className={`${
+                          period === "12" && "PeriodButtonActive"
+                        } PeriodButton`}
+                        name="1year"
+                        value="12"
+                        role="presentation"
+                        onClick={handleChange}
+                      >
+                        1y
+                      </div>
+                      <div
+                        className={`${
+                          period === "all" && "PeriodButtonActive"
+                        } PeriodButton`}
+                        name="all"
+                        value="all"
+                        role="presentation"
+                        onClick={handleChange}
+                      >
+                        all
                       </div>
                     </div>
-                  </MetricsCard>
-                </div>
+                  </div>
+                </span>
               </div>
+              <div className="ChartsArea">
+                {sectionValue1 === "Projects" ? (
+                  <div>
+                    <AreaChart
+                      width={550}
+                      height={380}
+                      syncId="anyId"
+                      data={
+                        period !== "all" ? filteredGraphData : graphDataArray
+                      }
+                    >
+                      <Line type="monotone" dataKey="Value" stroke="#8884d8" />
+                      <CartesianGrid stroke="#ccc" />
+                      <XAxis dataKey="Month" />
+                      <XAxis
+                        xAxisId={1}
+                        dx={10}
+                        label={{
+                          value: "Time",
+                          angle: 0,
+                          position: "bottom",
+                        }}
+                        interval={12}
+                        dataKey="Year"
+                        tickLine={false}
+                        tick={{fontSize: 12, angle: 0}}
+                      />
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <YAxis
+                        label={{
+                          value: "Number of Projects",
+                          angle: 270,
+                          position: "outside",
+                        }}
+                        width={100}
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="Value"
+                        stroke="#82ca9d"
+                        fill="#82ca9d"
+                      />
+                      <Tooltip
+                        labelFormatter={(value) => {
+                          const monthNames = retrieveMonthNames();
+                          const month = parseInt(value) - 1;
+                          return monthNames[month].name;
+                        }}
+                        formatter={(value) => {
+                          return [`${value} projects`];
+                        }}
+                      />
+                    </AreaChart>
+                  </div>
+                ) : (
+                  <div className="ChartsArea">
+                    <AreaChart
+                      width={550}
+                      height={380}
+                      data={
+                        period !== "all"
+                          ? newFilteredGraphData
+                          : newGraphDataArray
+                      }
+                      margin={{
+                        top: 10,
+                        right: 30,
+                        left: 0,
+                        bottom: 0,
+                      }}
+                    >
+                      <CartesianGrid stroke="#ccc" />
+                      <XAxis dataKey="Month" />
+                      <XAxis
+                        xAxisId={1}
+                        dx={10}
+                        label={{
+                          value: "Time",
+                          angle: 0,
+                          position: "bottom",
+                        }}
+                        interval={12}
+                        dataKey="Year"
+                        tickLine={false}
+                        tick={{fontSize: 12, angle: 0}}
+                      />
+                      <YAxis
+                        label={{
+                          value: "Numbers per Project Type",
+                          angle: 270,
+                          position: "outside",
+                        }}
+                        width={100}
+                      />
+                      <Tooltip
+                        labelFormatter={(value) => {
+                          const monthNames = retrieveMonthNames();
+                          const month = parseInt(value) - 1;
+                          return monthNames[month].name;
+                        }}
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="Personal"
+                        stackId="1"
+                        stroke="#8884d8"
+                        fill="#8884d8"
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="Research"
+                        stackId="1"
+                        stroke="#82ca9d"
+                        fill="#82ca9d"
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="Student"
+                        stackId="1"
+                        stroke="#ffc658"
+                        fill="#ffc658"
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="Commercial"
+                        stackId="1"
+                        stroke="#ffc999"
+                        fill="#ffc999"
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="Charity"
+                        stackId="1"
+                        stroke="#ffc302"
+                        fill="#ffc302"
+                      />
+                    </AreaChart>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="VisualArea">
+              {sectionValue === "Projects" ? (
+                <>
+                  <div className="PieContainer">
+                    <div className="ChartColumn">
+                      <PieChart width={300} height={300}>
+                        <Pie
+                          data={createPieChartData()}
+                          dataKey="value"
+                          nameKey="category"
+                          cx="50%"
+                          cy="50%"
+                          outerRadius={140}
+                          paddingAngle={3}
+                          fill="#8884d8"
+                        >
+                          {createPieChartData().map((entry, index) => (
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={COLORS[index % COLORS.length]}
+                            />
+                          ))}
+                        </Pie>
+                        <Tooltip />
+                      </PieChart>
+                    </div>
+                    <div className="PercentageColumn">
+                      <ul className="KeyItems">
+                        {createPieChartData().map((entry, index) => (
+                          <>
+                            <li key={`list-item-${index}`}>
+                              <span
+                                style={{color: COLORS[index % COLORS.length]}}
+                              >
+                                {entry.category} :{" "}
+                              </span>
+                              {entry.value} %
+                            </li>
+                            <hr style={{width: "100%"}} />
+                          </>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="PieContainer">
+                    <div className="ChartColumn">
+                      <PieChart width={300} height={300}>
+                        <Pie
+                          data={createNewPieChartData()}
+                          dataKey="value"
+                          nameKey="category"
+                          cx="50%"
+                          cy="50%"
+                          outerRadius={140}
+                          paddingAngle={3}
+                          fill="#8884d8"
+                        >
+                          {createNewPieChartData().map((entry, index) => (
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={COLORS[index % COLORS.length]}
+                            />
+                          ))}
+                        </Pie>
+                        <Tooltip />
+                      </PieChart>
+                      </div>
+                      <div className="PercentageColumn">
+                        <ul className="KeyItems">
+                          {createNewPieChartData().map((entry, index) => (
+                            <>
+                              <li key={`list-item-${index}`}>
+                                <span
+                                  style={{
+                                    color: COLORS[index % COLORS.length],
+                                  }}
+                                >
+                                  {entry.category} :{" "}
+                                </span>
+                                {entry.value} %
+                              </li>
+                              <hr style={{width: "100%"}} />
+                            </>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                </>
+              )}
             </div>
           </div>
-          <div className="ContentSection">
-            <div className="SearchBar">
-              <div className="AdminSearchInput">
-                <input
-                  type="text"
-                  className="searchTerm"
-                  name="Searchword"
-                  placeholder="Search for project"
-                  value={word}
-                  onChange={(e) => {
-                    handleCallbackSearchword(e);
-                  }}
+
+          <div className="TitleArea">
+            <div className="SectionTitle">
+              <span>
+                <Select
+                  placeholder="Project Lists"
+                  options={availableProjectListings}
+                  onChange={(selectedOption) =>
+                    handleListChange(selectedOption)
+                  }
                 />
-                <SearchButton className="SearchIcon" />
-              </div>
+              </span>
+              <span>
+                <div className="XSearchBar">
+                  <div className="AdminSearchInput">
+                    <input
+                      type="text"
+                      className="searchTerm"
+                      name="Searchword"
+                      placeholder="Search for project"
+                      value={word}
+                      onChange={(e) => {
+                        handleCallbackSearchword(e);
+                      }}
+                    />
+                    <SearchButton className="SearchIcon" />
+                  </div>
+                </div>
+              </span>
             </div>
-            <div
-              className={
-                isRetrieving
-                  ? "ResourcesTable LoadingResourcesTable"
-                  : "ResourcesTable"
-              }
-            >
-              <table>
-                <thead className="uppercase">
-                  <tr>
-                    <th>name</th>
-                    <th>owner</th>
-                    <th>description</th>
-                    <th>status</th>
-                  </tr>
-                </thead>
-                {isRetrieving ? (
-                  <tbody>
-                    <tr className="TableLoading">
-                      <td className="TableTdSpinner">
-                        <div className="SpinnerWrapper">
-                          <Spinner size="big" />
+            </div>
+
+            <div className="APage">
+              <div className="AMainSection">
+                <div className="ContentSection">
+                  <div className="ResourceTable">
+                    <div
+                      className={
+                        isRetrieving
+                          ? "ResourcesTable LoadingResourcesTable"
+                          : "ResourcesTable"
+                      }
+                    >
+                      <table>
+                        <thead className="uppercase">
+                          <tr>
+                            <th>name</th>
+                            <th>owner</th>
+                            <th>description</th>
+                            <th>status</th>
+                          </tr>
+                        </thead>
+                        {isRetrieving ? (
+                          <tbody>
+                            <tr className="TableLoading">
+                              <td className="TableTdSpinner">
+                                <div className="SpinnerWrapper">
+                                  <Spinner size="big" />
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        ) : (
+                          <tbody>
+                            {sectionValue2 === "Disabled Projects"
+                              ? // {/* Display disabled projects */}
+                                isRetrieved &&
+                                disabledProjects !== undefined &&
+                                disabledProjects.map((project) => (
+                                  <tr key={project.id}>
+                                    <td>{project.name}</td>
+                                    <td>{getUserName(project.owner_id)}</td>
+                                    <td>{project.description}</td>
+                                    <td>
+                                      <span className="ProjectStatusDisabled">
+                                        Disabled
+                                      </span>
+                                    </td>
+                                  </tr>
+                                ))
+                              : //Display General Project Lists
+                                isRetrieved &&
+                                projects !== undefined &&
+                                projects.map((project) => (
+                                  <tr key={projects.indexOf(project)}>
+                                    <td>{project?.name}</td>
+                                    <td>{getUserName(project?.owner_id)}</td>
+                                    <td>{project?.description}</td>
+                                    <td>
+                                      <span
+                                        className={
+                                          project?.disabled === false
+                                            ? "ProjectStatus"
+                                            : "ProjectStatusDisabled"
+                                        }
+                                      >
+                                        {project?.disabled === false
+                                          ? "Active"
+                                          : "Disabled"}
+                                      </span>
+                                    </td>
+                                  </tr>
+                                ))}
+                          </tbody>
+                        )}
+                      </table>
+                      {isRetrieved && projects.length === 0 && (
+                        <div className="NoResourcesMessage">
+                          <p>No projects available</p>
                         </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                ) : (
-                  <tbody>
-                    {isRetrieved &&
-                      projects !== undefined &&
-                      projects.map((project) => (
-                        <tr key={projects.indexOf(project)}>
-                          <td>{project?.name}</td>
-                          <td>{getUserName(project?.owner_id)}</td>
-                          <td>{project?.description}</td>
-                          <td>
-                            <span
-                              className={
-                                project?.disabled === false
-                                  ? "ProjectStatus"
-                                  : "ProjectStatusDisabled"
-                              }
-                            >
-                              {project?.disabled === false
-                                ? "Active"
-                                : "Disabled"}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                )}
-              </table>
-              {isRetrieved && projects.length === 0 && (
-                <div className="NoResourcesMessage">
-                  <p>No projects available</p>
+                      )}
+                      {!isRetrieving && !isRetrieved && (
+                        <div className="NoResourcesMessage">
+                          <p>
+                            Oops! Something went wrong! Failed to retrieve
+                            projects.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  {pagination?.pages > 1 && (
+                    <div className="AdminPaginationSection">
+                      <Pagination
+                        total={pagination.pages}
+                        current={currentPage}
+                        onPageChange={handlePageChange}
+                      />
+                    </div>
+                  )}
                 </div>
-              )}
-              {!isRetrieving && !isRetrieved && (
-                <div className="NoResourcesMessage">
-                  <p>
-                    Oops! Something went wrong! Failed to retrieve projects.
-                  </p>
-                </div>
-              )}
-            </div>
-            {pagination?.pages > 1 && (
-              <div className="AdminPaginationSection">
-                <Pagination
-                  total={pagination.pages}
-                  current={currentPage}
-                  onPageChange={handlePageChange}
-                />
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
-export default AdminProjectsList;
+export default AdminProjectsOverview;

@@ -14,6 +14,7 @@
   padding: 0.8rem;
   display: flex;
   justify-content: space-between;
+  gap: 0.5rem;
 }
 
 .SmallSelectElementValue {

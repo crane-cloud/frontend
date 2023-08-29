@@ -15,7 +15,7 @@
     padding-top: 1rem;
 }
 
-.TextArea> ::placeholder {
+.TextArea > ::placeholder {
     padding-left: 1rem;
 }
 
@@ -25,25 +25,38 @@
 .ProjectStatusDisabled{
     color: red;
 }
-.SearchBar , .AdminSearchInput{
+.SectionTitle > .select > .SearchBar > .AdminSearchInput{
     float : right;
-    padding-right: 1.5rem;
+    /* padding-left: 3rem; */
 }
-
 .DropDownLink {
     text-align: center;
     justify-content: center;
 }
-.MainSection1{
-    background-color: var( --gray-bg-light-color);
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(500px,1fr));
-    overflow: hidden;
-    position: absolute;
+.ClusterContainer{
     place-items: center;
-    top: 4rem;
-    left: 0;
-    width: 100%;
+}
+.ChartContainer .VisualAreaHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    align-items: center;
+    padding-bottom: 1rem;
+}
+.ChartContainer .VisualAreaHeader .SelectElementValue {
+       /* padding: 0.3rem; */
+       display: flex;
+       justify-content: space-between;
+       gap: 0.3rem;
+       font-size: 1.1rem;
+       font-weight: bold;
+}
+.TitleArea .SectionTitle .SelectElementValue {
+    /* gap: 0.5rem; */
+    padding: 0.6rem;
+    font-weight: 500;
+    font-size: 1rem;
 }
 @media (min-width : 768px),(max-width: 1280px){
     span .breadcrumb{
@@ -96,6 +109,105 @@
         font-size: 18px;
     }
 }
+@media (max-width : 1024px){
+    .NewResourceCard {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 14rem;
+        /* height: 9rem; */
+        background-color: #ffffff;
+        border-radius: 0.6rem;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 1rem 0;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+    .ClusterContainer {
+        display: flex;
+        gap: 1rem;
+        padding: 2rem 1.4rem;
+        flex-wrap: wrap;
+    }
+    .NewResourceCardHeader {
+        font-size: 1rem;
+    }
+    .NewResourceCardCount {
+        font-size: 1.9rem;
+        font-weight: 420;
+        color: var(--primary-color);
+    }
+    .TitleArea .SectionTitle .SelectElementValue {
+        gap: 0.2rem;
+        padding: 0.4rem;
+        font-weight: 500;
+        font-size: 0.8rem;
+        align-items: center;
+    }
+    .SearchArea, .SectionTitle {
+        /* display: grid; */
+        align-items: center;
+        padding-top: 1rem;
+        font-size: 0.9rem;
+    }
+    .UserSection .piechart {
+        background-color: #fff;
+        border-radius: 0.6rem;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0.1rem;
+        place-items: center;
+    }
+    .MainContentSection {
+        overflow: hidden;
+    }
+    .PeriodButtonsSection {
+        display: flex;
+        flex-wrap: nowrap;
+    }
+    .SelectElementValue {
+        padding: 0.2rem;
+        display: flex;
+        justify-content: space-evenly;
+        gap: 0.2rem;
+        align-items: center;
+        padding: 0.2rem;
+        font-size: 0.9rem;
+    }
+    .SelectElementMain {
+        border: 1px solid #000000;
+        border-radius: 0.3rem;
+        width: 5.5rem;
+        padding: 0.1rem;
+    }
+    .CardHeaderSection {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #cccccc;
+        font-size: 1rem;
+    }
+    .AdminSearchInput input {
+        background-color: #ebead5;
+        border: 0;
+        border-top-left-radius: 4px 2px;
+        border-bottom-left-radius: 3px 4px;
+        color: #000;
+        font-size: 1rem;
+        height: 40px;
+        max-width: 10rem;
+        padding: 1rem;
+    }
+    .SearchBar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.5rem 0 1rem;
+        max-width: 90%;
+        border-bottom: 1px solid #ccc;
+    }
+}
 @media (max-width: 412px){
     span .breadcrumb{
         font-size: 14px;
@@ -104,7 +216,7 @@
         display: flex;
         align-items: center;
         font-weight: bold;
-        font-size: 14px;
+        font-size: 1.1rem;
         gap: 5px;
     }
     .MainSection1{
@@ -179,5 +291,18 @@
         grid-gap: 0.5rem;
         grid-auto-flow: column;
         align-items: center;
+    }
+    .NewResourceCard {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width:9rem;
+        background-color: #ffffff;
+        border-radius: 0.6rem;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 1rem 0;
+        text-align: center;
+        transition: transform 0.3s ease;
     }
 }
