@@ -27,7 +27,7 @@
 .SideBarSection {
   overflow: hidden;
   overflow-y: scroll;
-  height: calc(100vh - 5rem);
+  height: 100vh;
 }
 
 .SideBarSection::-webkit-scrollbar {
@@ -533,6 +533,143 @@
   align-items: center;
 }
 
+/* New design CSS */
+.breadcrumb {
+  padding: 0 0.5rem;
+}
+
+.flex_back_link {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: #000 !important
+}
+
+.project_details {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.flex_details {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  justify-content: space-evenly;
+}
+
+.flex_author {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-direction: column;
+}
+
+.avatar_author {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  /* text-align: center; */
+  font-weight: bold;
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: #000 0.1rem solid;
+}
+
+.flex_name_status {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+}
+
+.font_status {
+  color: #fff;
+  padding: 0.1rem 0.5rem;
+  border-radius: 0.3rem;
+  font-weight: 400;
+}
+
+.disabled {
+  background-color: #ff0000;
+}
+
+.active {
+  background-color: #00ff00;
+}
+
+.details_styles {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.flex_detail {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.boldStyle {
+  font-weight: 800;
+}
+
+.line_between {
+  height: 0.5rem;
+  width: 0.05rem;
+  background-color: #000;
+}
+
+.project_details_type {
+  transition: all 0.3s ease-in-out;
+}
+
+.project_details_type:hover {
+  cursor: pointer;
+  color: #008ac1;
+}
+
+.flex_metrics {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.enableBtn {
+  background-color: #fff;
+  color: #008ac1;
+  border: 0.1rem #008ac1 solid;
+}
+
+.enableBtn:hover {
+  cursor: pointer;
+  background-color: #008ac1;
+  color: #fff;
+  border: none;
+}
+
+.disableBtn {
+  background-color: #fff;
+  color: #ff0000;
+  border: 0.1rem #ff0000 solid;
+}
+
+.disableBtn:hover {
+  cursor: pointer;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+}
+/* end */
+
+
+
 @media screen and (max-width: 768px) {
   .ProjectInfoOwner {
     flex-direction: column;
@@ -547,4 +684,60 @@
     flex-direction: column;
     align-items: flex-start;
   }
+  /* New design CSS */
+  .MainSection {
+    grid-template-columns: 0fr 6fr;
+  }
+  .CustomSmallContainer {
+    padding-left: 1rem;
+  }
+  .InformationBarTitle{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .flex_details {
+    flex-direction: column;
+  }
+
+  .flex_author {
+    flex-direction: row;
+  }
+
+  /* .flex_back_link {
+    flex-direction: column;
+  } */
+
+  .line_between {
+    display: none;
+  }
+
+  .project_details_type {
+    font-size: 1rem;
+  }
+
+  .avatar_author {
+    display: none;
+  }
+
+  .flex_detail {
+    flex-direction: column;
+  }
+
+  .details_styles {
+    flex-direction: column;
+  }
+
+  .boldStyle {
+    font-size: 1rem;
+  }
+
+  .font_status {
+    font-size: 1.5rem;
+  }
+
+  .flex_metrics {
+    flex-direction: column;
+  }
+  /* end */
 }
