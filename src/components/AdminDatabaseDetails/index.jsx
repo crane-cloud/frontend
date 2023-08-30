@@ -91,7 +91,9 @@ const AdminDatabaseDetails = () => {
                               />
                               <div className={userProfleStyles.Identity}>
                                 <div className={userProfleStyles.IdentityName}>
-                                  {details?.name}
+                                  <div className="AdminProfileName">
+                                    {details?.name}
+                                  </div>
                                   {details?.db_status === true && (
                                     <div
                                       className={userProfleStyles.BetaUserDiv}
