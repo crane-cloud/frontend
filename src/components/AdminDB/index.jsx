@@ -38,18 +38,19 @@ const AdminDBList = () => {
   const [openCreateComponent, setOpenCreateComponent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [period, setPeriod] = useState("all");
-  //const [sectionValue, setSectionValue] = useState("all");
+  const [metadata, setMetaData] = useState({});
+  const [sectionValue, setSectionValue] = useState("all");
 
   const dispatch = useDispatch();
 
-  const COLORS = ["#0088FE", "#0DBC00", "#F9991A"];
+  const COLORS = ["#0088FE", "#0DBC00"];
 
   let graphDataArray = [];
   let filteredGraphData = [];
 
   const databaseResources = useCallback(
-    () => dispatch(adminGetDatabases(currentPage)),
-    [dispatch, currentPage]
+    () => dispatch(adminGetDatabases(sectionValue, currentPage)),
+    [dispatch, sectionValue, currentPage]
   );
   useEffect(() => {
     getAllDatabases();
@@ -67,6 +68,7 @@ const AdminDBList = () => {
           .then((response) => {
             if (response.data.data.databases.length > 0) {
               setDatabaseSummary(response.data.data.databases);
+              setMetaData(response.data.data.metadata);
               setLoading(false);
             } else {
               throw new Error("No databases found");
@@ -89,8 +91,8 @@ const AdminDBList = () => {
 
   useEffect(() => {
     callbackCreateComponent();
-    dispatch(adminGetDatabases(currentPage));
-  }, [currentPage, isCreated, dispatch]);
+    dispatch(adminGetDatabases(sectionValue, currentPage));
+  }, [sectionValue, currentPage, isCreated, dispatch]);
 
   const showCreateComponent = () => {
     setOpenCreateComponent(true);
@@ -111,11 +113,9 @@ const AdminDBList = () => {
 
   // these counts will get actual values from data provided by backend
   const databaseCounts = {
-    total: 149,
-    mysql: 100,
-    postgres: 49,
-    active: 145,
-    disabled: 4,
+    total: metadata.total,
+    mysql: metadata.mysql_total,
+    postgres: metadata.postgres_total,
   };
 
   const handleChange = ({ target }) => {
@@ -123,8 +123,8 @@ const AdminDBList = () => {
   };
 
   const handleSectionChange = (selectedOption) => {
-    //const selectedValue = selectedOption.value;
-    //setSectionValue(selectedValue);
+    const selectedValue = selectedOption.value;
+    setSectionValue(selectedValue);
   };
 
   graphDataArray = createDatabaseGraphData(databaseSummary);
