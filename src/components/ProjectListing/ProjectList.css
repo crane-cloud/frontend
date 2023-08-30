@@ -52,6 +52,12 @@
        font-size: 1.1rem;
        font-weight: bold;
 }
+.VisualAreaHeader .SectionTitle .SelectOptionsWrapper .SelectOption {
+    padding: 0 1rem;
+    line-height: 2.5rem;
+    height: 2.5rem;
+    font-weight: 500;
+}
 .TitleArea .SectionTitle .SelectElementValue {
     /* gap: 0.5rem; */
     padding: 0.6rem;
