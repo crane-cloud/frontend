@@ -128,8 +128,8 @@ const ClusterPage = ({
 
       <div>
         <div className="TitleArea">
-          <div className="SectionTitle" style={{paddingTop: "1rem"}}>
-            <b>Resource usage summary</b>
+          <div className="SectionTitle" style={{ paddingTop: "1rem" }}>
+            <b>Summary</b>
           </div>
         </div>
       </div>
@@ -146,7 +146,7 @@ const ClusterPage = ({
             <div className={styles.columnCardSection}>
               <div className={styles.innerCardHeader}>Verified</div>
               <div className={styles.rowResourceDigit}>
-                {parseInt(parseInt(usersSummary?.metadata?.total_users) / 2)}
+                {usersSummary?.metadata?.verified}
               </div>
             </div>
             <div className={styles.columnCardSection}>
@@ -154,7 +154,7 @@ const ClusterPage = ({
               <div
                 className={`${styles.rowResourceDigit} ${styles.rightTextAlign}`}
               >
-                {parseInt(parseInt(usersSummary?.metadata?.total_users) / 2)}
+                {parseInt(parseInt(usersSummary?.metadata?.total_users) - parseInt(usersSummary?.metadata?.verified))}
               </div>
             </div>
           </div>
