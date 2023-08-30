@@ -156,7 +156,7 @@ const AdminProjectDetails = () => {
                               <div className={styles.line_between}></div>
                               <div className={styles.project_details_type}>
                                 Organization:{" "}
-                                <span className="boldStyle">
+                                <span className={styles.boldStyle}>
                                   {details?.organisation}
                                 </span>
                               </div>
