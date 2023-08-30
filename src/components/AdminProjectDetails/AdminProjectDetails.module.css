@@ -43,7 +43,7 @@
 .MainContentSection {
   /* divided into two rows */
   display: grid;
-  grid-template-rows: 80px 4fr;
+  grid-template-rows: 80px auto;
   overflow: auto;
 }
 
@@ -88,6 +88,7 @@
   max-width: 50rem;
   padding-left: 4rem;
   padding-right: 2rem;
+  padding-bottom: 5rem;
 }
 
 .field {

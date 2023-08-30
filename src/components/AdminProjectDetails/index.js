@@ -110,7 +110,7 @@ const AdminProjectDetails = () => {
             ) : (
               <>
                 {!error && (
-                  <>
+                  <div>
                     {/* Project information */}
                     <section className={styles.DetailsSection}>
                       <div className="SectionTitle">Project Information</div>
@@ -189,9 +189,6 @@ const AdminProjectDetails = () => {
                     <section className={styles.DetailsSection}>
                       <div className="SectionTitle">Membership</div>
                       <div className={styles.ProjectInstructions}>
-                        {/* {fetchingProjectMembers ? (
-          <Spinner />
-        ) : ( */}
                         <>
                           <div className={styles.MembershipHeader}>
                             <div className={styles.MemberSection}>
@@ -255,8 +252,6 @@ const AdminProjectDetails = () => {
                         </>
                       </div>
                     </section>
-                    {/* <ActivityLogs projectID={ projectID } /> */}
-                    {/* Management */}
                     <section className={styles.DetailsSection}>
                       <>
                         <div className="SectionTitle">Manage Project</div>
@@ -299,7 +294,7 @@ const AdminProjectDetails = () => {
                         </div>
                       </>
                     </section>
-                  </>
+                  </div>
                 )}
               </>
             )}
