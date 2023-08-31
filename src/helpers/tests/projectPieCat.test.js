@@ -9,7 +9,7 @@ describe("Test Project Categories Functions", () => {
   it("should correctly retrieve projectPieCategories", () => {
     const expected = [
       { id: 1, name: "Project Categories", value: "Projects" },
-      { id: 2, name: "Orgaisation Categories", value: "Organizations" },
+      { id: 2, name: "Organization Categories", value: "Organizations" },
     ];
 
     const result = projectPieCategories();
