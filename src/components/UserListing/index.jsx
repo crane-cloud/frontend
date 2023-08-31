@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import Pagination from "../../components/Pagination";
 import Spinner from "../Spinner";
@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const UserListing = (props) => {
   const { currentPage, gettingUsers, handlePageChange } = props;
-  const [actionsMenu, setActionsMenu] = useState(false);
+  // const [actionsMenu, setActionsMenu] = useState(false);
  
 
   const { isFetching, users, isFetched, pagination } = useSelector(
@@ -22,10 +22,10 @@ const UserListing = (props) => {
 
   
 
-  const hideModal = () => {
-    setActionsMenu(false);
-    document.removeEventListener("click", hideModal);
-  };
+  // const hideModal = () => {
+  //   // setActionsMenu(false);
+  //   document.removeEventListener("click", hideModal);
+  // };
 
   
 

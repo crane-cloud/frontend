@@ -2,27 +2,25 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import Pagination from "../../components/Pagination";
 import Spinner from "../Spinner";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const AppListing = (props) => {
   const { currentPage, gettingApps, handlePageChange } = props; 
-  const history = useHistory();
 
-  const {  apps, isFetched, pagination } = useSelector(
+  const {  isFetching, apps, isFetched, pagination } = useSelector(
     (state) => state.appsAdminListReducer
   );
 
   useEffect(() => {
     gettingApps(currentPage);
   }, [gettingApps, currentPage]);
-  console.log(isFetched)
+  
   return (
     <div className="APage">
       <div className="AMainSection">
         <div className="ContentSection">
           <div
             className={
-              true
+              isFetching
                 ? "ResourcesTable LoadingResourcesTable"
                 : "ResourcesTable"
             }
@@ -35,7 +33,7 @@ const AppListing = (props) => {
               <th>Age</th>
             </tr>
           </thead>
-          {false ? (
+          {isFetching ? (
             <tbody>
               <tr className="TableLoading">
                 <td className="TableTdSpinner">
@@ -71,7 +69,7 @@ const AppListing = (props) => {
                 <p>No apps Available</p>
               </div>
             )}
-            {!false && !isFetched && (
+            {!isFetching && !isFetched && (
               <div className="AdminNoResourcesMessage">
                 <p>
                   Oops! Something went wrong! Failed to retrieve Available

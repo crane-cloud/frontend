@@ -12,20 +12,13 @@ import {
   XAxis,
   YAxis,
   AreaChart,
-  Area,
-  Tooltip,
-  Cell,
+  Area
 } from "recharts";
-import { filterGraphData } from "../../helpers/filterGraphData.js";
-import { retrieveMonthNames } from "../../helpers/monthNames.js";
 import NewResourceCard from "../../components/NewResourceCard";
 import "./AdminAppsPage.css";
-// import { createUsersPieChartData } from "../../helpers/usersPieChartData";
-import { createUserGraphData, createappsGraphData } from "../../helpers/usersGraphData";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import AppListing from "../../components/AppListing";
 import usePaginator from "../../hooks/usePaginator";
-import Pagination from "../../components/Pagination";
 
 const AdminAppsPage = () => {
   const [apps, setApps] = useState([]);
@@ -39,10 +32,6 @@ const AdminAppsPage = () => {
   const [currentPage, handleChangePage] = usePaginator();
   const dispatch = useDispatch();
 
-  const COLORS = ["#0088FE", "#0DBC00", "#F9991A"];
-
-  let graphDataArray = [];
-  let filteredGraphData = [];
 
   useEffect(() => {
     getAllApps();
@@ -54,15 +43,15 @@ const AdminAppsPage = () => {
     try {
       const response = await handleGetRequest("/apps?series=true");
       setPaginat(response.data.data.graph_data);
-      if (response.data.data.apps.length > 0) {
-        const totalNumberOfApps = response.data.data.pagination.total;
+      setAppTotal(response.data.data.metadata.total_apps);
+      if (response.data.data.apps.graph_data > 0) {
+        // const totalNumberOfApps = response.data.data.pagination.total;
         handleGetRequest(`/apps?per_page=10`)
           .then((response) => {
-            console.log(response)
             if (response.data.data.apps.length > 0) {
               setApps(response.data.data.apps);
               setLoading(false);
-              setAppTotal(totalNumberOfApps);
+
             } else {
               throw new Error("No Apps found");
             }
@@ -78,21 +67,11 @@ const AdminAppsPage = () => {
     }
   };
 
-  const appCounts = {
-    total: appTotal,
-    running: appTotal,
-    down: 0,
-  };
 
   const handleChange = ({ target }) => {
     setPeriod(target.getAttribute("value"));
   };
 
-  graphDataArray = createappsGraphData(paginat);
-
-
-  // calling the filterGraphData() to filter basing on period
-  filteredGraphData = filterGraphData(graphDataArray, period);
 
   const handleSectionChange = (selectedOption) => {
     const selectedValue = selectedOption.value;
@@ -127,8 +106,6 @@ const AdminAppsPage = () => {
     handleChangePage(currentPage);
     gettingApps();
   };
-  console.log(paginat);
-  console.log(graphDataArray);
   return (
     <div className="APage">
       <div className="TopRow">
