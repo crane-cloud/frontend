@@ -65,6 +65,7 @@ import ProjectLogs from "./pages/ProjectLogs";
 import store from "./redux/store";
 import AdminUserOverviewPage from "./pages/AdminUserOverviewPage";
 import AdminProjectsList from "./components/ProjectListing/ProjectList"; 
+import AdminAppsPage from "./pages/AdminAppsPage";
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
@@ -326,6 +327,12 @@ const Routes = () => (
         exact
         path="/activity"
         component={UserActivity}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        exact
+        path="/apps"
+        component={AdminAppsPage}
       />
       <Route path="*" component={PageNotFound} />
     </Switch>
