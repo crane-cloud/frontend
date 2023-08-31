@@ -367,11 +367,11 @@ const AdminAppsPage = () => {
             </div>
           </div>
           {/* {sectionValue === "active" ? } */}
-          {/* <AppListing
+          <AppListing
             gettingApps={gettingApps}
             handlePageChange={handlePageChange}
             currentPage={currentPage}
-          /> */}
+          />
         </div>
       </div>
     </div>
