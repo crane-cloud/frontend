@@ -314,6 +314,7 @@ tr.TableLoading td {
 
 .TableTdSpinner {
   border: none !important;
+  height: 50vh;
 }
 
 .ResourcesTable td {
@@ -541,6 +542,9 @@ tr.TableLoading td {
     display: flex;
     z-index: 40;
   }
+  .SpinnerWrapper{
+    width: fit-content;
+  }
 
 }
 
@@ -581,6 +585,7 @@ tr.TableLoading td {
   border: 1px solid var(--gray-light-color);
   height: fit-content;
 }
+
 
 /* ////////////---- Pagination ---- ///////////// */
 .AdminPaginationSection {

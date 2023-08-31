@@ -136,12 +136,12 @@
 
 
 .SmallSidebar {
-  height: inherit;
+  height: 100vh;
   background: var(--primary-dark-color);
   mix-blend-mode: normal;
   margin-left: 0px;
   overflow-x: hidden;
-  overflow-y: hidden;
+  overflow-y: auto;
   width: 50%;
   z-index: 100;
   display: flex;

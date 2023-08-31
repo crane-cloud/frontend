@@ -18,7 +18,7 @@ const Avatar = ({ name,className }) => {
       className={className? className: "UserAvatar"}
       style={{ backgroundColor: nameStringToHslColor(name), color: "#000" }}
     >
-      {name.charAt(0).toUpperCase()}
+      {name?.charAt(0).toUpperCase()}
     </div>
   );
 };
