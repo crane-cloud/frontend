@@ -2,10 +2,15 @@
 
 .ClusterContainer {
   display: flex;
-    gap: 1rem;
-    padding: 2rem 1.4rem;
-    flex-wrap: wrap;
+  gap: 1rem;
+  padding: 2rem 1.4rem;
+  flex-wrap: wrap;
 }
+
+.CardLink {
+  text-decoration: none;
+}
+
 .ContentSection .ResourceSpinnerWrapper {
   position: relative;
   width: 100%;

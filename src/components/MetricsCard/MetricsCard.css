@@ -1,9 +1,9 @@
 .MetricsCardContainer {
   background-color: #ffffff;
-    display: flex;
-    flex-wrap: wrap;
-    /* border: 1px solid #cccccc; */
-    border-radius: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #cccccc;
+  border-radius: 15px;
 }
 
 .CardHeaderSection {
@@ -13,7 +13,6 @@
   padding: 0.5rem 1rem;
   border-bottom: 1px solid #cccccc;
   font-size: 1rem;
-  padding-bottom: 15px;
 }
 
 .CardTitle {
@@ -25,12 +24,14 @@
   flex-grow: 1;
   display: flex;
 }
-.MetricsCardIcon svg{
+
+.MetricsCardIcon svg {
   width: 1.3rem;
   height: 1.3rem;
   margin: 0;
   color: #888;
 }
+
 /* .MetricsCardContainer:hover {
   border: 1px solid var(--secondary-color);
 } */

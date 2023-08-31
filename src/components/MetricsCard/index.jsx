@@ -8,7 +8,6 @@ const MetricsCard = ({ className, title, icon, children }) => {
         <div className="CardTitle">{title}</div>
         <div className="MetricsCardIcon">{icon}</div>
       </div>
-      <hr />
       <div className="CardBodySection">{children}</div>
     </div>
   );

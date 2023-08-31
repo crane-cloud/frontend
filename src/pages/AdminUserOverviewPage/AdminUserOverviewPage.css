@@ -22,9 +22,9 @@
 }
 
 .TitleArea .SelectElementValue {
-  gap: 0.5rem;
+  gap: 1.5rem;
   padding: 0.6rem;
-  font-weight: 500;
+  font-weight: bold;
 }
 
 .TitleArea .SelectElementValue:hover {

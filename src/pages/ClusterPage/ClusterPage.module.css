@@ -1,6 +1,6 @@
 .Page {
   margin: 0;
-  background: var( --gray-bg-light-color);
+  background: var(--gray-bg-light-color);
 }
 
 .ViewAccountsBtn {
@@ -142,17 +142,20 @@
   color: #008AC1;
   padding-left: 8px;
 }
-.columnCardSection{
+
+.columnCardSection {
   display: flex;
   flex-direction: column;
 }
-.rowCardSection{
+
+.rowCardSection {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding: 12px;
 }
-.rowResourceDigit{
+
+.rowResourceDigit {
   flex: 1 1 auto;
   font-size: 1.7rem;
   font-weight: 500;
@@ -161,7 +164,8 @@
   text-align: left;
   color: #008AC1;
 }
-.rightTextAlign{
+
+.rightTextAlign {
   text-align: right;
   padding-right: 10px;
   padding-left: 0;
@@ -178,7 +182,8 @@
   text-transform: lowercase;
   cursor: pointer;
 }
-.innerCardHeader{
+
+.innerCardHeader {
   color: #444;
   text-align: left;
   font-size: 1.1rem;
@@ -187,11 +192,12 @@
   text-transform: lowercase;
   cursor: pointer;
 }
-.innerCardHeader::first-letter{
+
+.innerCardHeader::first-letter {
   text-transform: uppercase;
 }
 
-.ResourceCard .CardHeader::first-letter  {
+.ResourceCard .CardHeader::first-letter {
   text-transform: uppercase;
 }
 
@@ -199,12 +205,14 @@
   opacity: 0.7;
   border: 1px solid var(--secondary-color);
 }
-.TopRow{
+
+.TopRow {
   padding-top: 1rem;
 }
+
 .FooterRow {
   padding: 1rem 3rem;
-  background-color: var( --gray-bg-light-color);
+  background-color: var(--gray-bg-light-color);
 }
 
 .ContentSection {
@@ -213,10 +221,16 @@
   overflow-x: hidden;
   overflow-y: auto;
 }
+
+.ClusterMetricsCardGraph {
+  max-height: 12rem;
+}
+
 .AllUsers {
   display: flex;
   margin: auto;
 }
+
 .OtherCards {
   align-items: center;
   display: grid;
