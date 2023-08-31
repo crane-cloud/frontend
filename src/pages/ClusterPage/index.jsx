@@ -154,7 +154,10 @@ const ClusterPage = ({
               <div
                 className={`${styles.rowResourceDigit} ${styles.rightTextAlign}`}
               >
-                {parseInt(parseInt(usersSummary?.metadata?.total_users) - parseInt(usersSummary?.metadata?.verified))}
+                {parseInt(
+                  parseInt(usersSummary?.metadata?.total_users) -
+                    parseInt(usersSummary?.metadata?.verified)
+                )}
               </div>
             </div>
           </div>
@@ -208,7 +211,7 @@ const ClusterPage = ({
             </div>
           </div>
         </Link>
-        <div className={styles.ResourceCard}>
+        <Link to="/apps" className={styles.ResourceCard}>
           <div className={styles.columnCardSection}>
             <div className={styles.CardHeader}>Apps</div>
             <div className={styles.ResourceDigit}>
@@ -231,7 +234,7 @@ const ClusterPage = ({
               </div>
             </div>
           </div>
-        </div>
+        </Link>
       </div>
 
       <div>

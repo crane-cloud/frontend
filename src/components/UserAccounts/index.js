@@ -27,6 +27,8 @@ const UserAccounts = () => {
   const [credits, setCredits] = useState("");
   const [creditDescription, setCreditDescription] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
+  // const [word, setWord] = useState("");
+
   // const [searchList, setSearchList] = useState([]);
 
   const { isFetching, users, isFetched, pagination } = useSelector(
