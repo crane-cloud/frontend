@@ -65,6 +65,7 @@ import ProjectLogs from "./pages/ProjectLogs";
 import store from "./redux/store";
 import AdminUserOverviewPage from "./pages/AdminUserOverviewPage";
 import AdminProjectsOverview from "./components/ProjectListing/ProjectList"; 
+import AdminDatabaseDetails from "./components/AdminDatabaseDetails";
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
@@ -302,6 +303,12 @@ const Routes = () => (
         exact
         path="/databases"
         component={AdminDBList}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        exact
+        path="/databases/:databaseID"
+        component={AdminDatabaseDetails}
       />
       <ProtectedRoute
         isAllowed={hasToken}

@@ -1,8 +1,8 @@
 import axios from "../../axios";
 import {
-    ADMIN_GETTING_ALL_DATABASES,
-    ADMIN_ALL_DATABASES_SUCCESS,
-    ADMIN_ALL_DATABASES_FAIL,
+  ADMIN_GETTING_ALL_DATABASES,
+  ADMIN_ALL_DATABASES_SUCCESS,
+  ADMIN_ALL_DATABASES_FAIL,
 } from "./actionTypes";
 
 const startFetchingDatabases = () => ({
@@ -22,11 +22,18 @@ const adminGetDatabasesFailed = (error) => ({
   },
 });
 
-const adminGetDatabases = (page) => (dispatch) => {
+const adminGetDatabases = (sectionValue, page) => (dispatch) => {
   dispatch(startFetchingDatabases());
 
+  let link;
+  if (sectionValue !== "all") {
+    link = `/databases?db_flavour=${sectionValue}&page=${page}`;
+  } else {
+    link = `/databases?page=${page}`;
+  }
+
   return axios
-    .get(`/databases?page=${page}`)
+    .get(link)
     .then((response) => {
       dispatch(adminGetDatabasesSuccess(response));
     })
