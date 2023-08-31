@@ -205,6 +205,17 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
 }
+
+.Redeploy{
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  cursor: pointer;
+}
+
+.DeployText{
+  color:#fb0c0c;
+}
 @media only screen and (max-width: 650px) {
   .MetricCardsSection {
     grid-template-columns: repeat(1, 1fr);
