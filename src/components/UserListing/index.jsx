@@ -8,7 +8,6 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 const UserListing = (props) => {
   const { currentPage, gettingUsers, handlePageChange } = props;
   // const [actionsMenu, setActionsMenu] = useState(false);
- 
 
   const { isFetching, users, isFetched, pagination } = useSelector(
     (state) => state.usersListReducer
@@ -20,14 +19,10 @@ const UserListing = (props) => {
 
   const history = useHistory();
 
-  
-
   // const hideModal = () => {
   //   // setActionsMenu(false);
   //   document.removeEventListener("click", hideModal);
   // };
-
-  
 
   return (
     <div className="APage">

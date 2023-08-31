@@ -66,6 +66,8 @@ import store from "./redux/store";
 import AdminUserOverviewPage from "./pages/AdminUserOverviewPage";
 import AdminProjectsList from "./components/ProjectListing/ProjectList"; 
 import AdminAppsPage from "./pages/AdminAppsPage";
+import AdminProjectsOverview from "./components/ProjectListing/ProjectList"; 
+import AdminDatabaseDetails from "./components/AdminDatabaseDetails";
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
@@ -92,7 +94,7 @@ const Routes = () => (
       <Route path="/terms-of-service" component={Terms} />
       <Route path="/privacy-policy" component={Privacy} />
       <Route path="/status" component={MonitoringPage} />
-      <Route path="/projectsListing" component={AdminProjectsList} />
+      <Route path="/projects-overview" component={AdminProjectsOverview} />
       {/* projects */}
       <ProtectedRoute
         isAllowed={hasToken}
@@ -303,6 +305,12 @@ const Routes = () => (
         exact
         path="/databases"
         component={AdminDBList}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        exact
+        path="/databases/:databaseID"
+        component={AdminDatabaseDetails}
       />
       <ProtectedRoute
         isAllowed={hasToken}

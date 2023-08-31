@@ -1,296 +1,326 @@
+.NoResourcesMessage {
+  flex-grow: 1;
+  display: flex;
+  font-size: 16px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding: 12rem;
+}
 
+.Page {
+  background-color: #F1F1F1;
+  position: relative;
+}
 
- 
-  .NoResourcesMessage {
-    flex-grow: 1;
-    display: flex;
-    font-size: 16px;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    padding: 12rem;
-  }
-  .Page{
-    background-color: #F1F1F1;
-    position: relative;
-  }
-  .ButtonPlusSmall {
-    width: 1rem;
-    height: 1rem;
-  }
- 
-  .CoinSize{
-    display: flex;
-    width: 1.5rem;
+.ButtonPlusSmall {
+  width: 1rem;
+  height: 1rem;
+}
 
-  }
-  .MainColumn{
-    padding: .5rem 5rem 0rem 4rem;
-  }
+.CoinSize {
+  display: flex;
+  width: 1.5rem;
 
-  .BackButton {
-    width: fit-content;
-    color: var(--primary-color);
-    height: 2rem;
-    background-color: #fff;
-    border: 1px solid var(--primary-color);
-  }
+}
 
-  .BackButton:hover {
-    color: #fff;
-    background-color: var(--primary-color);
-    border: 1px solid var(--primary-color);
-  }
-  .PairButtonCancel{
-    color: #fff;
-    width: fit-content;
-    height: 2rem;
-    padding-bottom: .5rem;
-    background-color: #000;
-    border: 1px solid #000;
-  }
-  .PairButtonCancel:hover{
-    color: #000;
-    background-color: #fff;
-    border: 1px solid #000;
-  }
-  .CreditsContainer{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: .3rem;
-  }
-  .rowContentYes{
-    color: var(--primary-color);
-    font-weight: 700;
-  }
-  .RowContent{
-    font-weight: 700;
-  }
-  .rowContentNo{
-    color: #d80000;
-    font-weight: 700;
-  }
-  .FooterRow {
-    padding: 1rem 3rem;
-    background-color: var( --gray-bg-light-color);
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-  }
+.MainColumn {
+  padding: .5rem 5rem 0rem 4rem;
+}
 
-  .UserContainer{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    flex: 1;
-    max-width: 51rem;
-  }
+.BackButton {
+  width: fit-content;
+  color: var(--primary-color);
+  height: 2rem;
+  background-color: #fff;
+  border: 1px solid var(--primary-color);
+}
 
-  .SecondMainSection{
-    flex: 1;
-  }
+.BackButton:hover {
+  color: #fff;
+  background-color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
 
-  .UserAvatar {
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 50%;
-    text-align: center;
-    font-weight: bold;
-    font-size: 2.7rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
+.PairButtonCancel {
+  color: #fff;
+  width: fit-content;
+  height: 2rem;
+  padding-bottom: .5rem;
+  background-color: #000;
+  border: 1px solid #000;
+}
 
-  .UserAvatarLarge {
-    width: 7rem;
-    height: 7rem;
-    border-radius: 50%;
-    text-align: center;
-    font-weight: bold;
-    font-size: 2.7rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
-  .CardInfor{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    font-size: 0.95rem;
-    gap: 0.5rem;
-    color: #4d4d4d;
-  }
+.PairButtonCancel:hover {
+  color: #000;
+  background-color: #fff;
+  border: 1px solid #000;
+}
 
-  .CustomInput{
-    height: 2.5rem;
-    padding: .3rem;
-    width: 70%;
-  }
-  .CustomPasswordInput{
-    border: 1px solid #000;
-    height: 2.5rem;
-    padding: .3rem;
-    width: 70%;
-  }
-  .InputDiv{
-    display: grid;
-    grid-template-columns: 1fr 4fr;
-    align-items: center;
-    gap: 1rem;
-    width: 100%;
-    padding: .3rem .3rem .3rem 0;
-  }
-  .PasswordChange{
-    display: flex;
-    align-items: center;
-    gap: 4em;
-    width: 100%;
-    padding: .3rem .3rem .7rem .3rem;
-  }
-  .ExtraContentDiv{
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 1rem 1rem 0;
-  }
-  .ContainerCard{
-    padding-left: 1rem;
-    padding-top: .5rem;
-    padding-bottom: .5rem;
-    gap:.4rem;
-    flex-direction: column;
-    border-radius: 10px;
-    padding: 1rem 2rem;
-    background-color: #fff;
-  }
-  .ButtonsDiv{
-    display: flex;
-    flex-direction: row;
-    gap:.5rem
-  }
-  
-  .UserSectionTitle{
-    font-weight: 700;
-    font-size: 24px;
-    color: #000;
-  }
-  .UserSectionSubTitle{
-    font-style: normal;
-    font-weight: 300;
-    font-size: .8rem;
-    color: #000;
-  }
-  
-  .ProfileActionBtns{
-    display: flex;
-    justify-content: flex-end;
-  }
+.CreditsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: .3rem;
+}
 
-  .ContainerSection{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 1rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid rgba(204, 204, 204, 0.69);
-    margin-bottom: 1rem;
-  }
-  .ContainerHeadSection{
-    /* display: flex; */
-    border-bottom: 1px solid rgba(204, 204, 204, 0.69);
-    padding-bottom: 2rem;
-  }
+.rowContentYes {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.RowContent {
+  font-weight: 700;
+}
+
+.rowContentNo {
+  color: #d80000;
+  font-weight: 700;
+}
+
+.FooterRow {
+  padding: 1rem 3rem;
+  background-color: var(--gray-bg-light-color);
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+}
+
+.UserContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+  max-width: 51rem;
+}
+
+.SecondMainSection {
+  flex: 1;
+}
+
+.UserAvatar {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 2.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.UserAvatarLarge {
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 2.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.CardInfor {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  font-size: 0.95rem;
+  gap: 0.5rem;
+  color: #4d4d4d;
+}
+
+.CustomInput {
+  height: 2.5rem;
+  padding: .3rem;
+  width: 70%;
+}
+
+.CustomPasswordInput {
+  border: 1px solid #000;
+  height: 2.5rem;
+  padding: .3rem;
+  width: 70%;
+}
+
+.InputDiv {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: .3rem .3rem .3rem 0;
+}
+
+.PasswordChange {
+  display: flex;
+  align-items: center;
+  gap: 4em;
+  width: 100%;
+  padding: .3rem .3rem .7rem .3rem;
+}
+
+.ExtraContentDiv {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem 1rem 0;
+}
+
+.ContainerCard {
+  padding-left: 1rem;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  gap: .4rem;
+  flex-direction: column;
+  border-radius: 10px;
+  padding: 1rem 2rem;
+  background-color: #fff;
+}
+
+.ButtonsDiv {
+  display: flex;
+  flex-direction: row;
+  gap: .5rem
+}
+
+.UserSectionTitle {
+  font-weight: 700;
+  font-size: 24px;
+  color: #000;
+}
+
+.UserSectionSubTitle {
+  font-style: normal;
+  font-weight: 300;
+  font-size: .8rem;
+  color: #000;
+}
+
+.ProfileActionBtns {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ContainerSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(204, 204, 204, 0.69);
+  margin-bottom: 1rem;
+}
+
+.ContainerHeadSection {
+  /* display: flex; */
+  border-bottom: 1px solid rgba(204, 204, 204, 0.69);
+  padding-bottom: 2rem;
+}
+
 /*increased width to 48rem from 30rem*/
-  .ProfileCard{
-    display: flex;
-    gap:1rem;
-    flex-direction: column;
-    border-radius: 10px;
-    background-color: #fff;
-    padding: 1.3rem 1rem 1rem 2.5rem;
-  }
+.ProfileCard {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 1.3rem 1rem 1rem 2.5rem;
+}
 
-  .UserProfileCard{
-    display: flex;
-    gap:1rem;
-    flex-direction: row;
-    border-radius: 10px;
-    background-color: #fff;
-    padding: 2rem;
-    align-items: center;
-    justify-content: space-between;
-  }
+.UserProfileCard {
+  display: flex;
+  gap: 1rem;
+  flex-direction: row;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 2rem;
+  align-items: center;
+  justify-content: space-between;
+}
 
-  .AvatarDiv{
-    display: flex;
-    flex-direction: row;
-    height: 5rem;
-    align-items: center;
-    margin-bottom: 0.3rem;
-  }
-  .ProfileContainer{
-    display: flex;
-    justify-content: center;
-    margin-top: 1rem;
-  }
-  .Title2{
-   padding: .4rem;
-  }
-  .Title2Name{
-    text-transform: capitalize;
-    padding: .4rem;
-  }
-  .Identity{
-    display: flex;
-    flex-direction: column;
-    padding-left: 1rem;
-  }
-  .IdentityName{
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #000;
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-    text-transform: capitalize;
-  }
-  .BackgroundInfor{
-    display: flex;
-    flex-direction: column;
-    width: 20rem;
-  }
-  .ProjectDeleteModel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  .ProjectDeleteModel .ModalChildWrap {
-    z-index: 3;
-  }
-  .ProjectDeleteModel .ModalChildWrap {
-    min-width: 21rem;
-    max-width: 25rem;
-  }
+.AvatarDiv {
+  display: flex;
+  flex-direction: row;
+  height: 5rem;
+  align-items: center;
+  margin-bottom: 0.3rem;
+}
+
+.ProfileContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.Title2 {
+  padding: .4rem;
+}
+
+.Title2Name {
+  text-transform: capitalize;
+  padding: .4rem;
+}
+
+.Identity {
+  display: flex;
+  flex-direction: column;
+  padding-left: 1rem;
+}
+
+.IdentityName {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #000;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  text-transform: capitalize;
+}
+
+.BackgroundInfor {
+  display: flex;
+  flex-direction: column;
+  width: 20rem;
+}
+
+.ProjectDeleteModel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.ProjectDeleteModel .ModalChildWrap {
+  z-index: 3;
+}
+
+.ProjectDeleteModel .ModalChildWrap {
+  min-width: 21rem;
+  max-width: 25rem;
+}
+
 .ProjectDeleteModel .ModalParentWrap {
   background-color: inherit;
 }
+
 .UpdateProjectModelButtons {
   display: flex;
   justify-content: space-between;
 }
+
 .ModelContent {
   width: 23rem;
 }
+
 .ModelHeader {
   display: flex;
   align-items: center;
@@ -298,131 +328,160 @@
   font-weight: 700;
   font-size: 2rem;
 }
+
 .UpdateForm {
   display: grid;
   gap: 1rem;
   padding: 1rem 1.3rem;
   grid-template-rows: 2fr;
 }
+
 .InformationText {
   width: 20rem;
 }
 
-  .HeaderSection{
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.3rem;
-    justify-content: flex-start;
-  }
-  .EmailHead{
-    display: flex;
-    flex-direction: column;
-    gap: 1.3rem;
-    align-items: flex-start;
-  }
-  .FeedBackDiv{
-    color: rgb(28, 255, 28);
-  }
-  .ErrorDiv{
-    color: red;
-  }
+.HeaderSection {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.3rem;
+  justify-content: flex-start;
+}
 
-  .BetaUserDiv{
-    display: inline;
-    padding: 0.3rem 0.5rem;
-    border-radius: 999px;
-    background-color: rgba(128, 0, 128, 0.217);
-    color: purple;
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-weight: normal;
-  }
-  .IdentityEmail{
-    color: #686868;
-    font-size: 0.95rem;
-  }
-  
-  
-  @media (max-width: 500px) {
-  
-    
-  }
-  /* @media only screen and (max-width: 1100px) and (min-width: 901px) {
+.EmailHead {
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+  align-items: flex-start;
+}
+
+.FeedBackDiv {
+  color: rgb(28, 255, 28);
+}
+
+.ErrorDiv {
+  color: red;
+}
+
+.BetaUserDiv {
+  display: inline;
+  padding: 0.3rem 0.5rem;
+  border-radius: 999px;
+  background-color: rgba(128, 0, 128, 0.217);
+  color: purple;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: normal;
+}
+
+.IdentityEmail {
+  color: #686868;
+  font-size: 0.95rem;
+}
+
+
+@media (max-width: 500px) {}
+
+/* @media only screen and (max-width: 1100px) and (min-width: 901px) {
     .ProjectList {
       grid-template-columns: repeat(4, 1fr);
     }
   }*/
-  @media only screen and (max-width: 1070px)  {
-    .ProfileContainer{
-       margin-left: 2rem;
-       margin-right: 2rem;
-    }
-    .UserContainer{
-      padding-left: 2rem;
-    }
+@media only screen and (max-width: 1070px) {
+  .ProfileContainer {
+    margin-left: 2rem;
+    margin-right: 2rem;
   }
-  @media only screen and (max-width: 900px)  {
-    .ProfileContainer{
-       margin-left: .5rem;
-       margin-right: .5rem;
-    }
-    .UserContainer{
-      padding-left: 1rem;
-    }
+
+  .UserContainer {
+    padding-left: 2rem;
   }
-  
-  @media only screen and (max-width: 700px)  {
-    .ContainerSection{
-      display: flex;
-      flex-direction: column;
-      width: auto;
-    }
-    .ContainerHeadSection{
-      width: auto;
-      margin-left: 2rem;
-      margin-right: 1rem;
-    }
-    .ProfileCard{
-      width: auto;
-    }
-    .MainColumn{
-      padding: .5rem 3rem 0rem 1rem;
-    }
-    .UserContainer{
-      padding-left: 0rem;
-    }
-    .InputDiv{
-      gap: 2rem;
-    }
-    .SecondMainSection{
-      flex: 0;
-      margin-left: 2rem;
-      margin-right: 1rem;
-    }
-    aside{
-      width: 23rem;
-    }
-    .Page{
-      min-width: 40rem;
-      height: 180vh;
-    }
-    .UserAvatar {
-      display:  none;
-    }
-    .UserAvatarLarge {
-      display:  none;
-    }
-    .IdentityName{
-      font-size: 22px;
-    }
-    .FooterRow {
-      font-size: 14px;
-    }
-    .ProfileActionBtns {
-      flex-direction: column-reverse;
-    }
+}
+
+@media only screen and (max-width: 900px) {
+  .ProfileContainer {
+    margin-left: .5rem;
+    margin-right: .5rem;
   }
-  
-  
-  
+
+  .UserContainer {
+    padding-left: 1rem;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .ContainerSection {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+  }
+
+  .ContainerHeadSection {
+    width: auto;
+    margin-left: 2rem;
+    margin-right: 1rem;
+  }
+
+  .ProfileCard {
+    width: auto;
+  }
+
+  .MainColumn {
+    padding: .5rem 3rem 0rem 1rem;
+  }
+
+  .UserContainer {
+    padding-left: 0rem;
+  }
+
+  .InputDiv {
+    gap: 2rem;
+  }
+
+  .SecondMainSection {
+    flex: 0;
+    margin-left: 2rem;
+    margin-right: 1rem;
+  }
+
+  aside {
+    width: 23rem;
+  }
+
+  .Page {
+    min-width: 40rem;
+    height: 180vh;
+  }
+
+  .UserAvatar {
+    display: none;
+  }
+
+  .UserAvatarLarge {
+    display: none;
+  }
+
+  .IdentityName {
+    font-size: 22px;
+  }
+
+  .FooterRow {
+    font-size: 14px;
+  }
+
+  .ProfileActionBtns {
+    flex-direction: column-reverse;
+  }
+
+  .Identity {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+
+  .IdentityName{
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
