@@ -4,7 +4,6 @@ import getAppsList from "../../redux/actions/adminApps";
 import Header from "../../components/Header";
 import InformationBar from "../../components/InformationBar";
 import { handleGetRequest } from "../../apis/apis.js";
-import Spinner from "../../components/Spinner";
 import Select from "../../components/Select";
 import {
   Line,

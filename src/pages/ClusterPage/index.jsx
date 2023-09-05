@@ -9,29 +9,17 @@ import Modal from "../../components/Modal";
 import ClustersList from "../../components/ClustersList";
 import Header from "../../components/Header";
 import addCluster, {clearAddClusterState} from "../../redux/actions/addCluster";
-import userSummary from "../../redux/actions/usersSummary";
-import appSummary from "../../redux/actions/appsSummary";
 import Feedback from "../../components/Feedback";
 import styles from "./ClusterPage.module.css";
-import getDatabases from "../../redux/actions/getDatabases";
 import getClustersList from "../../redux/actions/clusters";
-import {currentDate} from "../../helpers/dateConstants";
 import {handleGetRequest} from "../../apis/apis.js";
 
 const ClusterPage = ({
-  getDatabases,
-  userSummary,
-  appSummary,
   creatingCluster,
   isAdded,
   isFailed,
   addCluster,
   message,
-  databases,
-  usersSummary,
-  summary,
-  isFetchingAppsSummary,
-  isFetchingUsersSummary,
   clearAddClusterState,
   clusters,
 }) => {
@@ -42,51 +30,23 @@ const ClusterPage = ({
   const [error, setError] = useState("");
   const [description, setDescription] = useState("");
   const [prometheus_url, setPrometheus_url] = useState("");
-  const [projects, setProjects] = useState([]);
-
-  let disabledProjectsCount = 0;
-  let enabledProjectsCount = 0;
+  const [summary, setSummary] = useState({});
 
   useEffect(() => {
-    let details = {begin: "2021-03-01", end: currentDate, set_by: "month"};
-    userSummary(details);
-    appSummary(details);
     getClustersList();
-    getDatabases();
-    getAllProjects();
-  }, [userSummary, appSummary, getDatabases]);
+    getAllMetrics();
+  }, []);
 
-  const getAllProjects = async () => {
+  const getAllMetrics = async () => {
     try {
-      const response = await handleGetRequest("/projects");
-      if (response.data.data.projects.length > 0) {
-        const totalNumberOfProjects = response.data.data.pagination.total;
-        handleGetRequest(`/projects?per_page=${totalNumberOfProjects}`)
-          .then((response) => {
-            if (response.data.data.projects.length > 0) {
-              setProjects(response.data.data.projects);
-            } else {
-              throw new Error("No projects found");
-            }
-          })
-          .catch(() => {
-            throw new Error("Failed to fetch all projects, please try again");
-          });
-      } else {
-        throw new Error("No projects found");
+      const response = await handleGetRequest("/system_summary");
+      if (response.data.status === 'success') {
+        setSummary(response.data.data)
       }
     } catch (error) {
-      throw new Error("Failed to fetch projects, please try again");
+      throw new Error("Failed to fetch summary metrics, please try again");
     }
   };
-
-  projects.forEach((project) => {
-    if (project.disabled) {
-      disabledProjectsCount++;
-    } else {
-      enabledProjectsCount++;
-    }
-  });
 
   const showForm = () => setOpenModal(true);
 
@@ -139,14 +99,14 @@ const ClusterPage = ({
           <div className={styles.columnCardSection}>
             <div className={styles.CardHeader}>Users</div>
             <div className={styles.ResourceDigit}>
-              {usersSummary?.metadata?.total_users}
+              {summary?.Users?.total_count}
             </div>
           </div>
           <div className={styles.rowCardSection}>
             <div className={styles.columnCardSection}>
               <div className={styles.innerCardHeader}>Verified</div>
               <div className={styles.rowResourceDigit}>
-                {usersSummary?.metadata?.verified}
+                {summary?.Users?.verified}
               </div>
             </div>
             <div className={styles.columnCardSection}>
@@ -155,8 +115,8 @@ const ClusterPage = ({
                 className={`${styles.rowResourceDigit} ${styles.rightTextAlign}`}
               >
                 {parseInt(
-                  parseInt(usersSummary?.metadata?.total_users) -
-                    parseInt(usersSummary?.metadata?.verified)
+                  parseInt(summary?.Users?.total_count) -
+                    parseInt(summary?.Users?.verified)
                 )}
               </div>
             </div>
@@ -166,14 +126,14 @@ const ClusterPage = ({
           <div className={styles.columnCardSection}>
             <div className={styles.CardHeader}>Projects</div>
             <div className={styles.ResourceDigit}>
-              {Number(enabledProjectsCount) + Number(disabledProjectsCount)}
+              {summary?.Projects?.total_count}
             </div>
           </div>
           <div className={styles.rowCardSection}>
             <div className={styles.columnCardSection}>
               <div className={styles.innerCardHeader}>Active</div>
               <div className={styles.rowResourceDigit}>
-                {enabledProjectsCount}
+                {summary?.Projects?.total_count - summary?.Projects?.disabled}
               </div>
             </div>
             <div className={styles.columnCardSection}>
@@ -181,7 +141,7 @@ const ClusterPage = ({
               <div
                 className={`${styles.rowResourceDigit} ${styles.rightTextAlign}`}
               >
-                {disabledProjectsCount}
+                {summary?.Projects?.disabled}
               </div>
             </div>
           </div>
@@ -190,14 +150,14 @@ const ClusterPage = ({
           <div className={styles.columnCardSection}>
             <div className={styles.CardHeader}>Databases</div>
             <div className={styles.ResourceDigit}>
-              {databases && databases?.total_database_count}
+              {summary?.Databases?.total_count}
             </div>
           </div>
           <div className={styles.rowCardSection}>
             <div className={styles.columnCardSection}>
               <div className={styles.innerCardHeader}>MySql</div>
               <div className={styles.rowResourceDigit}>
-                {databases && databases?.dbs_stats_per_flavour?.mysql_db_count}
+                {summary?.Databases?.mysql}
               </div>
             </div>
             <div className={styles.columnCardSection}>
@@ -205,8 +165,7 @@ const ClusterPage = ({
               <div
                 className={`${styles.rowResourceDigit} ${styles.rightTextAlign}`}
               >
-                {databases &&
-                  databases?.dbs_stats_per_flavour?.postgres_db_count}
+                {summary?.Databases?.postgres}
               </div>
             </div>
           </div>
@@ -215,14 +174,14 @@ const ClusterPage = ({
           <div className={styles.columnCardSection}>
             <div className={styles.CardHeader}>Apps</div>
             <div className={styles.ResourceDigit}>
-              {summary?.metadata?.total_apps}
+              {summary?(summary?.Apps?.total_count):0}
             </div>
           </div>
           <div className={styles.rowCardSection}>
             <div className={styles.columnCardSection}>
               <div className={styles.innerCardHeader}>Up</div>
               <div className={styles.rowResourceDigit}>
-                {parseInt(parseInt(summary?.metadata?.total_apps) / 2)}
+                {summary?.Apps?.total_count}
               </div>
             </div>
             <div className={styles.columnCardSection}>
@@ -230,7 +189,7 @@ const ClusterPage = ({
               <div
                 className={`${styles.rowResourceDigit} ${styles.rightTextAlign}`}
               >
-                {parseInt(parseInt(summary?.metadata?.total_apps) / 2)}
+                {0}
               </div>
             </div>
           </div>
@@ -324,43 +283,25 @@ const ClusterPage = ({
 };
 
 export const mapStateToProps = (state) => {
-  const {isFetchingDatabases, databasesFetched, databases} =
-    state.databasesReducer;
   const {creatingCluster, isAdded, isFailed, errorOccured, message} =
     state.addClusterReducer;
   const {user} = state.user;
-  const {summary, FetchedAppsSummary, isFetchingAppsSummary} =
-    state.appsSummaryReducer;
-  const {usersSummary, FetchedUsersSummary, isFetchingUsersSummary} =
-    state.usersSummaryReducer;
   const {clusters} = state.clustersReducer;
 
   return {
-    isFetchingDatabases,
-    databasesFetched,
-    databases,
     user,
     creatingCluster,
     isAdded,
     isFailed,
     errorOccured,
     message,
-    summary,
-    FetchedAppsSummary,
-    isFetchingAppsSummary,
-    usersSummary,
-    FetchedUsersSummary,
-    isFetchingUsersSummary,
     clusters,
   };
 };
 
 const mapDispatchToProps = {
-  getDatabases,
   addCluster,
   clearAddClusterState,
-  appSummary,
-  userSummary,
   getClustersList,
 };
 

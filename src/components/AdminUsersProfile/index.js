@@ -253,7 +253,7 @@ class AdminUserPage extends Component {
                 showBackBtn
               />
             </div>
-            <div className="ShortContainer">
+            <div className="Short1Container">
               <div className="ContentSection">
                 <div className="AdminUserPageContainer">
                   <section>
@@ -376,7 +376,7 @@ class AdminUserPage extends Component {
                   )}
                   <div>
                     <div className="SectionTitle">User Platform Metrics</div>
-                    <div className="ClusterContainer">
+                    <div className="Cluster1Container">
                       <NewResourceCard
                         key={1}
                         title="Projects Owned"

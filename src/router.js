@@ -64,7 +64,7 @@ import UserActivity from "./pages/UserActivity";
 import ProjectLogs from "./pages/ProjectLogs";
 import store from "./redux/store";
 import AdminUserOverviewPage from "./pages/AdminUserOverviewPage";
-import AdminProjectsList from "./components/ProjectListing/ProjectList"; 
+// import AdminProjectsList from "./components/ProjectListing/ProjectList"; 
 import AdminAppsPage from "./pages/AdminAppsPage";
 import AdminProjectsOverview from "./components/ProjectListing/ProjectList"; 
 import AdminDatabaseDetails from "./components/AdminDatabaseDetails";
