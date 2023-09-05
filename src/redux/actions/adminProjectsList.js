@@ -22,11 +22,18 @@ export const getAdminProjectsFailed = (error) => ({
   },
 });
 
-const getAdminProjectsList = (page , keyword) => async (dispatch) => {
+const getAdminProjectsList = (page , keyword, state='') => async (dispatch) => {
   dispatch(startTheFetch());
+  let url
+  if(state){
+   url = `/projects?keywords=${keyword}&page=${page}&disabled=${state}`
+  }else{
+   url =  `/projects?page=${page}&keywords=${keyword}`
+  }
+
   try {
     const response = await axios.get(
-     `/projects?keywords=${keyword}&page=${page}`
+    url
     );
     return dispatch(getAdminProjectsSuccess(response));
   } catch (error) {

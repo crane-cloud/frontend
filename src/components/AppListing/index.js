@@ -15,7 +15,7 @@ const AppListing = (props) => {
   }, [gettingApps, currentPage]);
   
   return (
-    <div className="APage">
+    <div className="SubTableContainer">
       <div className="AMainSection">
         <div className="ContentSection">
           <div

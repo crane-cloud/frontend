@@ -606,3 +606,7 @@ tr.TableLoading td {
   align-items: center;
   justify-content: center;
 }
+
+.SubTableContainer{
+  padding-bottom: 5rem;
+}
