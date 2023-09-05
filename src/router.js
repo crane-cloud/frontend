@@ -94,7 +94,6 @@ const Routes = () => (
       <Route path="/terms-of-service" component={Terms} />
       <Route path="/privacy-policy" component={Privacy} />
       <Route path="/status" component={MonitoringPage} />
-      <Route path="/projects-overview" component={AdminProjectsOverview} />
       {/* projects */}
       <ProtectedRoute
         isAllowed={hasToken}
@@ -228,6 +227,18 @@ const Routes = () => (
         exact
         path="/projects/:projectID/details"
         component={AdminProjectDetails}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        exact
+        path="/projects-overview/:projectID/details"
+        component={AdminProjectDetails}
+      />
+      <Route
+      isAllowed={hasToken}
+      exact 
+      path="/projects-overview" 
+      component={AdminProjectsOverview} 
       />
       <ProtectedRoute
         isAllowed={hasToken}

@@ -18,6 +18,9 @@ import { filterGraphData } from "../../helpers/filterGraphData.js";
 import { retrieveMonthNames } from "../../helpers/monthNames.js";
 import NewResourceCard from "../../components/NewResourceCard";
 import Select from "../../components/Select";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 import {
   projectPieCategories,
   projectGraphCategories,
@@ -58,6 +61,7 @@ const AdminProjectsOverview = () => {
   let createNewPieChartData = [];
   let filteredGraphData = [];
   let newFilteredGraphData = [];
+  const history = useHistory();
 
   const COLORS = [
     "#0088FE",
@@ -435,7 +439,18 @@ const AdminProjectsOverview = () => {
       <div className="AMainSection">
         <div className="ContentSection">
           <div className="InformationBarSection">
-            <InformationBar header={<>Projects Listing</>} showBackBtn={true} />
+            <InformationBar  header={
+                <span className="ProjectsInformationBarTitle">
+                  <Link
+                    className={ `breadcrumb flex_back_link`}
+                    to={`/clusters`}
+                  >
+                    <BackButton />
+                    <div className="back_link">Project Listing</div>
+                  </Link>
+                </span>
+              }
+              showBtn={false} />
           </div>
 
           <div className="TitleArea">
@@ -905,7 +920,11 @@ const AdminProjectsOverview = () => {
                               isRetrieved &&
                               projects !== undefined &&
                               projects.map((project) => (
-                                <tr key={projects.indexOf(project)}>
+                                <tr 
+                                onClick={() => {
+                                  history.push(`/projects-overview/${project.id}/details`);
+                                }}
+                                key={projects.indexOf(project)}>
                                   <td>{project?.name}</td>
                                   <td>{getUserName(project?.owner_id)}</td>
                                   <td>{project?.description}</td>
