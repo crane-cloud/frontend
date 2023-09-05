@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import Pagination from "../../components/Pagination";
 import Spinner from "../Spinner";
 
@@ -13,6 +14,9 @@ const AppListing = (props) => {
   useEffect(() => {
     gettingApps(currentPage);
   }, [gettingApps, currentPage]);
+
+
+  const history = useHistory();
   
   return (
     <div className="APage">
@@ -50,9 +54,9 @@ const AppListing = (props) => {
                 apps?.map((app) => (
                   <tr
                     key={apps.indexOf(app)}
-                    // onClick={() => {
-                    //   history.push(`/accounts/${user.id}`);
-                    // }}
+                    onClick={() => {
+                      history.push(`/apps/${app?.id}`);
+                    }}
                   >
                     <td>{app?.name}</td>
                     <td>{app.image}</td>

@@ -68,6 +68,7 @@ import AdminProjectsList from "./components/ProjectListing/ProjectList";
 import AdminAppsPage from "./pages/AdminAppsPage";
 import AdminProjectsOverview from "./components/ProjectListing/ProjectList"; 
 import AdminDatabaseDetails from "./components/AdminDatabaseDetails";
+import AdminAppDetail from "./pages/AdminAppDetail";
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
@@ -335,6 +336,12 @@ const Routes = () => (
         exact
         path="/activity"
         component={UserActivity}
+      />
+      <ProtectedRoute
+        isAllowed={hasToken}
+        exact
+        path="/apps/:appID"
+        component={AdminAppDetail}
       />
       <ProtectedRoute
         isAllowed={hasToken}

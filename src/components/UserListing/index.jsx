@@ -19,11 +19,6 @@ const UserListing = (props) => {
 
   const history = useHistory();
 
-  // const hideModal = () => {
-  //   // setActionsMenu(false);
-  //   document.removeEventListener("click", hideModal);
-  // };
-
   return (
     <div className="APage">
       <div className="AMainSection">
