@@ -81,6 +81,7 @@ const AdminUserOverviewPage = () => {
     verified: users.filter((user) => user.verified === true).length,
     unverified: users.filter((user) => user.verified === false).length,
     beta: users.filter((user) => user.is_beta_user === true).length,
+    disabled: 0
   };
 
   const handleChange = ({ target }) => {
@@ -131,6 +132,7 @@ const AdminUserOverviewPage = () => {
     handleChangePage(currentPage);
     gettingUsers();
   };
+  console.log(users)
 
   return (
     <div className="APage">
