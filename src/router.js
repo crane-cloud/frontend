@@ -366,7 +366,7 @@ const Routes = () => {
           component={UserActivity}
         />
         <ProtectedRoute
-          isAllowed={hasToken}
+          isAllowed={hasToken && isAdmin}
           exact
           path="/apps"
           component={AdminAppsPage}
