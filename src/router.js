@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   BrowserRouter as Router,
@@ -64,10 +64,12 @@ import UserActivity from "./pages/UserActivity";
 import ProjectLogs from "./pages/ProjectLogs";
 import store from "./redux/store";
 import AdminUserOverviewPage from "./pages/AdminUserOverviewPage";
-import AdminProjectsList from "./components/ProjectListing/ProjectList"; 
+import AdminProjectsList from "./components/ProjectListing/ProjectList";
 import AdminAppsPage from "./pages/AdminAppsPage";
-import AdminProjectsOverview from "./components/ProjectListing/ProjectList"; 
+import AdminProjectsOverview from "./components/ProjectListing/ProjectList";
 import AdminDatabaseDetails from "./components/AdminDatabaseDetails";
+
+import { handleGetRequest } from "./apis/apis";
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
@@ -75,276 +77,304 @@ const ProtectedRoute = ({ isAllowed, ...props }) =>
 
 // for now, existence of token will determine access to route
 // later, this token will be a verified boolean
-const hasToken = store.getState().user.accessToken;
+const currentUser = store.getState().user;
+const hasToken = currentUser.accessToken;
 
-const Routes = () => (
-  <Router>
-    <Switch>
-      <Route exact path="/" component={App} />
-      <Route path="/login" component={LoginPage} />
-      <Route path="/contact" component={ContactPage} />
-      <Route path="/admin-login" component={AdminLoginPage} />
-      <Route path="/forgot-password" component={PasswordReset} />
-      <Route path="/register" component={RegisterPage} />
-      <Route path="/new-password" component={CreateNewPassword} />
-      <Route path="/verify/:token" component={VerificationSentPage} />
-      <Route path="/reset_password/:token" component={CreateNewPassword} />
-      <Route path="/team" component={TeamPage} />
-      <Route path="/create" component={CreateDatabase} />
-      <Route path="/terms-of-service" component={Terms} />
-      <Route path="/privacy-policy" component={Privacy} />
-      <Route path="/status" component={MonitoringPage} />
-      <Route path="/projects-overview" component={AdminProjectsOverview} />
-      {/* projects */}
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects/:projectID/billing"
-        component={ProjectBillingPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects"
-        component={UserProjectsPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects/:projectID/databases"
-        component={DatabaseList}
-      />
+const Routes = () => {
+  const [isAdmin, setIsAdmin] = useState(true);
+  useEffect(() => {
+    //protect admin routes
+    if (currentUser?.data?.id) {
+      handleGetRequest(`/user/${currentUser?.data?.id}/roles`)
+        .then((response) => {
+          setIsAdmin(
+            response.data.data.user_roles.some(
+              (role) => role.name === "administrator"
+            )
+          );
+        })
+        .catch((error) => {
+          //this means the user is unauthorized to access this endpoint
+          //only admin token is authorized
+          setIsAdmin(false);
+        });
+    }
+  }, []);
 
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects/:projectID/databases/:databaseID/settings"
-        component={DBSettingsPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects/:projectID/apps"
-        component={AppsPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects/:projectID/apps/:appID/network"
-        component={AppNetworkPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects/:projectID/apps/:appID/cpu"
-        component={AppCpuPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects/:projectID/apps/:appID/memory"
-        component={AppMemoryPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects/:projectID/apps/:appID/dashboard"
-        component={AppMetricsPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects/:projectID/apps/:appID/settings"
-        component={AppSettingsPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects/:projectID/apps/:appID/logs"
-        component={AppLogsPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects/:projectID/databases"
-        component={DatabaseList}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects/:projectID/memory/"
-        component={ProjectMemoryPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects/:projectID/dashboard"
-        component={ProjectDashboardPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects/:projectID/cpu/"
-        component={ProjectCPUPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects/:projectID/network/"
-        component={ProjectNetworkPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects/:projectID/settings"
-        component={ProjectSettingsPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/accounts"
-        component={AdminUserOverviewPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/profile"
-        component={UserProfile}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/accounts/:userID"
-        component={AdminUsersProfile}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/accounts/:userID/logs"
-        component={AdminUserLogs}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects/:projectID/details"
-        component={AdminProjectDetails}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        path="/clusters/:clusterID/projects"
-        component={AdminProjectOverviewPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        path="/clusters/:clusterID/projects-listing"
-        component={AdminProjectsPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        path="/users-listing"
-        component={UsersAccounts}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        path="/clusters/:clusterID/resources"
-        component={ClusterResourcesPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        path="/clusters/:clusterID/services"
-        component={ServicesListPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        path="/clusters/:clusterID/volumes"
-        component={PvsListPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        path="/clusters/:clusterID/nodes"
-        component={ClusterNodes}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        path="/clusters/:clusterID/pvcs"
-        component={PvcsList}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        path="/clusters/:clusterID/namespaces"
-        component={NamespacesListPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        path="/clusters/:clusterID/pods"
-        component={PodsList}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        path="/clusters/:clusterID/storage-classes"
-        component={StorageClassList}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        path="/clusters/:clusterID/jobs"
-        component={JobsListPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        path="/clusters/:clusterID/deployments"
-        component={DeploymentsPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/clusters"
-        component={ClusterPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/databases"
-        component={AdminDBList}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/databases/:databaseID"
-        component={AdminDatabaseDetails}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/clusters/:clusterID/logs"
-        component={AdminLogsPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/clusters/:clusterID/clusterSettings"
-        component={ClusterSettingsPage}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/projects/:projectID/activity"
-        component={ProjectLogs}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/activity"
-        component={UserActivity}
-      />
-      <ProtectedRoute
-        isAllowed={hasToken}
-        exact
-        path="/apps"
-        component={AdminAppsPage}
-      />
-      <Route path="*" component={PageNotFound} />
-    </Switch>
-  </Router>
-);
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/" component={App} />
+        <Route path="/login" component={LoginPage} />
+        <Route path="/contact" component={ContactPage} />
+        <Route path="/admin-login" component={AdminLoginPage} />
+        <Route path="/forgot-password" component={PasswordReset} />
+        <Route path="/register" component={RegisterPage} />
+        <Route path="/new-password" component={CreateNewPassword} />
+        <Route path="/verify/:token" component={VerificationSentPage} />
+        <Route path="/reset_password/:token" component={CreateNewPassword} />
+        <Route path="/team" component={TeamPage} />
+        <Route path="/create" component={CreateDatabase} />
+        <Route path="/terms-of-service" component={Terms} />
+        <Route path="/privacy-policy" component={Privacy} />
+        <Route path="/status" component={MonitoringPage} />
+        {/* projects */}
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects/:projectID/billing"
+          component={ProjectBillingPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects"
+          component={UserProjectsPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects/:projectID/databases"
+          component={DatabaseList}
+        />
+
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects/:projectID/databases/:databaseID/settings"
+          component={DBSettingsPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects/:projectID/apps"
+          component={AppsPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects/:projectID/apps/:appID/network"
+          component={AppNetworkPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects/:projectID/apps/:appID/cpu"
+          component={AppCpuPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects/:projectID/apps/:appID/memory"
+          component={AppMemoryPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects/:projectID/apps/:appID/dashboard"
+          component={AppMetricsPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects/:projectID/apps/:appID/settings"
+          component={AppSettingsPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects/:projectID/apps/:appID/logs"
+          component={AppLogsPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects/:projectID/databases"
+          component={DatabaseList}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects/:projectID/memory/"
+          component={ProjectMemoryPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects/:projectID/dashboard"
+          component={ProjectDashboardPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects/:projectID/cpu/"
+          component={ProjectCPUPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects/:projectID/network/"
+          component={ProjectNetworkPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects/:projectID/settings"
+          component={ProjectSettingsPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          exact
+          path="/accounts"
+          component={AdminUserOverviewPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/profile"
+          component={UserProfile}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          exact
+          path="/accounts/:userID"
+          component={AdminUsersProfile}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          exact
+          path="/accounts/:userID/logs"
+          component={AdminUserLogs}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          exact
+          path="/projects/:projectID/details"
+          component={AdminProjectDetails}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          path="/clusters/:clusterID/projects"
+          component={AdminProjectOverviewPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          path="/clusters/:clusterID/projects-listing"
+          component={AdminProjectsPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          path="/users-listing"
+          component={UsersAccounts}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          path="/clusters/:clusterID/resources"
+          component={ClusterResourcesPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          path="/clusters/:clusterID/services"
+          component={ServicesListPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          path="/clusters/:clusterID/volumes"
+          component={PvsListPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          path="/clusters/:clusterID/nodes"
+          component={ClusterNodes}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          path="/clusters/:clusterID/pvcs"
+          component={PvcsList}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          path="/clusters/:clusterID/namespaces"
+          component={NamespacesListPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          path="/clusters/:clusterID/pods"
+          component={PodsList}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          path="/clusters/:clusterID/storage-classes"
+          component={StorageClassList}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          path="/clusters/:clusterID/jobs"
+          component={JobsListPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          path="/clusters/:clusterID/deployments"
+          component={DeploymentsPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          exact
+          path="/clusters"
+          component={ClusterPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          exact
+          path="/databases"
+          component={AdminDBList}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          exact
+          path="/databases/:databaseID"
+          component={AdminDatabaseDetails}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          exact
+          path="/clusters/:clusterID/logs"
+          component={AdminLogsPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          exact
+          path="/clusters/:clusterID/clusterSettings"
+          component={ClusterSettingsPage}
+        />
+        <Route
+          isAllowed={hasToken && isAdmin}
+          exact
+          path="/projects-overview"
+          component={AdminProjectsOverview}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects/:projectID/activity"
+          component={ProjectLogs}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/activity"
+          component={UserActivity}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          exact
+          path="/apps"
+          component={AdminAppsPage}
+        />
+        <Route path="*" component={PageNotFound} />
+      </Switch>
+    </Router>
+  );
+};
 
 export default Routes;
