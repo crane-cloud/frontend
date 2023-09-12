@@ -1,0 +1,116 @@
+.MonitoringPageMain {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #e5f3f9;
+}
+
+.PageContainer {
+  max-width: 100%;
+}
+
+.PrimaryTitle {
+  color: var(--primary-color);
+  font-size: 52px;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 3rem;
+}
+
+.PrimaryContent,
+.PrimaryDescription {
+  color: #000000;
+  font-size: 19px;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 1.5rem;
+}
+
+.BannerArea {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 0 3rem 0;
+}
+
+.StatusBanner {
+  background-color: var(--secondary-color);
+  width: 35%;
+  border-radius: 0.5rem;
+}
+
+.BannerText {
+  padding: 1rem;
+  color: #ffff;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.SmallIcon,
+.SmallerIcon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.SmallIcon {
+  padding-top: 0.6rem;
+  cursor: pointer;
+}
+
+.StatusSectionContent {
+  padding-left: 13rem;
+  padding-bottom: 3rem;
+  max-width: 70%;
+}
+
+.StatusSectionContent .SectionTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.StatusSectionChildContainer {
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.RowDivider {
+  width: 100%;
+}
+
+.MonitoringPageMain .FooterRow {
+  padding: 3rem 0 0 9rem;
+}
+
+.LoadingArea {
+  padding: 4rem 0 4rem 0;
+}
+
+.LoadingArea {
+  padding: 4rem 0 4rem 0;
+}
+
+@media only screen and (max-width: 750px) {
+  .StatusSectionContent {
+    padding-left: 0rem;
+  }
+
+  .StatusSectionChildContainer {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    max-width: none;
+  }
+
+  .StatusTypes {
+    display: none;
+  }
+
+  .StatusBanner {
+    width: 80%;
+  }
+}
