@@ -4,6 +4,8 @@ Automated application deployment, management, and scaling.
 
 Crane Cloud is an open source multi-cloud software platform for cloud-native application deployment and management.
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/null/crane-cloud/frontend/tree/develop.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/null/crane-cloud/frontend/tree/develop)
+
 [![Maintainability](https://api.codeclimate.com/v1/badges/afca0db82a7d7ced4a39/maintainability)](https://codeclimate.com/github/crane-cloud/frontend/maintainability)
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/afca0db82a7d7ced4a39/test_coverage)](https://codeclimate.com/github/crane-cloud/frontend/test_coverage)

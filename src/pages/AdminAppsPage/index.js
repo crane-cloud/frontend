@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import getAppsList from "../../redux/actions/adminApps";
+import { getAppCategories } from "../../helpers/getAppCategories";
 import Header from "../../components/Header";
 import InformationBar from "../../components/InformationBar";
 import { handleGetRequest } from "../../apis/apis.js";
-import Spinner from "../../components/Spinner";
 import Select from "../../components/Select";
 import {
   Line,
@@ -71,6 +71,8 @@ const AdminAppsPage = () => {
   const handleChange = ({ target }) => {
     setPeriod(target.getAttribute("value"));
   };
+
+  const availableAppCategories = getAppCategories();
 
 
   const handleSectionChange = (selectedOption) => {
@@ -318,7 +320,7 @@ const AdminAppsPage = () => {
               <span>
                 <Select
                   placeholder="Apps Listing"
-                  // options={availableUserCategories}
+                  options={availableAppCategories}
                   onChange={(selectedOption) =>
                     handleSectionChange(selectedOption)
                   }
