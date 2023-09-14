@@ -22,7 +22,7 @@ const MonitoringPage = () => {
   const getStatusData = async () => {
     setLoading(true);
     try {
-      await handleGetRequest(STATUS_MONITORING_URL).then((response) => {
+      await handleGetRequest(`${STATUS_MONITORING_URL}/statuses`).then((response) => {
         if (response.status !== 200) {
           return false;
         }
