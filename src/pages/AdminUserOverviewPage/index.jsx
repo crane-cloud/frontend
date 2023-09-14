@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import getUsersList from "../../redux/actions/users";
 import Header from "../../components/Header";
 import InformationBar from "../../components/InformationBar";
@@ -29,9 +30,9 @@ import { createUserGraphData } from "../../helpers/usersGraphData";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import UserListing from "../../components/UserListing";
 import usePaginator from "../../hooks/usePaginator";
-
+ 
 const AdminUserOverviewPage = () => {
-  const [users, setUsers] = useState([]);
+  const [usersSummary, setUsersSummary] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
   const [period, setPeriod] = useState("all");
@@ -39,19 +40,25 @@ const AdminUserOverviewPage = () => {
   const [word, setWord] = useState("");
   const [currentPage, handleChangePage] = usePaginator();
   const dispatch = useDispatch();
-
+ 
   const COLORS = ["#0088FE", "#0DBC00", "#F9991A"];
-
+ 
   let graphDataArray = [];
   let filteredGraphData = [];
-
+ 
+  const gettingUsers = useCallback(
+    () => dispatch(getUsersList(sectionValue, currentPage, word)),
+    [currentPage, dispatch, sectionValue, word]
+  );
+ 
   useEffect(() => {
     getAllUsers();
-  }, []);
-
+    gettingUsers();
+  }, [gettingUsers]);
+ 
   const getAllUsers = async () => {
     setLoading(true);
-
+ 
     try {
       const response = await handleGetRequest("/users");
       if (response.data.data.users.length > 0) {
@@ -59,7 +66,7 @@ const AdminUserOverviewPage = () => {
         handleGetRequest(`/users?per_page=${totalNumberOfUsers}`)
           .then((response) => {
             if (response.data.data.users.length > 0) {
-              setUsers(response.data.data.users);
+              setUsersSummary(response.data.data.users);
               setLoading(false);
             } else {
               throw new Error("No users found");
@@ -75,65 +82,49 @@ const AdminUserOverviewPage = () => {
       setFeedback("Failed to fetch users, please try again");
     }
   };
-
+ 
+  const { isFetching, users, isFetched, pagination } = useSelector(
+    (state) => state.usersListReducer
+  );
+ 
+  useEffect(() => {
+    dispatch(getUsersList(sectionValue, currentPage));
+  }, [sectionValue, currentPage, dispatch]);
+ 
   const userCounts = {
-    total: users.length,
-    verified: users.filter((user) => user.verified === true).length,
-    unverified: users.filter((user) => user.verified === false).length,
-    beta: users.filter((user) => user.is_beta_user === true).length,
+    total: usersSummary.length,
+    verified: usersSummary.filter((user) => user.verified === true).length,
+    unverified: usersSummary.filter((user) => user.verified === false).length,
+    beta: usersSummary.filter((user) => user.is_beta_user === true).length,
     disabled: 0
   };
-
+ 
   const handleChange = ({ target }) => {
     setPeriod(target.getAttribute("value"));
   };
-
+ 
   // Filter out verified users
-  const verifiedUsers = users.filter((user) => user.verified === true);
-
+  const verifiedUsers = usersSummary.filter((user) => user.verified === true);
+ 
   // function call to create the user graph data
   graphDataArray = createUserGraphData(verifiedUsers);
-
+ 
   // calling the filterGraphData() to filter basing on period
   filteredGraphData = filterGraphData(graphDataArray, period);
-
+ 
   const availableUserCategories = getUserCategories();
-
+ 
   const handleSectionChange = (selectedOption) => {
     const selectedValue = selectedOption.value;
     setSectionValue(selectedValue);
   };
-
-  const gettingUsers = useCallback(
-    (page, keyword = "") => dispatch(getUsersList(page, keyword)),
-    [dispatch]
-  );
-
-  const searchThroughAccounts = (keyword) => {
-    // use api
-    handleChangePage(1);
-    gettingUsers(1, keyword);
-  };
-
-  const handleCallbackSearchword = ({ target }) => {
-    const { value } = target;
-    setWord(value);
-    if (value !== "") {
-      searchThroughAccounts(value);
-    }
-    if (value === "") {
-      // setSearchList([]);
-      handleChangePage(1);
-      gettingUsers(1);
-    }
-  };
-
+ 
+  const handleCallbackSearchword = ({ target: { value } }) => setWord(value);
+ 
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);
     gettingUsers();
   };
-  console.log(users)
-
   return (
     <div className="APage">
       <div className="TopRow">
@@ -162,13 +153,13 @@ const AdminUserOverviewPage = () => {
               ))}
             </div>
           ) : null}
-
+ 
           <div className="TitleArea">
             <div className="SectionTitle">
               Graph and Pie Chart Summary on Users
             </div>
           </div>
-
+ 
           <div className="ChartContainer">
             <div className="VisualArea">
               <div className="VisualAreaHeader">
@@ -306,7 +297,7 @@ const AdminUserOverviewPage = () => {
                 />
               </AreaChart>
             </div>
-
+ 
             <div className="VisualArea">
               <div className="VisualAreaHeader">
                 <span className="SectionTitle">
@@ -359,7 +350,7 @@ const AdminUserOverviewPage = () => {
               </div>
             </div>
           </div>
-
+ 
           <div className="TitleArea">
             <div className="SectionTitle">
               <span>
@@ -390,14 +381,16 @@ const AdminUserOverviewPage = () => {
               </span>
             </div>
           </div>
-
+ 
           {sectionValue === "active" ? (
             <AdminInactiveUsers />
           ) : (
             <>
               <UserListing
-                tableType={sectionValue}
-                gettingUsers={gettingUsers}
+                isFetching={isFetching}
+                isFetched={isFetched}
+                users={users}
+                pagination={pagination}
                 handlePageChange={handlePageChange}
                 currentPage={currentPage}
               />
@@ -408,5 +401,6 @@ const AdminUserOverviewPage = () => {
     </div>
   );
 };
-
+ 
 export default AdminUserOverviewPage;
+ 
