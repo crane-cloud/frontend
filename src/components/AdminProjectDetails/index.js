@@ -17,10 +17,13 @@ import Modal from "../Modal";
 import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 import Feedback from "../Feedback";
 import NewResourceCard from "../NewResourceCard";
+import { useLocation } from 'react-router-dom';
 
 const AdminProjectDetails = () => {
   const clusterID = localStorage.getItem("clusterID");
   const clusterName = localStorage.getItem("clusterName");
+  const location = useLocation();
+  const isOverviewProject = location.pathname.includes('/projects-overview');
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -40,16 +43,16 @@ const AdminProjectDetails = () => {
   };
 
   const fetchProjectDetails = useCallback(() => {
-    setLoading(true);
     handleGetRequest(`/projects/${projectID}`)
       .then((response) => {
         setDetails(response.data.data.project);
-        setLoading(false);
       })
       .catch((error) => {
         setError("Failed to fetch project detail please refresh");
+      })
+      .finally(()=>{
         setLoading(false);
-      });
+      })
   }, [projectID]);
 
   useEffect(() => {
@@ -81,10 +84,11 @@ const AdminProjectDetails = () => {
       <div className={styles.TopBarSection}>
         <Header />
       </div>
-      <div className={styles.MainSection}>
-        <div className={styles.SideBarSection}>
+      <div className={isOverviewProject? styles.CenterSection : styles.MainSection}>
+       {!isOverviewProject && <div className={styles.SideBarSection}>
           <SideNav clusterName={clusterName} clusterId={clusterID} />
         </div>
+        }
         <div className={styles.MainContentSection}>
           <div className={styles.InformationBarSection}>
             <InformationBar
@@ -92,7 +96,7 @@ const AdminProjectDetails = () => {
                 <span className={styles.InformationBarTitle}>
                   <Link
                     className={ `${styles.breadcrumb} ${styles.flex_back_link}`}
-                    to={`/clusters/${clusterID}/projects-listing`}
+                    to={isOverviewProject? `/projects-overview` : `/clusters/${clusterID}/projects-listing`}
                   >
                     <BackButton />
                     <div className={styles.back_link}>Project Details</div>
@@ -102,7 +106,7 @@ const AdminProjectDetails = () => {
               showBtn={false}
             />
           </div>
-          <div className={styles.CustomSmallContainer}>
+          <div className={isOverviewProject ?  styles.CustomOverViewSmallContainer : styles.CustomSmallContainer}>
             {loading ? (
               <div className={styles.CentralSpinner}>
                 <Spinner />
