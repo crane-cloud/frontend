@@ -25,7 +25,7 @@ const UserListing = (props) => {
   // };
 
   return (
-    <div className="APage">
+    <div className="SubTableContainer">
       <div className="AMainSection">
         <div className="ContentSection">
           <div
