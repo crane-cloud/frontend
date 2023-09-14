@@ -1,26 +1,21 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 import Pagination from "../../components/Pagination";
 import Spinner from "../Spinner";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-
+ 
 const UserListing = (props) => {
-  const { currentPage, gettingUsers, handlePageChange } = props;
-  // const [actionsMenu, setActionsMenu] = useState(false);
-
-  const { isFetching, users, isFetched, pagination } = useSelector(
-    (state) => state.usersListReducer
-  );
-
-  useEffect(() => {
-    gettingUsers(currentPage);
-  }, [gettingUsers, currentPage]);
-
+  const {
+    isFetching,
+    users,
+    isFetched,
+    pagination,
+    currentPage,
+    handlePageChange,
+  } = props;
   const history = useHistory();
-
   return (
-    <div className="APage">
+    <div className="SubTableContainer">
       <div className="AMainSection">
         <div className="ContentSection">
           <div
@@ -76,7 +71,6 @@ const UserListing = (props) => {
                           )}
                         </td>
                         <td>{user?.email}</td>
-                        
                       </tr>
                     ))}
                 </tbody>
@@ -110,5 +104,6 @@ const UserListing = (props) => {
     </div>
   );
 };
-
+ 
 export default UserListing;
+ 

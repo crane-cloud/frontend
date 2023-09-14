@@ -18,6 +18,9 @@ import { filterGraphData } from "../../helpers/filterGraphData.js";
 import { retrieveMonthNames } from "../../helpers/monthNames.js";
 import NewResourceCard from "../../components/NewResourceCard";
 import Select from "../../components/Select";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 import {
   projectPieCategories,
   projectGraphCategories,
@@ -42,10 +45,9 @@ const AdminProjectsOverview = () => {
   const [word, setWord] = useState("");
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
-  const [disabledProjects, setDisabledProjects] = useState([]);
   const [sectionValue, setSectionValue] = useState("Projects");
   const [sectionValue1, setSectionValue1] = useState("Projects");
-  const [sectionValue2, setSectionValue2] = useState("Project Lists");
+  const [sectionValue2, setSectionValue2] = useState("");
   const projectTypeCounts = {};
   const projectOrganisationCount = {};
   const [project, setProject] = useState([]);
@@ -58,6 +60,7 @@ const AdminProjectsOverview = () => {
   let createNewPieChartData = [];
   let filteredGraphData = [];
   let newFilteredGraphData = [];
+  const history = useHistory();
 
   const COLORS = [
     "#0088FE",
@@ -92,7 +95,7 @@ const AdminProjectsOverview = () => {
   );
 
   const AdminProjects = useCallback(
-    (page, keyword = "") => dispatch(getAdminProjectsList(page, keyword)),
+    (page, state="", keyword = "" ) => dispatch(getAdminProjectsList(page, keyword, state )),
     [dispatch]
   );
 
@@ -240,39 +243,26 @@ const AdminProjectsOverview = () => {
   const handleChange = ({ target }) => {
     setPeriod(target.getAttribute("value"));
   };
+  const handleProjectFilterAndFetch = useCallback((page,keyword = "")=>{
+    if(sectionValue2 === "Disabled Projects"){
+      AdminProjects(page,"true",keyword);
+    }else if(sectionValue2 === "Active Projects"){
+      AdminProjects(page,"false",keyword);
+    }else{
+      AdminProjects(page, "",keyword);
+    } 
+  },[AdminProjects,sectionValue2])
 
   useEffect(() => {
-    const getDisabledProjects = async () => {
-      try {
-        const response = await handleGetRequest("/projects?disabled=true");
-        if (response.data.data.projects.length > 0) {
-          const totalNumberOfDisabledProjects =
-            response.data.data.pagination.total;
-          const response2 = await handleGetRequest(
-            `/projects?per_page=${totalNumberOfDisabledProjects}&disabled=true`
-          );
-          if (response2.data.data.projects.length > 0) {
-            setDisabledProjects(response2.data.data.projects);
-          } else {
-            throw new Error("No disabled Projects");
-          }
-        } else {
-          throw new Error("No disabled projects found");
-        }
-      } catch (error) {
-        setFeedback("Failed to fetch disabled projects, please try again");
-      }
-    };
-    getDisabledProjects();
-    AdminProjects(currentPage);
-  }, [currentPage, AdminProjects]);
+    handleProjectFilterAndFetch(currentPage)
+  }, [sectionValue2, currentPage, handleProjectFilterAndFetch]);
 
   useEffect(() => {
     getUsersProps();
     fetchUsersList();
-    AdminProjects(currentPage);
+    handleProjectFilterAndFetch(currentPage)
     getAllProjects();
-  }, [getUsersProps, AdminProjects, getAllProjects, currentPage]);
+  }, [getUsersProps, handleProjectFilterAndFetch, getAllProjects, currentPage]);
 
   const filteredData = project.filter((p) => {
     const allowedProjectTypes = retrieveProjectTypes().map(
@@ -346,7 +336,7 @@ const AdminProjectsOverview = () => {
 
   const searchThroughProjects = (keyword) => {
     handleChangePage(1);
-    AdminProjects(1, keyword);
+    handleProjectFilterAndFetch(1,keyword)
   };
 
   const handleCallbackSearchword = ({ target }) => {
@@ -357,7 +347,7 @@ const AdminProjectsOverview = () => {
     }
     if (value === "") {
       handleChangePage(1);
-      AdminProjects(1);
+      handleProjectFilterAndFetch(1) 
     }
   };
 
@@ -373,7 +363,7 @@ const AdminProjectsOverview = () => {
 
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);
-    AdminProjects();
+    handleProjectFilterAndFetch(currentPage)
   };
 
   createPieChartData = () => {
@@ -435,7 +425,18 @@ const AdminProjectsOverview = () => {
       <div className="AMainSection">
         <div className="ContentSection">
           <div className="InformationBarSection">
-            <InformationBar header={<>Projects Listing</>} showBackBtn={true} />
+            <InformationBar  header={
+                <span className="ProjectsInformationBarTitle">
+                  <Link
+                    className={ `breadcrumb flex_back_link`}
+                    to={`/clusters`}
+                  >
+                    <BackButton />
+                    <div className="back_link">Project Listing</div>
+                  </Link>
+                </span>
+              }
+              showBtn={false} />
           </div>
 
           <div className="TitleArea">
@@ -853,7 +854,7 @@ const AdminProjectsOverview = () => {
             </div>
           </div>
 
-          <div className="APage">
+          <div className="SubTableContainer">
             <div className="AMainSection">
               <div className="ContentSection">
                 <div className="ResourceTable">
@@ -885,27 +886,14 @@ const AdminProjectsOverview = () => {
                         </tbody>
                       ) : (
                         <tbody>
-                          {sectionValue2 === "Disabled Projects"
-                            ? // {/* Display disabled projects */}
-                              isRetrieved &&
-                              disabledProjects !== undefined &&
-                              disabledProjects.map((project) => (
-                                <tr key={project.id}>
-                                  <td>{project.name}</td>
-                                  <td>{getUserName(project.owner_id)}</td>
-                                  <td>{project.description}</td>
-                                  <td>
-                                    <span className="ProjectStatusDisabled">
-                                      Disabled
-                                    </span>
-                                  </td>
-                                </tr>
-                              ))
-                            : //Display General Project Lists
-                              isRetrieved &&
+                          { isRetrieved &&
                               projects !== undefined &&
                               projects.map((project) => (
-                                <tr key={projects.indexOf(project)}>
+                                <tr 
+                                onClick={() => {
+                                  history.push(`/projects-overview/${project.id}/details`);
+                                }}
+                                key={projects.indexOf(project)}>
                                   <td>{project?.name}</td>
                                   <td>{getUserName(project?.owner_id)}</td>
                                   <td>{project?.description}</td>

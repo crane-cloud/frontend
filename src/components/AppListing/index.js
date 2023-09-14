@@ -19,7 +19,7 @@ const AppListing = (props) => {
   const history = useHistory();
   
   return (
-    <div className="APage">
+    <div className="SubTableContainer">
       <div className="AMainSection">
         <div className="ContentSection">
           <div

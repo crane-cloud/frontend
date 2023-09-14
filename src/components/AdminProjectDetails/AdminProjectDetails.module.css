@@ -23,6 +23,11 @@
   grid-template-columns: 1.3fr 6fr;
   overflow: hidden;
 }
+.CenterSection {
+  background-color: var(--gray-bg-light-color);
+  display: flex;
+  width: 100vw;
+}
 
 .SideBarSection {
   overflow: hidden;
@@ -45,6 +50,7 @@
   display: grid;
   grid-template-rows: 80px auto;
   overflow: auto;
+  width: 100%;
 }
 
 
@@ -89,6 +95,17 @@
   padding-left: 4rem;
   padding-right: 2rem;
   padding-bottom: 5rem;
+}
+
+.CustomOverViewSmallContainer {
+  /* padding: 2rem; */
+  background: var(--gray-bg-light-color);
+  max-width: 50rem;
+  padding-left: 4rem;
+  padding-right: 2rem;
+  padding-bottom: 5rem;
+  display: flex;
+  justify-self: center;
 }
 
 .field {

@@ -1,0 +1,54 @@
+.SeriesCardArea {
+    padding: 2rem;
+}
+
+.SeriesCard {
+    border: black;
+    border-radius: 0.5rem;
+    background-color: white;
+    padding-bottom: 1rem;
+}
+
+.horizontal-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 2rem 0 2rem;
+}
+
+.SeriesTopRow,
+.SeriesBottomRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1.5rem 2rem 0;
+}
+
+.SeriesTitle {
+    color: #555555;
+    font-size: 1.2rem;
+    line-height: 2rem;
+    font-weight: bold;
+}
+
+.RowDivider {
+    width: 80%;
+    border-bottom: none;
+    border-left: none;
+}
+
+.box {
+    width: 20px;
+    height: 60px;
+    margin: 0 5px;
+    border-radius: 0.3rem;
+}
+
+.green {
+    background-color: #41873F;
+}
+
+.red {
+    background-color: #FF0000;
+}

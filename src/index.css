@@ -548,6 +548,17 @@ tr.TableLoading td {
 
 }
 
+.InformationBarTitle{
+  display: flex;
+  flex-direction: row;
+}
+.flex_back_link {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: #000 !important
+}
+
 
 
 /* //////////////////////////////////////////// */
@@ -594,4 +605,8 @@ tr.TableLoading td {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.SubTableContainer{
+  padding-bottom: 5rem;
 }

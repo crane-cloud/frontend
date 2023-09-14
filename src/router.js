@@ -253,6 +253,12 @@ const Routes = () => {
           component={AdminProjectDetails}
         />
         <ProtectedRoute
+        isAllowed={hasToken && isAdmin}
+        exact
+        path="/projects-overview/:projectID/details"
+        component={AdminProjectDetails}
+      />
+        <ProtectedRoute
           isAllowed={hasToken && isAdmin}
           path="/clusters/:clusterID/projects"
           component={AdminProjectOverviewPage}
@@ -347,7 +353,7 @@ const Routes = () => {
           path="/clusters/:clusterID/clusterSettings"
           component={ClusterSettingsPage}
         />
-        <Route
+        <ProtectedRoute
           isAllowed={hasToken && isAdmin}
           exact
           path="/projects-overview"

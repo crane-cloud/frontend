@@ -1,0 +1,84 @@
+.StatusSectionTitle {
+    padding: 1rem 0 0 5rem;
+}
+
+.StatusSection {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 4rem;
+}
+
+.StatusContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.MoreDetailsIcon {
+    padding: 1rem 1rem 2rem;
+}
+
+.StatusSectionContent .SectionTitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.StatusSectionItem {
+    padding: 1rem;
+    background-color: #ffff;
+    color: #555555;
+    display: grid;
+    gap: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.StatusSectionItem:hover {
+    cursor: pointer;
+}
+
+.StatusSectionCardTitle {
+    font-size: 1.2rem;
+    line-height: 2rem;
+    font-weight: bold;
+}
+
+.StatusSection {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.StatusSection {
+    display: flex;
+    justify-content: space-between;
+}
+
+.LeftContent {
+    flex: 1;
+}
+
+.RightContent {
+    margin-left: 20px;
+}
+
+.CustomTooltip {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    padding: 8px;
+    z-index: 999;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    height: 55px;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.QuestionMark {
+    cursor: pointer;
+    color: var(--primary-color);
+    padding-left: 5px;
+}
