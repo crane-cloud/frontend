@@ -68,7 +68,7 @@ const AdminInactiveUsers = () => {
   const sortedUserList = inactiveUsers.slice().sort(compareLastSeen);
 
   return (
-    <>
+    <div className="SubTableContainer">
       {isFetchingInactiveUsers ? (
         <div className="SpinnerArea">
           <div className="SpinnerWrapper">
@@ -148,7 +148,7 @@ const AdminInactiveUsers = () => {
           )}
         </>
       )}
-    </>
+    </div>
   );
 };
 
