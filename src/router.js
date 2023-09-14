@@ -371,6 +371,12 @@ const Routes = () => {
           path="/apps"
           component={AdminAppsPage}
         />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          exact
+          path="/apps/:appID"
+          component={AdminAppDetail}
+        />
         <Route path="*" component={PageNotFound} />
       </Switch>
     </Router>
