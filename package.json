@@ -71,10 +71,7 @@
         {
           "subdir": "./coverage"
         }
-      ],
-      {
-        "verbose": false
-      } 
+      ]
     ]
   },
   "peerDependencies": {
