@@ -68,6 +68,7 @@ import AdminUserOverviewPage from "./pages/AdminUserOverviewPage";
 import AdminAppsPage from "./pages/AdminAppsPage";
 import AdminProjectsOverview from "./components/ProjectListing/ProjectList";
 import AdminDatabaseDetails from "./components/AdminDatabaseDetails";
+import AdminAppDetail from "./pages/AdminAppDetail";
 
 import { handleGetRequest } from "./apis/apis";
 
@@ -137,7 +138,6 @@ const Routes = () => {
           path="/projects/:projectID/databases"
           component={DatabaseList}
         />
-
         <ProtectedRoute
           isAllowed={hasToken}
           exact
@@ -376,6 +376,12 @@ const Routes = () => {
           exact
           path="/apps"
           component={AdminAppsPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken && isAdmin}
+          exact
+          path="/apps/:appID"
+          component={AdminAppDetail}
         />
         <Route path="*" component={PageNotFound} />
       </Switch>

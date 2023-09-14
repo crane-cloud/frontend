@@ -14,7 +14,6 @@ const UserListing = (props) => {
     handlePageChange,
   } = props;
   const history = useHistory();
- 
   return (
     <div className="SubTableContainer">
       <div className="AMainSection">
