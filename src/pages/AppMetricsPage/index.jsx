@@ -65,6 +65,7 @@ class AppMetricsPage extends React.Component {
       alias: found?.alias,
       image: found?.image,
       port: found?.port,
+      disable: found?.disabled,
     };
 
     return info;
@@ -274,7 +275,7 @@ class AppMetricsPage extends React.Component {
                   <div className={styles.InnerTitlesMiddle}>App Status</div>
                   <div className={styles.InnerContentStatus}>
                     <AppStatus appStatus={appInfo.status} />
-                    <div>{appInfo.status === "running" ? "Ready" : "Down"}</div>
+                    <div>{appInfo.status === "disabled" ? <div className={styles.DeployText}>Disabled</div>:(appInfo.status === "running" ? "Ready" : "Down")}</div>
                   </div>
                 </div>
                 <div className={styles.InnerContentGrid}>

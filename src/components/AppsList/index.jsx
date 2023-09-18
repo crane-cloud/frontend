@@ -123,6 +123,7 @@ class AppsList extends Component {
                     url={app.url}
                     appId={app.id}
                     otherData={params}
+                    disabled={app.disabled}
                     hasDeleted={this.renderAfterDelete}
                   />
                 </div>
@@ -141,6 +142,7 @@ class AppsList extends Component {
                     url={app.url}
                     appId={app.id}
                     otherData={params}
+                    disabled={app.disabled}
                     hasDeleted={this.renderAfterDelete}
                   />
                 </div>
