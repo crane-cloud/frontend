@@ -7,6 +7,8 @@ import { handleGetRequest } from "../../apis/apis";
 import "./MonitoringPage.css";
 import StatusGraph from "../../components/StatusGraph";
 import StatusModule from "../../components/StatusModule";
+import { useSelector } from "react-redux";
+import { isUserAdmin } from "../../helpers/adminUtils";
 
 const statusValue = [
   { type: "success" },
@@ -18,18 +20,32 @@ const MonitoringPage = () => {
   const [statusAvailable, setStatusAvailable] = useState("");
   const [statusData, setStatusData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const currentUser = useSelector((state) => state.user);
+
+  useEffect(() => {
+    async function checkAdminStatus() {
+      const userIsAdmin = await isUserAdmin(currentUser);
+      setIsAdmin(userIsAdmin);
+    }
+
+    checkAdminStatus();
+  }, [currentUser]);
 
   const getStatusData = async () => {
     setLoading(true);
     try {
-      await handleGetRequest(`${STATUS_MONITORING_URL}/statuses`).then((response) => {
-        if (response.status !== 200) {
-          return false;
+      await handleGetRequest(`${STATUS_MONITORING_URL}/statuses`).then(
+        (response) => {
+          if (response.status !== 200) {
+            return false;
+          }
+          setStatusAvailable(response.data.status);
+          setStatusData(response.data.data);
+          setLoading(false);
         }
-        setStatusAvailable(response.data.status);
-        setStatusData(response.data.data);
-        setLoading(false);
-      });
+      );
     } catch (error) {
       setStatusData([]);
       setLoading(false);
@@ -77,61 +93,100 @@ const MonitoringPage = () => {
               </div>
               <div className="StatusSectionChildContainer">
                 <StatusModule
-                  title="Crane Cloud"
-                  description="This includes the web application and platform API"
+                  title="Crane Cloud Frontend"
+                  description="The Web Application of the platform"
                   isOperational={
-                    statusData?.cranecloud_status?.status ===
+                    statusData?.cranecloud_status?.data[0].status ===
                     statusValue[0].type
                   }
                 />
 
                 <StatusModule
-                  title="Databases"
-                  description="This includes the MySQL and PostgreSQL database flavors"
+                  title="Crane Cloud Backend"
+                  description="The API that provides functionality to the Frontend"
                   isOperational={
-                    statusData?.database_status?.status === statusValue[0].type
+                    statusData?.cranecloud_status?.data[1].status ===
+                    statusValue[0].type
                   }
                 />
 
                 <StatusModule
-                  title="Registry"
-                  description="This is the Crane Cloud image registry"
+                  title="MySQL Databases"
+                  description="This is the MySQL database flavor offered by Crane Cloud"
+                  isOperational={
+                    statusData?.database_status?.data[0].status ===
+                    statusValue[0].type
+                  }
+                />
+
+                <StatusModule
+                  title="PostgreSQL Databases"
+                  description="This is the PostgreSQL database flavor offered by Crane Cloud"
+                  isOperational={
+                    statusData?.database_status?.data[1].status ===
+                    statusValue[0].type
+                  }
+                />
+
+                <StatusModule
+                  title="Image Registry"
+                  description="This is the repository for storing and retrieving deployment images"
                   isOperational={
                     statusData?.registry?.status === statusValue[0].type
                   }
                 />
 
                 <StatusModule
-                  title="Mira Service"
-                  description="This includes the Mira frontend and backend services"
+                  title="Mira Frontend"
+                  description="This allows users to interact with the mira auto-containerization platform"
                   isOperational={
-                    statusData?.mira_status?.status === statusValue[0].type
-                  }
-                />
-
-                <StatusModule
-                  title="Clusters"
-                  description="This includes the infrastructure Crane Cloud runs on"
-                  isOperational={
-                    statusData?.clusters_status?.status === statusValue[0].type
-                  }
-                />
-
-                <StatusModule
-                  title="Prometheus"
-                  description="This is Crane Cloud's alerting toolkit"
-                  isOperational={
-                    statusData?.prometheus_status?.status ===
+                    statusData?.mira_status?.data[0].status ===
                     statusValue[0].type
                   }
                 />
+
+                <StatusModule
+                  title="Mira Backend"
+                  description="This API manages logic such that applications are seamlessly containerized"
+                  isOperational={
+                    statusData?.mira_status?.data[1].status ===
+                    statusValue[0].type
+                  }
+                />
+
+                {isAdmin && (
+                  <>
+                    <StatusModule
+                      title="Clusters"
+                      description="This includes the infrastructure Crane Cloud runs on"
+                      isOperational={
+                        statusData?.clusters_status?.status ===
+                        statusValue[0].type
+                      }
+                    />
+
+                    <StatusModule
+                      title="Prometheus"
+                      description="This is Crane Cloud's alerting toolkit"
+                      isOperational={
+                        statusData?.prometheus_status?.status ===
+                        statusValue[0].type
+                      }
+                    />
+                  </>
+                )}
               </div>
 
-              <div className="TitleArea">
-                <div className="SectionTitle">System Status Series Graphs </div>
-              </div>
-
-              <StatusGraph />
+              {isAdmin && (
+                <>
+                  <div className="TitleArea">
+                    <div className="SectionTitle">
+                      System Status Series Graphs
+                    </div>
+                  </div>
+                  <StatusGraph />
+                </>
+              )}
             </div>
           </>
         ) : (
