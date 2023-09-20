@@ -32,16 +32,16 @@ const StatusModule = ({ title, description, isOperational }) => {
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
-              {title} <span className="QuestionMark">?</span>
+              {title}
             </div>
             <div>{isOperational ? "No Issues" : "Issues detected"}</div>
           </div>
           <div className="RightContent">
             <span>
               {isOperational ? (
-                <Operational className="SmallIcon" />
+                <Operational className="SmallIcon" title="Operational" />
               ) : (
-                <Incident className="SmallIcon" />
+                <Incident className="SmallIcon" title="Issues Detected" />
               )}
             </span>
           </div>
