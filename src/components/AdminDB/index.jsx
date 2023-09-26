@@ -162,7 +162,7 @@ const AdminDBList = () => {
               ) : feedback !== "" ? (
                 <div className="NoResourcesMessage">{feedback}</div>
               ) : Object.keys(databaseCounts).length > 0 ? (
-                <div className="ClusterContainer">
+                <div className="ResourceClusterContainer">
                   {Object.keys(databaseCounts).map((countType) => (
                     <NewResourceCard
                       key={countType}

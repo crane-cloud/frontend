@@ -610,3 +610,19 @@ tr.TableLoading td {
 .SubTableContainer{
   padding-bottom: 5rem;
 }
+
+/*////////////// ---admin cards--- ///////// */
+
+.ResourceClusterContainer{
+  display: flex;
+  gap: 1rem;
+  padding: 2rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+@media only screen and (max-width: 740px) {
+.ResourceClusterContainer {
+  align-items: center;
+}
+}
