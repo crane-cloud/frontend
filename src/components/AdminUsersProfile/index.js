@@ -22,6 +22,7 @@ import { getUser } from "../../helpers/projectName";
 import { DisplayDateTime } from "../../helpers/dateConstants";
 import { Link } from "react-router-dom";
 import { getUserProjects } from "../../helpers/projectCount";
+import { getUserdata } from "../../helpers/getUserdata";
 import NewResourceCard from "../NewResourceCard";
 import userProfleStyles from "../UserProfile/UserProfile.module.css";
 import Avatar from "../Avatar";
@@ -71,6 +72,12 @@ class AdminUserPage extends Component {
         projectsCount: projectsCount.projectsCount,
         activeProjectsCount: projectsCount.activeProjectsCount,
         disabledProjectsCount: projectsCount.disabledProjectsCount,
+      });
+    });
+    getUserdata(params.userID).then((userData) => {
+      this.setState({
+        appsCount: userData.appsCount,
+        databasesCount: userData.databasesCount,
       });
     });
     clearCreditsState();
@@ -320,6 +327,35 @@ class AdminUserPage extends Component {
                       </div>
                     </div>
                   </section>
+                  <div>
+                  <div className="UserPlatformMetricsContainer">
+                    <div className="SectionTitle">User Platform Metrics</div>
+                    <div className="Cluster1Container">
+                      <NewResourceCard
+                        key={1}
+                        title="Projects Owned"
+                        count={this.state.projectsCount}
+                      />
+                      <NewResourceCard
+                        key={1}
+                        title="Apps Deployed"
+                        count={this.state.appsCount}
+                      />
+                      <NewResourceCard
+                        key={1}
+                        title="Databases Created"
+                        count={this.state.databasesCount}
+                      />
+                      <NewResourceCard
+                        key={1}
+                        title="Credits"
+                        count={
+                          user?.credits.length === 0 ? 0 : user?.credits[0].amount
+                        }
+                      />
+                    </div>
+                  </div>
+                  </div>
                   {/* Credential history */}
                   {credit_assignment_records?.length > 0 && (
                     <div className="CreditsAlotted">
@@ -374,33 +410,7 @@ class AdminUserPage extends Component {
                       </div>
                     </div>
                   )}
-                  <div>
-                    <div className="SectionTitle">User Platform Metrics</div>
-                    <div className="Cluster1Container">
-                      <NewResourceCard
-                        key={1}
-                        title="Projects Owned"
-                        count={this.state.projectsCount}
-                      />
-                      <NewResourceCard
-                        key={1}
-                        title="Apps Deployed"
-                        count={6}
-                      />
-                      <NewResourceCard
-                        key={1}
-                        title="Databases Created"
-                        count={3}
-                      />
-                      <NewResourceCard
-                        key={1}
-                        title="Credits"
-                        count={
-                          user?.credits.length === 0 ? 0 : user?.credits[0].amount
-                        }
-                      />
-                    </div>
-                  </div>
+                  {user && user.name !== "admin" && (
                   <div className="AdminDBSections">
                     <div className="SectionTitle">Manage User</div>
                     <div className="ProjectInstructions">
@@ -563,7 +573,9 @@ class AdminUserPage extends Component {
                       </div>
                     )}
                   </div>
+                  )}
                 </div>
+                
                 <Modal
                   showModal={this.state.addCredits}
                   onClickAway={() => this.hideCreditsModal()}
