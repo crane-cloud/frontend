@@ -64,6 +64,10 @@ jobs:
           paths:
             - ./node_modules
       - run:
+          name: Set Environment Variables
+          command: |
+            export CIRCLE_ENV_VARS=true
+      - run:
           name: Setup Dependencies
           command: printenv
       - run: # run tests
