@@ -29,6 +29,7 @@ import { handleGetRequest } from "../../apis/apis";
 import Select from "../Select";
 import { getDatabaseFlavors } from "../../helpers/databaseCategories";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import AppFooter from "../appFooter";
 
 const AdminDBList = () => {
   const history = useHistory();
@@ -464,6 +465,7 @@ const AdminDBList = () => {
           </div>
         </>
       )}
+      <AppFooter/>
     </div>
   );
 };

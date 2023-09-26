@@ -8,6 +8,7 @@ import getNamespaces from "../../redux/actions/namespaces";
 import Status from "../Status";
 import tellAge from "../../helpers/ageUtility";
 import Spinner from "../Spinner";
+import AppFooter from "../appFooter";
 
 const NamespacesListPage = () => {
   const  clusterID  = localStorage.getItem("clusterID");
@@ -97,7 +98,8 @@ const NamespacesListPage = () => {
                 </div>
               )}
             </div>
-          </div>
+            <AppFooter position="absolute"/>
+          </div>          
         </div>
       </div>
     </div>

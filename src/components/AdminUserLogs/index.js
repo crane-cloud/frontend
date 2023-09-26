@@ -10,6 +10,7 @@ import styles from "./AdminUserLogs.module.css";
 // import { useParams } from "react-router-dom";
 import PrimaryButton from "../../components/PrimaryButton";
 import {Link} from "react-router-dom";
+import AppFooter from "../appFooter";
 
 const AdminUserLogs = () => {
   const clusterID = localStorage.getItem("clusterID");
@@ -141,6 +142,7 @@ const AdminUserLogs = () => {
               <hr className={styles.hr} />
             </div>
           </div>
+          <AppFooter/>
         </div>
       </div>
     </div>

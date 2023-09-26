@@ -9,6 +9,7 @@ import Spinner from "../Spinner";
 import Pagination from "../../components/Pagination";
 import { useSelector, useDispatch } from "react-redux";
 import usePaginator from "../../hooks/usePaginator";
+import AppFooter from "../appFooter";
 // import { useParams } from "react-router-dom";
 
 const  PvcsListPage =()=> {
@@ -109,6 +110,7 @@ const  PvcsListPage =()=> {
             </div>
           )}
             </div>
+            <AppFooter/>
           </div>
         </div>
       </div>

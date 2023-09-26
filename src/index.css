@@ -244,6 +244,7 @@ div.ResourcesTable.LoadingResourcesTable {
   border-collapse: collapse;
   width: 100%;
   height: 100%;
+  background-color: #fff;
 }
 
 .ResourcesTable table th {
@@ -256,12 +257,16 @@ div.ResourcesTable.LoadingResourcesTable {
   text-align: left;
   padding-left: 1rem;
   text-transform: capitalize;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 
 .ResourcesTable table th:last-child,
 .ResourcesTable table td:last-child {
   text-align: right;
   padding-right: 1rem;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .ResourcesTable table td {
@@ -271,7 +276,7 @@ div.ResourcesTable.LoadingResourcesTable {
 }
 
 .ResourcesTable td {
-  border: 1px solid #fff;
+  border: 1px solid #f2f2f2;
 }
 
 .ResourcesTable th {
@@ -621,8 +626,21 @@ tr.TableLoading td {
   justify-content: space-between;
 }
 
-@media only screen and (max-width: 740px) {
-.ResourceClusterContainer {
-  align-items: center;
+
+.appFooterRow {
+  padding: 1rem 3rem;
+  color: black;
+  position: relative;
+  bottom: 0;
+  background-color: var(--gray-bg-light-color);
 }
+.footerPositionAbsolute{
+  position: absolute;
+}
+ 
+
+@media only screen and (max-width: 740px) {
+  .ResourceClusterContainer {
+    align-items: center;
+  }
 }

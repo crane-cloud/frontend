@@ -38,6 +38,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import AppFooter from "../appFooter";
 
 const AdminProjectsOverview = () => {
   const [currentPage, handleChangePage] = usePaginator();
@@ -944,6 +945,7 @@ const AdminProjectsOverview = () => {
           </div>
         </div>
       </div>
+      <AppFooter/>
     </div>
   );
 };

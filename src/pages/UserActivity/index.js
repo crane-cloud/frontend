@@ -19,6 +19,7 @@ import { ReactComponent as FilterIcon } from "../../assets/images/filterIcon.svg
 import { ReactComponent as ArrowUpDDown } from "../../assets/images/ArrowUp&Down.svg";
 import { DisplayDateTime } from "../../helpers/dateConstants";
 import Spinner from "../../components/Spinner";
+import AppFooter from "../../components/appFooter";
 
 const UserActivity = (props) => {
   const { data } = useSelector((state) => state.user);
@@ -696,6 +697,7 @@ const UserActivity = (props) => {
             </div>
           </div>
         </div>
+         <AppFooter position="absolute"/>
       </div>
   );
 };

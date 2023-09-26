@@ -9,6 +9,7 @@ import Spinner from "../../components/Spinner";
 import SideNav from "../../components/SideNav";
 import getClusterResourcesCount from "../../redux/actions/clusterResources";
 import NewResourceCard from "../../components/NewResourceCard";
+import AppFooter from "../../components/appFooter";
 
 const ClusterResourcesPage = () => {
   const { clusterID } = useParams();
@@ -84,6 +85,7 @@ const ClusterResourcesPage = () => {
               </div>
             )}
           </div>
+          <AppFooter/>
         </div>
       </div>
     </div>

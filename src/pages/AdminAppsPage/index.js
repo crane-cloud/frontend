@@ -13,6 +13,7 @@ import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import AppListing from "../../components/AppListing";
 import usePaginator from "../../hooks/usePaginator";
 import Spinner from "../../components/Spinner";
+import AppFooter from "../../components/appFooter";
 
 const AdminAppsPage = () => {
   // const [apps, setApps] = useState([]);
@@ -362,6 +363,7 @@ const AdminAppsPage = () => {
           />
         </div>
       </div>
+      <AppFooter/>
     </div>
   );
 };

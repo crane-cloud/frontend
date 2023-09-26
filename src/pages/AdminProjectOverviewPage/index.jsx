@@ -24,6 +24,7 @@ import { filterGraphData } from "../../helpers/filterGraphData.js";
 import { namedOrganisations } from "../../helpers/projectOrganisations.js";
 import "./AdminProjectOverviewPage.css";
 import NewResourceCard from "../../components/NewResourceCard/index.js";
+import AppFooter from "../../components/appFooter/index.js";
 
 const AdminProjectOverviewPage = () => {
   const history = useHistory();
@@ -686,6 +687,7 @@ const AdminProjectOverviewPage = () => {
                 </div>
               </div>
             </div>
+            <AppFooter/>
           </div>
         </div>
       </div>

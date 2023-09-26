@@ -29,6 +29,7 @@ import { createUserGraphData } from "../../helpers/usersGraphData";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import UserListing from "../../components/UserListing";
 import usePaginator from "../../hooks/usePaginator";
+import AppFooter from "../../components/appFooter";
 
 const AdminUserOverviewPage = () => {
   const [usersSummary, setUsersSummary] = useState([]);
@@ -398,6 +399,7 @@ const AdminUserOverviewPage = () => {
           />
         </div>
       </div>
+      <AppFooter/>
     </div>
   );
 };
