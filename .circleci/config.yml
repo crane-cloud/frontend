@@ -63,13 +63,14 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
+      - run:
+          name: Setup Dependencies
+          command: printenv
       - run: # run tests
           name: Run Test and Coverage
           no_output_timeout: 35m
           command: yarn test --detectOpenHandles
-      - run:
-          name: Setup Dependencies
-          command: printenv
+
       - run: # send coverage
           name: Code Climate report
           command: ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
@@ -124,7 +125,6 @@ jobs:
       - *configure_gcloud
       - *build_and_push_image
       - *deploy_to_kubernetes
-      
 
 workflows:
   version: 2
