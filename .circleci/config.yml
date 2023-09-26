@@ -63,13 +63,11 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-      - run:
-          name: Set Environment Variables
-          command: |
-            export CIRCLE_ENV_VARS=true
-      - run:
-          name: Setup Dependencies
-          command: printenv
+      - run: # Enable Debug SSH
+          name: Enable Debug SSH
+          command: echo "SSH debug is enabled"
+          background: true
+
       - run: # run tests
           name: Run Test and Coverage
           no_output_timeout: 35m
