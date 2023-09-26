@@ -46,7 +46,6 @@ deploy_to_kubernetes: &deploy_to_kubernetes
 jobs:
   test_and_report:
     <<: *defaults
-    parallelism: 2
     steps:
       - checkout
       - *attach_workspace
@@ -64,18 +63,10 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-      - run: mkdir ~/test_unit
       - run: # run tests
           name: Run Test and Coverage
           no_output_timeout: 35m
-          command: |
-            TEST=$(circleci tests glob "src/**/*.test.js" | circleci tests split --split-by=timings)
-            yarn test $TEST --detectOpenHandles
-      - run:
-          command: cp test_unit.xml ~/test_unit/
-          when: always
-      - store_test_results:
-          path: ~/test_unit
+          command: yarn test --detectOpenHandles
       - run: # send coverage
           name: Code Climate report
           command: ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
