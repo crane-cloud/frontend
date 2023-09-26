@@ -46,7 +46,7 @@ deploy_to_kubernetes: &deploy_to_kubernetes
 jobs:
   test_and_report:
     <<: *defaults
-    parallelism: 5
+    parallelism: 2
     steps:
       - checkout
       - *attach_workspace

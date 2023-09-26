@@ -63,6 +63,7 @@
       "src/**/*.{js,jsx}",
       "!<rootDir>/node_modules/"
     ],
+    "detectOpenHandles": true, 
     "coverageReporters": [
       "lcov",
       "html",
