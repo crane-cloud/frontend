@@ -9,6 +9,8 @@ import StatusGraph from "../../components/StatusGraph";
 import StatusModule from "../../components/StatusModule";
 import { useSelector } from "react-redux";
 import { isUserAdmin } from "../../helpers/adminUtils";
+import { groupStatusData } from "../../helpers/groupStatusData";
+import { filterStatusData } from "../../helpers/filterStatusData";
 
 const statusValue = [
   { type: "success" },
@@ -17,8 +19,9 @@ const statusValue = [
 ];
 
 const MonitoringPage = () => {
-  const [statusAvailable, setStatusAvailable] = useState("");
   const [statusData, setStatusData] = useState([]);
+  const [statusModules, setStatusModules] = useState({});
+  const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -33,6 +36,11 @@ const MonitoringPage = () => {
     checkAdminStatus();
   }, [currentUser]);
 
+  useEffect(() => {
+    getStatusData();
+    getStatusGraphData();
+  }, []);
+
   const getStatusData = async () => {
     setLoading(true);
     try {
@@ -41,7 +49,6 @@ const MonitoringPage = () => {
           if (response.status !== 200) {
             return false;
           }
-          setStatusAvailable(response.data.status);
           setStatusData(response.data.data);
           setLoading(false);
         }
@@ -52,9 +59,40 @@ const MonitoringPage = () => {
     }
   };
 
+  const getStatusGraphData = async () => {
+    setLoading(true);
+    try {
+      await handleGetRequest(
+        `${STATUS_MONITORING_URL}/statuses/series?series=true`
+      ).then((response) => {
+        if (response.status !== 200) {
+          return false;
+        }
+        // Group the data by parent_name
+        const groupedData = groupStatusData(response.data.data.graph_data);
+        setStatusModules(groupedData);
+        setLoading(false);
+      });
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    getStatusData();
-  }, []);
+    const filtered = filterStatusData(statusModules);
+    setFilteredData(filtered);
+  }, [statusModules]);
+
+  useEffect(() => {
+    if (!loading && Object.keys(statusModules).length > 0) {
+      setLoading(false);
+    }
+  }, [loading, statusModules]);
+
+  const dataArray = Object.entries(filteredData).map(([key, value]) => ({
+    key,
+    value,
+  }));
 
   return (
     <div className="MonitoringPageMain">
@@ -70,7 +108,13 @@ const MonitoringPage = () => {
           services reported here.
         </div>
 
-        {statusAvailable === "success" ? (
+        {loading ? (
+          <>
+            <div className="LoadingArea">
+              <Spinner size="big" />
+            </div>
+          </>
+        ) : (
           <>
             <div className="BannerArea">
               <div className="StatusBanner">
@@ -184,19 +228,11 @@ const MonitoringPage = () => {
                       System Status Series Graphs
                     </div>
                   </div>
-                  <StatusGraph />
+                  <StatusGraph status={statusData} data={dataArray} />
                 </>
               )}
             </div>
           </>
-        ) : (
-          loading && (
-            <>
-              <div className="LoadingArea">
-                <Spinner size="big" />
-              </div>
-            </>
-          )
         )}
       </div>
       <div className="FooterSection">

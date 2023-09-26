@@ -21,7 +21,6 @@
 
 .StatusSectionContent .SectionTitle {
     font-size: 1.5rem;
-    font-weight: bold;
 }
 
 .StatusSectionItem {
@@ -41,7 +40,6 @@
 .StatusSectionCardTitle {
     font-size: 1.2rem;
     line-height: 2rem;
-    font-weight: bold;
 }
 
 .StatusSection {
@@ -63,19 +61,14 @@
     margin-left: 20px;
 }
 
-.CustomTooltip {
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 0.5rem;
-    padding: 8px;
-    z-index: 999;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 200px;
-    height: 55px;
-    top: 80%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.StatusSectionCardTitle .TooltipContainer {
+    display: flex;
+    padding: 0;
+    justify-content: flex-start;
+}
+
+.StatusSectionCardTitle .TooltipPlaceholder {
+    color: black;
 }
 
 @media only screen and (max-width: 750px) {
