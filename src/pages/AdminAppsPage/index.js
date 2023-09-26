@@ -6,14 +6,7 @@ import Header from "../../components/Header";
 import InformationBar from "../../components/InformationBar";
 import { handleGetRequest } from "../../apis/apis.js";
 import Select from "../../components/Select";
-import {
-  Line,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  AreaChart,
-  Area
-} from "recharts";
+import { Line, CartesianGrid, XAxis, YAxis, AreaChart, Area } from "recharts";
 import NewResourceCard from "../../components/NewResourceCard";
 import "./AdminAppsPage.css";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
@@ -22,7 +15,7 @@ import usePaginator from "../../hooks/usePaginator";
 import Spinner from "../../components/Spinner";
 
 const AdminAppsPage = () => {
- // const [apps, setApps] = useState([]);
+  // const [apps, setApps] = useState([]);
   const [appTotal, setAppTotal] = useState([]);
   const [pagination, setPagination] = useState([]);
   const [feedback, setFeedback] = useState("");
@@ -33,7 +26,6 @@ const AdminAppsPage = () => {
   const [word, setWord] = useState("");
   const [currentPage, handleChangePage] = usePaginator();
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     getAllApps();
@@ -67,18 +59,16 @@ const AdminAppsPage = () => {
       // }
     } catch (error) {
       setFeedback("Failed to fetch Apps metrics");
-    } finally  {
+    } finally {
       setLoading(false);
     }
   };
-
 
   const handleChange = ({ target }) => {
     setPeriod(target.getAttribute("value"));
   };
 
   const availableAppCategories = getAppCategories();
-
 
   const handleSectionChange = (selectedOption) => {
     const selectedValue = selectedOption.value;
