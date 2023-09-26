@@ -147,7 +147,7 @@ const AdminUserOverviewPage = () => {
           ) : feedback !== "" ? (
             <div className="NoResourcesMessage">{feedback}</div>
           ) : Object.keys(userCounts).length > 0 ? (
-            <div className="ClusterContainer">
+            <div className="ResourceClusterContainer">
               {Object.keys(userCounts).map((countType) => (
                 <NewResourceCard
                   key={countType}

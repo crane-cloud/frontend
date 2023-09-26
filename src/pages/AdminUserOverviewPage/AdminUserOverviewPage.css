@@ -13,9 +13,17 @@
   background: var(--gray-bg-light-color);
 }
 
-.AMainSection .ClusterContainer {
+.AMainSection .ResourceClusterContainer {
   padding: 2rem;
 }
+.ResourceClusterContainer{
+    display: flex;
+    gap: 1rem;
+    padding: 2rem 1.4rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 
 .AChartsArea {
   width: 100%;
@@ -102,8 +110,21 @@
   gap: 1rem;
 }
 
+@media only screen and (min-width: 750px) {
+  .ResourceClusterContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Bigger than Phones(laptop / desktop) */
+@media only screen and (min-width: 970px) {
+  .ResourceClusterContainer {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 @media only screen and (max-width: 900px) {
-  .ChartContainer {
+  .ResourceClusterContainer {
     display: flex;
     flex-direction: column;
   }
