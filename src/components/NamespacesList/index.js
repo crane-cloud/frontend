@@ -98,8 +98,9 @@ const NamespacesListPage = () => {
                 </div>
               )}
             </div>
-            <AppFooter position="absolute"/>
-          </div>          
+            
+          </div>   
+          <AppFooter/>       
         </div>
       </div>
     </div>
