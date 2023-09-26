@@ -70,7 +70,7 @@ jobs:
           no_output_timeout: 35m
           command: |
             TEST=$(circleci tests glob "src/**/*.test.js" | circleci tests split --split-by=timings)
-            yarn test --detectOpenHandles $TEST
+            yarn test $TEST --detectOpenHandles
       - run:
           command: cp test_unit.xml ~/test_unit/
           when: always
