@@ -22,6 +22,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install (Buildx)
+        uses: docker/setup-buildx-action@v1
+      
+      - name: Set up Docker Buildx
+        run: |
+          docker buildx create --use
+          docker buildx version  # Print information to verify that Buildx is set up
+        if: runner.os == 'Linux'  # Only run on Linux runners
+
       - name: Install kubectl
         run: |
           curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
@@ -37,13 +46,52 @@ jobs:
         run: |
           gcloud container clusters get-credentials $cluster --zone us-central1-a
 
-      - name: Build and push frontend image
-        # run: ./.github/workflows/build-and-push-frontend.sh
-        run: |
-          echo ${{ secrets.GCR_SERVICE_KEY }} | docker login -u _json_key --password-stdin https://gcr.io
-          docker build -f docker/prod/Dockerfile -t gcr.io/$GITHUB_REPOSITORY/cranecloud-frontend:$IMG_TAG .
-          docker push gcr.io/$GITHUB_REPOSITORY/cranecloud-frontend:$IMG_TAG
+      - name: Install (Gcloud)
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          install_components: "gke-gcloud-auth-plugin"
 
+      - name: Login (GCR)
+        run: gcloud auth configure-docker
+
+      - id: meta
+        name: Tag
+        uses: docker/metadata-action@v3
+        with:
+          flavor: |
+            latest=true
+          images: gcr.io/${{ secrets.GCP_PROJECT_ID }}/cranecloud-frontend
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha
+
+      - name: Build
+        uses: docker/build-push-action@v2
+        with:
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          context: .
+          file: docker/prod/Dockerfile
+          labels: ${{ steps.meta.outputs.labels }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+
+      - id: export
+        name: Export
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const metadata = JSON.parse(`${{ steps.meta.outputs.json }}`)
+            const fullUrl = metadata.tags.find((t) => t.includes(':sha-'))
+            if (fullUrl == null) {
+              core.error('Unable to find sha tag of image')
+            } else {
+              const tag = fullUrl.split(':')[1]
+              core.setOutput('image', fullUrl)
+              core.setOutput('tag', tag)
+            }
 
       - name: Update deployment image
         run: |
