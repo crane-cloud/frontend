@@ -4,14 +4,13 @@ on:
   push:
     branches:
       - develop
-      - ft/status-series-graphs
 
 jobs:
   build_and_deploy_staging:
     outputs:
       image: ${{ steps.export.outputs.image }}
       tag: ${{ steps.export.outputs.tag }}
-    
+
     runs-on: ubuntu-latest
     env:
       USE_GKE_GCLOUD_AUTH_PLUGIN: true
@@ -98,5 +97,4 @@ jobs:
 
       - name: Update deployment image
         run: |
-          echo "${{ needs.build.outputs.tag }}"
-          kubectl set image deployment/cranecloud-frontend cranecloud-frontend=gcr.io/${{ secrets.GCP_PROJECT_ID }}/cranecloud-frontend:${{ needs.build.outputs.tag }} --record -n $namespace
+          kubectl set image deployment/cranecloud-frontend cranecloud-frontend=gcr.io/${{ secrets.GCP_PROJECT_ID }}/cranecloud-frontend:${{ steps.export.outputs.tag }} --record -n $namespace
