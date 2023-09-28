@@ -30,6 +30,8 @@ jobs:
 
       - name: Configure gcloud default settings
         run: |
+          pwd
+          ls
           echo $GCLOUD_SERVICE_KEY > ~/crane-cloud/auth_key.json
           gcloud auth activate-service-account --key-file ~/crane-cloud/auth_key.json
           gcloud container clusters get-credentials $cluster --zone us-central1-a --project $GCP_PROJECT_ID
