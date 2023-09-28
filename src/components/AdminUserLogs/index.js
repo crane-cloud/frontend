@@ -148,5 +148,4 @@ const AdminUserLogs = () => {
     </div>
   );
 };
-
 export default AdminUserLogs;
