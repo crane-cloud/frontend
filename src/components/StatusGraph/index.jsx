@@ -1,23 +1,55 @@
 import React from "react";
 import "./StatusGraph.css";
+import Tooltip from "../Tooltip";
+import {
+  formatTimestamp,
+  getStatusColor,
+  getStatusValueByKey,
+  toSentenceCase,
+} from "../../helpers/statusGraphUtils";
 
-const StatusGraph = () => {
-  const boxCount = 30;
-  const boxData = Array.from({ length: boxCount }, (_, index) =>
-    index % 2 === 0 ? "green" : "red"
-  );
-
+const StatusGraph = ({ status, data }) => {
   return (
-    <>
-      <div className="SeriesCardArea">
-        <div className="SeriesCard">
+    <div className="SeriesCardArea">
+      {data.map(({ key, value }) => (
+        <div key={key} className="SeriesCard">
           <div className="SeriesTopRow">
-            <span className="SeriesTitle">Crane Cloud Application</span>
-            <span>Operational</span>
+            <span className="SeriesTitle">{toSentenceCase(key)}</span>
+            <span>
+              {getStatusValueByKey(key, status) === "success"
+                ? "Operational"
+                : "Issues Detected"}
+            </span>
           </div>
           <div className="horizontal-card">
-            {boxData.map((boxColor, index) => (
-              <div key={index} className={`box ${boxColor}`}></div>
+            {Object.entries(value).map(([serviceName, serviceData]) => (
+              <div key={serviceName} className="ServiceGraph">
+                <div className="ServiceTitle">
+                  {toSentenceCase(serviceName)}
+                </div>
+                <hr />
+                <div className="ServiceGraphBoxes">
+                  {serviceData.map((dataItem, index) => (
+                    <>
+                      <Tooltip
+                        showIcon={false}
+                        keyword={
+                          <div
+                            key={index}
+                            className={`box ${getStatusColor(dataItem.status)}`}
+                          ></div>
+                        }
+                        message={`${formatTimestamp(dataItem.timestamp)} - ${
+                          dataItem.status === "success"
+                            ? "Service Available"
+                            : "Issues Detected"
+                        }`}
+                        position="bottom"
+                      ></Tooltip>
+                    </>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
           <div className="SeriesBottomRow">
@@ -26,103 +58,8 @@ const StatusGraph = () => {
             <span>Today</span>
           </div>
         </div>
-      </div>
-
-      <div className="SeriesCardArea">
-        <div className="SeriesCard">
-          <div className="SeriesTopRow">
-            <span className="SeriesTitle">Databases</span>
-            <span>Operational</span>
-          </div>
-          <div className="horizontal-card">
-            {boxData.map((boxColor, index) => (
-              <div key={index} className={`box ${boxColor}`}></div>
-            ))}
-          </div>
-          <div className="SeriesBottomRow">
-            <span>30 days ago</span>
-            <hr className="RowDivider" />
-            <span>Today</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="SeriesCardArea">
-        <div className="SeriesCard">
-          <div className="SeriesTopRow">
-            <span className="SeriesTitle">Mira Service</span>
-            <span>Operational</span>
-          </div>
-          <div className="horizontal-card">
-            {boxData.map((boxColor, index) => (
-              <div key={index} className={`box ${boxColor}`}></div>
-            ))}
-          </div>
-          <div className="SeriesBottomRow">
-            <span>30 days ago</span>
-            <hr className="RowDivider" />
-            <span>Today</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="SeriesCardArea">
-        <div className="SeriesCard">
-          <div className="SeriesTopRow">
-            <span className="SeriesTitle">Crane Cloud Registry</span>
-            <span>Operational</span>
-          </div>
-          <div className="horizontal-card">
-            {boxData.map((boxColor, index) => (
-              <div key={index} className={`box ${boxColor}`}></div>
-            ))}
-          </div>
-          <div className="SeriesBottomRow">
-            <span>30 days ago</span>
-            <hr className="RowDivider" />
-            <span>Today</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="SeriesCardArea">
-        <div className="SeriesCard">
-          <div className="SeriesTopRow">
-            <span className="SeriesTitle">Clusters</span>
-            <span>Issues detected</span>
-          </div>
-          <div className="horizontal-card">
-            {boxData.map((boxColor, index) => (
-              <div key={index} className={`box ${boxColor}`}></div>
-            ))}
-          </div>
-          <div className="SeriesBottomRow">
-            <span>30 days ago</span>
-            <hr className="RowDivider" />
-            <span>Today</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="SeriesCardArea">
-        <div className="SeriesCard">
-          <div className="SeriesTopRow">
-            <span className="SeriesTitle">Prometheus</span>
-            <span>Operational</span>
-          </div>
-          <div className="horizontal-card">
-            {boxData.map((boxColor, index) => (
-              <div key={index} className={`box ${boxColor}`}></div>
-            ))}
-          </div>
-          <div className="SeriesBottomRow">
-            <span>30 days ago</span>
-            <hr className="RowDivider" />
-            <span>Today</span>
-          </div>
-        </div>
-      </div>
-    </>
+      ))}
+    </div>
   );
 };
 
