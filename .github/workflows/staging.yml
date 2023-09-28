@@ -30,9 +30,10 @@ jobs:
 
       - name: Configure gcloud default settings
         run: |
-          echo ${{ secrets.GCLOUD_SERVICE_KEY }} > auth_key.json
-          gcloud auth activate-service-account --key-file auth_key.json
-          gcloud container clusters get-credentials $cluster --zone us-central1-a --project ${{ secrets.GCP_PROJECT_ID }}
+          echo "${{ secrets.GCLOUD_SERVICE_KEY }}" 
+          SA_EMAIL=$(cat auth_key.json | jq -r .client_email)
+          gcloud auth activate-service-account --account=$SA_EMAIL --key-file=-
+          gcloud container clusters get-credentials $cluster --zone us-central1-a --project "${{ secrets.GCP_PROJECT_ID }}"
 
       - name: Build and push frontend image
         run: ./.github/workflows/build-and-push-frontend.sh
