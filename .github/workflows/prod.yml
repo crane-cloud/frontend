@@ -1,0 +1,41 @@
+name: CraneCloud Deployment
+
+on:
+  push:
+    branches:
+      - master
+      - 'release/*'
+
+jobs:
+  build_and_deploy_production:
+    runs-on: ubuntu-latest
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+      cluster: staging-cluster
+      REACT_APP_API_BASE_URL: https://api.cranecloud.io
+      namespace: cranecloud-prod
+      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install kubectl
+        run: |
+          curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+          chmod +x ./kubectl
+          sudo mv ./kubectl /usr/local/bin/kubectl
+
+      - name: Configure gcloud default settings
+        run: |
+          echo $GCLOUD_SERVICE_KEY > ~/crane-cloud/auth_key.json
+          gcloud auth activate-service-account --key-file ~/crane-cloud/auth_key.json
+          gcloud container clusters get-credentials $cluster --zone us-central1-a --project $GCP_PROJECT_ID
+
+      - name: Build and push frontend image
+        run: ./.github/workflows/bin/build-and-push-frontend.sh
+
+      - name: Update deployment image
+        run: |
+          export IMG_TAG=$(echo $GITHUB_SHA | cut -c -7)
+          kubectl set image deployment/cranecloud-frontend cranecloud-frontend=gcr.io/$GCP_PROJECT_ID/cranecloud-frontend:$IMG_TAG --record -n $namespace
