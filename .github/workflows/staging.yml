@@ -30,14 +30,14 @@ jobs:
 
       - name: Configure gcloud default settings
         run: |
-          echo $GCLOUD_SERVICE_KEY > auth_key.json
+          echo ${{ secrets.GCLOUD_SERVICE_KEY }} > auth_key.json
           gcloud auth activate-service-account --key-file auth_key.json
-          gcloud container clusters get-credentials $cluster --zone us-central1-a --project $GCP_PROJECT_ID
+          gcloud container clusters get-credentials $cluster --zone us-central1-a --project ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Build and push frontend image
         run: ./.github/workflows/build-and-push-frontend.sh
 
       - name: Update deployment image
         run: |
-          export IMG_TAG=$(echo $GITHUB_SHA | cut -c -7)
-          kubectl set image deployment/cranecloud-frontend cranecloud-frontend=gcr.io/$GCP_PROJECT_ID/cranecloud-frontend:$IMG_TAG --record -n $namespace
+          export IMG_TAG=$(echo ${{ secrets.GITHUB_SHA }} | cut -c -7)
+          kubectl set image deployment/cranecloud-frontend cranecloud-frontend=gcr.io/${{ secrets.GCP_PROJECT_ID }}/cranecloud-frontend:$IMG_TAG --record -n $namespace
