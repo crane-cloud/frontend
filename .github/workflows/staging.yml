@@ -28,15 +28,22 @@ jobs:
           chmod +x ./kubectl
           sudo mv ./kubectl /usr/local/bin/kubectl
 
-      - name: Configure gcloud default settings
+      - name: Login (GCP)
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCLOUD_SERVICE_KEY }}
+
+      - name: Get Kubernetes credentials
         run: |
-          echo "${{ secrets.GCLOUD_SERVICE_KEY }}" 
-          SA_EMAIL=$(cat auth_key.json | jq -r .client_email)
-          gcloud auth activate-service-account --account=$SA_EMAIL --key-file=-
-          gcloud container clusters get-credentials $cluster --zone us-central1-a --project "${{ secrets.GCP_PROJECT_ID }}"
+          gcloud container clusters get-credentials $cluster --zone us-central1-a
 
       - name: Build and push frontend image
-        run: ./.github/workflows/build-and-push-frontend.sh
+        # run: ./.github/workflows/build-and-push-frontend.sh
+        run: |
+          echo ${{ secrets.GCR_SERVICE_KEY }} | docker login -u _json_key --password-stdin https://gcr.io
+          docker build -f docker/prod/Dockerfile -t gcr.io/$GITHUB_REPOSITORY/cranecloud-frontend:$IMG_TAG .
+          docker push gcr.io/$GITHUB_REPOSITORY/cranecloud-frontend:$IMG_TAG
+
 
       - name: Update deployment image
         run: |
