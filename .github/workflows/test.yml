@@ -1,0 +1,38 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test_and_report:
+    runs-on: ubuntu-latest
+    env:
+      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Setup Dependencies
+        run: yarn
+
+      - name: Setup Code Climate test-reporter
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter before-build
+
+      - name: Run Test and Coverage
+        run: yarn test --detectOpenHandles
+
+      - name: Code Climate report
+        run: ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
