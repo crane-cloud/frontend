@@ -116,9 +116,7 @@
 .ResourceCard {
   width: 100%;
   max-width: 17rem;
-  margin-left: 10px;
   align-items: left;
-  margin-bottom: 1rem;
   background: #fff;
   position: relative;
   color: #000000;
@@ -231,11 +229,12 @@
   margin: auto;
 }
 
-.OtherCards {
-  align-items: center;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: .3rem;
-  overflow-x: hidden;
-  padding: 3rem 1rem 0 1rem;
+ .OtherCards { 
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: space-between;
+   gap: .3rem;
+   overflow-x: hidden;
+   padding: 3rem 1rem 0 1rem;
+   max-width: 100%;
 }
