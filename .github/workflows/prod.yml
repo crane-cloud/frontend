@@ -1,4 +1,4 @@
-name: CraneCloud Deployment
+name: Production Deployment
 
 on:
   push:
