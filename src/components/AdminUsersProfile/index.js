@@ -14,6 +14,8 @@ import DeleteWarning from "../../components/DeleteWarning";
 import BlackInputText from "../BlackInputText";
 import PrimaryButton from "../PrimaryButton";
 import addBetaUser from "../../redux/actions/addBetaUser";
+import disableUser from "../../redux/actions/disableUser";
+import enableUser from "../../redux/actions/enableUser";
 import adminGetUserCredits, {
   clearUserCredits,
 } from "../../redux/actions/adminGetUserCredits";
@@ -520,7 +522,6 @@ class AdminUserPage extends Component {
                                 <span className="DatabaseName">
                                   {user?.name} ?
                                 </span>
-                                <DeleteWarning />
                               </div>
                             </div>
 
@@ -675,6 +676,8 @@ const mapDispatchToProps = {
   adminGetUserCredits,
   clearUserCredits,
   clearCreditsState,
+  disableUser,
+  enableUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminUserPage);
