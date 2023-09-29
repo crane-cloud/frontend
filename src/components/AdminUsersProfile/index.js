@@ -28,6 +28,7 @@ import NewResourceCard from "../NewResourceCard";
 import userProfleStyles from "../UserProfile/UserProfile.module.css";
 import Avatar from "../Avatar";
 import moment from "moment";
+import AppFooter from "../appFooter";
 
 class AdminUserPage extends Component {
   constructor() {
@@ -625,6 +626,7 @@ class AdminUserPage extends Component {
                 </Modal>
               </div>
             </div>
+            <AppFooter/>
           </div>
         </div>
       </div>

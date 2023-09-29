@@ -6,32 +6,27 @@ import Header from "../../components/Header";
 import InformationBar from "../../components/InformationBar";
 import { handleGetRequest } from "../../apis/apis.js";
 import Select from "../../components/Select";
-import {
-  Line,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  AreaChart,
-  Area
-} from "recharts";
+import { Line, CartesianGrid, XAxis, YAxis, AreaChart, Area } from "recharts";
 import NewResourceCard from "../../components/NewResourceCard";
 import "./AdminAppsPage.css";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import AppListing from "../../components/AppListing";
 import usePaginator from "../../hooks/usePaginator";
+import Spinner from "../../components/Spinner";
+import AppFooter from "../../components/appFooter";
 
 const AdminAppsPage = () => {
-  const [apps, setApps] = useState([]);
+  // const [apps, setApps] = useState([]);
   const [appTotal, setAppTotal] = useState([]);
-  const [paginat, setPaginat] = useState([]);
+  const [pagination, setPagination] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
   const [period, setPeriod] = useState("all");
-  const [sectionValue, setSectionValue] = useState("all");
+  //sectionValue will be set when being used
+  const [, setSectionValue] = useState("all");
   const [word, setWord] = useState("");
   const [currentPage, handleChangePage] = usePaginator();
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     getAllApps();
@@ -42,38 +37,39 @@ const AdminAppsPage = () => {
 
     try {
       const response = await handleGetRequest("/apps?series=true");
-      setPaginat(response.data.data.graph_data);
+      setPagination(response.data.data.graph_data);
       setAppTotal(response.data.data.metadata.total_apps);
-      if (response.data.data.apps.graph_data > 0) {
-        // const totalNumberOfApps = response.data.data.pagination.total;
-        handleGetRequest(`/apps?per_page=10`)
-          .then((response) => {
-            if (response.data.data.apps.length > 0) {
-              setApps(response.data.data.apps);
-              setLoading(false);
+      //not sure what this was for but it doesn't seem relevant
+      // if (response.data.data.graph_data > 0) {
+      //   //const totalNumberOfApps = response.data.data.pagination.total;
+      //   handleGetRequest(`/apps?per_page=10`)
+      //     .then((response) => {
+      //       if (response.data.data.apps.length > 0) {
+      //         setApps(response.data.data.apps);
+      //         setLoading(false);
 
-            } else {
-              throw new Error("No Apps found");
-            }
-          })
-          .catch(() => {
-            setFeedback("Failed to fetch all apps, please try again");
-          });
-      } else {
-        setFeedback("No Apps found");
-      }
+      //       } else {
+      //         throw new Error("No Apps found");
+      //       }
+      //     })
+      //     .catch(() => {
+      //       setFeedback("Failed to fetch all apps, please try again");
+      //     });
+      // } else {
+      //   setFeedback("No Apps found");
+      // }
     } catch (error) {
-      setFeedback("Failed to fetch Apps, please try again");
+      setFeedback("Failed to fetch Apps metrics");
+    } finally {
+      setLoading(false);
     }
   };
-
 
   const handleChange = ({ target }) => {
     setPeriod(target.getAttribute("value"));
   };
 
   const availableAppCategories = getAppCategories();
-
 
   const handleSectionChange = (selectedOption) => {
     const selectedValue = selectedOption.value;
@@ -119,11 +115,25 @@ const AdminAppsPage = () => {
           <div className="TitleArea">
             <div className="SectionTitle">Apps Summary</div>
           </div>
-          <div className="AdminappsContainer">
-            <NewResourceCard title="Total Apps" count={appTotal} />
-            <NewResourceCard title="Running Apps" count={appTotal * 0.9} />
-            <NewResourceCard title="Down Apps" count={appTotal * 0.1} />
-          </div>
+          {loading ? (
+            <div className="ResourceSpinnerWrapper">
+              <Spinner size="big" />
+            </div>
+          ) : feedback !== "" ? (
+            <div className="NoResourcesMessage">{feedback}</div>
+          ) : (
+            <div className="ResourceClusterContainer">
+              <NewResourceCard title="Total Apps" count={appTotal} />
+              <NewResourceCard
+                title="Running Apps"
+                count={Math.floor(appTotal * 0.9)}
+              />
+              <NewResourceCard
+                title="Down Apps"
+                count={Math.floor(appTotal * 0.1)}
+              />
+            </div>
+          )}
 
           <div className="TitleArea">
             <div className="SectionTitle">Graph Summary on Deployments</div>
@@ -216,7 +226,7 @@ const AdminAppsPage = () => {
                   bottom: 0,
                 }}
                 syncId="anyId"
-                data={paginat}
+                data={pagination}
               >
                 <Line type="monotone" dataKey="Value" stroke="#8884d8" />
                 <CartesianGrid stroke="#ccc" />
@@ -353,6 +363,7 @@ const AdminAppsPage = () => {
           />
         </div>
       </div>
+      <AppFooter/>
     </div>
   );
 };

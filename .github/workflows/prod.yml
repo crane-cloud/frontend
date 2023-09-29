@@ -8,6 +8,10 @@ on:
 
 jobs:
   build_and_deploy_production:
+    outputs:
+      image: ${{ steps.export.outputs.image }}
+      tag: ${{ steps.export.outputs.tag }}
+      
     runs-on: ubuntu-latest
     env:
       GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
@@ -93,5 +97,4 @@ jobs:
 
       - name: Update deployment image
         run: |
-          export IMG_TAG=$(echo ${{ secrets.GITHUB_SHA }} | cut -c -7)
-          kubectl set image deployment/cranecloud-frontend cranecloud-frontend=gcr.io/${{ secrets.GCP_PROJECT_ID }}/cranecloud-frontend:$IMG_TAG --record -n $namespace
+          kubectl set image deployment/cranecloud-frontend cranecloud-frontend=gcr.io/${{ secrets.GCP_PROJECT_ID }}/cranecloud-frontend:${{ steps.export.outputs.tag }} --record -n $namespace

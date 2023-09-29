@@ -13,9 +13,8 @@
   background: var(--gray-bg-light-color);
 }
 
-.AMainSection .ClusterContainer {
-  padding: 2rem;
-}
+
+
 
 .AChartsArea {
   width: 100%;
@@ -102,9 +101,7 @@
   gap: 1rem;
 }
 
-@media only screen and (max-width: 900px) {
-  .ChartContainer {
-    display: flex;
-    flex-direction: column;
-  }
-}
+
+/* .AMainSection .ResourceClusterContainer {
+  padding: 2rem;
+} */

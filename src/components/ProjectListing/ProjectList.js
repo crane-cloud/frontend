@@ -38,6 +38,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import AppFooter from "../appFooter";
 
 const AdminProjectsOverview = () => {
   const [currentPage, handleChangePage] = usePaginator();
@@ -449,7 +450,7 @@ const AdminProjectsOverview = () => {
           ) : feedback !== "" ? (
             <div className="NoResourcesMessage">{feedback}</div>
           ) : Object.keys(projectTypeCounts).length > 0 ? (
-            <div className="ClusterContainer">
+            <div className="ResourceClusterContainer">
               {Object.keys(projectTypeCounts).map((projectType) => (
                 <NewResourceCard
                   key={projectType}
@@ -470,7 +471,7 @@ const AdminProjectsOverview = () => {
           ) : feedback !== "" ? (
             <div className="NoResourcesMessage">{feedback}</div>
           ) : Object.keys(projectOrganisationCount).length > 0 ? (
-            <div className="ClusterContainer">
+            <div className="ResourceClusterContainer">
               {Object.keys(projectOrganisationCount).map(
                 (projectOrganisation) => (
                   <NewResourceCard
@@ -944,6 +945,7 @@ const AdminProjectsOverview = () => {
           </div>
         </div>
       </div>
+      <AppFooter/>
     </div>
   );
 };

@@ -7,6 +7,7 @@ import { DisplayDateTime } from "../../helpers/dateConstants";
 import Header from "../../components/Header";
 import styles from "./AdminAppDetail.module.css";
 
+
 const AdminAppDetail = () => {
   const { appID } = useParams();
   const [appDetail, setAppDetail] = useState({});

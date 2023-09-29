@@ -8,6 +8,7 @@ import Status from "../Status";
 import Spinner from "../Spinner";
 import InformationBar from "../InformationBar";
 import SideNav from "../SideNav";
+import AppFooter from "../appFooter";
 
 class NodesList extends Component {
   componentDidMount() {
@@ -124,6 +125,7 @@ class NodesList extends Component {
                 )}
               </div>
             </div>
+            <AppFooter/>
           </div>
         </div>
       </div>

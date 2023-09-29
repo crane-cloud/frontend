@@ -18,6 +18,7 @@ import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg
 import Feedback from "../Feedback";
 import NewResourceCard from "../NewResourceCard";
 import { useLocation } from 'react-router-dom';
+import AppFooter from "../appFooter";
 
 const AdminProjectDetails = () => {
   const clusterID = localStorage.getItem("clusterID");
@@ -306,6 +307,7 @@ const AdminProjectDetails = () => {
               <div className={styles.CentralSpinner}>{error}</div>
             )}
           </div>
+          <AppFooter/>
         </div>
       </div>
       {openDisableProjectModel && (
