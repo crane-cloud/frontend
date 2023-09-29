@@ -15,6 +15,7 @@ import Pagination from "../../components/Pagination";
 import { handleGetRequest } from "../../apis/apis.js";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import AppFooter from "../../components/appFooter";
 
 
 const AdminProjectsPage = () => {
@@ -267,6 +268,7 @@ const AdminProjectsPage = () => {
                 />
               </div>
             )}
+            <AppFooter />
           </div>
         </div>
       </div>

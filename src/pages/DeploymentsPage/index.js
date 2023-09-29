@@ -12,6 +12,7 @@ import tellAge from "../../helpers/ageUtility";
 import "./DeploymentsPage.css";
 import usePaginator from "../../hooks/usePaginator";
 import Pagination from "../../components/Pagination";
+import AppFooter from "../../components/appFooter";
 
 const DeploymentsPage = () => {
   const dispatch = useDispatch();
@@ -172,6 +173,7 @@ const DeploymentsPage = () => {
               />
             </div>
           )}
+          <AppFooter/>
           </div>
         </div>
       </div>

@@ -37,9 +37,9 @@
     justify-content: center;
 }
 
-.ClusterContainer {
+/* .ClusterContainer {
     place-items: center;
-}
+} */
 
 .ChartContainer .VisualAreaHeader {
     display: flex;
@@ -159,12 +159,6 @@
         transition: transform 0.3s ease;
     }
 
-    .ClusterContainer {
-        display: flex;
-        gap: 1rem;
-        padding: 2rem 1.4rem;
-        flex-wrap: wrap;
-    }
 
     .NewResourceCardHeader {
         font-size: 1rem;

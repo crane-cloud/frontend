@@ -9,6 +9,7 @@ import getJobs from "../../redux/actions/jobs";
 import Status from "../../components/Status";
 import Spinner from "../../components/Spinner";
 import tellAge from "../../helpers/ageUtility";
+import AppFooter from "../../components/appFooter";
 
 const JobsListPage = () => {
   const  clusterID  = localStorage.getItem("clusterID");
@@ -100,6 +101,7 @@ const JobsListPage = () => {
               )}
             </div>
           </div>
+          <AppFooter position="absolute"/>
         </div>
       </div>
     </div>

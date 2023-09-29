@@ -29,6 +29,7 @@ import { createUserGraphData } from "../../helpers/usersGraphData";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import UserListing from "../../components/UserListing";
 import usePaginator from "../../hooks/usePaginator";
+import AppFooter from "../../components/appFooter";
 
 const AdminUserOverviewPage = () => {
   const [usersSummary, setUsersSummary] = useState([]);
@@ -147,7 +148,7 @@ const AdminUserOverviewPage = () => {
           ) : feedback !== "" ? (
             <div className="NoResourcesMessage">{feedback}</div>
           ) : Object.keys(userCounts).length > 0 ? (
-            <div className="ClusterContainer">
+            <div className="ResourceClusterContainer">
               {Object.keys(userCounts).map((countType) => (
                 <NewResourceCard
                   key={countType}
@@ -398,6 +399,7 @@ const AdminUserOverviewPage = () => {
           />
         </div>
       </div>
+      <AppFooter/>
     </div>
   );
 };
