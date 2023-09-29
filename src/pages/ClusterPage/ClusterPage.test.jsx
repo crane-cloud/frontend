@@ -23,11 +23,6 @@ describe("A test for the component map state to props", () => {
   it("map state to props test", () => {
     expect(
       mapStateToProps({
-        databasesReducer: {
-          isFetchingDatabases: false,
-          databasesFetched: false,
-          databases: [],
-        },
         addClusterReducer: {
           creatingCluster: false,
           isAdded: false,
@@ -36,34 +31,15 @@ describe("A test for the component map state to props", () => {
           message: "",
         },
         user: { user: [] },
-        appsSummaryReducer: {
-          summary: [],
-          FetchedAppsSummary: false,
-          isFetchingAppsSummary: false,
-        },
-        usersSummaryReducer: {
-          usersSummary: [],
-          FetchedUsersSummary: false,
-          isFetchingUsersSummary: false,
-        },
         clustersReducer: { clusters: {metadata:[]} },
       })
     ).toEqual({
-      isFetchingDatabases: false,
-      databasesFetched: false,
-      databases: [],
       creatingCluster: false,
       isAdded: false,
       isFailed: false,
       errorOccured: false,
       message: "",
       user: [],
-      summary: [],
-      FetchedAppsSummary: false,
-      isFetchingAppsSummary: false,
-      usersSummary: [],
-      FetchedUsersSummary: false,
-      isFetchingUsersSummary: false,
       clusters: {metadata:[]},
     });
   });

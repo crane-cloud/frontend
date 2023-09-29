@@ -23,14 +23,13 @@ import { filterGraphData } from "../../helpers/filterGraphData.js";
 import { retrieveMonthNames } from "../../helpers/monthNames.js";
 import NewResourceCard from "../../components/NewResourceCard";
 import { getUserCategories } from "../../helpers/userCategories";
-import AdminInactiveUsers from "../../components/AdminInactiveUsers";
 import "./AdminUserOverviewPage.css";
 import { createUsersPieChartData } from "../../helpers/usersPieChartData";
 import { createUserGraphData } from "../../helpers/usersGraphData";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import UserListing from "../../components/UserListing";
 import usePaginator from "../../hooks/usePaginator";
- 
+
 const AdminUserOverviewPage = () => {
   const [usersSummary, setUsersSummary] = useState([]);
   const [feedback, setFeedback] = useState("");
@@ -39,26 +38,27 @@ const AdminUserOverviewPage = () => {
   const [sectionValue, setSectionValue] = useState("all");
   const [word, setWord] = useState("");
   const [currentPage, handleChangePage] = usePaginator();
+  const [dateRange, setDateRange] = useState("7");
   const dispatch = useDispatch();
- 
+
   const COLORS = ["#0088FE", "#0DBC00", "#F9991A"];
- 
+
   let graphDataArray = [];
   let filteredGraphData = [];
- 
+
   const gettingUsers = useCallback(
-    () => dispatch(getUsersList(sectionValue, currentPage, word)),
-    [currentPage, dispatch, sectionValue, word]
+    () => dispatch(getUsersList(dateRange, sectionValue, currentPage, word)),
+    [currentPage, dispatch, sectionValue, word, dateRange]
   );
- 
+
   useEffect(() => {
     getAllUsers();
     gettingUsers();
   }, [gettingUsers]);
- 
+
   const getAllUsers = async () => {
     setLoading(true);
- 
+
     try {
       const response = await handleGetRequest("/users");
       if (response.data.data.users.length > 0) {
@@ -82,15 +82,15 @@ const AdminUserOverviewPage = () => {
       setFeedback("Failed to fetch users, please try again");
     }
   };
- 
+
   const { isFetching, users, isFetched, pagination } = useSelector(
     (state) => state.usersListReducer
   );
- 
+
   useEffect(() => {
-    dispatch(getUsersList(sectionValue, currentPage));
-  }, [sectionValue, currentPage, dispatch]);
- 
+    dispatch(getUsersList(dateRange, sectionValue, currentPage));
+  }, [sectionValue, currentPage, dateRange, dispatch]);
+
   const userCounts = {
     total: usersSummary.length,
     verified: usersSummary.filter((user) => user.verified === true).length,
@@ -98,33 +98,38 @@ const AdminUserOverviewPage = () => {
     beta: usersSummary.filter((user) => user.is_beta_user === true).length,
     disabled: 0
   };
- 
+
   const handleChange = ({ target }) => {
     setPeriod(target.getAttribute("value"));
   };
- 
+
   // Filter out verified users
   const verifiedUsers = usersSummary.filter((user) => user.verified === true);
- 
+
   // function call to create the user graph data
   graphDataArray = createUserGraphData(verifiedUsers);
- 
+
   // calling the filterGraphData() to filter basing on period
   filteredGraphData = filterGraphData(graphDataArray, period);
- 
+
   const availableUserCategories = getUserCategories();
- 
+
   const handleSectionChange = (selectedOption) => {
     const selectedValue = selectedOption.value;
     setSectionValue(selectedValue);
   };
- 
+
   const handleCallbackSearchword = ({ target: { value } }) => setWord(value);
- 
+
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);
     gettingUsers();
   };
+
+  const handleDateRangeChange = (range) => {
+    setDateRange(range);
+  };
+  
   return (
     <div className="APage">
       <div className="TopRow">
@@ -136,7 +141,7 @@ const AdminUserOverviewPage = () => {
           <div className="TitleArea">
             <div className="SectionTitle">Users Category Summary</div>
           </div>
-          {loading ? (
+          {loading && sectionValue !== "active" ? (
             <div className="ResourceSpinnerWrapper">
               <Spinner size="big" />
             </div>
@@ -153,13 +158,13 @@ const AdminUserOverviewPage = () => {
               ))}
             </div>
           ) : null}
- 
+
           <div className="TitleArea">
             <div className="SectionTitle">
               Graph and Pie Chart Summary on Users
             </div>
           </div>
- 
+
           <div className="ChartContainer">
             <div className="VisualArea">
               <div className="VisualAreaHeader">
@@ -297,7 +302,7 @@ const AdminUserOverviewPage = () => {
                 />
               </AreaChart>
             </div>
- 
+
             <div className="VisualArea">
               <div className="VisualAreaHeader">
                 <span className="SectionTitle">
@@ -350,7 +355,7 @@ const AdminUserOverviewPage = () => {
               </div>
             </div>
           </div>
- 
+
           <div className="TitleArea">
             <div className="SectionTitle">
               <span>
@@ -381,26 +386,21 @@ const AdminUserOverviewPage = () => {
               </span>
             </div>
           </div>
- 
-          {sectionValue === "active" ? (
-            <AdminInactiveUsers />
-          ) : (
-            <>
-              <UserListing
-                isFetching={isFetching}
-                isFetched={isFetched}
-                users={users}
-                pagination={pagination}
-                handlePageChange={handlePageChange}
-                currentPage={currentPage}
-              />
-            </>
-          )}
+
+          <UserListing
+            sectionValue={sectionValue}
+            setSelectedDateRange={handleDateRangeChange}
+            isFetching={isFetching}
+            isFetched={isFetched}
+            users={users}
+            pagination={pagination}
+            handlePageChange={handlePageChange}
+            currentPage={currentPage}
+          />
         </div>
       </div>
     </div>
   );
 };
- 
+
 export default AdminUserOverviewPage;
- 

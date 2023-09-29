@@ -1,7 +1,7 @@
 footer.LandingFooter {
   color: #555555;
   text-align: center;
-  background-color: var( --gray-bg-light-color);
+  background-color: var(--gray-bg-light-color);
 }
 
 .FooterParent {
@@ -22,8 +22,8 @@ footer.LandingFooter {
 }
 
 .FooterContent {
-  display: grid;
-  grid-auto-flow: column;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .FooterLogoName {
