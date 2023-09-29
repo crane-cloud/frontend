@@ -49,6 +49,7 @@ const AdminAppDetail = () => {
       window.location.reload();
     }
   };
+  console.log(appDetail);
   return (
     <div className={styles.Page}>
       <div className="TopRow">
@@ -99,7 +100,7 @@ const AdminAppDetail = () => {
                 {DisplayDateTime(new Date(appDetail?.apps?.date_created))}
               </div>
               <div className={styles.listItem}>
-                <strong>Command:</strong> {appDetail?.apps?.command}
+                <strong>Command:</strong> {appDetail?.apps?.command ? appDetail?.apps?.command : "None"}
               </div>
               <div className={styles.listItem}>
                 <strong>Private Image:</strong>{" "}
