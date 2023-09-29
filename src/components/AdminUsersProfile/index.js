@@ -238,7 +238,6 @@ class AdminUserPage extends Component {
   handleEnableButtonClick = async () => {
     let { userDetail } = this.state;
     const { userID } = this.props.match.params;
-    console.log(userDetail)
 
     try {
       if (userDetail.disabled) {
@@ -299,7 +298,6 @@ class AdminUserPage extends Component {
       this.state;
     const user = getUser(users, params.userID);
     const { credit_assignment_records } = userCredits;
-    console.log(userDetail);
     return (
       <div className="MainPage">
         {Added ? this.renderRedirect() : null}

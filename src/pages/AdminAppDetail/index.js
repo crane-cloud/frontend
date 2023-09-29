@@ -6,7 +6,7 @@ import PrimaryButton from "../../components/PrimaryButton";
 import { DisplayDateTime } from "../../helpers/dateConstants";
 import Header from "../../components/Header";
 import styles from "./AdminAppDetail.module.css";
-
+import { handlePostRequestWithOutDataObject } from "../../apis/apis.js";
 
 const AdminAppDetail = () => {
   const { appID } = useParams();
@@ -28,7 +28,27 @@ const AdminAppDetail = () => {
       throw new Error("Failed to fetch app detail, please try again");
     }
   };
-
+  const handleEnableButtonClick = async () => {
+    try {
+      if (appDetail?.apps?.disabled) {
+        await handlePostRequestWithOutDataObject(
+          appID,
+          `/apps/${appID}/enable`
+        );
+      } else {
+        await handlePostRequestWithOutDataObject(
+          appID,
+          `/apps/${appID}/disable`
+        );
+      }
+      // Handle success (you can add any necessary logic here)
+      window.location.reload();
+    } catch (error) {
+      console.error("API call error:", error);
+    } finally {
+      window.location.reload();
+    }
+  };
   return (
     <div className={styles.Page}>
       <div className="TopRow">
@@ -40,8 +60,11 @@ const AdminAppDetail = () => {
         <div className="TitleArea">
           <div className="SectionTitle" style={{ paddingTop: "1rem" }}>
             <b>Application Detail</b>{" "}
-            <PrimaryButton className="CancelBtn" color="red">
-              Disable
+            <PrimaryButton
+              onClick={handleEnableButtonClick}
+              color={appDetail?.apps?.disabled ? "primary-outline" : "red-outline"}
+            >
+              {appDetail?.apps?.disabled ? "Enable" : "Disable"}
             </PrimaryButton>
           </div>
         </div>
