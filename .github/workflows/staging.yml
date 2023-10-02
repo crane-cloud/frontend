@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - develop
-      - ft-add-envs-actions
 
 jobs:
   build_and_deploy_staging:

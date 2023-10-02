@@ -68,6 +68,21 @@ jobs:
             type=ref,event=branch
             type=ref,event=pr
             type=sha
+      
+      - name: Add Env vars
+        env:
+          REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL_PROD }}
+          REACT_APP_MIRA_API_URL: ${{ secrets.REACT_APP_MIRA_API_URL }}
+          REACT_APP_FLUTTERWAVE_PUBLIC_KEY_TESTING: ${{ secrets.REACT_APP_FLUTTERWAVE_PUBLIC_KEY_TESTING }}
+          REACT_APP_GITHUB_CLEINT_ID: ${{ secrets.REACT_APP_GITHUB_CLEINT_ID_PRODUCTION }}
+          REACT_APP_EXCHANGE_RATE_KEY: ${{ secrets.REACT_APP_EXCHANGE_RATE_KEY }}
+          REACT_APP_DOCS_URL: ${{ secrets.REACT_APP_DOCS_URL_PROD }}
+          REACT_APP_DOCKER_EMAIL: ${{ secrets.REACT_APP_DOCKER_EMAIL }}
+          REACT_APP_DOCKER_PASSWORD: ${{ secrets.REACT_APP_DOCKER_PASSWORD }}
+          REACT_APP_MONITORING_APP: ${{ secrets.REACT_APP_MONITORING_APP_PROD }}
+        run: | 
+          chmod +x ./.github/workflows/bin/create_envs.sh
+          ./.github/workflows/bin/create_envs.sh
 
       - name: Build
         uses: docker/build-push-action@v2
