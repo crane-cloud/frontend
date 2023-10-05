@@ -32,7 +32,7 @@ export const filterStatusData = (data) => {
         (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
       );
 
-      const slicedRecords = latestRecords.slice(6);
+      const slicedRecords = latestRecords.slice(12);
 
       if (slicedRecords.length > 0) {
         result[parentName][name] = slicedRecords;

@@ -29,7 +29,7 @@ const StatusGraph = ({ status, data }) => {
                 </div>
                 <hr />
                 <div className="ServiceGraphBoxes">
-                  {serviceData.map((dataItem, index) => (
+                  {serviceData.slice(3, 34).map((dataItem, index) => (
                     <>
                       <Tooltip
                         showIcon={false}
