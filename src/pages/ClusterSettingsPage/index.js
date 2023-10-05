@@ -16,6 +16,7 @@ import SideNav from "../../components/SideNav";
 import Feedback from "../../components/Feedback";
 import BlackInputText from "../../components/BlackInputText";
 import styles from "./ClusterSettingsPage.module.css";
+import AppFooter from "../../components/appFooter";
 
 class ClusterSettingsPage extends React.Component {
   constructor(props) {
@@ -264,6 +265,7 @@ class ClusterSettingsPage extends React.Component {
                 </div>
               </Modal>
             </div>
+            <AppFooter/>
           </div>
         </div>
       </section>

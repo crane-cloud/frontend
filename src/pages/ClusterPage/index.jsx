@@ -122,7 +122,7 @@ const ClusterPage = ({
             </div>
           </div>
         </Link>
-        <Link to="projects-overview" className={styles.ResourceCard}>
+        <Link to="/projects-overview" className={styles.ResourceCard}>
           <div className={styles.columnCardSection}>
             <div className={styles.CardHeader}>Projects</div>
             <div className={styles.ResourceDigit}>

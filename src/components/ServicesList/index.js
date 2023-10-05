@@ -9,6 +9,7 @@ import SideNav from "../SideNav";
 import getServices from "../../redux/actions/services";
 import usePaginator from "../../hooks/usePaginator";
 import Pagination from "../../components/Pagination";
+import AppFooter from "../appFooter";
 
 const ServicesListPage = () => {
   const  clusterID  = localStorage.getItem("clusterID");
@@ -128,6 +129,7 @@ const ServicesListPage = () => {
               />
             </div>
           )}
+          <AppFooter/>
           </div>
         </div>
       </div>

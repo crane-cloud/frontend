@@ -12,6 +12,7 @@ import ProgressBar from "../ProgressBar";
 import Pagination from "../../components/Pagination";
 import { useSelector, useDispatch } from "react-redux";
 import usePaginator from "../../hooks/usePaginator";
+import AppFooter from "../appFooter";
 // import { useParams } from "react-router-dom";
 
 const PodsList =()=>{
@@ -161,7 +162,8 @@ const PodsList =()=>{
                 onPageChange={handlePageChange}
               />
             </div>)}
-            </div>
+            <AppFooter/>
+            </div> 
           </div>
         </div>
       </div>
