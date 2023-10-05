@@ -51,26 +51,37 @@ const AdminDatabaseDetails = () => {
     fetchDatabaseDetails();
   }, [fetchDatabaseDetails, fetchProjectSummary]);
 
-  const handleEnableButtonClick = async () => {
+  const handleEnableButtonClick = () => {
     try {
       if (details.disabled) {
-        await handlePostRequestWithOutDataObject(
+        handlePostRequestWithOutDataObject(
           databaseID,
           `/databases/${databaseID}/enable`
-        );
+        )
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error("API call error:", error);
+            setError(error);
+            window.location.reload();
+          });
       } else {
-        await handlePostRequestWithOutDataObject(
+        handlePostRequestWithOutDataObject(
           databaseID,
           `/databases/${databaseID}/disable`
-        );
+        )
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error("API call error:", error);
+            setError(error);
+            window.location.reload();
+          });
       }
-      // Handle success (you can add any necessary logic here)
-      window.location.reload();
     } catch (error) {
       console.error("API call error:", error);
-      setError(error);
-    } finally {
-      window.location.reload();
     }
   };
   return (

@@ -235,13 +235,13 @@ class AdminUserPage extends Component {
       return <Redirect to={`/accounts/&{user_id}`} noThrow />;
     }
   };
-  handleEnableButtonClick = async () => {
+  handleEnableButtonClick = () => {
     let { userDetail } = this.state;
     const { userID } = this.props.match.params;
 
     try {
       if (userDetail.disabled) {
-        await handlePostRequestWithOutDataObject(
+        handlePostRequestWithOutDataObject(
           userID,
           `/users/${userID}/enable`
         )
@@ -254,7 +254,7 @@ class AdminUserPage extends Component {
             });
           });
       } else {
-        await handlePostRequestWithOutDataObject(
+        handlePostRequestWithOutDataObject(
           userID,
           `/users/${userID}/disable`
         )
@@ -269,8 +269,6 @@ class AdminUserPage extends Component {
       }
     } catch (error) {
       console.error("API call error:", error);
-    } finally {
-      window.location.reload();
     }
   };
 

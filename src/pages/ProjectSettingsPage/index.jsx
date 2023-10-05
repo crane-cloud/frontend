@@ -491,13 +491,13 @@ class ProjectSettingsPage extends React.Component {
       });
   }
 
-  handleEnableButtonClick = async () => {
+  handleEnableButtonClick = () => {
     let { projectDetails } = this.state;
     const { projectID } = this.props.match.params;
 
     try {
       if (projectDetails.disabled) {
-        await handlePostRequestWithOutDataObject(
+        handlePostRequestWithOutDataObject(
           projectID,
           `/projects/${projectID}/enable`
         )
@@ -510,7 +510,7 @@ class ProjectSettingsPage extends React.Component {
             });
           });
       } else {
-        await handlePostRequestWithOutDataObject(
+        handlePostRequestWithOutDataObject(
           projectID,
           `/projects/${projectID}/disable`
         )
