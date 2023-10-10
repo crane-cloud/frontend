@@ -96,7 +96,8 @@ const AdminProjectsOverview = () => {
   );
 
   const AdminProjects = useCallback(
-    (page, state="", keyword = "" ) => dispatch(getAdminProjectsList(page, keyword, state )),
+    (page, state = "", keyword = "") =>
+      dispatch(getAdminProjectsList(page, keyword, state)),
     [dispatch]
   );
 
@@ -244,24 +245,27 @@ const AdminProjectsOverview = () => {
   const handleChange = ({ target }) => {
     setPeriod(target.getAttribute("value"));
   };
-  const handleProjectFilterAndFetch = useCallback((page,keyword = "")=>{
-    if(sectionValue2 === "Disabled Projects"){
-      AdminProjects(page,"true",keyword);
-    }else if(sectionValue2 === "Active Projects"){
-      AdminProjects(page,"false",keyword);
-    }else{
-      AdminProjects(page, "",keyword);
-    } 
-  },[AdminProjects,sectionValue2])
+  const handleProjectFilterAndFetch = useCallback(
+    (page, keyword = "") => {
+      if (sectionValue2 === "Disabled Projects") {
+        AdminProjects(page, "true", keyword);
+      } else if (sectionValue2 === "Active Projects") {
+        AdminProjects(page, "false", keyword);
+      } else {
+        AdminProjects(page, "", keyword);
+      }
+    },
+    [AdminProjects, sectionValue2]
+  );
 
   useEffect(() => {
-    handleProjectFilterAndFetch(currentPage)
+    handleProjectFilterAndFetch(currentPage);
   }, [sectionValue2, currentPage, handleProjectFilterAndFetch]);
 
   useEffect(() => {
     getUsersProps();
     fetchUsersList();
-    handleProjectFilterAndFetch(currentPage)
+    handleProjectFilterAndFetch(currentPage);
     getAllProjects();
   }, [getUsersProps, handleProjectFilterAndFetch, getAllProjects, currentPage]);
 
@@ -337,7 +341,7 @@ const AdminProjectsOverview = () => {
 
   const searchThroughProjects = (keyword) => {
     handleChangePage(1);
-    handleProjectFilterAndFetch(1,keyword)
+    handleProjectFilterAndFetch(1, keyword);
   };
 
   const handleCallbackSearchword = ({ target }) => {
@@ -348,7 +352,7 @@ const AdminProjectsOverview = () => {
     }
     if (value === "") {
       handleChangePage(1);
-      handleProjectFilterAndFetch(1) 
+      handleProjectFilterAndFetch(1);
     }
   };
 
@@ -364,7 +368,7 @@ const AdminProjectsOverview = () => {
 
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);
-    handleProjectFilterAndFetch(currentPage)
+    handleProjectFilterAndFetch(currentPage);
   };
 
   createPieChartData = () => {
@@ -426,10 +430,11 @@ const AdminProjectsOverview = () => {
       <div className="AMainSection">
         <div className="ContentSection">
           <div className="InformationBarSection">
-            <InformationBar  header={
+            <InformationBar
+              header={
                 <span className="ProjectsInformationBarTitle">
                   <Link
-                    className={ `breadcrumb flex_back_link`}
+                    className={`breadcrumb flex_back_link`}
                     to={`/clusters`}
                   >
                     <BackButton />
@@ -437,7 +442,8 @@ const AdminProjectsOverview = () => {
                   </Link>
                 </span>
               }
-              showBtn={false} />
+              showBtn={false}
+            />
           </div>
 
           <div className="TitleArea">
@@ -887,42 +893,45 @@ const AdminProjectsOverview = () => {
                         </tbody>
                       ) : (
                         <tbody>
-                          { isRetrieved &&
-                              projects !== undefined &&
-                              projects.map((project) => (
-                                <tr 
+                          {isRetrieved &&
+                            projects !== undefined &&
+                            projects.map((project) => (
+                              <tr
                                 onClick={() => {
-                                  history.push(`/projects-overview/${project.id}/details`);
+                                  history.push(
+                                    `/projects-overview/${project.id}/details`
+                                  );
                                 }}
-                                key={projects.indexOf(project)}>
-                                  <td>{project?.name}</td>
-                                  <td>{getUserName(project?.owner_id)}</td>
-                                  <td>{project?.description}</td>
-                                  <td>
-                                    <span
-                                      className={
-                                        project?.disabled === false
-                                          ? "ProjectStatus"
-                                          : "ProjectStatusDisabled"
-                                      }
-                                    >
-                                      {project?.disabled === false
-                                        ? "Active"
-                                        : "Disabled"}
-                                    </span>
-                                  </td>
-                                </tr>
-                              ))}
+                                key={projects.indexOf(project)}
+                              >
+                                <td>{project?.name}</td>
+                                <td>{getUserName(project?.owner_id)}</td>
+                                <td>{project?.description}</td>
+                                <td>
+                                  <span
+                                    className={
+                                      project?.disabled === false
+                                        ? "ProjectStatus"
+                                        : "ProjectStatusDisabled"
+                                    }
+                                  >
+                                    {project?.disabled === false
+                                      ? "Active"
+                                      : "Disabled"}
+                                  </span>
+                                </td>
+                              </tr>
+                            ))}
                         </tbody>
                       )}
                     </table>
                     {isRetrieved && projects.length === 0 && (
-                      <div className="NoResourcesMessage">
+                      <div className="AdminNoResourcesMessage">
                         <p>No projects available</p>
                       </div>
                     )}
                     {!isRetrieving && !isRetrieved && (
-                      <div className="NoResourcesMessage">
+                      <div className="AdminNoResourcesMessage">
                         <p>
                           Oops! Something went wrong! Failed to retrieve
                           projects.
@@ -945,7 +954,7 @@ const AdminProjectsOverview = () => {
           </div>
         </div>
       </div>
-      <AppFooter/>
+      <AppFooter />
     </div>
   );
 };

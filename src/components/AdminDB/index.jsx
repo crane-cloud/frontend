@@ -400,7 +400,7 @@ const AdminDBList = () => {
                 }
               >
                 <table className="UsersTable">
-                  <thead>
+                  <thead className="uppercase">
                     <tr>
                       <th>Database Flavor</th>
                       <th>Name</th>
@@ -465,7 +465,7 @@ const AdminDBList = () => {
           </div>
         </>
       )}
-      <AppFooter/>
+      <AppFooter />
     </div>
   );
 };

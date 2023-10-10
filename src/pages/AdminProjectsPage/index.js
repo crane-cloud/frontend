@@ -17,7 +17,6 @@ import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import AppFooter from "../../components/appFooter";
 
-
 const AdminProjectsPage = () => {
   const [currentPage, handleChangePage] = usePaginator();
   const clusterID = localStorage.getItem("clusterID");
@@ -25,22 +24,22 @@ const AdminProjectsPage = () => {
   const [word, setWord] = useState("");
   const history = useHistory();
 
-  const { isRetrieved , isRetrieving, projects, pagination} = useSelector(
+  const { isRetrieved, isRetrieving, projects, pagination } = useSelector(
     (state) => state.adminProjectsReducer
   );
 
   const AdminProjects = useCallback(
-    (page, keyword='') => dispatch(getAdminProjectsList(page,keyword)),
+    (page, keyword = "") => dispatch(getAdminProjectsList(page, keyword)),
     [dispatch]
-    );
-
+  );
 
   const getAdminProps = useCallback(
-    (page, keyword='') => dispatch(getAdminProjects(clusterID, currentPage, page, keyword)),
+    (page, keyword = "") =>
+      dispatch(getAdminProjects(clusterID, currentPage, page, keyword)),
     [dispatch, clusterID, currentPage]
   );
   const getUsersProps = useCallback(() => dispatch(getUsersList), [dispatch]);
- 
+
   // const adminProjects = useSelector((state) => state.adminProjectsReducer);
   // const usersList = useSelector((state) => state.usersListReducer);
   const [contextMenu, setContextMenu] = useState(false);
@@ -48,17 +47,17 @@ const AdminProjectsPage = () => {
   // const [addCredits, setAddCredits] = useState(false);
   const [users, setUsers] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     AdminProjects(currentPage);
     getAdminProps(currentPage);
-  },[currentPage,getAdminProps,AdminProjects]);
+  }, [currentPage, getAdminProps, AdminProjects]);
 
   useEffect(() => {
     getAdminProps(currentPage);
     getUsersProps();
     fetchUsersList();
     AdminProjects(currentPage);
-  }, [getAdminProps, getUsersProps,currentPage,AdminProjects]);
+  }, [getAdminProps, getUsersProps, currentPage, AdminProjects]);
 
   const fetchUsersList = () => {
     handleGetRequest("/users")
@@ -87,7 +86,7 @@ const AdminProjectsPage = () => {
 
   const searchThroughProjects = (keyword) => {
     handleChangePage(1);
-    AdminProjects(1,keyword);
+    AdminProjects(1, keyword);
   };
 
   const handleCallbackSearchword = ({ target }) => {
@@ -101,7 +100,6 @@ const AdminProjectsPage = () => {
       AdminProjects(1);
     }
   };
-
 
   const getUserName = (id) => {
     let userName = "";
@@ -197,62 +195,67 @@ const AdminProjectsPage = () => {
                   <tbody>
                     {isRetrieved &&
                       projects !== undefined &&
-                       projects.map((project) =>(
-                        <tr 
-                        onClick={() => {
-                          history.push(`/projects/${project.id}/details`);
-                        }}
-                        key={projects.indexOf(project)}>
-                           <td>{project?.name}</td>
-                            <td>{getUserName(project?.owner_id)}</td>
-                            <td >{project?.description}</td>
-                            <td>
-                              <span className={project?.disabled === false ? "ProjectStatus":"ProjectStatusDisabled"}>
-                                {project?.disabled === false
-                                  ? "Active"
-                                  : "Disabled"}
-                              </span>
-                            </td>
-                            <td
-                              onClick={(e) => {
-                                showContextMenu(project.id);
-                              }}
+                      projects.map((project) => (
+                        <tr
+                          onClick={() => {
+                            history.push(`/projects/${project.id}/details`);
+                          }}
+                          key={projects.indexOf(project)}
+                        >
+                          <td>{project?.name}</td>
+                          <td>{getUserName(project?.owner_id)}</td>
+                          <td>{project?.description}</td>
+                          <td>
+                            <span
+                              className={
+                                project?.disabled === false
+                                  ? "ProjectStatus"
+                                  : "ProjectStatusDisabled"
+                              }
                             >
-                              <MoreIcon />
+                              {project?.disabled === false
+                                ? "Active"
+                                : "Disabled"}
+                            </span>
+                          </td>
+                          <td
+                            onClick={(e) => {
+                              showContextMenu(project.id);
+                            }}
+                          >
+                            <MoreIcon />
 
-                              {contextMenu && project.id === selectedProject && (
-                                <div className="BelowHeader bg-light">
-                                  <div className="context-menu">
-                                    <div
-                                      className="DropDownLink"
-                                      role="presentation"
+                            {contextMenu && project.id === selectedProject && (
+                              <div className="BelowHeader bg-light">
+                                <div className="context-menu">
+                                  <div
+                                    className="DropDownLink"
+                                    role="presentation"
+                                  >
+                                    <Link
+                                      to={{
+                                        pathname: `/projects/${selectedProject}/details`,
+                                      }}
                                     >
-                                      <Link
-                                        to={{
-                                          pathname: `/projects/${selectedProject}/details`,
-                                        }}
-                                      >
-                                        View Project Details
-                                      </Link>
-                                    </div>
+                                      View Project Details
+                                    </Link>
                                   </div>
                                 </div>
-                              )}
-                            </td>
+                              </div>
+                            )}
+                          </td>
                         </tr>
-                       ))
-                    }
+                      ))}
                   </tbody>
                 )}
               </table>
-              {isRetrieved &&
-                projects.length === 0 && (
-                  <div className="NoResourcesMessage">
-                    <p>No projects available</p>
-                  </div>
-                )}
+              {isRetrieved && projects.length === 0 && (
+                <div className="AdminNoResourcesMessage">
+                  <p>No projects available</p>
+                </div>
+              )}
               {!isRetrieving && !isRetrieved && (
-                <div className="NoResourcesMessage">
+                <div className="AdminNoResourcesMessage">
                   <p>
                     Oops! Something went wrong! Failed to retrieve projects.
                   </p>

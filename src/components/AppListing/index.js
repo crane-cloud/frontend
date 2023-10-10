@@ -5,9 +5,9 @@ import Pagination from "../../components/Pagination";
 import Spinner from "../Spinner";
 
 const AppListing = (props) => {
-  const { currentPage, gettingApps, handlePageChange } = props; 
+  const { currentPage, gettingApps, handlePageChange } = props;
 
-  const {  isFetching, apps, isFetched, pagination } = useSelector(
+  const { isFetching, apps, isFetched, pagination } = useSelector(
     (state) => state.appsAdminListReducer
   );
 
@@ -15,9 +15,8 @@ const AppListing = (props) => {
     gettingApps(currentPage);
   }, [gettingApps, currentPage]);
 
-
   const history = useHistory();
-  
+
   return (
     <div className="SubTableContainer">
       <div className="AMainSection">
@@ -28,47 +27,48 @@ const AppListing = (props) => {
                 ? "ResourcesTable LoadingResourcesTable"
                 : "ResourcesTable"
             }
-          ><table className="UsersTable">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Image</th>
-              <th>Url</th>
-              <th>Age</th>
-            </tr>
-          </thead>
-          {isFetching ? (
-            <tbody>
-              <tr className="TableLoading">
-                <td className="TableTdSpinner">
-                  <div className="SpinnerWrapper">
-                    <Spinner size="big" />
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          ) : (
-            <tbody>
-              {isFetched &&
-                apps !== undefined &&
-                apps?.map((app) => (
-                  <tr
-                    key={apps.indexOf(app)}
-                    onClick={() => {
-                      history.push(`/apps/${app?.id}`);
-                    }}
-                  >
-                    <td>{app?.name}</td>
-                    <td>{app.image}</td>
-                    <td>{app?.url}</td>
-                    <td>{app?.age}</td>
+          >
+            <table className="UsersTable">
+              <thead className="uppercase">
+                <tr>
+                  <th>Name</th>
+                  <th>Image</th>
+                  <th>Url</th>
+                  <th>Age</th>
+                </tr>
+              </thead>
+              {isFetching ? (
+                <tbody>
+                  <tr className="TableLoading">
+                    <td className="TableTdSpinner">
+                      <div className="SpinnerWrapper">
+                        <Spinner size="big" />
+                      </div>
+                    </td>
                   </tr>
-                ))}
-            </tbody>
-          )}
-        </table>
+                </tbody>
+              ) : (
+                <tbody>
+                  {isFetched &&
+                    apps !== undefined &&
+                    apps?.map((app) => (
+                      <tr
+                        key={apps.indexOf(app)}
+                        onClick={() => {
+                          history.push(`/apps/${app?.id}`);
+                        }}
+                      >
+                        <td>{app?.name}</td>
+                        <td>{app.image}</td>
+                        <td>{app?.url}</td>
+                        <td>{app?.age}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              )}
+            </table>
 
-        {isFetched && apps.length === 0 && (
+            {isFetched && apps.length === 0 && (
               <div className="AdminNoResourcesMessage">
                 <p>No apps Available</p>
               </div>
@@ -76,8 +76,7 @@ const AppListing = (props) => {
             {!isFetching && !isFetched && (
               <div className="AdminNoResourcesMessage">
                 <p>
-                  Oops! Something went wrong! Failed to retrieve Available
-                  apps.
+                  Oops! Something went wrong! Failed to retrieve Available apps.
                 </p>
               </div>
             )}
@@ -92,7 +91,7 @@ const AppListing = (props) => {
             </div>
           )}
         </div>
-        </div>
+      </div>
     </div>
   );
 };

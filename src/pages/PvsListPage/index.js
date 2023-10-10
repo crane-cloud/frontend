@@ -16,20 +16,18 @@ const PvsListPage = (props) => {
     (state) => state.pvsReducer
   );
   const dispatch = useDispatch();
-  
+
   const clusterName = localStorage.getItem("clusterName");
   const [currentPage, handleChangePage] = usePaginator();
-  const  clusterID  = localStorage.getItem("clusterID");
+  const clusterID = localStorage.getItem("clusterID");
   useEffect(() => {
     dispatch(getPvs(clusterID, currentPage));
-  }, [clusterID, currentPage,dispatch]);
+  }, [clusterID, currentPage, dispatch]);
 
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);
     dispatch(getPvs(clusterID, currentPage));
   };
-
-
 
   return (
     <div className="MainPage">
@@ -53,7 +51,7 @@ const PvsListPage = (props) => {
               }
             >
               <table>
-                <thead>
+                <thead className="uppercase">
                   <tr>
                     <th>Name</th>
                     <th>Access Mode</th>
@@ -65,7 +63,7 @@ const PvsListPage = (props) => {
                 {isRetrieving ? (
                   <tbody>
                     <tr className="TableLoading">
-                    <td className="TableTdSpinner">
+                      <td className="TableTdSpinner">
                         <div className="SpinnerWrapper">
                           <Spinner size="big" />
                         </div>
@@ -112,7 +110,7 @@ const PvsListPage = (props) => {
               />
             </div>
           )}
-          <AppFooter/>
+          <AppFooter />
         </div>
       </div>
     </div>
