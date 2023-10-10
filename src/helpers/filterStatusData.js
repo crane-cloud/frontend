@@ -1,4 +1,9 @@
 export const filterStatusData = (data) => {
+  // Calculate the start date for the 30-day window.
+  const currentDate = new Date();
+  const startDate = new Date();
+  startDate.setDate(currentDate.getDate() - 30);
+
   return Object.keys(data).reduce((result, parentName) => {
     result[parentName] = {};
     Object.keys(data[parentName]).forEach((name) => {
@@ -11,31 +16,29 @@ export const filterStatusData = (data) => {
       subgroup.forEach((data) => {
         const timestamp = data.timestamp * 1000;
         const date = new Date(timestamp);
-        const formattedDate = date.toDateString(); // You can format the date as desired
+        const formattedDate = date.toDateString();
 
-        if (
-          !uniqueDatesMap.has(formattedDate) ||
-          timestamp > uniqueDatesMap.get(formattedDate).timestamp
-        ) {
-          uniqueDatesMap.set(formattedDate, {
-            ...data,
-            timestamp: formattedDate,
-          });
+        // Only consider data within the 30-day window
+        if (date >= startDate && date <= currentDate) {
+          if (
+            !uniqueDatesMap.has(formattedDate) ||
+            timestamp > uniqueDatesMap.get(formattedDate).timestamp
+          ) {
+            uniqueDatesMap.set(formattedDate, {
+              ...data,
+              timestamp: formattedDate,
+            });
+          }
         }
       });
 
-      // Convert the map values (latest records) back to an array
       const latestRecords = Array.from(uniqueDatesMap.values());
-
-      // Sort the latestRecords by timestamp (most current first)
       latestRecords.sort(
         (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
       );
 
-      const slicedRecords = latestRecords.slice(12);
-
-      if (slicedRecords.length > 0) {
-        result[parentName][name] = slicedRecords;
+      if (latestRecords.length > 0) {
+        result[parentName][name] = latestRecords;
       }
     });
     return result;
