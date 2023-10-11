@@ -16,10 +16,15 @@
   user-select: none;
   /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
+
+.UserPlatformMetricsContainer{
+  margin-bottom: 1.5rem;
+}
  
 .BetaUser {
   display: flex;
   gap: 1rem;
+  margin-bottom: 1.5rem;
 }
  
 .BetaUserText {

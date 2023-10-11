@@ -239,11 +239,11 @@ class UserProfile extends React.Component {
                           title="Assigned by Admin for billing purporses"
                         >
                           {user.credits.length === 0 ? (
-                            "0 credits"
+                            "0 Credits"
                           ) : (
                             <div className={styles.CreditsContainer}>
-                              {user.credits[0].amount}
-                              credits
+                              {user.credits[0].amount} {" "}
+                              Credits
                             </div>
                           )}
                         </div>
@@ -263,7 +263,7 @@ class UserProfile extends React.Component {
                           Information
                         </div>
                         <div className={styles.UserSectionSubTitle}>
-                          Your identity on crane cloud
+                          Your identity on Crane Cloud
                         </div>
                       </div>
                       <div className={styles.ContainerCard}>
