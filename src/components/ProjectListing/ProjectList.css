@@ -22,29 +22,74 @@
 .ProjectStatus {
     color: #408140;
 }
-.ProjectStatusDisabled{
+
+.ProjectStatusDisabled {
     color: red;
 }
 
-.DropDownLink {
+.SectionTitle>.select>.SearchBar>.AdminSearchInput {
+    float: right;
+    /* padding-left: 3rem; */
+}
+
+.SectionTitle .SelectElementValue .DropDownLink {
     text-align: center;
     justify-content: center;
 }
-.MainSection1{
-    background-color: var( --gray-bg-light-color);
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(500px,1fr));
-    overflow: hidden;
-    position: absolute;
+
+/* .ClusterContainer {
     place-items: center;
-    top: 4rem;
-    left: 0;
-    width: 100%;
+} */
+
+.ChartContainer .VisualAreaHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    align-items: center;
 }
-@media (min-width : 768px),(max-width: 1280px){
-    span .breadcrumb{
+
+.ChartContainer .VisualAreaHeader .SelectElementValue {
+    padding: 0.6rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.VisualAreaHeader .SectionTitle .SelectOptionsWrapper .SelectOption {
+    padding: 0 1rem;
+    line-height: 2.5rem;
+    height: 2.5rem;
+    font-weight: 500;
+}
+
+.VisualAreaContentSection {
+    padding: 0;
+}
+
+.ChartDropDown {
+    padding-bottom: 1rem;
+}
+
+.ChartDropDown:hover {
+    cursor: pointer;
+}
+
+.TitleArea .SectionTitle .SelectElementValue {
+    gap: 0.5rem;
+    padding: 0.7rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+@media (min-width : 768px),
+(max-width: 1280px) {
+    span .breadcrumb {
         font-size: 24px;
     }
+
     .InfoHeader {
         display: flex;
         align-items: center;
@@ -52,6 +97,7 @@
         font-size: 24px;
         gap: 10px;
     }
+
     .InformationBar {
         background: #f8f7e5;
         min-height: 4rem;
@@ -59,10 +105,11 @@
         align-items: center;
         position: relative;
     }
-    .MainSection1{
-        background-color: var( --gray-bg-light-color);
+
+    .MainSection1 {
+        background-color: var(--gray-bg-light-color);
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px,1fr));
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
         overflow: hidden;
         position: absolute;
         place-items: center;
@@ -70,7 +117,8 @@
         left: 0;
         width: 100%;
     }
-    .uppercase{
+
+    .uppercase {
         font-size: 20px;
         text-transform: capitalize;
         text-align: left;
@@ -78,13 +126,15 @@
         position: relative;
         width: 100%;
     }
+
     .ContentSection {
         display: flex;
         flex-direction: column;
         overflow-x: hidden;
         overflow-y: auto;
         height: 100%;
-      }
+    }
+
     .ResourcesTable table td {
         padding: 0.8rem 1rem;
         text-align: left;
@@ -92,21 +142,132 @@
         font-size: 18px;
     }
 }
-@media (max-width: 412px){
-    span .breadcrumb{
+
+@media (max-width : 1024px) {
+    .NewResourceCard {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 14rem;
+        /* height: 9rem; */
+        background-color: #ffffff;
+        border-radius: 0.6rem;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 1rem 0;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+
+    .NewResourceCardHeader {
+        font-size: 1rem;
+    }
+
+    .NewResourceCardCount {
+        font-size: 1.9rem;
+        font-weight: 420;
+        color: var(--primary-color);
+    }
+
+    .TitleArea .SectionTitle .SelectElementValue {
+        gap: 0.2rem;
+        padding: 0.4rem;
+        font-weight: 500;
+        font-size: 0.8rem;
+        align-items: center;
+    }
+
+    .SearchArea,
+    .SectionTitle {
+        /* display: grid; */
+        align-items: center;
+        padding-top: 1rem;
+        font-size: 1rem;
+    }
+
+    .UserSection .piechart {
+        background-color: #fff;
+        border-radius: 0.6rem;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0.1rem;
+        place-items: center;
+    }
+
+    .MainContentSection {
+        overflow: hidden;
+    }
+
+    .PeriodButtonsSection {
+        display: flex;
+        flex-wrap: nowrap;
+    }
+
+    .SelectElementValue {
+        padding: 0.2rem;
+        display: flex;
+        justify-content: space-evenly;
+        gap: 0.2rem;
+        align-items: center;
+        padding: 0.2rem;
+        font-size: 0.9rem;
+    }
+
+    .SelectElementMain {
+        border: 1px solid #000000;
+        border-radius: 0.3rem;
+        width: 5.5rem;
+        padding: 0.1rem;
+    }
+
+    .CardHeaderSection {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #cccccc;
+        font-size: 1rem;
+    }
+
+    .AdminSearchInput input {
+        background-color: #ebead5;
+        border: 0;
+        border-top-left-radius: 4px 2px;
+        border-bottom-left-radius: 3px 4px;
+        color: #000;
+        font-size: 1rem;
+        height: 40px;
+        max-width: 10rem;
+        padding: 1rem;
+    }
+
+    .SearchBar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.5rem 0 1rem;
+        max-width: 90%;
+        border-bottom: 1px solid #ccc;
+    }
+}
+
+@media (max-width: 412px) {
+    span .breadcrumb {
         font-size: 14px;
     }
+
     .InfoHeader {
         display: flex;
         align-items: center;
         font-weight: bold;
-        font-size: 14px;
+        font-size: 1.1rem;
         gap: 5px;
     }
-    .MainSection1{
-        background-color: var( --gray-bg-light-color);
+
+    .MainSection1 {
+        background-color: var(--gray-bg-light-color);
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         overflow: hidden;
         position: absolute;
         place-items: center;
@@ -114,16 +275,19 @@
         left: 0;
         width: 100%;
     }
+
     .ResourcesTable table th {
         padding: 0.5rem 0.3rem;
         text-align: left;
     }
-    .uppercase{
+
+    .uppercase {
         font-size: 10px;
         text-transform: capitalize;
         text-align: left;
         font-weight: bolder;
     }
+
     .ContentSection {
         display: flex;
         flex-direction: column;
@@ -131,13 +295,15 @@
         overflow-y: auto;
         padding: 0.5rem;
         height: calc(100vh - 4rem);
-      }
+    }
+
     .ResourcesTable table td {
         padding: 0.5rem 0.8rem;
         text-align: left;
         font-weight: normal;
         font-size: 12px;
     }
+
     .AdminSearchInput {
         display: flex;
         flex-direction: row;
@@ -147,11 +313,13 @@
         border-radius: 5px;
         place-items: center;
     }
+
     .LogoType {
         color: #fff;
         font-weight: 600;
         font-size: 1.2rem;
     }
+
     .Header_OnHeader__9Jr22 {
         display: grid;
         gap: 0.3rem;
@@ -160,6 +328,7 @@
         position: relative;
         cursor: pointer;
     }
+
     .Header_UserNames__VEaft {
         font-weight: bold;
         color: #fff;
@@ -170,10 +339,25 @@
         user-select: none;
         font-size: 12px;
     }
+
     .Logo {
         display: grid;
         grid-gap: 0.5rem;
         grid-auto-flow: column;
         align-items: center;
+    }
+
+    .NewResourceCard {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 9rem;
+        background-color: #ffffff;
+        border-radius: 0.6rem;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 1rem 0;
+        text-align: center;
+        transition: transform 0.3s ease;
     }
 }

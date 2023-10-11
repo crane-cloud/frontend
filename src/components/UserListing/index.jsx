@@ -1,38 +1,88 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
 import Pagination from "../../components/Pagination";
 import Spinner from "../Spinner";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { compareLastSeen } from "../../helpers/compareLastSeen";
+import { dateInWords } from "../../helpers/dateConstants";
+import Select from "../Select";
+import { retrieveDefaultDateRanges } from "../../helpers/dateRanges";
+import BlackInputText from "../BlackInputText";
+import PrimaryButton from "../PrimaryButton";
+import "./UserListing.css";
 
 const UserListing = (props) => {
-  const { currentPage, gettingUsers, handlePageChange } = props;
-  const [actionsMenu, setActionsMenu] = useState(false);
- 
-
-  const { isFetching, users, isFetched, pagination } = useSelector(
-    (state) => state.usersListReducer
-  );
-
-  useEffect(() => {
-    gettingUsers(currentPage);
-  }, [gettingUsers, currentPage]);
-
+  let {
+    sectionValue,
+    isFetching,
+    users,
+    isFetched,
+    pagination,
+    currentPage,
+    handlePageChange,
+    setSelectedDateRange,
+  } = props;
   const history = useHistory();
+  const defaultDateRanges = retrieveDefaultDateRanges();
+  const [selectedOption, setSelectedOption] = useState("");
+  const [customDateRange, setCustomDateRange] = useState("");
 
-  
+  const handleDateRangeChange = (selectedOption) => {
+    const selectedValue = selectedOption.value;
+    setSelectedDateRange(selectedValue);
 
-  const hideModal = () => {
-    setActionsMenu(false);
-    document.removeEventListener("click", hideModal);
+    if (selectedValue !== "custom") {
+      setSelectedOption("");
+    }
+
+    setSelectedOption(selectedValue);
   };
 
-  
+  const handleApplyCustomDateRange = (customDateRange) => {
+    setSelectedDateRange(customDateRange);
+  };
+
+  // Sort the user list in descending order of "last_seen"
+  const sortedUserList = users.slice().sort(compareLastSeen);
 
   return (
-    <div className="APage">
+    <div className="SubTableContainer">
       <div className="AMainSection">
         <div className="ContentSection">
+          {sectionValue === "active" && (
+            <>
+              <div className="TableHeader">
+                <div className="DateRangeSection">
+                  <Select
+                    placeholder="Choose Date Range"
+                    options={defaultDateRanges}
+                    onChange={(selectedOption) =>
+                      handleDateRangeChange(selectedOption)
+                    }
+                  />
+                  {selectedOption === "custom" && (
+                    <div className="CustomDateRangeSection">
+                      <BlackInputText
+                        type="text"
+                        value={customDateRange}
+                        onChange={(e) => setCustomDateRange(e.target.value)}
+                        placeholder="Enter custom date range"
+                      />
+                      <div className="DateRangeButton">
+                        <PrimaryButton
+                          onClick={() =>
+                            handleApplyCustomDateRange(customDateRange)
+                          }
+                        >
+                          Apply
+                        </PrimaryButton>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
           <div
             className={
               isFetching
@@ -43,10 +93,21 @@ const UserListing = (props) => {
             <table className="UsersTable">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Beta User</th>
-                  <th>Credits</th>
-                  <th>Email</th>
+                  {sectionValue === "active" ? (
+                    <>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Date Joined</th>
+                      <th>Last Login</th>
+                    </>
+                  ) : (
+                    <>
+                      <th>Name</th>
+                      <th>Beta User</th>
+                      <th>Credits</th>
+                      <th>Email</th>
+                    </>
+                  )}
                 </tr>
               </thead>
               {isFetching ? (
@@ -63,30 +124,40 @@ const UserListing = (props) => {
                 <tbody>
                   {isFetched &&
                     users !== undefined &&
-                    users?.map((user) => (
+                    sortedUserList?.map((user) => (
                       <tr
                         key={users.indexOf(user)}
                         onClick={() => {
                           history.push(`/accounts/${user.id}`);
                         }}
                       >
-                        <td>{user?.name}</td>
-                        <td>{user.is_beta_user ? "True" : "False"}</td>
-                        <td>
-                          {user?.credits.length === 0 ? (
-                            "No credits"
-                          ) : (
-                            <div className="creditSection">
-                              {user?.credits[0]?.amount}
-                              <div className="creditCoin">
-                                {" "}
-                                <Coin title="credits" />
-                              </div>
-                            </div>
-                          )}
-                        </td>
-                        <td>{user?.email}</td>
-                        
+                        {sectionValue === "active" ? (
+                          <>
+                            <td>{user?.name}</td>
+                            <td>{user?.email}</td>
+                            <td>{dateInWords(new Date(user?.date_created))}</td>
+                            <td>{dateInWords(new Date(user?.last_seen))}</td>
+                          </>
+                        ) : (
+                          <>
+                            <td>{user?.name}</td>
+                            <td>{user.is_beta_user ? "True" : "False"}</td>
+                            <td>
+                              {user?.credits.length === 0 ? (
+                                "No credits"
+                              ) : (
+                                <div className="creditSection">
+                                  {user?.credits[0]?.amount}
+                                  <div className="creditCoin">
+                                    {" "}
+                                    <Coin title="credits" />
+                                  </div>
+                                </div>
+                              )}
+                            </td>
+                            <td>{user?.email}</td>
+                          </>
+                        )}
                       </tr>
                     ))}
                 </tbody>

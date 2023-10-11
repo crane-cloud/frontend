@@ -16,6 +16,7 @@ import { ReactComponent as FilterIcon } from "../../assets/images/filterIcon.svg
 import { ReactComponent as ArrowUpDDown } from "../../assets/images/ArrowUp&Down.svg";
 import { dateInWords } from "../../helpers/dateConstants";
 import Spinner from "../../components/Spinner";
+import AppFooter from "../../components/appFooter/index.js";
 
 const AdminLogsPage = () => {
   const  clusterID  = localStorage.getItem("clusterID");
@@ -454,8 +455,10 @@ const AdminLogsPage = () => {
               </div>
             </div>
           </div>
+          <AppFooter/>
         </div>
       </div>
+
     </div>
   );
 };

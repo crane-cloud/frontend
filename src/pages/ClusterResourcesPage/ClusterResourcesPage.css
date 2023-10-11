@@ -1,10 +1,14 @@
 /* This Component is ideal for re-use for both the clusters and cluster resources */
 
 .ClusterContainer {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  grid-gap: 15px;
+  display: flex;
+  gap: 1rem;
   padding: 2rem 1.4rem;
+  flex-wrap: wrap;
+}
+
+.CardLink {
+  text-decoration: none;
 }
 
 .ContentSection .ResourceSpinnerWrapper {

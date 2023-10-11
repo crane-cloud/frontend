@@ -1,0 +1,92 @@
+.SeriesCardArea {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 2rem;
+}
+
+.SeriesCard {
+    border: 1px solid #ccc;
+    background-color: white;
+    width: 100%;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.SeriesTopRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.SeriesTitle {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.horizontal-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.box {
+    width: 14px;
+    height: 45px;
+    border-radius: 0.3rem;
+}
+
+.box.green {
+    background-color: #41873F;
+}
+
+.box.red {
+    background-color: #FF0000;
+}
+
+.SeriesBottomRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #666;
+}
+
+.RowDivider {
+    width: 80%;
+    border-bottom: none;
+    border-left: none;
+}
+
+.ServiceGraph {
+    padding: 1rem;
+    width: 100%;
+}
+
+.ServiceTitle {
+    color: #555555;
+    font-size: 1rem;
+    line-height: 2rem;
+    font-weight: bold;
+}
+
+.ServiceGraphBoxes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+@media only screen and (max-width: 750px) {
+    .SeriesCardArea {
+        padding: 1rem 0 0 2rem;
+        width: 120%;
+    }
+
+    .ServiceGraphBoxes {
+        justify-content: flex-start;
+    }
+}

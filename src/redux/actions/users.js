@@ -5,15 +5,6 @@ import {
   START_GETTING_USERS,
 } from "./actionTypes";
 
-import LRU  from "lru-cache";
-const cache = new LRU({
-  max: 50, 
-  ttl: 60 * 60 * 1000, 
-});
-
-let currentCacheKey = null;
-
-
 export const startGettingUsers = () => ({
   type: START_GETTING_USERS,
 });
@@ -31,51 +22,40 @@ export const getUsersFail = (error) => ({
   },
 });
 
-const getUsersList = (page,keyword='') => async (dispatch) => {
-  dispatch(startGettingUsers());
-  // try {
-  //   const response = await axios.get(`/users?page=${page}`);
-  //   return dispatch(getUsersSuccess(response));
-  // } catch (error) {
-  //   dispatch(getUsersFail(error));
-  // }
+const getUsersList =
+  (dateRange, sectionValue, page, keywords) => async (dispatch) => {
+    dispatch(startGettingUsers());
 
-  const cacheKey = `${page}_${keyword}`;
-  currentCacheKey=cacheKey;
-
-  // Check if the data is already cached
-  const cachedResponse = cache.get(cacheKey);
-  if (cachedResponse) {
-    dispatch(getUsersSuccess(cachedResponse));
-    return Promise.resolve();
-  }
-
-  let link;
-  if (keyword) {
-    link = `/users?page=${page}&keywords=${keyword}`;
-  } else {
-    link = `/users?page=${page}`;
-  }
-  
-  // Run the API call in the background to fetch updated data
-  const backgroundRequest = axios.get(link).then((response) => {
-    cache.set(cacheKey, response); // Update the cache with new data
-    //prevents background search from affecting the new search
-    if(cacheKey === currentCacheKey){
-    dispatch(getUsersSuccess(response));
+    let link;
+    if (sectionValue !== "all") {
+      if (sectionValue === "verified") {
+        link = `/users?page=${page}&verified=true`;
+      } else if (sectionValue === "unverified") {
+        link = `/users?page=${page}&verified=false`;
+      } else if (sectionValue === "beta") {
+        link = `/users?page=${page}&is_beta=true`;
+      } else {
+        if (dateRange === "custom") {
+          // have a default range of 30days
+          link = `/users/inactive_users?range=30&page=${page}`;
+        } else {
+          link = `/users/inactive_users?range=${dateRange}&page=${page}`;
+        }
+      }
+    } else {
+      link = `/users?page=${page}`;
     }
-  });
 
-  // Check if there's an existing cache, but don't wait for the background request to finish
-  if (cachedResponse) {
-    return Promise.resolve();
-  }
+    if (keywords) {
+      link += `&keywords=${keywords}`;
+    }
 
-  // Return the background request as a promise
-  return backgroundRequest.catch((error) => {
-    dispatch(getUsersFail(error));
-  });
-
-};
+    try {
+      const response = await axios.get(link);
+      dispatch(getUsersSuccess(response));
+    } catch (error) {
+      dispatch(getUsersFail(error));
+    }
+  };
 
 export default getUsersList;

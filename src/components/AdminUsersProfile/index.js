@@ -26,6 +26,11 @@ import NewResourceCard from "../NewResourceCard";
 import userProfleStyles from "../UserProfile/UserProfile.module.css";
 import Avatar from "../Avatar";
 import moment from "moment";
+import AppFooter from "../appFooter";
+import {
+  handleGetRequest,
+  handlePostRequestWithOutDataObject,
+} from "../../apis/apis"
 
 class AdminUserPage extends Component {
   constructor() {
@@ -41,6 +46,8 @@ class AdminUserPage extends Component {
       openDisableAlert: false,
       error: "",
       hidden: true,
+      userDetail: [],
+      fetchingUserDetails: true,
     };
     this.showMenu = this.showMenu.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -58,6 +65,7 @@ class AdminUserPage extends Component {
     this.handleDisableAlert = this.handleDisableAlert.bind(this);
     this.showDisableAlert = this.showDisableAlert.bind(this);
     this.hideDisableAlert = this.hideDisableAlert.bind(this);
+    this.getUserDetails =  this.getUserDetails.bind(this);
   }
   componentDidMount() {
     const {
@@ -76,6 +84,7 @@ class AdminUserPage extends Component {
     clearCreditsState();
     clearUserCredits();
     adminGetUserCredits(params.userID);
+    this.getUserDetails();
   }
 
   componentDidUpdate(prevProps) {
@@ -89,6 +98,26 @@ class AdminUserPage extends Component {
     if (isDisableUser !== prevProps.DisableUser) {
       this.hideDeleteAlert();
     }
+  }
+
+  getUserDetails() {
+    const {
+      match: { params },
+    } = this.props;
+    const { userID } = params;
+    handleGetRequest(`/users/${userID}`)
+      .then((response) => {
+        this.setState({
+          userDetail: response.data.data.user,
+          fetchingUserDetails: false,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          error: "Failed to fetch user details",
+          fetchingUserDetails: false,
+        });
+      });
   }
 
   handleDeleteAlert(e, userID) {
@@ -206,6 +235,42 @@ class AdminUserPage extends Component {
       return <Redirect to={`/accounts/&{user_id}`} noThrow />;
     }
   };
+  handleEnableButtonClick = () => {
+    let { userDetail } = this.state;
+    const { userID } = this.props.match.params;
+
+    try {
+      if (userDetail.disabled) {
+        handlePostRequestWithOutDataObject(
+          userID,
+          `/users/${userID}/enable`
+        )
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            this.setState({
+              error: error,
+            });
+          });
+      } else {
+        handlePostRequestWithOutDataObject(
+          userID,
+          `/users/${userID}/disable`
+        )
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            this.setState({
+              error: error,
+            });
+          });
+      }
+    } catch (error) {
+      console.error("API call error:", error);
+    }
+  };
 
   render() {
     const {
@@ -227,7 +292,7 @@ class AdminUserPage extends Component {
     const {
       match: { params },
     } = this.props;
-    const { credits, creditDescription, openDeleteAlert, openDisableAlert } =
+    const { credits, creditDescription, openDeleteAlert, openDisableAlert, userDetail } =
       this.state;
     const user = getUser(users, params.userID);
     const { credit_assignment_records } = userCredits;
@@ -253,7 +318,7 @@ class AdminUserPage extends Component {
                 showBackBtn
               />
             </div>
-            <div className="ShortContainer">
+            <div className="Short1Container">
               <div className="ContentSection">
                 <div className="AdminUserPageContainer">
                   <section>
@@ -263,20 +328,20 @@ class AdminUserPage extends Component {
                         <div className="AdminUserProfileInfoSect">
                           <div className="AdminUserProfileInfoHeader">
                             <Avatar
-                              name={user?.name}
+                              name={userDetail?.name}
                               className={userProfleStyles.UserAvatarLarge}
                             />
                             <div className={userProfleStyles.Identity}>
                               <div className={userProfleStyles.IdentityName}>
-                                {user?.name}
-                                {user?.is_beta_user === true && (
+                                {userDetail?.name}
+                                {userDetail?.is_beta_user === true && (
                                   <div className={userProfleStyles.BetaUserDiv}>
                                     Beta User
                                   </div>
                                 )}
                               </div>
                               <div className={userProfleStyles.IdentityEmail}>
-                                {user?.email}
+                                {userDetail?.email}
                               </div>
                             </div>
                           </div>
@@ -284,14 +349,14 @@ class AdminUserPage extends Component {
                           <div className="AdminProfileRowInfo">
                             <div className="AdminProfileRowItem">
                               Verified:
-                              <span>{user?.verified ? "True" : "False"}</span>
+                              <span>{userDetail?.verified ? "True" : "False"}</span>
                             </div>
                             |
                             <div className="AdminProfileRowItem">
                               Role:
                               <span>
-                                {user?.roles?.length > 0
-                                  ? user?.roles[0].name
+                                {userDetail?.roles?.length > 0
+                                  ? userDetail?.roles[0].name
                                   : "None"}
                               </span>
                             </div>
@@ -299,7 +364,7 @@ class AdminUserPage extends Component {
                             <div className="AdminProfileRowItem">
                               Date Joined:
                               <span>
-                                {moment(user?.date_created)
+                                {moment(userDetail?.date_created)
                                   .utc()
                                   .format("ddd, MMMM DD, yyyy")}
                               </span>
@@ -308,8 +373,8 @@ class AdminUserPage extends Component {
                             <div className="AdminProfileRowItem">
                               Last Seen:
                               <span>
-                                {user?.last_seen
-                                  ? moment(user?.last_seen)
+                                {userDetail?.last_seen
+                                  ? moment(userDetail?.last_seen)
                                       .utc()
                                       .format("ddd, MMMM DD, yyyy")
                                   : "Not available"}
@@ -376,7 +441,7 @@ class AdminUserPage extends Component {
                   )}
                   <div>
                     <div className="SectionTitle">User Platform Metrics</div>
-                    <div className="ClusterContainer">
+                    <div className="Cluster1Container">
                       <NewResourceCard
                         key={1}
                         title="Projects Owned"
@@ -396,7 +461,9 @@ class AdminUserPage extends Component {
                         key={1}
                         title="Credits"
                         count={
-                          user?.credits.length === 0 ? 0 : user?.credits[0].amount
+                          user?.credits.length === 0
+                            ? 0
+                            : user?.credits[0].amount
                         }
                       />
                     </div>
@@ -427,18 +494,24 @@ class AdminUserPage extends Component {
                         <div className="MemberTableRow">
                           <div className="SettingsSectionInfo">
                             <div className="SubTitle">
-                              Disable User
+                              {userDetail?.disabled ? "Enable" : "Disable"} User
                               <br />
                               <div className="SubTitleContent">
-                                This will temporary disable the user.
+                                {userDetail?.disabled
+                                  ? "This will enable this user."
+                                  : "This will temporary disable the user."}
                               </div>
                             </div>
                             <div className="SectionButtons">
                               <PrimaryButton
-                                color="red-outline"
-                                onClick={this.showDisableAlert}
+                                onClick={this.handleEnableButtonClick}
+                                color={
+                                  userDetail?.disabled
+                                    ? "primary-outline"
+                                    : "red-outline"
+                                }
                               >
-                                Disable
+                                {userDetail?.disabled ? "Enable" : "Disable"}
                               </PrimaryButton>
                             </div>
                           </div>
@@ -474,7 +547,7 @@ class AdminUserPage extends Component {
                               <div className="InnerModalDescription">
                                 Are you sure you want to delete this user &nbsp;
                                 <span className="DatabaseName">
-                                  {user?.name} ?
+                                  {userDetail?.name} ?
                                 </span>
                                 <DeleteWarning />
                               </div>
@@ -518,9 +591,8 @@ class AdminUserPage extends Component {
                                 Are you sure you want to disable this user
                                 &nbsp;
                                 <span className="DatabaseName">
-                                  {user?.name} ?
+                                  {userDetail?.name} ?
                                 </span>
-                                <DeleteWarning />
                               </div>
                             </div>
 
@@ -624,6 +696,7 @@ class AdminUserPage extends Component {
                 </Modal>
               </div>
             </div>
+            <AppFooter />
           </div>
         </div>
       </div>

@@ -8,6 +8,7 @@ import Status from "../../components/Status";
 import Pagination from "../../components/Pagination";
 import { useSelector, useDispatch } from "react-redux";
 import usePaginator from "../../hooks/usePaginator";
+import AppFooter from "../../components/appFooter";
 // import { useParams } from "react-router-dom";
 
 const PvsListPage = (props) => {
@@ -111,6 +112,7 @@ const PvsListPage = (props) => {
               />
             </div>
           )}
+          <AppFooter/>
         </div>
       </div>
     </div>

@@ -14,6 +14,8 @@ import usePaginator from "../../hooks/usePaginator";
 import Pagination from "../../components/Pagination";
 import { handleGetRequest } from "../../apis/apis.js";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import AppFooter from "../../components/appFooter";
 
 
 const AdminProjectsPage = () => {
@@ -21,7 +23,7 @@ const AdminProjectsPage = () => {
   const clusterID = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
   const [word, setWord] = useState("");
-  // const [searchProjectList, setSearchProjectList] = useState([]);
+  const history = useHistory();
 
   const { isRetrieved , isRetrieving, projects, pagination} = useSelector(
     (state) => state.adminProjectsReducer
@@ -196,7 +198,11 @@ const AdminProjectsPage = () => {
                     {isRetrieved &&
                       projects !== undefined &&
                        projects.map((project) =>(
-                        <tr key={projects.indexOf(project)}>
+                        <tr 
+                        onClick={() => {
+                          history.push(`/projects/${project.id}/details`);
+                        }}
+                        key={projects.indexOf(project)}>
                            <td>{project?.name}</td>
                             <td>{getUserName(project?.owner_id)}</td>
                             <td >{project?.description}</td>
@@ -262,6 +268,7 @@ const AdminProjectsPage = () => {
                 />
               </div>
             )}
+            <AppFooter />
           </div>
         </div>
       </div>

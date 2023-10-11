@@ -1,0 +1,64 @@
+.ProjectInstructions .SettingsSectionRow {
+    display: flex;
+    justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+    .AdminProfileRowInfo {
+        flex-direction: column;
+        /* Stack items vertically */
+        align-items: flex-start;
+        /* Align items to the left */
+        gap: 0.5rem;
+        /* Reduce the gap between items */
+        font-size: 0.9rem;
+        /* Adjust font size for smaller screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .AdminUserProfileCard {
+        flex-direction: column;
+        /* Stack items vertically */
+        align-items: flex-start;
+        /* Align items to the left */
+        gap: 1rem;
+        /* Keep some gap between stacked items */
+        padding: 1rem;
+        /* Adjust padding for smaller screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .AdminUserProfileInfoSect {
+        padding: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .ProjectInstructions {
+        padding: 0.5rem;
+        /* Adjust padding for smaller screens */
+        border-radius: 10px;
+        /* Adjust border radius for smaller screens */
+        border: none;
+        /* Remove border on smaller screens */
+        gap: 0.5rem;
+        /* Adjust gap between grid items */
+    }
+
+    .SettingsSectionRow {
+        display: flex;
+        flex-direction: column;
+        padding: 0.5rem;
+    }
+
+    .SectionButtons {
+        padding-top: 1rem;
+        justify-content: flex-start;
+    }
+
+    .AdminProfileName {
+        display: none;
+    }
+}

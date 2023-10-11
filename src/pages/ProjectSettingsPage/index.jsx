@@ -77,6 +77,8 @@ class ProjectSettingsPage extends React.Component {
       disableProjectError: "",
       disablingProject: false,
       openDisableProjectModel: false,
+      fetchingProjectDetails: false,
+      projectDetails: [],
     };
 
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
@@ -113,13 +115,16 @@ class ProjectSettingsPage extends React.Component {
     this.removeMember = this.removeMember.bind(this);
     this.updateProjectDetails = this.updateProjectDetails.bind(this);
     this.deleteThisProject = this.deleteThisProject.bind(this);
-    this.handleDisableProject = this.handleDisableProject.bind(this);
+    // this.handleDisableProject = this.handleDisableProject.bind(this);
     this.handleOrganisationSelectChange =
       this.handleOrganisationSelectChange.bind(this);
+    this.handleEnableButtonClick = this.handleEnableButtonClick.bind(this);
+    this.getProjectDetails = this.getProjectDetails.bind(this);
   }
 
   componentDidMount() {
     this.getProjectMemberz();
+    this.getProjectDetails();
   }
 
   getProjectMemberz() {
@@ -466,31 +471,64 @@ class ProjectSettingsPage extends React.Component {
     this.deleteThisProject(projectID);
   }
 
-  handleDisableProject(e, disabled) {
-    // /projects/d1e9954c-7a3b-437f-8611-9c0045815afe/disable
-    e.preventDefault();
-    this.setState({
-      disablingProject: true,
-    });
-    const projectID = this.props.match.params.projectID;
-    let apiEndpoint;
-    if (disabled) {
-      apiEndpoint = `/projects/${projectID}/enable`;
-    } else {
-      apiEndpoint = `/projects/${projectID}/disable`;
-    }
-    handlePostRequestWithOutDataObject({}, apiEndpoint)
-      .then(() => {
-        //reset to projects page to re populate redux
-        window.location.href = `/projects`;
+  getProjectDetails() {
+    const {
+      match: { params },
+    } = this.props;
+    const { projectID } = params;
+    handleGetRequest(`/projects/${projectID}`)
+      .then((response) => {
+        this.setState({
+          projectDetails: response.data.data.project,
+          fetchingProjectDetails: false,
+        });
       })
       .catch((error) => {
         this.setState({
-          disableProjectError: "Process failed, please try again.",
-          disablingProject: false,
+          error: "Failed to fetch project details",
+          fetchingProjectDetails: false,
         });
       });
   }
+
+  handleEnableButtonClick = () => {
+    let { projectDetails } = this.state;
+    const { projectID } = this.props.match.params;
+
+    try {
+      if (projectDetails.disabled) {
+        handlePostRequestWithOutDataObject(
+          projectID,
+          `/projects/${projectID}/enable`
+        )
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            this.setState({
+              error: error,
+            });
+          });
+      } else {
+        handlePostRequestWithOutDataObject(
+          projectID,
+          `/projects/${projectID}/disable`
+        )
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            this.setState({
+              error: error,
+            });
+          });
+      }
+    } catch (error) {
+      console.error("API call error:", error);
+    } finally {
+      window.location.reload();
+    }
+  };
 
   showUpdateAlert() {
     this.setState({ openUpdateAlert: true });
@@ -747,7 +785,7 @@ class ProjectSettingsPage extends React.Component {
                       <div>Project has {projectUsers?.length} Team Members</div>
                     )}
                   </div>
-                  <div className="SubText" style={{maxWidth:'90%'}}>
+                  <div className="SubText" style={{ maxWidth: "90%" }}>
                     Members that have accounts on crane cloud can perform
                     different operations on the project depending on their
                     permission.
@@ -849,10 +887,12 @@ class ProjectSettingsPage extends React.Component {
                         <div className={styles.MemberTableRow} key={index}>
                           <div className={styles.MemberTableCell}>
                             <div className={styles.NameSecting}>
-                             { <Avatar
-                                name={entry.email}
-                                className={styles.MemberAvatar}
-                              />}
+                              {
+                                <Avatar
+                                  name={entry.email}
+                                  className={styles.MemberAvatar}
+                                />
+                              }
                               {/* <div className={styles.MemberNameEmail}> */}
                               <div className={styles.Wrap}>{entry.email}</div>
 
@@ -963,23 +1003,24 @@ class ProjectSettingsPage extends React.Component {
                 <div className={styles.MemberTableRow}>
                   <div className={styles.SettingsSectionInfo}>
                     <div className="SubTitle">
-                      {disabled ? "Enable" : "Disable"} project
+                      {this.state.projectDetails?.disabled
+                        ? "Enable"
+                        : "Disable"}{" "}
+                      project
                     </div>
                     <div>
-                      {disabled
+                      {this.state.projectDetails?.disabled
                         ? "Allow access to project resources and enable billing"
                         : "Prevent project from being billed by blocking access to it's resources."}
                     </div>
                   </div>
                   <div className={styles.SectionButtons}>
                     <PrimaryButton
-                      onClick={() => {
-                        this.setState({ openDisableProjectModel: true });
-                      }}
+                      onClick={this.handleEnableButtonClick}
                       small
                       color={disabled ? "primary" : "red"}
                     >
-                      {disabled ? "Enable" : "Disable"}
+                      {this.state.projectDetails?.disabled ? "Enable" : "Disable"}
                     </PrimaryButton>
                   </div>
                 </div>

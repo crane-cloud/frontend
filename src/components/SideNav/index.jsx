@@ -47,11 +47,7 @@ const SideNav = ({ clusterId, clusterName }) => {
               </Link>
             </div>
             {/* fix side bar bug */}
-            <Link
-              className="ListItem"
-            >
-              Infrastructure
-            </Link>
+            <Link className="ListItem">Infrastructure</Link>
             <div>
               <NavLink
                 to={{ pathname: `${BASE_URL}/nodes` }}
@@ -126,17 +122,12 @@ const SideNav = ({ clusterId, clusterName }) => {
                 Jobs
               </NavLink>
             </div>
-            <Link to={{ pathname: "/databases" }} className="ListItem">
-              Databases
+            <Link
+              to={{ pathname: `${BASE_URL}/projects` }}
+              className="ListItem"
+            >
+              Cluster Projects
             </Link>
-            <div>
-              <NavLink
-                to={{ pathname: `${BASE_URL}/projects` }}
-                className="SubListItem"
-              >
-                Projects
-              </NavLink>
-            </div>
 
             <div className="ListItem">Others</div>
             <div>
@@ -175,14 +166,16 @@ const SideNav = ({ clusterId, clusterName }) => {
           <img src={Menu} alt="menu" />
         </div>
       )}
-      {!isDesktop && OpenForsmallScreen &&<div
+      {!isDesktop && OpenForsmallScreen && (
+        <div
           className="CloseMenuIcon"
           onClick={() => {
-            setopenForsmallScreen(false)
+            setopenForsmallScreen(false);
           }}
         >
-        <img src={CloseIcon} alt="menu" />  
-        </div>}
+          <img src={CloseIcon} alt="menu" />
+        </div>
+      )}
     </>
   );
 };

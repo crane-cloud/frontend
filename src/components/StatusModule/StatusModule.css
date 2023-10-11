@@ -1,0 +1,79 @@
+.StatusSectionTitle {
+    padding: 1rem 0 0 5rem;
+}
+
+.StatusSection {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 4rem;
+}
+
+.StatusContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.MoreDetailsIcon {
+    padding: 1rem 1rem 2rem;
+}
+
+.StatusSectionContent .SectionTitle {
+    font-size: 1.5rem;
+}
+
+.StatusSectionItem {
+    padding: 1rem;
+    background-color: #ffff;
+    color: #555555;
+    display: grid;
+    gap: 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.StatusSectionItem:hover {
+    cursor: pointer;
+}
+
+.StatusSectionCardTitle {
+    font-size: 1.2rem;
+    line-height: 2rem;
+}
+
+.StatusSection {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.StatusSection {
+    display: flex;
+    justify-content: space-between;
+}
+
+.LeftContent {
+    flex: 1;
+}
+
+.RightContent {
+    margin-left: 20px;
+}
+
+.StatusSectionCardTitle .TooltipContainer {
+    display: flex;
+    padding: 0;
+    justify-content: flex-start;
+}
+
+.StatusSectionCardTitle .TooltipPlaceholder {
+    color: black;
+}
+
+@media only screen and (max-width: 750px) {
+    .StatusSection {
+        white-space: nowrap;
+        gap: 1rem;
+    }
+}

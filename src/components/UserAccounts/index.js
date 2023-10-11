@@ -6,13 +6,10 @@ import BlackInputText from "../BlackInputText";
 import getUsersList from "../../redux/actions/users";
 import addUserCredits from "../../redux/actions/addCredits";
 import "./UserAccounts.css";
-import Header from "../Header";
 import Spinner from "../Spinner";
-import InformationBar from "../InformationBar";
 import Modal from "../Modal";
 import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 import { ReactComponent as MoreIcon } from "../../assets/images/more-verticle.svg";
-import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import PrimaryButton from "../PrimaryButton";
 import addBetaUser from "../../redux/actions/addBetaUser";
 import Feedback from "../Feedback";
@@ -30,7 +27,8 @@ const UserAccounts = () => {
   const [credits, setCredits] = useState("");
   const [creditDescription, setCreditDescription] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
-  const [word, setWord] = useState("");
+  // const [word, setWord] = useState("");
+
   // const [searchList, setSearchList] = useState([]);
 
   const { isFetching, users, isFetched, pagination } = useSelector(
@@ -58,24 +56,24 @@ const UserAccounts = () => {
     hideCreditsModal();
   }, [gettingUsers, isAdded, Added, currentPage]);
 
-  const searchThroughAccounts = (keyword) => {
-    // use api
-    handleChangePage(1);
-    gettingUsers(1, keyword);
-  };
+  // const searchThroughAccounts = (keyword) => {
+  //   // use api
+  //   handleChangePage(1);
+  //   gettingUsers(1, keyword);
+  // };
 
-  const handleCallbackSearchword = ({ target }) => {
-    const { value } = target;
-    setWord(value);
-    if (value !== "") {
-      searchThroughAccounts(value);
-    }
-    if (value === "") {
-      // setSearchList([]);
-      handleChangePage(1);
-      gettingUsers(1);
-    }
-  };
+  // const handleCallbackSearchword = ({ target }) => {
+  //   const { value } = target;
+  //   setWord(value);
+  //   if (value !== "") {
+  //     searchThroughAccounts(value);
+  //   }
+  //   if (value === "") {
+  //     // setSearchList([]);
+  //     handleChangePage(1);
+  //     gettingUsers(1);
+  //   }
+  // };
 
   const handleClick = (e) => {
     if (actionsMenu) {

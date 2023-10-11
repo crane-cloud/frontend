@@ -1,6 +1,6 @@
 .Page {
   margin: 0;
-  background: var( --gray-bg-light-color);
+  background: var(--gray-bg-light-color);
 }
 
 .ViewAccountsBtn {
@@ -115,10 +115,7 @@
 
 .ResourceCard {
   width: 100%;
-  max-width: 17rem;
-  margin-left: 10px;
   align-items: left;
-  margin-bottom: 1rem;
   background: #fff;
   position: relative;
   color: #000000;
@@ -129,39 +126,43 @@
   display: flex;
   flex-direction: column;
   min-height: 10rem;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  /* box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); */
 }
 
 .ResourceDigit {
   flex: 1 1 auto;
-  font-size: 40px;
-  font-weight: 600;
+  font-size: 2rem;
+  font-weight: 500;
   box-sizing: border-box;
   padding-top: 0.2rem;
   text-align: left;
   color: #008AC1;
   padding-left: 8px;
 }
-.columnCardSection{
+
+.columnCardSection {
   display: flex;
   flex-direction: column;
 }
-.rowCardSection{
+
+.rowCardSection {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding: 12px;
 }
-.rowResourceDigit{
+
+.rowResourceDigit {
   flex: 1 1 auto;
-  font-size: 28px;
+  font-size: 1.7rem;
   font-weight: 500;
   box-sizing: border-box;
   padding-top: 0.2rem;
   text-align: left;
   color: #008AC1;
 }
-.rightTextAlign{
+
+.rightTextAlign {
   text-align: right;
   padding-right: 10px;
   padding-left: 0;
@@ -178,20 +179,22 @@
   text-transform: lowercase;
   cursor: pointer;
 }
-.innerCardHeader{
-  color: #000;
+
+.innerCardHeader {
+  color: #444;
   text-align: left;
-  font-size: 17px;
+  font-size: 1.1rem;
   font-weight: 400;
   line-height: normal;
   text-transform: lowercase;
   cursor: pointer;
 }
-.innerCardHeader::first-letter{
+
+.innerCardHeader::first-letter {
   text-transform: uppercase;
 }
 
-.ResourceCard .CardHeader::first-letter  {
+.ResourceCard .CardHeader::first-letter {
   text-transform: uppercase;
 }
 
@@ -199,12 +202,14 @@
   opacity: 0.7;
   border: 1px solid var(--secondary-color);
 }
-.TopRow{
+
+.TopRow {
   padding-top: 1rem;
 }
+
 .FooterRow {
   padding: 1rem 3rem;
-  background-color: var( --gray-bg-light-color);
+  background-color: var(--gray-bg-light-color);
 }
 
 .ContentSection {
@@ -217,6 +222,7 @@
 .ClusterMetricsCardGraph {
   max-height: 12rem;
 }
+
 .AllUsers {
   display: flex;
   margin: auto;
@@ -226,7 +232,7 @@
   align-items: center;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: .3rem;
+  gap: 4rem;
   overflow-x: hidden;
-  padding: 3rem 1rem 0 1rem;
+  padding: 3rem 2rem 0 2rem;
 }

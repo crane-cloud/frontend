@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import getUsersList from "../../redux/actions/users";
 import Header from "../../components/Header";
 import InformationBar from "../../components/InformationBar";
@@ -22,22 +23,23 @@ import { filterGraphData } from "../../helpers/filterGraphData.js";
 import { retrieveMonthNames } from "../../helpers/monthNames.js";
 import NewResourceCard from "../../components/NewResourceCard";
 import { getUserCategories } from "../../helpers/userCategories";
-import AdminInactiveUsers from "../../components/AdminInactiveUsers";
 import "./AdminUserOverviewPage.css";
 import { createUsersPieChartData } from "../../helpers/usersPieChartData";
 import { createUserGraphData } from "../../helpers/usersGraphData";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
 import UserListing from "../../components/UserListing";
 import usePaginator from "../../hooks/usePaginator";
+import AppFooter from "../../components/appFooter";
 
 const AdminUserOverviewPage = () => {
-  const [users, setUsers] = useState([]);
+  const [usersSummary, setUsersSummary] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
   const [period, setPeriod] = useState("all");
   const [sectionValue, setSectionValue] = useState("all");
   const [word, setWord] = useState("");
   const [currentPage, handleChangePage] = usePaginator();
+  const [dateRange, setDateRange] = useState("7");
   const dispatch = useDispatch();
 
   const COLORS = ["#0088FE", "#0DBC00", "#F9991A"];
@@ -45,9 +47,15 @@ const AdminUserOverviewPage = () => {
   let graphDataArray = [];
   let filteredGraphData = [];
 
+  const gettingUsers = useCallback(
+    () => dispatch(getUsersList(dateRange, sectionValue, currentPage, word)),
+    [currentPage, dispatch, sectionValue, word, dateRange]
+  );
+
   useEffect(() => {
     getAllUsers();
-  }, []);
+    gettingUsers();
+  }, [gettingUsers]);
 
   const getAllUsers = async () => {
     setLoading(true);
@@ -59,7 +67,7 @@ const AdminUserOverviewPage = () => {
         handleGetRequest(`/users?per_page=${totalNumberOfUsers}`)
           .then((response) => {
             if (response.data.data.users.length > 0) {
-              setUsers(response.data.data.users);
+              setUsersSummary(response.data.data.users);
               setLoading(false);
             } else {
               throw new Error("No users found");
@@ -76,11 +84,20 @@ const AdminUserOverviewPage = () => {
     }
   };
 
+  const { isFetching, users, isFetched, pagination } = useSelector(
+    (state) => state.usersListReducer
+  );
+
+  useEffect(() => {
+    dispatch(getUsersList(dateRange, sectionValue, currentPage));
+  }, [sectionValue, currentPage, dateRange, dispatch]);
+
   const userCounts = {
-    total: users.length,
-    verified: users.filter((user) => user.verified === true).length,
-    unverified: users.filter((user) => user.verified === false).length,
-    beta: users.filter((user) => user.is_beta_user === true).length,
+    total: usersSummary.length,
+    verified: usersSummary.filter((user) => user.verified === true).length,
+    unverified: usersSummary.filter((user) => user.verified === false).length,
+    beta: usersSummary.filter((user) => user.is_beta_user === true).length,
+    disabled: 0
   };
 
   const handleChange = ({ target }) => {
@@ -88,7 +105,7 @@ const AdminUserOverviewPage = () => {
   };
 
   // Filter out verified users
-  const verifiedUsers = users.filter((user) => user.verified === true);
+  const verifiedUsers = usersSummary.filter((user) => user.verified === true);
 
   // function call to create the user graph data
   graphDataArray = createUserGraphData(verifiedUsers);
@@ -103,35 +120,17 @@ const AdminUserOverviewPage = () => {
     setSectionValue(selectedValue);
   };
 
-  const gettingUsers = useCallback(
-    (page, keyword = "") => dispatch(getUsersList(page, keyword)),
-    [dispatch]
-  );
-
-  const searchThroughAccounts = (keyword) => {
-    // use api
-    handleChangePage(1);
-    gettingUsers(1, keyword);
-  };
-
-  const handleCallbackSearchword = ({ target }) => {
-    const { value } = target;
-    setWord(value);
-    if (value !== "") {
-      searchThroughAccounts(value);
-    }
-    if (value === "") {
-      // setSearchList([]);
-      handleChangePage(1);
-      gettingUsers(1);
-    }
-  };
+  const handleCallbackSearchword = ({ target: { value } }) => setWord(value);
 
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);
     gettingUsers();
   };
 
+  const handleDateRangeChange = (range) => {
+    setDateRange(range);
+  };
+  
   return (
     <div className="APage">
       <div className="TopRow">
@@ -143,14 +142,14 @@ const AdminUserOverviewPage = () => {
           <div className="TitleArea">
             <div className="SectionTitle">Users Category Summary</div>
           </div>
-          {loading ? (
+          {loading && sectionValue !== "active" ? (
             <div className="ResourceSpinnerWrapper">
               <Spinner size="big" />
             </div>
           ) : feedback !== "" ? (
             <div className="NoResourcesMessage">{feedback}</div>
           ) : Object.keys(userCounts).length > 0 ? (
-            <div className="ClusterContainer">
+            <div className="ResourceClusterContainer">
               {Object.keys(userCounts).map((countType) => (
                 <NewResourceCard
                   key={countType}
@@ -389,20 +388,19 @@ const AdminUserOverviewPage = () => {
             </div>
           </div>
 
-          {sectionValue === "active" ? (
-            <AdminInactiveUsers />
-          ) : (
-            <>
-              <UserListing
-                tableType={sectionValue}
-                gettingUsers={gettingUsers}
-                handlePageChange={handlePageChange}
-                currentPage={currentPage}
-              />
-            </>
-          )}
+          <UserListing
+            sectionValue={sectionValue}
+            setSelectedDateRange={handleDateRangeChange}
+            isFetching={isFetching}
+            isFetched={isFetched}
+            users={users}
+            pagination={pagination}
+            handlePageChange={handlePageChange}
+            currentPage={currentPage}
+          />
         </div>
       </div>
+      <AppFooter/>
     </div>
   );
 };

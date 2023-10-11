@@ -5,13 +5,19 @@ import PropTypes from "prop-types";
 import Spinner from "../../components/Spinner";
 import { Redirect } from "react-router-dom";
 import MetricsCard from "../../components/MetricsCard";
+import { ReactComponent as RedeployICon } from "../../assets/images/redeploy.svg";
 import { ReactComponent as CPUIcon } from "../../assets/images/cpu.svg";
 import { ReactComponent as NetworkIcon } from "../../assets/images/wifi.svg";
 import { ReactComponent as MemoryIcon } from "../../assets/images/hard-drive.svg";
+
 import styles from "./AppMetricsPage.module.css";
 import LineChartComponent from "../../components/LineChart";
 import LogsFrame from "../../components/LogsFrame";
-import { handlePostRequestWithDataObject } from "../../apis/apis";
+import {
+  handlePostRequestWithDataObject,
+  handlePostRequestWithOutDataObject,
+  handleGetRequest,
+} from "../../apis/apis";
 import getAppMemory, { clearAppMemory } from "../../redux/actions/appMemory";
 import getAppCPU from "../../redux/actions/appCPU";
 import {
@@ -35,6 +41,9 @@ class AppMetricsPage extends React.Component {
       logs: [],
       fetchingLogs: true,
       logsError: "",
+      redeploy: false,
+      deployError: "",
+      spin: false,
     };
 
     this.getAppMemoryMetrics = this.getAppMemoryMetrics.bind(this);
@@ -56,12 +65,14 @@ class AppMetricsPage extends React.Component {
       alias: found?.alias,
       image: found?.image,
       port: found?.port,
+      disable: found?.disabled,
     };
 
     return info;
   }
 
   componentDidMount() {
+    this.setState({ spin: false });
     const {
       getAppMemory,
       getAppCPU,
@@ -87,6 +98,19 @@ class AppMetricsPage extends React.Component {
         });
       });
 
+    handleGetRequest(`/apps/${appID}`)
+      .then((response) => {
+        this.setState({
+          //console.log(response)
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          redeploy: true,
+          deployError: error?.response?.data?.message,
+        });
+      });
+
     clearAppMemory();
     clearUrlRevertState();
     getAppMemory(projectID, appID, {});
@@ -100,7 +124,7 @@ class AppMetricsPage extends React.Component {
     const results = formatAppMemoryMetrics(appID, appMemoryMetrics);
     return results;
   }
-
+  // "Application does not exist on the cluster"
   copyUrl() {
     const { params } = this.props.match;
     const { appID } = params;
@@ -137,18 +161,35 @@ class AppMetricsPage extends React.Component {
     }
   };
 
+  handleRedeployApp = () => {
+    this.setState({ spin: true });
+    const {
+      match: { params },
+    } = this.props;
+
+    const { appID } = params;
+
+    handlePostRequestWithOutDataObject({}, `/apps/${appID}/redeploy`)
+      .then((response) => {
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error("Failed to redeploy app:", error);
+      });
+  };
+
   render() {
     const { params } = this.props.match;
     const { projectID, appID } = params;
     // eslint-disable-next-line no-unused-vars
     const { isReverting, isReverted } = this.props;
-    const { logs, logsError, fetchingLogs, urlChecked } = this.state;
+    const { logs, logsError, fetchingLogs, urlChecked, redeploy, spin } =
+      this.state;
 
     const formattedMemoryMetrics = this.getAppMemoryMetrics();
     const formattedCPUMetrics = this.getAppCPUMetrics();
     const formattedNetworkMetrics = this.getAppNetworkMetrics();
     const appInfo = this.getAppInfo(appID);
-
     return (
       <DashboardLayout
         name={appInfo.name}
@@ -165,56 +206,76 @@ class AppMetricsPage extends React.Component {
           </div>
           <div className={styles.CardBodySection}>
             <div className={styles.InnerCard}>
-              <div className={styles.InnerCardSections}>
-                <div className={styles.InnerContentGrid}>
-                  <div className={styles.InnerTitlesStart}>App Name</div>
-                  <div className={styles.InnerContentName}>{appInfo.name}</div>
-                </div>
-                <div className={styles.InnerContentGrid}>
-                  <div className={styles.InnerTitlesStart}>App Url</div>
-                  {appInfo.url ? (
-                    <div className={styles.InnerContentLink}>
-                      <div className={styles.InnerContentLinkText}>
-                        <a
-                          href={appInfo.url}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          {appInfo.url}
-                        </a>
-                      </div>
-                      <div className={styles.CopierDiv}>
-                        <div className={styles.Icons}>
-                          <CopyText onClick={this.copyUrl} />
-                          {urlChecked === true ? <Checked /> : null}
-                        </div>
-                      </div>
+              {spin ? (
+                <Spinner />
+              ) : (
+                <div className={styles.InnerCardSections}>
+                  <div className={styles.InnerContentGrid}>
+                    <div className={styles.InnerTitlesStart}>App Name</div>
+                    <div className={styles.InnerContentName}>
+                      {appInfo.name}
                     </div>
-                  ) : (
-                    <>
-                      {isReverting ? (
-                        <Spinner />
-                      ) : (
-                        <div
-                          className={styles.InnerContentWarnText}
-                          onClick={() => {
-                            this.regenerate();
-                          }}
-                        >
-                          Click to re-generate url
-                        </div>
-                      )}
-                    </>
-                  )}
+                  </div>
+                  <div className={styles.InnerContentGrid}>
+                    <div className={styles.InnerTitlesStart}>App Url</div>
+                    {appInfo.url ? (
+                      <>
+                        {redeploy ? (
+                          <div
+                            className={styles.Redeploy}
+                            onClick={this.handleRedeployApp}
+                          >
+                            <RedeployICon />
+                            <span className={styles.DeployText}>
+                              Redeploy App
+                            </span>
+                          </div>
+                        ) : (
+                          <div className={styles.InnerContentLink}>
+                            <div className={styles.InnerContentLinkText}>
+                              <a
+                                href={appInfo.url}
+                                rel="noopener noreferrer"
+                                target="_blank"
+                              >
+                                {appInfo.url}
+                              </a>
+                            </div>
+                            <div className={styles.CopierDiv}>
+                              <div className={styles.Icons}>
+                                <CopyText onClick={this.copyUrl} />
+                                {urlChecked === true ? <Checked /> : null}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {isReverting ? (
+                          <Spinner />
+                        ) : (
+                          <div
+                            className={styles.InnerContentWarnText}
+                            onClick={() => {
+                              this.regenerate();
+                            }}
+                          >
+                            Click to re-generate url
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
               <hr />
               <div className={styles.InnerCardSections}>
                 <div className={styles.InnerContentGrid}>
                   <div className={styles.InnerTitlesMiddle}>App Status</div>
                   <div className={styles.InnerContentStatus}>
                     <AppStatus appStatus={appInfo.status} />
-                    <div>{appInfo.status === "running" ? "Ready" : "Down"}</div>
+                    <div>{appInfo.status === "disabled" ? <div className={styles.DeployText}>Disabled</div>:(appInfo.status === "running" ? "Ready" : "Down")}</div>
                   </div>
                 </div>
                 <div className={styles.InnerContentGrid}>

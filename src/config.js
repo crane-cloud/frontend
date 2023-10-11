@@ -12,8 +12,6 @@ export const FLUTTER_WAVE_PUBLIC_KEY =
   process.env.REACT_APP_FLUTTERWAVE_PUBLIC_KEY_TESTING;
 //for live exchange rate
 export const LIVE_EXCHANGE_RATE_API = `https://openexchangerates.org/api/latest.json?app_id=${process.env.REACT_APP_EXCHANGE_RATE_KEY}`;
-//crane cloud status
-export const CRANE_CLOUD_STATUS = `${STATUS_MONITORING_URL}/statuses`;
 export const GITLAB_URL =
   "https://gitlab-ce-32b64b3f-fc91-4331-bf7e.cranecloud.io/users/sign_in";
 export const GOPLAYGROUND_URL = "https://go.dev.cranecloud.io/";
