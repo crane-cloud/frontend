@@ -11,7 +11,7 @@ import Spinner from "../Spinner";
 import AppFooter from "../appFooter";
 
 const NamespacesListPage = () => {
-  const  clusterID  = localStorage.getItem("clusterID");
+  const clusterID = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
 
   const adminNamespaces = useCallback(
@@ -27,7 +27,7 @@ const NamespacesListPage = () => {
   }, [adminNamespaces]);
 
   const clusterName = localStorage.getItem("clusterName");
-  
+
   return (
     <div className="MainPage">
       <div className="TopBarSection">
@@ -98,9 +98,8 @@ const NamespacesListPage = () => {
                 </div>
               )}
             </div>
-            
-          </div>   
-          <AppFooter/>       
+          </div>
+          <AppFooter sidebar={true} />
         </div>
       </div>
     </div>

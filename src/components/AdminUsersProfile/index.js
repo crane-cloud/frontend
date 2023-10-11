@@ -254,7 +254,7 @@ class AdminUserPage extends Component {
                 showBackBtn
               />
             </div>
-            <div className="Short1Container">
+            <div className="LeftAlignContainer">
               <div className="ContentSection">
                 <div className="AdminUserPageContainer">
                   <section>
@@ -397,7 +397,9 @@ class AdminUserPage extends Component {
                         key={1}
                         title="Credits"
                         count={
-                          user?.credits.length === 0 ? 0 : user?.credits[0].amount
+                          user?.credits.length === 0
+                            ? 0
+                            : user?.credits[0].amount
                         }
                       />
                     </div>
@@ -625,7 +627,7 @@ class AdminUserPage extends Component {
                 </Modal>
               </div>
             </div>
-            <AppFooter/>
+            <AppFooter />
           </div>
         </div>
       </div>

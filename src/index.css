@@ -45,7 +45,7 @@ body {
   min-height: 100vh;
   flex-direction: column;
   /* justify-content: space-between; */
-  background-color: var( --gray-bg-light-color);
+  background-color: var(--gray-bg-light-color);
 }
 
 textarea,
@@ -220,9 +220,7 @@ input[type="password"] {
 
 /*- ///// TABLE STYLING ///////// */
 div.ResourcesTable {
-  padding-top: 1rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding: 1rem 2rem 0 2rem;
 }
 
 div.ResourcesTable.LoadingResourcesTable {
@@ -232,10 +230,6 @@ div.ResourcesTable.LoadingResourcesTable {
 .ResourcesTable table thead {
   text-transform: capitalize;
 }
-
-/* .ResourcesTable  tr:nth-child(even){
-  background-color: #d0e0f8;
-} */
 
 .ResourcesTable table {
   position: relative;
@@ -540,7 +534,8 @@ tr.TableLoading td {
     overflow-y: auto;
     height: 100%;
   }
-  .CloseMenuIcon{
+
+  .CloseMenuIcon {
     height: 1.8rem;
     width: 3rem;
     position: absolute;
@@ -549,19 +544,21 @@ tr.TableLoading td {
     display: flex;
     z-index: 40;
   }
-  .SpinnerWrapper{
+
+  .SpinnerWrapper {
     width: fit-content;
   }
 
 }
 
-.InformationBarTitle{
+.InformationBarTitle {
   display: flex;
   flex-direction: row;
 }
+
 .flex_back_link {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   align-items: center;
   color: #000 !important
 }
@@ -614,13 +611,13 @@ tr.TableLoading td {
   justify-content: center;
 }
 
-.SubTableContainer{
-  padding-bottom: 5rem;
+.SubTableContainer {
+  padding-bottom: 0;
 }
 
 /*////////////// ---admin cards--- ///////// */
 
-.ResourceClusterContainer{
+.ResourceClusterContainer {
   display: flex;
   gap: 1rem;
   padding: 2rem;
@@ -628,18 +625,33 @@ tr.TableLoading td {
   justify-content: space-between;
 }
 
+.AMainSection {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+  max-width: fit-content;
+}
+
+.LeftAlignContainer {
+  padding: 0 3rem 0 6rem;
+  max-width: fit-content;
+}
+
+.appFooterForSideBar {
+  padding-left: 2rem;
+}
 
 .appFooterRow {
-  padding: 1rem 3rem;
+  padding: 1rem 3rem 0 6rem;
   color: black;
   position: relative;
   bottom: 0;
   background-color: var(--gray-bg-light-color);
 }
-.footerPositionAbsolute{
+
+.footerPositionAbsolute {
   position: absolute;
 }
- 
+
 
 @media only screen and (max-width: 740px) {
   .ResourceClusterContainer {

@@ -1,12 +1,18 @@
 import React from "react";
- 
-const AppFooter = ({position}) => {
+
+const AppFooter = ({ position, sidebar }) => {
+  let className = sidebar ? "appFooterForSideBar" : "appFooterRow";
+
+  if (position === "absolute") {
+    className += " footerPositionAbsolute";
+  }
+
   return (
-    <div className={`appFooterRow  ${position === "absolute" ? "footerPositionAbsolute": ""}`}>
-     <p>
-     Copyright {new Date().getFullYear()} Crane Cloud. All Rights Reserved.
-    </p>
-  </div>
+    <div className={className}>
+      <p>
+        Copyright {new Date().getFullYear()} Crane Cloud. All Rights Reserved.
+      </p>
+    </div>
   );
 };
 
