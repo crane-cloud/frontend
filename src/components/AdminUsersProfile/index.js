@@ -22,12 +22,15 @@ import { getUser } from "../../helpers/projectName";
 import { DisplayDateTime } from "../../helpers/dateConstants";
 import { Link } from "react-router-dom";
 import { getUserProjects } from "../../helpers/projectCount";
-import { getUserdata } from "../../helpers/getUserdata";
 import NewResourceCard from "../NewResourceCard";
 import userProfleStyles from "../UserProfile/UserProfile.module.css";
 import Avatar from "../Avatar";
 import moment from "moment";
 import AppFooter from "../appFooter";
+import {
+  handleGetRequest,
+  handlePostRequestWithOutDataObject,
+} from "../../apis/apis";
 
 class AdminUserPage extends Component {
   constructor() {
@@ -43,6 +46,8 @@ class AdminUserPage extends Component {
       openDisableAlert: false,
       error: "",
       hidden: true,
+      userDetail: [],
+      fetchingUserDetails: true,
     };
     this.showMenu = this.showMenu.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -60,6 +65,7 @@ class AdminUserPage extends Component {
     this.handleDisableAlert = this.handleDisableAlert.bind(this);
     this.showDisableAlert = this.showDisableAlert.bind(this);
     this.hideDisableAlert = this.hideDisableAlert.bind(this);
+    this.getUserDetails = this.getUserDetails.bind(this);
   }
   componentDidMount() {
     const {
@@ -75,15 +81,10 @@ class AdminUserPage extends Component {
         disabledProjectsCount: projectsCount.disabledProjectsCount,
       });
     });
-    getUserdata(params.userID).then((userData) => {
-      this.setState({
-        appsCount: userData.appsCount,
-        databasesCount: userData.databasesCount,
-      });
-    });
     clearCreditsState();
     clearUserCredits();
     adminGetUserCredits(params.userID);
+    this.getUserDetails();
   }
 
   componentDidUpdate(prevProps) {
@@ -97,6 +98,26 @@ class AdminUserPage extends Component {
     if (isDisableUser !== prevProps.DisableUser) {
       this.hideDeleteAlert();
     }
+  }
+
+  getUserDetails() {
+    const {
+      match: { params },
+    } = this.props;
+    const { userID } = params;
+    handleGetRequest(`/users/${userID}`)
+      .then((response) => {
+        this.setState({
+          userDetail: response.data.data.user,
+          fetchingUserDetails: false,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          error: "Failed to fetch user details",
+          fetchingUserDetails: false,
+        });
+      });
   }
 
   handleDeleteAlert(e, userID) {
@@ -214,6 +235,36 @@ class AdminUserPage extends Component {
       return <Redirect to={`/accounts/&{user_id}`} noThrow />;
     }
   };
+  handleEnableButtonClick = () => {
+    let { userDetail } = this.state;
+    const { userID } = this.props.match.params;
+
+    try {
+      if (userDetail.disabled) {
+        handlePostRequestWithOutDataObject(userID, `/users/${userID}/enable`)
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            this.setState({
+              error: error,
+            });
+          });
+      } else {
+        handlePostRequestWithOutDataObject(userID, `/users/${userID}/disable`)
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            this.setState({
+              error: error,
+            });
+          });
+      }
+    } catch (error) {
+      console.error("API call error:", error);
+    }
+  };
 
   render() {
     const {
@@ -235,8 +286,13 @@ class AdminUserPage extends Component {
     const {
       match: { params },
     } = this.props;
-    const { credits, creditDescription, openDeleteAlert, openDisableAlert } =
-      this.state;
+    const {
+      credits,
+      creditDescription,
+      openDeleteAlert,
+      openDisableAlert,
+      userDetail,
+    } = this.state;
     const user = getUser(users, params.userID);
     const { credit_assignment_records } = userCredits;
     return (
@@ -271,20 +327,20 @@ class AdminUserPage extends Component {
                         <div className="AdminUserProfileInfoSect">
                           <div className="AdminUserProfileInfoHeader">
                             <Avatar
-                              name={user?.name}
+                              name={userDetail?.name}
                               className={userProfleStyles.UserAvatarLarge}
                             />
                             <div className={userProfleStyles.Identity}>
                               <div className={userProfleStyles.IdentityName}>
-                                {user?.name}
-                                {user?.is_beta_user === true && (
+                                {userDetail?.name}
+                                {userDetail?.is_beta_user === true && (
                                   <div className={userProfleStyles.BetaUserDiv}>
                                     Beta User
                                   </div>
                                 )}
                               </div>
                               <div className={userProfleStyles.IdentityEmail}>
-                                {user?.email}
+                                {userDetail?.email}
                               </div>
                             </div>
                           </div>
@@ -292,14 +348,16 @@ class AdminUserPage extends Component {
                           <div className="AdminProfileRowInfo">
                             <div className="AdminProfileRowItem">
                               Verified:
-                              <span>{user?.verified ? "True" : "False"}</span>
+                              <span>
+                                {userDetail?.verified ? "True" : "False"}
+                              </span>
                             </div>
                             |
                             <div className="AdminProfileRowItem">
                               Role:
                               <span>
-                                {user?.roles?.length > 0
-                                  ? user?.roles[0].name
+                                {userDetail?.roles?.length > 0
+                                  ? userDetail?.roles[0].name
                                   : "None"}
                               </span>
                             </div>
@@ -307,7 +365,7 @@ class AdminUserPage extends Component {
                             <div className="AdminProfileRowItem">
                               Date Joined:
                               <span>
-                                {moment(user?.date_created)
+                                {moment(userDetail?.date_created)
                                   .utc()
                                   .format("ddd, MMMM DD, yyyy")}
                               </span>
@@ -316,8 +374,8 @@ class AdminUserPage extends Component {
                             <div className="AdminProfileRowItem">
                               Last Seen:
                               <span>
-                                {user?.last_seen
-                                  ? moment(user?.last_seen)
+                                {userDetail?.last_seen
+                                  ? moment(userDetail?.last_seen)
                                       .utc()
                                       .format("ddd, MMMM DD, yyyy")
                                   : "Not available"}
@@ -328,37 +386,6 @@ class AdminUserPage extends Component {
                       </div>
                     </div>
                   </section>
-                  <div>
-                    <div className="UserPlatformMetricsContainer">
-                      <div className="SectionTitle">User Platform Metrics</div>
-                      <div className="Cluster1Container">
-                        <NewResourceCard
-                          key={1}
-                          title="Projects Owned"
-                          count={this.state.projectsCount}
-                        />
-                        <NewResourceCard
-                          key={1}
-                          title="Apps Deployed"
-                          count={this.state.appsCount}
-                        />
-                        <NewResourceCard
-                          key={1}
-                          title="Databases Created"
-                          count={this.state.databasesCount}
-                        />
-                        <NewResourceCard
-                          key={1}
-                          title="Credits"
-                          count={
-                            user?.credits.length === 0
-                              ? 0
-                              : user?.credits[0].amount
-                          }
-                        />
-                      </div>
-                    </div>
-                  </div>
                   {/* Credential history */}
                   {credit_assignment_records?.length > 0 && (
                     <div className="CreditsAlotted">
@@ -413,176 +440,203 @@ class AdminUserPage extends Component {
                       </div>
                     </div>
                   )}
-                  {user && user.name !== "admin" && (
-                    <div className="AdminDBSections">
-                      <div className="SectionTitle">Manage User</div>
-                      <div className="ProjectInstructions">
-                        <div className="MemberBody">
-                          <div className="MemberTableRow">
-                            <div className="SettingsSectionInfo">
-                              <div className="SubTitle">
-                                Add Credits to User
-                                <br />
-                                <div className="SubTitleContent">
-                                  This will add credits to the user.
-                                </div>
-                              </div>
-                              <div className="SectionButtons">
-                                <PrimaryButton
-                                  color="primary-outline"
-                                  onClick={this.showCreditsModal}
-                                >
-                                  Add Credits
-                                </PrimaryButton>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="MemberTableRow">
-                            <div className="SettingsSectionInfo">
-                              <div className="SubTitle">
-                                Disable User
-                                <br />
-                                <div className="SubTitleContent">
-                                  This will temporary disable the user.
-                                </div>
-                              </div>
-                              <div className="SectionButtons">
-                                <PrimaryButton
-                                  color="red-outline"
-                                  onClick={this.showDisableAlert}
-                                >
-                                  Disable
-                                </PrimaryButton>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="SettingsSectionInfo1">
+                  <div>
+                    <div className="SectionTitle">User Platform Metrics</div>
+                    <div className="Cluster1Container">
+                      <NewResourceCard
+                        key={1}
+                        title="Projects Owned"
+                        count={this.state.projectsCount}
+                      />
+                      <NewResourceCard
+                        key={1}
+                        title="Apps Deployed"
+                        count={6}
+                      />
+                      <NewResourceCard
+                        key={1}
+                        title="Databases Created"
+                        count={3}
+                      />
+                      <NewResourceCard
+                        key={1}
+                        title="Credits"
+                        count={
+                          user?.credits.length === 0
+                            ? 0
+                            : user?.credits[0].amount
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="AdminDBSections">
+                    <div className="SectionTitle">Manage User</div>
+                    <div className="ProjectInstructions">
+                      <div className="MemberBody">
+                        <div className="MemberTableRow">
+                          <div className="SettingsSectionInfo">
                             <div className="SubTitle">
-                              Delete User
+                              Add Credits to User
                               <br />
                               <div className="SubTitleContent">
-                                This will permanently delete the user-history ,
-                                apps , database and settings.
+                                This will add credits to the user.
                               </div>
                             </div>
                             <div className="SectionButtons">
                               <PrimaryButton
-                                color="red-outline"
-                                onClick={this.showDeleteAlert}
+                                color="primary-outline"
+                                onClick={this.showCreditsModal}
                               >
-                                Delete
+                                Add Credits
                               </PrimaryButton>
                             </div>
                           </div>
                         </div>
+                        <div className="MemberTableRow">
+                          <div className="SettingsSectionInfo">
+                            <div className="SubTitle">
+                              {userDetail?.disabled ? "Enable" : "Disable"} User
+                              <br />
+                              <div className="SubTitleContent">
+                                {userDetail?.disabled
+                                  ? "This will enable this user."
+                                  : "This will temporary disable the user."}
+                              </div>
+                            </div>
+                            <div className="SectionButtons">
+                              <PrimaryButton
+                                onClick={this.handleEnableButtonClick}
+                                color={
+                                  userDetail?.disabled
+                                    ? "primary-outline"
+                                    : "red-outline"
+                                }
+                              >
+                                {userDetail?.disabled ? "Enable" : "Disable"}
+                              </PrimaryButton>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="SettingsSectionInfo1">
+                          <div className="SubTitle">
+                            Delete User
+                            <br />
+                            <div className="SubTitleContent">
+                              This will permanently delete the user-history ,
+                              apps , database and settings.
+                            </div>
+                          </div>
+                          <div className="SectionButtons">
+                            <PrimaryButton
+                              color="red-outline"
+                              onClick={this.showDeleteAlert}
+                            >
+                              Delete
+                            </PrimaryButton>
+                          </div>
+                        </div>
                       </div>
-                      {openDeleteAlert && (
-                        <div className="ProjectDeleteModel">
-                          <Modal
-                            showModal={openDeleteAlert}
-                            onClickAway={this.hideDeleteAlert}
-                          >
-                            <div className="DeleteDatabaseModel">
-                              <div className="DeleteProjectModalUpperSection">
-                                <div className="InnerModalDescription">
-                                  Are you sure you want to delete this user
-                                  &nbsp;
-                                  <span className="DatabaseName">
-                                    {user?.name} ?
-                                  </span>
-                                  <DeleteWarning />
-                                </div>
-                              </div>
-
-                              <div className="DeleteProjectModalLowerSection">
-                                <div className="DeleteProjectModelButtons">
-                                  <PrimaryButton
-                                    className="CancelBtn"
-                                    onClick={this.hideDeleteAlert}
-                                  >
-                                    Cancel
-                                  </PrimaryButton>
-                                  <PrimaryButton
-                                    color="red"
-                                    onClick={(e) =>
-                                      this.handleDeleteAlert(e, userID)
-                                    }
-                                  >
-                                    {deletingUser ? <Spinner /> : "Delete"}
-                                  </PrimaryButton>
-                                </div>
-
-                                {userDeleteFailed && isDeleteUser && (
-                                  <Feedback
-                                    message={isDeleteUser}
-                                    type="error"
-                                  />
-                                )}
-                              </div>
-                            </div>
-                          </Modal>
-                        </div>
-                      )}
-                      {openDisableAlert && (
-                        <div className="ProjectDeleteModel">
-                          <Modal
-                            showModal={openDisableAlert}
-                            onClickAway={this.hideDisableAlert}
-                          >
-                            <div className="DeleteDatabaseModel">
-                              <div className="DeleteProjectModalUpperSection">
-                                <div className="InnerModalDescription">
-                                  Are you sure you want to disable this user
-                                  &nbsp;
-                                  <span className="DatabaseName">
-                                    {user?.name} ?
-                                  </span>
-                                  <DeleteWarning />
-                                </div>
-                              </div>
-
-                              <div className="DeleteProjectModalLowerSection">
-                                <div className="DeleteProjectModelButtons">
-                                  <PrimaryButton
-                                    className="CancelBtn"
-                                    onClick={this.hideDisableAlert}
-                                  >
-                                    Cancel
-                                  </PrimaryButton>
-                                  <PrimaryButton
-                                    color="red"
-                                    onClick={(e) =>
-                                      this.handleDisableAlert(e, userID)
-                                    }
-                                  >
-                                    {isDisablingUser ? <Spinner /> : "Disable"}
-                                  </PrimaryButton>
-                                </div>
-
-                                {userDisableFailed && isDisableUser && (
-                                  <Feedback
-                                    message={isDisableUser}
-                                    type="error"
-                                  />
-                                )}
-                              </div>
-                            </div>
-                          </Modal>
-                        </div>
-                      )}
-
-                      {!isFetching && !isFetched && (
-                        <div className="NoResourcesMessage">
-                          <p>
-                            Oops! Something went wrong! Failed to retrieve User
-                            Profile.
-                          </p>
-                        </div>
-                      )}
                     </div>
-                  )}
-                </div>
+                    {openDeleteAlert && (
+                      <div className="ProjectDeleteModel">
+                        <Modal
+                          showModal={openDeleteAlert}
+                          onClickAway={this.hideDeleteAlert}
+                        >
+                          <div className="DeleteDatabaseModel">
+                            <div className="DeleteProjectModalUpperSection">
+                              <div className="InnerModalDescription">
+                                Are you sure you want to delete this user &nbsp;
+                                <span className="DatabaseName">
+                                  {userDetail?.name} ?
+                                </span>
+                                <DeleteWarning />
+                              </div>
+                            </div>
 
+                            <div className="DeleteProjectModalLowerSection">
+                              <div className="DeleteProjectModelButtons">
+                                <PrimaryButton
+                                  className="CancelBtn"
+                                  onClick={this.hideDeleteAlert}
+                                >
+                                  Cancel
+                                </PrimaryButton>
+                                <PrimaryButton
+                                  color="red"
+                                  onClick={(e) =>
+                                    this.handleDeleteAlert(e, userID)
+                                  }
+                                >
+                                  {deletingUser ? <Spinner /> : "Delete"}
+                                </PrimaryButton>
+                              </div>
+
+                              {userDeleteFailed && isDeleteUser && (
+                                <Feedback message={isDeleteUser} type="error" />
+                              )}
+                            </div>
+                          </div>
+                        </Modal>
+                      </div>
+                    )}
+                    {openDisableAlert && (
+                      <div className="ProjectDeleteModel">
+                        <Modal
+                          showModal={openDisableAlert}
+                          onClickAway={this.hideDisableAlert}
+                        >
+                          <div className="DeleteDatabaseModel">
+                            <div className="DeleteProjectModalUpperSection">
+                              <div className="InnerModalDescription">
+                                Are you sure you want to disable this user
+                                &nbsp;
+                                <span className="DatabaseName">
+                                  {userDetail?.name} ?
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="DeleteProjectModalLowerSection">
+                              <div className="DeleteProjectModelButtons">
+                                <PrimaryButton
+                                  className="CancelBtn"
+                                  onClick={this.hideDisableAlert}
+                                >
+                                  Cancel
+                                </PrimaryButton>
+                                <PrimaryButton
+                                  color="red"
+                                  onClick={(e) =>
+                                    this.handleDisableAlert(e, userID)
+                                  }
+                                >
+                                  {isDisablingUser ? <Spinner /> : "Disable"}
+                                </PrimaryButton>
+                              </div>
+
+                              {userDisableFailed && isDisableUser && (
+                                <Feedback
+                                  message={isDisableUser}
+                                  type="error"
+                                />
+                              )}
+                            </div>
+                          </div>
+                        </Modal>
+                      </div>
+                    )}
+
+                    {!isFetching && !isFetched && (
+                      <div className="NoResourcesMessage">
+                        <p>
+                          Oops! Something went wrong! Failed to retrieve User
+                          Profile.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
                 <Modal
                   showModal={this.state.addCredits}
                   onClickAway={() => this.hideCreditsModal()}

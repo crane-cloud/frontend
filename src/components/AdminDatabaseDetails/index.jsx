@@ -7,6 +7,8 @@ import InformationBar from "../InformationBar";
 import Avatar from "../Avatar";
 import moment from "moment";
 import PrimaryButton from "../PrimaryButton";
+import { handlePostRequestWithOutDataObject
+} from "../../apis/apis.js";
 import userProfleStyles from "../UserProfile/UserProfile.module.css";
 import "./AdminDatabaseDetails.css";
 import Spinner from "../Spinner";
@@ -49,6 +51,39 @@ const AdminDatabaseDetails = () => {
     fetchDatabaseDetails();
   }, [fetchDatabaseDetails, fetchProjectSummary]);
 
+  const handleEnableButtonClick = () => {
+    try {
+      if (details.disabled) {
+        handlePostRequestWithOutDataObject(
+          databaseID,
+          `/databases/${databaseID}/enable`
+        )
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error("API call error:", error);
+            setError(error);
+            window.location.reload();
+          });
+      } else {
+        handlePostRequestWithOutDataObject(
+          databaseID,
+          `/databases/${databaseID}/disable`
+        )
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error("API call error:", error);
+            setError(error);
+            window.location.reload();
+          });
+      }
+    } catch (error) {
+      console.error("API call error:", error);
+    }
+  };
   return (
     <div className="MainPage">
       <div className="TopBarSection">
@@ -150,18 +185,24 @@ const AdminDatabaseDetails = () => {
                       <div className="MemberTableRow">
                         <div className="SettingsSectionRow">
                           <div className="SubTitle">
-                            Disable Database
+                            {details?.disabled ? "Enable" : "Disable"} Database
                             <br />
                             <div className="SubTitleContent">
-                              This will temporary disable the database.
+                              {details?.disabled
+                                ? "This will enable this user database"
+                                : "This will temporary disable the database."}
                             </div>
                           </div>
                           <div className="SectionButtons">
                             <PrimaryButton
-                              color="red-outline"
-                              //onClick={this.showDisableAlert}
+                              onClick={handleEnableButtonClick}
+                              color={
+                                details?.disabled
+                                  ? "primary-outline"
+                                  : "red-outline"
+                              }
                             >
-                              Disable
+                              {details?.disabled ? "Enable" : "Disable"}
                             </PrimaryButton>
                           </div>
                         </div>

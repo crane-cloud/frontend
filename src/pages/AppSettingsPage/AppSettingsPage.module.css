@@ -10,6 +10,11 @@
   background-color: rgba(112, 49, 49, 0.5);
 }
 
+.DeployText{
+  color:#fb0c0c;
+  font-weight: 600;
+}
+
 .AppPageLayout {
   display: flex;
   flex-direction: column;
@@ -184,12 +189,11 @@
   gap: 1rem;
 }
 
-@media(max-width: 965px) {
+@media (max-width: 965px) {
   .APPSections {
     padding: 0;
   }
 }
-
 
 .APPSectionPort {
   display: grid;
@@ -378,7 +382,7 @@
   grid-template-columns: 1fr 1fr;
 }
 
-.EnvVarsAddBtn>* {
+.EnvVarsAddBtn > * {
   height: 100%;
 }
 
@@ -387,8 +391,6 @@
   flex-direction: column;
   gap: 1rem;
 }
-
-
 
 .RemoveIconBtn {
   cursor: pointer;
@@ -409,7 +411,6 @@
   color: #fff;
   border: 1px solid #fb0c0c;
 }
-
 
 /* .EnvVarsInputGroup input {
   max-width: 10rem;
@@ -445,7 +446,6 @@
   align-items: center;
 }
 
-
 .EnvDataItem div {
   white-space: nowrap;
   overflow: hidden;
@@ -458,7 +458,7 @@
   gap: 1rem;
 }
 
-.EnvValue>div {
+.EnvValue > div {
   border: 1px solid #777;
   padding: 0.3rem 0.5rem;
   border-radius: 5px;
@@ -658,4 +658,81 @@ ul li {
     display: flex;
     flex-wrap: wrap;
   }
+}
+.MemberBody {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background-color: var(--gray-light-color);
+}
+
+.MemberTableRow {
+  display: flex;
+  color: #000000;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem;
+  margin: 0;
+  background-color: white;
+  gap: 1rem;
+}
+
+.MemberActionArea {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 4rem;
+  align-items: center;
+}
+
+.MemberInfo {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.MemberOptions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(7rem, 1fr));
+  gap: 2rem;
+  align-items: center;
+}
+
+.MemberRole {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0.3rem;
+  align-items: baseline;
+  font-weight: 600;
+  color: var(--primary-dark-color);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.MemberRole:hover {
+  color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+.MemberRole span {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.MemberTableRowUnregistered {
+  display: grid;
+  color: #000000;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  background-color: white;
+}
+.ProjectInstructions {
+  padding: 1rem;
+  background: #ffffff;
+  border-radius: 15px;
+  border: 1px solid var(--gray-light-color);
+  display: grid;
+  gap: 1rem;
 }

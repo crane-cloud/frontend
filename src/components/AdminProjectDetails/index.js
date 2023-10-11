@@ -13,9 +13,8 @@ import Avatar from "../Avatar";
 // import ActivityLogs from "../ActivityLogs";
 import Spinner from "../Spinner";
 import { dateInWords } from "../../helpers/dateConstants";
-import Modal from "../Modal";
 import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
-import Feedback from "../Feedback";
+
 import NewResourceCard from "../NewResourceCard";
 import { useLocation } from 'react-router-dom';
 import AppFooter from "../appFooter";
@@ -29,10 +28,6 @@ const AdminProjectDetails = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [details, setDetails] = useState({});
-
-  const [disablingProject, setDisablingProject] = useState(false);
-  const [disableProjectError, setDisableProjectError] = useState("");
-  const [openDisableProjectModel, setOpenDisableProjectModel] = useState(false);
 
   //need to get all current project details
   const { projectID } = useParams();
@@ -60,24 +55,38 @@ const AdminProjectDetails = () => {
     fetchProjectDetails();
   }, [fetchProjectDetails]);
 
-  const handleDisableProject = (e, disabled) => {
-    e.preventDefault();
-    setDisablingProject(true);
-    let apiEndpoint;
-    if (disabled) {
-      apiEndpoint = `/projects/${projectID}/admin_enable`;
-    } else {
-      apiEndpoint = `/projects/${projectID}/admin_disable`;
+  const handleEnableButtonClick = () => {
+    try {
+      if (details.disabled) {
+        handlePostRequestWithOutDataObject(
+          projectID,
+          `/projects/${projectID}/enable`
+        )
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error("API call error:", error);
+            setError(error);
+            window.location.reload();
+          });
+      } else {
+        handlePostRequestWithOutDataObject(
+          projectID,
+          `/projects/${projectID}/disable`
+        )
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error("API call error:", error);
+            setError(error);
+            window.location.reload();
+          });
+      }
+    } catch (error) {
+      console.error("API call error:", error);
     }
-    handlePostRequestWithOutDataObject({}, apiEndpoint)
-      .then(() => {
-        //reset to projects page to re populate redux
-        window.location.href = `/projects/${projectID}/details`;
-      })
-      .catch((error) => {
-        setDisableProjectError("Process failed, please try again.");
-        setDisablingProject(false);
-      });
   };
 
   return (
@@ -265,31 +274,23 @@ const AdminProjectDetails = () => {
                             <div className={styles.MemberTableRow}>
                               <div className={styles.SettingsSectionInfo}>
                                 <div className="SubTitle">
-                                  {details?.admin_disabled
+                                  {details?.disabled
                                     ? "Enable"
-                                    : "Disable"}{" "}
-                                  project
+                                    : "Disable"} project
                                 </div>
                                 <div>
-                                  {details?.admin_disabled
+                                  {details?.disabled
                                     ? "Enable and make all project resources accessible (apps, and databases) to the user."
                                     : "Disable and make all project resources inaccessible (apps, and databases) to the user."}
                                 </div>
                               </div>
                               <div className={styles.SectionButtons}>
                                 <PrimaryButton
-                                  onClick={() => {
-                                    setOpenDisableProjectModel(true);
-                                  }}
-                                  small
-                                  // color={ details?.disabled ? "primary" : "red" }
-                                  className={
-                                    details?.admin_disabled
-                                      ? "enableBtn"
-                                      : "disableBtn"
-                                  }
+                                  onClick={handleEnableButtonClick}
+                                  color={ details?.disabled ? "primary-outline" : "red-outline" }
+                                  
                                 >
-                                  {details?.admin_disabled
+                                  {details?.disabled
                                     ? "Enable"
                                     : "Disable"}
                                 </PrimaryButton>
@@ -310,61 +311,7 @@ const AdminProjectDetails = () => {
           <AppFooter/>
         </div>
       </div>
-      {openDisableProjectModel && (
-        <div className={styles.ProjectDeleteModel}>
-          <Modal
-            showModal={openDisableProjectModel}
-            onClickAway={() => {
-              setOpenDisableProjectModel(false);
-            }}
-          >
-            <div className={styles.DeleteProjectModel}>
-              <div className={styles.DeleteProjectModalUpperSection}>
-                <div className={styles.WarningContainer}>
-                  <div className={styles.DeleteDescription}>
-                    Are you sure you want to{" "}
-                    {details?.admin_disabled ? "enable" : "disable"}&nbsp;
-                    <span>{details?.name}</span>
-                    &nbsp;?
-                  </div>
-                  <div className={styles.DisableSubDescription}>
-                    This will {details?.disabled ? "enable" : "disable"} billing
-                    and external access of resources in this project.
-                  </div>
-                </div>
-              </div>
-              <div className={styles.DeleteProjectModalLowerSection}>
-                <div className={styles.DeleteProjectModelButtons}>
-                  <PrimaryButton
-                    className="CancelBtn"
-                    onClick={() => {
-                      setOpenDisableProjectModel(false);
-                    }}
-                  >
-                    Cancel
-                  </PrimaryButton>
-                  <PrimaryButton
-                    color={details?.disabled ? "primary" : "red"}
-                    onClick={(e) => handleDisableProject(e, details?.disabled)}
-                  >
-                    {disablingProject ? (
-                      <Spinner />
-                    ) : details?.disabled === true ? (
-                      "Enable"
-                    ) : (
-                      "Disable"
-                    )}
-                  </PrimaryButton>
-                </div>
-
-                {disableProjectError && (
-                  <Feedback message={disableProjectError} type="error" />
-                )}
-              </div>
-            </div>
-          </Modal>
-        </div>
-      )}
+      
     </section>
   );
 };
