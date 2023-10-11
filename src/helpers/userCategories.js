@@ -5,6 +5,7 @@ export const getUserCategories = () => {
     { id: 3, name: "Verified Users", value: "verified" },
     { id: 4, name: "Unverified Users", value: "unverified" },
     { id: 5, name: "Beta Users", value: "beta" },
+    { id: 6, name: "Disabled Users", value: "disabled" },
   ];
   return userCategories;
 };

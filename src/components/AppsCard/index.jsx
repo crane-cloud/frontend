@@ -10,7 +10,8 @@ import getAppMemory, { clearAppMemory } from "../../redux/actions/appMemory";
 import { formatAppMemoryMetrics } from "../../helpers/formatMetrics";
 
 const AppsCard = (props) => {
-  const { getAppMemory, name, appStatus, appId, otherData, appMemoryMetrics, url } =
+  const { getAppMemory, name, appStatus, appId, otherData, appMemoryMetrics, url, disabled,
+    admin_disabled=false } =
     props;
   const { projectID } = props.otherData;
   useEffect(() => {
@@ -25,7 +26,7 @@ const AppsCard = (props) => {
   const formattedMemoryMetrics = getAppMemoryMetrics();
 
   return (
-    <>
+    <div className={`${admin_disabled ? "unclickable":""}  ${disabled || admin_disabled ? "opequeCard":""}`} title={(disabled === true && !admin_disabled) ? "Disabled app": admin_disabled ? "Admin disabled this app": name}>
       <Link
         to={{
           pathname: `/projects/${otherData.projectID}/apps/${appId}/dashboard`,
@@ -58,7 +59,7 @@ const AppsCard = (props) => {
           </div>
         </div>
       </Link>
-    </>
+    </div>
   );
 };
 
