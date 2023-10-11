@@ -83,7 +83,7 @@ class ProjectCard extends React.Component {
     const { currentUserRecord, fetchingProjectMembers } = this.state;
     const formattedMetrics = this.getProjectMemoryMetrics();
     return (
-      <div  className={`ProjectsCard ${admin_disabled ? "unclickable":""}  ${disabled || admin_disabled ? "opequeCard":""}`} title={(disabled === true && !admin_disabled) ? "Disabled project": admin_disabled ? "Admin disabled this project": name  }>
+      <div  className={`ProjectsCard ${admin_disabled ? "unclickable":""}  ${disabled || admin_disabled ? "opequeCard":""}`} title={(disabled === true && !admin_disabled) ? "Disabled project": admin_disabled ? "Admin disabled this project": name }>
         <div className="appCount" title={`${apps_count} Apps in this project`}>
           <div>{apps_count}</div>
         </div>

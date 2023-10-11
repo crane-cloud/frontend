@@ -98,6 +98,7 @@ const AdminUserOverviewPage = () => {
     verified: usersSummary.filter((user) => user.verified === true).length,
     unverified: usersSummary.filter((user) => user.verified === false).length,
     beta: usersSummary.filter((user) => user.is_beta_user === true).length,
+    disabled: 0
   };
 
   const handleChange = ({ target }) => {
@@ -130,7 +131,7 @@ const AdminUserOverviewPage = () => {
   const handleDateRangeChange = (range) => {
     setDateRange(range);
   };
-
+  
   return (
     <div className="APage">
       <div className="TopRow">
