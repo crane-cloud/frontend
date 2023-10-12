@@ -110,7 +110,7 @@ const PvsListPage = (props) => {
               />
             </div>
           )}
-          <AppFooter />
+          <AppFooter sidebar={true} />
         </div>
       </div>
     </div>

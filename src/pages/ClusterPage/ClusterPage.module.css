@@ -3,6 +3,10 @@
   background: var(--gray-bg-light-color);
 }
 
+.Page .FooterRow {
+  padding-left: 1rem;
+}
+
 .ViewAccountsBtn {
   text-transform: capitalize !important;
   color: var(--primary-color);

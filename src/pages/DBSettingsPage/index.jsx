@@ -40,25 +40,24 @@ class DBSettingsPage extends React.Component {
       openUpdateModal: false,
       newDatabasePassword: "",
       confirmNewDatabasePassword: "",
-     // api states
-      gettingDatabases:false,
-      fetchingDatabaseErrors:"",
-      currentDB:{},
-    // getting password
-      gettingPassword:false,
-      getPasswordError:"",
-      DBpassword:"", 
-    // database password
-      changingDBPassword:false,
-      DBPasswordChangeError:"",
-     // database reset
-     resettingDB:false,
-     resettingDBError:"",
-     resettingResponseCode:"",
-     //delete database
-     deletingDB: false, 
-     deleteDBError:"" 
-     
+      // api states
+      gettingDatabases: false,
+      fetchingDatabaseErrors: "",
+      currentDB: {},
+      // getting password
+      gettingPassword: false,
+      getPasswordError: "",
+      DBpassword: "",
+      // database password
+      changingDBPassword: false,
+      DBPasswordChangeError: "",
+      // database reset
+      resettingDB: false,
+      resettingDBError: "",
+      resettingResponseCode: "",
+      //delete database
+      deletingDB: false,
+      deleteDBError: "",
     };
 
     this.handleDeleteDatabase = this.handleDeleteDatabase.bind(this);
@@ -73,7 +72,8 @@ class DBSettingsPage extends React.Component {
     this.userOnClick = this.userOnClick.bind(this);
     this.hostOnClick = this.hostOnClick.bind(this);
     this.uriOnClick = this.uriOnClick.bind(this);
-    this.uriCopyPostgresOnClickString = this.uriCopyPostgresOnClickString.bind(this);
+    this.uriCopyPostgresOnClickString =
+      this.uriCopyPostgresOnClickString.bind(this);
     this.uriCopyPostgresOnClick = this.uriCopyPostgresOnClick.bind(this);
     this.passwordOnClick = this.passwordOnClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -87,8 +87,7 @@ class DBSettingsPage extends React.Component {
     this.fetchPasswordApis = this.fetchPasswordApis.bind(this);
     this.changeDatabasePassword = this.changeDatabasePassword.bind(this);
     this.resetDB = this.resetDB.bind(this);
-    this.deleteDb = this.deleteDb.bind(this)
-    
+    this.deleteDb = this.deleteDb.bind(this);
   }
   componentDidMount() {
     const { projectID, databaseID } = this.props.match.params;
@@ -96,28 +95,28 @@ class DBSettingsPage extends React.Component {
   }
   // componentDidUpdate(prevProps) {
   // }
-  fetchSelectedDb(projectID, databaseID){
+  fetchSelectedDb(projectID, databaseID) {
     this.setState({
       gettingDatabases: true,
     });
     handleGetRequest(`/projects/${projectID}/databases/${databaseID}`)
-    .then((response) => {
-      this.setState({
-        gettingDatabases: false,
-        currentDB: response.data.data.database
+      .then((response) => {
+        this.setState({
+          gettingDatabases: false,
+          currentDB: response.data.data.database,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          fetchingDatabaseErrors: "Failed to fetch database",
+          gettingDatabases: false,
+        });
       });
-    })
-    .catch((error) => {
-      this.setState({
-        fetchingDatabaseErrors: "Failed to fetch database",
-        gettingDatabases: false,
-      });
-    });
   }
 
   handleDeleteDatabase(e, projectID, databaseID) {
     e.preventDefault();
-   this.deleteDb(projectID, databaseID)
+    this.deleteDb(projectID, databaseID);
   }
 
   showDeleteAlert() {
@@ -130,7 +129,7 @@ class DBSettingsPage extends React.Component {
 
   handleResetDatabase(e, projectID, databaseID) {
     e.preventDefault();
-   this.resetDB(projectID, databaseID)
+    this.resetDB(projectID, databaseID);
   }
 
   showResetAlert() {
@@ -148,12 +147,11 @@ class DBSettingsPage extends React.Component {
 
   // hide update modal
   hideUpdateModal() {
-    this.setState({ 
+    this.setState({
       openUpdateModal: false,
       newDatabasePassword: "",
-      confirmNewDatabasePassword: "" 
+      confirmNewDatabasePassword: "",
     });
-   
   }
 
   // handle input onchange
@@ -202,7 +200,7 @@ class DBSettingsPage extends React.Component {
   }
 
   uriCopyPostgresOnClickString() {
-    const {currentDB } = this.state;
+    const { currentDB } = this.state;
     navigator.clipboard.writeText(
       `postgresql://${currentDB.user}:${currentDB.password}@${currentDB.host}:${currentDB.port}/${currentDB.name}`
       // `postgresql://${currentDB?.user}:${currentDB?.password}@${currentDB?.host}:${currentDB?.port}/${currentDB?.name}`
@@ -232,15 +230,15 @@ class DBSettingsPage extends React.Component {
     } = this.props;
     this.fetchPasswordApis(projectID, databaseID);
   }
-  fetchPasswordApis(projectID, databaseID){
-      this.setState({
-        gettingPassword: true,
-      });
-      handleGetRequest(`/projects/${projectID}/databases/${databaseID}/password`)
+  fetchPasswordApis(projectID, databaseID) {
+    this.setState({
+      gettingPassword: true,
+    });
+    handleGetRequest(`/projects/${projectID}/databases/${databaseID}/password`)
       .then((response) => {
         this.setState({
           gettingPassword: false,
-          DBpassword: response.data.data.password
+          DBpassword: response.data.data.password,
         });
       })
       .catch((error) => {
@@ -277,56 +275,58 @@ class DBSettingsPage extends React.Component {
       const newPassword = {
         password: newDatabasePassword,
       };
-     // updateDatabasePassword(projectID, databaseID, newPassword);
-     this.changeDatabasePassword(projectID, databaseID, newPassword);
+      // updateDatabasePassword(projectID, databaseID, newPassword);
+      this.changeDatabasePassword(projectID, databaseID, newPassword);
     }
   }
-  changeDatabasePassword(projectID, databaseID, newPassword){
+  changeDatabasePassword(projectID, databaseID, newPassword) {
     this.setState({
       changingDBPassword: true,
-      DBPasswordChangeError:""
+      DBPasswordChangeError: "",
     });
     handlePostRequestWithOutDataObject(
       newPassword,
       `/projects/${projectID}/databases/${databaseID}/reset_password`
-    ).then(() => {
-         window.location.href = `/projects/${projectID}/databases/${databaseID}/settings`;
+    )
+      .then(() => {
+        window.location.href = `/projects/${projectID}/databases/${databaseID}/settings`;
       })
       .catch((error) => {
         this.setState({
-          changingDBPassword:false,
-          DBPasswordChangeError:"Failed to update password",
+          changingDBPassword: false,
+          DBPasswordChangeError: "Failed to update password",
         });
       });
   }
-  resetDB(projectID, databaseID){
+  resetDB(projectID, databaseID) {
     this.setState({
-      resettingDB:true,
-      resettingDBError:"",
-      resettingResponseCode:"",
+      resettingDB: true,
+      resettingDBError: "",
+      resettingResponseCode: "",
     });
     handlePostRequestWithOutDataObject(
       {},
       `/projects/${projectID}/databases/${databaseID}/reset`
-    ).then((response) => {
-         this.setState({
-          resettingDB:false,
-          resettingResponseCode:response.status,
+    )
+      .then((response) => {
+        this.setState({
+          resettingDB: false,
+          resettingResponseCode: response.status,
         });
-        this.hideResetAlert()
+        this.hideResetAlert();
       })
       .catch((error) => {
         this.setState({
-          changingDBPassword:false,
-          DBPasswordChangeError:"Failed to reset password",
-          resettingResponseCode:error.response.status,
+          changingDBPassword: false,
+          DBPasswordChangeError: "Failed to reset password",
+          resettingResponseCode: error.response.status,
         });
-        this.hideResetAlert()
+        this.hideResetAlert();
       });
   }
-  deleteDb(projectID, databaseID){
-    this.setState({ deletingDB: true, deleteDBError:"" });
-    handleDeleteRequest(`/projects/${projectID}/databases/${databaseID}`,{})
+  deleteDb(projectID, databaseID) {
+    this.setState({ deletingDB: true, deleteDBError: "" });
+    handleDeleteRequest(`/projects/${projectID}/databases/${databaseID}`, {})
       .then(() => {
         window.location.href = `/projects/${projectID}/databases`;
       })
@@ -334,14 +334,50 @@ class DBSettingsPage extends React.Component {
         this.setState({
           deleteProjectError: "Failed to delete this database",
           deletingProject: false,
-        })
+        });
       });
   }
+  handleEnableButtonClick = async () => {
+    let { currentDB } = this.state;
+    const { databaseID } = this.props.match.params;
+
+    try {
+      if (currentDB.disabled) {
+        await handlePostRequestWithOutDataObject(
+          databaseID,
+          `/databases/${databaseID}/enable`
+        )
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            this.setState({
+              error: error,
+            });
+          });
+      } else {
+        await handlePostRequestWithOutDataObject(
+          databaseID,
+          `/databases/${databaseID}/disable`
+        )
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            this.setState({
+              error: error,
+            });
+          });
+      }
+    } catch (error) {
+      console.error("API call error:", error);
+    } finally {
+      window.location.reload();
+    }
+  };
 
   render() {
-    const {
-      projects,
-    } = this.props;
+    const { projects } = this.props;
     const { projectID, databaseID } = this.props.match.params;
     // const dbInfo = this.getDatabaseInfo(databaseID);
     const {
@@ -366,17 +402,25 @@ class DBSettingsPage extends React.Component {
       resettingDB,
       resettingDBError,
       resettingResponseCode,
-      deletingDB, 
-      deleteDBError
+      deletingDB,
+      deleteDBError,
     } = this.state;
     return (
       <DashboardLayout
-        header={<><Link className="breadcrumb" 
-        to={`/projects/${projectID}/databases/`}>Databases</Link><span>/ DB settings</span></>}
+        header={
+          <>
+            <Link
+              className="breadcrumb"
+              to={`/projects/${projectID}/databases/`}
+            >
+              Databases
+            </Link>
+            <span>/ DB settings</span>
+          </>
+        }
         name={getProjectName(projects, projectID)}
         short
       >
-
         {gettingDatabases ? (
           <div className="NoResourcesMessage">
             <div className="SpinnerWrapper">
@@ -448,7 +492,7 @@ class DBSettingsPage extends React.Component {
                 </div>
               </div>
 
-              {DBpassword !=="" ? (
+              {DBpassword !== "" ? (
                 <div>
                   <div className="SectionSubTitle">Password</div>
                   <div className="DetailRow">
@@ -565,7 +609,9 @@ class DBSettingsPage extends React.Component {
                       </code>
                       <div className="DBAccessCopy">
                         <div className="DBPassword">
-                          <CopyText onClick={this.uriCopyPostgresOnClickString} />
+                          <CopyText
+                            onClick={this.uriCopyPostgresOnClickString}
+                          />
                           {newUriChecked ? <Checked /> : null}
                         </div>
                       </div>
@@ -638,20 +684,40 @@ class DBSettingsPage extends React.Component {
                       </PrimaryButton>
                     </div>
                   </div>
-                  {(resettingDBError === "" && resettingResponseCode ===200 )&& (
+                  {resettingDBError === "" && resettingResponseCode === 200 && (
                     <Feedback
-                      message={
-                          "Database has been successfully reset."
-                      }
+                      message={"Database has been successfully reset."}
                       type={"success"}
                     />
                   )}
-                  {(resettingDBError !== "" )&& (
-                    <Feedback
-                      message={resettingDBError}
-                      type={"error"}
-                    />
+                  {resettingDBError !== "" && (
+                    <Feedback message={resettingDBError} type={"error"} />
                   )}
+                  <div className={styles.MemberTableRow}>
+                    <div className={styles.SettingsSectionInfo}>
+                      <div className="SubTitle">
+                        {currentDB?.disabled ? "Enable" : "Disable"} database
+                      </div>
+                      <br />
+                      <div className="SubTitleContent">
+                        {currentDB?.disabled
+                          ? "This will enable this database."
+                          : "This will temporary disable the database."}
+                      </div>
+                    </div>
+                    <div className="SectionButtons">
+                      <PrimaryButton
+                        onClick={this.handleEnableButtonClick}
+                        color={
+                          currentDB?.disabled
+                            ? "primary-outline"
+                            : "red-outline"
+                        }
+                      >
+                        {currentDB?.disabled ? "Enable" : "Disable"}
+                      </PrimaryButton>
+                    </div>
+                  </div>
                   <div className={styles.MemberTableRow}>
                     <div className={styles.SettingsSectionInfo}>
                       <div className="SubTitle">Delete database</div>
@@ -674,157 +740,140 @@ class DBSettingsPage extends React.Component {
               </div>
             </div>
 
-  
-              {openUpdateModal && (
-                <div className="ProjectDeleteModel">
-                  <Modal
-                    showModal={openUpdateModal}
-                    onClickAway={this.hideUpdateModal}
-                  >
-                    <div className="DeleteDatabaseModel">
-                      <div className="DeleteProjectModalUpperSection">
-                        <div className="ModalFormHeading">
-                          <h2>Update database password</h2>
-                        </div>
-                        <div className="InnerModalDescription">
-                          <BlackInputText
-                            required
-                            placeholder="New database Password"
-                            name="newDatabasePassword"
-                            value={newDatabasePassword}
-                            onChange={(e) => {
-                              this.handleChange(e);
-                            }}
-                          />
-                          <BlackInputText
-                            required
-                            placeholder="Confirm New database Password"
-                            name="confirmNewDatabasePassword"
-                            value={confirmNewDatabasePassword}
-                            onChange={(e) => {
-                              this.handleChange(e);
-                            }}
-                          />
-                        </div>
+            {openUpdateModal && (
+              <div className="ProjectDeleteModel">
+                <Modal
+                  showModal={openUpdateModal}
+                  onClickAway={this.hideUpdateModal}
+                >
+                  <div className="DeleteDatabaseModel">
+                    <div className="DeleteProjectModalUpperSection">
+                      <div className="ModalFormHeading">
+                        <h2>Update database password</h2>
                       </div>
-                      {(DBPasswordChangeError) && (
-                        <Feedback
-                          type="error"
-                          message={
-                            DBPasswordChangeError
-                          }
+                      <div className="InnerModalDescription">
+                        <BlackInputText
+                          required
+                          placeholder="New database Password"
+                          name="newDatabasePassword"
+                          value={newDatabasePassword}
+                          onChange={(e) => {
+                            this.handleChange(e);
+                          }}
                         />
+                        <BlackInputText
+                          required
+                          placeholder="Confirm New database Password"
+                          name="confirmNewDatabasePassword"
+                          value={confirmNewDatabasePassword}
+                          onChange={(e) => {
+                            this.handleChange(e);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    {DBPasswordChangeError && (
+                      <Feedback type="error" message={DBPasswordChangeError} />
+                    )}
+                    <div className="DeleteProjectModalLowerSection">
+                      <div className="DeleteProjectModelButtons">
+                        <PrimaryButton
+                          className="CancelBtn"
+                          onClick={this.hideUpdateModal}
+                        >
+                          Cancel
+                        </PrimaryButton>
+                        <PrimaryButton
+                          color="primary"
+                          onClick={this.handleSubmitUpdate}
+                        >
+                          {changingDBPassword ? <Spinner /> : "Update"}
+                        </PrimaryButton>
+                      </div>
+                    </div>
+                  </div>
+                </Modal>
+              </div>
+            )}
+            {openDeleteAlert && (
+              <div className="ProjectDeleteModel">
+                <Modal
+                  showModal={openDeleteAlert}
+                  onClickAway={this.hideDeleteAlert}
+                >
+                  <div className="DeleteDatabaseModel">
+                    <div className="DeleteProjectModalUpperSection">
+                      <div className="InnerModalDescription">
+                        Are you sure you want to delete this database &nbsp;
+                        <span className="DatabaseName">{currentDB.name} ?</span>
+                        <DeleteWarning />
+                      </div>
+                    </div>
+
+                    <div className="DeleteProjectModalLowerSection">
+                      <div className="DeleteProjectModelButtons">
+                        <PrimaryButton
+                          className="CancelBtn"
+                          onClick={this.hideDeleteAlert}
+                        >
+                          Cancel
+                        </PrimaryButton>
+                        <PrimaryButton
+                          color="red"
+                          onClick={(e) =>
+                            this.handleDeleteDatabase(e, projectID, databaseID)
+                          }
+                        >
+                          {deletingDB ? <Spinner /> : "Delete"}
+                        </PrimaryButton>
+                      </div>
+
+                      {deleteDBError && (
+                        <Feedback message={deleteDBError} type="error" />
                       )}
-                      <div className="DeleteProjectModalLowerSection">
-                        <div className="DeleteProjectModelButtons">
-                          <PrimaryButton
-                            className="CancelBtn"
-                            onClick={this.hideUpdateModal}
-                          >
-                            Cancel
-                          </PrimaryButton>
-                          <PrimaryButton
-                            color="primary"
-                            onClick={this.handleSubmitUpdate}
-                          >
-                            {changingDBPassword ? <Spinner /> : "Update"}
-                          </PrimaryButton>
-                        </div>
+                    </div>
+                  </div>
+                </Modal>
+              </div>
+            )}
 
-                       
+            {openResetAlert && (
+              <div className="ProjectDeleteModel">
+                <Modal
+                  showModal={openResetAlert}
+                  onClickAway={this.hideResetAlert}
+                >
+                  <div className="DeleteDatabaseModel">
+                    <div className="DeleteProjectModalUpperSection">
+                      <div className="InnerModalDescription">
+                        Are you sure you want to reset this database &nbsp;
+                        <span className="DatabaseName">{currentDB.name} ?</span>
+                        <DeleteWarning />
                       </div>
                     </div>
-                  </Modal>
-                </div>
-              )}
-              {openDeleteAlert && (
-                <div className="ProjectDeleteModel">
-                  <Modal
-                    showModal={openDeleteAlert}
-                    onClickAway={this.hideDeleteAlert}
-                  >
-                    <div className="DeleteDatabaseModel">
-                      <div className="DeleteProjectModalUpperSection">
-                        <div className="InnerModalDescription">
-                          Are you sure you want to delete this database &nbsp;
-                          <span className="DatabaseName">
-                            {currentDB.name} ?
-                          </span>
-                          <DeleteWarning />
-                        </div>
-                      </div>
 
-                      <div className="DeleteProjectModalLowerSection">
-                        <div className="DeleteProjectModelButtons">
-                          <PrimaryButton
-                            className="CancelBtn"
-                            onClick={this.hideDeleteAlert}
-                          >
-                            Cancel
-                          </PrimaryButton>
-                          <PrimaryButton
-                            color="red"
-                            onClick={(e) =>
-                              this.handleDeleteDatabase(
-                                e,
-                                projectID,
-                                databaseID
-                              )
-                            }
-                          >
-                            {deletingDB ? <Spinner /> : "Delete"}
-                          </PrimaryButton>
-                        </div>
-
-                        {deleteDBError && (
-                          <Feedback message={deleteDBError} type="error" />
-                        )}
+                    <div className="DeleteProjectModalLowerSection">
+                      <div className="DeleteProjectModelButtons">
+                        <PrimaryButton
+                          className="CancelBtn"
+                          onClick={this.hideResetAlert}
+                        >
+                          Cancel
+                        </PrimaryButton>
+                        <PrimaryButton
+                          color="red"
+                          onClick={(e) =>
+                            this.handleResetDatabase(e, projectID, databaseID)
+                          }
+                        >
+                          {resettingDB ? <Spinner /> : "Reset"}
+                        </PrimaryButton>
                       </div>
                     </div>
-                  </Modal>
-                </div>
-              )}
-
-              {openResetAlert && (
-                <div className="ProjectDeleteModel">
-                  <Modal
-                    showModal={openResetAlert}
-                    onClickAway={this.hideResetAlert}
-                  >
-                    <div className="DeleteDatabaseModel">
-                      <div className="DeleteProjectModalUpperSection">
-                        <div className="InnerModalDescription">
-                          Are you sure you want to reset this database &nbsp;
-                          <span className="DatabaseName">
-                            {currentDB.name} ?
-                          </span>
-                          <DeleteWarning />
-                        </div>
-                      </div>
-
-                      <div className="DeleteProjectModalLowerSection">
-                        <div className="DeleteProjectModelButtons">
-                          <PrimaryButton
-                            className="CancelBtn"
-                            onClick={this.hideResetAlert}
-                          >
-                            Cancel
-                          </PrimaryButton>
-                          <PrimaryButton
-                            color="red"
-                            onClick={(e) =>
-                              this.handleResetDatabase(e, projectID, databaseID)
-                            }
-                          >
-                            {resettingDB ? <Spinner /> : "Reset"}
-                          </PrimaryButton>
-                        </div>
-                      </div>
-                    </div>
-                  </Modal>
-                </div>
-              )}
-            
+                  </div>
+                </Modal>
+              </div>
+            )}
           </div>
         )}
       </DashboardLayout>

@@ -6,7 +6,7 @@ import PrimaryButton from "../../components/PrimaryButton";
 import { DisplayDateTime } from "../../helpers/dateConstants";
 import Header from "../../components/Header";
 import styles from "./AdminAppDetail.module.css";
-
+import { handlePostRequestWithOutDataObject } from "../../apis/apis.js";
 
 const AdminAppDetail = () => {
   const { appID } = useParams();
@@ -16,9 +16,9 @@ const AdminAppDetail = () => {
     getAppDetails(appID);
   }, [appID]);
 
-  const getAppDetails = async (appID) => {
+  const getAppDetails = (appID) => {
     try {
-      const response = await handleGetRequest(`/apps/${appID}`);
+      const response = handleGetRequest(`/apps/${appID}`);
       if (response.data.status === "success") {
         setAppDetail(response.data.data);
       } else {
@@ -28,7 +28,40 @@ const AdminAppDetail = () => {
       throw new Error("Failed to fetch app detail, please try again");
     }
   };
-
+  const handleEnableButtonClick = () => {
+    try {
+      if (appDetail?.apps?.disabled) {
+        handlePostRequestWithOutDataObject(
+          appID,
+          `/apps/${appID}/enable`
+        )
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error("API call error:", error);
+            // setError(error);
+            window.location.reload();
+          });
+      } else {
+        handlePostRequestWithOutDataObject(
+          appID,
+          `/apps/${appID}/disable`
+        )
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error("API call error:", error);
+            // setError(error);
+            window.location.reload();
+          });
+      }
+    } catch (error) {
+      console.error("API call error:", error);
+    }
+  };
+  console.log(appDetail);
   return (
     <div className={styles.Page}>
       <div className="TopRow">
@@ -40,8 +73,11 @@ const AdminAppDetail = () => {
         <div className="TitleArea">
           <div className="SectionTitle" style={{ paddingTop: "1rem" }}>
             <b>Application Detail</b>{" "}
-            <PrimaryButton className="CancelBtn" color="red">
-              Disable
+            <PrimaryButton
+              onClick={handleEnableButtonClick}
+              color={appDetail?.apps?.disabled ? "primary-outline" : "red-outline"}
+            >
+              {appDetail?.apps?.disabled ? "Enable" : "Disable"}
             </PrimaryButton>
           </div>
         </div>
@@ -76,7 +112,7 @@ const AdminAppDetail = () => {
                 {DisplayDateTime(new Date(appDetail?.apps?.date_created))}
               </div>
               <div className={styles.listItem}>
-                <strong>Command:</strong> {appDetail?.apps?.command}
+                <strong>Command:</strong> {appDetail?.apps?.command ? appDetail?.apps?.command : "None"}
               </div>
               <div className={styles.listItem}>
                 <strong>Private Image:</strong>{" "}

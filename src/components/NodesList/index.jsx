@@ -124,7 +124,7 @@ class NodesList extends Component {
                 )}
               </div>
             </div>
-            <AppFooter />
+            <AppFooter sidebar={true} />
           </div>
         </div>
       </div>

@@ -19,7 +19,7 @@ import Spinner from "../../components/Spinner";
 import AppFooter from "../../components/appFooter/index.js";
 
 const AdminLogsPage = () => {
-  const  clusterID  = localStorage.getItem("clusterID");
+  const clusterID = localStorage.getItem("clusterID");
 
   const baseLink = "/users/activities?";
   const [loading, setLoading] = useState(false);
@@ -153,9 +153,9 @@ const AdminLogsPage = () => {
   };
   const handleCalenderSubmission = () => {
     //add to link
-    const toDate = new Date(toTS) 
-    const fromDate = new Date(fromTS)
-    if(toTS !== "none" && fromTS !== "none" && (toDate < fromDate )){
+    const toDate = new Date(toTS);
+    const fromDate = new Date(fromTS);
+    if (toTS !== "none" && fromTS !== "none" && toDate < fromDate) {
       setDateError("The 'end' date must be greater than the 'start' date");
       setFromTS("none");
       setToTS("none");
@@ -262,37 +262,37 @@ const AdminLogsPage = () => {
                 </div>
                 <div className={styles.SimpleForm}>
                   <div className={styles.OuterFilterItem}>
-                  <div className={styles.DateSection}>
-                    <div className={styles.DateItem}>
-                      <div>Start:</div>
-                      <DateInput
-                        handleChange={handleFromDate}
-                        showCalendar={showFromCalendar}
-                        className={styles.dateField}
-                        position={styles.CalenderFromposition}
-                        dateValue={fromTS}
-                        onClick={switchCalendars}
-                        onCancel={closeCalendar}
-                        onSubmit={handleCalenderSubmission}
-                        value="from"
-                      />
+                    <div className={styles.DateSection}>
+                      <div className={styles.DateItem}>
+                        <div>Start:</div>
+                        <DateInput
+                          handleChange={handleFromDate}
+                          showCalendar={showFromCalendar}
+                          className={styles.dateField}
+                          position={styles.CalenderFromposition}
+                          dateValue={fromTS}
+                          onClick={switchCalendars}
+                          onCancel={closeCalendar}
+                          onSubmit={handleCalenderSubmission}
+                          value="from"
+                        />
+                      </div>
+                      <div className={styles.DateItem}>
+                        <div>End:</div>
+                        <DateInput
+                          handleChange={handleToDate}
+                          showCalendar={showToCalendar}
+                          position={styles.CalenderToposition}
+                          className={styles.dateField}
+                          dateValue={toTS}
+                          onClick={switchCalendars}
+                          onCancel={closeCalendar}
+                          onSubmit={handleCalenderSubmission}
+                          value="to"
+                        />
+                      </div>
                     </div>
-                    <div className={styles.DateItem}>
-                      <div>End:</div>
-                      <DateInput
-                        handleChange={handleToDate}
-                        showCalendar={showToCalendar}
-                        position={styles.CalenderToposition}
-                        className={styles.dateField}
-                        dateValue={toTS}
-                        onClick={switchCalendars}
-                        onCancel={closeCalendar}
-                        onSubmit={handleCalenderSubmission}
-                        value="to"
-                      />
-                    </div>
-                  </div>
-                  <div className={styles.errorSection}>{dateError}</div>
+                    <div className={styles.errorSection}>{dateError}</div>
                   </div>
                   <div className={styles.Filter}>
                     <FilterIcon />
@@ -455,10 +455,9 @@ const AdminLogsPage = () => {
               </div>
             </div>
           </div>
-          <AppFooter/>
+          <AppFooter sidebar={true} />
         </div>
       </div>
-
     </div>
   );
 };

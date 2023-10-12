@@ -14,17 +14,16 @@ import Avatar from "../Avatar";
 import Spinner from "../Spinner";
 import { dateInWords } from "../../helpers/dateConstants";
 import Modal from "../Modal";
-import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 import Feedback from "../Feedback";
 import NewResourceCard from "../NewResourceCard";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import AppFooter from "../appFooter";
 
 const AdminProjectDetails = () => {
   const clusterID = localStorage.getItem("clusterID");
   const clusterName = localStorage.getItem("clusterName");
   const location = useLocation();
-  const isOverviewProject = location.pathname.includes('/projects-overview');
+  const isOverviewProject = location.pathname.includes("/projects-overview");
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -51,9 +50,9 @@ const AdminProjectDetails = () => {
       .catch((error) => {
         setError("Failed to fetch project detail please refresh");
       })
-      .finally(()=>{
+      .finally(() => {
         setLoading(false);
-      })
+      });
   }, [projectID]);
 
   useEffect(() => {
@@ -85,29 +84,45 @@ const AdminProjectDetails = () => {
       <div className={styles.TopBarSection}>
         <Header />
       </div>
-      <div className={isOverviewProject? styles.CenterSection : styles.MainSection}>
-       {!isOverviewProject && <div className={styles.SideBarSection}>
-          <SideNav clusterName={clusterName} clusterId={clusterID} />
-        </div>
+      <div
+        className={
+          isOverviewProject ? styles.CenterSection : styles.MainSection
         }
+      >
+        {!isOverviewProject && (
+          <div className={styles.SideBarSection}>
+            <SideNav clusterName={clusterName} clusterId={clusterID} />
+          </div>
+        )}
         <div className={styles.MainContentSection}>
-          <div className={styles.InformationBarSection}>
+          <div className="InformationBarSection">
             <InformationBar
               header={
-                <span className={styles.InformationBarTitle}>
+                <span>
                   <Link
-                    className={ `${styles.breadcrumb} ${styles.flex_back_link}`}
-                    to={isOverviewProject? `/projects-overview` : `/clusters/${clusterID}/projects-listing`}
+                    className="breadcrumb"
+                    to={
+                      isOverviewProject
+                        ? `/projects-overview`
+                        : `/clusters/${clusterID}/projects-listing`
+                    }
                   >
-                    <BackButton />
-                    <div className={styles.back_link}>Project Details</div>
+                    Projects
                   </Link>
+                  / {details?.name}
                 </span>
               }
               showBtn={false}
+              showBackBtn
             />
           </div>
-          <div className={isOverviewProject ?  styles.CustomOverViewSmallContainer : styles.CustomSmallContainer}>
+          <div
+            className={
+              isOverviewProject
+                ? "LeftAlignContainer"
+                : styles.CustomSmallContainer
+            }
+          >
             {loading ? (
               <div className={styles.CentralSpinner}>
                 <Spinner />
@@ -135,11 +150,15 @@ const AdminProjectDetails = () => {
                                 </div>
                                 <div className={styles.ProjectStatus}>
                                   {details?.disabled ? (
-                                    <div className={ `${styles.font_status} ${styles.disabled}`}>
+                                    <div
+                                      className={`${styles.font_status} ${styles.disabled}`}
+                                    >
                                       Disabled
                                     </div>
                                   ) : (
-                                    <div className={ `${styles.font_status} ${styles.active}`}>
+                                    <div
+                                      className={`${styles.font_status} ${styles.active}`}
+                                    >
                                       Active
                                     </div>
                                   )}
@@ -257,32 +276,28 @@ const AdminProjectDetails = () => {
                         </>
                       </div>
                     </section>
-                    <section className={styles.DetailsSection}>
-                      <>
-                        <div className="SectionTitle">Manage Project</div>
-                        <div className={styles.ProjectInstructions}>
-                          <div className={styles.MemberBody}>
-                            <div className={styles.MemberTableRow}>
-                              <div className={styles.SettingsSectionInfo}>
-                                <div className="SubTitle">
-                                  {details?.admin_disabled
-                                    ? "Enable"
-                                    : "Disable"}{" "}
-                                  project
-                                </div>
-                                <div>
+                    <div className="AdminDBSections">
+                      <div className="SectionTitle">Manage Project</div>
+                      <div className="ProjectInstructions">
+                        <div className="MemberBody">
+                          <div className="MemberTableRow">
+                            <div className="SettingsSectionRow">
+                              <div className="SubTitle">
+                                {details?.admin_disabled ? "Enable" : "Disable"}{" "}
+                                project
+                                <br />
+                                <div className="SubTitleContent">
                                   {details?.admin_disabled
                                     ? "Enable and make all project resources accessible (apps, and databases) to the user."
                                     : "Disable and make all project resources inaccessible (apps, and databases) to the user."}
                                 </div>
                               </div>
-                              <div className={styles.SectionButtons}>
+                              <div className="SectionButtons">
                                 <PrimaryButton
+                                  color="red-outline"
                                   onClick={() => {
                                     setOpenDisableProjectModel(true);
                                   }}
-                                  small
-                                  // color={ details?.disabled ? "primary" : "red" }
                                   className={
                                     details?.admin_disabled
                                       ? "enableBtn"
@@ -297,8 +312,8 @@ const AdminProjectDetails = () => {
                             </div>
                           </div>
                         </div>
-                      </>
-                    </section>
+                      </div>
+                    </div>
                   </div>
                 )}
               </>
@@ -307,7 +322,7 @@ const AdminProjectDetails = () => {
               <div className={styles.CentralSpinner}>{error}</div>
             )}
           </div>
-          <AppFooter/>
+          <AppFooter />
         </div>
       </div>
       {openDisableProjectModel && (

@@ -158,7 +158,7 @@ const PodsList = () => {
                 />
               </div>
             )}
-            <AppFooter />
+            <AppFooter sidebar={true} />
           </div>
         </div>
       </div>

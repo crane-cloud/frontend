@@ -687,7 +687,7 @@ const AdminProjectOverviewPage = () => {
                 </div>
               </div>
             </div>
-            <AppFooter/>
+            <AppFooter sidebar={true} />
           </div>
         </div>
       </div>

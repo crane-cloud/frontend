@@ -28,7 +28,8 @@ import { retrieveMonthNames } from "../../helpers/monthNames";
 import { handleGetRequest } from "../../apis/apis";
 import Select from "../Select";
 import { getDatabaseFlavors } from "../../helpers/databaseCategories";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory, Link } from "react-router-dom/cjs/react-router-dom.min";
+import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 import AppFooter from "../appFooter";
 
 const AdminDBList = () => {
@@ -143,8 +144,17 @@ const AdminDBList = () => {
         <>
           <div className="TopRow">
             <InformationBar
-              header="Databases Overview"
-              showBackBtn={true}
+              header={
+                <span className="ProjectsInformationBarTitle">
+                  <Link
+                    className={`breadcrumb flex_back_link`}
+                    to={`/clusters`}
+                  >
+                    <BackButton />
+                    <div className="back_link">Databases Overview</div>
+                  </Link>
+                </span>
+              }
               showBtn
               buttontext="+ new database"
               btnAction={showCreateComponent}

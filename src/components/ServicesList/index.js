@@ -129,7 +129,7 @@ const ServicesListPage = () => {
                 />
               </div>
             )}
-            <AppFooter />
+            <AppFooter sidebar={true} />
           </div>
         </div>
       </div>

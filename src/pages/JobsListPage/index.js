@@ -101,7 +101,7 @@ const JobsListPage = () => {
               )}
             </div>
           </div>
-          <AppFooter position="absolute" />
+          <AppFooter sidebar={true} />
         </div>
       </div>
     </div>
