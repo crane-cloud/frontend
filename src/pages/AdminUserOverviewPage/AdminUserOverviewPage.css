@@ -87,12 +87,10 @@
 
 .ChartColumn {
   flex: 1;
-  padding-right: 20px;
-  /* Add spacing between the columns */
 }
 
 .PercentageColumn {
-  padding-right: 3rem;
+  display: contents;
 }
 
 .KeyItems {
@@ -101,7 +99,11 @@
   gap: 1rem;
 }
 
+.ProjectsInformationBarTitle {
+  display: flex;
+  gap: 2rem;
+}
 
-/* .AMainSection .ResourceClusterContainer {
-  padding: 2rem;
-} */
+.APage .appFooterRow {
+  padding: 0rem 3rem 0 4.5rem;
+}

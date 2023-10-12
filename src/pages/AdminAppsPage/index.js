@@ -14,6 +14,8 @@ import AppListing from "../../components/AppListing";
 import usePaginator from "../../hooks/usePaginator";
 import Spinner from "../../components/Spinner";
 import AppFooter from "../../components/appFooter";
+import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const AdminAppsPage = () => {
   // const [apps, setApps] = useState([]);
@@ -108,7 +110,16 @@ const AdminAppsPage = () => {
     <div className="APage">
       <div className="TopRow">
         <Header />
-        <InformationBar header="Apps Overview" showBackBtn />
+        <InformationBar
+          header={
+            <span className="ProjectsInformationBarTitle">
+              <Link className={`breadcrumb flex_back_link`} to={`/clusters`}>
+                <BackButton />
+                <div className="back_link">Apps Overview</div>
+              </Link>
+            </span>
+          }
+        />
       </div>
       <div className="AMainSection">
         <div className="ContentSection">
@@ -363,7 +374,7 @@ const AdminAppsPage = () => {
           />
         </div>
       </div>
-      <AppFooter/>
+      <AppFooter />
     </div>
   );
 };

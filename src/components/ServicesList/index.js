@@ -12,20 +12,20 @@ import Pagination from "../../components/Pagination";
 import AppFooter from "../appFooter";
 
 const ServicesListPage = () => {
-  const  clusterID  = localStorage.getItem("clusterID");
+  const clusterID = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
   const [currentPage, handleChangePage] = usePaginator();
 
   const serviceResources = useCallback(
-    () => dispatch(getServices(clusterID,currentPage)),
-    [dispatch, clusterID,currentPage]
+    () => dispatch(getServices(clusterID, currentPage)),
+    [dispatch, clusterID, currentPage]
   );
 
   useEffect(() => {
     serviceResources();
   }, [serviceResources]);
 
-  const { isRetrieving, services, isFetched,pagination } = useSelector(
+  const { isRetrieving, services, isFetched, pagination } = useSelector(
     (state) => state.servicesReducer
   );
 
@@ -48,7 +48,7 @@ const ServicesListPage = () => {
   };
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);
-    serviceResources()
+    serviceResources();
   };
 
   return (
@@ -84,7 +84,7 @@ const ServicesListPage = () => {
                 {isRetrieving ? (
                   <tbody>
                     <tr className="TableLoading">
-                    <td className="TableTdSpinner">
+                      <td className="TableTdSpinner">
                         <div className="SpinnerWrapper">
                           <Spinner size="big" />
                         </div>
@@ -121,15 +121,15 @@ const ServicesListPage = () => {
               )}
             </div>
             {pagination?.pages > 1 && (
-            <div className="AdminPaginationSection">
-              <Pagination
-                total={pagination.pages}
-                current={currentPage}
-                onPageChange={handlePageChange}
-              />
-            </div>
-          )}
-          <AppFooter/>
+              <div className="AdminPaginationSection">
+                <Pagination
+                  total={pagination.pages}
+                  current={currentPage}
+                  onPageChange={handlePageChange}
+                />
+              </div>
+            )}
+            <AppFooter sidebar={true} />
           </div>
         </div>
       </div>

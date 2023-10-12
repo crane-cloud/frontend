@@ -318,7 +318,7 @@ class AdminUserPage extends Component {
                 showBackBtn
               />
             </div>
-            <div className="Short1Container">
+            <div className="LeftAlignContainer">
               <div className="ContentSection">
                 <div className="AdminUserPageContainer">
                   <section>
