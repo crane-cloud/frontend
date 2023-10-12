@@ -7,11 +7,10 @@ import InformationBar from "../InformationBar";
 import Avatar from "../Avatar";
 import moment from "moment";
 import PrimaryButton from "../PrimaryButton";
-import { handlePostRequestWithOutDataObject
-} from "../../apis/apis.js";
 import userProfleStyles from "../UserProfile/UserProfile.module.css";
 import "./AdminDatabaseDetails.css";
 import Spinner from "../Spinner";
+import AppFooter from "../appFooter";
 
 const AdminDatabaseDetails = () => {
   const { databaseID } = useParams();
@@ -51,39 +50,6 @@ const AdminDatabaseDetails = () => {
     fetchDatabaseDetails();
   }, [fetchDatabaseDetails, fetchProjectSummary]);
 
-  const handleEnableButtonClick = () => {
-    try {
-      if (details.disabled) {
-        handlePostRequestWithOutDataObject(
-          databaseID,
-          `/databases/${databaseID}/enable`
-        )
-          .then(() => {
-            window.location.reload();
-          })
-          .catch((error) => {
-            console.error("API call error:", error);
-            setError(error);
-            window.location.reload();
-          });
-      } else {
-        handlePostRequestWithOutDataObject(
-          databaseID,
-          `/databases/${databaseID}/disable`
-        )
-          .then(() => {
-            window.location.reload();
-          })
-          .catch((error) => {
-            console.error("API call error:", error);
-            setError(error);
-            window.location.reload();
-          });
-      }
-    } catch (error) {
-      console.error("API call error:", error);
-    }
-  };
   return (
     <div className="MainPage">
       <div className="TopBarSection">
@@ -105,114 +71,117 @@ const AdminDatabaseDetails = () => {
               showBackBtn={true}
             />
           </div>
-          <div className="ShortContainer">
-            <div className="ContentSection">
-              <div className="AdminUserPageContainer">
-                <section>
-                  <div className="SectionTitle">Database information</div>
-                  <div className="AdminCardArea">
-                    <div className="AdminUserProfileCard">
-                      {projectName === "" ? (
-                        <div className="ResourceSpinnerWrapper">
-                          <Spinner size="small" />
-                        </div>
-                      ) : (
-                        <>
-                          <div className="AdminUserProfileInfoSect">
-                            <div className="AdminUserProfileInfoHeader">
-                              <Avatar
-                                name={details?.name}
-                                className={userProfleStyles.UserAvatarLarge}
-                              />
-                              <div className={userProfleStyles.Identity}>
-                                <div className={userProfleStyles.IdentityName}>
-                                  <div className="AdminProfileName">
-                                    {details?.name}
-                                  </div>
-                                  {details?.db_status === true && (
-                                    <div
-                                      className={userProfleStyles.BetaUserDiv}
-                                    >
-                                      Active
+
+          <div className="LeftAlignContainer">
+            {projectName === "" ? (
+              <div className="ResourceSpinnerWrapper">
+                <Spinner size="big" />
+              </div>
+            ) : (
+              <>
+                <div className="ContentSection">
+                  <div className="AdminUserPageContainer">
+                    <section>
+                      <div className="SectionTitle">Database information</div>
+                      <div className="AdminCardArea">
+                        <div className="AdminUserProfileCard">
+                          <>
+                            <div className="AdminUserProfileInfoSect">
+                              <div className="AdminUserProfileInfoHeader">
+                                <Avatar
+                                  name={details?.name}
+                                  className={userProfleStyles.UserAvatarLarge}
+                                />
+                                <div className={userProfleStyles.Identity}>
+                                  <div
+                                    className={userProfleStyles.IdentityName}
+                                  >
+                                    <div className="AdminProfileName">
+                                      {details?.name}
                                     </div>
-                                  )}
+                                    {details?.db_status === true && (
+                                      <div
+                                        className={userProfleStyles.BetaUserDiv}
+                                      >
+                                        Active
+                                      </div>
+                                    )}
+                                  </div>
+                                  <div
+                                    className={userProfleStyles.IdentityEmail}
+                                  >
+                                    Database Type:{" "}
+                                    {details?.database_flavour_name}
+                                  </div>
                                 </div>
-                                <div className={userProfleStyles.IdentityEmail}>
-                                  Database Type:{" "}
-                                  {details?.database_flavour_name}
+                              </div>
+
+                              <div className="AdminProfileRowInfo">
+                                <div className="AdminProfileRowItem">
+                                  Parent Project:
+                                  <span className="AdminProfileRowValue">
+                                    {projectName}
+                                  </span>
+                                </div>
+                                |
+                                <div className="AdminProfileRowItem">
+                                  Host:
+                                  <span>{details?.host}</span>
+                                </div>
+                                |
+                                <div className="AdminProfileRowItem">
+                                  Port:
+                                  <span>{details?.port}</span>
+                                </div>
+                                |
+                                <div className="AdminProfileRowItem">
+                                  Date Created:
+                                  <span>
+                                    {moment(details?.date_created)
+                                      .utc()
+                                      .format("ddd, MMMM DD, yyyy")}
+                                  </span>
                                 </div>
                               </div>
                             </div>
+                          </>
+                        </div>
+                      </div>
+                    </section>
 
-                            <div className="AdminProfileRowInfo">
-                              <div className="AdminProfileRowItem">
-                                Parent Project:
-                                <span className="AdminProfileRowValue">
-                                  {projectName}
-                                </span>
+                    <div className="AdminDBSections">
+                      <div className="SectionTitle">Manage Database</div>
+                      <div className="ProjectInstructions">
+                        <div className="MemberBody">
+                          <div className="MemberTableRow">
+                            <div className="SettingsSectionRow">
+                              <div className="SubTitle">
+                                Disable Database
+                                <br />
+                                <div className="SubTitleContent">
+                                  This will temporary disable the database.
+                                </div>
                               </div>
-                              |
-                              <div className="AdminProfileRowItem">
-                                Host:
-                                <span>{details?.host}</span>
-                              </div>
-                              |
-                              <div className="AdminProfileRowItem">
-                                Port:
-                                <span>{details?.port}</span>
-                              </div>
-                              |
-                              <div className="AdminProfileRowItem">
-                                Date Created:
-                                <span>
-                                  {moment(details?.date_created)
-                                    .utc()
-                                    .format("ddd, MMMM DD, yyyy")}
-                                </span>
+                              <div className="SectionButtons">
+                                <PrimaryButton
+                                  color="red-outline"
+                                  //onClick={this.showDisableAlert}
+                                >
+                                  Disable
+                                </PrimaryButton>
                               </div>
                             </div>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </section>
-
-                <div className="AdminDBSections">
-                  <div className="SectionTitle">Manage Database</div>
-                  <div className="ProjectInstructions">
-                    <div className="MemberBody">
-                      <div className="MemberTableRow">
-                        <div className="SettingsSectionRow">
-                          <div className="SubTitle">
-                            {details?.disabled ? "Enable" : "Disable"} Database
-                            <br />
-                            <div className="SubTitleContent">
-                              {details?.disabled
-                                ? "This will enable this user database"
-                                : "This will temporary disable the database."}
-                            </div>
-                          </div>
-                          <div className="SectionButtons">
-                            <PrimaryButton
-                              onClick={handleEnableButtonClick}
-                              color={
-                                details?.disabled
-                                  ? "primary-outline"
-                                  : "red-outline"
-                              }
-                            >
-                              {details?.disabled ? "Enable" : "Disable"}
-                            </PrimaryButton>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </>
+            )}
           </div>
+
+          <AppFooter />
         </div>
       </div>
     </div>

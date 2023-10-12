@@ -85,7 +85,7 @@ const ClusterResourcesPage = () => {
               </div>
             )}
           </div>
-          <AppFooter/>
+          <AppFooter sidebar={true} />
         </div>
       </div>
     </div>

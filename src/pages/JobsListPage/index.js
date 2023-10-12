@@ -12,7 +12,7 @@ import tellAge from "../../helpers/ageUtility";
 import AppFooter from "../../components/appFooter";
 
 const JobsListPage = () => {
-  const  clusterID  = localStorage.getItem("clusterID");
+  const clusterID = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
 
   const adminJobs = useCallback(
@@ -61,7 +61,7 @@ const JobsListPage = () => {
                 {isRetrieving ? (
                   <tbody>
                     <tr className="TableLoading">
-                    <td className="TableTdSpinner">
+                      <td className="TableTdSpinner">
                         <div className="SpinnerWrapper">
                           <Spinner size="big" />
                         </div>
@@ -101,7 +101,7 @@ const JobsListPage = () => {
               )}
             </div>
           </div>
-          <AppFooter position="absolute"/>
+          <AppFooter sidebar={true} />
         </div>
       </div>
     </div>

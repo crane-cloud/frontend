@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from "react";
-import {connect} from "react-redux";
-import {Link} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import InformationBar from "../../components/InformationBar";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
@@ -8,11 +8,13 @@ import BlackInputText from "../../components/BlackInputText";
 import Modal from "../../components/Modal";
 import ClustersList from "../../components/ClustersList";
 import Header from "../../components/Header";
-import addCluster, {clearAddClusterState} from "../../redux/actions/addCluster";
+import addCluster, {
+  clearAddClusterState,
+} from "../../redux/actions/addCluster";
 import Feedback from "../../components/Feedback";
 import styles from "./ClusterPage.module.css";
 import getClustersList from "../../redux/actions/clusters";
-import {handleGetRequest} from "../../apis/apis.js";
+import { handleGetRequest } from "../../apis/apis.js";
 
 const ClusterPage = ({
   creatingCluster,
@@ -40,8 +42,8 @@ const ClusterPage = ({
   const getAllMetrics = async () => {
     try {
       const response = await handleGetRequest("/system_summary");
-      if (response.data.status === 'success') {
-        setSummary(response.data.data)
+      if (response.data.status === "success") {
+        setSummary(response.data.data);
       }
     } catch (error) {
       throw new Error("Failed to fetch summary metrics, please try again");
@@ -174,7 +176,7 @@ const ClusterPage = ({
           <div className={styles.columnCardSection}>
             <div className={styles.CardHeader}>Apps</div>
             <div className={styles.ResourceDigit}>
-              {summary?(summary?.Apps?.total_count):0}
+              {summary ? summary?.Apps?.total_count : 0}
             </div>
           </div>
           <div className={styles.rowCardSection}>
@@ -198,7 +200,7 @@ const ClusterPage = ({
 
       <div>
         <div className="TitleArea">
-          <div className="SectionTitle" style={{paddingTop: "2rem"}}>
+          <div className="SectionTitle" style={{ paddingTop: "2rem" }}>
             <b>Select Infrastructure ({clusters?.metadata?.cluster_count})</b>
           </div>
         </div>
@@ -208,7 +210,7 @@ const ClusterPage = ({
         <ClustersList newClusterAdded={isAdded} />
       </div>
 
-      <div className="FooterRow">
+      <div style={{ paddingLeft: "1.8rem" }}>
         <p>
           Copyright {new Date().getFullYear()} Crane Cloud. All Rights Reserved.
         </p>
@@ -283,10 +285,10 @@ const ClusterPage = ({
 };
 
 export const mapStateToProps = (state) => {
-  const {creatingCluster, isAdded, isFailed, errorOccured, message} =
+  const { creatingCluster, isAdded, isFailed, errorOccured, message } =
     state.addClusterReducer;
-  const {user} = state.user;
-  const {clusters} = state.clustersReducer;
+  const { user } = state.user;
+  const { clusters } = state.clustersReducer;
 
   return {
     user,

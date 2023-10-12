@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import getUsersList from "../../redux/actions/users";
 import Header from "../../components/Header";
 import InformationBar from "../../components/InformationBar";
@@ -27,6 +27,7 @@ import "./AdminUserOverviewPage.css";
 import { createUsersPieChartData } from "../../helpers/usersPieChartData";
 import { createUserGraphData } from "../../helpers/usersGraphData";
 import { ReactComponent as SearchButton } from "../../assets/images/search.svg";
+import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 import UserListing from "../../components/UserListing";
 import usePaginator from "../../hooks/usePaginator";
 import AppFooter from "../../components/appFooter";
@@ -135,7 +136,16 @@ const AdminUserOverviewPage = () => {
     <div className="APage">
       <div className="TopRow">
         <Header />
-        <InformationBar header="Users Overview" showBackBtn />
+        <InformationBar
+          header={
+            <span className="ProjectsInformationBarTitle">
+              <Link className={`breadcrumb flex_back_link`} to={`/clusters`}>
+                <BackButton />
+                <div className="back_link">Users Overview</div>
+              </Link>
+            </span>
+          }
+        />
       </div>
       <div className="AMainSection">
         <div className="ContentSection">
@@ -400,7 +410,8 @@ const AdminUserOverviewPage = () => {
           />
         </div>
       </div>
-      <AppFooter/>
+      <hr />
+      <AppFooter />
     </div>
   );
 };
