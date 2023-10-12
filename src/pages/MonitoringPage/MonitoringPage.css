@@ -7,11 +7,6 @@
 
 .PageContainer {
   max-width: 100%;
-
-  @media (min-width: 1200px) {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
 }
 
 .PrimaryTitle {
@@ -20,6 +15,7 @@
   font-weight: bold;
   text-align: center;
   padding-top: 3rem;
+  letter-spacing: 0.2rem;
 }
 
 .PrimaryContent,

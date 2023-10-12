@@ -100,15 +100,8 @@ const MonitoringPage = () => {
 
       <div className="PageContainer">
         <div className="PrimaryTitle">Crane Cloud Status</div>
-        <div className="PrimaryContent">
-          Welcome to the Crane Cloud status page.
-        </div>
-        <div className="PrimaryDescription">
-          Here you will find real-time information about the status of our
-          services reported here.
-        </div>
 
-        {loading ? (
+        {loading && statusData.length === 0 ? (
           <>
             <div className="LoadingArea">
               <Spinner size="big" />
@@ -116,25 +109,7 @@ const MonitoringPage = () => {
           </>
         ) : (
           <>
-            <div className="BannerArea">
-              <div className="StatusBanner">
-                {statusData?.cranecloud_status &&
-                statusData?.database_status &&
-                statusData?.mira_status &&
-                statusData?.registry &&
-                statusData?.clusters_status &&
-                statusData?.prometheus_status === "success" ? (
-                  <div className="BannerText">Services Available</div>
-                ) : (
-                  <div className="BannerText">Issues detected</div>
-                )}
-              </div>
-            </div>
-
             <div className="StatusSectionContent">
-              <div className="TitleArea">
-                <div className="SectionTitle">Current Status Overview</div>
-              </div>
               <div className="StatusSectionChildContainer">
                 <StatusModule
                   title="Crane Cloud Frontend"
