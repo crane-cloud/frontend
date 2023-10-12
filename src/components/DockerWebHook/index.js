@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useCallback } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { handleGetRequest } from "../../apis/apis";
 import Header from "../Header";
@@ -20,6 +20,11 @@ const DockerWebHook = () => {
   const [url, setUrl] = useState("");
   const [showUrl, setShowUrl] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const history = useHistory();
+
+  const goBack = () => {
+    history.goBack();
+  };
 
   const isStaging = /localhost|staging/.test(window.location.href);
 
@@ -44,6 +49,7 @@ const DockerWebHook = () => {
     navigator.clipboard.writeText(url);
     setIsCopied(true);
   };
+
   return (
     <div className="MainPage">
       <div className="TopBarSection">
@@ -53,13 +59,7 @@ const DockerWebHook = () => {
         <div className="MainContentSection">
           <div className="InformationBarSection">
             <InformationBar
-              header={
-                <span>
-                  <Link className="breadcrumb" to={`/databases`}>
-                    App Settings
-                  </Link>
-                </span>
-              }
+              header={<span onClick={goBack}>App Settings</span>}
               showBtn={false}
               showBackBtn={true}
             />
@@ -136,7 +136,8 @@ const DockerWebHook = () => {
                               </p>
                               <p>
                                 <strong> Copy URL:</strong> &nbsp;
-                                <CopyText onClick={copyUrlToClipboard} />&nbsp;
+                                <CopyText onClick={copyUrlToClipboard} />
+                                &nbsp;
                                 {isCopied ? <Checked /> : null}
                               </p>
                             </div>
