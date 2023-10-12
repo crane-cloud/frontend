@@ -469,6 +469,12 @@ tr.TableLoading td {
   max-width: 80%;
 }
 
+@media (min-width: 669px) {
+  .SmallSelectElementValue {
+    display: inline-flex;
+  }
+}
+
 @media (max-width: 750px) {
   .SmallContainer {
     padding-left: 1rem;
