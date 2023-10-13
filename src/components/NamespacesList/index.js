@@ -49,8 +49,8 @@ const NamespacesListPage = () => {
                   : "ResourcesTable"
               }
             >
-              <table className="NamespacesTable">
-                <thead>
+              <table>
+                <thead className="uppercase">
                   <tr>
                     <th>Name</th>
                     <th>Status</th>
@@ -86,12 +86,12 @@ const NamespacesListPage = () => {
                 )}
               </table>
               {isRetrieved && namespacesList.length === 0 && (
-                <div className="NoResourcesMessage">
+                <div className="AdminNoResourcesMessage">
                   <p>No namespaces available</p>
                 </div>
               )}
               {!isRetrieving && !isRetrieved && (
-                <div className="NoResourcesMessage">
+                <div className="AdminNoResourcesMessage">
                   <p>
                     Oops! Something went wrong! Failed to retrieve namespaces.
                   </p>

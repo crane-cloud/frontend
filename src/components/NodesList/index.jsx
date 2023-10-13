@@ -72,8 +72,8 @@ class NodesList extends Component {
                     : "ResourcesTable"
                 }
               >
-                <table className="Nodes table">
-                  <thead>
+                <table>
+                  <thead className="uppercase">
                     <tr>
                       <th>Name</th>
                       <th>Status</th>
@@ -112,14 +112,13 @@ class NodesList extends Component {
                     </tbody>
                   )}
                 </table>
-
                 {isFetched && nodes.nodes.length === 0 && (
-                  <div className="NoResourcesMessage">
+                  <div className="AdminNoResourcesMessage">
                     <p>No Nodes Available</p>
                   </div>
                 )}
                 {!isRetrieving && !isFetched && (
-                  <div className="NoResourcesMessage">
+                  <div className="AdminNoResourcesMessage">
                     <p>Oops! Something went wrong! Failed to retrieve Nodes.</p>
                   </div>
                 )}

@@ -51,7 +51,7 @@ const PvsListPage = (props) => {
               }
             >
               <table>
-                <thead>
+                <thead className="uppercase">
                   <tr>
                     <th>Name</th>
                     <th>Access Mode</th>

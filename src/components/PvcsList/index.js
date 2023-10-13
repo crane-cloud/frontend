@@ -52,7 +52,7 @@ const PvcsListPage = () => {
                 }
               >
                 <table>
-                  <thead>
+                  <thead className="uppercase">
                     <tr>
                       <th>Name</th>
                       <th>Status</th>

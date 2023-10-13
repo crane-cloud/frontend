@@ -87,7 +87,7 @@ const UserListing = (props) => {
         }
       >
         <table className="UsersTable">
-          <thead>
+          <thead className="uppercase">
             <tr>
               {sectionValue === "active" ? (
                 <>

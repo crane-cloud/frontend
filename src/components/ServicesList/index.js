@@ -73,7 +73,7 @@ const ServicesListPage = () => {
               }
             >
               <table>
-                <thead>
+                <thead className="uppercase">
                   <tr>
                     <th>Name</th>
                     <th>Type</th>

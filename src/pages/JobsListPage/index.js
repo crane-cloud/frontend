@@ -50,7 +50,7 @@ const JobsListPage = () => {
               }
             >
               <table>
-                <thead>
+                <thead className="uppercase">
                   <tr>
                     <th>Name</th>
                     <th>Duration</th>
@@ -90,12 +90,12 @@ const JobsListPage = () => {
                 )}
               </table>
               {isFetched && jobs.length === 0 && (
-                <div className="NoResourcesMessage">
+                <div className="AdminNoResourcesMessage">
                   <p>No Jobs Available</p>
                 </div>
               )}
               {!isRetrieving && !isFetched && (
-                <div className="NoResourcesMessage">
+                <div className="AdminNoResourcesMessage">
                   <p>Oops! Something went wrong! Failed to retrieve Jobs.</p>
                 </div>
               )}

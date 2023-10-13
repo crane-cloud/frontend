@@ -409,8 +409,8 @@ const AdminDBList = () => {
                     : "ResourcesTable"
                 }
               >
-                <table>
-                  <thead>
+                <table className="UsersTable">
+                  <thead className="uppercase">
                     <tr>
                       <th>Database Flavor</th>
                       <th>Name</th>

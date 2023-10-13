@@ -49,7 +49,7 @@ const StorageClassList = () => {
               }
             >
               <table className="StorageClassesTable">
-                <thead>
+                <thead className="uppercase">
                   <tr>
                     <th>Name</th>
                     <th>Provisioner</th>

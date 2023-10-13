@@ -25,7 +25,7 @@ const AppListing = (props) => {
         }
       >
         <table className="UsersTable">
-          <thead>
+          <thead className="uppercase">
             <tr>
               <th>Name</th>
               <th>Image</th>

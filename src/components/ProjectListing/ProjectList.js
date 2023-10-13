@@ -431,7 +431,7 @@ const AdminProjectsOverview = () => {
             <span className="ProjectsInformationBarTitle">
               <Link className={`breadcrumb flex_back_link`} to={`/clusters`}>
                 <BackButton />
-                <div className="back_link">Projects Overview</div>
+                <div className="back_link">Project Listing</div>
               </Link>
             </span>
           }
@@ -918,12 +918,12 @@ const AdminProjectsOverview = () => {
                   )}
                 </table>
                 {isRetrieved && projects.length === 0 && (
-                  <div className="NoResourcesMessage">
+                  <div className="AdminNoResourcesMessage">
                     <p>No projects available</p>
                   </div>
                 )}
                 {!isRetrieving && !isRetrieved && (
-                  <div className="NoResourcesMessage">
+                  <div className="AdminNoResourcesMessage">
                     <p>
                       Oops! Something went wrong! Failed to retrieve projects.
                     </p>

@@ -103,7 +103,7 @@ const PodsList = () => {
               }
             >
               <table className="PodsTable">
-                <thead>
+                <thead className="uppercase">
                   <tr>
                     <th>Name</th>
                     <th>Ready</th>
