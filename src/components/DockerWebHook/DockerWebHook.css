@@ -1,0 +1,17 @@
+.imageTag {
+  background: transparent;
+  border: 1px solid #000;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  width: 20rem;
+}
+
+.PortSection{
+  display: inline-flex;
+  width: -webkit-fill-available;
+  gap: 3%;
+  align-items: center;
+}
+
+.DockerInfo{
+  line-height: 2;
+}

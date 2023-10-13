@@ -69,6 +69,7 @@ import AdminAppsPage from "./pages/AdminAppsPage";
 import AdminProjectsOverview from "./components/ProjectListing/ProjectList";
 import AdminDatabaseDetails from "./components/AdminDatabaseDetails";
 import AdminAppDetail from "./pages/AdminAppDetail";
+import DockerWebHook from "./components/DockerWebHook";
 
 import { handleGetRequest } from "./apis/apis";
 
@@ -155,6 +156,12 @@ const Routes = () => {
           exact
           path="/projects/:projectID/apps/:appID/network"
           component={AppNetworkPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/apps/:appID/webhook"
+          component={DockerWebHook}
         />
         <ProtectedRoute
           isAllowed={hasToken}
