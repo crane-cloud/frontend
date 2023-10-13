@@ -337,14 +337,14 @@ class DBSettingsPage extends React.Component {
         });
       });
   }
-  handleEnableButtonClick = async () => {
+  handleEnableButtonClick = () => {
     let { currentDB } = this.state;
     const { databaseID } = this.props.match.params;
 
     try {
       if (currentDB.disabled) {
-        await handlePostRequestWithOutDataObject(
-          databaseID,
+        handlePostRequestWithOutDataObject(
+          {},
           `/databases/${databaseID}/enable`
         )
           .then(() => {
@@ -356,8 +356,8 @@ class DBSettingsPage extends React.Component {
             });
           });
       } else {
-        await handlePostRequestWithOutDataObject(
-          databaseID,
+        handlePostRequestWithOutDataObject(
+          {},
           `/databases/${databaseID}/disable`
         )
           .then(() => {
@@ -371,8 +371,6 @@ class DBSettingsPage extends React.Component {
       }
     } catch (error) {
       console.error("API call error:", error);
-    } finally {
-      window.location.reload();
     }
   };
 
