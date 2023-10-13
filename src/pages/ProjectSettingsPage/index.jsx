@@ -498,7 +498,7 @@ class ProjectSettingsPage extends React.Component {
     try {
       if (projectDetails.disabled) {
         handlePostRequestWithOutDataObject(
-          projectID,
+          {},
           `/projects/${projectID}/enable`
         )
           .then(() => {
@@ -511,7 +511,7 @@ class ProjectSettingsPage extends React.Component {
           });
       } else {
         handlePostRequestWithOutDataObject(
-          projectID,
+          {},
           `/projects/${projectID}/disable`
         )
           .then(() => {
@@ -525,9 +525,7 @@ class ProjectSettingsPage extends React.Component {
       }
     } catch (error) {
       console.error("API call error:", error);
-    } finally {
-      window.location.reload();
-    }
+    } 
   };
 
   showUpdateAlert() {

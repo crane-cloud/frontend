@@ -64,9 +64,9 @@ const AdminProjectDetails = () => {
     setDisablingProject(true);
     let apiEndpoint;
     if (disabled) {
-      apiEndpoint = `/projects/${projectID}/admin_enable`;
+      apiEndpoint = `/projects/${projectID}/enable`;
     } else {
-      apiEndpoint = `/projects/${projectID}/admin_disable`;
+      apiEndpoint = `/projects/${projectID}/disable`;
     }
     handlePostRequestWithOutDataObject({}, apiEndpoint)
       .then(() => {
@@ -77,6 +77,40 @@ const AdminProjectDetails = () => {
         setDisableProjectError("Process failed, please try again.");
         setDisablingProject(false);
       });
+  };
+
+  const handleEnableButtonClick = () => {
+    // let { projectDetails } = this.state;
+    // const { projectID } = this.props.match.params;
+    console.log(details);
+
+    try {
+      if (details.disabled) {
+        handlePostRequestWithOutDataObject(
+          {},
+          `/projects/${projectID}/enable`
+        )
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            setError(error)
+          });
+      } else {
+        handlePostRequestWithOutDataObject(
+          {},
+          `/projects/${projectID}/disable`
+        )
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            setError(error)
+          });
+      }
+    } catch (error) {
+      console.error("API call error:", error);
+    } 
   };
 
   return (
@@ -283,11 +317,11 @@ const AdminProjectDetails = () => {
                           <div className="MemberTableRow">
                             <div className="SettingsSectionRow">
                               <div className="SubTitle">
-                                {details?.admin_disabled ? "Enable" : "Disable"}{" "}
+                                {details?.disabled ? "Enable" : "Disable"}{" "}
                                 project
                                 <br />
                                 <div className="SubTitleContent">
-                                  {details?.admin_disabled
+                                  {details?.disabled
                                     ? "Enable and make all project resources accessible (apps, and databases) to the user."
                                     : "Disable and make all project resources inaccessible (apps, and databases) to the user."}
                                 </div>
@@ -295,16 +329,14 @@ const AdminProjectDetails = () => {
                               <div className="SectionButtons">
                                 <PrimaryButton
                                   color="red-outline"
-                                  onClick={() => {
-                                    setOpenDisableProjectModel(true);
-                                  }}
+                                  onClick={handleEnableButtonClick}
                                   className={
-                                    details?.admin_disabled
+                                    details?.disabled
                                       ? "enableBtn"
                                       : "disableBtn"
                                   }
                                 >
-                                  {details?.admin_disabled
+                                  {details?.disabled
                                     ? "Enable"
                                     : "Disable"}
                                 </PrimaryButton>
