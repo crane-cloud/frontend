@@ -12,7 +12,7 @@ import tellAge from "../../helpers/ageUtility";
 import AppFooter from "../../components/appFooter";
 
 const JobsListPage = () => {
-  const  clusterID  = localStorage.getItem("clusterID");
+  const clusterID = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
 
   const adminJobs = useCallback(
@@ -50,7 +50,7 @@ const JobsListPage = () => {
               }
             >
               <table>
-                <thead>
+                <thead className="uppercase">
                   <tr>
                     <th>Name</th>
                     <th>Duration</th>
@@ -61,7 +61,7 @@ const JobsListPage = () => {
                 {isRetrieving ? (
                   <tbody>
                     <tr className="TableLoading">
-                    <td className="TableTdSpinner">
+                      <td className="TableTdSpinner">
                         <div className="SpinnerWrapper">
                           <Spinner size="big" />
                         </div>
@@ -90,18 +90,18 @@ const JobsListPage = () => {
                 )}
               </table>
               {isFetched && jobs.length === 0 && (
-                <div className="NoResourcesMessage">
+                <div className="AdminNoResourcesMessage">
                   <p>No Jobs Available</p>
                 </div>
               )}
               {!isRetrieving && !isFetched && (
-                <div className="NoResourcesMessage">
+                <div className="AdminNoResourcesMessage">
                   <p>Oops! Something went wrong! Failed to retrieve Jobs.</p>
                 </div>
               )}
             </div>
           </div>
-          <AppFooter position="absolute"/>
+          <AppFooter sidebar={true} />
         </div>
       </div>
     </div>

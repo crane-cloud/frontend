@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import AppFooter from "../appFooter";
 
 const StorageClassList = () => {
-  const  clusterID  = localStorage.getItem("clusterID");
+  const clusterID = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
 
   const storageResources = useCallback(
@@ -49,7 +49,7 @@ const StorageClassList = () => {
               }
             >
               <table className="StorageClassesTable">
-                <thead>
+                <thead className="uppercase">
                   <tr>
                     <th>Name</th>
                     <th>Provisioner</th>
@@ -59,7 +59,7 @@ const StorageClassList = () => {
                 {isRetrieving ? (
                   <tbody>
                     <tr className="TableLoading">
-                    <td className="TableTdSpinner">
+                      <td className="TableTdSpinner">
                         <div className="SpinnerWrapper">
                           <Spinner size="big" />
                         </div>
@@ -101,7 +101,7 @@ const StorageClassList = () => {
               )}
             </div>
           </div>
-          <AppFooter/>
+          <AppFooter sidebar={true} />
         </div>
       </div>
     </div>

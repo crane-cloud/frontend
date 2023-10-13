@@ -107,6 +107,7 @@ class AppSettingsPage extends React.Component {
     this.removeExistingEnvVar = this.removeExistingEnvVar.bind(this);
     this.getCurrentRevision = this.getCurrentRevision.bind(this);
     this.handleEnableButtonClick = this.handleEnableButtonClick.bind(this);
+    this.handleCIClick = this.handleCIClick.bind(this);
   }
 
   handleChange(e) {
@@ -607,6 +608,15 @@ class AppSettingsPage extends React.Component {
       });
     }
   }
+
+  handleCIClick = () => {
+    // const appID = '123'; // Replace with your logic to get appID from the URL
+    const { appID } = this.props.match.params;
+    console.log(appID);
+    console.log(this.props.match.params);
+    this.props.history.push(`/apps/${appID}/webhook`)
+    // history.push(`/app/${appID}`);
+  };
 
   handleEnableButtonClick = async () => {
     const { app } = this.props;
@@ -1272,6 +1282,21 @@ class AppSettingsPage extends React.Component {
                   <div className="SectionTitle">Danger Zone</div>
                   <div className={styles.ProjectInstructions}>
                     <div className={styles.MemberBody}>
+                      <div className={styles.MemberTableRow}>
+                        <div className={styles.SettingsSectionInfo}>
+                          <div className="SubTitle">Set up CI/CD</div>
+                          <div>Set  up Continous Integration for you application.</div>
+                        </div>
+                        <div className={styles.SectionButtons}>
+                          <PrimaryButton
+                            onClick={this.handleCIClick}
+                            small
+                            // color="red"
+                          >
+                            Set up CI/CD
+                          </PrimaryButton>
+                        </div>
+                      </div>
                       <div className={styles.MemberTableRow}>
                         <div className={styles.SettingsSectionInfo}>
                           <div className="SubTitle">

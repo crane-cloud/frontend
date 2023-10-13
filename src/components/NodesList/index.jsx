@@ -72,8 +72,8 @@ class NodesList extends Component {
                     : "ResourcesTable"
                 }
               >
-                <table className="Nodes table">
-                  <thead>
+                <table>
+                  <thead className="uppercase">
                     <tr>
                       <th>Name</th>
                       <th>Status</th>
@@ -85,11 +85,11 @@ class NodesList extends Component {
                   {isRetrieving ? (
                     <tbody>
                       <tr className="TableLoading">
-                      <td className="TableTdSpinner">
-                        <div className="SpinnerWrapper">
-                          <Spinner size="big" />
-                        </div>
-                      </td>
+                        <td className="TableTdSpinner">
+                          <div className="SpinnerWrapper">
+                            <Spinner size="big" />
+                          </div>
+                        </td>
                       </tr>
                     </tbody>
                   ) : (
@@ -112,20 +112,19 @@ class NodesList extends Component {
                     </tbody>
                   )}
                 </table>
-
                 {isFetched && nodes.nodes.length === 0 && (
-                  <div className="NoResourcesMessage">
+                  <div className="AdminNoResourcesMessage">
                     <p>No Nodes Available</p>
                   </div>
                 )}
                 {!isRetrieving && !isFetched && (
-                  <div className="NoResourcesMessage">
+                  <div className="AdminNoResourcesMessage">
                     <p>Oops! Something went wrong! Failed to retrieve Nodes.</p>
                   </div>
                 )}
               </div>
             </div>
-            <AppFooter/>
+            <AppFooter sidebar={true} />
           </div>
         </div>
       </div>

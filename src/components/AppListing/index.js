@@ -5,9 +5,9 @@ import Pagination from "../../components/Pagination";
 import Spinner from "../Spinner";
 
 const AppListing = (props) => {
-  const { currentPage, gettingApps, handlePageChange } = props; 
+  const { currentPage, gettingApps, handlePageChange } = props;
 
-  const {  isFetching, apps, isFetched, pagination } = useSelector(
+  const { isFetching, apps, isFetched, pagination } = useSelector(
     (state) => state.appsAdminListReducer
   );
 
@@ -15,21 +15,17 @@ const AppListing = (props) => {
     gettingApps(currentPage);
   }, [gettingApps, currentPage]);
 
-
   const history = useHistory();
-  
+
   return (
-    <div className="SubTableContainer">
-      <div className="AMainSection">
-        <div className="ContentSection">
-          <div
-            className={
-              isFetching
-                ? "ResourcesTable LoadingResourcesTable"
-                : "ResourcesTable"
-            }
-          ><table className="UsersTable">
-          <thead>
+    <div className="ContentSection">
+      <div
+        className={
+          isFetching ? "ResourcesTable LoadingResourcesTable" : "ResourcesTable"
+        }
+      >
+        <table className="UsersTable">
+          <thead className="uppercase">
             <tr>
               <th>Name</th>
               <th>Image</th>
@@ -69,30 +65,27 @@ const AppListing = (props) => {
         </table>
 
         {isFetched && apps.length === 0 && (
-              <div className="AdminNoResourcesMessage">
-                <p>No apps Available</p>
-              </div>
-            )}
-            {!isFetching && !isFetched && (
-              <div className="AdminNoResourcesMessage">
-                <p>
-                  Oops! Something went wrong! Failed to retrieve Available
-                  apps.
-                </p>
-              </div>
-            )}
+          <div className="AdminNoResourcesMessage">
+            <p>No apps Available</p>
           </div>
-          {pagination?.pages > 1 && (
-            <div className="AdminPaginationSection">
-              <Pagination
-                total={pagination.pages}
-                current={currentPage}
-                onPageChange={handlePageChange}
-              />
-            </div>
-          )}
+        )}
+        {!isFetching && !isFetched && (
+          <div className="AdminNoResourcesMessage">
+            <p>
+              Oops! Something went wrong! Failed to retrieve Available apps.
+            </p>
+          </div>
+        )}
+      </div>
+      {pagination?.pages > 1 && (
+        <div className="AdminPaginationSection">
+          <Pagination
+            total={pagination.pages}
+            current={currentPage}
+            onPageChange={handlePageChange}
+          />
         </div>
-        </div>
+      )}
     </div>
   );
 };

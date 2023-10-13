@@ -45,7 +45,7 @@ body {
   min-height: 100vh;
   flex-direction: column;
   /* justify-content: space-between; */
-  background-color: var( --gray-bg-light-color);
+  background-color: var(--gray-bg-light-color);
 }
 
 textarea,
@@ -220,9 +220,7 @@ input[type="password"] {
 
 /*- ///// TABLE STYLING ///////// */
 div.ResourcesTable {
-  padding-top: 1rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding: 1rem 2rem 0 2rem;
 }
 
 div.ResourcesTable.LoadingResourcesTable {
@@ -233,18 +231,15 @@ div.ResourcesTable.LoadingResourcesTable {
   text-transform: capitalize;
 }
 
-/* .ResourcesTable  tr:nth-child(even){
-  background-color: #d0e0f8;
-} */
-
 .ResourcesTable table {
   position: relative;
   table-layout: fixed;
   text-align: center;
   border-collapse: collapse;
   width: 100%;
-  height: 100%;
-  background-color: transparent;
+  background-color: white;
+  border-radius: 0.6rem;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -260,7 +255,6 @@ div.ResourcesTable.LoadingResourcesTable {
   padding-left: 1rem;
   text-transform: capitalize;
   border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
 }
 
 .ResourcesTable table th:last-child,
@@ -268,7 +262,6 @@ div.ResourcesTable.LoadingResourcesTable {
   text-align: right;
   padding-right: 1rem;
   border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
 }
 
 .ResourcesTable table td {
@@ -278,7 +271,7 @@ div.ResourcesTable.LoadingResourcesTable {
 }
 
 .ResourcesTable td {
-  border: 1px solid #f2f2f2;
+  border: 1px solid var(--gray-light-color);
 }
 
 .ResourcesTable th {
@@ -291,7 +284,6 @@ div.ResourcesTable.LoadingResourcesTable {
 
 div.TableLoading {
   display: flex;
-  height: 100%;
   justify-self: center;
   justify-content: center;
   align-items: center;
@@ -321,7 +313,7 @@ tr.TableLoading td {
 
 .TableTdSpinner {
   border: none !important;
-  height: 50vh;
+  height: 20vh;
 }
 
 .ResourcesTable td {
@@ -365,6 +357,16 @@ tr.TableLoading td {
 /*- ////////////////////////////////// */
 
 /* Other */
+
+.AdminNoResourcesMessage {
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 1rem;
+  background-color: white;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-y: hidden;
+}
 
 .NoResourcesMessage {
   flex-grow: 1;
@@ -475,6 +477,12 @@ tr.TableLoading td {
   max-width: 80%;
 }
 
+@media (min-width: 669px) {
+  .SmallSelectElementValue {
+    display: inline-flex;
+  }
+}
+
 @media (max-width: 750px) {
   .SmallContainer {
     padding-left: 1rem;
@@ -540,7 +548,8 @@ tr.TableLoading td {
     overflow-y: auto;
     height: 100%;
   }
-  .CloseMenuIcon{
+
+  .CloseMenuIcon {
     height: 1.8rem;
     width: 3rem;
     position: absolute;
@@ -549,19 +558,21 @@ tr.TableLoading td {
     display: flex;
     z-index: 40;
   }
-  .SpinnerWrapper{
+
+  .SpinnerWrapper {
     width: fit-content;
   }
 
 }
 
-.InformationBarTitle{
+.InformationBarTitle {
   display: flex;
   flex-direction: row;
 }
+
 .flex_back_link {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   align-items: center;
   color: #000 !important
 }
@@ -614,13 +625,13 @@ tr.TableLoading td {
   justify-content: center;
 }
 
-.SubTableContainer{
-  padding-bottom: 5rem;
+.SubTableContainer {
+  padding-bottom: 0;
 }
 
 /*////////////// ---admin cards--- ///////// */
 
-.ResourceClusterContainer{
+.ResourceClusterContainer {
   display: flex;
   gap: 1rem;
   padding: 2rem;
@@ -628,18 +639,33 @@ tr.TableLoading td {
   justify-content: space-between;
 }
 
+.AMainSection {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+  max-width: fit-content;
+}
+
+.LeftAlignContainer {
+  padding: 0 3rem 0 6rem;
+  max-width: fit-content;
+}
+
+.appFooterForSideBar {
+  padding-left: 2rem;
+}
 
 .appFooterRow {
-  padding: 1rem 3rem;
+  padding: 1rem 3rem 0 6rem;
   color: black;
   position: relative;
   bottom: 0;
   background-color: var(--gray-bg-light-color);
 }
-.footerPositionAbsolute{
+
+.footerPositionAbsolute {
   position: absolute;
 }
- 
+
 
 @media only screen and (max-width: 740px) {
   .ResourceClusterContainer {

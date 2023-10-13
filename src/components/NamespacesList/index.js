@@ -11,7 +11,7 @@ import Spinner from "../Spinner";
 import AppFooter from "../appFooter";
 
 const NamespacesListPage = () => {
-  const  clusterID  = localStorage.getItem("clusterID");
+  const clusterID = localStorage.getItem("clusterID");
   const dispatch = useDispatch();
 
   const adminNamespaces = useCallback(
@@ -27,7 +27,7 @@ const NamespacesListPage = () => {
   }, [adminNamespaces]);
 
   const clusterName = localStorage.getItem("clusterName");
-  
+
   return (
     <div className="MainPage">
       <div className="TopBarSection">
@@ -49,8 +49,8 @@ const NamespacesListPage = () => {
                   : "ResourcesTable"
               }
             >
-              <table className="NamespacesTable">
-                <thead>
+              <table>
+                <thead className="uppercase">
                   <tr>
                     <th>Name</th>
                     <th>Status</th>
@@ -86,21 +86,20 @@ const NamespacesListPage = () => {
                 )}
               </table>
               {isRetrieved && namespacesList.length === 0 && (
-                <div className="NoResourcesMessage">
+                <div className="AdminNoResourcesMessage">
                   <p>No namespaces available</p>
                 </div>
               )}
               {!isRetrieving && !isRetrieved && (
-                <div className="NoResourcesMessage">
+                <div className="AdminNoResourcesMessage">
                   <p>
                     Oops! Something went wrong! Failed to retrieve namespaces.
                   </p>
                 </div>
               )}
             </div>
-            
-          </div>   
-          <AppFooter/>       
+          </div>
+          <AppFooter sidebar={true} />
         </div>
       </div>
     </div>

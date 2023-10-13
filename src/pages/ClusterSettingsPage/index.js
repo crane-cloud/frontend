@@ -265,7 +265,7 @@ class ClusterSettingsPage extends React.Component {
                 </div>
               </Modal>
             </div>
-            <AppFooter/>
+            <AppFooter sidebar={true} />
           </div>
         </div>
       </section>

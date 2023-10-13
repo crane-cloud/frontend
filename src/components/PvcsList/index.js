@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import Header from "../Header";
 import InformationBar from "../InformationBar";
 import SideNav from "../SideNav";
@@ -12,7 +12,7 @@ import usePaginator from "../../hooks/usePaginator";
 import AppFooter from "../appFooter";
 // import { useParams } from "react-router-dom";
 
-const  PvcsListPage =()=> {
+const PvcsListPage = () => {
   const { isRetrieving, pvcs, isFetched, pagination } = useSelector(
     (state) => state.pvcsReducer
   );
@@ -20,17 +20,17 @@ const  PvcsListPage =()=> {
   const clusterID = localStorage.getItem("clusterID");
   const clusterName = localStorage.getItem("clusterName");
   const [currentPage, handleChangePage] = usePaginator();
-  
+
   useEffect(() => {
     dispatch(getPvcs(clusterID, currentPage));
-  }, [currentPage,clusterID,dispatch]);
+  }, [currentPage, clusterID, dispatch]);
 
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);
     dispatch(getPvcs(clusterID, currentPage));
   };
-    return (
-      <>
+  return (
+    <>
       <div className="MainPage">
         <div className="TopBarSection">
           <Header />
@@ -52,7 +52,7 @@ const  PvcsListPage =()=> {
                 }
               >
                 <table>
-                  <thead>
+                  <thead className="uppercase">
                     <tr>
                       <th>Name</th>
                       <th>Status</th>
@@ -62,11 +62,11 @@ const  PvcsListPage =()=> {
                   {isRetrieving ? (
                     <tbody>
                       <tr className="TableLoading">
-                      <td className="TableTdSpinner">
-                        <div className="SpinnerWrapper">
-                          <Spinner size="big" />
-                        </div>
-                      </td>
+                        <td className="TableTdSpinner">
+                          <div className="SpinnerWrapper">
+                            <Spinner size="big" />
+                          </div>
+                        </td>
                       </tr>
                     </tbody>
                   ) : (
@@ -101,22 +101,21 @@ const  PvcsListPage =()=> {
                 )}
               </div>
               {pagination?.pages > 1 && (
-            <div className="AdminPaginationSection">
-              <Pagination
-                total={pagination.pages}
-                current={currentPage}
-                onPageChange={handlePageChange}
-              />
+                <div className="AdminPaginationSection">
+                  <Pagination
+                    total={pagination.pages}
+                    current={currentPage}
+                    onPageChange={handlePageChange}
+                  />
+                </div>
+              )}
             </div>
-          )}
-            </div>
-            <AppFooter/>
+            <AppFooter sidebar={true} />
           </div>
         </div>
       </div>
-      </>
-    );
-  
-}
+    </>
+  );
+};
 
 export default PvcsListPage;
