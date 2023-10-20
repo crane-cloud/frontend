@@ -38,6 +38,7 @@ const DockerWebHook = () => {
 
   const handleInputChange = (e) => {
     setImageTag(e.target.value);
+    setShowUrl(false);
   };
 
   const updateUrl = () => {
