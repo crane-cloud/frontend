@@ -18,6 +18,10 @@ import {
   clearUpdateProfileState,
 } from "../../redux/actions/updateProfile";
 import "../../index.css";
+import { Link } from "react-router-dom";
+import moment from "moment";
+import AppFooter from "../appFooter";
+import NewResourceCard from "../NewResourceCard";
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -25,9 +29,9 @@ class UserProfile extends React.Component {
     const { name } = props.user;
     this.initialState = {
       username: name,
-      editMode: false,
       showSaveModel: false,
       passwordModel: false,
+      updateModal: false,
       passwordChangeLoading: false,
       passwordChangeError: "",
       passwordChangeSuccess: "",
@@ -38,14 +42,12 @@ class UserProfile extends React.Component {
     this.state = this.initialState;
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeSaving = this.handleChangeSaving.bind(this);
-    this.closeEditMode = this.closeEditMode.bind(this);
-    this.openEditMode = this.openEditMode.bind(this);
     this.getUserProjects = this.getUserProjects.bind(this);
-    this.showSaveChangesModel = this.showSaveChangesModel.bind(this);
-    this.hideSaveChangesModel = this.hideSaveChangesModel.bind(this);
     this.showPasswordWarningModel = this.showPasswordWarningModel.bind(this);
     this.hidePasswordWarningModel = this.hidePasswordWarningModel.bind(this);
     this.handlePasswordChanage = this.handlePasswordChanage.bind(this);
+    this.showUpdateModal = this.showUpdateModal.bind(this);
+    this.hideUpdateModal = this.hideUpdateModal.bind(this);
   }
 
   componentDidMount() {
@@ -89,24 +91,19 @@ class UserProfile extends React.Component {
       [e.target.name]: e.target.value,
     });
   };
-  showSaveChangesModel = () => {
-    this.setState({ showSaveModel: true });
-  };
-  hideSaveChangesModel = () => {
-    this.setState({ showSaveModel: false });
-  };
   showPasswordWarningModel = () => {
     this.setState({ passwordModel: true });
   };
   hidePasswordWarningModel = () => {
     this.setState({ passwordModel: false });
   };
-  closeEditMode() {
-    this.setState({ editMode: false });
+  showUpdateModal() {
+    this.setState({ updateModal: true });
   }
-  openEditMode() {
-    this.setState({ editMode: true });
+  hideUpdateModal() {
+    this.setState({ updateModal: false });
   }
+
   componentDidUpdate(prevProps) {
     const { profileUpdated, user } = this.props;
     if (profileUpdated !== prevProps.profileUpdated) {
@@ -141,6 +138,7 @@ class UserProfile extends React.Component {
         if (response.data.status === "success") {
           this.setState({
             loading: false,
+            passwordChangeLoading: false,
             passwordChangeSuccess:
               "Please check your email. If you cant find the email, check the spam folder",
           });
@@ -156,18 +154,32 @@ class UserProfile extends React.Component {
         });
       });
   }
-  render() {
-    const options = {
-      weekday: "short",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const { userId, username } = this.state;
+
+    const postData = {
+      username: username,
     };
+
+    axios
+      .post(`${API_BASE_URL}/users/${userId}`, postData)
+      .then(() => {
+        // this will logout the user
+        localStorage.clear();
+        window.location.href = "/";
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
+  }
+
+  render() {
     const {
       username,
-      editMode,
-      showSaveModel,
       passwordModel,
+      updateModal,
       passwordChangeError,
       passwordChangeSuccess,
       passwordChangeLoading,
@@ -178,286 +190,310 @@ class UserProfile extends React.Component {
     const { user, isFetching, isFetched, profileUpdating } = this.props;
 
     return (
-      <div className={styles.Page}>
-        <div className={styles.TopRow}>
+      <div className="MainPage">
+        <div className="TopBarSection">
           <Header />
-          <InformationBar header="Profile Page" showBackBtn />
         </div>
-        <div className={styles.MainColumn}>
-          {isFetching ? (
-            <div className={styles.NoResourcesMessage}>
-              <div className={styles.SpinnerWrapper}>
-                <Spinner size="big" />
-              </div>
+        <div className="Mainsection">
+          <div className="MainContentSection">
+            <div className="InformationBarSection">
+              <InformationBar
+                header={
+                  <span>
+                    <Link className="breadcrumb" to={`/projects`}>
+                      User Profile
+                    </Link>
+                    / {user?.name}
+                  </span>
+                }
+                showBtn={false}
+                showBackBtn
+              />
             </div>
-          ) : isFetched ? (
-            <div className={`${styles.ProfileContainer}  SmallContainer`}>
-              {isFetched && (
-                <div className={styles.UserContainer}>
-                  <section className={styles.ContainerHeadSection}>
-                    <div className={styles.UserProfileCard}>
-                      <div>
-                        <div>
-                          <div className={styles.AvatarDiv}>
-                            <Avatar
-                              name={user.name}
-                              className={styles.UserAvatar}
-                            />
-                            <div className={styles.Identity}>
-                              <div className={styles.IdentityName}>
-                                {user.name}
-                                {user.is_beta_user === true && (
-                                  <div className={styles.BetaUserDiv}>
-                                    Beta User
+
+            <div className="ContentSection">
+              <div>
+                {isFetching ? (
+                  <div className={styles.NoResourcesMessage}>
+                    <div className={styles.SpinnerWrapper}>
+                      <Spinner size="big" />
+                    </div>
+                  </div>
+                ) : isFetched ? (
+                  <div className="LeftAlignContainer">
+                    <div className="ContentSection">
+                      <div className="AdminUserPageContainer">
+                        <section>
+                          <div className="SectionTitle">
+                            Personal information
+                          </div>
+                          <div className="AdminCardArea">
+                            <div className="AdminUserProfileCard">
+                              <div className="AdminUserProfileInfoSect">
+                                <div className="AdminUserProfileInfoHeader">
+                                  <Avatar
+                                    name={user?.name}
+                                    className={styles.UserAvatarLarge}
+                                  />
+                                  <div className={styles.Identity}>
+                                    <div className={styles.IdentityName}>
+                                      {user?.name}
+                                      {user?.is_beta_user === true && (
+                                        <div className={styles.BetaUserDiv}>
+                                          Beta User
+                                        </div>
+                                      )}
+                                    </div>
+                                    <div className={styles.IdentityEmail}>
+                                      {user?.email}
+                                    </div>
                                   </div>
-                                )}
-                              </div>
-                              <div className={styles.IdentityEmail}>
-                                {user.email}
+                                </div>
+
+                                <div className="AdminProfileRowInfo">
+                                  <div className="AdminProfileRowItem">
+                                    Has
+                                    <span>{activeProjectsCount} active</span>
+                                    and
+                                    <span>
+                                      {disabledProjectsCount} disabled
+                                    </span>
+                                    projects
+                                  </div>
+                                  |
+                                  <div className="AdminProfileRowItem">
+                                    Organization:
+                                    <span>
+                                      {user?.organisation === null
+                                        ? "Not Found"
+                                        : user?.organisation}
+                                    </span>
+                                  </div>
+                                  |
+                                  <div className="AdminProfileRowItem">
+                                    Date Joined:
+                                    <span>
+                                      {moment(user?.date_created)
+                                        .utc()
+                                        .format("ddd, MMMM DD, yyyy")}
+                                    </span>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
-                          <div className={styles.BackgroundInfor}>
-                            <div>
-                              Joined Crane Cloud on{" "}
-                              {new Date(user.date_created).toLocaleDateString(
-                                "en-US",
-                                options
-                              )}
-                            </div>
-                            <div className={styles.CardInfor}>
-                              <span>Has {projectsCount} Projects </span>
-                              {"|"}
-                              <span>{activeProjectsCount} Active</span>
-                              {"|"}
-                              <span>{disabledProjectsCount} Disabled</span>
-                            </div>
+                        </section>
+
+                        <div>
+                          <div className="SectionTitle">
+                            User Platform Metrics
+                          </div>
+                          <div className="Cluster1Container">
+                            <NewResourceCard
+                              key={1}
+                              title="Projects"
+                              count={projectsCount}
+                            />
+                            <NewResourceCard
+                              key={1}
+                              title="Apps Deployed"
+                              count={user?.apps_count}
+                            />
+                            <NewResourceCard
+                              key={1}
+                              title="Databases Created"
+                              count={user?.database_count}
+                            />
+                            <NewResourceCard
+                              key={1}
+                              title="Credits"
+                              count={
+                                user?.credits.length === 0
+                                  ? 0
+                                  : user?.credits[0].amount
+                              }
+                            />
                           </div>
                         </div>
-                        <div
-                          className={styles.RowContent}
-                          title="Assigned by Admin for billing purporses"
-                        >
-                          {user.credits.length === 0 ? (
-                            "0 credits"
-                          ) : (
-                            <div className={styles.CreditsContainer}>
-                              {user.credits[0].amount}
-                              credits
+                        <div className="AdminDBSections">
+                          <div className="SectionTitle">Manage User</div>
+                          <div className="ProjectInstructions">
+                            <div className="MemberBody">
+                              <div className="MemberTableRow">
+                                <div className="SettingsSectionInfo">
+                                  <div className="SubTitle">
+                                    Change Password
+                                    <br />
+                                    <div className="SubTitleContent">
+                                      This will permanently change your current
+                                      password to a new one
+                                    </div>
+                                  </div>
+                                  <div className="SectionButtons">
+                                    <PrimaryButton
+                                      onClick={() => {
+                                        this.showPasswordWarningModel();
+                                      }}
+                                      color="red-outline"
+                                    >
+                                      Reset Password
+                                    </PrimaryButton>
+                                  </div>
+                                </div>
+                                <div className="SettingsSectionInfo1">
+                                  <div className="SubTitle">
+                                    Update Profile
+                                    <br />
+                                    <div className="SubTitleContent">
+                                      This allows you to make changes to
+                                      specific fields under your profile
+                                    </div>
+                                  </div>
+                                  <div className="SectionButtons">
+                                    <PrimaryButton
+                                      onClick={() => {
+                                        this.showUpdateModal();
+                                      }}
+                                      color="primary-outline"
+                                    >
+                                      Edit Profile
+                                    </PrimaryButton>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          {!isFetching && !isFetched && (
+                            <div className="NoResourcesMessage">
+                              <p>
+                                Oops! Something went wrong! Failed to retrieve
+                                User Profile.
+                              </p>
                             </div>
                           )}
                         </div>
                       </div>
-                      <div>
-                        <Avatar
-                          name={user.name}
-                          className={styles.UserAvatarLarge}
-                        />
-                      </div>
                     </div>
-                  </section>
-                  <div className={styles.SecondMainSection}>
-                    <section className={styles.ContainerSection}>
-                      <div className={styles.HeaderSection}>
-                        <div className={styles.UserSectionTitle}>
-                          Information
+                  </div>
+                ) : null}
+
+                {!isFetching && !isFetched && (
+                  <div className={styles.NoResourcesMessage}>
+                    Oops! Something went wrong! Failed to retrieve user.
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {updateModal && (
+              <div className={styles.ProjectDeleteModel}>
+                <Modal
+                  showModal={updateModal}
+                  onClickAway={this.hideUpdateAlert}
+                >
+                  <div>
+                    <div
+                      onSubmit={(e) => {
+                        this.handleSubmit();
+                      }}
+                    >
+                      <div className={styles.ModelContent}>
+                        <div className={styles.ModelHeader}>
+                          Edit User Details
                         </div>
-                        <div className={styles.UserSectionSubTitle}>
-                          Your identity on crane cloud
-                        </div>
-                      </div>
-                      <div className={styles.ContainerCard}>
-                        <div className={styles.EmailHead}>
-                          {/* not editable */}
-                          <div className={styles.InputDiv}>
-                            <div className={styles.Title2}>Email</div>
-                            <div>{user.email}</div>
-                          </div>
-                        </div>
-                        <div className={styles.InputDiv}>
-                          <div className={styles.Title2}>Name</div>
-                          {editMode ? (
+                        <div className={styles.UpdateForm}>
+                          <div className={styles.UpdateInputSection}>
+                            <div className={styles.DeleteDescription}>
+                              Username
+                            </div>
                             <BlackInputText
-                              className={styles.CustomInput}
-                              placeholder=""
+                              placeholder="UserName"
                               name="username"
                               value={username}
                               onChange={(e) => {
                                 this.handleChange(e);
                               }}
                             />
-                          ) : (
-                            <div className={styles.Title2Name}>{user.name}</div>
-                          )}
-                        </div>
-                        <div className={styles.InputDiv}>
-                          <div className={styles.Title2}>Organisation</div>
-                          {/* {editMode ? (
-                              <BlackInputText
-                                className={styles.CustomInput}
-                                placeholder=""
-                                name="organisation"
-                                value={organisation}
-                                onChange={(e) => {
-                                  this.handleChange(e);
-                                }}
-                              />
-                            ) : (
-                              <div>{user.organisation}</div>
-                            )} */}
-                          <div>Not Addded</div>
-                        </div>
-                        <div className={styles.ProfileActionBtns}>
-                          <div className={styles.PasswordChange}>
-                            <div>Change Password</div>
-                            <PrimaryButton
-                              onClick={() => {
-                                this.showPasswordWarningModel();
-                              }}
-                              className={styles.BackButton}
-                            >
-                              Reset password by email
-                            </PrimaryButton>
                           </div>
 
-                          {editMode ? (
-                            <div className={styles.ButtonsDiv}>
-                              <PrimaryButton
-                                onClick={() => {
-                                  user.name !== username &&
-                                    this.showSaveChangesModel();
-                                }}
-                                className={styles.BackButton}
-                              >
-                                Save
-                              </PrimaryButton>
-                              <PrimaryButton
-                                onClick={() => {
-                                  this.closeEditMode();
-                                }}
-                                className={styles.PairButtonCancel}
-                              >
-                                Cancel
-                              </PrimaryButton>
-                            </div>
-                          ) : (
+                          <div className={styles.UpdateProjectModelButtons}>
                             <PrimaryButton
                               onClick={() => {
-                                this.openEditMode();
+                                this.handleChangeSaving();
                               }}
-                              className={styles.BackButton}
+                              color="primary"
                             >
-                              Edit profile
+                              {profileUpdating ? <Spinner /> : "Update"}
                             </PrimaryButton>
-                          )}
+                            <PrimaryButton
+                              className="CancelBtn"
+                              onClick={() => {
+                                this.hideUpdateModal();
+                              }}
+                            >
+                              Cancel
+                            </PrimaryButton>
+                          </div>
                         </div>
                       </div>
-                    </section>
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
-          ) : null}
-
-          {!isFetching && !isFetched && (
-            <div className={styles.NoResourcesMessage}>
-              Oops! Something went wrong! Failed to retrieve user.
-            </div>
-          )}
-        </div>
-
-        {showSaveModel === true && (
-          <div className={styles.ProjectDeleteModel}>
-            <Modal
-              showModal={showSaveModel}
-              onClickAway={() => {
-                this.hideSaveChangesModel();
-              }}
-            >
-              <div className={styles.ModelContent}>
-                <div className={styles.ModelHeader}>Save Changes</div>
-                <div className={styles.UpdateForm}>
-                  <div className={styles.InformationText}>
-                    Confirm you want to save new changes, this will log you out
-                    automatically.
-                  </div>
-                  <div className={styles.UpdateProjectModelButtons}>
-                    <PrimaryButton
-                      className={styles.BackButton}
-                      onClick={() => {
-                        this.handleChangeSaving();
-                      }}
-                    >
-                      {profileUpdating ? <Spinner /> : "Confirm"}
-                    </PrimaryButton>
-                    <PrimaryButton
-                      className={styles.PairButtonCancel}
-                      onClick={() => {
-                        this.hideSaveChangesModel();
-                      }}
-                    >
-                      Cancel
-                    </PrimaryButton>
-                  </div>
-                </div>
+                </Modal>
               </div>
-            </Modal>
-          </div>
-        )}
-        {passwordModel === true && (
-          <div className={styles.ProjectDeleteModel}>
-            <Modal
-              showModal={passwordModel}
-              onClickAway={() => {
-                this.hidePasswordWarningModel();
-              }}
-            >
-              <div className={styles.ModelContent}>
-                <div className={styles.ModelHeader}>Change Password</div>
-                <div className={styles.UpdateForm}>
-                  <div className={styles.InformationText}>
-                    Confirm and an email to edit your password will be sent to
-                    you. Redo the process in case you don't recieve the email
-                  </div>
-                  <div className={styles.UpdateProjectModelButtons}>
-                    <PrimaryButton
-                      className={styles.BackButton}
-                      onClick={() => {
-                        this.handlePasswordChanage();
-                      }}
-                    >
-                      {passwordChangeLoading ? <Spinner /> : "Confirm"}
-                    </PrimaryButton>
-                    <PrimaryButton
-                      className={styles.PairButtonCancel}
-                      onClick={() => {
-                        this.hidePasswordWarningModel();
-                      }}
-                    >
-                      Cancel
-                    </PrimaryButton>
-                  </div>
-                  <div>
-                    {passwordChangeSuccess && (
-                      <div className={styles.FeedBackDiv}>
-                        {passwordChangeSuccess}
+            )}
+
+            {passwordModel === true && (
+              <div className={styles.ProjectDeleteModel}>
+                <Modal
+                  showModal={passwordModel}
+                  onClickAway={() => {
+                    this.hidePasswordWarningModel();
+                  }}
+                >
+                  <div className={styles.ModelContent}>
+                    <div className={styles.ModelHeader}>Change Password</div>
+                    <div className={styles.UpdateForm}>
+                      <div className={styles.InformationText}>
+                        Confirm and an email to edit your password will be sent
+                        to you. Redo the process in case you don't recieve the
+                        email
                       </div>
-                    )}
-                    {passwordChangeError && (
-                      <div className={styles.ErrorDiv}>
-                        {passwordChangeError}
+                      <div className={styles.UpdateProjectModelButtons}>
+                        <PrimaryButton
+                          onClick={() => {
+                            this.handlePasswordChanage();
+                          }}
+                          color="primary"
+                        >
+                          {passwordChangeLoading ? <Spinner /> : "Confirm"}
+                        </PrimaryButton>
+                        <PrimaryButton
+                          className="CancelBtn"
+                          onClick={() => {
+                            this.hidePasswordWarningModel();
+                          }}
+                        >
+                          Cancel
+                        </PrimaryButton>
                       </div>
-                    )}
+                      <div>
+                        {passwordChangeSuccess && (
+                          <div className={styles.FeedBackDiv}>
+                            {passwordChangeSuccess}
+                          </div>
+                        )}
+                        {passwordChangeError && (
+                          <div className={styles.ErrorDiv}>
+                            {passwordChangeError}
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </Modal>
               </div>
-            </Modal>
-          </div>
-        )}
-        <div className={styles.FooterRow}>
-          <div>
-            Copyright {new Date().getFullYear()} Crane Cloud. All Rights
-            Reserved.
+            )}
+            <AppFooter />
           </div>
         </div>
       </div>

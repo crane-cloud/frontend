@@ -274,7 +274,7 @@
 
 .Cluster1Container {
   display: flex;
-  padding: 2rem 0 0 0;
+  padding: 2rem 0.5rem 0 0.5rem;
   gap: 1rem;
   flex-wrap: wrap;
   justify-content: space-between;
