@@ -46,6 +46,7 @@ class AppSettingsPage extends React.Component {
       domainModal: false,
       newImage: "",
       urlChecked: false,
+      internalUrlChecked: false,
       dockerCredentials: {
         username: "",
         email: "",
@@ -92,6 +93,7 @@ class AppSettingsPage extends React.Component {
     this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.urlOnClick = this.urlOnClick.bind(this);
+    this.internalUrlOnClick = this.internalUrlOnClick.bind(this);
     this.handlePortSubmit = this.handlePortSubmit.bind(this);
     this.handleCommandSubmit = this.handleCommandSubmit.bind(this);
     this.handleEnvVarsSubmit = this.handleEnvVarsSubmit.bind(this);
@@ -396,6 +398,12 @@ class AppSettingsPage extends React.Component {
     this.setState({ urlChecked: true });
   }
 
+  internalUrlOnClick() {
+    const { app } = this.props;
+    navigator.clipboard.writeText(app.internal_url);
+    this.setState({ internalUrlChecked: true });
+  }
+
   handleEnvVarsSubmit() {
     const {
       match: { params },
@@ -679,6 +687,7 @@ class AppSettingsPage extends React.Component {
       disableDelete,
       newImage,
       urlChecked,
+      internalUrlChecked,
       error,
       portError,
       commandError,
@@ -983,6 +992,16 @@ class AppSettingsPage extends React.Component {
                           )}
                         </>
                       )}
+                    </div>
+                    <div className={styles.APPButtonRow}>
+                      <div className={styles.AppLabel}>Internal URL</div>
+                      <div className={styles.CopyDiv}>
+                        <div className="DBTDetail">{appDetail.internal_url}</div>
+                        <div className={styles.CopyUrl}>
+                          <CopyText onClick={this.internalUrlOnClick} />
+                          {internalUrlChecked ? <Checked /> : null}
+                        </div>
+                      </div>
                     </div>
                     <div className={styles.APPButton}>
                       <div className={styles.UpperSection}>
