@@ -106,6 +106,7 @@ class AppSettingsPage extends React.Component {
     this.domainRevert = this.domainRevert.bind(this);
     this.disableRevert = this.disableRevert.bind(this);
     this.regenerate = this.regenerate.bind(this);
+    this.updatePage = this.updatePage.bind(this);
     this.getAppRevisionDetails = this.getAppRevisionDetails.bind(this);
     this.rollbackApp = this.rollbackApp.bind(this);
     this.showAppRevisionModal = this.showAppRevisionModal.bind(this);
@@ -140,8 +141,7 @@ class AppSettingsPage extends React.Component {
       });
     }
   }
-
-  componentDidMount() {
+  updatePage() {
     const {
       match: { params },
       getSingleApp,
@@ -158,6 +158,12 @@ class AppSettingsPage extends React.Component {
     getSingleApp(appID);
     this.getAppRevisionDetails();
   }
+
+  componentDidMount() {
+    this.updatePage();
+  }
+
+  
 
   getAppRevisionDetails() {
     const {
@@ -361,7 +367,7 @@ class AppSettingsPage extends React.Component {
     }, {});
     this.setState({ envVars: newEnvVars });
   }
-  removeExistingEnvVar(index) {
+  async removeExistingEnvVar(index) {
     const {
       match: { params },
       updateApp,
@@ -369,15 +375,12 @@ class AppSettingsPage extends React.Component {
     const { appDetail } = this.state;
     const { appID } = params;
     const keyToRemove = Object.keys(appDetail.env_vars)[index];
-    const newEnvVars = Object.keys(appDetail.env_vars).reduce((object, key) => {
-      if (key !== keyToRemove) {
-        object[key] = appDetail.env_vars[key]; // eslint-disable-line no-param-reassign
-      }
-      return object;
-    }, {});
-    //console.log(newEnvVars)
-    updateApp(appID, { env_vars: newEnvVars });
+  
+    await updateApp(appID, { delete_env_vars: [keyToRemove] });
+  
+    this.updatePage();
   }
+  
 
   togglePrivateImage() {
     const { isPrivateImage } = this.state;
