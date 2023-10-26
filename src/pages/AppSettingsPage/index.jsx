@@ -75,6 +75,9 @@ class AppSettingsPage extends React.Component {
       rollBackConfirmationModal: false,
       revisingApp: false,
       revisingAppError: "",
+      showAppDisableModal: false,
+      appDisableProgress:false,
+      appDisableFailError:""
     };
 
     this.handleDeleteApp = this.handleDeleteApp.bind(this);
@@ -99,9 +102,11 @@ class AppSettingsPage extends React.Component {
     this.handleEnvVarsSubmit = this.handleEnvVarsSubmit.bind(this);
     this.showDomainModal = this.showDomainModal.bind(this);
     this.hideDomainModal = this.hideDomainModal.bind(this);
+    this.showDisableModal = this.showDisableModal.bind(this);
     this.domainRevert = this.domainRevert.bind(this);
     this.disableRevert = this.disableRevert.bind(this);
     this.regenerate = this.regenerate.bind(this);
+    this.updatePage = this.updatePage.bind(this);
     this.getAppRevisionDetails = this.getAppRevisionDetails.bind(this);
     this.rollbackApp = this.rollbackApp.bind(this);
     this.showAppRevisionModal = this.showAppRevisionModal.bind(this);
@@ -136,8 +141,7 @@ class AppSettingsPage extends React.Component {
       });
     }
   }
-
-  componentDidMount() {
+  updatePage() {
     const {
       match: { params },
       getSingleApp,
@@ -154,6 +158,12 @@ class AppSettingsPage extends React.Component {
     getSingleApp(appID);
     this.getAppRevisionDetails();
   }
+
+  componentDidMount() {
+    this.updatePage();
+  }
+
+  
 
   getAppRevisionDetails() {
     const {
@@ -357,7 +367,7 @@ class AppSettingsPage extends React.Component {
     }, {});
     this.setState({ envVars: newEnvVars });
   }
-  removeExistingEnvVar(index) {
+  async removeExistingEnvVar(index) {
     const {
       match: { params },
       updateApp,
@@ -365,14 +375,12 @@ class AppSettingsPage extends React.Component {
     const { appDetail } = this.state;
     const { appID } = params;
     const keyToRemove = Object.keys(appDetail.env_vars)[index];
-    const newEnvVars = Object.keys(appDetail.env_vars).reduce((object, key) => {
-      if (key !== keyToRemove) {
-        object[key] = appDetail.env_vars[key]; // eslint-disable-line no-param-reassign
-      }
-      return object;
-    }, {});
-    updateApp(appID, { env_vars: newEnvVars });
+  
+    await updateApp(appID, { delete_env_vars: [keyToRemove] });
+  
+    this.updatePage();
   }
+  
 
   togglePrivateImage() {
     const { isPrivateImage } = this.state;
@@ -596,6 +604,9 @@ class AppSettingsPage extends React.Component {
   hideDomainModal() {
     this.setState({ domainModal: false });
   }
+  showDisableModal(){
+    this.setState({ showAppDisableModal: true });
+  }
 
   domainRevert() {
     const {
@@ -620,8 +631,8 @@ class AppSettingsPage extends React.Component {
   handleCIClick = () => {
     // const appID = '123'; // Replace with your logic to get appID from the URL
     const { appID } = this.props.match.params;
-    console.log(appID);
-    console.log(this.props.match.params);
+    //console.log(appID);
+    //console.log(this.props.match.params);
     this.props.history.push(`/apps/${appID}/webhook`)
     // history.push(`/app/${appID}`);
   };
@@ -629,6 +640,7 @@ class AppSettingsPage extends React.Component {
   handleEnableButtonClick = async () => {
     const { app } = this.props;
     let app_id = app?.id;
+    this.setState({appDisableProgress:true, appDisableFailError:""})
 
     try {
       if (app.disabled) {
@@ -659,7 +671,10 @@ class AppSettingsPage extends React.Component {
           });
       }
     } catch (error) {
-      console.error("API call error:", error);
+      //console.error("API call error:", error);
+      this.setState({appDisableFailError:"Request failed, please try again later"})
+    } finally {
+      this.setState({appDisableProgress:false})
     }
   };
 
@@ -711,6 +726,7 @@ class AppSettingsPage extends React.Component {
       rollBackConfirmationModal,
       revisingApp,
       revisingAppError,
+      showAppDisableModal,
       dockerCredentials: { username, email, password, server },
     } = this.state;
     // project name from line 105 disappears on refreash, another source of the name was needed
@@ -722,7 +738,7 @@ class AppSettingsPage extends React.Component {
       { id: 3, name: "3" },
       { id: 4, name: "4" },
     ];
-    console.log(this.props.app);
+    //console.log(this.props.app);
 
     return (
       <DashboardLayout name={appDetail?.name} header="App Settings" short>
@@ -907,7 +923,7 @@ class AppSettingsPage extends React.Component {
                                   className={styles.RevertButton}
                                   onClick={this.domainRevert}
                                   disabled={
-                                    appDetail.app_running_status || urlReverted
+                                    urlReverted
                                   }
                                 >
                                   {isReverting ? <Spinner /> : "REVERT"}
@@ -928,7 +944,6 @@ class AppSettingsPage extends React.Component {
                               "App has " + appDetail?.replicas + " replica(s)"
                             }
                             options={replicaOptions}
-                            isSmall
                             onChange={this.handleSelectReplicas}
                           />
                         </div>
@@ -1006,7 +1021,7 @@ class AppSettingsPage extends React.Component {
                     <div className={styles.APPButton}>
                       <div className={styles.UpperSection}>
                         <PrimaryButton
-                          disabled={appDetail.app_running_status || isUpdating}
+                          disabled={isUpdating}
                           className={isUpdating && styles.deactivatedBtn}
                           onClick={this.handleSubmit}
                         >
@@ -1207,7 +1222,7 @@ class AppSettingsPage extends React.Component {
                       <div className={styles.APPButton}>
                         <div className={styles.UpperSection}>
                           <PrimaryButton
-                            disabled={appDetail.app_running_status}
+                            disabled={isUpdating}
                             onClick={this.handleEnvVarsSubmit}
                             small
                           >
@@ -1238,7 +1253,7 @@ class AppSettingsPage extends React.Component {
                       </div>
                       <div className={styles.APPOptionsButton}>
                         <PrimaryButton
-                          disabled={appDetail.app_running_status || isUpdating}
+                          disabled={isUpdating}
                           onClick={this.handlePortSubmit}
                           small
                         >
@@ -1266,7 +1281,7 @@ class AppSettingsPage extends React.Component {
                       </div>
                       <div className={styles.APPOptionsButton}>
                         <PrimaryButton
-                          disabled={appDetail.app_running_status || isUpdating}
+                          disabled={isUpdating}
                           // className={isUpdating && styles.deactivatedBtn}
                           onClick={this.handleCommandSubmit}
                           small
@@ -1327,9 +1342,13 @@ class AppSettingsPage extends React.Component {
                               : "Prevent App from being billed by blocking access to it's resources."}
                           </div>
                         </div>
+                   
                         <div className={styles.SectionButtons}>
                           <PrimaryButton
-                            onClick={this.handleEnableButtonClick}
+                            onClick={(e)=> {
+                              e.preventDefault()
+                              this.showDisableModal()
+                            }}
                             small
                             color={app?.disabled ? "primary" : "red"}
                           >
@@ -1356,6 +1375,57 @@ class AppSettingsPage extends React.Component {
                   </div>
                 </>
 
+                {showAppDisableModal && (
+                  <div className={styles.AppDeleteModel}>
+                    <Modal
+                      showModal={showAppDisableModal}
+                      onClickAway={() => {this.setState({showAppDisableModal:false})}}
+                    >
+                      <div className={styles.DeleteAppModel}>
+                        <div className={styles.DeleteModalUpperSection}>
+                          <div className={styles.WarningContainer}>
+                            <div className={styles.DeleteDescription}>
+                             {` Are you sure you want to ${app?.disabled ? "enable": "disable"  }  `}
+                              <span>{app.name}</span>
+                              &nbsp;?
+                            </div>
+                            <div className={styles.DeleteSubDescription}>
+                            {app?.disabled
+                              ? "Allow access to App resources and enable billing"
+                              : "Prevent App from being billed by blocking access to it's resources."}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className={styles.DeleteModalLowerSection}>
+                          <div className={styles.DeleteAppModelButtons}>
+                            <PrimaryButton
+                              className="CancelBtn"
+                              onClick={() => {this.setState({showAppDisableModal:false })}}
+                            >
+                              Cancel
+                            </PrimaryButton>
+                            <PrimaryButton
+                              // className={disableDelete && styles.InactiveDelete}
+                              color={!app?.disabled && "red"}
+                              disabled={this.state.appDisableProgress}
+                              onClick={this.handleEnableButtonClick}
+                            >
+                              {this.state.appDisableProgress ? <Spinner /> : "Confirm"}
+                            </PrimaryButton>
+                          </div>
+
+                          {message && (
+                            <Feedback
+                              type={isFailed ? "error" : "success"}
+                              message={message}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </Modal>
+                  </div>
+                )}
                 {openDeleteAlert && (
                   <div className={styles.AppDeleteModel}>
                     <Modal
