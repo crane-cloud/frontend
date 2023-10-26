@@ -34,6 +34,7 @@ const updateApp = (appID, appData) => (dispatch) => {
     .patch(`/apps/${appID}`, appData)
     .then((response) => dispatch(updateAppSuccess(response)))
     .catch((error) => {
+      console.log(error)
       dispatch(updateAppFail(error));
     });
 };
