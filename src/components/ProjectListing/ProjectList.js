@@ -590,147 +590,168 @@ const AdminProjectsOverview = () => {
               <div className="ChartsArea">
                 {sectionValue1 === "Projects" ? (
                   <div>
-                    <AreaChart
-                      width={550}
-                      height={380}
-                      syncId="anyId"
-                      data={
-                        period !== "all" ? filteredGraphData : graphDataArray
-                      }
-                    >
-                      <Line type="monotone" dataKey="Value" stroke="#8884d8" />
-                      <CartesianGrid stroke="#ccc" />
-                      <XAxis dataKey="Month" />
-                      <XAxis
-                        xAxisId={1}
-                        dx={10}
-                        label={{
-                          value: "Time",
-                          angle: 0,
-                          position: "bottom",
-                        }}
-                        interval={12}
-                        dataKey="Year"
-                        tickLine={false}
-                        tick={{ fontSize: 12, angle: 0 }}
-                      />
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <YAxis
-                        label={{
-                          value: "Number of Projects",
-                          angle: 270,
-                          position: "outside",
-                        }}
-                        width={100}
-                      />
-                      <Area
-                        type="monotone"
-                        dataKey="Value"
-                        stroke="#82ca9d"
-                        fill="#82ca9d"
-                      />
-                      <Tooltip
-                        labelFormatter={(value) => {
-                          const monthNames = retrieveMonthNames();
-                          const month = parseInt(value) - 1;
-                          return monthNames[month].name;
-                        }}
-                        formatter={(value) => {
-                          return [`${value} projects`];
-                        }}
-                      />
-                    </AreaChart>
+                    {graphDataArray.length > 0 ? (
+                      <AreaChart
+                        width={550}
+                        height={380}
+                        syncId="anyId"
+                        data={
+                          period !== "all" ? filteredGraphData : graphDataArray
+                        }
+                      >
+                        <Line
+                          type="monotone"
+                          dataKey="Value"
+                          stroke="#8884d8"
+                        />
+                        <CartesianGrid stroke="#ccc" />
+                        <XAxis dataKey="Month" />
+                        <XAxis
+                          xAxisId={1}
+                          dx={10}
+                          label={{
+                            value: "Time",
+                            angle: 0,
+                            position: "bottom",
+                          }}
+                          interval={12}
+                          dataKey="Year"
+                          tickLine={false}
+                          tick={{ fontSize: 12, angle: 0 }}
+                        />
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <YAxis
+                          label={{
+                            value: "Number of Projects",
+                            angle: 270,
+                            position: "outside",
+                          }}
+                          width={100}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="Value"
+                          stroke="#82ca9d"
+                          fill="#82ca9d"
+                        />
+                        <Tooltip
+                          labelFormatter={(value) => {
+                            const monthNames = retrieveMonthNames();
+                            const month = parseInt(value) - 1;
+                            return monthNames[month].name;
+                          }}
+                          formatter={(value) => {
+                            return [`${value} projects`];
+                          }}
+                        />
+                      </AreaChart>
+                    ) : (
+                      <div className="ResourceSpinnerWrapper">
+                        <Spinner size="big" />
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className="ChartsArea">
-                    <AreaChart
-                      width={550}
-                      height={380}
-                      data={
-                        period !== "all"
-                          ? newFilteredGraphData
-                          : newGraphDataArray
-                      }
-                      margin={{
-                        top: 10,
-                        right: 30,
-                        left: 0,
-                        bottom: 0,
-                      }}
-                    >
-                      <CartesianGrid stroke="#ccc" />
-                      <XAxis dataKey="Month" />
-                      <XAxis
-                        xAxisId={1}
-                        dx={10}
-                        label={{
-                          value: "Time",
-                          angle: 0,
-                          position: "bottom",
+                    {newGraphDataArray.length > 0 ? (
+                      <AreaChart
+                        width={550}
+                        height={380}
+                        data={
+                          period !== "all"
+                            ? newFilteredGraphData
+                            : newGraphDataArray
+                        }
+                        margin={{
+                          top: 10,
+                          right: 30,
+                          left: 0,
+                          bottom: 0,
                         }}
-                        interval={12}
-                        dataKey="Year"
-                        tickLine={false}
-                        tick={{ fontSize: 12, angle: 0 }}
-                      />
-                      <YAxis
-                        label={{
-                          value: "Numbers per Project Type",
-                          angle: 270,
-                          position: "outside",
-                        }}
-                        width={100}
-                      />
-                      <Tooltip
-                        labelFormatter={(value) => {
-                          const monthNames = retrieveMonthNames();
-                          const month = parseInt(value) - 1;
-                          return monthNames[month].name;
-                        }}
-                      />
-                      <Area
-                        type="monotone"
-                        dataKey="Personal"
-                        stackId="1"
-                        stroke="#8884d8"
-                        fill="#8884d8"
-                      />
-                      <Area
-                        type="monotone"
-                        dataKey="Research"
-                        stackId="1"
-                        stroke="#82ca9d"
-                        fill="#82ca9d"
-                      />
-                      <Area
-                        type="monotone"
-                        dataKey="Student"
-                        stackId="1"
-                        stroke="#ffc658"
-                        fill="#ffc658"
-                      />
-                      <Area
-                        type="monotone"
-                        dataKey="Commercial"
-                        stackId="1"
-                        stroke="#ffc999"
-                        fill="#ffc999"
-                      />
-                      <Area
-                        type="monotone"
-                        dataKey="Charity"
-                        stackId="1"
-                        stroke="#ffc302"
-                        fill="#ffc302"
-                      />
-                    </AreaChart>
+                      >
+                        <CartesianGrid stroke="#ccc" />
+                        <XAxis dataKey="Month" />
+                        <XAxis
+                          xAxisId={1}
+                          dx={10}
+                          label={{
+                            value: "Time",
+                            angle: 0,
+                            position: "bottom",
+                          }}
+                          interval={12}
+                          dataKey="Year"
+                          tickLine={false}
+                          tick={{ fontSize: 12, angle: 0 }}
+                        />
+                        <YAxis
+                          label={{
+                            value: "Numbers per Project Type",
+                            angle: 270,
+                            position: "outside",
+                          }}
+                          width={100}
+                        />
+                        <Tooltip
+                          labelFormatter={(value) => {
+                            const monthNames = retrieveMonthNames();
+                            const month = parseInt(value) - 1;
+                            return monthNames[month].name;
+                          }}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="Personal"
+                          stackId="1"
+                          stroke="#8884d8"
+                          fill="#8884d8"
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="Research"
+                          stackId="1"
+                          stroke="#82ca9d"
+                          fill="#82ca9d"
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="Student"
+                          stackId="1"
+                          stroke="#ffc658"
+                          fill="#ffc658"
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="Commercial"
+                          stackId="1"
+                          stroke="#ffc999"
+                          fill="#ffc999"
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="Charity"
+                          stackId="1"
+                          stroke="#ffc302"
+                          fill="#ffc302"
+                        />
+                      </AreaChart>
+                    ) : (
+                      <div className="ResourceSpinnerWrapper">
+                        <Spinner size="big" />
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
             </div>
 
             <div className="VisualArea">
-              {sectionValue === "Projects" ? (
+              {sectionValue === "Projects" &&
+              Object.keys(projectTypeCounts).length === 0 ? (
+                <div className="ResourceSpinnerWrapper">
+                  <Spinner size="big" />
+                </div>
+              ) : Object.keys(projectTypeCounts).length !== 0 ? (
                 <>
                   <div className="PieContainer">
                     <div className="ChartColumn">
@@ -774,7 +795,9 @@ const AdminProjectsOverview = () => {
                     </div>
                   </div>
                 </>
-              ) : (
+              ) : null}
+
+              {sectionValue === "Organisations" ? (
                 <>
                   <div className="PieContainer">
                     <div className="ChartColumn">
@@ -820,7 +843,7 @@ const AdminProjectsOverview = () => {
                     </div>
                   </div>
                 </>
-              )}
+              ) : null}
             </div>
           </div>
 

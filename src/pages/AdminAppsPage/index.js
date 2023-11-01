@@ -227,51 +227,57 @@ const AdminAppsPage = () => {
                   </div>
                 </span>
               </div>
-              <AreaChart
-                width={840}
-                height={350}
-                margin={{
-                  top: 20,
-                  right: 30,
-                  left: 0,
-                  bottom: 0,
-                }}
-                syncId="anyId"
-                data={pagination}
-              >
-                <Line type="monotone" dataKey="Value" stroke="#8884d8" />
-                <CartesianGrid stroke="#ccc" />
-                <XAxis dataKey="month" />
-                <XAxis
-                  xAxisId={1}
-                  dx={10}
-                  label={{
-                    value: "Months",
-                    angle: 0,
-                    position: "outside",
+              {pagination.length !== 0 ? (
+                <AreaChart
+                  width={840}
+                  height={350}
+                  margin={{
+                    top: 20,
+                    right: 30,
+                    left: 0,
+                    bottom: 0,
                   }}
-                  height={70}
-                  interval={12}
-                  dataKey="year"
-                  tickLine={false}
-                  tick={{ fontSize: 12, angle: 0 }}
-                />
-                <CartesianGrid strokeDasharray="3 3" />
-                <YAxis
-                  label={{
-                    value: "Number of Apps",
-                    angle: 270,
-                    position: "outside",
-                  }}
-                  width={80}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="value"
-                  stroke="#82ca9d"
-                  fill="#82ca9d"
-                />
-              </AreaChart>
+                  syncId="anyId"
+                  data={pagination}
+                >
+                  <Line type="monotone" dataKey="Value" stroke="#8884d8" />
+                  <CartesianGrid stroke="#ccc" />
+                  <XAxis dataKey="month" />
+                  <XAxis
+                    xAxisId={1}
+                    dx={10}
+                    label={{
+                      value: "Months",
+                      angle: 0,
+                      position: "outside",
+                    }}
+                    height={70}
+                    interval={12}
+                    dataKey="year"
+                    tickLine={false}
+                    tick={{ fontSize: 12, angle: 0 }}
+                  />
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <YAxis
+                    label={{
+                      value: "Number of Apps",
+                      angle: 270,
+                      position: "outside",
+                    }}
+                    width={80}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#82ca9d"
+                    fill="#82ca9d"
+                  />
+                </AreaChart>
+              ) : (
+                <div className="ResourceSpinnerWrapper">
+                  <Spinner size="big" />
+                </div>
+              )}
             </div>
 
             <div className="VisualArea">

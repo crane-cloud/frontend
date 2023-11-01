@@ -86,43 +86,33 @@ const AdminProjectDetails = () => {
 
     try {
       if (details.disabled) {
-        handlePostRequestWithOutDataObject(
-          {},
-          `/projects/${projectID}/enable`
-        )
+        handlePostRequestWithOutDataObject({}, `/projects/${projectID}/enable`)
           .then(() => {
             window.location.reload();
           })
           .catch((error) => {
-            setError(error)
+            setError(error);
           });
       } else {
-        handlePostRequestWithOutDataObject(
-          {},
-          `/projects/${projectID}/disable`
-        )
+        handlePostRequestWithOutDataObject({}, `/projects/${projectID}/disable`)
           .then(() => {
             window.location.reload();
           })
           .catch((error) => {
-            setError(error)
+            setError(error);
           });
       }
     } catch (error) {
       console.error("API call error:", error);
-    } 
+    }
   };
 
   return (
-    <section className={styles.Page}>
+    <div className="MainPage">
       <div className={styles.TopBarSection}>
         <Header />
       </div>
-      <div
-        className={
-          isOverviewProject ? styles.CenterSection : styles.MainSection
-        }
-      >
+      <div className={isOverviewProject ? "Mainsection" : styles.MainSection}>
         {!isOverviewProject && (
           <div className={styles.SideBarSection}>
             <SideNav clusterName={clusterName} clusterId={clusterID} />
@@ -157,201 +147,193 @@ const AdminProjectDetails = () => {
                 : styles.CustomSmallContainer
             }
           >
-            {loading ? (
-              <div className={styles.CentralSpinner}>
-                <Spinner />
+            {loading || Object.keys(details).length === 0 ? (
+              <div className={styles.ResourceSpinnerWrapper}>
+                <Spinner size="big" />
               </div>
-            ) : (
+            ) : Object.keys(details).length > 0 ? (
               <>
-                {!error && (
-                  <div>
-                    {/* Project information */}
-                    <section className={styles.DetailsSection}>
-                      <div className="SectionTitle">Project Information</div>
-                      <div className={styles.ProjectInstructions}>
-                        <div className={styles.ProjectInfo}>
-                          <div className={styles.ProjectInfoHeader}>
-                            <div className={styles.AvatarName}>
-                              <Avatar
-                                name={details?.name}
-                                className={styles.avatar_author}
-                              />
+                <div>
+                  {/* Project information */}
+                  <section className={styles.DetailsSection}>
+                    <div className="SectionTitle">Project Information</div>
+                    <div className={styles.ProjectInstructions}>
+                      <div className={styles.ProjectInfo}>
+                        <div className={styles.ProjectInfoHeader}>
+                          <div className={styles.AvatarName}>
+                            <Avatar
+                              name={details?.name}
+                              className={styles.avatar_author}
+                            />
+                          </div>
+                          <div>
+                            <div className={styles.flex_name_status}>
+                              <div className={styles.ProjectName}>
+                                {details?.name}
+                              </div>
+                              <div className={styles.ProjectStatus}>
+                                {details?.disabled ? (
+                                  <div
+                                    className={`${styles.font_status} ${styles.disabled}`}
+                                  >
+                                    Disabled
+                                  </div>
+                                ) : (
+                                  <div
+                                    className={`${styles.font_status} ${styles.active}`}
+                                  >
+                                    Active
+                                  </div>
+                                )}
+                              </div>
                             </div>
-                            <div>
-                              <div className={styles.flex_name_status}>
-                                <div className={styles.ProjectName}>
-                                  {details?.name}
-                                </div>
-                                <div className={styles.ProjectStatus}>
-                                  {details?.disabled ? (
-                                    <div
-                                      className={`${styles.font_status} ${styles.disabled}`}
-                                    >
-                                      Disabled
-                                    </div>
-                                  ) : (
-                                    <div
-                                      className={`${styles.font_status} ${styles.active}`}
-                                    >
-                                      Active
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                              <div className={styles.ProjectDescription}>
-                                {details?.description}
-                              </div>
+                            <div className={styles.ProjectDescription}>
+                              {details?.description}
                             </div>
                           </div>
-                          <div className={styles.ProjectInfoBody}>
-                            <div className={styles.ProjectInfoOwner}>
-                              <div className={styles.project_details_type}>
-                                Project Type:{" "}
-                                <span className={styles.boldStyle}>
-                                  {details?.project_type}
-                                </span>
-                              </div>
-                              <div className={styles.line_between}></div>
-                              <div className={styles.project_details_type}>
-                                Organization:{" "}
-                                <span className={styles.boldStyle}>
-                                  {details?.organisation}
-                                </span>
-                              </div>
-                              <div className={styles.line_between}></div>
-                              <div className={styles.project_details_type}>
-                                Created:{" "}
-                                <span className={styles.boldStyle}>
-                                  {dateInWords(details?.date_created)}
-                                </span>
-                              </div>
+                        </div>
+                        <div className={styles.ProjectInfoBody}>
+                          <div className={styles.ProjectInfoOwner}>
+                            <div className={styles.project_details_type}>
+                              Project Type:{" "}
+                              <span className={styles.boldStyle}>
+                                {details?.project_type}
+                              </span>
+                            </div>
+                            <div className={styles.line_between}></div>
+                            <div className={styles.project_details_type}>
+                              Organization:{" "}
+                              <span className={styles.boldStyle}>
+                                {details?.organisation}
+                              </span>
+                            </div>
+                            <div className={styles.line_between}></div>
+                            <div className={styles.project_details_type}>
+                              Created:{" "}
+                              <span className={styles.boldStyle}>
+                                {dateInWords(details?.date_created)}
+                              </span>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </section>
-                    {/* Project Metrics */}
-                    <section className={styles.DetailsSection}>
-                      <div className="SectionTitle">Project Metrics</div>
-                      <div className={styles.flex_metrics}>
-                        {Object.keys(projectCount).map((key, index) => (
-                          <NewResourceCard
-                            key={index}
-                            title={key}
-                            count={projectCount[key]}
-                          />
-                        ))}
-                      </div>
-                    </section>
-                    {/* Membership */}
-                    <section className={styles.DetailsSection}>
-                      <div className="SectionTitle">Membership</div>
-                      <div className={styles.ProjectInstructions}>
-                        <>
-                          <div className={styles.MembershipHeader}>
-                            <div className={styles.MemberSection}>
-                              <div className={styles.SettingsSectionInfoHeader}>
-                                {details?.users?.length === 1 ? (
-                                  <div className="SectionSubTitle">
-                                    Project has 1 Team Member
-                                  </div>
-                                ) : (
-                                  <div>
-                                    Project has {details?.users?.length} Team
-                                    Members
-                                  </div>
-                                )}
-                              </div>
-                              <div className="SubText">
-                                Members that have accounts on crane cloud can
-                                perform different operations on the project
-                                depending on their permission.
-                              </div>
+                    </div>
+                  </section>
+                  {/* Project Metrics */}
+                  <section className={styles.DetailsSection}>
+                    <div className="SectionTitle">Project Metrics</div>
+                    <div className={styles.flex_metrics}>
+                      {Object.keys(projectCount).map((key, index) => (
+                        <NewResourceCard
+                          key={index}
+                          title={key}
+                          count={projectCount[key]}
+                        />
+                      ))}
+                    </div>
+                  </section>
+                  {/* Membership */}
+                  <section className={styles.DetailsSection}>
+                    <div className="SectionTitle">Membership</div>
+                    <div className={styles.ProjectInstructions}>
+                      <>
+                        <div className={styles.MembershipHeader}>
+                          <div className={styles.MemberSection}>
+                            <div className={styles.SettingsSectionInfoHeader}>
+                              {details?.users?.length === 1 ? (
+                                <div className="SectionSubTitle">
+                                  Project has 1 Team Member
+                                </div>
+                              ) : (
+                                <div>
+                                  Project has {details?.users?.length} Team
+                                  Members
+                                </div>
+                              )}
+                            </div>
+                            <div className="SubText">
+                              Members that have accounts on crane cloud can
+                              perform different operations on the project
+                              depending on their permission.
                             </div>
                           </div>
-                          <div className={styles.MemberTable}>
-                            <div className={styles.MemberBody}>
-                              {details?.users?.map((entry, index) => (
-                                <div
-                                  className={styles.MemberTableRow}
-                                  key={index}
-                                >
-                                  <div className={styles.MemberInfo}>
-                                    <Avatar
-                                      name={entry.user.name}
-                                      className={styles.MemberAvatar}
-                                    />
-                                    <div className={styles.MemberNameEmail}>
-                                      <div className={styles.UserHeader}>
-                                        {entry.user.name}
-                                      </div>
-                                      <div className={styles.Wrap}>
-                                        {entry.user.email}
-                                      </div>
+                        </div>
+                        <div className={styles.MemberTable}>
+                          <div className={styles.MemberBody}>
+                            {details?.users?.map((entry, index) => (
+                              <div
+                                className={styles.MemberTableRow}
+                                key={index}
+                              >
+                                <div className={styles.MemberInfo}>
+                                  <Avatar
+                                    name={entry.user.name}
+                                    className={styles.MemberAvatar}
+                                  />
+                                  <div className={styles.MemberNameEmail}>
+                                    <div className={styles.UserHeader}>
+                                      {entry.user.name}
                                     </div>
-                                  </div>
-                                  {entry.role !== "RolesList.owner" &&
-                                    entry.accepted_collaboration_invite ===
-                                      false && (
-                                      <div className="SubText">
-                                        Invite pending.
-                                      </div>
-                                    )}
-                                  <div className={styles.MemberOptions}>
-                                    <div className={styles.MemberRole}>
-                                      <span>Role:</span>
-                                      {entry.role.split(".").pop()}
+                                    <div className={styles.Wrap}>
+                                      {entry.user.email}
                                     </div>
                                   </div>
                                 </div>
-                              ))}
-                            </div>
-                          </div>
-                        </>
-                      </div>
-                    </section>
-                    <div className="AdminDBSections">
-                      <div className="SectionTitle">Manage Project</div>
-                      <div className="ProjectInstructions">
-                        <div className="MemberBody">
-                          <div className="MemberTableRow">
-                            <div className="SettingsSectionRow">
-                              <div className="SubTitle">
-                                {details?.disabled ? "Enable" : "Disable"}{" "}
-                                project
-                                <br />
-                                <div className="SubTitleContent">
-                                  {details?.disabled
-                                    ? "Enable and make all project resources accessible (apps, and databases) to the user."
-                                    : "Disable and make all project resources inaccessible (apps, and databases) to the user."}
+                                {entry.role !== "RolesList.owner" &&
+                                  entry.accepted_collaboration_invite ===
+                                    false && (
+                                    <div className="SubText">
+                                      Invite pending.
+                                    </div>
+                                  )}
+                                <div className={styles.MemberOptions}>
+                                  <div className={styles.MemberRole}>
+                                    <span>Role:</span>
+                                    {entry.role.split(".").pop()}
+                                  </div>
                                 </div>
                               </div>
-                              <div className="SectionButtons">
-                                <PrimaryButton
-                                  color="red-outline"
-                                  onClick={handleEnableButtonClick}
-                                  className={
-                                    details?.disabled
-                                      ? "enableBtn"
-                                      : "disableBtn"
-                                  }
-                                >
-                                  {details?.disabled
-                                    ? "Enable"
-                                    : "Disable"}
-                                </PrimaryButton>
+                            ))}
+                          </div>
+                        </div>
+                      </>
+                    </div>
+                  </section>
+                  <div className="AdminDBSections">
+                    <div className="SectionTitle">Manage Project</div>
+                    <div className="ProjectInstructions">
+                      <div className="MemberBody">
+                        <div className="MemberTableRow">
+                          <div className="SettingsSectionRow">
+                            <div className="SubTitle">
+                              {details?.disabled ? "Enable" : "Disable"} project
+                              <br />
+                              <div className="SubTitleContent">
+                                {details?.disabled
+                                  ? "Enable and make all project resources accessible (apps, and databases) to the user."
+                                  : "Disable and make all project resources inaccessible (apps, and databases) to the user."}
                               </div>
+                            </div>
+                            <div className="SectionButtons">
+                              <PrimaryButton
+                                color="red-outline"
+                                onClick={handleEnableButtonClick}
+                                className={
+                                  details?.disabled ? "enableBtn" : "disableBtn"
+                                }
+                              >
+                                {details?.disabled ? "Enable" : "Disable"}
+                              </PrimaryButton>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                )}
+                </div>
               </>
-            )}
-            {Object.keys(details).length < 0 && error && (
-              <div className={styles.CentralSpinner}>{error}</div>
+            ) : (
+              <div className="NoResourcesMessage">{error}</div>
             )}
           </div>
           <AppFooter />
@@ -412,7 +394,7 @@ const AdminProjectDetails = () => {
           </Modal>
         </div>
       )}
-    </section>
+    </div>
   );
 };
 
