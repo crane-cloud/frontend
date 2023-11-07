@@ -33,6 +33,7 @@ const ClusterPage = ({
   const [description, setDescription] = useState("");
   const [prometheus_url, setPrometheus_url] = useState("");
   const [summary, setSummary] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getClustersList();
@@ -40,13 +41,17 @@ const ClusterPage = ({
   }, []);
 
   const getAllMetrics = async () => {
+    setLoading(true);
     try {
       const response = await handleGetRequest("/system_summary");
       if (response.data.status === "success") {
         setSummary(response.data.data);
+        setLoading(false);
       }
     } catch (error) {
-      throw new Error("Failed to fetch summary metrics, please try again");
+      setError("Failed to fetch summary metrics, please try again");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -96,107 +101,115 @@ const ClusterPage = ({
         </div>
       </div>
 
-      <div className={styles.OtherCards}>
-        <Link to="/accounts" className={styles.ResourceCard}>
-          <div className={styles.columnCardSection}>
-            <div className={styles.CardHeader}>Users</div>
-            <div className={styles.ResourceDigit}>
-              {summary?.Users?.total_count}
-            </div>
-          </div>
-          <div className={styles.rowCardSection}>
+      {summary && Object.keys(summary).length > 0 ? (
+        <div className={styles.OtherCards}>
+          <Link to="/accounts" className={styles.ResourceCard}>
             <div className={styles.columnCardSection}>
-              <div className={styles.innerCardHeader}>Verified</div>
-              <div className={styles.rowResourceDigit}>
-                {summary?.Users?.verified}
+              <div className={styles.CardHeader}>Users</div>
+              <div className={styles.ResourceDigit}>
+                {summary?.Users?.total_count}
               </div>
             </div>
-            <div className={styles.columnCardSection}>
-              <div className={styles.innerCardHeader}>Unverified</div>
-              <div
-                className={`${styles.rowResourceDigit} ${styles.rightTextAlign}`}
-              >
-                {parseInt(
-                  parseInt(summary?.Users?.total_count) -
-                    parseInt(summary?.Users?.verified)
-                )}
+            <div className={styles.rowCardSection}>
+              <div className={styles.columnCardSection}>
+                <div className={styles.innerCardHeader}>Verified</div>
+                <div className={styles.rowResourceDigit}>
+                  {summary?.Users?.verified}
+                </div>
+              </div>
+              <div className={styles.columnCardSection}>
+                <div className={styles.innerCardHeader}>Unverified</div>
+                <div
+                  className={`${styles.rowResourceDigit} ${styles.rightTextAlign}`}
+                >
+                  {parseInt(
+                    parseInt(summary?.Users?.total_count) -
+                      parseInt(summary?.Users?.verified)
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        </Link>
-        <Link to="/projects-overview" className={styles.ResourceCard}>
-          <div className={styles.columnCardSection}>
-            <div className={styles.CardHeader}>Projects</div>
-            <div className={styles.ResourceDigit}>
-              {summary?.Projects?.total_count}
-            </div>
-          </div>
-          <div className={styles.rowCardSection}>
+          </Link>
+          <Link to="/projects-overview" className={styles.ResourceCard}>
             <div className={styles.columnCardSection}>
-              <div className={styles.innerCardHeader}>Active</div>
-              <div className={styles.rowResourceDigit}>
-                {summary?.Projects?.total_count - summary?.Projects?.disabled}
+              <div className={styles.CardHeader}>Projects</div>
+              <div className={styles.ResourceDigit}>
+                {summary?.Projects?.total_count}
               </div>
             </div>
-            <div className={styles.columnCardSection}>
-              <div className={styles.innerCardHeader}>Disabled</div>
-              <div
-                className={`${styles.rowResourceDigit} ${styles.rightTextAlign}`}
-              >
-                {summary?.Projects?.disabled}
+            <div className={styles.rowCardSection}>
+              <div className={styles.columnCardSection}>
+                <div className={styles.innerCardHeader}>Active</div>
+                <div className={styles.rowResourceDigit}>
+                  {summary?.Projects?.total_count - summary?.Projects?.disabled}
+                </div>
+              </div>
+              <div className={styles.columnCardSection}>
+                <div className={styles.innerCardHeader}>Disabled</div>
+                <div
+                  className={`${styles.rowResourceDigit} ${styles.rightTextAlign}`}
+                >
+                  {summary?.Projects?.disabled}
+                </div>
               </div>
             </div>
-          </div>
-        </Link>
-        <Link to="/databases" className={styles.ResourceCard}>
-          <div className={styles.columnCardSection}>
-            <div className={styles.CardHeader}>Databases</div>
-            <div className={styles.ResourceDigit}>
-              {summary?.Databases?.total_count}
-            </div>
-          </div>
-          <div className={styles.rowCardSection}>
+          </Link>
+          <Link to="/databases" className={styles.ResourceCard}>
             <div className={styles.columnCardSection}>
-              <div className={styles.innerCardHeader}>MySql</div>
-              <div className={styles.rowResourceDigit}>
-                {summary?.Databases?.mysql}
+              <div className={styles.CardHeader}>Databases</div>
+              <div className={styles.ResourceDigit}>
+                {summary?.Databases?.total_count}
               </div>
             </div>
-            <div className={styles.columnCardSection}>
-              <div className={styles.innerCardHeader}>Postgresql</div>
-              <div
-                className={`${styles.rowResourceDigit} ${styles.rightTextAlign}`}
-              >
-                {summary?.Databases?.postgres}
+            <div className={styles.rowCardSection}>
+              <div className={styles.columnCardSection}>
+                <div className={styles.innerCardHeader}>MySql</div>
+                <div className={styles.rowResourceDigit}>
+                  {summary?.Databases?.mysql}
+                </div>
+              </div>
+              <div className={styles.columnCardSection}>
+                <div className={styles.innerCardHeader}>Postgresql</div>
+                <div
+                  className={`${styles.rowResourceDigit} ${styles.rightTextAlign}`}
+                >
+                  {summary?.Databases?.postgres}
+                </div>
               </div>
             </div>
-          </div>
-        </Link>
-        <Link to="/apps" className={styles.ResourceCard}>
-          <div className={styles.columnCardSection}>
-            <div className={styles.CardHeader}>Apps</div>
-            <div className={styles.ResourceDigit}>
-              {summary ? summary?.Apps?.total_count : 0}
-            </div>
-          </div>
-          <div className={styles.rowCardSection}>
+          </Link>
+          <Link to="/apps" className={styles.ResourceCard}>
             <div className={styles.columnCardSection}>
-              <div className={styles.innerCardHeader}>Up</div>
-              <div className={styles.rowResourceDigit}>
-                {summary?.Apps?.total_count}
+              <div className={styles.CardHeader}>Apps</div>
+              <div className={styles.ResourceDigit}>
+                {summary ? summary?.Apps?.total_count : 0}
               </div>
             </div>
-            <div className={styles.columnCardSection}>
-              <div className={styles.innerCardHeader}>Down</div>
-              <div
-                className={`${styles.rowResourceDigit} ${styles.rightTextAlign}`}
-              >
-                {0}
+            <div className={styles.rowCardSection}>
+              <div className={styles.columnCardSection}>
+                <div className={styles.innerCardHeader}>Up</div>
+                <div className={styles.rowResourceDigit}>
+                  {summary?.Apps?.total_count}
+                </div>
+              </div>
+              <div className={styles.columnCardSection}>
+                <div className={styles.innerCardHeader}>Down</div>
+                <div
+                  className={`${styles.rowResourceDigit} ${styles.rightTextAlign}`}
+                >
+                  {0}
+                </div>
               </div>
             </div>
-          </div>
-        </Link>
-      </div>
+          </Link>
+        </div>
+      ) : loading ? (
+        <div className={styles.LoadingArea}>
+          <Spinner size="big" />
+        </div>
+      ) : (
+        <div className="NoResourcesMessage">{error}</div>
+      )}
 
       <div>
         <div className="TitleArea">

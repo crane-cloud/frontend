@@ -98,7 +98,7 @@ const AdminUserOverviewPage = () => {
     verified: usersSummary.filter((user) => user.verified === true).length,
     unverified: usersSummary.filter((user) => user.verified === false).length,
     beta: usersSummary.filter((user) => user.is_beta_user === true).length,
-    disabled: 0
+    disabled: 0,
   };
 
   const handleChange = ({ target }) => {
@@ -131,7 +131,7 @@ const AdminUserOverviewPage = () => {
   const handleDateRangeChange = (range) => {
     setDateRange(range);
   };
-  
+
   return (
     <div className="APage">
       <div className="TopRow">
@@ -253,65 +253,72 @@ const AdminUserOverviewPage = () => {
                   </div>
                 </span>
               </div>
-              <AreaChart
-                width={600}
-                height={350}
-                margin={{
-                  top: 20,
-                  right: 30,
-                  left: 0,
-                  bottom: 0,
-                }}
-                syncId="anyId"
-                data={period !== "all" ? filteredGraphData : graphDataArray}
-              >
-                <Line type="monotone" dataKey="Value" stroke="#8884d8" />
-                <CartesianGrid stroke="#ccc" />
-                <XAxis dataKey="Month" />
-                <XAxis
-                  xAxisId={1}
-                  dx={10}
-                  label={{
-                    value: "Months",
-                    angle: 0,
-                    position: "outside",
+
+              {graphDataArray.length > 0 ? (
+                <AreaChart
+                  width={600}
+                  height={350}
+                  margin={{
+                    top: 20,
+                    right: 30,
+                    left: 0,
+                    bottom: 0,
                   }}
-                  height={70}
-                  interval={12}
-                  dataKey="Year"
-                  tickLine={false}
-                  tick={{ fontSize: 12, angle: 0 }}
-                />
-                <CartesianGrid strokeDasharray="3 3" />
-                <YAxis
-                  label={{
-                    value: "Number of Users",
-                    angle: 270,
-                    position: "outside",
-                  }}
-                  width={80}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="Value"
-                  stroke="#82ca9d"
-                  fill="#82ca9d"
-                />
-                <Tooltip
-                  labelFormatter={(value) => {
-                    const monthNames = retrieveMonthNames();
-                    const month = parseInt(value) - 1;
-                    return monthNames[month].name;
-                  }}
-                  formatter={(value) => {
-                    if (value === 1) {
-                      return [`${value} user`];
-                    } else {
-                      return [`${value} users`];
-                    }
-                  }}
-                />
-              </AreaChart>
+                  syncId="anyId"
+                  data={period !== "all" ? filteredGraphData : graphDataArray}
+                >
+                  <Line type="monotone" dataKey="Value" stroke="#8884d8" />
+                  <CartesianGrid stroke="#ccc" />
+                  <XAxis dataKey="Month" />
+                  <XAxis
+                    xAxisId={1}
+                    dx={10}
+                    label={{
+                      value: "Months",
+                      angle: 0,
+                      position: "outside",
+                    }}
+                    height={70}
+                    interval={12}
+                    dataKey="Year"
+                    tickLine={false}
+                    tick={{ fontSize: 12, angle: 0 }}
+                  />
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <YAxis
+                    label={{
+                      value: "Number of Users",
+                      angle: 270,
+                      position: "outside",
+                    }}
+                    width={80}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="Value"
+                    stroke="#82ca9d"
+                    fill="#82ca9d"
+                  />
+                  <Tooltip
+                    labelFormatter={(value) => {
+                      const monthNames = retrieveMonthNames();
+                      const month = parseInt(value) - 1;
+                      return monthNames[month].name;
+                    }}
+                    formatter={(value) => {
+                      if (value === 1) {
+                        return [`${value} user`];
+                      } else {
+                        return [`${value} users`];
+                      }
+                    }}
+                  />
+                </AreaChart>
+              ) : (
+                <div className="ResourceSpinnerWrapper">
+                  <Spinner size="big" />
+                </div>
+              )}
             </div>
 
             <div className="VisualArea">
@@ -320,50 +327,62 @@ const AdminUserOverviewPage = () => {
                   Pie Chart for Users Categories
                 </span>
               </div>
-              <div className="PieContainer">
-                <div className="ChartColumn">
-                  <PieChart width={300} height={300}>
-                    <Pie
-                      data={createUsersPieChartData(userCounts)}
-                      dataKey="value"
-                      nameKey="category"
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={140}
-                      paddingAngle={3}
-                      label={true}
-                    >
+
+              {Object.keys(usersSummary).length === 0 ? (
+                <div className="ResourceSpinnerWrapper">
+                  <Spinner size="big" />
+                </div>
+              ) : (
+                <div className="PieContainer">
+                  <div className="ChartColumn">
+                    <PieChart width={300} height={300}>
+                      <Pie
+                        data={createUsersPieChartData(userCounts)}
+                        dataKey="value"
+                        nameKey="category"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={140}
+                        paddingAngle={3}
+                        label={true}
+                      >
+                        {createUsersPieChartData(userCounts).map(
+                          (entry, index) => (
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={COLORS[index % COLORS.length]}
+                            />
+                          )
+                        )}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </div>
+                  <div className="PercentageColumn">
+                    <ul className="KeyItems">
                       {createUsersPieChartData(userCounts).map(
                         (entry, index) => (
-                          <Cell
-                            key={`cell-${index}`}
-                            fill={COLORS[index % COLORS.length]}
-                          />
+                          <>
+                            {" "}
+                            <li key={`list-item-${index}`}>
+                              <span
+                                style={{ color: COLORS[index % COLORS.length] }}
+                              >
+                                {entry.category}:
+                              </span>{" "}
+                              {((entry.value / userCounts.total) * 100).toFixed(
+                                0
+                              )}
+                              %
+                            </li>
+                            <hr style={{ width: "100%" }} />
+                          </>
                         )
                       )}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
+                    </ul>
+                  </div>
                 </div>
-                <div className="PercentageColumn">
-                  <ul className="KeyItems">
-                    {createUsersPieChartData(userCounts).map((entry, index) => (
-                      <>
-                        {" "}
-                        <li key={`list-item-${index}`}>
-                          <span
-                            style={{ color: COLORS[index % COLORS.length] }}
-                          >
-                            {entry.category}:
-                          </span>{" "}
-                          {((entry.value / userCounts.total) * 100).toFixed(0)}%
-                        </li>
-                        <hr style={{ width: "100%" }} />
-                      </>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+              )}
             </div>
           </div>
 
