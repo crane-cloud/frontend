@@ -12,6 +12,7 @@ describe("DashboardLayout component", () => {
     credits: { amount: 100 },
     header: "Dashboard",
     short: false,
+    appsWarning: false
   };
 
   it("renders the DashboardLayout component correctly", () => {

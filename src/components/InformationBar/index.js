@@ -102,7 +102,7 @@ const InformationBar = ({
               )}
             </div>
             <div className="InfoContent">
-              <div className="SearchBar DesktopView">
+              { isDesktop &&  <div className="SearchBar DesktopView">
                 <div className="SearchInput">
                   <input
                     type="text"
@@ -114,7 +114,7 @@ const InformationBar = ({
                   />
                   <SearchButton className="SearchIcon" />
                 </div>
-              </div>
+              </div>}
               <div className="ButtonWrap">
                 {adminRoute &&
                   (adminProjects ? (

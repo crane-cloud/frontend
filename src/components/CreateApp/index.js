@@ -22,6 +22,7 @@ import MiraPage from "../../pages/MiraPage";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
 
+
 const dockerEmail = process.env.REACT_APP_DOCKER_EMAIL;
 const dockerPassword = process.env.REACT_APP_DOCKER_PASSWORD;
 
