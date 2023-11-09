@@ -60,6 +60,8 @@ class CreateApp extends React.Component {
       addingApp: false,
       addAppError: false,
       addErrorCode: "",
+      formData: {},
+      formInstances: [{ id: 1, isOpen: true }],
     };
 
     this.addEnvVar = this.addEnvVar.bind(this);
@@ -73,6 +75,7 @@ class CreateApp extends React.Component {
     this.toggleCustomDomain = this.toggleCustomDomain.bind(this);
     this.toggleDefaultDeployment = this.toggleDefaultDeployment.bind(this);
     this.toggleMiraDeployment = this.toggleMiraDeployment.bind(this);
+    this.toggleMicroservice = this.toggleMicroservice.bind(this);
     this.handleDockerCredentialsChange =
       this.handleDockerCredentialsChange.bind(this);
     this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
@@ -81,6 +84,13 @@ class CreateApp extends React.Component {
     this.handleOnChange = this.handleOnChange.bind(this);
     this.createNewApp = this.createNewApp.bind(this);
     this.togglePassword = this.togglePassword.bind(this);
+    this.renderFormInstances = this.renderFormInstances.bind(this);
+    this.renderInnerForm = this.renderInnerForm.bind(this);
+    this.toggleInstance = this.toggleInstance.bind(this);
+    this.renderFormInstances = this.renderFormInstances.bind(this);
+    this.handleNewChange = this.handleNewChange.bind(this);
+    this.addInstance = this.addInstance.bind(this);
+    this.deleteInstance = this.deleteInstance.bind(this);
   }
   handleOnChange(position) {
     const { SelectedClusters } = this.state;
@@ -103,6 +113,10 @@ class CreateApp extends React.Component {
 
   toggleMiraDeployment() {
     this.setState({ currentDeploymentMethod: "mira" });
+  }
+
+  toggleMicroservice() {
+    this.setState({ currentDeploymentMethod: "microservice" });
   }
 
   // componentDidMount() {
@@ -343,6 +357,420 @@ class CreateApp extends React.Component {
       }
     }
   }
+
+  addInstance = () => {
+    const { formInstances } = this.state;
+    const newInstanceId = formInstances.length + 1;
+    const newInstances = [
+      ...formInstances,
+      { id: newInstanceId, isOpen: true },
+    ];
+
+    this.setState({ formInstances: newInstances });
+  };
+
+  deleteInstance = (instanceId) => {
+    const { formInstances } = this.state;
+    const filteredInstances = formInstances.filter(
+      (instance) => instance.id !== instanceId
+    );
+
+    this.setState({ formInstances: filteredInstances });
+  };
+
+  handleNewChange = (e, instanceId) => {
+    const { name, value } = e.target;
+    const { formInstances, formData } = this.state;
+
+    const updatedInstances = formInstances.map((instance) =>
+      instance.id === instanceId
+        ? { ...instance, isOpen: instance.isOpen, [name]: value }
+        : instance
+    );
+
+    this.setState({
+      formInstances: updatedInstances,
+      formData: {
+        ...formData,
+        [name]: value,
+      },
+    });
+  };
+
+  toggleInstance = (instanceId) => {
+    const { formInstances } = this.state;
+    const updatedInstances = formInstances.map((instance) =>
+      instance.id === instanceId
+        ? { ...instance, isOpen: !instance.isOpen }
+        : instance
+    );
+
+    this.setState({ formInstances: updatedInstances });
+  };
+
+  renderFormInstances = () => {
+    const { formInstances } = this.state;
+
+    return (
+      <div className={styles.WhiteBackground}>
+        {formInstances.map((instance) => (
+          <div key={instance.id}>
+            <button onClick={() => this.toggleInstance(instance.id)}>
+              Toggle Instance {instance.id}
+            </button>
+            {instance.isOpen && this.renderInnerForm(instance.id)}
+          </div>
+        ))}
+        <button onClick={this.addInstance}>Add New Instance</button>
+      </div>
+    );
+  };
+
+  renderInnerForm = (instanceId) => {
+    const { formData } = this.state;
+
+    const {
+      name,
+      uri,
+      isPrivateImage,
+      username,
+      email,
+      password,
+      server /* other fields */,
+    } = formData;
+
+    return (
+      <div>
+        <div className={styles.ModalFormInputs}>
+          <div className={styles.FormHeading}>Fields marked * are required</div>
+          <div className={styles.ModalFormInputsBasic}>
+            <BlackInputText
+              required
+              placeholder="Name"
+              name="name"
+              value={name}
+              onChange={(e) => {
+                this.handleChange(e);
+              }}
+              className="ReplicasSelect"
+            />
+
+            <div className={styles.ReplicasSelect}>
+              <Select
+                placeholder="Number of Replicas - defaults to 1"
+                // options={replicaOptions}
+                onChange={this.handleSelectReplicas}
+              />
+            </div>
+
+            <div className={styles.InputFieldWithTooltip}>
+              <BlackInputText
+                required
+                placeholder="Image URI"
+                name="uri"
+                value={uri}
+                onChange={(e) => {
+                  this.handleChange(e);
+                }}
+              />
+              <div className={styles.InputTooltipContainer}>
+                <Tooltip
+                  showIcon
+                  message="Image URI e.g for docker: ngnixdemos/hello with ngnixdemos being your username and hello being the image name"
+                  position="left"
+                />
+              </div>
+            </div>
+
+            <div className={styles.PrivateImageCheckField}>
+              <Checkbox
+                isBlack
+                onClick={this.togglePrivateImage}
+                isChecked={isPrivateImage}
+              />
+              &nbsp; Private Image
+            </div>
+
+            {isPrivateImage && (
+              <div className={styles.PrivateImageTabContainer}>
+                <Tabs>
+                  <div index={1} /* label={<DockerLogo />} */>
+                    <div className={styles.PrivateImageInputs}>
+                      <BlackInputText
+                        required
+                        placeholder="Username"
+                        name="username"
+                        value={username}
+                        onChange={(e) => {
+                          this.handleDockerCredentialsChange(e);
+                        }}
+                      />
+
+                      <BlackInputText
+                        required
+                        placeholder="Email"
+                        name="email"
+                        value={email}
+                        onChange={(e) => {
+                          this.handleDockerCredentialsChange(e);
+                        }}
+                      />
+                      <div className="password-wrappers">
+                        <BlackInputText
+                          required
+                          placeholder="Password"
+                          name="password"
+                          type={true ? "text" : "password"}
+                          value={password}
+                          onChange={(e) => {
+                            this.handleDockerCredentialsChange(e);
+                          }}
+                        />
+
+                        <div className="password" onClick={this.togglePassword}>
+                          {true ? <Open /> : <Closed />}
+                        </div>
+                      </div>
+                      <div className={styles.InputFieldWithTooltip}>
+                        <BlackInputText
+                          required
+                          placeholder="Registry Server"
+                          name="server"
+                          value={server}
+                          onChange={(e) => {
+                            this.handleDockerCredentialsChange(e);
+                          }}
+                        />
+                        <div className={styles.InputTooltipContainerDB}>
+                          <Tooltip
+                            showIcon
+                            message="Registry server for example: docker.io or gcr.io"
+                            position="left"
+                          />
+                        </div>
+                      </div>
+
+                      {/* {dockerCredentials.error && (
+                        <Feedback
+                          type="error"
+                          message={dockerCredentials.error}
+                        />
+                      )} */}
+                    </div>
+                  </div>
+                </Tabs>
+              </div>
+            )}
+
+            {/* {multiCluster && (
+              <div className={styles.ClustersSection}>
+                <div className={styles.MultiSelectionText}>
+                  Please select a datacenter(s) you would like your app to be
+                  deployed to.
+                </div>
+                <div className={styles.Multipleclusters}>
+                  {clusters.map(({ name, id }, index) => {
+                    return (
+                      <li className={styles.ListStyle} key={index}>
+                        <div className={styles.clusterListItem}>
+                          <div className={styles.leftsection}>
+                            <input
+                              type="checkbox"
+                              id={id}
+                              name={name}
+                              value={name}
+                              checked={SelectedClusters[index]}
+                              onChange={() => this.handleOnChange(index)}
+                            />
+                            <label className={styles.ClusterLabel} htmlFor={id}>
+                              {name}
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {beta && (
+              <div className={styles.CustomDomainCheckField}>
+                <Checkbox
+                  isBlack
+                  onClick={this.toggleCustomDomain}
+                  isChecked={isCustomDomain}
+                />
+                &nbsp; Custom Domain
+              </div>
+            )}
+
+            {isCustomDomain && (
+              <div className={styles.CustomDomainTabContainer}>
+                <Tabs>
+                  <div index={1}>
+                    <div className={styles.InputFieldWithTooltip}>
+                      <BlackInputText
+                        required
+                        placeholder="Domain name"
+                        name="domainName"
+                        value={domainName}
+                        onChange={(e) => {
+                          this.handleChange(e);
+                        }}
+                      />
+                      <div className={styles.InputTooltipContainer}>
+                        <Tooltip
+                          showIcon
+                          message="You will be given IP addresses to link your hosting provider DNS to our servers"
+                          position="left"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </Tabs>
+              </div>
+            )} */}
+
+            <div className={styles.InputFieldWithTooltip}>
+              <BlackInputText
+                placeholder="Entry Command"
+                name="entryCommand"
+                // value={entryCommand}
+                onChange={(e) => {
+                  this.handleChange(e);
+                }}
+              />
+              <div className={styles.InputTooltipContainer}>
+                <Tooltip
+                  showIcon
+                  message="Entrypoint or command for your container"
+                  position="left"
+                />
+              </div>
+            </div>
+            <div className={styles.InputFieldWithTooltip}>
+              <BlackInputText
+                placeholder="Port (optional) - defaults to 80"
+                name="port"
+                // value={port}
+                onChange={(e) => {
+                  this.handleChange(e);
+                }}
+              />
+              <div className={styles.InputTooltipContainer}>
+                <Tooltip
+                  showIcon
+                  message="Exposed port of your container"
+                  position="left"
+                />
+              </div>
+            </div>
+
+            {/* {error && (
+              <div className={styles.FeedbackSection}>
+                {" "}
+                <Feedback type="error" message={error} />{" "}
+              </div>
+            )} */}
+          </div>
+          <div className={styles.ModalFormInputsEnvVars}>
+            <div className={styles.HeadingWithTooltip}>
+              <h4>Environment Variables</h4>
+              <Tooltip
+                showIcon
+                message="These are are key/value pairs which define aspects of your app’s environment that can vary"
+              />
+            </div>
+            {/* {Object.keys(envVars).length > 0 && (
+              <div className={styles.EnvVarsTable}>
+                <table>
+                  <thead>
+                    <tr>
+                      <td>Name</td>
+                      <td>Value</td>
+                      <td>Remove</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.keys(envVars).map((envVar, index) => (
+                      <tr key={uuidv4()}>
+                        <td>{Object.keys(envVars)[index]}</td>
+                        <td>{envVars[Object.keys(envVars)[index]]}</td>
+                        <td>
+                          <img
+                            src={RemoveIcon}
+                            alt="remove_ico"
+                            onClick={() => this.removeEnvVar(index)}
+                            role="presentation"
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )} */}
+            <div className={styles.EnvVarsInputGroup}>
+              <div className={styles.EnvVarsInputs}>
+                <BlackInputText
+                  placeholder="Name"
+                  name="varName"
+                  // value={varName}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+                />
+                <BlackInputText
+                  placeholder="Value"
+                  name="varValue"
+                  // value={varValue}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+                />
+              </div>
+              <div className={styles.EnvVarsAddBtn}>
+                <PrimaryButton
+                  onClick={this.addEnvVar}
+                  className={styles.EnvVarAddBtn}
+                >
+                  Add
+                </PrimaryButton>
+              </div>
+            </div>
+          </div>
+          <div className={styles.ModalFormButtons}>
+            {/* {addAppError && (
+              <div className={styles.FeedbackSection}>
+                <Feedback
+                  className={styles.FeedbackSection}
+                  message={
+                    addErrorCode === 409
+                      ? "Name already in use, please choose another and try again"
+                      : addAppError
+                  }
+                  type={"error"}
+                />
+              </div>
+            )} */}
+
+            <div className={styles.ButtonSection}>
+              <PrimaryButton
+                className="AuthBtn FullWidth"
+                onClick={this.handleSubmit}
+              >
+                {false ? <Spinner /> : "deploy"}
+              </PrimaryButton>
+            </div>
+          </div>
+          <button onClick={() => this.deleteInstance(instanceId)}>
+            Delete Instance
+          </button>
+        </div>
+      </div>
+    );
+  };
   createNewApp(data, projectID) {
     this.setState({
       addingApp: true,
@@ -398,7 +826,7 @@ class CreateApp extends React.Component {
     ];
 
     return (
-      <div>
+      <div className={styles.CenterForm}>
         <div className={styles.DeploymentMethodTabs}>
           <span
             className={
@@ -408,7 +836,7 @@ class CreateApp extends React.Component {
             }
             onClick={this.toggleDefaultDeployment}
           >
-            Deploy with Crane Cloud
+            Deploy Single App
           </span>
           <span
             className={
@@ -419,6 +847,16 @@ class CreateApp extends React.Component {
             onClick={this.toggleMiraDeployment}
           >
             Deploy with mira
+          </span>
+          <span
+            className={
+              currentDeploymentMethod === "microservice"
+                ? styles.CurrentTab
+                : styles.Tab
+            }
+            onClick={this.toggleMicroservice}
+          >
+            Deploy Micro-services
           </span>
         </div>
 
@@ -776,6 +1214,12 @@ class CreateApp extends React.Component {
 
         {currentDeploymentMethod === "mira" && (
           <MiraPage projectID={projectID} />
+        )}
+
+        {currentDeploymentMethod === "microservice" && (
+          <div className={styles.CreateFormHolder}>
+            {this.renderFormInstances()}
+          </div>
         )}
       </div>
     );
