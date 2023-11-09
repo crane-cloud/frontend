@@ -22,8 +22,8 @@ import MiraPage from "../../pages/MiraPage";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
 
-const dockerEmail = process.env.REACT_APP_DOCKER_EMAIL;
-const dockerPassword = process.env.REACT_APP_DOCKER_PASSWORD;
+// const dockerEmail = process.env.REACT_APP_DOCKER_EMAIL;
+// const dockerPassword = process.env.REACT_APP_DOCKER_PASSWORD;
 
 class CreateApp extends React.Component {
   constructor(props) {
@@ -42,6 +42,10 @@ class CreateApp extends React.Component {
       createFeedback: "",
       entryCommand: "",
       port: "",
+      dockerEmail: "",
+      dockerPassword: "",
+      dockerUsername:"",
+      dockerServer: "",
       isPrivateImage: false,
       isCustomDomain: false,
       currentDeploymentMethod: "default",
@@ -236,6 +240,10 @@ class CreateApp extends React.Component {
       entryCommand,
       port,
       isPrivateImage,
+      dockerEmail,
+      dockerPassword,
+      dockerUsername,
+      dockerServer,
       dockerCredentials: { username, email, password, server },
       isCustomDomain,
       domainName,
@@ -300,9 +308,12 @@ class CreateApp extends React.Component {
         private_image: true,
         replicas,
         docker_email: dockerEmail,
-        docker_username: "cranecloudplatform",
         docker_password: dockerPassword,
-        docker_server: "docker.io",
+        docker_server: dockerServer,
+        docker_username: dockerUsername,
+        // docker_username: "cranecloudplatform",
+       // docker_server: "docker.io",
+       
       };
 
       if (isCustomDomain === true) {
