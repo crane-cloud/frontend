@@ -769,6 +769,72 @@ class CreateApp extends React.Component {
               </div>
             </div>
           </div>
+          <div className={styles.ModalFormInputsEnvVars}>
+            <div className={styles.HeadingWithTooltip}>
+              <h4>Environment Variables from other apps</h4>
+              <Tooltip
+                showIcon
+                message="These are are key/value pairs which define aspects of your app’s environment that can vary"
+              />
+            </div>
+            {/* {Object.keys(envVars).length > 0 && (
+              <div className={styles.EnvVarsTable}>
+                <table>
+                  <thead>
+                    <tr>
+                      <td>Name</td>
+                      <td>Value</td>
+                      <td>Remove</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.keys(envVars).map((envVar, index) => (
+                      <tr key={uuidv4()}>
+                        <td>{Object.keys(envVars)[index]}</td>
+                        <td>{envVars[Object.keys(envVars)[index]]}</td>
+                        <td>
+                          <img
+                            src={RemoveIcon}
+                            alt="remove_ico"
+                            onClick={() => this.removeEnvVar(index)}
+                            role="presentation"
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )} */}
+            <div className={styles.EnvVarsInputGroup}>
+              <div className={styles.EnvVarsInputs}>
+                <BlackInputText
+                  placeholder="Name"
+                  name="varName"
+                  // value={varName}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+                />
+                <BlackInputText
+                  placeholder="Value"
+                  name="varValue"
+                  // value={varValue}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+                />
+              </div>
+              <div className={styles.EnvVarsAddBtn}>
+                <PrimaryButton
+                  onClick={this.addEnvVar}
+                  className={styles.EnvVarAddBtn}
+                >
+                  Add
+                </PrimaryButton>
+              </div>
+            </div>
+          </div>
           <div className={styles.ModalFormButtons}>
             {/* {addAppError && (
               <div className={styles.FeedbackSection}>
@@ -795,6 +861,7 @@ class CreateApp extends React.Component {
             </div>
           </div>
         </div>
+        <hr style={{ width: "100%" }} />
       </div>
     );
   };
