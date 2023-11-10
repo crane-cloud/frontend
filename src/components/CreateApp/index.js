@@ -359,7 +359,10 @@ class CreateApp extends React.Component {
 
   addInstance = () => {
     const { formInstances } = this.state;
-    const newInstanceId = formInstances.length + 1;
+    const newInstanceId =
+      formInstances.length > 0
+        ? formInstances[formInstances.length - 1].id + 1
+        : 1;
     const newInstances = [
       ...formInstances,
       { id: newInstanceId, isOpen: true },
@@ -369,12 +372,17 @@ class CreateApp extends React.Component {
   };
 
   deleteInstance = (instanceId) => {
-    const { formInstances } = this.state;
+    const { formInstances, instanceNameValues } = this.state;
     const filteredInstances = formInstances.filter(
       (instance) => instance.id !== instanceId
     );
+    const updatedNameValues = { ...instanceNameValues };
+    delete updatedNameValues[instanceId];
 
-    this.setState({ formInstances: filteredInstances });
+    this.setState({
+      formInstances: filteredInstances,
+      instanceNameValues: updatedNameValues,
+    });
   };
 
   handleNewChange = (e, instanceId) => {
