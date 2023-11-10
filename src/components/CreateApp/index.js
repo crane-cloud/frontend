@@ -42,7 +42,7 @@ class CreateApp extends React.Component {
       createFeedback: "",
       entryCommand: "",
       port: "",
-     isPrivateImage: false,
+      isPrivateImage: false,
       isCustomDomain: false,
       currentDeploymentMethod: "default",
       domainName: "",
@@ -62,6 +62,7 @@ class CreateApp extends React.Component {
       addErrorCode: "",
       formData: {},
       formInstances: [{ id: 1, isOpen: true }],
+      instanceNameValues: {},
     };
 
     this.addEnvVar = this.addEnvVar.bind(this);
@@ -250,7 +251,7 @@ class CreateApp extends React.Component {
       entryCommand,
       port,
       isPrivateImage,
-    dockerCredentials: { username, email, password, server },
+      dockerCredentials: { username, email, password, server },
       isCustomDomain,
       domainName,
       replicas,
@@ -313,7 +314,7 @@ class CreateApp extends React.Component {
         project_id: params.projectID,
         private_image: false,
         replicas,
-     };
+      };
 
       if (isCustomDomain === true) {
         let sentDomainName = domainName.toLowerCase();
@@ -329,7 +330,6 @@ class CreateApp extends React.Component {
             docker_password: password,
             docker_server: server,
             private_image: true,
-
           };
         }
         appInfo = { ...appInfo, custom_domain: sentDomainName };
@@ -348,7 +348,6 @@ class CreateApp extends React.Component {
             docker_password: password,
             docker_server: server,
             private_image: true,
-
           };
         }
         //change
@@ -380,8 +379,7 @@ class CreateApp extends React.Component {
 
   handleNewChange = (e, instanceId) => {
     const { name, value } = e.target;
-    const { formInstances, formData } = this.state;
-
+    const { formInstances, formData, instanceNameValues } = this.state;
     const updatedInstances = formInstances.map((instance) =>
       instance.id === instanceId
         ? { ...instance, isOpen: instance.isOpen, [name]: value }
@@ -394,7 +392,25 @@ class CreateApp extends React.Component {
         ...formData,
         [name]: value,
       },
+      instanceNameValues: {
+        ...instanceNameValues,
+        [instanceId]: value,
+      },
     });
+
+    // const updatedInstances = formInstances.map((instance) =>
+    //   instance.id === instanceId
+    //     ? { ...instance, isOpen: instance.isOpen, [name]: value }
+    //     : instance
+    // );
+
+    // this.setState({
+    //   formInstances: updatedInstances,
+    //   formData: {
+    //     ...formData,
+    //     [name]: value,
+    //   },
+    // });
   };
 
   toggleInstance = (instanceId) => {
@@ -415,13 +431,26 @@ class CreateApp extends React.Component {
       <div className={styles.WhiteBackground}>
         {formInstances.map((instance) => (
           <div key={instance.id}>
-            <button onClick={() => this.toggleInstance(instance.id)}>
-              Toggle Instance {instance.id}
-            </button>
+            <div
+              onClick={() => this.toggleInstance(instance.id)}
+              className={styles.MSAAdd}
+            >
+              App {instance.id}
+            </div>
             {instance.isOpen && this.renderInnerForm(instance.id)}
           </div>
         ))}
-        <button onClick={this.addInstance}>Add New Instance</button>
+        <PrimaryButton
+          onClick={this.addInstance}
+          color="primary"
+          className={styles.MSAApp}
+        >
+          Add App
+        </PrimaryButton>
+        <PrimaryButton className={styles.MSFWidth} onClick={this.handleSubmit}>
+          {false ? <Spinner /> : "deploy"}
+        </PrimaryButton>
+        {/* <button onClick={this.addInstance}>Add New Instance</button> */}
       </div>
     );
   };
@@ -757,16 +786,14 @@ class CreateApp extends React.Component {
 
             <div className={styles.ButtonSection}>
               <PrimaryButton
-                className="AuthBtn FullWidth"
-                onClick={this.handleSubmit}
+                className="AuthBtn"
+                color="red"
+                onClick={() => this.deleteInstance(instanceId)}
               >
-                {false ? <Spinner /> : "deploy"}
+                Delete App
               </PrimaryButton>
             </div>
           </div>
-          <button onClick={() => this.deleteInstance(instanceId)}>
-            Delete Instance
-          </button>
         </div>
       </div>
     );

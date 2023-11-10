@@ -4,6 +4,11 @@
   width: 100%;
 }
 
+.MSFWidth{
+  width: 80%;
+  margin: auto;
+}
+
 .MainContentSection {
   /* divided into two rows */
   display: grid;
@@ -37,6 +42,18 @@
 
 .WhiteBackground {
   background-color: #fff;
+  padding: 1rem;
+}
+
+.MSAAdd{
+  margin: 0rem 1rem 1rem 1rem;
+  border: 1px solid blue;
+  padding: 1rem 1rem 1rem .5rem;
+  border-radius: 5px;
+}
+
+.MSAApp{
+  margin: 0rem 0rem 1.5rem 1rem;
 }
 .BackDiv img {
   display: inline;
