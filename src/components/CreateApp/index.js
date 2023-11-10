@@ -22,9 +22,8 @@ import MiraPage from "../../pages/MiraPage";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
 
-
-const dockerEmail = process.env.REACT_APP_DOCKER_EMAIL;
-const dockerPassword = process.env.REACT_APP_DOCKER_PASSWORD;
+// const dockerEmail = process.env.REACT_APP_DOCKER_EMAIL;
+// const dockerPassword = process.env.REACT_APP_DOCKER_PASSWORD;
 
 class CreateApp extends React.Component {
   constructor(props) {
@@ -43,7 +42,7 @@ class CreateApp extends React.Component {
       createFeedback: "",
       entryCommand: "",
       port: "",
-      isPrivateImage: false,
+     isPrivateImage: false,
       isCustomDomain: false,
       currentDeploymentMethod: "default",
       domainName: "",
@@ -237,7 +236,7 @@ class CreateApp extends React.Component {
       entryCommand,
       port,
       isPrivateImage,
-      dockerCredentials: { username, email, password, server },
+    dockerCredentials: { username, email, password, server },
       isCustomDomain,
       domainName,
       replicas,
@@ -298,13 +297,9 @@ class CreateApp extends React.Component {
         image: uri,
         name,
         project_id: params.projectID,
-        private_image: true,
+        private_image: false,
         replicas,
-        docker_email: dockerEmail,
-        docker_username: "cranecloudplatform",
-        docker_password: dockerPassword,
-        docker_server: "docker.io",
-      };
+     };
 
       if (isCustomDomain === true) {
         let sentDomainName = domainName.toLowerCase();
@@ -319,6 +314,8 @@ class CreateApp extends React.Component {
             docker_username: username,
             docker_password: password,
             docker_server: server,
+            private_image: true,
+
           };
         }
         appInfo = { ...appInfo, custom_domain: sentDomainName };
@@ -336,6 +333,8 @@ class CreateApp extends React.Component {
             docker_username: username,
             docker_password: password,
             docker_server: server,
+            private_image: true,
+
           };
         }
         //change
