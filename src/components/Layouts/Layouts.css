@@ -38,7 +38,7 @@
 .DashboardMainContentSection {
     /* divided into two rows */
     display: grid;
-    grid-template-rows: 80px 4fr;
+    grid-template-rows: auto 4fr;
     overflow: auto;
 }
 
@@ -47,6 +47,9 @@
     flex-direction: column;
     gap: 1rem;
     padding-bottom: 4rem;
+}
+.informationBarContainer{
+    padding-bottom: 1rem;
 }
 
 .DashboardSmallContainer {
@@ -57,7 +60,7 @@
         grid-template-columns: 0 1fr;
     }
     .DashboardMainContentSection {
-        grid-template-rows: 100px 4fr;
+        grid-template-rows: auto 4fr;
     }
 }
 @media (max-width: 580px) {
