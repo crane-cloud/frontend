@@ -60,8 +60,27 @@ class CreateApp extends React.Component {
       addingApp: false,
       addAppError: false,
       addErrorCode: "",
-      formData: {},
-      formInstances: [{ id: 1, isOpen: true }],
+      formInstances: [
+        {
+          id: 1,
+          isOpen: true,
+          formData: {
+            name: "",
+            uri: "",
+            varName: "",
+            varValue: "",
+            envVars: {},
+            error: "",
+            createFeedback: "",
+            entryCommand: "",
+            port: "",
+            isPrivateImage: false,
+            isCustomDomain: false,
+            currentDeploymentMethod: "default",
+            domainName: "",
+          },
+        },
+      ],
       instanceNameValues: {},
     };
 
@@ -387,23 +406,27 @@ class CreateApp extends React.Component {
 
   handleNewChange = (e, instanceId) => {
     const { name, value } = e.target;
-    const { formInstances, formData, instanceNameValues } = this.state;
+    const { formInstances,  } = this.state;
     const updatedInstances = formInstances.map((instance) =>
       instance.id === instanceId
-        ? { ...instance, isOpen: instance.isOpen, [name]: value }
+        ? {
+            ...instance,
+            isOpen: instance.isOpen,
+            formData: { ...instance.formData, [name]: value },
+          }
         : instance
     );
 
     this.setState({
       formInstances: updatedInstances,
-      formData: {
-        ...formData,
-        [name]: value,
-      },
-      instanceNameValues: {
-        ...instanceNameValues,
-        [instanceId]: value,
-      },
+      // formData: {
+      //   ...formData,
+      //   [name]: value,
+      // },
+      // instanceNameValues: {
+      //   ...instanceNameValues,
+      //   [instanceId]: value,
+      // },
     });
 
     // const updatedInstances = formInstances.map((instance) =>
@@ -473,8 +496,17 @@ class CreateApp extends React.Component {
       username,
       email,
       password,
-      server /* other fields */,
+      server,
+      port,
+      entryCommand,
+      varName,
+      varValue,
     } = formData;
+
+    const isOpen = this.state.formInstances.find(
+      (instance) => instance.id === instanceId
+    )?.isOpen;
+    const hasValues = isOpen && name && uri;
 
     return (
       <div>
@@ -486,9 +518,7 @@ class CreateApp extends React.Component {
               placeholder="Name"
               name="name"
               value={name}
-              onChange={(e) => {
-                this.handleChange(e);
-              }}
+              onChange={(e) => this.handleNewChange(e, instanceId)}
               className="ReplicasSelect"
             />
 
@@ -506,9 +536,7 @@ class CreateApp extends React.Component {
                 placeholder="Image URI"
                 name="uri"
                 value={uri}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
+                onChange={(e) => this.handleNewChange(e, instanceId)}
               />
               <div className={styles.InputTooltipContainer}>
                 <Tooltip
@@ -673,10 +701,8 @@ class CreateApp extends React.Component {
               <BlackInputText
                 placeholder="Entry Command"
                 name="entryCommand"
-                // value={entryCommand}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
+                value={entryCommand}
+                onChange={(e) => this.handleNewChange(e, instanceId)}
               />
               <div className={styles.InputTooltipContainer}>
                 <Tooltip
@@ -690,10 +716,8 @@ class CreateApp extends React.Component {
               <BlackInputText
                 placeholder="Port (optional) - defaults to 80"
                 name="port"
-                // value={port}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
+                value={port}
+                onChange={(e) => this.handleNewChange(e, instanceId)}
               />
               <div className={styles.InputTooltipContainer}>
                 <Tooltip
@@ -753,18 +777,14 @@ class CreateApp extends React.Component {
                 <BlackInputText
                   placeholder="Name"
                   name="varName"
-                  // value={varName}
-                  onChange={(e) => {
-                    this.handleChange(e);
-                  }}
+                  value={varName}
+                  onChange={(e) => this.handleNewChange(e, instanceId)}
                 />
                 <BlackInputText
                   placeholder="Value"
                   name="varValue"
-                  // value={varValue}
-                  onChange={(e) => {
-                    this.handleChange(e);
-                  }}
+                  value={varValue}
+                  onChange={(e) => this.handleNewChange(e, instanceId)}
                 />
               </div>
               <div className={styles.EnvVarsAddBtn}>
@@ -819,18 +839,14 @@ class CreateApp extends React.Component {
                 <BlackInputText
                   placeholder="Name"
                   name="varName"
-                  // value={varName}
-                  onChange={(e) => {
-                    this.handleChange(e);
-                  }}
+                  value={varName}
+                  onChange={(e) => this.handleNewChange(e, instanceId)}
                 />
                 <BlackInputText
                   placeholder="Value"
                   name="varValue"
-                  // value={varValue}
-                  onChange={(e) => {
-                    this.handleChange(e);
-                  }}
+                  value={varValue}
+                  onChange={(e) => this.handleNewChange(e, instanceId)}
                 />
               </div>
               <div className={styles.EnvVarsAddBtn}>
@@ -873,6 +889,15 @@ class CreateApp extends React.Component {
       </div>
     );
   };
+  handleMicroseviceSubmit = () => {
+    const { formInstances } = this.state;
+  
+    const allFormData = formInstances.map((instance) => instance.formData);
+    
+  };
+  
+
+
   createNewApp(data, projectID) {
     this.setState({
       addingApp: true,
