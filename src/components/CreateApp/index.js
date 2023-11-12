@@ -78,6 +78,7 @@ class CreateApp extends React.Component {
             isCustomDomain: false,
             currentDeploymentMethod: "default",
             domainName: "",
+            selectedInstance: "",
           },
         },
       ],
@@ -467,6 +468,12 @@ class CreateApp extends React.Component {
               className={styles.MSAAdd}
             >
               App {instance.id}
+              {!instance.isOpen && instance.formData && (
+                <>
+                  <div>Name: {instance.formData.name}</div>
+                  <div>Image: {instance.formData.uri}</div>
+                </>
+              )}
             </div>
             {instance.isOpen && this.renderInnerForm(instance.id)}
           </div>
@@ -501,6 +508,7 @@ class CreateApp extends React.Component {
       entryCommand,
       varName,
       varValue,
+      selectedInstance,
     } =
       formInstances.find((instance) => instance.id === instanceId)?.formData ||
       {};
@@ -509,6 +517,10 @@ class CreateApp extends React.Component {
       (instance) => instance.id === instanceId
     )?.isOpen;
     const hasValues = isOpen && name && uri;
+
+    const otherInstanceNames = formInstances
+      .filter((instance) => instance.id !== instanceId)
+      .map((instance) => instance.formData.name || "");
 
     return (
       <div>
@@ -737,6 +749,7 @@ class CreateApp extends React.Component {
               </div>
             )} */}
           </div>
+
           <div className={styles.ModalFormInputsEnvVars}>
             <div className={styles.HeadingWithTooltip}>
               <h4>Environment Variables</h4>
@@ -844,12 +857,18 @@ class CreateApp extends React.Component {
                   value={varName}
                   onChange={(e) => this.handleNewChange(e, instanceId)}
                 />
-                <BlackInputText
-                  placeholder="Value"
-                  name="varValue"
-                  value={varValue}
+                <select
+                  name="selectedInstance"
+                  value={selectedInstance}
                   onChange={(e) => this.handleNewChange(e, instanceId)}
-                />
+                >
+                  <option value="">Select an App</option>
+                  {otherInstanceNames.map((instanceName) => (
+                    <option key={instanceName} value={instanceName}>
+                      {instanceName}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className={styles.EnvVarsAddBtn}>
                 <PrimaryButton

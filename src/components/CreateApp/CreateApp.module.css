@@ -48,8 +48,14 @@
 .MSAAdd{
   margin: 0rem 1rem 1rem 1rem;
   border: 1px solid blue;
-  padding: 1rem 1rem 1rem .5rem;
+  padding: 1rem 1rem 1rem 1rem;
   border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Inliner{
+  display: inline;
 }
 
 .MSAApp{
