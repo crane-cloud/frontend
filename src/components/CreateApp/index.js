@@ -406,7 +406,7 @@ class CreateApp extends React.Component {
 
   handleNewChange = (e, instanceId) => {
     const { name, value } = e.target;
-    const { formInstances,  } = this.state;
+    const { formInstances } = this.state;
     const updatedInstances = formInstances.map((instance) =>
       instance.id === instanceId
         ? {
@@ -487,7 +487,7 @@ class CreateApp extends React.Component {
   };
 
   renderInnerForm = (instanceId) => {
-    const { formData } = this.state;
+    const { formInstances } = this.state;
 
     const {
       name,
@@ -501,7 +501,9 @@ class CreateApp extends React.Component {
       entryCommand,
       varName,
       varValue,
-    } = formData;
+    } =
+      formInstances.find((instance) => instance.id === instanceId)?.formData ||
+      {};
 
     const isOpen = this.state.formInstances.find(
       (instance) => instance.id === instanceId
@@ -891,12 +893,9 @@ class CreateApp extends React.Component {
   };
   handleMicroseviceSubmit = () => {
     const { formInstances } = this.state;
-  
-    const allFormData = formInstances.map((instance) => instance.formData);
-    
-  };
-  
 
+    const allFormData = formInstances.map((instance) => instance.formData);
+  };
 
   createNewApp(data, projectID) {
     this.setState({
