@@ -1,5 +1,5 @@
-.AppList {
-  display: grid;
+ .AppList { 
+  display: flex;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 1rem;
   min-height: 40vh;
