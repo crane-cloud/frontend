@@ -156,8 +156,17 @@ class ProjectNetworkPage extends React.Component {
         className="MetricsCardGraph"
         title={
           <div className="PeriodContainer">
-            <PeriodSelector onChange={this.handlePeriodChange} />
-            {period === "custom" && this.state.showErrorMessage && (
+             <div className="SelectedContainer"> 
+              <PeriodSelector onChange={this.handlePeriodChange} />
+              {this.state.period === 'custom' && (
+                <>
+                  <div className="SelectedDates">
+                    {new Date(this.state.time.start).toLocaleString()} - {new Date(this.state.time.end).toLocaleString()}
+                  </div>
+                </>
+              )}
+             </div> 
+            {this.state.showErrorMessage && (
               <div className="ErrorMessage"> {this.state.dateError}</div>
             )}
           </div>
