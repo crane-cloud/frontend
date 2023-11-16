@@ -97,6 +97,7 @@ class DatabaseList extends React.Component {
                   : "ResourcesTable"
               }
             >
+            {databases.length > 0 && (
             <table className="PodsTable">
                 <thead className="uppercase">
                   <tr>
@@ -171,7 +172,7 @@ class DatabaseList extends React.Component {
                   </tbody>
                 )}
               </table>
-
+            )}
             {databasesFetched && databases.length === 0 && (
               <div className={styles.NoResourcesMessageSection}>
                 <div className={styles.NoResourcesMessage}>
@@ -195,7 +196,7 @@ class DatabaseList extends React.Component {
               </div>
             )}
             </div>
-           
+                       
           </DashboardLayout>
         )}
       </div>

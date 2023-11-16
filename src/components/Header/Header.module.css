@@ -67,7 +67,10 @@
   height: 2rem;
   fill: white;
 }
-
+.rotate180 {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease; 
+}
 .OnHeader:hover .UserNames {
   color: var(--secondary-color);
 }
