@@ -60,6 +60,13 @@ class UserProfile extends React.Component {
   getUserProjects = async (userID) => {
     const response = await handleGetRequest(`/users/${userID}/projects`);
 
+    const projectsList = response.data.data?.projects;
+
+    const totalAppsCount = projectsList.reduce(
+      (total, project) => total + project.apps_count,
+      0
+    );
+    
     if (response.data.data?.projects.length > 0) {
       const projectsList = response.data.data?.projects;
 
@@ -74,12 +81,14 @@ class UserProfile extends React.Component {
         projectsCount: activeProjects.length,
         activeProjectsCount: activeProjects.length - disabledProjects.length,
         disabledProjectsCount: disabledProjects.length,
+        totalAppsCount: totalAppsCount,
       });
     } else {
       this.setState({
         projectsCount: 0,
         activeProjectsCount: 0,
         disabledProjectsCount: 0,
+        totalAppsCount:0,
       });
 
       throw new Error("No projects found for user");
@@ -297,7 +306,8 @@ class UserProfile extends React.Component {
                             <NewResourceCard
                               key={1}
                               title="Apps Deployed"
-                              count={user?.apps_count}
+                              count={this.state.totalAppsCount}
+
                             />
                             <NewResourceCard
                               key={1}
