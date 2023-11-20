@@ -741,7 +741,7 @@ class AppSettingsPage extends React.Component {
     //console.log(this.props.app);
 
     return (
-      <DashboardLayout name={appDetail?.name} header="App Settings"  appsWarning= {true} short>
+      <DashboardLayout name={appDetail?.name} header="App Settings" short>
         {isDeleted || isReverted ? this.renderRedirect() : null}
 
         {fetchingAppDetails ? (
