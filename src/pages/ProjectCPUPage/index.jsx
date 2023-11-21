@@ -174,7 +174,16 @@ let days;
           className="MetricsCardGraph"
           title={
             <div className="PeriodContainer">
-              <PeriodSelector onChange={this.handlePeriodChange} />
+               <div className="SelectedContainer"> 
+                <PeriodSelector onChange={this.handlePeriodChange} />
+                {this.state.period === 'custom' && (
+                  <>
+                    <div className="SelectedDates">
+                      {new Date(this.state.time.start).toLocaleString()} - {new Date(this.state.time.end).toLocaleString()}
+                    </div>
+                  </>
+                )}
+               </div> 
               {this.state.showErrorMessage && (
                 <div className="ErrorMessage"> {this.state.dateError}</div>
               )}
