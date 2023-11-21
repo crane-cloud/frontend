@@ -97,8 +97,8 @@ class DatabaseList extends React.Component {
                   : "ResourcesTable"
               }
             >
-            {databases.length > 0 && (
-            <table className="PodsTable">
+            {databases.length > 0 ? (
+              <table className="PodsTable">
                 <thead className="uppercase">
                   <tr>
                     <th>Type</th>
@@ -172,22 +172,36 @@ class DatabaseList extends React.Component {
                   </tbody>
                 )}
               </table>
-            )}
-            {databasesFetched && databases.length === 0 && (
-              <div className={styles.NoResourcesMessageSection}>
-                <div className={styles.NoResourcesMessage}>
-                  You haven’t created any databases yet.
-                </div>
-                <br></br>
-                <div className={styles.NoResourcesMessage}>
-                  Click the &nbsp;{" "}
-                  <ButtonPlus
-                    className={styles.ButtonPlusSmall}
-                    onClick={this.showCreateComponent}
-                  />{" "}
-                  &nbsp; button to create one.
-                </div>
-              </div>
+            ) : (
+              <table className="PodsTable">
+                {isFetchingDatabases ? (
+                  <tbody>
+                    <tr className="TableLoading">
+                      <td className="TableTdSpinner">
+                        <div className="SpinnerWrapper">
+                          <Spinner size="big" />
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                ) : (
+                databasesFetched && databases.length === 0 && (
+                  <div className={styles.NoResourcesMessageSection}>
+                    <div className={styles.NoResourcesMessage}>
+                      You haven’t created any databases yet.
+                    </div>
+                    <br></br>
+                    <div className={styles.NoResourcesMessage}>
+                      Click the &nbsp;{" "}
+                      <ButtonPlus
+                        className={styles.ButtonPlusSmall}
+                        onClick={this.showCreateComponent}
+                      />{" "}
+                      &nbsp; button to create one.
+                    </div>
+                  </div>
+                ))}
+              </table>
             )}
 
             {!isFetchingDatabases && !databasesFetched && (
