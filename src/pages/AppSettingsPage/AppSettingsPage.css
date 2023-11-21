@@ -376,12 +376,6 @@
   padding-left: 3.8rem;
 }
 
-.errorCenterDiv {
-  display: flex;
-  justify-content: center;
-  padding: 1rem 0;
-}
-
 .EnvVarsInputGroup {
   width: 100%;
   display: grid;
@@ -750,25 +744,6 @@ ul li {
   font-weight: lighter;
 }
 
-.tabItem {
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.activeTab {
-  font-weight: bold;
-  background-color: #d9d9d9;
-  border-radius: 4px;
-  padding: 10px 20px;
-}
-
-.inactiveTab,
-.activeTab:hover {
-  cursor: pointer;
-}
-
 .ApplicationTabs {
   display: flex;
   flex-direction: row;
@@ -976,4 +951,11 @@ ul li {
   height: 1px;
   background-color: #ddd;
   margin: 20px 0;
+}
+
+.SuccessMessageArea .SuccessOnWhite {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem;
+  width: 40%;
 }
