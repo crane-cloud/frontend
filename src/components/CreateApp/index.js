@@ -70,6 +70,9 @@ class CreateApp extends React.Component {
             varName: "",
             varValue: "",
             envVars: {},
+            envVarsOtherApps: {},
+            VarNameOtherApps: "",
+            VarValueOtherApps: "",
             error: "",
             createFeedback: "",
             entryCommand: "",
@@ -86,6 +89,12 @@ class CreateApp extends React.Component {
     };
 
     this.addEnvVar = this.addEnvVar.bind(this);
+    this.handleVarValueOtherAppsChange =
+      this.handleVarValueOtherAppsChange.bind(this);
+    this.addMicroserviceEnvVar = this.addMicroserviceEnvVar.bind(this);
+    this.removeMicroserviceEnvVar = this.removeMicroserviceEnvVar.bind(this);
+    this.addEnvVarFromOtherApps = this.addEnvVarFromOtherApps.bind(this);
+    this.removeEnvVarFromOtherApps = this.removeEnvVarFromOtherApps.bind(this);
     this.removeEnvVar = this.removeEnvVar.bind(this);
     this.showForm = this.showForm.bind(this);
     this.hideForm = this.hideForm.bind(this);
@@ -231,6 +240,46 @@ class CreateApp extends React.Component {
       });
     }
   }
+
+  addMicroserviceEnvVar = (instanceId) => {
+    const { formInstances } = this.state;
+
+    const updatedInstances = formInstances.map((instance) => {
+      if (instance.id === instanceId) {
+        const { varName, varValue } = instance.formData;
+        const updatedEnvVars = {
+          ...instance.formData.envVars,
+          [varName]: varValue,
+        };
+
+        return {
+          ...instance,
+          formData: { ...instance.formData, envVars: updatedEnvVars },
+        };
+      }
+      return instance;
+    });
+
+    this.setState({ formInstances: updatedInstances });
+  };
+
+  removeMicroserviceEnvVar = (instanceId, varNameToRemove) => {
+    this.setState((prevState) => {
+      const updatedFormInstances = prevState.formInstances.map((instance) => {
+        if (instance.id === instanceId) {
+          const updatedEnvVars = { ...instance.formData.envVars };
+          delete updatedEnvVars[varNameToRemove]; // Remove the specified variable
+          return {
+            ...instance,
+            formData: { ...instance.formData, envVars: updatedEnvVars },
+          };
+        }
+        return instance;
+      });
+
+      return { formInstances: updatedFormInstances };
+    });
+  };
 
   removeEnvVar(index) {
     const { envVars } = this.state;
@@ -456,6 +505,54 @@ class CreateApp extends React.Component {
     this.setState({ formInstances: updatedInstances });
   };
 
+  // Function to remove environment variable from other apps
+  removeEnvVarFromOtherApps = (instanceId, varNameOtherApps) => {
+    this.setState((prevState) => {
+      const updatedFormInstances = prevState.formInstances.map((instance) => {
+        if (instance.id === instanceId) {
+          const updatedOtherAppEnvVars = { ...instance.otherAppEnvVars };
+          delete updatedOtherAppEnvVars[varNameOtherApps]; // Remove the variable
+
+          return {
+            ...instance,
+            otherAppEnvVars: updatedOtherAppEnvVars,
+          };
+        }
+        return instance;
+      });
+
+      return { formInstances: updatedFormInstances };
+    });
+  };
+
+  // Function to add environment variable to other apps
+  addEnvVarFromOtherApps = (instanceId) => {
+    const { formInstances } = this.state;
+    const selectedInstance = formInstances.find(
+      (instance) => instance.id === instanceId
+    );
+    const { varNameOtherApps, varValueOtherApps } = selectedInstance;
+
+    this.setState((prevState) => {
+      const updatedFormInstances = prevState.formInstances.map((instance) => {
+        if (instance.id === instanceId) {
+          const updatedOtherAppEnvVars = {
+            ...instance.otherAppEnvVars,
+            [varNameOtherApps]: varValueOtherApps,
+          };
+
+          return {
+            ...instance,
+            otherAppEnvVars: updatedOtherAppEnvVars,
+          };
+        }
+        return instance;
+      });
+
+      return { formInstances: updatedFormInstances };
+    });
+  };
+
   renderFormInstances = () => {
     const { formInstances } = this.state;
 
@@ -485,12 +582,31 @@ class CreateApp extends React.Component {
         >
           Add App
         </PrimaryButton>
-        <PrimaryButton className={styles.MSFWidth} onClick={this.handleSubmit}>
+        <PrimaryButton
+          className={styles.MSFWidth}
+          onClick={this.handleMicroseviceSubmit}
+        >
           {false ? <Spinner /> : "deploy"}
         </PrimaryButton>
         {/* <button onClick={this.addInstance}>Add New Instance</button> */}
       </div>
     );
+  };
+
+  handleVarValueOtherAppsChange = (e, instanceId) => {
+    const { value } = e.target;
+
+    this.setState((prevState) => ({
+      formInstances: prevState.formInstances.map((instance) => {
+        if (instance.id === instanceId) {
+          return {
+            ...instance,
+            varValueOtherApps: value,
+          };
+        }
+        return instance;
+      }),
+    }));
   };
 
   renderInnerForm = (instanceId) => {
@@ -507,7 +623,11 @@ class CreateApp extends React.Component {
       port,
       entryCommand,
       varName,
+      VarNameOtherApps,
+      VarValueOtherApps,
       varValue,
+      envVars,
+      envVarsOtherApps,
       selectedInstance,
     } =
       formInstances.find((instance) => instance.id === instanceId)?.formData ||
@@ -516,11 +636,11 @@ class CreateApp extends React.Component {
     const isOpen = this.state.formInstances.find(
       (instance) => instance.id === instanceId
     )?.isOpen;
-    const hasValues = isOpen && name && uri;
+    // const hasValues = isOpen && name && uri;
 
-    const otherInstanceNames = formInstances
-      .filter((instance) => instance.id !== instanceId)
-      .map((instance) => instance.formData.name || "");
+    let otherInstanceNames = formInstances
+      .filter((instance) => instance.id !== instanceId && instance.formData)
+      .map((instance) => instance.formData?.name || "");
 
     return (
       <div>
@@ -758,7 +878,7 @@ class CreateApp extends React.Component {
                 message="These are are key/value pairs which define aspects of your app’s environment that can vary"
               />
             </div>
-            {/* {Object.keys(envVars).length > 0 && (
+            {envVars && Object.keys(envVars).length > 0 && (
               <div className={styles.EnvVarsTable}>
                 <table>
                   <thead>
@@ -769,15 +889,15 @@ class CreateApp extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {Object.keys(envVars).map((envVar, index) => (
-                      <tr key={uuidv4()}>
-                        <td>{Object.keys(envVars)[index]}</td>
-                        <td>{envVars[Object.keys(envVars)[index]]}</td>
+                    {Object.entries(envVars).map(([name, value]) => (
+                      <tr key={name}>
+                        <td>{name}</td>
+                        <td>{value}</td>
                         <td>
                           <img
                             src={RemoveIcon}
                             alt="remove_ico"
-                            onClick={() => this.removeEnvVar(index)}
+                            onClick={() => this.removeMicroserviceEnvVar(name)}
                             role="presentation"
                           />
                         </td>
@@ -786,7 +906,7 @@ class CreateApp extends React.Component {
                   </tbody>
                 </table>
               </div>
-            )} */}
+            )}
             <div className={styles.EnvVarsInputGroup}>
               <div className={styles.EnvVarsInputs}>
                 <BlackInputText
@@ -804,7 +924,7 @@ class CreateApp extends React.Component {
               </div>
               <div className={styles.EnvVarsAddBtn}>
                 <PrimaryButton
-                  onClick={this.addEnvVar}
+                  onClick={() => this.addMicroserviceEnvVar(instanceId)}
                   className={styles.EnvVarAddBtn}
                 >
                   Add
@@ -820,7 +940,7 @@ class CreateApp extends React.Component {
                 message="These are are key/value pairs which define aspects of your app’s environment that can vary"
               />
             </div>
-            {/* {Object.keys(envVars).length > 0 && (
+            {envVarsOtherApps && Object.keys(envVarsOtherApps).length > 0 && (
               <div className={styles.EnvVarsTable}>
                 <table>
                   <thead>
@@ -831,15 +951,17 @@ class CreateApp extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {Object.keys(envVars).map((envVar, index) => (
-                      <tr key={uuidv4()}>
-                        <td>{Object.keys(envVars)[index]}</td>
-                        <td>{envVars[Object.keys(envVars)[index]]}</td>
+                    {Object.entries(envVarsOtherApps).map(([name, value]) => (
+                      <tr key={name}>
+                        <td>{name}</td>
+                        <td>{value}</td>
                         <td>
                           <img
                             src={RemoveIcon}
                             alt="remove_ico"
-                            onClick={() => this.removeEnvVar(index)}
+                            onClick={() =>
+                              this.removeEnvVarFromOtherApps(instanceId, name)
+                            }
                             role="presentation"
                           />
                         </td>
@@ -848,19 +970,21 @@ class CreateApp extends React.Component {
                   </tbody>
                 </table>
               </div>
-            )} */}
+            )}
             <div className={styles.EnvVarsInputGroup}>
               <div className={styles.EnvVarsInputs}>
                 <BlackInputText
                   placeholder="Name"
-                  name="varName"
-                  value={varName}
+                  name="VarNameOtherApps"
+                  value={VarNameOtherApps}
                   onChange={(e) => this.handleNewChange(e, instanceId)}
                 />
                 <select
                   name="selectedInstance"
-                  value={selectedInstance}
-                  onChange={(e) => this.handleNewChange(e, instanceId)}
+                  value={selectedInstance?.VarValueOtherApps || ""}
+                  onChange={(e) =>
+                    this.handleVarValueOtherAppsChange(e, instanceId)
+                  }
                 >
                   <option value="">Select an App</option>
                   {otherInstanceNames.map((instanceName) => (
@@ -872,7 +996,7 @@ class CreateApp extends React.Component {
               </div>
               <div className={styles.EnvVarsAddBtn}>
                 <PrimaryButton
-                  onClick={this.addEnvVar}
+                  onClick={() => this.addEnvVarFromOtherApps(instanceId)}
                   className={styles.EnvVarAddBtn}
                 >
                   Add
@@ -912,8 +1036,44 @@ class CreateApp extends React.Component {
   };
   handleMicroseviceSubmit = () => {
     const { formInstances } = this.state;
+    const { params } = this.props;
 
-    const allFormData = formInstances.map((instance) => instance.formData);
+    let allFormData = formInstances.map((instance) => ({
+      name: instance.formData.name,
+      uri: instance.formData.uri,
+      isPrivateImage: instance.formData?.isPrivateImage,
+      username: instance.formData?.username,
+      email: instance.formData?.email,
+      password: instance.formData?.password,
+      server: instance.formData?.server,
+      port: instance.formData?.port,
+      entryCommand: instance.formData?.entryCommand,
+      varName: instance.formData?.varName,
+      VarNameOtherApps: instance.formData?.VarNameOtherApps,
+      VarValueOtherApps: instance.formData?.VarValueOtherApps,
+      varValue: instance.formData?.varValue,
+      envVars: instance.formData?.envVars,
+      envVarsOtherApps: instance.formData?.envVarsOtherApps,
+    }));
+
+    const payload = {
+      apps: allFormData,
+    };
+    handlePostRequestWithOutDataObject(
+      payload,
+      `/projects/${params?.projectID}/apps`
+    )
+      .then(() => {
+        window.location.href = `/projects/${params?.projectID}/apps`;
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          addAppError: "Failed to add Apps. Try again later",
+          addingApp: false,
+          addErrorCode: error.response?.status,
+        });
+      });
   };
 
   createNewApp(data, projectID) {
@@ -923,9 +1083,10 @@ class CreateApp extends React.Component {
     });
     handlePostRequestWithOutDataObject(data, `/projects/${projectID}/apps`)
       .then(() => {
-        window.location.href = `/projects/${projectID}/Apps`;
+        window.location.href = `/projects/${projectID}/apps`;
       })
       .catch((error) => {
+        console.log(error);
         this.setState({
           addAppError: "Failed to add App. Try again later",
           addingApp: false,
