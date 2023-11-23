@@ -469,29 +469,7 @@ class CreateApp extends React.Component {
 
     this.setState({
       formInstances: updatedInstances,
-      // formData: {
-      //   ...formData,
-      //   [name]: value,
-      // },
-      // instanceNameValues: {
-      //   ...instanceNameValues,
-      //   [instanceId]: value,
-      // },
     });
-
-    // const updatedInstances = formInstances.map((instance) =>
-    //   instance.id === instanceId
-    //     ? { ...instance, isOpen: instance.isOpen, [name]: value }
-    //     : instance
-    // );
-
-    // this.setState({
-    //   formInstances: updatedInstances,
-    //   formData: {
-    //     ...formData,
-    //     [name]: value,
-    //   },
-    // });
   };
 
   toggleInstance = (instanceId) => {
@@ -554,7 +532,7 @@ class CreateApp extends React.Component {
   };
 
   renderFormInstances = () => {
-    const { formInstances } = this.state;
+    const { formInstances, addingApp } = this.state;
 
     return (
       <div className={styles.WhiteBackground}>
@@ -586,7 +564,7 @@ class CreateApp extends React.Component {
           className={styles.MSFWidth}
           onClick={this.handleMicroseviceSubmit}
         >
-          {false ? <Spinner /> : "deploy"}
+          {addingApp ? <Spinner /> : "deploy"}
         </PrimaryButton>
         {/* <button onClick={this.addInstance}>Add New Instance</button> */}
       </div>
@@ -624,7 +602,7 @@ class CreateApp extends React.Component {
       entryCommand,
       varName,
       VarNameOtherApps,
-      VarValueOtherApps,
+      // VarValueOtherApps,
       varValue,
       envVars,
       envVarsOtherApps,
@@ -633,9 +611,9 @@ class CreateApp extends React.Component {
       formInstances.find((instance) => instance.id === instanceId)?.formData ||
       {};
 
-    const isOpen = this.state.formInstances.find(
-      (instance) => instance.id === instanceId
-    )?.isOpen;
+    // const isOpen = this.state.formInstances.find(
+    //   (instance) => instance.id === instanceId
+    // )?.isOpen;
     // const hasValues = isOpen && name && uri;
 
     let otherInstanceNames = formInstances
@@ -1038,27 +1016,42 @@ class CreateApp extends React.Component {
     const { formInstances } = this.state;
     const { params } = this.props;
 
-    let allFormData = formInstances.map((instance) => ({
-      name: instance.formData.name,
-      uri: instance.formData.uri,
-      isPrivateImage: instance.formData?.isPrivateImage,
-      username: instance.formData?.username,
-      email: instance.formData?.email,
-      password: instance.formData?.password,
-      server: instance.formData?.server,
-      port: instance.formData?.port,
-      entryCommand: instance.formData?.entryCommand,
-      varName: instance.formData?.varName,
-      VarNameOtherApps: instance.formData?.VarNameOtherApps,
-      VarValueOtherApps: instance.formData?.VarValueOtherApps,
-      varValue: instance.formData?.varValue,
-      envVars: instance.formData?.envVars,
-      envVarsOtherApps: instance.formData?.envVarsOtherApps,
-    }));
+    let allFormData = formInstances.map((instance) => {
+      const formData = instance.formData;
+      const filteredData = {};
+
+      if (formData.name) filteredData.name = formData.name;
+      if (formData.uri) filteredData.uri = formData.uri;
+      if (formData.isPrivateImage)
+        filteredData.isPrivateImage = formData.isPrivateImage;
+      if (formData.username) filteredData.username = formData.username;
+      if (formData.email) filteredData.email = formData.email;
+      if (formData.password) filteredData.password = formData.password;
+      if (formData.server) filteredData.server = formData.server;
+      if (formData.port) filteredData.port = formData.port;
+      if (formData.entryCommand)
+        filteredData.entryCommand = formData.entryCommand;
+      if (formData.varName) filteredData.varName = formData.varName;
+      if (formData.VarNameOtherApps)
+        filteredData.VarNameOtherApps = formData.VarNameOtherApps;
+      if (formData.VarValueOtherApps)
+        filteredData.VarValueOtherApps = formData.VarValueOtherApps;
+      if (formData.varValue) filteredData.varValue = formData.varValue;
+      if (Object.keys(formData.envVars || {}).length > 0)
+        filteredData.envVars = formData.envVars;
+      if (Object.keys(formData.envVarsOtherApps || {}).length > 0)
+        filteredData.envVarsOtherApps = formData.envVarsOtherApps;
+
+      return filteredData;
+    });
 
     const payload = {
-      apps: allFormData,
+      apps: allFormData.map((data) => ({ ...data, image: data.uri })),
     };
+    this.setState({
+      addingApp: true,
+      addAppError: "",
+    });
     handlePostRequestWithOutDataObject(
       payload,
       `/projects/${params?.projectID}/apps`
