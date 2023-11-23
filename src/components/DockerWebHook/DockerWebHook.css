@@ -1,3 +1,11 @@
+.SectionContainer .MainContentSection {
+  overflow: hidden;
+}
+
+.SectionContainer .AdminDBSections {
+  padding: 0;
+}
+
 .imageTag {
   background: transparent;
   border: 1px solid #000;
@@ -5,13 +13,13 @@
   width: 20rem;
 }
 
-.PortSection{
+.PortSection {
   display: inline-flex;
   width: -webkit-fill-available;
   gap: 3%;
   align-items: center;
 }
 
-.DockerInfo{
+.DockerInfo {
   line-height: 2;
 }

@@ -1,3 +1,17 @@
+.SettingsContainer {
+  width: 100%;
+  /* Use 100% width to be responsive */
+  max-width: 1200px;
+  /* Set a max-width that you prefer */
+  margin: 0 auto;
+}
+
+.LoadingArea {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /*///////////// Delete Model //////////////////*/
 
 .AppDeleteModel {
@@ -10,8 +24,8 @@
   background-color: rgba(112, 49, 49, 0.5);
 }
 
-.DeployText{
-  color:#fb0c0c;
+.DeployText {
+  color: #fb0c0c;
   font-weight: 600;
 }
 
@@ -19,10 +33,6 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-}
-
-.AppDeleteModel .ModalParentWrap {
-  background-color: inherit;
 }
 
 .AppDeleteModel .ModalChildWrap {
@@ -162,26 +172,29 @@
 }
 
 .APPInstruct {
-  display: grid;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  padding-top: 0.5rem;
 }
 
 .APPButtonRow {
   display: grid;
-  grid-template-columns: 1fr 5fr;
+  grid-template-columns: 1fr 4fr;
   grid-auto-flow: column;
   align-items: center;
-  gap: 1rem;
+  gap: 4.5rem;
 }
 
 .APPButtonRow select {
   padding: 0.5rem;
 }
 
-.SectionButtons {
+/* .SectionButtons {
   display: flex;
   justify-content: flex-end;
   padding-left: 1rem;
-}
+} */
 
 .APPSections {
   display: flex;
@@ -229,7 +242,6 @@
 
 .flexa input {
   border: 1px solid;
-  padding: 0.3rem;
 }
 
 .APPButtonRow .SmallSelectElementValue {
@@ -325,11 +337,11 @@
   color: #ff0000;
 }
 
-.PortSection {
+.Environments .PortSection {
   display: grid;
   grid-template-columns: 1fr 4fr 1fr;
   gap: 1rem;
-  width: 100%;
+  padding-bottom: 1rem;
 }
 
 .varInput {
@@ -356,17 +368,12 @@
   border: 1px solid #000;
   padding: 0.5rem;
   padding-left: 1rem;
-  width: 100%;
+  width: 94%;
 }
 
 .commandInputSection {
   display: grid;
-}
-
-.errorCenterDiv {
-  display: flex;
-  justify-content: center;
-  padding: 1rem 0;
+  padding-left: 3.8rem;
 }
 
 .EnvVarsInputGroup {
@@ -382,7 +389,7 @@
   grid-template-columns: 1fr 1fr;
 }
 
-.EnvVarsAddBtn > * {
+.EnvVarsAddBtn>* {
   height: 100%;
 }
 
@@ -433,11 +440,21 @@
   flex-direction: row;
   gap: 1rem;
   flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.settings-input.name-input {
+  flex: 0 0 30%;
+}
+
+.settings-input.value-input {
+  flex: 0 0 68%;
 }
 
 .VarInputGroup {
   display: flex;
   gap: 1rem;
+  width: 78%;
 }
 
 .EnvDataItem {
@@ -459,7 +476,7 @@
   gap: 1rem;
 }
 
-.EnvValue > div {
+.EnvValue>div {
   border: 1px solid #777;
   padding: 0.3rem 0.5rem;
   border-radius: 5px;
@@ -484,8 +501,7 @@
   color: var(--secondary-color);
 }
 
-.Domain__Popup,
-.Rollback__Option {
+.Domain__Popup {
   color: var(--primary-color);
   text-decoration: underline;
   cursor: pointer;
@@ -556,7 +572,13 @@ ul li {
 
 .AppRevision {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 1.5rem;
+}
+
+.APPInstruct:last-child {
+  border-bottom: none;
 }
 
 .RevisionStatus {
@@ -567,6 +589,31 @@ ul li {
 .Success {
   color: green;
   height: 30px;
+}
+
+.RevisionNumber {
+  color: #008ac1;
+  height: 30px;
+}
+
+.RevisionSummary {
+  display: flex;
+  /* This will align your items in a row */
+  justify-content: space-between;
+  /* This will put maximum space between items */
+  align-items: center;
+  /* This will vertically center align items */
+}
+
+.Time {
+  margin-right: auto;
+  /* This will push all the elements after Time to the right */
+}
+
+.AppDetails {
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 0;
 }
 
 .Danger {
@@ -580,37 +627,40 @@ ul li {
   height: 20px;
 }
 
+.LeftItems {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  gap: 1rem;
+}
+
+.RightItems {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+
 .Entity {
-  color: #008ac1;
+  font-size: 1.1rem;
+  margin-right: 10px;
 }
 
 .Time {
   padding-left: 1rem;
   color: gray;
+  margin-right: 10px;
 }
 
 .Rollback__Option {
   color: #008ac1;
   text-decoration: underline;
   cursor: pointer;
-}
-
-.Rollback__Option:hover {
-  color: var(--secondary-color);
+  padding: 0.5rem 1rem;
+  display: flex;
 }
 
 .TopSection {
   display: flex;
   justify-content: space-between;
-}
-
-.AppDetails {
-  padding-left: 1rem;
-}
-
-.AppRevisionsDetails {
-  display: grid;
-  gap: 1rem;
 }
 
 .ReviseAppModal {
@@ -651,6 +701,7 @@ ul li {
   .ContentSection {
     padding-top: 2.5rem;
   }
+
   .varInput {
     width: 10rem;
   }
@@ -660,75 +711,7 @@ ul li {
     flex-wrap: wrap;
   }
 }
-.MemberBody {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  background-color: var(--gray-light-color);
-}
 
-.MemberTableRow {
-  display: flex;
-  color: #000000;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.8rem;
-  margin: 0;
-  background-color: white;
-  gap: 1rem;
-}
-
-.MemberActionArea {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  gap: 4rem;
-  align-items: center;
-}
-
-.MemberInfo {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.MemberOptions {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(7rem, 1fr));
-  gap: 2rem;
-  align-items: center;
-}
-
-.MemberRole {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 0.3rem;
-  align-items: baseline;
-  font-weight: 600;
-  color: var(--primary-dark-color);
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-
-.MemberRole:hover {
-  color: var(--primary-color);
-  transform: scale(1.1);
-}
-
-.MemberRole span {
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-.MemberTableRowUnregistered {
-  display: grid;
-  color: #000000;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  background-color: white;
-}
 .ProjectInstructions {
   padding: 1rem;
   background: #ffffff;
@@ -736,4 +719,243 @@ ul li {
   border: 1px solid var(--gray-light-color);
   display: grid;
   gap: 1rem;
+}
+
+.SettingsSectionInfo2 {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding-left: 0.5rem;
+  font-size: 0.95rem;
+  justify-content: space-between;
+}
+
+.SubTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primary-dark-color);
+  margin: 0;
+  padding-top: 1rem;
+}
+
+.SubTitleContent {
+  font-size: 1rem;
+  font-weight: lighter;
+}
+
+.ApplicationTabs {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+}
+
+.MemberTableRow {
+  display: flex;
+  justify-content: space-between;
+  /* To space the children evenly */
+  align-items: center;
+  /* Vertically center-align the content */
+  border-bottom: 1px solid #e0e0e0;
+  /* Add a bottom border to separate rows */
+  padding: 10px 0;
+  /* Add some padding for spacing */
+}
+
+.MemberTableRow:last-child {
+  border-bottom: none;
+}
+
+.SubTitle {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.SubTitleContent {
+  font-weight: normal;
+}
+
+.ImageSection .APPButtonRow {
+  gap: 2.5rem;
+  padding-bottom: 1rem;
+}
+
+.version-item {
+  /* display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd; */
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  /* Adjust based on your layout */
+  align-items: center;
+  /* This aligns items vertically within their row */
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.version-item:last-child {
+  border-bottom: none;
+}
+
+.version-details {
+  display: flex;
+  align-items: center;
+}
+
+.upload-icon {
+  /* Style your icon appropriately */
+  margin-right: 10px;
+  /* Add some space between the icon and the text */
+}
+
+.version-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.version-name {
+  font-size: 1.1rem;
+
+}
+
+.version-id {
+  color: #008ac1;
+  font-size: 0.9rem;
+}
+
+.version-date {
+  justify-self: start;
+  padding-left: 10rem;
+}
+
+.rollback-link {
+  color: #0056b3;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.current-label {
+  /* Style for the 'Current' label */
+  background-color: #C8E6C9;
+  /* Example color */
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.current-label {
+  color: green;
+  font-weight: bold;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.pagination a {
+  color: #0056b3;
+  text-decoration: none;
+}
+
+.pagination a:hover {
+  text-decoration: underline;
+}
+
+.settings-input {
+  width: 70%;
+  padding: 0.6rem;
+}
+
+.ImageSection .SelectWrapper {
+  width: 70%;
+}
+
+.ImageSection .SelectElementValue {
+  padding: 0.6rem;
+}
+
+.PrivateImageInputs .APPButtonRow {
+  gap: 6rem;
+}
+
+.PrivateImageInputs .APPButtonRowEmail {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-auto-flow: column;
+  align-items: center;
+  padding-bottom: 1rem;
+  gap: 6.5rem;
+}
+
+.PrivateImageInputs .APPButtonRowRegistry {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-auto-flow: column;
+  align-items: center;
+  padding-bottom: 1rem;
+  gap: 6.5rem;
+}
+
+.PrivateImageInputs .APPButtonRowName {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-auto-flow: column;
+  align-items: center;
+  padding-bottom: 1rem;
+  gap: 5.8rem;
+}
+
+.PrivateImageInputs .sub-input {
+  width: 190%;
+  padding: 0.6rem;
+}
+
+.PrivateImageInputs .sub-input-email {
+  width: 190%;
+  padding: 0.6rem;
+}
+
+.cardSectionTitle {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.DBTDetail {
+  display: flex;
+  flex-wrap: wrap;
+  width: 80%;
+}
+
+.CustomDomainInputs .domain-input {
+  width: 79%;
+}
+
+.CustomDomainInputs .APPButtonRow {
+  gap: 2.8rem;
+}
+
+.settings-input[readonly] {
+  cursor: pointer;
+}
+
+.SectionSplit {
+  border: 0;
+  height: 1px;
+  background-color: #ddd;
+  margin: 20px 0;
+}
+
+.SuccessMessageArea .SuccessOnWhite {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem;
+  width: 40%;
 }
