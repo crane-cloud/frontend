@@ -1,7 +1,12 @@
 .Page {
   margin: 0;
-  background: var( --gray-bg-light-color);
+  background: var(--gray-bg-light-color);
   width: 100%;
+}
+
+.MSFWidth{
+  width: 80%;
+  margin: auto;
 }
 
 .MainContentSection {
@@ -18,25 +23,44 @@
   padding-left: 3rem;
   overflow: auto;
 }
-.FeedbackSection{
+.FeedbackSection {
   display: flex;
-  padding-top: .5rem;
+  padding-top: 0.5rem;
   align-items: center;
   justify-content: center;
 }
 
 .ModalFormInputs {
   background: #ffffff;
-  max-width: 40rem;
   padding: 1rem;
   border-bottom-left-radius: 0.7rem;
   border-bottom-right-radius: 0.7rem;
-  border-top-right-radius: 0.7rem;
 }
-.CreateFormHolder{
+.CreateFormHolder {
   height: calc(100vh - 14.5rem);
 }
 
+.WhiteBackground {
+  background-color: #fff;
+  padding: 1rem;
+}
+
+.MSAAdd{
+  margin: 0rem 1rem 1rem 1rem;
+  border: 1px solid blue;
+  padding: 1rem 1rem 1rem 1rem;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Inliner{
+  display: inline;
+}
+
+.MSAApp{
+  margin: 0rem 0rem 1.5rem 1rem;
+}
 .BackDiv img {
   display: inline;
 }
@@ -44,6 +68,11 @@
 .BackDiv {
   display: inline;
   color: black;
+}
+
+.CenterForm {
+  margin: auto;
+  width: 70%;
 }
 
 .BackDiv p {
@@ -63,7 +92,6 @@
   display: grid;
   gap: 1rem;
 }
-
 
 .ModalFormInputsBasic input::placeholder {
   color: gray;
@@ -146,7 +174,8 @@
 
 .EnvVarsTable table td img:hover {
   /* cursor: pointer; */
-  filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(180deg) brightness(119%) contrast(5%);
+  filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(180deg)
+    brightness(119%) contrast(5%);
 }
 
 .EnvVarsTable thead,
@@ -184,7 +213,7 @@
 }
 
 .ModalFormInputs::-webkit-scrollbar-track {
-  background: var( --gray-bg-light-color);
+  background: var(--gray-bg-light-color);
 }
 
 .ModalFormInputs::-webkit-scrollbar-thumb {
@@ -291,16 +320,14 @@
   font-size: 1.5rem;
 }
 
-
 .FormHeading {
-  padding: .3rem 0rem;
+  padding: 0.3rem 0rem;
   font-weight: 600;
 }
 
 .ErrorOnWhite {
   width: 100%;
 }
-
 
 .ClusterSelectionSection {
   display: flex;
@@ -321,7 +348,6 @@
   justify-content: center;
   align-items: flex-start;
 }
-
 
 .ClusterToggleSection {
   display: flex;
@@ -352,7 +378,6 @@ li.ListStyle {
   display: grid;
   grid-template-columns: 1fr 3fr;
   width: fit-content;
-
 }
 
 .ClusterLabel {
@@ -361,15 +386,16 @@ li.ListStyle {
 }
 
 .DeploymentMethodTabs {
-  padding: 0.5rem 0 0rem 0rem;
+  padding: 1rem 0rem 0rem 0rem;
   display: flex;
   flex-direction: row;
   gap: 2rem;
+  justify-content: space-between;
 }
 
 .CurrentTab {
   background-color: #ffffff;
-  padding: 0.5rem;
+  padding: 1rem 0.5rem;
   font-weight: bold;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
@@ -383,6 +409,7 @@ li.ListStyle {
 .Tab {
   padding: 0.5rem;
   font-weight: bold;
+  line-height: 2.6;
 }
 
 .ButtonSection {
@@ -402,7 +429,7 @@ li.ListStyle {
   }
 
   .MainContentSection {
-    background-color: var( --gray-bg-light-color);
+    background-color: var(--gray-bg-light-color);
     flex-direction: column;
     display: flex;
     flex-shrink: 0;

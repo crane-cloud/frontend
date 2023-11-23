@@ -1,5 +1,5 @@
 .attentionNotice{
-   width: 100%;
+   width: -webkit-fill-available;
    display: flex;
    flex-direction: column;
    background-color: #F9CD6E;
