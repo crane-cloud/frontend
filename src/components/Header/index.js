@@ -29,6 +29,10 @@ const Header = (props) => {
     }
   };
 
+  const handleArrowClick = () => {
+    setHidden(!hidden);
+  };
+
   const pageUrl = matchPath(match.path, {
     path: "/login",
     exact: true,
@@ -82,7 +86,8 @@ const Header = (props) => {
               <div className={styles.UserNames}>{displayName}</div>
             </>
 
-            <DownArrow className={styles.DropdownArrowSvg} />
+            <DownArrow className={`${styles.DropdownArrowSvg} ${hidden ? styles.rotate180 : ''}`}  onClick={handleArrowClick} />
+      
             {hidden && (
               <div className={styles.BelowHeader}>
                 <Link to={`/profile`} className={styles.UserInformation}>
