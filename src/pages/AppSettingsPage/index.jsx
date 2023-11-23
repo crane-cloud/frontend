@@ -76,8 +76,8 @@ class AppSettingsPage extends React.Component {
       revisingApp: false,
       revisingAppError: "",
       showAppDisableModal: false,
-      appDisableProgress:false,
-      appDisableFailError:""
+      appDisableProgress: false,
+      appDisableFailError: "",
     };
 
     this.handleDeleteApp = this.handleDeleteApp.bind(this);
@@ -163,8 +163,6 @@ class AppSettingsPage extends React.Component {
     this.updatePage();
   }
 
-  
-
   getAppRevisionDetails() {
     const {
       match: { params },
@@ -234,46 +232,50 @@ class AppSettingsPage extends React.Component {
     });
   }
 
-  // componentDidUpdate(prevProps) {
-  //   const {
-  //     isDeleted,
-  //     isUpdated,
-  //     getSingleApp,
-  //     clearUpdateAppState,
-  //     clearUrlRevertState,
-  //     isUpdating,
-  //     isReverted,
-  //     match: { params },
-  //   } = this.props;
+  componentDidUpdate(prevProps) {
+    console.log("Props:", this.props);
+    console.log("State:", this.state);
+    const {
+      isDeleted,
+      isUpdated,
+      getSingleApp,
+      clearUpdateAppState,
+      clearUrlRevertState,
+      isUpdating,
+      isReverted,
+      match: { params },
+    } = this.props;
 
-  //   const { updating_command, updating_form, updating_port } = this.state;
+    const { updating_command, updating_form, updating_port } = this.state;
 
-  //   if (isDeleted !== prevProps.isDeleted) {
-  //     this.hideDeleteAlert();
-  //   }
+    console.log("Params:", params);
 
-  //   if (
-  //     isUpdated !== prevProps.isUpdated ||
-  //     isReverted !== prevProps.isReverted
-  //   ) {
-  //     clearUpdateAppState();
-  //     clearUrlRevertState();
-  //     getSingleApp(params.appID);
-  //     window.location.reload();
-  //   }
+    if (isDeleted !== prevProps.isDeleted) {
+      this.hideDeleteAlert();
+    }
 
-  //   if (isUpdating !== prevProps.isUpdating) {
-  //     if (updating_command && !isUpdating) {
-  //       this.setState({ updating_command: false });
-  //     }
-  //     if (updating_port && !isUpdating) {
-  //       this.setState({ updating_port: false });
-  //     }
-  //     if (updating_form && !isUpdating) {
-  //       this.setState({ updating_form: false });
-  //     }
-  //   }
-  // }
+    if (
+      isUpdated !== prevProps.isUpdated ||
+      isReverted !== prevProps.isReverted
+    ) {
+      clearUpdateAppState();
+      clearUrlRevertState();
+      getSingleApp(params.appID);
+      window.location.reload();
+    }
+
+    if (isUpdating !== prevProps.isUpdating) {
+      if (updating_command && !isUpdating) {
+        this.setState({ updating_command: false });
+      }
+      if (updating_port && !isUpdating) {
+        this.setState({ updating_port: false });
+      }
+      if (updating_form && !isUpdating) {
+        this.setState({ updating_form: false });
+      }
+    }
+  }
 
   getAppName(id) {
     const { apps } = this.props;
@@ -375,12 +377,11 @@ class AppSettingsPage extends React.Component {
     const { appDetail } = this.state;
     const { appID } = params;
     const keyToRemove = Object.keys(appDetail.env_vars)[index];
-  
+
     await updateApp(appID, { delete_env_vars: [keyToRemove] });
-  
+
     this.updatePage();
   }
-  
 
   togglePrivateImage() {
     const { isPrivateImage } = this.state;
@@ -604,7 +605,7 @@ class AppSettingsPage extends React.Component {
   hideDomainModal() {
     this.setState({ domainModal: false });
   }
-  showDisableModal(){
+  showDisableModal() {
     this.setState({ showAppDisableModal: true });
   }
 
@@ -633,14 +634,14 @@ class AppSettingsPage extends React.Component {
     const { appID } = this.props.match.params;
     //console.log(appID);
     //console.log(this.props.match.params);
-    this.props.history.push(`/apps/${appID}/webhook`)
+    this.props.history.push(`/apps/${appID}/webhook`);
     // history.push(`/app/${appID}`);
   };
 
   handleEnableButtonClick = async () => {
     const { app } = this.props;
     let app_id = app?.id;
-    this.setState({appDisableProgress:true, appDisableFailError:""})
+    this.setState({ appDisableProgress: true, appDisableFailError: "" });
 
     try {
       if (app.disabled) {
@@ -672,9 +673,11 @@ class AppSettingsPage extends React.Component {
       }
     } catch (error) {
       //console.error("API call error:", error);
-      this.setState({appDisableFailError:"Request failed, please try again later"})
+      this.setState({
+        appDisableFailError: "Request failed, please try again later",
+      });
     } finally {
-      this.setState({appDisableProgress:false})
+      this.setState({ appDisableProgress: false });
     }
   };
 
@@ -922,9 +925,7 @@ class AppSettingsPage extends React.Component {
                                 <PrimaryButton
                                   className={styles.RevertButton}
                                   onClick={this.domainRevert}
-                                  disabled={
-                                    urlReverted
-                                  }
+                                  disabled={urlReverted}
                                 >
                                   {isReverting ? <Spinner /> : "REVERT"}
                                 </PrimaryButton>
@@ -1011,7 +1012,9 @@ class AppSettingsPage extends React.Component {
                     <div className={styles.APPButtonRow}>
                       <div className={styles.AppLabel}>Internal URL</div>
                       <div className={styles.CopyDiv}>
-                        <div className="DBTDetail">{appDetail.internal_url}</div>
+                        <div className="DBTDetail">
+                          {appDetail.internal_url}
+                        </div>
                         <div className={styles.CopyUrl}>
                           <CopyText onClick={this.internalUrlOnClick} />
                           {internalUrlChecked ? <Checked /> : null}
@@ -1319,7 +1322,9 @@ class AppSettingsPage extends React.Component {
                       <div className={styles.MemberTableRow}>
                         <div className={styles.SettingsSectionInfo}>
                           <div className="SubTitle">Set up CI/CD</div>
-                          <div>Set  up Continous Integration for you application.</div>
+                          <div>
+                            Set up Continous Integration for you application.
+                          </div>
                         </div>
                         <div className={styles.SectionButtons}>
                           <PrimaryButton
@@ -1342,12 +1347,12 @@ class AppSettingsPage extends React.Component {
                               : "Prevent App from being billed by blocking access to it's resources."}
                           </div>
                         </div>
-                   
+
                         <div className={styles.SectionButtons}>
                           <PrimaryButton
-                            onClick={(e)=> {
-                              e.preventDefault()
-                              this.showDisableModal()
+                            onClick={(e) => {
+                              e.preventDefault();
+                              this.showDisableModal();
                             }}
                             small
                             color={app?.disabled ? "primary" : "red"}
@@ -1379,20 +1384,24 @@ class AppSettingsPage extends React.Component {
                   <div className={styles.AppDeleteModel}>
                     <Modal
                       showModal={showAppDisableModal}
-                      onClickAway={() => {this.setState({showAppDisableModal:false})}}
+                      onClickAway={() => {
+                        this.setState({ showAppDisableModal: false });
+                      }}
                     >
                       <div className={styles.DeleteAppModel}>
                         <div className={styles.DeleteModalUpperSection}>
                           <div className={styles.WarningContainer}>
                             <div className={styles.DeleteDescription}>
-                             {` Are you sure you want to ${app?.disabled ? "enable": "disable"  }  `}
+                              {` Are you sure you want to ${
+                                app?.disabled ? "enable" : "disable"
+                              }  `}
                               <span>{app.name}</span>
                               &nbsp;?
                             </div>
                             <div className={styles.DeleteSubDescription}>
-                            {app?.disabled
-                              ? "Allow access to App resources and enable billing"
-                              : "Prevent App from being billed by blocking access to it's resources."}
+                              {app?.disabled
+                                ? "Allow access to App resources and enable billing"
+                                : "Prevent App from being billed by blocking access to it's resources."}
                             </div>
                           </div>
                         </div>
@@ -1401,7 +1410,9 @@ class AppSettingsPage extends React.Component {
                           <div className={styles.DeleteAppModelButtons}>
                             <PrimaryButton
                               className="CancelBtn"
-                              onClick={() => {this.setState({showAppDisableModal:false })}}
+                              onClick={() => {
+                                this.setState({ showAppDisableModal: false });
+                              }}
                             >
                               Cancel
                             </PrimaryButton>
@@ -1411,7 +1422,11 @@ class AppSettingsPage extends React.Component {
                               disabled={this.state.appDisableProgress}
                               onClick={this.handleEnableButtonClick}
                             >
-                              {this.state.appDisableProgress ? <Spinner /> : "Confirm"}
+                              {this.state.appDisableProgress ? (
+                                <Spinner />
+                              ) : (
+                                "Confirm"
+                              )}
                             </PrimaryButton>
                           </div>
 

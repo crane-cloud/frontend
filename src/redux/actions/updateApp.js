@@ -19,7 +19,7 @@ export const updateAppFail = (error) => ({
   type: UPDATE_APP_FAIL,
   payload: {
     status: false,
-    errorCode: error.response.status,
+    errorCode: error,
   },
 });
 
