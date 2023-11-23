@@ -10,6 +10,8 @@ const BlackInputText = ({
   value,
   required,
   type,
+  readOnly,
+  onFocus,
 }) => (
   <input
     className={`BlackInputText ${className}`}
@@ -20,6 +22,8 @@ const BlackInputText = ({
     onChange={(e) => {
       onChange(e);
     }}
+    readOnly={readOnly}
+    onFocus={onFocus}
   />
 );
 
@@ -29,6 +33,7 @@ BlackInputText.propTypes = {
   placeholder: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   required: PropTypes.bool,
+  readOnly: PropTypes.bool,
   type: PropTypes.string,
 };
 
@@ -36,6 +41,7 @@ BlackInputText.defaultProps = {
   value: "",
   required: false,
   type: "text",
+  readOnly: false,
 };
 
 export default BlackInputText;

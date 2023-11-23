@@ -10,10 +10,18 @@
 }
 
 .ErrorMessage {
-  /* margin-left: 15px;  */
   color: red; 
   font-size: 0.9rem;
   margin-right: 15px;
+}
+.SelectedDates{
+ color: var(--primary-color);
+ 
+}
+
+.SelectedContainer{
+ display: flex;
+ align-items: center;
 }
 
 @media (min-width:1366px) {

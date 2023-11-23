@@ -53,6 +53,7 @@
   right: -18rem;
   z-index: 3;
   width: 21rem;
+  border-radius: 0.6rem;
 }
 
 @media (max-width: 650px) {

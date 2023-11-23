@@ -90,73 +90,118 @@ class DatabaseList extends React.Component {
             btnAction={this.showCreateComponent}
             name={getProjectName(projects, params.projectID)}
           >
-            {isFetchingDatabases ? (
-              <div className={styles.NoResourcesMessageSection}>
-                <div className={styles.SpinnerWrapper}>
-                  <Spinner size="big" />
-                </div>
-              </div>
-            ) : (
-              databasesFetched &&
-              databases.length > 0 && (
-                <div className={`${styles.DatabaseTable} MetricsCardContainer`}>
-                  <div
-                    className={`${styles.DatabaseTableRow} CardHeaderSection`}
-                  >
-                    <div className={styles.DatabaseTableHead}>Type</div>
-                    <div className={styles.DatabaseTableHead}>Name</div>
-                    <div className={styles.DatabaseTableHead}>Host</div>
-                    <div className={styles.DatabaseTableHead}>Status</div>
-                    <div className={styles.DatabaseTableHead}>Age</div>
-                  </div>
-                  {databasesFetched &&
+            <div
+              className={
+                isFetchingDatabases
+                  ? "ResourcesTable LoadingResourcesTable"
+                  : "ResourcesTable"
+              }
+            >
+            {databases.length > 0 ? (
+              <table className="PodsTable">
+                <thead className="uppercase">
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Host</th>
+                    <th>Status</th>
+                    <th>Age</th>
+                  </tr>
+                </thead>
+                {isFetchingDatabases ? (
+                  <tbody>
+                    <tr className="TableLoading">
+                      <td className="TableTdSpinner">
+                        <div className="SpinnerWrapper">
+                          <Spinner size="big" />
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                ) : (
+                  <tbody>
+                    {databasesFetched &&
                     sortedDbs !== undefined &&
                     sortedDbs.map((database, index) => (
-                      <div className={styles.DatabaseBody} key={index}>
-                        <Link
-                          to={{
-                            pathname: `/projects/${projectID}/databases/${database.id}/settings`,
-                          }}
-                          key={database.id}
-                          className={styles.DatabaseTableRow}
-                        >
-                          <div className={styles.DatabaseTableCell}>
-                            {database.database_flavour_name}
-                          </div>
-                          <div className={styles.DatabaseTableCell}>
-                            {database.name}
-                          </div>
-                          <div className={styles.DatabaseTableCell}>
-                            {database.host}
-                          </div>
-                          <div className={styles.DatabaseTableCell}>
-                            <Status status={database.db_status} />
-                          </div>
-                          <div className={styles.DatabaseTableCell}>
-                            {database.age}
-                          </div>
-                        </Link>
-                      </div>
-                    ))}
-                </div>
-              )
-            )}
+                             
+                                <tr key={index}>
 
-            {databasesFetched && databases.length === 0 && (
-              <div className={styles.NoResourcesMessageSection}>
-                <div className={styles.NoResourcesMessage}>
-                  You haven’t created any databases yet.
-                </div>
-                <br></br>
-                <div className={styles.NoResourcesMessage}>
-                  Click the &nbsp;{" "}
-                  <ButtonPlus
-                    className={styles.ButtonPlusSmall}
-                    onClick={this.showCreateComponent}
-                  />{" "}
-                  &nbsp; button to create one.
-                </div>
-              </div>
+                                    <td>
+                                    <Link
+                                        to={`/projects/${projectID}/databases/${database.id}/settings`}
+                                        className={styles.DatabaseLink}
+                                      >
+                                        {database.database_flavour_name}
+                                      </Link>
+                                    </td>
+                                    <td>
+                                      <Link
+                                        to={`/projects/${projectID}/databases/${database.id}/settings`}
+                                        className={styles.DatabaseLink}
+                                      >
+                                        {database.name}
+                                      </Link>
+                                    </td>
+                                    <td>
+                                      <Link
+                                        to={`/projects/${projectID}/databases/${database.id}/settings`}
+                                        className={styles.DatabaseLink}
+                                      >
+                                        {database.host}
+                                      </Link>
+                                    </td>
+                                    <td>
+                                      <Link
+                                        to={`/projects/${projectID}/databases/${database.id}/settings`}
+                                        className={styles.DatabaseLink}
+                                      >
+                                        <Status status={database.db_status} />
+                                      </Link>
+                                    </td>
+                                    <td>
+                                      <Link
+                                        to={`/projects/${projectID}/databases/${database.id}/settings`}
+                                        className={styles.DatabaseLink}
+                                      >
+                                        {database.age}
+                                      </Link>
+                                    </td>
+
+                                </tr>
+                      ))}                          
+                  </tbody>
+                )}
+              </table>
+            ) : (
+              <table className="PodsTable">
+                {isFetchingDatabases ? (
+                  <tbody>
+                    <tr className="TableLoading">
+                      <td className="TableTdSpinner">
+                        <div className="SpinnerWrapper">
+                          <Spinner size="big" />
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                ) : (
+                databasesFetched && databases.length === 0 && (
+                  <div className={styles.NoResourcesMessageSection}>
+                    <div className={styles.NoResourcesMessage}>
+                      You haven’t created any databases yet.
+                    </div>
+                    <br></br>
+                    <div className={styles.NoResourcesMessage}>
+                      Click the &nbsp;{" "}
+                      <ButtonPlus
+                        className={styles.ButtonPlusSmall}
+                        onClick={this.showCreateComponent}
+                      />{" "}
+                      &nbsp; button to create one.
+                    </div>
+                  </div>
+                ))}
+              </table>
             )}
 
             {!isFetchingDatabases && !databasesFetched && (
@@ -164,6 +209,8 @@ class DatabaseList extends React.Component {
                 Oops! Something went wrong! Failed to retrieve Databases.
               </div>
             )}
+            </div>
+                       
           </DashboardLayout>
         )}
       </div>
