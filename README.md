@@ -7,12 +7,13 @@ Crane Cloud is an open source multi-cloud software platform for cloud-native app
 [![Staging deployment](https://github.com/crane-cloud/frontend/actions/workflows/staging.yml/badge.svg)](https://github.com/crane-cloud/frontend/actions/workflows/staging.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/afca0db82a7d7ced4a39/maintainability)](https://codeclimate.com/github/crane-cloud/frontend/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/afca0db82a7d7ced4a39/test_coverage)](https://codeclimate.com/github/crane-cloud/frontend/test_coverage)
+
 ## Setup
 
 1.  `git clone https://github.com/crane-cloud/frontend.git`.
 2.  `yarn`
 3.  Create a `.env` file in your root directory based off of the `.env.example` file and added all required enviroment variables.
-4.  Run the `source .env` command
+4.  Run the `source .env` command 
 5.  Run `yarn start` to start the application
 
 ## Tools
