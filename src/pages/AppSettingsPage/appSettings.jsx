@@ -250,7 +250,7 @@ const AppSettingsPage = () => {
     const projectID = app.project_id;
     let updatePayload = {};
 
-    if (port.toString() !== app.port.toString()) {
+    if (port !== "" && port.toString() !== app.port.toString()) {
       updatePayload = { ...updatePayload, port: parseInt(port, 10) };
     }
 

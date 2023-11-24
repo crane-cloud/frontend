@@ -232,50 +232,50 @@ class AppSettingsPage extends React.Component {
     });
   }
 
-  componentDidUpdate(prevProps) {
-    console.log("Props:", this.props);
-    console.log("State:", this.state);
-    const {
-      isDeleted,
-      isUpdated,
-      getSingleApp,
-      clearUpdateAppState,
-      clearUrlRevertState,
-      isUpdating,
-      isReverted,
-      match: { params },
-    } = this.props;
+  // componentDidUpdate(prevProps) {
+  //   console.log("Props:", this.props);
+  //   console.log("State:", this.state);
+  //   const {
+  //     isDeleted,
+  //     isUpdated,
+  //     getSingleApp,
+  //     clearUpdateAppState,
+  //     clearUrlRevertState,
+  //     isUpdating,
+  //     isReverted,
+  //     match: { params },
+  //   } = this.props;
 
-    const { updating_command, updating_form, updating_port } = this.state;
+  //   const { updating_command, updating_form, updating_port } = this.state;
 
-    console.log("Params:", params);
+  //   console.log("Params:", params);
 
-    if (isDeleted !== prevProps.isDeleted) {
-      this.hideDeleteAlert();
-    }
+  //   if (isDeleted !== prevProps.isDeleted) {
+  //     this.hideDeleteAlert();
+  //   }
 
-    if (
-      isUpdated !== prevProps.isUpdated ||
-      isReverted !== prevProps.isReverted
-    ) {
-      clearUpdateAppState();
-      clearUrlRevertState();
-      getSingleApp(params.appID);
-      window.location.reload();
-    }
+  //   if (
+  //     isUpdated !== prevProps.isUpdated ||
+  //     isReverted !== prevProps.isReverted
+  //   ) {
+  //     clearUpdateAppState();
+  //     clearUrlRevertState();
+  //     getSingleApp(params.appID);
+  //     window.location.reload();
+  //   }
 
-    if (isUpdating !== prevProps.isUpdating) {
-      if (updating_command && !isUpdating) {
-        this.setState({ updating_command: false });
-      }
-      if (updating_port && !isUpdating) {
-        this.setState({ updating_port: false });
-      }
-      if (updating_form && !isUpdating) {
-        this.setState({ updating_form: false });
-      }
-    }
-  }
+  //   if (isUpdating !== prevProps.isUpdating) {
+  //     if (updating_command && !isUpdating) {
+  //       this.setState({ updating_command: false });
+  //     }
+  //     if (updating_port && !isUpdating) {
+  //       this.setState({ updating_port: false });
+  //     }
+  //     if (updating_form && !isUpdating) {
+  //       this.setState({ updating_form: false });
+  //     }
+  //   }
+  // }
 
   getAppName(id) {
     const { apps } = this.props;
