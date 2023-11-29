@@ -21,6 +21,7 @@ import { validateName } from "../../helpers/validation";
 import MiraPage from "../../pages/MiraPage";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
+import AttentionComponent from "../attentionComponent"
 
 // const dockerEmail = process.env.REACT_APP_DOCKER_EMAIL;
 // const dockerPassword = process.env.REACT_APP_DOCKER_PASSWORD;
@@ -88,6 +89,8 @@ class CreateApp extends React.Component {
       instanceNameValues: {},
     };
 
+    this.myRef = React.createRef();
+
     this.addEnvVar = this.addEnvVar.bind(this);
     this.handleVarValueOtherAppsChange =
       this.handleVarValueOtherAppsChange.bind(this);
@@ -149,8 +152,11 @@ class CreateApp extends React.Component {
     this.setState({ currentDeploymentMethod: "microservice" });
   }
 
-  // componentDidMount() {
-  // }
+  componentDidMount() {
+    if (this.myRef.current) {
+      this.myRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
 
   componentDidUpdate(prevProps) {
     const {
@@ -565,6 +571,7 @@ class CreateApp extends React.Component {
           {addingApp ? <Spinner /> : "deploy"}
         </PrimaryButton>
         {/* <button onClick={this.addInstance}>Add New Instance</button> */}
+        
       </div>
     );
   };
@@ -1126,7 +1133,7 @@ class CreateApp extends React.Component {
     ];
 
     return (
-      <div className={styles.CenterForm}>
+      <div ref={this.myRef} className={styles.CenterForm}>
         <div className={styles.DeploymentMethodTabs}>
           <span
             className={
@@ -1507,6 +1514,7 @@ class CreateApp extends React.Component {
                     {addingApp ? <Spinner /> : "deploy"}
                   </PrimaryButton>
                 </div>
+                <AttentionComponent/>
               </div>
             </div>
           </div>

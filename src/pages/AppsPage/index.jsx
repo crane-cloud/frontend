@@ -73,7 +73,6 @@ class AppsPage extends React.Component {
             showBtn
             buttontext="Close"
             btntype="close"
-            appsWarning= {true}
             btnAction={this.hideForm}
           >
             <CreateApp params={params} />
@@ -85,7 +84,6 @@ class AppsPage extends React.Component {
             showBtn
             buttontext="+ New App"
             showSearchBar
-            appsWarning= {true}
             placeholder="Search through apps"
             searchAction={this.handleCallbackSearchword}
             btnAction={this.showForm}
