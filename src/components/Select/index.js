@@ -70,7 +70,7 @@ const Select = ({
       </div>
       {showOptions && (
         <div className="SelectOptionsWrapper">
-          {options.map((option) => (
+          {options?.map((option) => (
             <div
               key={option.id}
               className="SelectOption"
