@@ -268,7 +268,11 @@ class CreateApp extends React.Component {
       return instance;
     });
 
-    this.setState({ formInstances: updatedInstances });
+    this.setState({
+      formInstances: updatedInstances,
+      varName: "",
+      varValue: "",
+    });
   };
 
   removeMicroserviceEnvVar = (instanceId, varNameToRemove) => {
@@ -1080,26 +1084,25 @@ class CreateApp extends React.Component {
         dependant_env_vars: data.otherAppEnvVars,
       })),
     };
-    console.log(payload);
-    // this.setState({
-    //   addingApp: true,
-    //   addAppError: "",
-    // });
-    // handlePostRequestWithOutDataObject(
-    //   payload,
-    //   `/projects/${params?.projectID}/apps`
-    // )
-    //   .then(() => {
-    //     window.location.href = `/projects/${params?.projectID}/apps`;
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     this.setState({
-    //       addAppError: "Failed to add Apps. Try again later",
-    //       addingApp: false,
-    //       addErrorCode: error.response?.status,
-    //     });
-    //   });
+    this.setState({
+      addingApp: true,
+      addAppError: "",
+    });
+    handlePostRequestWithOutDataObject(
+      payload,
+      `/projects/${params?.projectID}/apps`
+    )
+      .then(() => {
+        window.location.href = `/projects/${params?.projectID}/apps`;
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          addAppError: "Failed to add Apps. Try again later",
+          addingApp: false,
+          addErrorCode: error.response?.status,
+        });
+      });
   };
 
   createNewApp(data, projectID) {
