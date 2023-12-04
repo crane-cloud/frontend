@@ -2,7 +2,7 @@
    width: -webkit-fill-available;
    display: flex;
    flex-direction: column;
-   background-color: #F9CD6E;
+   background-color: #dcd7d7;
    color: #000;
    font-weight: 400;
    font-size: 0.9rem;
@@ -14,7 +14,7 @@
     font-size: 1rem;
 }
 .commandFormatter {
-    background: #f4e6c7;;
+    background: #cac8c6;;
     padding: 0.1rem;
     width: fit-content;
     border-radius: 4px;

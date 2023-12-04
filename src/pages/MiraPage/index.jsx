@@ -11,6 +11,7 @@ import Spinner from "../../components/Spinner";
 import { retrieveFrameworkChoices } from "../../helpers/frameworkChoices";
 import { retrieveRegistryChoices } from "../../helpers/registryChoices";
 
+
 const MiraPge = ({ projectID }) => {
   const frameworks = retrieveFrameworkChoices();
   const registries = retrieveRegistryChoices();

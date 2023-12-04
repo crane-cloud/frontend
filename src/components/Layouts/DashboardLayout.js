@@ -3,10 +3,10 @@ import Header from "../Header";
 import InformationBar from "../InformationBar";
 import SideBar from "../SideBar";
 import "./Layouts.css";
-import AttentionComponent from "../attentionComponent";
+
 
 const DashboardLayout = (props) => {
-  const { children, name, credits, header, short = false, appsWarning = false } = props;
+  const { children, name, credits, header, short = false, } = props;
   return (
     <div className="DashboardPage">
       <div className="DashboardTopBarSection">
@@ -19,7 +19,7 @@ const DashboardLayout = (props) => {
         <div className="DashboardMainContentSection">
           <div className="informationBarContainer">
             <InformationBar header={header} {...props} />
-           { appsWarning && <AttentionComponent/>}
+           
           </div>
           
           <div

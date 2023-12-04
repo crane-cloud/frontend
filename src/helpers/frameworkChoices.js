@@ -5,7 +5,7 @@ export const retrieveFrameworkChoices = () => {
     { id: 3, name: "NodeJs", value: "NodeJS" },
     { id: 4, name: "Flask", value: "Flask" },
     { id: 5, name: "Django", value: "Django" },
-    { id: 6, name: "Laravel", value: "Laravel" },
+    // { id: 6, name: "Laravel", value: "Laravel" }, having trouble with laravel versions being updated rapidly
     { id: 7, name: "Laravel-custom", value: "Laravel-custom" },
   ];
 
