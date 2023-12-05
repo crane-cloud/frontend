@@ -11,6 +11,7 @@ import userProfleStyles from "../UserProfile/UserProfile.module.css";
 import "./AdminDatabaseDetails.css";
 import Spinner from "../Spinner";
 import AppFooter from "../appFooter";
+import SettingsActionRow from "../SettingsActionRow";
 
 const AdminDatabaseDetails = () => {
   const { databaseID } = useParams();
@@ -153,25 +154,12 @@ const AdminDatabaseDetails = () => {
                       <div className="SectionTitle">Manage Database</div>
                       <div className="ProjectInstructions">
                         <div className="MemberBody">
-                          <div className="MemberTableRow">
-                            <div className="SettingsSectionRow">
-                              <div className="SubTitle">
-                                Disable Database
-                                <br />
-                                <div className="SubTitleContent">
-                                  This will temporary disable the database.
-                                </div>
-                              </div>
-                              <div className="SectionButtons">
-                                <PrimaryButton
-                                  color="red-outline"
-                                  //onClick={this.showDisableAlert}
-                                >
-                                  Disable
-                                </PrimaryButton>
-                              </div>
-                            </div>
-                          </div>
+                          <SettingsActionRow 
+                            title="Disable Database"
+                            content="This will temporarily disable the database."
+                            buttonLabel="Disable"
+                            buttonColor="red"
+                          />
                         </div>
                       </div>
                     </div>

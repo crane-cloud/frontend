@@ -521,6 +521,7 @@ const AppSettingsPage = () => {
                       title="Setup CI/CD"
                       content="Setup continuous integration for your application"
                       buttonLabel="Set up CI/CD"
+                      buttonColor="primary"
                       onButtonClick={handleCIClick}
                     />
                     <SettingsActionRow
