@@ -25,7 +25,12 @@ import AttentionComponent from "../attentionComponent"
 
 // const dockerEmail = process.env.REACT_APP_DOCKER_EMAIL;
 // const dockerPassword = process.env.REACT_APP_DOCKER_PASSWORD;
-
+const replicaOptions = [
+  { id: 1, name: "1" },
+  { id: 2, name: "2" },
+  { id: 3, name: "3" },
+  { id: 4, name: "4" },
+];
 class CreateApp extends React.Component {
   constructor(props) {
     super(props);
@@ -83,6 +88,7 @@ class CreateApp extends React.Component {
             currentDeploymentMethod: "default",
             domainName: "",
             selectedInstance: "",
+            replicas: 1,
           },
         },
       ],
@@ -124,7 +130,9 @@ class CreateApp extends React.Component {
     this.handleNewChange = this.handleNewChange.bind(this);
     this.addInstance = this.addInstance.bind(this);
     this.deleteInstance = this.deleteInstance.bind(this);
+    this.handleReplicasChange = this.handleReplicasChange.bind(this);
   }
+
   handleOnChange(position) {
     const { SelectedClusters } = this.state;
     this.setState({
@@ -248,12 +256,12 @@ class CreateApp extends React.Component {
   }
 
   addMicroserviceEnvVar = (instanceId) => {
-    const { formInstances } = this.state;
+    let { formInstances } = this.state;
 
     const updatedInstances = formInstances.map((instance) => {
       if (instance.id === instanceId) {
-        const { varName, varValue } = instance.formData;
-        const updatedEnvVars = {
+        let { varName, varValue } = instance.formData;
+        let updatedEnvVars = {
           ...instance.formData.envVars,
           [varName]: varValue,
         };
@@ -266,7 +274,11 @@ class CreateApp extends React.Component {
       return instance;
     });
 
-    this.setState({ formInstances: updatedInstances });
+    this.setState({
+      formInstances: updatedInstances,
+      varName: "",
+      varValue: "",
+    });
   };
 
   removeMicroserviceEnvVar = (instanceId, varNameToRemove) => {
@@ -592,10 +604,29 @@ class CreateApp extends React.Component {
     }));
   };
 
+  handleReplicasChange = (selectedOption, instanceId) => {
+    const { formInstances } = this.state;
+
+    const updatedInstances = formInstances.map((instance) => {
+      if (instance.id === instanceId) {
+        return {
+          ...instance,
+          formData: {
+            ...instance.formData,
+            replicas: selectedOption.id,
+          },
+        };
+      }
+      return instance;
+    });
+
+    this.setState({ formInstances: updatedInstances });
+  };
+
   renderInnerForm = (instanceId) => {
     const { formInstances } = this.state;
 
-    const {
+    let {
       name,
       uri,
       isPrivateImage,
@@ -610,7 +641,8 @@ class CreateApp extends React.Component {
       varValueOtherApps,
       varValue,
       envVars,
-      otherAppEnvVars
+      otherAppEnvVars,
+      replicas,
     } =
       formInstances.find((instance) => instance.id === instanceId)?.formData ||
       {};
@@ -641,8 +673,10 @@ class CreateApp extends React.Component {
             <div className={styles.ReplicasSelect}>
               <Select
                 placeholder="Number of Replicas - defaults to 1"
-                // options={replicaOptions}
-                onChange={this.handleSelectReplicas}
+                options={replicaOptions}
+                onChange={(selectedOption) =>
+                  this.handleReplicasChange(selectedOption, instanceId)
+                }
               />
             </div>
 
@@ -1025,6 +1059,7 @@ class CreateApp extends React.Component {
       const filteredData = {};
 
       if (formData.name) filteredData.name = formData.name;
+      if (formData.replicas) filteredData.replicas = formData.replicas;
       if (formData.uri) filteredData.uri = formData.uri;
       if (formData.isPrivateImage)
         filteredData.isPrivateImage = formData.isPrivateImage;
@@ -1124,13 +1159,6 @@ class CreateApp extends React.Component {
       addAppError,
       passwordShown,
     } = this.state;
-
-    const replicaOptions = [
-      { id: 1, name: "1" },
-      { id: 2, name: "2" },
-      { id: 3, name: "3" },
-      { id: 4, name: "4" },
-    ];
 
     return (
       <div ref={this.myRef} className={styles.CenterForm}>
