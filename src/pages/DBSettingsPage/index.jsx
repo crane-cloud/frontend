@@ -19,7 +19,7 @@ import BlackInputText from "../../components/BlackInputText";
 import "./DBSettingsPage.css";
 import { getProjectName } from "../../helpers/projectName";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
-import styles from "../ProjectSettingsPage/ProjectSettingsPage.module.css";
+import SettingsActionRow from "../../components/SettingsActionRow/index.jsx";
 
 class DBSettingsPage extends React.Component {
   constructor(props) {
@@ -645,96 +645,58 @@ class DBSettingsPage extends React.Component {
                 </div>
               )}
             </div>
-            <div className="DBSections">
-              <div className="SectionTitle">More Options</div>
-              <div className={styles.ProjectInstructions}>
-                <div className={styles.MemberBody}>
-                  <div className={styles.MemberTableRow}>
-                    <div className={styles.SettingsSectionInfo}>
-                      <div className="SubTitle">Change password</div>
-                      <div>Update the password of this database.</div>
-                    </div>
-                    <div className={styles.SectionButtons}>
-                      <PrimaryButton
-                        onClick={this.showUpdateModal}
-                        small={true}
-                        color="primary-outline"
-                      >
-                        Change Password
-                      </PrimaryButton>
-                    </div>
-                  </div>
-                  <div className={styles.MemberTableRow}>
-                    <div className={styles.SettingsSectionInfo}>
-                      <div className="SubTitle">Reset database</div>
-                      <div>
-                        Delete all data inside this database and restore it to
-                        its initial state.
-                      </div>
-                    </div>
-                    <div className={styles.SectionButtons}>
-                      <PrimaryButton
-                        onClick={this.showResetAlert}
-                        small={true}
-                        color="red-outline"
-                      >
-                        Reset
-                      </PrimaryButton>
-                    </div>
-                  </div>
-                  {resettingDBError === "" && resettingResponseCode === 200 && (
-                    <Feedback
-                      message={"Database has been successfully reset."}
-                      type={"success"}
-                    />
-                  )}
-                  {resettingDBError !== "" && (
-                    <Feedback message={resettingDBError} type={"error"} />
-                  )}
-                  <div className={styles.MemberTableRow}>
-                    <div className={styles.SettingsSectionInfo}>
-                      <div className="SubTitle">
-                        {currentDB?.disabled ? "Enable" : "Disable"} database
-                      </div>
-                      <br />
-                      <div className="SubTitleContent">
-                        {currentDB?.disabled
-                          ? "This will enable this database."
-                          : "This will temporary disable the database."}
-                      </div>
-                    </div>
-                    <div className="SectionButtons">
-                      <PrimaryButton
-                        onClick={this.handleEnableButtonClick}
-                        color={
-                          currentDB?.disabled
-                            ? "primary-outline"
-                            : "red-outline"
-                        }
-                      >
-                        {currentDB?.disabled ? "Enable" : "Disable"}
-                      </PrimaryButton>
-                    </div>
-                  </div>
-                  <div className={styles.MemberTableRow}>
-                    <div className={styles.SettingsSectionInfo}>
-                      <div className="SubTitle">Delete database</div>
-                      <div>
-                        Destroy the entire database, delete all tables and data
-                        inside them.
-                      </div>
-                    </div>
-                    <div className={styles.SectionButtons}>
-                      <PrimaryButton
-                        onClick={this.showDeleteAlert}
-                        small={true}
-                        color="red-outline"
-                      >
-                        Delete
-                      </PrimaryButton>
-                    </div>
-                  </div>
-                </div>
+
+            <div className="SectionTitle">More Options</div>
+            <div className="ProjectInstructions">
+              <div className="MemberBody">
+                <SettingsActionRow
+                  title="Change Password"
+                  content="Update the password of this database."
+                  buttonLabel="Change Password"
+                  buttonColor="primary"
+                  onButtonClick={this.showUpdateModal}
+                />
+
+                <SettingsActionRow
+                  title="Reset Database"
+                  content="Delete all data inside this database and restore it to its initial state."
+                  buttonLabel="Reset"
+                  buttonColor="red"
+                  onButtonClick={this.showResetAlert}
+                />
+
+                {resettingDBError === "" && resettingResponseCode === 200 && (
+                  <Feedback
+                    message={"Database has been successfully reset."}
+                    type={"success"}
+                  />
+                )}
+                {resettingDBError !== "" && (
+                  <Feedback message={resettingDBError} type={"error"} />
+                )}
+
+                <SettingsActionRow
+                  title={
+                    currentDB?.disabled ? "Enable Database" : "Disable Database"
+                  }
+                  content={
+                    currentDB?.disabled
+                      ? "This will enable this database."
+                      : "This will temporary disable the database."
+                  }
+                  buttonLabel={currentDB?.disabled ? "Enable" : "Disable"}
+                  buttonColor={currentDB?.disabled ? "primary" : "red"}
+                  onButtonClick={this.handleEnableButtonClick}
+                />
+
+                <SettingsActionRow
+                  title="Delete Database"
+                  content="Destroy the entire database, delete all tables and data
+                  inside them."
+                  buttonLabel="Delete"
+                  buttonColor="red"
+                  onButtonClick={this.showDeleteAlert}
+                />
               </div>
             </div>
 

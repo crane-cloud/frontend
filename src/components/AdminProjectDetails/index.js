@@ -18,6 +18,7 @@ import Feedback from "../Feedback";
 import NewResourceCard from "../NewResourceCard";
 import { useLocation } from "react-router-dom";
 import AppFooter from "../appFooter";
+import SettingsActionRow from "../SettingsActionRow/index.jsx";
 
 const AdminProjectDetails = () => {
   const clusterID = localStorage.getItem("clusterID");
@@ -299,34 +300,24 @@ const AdminProjectDetails = () => {
                       </>
                     </div>
                   </section>
+
                   <div className="AdminDBSections">
                     <div className="SectionTitle">Manage Project</div>
                     <div className="ProjectInstructions">
                       <div className="MemberBody">
-                        <div className="MemberTableRow">
-                          <div className="SettingsSectionRow">
-                            <div className="SubTitle">
-                              {details?.disabled ? "Enable" : "Disable"} project
-                              <br />
-                              <div className="SubTitleContent">
-                                {details?.disabled
-                                  ? "Enable and make all project resources accessible (apps, and databases) to the user."
-                                  : "Disable and make all project resources inaccessible (apps, and databases) to the user."}
-                              </div>
-                            </div>
-                            <div className="SectionButtons">
-                              <PrimaryButton
-                                color="red-outline"
-                                onClick={handleEnableButtonClick}
-                                className={
-                                  details?.disabled ? "enableBtn" : "disableBtn"
-                                }
-                              >
-                                {details?.disabled ? "Enable" : "Disable"}
-                              </PrimaryButton>
-                            </div>
-                          </div>
-                        </div>
+                        <SettingsActionRow
+                          title={`${
+                            details?.disabled ? "Enable" : "Disable"
+                          } project`}
+                          content={
+                            details?.disabled
+                              ? "Enable and make all project resources accessible (apps, and databases) to the user."
+                              : "Disable and make all project resources inaccessible (apps, and databases) to the user."
+                          }
+                          buttonLabel={details?.disabled ? "Enable" : "Disable"}
+                          buttonColor={details?.disabled ? "primary" : "red"}
+                          onButtonClick={handleEnableButtonClick}
+                        />
                       </div>
                     </div>
                   </div>

@@ -1,8 +1,12 @@
-.DatabaseSettingsInfo{
+.DatabaseSettingsInfo {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   padding-bottom: 2rem;
+}
+
+.DatabaseSettingsInfo .SettingsSectionInfo {
+  padding: 0;
 }
 
 .ErrorOnWhite {
@@ -20,7 +24,7 @@
   align-items: center;
 }
 
-.DatabaseName{
+.DatabaseName {
   font-weight: bold;
 }
 
@@ -66,25 +70,27 @@
 
 .DBIcon {
   display: flex;
-  visibility:hidden;
+  visibility: hidden;
   gap: 0.8rem;
   align-items: center;
   cursor: pointer;
 }
-.DBPasswordBtns{
+
+.DBPasswordBtns {
   display: flex;
   gap: 1rem;
   align-items: center;
-  cursor: pointer; 
+  cursor: pointer;
 }
 
 .DBDetailRow:hover {
   color: var(--secondary-color);
 }
 
-.DBDetailRow:hover .DBIcon{
+.DBDetailRow:hover .DBIcon {
   visibility: visible;
 }
+
 .DBThead {
   font-weight: bold;
 }
@@ -93,7 +99,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer!important;
+  cursor: pointer !important;
   gap: 0.75rem;
 }
 
@@ -127,20 +133,20 @@
   gap: 1rem;
 }
 
-.DBInstructionsView{
+.DBInstructionsView {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.DBConnectionInfo{
+.DBConnectionInfo {
   display: flex;
   flex-direction: column;
   gap: 1rem;
   padding-left: 1rem;
 }
 
-.DBInfoTop code{
+.DBInfoTop code {
   background-color: rgb(234, 234, 234);
   padding: 0.1rem 0.4rem;
   font-size: 0.9rem;
@@ -153,24 +159,27 @@
 }
 
 .DBAccessInfo {
-  background: var( --gray-bg-light-color);
+  background: var(--gray-bg-light-color);
   padding: 0.5rem;
   word-wrap: break-word;
   width: 40rem;
   overflow-wrap: break-word;
   white-space: pre-wrap;
 }
-@media(max-width: 1160px){
+
+@media(max-width: 1160px) {
   .DBAccessInfo {
     width: 40rem;
   }
 }
-@media(max-width: 1030px){
+
+@media(max-width: 1030px) {
   .DBAccessInfo {
     width: 30rem;
   }
 }
-@media(max-width: 850px){
+
+@media(max-width: 850px) {
   .DBAccessInfo {
     width: 20rem;
   }
@@ -193,24 +202,24 @@
 }
 
 
-.SectionButtons{
+.SectionButtons {
   display: flex;
   justify-content: flex-end;
   padding-right: 1rem;
 }
 
-.DBSections{
+.DBSections {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.DBSectionTitle{
+.DBSectionTitle {
   font-size: 18px;
   font-weight: bold;
 }
 
-.DBButtonRow{
+.DBButtonRow {
   display: flex;
   gap: 1rem;
   align-items: center;
@@ -234,13 +243,14 @@
   align-items: center;
   column-gap: 1rem;
 }
-.DetailRow > div {
+
+.DetailRow>div {
   cursor: default;
 }
 
 
-.CopyIcon{
-  cursor: pointer!important;
+.CopyIcon {
+  cursor: pointer !important;
   display: flex;
   gap: 0.3rem;
   visibility: hidden;
@@ -258,11 +268,13 @@
   .DBDetailRow {
     grid-template-columns: 18% 40% 10% auto;
   }
-  .DBButtonRow{
+
+  .DBButtonRow {
     flex-direction: column;
     align-items: flex-start;
   }
-  .DB-Btn{
+
+  .DB-Btn {
     width: 100%;
   }
 }
@@ -272,12 +284,12 @@
     grid-template-columns: 20% 55% 15%;
     column-gap: .3rem;
   }
-  .DBButtonRow{
+
+  .DBButtonRow {
     grid-template-columns: 20% 80%;
   }
 
-  .DB-Btn{
+  .DB-Btn {
     width: 100%;
   }
 }
-
