@@ -19,7 +19,7 @@ export const updateAppFail = (error) => ({
   type: UPDATE_APP_FAIL,
   payload: {
     status: false,
-    errorCode: error.response.status,
+    errorCode: error,
   },
 });
 
@@ -34,6 +34,7 @@ const updateApp = (appID, appData) => (dispatch) => {
     .patch(`/apps/${appID}`, appData)
     .then((response) => dispatch(updateAppSuccess(response)))
     .catch((error) => {
+      console.log(error)
       dispatch(updateAppFail(error));
     });
 };

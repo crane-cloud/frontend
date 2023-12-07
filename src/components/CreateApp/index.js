@@ -21,10 +21,16 @@ import { validateName } from "../../helpers/validation";
 import MiraPage from "../../pages/MiraPage";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
+import AttentionComponent from "../attentionComponent"
 
-const dockerEmail = process.env.REACT_APP_DOCKER_EMAIL;
-const dockerPassword = process.env.REACT_APP_DOCKER_PASSWORD;
-
+// const dockerEmail = process.env.REACT_APP_DOCKER_EMAIL;
+// const dockerPassword = process.env.REACT_APP_DOCKER_PASSWORD;
+const replicaOptions = [
+  { id: 1, name: "1" },
+  { id: 2, name: "2" },
+  { id: 3, name: "3" },
+  { id: 4, name: "4" },
+];
 class CreateApp extends React.Component {
   constructor(props) {
     super(props);
@@ -60,9 +66,44 @@ class CreateApp extends React.Component {
       addingApp: false,
       addAppError: false,
       addErrorCode: "",
+      formInstances: [
+        {
+          id: 1,
+          isOpen: true,
+          formData: {
+            name: "",
+            uri: "",
+            varName: "",
+            varValue: "",
+            envVars: {},
+            otherAppEnvVars: {},
+            varNameOtherApps: "",
+            varValueOtherApps: "",
+            error: "",
+            createFeedback: "",
+            entryCommand: "",
+            port: "",
+            isPrivateImage: false,
+            isCustomDomain: false,
+            currentDeploymentMethod: "default",
+            domainName: "",
+            selectedInstance: "",
+            replicas: 1,
+          },
+        },
+      ],
+      instanceNameValues: {},
     };
 
+    this.myRef = React.createRef();
+
     this.addEnvVar = this.addEnvVar.bind(this);
+    this.handleVarValueOtherAppsChange =
+      this.handleVarValueOtherAppsChange.bind(this);
+    this.addMicroserviceEnvVar = this.addMicroserviceEnvVar.bind(this);
+    this.removeMicroserviceEnvVar = this.removeMicroserviceEnvVar.bind(this);
+    this.addEnvVarFromOtherApps = this.addEnvVarFromOtherApps.bind(this);
+    this.removeEnvVarFromOtherApps = this.removeEnvVarFromOtherApps.bind(this);
     this.removeEnvVar = this.removeEnvVar.bind(this);
     this.showForm = this.showForm.bind(this);
     this.hideForm = this.hideForm.bind(this);
@@ -73,6 +114,7 @@ class CreateApp extends React.Component {
     this.toggleCustomDomain = this.toggleCustomDomain.bind(this);
     this.toggleDefaultDeployment = this.toggleDefaultDeployment.bind(this);
     this.toggleMiraDeployment = this.toggleMiraDeployment.bind(this);
+    this.toggleMicroservice = this.toggleMicroservice.bind(this);
     this.handleDockerCredentialsChange =
       this.handleDockerCredentialsChange.bind(this);
     this.handleSelectReplicas = this.handleSelectReplicas.bind(this);
@@ -81,7 +123,16 @@ class CreateApp extends React.Component {
     this.handleOnChange = this.handleOnChange.bind(this);
     this.createNewApp = this.createNewApp.bind(this);
     this.togglePassword = this.togglePassword.bind(this);
+    this.renderFormInstances = this.renderFormInstances.bind(this);
+    this.renderInnerForm = this.renderInnerForm.bind(this);
+    this.toggleInstance = this.toggleInstance.bind(this);
+    this.renderFormInstances = this.renderFormInstances.bind(this);
+    this.handleNewChange = this.handleNewChange.bind(this);
+    this.addInstance = this.addInstance.bind(this);
+    this.deleteInstance = this.deleteInstance.bind(this);
+    this.handleReplicasChange = this.handleReplicasChange.bind(this);
   }
+
   handleOnChange(position) {
     const { SelectedClusters } = this.state;
     this.setState({
@@ -105,8 +156,15 @@ class CreateApp extends React.Component {
     this.setState({ currentDeploymentMethod: "mira" });
   }
 
-  // componentDidMount() {
-  // }
+  toggleMicroservice() {
+    this.setState({ currentDeploymentMethod: "microservice" });
+  }
+
+  componentDidMount() {
+    if (this.myRef.current) {
+      this.myRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
 
   componentDidUpdate(prevProps) {
     const {
@@ -196,6 +254,50 @@ class CreateApp extends React.Component {
       });
     }
   }
+
+  addMicroserviceEnvVar = (instanceId) => {
+    let { formInstances } = this.state;
+
+    const updatedInstances = formInstances.map((instance) => {
+      if (instance.id === instanceId) {
+        let { varName, varValue } = instance.formData;
+        let updatedEnvVars = {
+          ...instance.formData.envVars,
+          [varName]: varValue,
+        };
+
+        return {
+          ...instance,
+          formData: { ...instance.formData, envVars: updatedEnvVars },
+        };
+      }
+      return instance;
+    });
+
+    this.setState({
+      formInstances: updatedInstances,
+      varName: "",
+      varValue: "",
+    });
+  };
+
+  removeMicroserviceEnvVar = (instanceId, varNameToRemove) => {
+    this.setState((prevState) => {
+      const updatedFormInstances = prevState.formInstances.map((instance) => {
+        if (instance.id === instanceId) {
+          const updatedEnvVars = { ...instance.formData.envVars };
+          delete updatedEnvVars[varNameToRemove];
+          return {
+            ...instance,
+            formData: { ...instance.formData, envVars: updatedEnvVars },
+          };
+        }
+        return instance;
+      });
+
+      return { formInstances: updatedFormInstances };
+    });
+  };
 
   removeEnvVar(index) {
     const { envVars } = this.state;
@@ -297,12 +399,8 @@ class CreateApp extends React.Component {
         image: uri,
         name,
         project_id: params.projectID,
-        private_image: true,
+        private_image: false,
         replicas,
-        docker_email: dockerEmail,
-        docker_username: "cranecloudplatform",
-        docker_password: dockerPassword,
-        docker_server: "docker.io",
       };
 
       if (isCustomDomain === true) {
@@ -318,6 +416,7 @@ class CreateApp extends React.Component {
             docker_username: username,
             docker_password: password,
             docker_server: server,
+            private_image: true,
           };
         }
         appInfo = { ...appInfo, custom_domain: sentDomainName };
@@ -335,6 +434,7 @@ class CreateApp extends React.Component {
             docker_username: username,
             docker_password: password,
             docker_server: server,
+            private_image: true,
           };
         }
         //change
@@ -343,6 +443,675 @@ class CreateApp extends React.Component {
       }
     }
   }
+
+  addInstance = () => {
+    const { formInstances } = this.state;
+    const newInstanceId =
+      formInstances.length > 0
+        ? formInstances[formInstances.length - 1].id + 1
+        : 1;
+    const newInstances = [
+      ...formInstances,
+      { id: newInstanceId, isOpen: true },
+    ];
+
+    this.setState({ formInstances: newInstances });
+  };
+
+  deleteInstance = (instanceId) => {
+    const { formInstances, instanceNameValues } = this.state;
+    const filteredInstances = formInstances.filter(
+      (instance) => instance.id !== instanceId
+    );
+    const updatedNameValues = { ...instanceNameValues };
+    delete updatedNameValues[instanceId];
+
+    this.setState({
+      formInstances: filteredInstances,
+      instanceNameValues: updatedNameValues,
+    });
+  };
+
+  handleNewChange = (e, instanceId) => {
+    const { name, value } = e.target;
+    const { formInstances } = this.state;
+    const updatedInstances = formInstances.map((instance) =>
+      instance.id === instanceId
+        ? {
+            ...instance,
+            isOpen: instance.isOpen,
+            formData: { ...instance.formData, [name]: value },
+          }
+        : instance
+    );
+
+    this.setState({
+      formInstances: updatedInstances,
+    });
+  };
+
+  toggleInstance = (instanceId) => {
+    const { formInstances } = this.state;
+    const updatedInstances = formInstances.map((instance) =>
+      instance.id === instanceId
+        ? { ...instance, isOpen: !instance.isOpen }
+        : instance
+    );
+
+    this.setState({ formInstances: updatedInstances });
+  };
+
+  // Function to remove environment variable from other apps
+  removeEnvVarFromOtherApps = (instanceId, varNameOtherApps) => {
+    this.setState((prevState) => {
+      const updatedFormInstances = prevState.formInstances.map((instance) => {
+        if (instance.id === instanceId) {
+          const updatedOtherAppEnvVars = { ...instance.otherAppEnvVars };
+          delete updatedOtherAppEnvVars[varNameOtherApps];
+
+          return {
+            ...instance,
+            formData: {
+              ...instance.formData,
+              otherAppEnvVars: updatedOtherAppEnvVars,
+            },
+          };
+        }
+        return instance;
+      });
+
+      return { formInstances: updatedFormInstances };
+    });
+  };
+
+  // Function to add environment variable to other apps
+  addEnvVarFromOtherApps = (instanceId) => {
+    const { formInstances } = this.state;
+
+    const updatedInstances = formInstances.map((instance) => {
+      if (instance.id === instanceId) {
+        let { varNameOtherApps, varValueOtherApps } = instance.formData;
+        const updatedEnvVars = {
+          ...instance.formData.otherAppEnvVars,
+          [varNameOtherApps]: varValueOtherApps,
+        };
+
+        return {
+          ...instance,
+          formData: { ...instance.formData, otherAppEnvVars: updatedEnvVars },
+        };
+      }
+      return instance;
+    });
+
+    this.setState({ formInstances: updatedInstances });
+  };
+
+  renderFormInstances = () => {
+    const { formInstances, addingApp } = this.state;
+
+    return (
+      <div className={styles.WhiteBackground}>
+        {formInstances.map((instance) => (
+          <div key={instance.id}>
+            <div
+              onClick={() => this.toggleInstance(instance.id)}
+              className={styles.MSAAdd}
+            >
+              App {instance.id}
+              {!instance.isOpen && instance.formData && (
+                <>
+                  <div>Name: {instance.formData.name}</div>
+                  <div>Image: {instance.formData.uri}</div>
+                </>
+              )}
+            </div>
+            {instance.isOpen && this.renderInnerForm(instance.id)}
+          </div>
+        ))}
+        <PrimaryButton
+          onClick={this.addInstance}
+          color="primary"
+          className={styles.MSAApp}
+        >
+          Add App
+        </PrimaryButton>
+        <PrimaryButton
+          className={styles.MSFWidth}
+          onClick={this.handleMicroseviceSubmit}
+        >
+          {addingApp ? <Spinner /> : "deploy"}
+        </PrimaryButton>
+        {/* <button onClick={this.addInstance}>Add New Instance</button> */}
+        
+      </div>
+    );
+  };
+
+  handleVarValueOtherAppsChange = (e, instanceId) => {
+    const { value } = e.target;
+
+    this.setState((prevState) => ({
+      formInstances: prevState.formInstances.map((instance) => {
+        if (instance.id === instanceId) {
+          return {
+            ...instance,
+            varValueOtherApps: value,
+          };
+        }
+        return instance;
+      }),
+    }));
+  };
+
+  handleReplicasChange = (selectedOption, instanceId) => {
+    const { formInstances } = this.state;
+
+    const updatedInstances = formInstances.map((instance) => {
+      if (instance.id === instanceId) {
+        return {
+          ...instance,
+          formData: {
+            ...instance.formData,
+            replicas: selectedOption.id,
+          },
+        };
+      }
+      return instance;
+    });
+
+    this.setState({ formInstances: updatedInstances });
+  };
+
+  renderInnerForm = (instanceId) => {
+    const { formInstances } = this.state;
+
+    let {
+      name,
+      uri,
+      isPrivateImage,
+      username,
+      email,
+      password,
+      server,
+      port,
+      entryCommand,
+      varName,
+      varNameOtherApps,
+      varValueOtherApps,
+      varValue,
+      envVars,
+      otherAppEnvVars,
+      replicas,
+    } =
+      formInstances.find((instance) => instance.id === instanceId)?.formData ||
+      {};
+
+    // const isOpen = this.state.formInstances.find(
+    //   (instance) => instance.id === instanceId
+    // )?.isOpen;
+    // const hasValues = isOpen && name && uri;
+
+    let otherInstanceNames = formInstances
+      .filter((instance) => instance.id !== instanceId && instance.formData)
+      .map((instance) => instance.formData?.name || "");
+
+    return (
+      <div>
+        <div className={styles.ModalFormInputs}>
+          <div className={styles.FormHeading}>Fields marked * are required</div>
+          <div className={styles.ModalFormInputsBasic}>
+            <BlackInputText
+              required
+              placeholder="Name"
+              name="name"
+              value={name}
+              onChange={(e) => this.handleNewChange(e, instanceId)}
+              className="ReplicasSelect"
+            />
+
+            <div className={styles.ReplicasSelect}>
+              <Select
+                placeholder="Number of Replicas - defaults to 1"
+                options={replicaOptions}
+                onChange={(selectedOption) =>
+                  this.handleReplicasChange(selectedOption, instanceId)
+                }
+              />
+            </div>
+
+            <div className={styles.InputFieldWithTooltip}>
+              <BlackInputText
+                required
+                placeholder="Image URI"
+                name="uri"
+                value={uri}
+                onChange={(e) => this.handleNewChange(e, instanceId)}
+              />
+              <div className={styles.InputTooltipContainer}>
+                <Tooltip
+                  showIcon
+                  message="Image URI e.g for docker: ngnixdemos/hello with ngnixdemos being your username and hello being the image name"
+                  position="left"
+                />
+              </div>
+            </div>
+
+            <div className={styles.PrivateImageCheckField}>
+              <Checkbox
+                isBlack
+                onClick={this.togglePrivateImage}
+                isChecked={isPrivateImage}
+              />
+              &nbsp; Private Image
+            </div>
+
+            {isPrivateImage && (
+              <div className={styles.PrivateImageTabContainer}>
+                <Tabs>
+                  <div index={1} /* label={<DockerLogo />} */>
+                    <div className={styles.PrivateImageInputs}>
+                      <BlackInputText
+                        required
+                        placeholder="Username"
+                        name="username"
+                        value={username}
+                        onChange={(e) => {
+                          this.handleDockerCredentialsChange(e);
+                        }}
+                      />
+
+                      <BlackInputText
+                        required
+                        placeholder="Email"
+                        name="email"
+                        value={email}
+                        onChange={(e) => {
+                          this.handleDockerCredentialsChange(e);
+                        }}
+                      />
+                      <div className="password-wrappers">
+                        <BlackInputText
+                          required
+                          placeholder="Password"
+                          name="password"
+                          type={true ? "text" : "password"}
+                          value={password}
+                          onChange={(e) => {
+                            this.handleDockerCredentialsChange(e);
+                          }}
+                        />
+
+                        <div className="password" onClick={this.togglePassword}>
+                          {true ? <Open /> : <Closed />}
+                        </div>
+                      </div>
+                      <div className={styles.InputFieldWithTooltip}>
+                        <BlackInputText
+                          required
+                          placeholder="Registry Server"
+                          name="server"
+                          value={server}
+                          onChange={(e) => {
+                            this.handleDockerCredentialsChange(e);
+                          }}
+                        />
+                        <div className={styles.InputTooltipContainerDB}>
+                          <Tooltip
+                            showIcon
+                            message="Registry server for example: docker.io or gcr.io"
+                            position="left"
+                          />
+                        </div>
+                      </div>
+
+                      {/* {dockerCredentials.error && (
+                        <Feedback
+                          type="error"
+                          message={dockerCredentials.error}
+                        />
+                      )} */}
+                    </div>
+                  </div>
+                </Tabs>
+              </div>
+            )}
+
+            {/* {multiCluster && (
+              <div className={styles.ClustersSection}>
+                <div className={styles.MultiSelectionText}>
+                  Please select a datacenter(s) you would like your app to be
+                  deployed to.
+                </div>
+                <div className={styles.Multipleclusters}>
+                  {clusters.map(({ name, id }, index) => {
+                    return (
+                      <li className={styles.ListStyle} key={index}>
+                        <div className={styles.clusterListItem}>
+                          <div className={styles.leftsection}>
+                            <input
+                              type="checkbox"
+                              id={id}
+                              name={name}
+                              value={name}
+                              checked={SelectedClusters[index]}
+                              onChange={() => this.handleOnChange(index)}
+                            />
+                            <label className={styles.ClusterLabel} htmlFor={id}>
+                              {name}
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {beta && (
+              <div className={styles.CustomDomainCheckField}>
+                <Checkbox
+                  isBlack
+                  onClick={this.toggleCustomDomain}
+                  isChecked={isCustomDomain}
+                />
+                &nbsp; Custom Domain
+              </div>
+            )}
+
+            {isCustomDomain && (
+              <div className={styles.CustomDomainTabContainer}>
+                <Tabs>
+                  <div index={1}>
+                    <div className={styles.InputFieldWithTooltip}>
+                      <BlackInputText
+                        required
+                        placeholder="Domain name"
+                        name="domainName"
+                        value={domainName}
+                        onChange={(e) => {
+                          this.handleChange(e);
+                        }}
+                      />
+                      <div className={styles.InputTooltipContainer}>
+                        <Tooltip
+                          showIcon
+                          message="You will be given IP addresses to link your hosting provider DNS to our servers"
+                          position="left"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </Tabs>
+              </div>
+            )} */}
+
+            <div className={styles.InputFieldWithTooltip}>
+              <BlackInputText
+                placeholder="Entry Command"
+                name="entryCommand"
+                value={entryCommand}
+                onChange={(e) => this.handleNewChange(e, instanceId)}
+              />
+              <div className={styles.InputTooltipContainer}>
+                <Tooltip
+                  showIcon
+                  message="Entrypoint or command for your container"
+                  position="left"
+                />
+              </div>
+            </div>
+            <div className={styles.InputFieldWithTooltip}>
+              <BlackInputText
+                placeholder="Port (optional) - defaults to 80"
+                name="port"
+                value={port}
+                onChange={(e) => this.handleNewChange(e, instanceId)}
+              />
+              <div className={styles.InputTooltipContainer}>
+                <Tooltip
+                  showIcon
+                  message="Exposed port of your container"
+                  position="left"
+                />
+              </div>
+            </div>
+
+            {/* {error && (
+              <div className={styles.FeedbackSection}>
+                {" "}
+                <Feedback type="error" message={error} />{" "}
+              </div>
+            )} */}
+          </div>
+
+          <div className={styles.ModalFormInputsEnvVars}>
+            <div className={styles.HeadingWithTooltip}>
+              <h4>Environment Variables</h4>
+              <Tooltip
+                showIcon
+                message="These are are key/value pairs which define aspects of your app’s environment that can vary"
+              />
+            </div>
+            {envVars && Object.keys(envVars).length > 0 && (
+              <div className={styles.EnvVarsTable}>
+                <table>
+                  <thead>
+                    <tr>
+                      <td>Name</td>
+                      <td>Value</td>
+                      <td>Remove</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(envVars).map(([name, value]) => (
+                      <tr key={name}>
+                        <td>{name}</td>
+                        <td>{value}</td>
+                        <td>
+                          <img
+                            src={RemoveIcon}
+                            alt="remove_ico"
+                            onClick={() =>
+                              this.removeMicroserviceEnvVar(instanceId, name)
+                            }
+                            role="presentation"
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+            <div className={styles.EnvVarsInputGroup}>
+              <div className={styles.EnvVarsInputs}>
+                <BlackInputText
+                  placeholder="Name"
+                  name="varName"
+                  value={varName}
+                  onChange={(e) => this.handleNewChange(e, instanceId)}
+                />
+                <BlackInputText
+                  placeholder="Value"
+                  name="varValue"
+                  value={varValue}
+                  onChange={(e) => this.handleNewChange(e, instanceId)}
+                />
+              </div>
+              <div className={styles.EnvVarsAddBtn}>
+                <PrimaryButton
+                  onClick={() => this.addMicroserviceEnvVar(instanceId)}
+                  className={styles.EnvVarAddBtn}
+                >
+                  Add
+                </PrimaryButton>
+              </div>
+            </div>
+          </div>
+          <div className={styles.ModalFormInputsEnvVars}>
+            <div className={styles.HeadingWithTooltip}>
+              <h4>Environment Variables from other apps</h4>
+              <Tooltip
+                showIcon
+                message="These are are key/value pairs which define aspects of your app’s environment that can vary"
+              />
+            </div>
+            {otherAppEnvVars && Object.keys(otherAppEnvVars).length > 0 && (
+              <div className={styles.EnvVarsTable}>
+                <table>
+                  <thead>
+                    <tr>
+                      <td>Name</td>
+                      <td>Value</td>
+                      <td>Remove</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(otherAppEnvVars).map(([name, value]) => (
+                      <tr key={name}>
+                        <td>{name}</td>
+                        <td>{value}</td>
+                        <td>
+                          <img
+                            src={RemoveIcon}
+                            alt="remove_ico"
+                            onClick={() =>
+                              this.removeEnvVarFromOtherApps(instanceId, name)
+                            }
+                            role="presentation"
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+            <div className={styles.EnvVarsInputGroup}>
+              <div className={styles.EnvVarsInputs}>
+                <BlackInputText
+                  placeholder="Name"
+                  name="varNameOtherApps"
+                  value={varNameOtherApps}
+                  onChange={(e) => this.handleNewChange(e, instanceId)}
+                />
+                <select
+                  name="varValueOtherApps"
+                  value={varValueOtherApps}
+                  onChange={(e) => this.handleNewChange(e, instanceId)}
+                >
+                  <option value="">Select an App</option>
+                  {otherInstanceNames.map((instanceName) => (
+                    <option key={instanceName} value={instanceName}>
+                      {instanceName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className={styles.EnvVarsAddBtn}>
+                <PrimaryButton
+                  onClick={() => this.addEnvVarFromOtherApps(instanceId)}
+                  className={styles.EnvVarAddBtn}
+                >
+                  Add
+                </PrimaryButton>
+              </div>
+            </div>
+          </div>
+          <div className={styles.ModalFormButtons}>
+            {/* {addAppError && (
+              <div className={styles.FeedbackSection}>
+                <Feedback
+                  className={styles.FeedbackSection}
+                  message={
+                    addErrorCode === 409
+                      ? "Name already in use, please choose another and try again"
+                      : addAppError
+                  }
+                  type={"error"}
+                />
+              </div>
+            )} */}
+
+            <div className={styles.ButtonSection}>
+              <PrimaryButton
+                className="AuthBtn"
+                color="red"
+                onClick={() => this.deleteInstance(instanceId)}
+              >
+                Delete App
+              </PrimaryButton>
+            </div>
+          </div>
+        </div>
+        <hr style={{ width: "100%" }} />
+      </div>
+    );
+  };
+  handleMicroseviceSubmit = () => {
+    const { formInstances } = this.state;
+    const { params } = this.props;
+
+    let allFormData = formInstances.map((instance) => {
+      const formData = instance.formData;
+      const filteredData = {};
+
+      if (formData.name) filteredData.name = formData.name;
+      if (formData.replicas) filteredData.replicas = formData.replicas;
+      if (formData.uri) filteredData.uri = formData.uri;
+      if (formData.isPrivateImage)
+        filteredData.isPrivateImage = formData.isPrivateImage;
+      if (formData.username) filteredData.username = formData.username;
+      if (formData.email) filteredData.email = formData.email;
+      if (formData.password) filteredData.password = formData.password;
+      if (formData.server) filteredData.server = formData.server;
+      if (formData.port) filteredData.port = formData.port;
+      if (formData.entryCommand)
+        filteredData.entryCommand = formData.entryCommand;
+      if (formData.varName) filteredData.varName = formData.varName;
+      if (formData.varNameOtherApps)
+        if (Object.keys(formData.envVars || {}).length > 0)
+          //   filteredData.varNameOtherApps = formData.varNameOtherApps;
+          // if (formData.varValueOtherApps)
+          //   filteredData.varValueOtherApps = formData.varValueOtherApps;
+          // if (formData.varValue) filteredData.varValue = formData.varValue;
+          filteredData.envVars = formData.envVars;
+      if (Object.keys(formData.otherAppEnvVars || {}).length > 0)
+        filteredData.otherAppEnvVars = formData.otherAppEnvVars;
+
+      return filteredData;
+    });
+
+    const payload = {
+      apps: allFormData.map((data) => ({
+        ...data,
+        image: data.uri,
+        dependant_env_vars: data.otherAppEnvVars,
+      })),
+    };
+    this.setState({
+      addingApp: true,
+      addAppError: "",
+    });
+    handlePostRequestWithOutDataObject(
+      payload,
+      `/projects/${params?.projectID}/apps`
+    )
+      .then(() => {
+        window.location.href = `/projects/${params?.projectID}/apps`;
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          addAppError: "Failed to add Apps. Try again later",
+          addingApp: false,
+          addErrorCode: error.response?.status,
+        });
+      });
+  };
+
   createNewApp(data, projectID) {
     this.setState({
       addingApp: true,
@@ -350,9 +1119,10 @@ class CreateApp extends React.Component {
     });
     handlePostRequestWithOutDataObject(data, `/projects/${projectID}/apps`)
       .then(() => {
-        window.location.href = `/projects/${projectID}/Apps`;
+        window.location.href = `/projects/${projectID}/apps`;
       })
       .catch((error) => {
+        console.log(error);
         this.setState({
           addAppError: "Failed to add App. Try again later",
           addingApp: false,
@@ -390,15 +1160,8 @@ class CreateApp extends React.Component {
       passwordShown,
     } = this.state;
 
-    const replicaOptions = [
-      { id: 1, name: "1" },
-      { id: 2, name: "2" },
-      { id: 3, name: "3" },
-      { id: 4, name: "4" },
-    ];
-
     return (
-      <div>
+      <div ref={this.myRef} className={styles.CenterForm}>
         <div className={styles.DeploymentMethodTabs}>
           <span
             className={
@@ -408,7 +1171,7 @@ class CreateApp extends React.Component {
             }
             onClick={this.toggleDefaultDeployment}
           >
-            Deploy with Crane Cloud
+            Deploy Single App
           </span>
           <span
             className={
@@ -419,6 +1182,16 @@ class CreateApp extends React.Component {
             onClick={this.toggleMiraDeployment}
           >
             Deploy with mira
+          </span>
+          <span
+            className={
+              currentDeploymentMethod === "microservice"
+                ? styles.CurrentTab
+                : styles.Tab
+            }
+            onClick={this.toggleMicroservice}
+          >
+            Deploy Micro-services
           </span>
         </div>
 
@@ -769,6 +1542,7 @@ class CreateApp extends React.Component {
                     {addingApp ? <Spinner /> : "deploy"}
                   </PrimaryButton>
                 </div>
+                <AttentionComponent/>
               </div>
             </div>
           </div>
@@ -776,6 +1550,12 @@ class CreateApp extends React.Component {
 
         {currentDeploymentMethod === "mira" && (
           <MiraPage projectID={projectID} />
+        )}
+
+        {currentDeploymentMethod === "microservice" && (
+          <div className={styles.CreateFormHolder}>
+            {this.renderFormInstances()}
+          </div>
         )}
       </div>
     );

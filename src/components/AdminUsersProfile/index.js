@@ -30,7 +30,7 @@ import AppFooter from "../appFooter";
 import {
   handleGetRequest,
   handlePostRequestWithOutDataObject,
-} from "../../apis/apis"
+} from "../../apis/apis";
 
 class AdminUserPage extends Component {
   constructor() {
@@ -65,7 +65,7 @@ class AdminUserPage extends Component {
     this.handleDisableAlert = this.handleDisableAlert.bind(this);
     this.showDisableAlert = this.showDisableAlert.bind(this);
     this.hideDisableAlert = this.hideDisableAlert.bind(this);
-    this.getUserDetails =  this.getUserDetails.bind(this);
+    this.getUserDetails = this.getUserDetails.bind(this);
   }
   componentDidMount() {
     const {
@@ -241,10 +241,7 @@ class AdminUserPage extends Component {
 
     try {
       if (userDetail.disabled) {
-        handlePostRequestWithOutDataObject(
-          userID,
-          `/users/${userID}/enable`
-        )
+        handlePostRequestWithOutDataObject(userID, `/users/${userID}/enable`)
           .then(() => {
             window.location.reload();
           })
@@ -254,10 +251,7 @@ class AdminUserPage extends Component {
             });
           });
       } else {
-        handlePostRequestWithOutDataObject(
-          userID,
-          `/users/${userID}/disable`
-        )
+        handlePostRequestWithOutDataObject(userID, `/users/${userID}/disable`)
           .then(() => {
             window.location.reload();
           })
@@ -292,8 +286,13 @@ class AdminUserPage extends Component {
     const {
       match: { params },
     } = this.props;
-    const { credits, creditDescription, openDeleteAlert, openDisableAlert, userDetail } =
-      this.state;
+    const {
+      credits,
+      creditDescription,
+      openDeleteAlert,
+      openDisableAlert,
+      userDetail,
+    } = this.state;
     const user = getUser(users, params.userID);
     const { credit_assignment_records } = userCredits;
     return (
@@ -319,382 +318,411 @@ class AdminUserPage extends Component {
               />
             </div>
             <div className="LeftAlignContainer">
-              <div className="ContentSection">
-                <div className="AdminUserPageContainer">
-                  <section>
-                    <div className="SectionTitle">Personal information</div>
-                    <div className="AdminCardArea">
-                      <div className="AdminUserProfileCard">
-                        <div className="AdminUserProfileInfoSect">
-                          <div className="AdminUserProfileInfoHeader">
-                            <Avatar
-                              name={userDetail?.name}
-                              className={userProfleStyles.UserAvatarLarge}
-                            />
-                            <div className={userProfleStyles.Identity}>
-                              <div className={userProfleStyles.IdentityName}>
-                                {userDetail?.name}
-                                {userDetail?.is_beta_user === true && (
-                                  <div className={userProfleStyles.BetaUserDiv}>
-                                    Beta User
+              {userDetail.length === 0 ? (
+                <div className="ResourceSpinnerWrapper">
+                  <Spinner size="big" />
+                </div>
+              ) : (
+                <>
+                  <div className="ContentSection">
+                    <div className="AdminUserPageContainer">
+                      <section>
+                        <div className="SectionTitle">Personal information</div>
+                        <div className="AdminCardArea">
+                          <div className="AdminUserProfileCard">
+                            <div className="AdminUserProfileInfoSect">
+                              <div className="AdminUserProfileInfoHeader">
+                                <Avatar
+                                  name={userDetail?.name}
+                                  className={userProfleStyles.UserAvatarLarge}
+                                />
+                                <div className={userProfleStyles.Identity}>
+                                  <div
+                                    className={userProfleStyles.IdentityName}
+                                  >
+                                    {userDetail?.name}
+                                    {userDetail?.is_beta_user === true && (
+                                      <div
+                                        className={userProfleStyles.BetaUserDiv}
+                                      >
+                                        Beta User
+                                      </div>
+                                    )}
+                                  </div>
+                                  <div
+                                    className={userProfleStyles.IdentityEmail}
+                                  >
+                                    {userDetail?.email}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="AdminProfileRowInfo">
+                                <div className="AdminProfileRowItem">
+                                  Verified:
+                                  <span>
+                                    {userDetail?.verified ? "True" : "False"}
+                                  </span>
+                                </div>
+                                |
+                                <div className="AdminProfileRowItem">
+                                  Role:
+                                  <span>
+                                    {userDetail?.roles?.length > 0
+                                      ? userDetail?.roles[0].name
+                                      : "None"}
+                                  </span>
+                                </div>
+                                |
+                                <div className="AdminProfileRowItem">
+                                  Date Joined:
+                                  <span>
+                                    {moment(userDetail?.date_created)
+                                      .utc()
+                                      .format("ddd, MMMM DD, yyyy")}
+                                  </span>
+                                </div>
+                                |
+                                <div className="AdminProfileRowItem">
+                                  Last Seen:
+                                  <span>
+                                    {userDetail?.last_seen
+                                      ? moment(userDetail?.last_seen)
+                                          .utc()
+                                          .format("ddd, MMMM DD, yyyy")
+                                      : "Not available"}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </section>
+                      {/* Credential history */}
+                      {credit_assignment_records?.length > 0 && (
+                        <div className="CreditsAlotted">
+                          <div className="CreditsTable">
+                            <div className="CreditsHeader">
+                              Credits Assignment History
+                            </div>
+                            <div className="Credits">
+                              <div className="CreditsHead">
+                                <div className="CreditsHeaderRow">
+                                  <div className="CreditsHeaderAttribute">
+                                    Record ID
+                                  </div>
+                                  <div className="CreditsHeaderAttribute">
+                                    Date & Time
+                                  </div>
+                                  <div className="CreditsHeaderAttribute">
+                                    Amount
+                                  </div>
+                                  <div className="CreditsHeaderAttribute">
+                                    Description
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="CreditsBody">
+                                {credit_assignment_records ? (
+                                  credit_assignment_records.map((credit) => (
+                                    <div className="CreditsHeaderRow">
+                                      <div className="CreditsRowAttribute">
+                                        {credit?.id}
+                                      </div>
+                                      <div className="CreditsRowAttribute">
+                                        {DisplayDateTime(
+                                          new Date(credit?.date_created)
+                                        )}
+                                      </div>
+                                      <div className="CreditsRowAttribute">
+                                        {credit?.amount}
+                                      </div>
+                                      <div className="CreditsRowAttribute">
+                                        {credit?.description}
+                                      </div>
+                                    </div>
+                                  ))
+                                ) : (
+                                  <div className="CreditsError">
+                                    <>No Credits Assigned.</>
                                   </div>
                                 )}
                               </div>
-                              <div className={userProfleStyles.IdentityEmail}>
-                                {userDetail?.email}
-                              </div>
                             </div>
                           </div>
-
-                          <div className="AdminProfileRowInfo">
-                            <div className="AdminProfileRowItem">
-                              Verified:
-                              <span>{userDetail?.verified ? "True" : "False"}</span>
-                            </div>
-                            |
-                            <div className="AdminProfileRowItem">
-                              Role:
-                              <span>
-                                {userDetail?.roles?.length > 0
-                                  ? userDetail?.roles[0].name
-                                  : "None"}
-                              </span>
-                            </div>
-                            |
-                            <div className="AdminProfileRowItem">
-                              Date Joined:
-                              <span>
-                                {moment(userDetail?.date_created)
-                                  .utc()
-                                  .format("ddd, MMMM DD, yyyy")}
-                              </span>
-                            </div>
-                            |
-                            <div className="AdminProfileRowItem">
-                              Last Seen:
-                              <span>
-                                {userDetail?.last_seen
-                                  ? moment(userDetail?.last_seen)
-                                      .utc()
-                                      .format("ddd, MMMM DD, yyyy")
-                                  : "Not available"}
-                              </span>
-                            </div>
-                          </div>
+                        </div>
+                      )}
+                      <div>
+                        <div className="SectionTitle">
+                          User Platform Metrics
+                        </div>
+                        <div className="Cluster1Container">
+                          <NewResourceCard
+                            key={1}
+                            title="Projects Owned"
+                            count={this.state.projectsCount}
+                          />
+                          <NewResourceCard
+                            key={1}
+                            title="Apps Deployed"
+                            count={6}
+                          />
+                          <NewResourceCard
+                            key={1}
+                            title="Databases Created"
+                            count={3}
+                          />
+                          <NewResourceCard
+                            key={1}
+                            title="Credits"
+                            count={
+                              user?.credits.length === 0
+                                ? 0
+                                : user?.credits[0].amount
+                            }
+                          />
                         </div>
                       </div>
-                    </div>
-                  </section>
-                  {/* Credential history */}
-                  {credit_assignment_records?.length > 0 && (
-                    <div className="CreditsAlotted">
-                      <div className="CreditsTable">
-                        <div className="CreditsHeader">
-                          Credits Assignment History
-                        </div>
-                        <div className="Credits">
-                          <div className="CreditsHead">
-                            <div className="CreditsHeaderRow">
-                              <div className="CreditsHeaderAttribute">
-                                Record ID
-                              </div>
-                              <div className="CreditsHeaderAttribute">
-                                Date & Time
-                              </div>
-                              <div className="CreditsHeaderAttribute">
-                                Amount
-                              </div>
-                              <div className="CreditsHeaderAttribute">
-                                Description
-                              </div>
-                            </div>
-                          </div>
-                          <div className="CreditsBody">
-                            {credit_assignment_records ? (
-                              credit_assignment_records.map((credit) => (
-                                <div className="CreditsHeaderRow">
-                                  <div className="CreditsRowAttribute">
-                                    {credit?.id}
-                                  </div>
-                                  <div className="CreditsRowAttribute">
-                                    {DisplayDateTime(
-                                      new Date(credit?.date_created)
-                                    )}
-                                  </div>
-                                  <div className="CreditsRowAttribute">
-                                    {credit?.amount}
-                                  </div>
-                                  <div className="CreditsRowAttribute">
-                                    {credit?.description}
+                      <div className="AdminDBSections">
+                        <div className="SectionTitle">Manage User</div>
+                        <div className="ProjectInstructions">
+                          <div className="MemberBody">
+                            <div className="MemberTableRow">
+                              <div className="SettingsSectionInfo">
+                                <div className="SubTitle">
+                                  Add Credits to User
+                                  <br />
+                                  <div className="SubTitleContent">
+                                    This will add credits to the user.
                                   </div>
                                 </div>
-                              ))
-                            ) : (
-                              <div className="CreditsError">
-                                <>No Credits Assigned.</>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  <div>
-                    <div className="SectionTitle">User Platform Metrics</div>
-                    <div className="Cluster1Container">
-                      <NewResourceCard
-                        key={1}
-                        title="Projects Owned"
-                        count={this.state.projectsCount}
-                      />
-                      <NewResourceCard
-                        key={1}
-                        title="Apps Deployed"
-                        count={6}
-                      />
-                      <NewResourceCard
-                        key={1}
-                        title="Databases Created"
-                        count={3}
-                      />
-                      <NewResourceCard
-                        key={1}
-                        title="Credits"
-                        count={
-                          user?.credits.length === 0
-                            ? 0
-                            : user?.credits[0].amount
-                        }
-                      />
-                    </div>
-                  </div>
-                  <div className="AdminDBSections">
-                    <div className="SectionTitle">Manage User</div>
-                    <div className="ProjectInstructions">
-                      <div className="MemberBody">
-                        <div className="MemberTableRow">
-                          <div className="SettingsSectionInfo">
-                            <div className="SubTitle">
-                              Add Credits to User
-                              <br />
-                              <div className="SubTitleContent">
-                                This will add credits to the user.
+                                <div className="SectionButtons">
+                                  <PrimaryButton
+                                    color="primary-outline"
+                                    onClick={this.showCreditsModal}
+                                  >
+                                    Add Credits
+                                  </PrimaryButton>
+                                </div>
                               </div>
                             </div>
-                            <div className="SectionButtons">
-                              <PrimaryButton
-                                color="primary-outline"
-                                onClick={this.showCreditsModal}
-                              >
-                                Add Credits
-                              </PrimaryButton>
+                            <div className="MemberTableRow">
+                              <div className="SettingsSectionInfo">
+                                <div className="SubTitle">
+                                  {userDetail?.disabled ? "Enable" : "Disable"}{" "}
+                                  User
+                                  <br />
+                                  <div className="SubTitleContent">
+                                    {userDetail?.disabled
+                                      ? "This will enable this user."
+                                      : "This will temporary disable the user."}
+                                  </div>
+                                </div>
+                                <div className="SectionButtons">
+                                  <PrimaryButton
+                                    onClick={this.handleEnableButtonClick}
+                                    color={
+                                      userDetail?.disabled
+                                        ? "primary-outline"
+                                        : "red-outline"
+                                    }
+                                  >
+                                    {userDetail?.disabled
+                                      ? "Enable"
+                                      : "Disable"}
+                                  </PrimaryButton>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="SettingsSectionInfo1">
+                              <div className="SubTitle">
+                                Delete User
+                                <br />
+                                <div className="SubTitleContent">
+                                  This will permanently delete the user-history
+                                  , apps , database and settings.
+                                </div>
+                              </div>
+                              <div className="SectionButtons">
+                                <PrimaryButton
+                                  color="red-outline"
+                                  onClick={this.showDeleteAlert}
+                                >
+                                  Delete
+                                </PrimaryButton>
+                              </div>
                             </div>
                           </div>
                         </div>
-                        <div className="MemberTableRow">
-                          <div className="SettingsSectionInfo">
-                            <div className="SubTitle">
-                              {userDetail?.disabled ? "Enable" : "Disable"} User
-                              <br />
-                              <div className="SubTitleContent">
-                                {userDetail?.disabled
-                                  ? "This will enable this user."
-                                  : "This will temporary disable the user."}
-                              </div>
-                            </div>
-                            <div className="SectionButtons">
-                              <PrimaryButton
-                                onClick={this.handleEnableButtonClick}
-                                color={
-                                  userDetail?.disabled
-                                    ? "primary-outline"
-                                    : "red-outline"
-                                }
-                              >
-                                {userDetail?.disabled ? "Enable" : "Disable"}
-                              </PrimaryButton>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="SettingsSectionInfo1">
-                          <div className="SubTitle">
-                            Delete User
-                            <br />
-                            <div className="SubTitleContent">
-                              This will permanently delete the user-history ,
-                              apps , database and settings.
-                            </div>
-                          </div>
-                          <div className="SectionButtons">
-                            <PrimaryButton
-                              color="red-outline"
-                              onClick={this.showDeleteAlert}
+                        {openDeleteAlert && (
+                          <div className="ProjectDeleteModel">
+                            <Modal
+                              showModal={openDeleteAlert}
+                              onClickAway={this.hideDeleteAlert}
                             >
-                              Delete
-                            </PrimaryButton>
+                              <div className="DeleteDatabaseModel">
+                                <div className="DeleteProjectModalUpperSection">
+                                  <div className="InnerModalDescription">
+                                    Are you sure you want to delete this user
+                                    &nbsp;
+                                    <span className="DatabaseName">
+                                      {userDetail?.name} ?
+                                    </span>
+                                    <DeleteWarning />
+                                  </div>
+                                </div>
+
+                                <div className="DeleteProjectModalLowerSection">
+                                  <div className="DeleteProjectModelButtons">
+                                    <PrimaryButton
+                                      className="CancelBtn"
+                                      onClick={this.hideDeleteAlert}
+                                    >
+                                      Cancel
+                                    </PrimaryButton>
+                                    <PrimaryButton
+                                      color="red"
+                                      onClick={(e) =>
+                                        this.handleDeleteAlert(e, userID)
+                                      }
+                                    >
+                                      {deletingUser ? <Spinner /> : "Delete"}
+                                    </PrimaryButton>
+                                  </div>
+
+                                  {userDeleteFailed && isDeleteUser && (
+                                    <Feedback
+                                      message={isDeleteUser}
+                                      type="error"
+                                    />
+                                  )}
+                                </div>
+                              </div>
+                            </Modal>
                           </div>
+                        )}
+                        {openDisableAlert && (
+                          <div className="ProjectDeleteModel">
+                            <Modal
+                              showModal={openDisableAlert}
+                              onClickAway={this.hideDisableAlert}
+                            >
+                              <div className="DeleteDatabaseModel">
+                                <div className="DeleteProjectModalUpperSection">
+                                  <div className="InnerModalDescription">
+                                    Are you sure you want to disable this user
+                                    &nbsp;
+                                    <span className="DatabaseName">
+                                      {userDetail?.name} ?
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <div className="DeleteProjectModalLowerSection">
+                                  <div className="DeleteProjectModelButtons">
+                                    <PrimaryButton
+                                      className="CancelBtn"
+                                      onClick={this.hideDisableAlert}
+                                    >
+                                      Cancel
+                                    </PrimaryButton>
+                                    <PrimaryButton
+                                      color="red"
+                                      onClick={(e) =>
+                                        this.handleDisableAlert(e, userID)
+                                      }
+                                    >
+                                      {isDisablingUser ? (
+                                        <Spinner />
+                                      ) : (
+                                        "Disable"
+                                      )}
+                                    </PrimaryButton>
+                                  </div>
+
+                                  {userDisableFailed && isDisableUser && (
+                                    <Feedback
+                                      message={isDisableUser}
+                                      type="error"
+                                    />
+                                  )}
+                                </div>
+                              </div>
+                            </Modal>
+                          </div>
+                        )}
+
+                        {!isFetching && !isFetched && (
+                          <div className="NoResourcesMessage">
+                            <p>
+                              Oops! Something went wrong! Failed to retrieve
+                              User Profile.
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <Modal
+                      showModal={this.state.addCredits}
+                      onClickAway={() => this.hideCreditsModal()}
+                    >
+                      <div className="ModalHeader">
+                        <h5 className="ModalTitle">Add Credits</h5>
+
+                        <div className="">Number of credits</div>
+                        <div className="ModalContent">
+                          <BlackInputText
+                            required
+                            placeholder="Number of credits"
+                            name="credits"
+                            type="number"
+                            value={credits}
+                            onChange={(e) => {
+                              this.handleChange(e);
+                            }}
+                          />
                         </div>
+                        <div className="CreditsTitle">Description</div>
+                        <textarea
+                          className="TextArea"
+                          type="text"
+                          placeholder="Credits description"
+                          rows="4"
+                          cols="50"
+                          name="creditDescription"
+                          value={creditDescription}
+                          onChange={(e) => {
+                            this.handleChange(e);
+                          }}
+                        />
                       </div>
-                    </div>
-                    {openDeleteAlert && (
-                      <div className="ProjectDeleteModel">
-                        <Modal
-                          showModal={openDeleteAlert}
-                          onClickAway={this.hideDeleteAlert}
-                        >
-                          <div className="DeleteDatabaseModel">
-                            <div className="DeleteProjectModalUpperSection">
-                              <div className="InnerModalDescription">
-                                Are you sure you want to delete this user &nbsp;
-                                <span className="DatabaseName">
-                                  {userDetail?.name} ?
-                                </span>
-                                <DeleteWarning />
-                              </div>
-                            </div>
+                      <div className="ModalFooter">
+                        <div className="ModalButtons">
+                          <PrimaryButton
+                            className="CancelBtn"
+                            onClick={() => this.hideCreditsModal()}
+                          >
+                            Cancel
+                          </PrimaryButton>
 
-                            <div className="DeleteProjectModalLowerSection">
-                              <div className="DeleteProjectModelButtons">
-                                <PrimaryButton
-                                  className="CancelBtn"
-                                  onClick={this.hideDeleteAlert}
-                                >
-                                  Cancel
-                                </PrimaryButton>
-                                <PrimaryButton
-                                  color="red"
-                                  onClick={(e) =>
-                                    this.handleDeleteAlert(e, userID)
-                                  }
-                                >
-                                  {deletingUser ? <Spinner /> : "Delete"}
-                                </PrimaryButton>
-                              </div>
-
-                              {userDeleteFailed && isDeleteUser && (
-                                <Feedback message={isDeleteUser} type="error" />
-                              )}
-                            </div>
-                          </div>
-                        </Modal>
+                          <PrimaryButton
+                            type="button"
+                            onClick={() => this.handleCreditSubmittion()}
+                          >
+                            {Adding ? <Spinner /> : "Add"}
+                          </PrimaryButton>
+                        </div>
+                        {Failed && (
+                          <Feedback
+                            message={"failed to add credits"}
+                            type={"error"}
+                          />
+                        )}
                       </div>
-                    )}
-                    {openDisableAlert && (
-                      <div className="ProjectDeleteModel">
-                        <Modal
-                          showModal={openDisableAlert}
-                          onClickAway={this.hideDisableAlert}
-                        >
-                          <div className="DeleteDatabaseModel">
-                            <div className="DeleteProjectModalUpperSection">
-                              <div className="InnerModalDescription">
-                                Are you sure you want to disable this user
-                                &nbsp;
-                                <span className="DatabaseName">
-                                  {userDetail?.name} ?
-                                </span>
-                              </div>
-                            </div>
-
-                            <div className="DeleteProjectModalLowerSection">
-                              <div className="DeleteProjectModelButtons">
-                                <PrimaryButton
-                                  className="CancelBtn"
-                                  onClick={this.hideDisableAlert}
-                                >
-                                  Cancel
-                                </PrimaryButton>
-                                <PrimaryButton
-                                  color="red"
-                                  onClick={(e) =>
-                                    this.handleDisableAlert(e, userID)
-                                  }
-                                >
-                                  {isDisablingUser ? <Spinner /> : "Disable"}
-                                </PrimaryButton>
-                              </div>
-
-                              {userDisableFailed && isDisableUser && (
-                                <Feedback
-                                  message={isDisableUser}
-                                  type="error"
-                                />
-                              )}
-                            </div>
-                          </div>
-                        </Modal>
-                      </div>
-                    )}
-
-                    {!isFetching && !isFetched && (
-                      <div className="NoResourcesMessage">
-                        <p>
-                          Oops! Something went wrong! Failed to retrieve User
-                          Profile.
-                        </p>
-                      </div>
-                    )}
+                    </Modal>
                   </div>
-                </div>
-                <Modal
-                  showModal={this.state.addCredits}
-                  onClickAway={() => this.hideCreditsModal()}
-                >
-                  <div className="ModalHeader">
-                    <h5 className="ModalTitle">Add Credits</h5>
-
-                    <div className="">Number of credits</div>
-                    <div className="ModalContent">
-                      <BlackInputText
-                        required
-                        placeholder="Number of credits"
-                        name="credits"
-                        type="number"
-                        value={credits}
-                        onChange={(e) => {
-                          this.handleChange(e);
-                        }}
-                      />
-                    </div>
-                    <div className="CreditsTitle">Description</div>
-                    <textarea
-                      className="TextArea"
-                      type="text"
-                      placeholder="Credits description"
-                      rows="4"
-                      cols="50"
-                      name="creditDescription"
-                      value={creditDescription}
-                      onChange={(e) => {
-                        this.handleChange(e);
-                      }}
-                    />
-                  </div>
-                  <div className="ModalFooter">
-                    <div className="ModalButtons">
-                      <PrimaryButton
-                        className="CancelBtn"
-                        onClick={() => this.hideCreditsModal()}
-                      >
-                        Cancel
-                      </PrimaryButton>
-
-                      <PrimaryButton
-                        type="button"
-                        onClick={() => this.handleCreditSubmittion()}
-                      >
-                        {Adding ? <Spinner /> : "Add"}
-                      </PrimaryButton>
-                    </div>
-                    {Failed && (
-                      <Feedback
-                        message={"failed to add credits"}
-                        type={"error"}
-                      />
-                    )}
-                  </div>
-                </Modal>
-              </div>
+                </>
+              )}
             </div>
             <AppFooter />
           </div>

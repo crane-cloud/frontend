@@ -379,7 +379,6 @@
   font-size: 0.95rem;
 }
 
-
 @media (max-width: 500px) {}
 
 /* @media only screen and (max-width: 1100px) and (min-width: 901px) {
@@ -480,7 +479,7 @@
     flex-wrap: wrap;
   }
 
-  .IdentityName{
+  .IdentityName {
     display: flex;
     flex-wrap: wrap;
   }

@@ -1,0 +1,32 @@
+.attentionNotice{
+   width: -webkit-fill-available;
+   display: flex;
+   flex-direction: column;
+   background-color: #dcd7d7;
+   color: #000;
+   font-weight: 400;
+   font-size: 0.9rem;
+   padding: 1rem 1.4rem 0.6rem 2rem;
+   margin-bottom: 20px;
+}
+.attentionNoticeHeading{
+    font-weight: 700;
+    font-size: 1rem;
+}
+.commandFormatter {
+    background: #cac8c6;;
+    padding: 0.1rem;
+    width: fit-content;
+    border-radius: 4px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+@media(max-width: 850px){
+    .attentionNotice{
+        width: fit-content;
+        font-size: 0.5rem;
+        padding: 0.3rem 0.4rem 0.2rem 0.8rem;
+     }
+  }

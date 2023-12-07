@@ -4,8 +4,9 @@ import InformationBar from "../InformationBar";
 import SideBar from "../SideBar";
 import "./Layouts.css";
 
+
 const DashboardLayout = (props) => {
-  const { children, name, credits, header, short = false } = props;
+  const { children, name, credits, header, short = false, } = props;
   return (
     <div className="DashboardPage">
       <div className="DashboardTopBarSection">
@@ -16,9 +17,11 @@ const DashboardLayout = (props) => {
           <SideBar name={name} />
         </div>
         <div className="DashboardMainContentSection">
-          <div>
+          <div className="informationBarContainer">
             <InformationBar header={header} {...props} />
+           
           </div>
+          
           <div
             className={`${
               short ? "ShortContainer" : "SmallContainer"

@@ -7,6 +7,10 @@
   padding-left: 1rem;
 }
 
+.LoadingArea {
+  padding: 3rem;
+}
+
 .ViewAccountsBtn {
   text-transform: capitalize !important;
   color: var(--primary-color);

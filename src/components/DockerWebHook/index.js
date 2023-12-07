@@ -14,6 +14,7 @@ import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import "./DockerWebHook.css";
 import Spinner from "../Spinner";
+import SettingsActionRow from "../SettingsActionRow";
 
 const DockerWebHook = () => {
   const [imageTag, setImageTag] = useState("");
@@ -38,6 +39,7 @@ const DockerWebHook = () => {
 
   const handleInputChange = (e) => {
     setImageTag(e.target.value);
+    setShowUrl(false);
   };
 
   const updateUrl = () => {
@@ -55,6 +57,7 @@ const DockerWebHook = () => {
       <div className="TopBarSection">
         <Header />
       </div>
+      <div className="SectionContainer">
       <div className="Mainsection">
         <div className="MainContentSection">
           <div className="InformationBarSection">
@@ -105,24 +108,14 @@ const DockerWebHook = () => {
                         <br />
                         <br />
                       </div>
-                      <div className="MemberTableRow">
-                        <div className="SettingsSectionRow">
-                          <div className="SubTitle">
-                            Generate Link
-                            <br />
-                            <div className="SubTitleContent">
-                              To Generate a link with a token click the Generate
-                              link button.
-                            </div>
-                          </div>
-                          <PrimaryButton
-                            // className={isUpdating && styles.deactivatedBtn}
-                            onClick={updateUrl}
-                            small
-                          >
-                            Generate Link
-                          </PrimaryButton>
-                        </div>
+                      <div>
+                        <SettingsActionRow
+                          title="Generate Link"
+                          content="To Generate a link with a token click the Generate
+                        link button."
+                          buttonLabel="Generate Link"
+                          onButtonClick={updateUrl}
+                        />
                         <div className="DBInfoBottom">
                           {showUrl && (
                             <div>
@@ -178,6 +171,7 @@ const DockerWebHook = () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
