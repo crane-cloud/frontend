@@ -2,22 +2,24 @@
    width: -webkit-fill-available;
    display: flex;
    flex-direction: column;
-   background-color: #dcd7d7;
+   background-color: #E5EBFF ;
    color: #000;
    font-weight: 400;
+   border-radius: 10px;
    font-size: 0.9rem;
    padding: 1rem 1.4rem 0.6rem 2rem;
    margin-bottom: 20px;
 }
 .attentionNoticeHeading{
-    font-weight: 700;
+    font-weight: 600;
     font-size: 1rem;
 }
 .commandFormatter {
-    background: #cac8c6;;
+    background: #c6cfeb ;
     padding: 0.1rem;
     width: fit-content;
     border-radius: 4px;
+    font-weight: 500;
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: pre-wrap;

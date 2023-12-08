@@ -22,6 +22,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import AppFooter from "../appFooter";
 import NewResourceCard from "../NewResourceCard";
+import SettingsActionRow from "../SettingsActionRow/index.jsx";
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -66,7 +67,7 @@ class UserProfile extends React.Component {
       (total, project) => total + project.apps_count,
       0
     );
-    
+
     if (response.data.data?.projects.length > 0) {
       const projectsList = response.data.data?.projects;
 
@@ -88,7 +89,7 @@ class UserProfile extends React.Component {
         projectsCount: 0,
         activeProjectsCount: 0,
         disabledProjectsCount: 0,
-        totalAppsCount:0,
+        totalAppsCount: 0,
       });
 
       throw new Error("No projects found for user");
@@ -307,7 +308,6 @@ class UserProfile extends React.Component {
                               key={1}
                               title="Apps Deployed"
                               count={this.state.totalAppsCount}
-
                             />
                             <NewResourceCard
                               key={1}
@@ -325,63 +325,41 @@ class UserProfile extends React.Component {
                             />
                           </div>
                         </div>
-                        <div className="AdminDBSections">
-                          <div className="SectionTitle">Manage User</div>
-                          <div className="ProjectInstructions">
-                            <div className="MemberBody">
-                              <div className="MemberTableRow">
-                                <div className="SettingsSectionInfo">
-                                  <div className="SubTitle">
-                                    Change Password
-                                    <br />
-                                    <div className="SubTitleContent">
-                                      This will permanently change your current
-                                      password to a new one
-                                    </div>
-                                  </div>
-                                  <div className="SectionButtons">
-                                    <PrimaryButton
-                                      onClick={() => {
-                                        this.showPasswordWarningModel();
-                                      }}
-                                      color="red-outline"
-                                    >
-                                      Reset Password
-                                    </PrimaryButton>
-                                  </div>
-                                </div>
-                                <div className="SettingsSectionInfo1">
-                                  <div className="SubTitle">
-                                    Update Profile
-                                    <br />
-                                    <div className="SubTitleContent">
-                                      This allows you to make changes to
-                                      specific fields under your profile
-                                    </div>
-                                  </div>
-                                  <div className="SectionButtons">
-                                    <PrimaryButton
-                                      onClick={() => {
-                                        this.showUpdateModal();
-                                      }}
-                                      color="primary-outline"
-                                    >
-                                      Edit Profile
-                                    </PrimaryButton>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+
+                        <div className="SectionTitle">Manage User</div>
+                        <div className="ProjectInstructions">
+                          <div className="MemberBody">
+                            <SettingsActionRow
+                              title="Change Password"
+                              content="This will permanently change your current
+                              password to a new one"
+                              buttonLabel="Reset Password"
+                              buttonColor="red"
+                              onButtonClick={() => {
+                                this.showPasswordWarningModel();
+                              }}
+                            />
+
+                            <SettingsActionRow
+                              title="Update Profile"
+                              content="This allows you to make changes to specific
+                              fields under your profile"
+                              buttonLabel="Edit Profile"
+                              buttonColor="primary"
+                              onButtonClick={() => {
+                                this.showUpdateModal();
+                              }}
+                            />
                           </div>
-                          {!isFetching && !isFetched && (
-                            <div className="NoResourcesMessage">
-                              <p>
-                                Oops! Something went wrong! Failed to retrieve
-                                User Profile.
-                              </p>
-                            </div>
-                          )}
                         </div>
+                        {!isFetching && !isFetched && (
+                          <div className="NoResourcesMessage">
+                            <p>
+                              Oops! Something went wrong! Failed to retrieve
+                              User Profile.
+                            </p>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -428,20 +406,20 @@ class UserProfile extends React.Component {
 
                           <div className={styles.UpdateProjectModelButtons}>
                             <PrimaryButton
-                              onClick={() => {
-                                this.handleChangeSaving();
-                              }}
-                              color="primary"
-                            >
-                              {profileUpdating ? <Spinner /> : "Update"}
-                            </PrimaryButton>
-                            <PrimaryButton
                               className="CancelBtn"
                               onClick={() => {
                                 this.hideUpdateModal();
                               }}
                             >
                               Cancel
+                            </PrimaryButton>
+                            <PrimaryButton
+                              onClick={() => {
+                                this.handleChangeSaving();
+                              }}
+                              color="primary"
+                            >
+                              {profileUpdating ? <Spinner /> : "Update"}
                             </PrimaryButton>
                           </div>
                         </div>
@@ -470,20 +448,20 @@ class UserProfile extends React.Component {
                       </div>
                       <div className={styles.UpdateProjectModelButtons}>
                         <PrimaryButton
-                          onClick={() => {
-                            this.handlePasswordChanage();
-                          }}
-                          color="primary"
-                        >
-                          {passwordChangeLoading ? <Spinner /> : "Confirm"}
-                        </PrimaryButton>
-                        <PrimaryButton
                           className="CancelBtn"
                           onClick={() => {
                             this.hidePasswordWarningModel();
                           }}
                         >
                           Cancel
+                        </PrimaryButton>
+                        <PrimaryButton
+                          onClick={() => {
+                            this.handlePasswordChanage();
+                          }}
+                          color="primary"
+                        >
+                          {passwordChangeLoading ? <Spinner /> : "Confirm"}
                         </PrimaryButton>
                       </div>
                       <div>

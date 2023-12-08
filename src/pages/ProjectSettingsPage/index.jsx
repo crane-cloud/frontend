@@ -28,6 +28,7 @@ import { ReactComponent as Send } from "../../assets/images/send.svg";
 import { retrieveMembershipRoles } from "../../helpers/membershipRoles";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
 import { namedOrganisations } from "../../helpers/projectOrganisations";
+import SettingsActionRow from "../../components/SettingsActionRow/index.jsx";
 
 class ProjectSettingsPage extends React.Component {
   constructor(props) {
@@ -497,10 +498,7 @@ class ProjectSettingsPage extends React.Component {
 
     try {
       if (projectDetails.disabled) {
-        handlePostRequestWithOutDataObject(
-          {},
-          `/projects/${projectID}/enable`
-        )
+        handlePostRequestWithOutDataObject({}, `/projects/${projectID}/enable`)
           .then(() => {
             window.location.reload();
           })
@@ -510,10 +508,7 @@ class ProjectSettingsPage extends React.Component {
             });
           });
       } else {
-        handlePostRequestWithOutDataObject(
-          {},
-          `/projects/${projectID}/disable`
-        )
+        handlePostRequestWithOutDataObject({}, `/projects/${projectID}/disable`)
           .then(() => {
             window.location.reload();
           })
@@ -525,7 +520,7 @@ class ProjectSettingsPage extends React.Component {
       }
     } catch (error) {
       console.error("API call error:", error);
-    } 
+    }
   };
 
   showUpdateAlert() {
@@ -792,7 +787,7 @@ class ProjectSettingsPage extends React.Component {
                 {currentUserIsAdminOrOwner && (
                   <PrimaryButton
                     // className={styles.SettingsButton}
-                    color="primary-outline"
+                    color="primary"
                     onClick={() => {
                       this.showInviteMenu();
                     }}
@@ -980,65 +975,43 @@ class ProjectSettingsPage extends React.Component {
         )}
         {currentUserIsAdminOrMember === false ? (
           <>
-            <div className="SectionTitle">Danger Zone</div>
-            <div className={styles.ProjectInstructions}>
-              <div className={styles.MemberBody}>
-                <div className={styles.MemberTableRow}>
-                  <div className={styles.SettingsSectionInfo}>
-                    <div className="SubTitle">Update project</div>
-                    <div>Modify the project name and description</div>
-                  </div>
-                  <div className={styles.SectionButtons}>
-                    <PrimaryButton
-                      onClick={this.showUpdateAlert}
-                      small
-                      color="primary"
-                    >
-                      Update
-                    </PrimaryButton>
-                  </div>
-                </div>
-                <div className={styles.MemberTableRow}>
-                  <div className={styles.SettingsSectionInfo}>
-                    <div className="SubTitle">
-                      {this.state.projectDetails?.disabled
-                        ? "Enable"
-                        : "Disable"}{" "}
-                      project
-                    </div>
-                    <div>
-                      {this.state.projectDetails?.disabled
-                        ? "Allow access to project resources and enable billing"
-                        : "Prevent project from being billed by blocking access to it's resources."}
-                    </div>
-                  </div>
-                  <div className={styles.SectionButtons}>
-                    <PrimaryButton
-                      onClick={this.handleEnableButtonClick}
-                      small
-                      color={disabled ? "primary" : "red"}
-                    >
-                      {this.state.projectDetails?.disabled ? "Enable" : "Disable"}
-                    </PrimaryButton>
-                  </div>
-                </div>
-                <div className={styles.MemberTableRow}>
-                  <div className={styles.SettingsSectionInfo}>
-                    <div className="SubTitle">Delete project</div>
-                    <div>
-                      Take down your entire project, delete all apps under it.
-                    </div>
-                  </div>
-                  <div className={styles.SectionButtons}>
-                    <PrimaryButton
-                      onClick={this.showDeleteAlert}
-                      small
-                      color="red"
-                    >
-                      Delete
-                    </PrimaryButton>
-                  </div>
-                </div>
+            <div className="SectionTitle">Manage Project</div>
+            <div className="ProjectInstructions">
+              <div className="MemberBody">
+                <SettingsActionRow
+                  title="Update Project"
+                  content="Modify the project name and description"
+                  buttonLabel="Update"
+                  onButtonClick={this.showUpdateAlert}
+                  buttonColor="primary"
+                />
+
+                <SettingsActionRow
+                  title={`${
+                    this.state.projectDetails?.disabled ? "Enable" : "Disable"
+                  } project
+                  `}
+                  content={
+                    this.state.projectDetails?.disabled
+                      ? "Allow access to project resources and enable billing"
+                      : "Prevent project from being billed by blocking access to it's resources."
+                  }
+                  buttonLabel={
+                    this.state.projectDetails?.disabled ? "Enable" : "Disable"
+                  }
+                  buttonColor={
+                    this.state.projectDetails?.disabled ? "primary" : "red"
+                  }
+                  onButtonClick={this.handleEnableButtonClick}
+                />
+
+                <SettingsActionRow
+                  title="Delete Project"
+                  content="Take down your entire project, delete all apps under it."
+                  buttonLabel="Delete"
+                  buttonColor="red"
+                  onButtonClick={this.showDeleteAlert}
+                />
               </div>
             </div>
           </>

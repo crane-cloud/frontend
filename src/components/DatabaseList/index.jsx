@@ -97,120 +97,118 @@ class DatabaseList extends React.Component {
                   : "ResourcesTable"
               }
             >
-            {databases.length > 0 ? (
-              <table className="PodsTable">
-                <thead className="uppercase">
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Host</th>
-                    <th>Status</th>
-                    <th>Age</th>
-                  </tr>
-                </thead>
-                {isFetchingDatabases ? (
-                  <tbody>
-                    <tr className="TableLoading">
-                      <td className="TableTdSpinner">
-                        <div className="SpinnerWrapper">
-                          <Spinner size="big" />
-                        </div>
-                      </td>
+              {databases.length > 0 ? (
+                <table className="PodsTable">
+                  <thead className="uppercase">
+                    <tr>
+                      <th>Type</th>
+                      <th>Name</th>
+                      <th>Host</th>
+                      <th>Status</th>
+                      <th>Age</th>
                     </tr>
-                  </tbody>
-                ) : (
-                  <tbody>
-                    {databasesFetched &&
-                    sortedDbs !== undefined &&
-                    sortedDbs.map((database, index) => (
-                             
-                                <tr key={index}>
-
-                                    <td>
-                                    <Link
-                                        to={`/projects/${projectID}/databases/${database.id}/settings`}
-                                        className={styles.DatabaseLink}
-                                      >
-                                        {database.database_flavour_name}
-                                      </Link>
-                                    </td>
-                                    <td>
-                                      <Link
-                                        to={`/projects/${projectID}/databases/${database.id}/settings`}
-                                        className={styles.DatabaseLink}
-                                      >
-                                        {database.name}
-                                      </Link>
-                                    </td>
-                                    <td>
-                                      <Link
-                                        to={`/projects/${projectID}/databases/${database.id}/settings`}
-                                        className={styles.DatabaseLink}
-                                      >
-                                        {database.host}
-                                      </Link>
-                                    </td>
-                                    <td>
-                                      <Link
-                                        to={`/projects/${projectID}/databases/${database.id}/settings`}
-                                        className={styles.DatabaseLink}
-                                      >
-                                        <Status status={database.db_status} />
-                                      </Link>
-                                    </td>
-                                    <td>
-                                      <Link
-                                        to={`/projects/${projectID}/databases/${database.id}/settings`}
-                                        className={styles.DatabaseLink}
-                                      >
-                                        {database.age}
-                                      </Link>
-                                    </td>
-
-                                </tr>
-                      ))}                          
-                  </tbody>
-                )}
-              </table>
-            ) : (
-              <table className="PodsTable">
-                {isFetchingDatabases ? (
-                  <tbody>
-                    <tr className="TableLoading">
-                      <td className="TableTdSpinner">
-                        <div className="SpinnerWrapper">
-                          <Spinner size="big" />
+                  </thead>
+                  {isFetchingDatabases ? (
+                    <tbody>
+                      <tr className="TableLoading">
+                        <td className="TableTdSpinner">
+                          <div className="SpinnerWrapper">
+                            <Spinner size="big" />
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  ) : (
+                    <tbody>
+                      {databasesFetched &&
+                        sortedDbs !== undefined &&
+                        sortedDbs.map((database, index) => (
+                          <tr key={index}>
+                            <td>
+                              <Link
+                                to={`/projects/${projectID}/databases/${database.id}/settings`}
+                                className={styles.DatabaseLink}
+                              >
+                                {database.database_flavour_name}
+                              </Link>
+                            </td>
+                            <td>
+                              <Link
+                                to={`/projects/${projectID}/databases/${database.id}/settings`}
+                                className={styles.DatabaseLink}
+                              >
+                                {database.name}
+                              </Link>
+                            </td>
+                            <td>
+                              <Link
+                                to={`/projects/${projectID}/databases/${database.id}/settings`}
+                                className={styles.DatabaseLink}
+                              >
+                                {database.host}
+                              </Link>
+                            </td>
+                            <td>
+                              <Link
+                                to={`/projects/${projectID}/databases/${database.id}/settings`}
+                                className={styles.DatabaseLink}
+                              >
+                                <Status status={database.db_status} />
+                              </Link>
+                            </td>
+                            <td>
+                              <Link
+                                to={`/projects/${projectID}/databases/${database.id}/settings`}
+                                className={styles.DatabaseLink}
+                              >
+                                {database.age}
+                              </Link>
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  )}
+                </table>
+              ) : (
+                <table className="PodsTable">
+                  {isFetchingDatabases ? (
+                    <tbody>
+                      <tr className="TableLoading">
+                        <td className="TableTdSpinner">
+                          <div className="SpinnerWrapper">
+                            <Spinner size="big" />
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  ) : (
+                    databasesFetched &&
+                    databases.length === 0 && (
+                      <div className={styles.NoResourcesMessageSection}>
+                        <div className={styles.NoResourcesMessage}>
+                          You haven’t created any databases yet.
                         </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                ) : (
-                databasesFetched && databases.length === 0 && (
-                  <div className={styles.NoResourcesMessageSection}>
-                    <div className={styles.NoResourcesMessage}>
-                      You haven’t created any databases yet.
-                    </div>
-                    <br></br>
-                    <div className={styles.NoResourcesMessage}>
-                      Click the &nbsp;{" "}
-                      <ButtonPlus
-                        className={styles.ButtonPlusSmall}
-                        onClick={this.showCreateComponent}
-                      />{" "}
-                      &nbsp; button to create one.
-                    </div>
-                  </div>
-                ))}
-              </table>
-            )}
+                        <br></br>
+                        <div className={styles.NoResourcesMessage}>
+                          Click the &nbsp;{" "}
+                          <ButtonPlus
+                            className={styles.ButtonPlusSmall}
+                            onClick={this.showCreateComponent}
+                          />{" "}
+                          &nbsp; button to create one.
+                        </div>
+                      </div>
+                    )
+                  )}
+                </table>
+              )}
 
-            {!isFetchingDatabases && !databasesFetched && (
-              <div className={styles.NoResourcesMessage}>
-                Oops! Something went wrong! Failed to retrieve Databases.
-              </div>
-            )}
+              {!isFetchingDatabases && !databasesFetched && (
+                <div className={styles.NoResourcesMessage}>
+                  Oops! Something went wrong! Failed to retrieve Databases.
+                </div>
+              )}
             </div>
-                       
           </DashboardLayout>
         )}
       </div>
