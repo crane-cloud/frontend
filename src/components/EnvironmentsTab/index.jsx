@@ -17,6 +17,7 @@ const EnvironmentAndPortsTab = ({
   handleEnvSubmit,
   removeExistingEnvVar,
   loading,
+  loadingIndex,
   commandError,
   portError,
   error,
@@ -34,9 +35,11 @@ const EnvironmentAndPortsTab = ({
             <div className="VarInputGroup">
               <BlackInputText
                 placeholder="Key"
+                name="varName"
                 value={envVar}
                 className="settings-input name-input"
                 readOnly={true}
+                onChange={() => {}}
               />
               <BlackInputText
                 placeholder="Value"
@@ -45,6 +48,7 @@ const EnvironmentAndPortsTab = ({
                 className="settings-input value-input"
                 style={{ flex: 1 }}
                 readOnly={true}
+                onChange={() => {}}
               />
             </div>
             <div className="EnvVarsAddBtn">
@@ -52,8 +56,9 @@ const EnvironmentAndPortsTab = ({
                 onClick={() => removeExistingEnvVar(index)}
                 color="red"
                 small
+                disabled={loadingIndex === index}
               >
-                Remove
+                {loadingIndex === index ? <Spinner /> : "Remove"}
               </PrimaryButton>
             </div>
           </div>
@@ -99,7 +104,7 @@ const EnvironmentAndPortsTab = ({
           <div className="flexa">
             <BlackInputText
               type="text"
-              placeholder={app.port ? app.port : "port"}
+              placeholder={`${app.port ? app.port : "port"}`}
               name="port"
               value={port}
               className="portInput"
