@@ -21,23 +21,26 @@ const DomainAndUrlsTab = ({
     <div className="APPButtonRow">
       <div className="AppLabel">Application Link</div>
       <div className="CopyDiv">
-        <div className="DBTDetail">{app.url}</div>
+        <div className="DBTDetail">{app?.url}</div>
         <div className="CopyUrl">
           <CopyText onClick={urlOnClick} />
           {urlChecked ? <Checked /> : null}
         </div>
       </div>
     </div>
-    <div className="APPButtonRow">
-      <div className="AppLabel">Internal URL</div>
-      <div className="CopyDiv">
-        <div className="DBTDetail">{app.internal_url}</div>
-        <div className="CopyUrl">
-          <CopyText onClick={internalUrlOnClick} />
-          {internalUrlChecked ? <Checked /> : null}
+
+    {app?.internal_url && (
+      <div className="APPButtonRow">
+        <div className="AppLabel">Internal URL</div>
+        <div className="CopyDiv">
+          <div className="DBTDetail">{app.internal_url}</div>
+          <div className="CopyUrl">
+            <CopyText onClick={internalUrlOnClick} />
+            {internalUrlChecked ? <Checked /> : null}
+          </div>
         </div>
       </div>
-    </div>
+    )}
 
     {loggedInUser.data.beta && (
       <div className="APPButtonRow">
@@ -51,45 +54,43 @@ const DomainAndUrlsTab = ({
     )}
 
     {isCustomDomain && (
-      <div className="CustomDomainTabContainer">
-        <div index={1}>
-          <div className="CustomDomainInputs">
-            <div className="APPButtonRow">
-              <div className="AppLabel">
-                {app?.has_custom_domain === true && <span>Edit &nbsp;</span>}
-                Domain name
+      <>
+        <div className="CustomDomainTabContainer">
+          <div index={1}>
+            <div className="CustomDomainInputs">
+              <div className="APPButtonRow">
+                <div className="AppLabel">
+                  {app?.has_custom_domain === true && <span>Edit &nbsp;</span>}
+                  Domain name
+                </div>
+                <div className="flexa">
+                  <BlackInputText
+                    required
+                    className="domain-input"
+                    placeholder="Domain name"
+                    name="domainName"
+                    value={domainName.toLowerCase()}
+                  />
+                </div>
               </div>
-              <div className="flexa">
-                <BlackInputText
-                  required
-                  className="domain-input"
-                  placeholder="Domain name"
-                  name="domainName"
-                  value={domainName.toLowerCase()}
-                />
+              <div className="Domain__Popup" onClick={showDomainModal}>
+                Click for more instructions on how to set up you custom domain.
               </div>
-            </div>
-            <div className="Domain__Popup" onClick={showDomainModal}>
-              Click for more instructions on how to set up you custom domain.
             </div>
           </div>
         </div>
-      </div>
-    )}
 
-    <div className="APPButton">
-      <div className="UpperSection">
-        <PrimaryButton
-          disabled={loading}
-          className={loading && "deactivatedBtn"}
-        >
-          Update
-        </PrimaryButton>
-      </div>
-    </div>
+        <div className="APPButton">
+          <div className="UpperSection">
+            <PrimaryButton
+              disabled={loading}
+              className={loading && "deactivatedBtn"}
+            >
+              Update
+            </PrimaryButton>
+          </div>
+        </div>
 
-    {isCustomDomain && (
-      <>
         <hr className="SectionSplit" />
         <div className="RevertSection">
           <div className="FlexRevertSection">
