@@ -21,8 +21,8 @@ import { validateName } from "../../helpers/validation";
 import MiraPage from "../../pages/MiraPage";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
-import AttentionComponent from "../attentionComponent"
-import {parseEnvContent} from "../../helpers/fileParser"
+import AttentionComponent from "../attentionComponent";
+import { parseEnvContent } from "../../helpers/fileParser";
 
 // const dockerEmail = process.env.REACT_APP_DOCKER_EMAIL;
 // const dockerPassword = process.env.REACT_APP_DOCKER_PASSWORD;
@@ -67,7 +67,7 @@ class CreateApp extends React.Component {
       addingApp: false,
       addAppError: false,
       addErrorCode: "",
-      fileEnvContent:"",
+      fileEnvContent: "",
       formInstances: [
         {
           id: 1,
@@ -165,7 +165,7 @@ class CreateApp extends React.Component {
 
   componentDidMount() {
     if (this.myRef.current) {
-      this.myRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      this.myRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
 
@@ -345,7 +345,7 @@ class CreateApp extends React.Component {
       isCustomDomain,
       domainName,
       replicas,
-      fileEnvContent
+      fileEnvContent,
     } = this.state;
     const { createApp, params } = this.props;
 
@@ -398,8 +398,11 @@ class CreateApp extends React.Component {
       });
     } else {
       //if fileEnvContent is empty, parseEnvContent will return an empty object
-      const environmentVariables = {...envVars,...parseEnvContent(fileEnvContent)}
-      
+      const environmentVariables = {
+        ...envVars,
+        ...parseEnvContent(fileEnvContent),
+      };
+
       let appInfo = {
         command: entryCommand,
         env_vars: environmentVariables,
@@ -409,8 +412,6 @@ class CreateApp extends React.Component {
         private_image: false,
         replicas,
       };
-
-     
 
       if (isCustomDomain === true) {
         let sentDomainName = domainName.toLowerCase();
@@ -446,7 +447,7 @@ class CreateApp extends React.Component {
             private_image: true,
           };
         }
-       
+
         this.createNewApp(appInfo, params.projectID);
       }
     }
@@ -591,7 +592,6 @@ class CreateApp extends React.Component {
           {addingApp ? <Spinner /> : "deploy"}
         </PrimaryButton>
         {/* <button onClick={this.addInstance}>Add New Instance</button> */}
-        
       </div>
     );
   };
@@ -957,7 +957,28 @@ class CreateApp extends React.Component {
                 </PrimaryButton>
               </div>
             </div>
+            <div
+              style={{ marginTop: "5px" }}
+              className={styles.HeadingWithTooltip}
+            >
+              <h4>Paste Environment variables from a file.</h4>
+              <Tooltip
+                showIcon
+                message="Environment variables will be extracted from the file content provided"
+              />
+            </div>
+            <textarea
+              rows="2"
+              cols="50"
+              placeholder="Paste your .env content here"
+              // value={fileEnvContent}
+              // onChange={this.handleFileInputChange}
+              onFocus={(e) => (e.target.rows = 10)}
+              onBlur={(e) => (e.target.rows = 2)}
+              className={styles.envFileInput}
+            />
           </div>
+
           <div className={styles.ModalFormInputsEnvVars}>
             <div className={styles.HeadingWithTooltip}>
               <h4>Environment Variables from other apps</h4>
@@ -1138,9 +1159,9 @@ class CreateApp extends React.Component {
         });
       });
   }
-  handleFileInputChange(e){
-    this.setState({fileEnvContent: e.target.value});
-  };
+  handleFileInputChange(e) {
+    this.setState({ fileEnvContent: e.target.value });
+  }
 
   render() {
     const {
@@ -1546,8 +1567,8 @@ class CreateApp extends React.Component {
                   placeholder="Paste your .env content here"
                   value={fileEnvContent}
                   onChange={this.handleFileInputChange}
-                  onFocus={(e) => e.target.rows = 10} 
-                  onBlur={(e) => e.target.rows = 2} 
+                  onFocus={(e) => (e.target.rows = 10)}
+                  onBlur={(e) => (e.target.rows = 2)}
                   className={styles.envFileInput}
                 />
               </div>
