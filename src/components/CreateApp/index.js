@@ -90,6 +90,7 @@ class CreateApp extends React.Component {
             currentDeploymentMethod: "default",
             domainName: "",
             selectedInstance: "",
+            envFileContent: "",
             replicas: 1,
           },
         },
@@ -134,6 +135,8 @@ class CreateApp extends React.Component {
     this.deleteInstance = this.deleteInstance.bind(this);
     this.handleReplicasChange = this.handleReplicasChange.bind(this);
     this.handleFileInputChange = this.handleFileInputChange.bind(this);
+    this.handleMicroSFileInputChange =
+      this.handleMicroSFileInputChange.bind(this);
   }
 
   handleOnChange(position) {
@@ -631,6 +634,24 @@ class CreateApp extends React.Component {
     this.setState({ formInstances: updatedInstances });
   };
 
+  handleMicroSFileInputChange(e, instanceId) {
+    const { formInstances } = this.state;
+    const updatedInstances = formInstances.map((instance) => {
+      if (instance.id === instanceId) {
+        return {
+          ...instance,
+          formData: {
+            ...instance.formData,
+            envFileContent: e.target.value,
+          },
+        };
+      }
+      return instance;
+    });
+
+    this.setState({ formInstances: updatedInstances });
+  }
+
   renderInnerForm = (instanceId) => {
     const { formInstances } = this.state;
 
@@ -650,6 +671,7 @@ class CreateApp extends React.Component {
       varValue,
       envVars,
       otherAppEnvVars,
+      envFileContent,
       //replicas,
     } =
       formInstances.find((instance) => instance.id === instanceId)?.formData ||
@@ -971,8 +993,8 @@ class CreateApp extends React.Component {
               rows="2"
               cols="50"
               placeholder="Paste your .env content here"
-              // value={fileEnvContent}
-              // onChange={this.handleFileInputChange}
+              value={envFileContent}
+              onChange={(e) => this.handleMicroSFileInputChange(e, instanceId)}
               onFocus={(e) => (e.target.rows = 10)}
               onBlur={(e) => (e.target.rows = 2)}
               className={styles.envFileInput}
@@ -1101,12 +1123,16 @@ class CreateApp extends React.Component {
         filteredData.entryCommand = formData.entryCommand;
       if (formData.varName) filteredData.varName = formData.varName;
       if (formData.varNameOtherApps)
-        if (Object.keys(formData.envVars || {}).length > 0)
-          //   filteredData.varNameOtherApps = formData.varNameOtherApps;
-          // if (formData.varValueOtherApps)
-          //   filteredData.varValueOtherApps = formData.varValueOtherApps;
-          // if (formData.varValue) filteredData.varValue = formData.varValue;
-          filteredData.envVars = formData.envVars;
+        filteredData.varNameOtherApps = formData.varNameOtherApps;
+      if (formData.envFileContent) {
+        filteredData.envFileContent = formData.envFileContent;
+        filteredData.envVars = {
+          ...(formData.envVars || {}),
+          ...parseEnvContent(formData.envFileContent),
+        };
+      } else if (Object.keys(formData.envVars || {}).length > 0) {
+        filteredData.envVars = formData.envVars;
+      }
       if (Object.keys(formData.otherAppEnvVars || {}).length > 0)
         filteredData.otherAppEnvVars = formData.otherAppEnvVars;
 
