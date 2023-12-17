@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Avatar from "../../components/Avatar";
 import Header from "../../components/Header";
 import { handleGetRequest } from "../../apis/apis.js";
@@ -18,14 +18,15 @@ import {
   transformListForSelect,
   transformProjectsListForSelect,
 } from "../../helpers/listTransforms.js";
+import getUserActivities from "../../redux/actions/getUserActivities.js";
+import usePaginator from "../../hooks/usePaginator.js";
+import Pagination from "../../components/Pagination/index.jsx";
 
 const UserActivity = () => {
   const { data } = useSelector((state) => state.user);
 
   const user = useSelector((state) => state.user);
-  const baseLink = "/users/activities?";
-  const [loading, setLoading] = useState(false);
-  const [logs, setLogs] = useState([]);
+  const [currentPage, handleChangePage] = usePaginator();
   const [projects, setProjects] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [queryParams, setQueryParams] = useState("");
@@ -46,31 +47,19 @@ const UserActivity = () => {
   const transformedOperationsList = transformListForSelect(operationsList);
   const transformedProjectNames = transformProjectsListForSelect(projects);
 
-  useEffect(() => {
-    fetchActivityLogs(baseLink);
-  }, []);
+  const dispatch = useDispatch();
+
+  const userActivities = useCallback(
+    () => dispatch(getUserActivities(queryParams, currentPage)),
+    [dispatch, queryParams, currentPage]
+  );
 
   useEffect(() => {
-    fetchActivityLogs(`${baseLink}${queryParams}`);
-    setFeedback("");
-  }, [queryParams]);
+    userActivities();
+  }, [userActivities, queryParams]);
 
-  const fetchActivityLogs = (link) => {
-    setLoading(true);
-    handleGetRequest(link)
-      .then((response) => {
-        if (response.data.data.activity.length > 0) {
-          setLogs(response.data.data.activity);
-        } else {
-          setFeedback("No logs for you");
-        }
-        setLoading(false);
-      })
-      .catch((error) => {
-        setFeedback("Failed to fetch logs, please try again");
-        setLoading(false);
-      });
-  };
+  const { activities, pagination, isFetchingActivities, activitiesFetched } =
+    useSelector((state) => state.userActivitiesReducer);
 
   useEffect(() => {
     fetchProjectList();
@@ -260,6 +249,11 @@ const UserActivity = () => {
     }
   };
 
+  const handlePageChange = (currentPage) => {
+    handleChangePage(currentPage);
+    userActivities();
+  };
+
   return (
     <div className="MainPage">
       <div className="TopBarSection">
@@ -363,12 +357,12 @@ const UserActivity = () => {
             )}
 
             <div className={`${styles.LogsContainer}`}>
-              {loading ? (
+              {isFetchingActivities && !activitiesFetched ? (
                 <Spinner />
               ) : feedback !== "" ? (
                 <div className={styles.NoResourcesMessage}>{feedback}</div>
               ) : (
-                logs?.slice(0, 20).map((item, index, array) => (
+                activities?.map((item, index, array) => (
                   <div key={item._id.$oid}>
                     <div className={styles.TableRow}>
                       {item.status === "Success" ||
@@ -423,6 +417,16 @@ const UserActivity = () => {
                 ))
               )}
             </div>
+
+            {pagination?.pages > 1 && (
+              <div className="AdminPaginationSection">
+                <Pagination
+                  total={pagination.pages}
+                  current={currentPage}
+                  onPageChange={handlePageChange}
+                />
+              </div>
+            )}
           </div>
         </div>
         <AppFooter />
