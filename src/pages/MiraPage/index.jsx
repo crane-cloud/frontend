@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useRef } from "react";
+//import axios from "axios";
 import Dropzone from "../../components/DropZone";
 import styles from "./MiraPage.module.css";
 import BlackInputText from "../../components/BlackInputText";
@@ -15,6 +15,7 @@ import { retrieveRegistryChoices } from "../../helpers/registryChoices";
 const MiraPge = ({ projectID }) => {
   const frameworks = retrieveFrameworkChoices();
   const registries = retrieveRegistryChoices();
+  const logsSectionRef = useRef(null);
 
   const [files, setFiles] = useState([]);
   const [framework, setFramework] = useState("");
@@ -25,6 +26,7 @@ const MiraPge = ({ projectID }) => {
   });
   const [loading, setLoader] = useState(false);
   const [error, setError] = useState("");
+  const [logs, setLogs] = useState([]);
 
   const getPathName = (path) => {
     let filePath = path.replaceAll("/", "|").replace("|", "");
@@ -49,7 +51,7 @@ const MiraPge = ({ projectID }) => {
     setRegistry(selected.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoader(true);
     const token = localStorage.getItem("token");
     const formData = new FormData();
@@ -65,16 +67,56 @@ const MiraPge = ({ projectID }) => {
     formData.append("project", projectID);
     formData.append("registry", registry);
 
-    axios
-      .post(`${MIRA_API_URL}/containerize`, formData)
-      .then(function ({ res }) {
-        setLoader(false);
-        window.location.href = `/projects/${projectID}/Apps`;
-      })
-      .catch(function (error) {
-        setLoader(false);
-        setError("failed to deploy");
+    // axios
+    //   .post(`${MIRA_API_URL}/containerize`, formData)
+    //   .then(res => {
+    //     setLoader(false);
+    //     console.log(res)
+    //    // window.location.href = `/projects/${projectID}/Apps`;
+    //   })
+    //   .catch(error => {
+    //     console.log(error)
+    //     setLoader(false);
+    //     setError("failed to deploy");
+    //   });
+    if (logsSectionRef.current) {
+      logsSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+    //since it is stream data it will always return 200
+
+    fetch(`${MIRA_API_URL}/containerize`, {
+      method: 'POST',
+      body: formData
+    }).then((response) => {
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    const readStream = () => {
+      reader.read().then(({ done, value }) => {
+        if (done) {
+          console.log('Stream complete');
+          setLoader(false);
+          return;
+        }
+        const str = decoder.decode(value);
+        const regex = /{"timestamp":"(.*?)","message":"(.*?)"}(?={|$)/g;
+        let match;
+        while ((match = regex.exec(str)) !== null) {
+          const timestamp = match[1]; 
+          const message = match[2]; 
+          setLogs((prevLogs) => [...prevLogs, {timestamp: timestamp, message: message}])
+        }
+       
+        readStream();
+      }).catch((error) => {
+        console.error('Error reading stream:', error);
       });
+    };
+    // Start consuming the stream
+    readStream();
+  })
+  .catch((error) => {
+    console.error('Fetch error:', error);
+  });
   };
 
   return (
@@ -164,6 +206,23 @@ const MiraPge = ({ projectID }) => {
             {loading ? <Spinner /> : "Deploy"}
           </PrimaryButton>
         </div>
+      </div>
+      <h2 >Mira Logs</h2>
+      <div className={`${styles.MiraLogsFrameContainer}`}>
+      <div className={'LogsBodySection Dark'}  ref={logsSectionRef}>
+        <div className={'LogsAvailable'}>
+          _/
+          {logs.map((log, index) => (
+            <div key={index} className={`LogsAvailable`}>
+              <div className={styles.logItem}>
+              <span className={styles.logItemTitle}>{new Date(log.timestamp).toLocaleTimeString()}</span>
+              <p>{log.message}</p>
+              {/* {log} */}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
       </div>
     </div>
   );

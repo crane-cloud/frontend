@@ -41,7 +41,7 @@
   padding-bottom: 2rem;
 }
 .CreateFormHolder {
-  height: calc(100vh - 14.5rem);
+  min-height: calc(100vh - 14.5rem);
 }
 
 .FormInputs {
@@ -76,3 +76,26 @@
 .ButtonSection {
   padding-bottom: 1rem;
 }
+
+.MiraLogsFrameContainer {
+  border: 1px solid #cccccc;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 15px;
+  background-color: #283237;
+  color: initial;
+  height: 100%;
+  border-radius: 15px;
+}
+.MiraLogsFrameContainer:hover{
+  border: 1px solid var(--secondary-color);
+}
+
+.logItemTitle{
+  color: #88d6fd;
+}
+
+
+
+
