@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import styles from "./Dropzone.module.css";
-// import { ReactComponent as Drop } from "../../assets/images/drop.svg";
+import { ReactComponent as Drop } from "../../assets/images/drop.svg";
 
 const Dropzone = ({ handleDrop }) => {
   const [files, setFiles] = useState([]);
@@ -34,7 +34,7 @@ const Dropzone = ({ handleDrop }) => {
       {!files.length ? (
         <>
           <div>
-            {/* <Drop className={styles.UploadIconSmall} /> */}
+            <Drop className={styles.UploadIconSmall} />
             <p className={styles.DropzonePlaceholder}>
               Drag and drop your zipped folder or click here to select files
             </p>
