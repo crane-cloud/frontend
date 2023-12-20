@@ -10,6 +10,7 @@ import { MIRA_API_URL } from "../../config";
 import Spinner from "../../components/Spinner";
 import { retrieveFrameworkChoices } from "../../helpers/frameworkChoices";
 import { retrieveRegistryChoices } from "../../helpers/registryChoices";
+import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
 
 
 const MiraPge = ({ projectID }) => {
@@ -27,6 +28,8 @@ const MiraPge = ({ projectID }) => {
   const [loading, setLoader] = useState(false);
   const [error, setError] = useState("");
   const [logs, setLogs] = useState([]);
+
+  const [successfulDeployment, setSuccessfulDeployment] = useState();  
 
   const getPathName = (path) => {
     let filePath = path.replaceAll("/", "|").replace("|", "");
@@ -93,28 +96,31 @@ const MiraPge = ({ projectID }) => {
     const readStream = () => {
       reader.read().then(({ done, value }) => {
         if (done) {
-          console.log('Stream complete');
           setLoader(false);
           return;
         }
         const str = decoder.decode(value);
-        const regex = /{"timestamp":"(.*?)","message":"(.*?)"}(?={|$)/g;
+        
+        const regex = /{"timestamp":"(.*?)","message":"(.*?)","success":(true|false)}(?={|$)|{"timestamp":"(.*?)","message":"(.*?)"}(?={|$)/g;
         let match;
         while ((match = regex.exec(str)) !== null) {
-          const timestamp = match[1]; 
-          const message = match[2]; 
+          const timestamp = match[1] || match[4]; 
+          const message = match[2] || match[5]; 
+           if(match[3] !== undefined){
+            setSuccessfulDeployment(match[3])
+           }
           setLogs((prevLogs) => [...prevLogs, {timestamp: timestamp, message: message}])
         }
-       
         readStream();
       }).catch((error) => {
-        console.error('Error reading stream:', error);
+       const errorLog =  { timestamp: new Date().toISOString(), message: "Error reading log stream" }
+       setLogs((prevLogs) => [...prevLogs, errorLog])
       });
     };
     // Start consuming the stream
     readStream();
   })
-  .catch((error) => {
+  .catch((error) => {                                                 
     console.error('Fetch error:', error);
   });
   };
@@ -207,23 +213,44 @@ const MiraPge = ({ projectID }) => {
           </PrimaryButton>
         </div>
       </div>
-      <h2 >Mira Logs</h2>
+      
+       
+      <h2>Mira Logs</h2>
       <div className={`${styles.MiraLogsFrameContainer}`}>
-      <div className={'LogsBodySection Dark'}  ref={logsSectionRef}>
-        <div className={'LogsAvailable'}>
-          _/
-          {logs.map((log, index) => (
-            <div key={index} className={`LogsAvailable`}>
-              <div className={styles.logItem}>
-              <span className={styles.logItemTitle}>{new Date(log.timestamp).toLocaleTimeString()}</span>
-              <p>{log.message}</p>
-              {/* {log} */}
+        <div className={"LogsBodySection Dark"} ref={logsSectionRef}>
+          <div  className={`LogsAvailable ${styles.logsDiv}`}>
+            _/
+            {logs.map((log, index) => (
+              <div key={index} className={`LogsAvailable`}>
+                <div className={styles.logItem}>
+                  <span className={styles.logItemTitle}>
+                    {new Date(log.timestamp).toLocaleTimeString()}
+                  </span>
+                  <p>{log.message}</p>
+                  {/* {log} */}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
-      </div>
+       
+      
+      {successfulDeployment==="false" && (
+        <div className={styles.successfulDeployment}>
+          <div className={styles.ErrorDiv}>Failed to deploy application</div>
+        </div>
+      )}
+      {successfulDeployment==="true" && (
+        <div className={styles.successfulDeployment}>
+          <div className="LoginFeedBackDiv"> Deployed successfully</div>
+          <div className={styles.ButtonSection}>
+            <PrimaryButton className="AuthBtn FullWidth" onClick={()=> {window.location.href = `/projects/${projectID}/Apps`}}>
+              <BackButton/> View applications
+            </PrimaryButton>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

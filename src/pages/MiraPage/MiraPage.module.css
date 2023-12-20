@@ -95,6 +95,25 @@
 .logItemTitle{
   color: #88d6fd;
 }
+.successfulDeployment{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.logsDiv{
+  max-height: 27rem;
+  overflow: auto;
+}
+
+.ErrorDiv {
+  background-color: rgba(255, 255, 255, 0.597);
+  color: #d63b3b;
+  text-align: center;
+  padding: 1rem 0;
+  border-radius: 5px;
+}
 
 
 
