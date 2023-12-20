@@ -425,6 +425,10 @@ tr.TableLoading td {
 
 }
 
+.FilterSection .SelectOptionsWrapper {
+  overflow-y: auto;
+}
+
 .ContentSection {
   display: flex;
   flex-direction: column;

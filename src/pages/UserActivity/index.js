@@ -315,7 +315,7 @@ const UserActivity = () => {
                   </div>
                 </div>
 
-                <div className={styles.FilterItemDropdown}>
+                <div className={`${styles.FilterItemDropdown} FilterSection `}>
                   <span className={styles.FilterItemLabel}>Project</span>
                   <Select
                     placeholder="Choose Project"
