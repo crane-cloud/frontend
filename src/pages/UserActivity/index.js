@@ -361,6 +361,8 @@ const UserActivity = () => {
                 <Spinner />
               ) : feedback !== "" ? (
                 <div className={styles.NoResourcesMessage}>{feedback}</div>
+              ) : activities?.length === 0 ? (
+                <div className={styles.NoResourcesMessage}>No logs for you</div>
               ) : (
                 activities?.map((item, index, array) => (
                   <div key={item._id.$oid}>
