@@ -1,12 +1,12 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import ToggleButton from './index';
+import React from "react";
+import { render } from "@testing-library/react";
 
-describe('Toggle Button Component', () => {
-  it('Renders a Toggle button component', () => {
+import ToggleButton from "./index";
 
+describe("Toggle Button Component", () => {
+  it("Renders a Toggle button component", () => {
     const buttonEvent = jest.fn();
-    const ButtonComponent = shallow(<ToggleButton  onClick={buttonEvent}/>);
+    const ButtonComponent = render(<ToggleButton onClick={buttonEvent} />);
 
     expect(ButtonComponent).toMatchSnapshot();
   });

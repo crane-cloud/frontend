@@ -1,12 +1,17 @@
-import React from 'react';
-import { shallow } from "enzyme";
-import DeletWarning from '.';
+import React from "react";
+import { render } from "@testing-library/react";
 
-describe('Test the delete warning component', () => {
-    const AlignedDeletWarningComponent = shallow(<DeletWarning textAlignment="center" />);
-    const UnalignedDeletWarningComponent = shallow(<DeletWarning textAlignment={false} />);
+import DeletWarning from ".";
 
-    it('checks if the delete warning component matches the snapshot', () => {
-        expect(AlignedDeletWarningComponent).toMatchSnapshot();
-    });
+describe("Test the delete warning component", () => {
+  const AlignedDeletWarningComponent = render(
+    <DeletWarning textAlignment="center" />
+  );
+  const UnalignedDeletWarningComponent = render(
+    <DeletWarning textAlignment={false} />
+  );
+
+  it("checks if the delete warning component matches the snapshot", () => {
+    expect(AlignedDeletWarningComponent).toMatchSnapshot();
+  });
 });

@@ -1,5 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import PodsList from "./";
 import * as redux from "react-redux";
 
@@ -19,10 +20,10 @@ describe("PodsList component", () => {
     jest.spyOn(React, "useEffect").mockImplementationOnce((cb) => cb()());
     // Mock useSelector hook
     spyOnUseSelector = jest.spyOn(redux, "useSelector");
-    spyOnUseSelector.mockReturnValue({ 
-      pods: { pagination: { pages: 1 }, pods: [] }, 
-      isRetrieving: false, 
-      isFetched: false 
+    spyOnUseSelector.mockReturnValue({
+      pods: { pagination: { pages: 1 }, pods: [] },
+      isRetrieving: false,
+      isFetched: false,
     });
     // Mock useDispatch hook
     const useDispatchSpy = jest.spyOn(redux, "useDispatch");
@@ -36,7 +37,7 @@ describe("PodsList component", () => {
   });
 
   it("renders without crashing", () => {
-    const wrapper = shallow(<PodsList />);
+    const wrapper = render(<PodsList />);
 
     expect(wrapper.exists()).toBe(true);
   });

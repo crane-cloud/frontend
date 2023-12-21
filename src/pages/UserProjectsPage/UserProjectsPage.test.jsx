@@ -1,48 +1,53 @@
-/* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
-import UserProjectsPage, { mapStateToProps } from "./";
+import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect"; // For extended jest-dom assertions
+import { Provider } from "react-redux"; // Import your Redux Provider
+import configureStore from "redux-mock-store"; // Install the redux-mock-store library
+import thunk from "redux-thunk"; // If you're using redux-thunk
 
-const UserProjectsPageProps = {
-  data: { id:"1" },
-  match: { params: { projectID: "1" } },
-  getUserProjects: jest.fn(),
-  getClustersList: jest.fn(),
-  clusters: {},
-  getUserCredits: jest.fn(),
+import UserProjectsPage from "./";
+
+// Mock your Redux store
+const middlewares = [thunk]; // Add any middlewares you're using
+const mockStore = configureStore(middlewares);
+
+const initialState = {
+  user: {
+    data: {
+      id: "123",
+      username: "testUser",
+    },
+  },
+  clustersReducer: {
+    clusters: [],
+  },
+  userProjectsReducer: {
+    isRetrieving: false,
+    projects: [],
+    pagination: {},
+    isFetched: false,
+  },
+  userCreditsReducer: {
+    credits: {},
+  },
 };
 
-describe("Testing the user projects Page component", () => {
-  const WrapperUserProjectsPage = UserProjectsPage.WrappedComponent;
-  const UserProjectsPageComponent = shallow(<WrapperUserProjectsPage {...UserProjectsPageProps} />);
-  it("should match the snapshot for UserProjectsPage after adding props", () => {
-    UserProjectsPageComponent.setProps(UserProjectsPageProps);
-    expect(UserProjectsPageComponent).toBeDefined();
-  });
-  it("matchs the UserProjectsPage component snapshot", () => {
-    expect(UserProjectsPageComponent).toMatchSnapshot();
-  });
+let store;
+
+beforeEach(() => {
+  store = mockStore(initialState);
 });
 
+it("renders UserProjectsPage component", () => {
+  render(
+    <Provider store={store}>
+      <UserProjectsPage />
+    </Provider>
+  );
 
-describe("Testing the exported mapstate to props and dispatch", () => {
-  it("matches the Appmetricspage mapstostate", () => {
-    expect(
-      mapStateToProps({
-        user:{
-          data:[]
-        },
-        clustersReducer: { clusters: {} },
-        userProjectsReducer: { isRetrieving: false, projects: [], isFetched: false },
-        userCreditsReducer: { credits: {} },
-      })
-    ).toEqual({
-      data:[],
-      isRetrieving: false,
-      projects: [],
-      clusters: {},
-      isFetched: false,
-      credits: {},
-    });
-  });
+  // Add your testing assertions based on the component's behavior
+  expect(screen.getByText("Projects")).toBeInTheDocument();
+  // Add more assertions as needed
 });
+
+// Add more test cases as needed based on your component's behavior

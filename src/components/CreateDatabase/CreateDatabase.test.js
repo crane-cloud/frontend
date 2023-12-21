@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import CreateDatabase, { mapStateToProps } from "./";
 
 const createDBProps = {
@@ -10,12 +11,12 @@ const createDBProps = {
 describe("Test the CreateDatabase component", () => {
   it("wraps the component then creates a snapshot", () => {
     const wrapper = CreateDatabase.WrappedComponent;
-    const mycomponent = shallow(<wrapper {...createDBProps} />);
+    const mycomponent = render(<wrapper {...createDBProps} />);
     expect(mycomponent).toMatchSnapshot();
   });
   it("should match the snapshot of the created component", () => {
     const newComponent = CreateDatabase.WrappedComponent;
-    const wrapper = shallow(<newComponent {...createDBProps} />);
+    const wrapper = render(<newComponent {...createDBProps} />);
     wrapper.setProps(createDBProps);
     expect(wrapper).toBeDefined();
   });

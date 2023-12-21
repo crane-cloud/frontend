@@ -1,5 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 // import Header from "../../components/Header";
 import { API_BASE_URL } from "../../config";
 import axios from "axios";
@@ -19,14 +20,14 @@ describe("<Login /> Component", () => {
   const initiateGitHubLogin = jest.fn();
 
   const WrapperLoginPage = LoginPage.WrappedComponent;
-   
+
   let LoginPageComponent;
 
   beforeEach(() => {
-    LoginPageComponent = shallow(<WrapperLoginPage {...Props} />);
+    LoginPageComponent = render(<WrapperLoginPage {...Props} />);
   });
 
- // LoginPageComponent.setProps(Props);
+  // LoginPageComponent.setProps(Props);
 
   it("component should match the snapshot", () => {
     expect(LoginPageComponent).toMatchSnapshot();
@@ -96,9 +97,7 @@ describe("<Login /> Component", () => {
     const validEmail = "test@example.com";
     const invalidEmail = "invalid-email";
 
-    expect(LoginPageComponent.instance().validateEmail(validEmail)).toBe(
-      true
-    );
+    expect(LoginPageComponent.instance().validateEmail(validEmail)).toBe(true);
     expect(LoginPageComponent.instance().validateEmail(invalidEmail)).toBe(
       false
     );
@@ -180,8 +179,9 @@ describe("<Login /> Component", () => {
 
     LoginPageComponent.instance().handleSubmit(mockEvent);
 
-    expect(LoginPageComponent.state("error")).toBe("Please enter your email and password");
-
+    expect(LoginPageComponent.state("error")).toBe(
+      "Please enter your email and password"
+    );
   });
 
   it("should render the GitHub login button", () => {
@@ -193,7 +193,6 @@ describe("<Login /> Component", () => {
     expect(LoginPageComponent.find(".GithubLoginBtn").prop("disabled")).toBe(
       false
     );
-    
   });
 
   it("should have a password field", () => {
@@ -213,5 +212,4 @@ describe("<Login /> Component", () => {
       name: "password",
     });
   });
-
 });

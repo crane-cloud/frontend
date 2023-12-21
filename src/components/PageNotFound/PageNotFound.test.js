@@ -1,14 +1,15 @@
-import React from 'react';
+import React from "react";
 
-import { shallow } from 'enzyme';
+import { render } from "@testing-library/react";
 
-import PageNotFound from '.';
+import PageNotFound from ".";
 
-describe('Page not found Component', () => {
-  it('Renders a page not found component', () => {
-    const PageNotFoundComponent = shallow(<PageNotFound/>);
-    expect(PageNotFoundComponent.find('.ErrorPageConent')
-    .hasClass('ErrorPageConent')).toBe(true);
-   expect(PageNotFoundComponent).toMatchSnapshot();
+describe("Page not found Component", () => {
+  it("Renders a page not found component", () => {
+    const PageNotFoundComponent = render(<PageNotFound />);
+    expect(
+      PageNotFoundComponent.find(".ErrorPageConent").hasClass("ErrorPageConent")
+    ).toBe(true);
+    expect(PageNotFoundComponent).toMatchSnapshot();
   });
 });

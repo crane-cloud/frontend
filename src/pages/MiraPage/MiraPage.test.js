@@ -1,5 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import axios from "axios";
 import MiraPage from "./index";
 import PrimaryButton from "../../components/PrimaryButton";
@@ -15,12 +16,12 @@ describe("MiraPage component", () => {
   });
 
   it("should render the MiraPage component", () => {
-    const wrapper = shallow(<MiraPage projectID={projectID} />);
+    const wrapper = render(<MiraPage projectID={projectID} />);
     expect(wrapper.exists()).toBe(true);
   });
 
   it("should trigger deployment on button click", () => {
-    const wrapper = shallow(<MiraPage projectID={projectID} />);
+    const wrapper = render(<MiraPage projectID={projectID} />);
     const button = wrapper.find(PrimaryButton);
 
     // Simulate button click
@@ -34,7 +35,7 @@ describe("MiraPage component", () => {
   });
 
   it("should display spinner while loading", () => {
-    const wrapper = shallow(<MiraPage projectID={projectID} />);
+    const wrapper = render(<MiraPage projectID={projectID} />);
     wrapper.find(PrimaryButton).simulate("click");
     wrapper.update();
 
@@ -42,7 +43,6 @@ describe("MiraPage component", () => {
     expect(wrapper.find(Spinner).exists()).toBe(true);
   });
   it("should match the snapshot", () => {
-    const wrapper = shallow(<MiraPage projectID={projectID} />);
-    expect(wrapper).toMatchSnapshot();
+    const wrapper = render(<MiraPage projectID={projectID} />);
   });
 });

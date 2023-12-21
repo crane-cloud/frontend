@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import ClusterSettingsPage, { mapStateToProps } from "./";
 
 const ClusterSettingsPageProps = {
@@ -12,7 +13,7 @@ const ClusterSettingsPageProps = {
 // {} ={}
 describe("Testing the App Metrics Page component", () => {
   const WrapperClusterSettingsPage = ClusterSettingsPage.WrappedComponent;
-  const ClusterSettingsPageComponent = shallow(
+  const ClusterSettingsPageComponent = render(
     <WrapperClusterSettingsPage {...ClusterSettingsPageProps} />
   );
   it("should match the snapshot for ClusterSettingsPage after adding props", () => {

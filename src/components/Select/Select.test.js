@@ -1,15 +1,24 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import Select from './index';
+import React from "react";
+import { render } from "@testing-library/react";
 
-describe('Select Component', () => {
-  it('Renders a Select component', () => {
+import Select from "./index";
+
+describe("Select Component", () => {
+  it("Renders a Select component", () => {
     const selectEvent = jest.fn();
-    const options = [{ id: 1, name: 'Option 1' }, { id: 2, name: 'Option 2' }];
-    const placeholder = 'Select an option';
+    const options = [
+      { id: 1, name: "Option 1" },
+      { id: 2, name: "Option 2" },
+    ];
+    const placeholder = "Select an option";
 
-    const wrapper = shallow(
-      <Select onChange={selectEvent} options={options} required placeholder={placeholder} />
+    const wrapper = render(
+      <Select
+        onChange={selectEvent}
+        options={options}
+        required
+        placeholder={placeholder}
+      />
     );
 
     // Check if the component renders without errors
@@ -22,22 +31,22 @@ describe('Select Component', () => {
     // expect(selected).toBe(`${placeholder}`);
 
     // Check the rendered elements
-    expect(wrapper.find('.SelectWrapper')).toHaveLength(1);
-    expect(wrapper.find('.SelectElementMain')).toHaveLength(1);
-    expect(wrapper.find('.SelectElementValue')).toHaveLength(1);
-    expect(wrapper.find('.SelectArrow')).toHaveLength(1);
-    expect(wrapper.find('.SelectOptionsWrapper')).toHaveLength(0);
+    expect(wrapper.find(".SelectWrapper")).toHaveLength(1);
+    expect(wrapper.find(".SelectElementMain")).toHaveLength(1);
+    expect(wrapper.find(".SelectElementValue")).toHaveLength(1);
+    expect(wrapper.find(".SelectArrow")).toHaveLength(1);
+    expect(wrapper.find(".SelectOptionsWrapper")).toHaveLength(0);
 
     // Simulate click on SelectElementMain to open the options
-    wrapper.find('.SelectElementMain').simulate('click');
+    wrapper.find(".SelectElementMain").simulate("click");
 
     // Check the updated state after clicking on SelectElementMain
-   // expect(setShowOptions).toHaveBeenCalledWith(true);
-    expect(wrapper.find('.SelectOptionsWrapper')).toHaveLength(1);
-    expect(wrapper.find('.SelectOption')).toHaveLength(2); // Assuming two options are passed
+    // expect(setShowOptions).toHaveBeenCalledWith(true);
+    expect(wrapper.find(".SelectOptionsWrapper")).toHaveLength(1);
+    expect(wrapper.find(".SelectOption")).toHaveLength(2); // Assuming two options are passed
 
     // Simulate click on an option
-    wrapper.find('.SelectOption').at(0).simulate('click');
+    wrapper.find(".SelectOption").at(0).simulate("click");
 
     // Check the selected value and the function call
     //expect(setValue).toHaveBeenCalledWith(options[0].name);

@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import AppNetworkPage, { mapStateToProps } from "./";
 
 const props = {
@@ -10,12 +11,12 @@ const props = {
 describe("test the component", () => {
   it("matchs the component snapshot", () => {
     const wrapper = AppNetworkPage.WrappedComponent;
-    const mycomponent = shallow(<wrapper {...props} />);
+    const mycomponent = render(<wrapper {...props} />);
     expect(mycomponent).toMatchSnapshot();
   });
   it("should match the snapshot", () => {
     const newComponent = AppNetworkPage.WrappedComponent;
-    const wrapper = shallow(<newComponent {...props} />);
+    const wrapper = render(<newComponent {...props} />);
     wrapper.setProps(props);
     expect(wrapper).toBeDefined();
   });

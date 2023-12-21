@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import SpendingPeriod from ".";
 const SpendingPeriodProps = {
   switchCalendars: jest.fn(),
@@ -12,9 +13,11 @@ const SpendingPeriodProps = {
   handleToDate: jest.fn(),
   handleSubmit: jest.fn(),
 };
-describe('Test billing period component', () => {
-  const SpendingPeriodWrapper = shallow(<SpendingPeriod {...SpendingPeriodProps} />);
-  it('Test for billing class constructor', () => {
+describe("Test billing period component", () => {
+  const SpendingPeriodWrapper = render(
+    <SpendingPeriod {...SpendingPeriodProps} />
+  );
+  it("Test for billing class constructor", () => {
     expect(SpendingPeriodWrapper.exists()).toBeTruthy();
     expect(SpendingPeriodWrapper).toHaveLength(1);
   });

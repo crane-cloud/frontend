@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import CreateProject, { mapStateToProps } from "./";
 
 const CreateProjectProps = {
@@ -15,7 +16,9 @@ const CreateProjectProps = {
 // {} ={}
 describe("Testing the App Metrics Page component", () => {
   const WrapperCreateProject = CreateProject.WrappedComponent;
-  const CreateProjectComponent = shallow(<WrapperCreateProject {...CreateProjectProps} />);
+  const CreateProjectComponent = render(
+    <WrapperCreateProject {...CreateProjectProps} />
+  );
   it("should match the snapshot for CreateProject after adding props", () => {
     CreateProjectComponent.setProps(CreateProjectProps);
     expect(CreateProjectComponent).toBeDefined();

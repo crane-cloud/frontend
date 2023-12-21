@@ -1,12 +1,12 @@
 import React from "react";
 
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 
 import ResourceCard from "./index";
 
 describe("ResourceCard Component", () => {
   it("Renders the ResourceCard component", () => {
-    const ResourceCardComponent = shallow(
+    const ResourceCardComponent = render(
       <ResourceCard className="ResourceCard" title="db" count="2" />
     );
 

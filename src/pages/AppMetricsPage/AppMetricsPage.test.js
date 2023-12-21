@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import AppMetricsPage, { mapStateToProps } from ".";
 
 const AppMetricsPageProps = {
@@ -14,7 +15,7 @@ const AppMetricsPageProps = {
 // {} ={}
 describe("Testing the App Metrics Page component", () => {
   const WrapperAppMetricsPage = AppMetricsPage.WrappedComponent;
-  const AppMetricsPageComponent = shallow(
+  const AppMetricsPageComponent = render(
     <WrapperAppMetricsPage {...AppMetricsPageProps} />
   );
   it("should match the snapshot for AppMetricsPage after adding props", () => {

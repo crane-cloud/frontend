@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
 
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 
 import LandingPage, { mapStateToProps } from "./";
 
@@ -23,8 +23,10 @@ describe("LandingPage component test", () => {
   let landingpageWrapper, landingpageUserWrapper;
   beforeEach(() => {
     const LandingPagewrapper = LandingPage.WrappedComponent;
-    landingpageWrapper = shallow(<LandingPagewrapper {...LandingPageProps} />);
-    landingpageUserWrapper = shallow(<LandingPagewrapper {...userDefinedProps} />);
+    landingpageWrapper = render(<LandingPagewrapper {...LandingPageProps} />);
+    landingpageUserWrapper = render(
+      <LandingPagewrapper {...userDefinedProps} />
+    );
   });
   it("matches rendered component with the existing snapshot", () => {
     expect(landingpageWrapper).toMatchSnapshot();
@@ -37,7 +39,7 @@ describe("Test the landing page map state to props", () => {
         user: {},
       })
     ).toEqual({
-        user: {},
+      user: {},
     });
   });
 });

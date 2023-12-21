@@ -1,5 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import * as redux from "react-redux";
 import JobsListPage from ".";
 
@@ -43,7 +44,7 @@ describe("Jobs page", () => {
   });
 
   it("should render", () => {
-    const wrapper = shallow(<JobsListPage />);
+    const wrapper = render(<JobsListPage />);
 
     expect(wrapper.exists()).toBe(true);
   });

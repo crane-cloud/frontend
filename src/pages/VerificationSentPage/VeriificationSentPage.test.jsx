@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import VerificationSentPage, { mapStateToProps } from "./";
 
 const VerificationSentPageProps = {
@@ -10,7 +11,7 @@ const VerificationSentPageProps = {
 
 describe("Testing the App Metrics Page component", () => {
   const WrapperVerificationSentPage = VerificationSentPage.WrappedComponent;
-  const VerificationSentPageComponent = shallow(
+  const VerificationSentPageComponent = render(
     <WrapperVerificationSentPage {...VerificationSentPageProps} />
   );
   it("should match the snapshot for VerificationSentPage after adding props", () => {

@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 
 import CreateNewPassword from "./index";
 
@@ -12,8 +12,8 @@ describe(" New password Component", () => {
   const handleOnChange = jest.fn();
   const handleSubmit = jest.fn();
 
-  const CreateNewPasswordComponent = shallow(<CreateNewPassword {...Props} />);
-  // const CreateNewPasswordComponent = shallow(<CreateNewPassword/>);
+  const CreateNewPasswordComponent = render(<CreateNewPassword {...Props} />);
+  // const CreateNewPasswordComponent = render(<CreateNewPassword/>);
   CreateNewPasswordComponent.setProps(Props);
 
   it("component should match the snapshot", () => {

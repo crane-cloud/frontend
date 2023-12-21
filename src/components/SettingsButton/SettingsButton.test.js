@@ -1,22 +1,31 @@
-import React from 'react';
+import React from "react";
 
-import { shallow } from 'enzyme';
+import { render } from "@testing-library/react";
 
-import SettingsButton from './index';
+import SettingsButton from "./index";
 
-describe('Button Component', () => {
-  it('Renders a button component', () => {
-
+describe("Button Component", () => {
+  it("Renders a button component", () => {
     const buttonEvent = jest.fn();
-    const ButtonComponent = shallow(<SettingsButton className="Settings-Btn" onClick={buttonEvent} label="Close" disable={true}/>);
+    const ButtonComponent = render(
+      <SettingsButton
+        className="Settings-Btn"
+        onClick={buttonEvent}
+        label="Close"
+        disable={true}
+      />
+    );
 
-    expect(ButtonComponent.find('.Settings-Btn').text()).toBe('Close');
-    expect(ButtonComponent.find('.Settings-Btn').hasClass('Settings-Btn')).toBe(true);
+    expect(ButtonComponent.find(".Settings-Btn").text()).toBe("Close");
+    expect(ButtonComponent.find(".Settings-Btn").hasClass("Settings-Btn")).toBe(
+      true
+    );
 
-    ButtonComponent.find('.Settings-Btn').simulate('click');
+    ButtonComponent.find(".Settings-Btn").simulate("click");
     expect(buttonEvent).toHaveBeenCalled();
 
-    expect(ButtonComponent.find('.Settings-Btn').props()["disabled"]).toBe(true)
-
+    expect(ButtonComponent.find(".Settings-Btn").props()["disabled"]).toBe(
+      true
+    );
   });
 });

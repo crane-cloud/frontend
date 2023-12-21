@@ -1,5 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import AdminUserPage, { mapStateToProps } from "./";
 
 const AdminUserPageProps = {
@@ -10,14 +11,14 @@ const AdminUserPageProps = {
   getUserDetail: jest.fn(),
   clearCreditsState: jest.fn(),
   clearUserCredits: jest.fn(),
-  match: {params:{}},
-  userCredits: { credit_assignment_records: []},
-  adminGetUserCredits: jest.fn()
+  match: { params: {} },
+  userCredits: { credit_assignment_records: [] },
+  adminGetUserCredits: jest.fn(),
 };
 
 describe("Testing the  user Profile Page component", () => {
   const WrapperAdminUserPage = AdminUserPage.WrappedComponent;
-  const AdminUserPageComponent = shallow(
+  const AdminUserPageComponent = render(
     <WrapperAdminUserPage {...AdminUserPageProps} />
   );
   it("should match the snapshot for AdminUserPage after adding props", () => {

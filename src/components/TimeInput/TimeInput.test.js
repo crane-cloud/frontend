@@ -1,19 +1,20 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import TimeInput from ".";
 const TimeInputProps = {
-    setTimeOfDay: jest.fn(),
-    handleFocus: jest.fn(),
-    formatTime: jest.fn(),
-    changeHour: jest.fn(),
-    changeMinutes: jest.fn(),
-    onChange: jest.fn(),
-    format24HourClock: jest.fn(),
+  setTimeOfDay: jest.fn(),
+  handleFocus: jest.fn(),
+  formatTime: jest.fn(),
+  changeHour: jest.fn(),
+  changeMinutes: jest.fn(),
+  onChange: jest.fn(),
+  format24HourClock: jest.fn(),
 };
-describe('Test Time input component', () => {
-  const TimeInputWrapper = shallow(<TimeInput {...TimeInputProps} />);
-  it('Test Time input class constructor', () => {
+describe("Test Time input component", () => {
+  const TimeInputWrapper = render(<TimeInput {...TimeInputProps} />);
+  it("Test Time input class constructor", () => {
     expect(TimeInputWrapper.exists()).toBeTruthy();
     expect(TimeInputWrapper).toHaveLength(1);
   });

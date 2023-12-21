@@ -1,12 +1,13 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import PrimaryButton from "./index";
 
 describe("PrimaryButton Component", () => {
   it("renders a button component with text and triggers click event", () => {
     const buttonEvent = jest.fn();
     const buttonLabel = "Login";
-    const ButtonComponent = shallow(
+    const ButtonComponent = render(
       <PrimaryButton onClick={buttonEvent}>{buttonLabel}</PrimaryButton>
     );
 
@@ -27,7 +28,7 @@ describe("PrimaryButton Component", () => {
       disabled: true,
     };
 
-    const ButtonComponent = shallow(
+    const ButtonComponent = render(
       <PrimaryButton className={className} {...additionalProps}>
         {buttonLabel}
       </PrimaryButton>

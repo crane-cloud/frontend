@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import Period from ".";
 const PeriodProps = {
   switchCalendars: jest.fn(),
@@ -12,9 +13,9 @@ const PeriodProps = {
   handleToDate: jest.fn(),
   handleSubmit: jest.fn(),
 };
-describe('Test period component', () => {
-  const PeriodWrapper = shallow(<Period {...PeriodProps} />);
-  it('Test for class constructor', () => {
+describe("Test period component", () => {
+  const PeriodWrapper = render(<Period {...PeriodProps} />);
+  it("Test for class constructor", () => {
     expect(PeriodWrapper.exists()).toBeTruthy();
     expect(PeriodWrapper).toHaveLength(1);
   });

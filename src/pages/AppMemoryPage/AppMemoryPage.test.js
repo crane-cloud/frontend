@@ -1,13 +1,11 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
-import 
-  AppMemoryPage,{
-  mapStateToProps}
- from "./";
+import { render } from "@testing-library/react";
+
+import AppMemoryPage, { mapStateToProps } from "./";
 
 const props = {
-  data: { id:"1" },
+  data: { id: "1" },
   match: { params: { projectID: "2" } },
   appMemoryMetrics: [{ item: "item" }],
   getUserProjects: jest.fn(),
@@ -18,7 +16,7 @@ const props = {
 
 describe("test the component", () => {
   const NewComponent = AppMemoryPage.WrappedComponent;
-  const Wrapper = shallow(<NewComponent {...props} />);
+  const Wrapper = render(<NewComponent {...props} />);
   it("matchs the component snapshot", () => {
     expect(Wrapper).toMatchSnapshot();
   });
@@ -33,7 +31,7 @@ describe("test the map state to props and dispatch", () => {
     expect(
       mapStateToProps({
         appMemoryReducer: { isFetchingAppMemory: false, appMemoryMetrics: [] },
-        appsListReducer: { apps: [] }
+        appsListReducer: { apps: [] },
       })
     ).toEqual({ isFetchingAppMemory: false, appMemoryMetrics: [], apps: [] });
   });

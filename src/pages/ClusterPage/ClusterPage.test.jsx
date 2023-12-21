@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import ClusterPage, { mapStateToProps } from "./";
 
 const clusterPageProps = {
@@ -9,7 +10,7 @@ const clusterPageProps = {
 
 describe("test cluster page", () => {
   const ClusterWrapper = ClusterPage.WrappedComponent;
-  const tempComponent = shallow(<ClusterWrapper {...clusterPageProps} />);
+  const tempComponent = render(<ClusterWrapper {...clusterPageProps} />);
   it("match the component snapshot for cluster page", () => {
     expect(tempComponent).toMatchSnapshot();
   });
@@ -31,7 +32,7 @@ describe("A test for the component map state to props", () => {
           message: "",
         },
         user: { user: [] },
-        clustersReducer: { clusters: {metadata:[]} },
+        clustersReducer: { clusters: { metadata: [] } },
       })
     ).toEqual({
       creatingCluster: false,
@@ -40,7 +41,7 @@ describe("A test for the component map state to props", () => {
       errorOccured: false,
       message: "",
       user: [],
-      clusters: {metadata:[]},
+      clusters: { metadata: [] },
     });
   });
 });

@@ -1,5 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import * as redux from "react-redux";
 import ProjectBillingPage from "./";
 
@@ -41,7 +42,7 @@ describe("Billing page", () => {
   });
 
   it("should render", () => {
-    const Wrapper = shallow(<ProjectBillingPage />);
+    const Wrapper = render(<ProjectBillingPage />);
 
     // expect(Wrapper.exists()).toBe(true);
     expect(Wrapper).toMatchSnapshot();

@@ -1,9 +1,10 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import DBSettingsPage from "./";
-import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
 
 const SettingsPageProps = {
   match: { params: { projectID: "1" } },
@@ -17,16 +18,15 @@ describe("Testing the Project Settings Page component", () => {
     userProjectsReducer: {
       projects: [],
     },
-    
-  }; 
-  let store; 
+  };
+  let store;
 
   beforeEach(() => {
     store = mockStore(initialState);
   });
 
   it("should match the snapshot for DBSettingsPage after adding props", () => {
-    const DBSettingsPageComponent = shallow(
+    const DBSettingsPageComponent = render(
       <Provider store={store}>
         <DBSettingsPage {...SettingsPageProps} />
       </Provider>

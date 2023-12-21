@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import AppsList, { mapStateToProps } from "./";
 
 const AppsListProps = {
@@ -14,13 +15,13 @@ describe("Test AppsList component", () => {
   let applistWrapper;
   beforeEach(() => {
     const AppsListwrapper = AppsList.WrappedComponent;
-    applistWrapper = shallow(<AppsListwrapper {...AppsListProps} />);
+    applistWrapper = render(<AppsListwrapper {...AppsListProps} />);
   });
 
   it("should check `componentDidMount()`", () => {
     applistWrapper.instance().componentDidMount();
-    expect(AppsListProps.getAppsList).toHaveBeenCalledTimes(2); 
-    
+    expect(AppsListProps.getAppsList).toHaveBeenCalledTimes(2);
+
     expect(AppsListProps.getAppsList).toBeDefined();
     expect(AppsListProps.params).toBeDefined();
     expect(applistWrapper.instance().props.getAppsList).toBeCalled();

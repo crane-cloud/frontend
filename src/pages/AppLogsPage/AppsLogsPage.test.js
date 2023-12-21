@@ -1,10 +1,11 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import * as redux from "react-redux";
 import AppLogsPage from "./";
 
-jest.mock('react', () => {
-  const originReact = jest.requireActual('react');
+jest.mock("react", () => {
+  const originReact = jest.requireActual("react");
   return {
     ...originReact,
     useRef: jest.fn(),
@@ -16,8 +17,8 @@ jest.mock("react-router-dom", () => ({
     projectId: "12",
   }),
   useLocation: () => ({
-    pathname: "localhost:3000/example/path"
-  })
+    pathname: "localhost:3000/example/path",
+  }),
 }));
 
 describe("TodoList", () => {
@@ -26,7 +27,7 @@ describe("TodoList", () => {
   let mockDispatch;
 
   beforeEach(() => {
-    jest.spyOn(React, "useEffect").mockImplementationOnce(cb => cb()());
+    jest.spyOn(React, "useEffect").mockImplementationOnce((cb) => cb()());
     // Mock useSelector hook
     spyOnUseSelector = jest.spyOn(redux, "useSelector");
     spyOnUseSelector.mockReturnValue([{ id: 1, app: "nginx" }]);
@@ -43,7 +44,7 @@ describe("TodoList", () => {
   });
 
   it("should render", () => {
-    const wrapper = shallow(<AppLogsPage />);
+    const wrapper = render(<AppLogsPage />);
 
     expect(wrapper.exists()).toBe(true);
   });

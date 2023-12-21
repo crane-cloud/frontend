@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 
 import PricingPage, { mapStateToProps } from "./index";
 
@@ -14,14 +14,13 @@ const Props = {
 
 describe(" New password Component", () => {
   const Wrapper = PricingPage.WrappedComponent;
-  const PricingPageComponent = shallow(<Wrapper {...Props} />);
-  // const PricingPageComponent = shallow(<PricingPage/>);
+  const PricingPageComponent = render(<Wrapper {...Props} />);
+  // const PricingPageComponent = render(<PricingPage/>);
   PricingPageComponent.setProps(Props);
 
   it("component should match the snapshot", () => {
     expect(PricingPageComponent).toMatchSnapshot();
   });
-  
 });
 
 describe("Testing the exported mapstate to props for pricing", () => {
@@ -30,7 +29,7 @@ describe("Testing the exported mapstate to props for pricing", () => {
       mapStateToProps({
         user: {
           user: {},
-        }
+        },
       })
     ).toEqual({
       user: {

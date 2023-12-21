@@ -1,5 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import PvcsList from "./";
 import * as redux from "react-redux";
 
@@ -19,11 +20,11 @@ describe("Pvcs component", () => {
     jest.spyOn(React, "useEffect").mockImplementationOnce((cb) => cb()());
     // Mock useSelector hook
     spyOnUseSelector = jest.spyOn(redux, "useSelector");
-    spyOnUseSelector.mockReturnValue({ 
-      pvcs:  [],
-      pagination: { pages: 1 }, 
-      isRetrieving: false, 
-      isFetched: false 
+    spyOnUseSelector.mockReturnValue({
+      pvcs: [],
+      pagination: { pages: 1 },
+      isRetrieving: false,
+      isFetched: false,
     });
     // Mock useDispatch hook
     const useDispatchSpy = jest.spyOn(redux, "useDispatch");
@@ -37,7 +38,7 @@ describe("Pvcs component", () => {
   });
 
   it("renders without crashing", () => {
-    const wrapper = shallow(<PvcsList />);
+    const wrapper = render(<PvcsList />);
 
     expect(wrapper.exists()).toBe(true);
   });
