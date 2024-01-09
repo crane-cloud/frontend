@@ -15,6 +15,7 @@ import getDeployments from "./getDeployments";
 import adminProjectsReducer from "./adminProjects";
 import appsListReducer from "./appsList";
 import userProjectsReducer from "./userProjects";
+import userActivitiesReducer from "./getUserActivities";
 // import addProjectReducer from "./addProject";
 // import createAppReducer from "./createApp";
 // import deleteProjectReducer from "./deleteProject";
@@ -57,7 +58,7 @@ import updateProfileReducer from "./updateProfile";
 import creditsPaymentReducer from "./creditsPayments";
 import getGraphDataReducer from "./getGraphData";
 import adminGetInactiveUsersReducer from "./adminGetInactiveUsers";
-import appsAdminListReducer from "./adminAppsList"
+import appsAdminListReducer from "./adminAppsList";
 // import inviteMembersReducer from "./inviteMembers";
 //import removeMemberReducer from "./removeMembers";
 // import updateMemberRoleReducer from "./updateMemberRole";
@@ -122,6 +123,7 @@ export default combineReducers({
   getGraphDataReducer,
   adminGetInactiveUsersReducer,
   appsAdminListReducer,
+  userActivitiesReducer,
   // inviteMembersReducer,
   // removeMemberReducer,
   // updateMemberRoleReducer,

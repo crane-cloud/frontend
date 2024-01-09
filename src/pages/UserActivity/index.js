@@ -1,89 +1,95 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-// import moment from "moment";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Avatar from "../../components/Avatar";
 import Header from "../../components/Header";
 import { handleGetRequest } from "../../apis/apis.js";
 import InformationBar from "../../components/InformationBar";
 import styles from "./UserActivity.module.css";
 import DateInput from "../../components/DateInput";
-import getUserProjects from "../../redux/actions/projectsList";
-import { ReactComponent as BackButton } from "../../assets/images/arrow-left.svg";
-import { ReactComponent as DownArrow } from "../../assets/images/downarrow.svg";
-import { ReactComponent as UpArrow } from "../../assets/images/up-arrow.svg";
 import { ReactComponent as CheckMark } from "../../assets/images/check-circle.svg";
 import { ReactComponent as Danger } from "../../assets/images/alert-octagon.svg";
-// import { ReactComponent as CloudOff } from "../../assets/images/cloud-off.svg";
-import { ReactComponent as FilterIcon } from "../../assets/images/filterIcon.svg";
-import { ReactComponent as ArrowUpDDown } from "../../assets/images/ArrowUp&Down.svg";
 import { DisplayDateTime } from "../../helpers/dateConstants";
 import Spinner from "../../components/Spinner";
 import AppFooter from "../../components/appFooter";
+import Select from "../../components/Select/index.js";
+import Feedback from "../../components/Feedback/index.js";
+import {
+  transformListForSelect,
+  transformProjectsListForSelect,
+} from "../../helpers/listTransforms.js";
+import getUserActivities from "../../redux/actions/getUserActivities.js";
+import usePaginator from "../../hooks/usePaginator.js";
+import Pagination from "../../components/Pagination/index.jsx";
 
-const UserActivity = (props) => {
+const UserActivity = () => {
   const { data } = useSelector((state) => state.user);
-  const { projects, isFetched } = useSelector(
-    (state) => state.userProjectsReducer
-  );
-  const baseLink = "/users/activities?";
-  const [loading, setLoading] = useState(false);
-  const [logs, setLogs] = useState([]);
-  const [filterOpen, setFilterOpen] = useState(false);
+
+  const user = useSelector((state) => state.user);
+  const [currentPage, handleChangePage] = usePaginator();
+  const [projects, setProjects] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [queryParams, setQueryParams] = useState("");
   const [showFromCalendar, setShowFromCalendar] = useState(false);
   const [showToCalendar, setShowToCalendar] = useState(false);
-  //filter states
-  //status
-  const [showStatusFilter, setShowStatusFilter] = useState(false);
-  const [statusField, setStatusField] = useState("none");
-  //operation
-  const [showOperation, setShowOperation] = useState(false);
-  const [operationField, setOperationField] = useState("none");
-  //model
-  const [showModel, setShowModel] = useState(false);
-  const [modelField, setModelField] = useState("none");
-  //projects
-  const [showProjects, setShowProjects] = useState(false);
-  const [projectsField, setProjectsField] = useState("none");
+
   //dates
   const [toTS, setToTS] = useState("none");
   const [fromTS, setFromTS] = useState("none");
   const [dateError, setDateError] = useState("");
-  
+
   //constant lists
   const statusList = ["Success", "Failed"];
-  const operationsList = ["Create", "Update", "Delete"];
-  const modelsList = ["Project", "App", "Database"];
+  const operationsList = ["Create", "Update", "Delete", "Enable", "Disable"];
+
+  // Transforming values for Select Component
+  const transformedStatusList = transformListForSelect(statusList);
+  const transformedOperationsList = transformListForSelect(operationsList);
+  const transformedProjectNames = transformProjectsListForSelect(projects);
+
+  const dispatch = useDispatch();
+
+  const userActivities = useCallback(
+    () => dispatch(getUserActivities(queryParams, currentPage)),
+    [dispatch, queryParams, currentPage]
+  );
 
   useEffect(() => {
-    fetchActivityLogs(baseLink);
-    getUserProjects(data.id);
-  }, [data]);
+    userActivities();
+  }, [userActivities, queryParams]);
+
+  const { activities, pagination, isFetchingActivities, activitiesFetched } =
+    useSelector((state) => state.userActivitiesReducer);
 
   useEffect(() => {
-    fetchActivityLogs(`${baseLink}${queryParams}`);
-    setFeedback("");
-  }, [queryParams]);
+    fetchProjectList();
+  }, []);
 
-  const fetchActivityLogs = (link) => {
-    setLoading(true);
-    //projectID
-    handleGetRequest(link)
+  const fetchProjectList = () => {
+    handleGetRequest("/projects")
       .then((response) => {
-        if (response.data.data.activity.length > 0) {
-          setLogs(response.data.data.activity);
+        if (response.data.data.projects.length > 0) {
+          let totalNumberOfProjects = response.data.data.pagination.total;
+          handleGetRequest("/projects?per_page=" + totalNumberOfProjects)
+            .then((response) => {
+              if (response.data.data.projects.length > 0) {
+                setProjects(response.data.data.projects);
+              } else {
+                setFeedback("No projects found");
+              }
+            })
+            .catch((error) => {
+              setFeedback("Failed to fetch all projects, please try again");
+            });
         } else {
-          setFeedback("No logs for you");
+          setFeedback("No projects found");
         }
-        setLoading(false);
       })
       .catch((error) => {
-        setFeedback("Failed to fetch logs, please try again");
-        setLoading(false);
+        setFeedback("Failed to fetch projects, please try again");
       });
   };
+
   const handleFromDate = (fromTS) => {
     const date = new Date(fromTS);
     const year = date.getFullYear();
@@ -93,6 +99,7 @@ const UserActivity = (props) => {
     setFromTS(formattedDate);
     setDateError("");
   };
+
   const handleToDate = (toTS) => {
     const date = new Date(toTS);
     const year = date.getFullYear();
@@ -115,6 +122,7 @@ const UserActivity = (props) => {
       setShowFromCalendar(false);
     }
   };
+
   const closeCalendar = () => {
     if (showToCalendar) {
       //setToTS("none");
@@ -135,11 +143,12 @@ const UserActivity = (props) => {
       }
     }
   };
+
   const handleCalenderSubmission = () => {
     //add to link
-    const toDate = new Date(toTS) 
-    const fromDate = new Date(fromTS)
-    if(toTS !== "none" && fromTS !== "none" && (toDate < fromDate )){
+    const toDate = new Date(toTS);
+    const fromDate = new Date(fromTS);
+    if (toTS !== "none" && fromTS !== "none" && toDate < fromDate) {
       setDateError("The 'end' date must be greater than the 'start' date");
       setFromTS("none");
       setToTS("none");
@@ -162,8 +171,8 @@ const UserActivity = (props) => {
     }
     closeCalendar();
   };
+
   const handleStatusFilter = (item) => {
-    setStatusField(item);
     if (item === "none") {
       if (queryParams.includes("&status=")) {
         setQueryParams(queryParams.replace(/&status=[^&]+/, ""));
@@ -171,13 +180,12 @@ const UserActivity = (props) => {
         setQueryParams(queryParams.replace(/status=.+?(&|$)/, ""));
       }
     } else {
-      const NewParameter = `status=${item}`;
+      const NewParameter = `status=${item.value}`;
       if (queryParams.includes("&status=")) {
         let value = queryParams;
         value = value.replace(/&status=.[^&]+/, "");
         value = value === "" ? NewParameter : `${value}&${NewParameter}`;
         setQueryParams(value);
-        //setQueryParams(queryParams.replace(/&status=.+?(&|$)/, `&${NewParameter}`))
       } else if (queryParams.includes("status=")) {
         let value = queryParams;
         value = value.replace(/status=.+?(&|$)/, "");
@@ -189,10 +197,9 @@ const UserActivity = (props) => {
         setQueryParams(`${queryParams}&${NewParameter}`);
       }
     }
-    setShowStatusFilter(false);
   };
+
   const handleOperationFilter = (item) => {
-    setOperationField(item);
     if (item === "none") {
       if (queryParams.includes("&operation=")) {
         setQueryParams(queryParams.replace(/&operation=[^&]+/, ""));
@@ -200,13 +207,12 @@ const UserActivity = (props) => {
         setQueryParams(queryParams.replace(/operation=.+?(&|$)/, ""));
       }
     } else {
-      const NewParameter = `operation=${item}`;
+      const NewParameter = `operation=${item.value}`;
       if (queryParams.includes("&operation=")) {
         let value = queryParams;
         value = value.replace(/&operation=[^&]+/, "");
         value = value === "" ? NewParameter : `${value}&${NewParameter}`;
         setQueryParams(value);
-        //setQueryParams(queryParams.replace(/&operation=.+?(&|$)/, `&${NewParameter}`))
       } else if (queryParams.includes("operation=")) {
         let value = queryParams;
         value = value.replace(/operation=.+?(&|$)/, ``);
@@ -218,42 +224,9 @@ const UserActivity = (props) => {
         setQueryParams(`${queryParams}&${NewParameter}`);
       }
     }
-    setShowOperation(false);
   };
-  const handleModelFilter = (item) => {
-    setModelField(item);
 
-    if (item === "none") {
-      if (queryParams.includes("&model=")) {
-        setQueryParams(queryParams.replace(/&model=[^&]+/, ""));
-      } else if (queryParams.includes("model=")) {
-        setQueryParams(queryParams.replace(/model=.+?(&|$)/, ""));
-      }
-    } else {
-      const NewParameter = `model=${item}`;
-      if (queryParams.includes("&model=")) {
-        let value = queryParams;
-        value = value.replace(/&model=[^&]+/, "");
-        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
-        setQueryParams(value);
-        // setQueryParams(queryParams.replace(/&model=.+?(&|$)/, `&${NewParameter}`))
-      } else if (queryParams.includes("model=")) {
-        let value = queryParams;
-        value = value.replace(/model=.+?(&|$)/, ``);
-        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
-        setQueryParams(value);
-      } else if (queryParams === "") {
-        setQueryParams(NewParameter);
-      } else {
-        setQueryParams(`${queryParams}&${NewParameter}`);
-      }
-    }
-    setShowModel(false);
-  };
   const handleProjectFilter = (item) => {
-    setProjectsField(item.name);
-    setShowProjects(false);
-
     if (item.name === "none") {
       if (queryParams.includes("&a_project_id=")) {
         setQueryParams(queryParams.replace(/&a_project_id=[^&]+/, ""));
@@ -261,76 +234,77 @@ const UserActivity = (props) => {
         setQueryParams(queryParams.replace(/a_project_id=.+?(&|$)/, ""));
       }
     } else {
-      const NewParameter = `a_project_id=${projects[item.index].id}`;
-      if (queryParams.includes("&a_project_id=")) {
-        let value = queryParams;
-        value = value.replace(/&a_project_id=[^&]+/, "");
-        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
-        setQueryParams(value);
-        // setQueryParams(queryParams.replace(/&a_project_id=.+?(&|$)/, `&${NewParameter}`))
-      } else if (queryParams.includes("a_project_id=")) {
-        let value = queryParams;
-        value = value.replace(/a_project_id=.+?(&|$)/, ``);
-        value = value === "" ? NewParameter : `${value}&${NewParameter}`;
-        setQueryParams(value);
-      } else if (queryParams === "") {
-        setQueryParams(NewParameter);
+      const NewParameter = `a_project_id=${item.id}`;
+      let newValue = queryParams;
+
+      if (queryParams.includes("a_project_id=")) {
+        newValue = queryParams.replace(/a_project_id=[^&]*/, NewParameter);
       } else {
-        setQueryParams(`${queryParams}&${NewParameter}`);
+        newValue = queryParams
+          ? `${queryParams}&${NewParameter}`
+          : NewParameter;
       }
+
+      setQueryParams(newValue);
     }
   };
 
+  const handlePageChange = (currentPage) => {
+    handleChangePage(currentPage);
+    userActivities();
+  };
+
   return (
-      <div className={styles.Page}>
-        <div className={styles.TopBarSection}>
-          <Header />
-        </div>
-        <div className={styles.MainSection}>
-          <div>
-            <InformationBar header="User Activity" />
+    <div className="MainPage">
+      <div className="TopBarSection">
+        <Header />
+      </div>
+      <div className="Mainsection">
+        <div className="MainContentSection">
+          <div className="InformationBarSection">
+            <InformationBar
+              header={
+                <span>
+                  <Link className="breadcrumb" to={`/projects`}>
+                    User Activity
+                  </Link>
+                  / {user?.data?.name}
+                </span>
+              }
+              showBtn={false}
+              showBackBtn
+            />
           </div>
+
           <div className={styles.SmallContainer}>
             <div className={styles.Header}>
-              <div className={styles.Heading}>
+              <div className={styles.FilterItemsRow}>
                 <div className={styles.ActivityHeader}>
-                  <span className={styles.BackIconArea}>
-                    <Link to={`/projects`}>
-                      <BackButton
-                        color="#f7b21f"
-                        className={styles.BackIconSize}
-                      />
-                    </Link>
-                  </span>
-                  <span className={styles.ActivityPageTitle}>
-                    Activity Feed
-                  </span>
+                  <span className={styles.ActivityPageTitle}>Filters</span>
                 </div>
-              </div>
-              <div className={styles.SimpleForm}>
-                <div className={styles.OuterFilterItem}>
-                  <div className={styles.DateSection}>
-                    <div className={styles.DateItem}>
-                      <div>Start:</div>
+
+                <div className={styles.FilterItemDropdown}>
+                  <span className={styles.FilterItemLabel}>Date</span>
+                  <div className={styles.DateBtn}>
+                    <div className="DateInputsSection">
                       <DateInput
+                        label="From"
+                        position="from"
+                        hideTime={true}
                         handleChange={handleFromDate}
                         showCalendar={showFromCalendar}
-                        className={styles.dateField}
-                        position={styles.CalenderFromposition}
                         dateValue={fromTS}
                         onClick={switchCalendars}
                         onCancel={closeCalendar}
                         onSubmit={handleCalenderSubmission}
                         value="from"
                       />
-                    </div>
-                    <div className={styles.DateItem}>
-                      <div>End:</div>
                       <DateInput
+                        label="To"
+                        position="to"
+                        hideTime={true}
                         handleChange={handleToDate}
                         showCalendar={showToCalendar}
-                        position={styles.CalenderToposition}
-                        className={styles.dateField}
                         dateValue={toTS}
                         onClick={switchCalendars}
                         onCancel={closeCalendar}
@@ -339,254 +313,62 @@ const UserActivity = (props) => {
                       />
                     </div>
                   </div>
-                  <div className={styles.errorSection}>{dateError}</div>
                 </div>
-                <div className={styles.Filter}>
-                  <FilterIcon />
-                  <div className={styles.FilterText}>Filter</div>
-                  {!filterOpen && (
-                    <DownArrow
-                      className={styles.DownArrow}
-                      onClick={() => {
-                        setFilterOpen(!filterOpen);
-                      }}
-                    />
-                  )}
-                  {filterOpen && (
-                    <UpArrow
-                      className={styles.UpArrow}
-                      onClick={() => {
-                        setFilterOpen(!filterOpen);
-                      }}
-                    />
-                  )}
+
+                <div className={`${styles.FilterItemDropdown} FilterSection `}>
+                  <span className={styles.FilterItemLabel}>Project</span>
+                  <Select
+                    placeholder="Choose Project"
+                    options={transformedProjectNames}
+                    onChange={(selectedOption) =>
+                      handleProjectFilter(selectedOption)
+                    }
+                  />
                 </div>
-                {filterOpen && (
-                  <div className={styles.RelativeContainer}>
-                    <div className={styles.FilterDropdown}>
-                      <div className={styles.FilterItemContainer}>
-                        <div className={styles.FilterItem}>
-                          Status
-                          <div className={styles.SelectorBox}>
-                            <div className={styles.SelectOption}>
-                              {statusField}
-                            </div>
-                            <ArrowUpDDown
-                              className={styles.DoubleArrow}
-                              onClick={() => {
-                                setShowStatusFilter(!showStatusFilter);
-                              }}
-                            />
-                          </div>
-                          {showStatusFilter && (
-                            <div className={styles.InnerDropDown}>
-                              <div
-                                onClick={() => {
-                                  handleStatusFilter("none");
-                                }}
-                                className={styles.InnerDropDownItem}
-                              >
-                                none
-                              </div>
-                              {statusList.map((item, i) => (
-                                <div
-                                  key={i}
-                                  className={styles.InnerDropDownItem}
-                                  onClick={() => {
-                                    handleStatusFilter(item);
-                                  }}
-                                >
-                                  {item}
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      <div className={styles.FilterItemContainer}>
-                        <div className={styles.FilterItem}>
-                          Operation
-                          <div className={styles.SelectorBox}>
-                            <div className={styles.SelectOption}>
-                              {operationField}
-                            </div>
-                            <ArrowUpDDown
-                              className={styles.DoubleArrow}
-                              onClick={() => {
-                                setShowOperation(!showOperation);
-                              }}
-                            />
-                          </div>
-                          {showOperation && (
-                            <div className={styles.InnerDropDown}>
-                              <div
-                                onClick={() => {
-                                  handleOperationFilter("none");
-                                }}
-                                className={styles.InnerDropDownItem}
-                              >
-                                none
-                              </div>
-                              {operationsList.map((item, i) => (
-                                <div
-                                  key={i}
-                                  className={styles.InnerDropDownItem}
-                                  onClick={() => {
-                                    handleOperationFilter(item);
-                                  }}
-                                >
-                                  {item}
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      <div
-                        className={
-                          projectsField !== "none"
-                            ? `${styles.FilterItemContainer} ${styles.opacityClass}`
-                            : styles.FilterItemContainer
-                        }
-                      >
-                        <div className={styles.FilterItem}>
-                          Model
-                          <div className={styles.SelectorBox}>
-                            <div className={styles.SelectOption}>
-                              {modelField}
-                            </div>
-                            <ArrowUpDDown
-                              className={styles.DoubleArrow}
-                              onClick={() => {
-                                if (projectsField === "none") {
-                                  setShowModel(!showModel);
-                                }
-                              }}
-                            />
-                          </div>
-                          {showModel && projectsField === "none" && (
-                            <div className={styles.InnerDropDownLowerhalf}>
-                              <div
-                                onClick={() => {
-                                  handleModelFilter("none");
-                                }}
-                                className={styles.InnerDropDownItem}
-                              >
-                                none
-                              </div>
-                              {modelsList.map((item, i) => (
-                                <div
-                                  key={i}
-                                  className={styles.InnerDropDownItem}
-                                  onClick={() => {
-                                    handleModelFilter(item);
-                                  }}
-                                >
-                                  {item}
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      <div
-                        className={
-                          modelField === "App" || modelField === "Database"
-                            ? `${styles.FilterItemContainer} ${styles.opacityClass}`
-                            : styles.FilterItemContainer
-                        }
-                      >
-                        <div className={styles.FilterItem}>
-                          Project
-                          <div className={styles.SelectorBox}>
-                            <div className={styles.SelectOption}>
-                              {projectsField}
-                            </div>
-                            <ArrowUpDDown
-                              className={styles.DoubleArrow}
-                              onClick={() => {
-                                if (
-                                  modelField === "none" ||
-                                  modelField === "Project"
-                                ) {
-                                  setShowProjects(!showProjects);
-                                }
-                              }}
-                            />
-                          </div>
-                          {showProjects &&
-                            (modelField === "none" ||
-                              modelField === "Project") && (
-                              <div className={styles.InnerDropDownLowerhalf}>
-                                <div
-                                  onClick={() => {
-                                    handleProjectFilter({
-                                      name: "none",
-                                      index: -1,
-                                    });
-                                  }}
-                                  className={styles.InnerDropDownItem}
-                                >
-                                  none
-                                </div>
-                                {!isFetched && (
-                                  <div className={styles.InnerDropDownItem}>
-                                    loading...
-                                  </div>
-                                )}
-                                {projects.length > 0 &&
-                                  isFetched &&
-                                  projects?.map((item, index) => (
-                                    <div
-                                      key={index}
-                                      className={styles.InnerDropDownItem}
-                                      onClick={() => {
-                                        handleProjectFilter({
-                                          name: item.name,
-                                          index: index,
-                                        });
-                                      }}
-                                    >
-                                      {item.name}
-                                    </div>
-                                  ))}
-                              </div>
-                            )}
-                        </div>
-                      </div>
-                      {/* <div className={styles.FilterItemContainer}>
-                        <div className={styles.FilterItem}>
-                          Applications
-                          <div className={styles.SelectorBox}>
-                            <div className={styles.SelectOption}>none</div>
-                            <ArrowUpDDown />
-                          </div>
-                        </div>
-                      </div>
-                      <div className={styles.FilterItemContainer}>
-                        <div className={styles.FilterItem}>
-                          Databases
-                          <div className={styles.SelectorBox}>
-                            <div className={styles.SelectOption}>none</div>
-                            <ArrowUpDDown />
-                          </div>
-                        </div>
-                      </div> */}
-                    </div>
-                  </div>
-                )}
+
+                <div className={styles.FilterItemDropdown}>
+                  <span className={styles.FilterItemLabel}>Status</span>
+                  <Select
+                    placeholder="Choose Status"
+                    options={transformedStatusList}
+                    onChange={(selectedOption) =>
+                      handleStatusFilter(selectedOption)
+                    }
+                  />
+                </div>
+
+                <div className={styles.FilterItemDropdown}>
+                  <span className={styles.FilterItemLabel}>Operation</span>
+                  <Select
+                    placeholder="Choose Operation"
+                    options={transformedOperationsList}
+                    onChange={(selectedOption) =>
+                      handleOperationFilter(selectedOption)
+                    }
+                  />
+                </div>
               </div>
             </div>
+
+            {dateError && (
+              <div className={styles.ErrorSection}>
+                <Feedback type="error" message={dateError} />
+              </div>
+            )}
+
             <div className={`${styles.LogsContainer}`}>
-              {loading ? (
+              {isFetchingActivities && !activitiesFetched ? (
                 <Spinner />
               ) : feedback !== "" ? (
                 <div className={styles.NoResourcesMessage}>{feedback}</div>
+              ) : activities?.length === 0 ? (
+                <div className={styles.NoResourcesMessage}>No logs for you</div>
               ) : (
-                logs.map((item, index) => (
-                  <div key={index}>
+                activities?.map((item, index, array) => (
+                  <div key={item._id.$oid}>
                     <div className={styles.TableRow}>
-                      {item.status === "Success" ? (
+                      {item.status === "Success" ||
+                      item.status === "Successful" ? (
                         <CheckMark className={styles.Success} />
                       ) : (
                         <Danger className={styles.Danger} />
@@ -605,19 +387,23 @@ const UserActivity = (props) => {
                               {DisplayDateTime(new Date(item.creation_date))}
                             </div>
                           </div>
-                          <div>
-                            {item.operation}
+                          <div className={styles.ActivityStatus}>
+                            <span className={styles.EntityOperation}>
+                              {item.operation} -
+                            </span>
                             <span className={styles.Entity}>
-                              {item._id.$oid}
+                              {item.a_project_id}
                             </span>{" "}
                             <span
                               className={
-                                item.status === "Success"
+                                item.status.startsWith("Success")
                                   ? styles.Success
                                   : styles.Danger
                               }
                             >
-                              {item.status}
+                              {item.status.startsWith("Success")
+                                ? "Success"
+                                : item.status}
                             </span>
                           </div>
                         </div>
@@ -626,79 +412,28 @@ const UserActivity = (props) => {
                         </div>
                       </div>
                     </div>
-                    {index !== logs.length - 1 && <hr className={styles.hr} />}
+                    {index !== array?.length - 1 && (
+                      <hr className={styles.hr} />
+                    )}
                   </div>
                 ))
               )}
+            </div>
 
-              {/* <div className={styles.TableRow}>
-              <Danger className={styles.Danger} />
-              <div className={styles.Row}>
-                <div className={styles.RowCell}>
-                  <Avatar name={data.name} className={styles.UserAvatar} />
-                  <div>
-                    <div className={styles.Bold}>{data.email}</div>
-                    <div>Tuesday 12-12-2022 16:00:03</div>
-                  </div>
-                  <div>
-                    Creating project{" "}
-                    <span className={styles.Entity}>dsesdwe23</span>{" "}
-                    <span className={styles.Danger}>Failed</span>
-                  </div>
-                </div>
-                <div className={styles.LastCell}>
-                  <div>Not right project description</div>
-                </div>
+            {pagination?.pages > 1 && (
+              <div className="AdminPaginationSection">
+                <Pagination
+                  total={pagination.pages}
+                  current={currentPage}
+                  onPageChange={handlePageChange}
+                />
               </div>
-            </div>
-            <hr className={styles.hr} />
-            <div className={styles.TableRow}>
-              <CloudOff className={styles.Danger} />
-              <div className={styles.Row}>
-                <div className={styles.RowCell}>
-                  <Avatar name={data.name} className={styles.UserAvatar} />
-                  <div>
-                    <div className={styles.Bold}>{data.email}</div>
-                    <div>Tuesday 12-12-2022 16:00:03</div>
-                  </div>
-                  <div>
-                    Deploying app{" "}
-                    <span className={styles.Entity}>4344ewe23</span>{" "}
-                    <span className={styles.Danger}>Failed</span>
-                  </div>
-                </div>
-                <div className={styles.LastCell}>
-                  <div>App deployment has failed.</div>
-                </div>
-              </div>
-            </div>
-            <hr className={styles.hr} />
-            <div className={styles.TableRow}>
-              <Upload className={styles.Success} />
-              <div className={styles.Row}>
-                <div className={styles.RowCell}>
-                  <Avatar name={data.name} className={styles.UserAvatar} />
-                  <div>
-                    <div className={styles.Bold}>{data.email}</div>
-                    <div>Tuesday 12-12-2022 16:00:03</div>
-                  </div>
-                  <div>
-                    Deploying app{" "}
-                    <span className={styles.Entity}>4344ewe23</span>{" "}
-                    <span className={styles.Success}>Successful</span>
-                  </div>
-                </div>
-                <div className={styles.LastCell}>
-                  <div>Successfully deployed application.</div>
-                </div>
-              </div>
-            </div> 
-            <hr className={styles.hr} /> */}
-            </div>
+            )}
           </div>
         </div>
-         <AppFooter position="absolute"/>
+        <AppFooter />
       </div>
+    </div>
   );
 };
 export default UserActivity;
