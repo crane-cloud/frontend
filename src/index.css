@@ -421,8 +421,10 @@ tr.TableLoading td {
   /* divided into two rows */
   display: grid;
   grid-template-rows: 80px 4fr;
-  overflow: auto;
+}
 
+.FilterSection .SelectOptionsWrapper {
+  overflow-y: auto;
 }
 
 .ContentSection {
