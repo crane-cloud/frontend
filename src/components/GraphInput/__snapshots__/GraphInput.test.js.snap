@@ -18,7 +18,7 @@ Object {
             class="DateInputDisplay DisplayActive"
             role="presentation"
           >
-            Dec 21, 2023
+            Jan 10, 2024
           </div>
         </div>
         <div
@@ -36,7 +36,7 @@ Object {
               >
                 <iconmock />
               </div>
-              December 2023
+              January 2024
               <div
                 class="CalendarArrow"
                 role="presentation"
@@ -105,42 +105,6 @@ Object {
                   "
                   role="presentation"
                 >
-                  <div />
-                </div>
-                <div
-                  class="
-                  CalendarSingleDay 
-                  false
-                  "
-                  role="presentation"
-                >
-                  <div />
-                </div>
-                <div
-                  class="
-                  CalendarSingleDay 
-                  false
-                  "
-                  role="presentation"
-                >
-                  <div />
-                </div>
-                <div
-                  class="
-                  CalendarSingleDay 
-                  false
-                  "
-                  role="presentation"
-                >
-                  <div />
-                </div>
-                <div
-                  class="
-                  CalendarSingleDay 
-                  false
-                  "
-                  role="presentation"
-                >
                   <div>
                     1
                   </div>
@@ -156,10 +120,6 @@ Object {
                     2
                   </div>
                 </div>
-              </div>
-              <div
-                class="CalendarWeekDays"
-              >
                 <div
                   class="
                   CalendarSingleDay 
@@ -204,6 +164,10 @@ Object {
                     6
                   </div>
                 </div>
+              </div>
+              <div
+                class="CalendarWeekDays"
+              >
                 <div
                   class="
                   CalendarSingleDay 
@@ -237,14 +201,10 @@ Object {
                     9
                   </div>
                 </div>
-              </div>
-              <div
-                class="CalendarWeekDays"
-              >
                 <div
                   class="
                   CalendarSingleDay 
-                  false
+                  Today
                   "
                   role="presentation"
                 >
@@ -285,6 +245,10 @@ Object {
                     13
                   </div>
                 </div>
+              </div>
+              <div
+                class="CalendarWeekDays"
+              >
                 <div
                   class="
                   CalendarSingleDay 
@@ -318,10 +282,6 @@ Object {
                     16
                   </div>
                 </div>
-              </div>
-              <div
-                class="CalendarWeekDays"
-              >
                 <div
                   class="
                   CalendarSingleDay 
@@ -366,10 +326,14 @@ Object {
                     20
                   </div>
                 </div>
+              </div>
+              <div
+                class="CalendarWeekDays"
+              >
                 <div
                   class="
                   CalendarSingleDay 
-                  Today
+                  false
                   "
                   role="presentation"
                 >
@@ -399,10 +363,6 @@ Object {
                     23
                   </div>
                 </div>
-              </div>
-              <div
-                class="CalendarWeekDays"
-              >
                 <div
                   class="
                   CalendarSingleDay 
@@ -447,6 +407,10 @@ Object {
                     27
                   </div>
                 </div>
+              </div>
+              <div
+                class="CalendarWeekDays"
+              >
                 <div
                   class="
                   CalendarSingleDay 
@@ -479,6 +443,44 @@ Object {
                   <div>
                     30
                   </div>
+                </div>
+                <div
+                  class="
+                  CalendarSingleDay 
+                  false
+                  "
+                  role="presentation"
+                >
+                  <div>
+                    31
+                  </div>
+                </div>
+                <div
+                  class="
+                  CalendarSingleDay 
+                  false
+                  "
+                  role="presentation"
+                >
+                  <div />
+                </div>
+                <div
+                  class="
+                  CalendarSingleDay 
+                  false
+                  "
+                  role="presentation"
+                >
+                  <div />
+                </div>
+                <div
+                  class="
+                  CalendarSingleDay 
+                  false
+                  "
+                  role="presentation"
+                >
+                  <div />
                 </div>
               </div>
             </div>
@@ -521,7 +523,7 @@ Object {
           class="DateInputDisplay DisplayActive"
           role="presentation"
         >
-          Dec 21, 2023
+          Jan 10, 2024
         </div>
       </div>
       <div
@@ -539,7 +541,7 @@ Object {
             >
               <iconmock />
             </div>
-            December 2023
+            January 2024
             <div
               class="CalendarArrow"
               role="presentation"
@@ -608,42 +610,6 @@ Object {
                   "
                 role="presentation"
               >
-                <div />
-              </div>
-              <div
-                class="
-                  CalendarSingleDay 
-                  false
-                  "
-                role="presentation"
-              >
-                <div />
-              </div>
-              <div
-                class="
-                  CalendarSingleDay 
-                  false
-                  "
-                role="presentation"
-              >
-                <div />
-              </div>
-              <div
-                class="
-                  CalendarSingleDay 
-                  false
-                  "
-                role="presentation"
-              >
-                <div />
-              </div>
-              <div
-                class="
-                  CalendarSingleDay 
-                  false
-                  "
-                role="presentation"
-              >
                 <div>
                   1
                 </div>
@@ -659,10 +625,6 @@ Object {
                   2
                 </div>
               </div>
-            </div>
-            <div
-              class="CalendarWeekDays"
-            >
               <div
                 class="
                   CalendarSingleDay 
@@ -707,6 +669,10 @@ Object {
                   6
                 </div>
               </div>
+            </div>
+            <div
+              class="CalendarWeekDays"
+            >
               <div
                 class="
                   CalendarSingleDay 
@@ -740,14 +706,10 @@ Object {
                   9
                 </div>
               </div>
-            </div>
-            <div
-              class="CalendarWeekDays"
-            >
               <div
                 class="
                   CalendarSingleDay 
-                  false
+                  Today
                   "
                 role="presentation"
               >
@@ -788,6 +750,10 @@ Object {
                   13
                 </div>
               </div>
+            </div>
+            <div
+              class="CalendarWeekDays"
+            >
               <div
                 class="
                   CalendarSingleDay 
@@ -821,10 +787,6 @@ Object {
                   16
                 </div>
               </div>
-            </div>
-            <div
-              class="CalendarWeekDays"
-            >
               <div
                 class="
                   CalendarSingleDay 
@@ -869,10 +831,14 @@ Object {
                   20
                 </div>
               </div>
+            </div>
+            <div
+              class="CalendarWeekDays"
+            >
               <div
                 class="
                   CalendarSingleDay 
-                  Today
+                  false
                   "
                 role="presentation"
               >
@@ -902,10 +868,6 @@ Object {
                   23
                 </div>
               </div>
-            </div>
-            <div
-              class="CalendarWeekDays"
-            >
               <div
                 class="
                   CalendarSingleDay 
@@ -950,6 +912,10 @@ Object {
                   27
                 </div>
               </div>
+            </div>
+            <div
+              class="CalendarWeekDays"
+            >
               <div
                 class="
                   CalendarSingleDay 
@@ -982,6 +948,44 @@ Object {
                 <div>
                   30
                 </div>
+              </div>
+              <div
+                class="
+                  CalendarSingleDay 
+                  false
+                  "
+                role="presentation"
+              >
+                <div>
+                  31
+                </div>
+              </div>
+              <div
+                class="
+                  CalendarSingleDay 
+                  false
+                  "
+                role="presentation"
+              >
+                <div />
+              </div>
+              <div
+                class="
+                  CalendarSingleDay 
+                  false
+                  "
+                role="presentation"
+              >
+                <div />
+              </div>
+              <div
+                class="
+                  CalendarSingleDay 
+                  false
+                  "
+                role="presentation"
+              >
+                <div />
               </div>
             </div>
           </div>

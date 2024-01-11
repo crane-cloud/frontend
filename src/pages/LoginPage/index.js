@@ -13,7 +13,7 @@ import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
 
 import { API_BASE_URL, GIT_REDIRECT_URL } from "../../config";
-import { ReactComponent as LogoIcon } from "../../assets/images/githublogo.svg";
+import { ReactComponent as Logoicon } from "../../assets/images/githublogo.svg";
 import "./LoginPage.css";
 
 class LoginPage extends React.Component {
@@ -129,7 +129,7 @@ class LoginPage extends React.Component {
             this.setState({
               loading: false,
             });
-            if (err.response.data.message === "email not verified") {
+            if (err.response?.data?.message === "email not verified") {
               this.setState({
                 error: "Please verify your account.",
               });
@@ -256,7 +256,7 @@ class LoginPage extends React.Component {
                   <Spinner />
                 ) : (
                   <div className="GitLoginBtn">
-                    <LogoIcon className="LogoIcon" />
+                    <Logoicon className="LogoIcon" />
                     <div className="GitText">Github</div>
                   </div>
                 )}
