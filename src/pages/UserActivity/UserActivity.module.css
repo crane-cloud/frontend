@@ -48,7 +48,13 @@
 
 .ActivityStatus {
   display: flex;
-  gap: 0.5rem;
+  gap: 3.5rem;
+  padding-left: 3.5rem;
+}
+
+.ActivityDescription{
+  padding-right: 1rem;
+  min-width: 4rem;
 }
 
 .FilterItemLabel {
@@ -104,16 +110,26 @@
 
 .Success {
   color: green;
+  padding-left: 1rem;
 }
 
 .Danger {
   color: red;
+  padding-left: 1rem;
 }
 
 .Entity {
   color: var(--primary-color);
+  overflow: hidden;
+  max-width: 17rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
-
+.Entity:hover{
+  overflow: visible;
+  white-space: normal;
+  word-wrap: break-word;
+}
 .hr {
   margin: .5rem 0;
 }
@@ -121,12 +137,13 @@
 .Row {
   display: flex;
   justify-content: space-between;
-  width: -webkit-fill-available;
+  gap: 3.5rem;
+  /* width: -webkit-fill-available; */
 }
 
 .RowCell {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .LastCell {

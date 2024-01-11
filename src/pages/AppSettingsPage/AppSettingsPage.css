@@ -819,7 +819,15 @@ ul li {
 
 .version-name {
   font-size: 1.1rem;
-
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 12rem;
+}
+.version-name:hover{
+  white-space: normal;
+  word-wrap: break-word;
+  overflow: visible;
 }
 
 .version-id {

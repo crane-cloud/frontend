@@ -42,10 +42,13 @@
   position: absolute; /*relative */
   top: 3rem;
   z-index: 1;
-  /* left: 1rem; */
+  left: 1px;
   width: 20rem;
   border-radius: 10px;
   /* margin-top: 0.8rem; */
+}
+.DateInputsSection>.DateInputCalendar {
+  padding-right: 2rem;
 }
 
 .CalendarModalButtons {
