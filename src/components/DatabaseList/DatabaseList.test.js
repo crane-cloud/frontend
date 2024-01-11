@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import DatabaseList, { mapStateToProps } from "./";
 
 const DatabaseListProps = {
@@ -11,7 +12,7 @@ const DatabaseListProps = {
 // {} ={}
 describe("Testing the DatabaseList Page component", () => {
   const WrapperDatabaseList = DatabaseList.WrappedComponent;
-  const DatabaseListComponent = shallow(
+  const DatabaseListComponent = render(
     <WrapperDatabaseList {...DatabaseListProps} />
   );
   it("should match the snapshot for DatabaseList after adding props", () => {

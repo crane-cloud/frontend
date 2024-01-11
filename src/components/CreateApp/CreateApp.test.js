@@ -1,21 +1,22 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import CreateApp, { mapStateToProps } from "./";
 
 const CreateAppProps = {
-  clusters: {"log1":1, "log2":2},
+  clusters: { log1: 1, log2: 2 },
   match: { params: { projectId: "1" } },
   clearUpdateClusterState: jest.fn(),
   updateCluster: jest.fn(),
-  data: {beta: true},
+  data: { beta: true },
   clearState: jest.fn(),
   getClustersList: jest.fn(),
 };
 // {} ={}
 describe("Testing the App Metrics Page component", () => {
   const WrapperCreateApp = CreateApp.WrappedComponent;
-  const CreateAppComponent = shallow(<WrapperCreateApp {...CreateAppProps} />);
+  const CreateAppComponent = render(<WrapperCreateApp {...CreateAppProps} />);
   it("should match the snapshot for CreateApp after adding props", () => {
     CreateAppComponent.setProps(CreateAppProps);
     expect(CreateAppComponent).toBeDefined();

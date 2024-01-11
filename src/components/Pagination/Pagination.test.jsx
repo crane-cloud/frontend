@@ -1,5 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import Pagination from "./";
 
 describe("Pagination component", () => {
@@ -8,7 +9,7 @@ describe("Pagination component", () => {
     const current = 5;
     const onPageChange = jest.fn();
 
-    const wrapper = shallow(
+    const wrapper = render(
       <Pagination total={total} current={current} onPageChange={onPageChange} />
     );
 
@@ -17,9 +18,9 @@ describe("Pagination component", () => {
 
     // Verify the current page is selected
     expect(wrapper.find(".selectedPaginationBox")).toHaveLength(1);
-    expect(
-      wrapper.find(".selectedPaginationBox").prop("children")
-    ).toBe(current);
+    expect(wrapper.find(".selectedPaginationBox").prop("children")).toBe(
+      current
+    );
 
     // Simulate click on a page button
     const pageButton = wrapper.find(".paginationBox").at(0);
@@ -34,7 +35,7 @@ describe("Pagination component", () => {
     const current = 1;
     const onPageChange = jest.fn();
 
-    const wrapper = shallow(
+    const wrapper = render(
       <Pagination total={total} current={current} onPageChange={onPageChange} />
     );
 

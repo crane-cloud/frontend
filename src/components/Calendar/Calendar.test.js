@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import Calendar from "./";
 
 const CalendarProps = {
@@ -12,11 +13,9 @@ const CalendarProps = {
   onChange: jest.fn(),
 };
 
-
-describe('TestContainer', () => {
-  const CalendarWrapper = shallow(<Calendar {...CalendarProps} />);
-  it('Test class constructor', () => {
-  
+describe("TestContainer", () => {
+  const CalendarWrapper = render(<Calendar {...CalendarProps} />);
+  it("Test class constructor", () => {
     expect(CalendarWrapper.exists()).toBeTruthy();
     expect(CalendarWrapper).toHaveLength(1);
   });
@@ -24,10 +23,8 @@ describe('TestContainer', () => {
     expect(CalendarWrapper).toMatchSnapshot();
   });
   it("should match the snapshot", () => {
-
     CalendarWrapper.setProps(CalendarProps);
     expect(CalendarWrapper).toBeDefined();
     expect(CalendarWrapper).toHaveLength(1);
   });
-
 });

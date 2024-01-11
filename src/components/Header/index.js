@@ -63,7 +63,7 @@ const Header = (props) => {
   }, []);
 
   const { credits } = props;
-  let displayName = user.data.name ? user.data.name : user.data.username;
+  let displayName = user.data?.name ? user.data?.name : user.data?.username;
   return (
     <header className={`${styles.Header} SmallContainer`}>
       <Logo />

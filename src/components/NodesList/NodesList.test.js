@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import NodesList, { mapStateToProps } from "./";
 
 const NodesListProps = {
@@ -16,9 +17,7 @@ const NodesListProps = {
 // {} ={}
 describe("Testing the App Metrics Page component", () => {
   const WrapperNodesList = NodesList.WrappedComponent;
-  const NodesListComponent = shallow(
-    <WrapperNodesList {...NodesListProps} />
-  );
+  const NodesListComponent = render(<WrapperNodesList {...NodesListProps} />);
   it("should match the snapshot for NodesList after adding props", () => {
     NodesListComponent.setProps(NodesListProps);
     expect(NodesListComponent).toBeDefined();

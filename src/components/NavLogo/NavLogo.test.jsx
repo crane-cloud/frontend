@@ -1,14 +1,13 @@
-import React from 'react';
+import React from "react";
 
-import { shallow } from 'enzyme';
+import { render } from "@testing-library/react";
 
-import NavLogo from '.';
+import NavLogo from ".";
 
-
-describe('Test the nav logo', () => { 
-    it('checks for correct rendering of the component', () => {
-        const NavLogoComponent = shallow(<NavLogo />);
-        expect(NavLogoComponent).toMatchSnapshot();
-        expect(NavLogoComponent.find('img').length).toBe(1);
-    })
-})
+describe("Test the nav logo", () => {
+  it("checks for correct rendering of the component", () => {
+    const NavLogoComponent = render(<NavLogo />);
+    expect(NavLogoComponent).toMatchSnapshot();
+    expect(NavLogoComponent.find("img").length).toBe(1);
+  });
+});

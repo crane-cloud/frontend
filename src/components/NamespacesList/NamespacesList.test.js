@@ -1,5 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import * as redux from "react-redux";
 import NamespacesListPage from "./";
 
@@ -33,7 +34,7 @@ describe("Jobs page", () => {
   });
 
   it("should render", () => {
-    const wrapper = shallow(<NamespacesListPage />);
+    const wrapper = render(<NamespacesListPage />);
 
     expect(wrapper.exists()).toBe(true);
   });

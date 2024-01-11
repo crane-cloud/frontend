@@ -1,5 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import SideNav from ".";
 
 describe("SideNav component", () => {
@@ -9,14 +10,14 @@ describe("SideNav component", () => {
   };
 
   it("should render the SideNav component", () => {
-    const wrapper = shallow(<SideNav {...defaultProps} />);
+    const wrapper = render(<SideNav {...defaultProps} />);
     expect(wrapper.exists()).toBe(true);
   });
 
   it("should handle menu click on mobile", () => {
-    const wrapper = shallow(<SideNav {...defaultProps} />);
+    const wrapper = render(<SideNav {...defaultProps} />);
     const menuIcon = wrapper.find(".MenuIcon");
     menuIcon.simulate("click");
-   // expect(wrapper.state("OpenForsmallScreen")).toBe(true); // Check if the state is updated correctly
+    // expect(wrapper.state("OpenForsmallScreen")).toBe(true); // Check if the state is updated correctly
   });
 });

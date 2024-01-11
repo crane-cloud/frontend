@@ -1,13 +1,17 @@
-import React from 'react';
+import React from "react";
 
-import { shallow } from 'enzyme';
+import { render } from "@testing-library/react";
 
-import MetricsCard from './index';
+import MetricsCard from "./index";
 
-describe('MetricsCard Component', () => {
-  it('Renders the MetricsCard component', () => {
-    const MetricsCardComponent = shallow(<MetricsCard/>);
-    expect(MetricsCardComponent.find('.CardHeaderSection').hasClass('CardHeaderSection')).toBe(true);
-   expect(MetricsCardComponent).toMatchSnapshot();
+describe("MetricsCard Component", () => {
+  it("Renders the MetricsCard component", () => {
+    const MetricsCardComponent = render(<MetricsCard />);
+    expect(
+      MetricsCardComponent.find(".CardHeaderSection").hasClass(
+        "CardHeaderSection"
+      )
+    ).toBe(true);
+    expect(MetricsCardComponent).toMatchSnapshot();
   });
 });

@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import ClustersList, { mapStateToProps } from "./";
 
 const ClustersListProps = {
@@ -14,13 +15,13 @@ describe("Test ClustersList component", () => {
   let clusterlistWrapper;
   beforeEach(() => {
     const ClustersListwrapper = ClustersList.WrappedComponent;
-    clusterlistWrapper = shallow(<ClustersListwrapper {...ClustersListProps} />);
+    clusterlistWrapper = render(<ClustersListwrapper {...ClustersListProps} />);
   });
 
   it("should check `componentDidMount()`", () => {
     clusterlistWrapper.instance().componentDidMount();
-    expect(ClustersListProps.getClustersList).toHaveBeenCalledTimes(2); 
-    
+    expect(ClustersListProps.getClustersList).toHaveBeenCalledTimes(2);
+
     expect(ClustersListProps.getClustersList).toBeDefined();
     expect(ClustersListProps.params).toBeDefined();
     expect(clusterlistWrapper.instance().props.getClustersList).toBeCalled();
@@ -34,12 +35,16 @@ describe("Test ClustersList's map state to props and dispatch", () => {
   it("test result to match the mapstostate function", () => {
     expect(
       mapStateToProps({
-        clustersReducer: { isRetrieving: false, isRetrieved: false, clusters: { clusters: [] } },
+        clustersReducer: {
+          isRetrieving: false,
+          isRetrieved: false,
+          clusters: { clusters: [] },
+        },
       })
     ).toEqual({
       isRetrieving: false,
       isRetrieved: false,
-      clusters: []
+      clusters: [],
     });
   });
 });

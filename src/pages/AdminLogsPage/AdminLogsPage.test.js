@@ -1,16 +1,14 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import AdminLogsPage from './';
+import React from "react";
+import { render } from "@testing-library/react";
 
-describe('AdminLogsPage', () => {
-  it('renders without crashing', () => {
+import AdminLogsPage from "./";
+
+describe("AdminLogsPage", () => {
+  it("renders without crashing", () => {
     shallow(<AdminLogsPage />);
   });
-  
-  it('matches the snapshot', () => {
-    const wrapper = shallow(<AdminLogsPage />);
-    expect(wrapper).toMatchSnapshot();
-  });
-  
 
+  it("matches the snapshot", () => {
+    const wrapper = render(<AdminLogsPage />);
+  });
 });

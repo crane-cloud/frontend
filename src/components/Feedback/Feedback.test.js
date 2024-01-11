@@ -1,15 +1,18 @@
-import React from 'react';
+import React from "react";
 
-import { shallow } from 'enzyme';
+import { render } from "@testing-library/react";
 
-import Feedback from './index';
+import Feedback from "./index";
 
-describe('Feedback Component', () => {
-  it('Renders a Feedback component', () => {
-
-    const FeedbackComponent = shallow(<Feedback className="success" type='Succes SuccessOnWhite' message='Failed'/>);
+describe("Feedback Component", () => {
+  it("Renders a Feedback component", () => {
+    const FeedbackComponent = render(
+      <Feedback
+        className="success"
+        type="Succes SuccessOnWhite"
+        message="Failed"
+      />
+    );
     expect(FeedbackComponent).toMatchSnapshot();
-
-    
   });
 });

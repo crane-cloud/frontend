@@ -1,5 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import Header from "../../components/Header";
 
 import AdminLoginPage from "./index";
@@ -15,8 +16,8 @@ describe("Admin <Login /> Component", () => {
   const handleSubmit = jest.fn();
 
   const WrapperAdminLoginPage = AdminLoginPage.WrappedComponent;
-  const AdminLoginPageComponent = shallow(<WrapperAdminLoginPage {...Props} />);
-  // const AdminLoginPageComponent = shallow(<AdminLoginPage/>);
+  const AdminLoginPageComponent = render(<WrapperAdminLoginPage {...Props} />);
+  // const AdminLoginPageComponent = render(<AdminLoginPage/>);
   AdminLoginPageComponent.setProps(Props);
 
   it("component should match the snapshot", () => {
@@ -41,7 +42,7 @@ describe("Admin <Login /> Component", () => {
       required: true,
       value: "",
       name: "email",
-      type: "email"
+      type: "email",
     });
   });
 

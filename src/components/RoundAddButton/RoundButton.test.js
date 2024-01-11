@@ -1,11 +1,10 @@
-
 import React from "react";
 
-import { shallow } from "enzyme";
-import ShallowRenderer from 'react-test-renderer/shallow';
+import { render } from "@testing-library/react";
+
+import ShallowRenderer from "react-test-renderer/shallow";
 import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import RoundAddButton from "./index";
-
 
 // in your test:
 // const renderer = new ShallowRenderer();
@@ -18,11 +17,10 @@ import RoundAddButton from "./index";
 //   <ButtonPlus />
 // ]);
 
-
 describe("Button Component", () => {
   it("Renders a button component", () => {
     const buttonEvent = jest.fn();
-    const ButtonComponent = shallow(
+    const ButtonComponent = render(
       <RoundAddButton className="RoundAddButton" onClick={buttonEvent} />
     );
 
@@ -35,6 +33,5 @@ describe("Button Component", () => {
 
     expect(ButtonComponent).toMatchSnapshot();
     expect(ButtonComponent.contains(<ButtonPlus />)).toEqual(true);
-
   });
 });

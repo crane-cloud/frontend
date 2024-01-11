@@ -1,14 +1,12 @@
-import React from 'react';
+import React from "react";
 
-import { shallow } from 'enzyme';
+import { render } from "@testing-library/react";
 
-import Model from '.';
+import Model from ".";
 
-
-describe('Test the Model component', () => { 
-    it('checking for proper rendering', () => {
-        const ModelComponent = shallow(<Model/>);
-        expect(ModelComponent).toMatchSnapshot();
-        
-    })
-})
+describe("Test the Model component", () => {
+  it("checking for proper rendering", () => {
+    const ModelComponent = render(<Model />);
+    expect(ModelComponent).toMatchSnapshot();
+  });
+});

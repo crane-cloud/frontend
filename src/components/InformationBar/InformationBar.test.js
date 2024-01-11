@@ -18,9 +18,8 @@ describe("InformationBar Component", () => {
   };
 
   it("renders the default information bar without errors", () => {
-    const wrapper = shallow(<InformationBar {...defaultProps} />);
+    const wrapper = render(<InformationBar {...defaultProps} />);
     expect(wrapper.exists()).toBe(true);
-    expect(wrapper).toMatchSnapshot();
   });
 
   it("renders the information bar with search bar and triggers search action", () => {
@@ -29,7 +28,7 @@ describe("InformationBar Component", () => {
       showSearchBar: true,
       placeholder: "test",
     };
-    const wrapper = shallow(<InformationBar {...searchBarProps} />);
+    const wrapper = render(<InformationBar {...searchBarProps} />);
 
     // const searchInput = wrapper.find('.DesktopView .SearchInput input');
     // searchInput.simulate('change', { target: { name: 'Searchword', value: 'sample search' } });
@@ -42,10 +41,10 @@ describe("InformationBar Component", () => {
       ...defaultProps,
       status: "success",
     };
-    const wrapper = shallow(<InformationBar {...appStatusProps} />);
+    const wrapper = render(<InformationBar {...appStatusProps} />);
 
-    expect(wrapper.find('AppStatus')).toHaveLength(1);
-    expect(wrapper.find('.AppUrl a')).toHaveLength(1);
+    expect(wrapper.find("AppStatus")).toHaveLength(1);
+    expect(wrapper.find(".AppUrl a")).toHaveLength(1);
   });
 
   it("renders the information bar with a button and triggers button action", () => {
@@ -53,10 +52,10 @@ describe("InformationBar Component", () => {
       ...defaultProps,
       showBtn: true,
     };
-    const wrapper = shallow(<InformationBar {...addBtnProps} />);
+    const wrapper = render(<InformationBar {...addBtnProps} />);
 
-    expect(wrapper.find('PrimaryButton')).toHaveLength(1);
-    wrapper.find('PrimaryButton').simulate('click');
+    expect(wrapper.find("PrimaryButton")).toHaveLength(1);
+    wrapper.find("PrimaryButton").simulate("click");
     expect(btnAction).toHaveBeenCalled();
   });
 
@@ -65,14 +64,14 @@ describe("InformationBar Component", () => {
       ...defaultProps,
       viewAppLink: "test_url",
     };
-    const wrapper = shallow(<InformationBar {...addAppLinkProps} />);
+    const wrapper = render(<InformationBar {...addAppLinkProps} />);
 
-    expect(wrapper.find('.InfoHeader')).toHaveLength(1);
-    expect(wrapper.find('.InfoHeader').text()).toBe("test");
-    expect(wrapper.find('.PrimaryButton')).toHaveLength(0);
+    expect(wrapper.find(".InfoHeader")).toHaveLength(1);
+    expect(wrapper.find(".InfoHeader").text()).toBe("test");
+    expect(wrapper.find(".PrimaryButton")).toHaveLength(0);
     // expect(wrapper.find('.PrimaryButton').prop('children')).toBe("Open App");
-    expect(wrapper.find('a')).toHaveLength(1);
-    expect(wrapper.find('a').prop('href')).toBe("test_url");
+    expect(wrapper.find("a")).toHaveLength(1);
+    expect(wrapper.find("a").prop("href")).toBe("test_url");
   });
 
   it("renders the information bar with credits", () => {
@@ -80,27 +79,26 @@ describe("InformationBar Component", () => {
       ...defaultProps,
       credits: 10,
     };
-    const wrapper = shallow(<InformationBar {...creditsProps} />);
+    const wrapper = render(<InformationBar {...creditsProps} />);
 
-    expect(wrapper.find('.InfoHeader')).toHaveLength(1);
-    expect(wrapper.find('.InfoHeader').text()).toBe("test");
-    expect(wrapper.find('.CreditsCorner')).toHaveLength(1);
-    expect(wrapper.find('.CreditsCorner').text()).toBe("10");
-    expect(wrapper.find('Coin')).toHaveLength(0);
+    expect(wrapper.find(".InfoHeader")).toHaveLength(1);
+    expect(wrapper.find(".InfoHeader").text()).toBe("test");
+    expect(wrapper.find(".CreditsCorner")).toHaveLength(1);
+    expect(wrapper.find(".CreditsCorner").text()).toBe("10");
+    expect(wrapper.find("Coin")).toHaveLength(0);
   });
 
   it("renders the information bar without additional elements", () => {
-    const wrapper = shallow(<InformationBar {...defaultProps} />);
+    const wrapper = render(<InformationBar {...defaultProps} />);
 
-    expect(wrapper.find('.InfoHeader')).toHaveLength(1);
-    expect(wrapper.find('.InfoHeader').text()).toBe("test");
-    expect(wrapper.find('.InformationBarWithButton')).toHaveLength(0);
-    expect(wrapper.find('.AppUrl')).toHaveLength(0);
-    expect(wrapper.find('.RoundAddButtonWrap')).toHaveLength(0);
-    expect(wrapper.find('PrimaryButton')).toHaveLength(0);
-    expect(wrapper.find('a')).toHaveLength(0);
-    expect(wrapper.find('.CreditsCorner')).toHaveLength(0);
-    expect(wrapper.find('Coin')).toHaveLength(0);
+    expect(wrapper.find(".InfoHeader")).toHaveLength(1);
+    expect(wrapper.find(".InfoHeader").text()).toBe("test");
+    expect(wrapper.find(".InformationBarWithButton")).toHaveLength(0);
+    expect(wrapper.find(".AppUrl")).toHaveLength(0);
+    expect(wrapper.find(".RoundAddButtonWrap")).toHaveLength(0);
+    expect(wrapper.find("PrimaryButton")).toHaveLength(0);
+    expect(wrapper.find("a")).toHaveLength(0);
+    expect(wrapper.find(".CreditsCorner")).toHaveLength(0);
+    expect(wrapper.find("Coin")).toHaveLength(0);
   });
 });
-

@@ -1,5 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import LineChart from ".";
 
 describe("Test the line chart component", () => {
@@ -16,12 +17,12 @@ describe("Test the line chart component", () => {
     yDataKey: "",
     lineDataKey: "",
   };
-  const linechartPropsPreivew = {...linechartPropsNoPreview, preview:true};
-  const linechartNoData = {...linechartPropsNoPreview, data:[]};
+  const linechartPropsPreivew = { ...linechartPropsNoPreview, preview: true };
+  const linechartNoData = { ...linechartPropsNoPreview, data: [] };
 
-  const LineChartNoPreview = shallow(<LineChart {...linechartPropsNoPreview} />);
-  const LineChartPreview = shallow(<LineChart {...linechartPropsPreivew} />);
-  const LineChartNoData = shallow(<LineChart {...linechartNoData} />);
+  const LineChartNoPreview = render(<LineChart {...linechartPropsNoPreview} />);
+  const LineChartPreview = render(<LineChart {...linechartPropsPreivew} />);
+  const LineChartNoData = render(<LineChart {...linechartNoData} />);
   it("checks if the information bar component matches the snapshot", () => {
     expect(LineChartNoPreview).toMatchSnapshot();
   });

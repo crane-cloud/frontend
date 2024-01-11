@@ -1,17 +1,20 @@
-import React from 'react';
+import React from "react";
 
-import { shallow } from 'enzyme';
+import { render } from "@testing-library/react";
 
-import CancelButton from './index';
+import CancelButton from "./index";
 
-describe('Button Component', () => {
-  it('Renders a button component', () => {
-
+describe("Button Component", () => {
+  it("Renders a button component", () => {
     const buttonEvent = jest.fn();
-    const ButtonComponent = shallow(<CancelButton buttonClass="CancelButton" onClick={buttonEvent} />);
-    expect(ButtonComponent.find('.CancelButton').hasClass('CancelButton')).toBe(true);
+    const ButtonComponent = render(
+      <CancelButton buttonClass="CancelButton" onClick={buttonEvent} />
+    );
+    expect(ButtonComponent.find(".CancelButton").hasClass("CancelButton")).toBe(
+      true
+    );
 
-    ButtonComponent.find('.CancelButton').simulate('click');
+    ButtonComponent.find(".CancelButton").simulate("click");
     expect(buttonEvent).toHaveBeenCalled();
   });
 });

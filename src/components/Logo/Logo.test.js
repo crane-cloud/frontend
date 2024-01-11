@@ -1,17 +1,17 @@
-import React from 'react';
+import React from "react";
 
-import { shallow } from 'enzyme';
+import { render } from "@testing-library/react";
 
-import Logo from './index';
+import Logo from "./index";
 
-describe('Logo component test', () => {
-    it('checks whether the component rendered with expected elements', () => {
-        const LogoComponent = shallow(<Logo />);
-        
-        expect(LogoComponent).toMatchSnapshot();
+describe("Logo component test", () => {
+  it("checks whether the component rendered with expected elements", () => {
+    const LogoComponent = render(<Logo />);
 
-        const LogoType = LogoComponent.find("div > div");
-        expect(LogoType.hasClass("LogoType")).toEqual(true);
-        expect(LogoType.text()).toBe("Crane Cloud");
-    })
-})
+    expect(LogoComponent).toMatchSnapshot();
+
+    const LogoType = LogoComponent.find("div > div");
+    expect(LogoType.hasClass("LogoType")).toEqual(true);
+    expect(LogoType.text()).toBe("Crane Cloud");
+  });
+});

@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import ProjectDashboardPage, { mapStateToProps } from "./";
 
 const ProjectDashboardPageProps = {
@@ -19,7 +20,7 @@ const ProjectDashboardPageProps = {
 // {} ={}
 describe("Testing the App Metrics Page component", () => {
   const WrapperProjectDashboardPage = ProjectDashboardPage.WrappedComponent;
-  const ProjectDashboardPageComponent = shallow(
+  const ProjectDashboardPageComponent = render(
     <WrapperProjectDashboardPage {...ProjectDashboardPageProps} />
   );
   it("should match the snapshot for ProjectDashboardPage after adding props", () => {
@@ -47,7 +48,7 @@ describe("Testing the exported mapstate to props and dispatch", () => {
         },
         projectNetworkReducer: {
           isFetchingNetwork: false,
-          networkMetrics:[],
+          networkMetrics: [],
           networkMessage: "",
         },
         userProjectsReducer: { projects: [] },
@@ -61,7 +62,7 @@ describe("Testing the exported mapstate to props and dispatch", () => {
       cpuMetrics: [],
       cpuMessage: "",
       isFetchingNetwork: false,
-      networkMetrics:[],
+      networkMetrics: [],
       networkMessage: "",
       projects: [],
       credits: [],

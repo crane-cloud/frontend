@@ -1,5 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import BarGraph from "./";
 
 describe("Test the bar graph component", () => {
@@ -12,7 +13,7 @@ describe("Test the bar graph component", () => {
     width_percentage: 0,
     height_percentage: 0,
   };
-  const BarGraphComponent = shallow(<BarGraph {...barGraphProps} />);
+  const BarGraphComponent = render(<BarGraph {...barGraphProps} />);
   it("checks if the bar graph component matches the snapshot", () => {
     expect(BarGraphComponent).toMatchSnapshot();
   });

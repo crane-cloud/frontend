@@ -1,10 +1,11 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import * as redux from "react-redux";
 import AdminProjectsPage from "./";
 
-jest.mock('react', () => {
-  const originReact = jest.requireActual('react');
+jest.mock("react", () => {
+  const originReact = jest.requireActual("react");
   return {
     ...originReact,
     useRef: jest.fn(),
@@ -22,7 +23,7 @@ describe("Admin projects", () => {
   let mockDispatch;
 
   beforeEach(() => {
-    jest.spyOn(React, "useEffect").mockImplementationOnce(cb => cb()());
+    jest.spyOn(React, "useEffect").mockImplementationOnce((cb) => cb()());
     // Mock useSelector hook
     spyOnUseSelector = jest.spyOn(redux, "useSelector");
     spyOnUseSelector.mockReturnValue([{ id: 1, app: "nginx" }]);
@@ -39,7 +40,7 @@ describe("Admin projects", () => {
   });
 
   it("should render", () => {
-    const wrapper = shallow(<AdminProjectsPage />);
+    const wrapper = render(<AdminProjectsPage />);
 
     expect(wrapper.exists()).toBe(true);
   });

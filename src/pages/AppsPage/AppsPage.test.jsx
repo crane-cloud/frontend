@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import AppsPage, { mapStateToProps } from "./";
 
 const AppsPageProps = {
@@ -13,12 +14,12 @@ const AppsPageProps = {
 describe("testing the Apps page component", () => {
   it("this matchs Apps page component snapshot", () => {
     const AppsPagewrapped = AppsPage.WrappedComponent;
-    const mycomponent = shallow(<AppsPagewrapped {...AppsPageProps} />);
+    const mycomponent = render(<AppsPagewrapped {...AppsPageProps} />);
     expect(mycomponent).toMatchSnapshot();
   });
   it("should match wrapped component snapshot", () => {
     const NewComponent = AppsPage.WrappedComponent;
-    const wrapper = shallow(<NewComponent {...AppsPageProps} />);
+    const wrapper = render(<NewComponent {...AppsPageProps} />);
     wrapper.setProps(AppsPageProps);
     expect(wrapper).toBeDefined();
   });
@@ -28,10 +29,10 @@ describe("test only map state to props", () => {
   it("matches the mapstostate", () => {
     expect(
       mapStateToProps({
-        userProjectsReducer: { projects:[] }
+        userProjectsReducer: { projects: [] },
       })
     ).toEqual({
-      projects:[],
+      projects: [],
     });
   });
 });

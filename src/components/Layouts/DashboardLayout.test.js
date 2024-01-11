@@ -1,5 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import DashboardLayout from "./DashboardLayout";
 import Header from "../Header";
 import InformationBar from "../InformationBar";
@@ -11,11 +12,11 @@ describe("DashboardLayout component", () => {
     name: "John Doe",
     credits: { amount: 100 },
     header: "Dashboard",
-    short: false
+    short: false,
   };
 
   it("renders the DashboardLayout component correctly", () => {
-    const wrapper = shallow(<DashboardLayout {...mockProps} />);
+    const wrapper = render(<DashboardLayout {...mockProps} />);
 
     // Check if child components are rendered
     expect(wrapper.find(Header)).toHaveLength(1);
@@ -28,7 +29,9 @@ describe("DashboardLayout component", () => {
     expect(wrapper.find(SideBar).prop("name")).toBe(mockProps.name);
 
     // children are rendered on mount test
-    expect(wrapper.find(".DashboardChildrenSection").contains(mockProps.children)).toBe(false);
+    expect(
+      wrapper.find(".DashboardChildrenSection").contains(mockProps.children)
+    ).toBe(false);
 
     // Check if CSS classes are applied correctly
     expect(wrapper.find(".DashboardPage")).toHaveLength(1);
@@ -36,7 +39,9 @@ describe("DashboardLayout component", () => {
     expect(wrapper.find(".DashboardMainSection")).toHaveLength(1);
     expect(wrapper.find(".DashboardSideBarSection")).toHaveLength(1);
     expect(wrapper.find(".DashboardMainContentSection")).toHaveLength(1);
-    expect(wrapper.find(".DasboardChildrenSection").hasClass("SmallContainer")).toBe(true);
+    expect(
+      wrapper.find(".DasboardChildrenSection").hasClass("SmallContainer")
+    ).toBe(true);
   });
 
   it("renders the DashboardLayout component correctly with short container", () => {
@@ -44,8 +49,10 @@ describe("DashboardLayout component", () => {
       ...mockProps,
       short: true,
     };
-    const wrapper = shallow(<DashboardLayout {...propsWithShortContainer} />);
+    const wrapper = render(<DashboardLayout {...propsWithShortContainer} />);
 
-    expect(wrapper.find(".DasboardChildrenSection").hasClass("ShortContainer")).toBe(true);
+    expect(
+      wrapper.find(".DasboardChildrenSection").hasClass("ShortContainer")
+    ).toBe(true);
   });
 });

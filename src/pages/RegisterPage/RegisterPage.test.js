@@ -1,5 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import RegisterPage from "./index";
 import axios from "axios";
 
@@ -7,7 +8,7 @@ describe("<RegisterPage/> Component", () => {
   let RegisterPageComponent;
 
   beforeEach(() => {
-    RegisterPageComponent = shallow(<RegisterPage />);
+    RegisterPageComponent = render(<RegisterPage />);
   });
 
   it("should render the component", () => {
@@ -20,7 +21,7 @@ describe("<RegisterPage/> Component", () => {
       username: "",
       email: "",
       password: "",
-      organisation:"",
+      organisation: "",
       passwordConfirm: "",
       displayPassword: false,
       hasAgreed: false,
@@ -49,15 +50,14 @@ describe("<RegisterPage/> Component", () => {
   //   const mockEvent = {
   //     preventDefault: jest.fn(),
   //   };
-  
+
   //   window.location.href = jest.fn();
-  
+
   //   RegisterPageComponent.instance().toGithubauth();
-  
+
   //   expect(mockEvent.preventDefault).toHaveBeenCalledTimes(1);
   //   expect(window.location.href).toHaveBeenCalledTimes(1);
   // });
-  
 
   it("should toggle the 'passwordShown' state when 'togglePassword' is called", () => {
     RegisterPageComponent.instance().togglePassword();
@@ -118,7 +118,7 @@ describe("<RegisterPage/> Component", () => {
       password: "password",
       passwordConfirm: "password",
       hasAgreed: true,
-      organisation : 'crane-cloud',
+      organisation: "crane-cloud",
     });
 
     RegisterPageComponent.instance().handleSubmit(mockEvent);
@@ -132,7 +132,7 @@ describe("<RegisterPage/> Component", () => {
         username: "johndoe",
         email: "test@example.com",
         password: "password",
-        organisation : 'crane-cloud',
+        organisation: "crane-cloud",
       })
     );
     // You can add more expectations based on the specific behavior you want to test
@@ -145,7 +145,9 @@ describe("<RegisterPage/> Component", () => {
 
     RegisterPageComponent.instance().handleSubmit(mockEvent);
 
-    expect(RegisterPageComponent.state("error")).toBe("Please enter all fields");
+    expect(RegisterPageComponent.state("error")).toBe(
+      "Please enter all fields"
+    );
 
     // You can add more expectations based on the specific behavior you want to test
   });
@@ -170,7 +172,9 @@ describe("<RegisterPage/> Component", () => {
       email: "test@example.com",
     });
 
-    expect(RegisterPageComponent.find(".RegisteredMessage").exists()).toBe(true);
+    expect(RegisterPageComponent.find(".RegisteredMessage").exists()).toBe(
+      true
+    );
     expect(RegisterPageComponent.find(".RegisteredMessage h2").text()).toBe(
       "Thank you for registering with us!"
     );

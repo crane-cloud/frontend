@@ -1,5 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import UserAccounts from "./";
 import * as redux from "react-redux";
 
@@ -19,11 +20,11 @@ describe("UserList component", () => {
     jest.spyOn(React, "useEffect").mockImplementationOnce((cb) => cb()());
     // Mock useSelector hook
     spyOnUseSelector = jest.spyOn(redux, "useSelector");
-    spyOnUseSelector.mockReturnValue({ 
-      users: [], 
+    spyOnUseSelector.mockReturnValue({
+      users: [],
       pagination: { pages: 1 },
-      isRetrieving: false, 
-      isFetched: false 
+      isRetrieving: false,
+      isFetched: false,
     });
     // Mock useDispatch hook
     const useDispatchSpy = jest.spyOn(redux, "useDispatch");
@@ -37,7 +38,7 @@ describe("UserList component", () => {
   });
 
   it("renders without crashing", () => {
-    const wrapper = shallow(<UserAccounts />);
+    const wrapper = render(<UserAccounts />);
 
     expect(wrapper.exists()).toBe(true);
   });

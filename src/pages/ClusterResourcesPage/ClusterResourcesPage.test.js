@@ -1,5 +1,6 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+
 import * as redux from "react-redux";
 import ClusterResourcesPage from "./";
 
@@ -43,7 +44,7 @@ describe("TodoList", () => {
   });
 
   it("should render", () => {
-    const wrapper = shallow(<ClusterResourcesPage />);
+    const wrapper = render(<ClusterResourcesPage />);
 
     expect(wrapper.exists()).toBe(true);
   });

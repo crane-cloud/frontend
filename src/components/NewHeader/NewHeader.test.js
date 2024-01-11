@@ -1,6 +1,6 @@
 import React from "react";
 
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 
 import NewHeader, { mapStateToProps } from ".";
 
@@ -20,7 +20,7 @@ describe("NewHeader component test", () => {
 
   beforeEach(() => {
     const NewHeaderwrapper = NewHeader.WrappedComponent;
-    newheaderWrapper = shallow(<NewHeaderwrapper {...NewHeaderProps} />);
+    newheaderWrapper = render(<NewHeaderwrapper {...NewHeaderProps} />);
   });
 
   it("matches the NewHeader snapshot", () => {

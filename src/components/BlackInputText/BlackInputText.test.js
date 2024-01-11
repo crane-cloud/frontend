@@ -1,6 +1,6 @@
 import React from "react";
 
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 
 import BlackInputText from "./index";
 
@@ -14,7 +14,7 @@ const BlackInputTextProps = {
 
 describe("Test the component", () => {
   const OnChangeEvent = jest.fn();
-  const BlackInputTextComponent = shallow(
+  const BlackInputTextComponent = render(
     <BlackInputText name="" placeholder="*" value="" onChange={OnChangeEvent} />
   );
 
