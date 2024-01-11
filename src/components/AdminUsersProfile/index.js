@@ -31,6 +31,7 @@ import {
   handleGetRequest,
   handlePostRequestWithOutDataObject,
 } from "../../apis/apis";
+import SettingsActionRow from "../SettingsActionRow";
 
 class AdminUserPage extends Component {
   constructor() {
@@ -483,184 +484,147 @@ class AdminUserPage extends Component {
                           />
                         </div>
                       </div>
-                      <div className="AdminDBSections">
-                        <div className="SectionTitle">Manage User</div>
-                        <div className="ProjectInstructions">
-                          <div className="MemberBody">
-                            <div className="MemberTableRow">
-                              <div className="SettingsSectionInfo">
-                                <div className="SubTitle">
-                                  Add Credits to User
-                                  <br />
-                                  <div className="SubTitleContent">
-                                    This will add credits to the user.
-                                  </div>
-                                </div>
-                                <div className="SectionButtons">
-                                  <PrimaryButton
-                                    color="primary-outline"
-                                    onClick={this.showCreditsModal}
-                                  >
-                                    Add Credits
-                                  </PrimaryButton>
+
+                      <div className="SectionTitle">Manage User</div>
+                      <div className="ProjectInstructions">
+                        <div className="MemberBody">
+                          <SettingsActionRow
+                            title="Add Credits to User"
+                            content="This will add credits to the user."
+                            buttonLabel="Add Credits"
+                            buttonColor="primary"
+                            onButtonClick={this.showCreditsModal}
+                          />
+
+                          <SettingsActionRow
+                            title={`${
+                              userDetail?.disabled ? "Enable" : "Disable"
+                            } User`}
+                            content={
+                              userDetail?.disabled
+                                ? "This will enable this user."
+                                : "This will temporary disable the user."
+                            }
+                            buttonLabel={
+                              userDetail?.disabled ? "Enable" : "Disable"
+                            }
+                            buttonColor={
+                              userDetail?.disabled ? "primary" : "red"
+                            }
+                            onButtonClick={this.handleEnableButtonClick}
+                          />
+
+                          <SettingsActionRow
+                            title="Delete User"
+                            content="This will permanently delete the user-history,apps,database and settings."
+                            buttonLabel="Delete"
+                            buttonColor="red"
+                            onButtonClick={this.showDeleteAlert}
+                          />
+                        </div>
+                      </div>
+                      {openDeleteAlert && (
+                        <div className="ProjectDeleteModel">
+                          <Modal
+                            showModal={openDeleteAlert}
+                            onClickAway={this.hideDeleteAlert}
+                          >
+                            <div className="DeleteDatabaseModel">
+                              <div className="DeleteProjectModalUpperSection">
+                                <div className="InnerModalDescription">
+                                  Are you sure you want to delete this user
+                                  &nbsp;
+                                  <span className="DatabaseName">
+                                    {userDetail?.name} ?
+                                  </span>
+                                  <DeleteWarning />
                                 </div>
                               </div>
-                            </div>
-                            <div className="MemberTableRow">
-                              <div className="SettingsSectionInfo">
-                                <div className="SubTitle">
-                                  {userDetail?.disabled ? "Enable" : "Disable"}{" "}
-                                  User
-                                  <br />
-                                  <div className="SubTitleContent">
-                                    {userDetail?.disabled
-                                      ? "This will enable this user."
-                                      : "This will temporary disable the user."}
-                                  </div>
-                                </div>
-                                <div className="SectionButtons">
+
+                              <div className="DeleteProjectModalLowerSection">
+                                <div className="DeleteProjectModelButtons">
                                   <PrimaryButton
-                                    onClick={this.handleEnableButtonClick}
-                                    color={
-                                      userDetail?.disabled
-                                        ? "primary-outline"
-                                        : "red-outline"
+                                    className="CancelBtn"
+                                    onClick={this.hideDeleteAlert}
+                                  >
+                                    Cancel
+                                  </PrimaryButton>
+                                  <PrimaryButton
+                                    color="red"
+                                    onClick={(e) =>
+                                      this.handleDeleteAlert(e, userID)
                                     }
                                   >
-                                    {userDetail?.disabled
-                                      ? "Enable"
-                                      : "Disable"}
+                                    {deletingUser ? <Spinner /> : "Delete"}
                                   </PrimaryButton>
                                 </div>
+
+                                {userDeleteFailed && isDeleteUser && (
+                                  <Feedback
+                                    message={isDeleteUser}
+                                    type="error"
+                                  />
+                                )}
                               </div>
                             </div>
-                            <div className="SettingsSectionInfo1">
-                              <div className="SubTitle">
-                                Delete User
-                                <br />
-                                <div className="SubTitleContent">
-                                  This will permanently delete the user-history
-                                  , apps , database and settings.
-                                </div>
-                              </div>
-                              <div className="SectionButtons">
-                                <PrimaryButton
-                                  color="red-outline"
-                                  onClick={this.showDeleteAlert}
-                                >
-                                  Delete
-                                </PrimaryButton>
-                              </div>
-                            </div>
-                          </div>
+                          </Modal>
                         </div>
-                        {openDeleteAlert && (
-                          <div className="ProjectDeleteModel">
-                            <Modal
-                              showModal={openDeleteAlert}
-                              onClickAway={this.hideDeleteAlert}
-                            >
-                              <div className="DeleteDatabaseModel">
-                                <div className="DeleteProjectModalUpperSection">
-                                  <div className="InnerModalDescription">
-                                    Are you sure you want to delete this user
-                                    &nbsp;
-                                    <span className="DatabaseName">
-                                      {userDetail?.name} ?
-                                    </span>
-                                    <DeleteWarning />
-                                  </div>
-                                </div>
-
-                                <div className="DeleteProjectModalLowerSection">
-                                  <div className="DeleteProjectModelButtons">
-                                    <PrimaryButton
-                                      className="CancelBtn"
-                                      onClick={this.hideDeleteAlert}
-                                    >
-                                      Cancel
-                                    </PrimaryButton>
-                                    <PrimaryButton
-                                      color="red"
-                                      onClick={(e) =>
-                                        this.handleDeleteAlert(e, userID)
-                                      }
-                                    >
-                                      {deletingUser ? <Spinner /> : "Delete"}
-                                    </PrimaryButton>
-                                  </div>
-
-                                  {userDeleteFailed && isDeleteUser && (
-                                    <Feedback
-                                      message={isDeleteUser}
-                                      type="error"
-                                    />
-                                  )}
+                      )}
+                      {openDisableAlert && (
+                        <div className="ProjectDeleteModel">
+                          <Modal
+                            showModal={openDisableAlert}
+                            onClickAway={this.hideDisableAlert}
+                          >
+                            <div className="DeleteDatabaseModel">
+                              <div className="DeleteProjectModalUpperSection">
+                                <div className="InnerModalDescription">
+                                  Are you sure you want to disable this user
+                                  &nbsp;
+                                  <span className="DatabaseName">
+                                    {userDetail?.name} ?
+                                  </span>
                                 </div>
                               </div>
-                            </Modal>
-                          </div>
-                        )}
-                        {openDisableAlert && (
-                          <div className="ProjectDeleteModel">
-                            <Modal
-                              showModal={openDisableAlert}
-                              onClickAway={this.hideDisableAlert}
-                            >
-                              <div className="DeleteDatabaseModel">
-                                <div className="DeleteProjectModalUpperSection">
-                                  <div className="InnerModalDescription">
-                                    Are you sure you want to disable this user
-                                    &nbsp;
-                                    <span className="DatabaseName">
-                                      {userDetail?.name} ?
-                                    </span>
-                                  </div>
+
+                              <div className="DeleteProjectModalLowerSection">
+                                <div className="DeleteProjectModelButtons">
+                                  <PrimaryButton
+                                    className="CancelBtn"
+                                    onClick={this.hideDisableAlert}
+                                  >
+                                    Cancel
+                                  </PrimaryButton>
+                                  <PrimaryButton
+                                    color="red"
+                                    onClick={(e) =>
+                                      this.handleDisableAlert(e, userID)
+                                    }
+                                  >
+                                    {isDisablingUser ? <Spinner /> : "Disable"}
+                                  </PrimaryButton>
                                 </div>
 
-                                <div className="DeleteProjectModalLowerSection">
-                                  <div className="DeleteProjectModelButtons">
-                                    <PrimaryButton
-                                      className="CancelBtn"
-                                      onClick={this.hideDisableAlert}
-                                    >
-                                      Cancel
-                                    </PrimaryButton>
-                                    <PrimaryButton
-                                      color="red"
-                                      onClick={(e) =>
-                                        this.handleDisableAlert(e, userID)
-                                      }
-                                    >
-                                      {isDisablingUser ? (
-                                        <Spinner />
-                                      ) : (
-                                        "Disable"
-                                      )}
-                                    </PrimaryButton>
-                                  </div>
-
-                                  {userDisableFailed && isDisableUser && (
-                                    <Feedback
-                                      message={isDisableUser}
-                                      type="error"
-                                    />
-                                  )}
-                                </div>
+                                {userDisableFailed && isDisableUser && (
+                                  <Feedback
+                                    message={isDisableUser}
+                                    type="error"
+                                  />
+                                )}
                               </div>
-                            </Modal>
-                          </div>
-                        )}
+                            </div>
+                          </Modal>
+                        </div>
+                      )}
 
-                        {!isFetching && !isFetched && (
-                          <div className="NoResourcesMessage">
-                            <p>
-                              Oops! Something went wrong! Failed to retrieve
-                              User Profile.
-                            </p>
-                          </div>
-                        )}
-                      </div>
+                      {!isFetching && !isFetched && (
+                        <div className="NoResourcesMessage">
+                          <p>
+                            Oops! Something went wrong! Failed to retrieve User
+                            Profile.
+                          </p>
+                        </div>
+                      )}
                     </div>
                     <Modal
                       showModal={this.state.addCredits}

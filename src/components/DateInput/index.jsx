@@ -21,6 +21,7 @@ const DateInput = ({
   onClick,
   value,
   months_only,
+  hideTime,
   SpendCalenderClass,
   dateValue,
   onCancel,
@@ -35,11 +36,15 @@ const DateInput = ({
     };
   };
 
-  const [date, setDate] = useState((dateValue && dateValue !== "none")?{...parseDate(dateValue)} :{
-    day: today,
-    month: currentMonth,
-    year: currentYear,
-  });
+  const [date, setDate] = useState(
+    dateValue && dateValue !== "none"
+      ? { ...parseDate(dateValue) }
+      : {
+          day: today,
+          month: currentMonth,
+          year: currentYear,
+        }
+  );
   const [time, setTime] = useState({
     hour: currentHour,
     mins: currentMinutes,
@@ -104,25 +109,26 @@ const DateInput = ({
           onClick={onClick}
           role="presentation"
         >
-          {dateValue ? dateValue :date
+          {dateValue
+            ? dateValue
+            : date
             ? `${date.year} ${!months_only ? date.day : ""}, ${trimMonthName(
                 monthNames[date.month]
               )} `
             : `${currentYear} ${!months_only ? today : ""}, ${trimMonthName(
                 monthNames[currentMonth]
-              )}`
-              }
+              )}`}
         </div>
       </div>
       {showCalendar && (
         <div
           className={
-            (!SpendCalenderClass)
+            !SpendCalenderClass
               ? `DateInputCalendar ${position}`
               : `${SpendCalenderClass}`
           }
         >
-          {!months_only && (
+          {!months_only && !hideTime && (
             <div className="TimeSection">
               <TimeInput onChange={getTime} />
             </div>

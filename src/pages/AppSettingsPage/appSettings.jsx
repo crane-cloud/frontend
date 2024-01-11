@@ -87,6 +87,7 @@ const AppSettingsPage = () => {
     useState(false);
   const [revisingApp, setRevisingApp] = useState(false);
   const [revisingAppError, setRevisingAppError] = useState("");
+  const [loadingIndex, setLoadingIndex] = useState(null);
   const [showAppDisableModal, setShowAppDisableModal] = useState(false);
   const [appDisableProgress, setAppDisableProgress] = useState(false);
   const [dockerCredentials, setDockerCredentials] = useState({
@@ -99,8 +100,11 @@ const AppSettingsPage = () => {
 
   useEffect(() => {
     if (appID) {
+      // Clear the state before fetching new data
+      dispatch(clearFetchAppState());
       dispatch(getSingleApp(appID));
     }
+    // The cleanup function here is called when the component unmounts
     return () => {
       dispatch(clearFetchAppState());
     };
@@ -128,7 +132,7 @@ const AppSettingsPage = () => {
         setParentProject(response.data.data.project);
       })
       .catch((error) => {
-        setError("Failed to fetch project detail please refresh");
+        console.error(error);
       });
   }, [app?.project_id]);
 
@@ -137,9 +141,8 @@ const AppSettingsPage = () => {
   }, [fetchProjectDetails]);
 
   useEffect(() => {
-    setEnvVars({ ...app.env_vars, ...envVars });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [app.env_vars]);
+    setEnvVars(app?.env_vars || {});
+  }, [app?.env_vars]);
 
   // Handlers
   const handleDeleteApp = (e, appId) => {
@@ -247,7 +250,7 @@ const AppSettingsPage = () => {
   };
 
   const handleEnvSubmit = () => {
-    const projectID = app.project_id;
+    const projectID = app?.project_id;
     let updatePayload = {};
 
     if (port !== "" && port.toString() !== app.port.toString()) {
@@ -258,7 +261,7 @@ const AppSettingsPage = () => {
       updatePayload = { ...updatePayload, command: entryCommand };
     }
 
-    if (haveEnvVarsChanged(envVars, app.env_vars)) {
+    if (haveEnvVarsChanged(envVars, app?.env_vars)) {
       updatePayload = { ...updatePayload, env_vars: envVars };
     }
 
@@ -294,7 +297,7 @@ const AppSettingsPage = () => {
 
   const haveEnvVarsChanged = (newEnvVars, originalEnvVars) => {
     return Object.keys(newEnvVars).some(
-      (key) => newEnvVars[key] !== originalEnvVars[key]
+      (key) => newEnvVars[key] !== (originalEnvVars?.[key] ?? undefined)
     );
   };
 
@@ -311,15 +314,38 @@ const AppSettingsPage = () => {
     }
   };
 
-  const removeExistingEnvVar = (index) => {
+  const removeExistingEnvVar = async (index) => {
+    const projectID = app?.project_id;
+    setLoadingIndex(index);
     const keyToRemove = Object.keys(envVars)[index];
-    const newEnvVars = Object.keys(envVars).reduce((object, key) => {
-      if (key !== keyToRemove) {
-        object[key] = envVars[key];
-      }
-      return object;
-    }, {});
-    setEnvVars(newEnvVars);
+
+    if (keyToRemove !== null) {
+      const updatePayload = { delete_env_vars: [keyToRemove] };
+
+      await dispatch(updateApp(appID, updatePayload))
+        .then(() => {
+          dispatch(clearUpdateAppState());
+
+          // update state with new env vars
+          const newEnvVars = Object.keys(envVars).reduce((object, key) => {
+            if (key !== keyToRemove) {
+              object[key] = envVars[key];
+            }
+            return object;
+          }, {});
+          setEnvVars(newEnvVars);
+
+          // retrieve updated application details here
+          setSubmitMessage("Update successful.");
+          dispatch(getSingleApp(appID));
+          window.location.href = `/projects/${projectID}/apps/${appID}/settings`;
+        })
+        .catch((error) => {
+          dispatch(clearUpdateAppState());
+          console.error("Update failed:", error);
+          setSubmitMessage("Update failed, please try again.");
+        });
+    }
   };
 
   const getCurrentRevision = (revisions) => {
@@ -456,6 +482,7 @@ const AppSettingsPage = () => {
                         varValue={varValue}
                         envError={envError}
                         loading={isUpdating}
+                        loadingIndex={loadingIndex}
                         addEnvVar={addEnvVar}
                         portError={portError}
                         entryCommand={entryCommand}
@@ -521,6 +548,7 @@ const AppSettingsPage = () => {
                       title="Setup CI/CD"
                       content="Setup continuous integration for your application"
                       buttonLabel="Set up CI/CD"
+                      buttonColor="primary"
                       onButtonClick={handleCIClick}
                     />
                     <SettingsActionRow

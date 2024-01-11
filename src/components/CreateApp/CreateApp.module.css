@@ -163,6 +163,11 @@
   display: block;
   margin: auto;
 }
+.envFileInput{
+  resize: none;
+  transition: all;
+  width: 98%;
+}
 
 .EnvVarsTable table td {
   font-weight: normal;
