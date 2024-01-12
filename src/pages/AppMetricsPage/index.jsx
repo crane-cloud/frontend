@@ -38,6 +38,7 @@ class AppMetricsPage extends React.Component {
 
     this.state = {
       urlChecked: false,
+      app: [],
       logs: [],
       fetchingLogs: true,
       logsError: "",
@@ -54,25 +55,29 @@ class AppMetricsPage extends React.Component {
     this.renderRedirect = this.renderRedirect.bind(this);
   }
 
-  getAppInfo(id) {
-    const { apps } = this.props;
-    const found = apps?.apps.find((app) => app.id === id);
+  getAppInfo() {
+    const { app } = this.state;
+
+    if (!app) {
+      return null;
+    }
+
     const info = {
-      name: found?.name,
-      status: found?.app_running_status,
-      url: found?.url,
-      age: found?.age,
-      alias: found?.alias,
-      image: found?.image,
-      port: found?.port,
-      disable: found?.disabled,
+      name: app.name,
+      status: app.app_running_status,
+      url: app.url,
+      age: app.age,
+      alias: app.alias,
+      image: app.image,
+      port: app.port,
+      disable: app.disabled,
     };
 
     return info;
   }
 
   componentDidMount() {
-    this.setState({ spin: false });
+    this.setState({ spin: true });
     const {
       getAppMemory,
       getAppCPU,
@@ -101,7 +106,8 @@ class AppMetricsPage extends React.Component {
     handleGetRequest(`/apps/${appID}`)
       .then((response) => {
         this.setState({
-          //console.log(response)
+          app: response.data.data.apps,
+          spin: false,
         });
       })
       .catch((error) => {
@@ -126,9 +132,7 @@ class AppMetricsPage extends React.Component {
   }
   // "Application does not exist on the cluster"
   copyUrl() {
-    const { params } = this.props.match;
-    const { appID } = params;
-    const app = this.getAppInfo(appID);
+    const app = this.getAppInfo();
     navigator.clipboard.writeText(app.url);
     this.setState({ urlChecked: true });
   }
@@ -189,7 +193,7 @@ class AppMetricsPage extends React.Component {
     const formattedMemoryMetrics = this.getAppMemoryMetrics();
     const formattedCPUMetrics = this.getAppCPUMetrics();
     const formattedNetworkMetrics = this.getAppNetworkMetrics();
-    const appInfo = this.getAppInfo(appID);
+    const appInfo = this.getAppInfo();
     return (
       <DashboardLayout
         name={appInfo.name}
@@ -204,11 +208,15 @@ class AppMetricsPage extends React.Component {
           <div className={styles.CardHeaderSection}>
             <div className={styles.CardTitle}>App Summary</div>
           </div>
-          <div className={styles.CardBodySection}>
-            <div className={styles.InnerCard}>
-              {spin ? (
-                <Spinner />
-              ) : (
+          {spin ? (
+            <div className={styles.SummarySectionArea}>
+              <div className="SpinnerWrapper">
+                <Spinner size="big" />
+              </div>
+            </div>
+          ) : (
+            <div className={styles.CardBodySection}>
+              <div className={styles.InnerCard}>
                 <div className={styles.InnerCardSections}>
                   <div className={styles.InnerContentGrid}>
                     <div className={styles.InnerTitlesStart}>App Name</div>
@@ -268,34 +276,47 @@ class AppMetricsPage extends React.Component {
                     )}
                   </div>
                 </div>
-              )}
-              <hr />
-              <div className={styles.InnerCardSections}>
-                <div className={styles.InnerContentGrid}>
-                  <div className={styles.InnerTitlesMiddle}>App Status</div>
-                  <div className={styles.InnerContentStatus}>
-                    <AppStatus appStatus={appInfo.status} />
-                    <div>{appInfo.status === "disabled" ? <div className={styles.DeployText}>Disabled</div>:(appInfo.status === "running" ? "Ready" : "Down")}</div>
+
+                <hr />
+                <div className={styles.InnerCardSections}>
+                  <div className={styles.InnerContentGrid}>
+                    <div className={styles.InnerTitlesMiddle}>App Status</div>
+                    <div className={styles.InnerContentStatus}>
+                      <AppStatus appStatus={appInfo.status} />
+                      <div>
+                        {appInfo.status === "disabled" ? (
+                          <div className={styles.DeployText}>Disabled</div>
+                        ) : appInfo.status === "running" ? (
+                          "Ready"
+                        ) : (
+                          "Down"
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className={styles.InnerContentGrid}>
+                    <div className={styles.InnerTitlesMiddle}>
+                      Date Deployed
+                    </div>
+                    <div className={styles.InnerContentAge}>{appInfo.age}</div>
                   </div>
                 </div>
-                <div className={styles.InnerContentGrid}>
-                  <div className={styles.InnerTitlesMiddle}>Date Deployed</div>
-                  <div className={styles.InnerContentAge}>{appInfo.age}</div>
-                </div>
-              </div>
-              <hr />
-              <div className={styles.InnerCardSections}>
-                <div className={styles.InnerContentGrid}>
-                  <div className={styles.InnerTitlesEnd}>App Alias</div>
-                  <div className={styles.InnerContentEnd}>{appInfo.alias}</div>
-                </div>
-                <div className={styles.InnerContentGrid}>
-                  <div className={styles.InnerTitlesEnd}>Port</div>
-                  <div className={styles.InnerContentEnd}>{appInfo.port}</div>
+                <hr />
+                <div className={styles.InnerCardSections}>
+                  <div className={styles.InnerContentGrid}>
+                    <div className={styles.InnerTitlesEnd}>App Alias</div>
+                    <div className={styles.InnerContentEnd}>
+                      {appInfo.alias}
+                    </div>
+                  </div>
+                  <div className={styles.InnerContentGrid}>
+                    <div className={styles.InnerTitlesEnd}>Port</div>
+                    <div className={styles.InnerContentEnd}>{appInfo.port}</div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
         <div className={styles.MetricCardsSection}>
           <Link
