@@ -59,6 +59,7 @@ import creditsPaymentReducer from "./creditsPayments";
 import getGraphDataReducer from "./getGraphData";
 import adminGetInactiveUsersReducer from "./adminGetInactiveUsers";
 import appsAdminListReducer from "./adminAppsList";
+import appRevisionsReducer from "./getRevisions";
 // import inviteMembersReducer from "./inviteMembers";
 //import removeMemberReducer from "./removeMembers";
 // import updateMemberRoleReducer from "./updateMemberRole";
@@ -124,6 +125,7 @@ export default combineReducers({
   adminGetInactiveUsersReducer,
   appsAdminListReducer,
   userActivitiesReducer,
+  appRevisionsReducer,
   // inviteMembersReducer,
   // removeMemberReducer,
   // updateMemberRoleReducer,
