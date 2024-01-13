@@ -26,8 +26,11 @@ import {
   handlePostRequestWithOutDataObject,
 } from "../../apis/apis";
 import "./AppSettingsPage.css";
-import { validateDomain } from "../../helpers/validation";
-import revertUrl, { clearUrlRevertState } from "../../redux/actions/revertUrl";
+import getAppRevisions, {
+  clearFetchAppRevisionsState,
+} from "../../redux/actions/getRevisions";
+import usePaginator from "../../hooks/usePaginator";
+import Pagination from "../../components/Pagination";
 
 const AppSettingsPage = () => {
   const dispatch = useDispatch();
@@ -44,7 +47,9 @@ const AppSettingsPage = () => {
   const { isDeleting, isFailed, message } = useSelector(
     (state) => state.deleteAppReducer
   );
-  const { isReverting } = useSelector((state) => state.revertUrlReducer);
+  const { revisions, isFetching, pagination } = useSelector(
+    (state) => state.appRevisionsReducer
+  );
 
   const tabNames = [
     "General Details",
@@ -61,6 +66,7 @@ const AppSettingsPage = () => {
   ];
 
   const [activeTab, setActiveTab] = useState("General Details");
+  const [currentPage, handleChangePage] = usePaginator();
   const [parentProject, setParentProject] = useState("");
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
   const [error, setError] = useState("");
@@ -76,15 +82,13 @@ const AppSettingsPage = () => {
   const [internalUrlChecked, setInternalUrlChecked] = useState(false);
   const [isPrivateImage, setIsPrivateImage] = useState(false);
   const [isCustomDomain, setIsCustomDomain] = useState(false);
-  const [domainName, setDomainName] = useState("");
+  const [domainName] = useState("");
   const [varName, setVarName] = useState("");
   const [varValue, setVarValue] = useState("");
   const [envVars, setEnvVars] = useState({});
   const [entryCommand, setEntryCommand] = useState("");
   const [port, setPort] = useState("");
   const [replicas, setReplicas] = useState("");
-  const [revisions, setRevisions] = useState([]);
-  const [fetchingAppDetails, setFetchingAppDetails] = useState(true);
   const [revisionId, setRevisionId] = useState("");
   const [rollBackConfirmationModal, setRollBackConfirmationModal] =
     useState(false);
@@ -101,9 +105,14 @@ const AppSettingsPage = () => {
     error: "",
   });
 
+  const applicationRevisions = useCallback(
+    () => dispatch(getAppRevisions(appID, currentPage)),
+    [dispatch, appID, currentPage]
+  );
+
   useEffect(() => {
     if (appID) {
-      // Clear the state before fetching new data
+      // Clear the state before fetching new app data and revisions
       dispatch(clearFetchAppState());
       dispatch(getSingleApp(appID));
     }
@@ -113,21 +122,23 @@ const AppSettingsPage = () => {
     };
   }, [appID, dispatch]);
 
-  const getApplicationRevisions = useCallback(() => {
-    handleGetRequest(`/apps/${appID}`)
-      .then((response) => {
-        setRevisions(response?.data?.data?.revisions);
-        setFetchingAppDetails(false);
-      })
-      .catch((err) => {
-        setError("Failed to fetch app revisions");
-        setFetchingAppDetails(false);
-      });
-  }, [appID]);
+  useEffect(() => {
+    applicationRevisions();
+
+    // The cleanup function here is called when the component unmounts
+    return () => {
+      dispatch(clearFetchAppRevisionsState());
+    };
+  }, [applicationRevisions, dispatch]);
 
   useEffect(() => {
-    getApplicationRevisions();
-  }, [getApplicationRevisions]);
+    dispatch(getAppRevisions(appID, currentPage));
+
+    // The cleanup function here is called when the component unmounts
+    return () => {
+      dispatch(clearFetchAppRevisionsState());
+    };
+  }, [appID, currentPage, dispatch]);
 
   const fetchProjectDetails = useCallback(() => {
     handleGetRequest(`/projects/${app?.project_id}`)
@@ -148,6 +159,11 @@ const AppSettingsPage = () => {
   }, [app?.env_vars]);
 
   // Handlers
+  const handlePageChange = (currentPage) => {
+    handleChangePage(currentPage);
+    applicationRevisions();
+  };
+
   const handleDeleteApp = (e, appId) => {
     e.preventDefault();
 
@@ -351,13 +367,6 @@ const AppSettingsPage = () => {
     }
   };
 
-  const getCurrentRevision = (revisions) => {
-    let currentRevision = (revisions || []).find(
-      (revision) => revision.current === true
-    );
-    return currentRevision ? currentRevision.revision_id : null;
-  };
-
   const handleEnableButtonClick = async () => {
     setAppDisableProgress(true);
     setError("");
@@ -384,70 +393,6 @@ const AppSettingsPage = () => {
     } else if (openDeleteAlert && e.target.value !== app.name) {
       setDisableDelete(true);
     }
-  };
-
-  const handleDomainChange = (e) => {
-    const { name, value } = e.target;
-
-    if (name === "domainName") {
-      setDomainName(value);
-    }
-  };
-
-  const handleDomainSubmit = () => {
-    const projectID = app.project_id;
-
-    if (!domainName) {
-      setSubmitMessage("Provide a domain name.");
-      return;
-    }
-
-    let updatePayload = { ...{ custom_domain: domainName } };
-
-    let error = validateDomain(domainName.toLowerCase());
-
-    if (error) {
-      setSubmitMessage(error);
-      return;
-    } else {
-      if (Object.keys(updatePayload).length === 0) {
-        setSubmitMessage("Provide a domain name.");
-        return;
-      } else {
-        dispatch(updateApp(appID, updatePayload))
-          .then(() => {
-            dispatch(clearUpdateAppState());
-            setSubmitMessage("Update successful.");
-            window.location.href = `/projects/${projectID}/apps/${appID}/settings`;
-          })
-          .catch((error) => {
-            dispatch(clearUpdateAppState());
-            console.error("Update failed:", error);
-            setSubmitMessage("Update failed, please try again.");
-          });
-      }
-    }
-  };
-
-  const revertAppUrl = () => {
-    const projectID = app.project_id;
-
-    if (!app.has_custom_domain) {
-      setSubmitMessage("Can't revert. Application has no custom domain.");
-      return;
-    }
-
-    dispatch(revertUrl(appID))
-      .then(() => {
-        dispatch(clearUrlRevertState());
-        setSubmitMessage("Application Url reverted successfully.");
-        window.location.href = `/projects/${projectID}/apps/${appID}/settings`;
-      })
-      .catch((error) => {
-        dispatch(clearUrlRevertState());
-        console.error("Failed to revert url:", error);
-        setSubmitMessage("Failed to revert url, please try again.");
-      });
   };
 
   // Alerts
@@ -515,9 +460,7 @@ const AppSettingsPage = () => {
                     {activeTab === "General Details" && (
                       <GeneralDetailsTab
                         app={app}
-                        revisions={revisions}
                         parentProject={parentProject}
-                        getCurrentRevision={getCurrentRevision(revisions)}
                       />
                     )}
                     {activeTab === "Image Settings" && (
@@ -569,17 +512,13 @@ const AppSettingsPage = () => {
                     {activeTab === "Domain and URLs" && (
                       <DomainAndUrlsTab
                         app={app}
-                        updating={isUpdating}
-                        reverting={isReverting}
+                        loading={isUpdating}
                         urlOnClick={urlOnClick}
                         domainName={domainName}
                         urlChecked={urlChecked}
-                        revertAppUrl={revertAppUrl}
                         loggedInUser={loggedInUser}
                         isCustomDomain={isCustomDomain}
                         showDomainModal={showDomainModal}
-                        handleDomainChange={handleDomainChange}
-                        handleDomainSubmit={handleDomainSubmit}
                         internalUrlChecked={internalUrlChecked}
                         toggleCustomDomain={toggleCustomDomain}
                         internalUrlOnClick={internalUrlOnClick}
@@ -598,7 +537,7 @@ const AppSettingsPage = () => {
               <div className="APPSections">
                 <div className="SectionTitle">Application Revisions</div>
                 <div className={`AppRevisionsDetails BigCard`}>
-                  {fetchingAppDetails && revisions.length === 0 ? (
+                  {isFetching ? (
                     <div className="ResourceSpinnerWrapper">
                       <Spinner size="big" />
                     </div>
@@ -609,6 +548,16 @@ const AppSettingsPage = () => {
                     />
                   )}
                 </div>
+
+                {pagination?.pages > 1 && (
+                  <div className="AdminPaginationSection">
+                    <Pagination
+                      total={pagination.pages}
+                      current={currentPage}
+                      onPageChange={handlePageChange}
+                    />
+                  </div>
+                )}
               </div>
 
               <>
