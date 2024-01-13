@@ -3,11 +3,14 @@ import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import BlackInputText from "../BlackInputText";
 import PrimaryButton from "../PrimaryButton";
 import Checkbox from "../Checkbox";
+import Spinner from "../Spinner";
 
 const DomainAndUrlsTab = ({
   app,
-  loading,
+  updating,
+  reverting,
   urlOnClick,
+  revertAppUrl,
   internalUrlOnClick,
   urlChecked,
   internalUrlChecked,
@@ -16,6 +19,8 @@ const DomainAndUrlsTab = ({
   domainName,
   toggleCustomDomain,
   showDomainModal,
+  handleDomainChange,
+  handleDomainSubmit,
 }) => (
   <div className={`APPInstructions BigCard`}>
     <div className="APPButtonRow">
@@ -48,12 +53,12 @@ const DomainAndUrlsTab = ({
         <Checkbox
           isBlack
           onClick={toggleCustomDomain}
-          isChecked={isCustomDomain}
+          isChecked={app?.has_custom_domain === true || isCustomDomain}
         />
       </div>
     )}
 
-    {isCustomDomain && (
+    {isCustomDomain || app?.has_custom_domain ? (
       <>
         <div className="CustomDomainTabContainer">
           <div index={1}>
@@ -65,10 +70,12 @@ const DomainAndUrlsTab = ({
                 </div>
                 <div className="flexa">
                   <BlackInputText
-                    required
                     className="domain-input"
-                    placeholder="Domain name"
+                    placeholder={
+                      app?.has_custom_domain === true ? app?.url : "Domain Name"
+                    }
                     name="domainName"
+                    onChange={handleDomainChange}
                     value={domainName.toLowerCase()}
                   />
                 </div>
@@ -82,11 +89,8 @@ const DomainAndUrlsTab = ({
 
         <div className="APPButton">
           <div className="UpperSection">
-            <PrimaryButton
-              disabled={loading}
-              className={loading && "deactivatedBtn"}
-            >
-              Update
+            <PrimaryButton onClick={() => handleDomainSubmit()}>
+              {updating ? <Spinner /> : "Update"}
             </PrimaryButton>
           </div>
         </div>
@@ -100,11 +104,16 @@ const DomainAndUrlsTab = ({
             <div>Reverts to cranecloud's auto-generated URL.</div>
           </div>
           <div className="SectionButtons">
-            <PrimaryButton className="RevertButton">Revert</PrimaryButton>
+            <PrimaryButton
+              className="RevertButton"
+              onClick={() => revertAppUrl()}
+            >
+              {reverting ? <Spinner /> : "Revert"}
+            </PrimaryButton>
           </div>
         </div>
       </>
-    )}
+    ) : null}
   </div>
 );
 

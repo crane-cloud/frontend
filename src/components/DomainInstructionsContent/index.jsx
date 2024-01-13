@@ -18,26 +18,41 @@ const DomainInstructionsContent = ({ onClose }) => (
         <div className="Step__Title">Step 2.</div>
         <div className="Step__Description">
           <div>
-            Add A-Records. Add A-records inorder to use your root domain(i.e
-            custom domain).
+            Add an A-record inorder to use your root domain(i.e custom domain).
           </div>
           <div>Edit any existing A Records with Host Name @</div>
           <div>
             Do not edit or delete A-Records for Mail or Email as it could
             interfere with your email service.{" "}
           </div>
+          <br />
           <div>
-            An example of A-records with the IP address we shall provide you;
+            On your DNS provider, enter the following information for your
+            service:
           </div>
           <ul>
-            <li>A-Record: 3.209.XX.XX</li>
+            <li>Record Type: A</li>
+            <li>Host: app [This will point to your domain]</li>
+            <li>
+              Address/Value: 102.134.147.233 [This is an example IP address we
+              provide]
+            </li>
+          </ul>
+
+          <div>
+            Another example of A-records using the IP address we shall provide
+            you;
+          </div>
+          <ul>
+            <li>A-Record: 102.134.147.233</li>
             <li>Host or Name: @</li>
-            <li>Points To: 3.209.XX.XX</li>
+            <li>Points To: 102.134.147.233</li>
             <li>TTL: 1 Hour</li>
             <li>Click: Save</li>
           </ul>
           <div>
-            <strong>Note:</strong> DNS settings may look different for each
+            <strong>Note:</strong> DNS settings may look different for different
+            domain providers
           </div>
         </div>
       </div>
