@@ -23,6 +23,8 @@ import { retrieveProjectTypes } from "../../helpers/projecttypes";
 import { validateName } from "../../helpers/validation";
 import { ReactComponent as CopyText } from "../../assets/images/copy.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
+import SettingsModal from "../../components/SettingsModal/index.jsx";
+import DisableModalContent from "../../components/DisableModalContent/index.jsx";
 import { ReactComponent as Bin } from "../../assets/images/bin.svg";
 import { ReactComponent as Send } from "../../assets/images/send.svg";
 import { retrieveMembershipRoles } from "../../helpers/membershipRoles";
@@ -76,9 +78,9 @@ class ProjectSettingsPage extends React.Component {
       deleteProjectError: "",
       deletingProject: false,
       disableProjectError: "",
-      disablingProject: false,
-      openDisableProjectModel: false,
       fetchingProjectDetails: false,
+      disableProjectAlert: false,
+      disableProjectProgress: false,
       projectDetails: [],
     };
 
@@ -116,16 +118,23 @@ class ProjectSettingsPage extends React.Component {
     this.removeMember = this.removeMember.bind(this);
     this.updateProjectDetails = this.updateProjectDetails.bind(this);
     this.deleteThisProject = this.deleteThisProject.bind(this);
-    // this.handleDisableProject = this.handleDisableProject.bind(this);
     this.handleOrganisationSelectChange =
       this.handleOrganisationSelectChange.bind(this);
     this.handleEnableButtonClick = this.handleEnableButtonClick.bind(this);
     this.getProjectDetails = this.getProjectDetails.bind(this);
+    this.disableProjectAlertFunc = this.disableProjectAlertFunc.bind(this);
+
   }
 
   componentDidMount() {
     this.getProjectMemberz();
     this.getProjectDetails();
+  }
+
+  disableProjectAlertFunc(disableBool) {
+    this.setState({ disableProjectAlert: disableBool,
+      disableProjectError: ''
+    });
   }
 
   getProjectMemberz() {
@@ -495,8 +504,9 @@ class ProjectSettingsPage extends React.Component {
   handleEnableButtonClick = () => {
     let { projectDetails } = this.state;
     const { projectID } = this.props.match.params;
-
+    this.setState({disableProjectProgress:true})
     try {
+      
       if (projectDetails.disabled) {
         handlePostRequestWithOutDataObject({}, `/projects/${projectID}/enable`)
           .then(() => {
@@ -504,7 +514,7 @@ class ProjectSettingsPage extends React.Component {
           })
           .catch((error) => {
             this.setState({
-              error: error,
+              disableProjectError: 'Failed to complete this action. Please try again later',
             });
           });
       } else {
@@ -514,13 +524,18 @@ class ProjectSettingsPage extends React.Component {
           })
           .catch((error) => {
             this.setState({
-              error: error,
+              disableProjectError: 'Failed to complete this action. Please try again later',
+              disableProjectProgress:false
             });
           });
       }
     } catch (error) {
-      console.error("API call error:", error);
-    }
+      //console.error("API call error:", error);
+      this.setState({
+        disableProjectError: 'Failed to complete this action. Please try again later',
+        disableProjectProgress:false
+      });
+    } 
   };
 
   showUpdateAlert() {
@@ -697,8 +712,8 @@ class ProjectSettingsPage extends React.Component {
       deletingProject,
       deleteProjectError,
       disableProjectError,
-      disablingProject,
-      openDisableProjectModel,
+      disableProjectAlert,
+      disableProjectProgress
     } = this.state;
     const types = retrieveProjectTypes();
     const roles = retrieveMembershipRoles();
@@ -1002,7 +1017,9 @@ class ProjectSettingsPage extends React.Component {
                   buttonColor={
                     this.state.projectDetails?.disabled ? "primary" : "red"
                   }
-                  onButtonClick={this.handleEnableButtonClick}
+                  onButtonClick={() => {
+                    this.disableProjectAlertFunc(true);
+                  }}
                 />
 
                 <SettingsActionRow
@@ -1254,61 +1271,7 @@ class ProjectSettingsPage extends React.Component {
             </Modal>
           </div>
         )}
-        {openDisableProjectModel && (
-          <div className={styles.ProjectDeleteModel}>
-            <Modal
-              showModal={openDisableProjectModel}
-              onClickAway={() => {
-                this.setState({ openDisableProjectModel: false });
-              }}
-            >
-              <div className={styles.DeleteProjectModel}>
-                <div className={styles.DeleteProjectModalUpperSection}>
-                  <div className={styles.WarningContainer}>
-                    <div className={styles.DeleteDescription}>
-                      Are you sure you want to {disabled ? "enable" : "disable"}
-                      &nbsp;
-                      <span>{name}</span>
-                      &nbsp;?
-                    </div>
-                    <div className={styles.DisableSubDescription}>
-                      This will {disabled ? "enable" : "disable"} billing and
-                      external access of resources in this project.
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.DeleteProjectModalLowerSection}>
-                  <div className={styles.DeleteProjectModelButtons}>
-                    <PrimaryButton
-                      className="CancelBtn"
-                      onClick={() => {
-                        this.setState({ openDisableProjectModel: false });
-                      }}
-                    >
-                      Cancel
-                    </PrimaryButton>
-                    <PrimaryButton
-                      color={disabled ? "primary" : "red"}
-                      onClick={(e) => this.handleDisableProject(e, disabled)}
-                    >
-                      {disablingProject ? (
-                        <Spinner />
-                      ) : disabled === true ? (
-                        "Enable"
-                      ) : (
-                        "Disable"
-                      )}
-                    </PrimaryButton>
-                  </div>
-
-                  {disableProjectError && (
-                    <Feedback message={disableProjectError} type="error" />
-                  )}
-                </div>
-              </div>
-            </Modal>
-          </div>
-        )}
+       
 
         <Modal
           showModal={removeMemberModal}
@@ -1352,6 +1315,31 @@ class ProjectSettingsPage extends React.Component {
             )}
           </div>
         </Modal>
+        {disableProjectAlert && (
+          <SettingsModal
+            showModal={disableProjectAlert}
+            onClickAway={() => {
+              this.disableProjectAlertFunc(false);
+            }}
+          >
+            <DisableModalContent
+              item={{
+                name: projectName,
+                type: "project",
+                disabled: this.state.projectDetails?.disabled
+              }}
+              disableProgress={this.state.disableProjectProgress}
+              handleDisableButtonClick={() => {
+                this.handleEnableButtonClick();
+              }}
+              hideDisableAlert={() => {
+                this.disableProjectAlertFunc(false);
+              }}
+              message={disableProjectError}
+              isFailed={disableProjectError ? true : false}
+            />
+          </SettingsModal>
+        )}
       </DashboardLayout>
     );
   }

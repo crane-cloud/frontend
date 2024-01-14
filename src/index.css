@@ -667,6 +667,15 @@ tr.TableLoading td {
 .footerPositionAbsolute {
   position: absolute;
 }
+/* Modal buttons */
+.AlertButtons{
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  padding-top: 3rem;
+  margin-bottom: 2rem;
+}
 
 
 @media only screen and (max-width: 740px) {

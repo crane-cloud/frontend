@@ -9,7 +9,7 @@ import deleteApp, { clearState } from "../../redux/actions/deleteApp";
 import EnvironmentAndPortsTab from "../../components/EnvironmentsTab";
 import GeneralDetailsTab from "../../components/GeneralDetailsTab";
 import SettingsActionRow from "../../components/SettingsActionRow";
-import DisableAppContent from "../../components/DisableAppContent";
+import DisableModalContent from "../../components/DisableModalContent";
 import ImageSettingsTab from "../../components/ImageSettingsTab";
 import DeleteAppContent from "../../components/DeleteAppContent";
 import DomainAndUrlsTab from "../../components/DomainAndUrlsTab";
@@ -630,11 +630,15 @@ const AppSettingsPage = () => {
                 showModal={showAppDisableModal}
                 onClickAway={() => setShowAppDisableModal(false)}
               >
-                <DisableAppContent
-                  app={app}
-                  appDisableProgress={appDisableProgress}
-                  handleEnableButtonClick={handleEnableButtonClick}
-                  setShowAppDisableModal={setShowAppDisableModal}
+                <DisableModalContent
+                  item={{
+                    name:app?.name,
+                    disabled:app?.disabled,
+                    type:'app'
+                  }}
+                  disableProgress={appDisableProgress}
+                  handleDisableButtonClick={handleEnableButtonClick}
+                  hideDisableAlert={() => setShowAppDisableModal(false)}
                   message={message}
                   isFailed={isFailed}
                 />
