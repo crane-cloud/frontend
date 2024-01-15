@@ -15,12 +15,17 @@ import DeleteAppContent from "../../components/DeleteAppContent";
 import DomainAndUrlsTab from "../../components/DomainAndUrlsTab";
 import SettingsModal from "../../components/SettingsModal";
 import RevisionsList from "../../components/RevisionList";
+import Pagination from "../../components/Pagination";
+import usePaginator from "../../hooks/usePaginator";
 import Feedback from "../../components/Feedback";
 import Spinner from "../../components/Spinner";
 import TabItem from "../../components/TabItem";
 import getSingleApp, {
   clearFetchAppState,
 } from "../../redux/actions/getSingleApp";
+import getAppRevisions, {
+  clearFetchAppRevisionsState,
+} from "../../redux/actions/getRevisions";
 import {
   handleGetRequest,
   handlePostRequestWithOutDataObject,
@@ -45,6 +50,9 @@ const AppSettingsPage = () => {
     (state) => state.deleteAppReducer
   );
   const { isReverting } = useSelector((state) => state.revertUrlReducer);
+  const { revisions, isFetching, pagination } = useSelector(
+    (state) => state.appRevisionsReducer
+  );
 
   const tabNames = [
     "General Details",
@@ -61,6 +69,7 @@ const AppSettingsPage = () => {
   ];
 
   const [activeTab, setActiveTab] = useState("General Details");
+  const [currentPage, handleChangePage] = usePaginator();
   const [parentProject, setParentProject] = useState("");
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
   const [error, setError] = useState("");
@@ -83,8 +92,6 @@ const AppSettingsPage = () => {
   const [entryCommand, setEntryCommand] = useState("");
   const [port, setPort] = useState("");
   const [replicas, setReplicas] = useState("");
-  const [revisions, setRevisions] = useState([]);
-  const [fetchingAppDetails, setFetchingAppDetails] = useState(true);
   const [revisionId, setRevisionId] = useState("");
   const [rollBackConfirmationModal, setRollBackConfirmationModal] =
     useState(false);
@@ -101,6 +108,11 @@ const AppSettingsPage = () => {
     error: "",
   });
 
+  const applicationRevisions = useCallback(
+    () => dispatch(getAppRevisions(appID, currentPage)),
+    [dispatch, appID, currentPage]
+  );
+
   useEffect(() => {
     if (appID) {
       // Clear the state before fetching new data
@@ -113,21 +125,21 @@ const AppSettingsPage = () => {
     };
   }, [appID, dispatch]);
 
-  const getApplicationRevisions = useCallback(() => {
-    handleGetRequest(`/apps/${appID}`)
-      .then((response) => {
-        setRevisions(response?.data?.data?.revisions);
-        setFetchingAppDetails(false);
-      })
-      .catch((err) => {
-        setError("Failed to fetch app revisions");
-        setFetchingAppDetails(false);
-      });
-  }, [appID]);
+  useEffect(() => {
+    applicationRevisions();
+    // The cleanup function here is called when the component unmounts
+    return () => {
+      dispatch(clearFetchAppRevisionsState());
+    };
+  }, [applicationRevisions, dispatch]);
 
   useEffect(() => {
-    getApplicationRevisions();
-  }, [getApplicationRevisions]);
+    dispatch(getAppRevisions(appID, currentPage));
+    // The cleanup function here is called when the component unmounts
+    return () => {
+      dispatch(clearFetchAppRevisionsState());
+    };
+  }, [appID, currentPage, dispatch]);
 
   const fetchProjectDetails = useCallback(() => {
     handleGetRequest(`/projects/${app?.project_id}`)
@@ -148,6 +160,11 @@ const AppSettingsPage = () => {
   }, [app?.env_vars]);
 
   // Handlers
+  const handlePageChange = (currentPage) => {
+    handleChangePage(currentPage);
+    applicationRevisions();
+  };
+
   const handleDeleteApp = (e, appId) => {
     e.preventDefault();
 
@@ -351,13 +368,6 @@ const AppSettingsPage = () => {
     }
   };
 
-  const getCurrentRevision = (revisions) => {
-    let currentRevision = (revisions || []).find(
-      (revision) => revision.current === true
-    );
-    return currentRevision ? currentRevision.revision_id : null;
-  };
-
   const handleEnableButtonClick = async () => {
     setAppDisableProgress(true);
     setError("");
@@ -515,9 +525,7 @@ const AppSettingsPage = () => {
                     {activeTab === "General Details" && (
                       <GeneralDetailsTab
                         app={app}
-                        revisions={revisions}
                         parentProject={parentProject}
-                        getCurrentRevision={getCurrentRevision(revisions)}
                       />
                     )}
                     {activeTab === "Image Settings" && (
@@ -598,7 +606,7 @@ const AppSettingsPage = () => {
               <div className="APPSections">
                 <div className="SectionTitle">Application Revisions</div>
                 <div className={`AppRevisionsDetails BigCard`}>
-                  {fetchingAppDetails && revisions.length === 0 ? (
+                  {isFetching ? (
                     <div className="ResourceSpinnerWrapper">
                       <Spinner size="big" />
                     </div>
@@ -609,6 +617,16 @@ const AppSettingsPage = () => {
                     />
                   )}
                 </div>
+
+                {pagination?.pages > 1 && (
+                  <div className="AdminPaginationSection">
+                    <Pagination
+                      total={pagination.pages}
+                      current={currentPage}
+                      onPageChange={handlePageChange}
+                    />
+                  </div>
+                )}
               </div>
 
               <>
