@@ -31,11 +31,6 @@ import {
   handlePostRequestWithOutDataObject,
 } from "../../apis/apis";
 import "./AppSettingsPage.css";
-import getAppRevisions, {
-  clearFetchAppRevisionsState,
-} from "../../redux/actions/getRevisions";
-import usePaginator from "../../hooks/usePaginator";
-import Pagination from "../../components/Pagination";
 
 const AppSettingsPage = () => {
   const dispatch = useDispatch();
@@ -52,10 +47,7 @@ const AppSettingsPage = () => {
   const { isDeleting, isFailed, message } = useSelector(
     (state) => state.deleteAppReducer
   );
-<<<<<<< HEAD
-=======
   const { isReverting } = useSelector((state) => state.revertUrlReducer);
->>>>>>> develop
   const { revisions, isFetching, pagination } = useSelector(
     (state) => state.appRevisionsReducer
   );
