@@ -674,7 +674,7 @@ class ProjectSettingsPage extends React.Component {
 
     let currentUserEmail = data.email;
 
-    const { name, disabled } = projectInfo;
+    const { name } = projectInfo;
 
     const {
       openUpdateAlert,
@@ -766,7 +766,7 @@ class ProjectSettingsPage extends React.Component {
             <div className={styles.ProjectButtonRow}>
               <div className={styles.SettingsSectionInfo}>
                 <div>
-                  {disabled === true ? (
+                  {this.state.projectDetails?.disabled === true ? (
                     <span style={{ color: "red" }}>Disabled</span>
                   ) : (
                     "Enabled"
@@ -1328,7 +1328,7 @@ class ProjectSettingsPage extends React.Component {
                 type: "project",
                 disabled: this.state.projectDetails?.disabled
               }}
-              disableProgress={this.state.disableProjectProgress}
+              disableProgress={disableProjectProgress}
               handleDisableButtonClick={() => {
                 this.handleEnableButtonClick();
               }}

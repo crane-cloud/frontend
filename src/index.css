@@ -677,6 +677,21 @@ tr.TableLoading td {
   margin-bottom: 2rem;
 }
 
+.AlertDescription {
+  cursor: default;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.AlertDescription span {
+  padding: 0.2rem 0.4rem;
+  margin: 0;
+  font-weight: bold;
+  font-size: 90%;
+  background-color: rgba(27, 31, 35, 0.1);
+  border-radius: 3px;
+}
+
 
 @media only screen and (max-width: 740px) {
   .ResourceClusterContainer {
