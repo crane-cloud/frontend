@@ -38,12 +38,9 @@ const getAppRevisions = (appID, currentPage) => (dispatch) => {
     link = `/apps/${appID}/revisions`;
   }
 
-  console.log(link);
-
   return axios
     .get(link)
     .then((response) => {
-      console.log(response);
       dispatch(getAppRevisionsSuccess(response));
     })
     .catch((error) => {

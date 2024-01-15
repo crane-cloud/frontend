@@ -15,12 +15,17 @@ import DeleteAppContent from "../../components/DeleteAppContent";
 import DomainAndUrlsTab from "../../components/DomainAndUrlsTab";
 import SettingsModal from "../../components/SettingsModal";
 import RevisionsList from "../../components/RevisionList";
+import Pagination from "../../components/Pagination";
+import usePaginator from "../../hooks/usePaginator";
 import Feedback from "../../components/Feedback";
 import Spinner from "../../components/Spinner";
 import TabItem from "../../components/TabItem";
 import getSingleApp, {
   clearFetchAppState,
 } from "../../redux/actions/getSingleApp";
+import getAppRevisions, {
+  clearFetchAppRevisionsState,
+} from "../../redux/actions/getRevisions";
 import {
   handleGetRequest,
   handlePostRequestWithOutDataObject,
@@ -47,6 +52,10 @@ const AppSettingsPage = () => {
   const { isDeleting, isFailed, message } = useSelector(
     (state) => state.deleteAppReducer
   );
+<<<<<<< HEAD
+=======
+  const { isReverting } = useSelector((state) => state.revertUrlReducer);
+>>>>>>> develop
   const { revisions, isFetching, pagination } = useSelector(
     (state) => state.appRevisionsReducer
   );
@@ -124,7 +133,6 @@ const AppSettingsPage = () => {
 
   useEffect(() => {
     applicationRevisions();
-
     // The cleanup function here is called when the component unmounts
     return () => {
       dispatch(clearFetchAppRevisionsState());
@@ -133,7 +141,6 @@ const AppSettingsPage = () => {
 
   useEffect(() => {
     dispatch(getAppRevisions(appID, currentPage));
-
     // The cleanup function here is called when the component unmounts
     return () => {
       dispatch(clearFetchAppRevisionsState());
