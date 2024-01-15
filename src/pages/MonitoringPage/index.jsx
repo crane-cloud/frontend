@@ -37,10 +37,20 @@ const MonitoringPage = () => {
   }, [currentUser]);
 
   useEffect(() => {
-    getStatusData();
-    getStatusGraphData();
-  }, []);
+    setLoading(true);
+    const fetchData = async () => {
+      await getStatusData();
+      await getStatusGraphData();
+    };
 
+    const timeoutId = setTimeout(fetchData, 4000);
+
+    return () => {
+      setLoading(false);
+      clearTimeout(timeoutId); // Clear the timeout if the component unmounts before 4 seconds
+    };
+  }, []);
+  
   const getStatusData = async () => {
     setLoading(true);
     try {
