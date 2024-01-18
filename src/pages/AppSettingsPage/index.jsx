@@ -9,7 +9,7 @@ import deleteApp, { clearState } from "../../redux/actions/deleteApp";
 import EnvironmentAndPortsTab from "../../components/EnvironmentsTab";
 import GeneralDetailsTab from "../../components/GeneralDetailsTab";
 import SettingsActionRow from "../../components/SettingsActionRow";
-import DisableAppContent from "../../components/DisableAppContent";
+import DisableModalContent from "../../components/DisableModalContent";
 import ImageSettingsTab from "../../components/ImageSettingsTab";
 import DeleteAppContent from "../../components/DeleteAppContent";
 import DomainAndUrlsTab from "../../components/DomainAndUrlsTab";
@@ -31,8 +31,6 @@ import {
   handlePostRequestWithOutDataObject,
 } from "../../apis/apis";
 import "./AppSettingsPage.css";
-import { validateDomain } from "../../helpers/validation";
-import revertUrl, { clearUrlRevertState } from "../../redux/actions/revertUrl";
 
 const AppSettingsPage = () => {
   const dispatch = useDispatch();
@@ -85,7 +83,7 @@ const AppSettingsPage = () => {
   const [internalUrlChecked, setInternalUrlChecked] = useState(false);
   const [isPrivateImage, setIsPrivateImage] = useState(false);
   const [isCustomDomain, setIsCustomDomain] = useState(false);
-  const [domainName, setDomainName] = useState("");
+  const [domainName] = useState("");
   const [varName, setVarName] = useState("");
   const [varValue, setVarValue] = useState("");
   const [envVars, setEnvVars] = useState({});
@@ -115,7 +113,7 @@ const AppSettingsPage = () => {
 
   useEffect(() => {
     if (appID) {
-      // Clear the state before fetching new data
+      // Clear the state before fetching new app data and revisions
       dispatch(clearFetchAppState());
       dispatch(getSingleApp(appID));
     }
@@ -396,70 +394,6 @@ const AppSettingsPage = () => {
     }
   };
 
-  const handleDomainChange = (e) => {
-    const { name, value } = e.target;
-
-    if (name === "domainName") {
-      setDomainName(value);
-    }
-  };
-
-  const handleDomainSubmit = () => {
-    const projectID = app.project_id;
-
-    if (!domainName) {
-      setSubmitMessage("Provide a domain name.");
-      return;
-    }
-
-    let updatePayload = { ...{ custom_domain: domainName } };
-
-    let error = validateDomain(domainName.toLowerCase());
-
-    if (error) {
-      setSubmitMessage(error);
-      return;
-    } else {
-      if (Object.keys(updatePayload).length === 0) {
-        setSubmitMessage("Provide a domain name.");
-        return;
-      } else {
-        dispatch(updateApp(appID, updatePayload))
-          .then(() => {
-            dispatch(clearUpdateAppState());
-            setSubmitMessage("Update successful.");
-            window.location.href = `/projects/${projectID}/apps/${appID}/settings`;
-          })
-          .catch((error) => {
-            dispatch(clearUpdateAppState());
-            console.error("Update failed:", error);
-            setSubmitMessage("Update failed, please try again.");
-          });
-      }
-    }
-  };
-
-  const revertAppUrl = () => {
-    const projectID = app.project_id;
-
-    if (!app.has_custom_domain) {
-      setSubmitMessage("Can't revert. Application has no custom domain.");
-      return;
-    }
-
-    dispatch(revertUrl(appID))
-      .then(() => {
-        dispatch(clearUrlRevertState());
-        setSubmitMessage("Application Url reverted successfully.");
-        window.location.href = `/projects/${projectID}/apps/${appID}/settings`;
-      })
-      .catch((error) => {
-        dispatch(clearUrlRevertState());
-        console.error("Failed to revert url:", error);
-        setSubmitMessage("Failed to revert url, please try again.");
-      });
-  };
-
   // Alerts
   const showDeleteAlert = () => {
     setOpenDeleteAlert(true);
@@ -577,17 +511,13 @@ const AppSettingsPage = () => {
                     {activeTab === "Domain and URLs" && (
                       <DomainAndUrlsTab
                         app={app}
-                        updating={isUpdating}
-                        reverting={isReverting}
+                        loading={isUpdating}
                         urlOnClick={urlOnClick}
                         domainName={domainName}
                         urlChecked={urlChecked}
-                        revertAppUrl={revertAppUrl}
                         loggedInUser={loggedInUser}
                         isCustomDomain={isCustomDomain}
                         showDomainModal={showDomainModal}
-                        handleDomainChange={handleDomainChange}
-                        handleDomainSubmit={handleDomainSubmit}
                         internalUrlChecked={internalUrlChecked}
                         toggleCustomDomain={toggleCustomDomain}
                         internalUrlOnClick={internalUrlOnClick}
@@ -699,11 +629,15 @@ const AppSettingsPage = () => {
                 showModal={showAppDisableModal}
                 onClickAway={() => setShowAppDisableModal(false)}
               >
-                <DisableAppContent
-                  app={app}
-                  appDisableProgress={appDisableProgress}
-                  handleEnableButtonClick={handleEnableButtonClick}
-                  setShowAppDisableModal={setShowAppDisableModal}
+                <DisableModalContent
+                  item={{
+                    name:app?.name,
+                    disabled:app?.disabled,
+                    type:'app'
+                  }}
+                  disableProgress={appDisableProgress}
+                  handleDisableButtonClick={handleEnableButtonClick}
+                  hideDisableAlert={() => setShowAppDisableModal(false)}
                   message={message}
                   isFailed={isFailed}
                 />

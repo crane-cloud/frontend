@@ -30,8 +30,8 @@ const RevisionItem = ({ entry, onRollbackClick }) => (
 
 const RevisionsList = ({ revisions, onRollbackClick }) =>
   revisions
-    .sort((a, b) => (a.current === b.current ? 0 : a.current ? -1 : 1))
-    .map((entry) => (
+    ?.sort((a, b) => (a.current === b.current ? 0 : a.current ? -1 : 1))
+    ?.map((entry) => (
       <RevisionItem
         key={entry.revision_id}
         entry={entry}
