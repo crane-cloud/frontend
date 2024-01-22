@@ -11,9 +11,14 @@ const DisableModalContent = ({
   isFailed,
 }) => {
   const isProject = item && item.type === "project";
+  const isDatabase = item && item.type === "database";
 
   return (
-    <div className={`DisableContentAlert ${isProject ? 'Project' : 'App'}`}>
+    <div
+      className={`DisableContentAlert ${
+        isProject ? "Project" : isDatabase ? "Database" : "App"
+      }`}
+    >
       <div className="AlertUpperSection">
         <div className="WarningContainer">
           <div className="AlertDescription">
@@ -22,18 +27,19 @@ const DisableModalContent = ({
           </div>
           <div className="AlertSubDescription">
             {item?.disabled
-              ? `Allow access to ${isProject ? 'Project' : 'App'} resources and enable billing`
-              : `This will prevent your ${isProject ? 'project' : 'app'} from being billed by blocking access to its resources.`}
+              ? `Allow access to ${
+                  isProject ? "project" : isDatabase ? "database" : "app"
+                } resources and enable billing`
+              : `This will prevent your ${
+                  isProject ? "project" : isDatabase ? "database" : "app"
+                } from being billed by blocking access to its resources.`}
           </div>
         </div>
       </div>
 
       <div className="AlertLowerSection">
         <div className="AlertButtons">
-          <PrimaryButton
-            className="CancelBtn"
-            onClick={hideDisableAlert}
-          >
+          <PrimaryButton className="CancelBtn" onClick={hideDisableAlert}>
             Cancel
           </PrimaryButton>
           <PrimaryButton
