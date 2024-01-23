@@ -222,7 +222,19 @@ input[type="password"] {
 div.ResourcesTable {
   padding: 1rem 2rem 0 2rem;
 }
-
+div.ResourcesTable div.nologs{
+  position: relative;
+  table-layout: fixed;
+  text-align: center;
+  border-collapse: collapse;
+  width: 100%;
+  background-color: white;
+  border-radius: 0.6rem;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  padding: 1rem 1rem 1rem 2rem;
+  right: 1.6rem;
+}
 div.ResourcesTable.LoadingResourcesTable {
   flex-grow: 1;
 }

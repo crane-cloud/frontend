@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Avatar from "../../components/Avatar";
+// import Avatar from "../../components/Avatar";
 import Header from "../../components/Header";
 import { handleGetRequest } from "../../apis/apis.js";
 import InformationBar from "../../components/InformationBar";
 import styles from "./UserActivity.module.css";
 import DateInput from "../../components/DateInput";
-import { ReactComponent as CheckMark } from "../../assets/images/check-circle.svg";
-import { ReactComponent as Danger } from "../../assets/images/alert-octagon.svg";
+// import { ReactComponent as CheckMark } from "../../assets/images/check-circle.svg";
+// import { ReactComponent as Danger } from "../../assets/images/alert-octagon.svg";
 import { DisplayDateTime } from "../../helpers/dateConstants";
 import Spinner from "../../components/Spinner";
 import AppFooter from "../../components/appFooter";
@@ -23,7 +23,7 @@ import usePaginator from "../../hooks/usePaginator.js";
 import Pagination from "../../components/Pagination/index.jsx";
 
 const UserActivity = () => {
-  const { data } = useSelector((state) => state.user);
+  // const { data } = useSelector((state) => state.user);
 
   const user = useSelector((state) => state.user);
   const [currentPage, handleChangePage] = usePaginator();
@@ -287,18 +287,18 @@ const UserActivity = () => {
                   <span className={styles.FilterItemLabel}>Date</span>
                   <div className={styles.DateBtn}>
                     <div className="DateInputsSection">
-                        <DateInput
-                          label="From"
-                          position="from"
-                          hideTime={true}
-                          handleChange={handleFromDate}
-                          showCalendar={showFromCalendar}
-                          dateValue={fromTS}
-                          onClick={switchCalendars}
-                          onCancel={closeCalendar}
-                          onSubmit={handleCalenderSubmission}
-                          value="from"
-                        />
+                      <DateInput
+                        label="From"
+                        position="from"
+                        hideTime={true}
+                        handleChange={handleFromDate}
+                        showCalendar={showFromCalendar}
+                        dateValue={fromTS}
+                        onClick={switchCalendars}
+                        onCancel={closeCalendar}
+                        onSubmit={handleCalenderSubmission}
+                        value="from"
+                      />
                       <DateInput
                         label="To"
                         position="to"
@@ -356,67 +356,67 @@ const UserActivity = () => {
               </div>
             )}
 
-            <div className={`${styles.LogsContainer}`}>
+            <div className="ResourcesTable">
               {isFetchingActivities && !activitiesFetched ? (
                 <Spinner />
               ) : feedback !== "" ? (
-                <div className={styles.NoResourcesMessage}>{feedback}</div>
+                <div className="nologs">{feedback}</div>
               ) : activities?.length === 0 ? (
-                <div className={styles.NoResourcesMessage}>No logs for you</div>
+                <div className="nologs">There are no logs found.</div>
               ) : (
-                activities?.map((item, index, array) => (
-                  <div key={item._id.$oid}>
-                    <div className={styles.TableRow}>
-                      {item.status === "Success" ||
-                      item.status === "Successful" ? (
-                        <CheckMark className={styles.Success} />
-                      ) : (
-                        <Danger className={styles.Danger} />
-                      )}
-                      <div className={styles.Row}>
-                        <div className={styles.RowCell}>
-                          <Avatar
-                            name={data.name}
-                            className={styles.UserAvatar}
-                          />
-                          <div>
-                            <div className={styles.ActivityEmail}>
-                              {data.email}:
-                            </div>
-                            <div className={styles.ActivityDate}>
-                              {DisplayDateTime(new Date(item.creation_date))}
-                            </div>
+                <table className="ResourcesTable">
+                  <thead className="uppercase">
+                    <tr>
+                      <>
+                        <th>Date Created</th>
+                        <th>Activity Type</th>
+                        <th>Operation</th>
+                        <th>Status</th>
+                        <th>Activity Description</th>
+                      </>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {activities?.map((item, index, array) => (
+                      <tr key={item._id.$oid}>
+                        <td>
+                          <div className={styles.ActivityDate}>
+                            {DisplayDateTime(new Date(item.creation_date))}
                           </div>
-                          <div className={styles.ActivityStatus}>
-                            <span className={styles.EntityOperation}>
-                              {item.operation} -
-                            </span>
-                            <span className={styles.ActivityDescription}>
-                              <div>{item.model}</div>
-                            </span>
-                            <span className={styles.Entity}>
-                              {item.a_project_id}
-                            </span>{" "}
-                            <span
-                              className={
-                                item.status.startsWith("Success")
-                                  ? styles.Success
-                                  : styles.Danger
-                              }
-                            >
-                              {item.status.startsWith("Success")
-                                ? "Success"
-                                : item.status}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    {index !== array?.length - 1 && (
-                      <hr className={styles.hr} />
-                    )}
-                  </div>
-                ))
+                        </td>
+                        <td>
+                          {" "}
+                          <span className={styles.ActivityDescription}>
+                            <div>{item.model}</div>
+                          </span>
+                        </td>
+                        <td>
+                          <span className={styles.EntityOperation}>
+                            {item.operation}
+                          </span>
+                        </td>
+                        <td>
+                          <span
+                            className={
+                              item.status.startsWith("Success")
+                                ? styles.Success
+                                : styles.Danger
+                            }
+                          >
+                            {item.status.startsWith("Success")
+                              ? "Success"
+                              : item.status}
+                          </span>
+                        </td>
+                        <td>
+                          <span className={styles.ActivityDescription}>
+                            <div>{item.description}</div>
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               )}
             </div>
 
