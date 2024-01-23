@@ -1,32 +1,17 @@
 export const validateDomain = (name) => {
   const expression =
-    /[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)?/gi;
-  const regex = new RegExp(expression);
-  if (!name) {
-    return "Please provide domain name";
-  } else {
-    if (regex.test(name)) {
-      if (name.match(!regex)) {
-        return "Use accepted formats for example google.com, domain.ug";
-      }
-    } else {
-      return "Domain name should start with a letter";
-    }
-  }
-};
+    /^([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
 
-export const validateDomainName = (domainName) => {
-  const expression =
-    /[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)?/gi;
-  const regex = new RegExp(expression);
-  if (regex.test(domainName)) {
-    if (domainName.match(!regex)) {
-      return "false_convention";
-    }
-    return true;
+  if (!name) {
+    return "Please provide a domain name";
   }
+
+  if (!expression.test(name)) {
+    return "Use accepted formats, for example, google.com, yourdomain.ug";
+  }
+
   return false;
-}
+};
 
 export const validateName = (name) => {
   if (/^[a-z]/i.test(name)) {
@@ -45,9 +30,7 @@ export const validateProjectDescription = (description) => {
 };
 
 export const validateOrganizationName = (name) => {
-  if (
-    !name
-  ) {
+  if (!name) {
     return "Organisation field can't be an empty";
   }
 };
@@ -86,7 +69,6 @@ export const validateProjectType = (projectType) => {
   if (validateName(projectType) === false) {
     return "Project Type should start with a letter";
   }
-
 };
 
 export const handleProjectValidation = (

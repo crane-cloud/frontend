@@ -1,6 +1,6 @@
 import AppStatus from "../AppStatus";
 
-const GeneralDetailsTab = ({ parentProject, app, getCurrentRevision }) => (
+const GeneralDetailsTab = ({ parentProject, app }) => (
   <div className={`APPInstructions BigCard`}>
     <div className="APPButtonRow">
       <div className="AppLabel">Project Name</div>
@@ -38,7 +38,7 @@ const GeneralDetailsTab = ({ parentProject, app, getCurrentRevision }) => (
     </div>
     <div className="APPButtonRow">
       <div className="AppLabel">Current Revision</div>
-      <div className="flexa">{getCurrentRevision}</div>
+      <div className="flexa">{app.revision_id}</div>
     </div>
   </div>
 );

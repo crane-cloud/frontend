@@ -287,18 +287,18 @@ const UserActivity = () => {
                   <span className={styles.FilterItemLabel}>Date</span>
                   <div className={styles.DateBtn}>
                     <div className="DateInputsSection">
-                      <DateInput
-                        label="From"
-                        position="from"
-                        hideTime={true}
-                        handleChange={handleFromDate}
-                        showCalendar={showFromCalendar}
-                        dateValue={fromTS}
-                        onClick={switchCalendars}
-                        onCancel={closeCalendar}
-                        onSubmit={handleCalenderSubmission}
-                        value="from"
-                      />
+                        <DateInput
+                          label="From"
+                          position="from"
+                          hideTime={true}
+                          handleChange={handleFromDate}
+                          showCalendar={showFromCalendar}
+                          dateValue={fromTS}
+                          onClick={switchCalendars}
+                          onCancel={closeCalendar}
+                          onSubmit={handleCalenderSubmission}
+                          value="from"
+                        />
                       <DateInput
                         label="To"
                         position="to"
@@ -391,6 +391,9 @@ const UserActivity = () => {
                             <span className={styles.EntityOperation}>
                               {item.operation} -
                             </span>
+                            <span className={styles.ActivityDescription}>
+                              <div>{item.model}</div>
+                            </span>
                             <span className={styles.Entity}>
                               {item.a_project_id}
                             </span>{" "}
@@ -406,9 +409,6 @@ const UserActivity = () => {
                                 : item.status}
                             </span>
                           </div>
-                        </div>
-                        <div className={styles.ActivityDescription}>
-                          <div>{item.description}</div>
                         </div>
                       </div>
                     </div>

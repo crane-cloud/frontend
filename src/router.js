@@ -18,7 +18,7 @@ import App from "./components/App";
 import AppLogsPage from "./pages/AppLogsPage";
 import AppMemoryPage from "./pages/AppMemoryPage";
 import AppNetworkPage from "./pages/AppNetworkPage";
-import AppSettingsPage from "./pages/AppSettingsPage/appSettings.jsx";
+import AppSettingsPage from "./pages/AppSettingsPage";
 import AppsPage from "./pages/AppsPage";
 import ClusterPage from "./pages/ClusterPage";
 import ClusterResourcesPage from "./pages/ClusterResourcesPage";
