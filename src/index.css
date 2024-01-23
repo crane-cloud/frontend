@@ -220,7 +220,7 @@ input[type="password"] {
 
 /*- ///// TABLE STYLING ///////// */
 div.ResourcesTable {
-  padding: 1rem 2rem 0 2rem;
+  padding: 1rem 0.5rem 0 0.5rem;
 }
 div.ResourcesTable div.nologs{
   position: relative;
@@ -648,7 +648,7 @@ tr.TableLoading td {
 .ResourceClusterContainer {
   display: flex;
   gap: 1rem;
-  padding: 2rem;
+  padding: 0.5rem;
   flex-wrap: wrap;
   justify-content: space-between;
 }
