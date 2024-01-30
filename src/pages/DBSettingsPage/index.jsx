@@ -20,6 +20,8 @@ import "./DBSettingsPage.css";
 import { getProjectName } from "../../helpers/projectName";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
 import SettingsActionRow from "../../components/SettingsActionRow/index.jsx";
+import SettingsModal from "../../components/SettingsModal/index.jsx";
+import DisableModalContent from "../../components/DisableModalContent/index.jsx";
 
 class DBSettingsPage extends React.Component {
   constructor(props) {
@@ -40,6 +42,9 @@ class DBSettingsPage extends React.Component {
       openUpdateModal: false,
       newDatabasePassword: "",
       confirmNewDatabasePassword: "",
+      disableDatabaseError: "",
+      disableDatabaseAlert: false,
+      disableDisableDatabaseProgress: false,
       // api states
       gettingDatabases: false,
       fetchingDatabaseErrors: "",
@@ -81,6 +86,8 @@ class DBSettingsPage extends React.Component {
     this.hideUpdateModal = this.hideUpdateModal.bind(this);
     this.handleSubmitUpdate = this.handleSubmitUpdate.bind(this);
     this.fetchPassword = this.fetchPassword.bind(this);
+    this.showDisableAlert = this.showDisableAlert.bind(this);
+    this.hideDisableAlert = this.hideDisableAlert.bind(this);
 
     // api functions
     this.fetchSelectedDb = this.fetchSelectedDb.bind(this);
@@ -143,6 +150,14 @@ class DBSettingsPage extends React.Component {
   // show update modal
   showUpdateModal() {
     this.setState({ openUpdateModal: true });
+  }
+
+  showDisableAlert() {
+    this.setState({ disableDatabaseAlert: true });
+  }
+
+  hideDisableAlert() {
+    this.setState({ disableDatabaseAlert: false });
   }
 
   // hide update modal
@@ -340,6 +355,7 @@ class DBSettingsPage extends React.Component {
   handleEnableButtonClick = () => {
     let { currentDB } = this.state;
     const { databaseID } = this.props.match.params;
+    this.setState({ disableDisableDatabaseProgress: true });
 
     try {
       if (currentDB.disabled) {
@@ -352,7 +368,8 @@ class DBSettingsPage extends React.Component {
           })
           .catch((error) => {
             this.setState({
-              error: error,
+              disableDatabaseError: error,
+              disableDisableDatabaseProgress: false,
             });
           });
       } else {
@@ -365,7 +382,8 @@ class DBSettingsPage extends React.Component {
           })
           .catch((error) => {
             this.setState({
-              error: error,
+              disableDatabaseError: error,
+              disableDisableDatabaseProgress: false,
             });
           });
       }
@@ -402,6 +420,9 @@ class DBSettingsPage extends React.Component {
       resettingResponseCode,
       deletingDB,
       deleteDBError,
+      disableDatabaseError,
+      disableDatabaseAlert,
+      disableDisableDatabaseProgress,
     } = this.state;
     return (
       <DashboardLayout
@@ -550,6 +571,20 @@ class DBSettingsPage extends React.Component {
                   </div>
                 </div>
               </div>
+              <div>
+                <div className="SectionSubTitle">Database Status</div>
+                <div className="DetailRow">
+                  <div className="SettingsSectionInfo">
+                    <div>
+                      {currentDB?.disabled === true ? (
+                        <span style={{ color: "red" }}>Disabled</span>
+                      ) : (
+                        "Enabled"
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="DBSections">
@@ -686,7 +721,7 @@ class DBSettingsPage extends React.Component {
                   }
                   buttonLabel={currentDB?.disabled ? "Enable" : "Disable"}
                   buttonColor={currentDB?.disabled ? "primary" : "red"}
-                  onButtonClick={this.handleEnableButtonClick}
+                  onButtonClick={this.showDisableAlert}
                 />
 
                 <SettingsActionRow
@@ -835,6 +870,28 @@ class DBSettingsPage extends React.Component {
               </div>
             )}
           </div>
+        )}
+
+        {disableDatabaseAlert && (
+          <SettingsModal
+            showModal={disableDatabaseAlert}
+            onClickAway={this.hideDisableAlert}
+          >
+            <DisableModalContent
+              item={{
+                name: currentDB?.name,
+                type: "database",
+                disabled: currentDB?.disabled,
+              }}
+              disableProgress={disableDisableDatabaseProgress}
+              handleDisableButtonClick={() => {
+                this.handleEnableButtonClick();
+              }}
+              hideDisableAlert={this.hideDisableAlert}
+              message={disableDatabaseError}
+              isFailed={disableDatabaseError ? true : false}
+            />
+          </SettingsModal>
         )}
       </DashboardLayout>
     );
