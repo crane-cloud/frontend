@@ -141,6 +141,15 @@ const AppSettingsPage = () => {
     };
   }, [appID, currentPage, dispatch]);
 
+  useEffect(() => {
+    if (app.command) {
+      setEntryCommand(app.command);
+    }
+    if (app.port) {
+      setPort(app.port);
+    }
+  }, [app?.command, app?.port]);
+
   const fetchProjectDetails = useCallback(() => {
     handleGetRequest(`/projects/${app?.project_id}`)
       .then((response) => {
@@ -272,13 +281,8 @@ const AppSettingsPage = () => {
   const handleEnvSubmit = () => {
     const projectID = app?.project_id;
     let updatePayload = {};
-
     if (port !== "" && port.toString() !== app.port.toString()) {
       updatePayload = { ...updatePayload, port: parseInt(port, 10) };
-    }
-
-    if (entryCommand !== app.command) {
-      updatePayload = { ...updatePayload, command: entryCommand };
     }
 
     if (haveEnvVarsChanged(envVars, app?.env_vars)) {
@@ -295,6 +299,11 @@ const AppSettingsPage = () => {
       },
       {}
     );
+    //since command can be empty
+
+    if (entryCommand !== app.command) {
+      updatePayload = { ...updatePayload, command: entryCommand };
+    }
 
     // Check if the payload is empty (no changes)
     if (Object.keys(updatePayload).length === 0) {
@@ -338,6 +347,7 @@ const AppSettingsPage = () => {
     const projectID = app?.project_id;
     setLoadingIndex(index);
     const keyToRemove = Object.keys(envVars)[index];
+    console.log(keyToRemove)
 
     if (keyToRemove !== null) {
       const updatePayload = { delete_env_vars: [keyToRemove] };
