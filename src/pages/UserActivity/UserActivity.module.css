@@ -50,11 +50,20 @@
   display: flex;
   gap: 3.5rem;
   padding-left: 3.5rem;
+  text-align: left;
 }
 
-.ActivityDescription{
-  padding-right: 1rem;
-  min-width: 4rem;
+.ActivityDescription div{
+  /* padding-right: 1rem; */
+  max-width: 15rem; 
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.ActivityDescription div:hover{
+  overflow: visible;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .FilterItemLabel {
@@ -110,12 +119,12 @@
 
 .Success {
   color: green;
-  padding-left: 1rem;
+  /* padding-left: 1rem; */
 }
 
 .Danger {
   color: red;
-  padding-left: 1rem;
+  /* padding-left: 1rem; */
 }
 
 .Entity {
@@ -166,22 +175,14 @@
   width: 40%;
 }
 
-.LogsContainer {
-  padding: 1.2rem;
-  background: #ffffff;
-  border-radius: 15px;
-  border: 1px solid var(--gray-light-color);
-  height: fit-content;
-}
-
 @media(max-width: 650px) {
   .Header {
     flex-direction: column;
   }
 
-  .LogsContainer {
+  /* .LogsContainer {
     margin-top: 5rem;
-  }
+  } */
 
   .ActivityPageTitle {
     font-size: 15px;
