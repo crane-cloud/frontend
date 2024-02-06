@@ -1,0 +1,13 @@
+# Versioning and metadata
+.git
+.gitignore
+.dockerignore
+
+# Build dependencies
+dist
+build
+node_modules
+coverage
+
+# Environment (contains sensitive data)
+.env
