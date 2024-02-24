@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import Header from "../../components/Header";
 import InputText from "../../components/InputText";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
@@ -10,8 +9,8 @@ import { API_BASE_URL, GIT_REDIRECT_URL } from "../../config";
 import Checkbox from "../../components/Checkbox";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
-
 import "./RegisterPage.css";
+import { ReactComponent as Logo } from "../../assets/images/logo.svg";
 
 export default class RegisterPage extends Component {
   constructor() {
@@ -20,7 +19,7 @@ export default class RegisterPage extends Component {
     this.state = {
       name: "",
       username: "",
-      organisation:"",
+      organisation: "",
       email: "",
       password: "",
       passwordConfirm: "",
@@ -102,8 +101,15 @@ export default class RegisterPage extends Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    const { name, username, organisation, email, password, passwordConfirm, hasAgreed } =
-      this.state;
+    const {
+      name,
+      username,
+      organisation,
+      email,
+      password,
+      passwordConfirm,
+      hasAgreed,
+    } = this.state;
 
     const userData = {
       name,
@@ -113,7 +119,14 @@ export default class RegisterPage extends Component {
       password,
     };
 
-    if (!email || !password || !name || !username || !passwordConfirm || !organisation) {
+    if (
+      !email ||
+      !password ||
+      !name ||
+      !username ||
+      !passwordConfirm ||
+      !organisation
+    ) {
       this.setState({
         error: "Please enter all fields",
       });
@@ -176,9 +189,22 @@ export default class RegisterPage extends Component {
       gitLoading,
     } = this.state;
     return (
-      <div className="RegisterPageContainer">
-        <Header />
-        <div className="RegisterContent">
+      <div className="SectionsContainer">
+        <div className="LeftSectionContent">
+          <Logo className="Brand" />
+          <h1 className="BrandText">Crane Cloud</h1>
+          <h2 className="BrandSubText">
+            Crane Cloud is an open source multi-cloud software platform for
+            cloud-native application deployment and management.
+          </h2>
+          <span>- - - -</span>
+          <h2 className="BrandSubText">
+            Crane Cloud offers a comprehensive range of cloud services that can
+            fulfill your needs, whether you want to deploy an application, store
+            data, or manage your computing resources.
+          </h2>
+        </div>
+        <div className="RightSectionContent">
           {!registered ? (
             <div>
               <div className="RegisterContentHeading">
