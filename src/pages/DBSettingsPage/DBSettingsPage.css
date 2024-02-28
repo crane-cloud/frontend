@@ -248,12 +248,14 @@
   cursor: default;
 }
 
+.VisibilityIcon:hover {
+  cursor: pointer;
+}
 
 .CopyIcon {
   cursor: pointer !important;
   display: flex;
   gap: 0.3rem;
-  visibility: hidden;
   align-items: center;
   justify-content: center;
 }
@@ -262,6 +264,41 @@
   visibility: visible;
 }
 
+.DatabaseSettingsInfo .TooltipContainer {
+  display: contents;
+}
+
+.DatabaseSettingsInfo .TooltipWordPlaceholder {
+  font-weight: normal;
+  color: black;
+}
+
+.DatabaseSettingsInfo [tooltip-message]:before {
+  bottom: 100%;
+}
+
+.leftGridItem [tooltip-message]:after {
+  bottom: 100%;
+  left: 30%;
+}
+
+.middleGridItem [tooltip-message]:after {
+  bottom: 100%;
+  left: 50%;
+}
+
+.rightGridItem [tooltip-message]:before {
+  width: 180px;
+}
+
+.rightGridItem [tooltip-message]:after {
+  bottom: 100%;
+  left: 85%
+}
+
+.DatabaseSettingsInfo [position="left"]:before {
+  margin-right: 2rem;
+}
 
 
 @media only screen and (min-device-width: 641px) and (max-width: 900px) {
