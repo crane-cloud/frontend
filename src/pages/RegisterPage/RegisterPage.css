@@ -15,6 +15,12 @@
   padding-bottom: 5rem;
 }
 
+.RegisterContentHeading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .RegisterSuccessContent {
   min-height: 25rem;
   display: grid;
@@ -81,11 +87,13 @@
     width: 100%;
   } */
 }
+
 .password-wrapper {
   position: relative;
   display: grid;
   align-items: center;
 }
+
 .password-wrapper .toggle-password {
   position: absolute;
   top: 50%;
@@ -93,9 +101,11 @@
   transform: translateY(-50%);
   cursor: pointer;
 }
+
 .password-input-container {
   position: relative;
 }
+
 .password {
   position: absolute;
   top: 50%;
@@ -103,6 +113,7 @@
   transform: translateY(-50%);
   cursor: pointer;
 }
+
 .password-repeat {
   position: relative;
   display: grid;

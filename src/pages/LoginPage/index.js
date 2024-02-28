@@ -8,12 +8,11 @@ import removeUser from "../../redux/actions/removeUser";
 import InputText from "../../components/InputText";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
-import Header from "../../components/Header";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
-
 import { API_BASE_URL, GIT_REDIRECT_URL } from "../../config";
 import { ReactComponent as LogoIcon } from "../../assets/images/githublogo.svg";
+import { ReactComponent as Logo } from "../../assets/images/logo.svg";
 import "./LoginPage.css";
 
 class LoginPage extends React.Component {
@@ -194,12 +193,24 @@ class LoginPage extends React.Component {
       passwordShown,
     } = this.state;
     return (
-      <div className="LoginPageContainer">
-        <Header />
-        <div className="LoginContent">
-          <div className="LoginContentHeading">
-            <h1>Login to the cloud</h1>
-          </div>
+      <div className="SectionsContainer">
+        <div className="LeftSectionContent">
+          <Logo className="Brand" />
+          <h1 className="BrandText">Crane Cloud</h1>
+          <h2 className="BrandSubText">
+            Crane Cloud is an open source multi-cloud software platform for
+            cloud-native application deployment and management.
+          </h2>
+          <span>- - - -</span>
+          <h2 className="BrandSubText">
+            Crane Cloud offers a comprehensive range of cloud services that can
+            fulfill your needs, whether you want to deploy an application, store
+            data, or manage your computing resources.
+          </h2>
+        </div>
+        <div className="RightSectionContent">
+          <h1 className="LoginContentTitle">Login to the cloud</h1>
+
           <form onSubmit={this.handleSubmit} className="LoginContentInputs">
             <InputText
               required
