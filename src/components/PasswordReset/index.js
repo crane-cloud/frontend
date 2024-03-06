@@ -96,14 +96,11 @@ export default class PasswordReset extends React.Component {
           <Logo className="Brand" />
           <h1 className="BrandText">Crane Cloud</h1>
           <h2 className="BrandSubText">
-            Crane Cloud is an open source multi-cloud software platform for
-            cloud-native application deployment and management.
-          </h2>
-          <span>- - - -</span>
-          <h2 className="BrandSubText">
-            Crane Cloud offers a comprehensive range of cloud services that can
-            fulfill your needs, whether you want to deploy an application, store
-            data, or manage your computing resources.
+            Crane Cloud is an open-source multi-cloud software platform which
+            provides a comprehensive suite of cloud services tailored to meet
+            various needs, including deploying applications, storing data, and
+            managing computing resources for cloud-native application deployment
+            and management.
           </h2>
         </div>
         <div className="RightSectionContent">
