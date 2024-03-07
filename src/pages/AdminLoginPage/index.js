@@ -4,7 +4,6 @@ import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import saveUser from "../../redux/actions/saveUser";
-import Header from "../../components/Header";
 import InputText from "../../components/InputText";
 import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
@@ -12,6 +11,7 @@ import { API_BASE_URL } from "../../config";
 import "../../pages/LoginPage/LoginPage.css";
 import { ReactComponent as Open } from "../../assets/images/open.svg";
 import { ReactComponent as Closed } from "../../assets/images/close.svg";
+import { ReactComponent as Logo } from "../../assets/images/logo.svg";
 
 class AdminLoginPage extends React.Component {
   constructor() {
@@ -86,16 +86,24 @@ class AdminLoginPage extends React.Component {
   }
 
   render() {
-    const { email, password, loading, passwordShown } =
-      this.state;
+    const { email, password, loading, passwordShown } = this.state;
 
     return (
-      <div className="LoginPageContainer">
-        <Header />
-        <div className="LoginContent">
-          <div className="LoginContentHeading">
-            <h1>Admin Login</h1>
-          </div>
+      <div className="SectionsContainer">
+        <div className="LeftSectionContent">
+          <Logo className="Brand" />
+          <h1 className="BrandText">Crane Cloud</h1>
+          <h2 className="BrandSubText">
+            Crane Cloud is an open-source multi-cloud software platform which
+            provides a comprehensive suite of cloud services tailored to meet
+            various needs, including deploying applications, storing data, and
+            managing computing resources for cloud-native application deployment
+            and management.
+          </h2>
+        </div>
+        <div className="RightSectionContent">
+          <h1 className="LoginContentTitle">Admin Login</h1>
+
           <form onSubmit={this.handleSubmit}>
             <div className="LoginContentInputs">
               {/* Input fields */}
