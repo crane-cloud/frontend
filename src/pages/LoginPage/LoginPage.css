@@ -1,18 +1,58 @@
-.LoginPageContainer {
-  background: var(--primary-color) !important;
-  color: #ffffff;
+.Brand {
+  width: 120px;
+  height: 120px;
+  fill: var(--primary-color);
+}
+
+.SectionsContainer {
+  flex: 1;
   display: flex;
-  flex-direction: column;
-  overflow-y: hidden;
-  flex-grow: 1;
+  flex-direction: row !important;
+  justify-content: space-between;
+  background-color: #fff !important;
 }
 
 .LoginContent {
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+}
+
+.BrandText {
+  font-size: 3rem;
+  color: var(--primary-color);
+}
+
+.BrandSubText {
+  font-size: 1.4rem;
+  text-align: center;
+  color: var(--gray-color);
+}
+
+.LeftSectionContent,
+.RightSectionContent {
+  padding: 20px;
+}
+
+.LeftSectionContent {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  padding: 3rem;
+}
+
+.RightSectionContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  background: var(--primary-color);
+  color: #fff;
+  padding: 0 1rem 0 1rem;
+  border-bottom-left-radius: 1rem;
+  border-top-left-radius: 1rem;
 }
 
 .AuthBtn {
@@ -27,7 +67,7 @@
   width: 25rem;
 }
 
-.LoginContentInputs > * {
+.LoginContentInputs>* {
   width: 100%;
 }
 
@@ -54,6 +94,7 @@
   padding: 1rem 0;
   border-radius: 5px;
 }
+
 .LoginFeedBackDiv {
   background-color: rgba(255, 255, 255, 0.5);
   color: #026d0a;
@@ -64,23 +105,28 @@
 .LoginContentBottomLink {
   padding-top: 1rem;
 }
+
 .LoginButton {
   width: 100%;
 }
+
 .LoginButton:hover {
   background-color: var(--secondary-color);
   color: #fff;
 }
+
 .GitLoginBtn {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
 }
+
 .LogoIcon {
   width: 1.5rem;
   height: 1.5rem;
 }
+
 .GithubLoginBtn {
   width: 100%;
   color: #fff;
@@ -92,28 +138,34 @@
   border: 1px solid var(--primary-dark-color);
   background-color: var(--primary-dark-color);
 }
+
 .GitText {
   color: #fff;
   text-transform: capitalize;
 }
+
 .LoginWith {
   width: 100%;
   text-align: center;
   border-bottom: 1px solid #fff;
   line-height: 0.1em;
 }
+
 .LoginWith span {
   background-color: var(--primary-color);
   padding: 0 1rem;
 }
+
 @media (max-width: 460px) {
   .LoginContent {
     padding: 0 2rem;
   }
+
   .LoginContentInputs {
     width: 100%;
   }
 }
+
 .password-wrappers {
   display: grid;
   align-items: center;
@@ -135,4 +187,17 @@
   right: 1rem;
   transform: translateY(-50%);
   cursor: pointer;
+}
+
+@media only screen and (max-width: 768px) {
+  .LeftSectionContent {
+    display: none;
+  }
+
+  .RightSectionContent {
+    padding: 0 2rem;
+    width: 100%;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+  }
 }

@@ -1,12 +1,12 @@
 import React from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import Header from "../Header";
 import InputText from "../InputText";
 import PrimaryButton from "../PrimaryButton";
 import Spinner from "../Spinner";
 import { API_BASE_URL } from "../../config";
 import "./PasswordReset.css";
+import { ReactComponent as Logo } from "../../assets/images/logo.svg";
 
 export default class PasswordReset extends React.Component {
   constructor() {
@@ -91,59 +91,73 @@ export default class PasswordReset extends React.Component {
     const { email, loading, registered, error } = this.state;
 
     return (
-      <div className="ResetPasswordPageContainer">
-        <Header />
-        {!registered ? (
-          <>
-            <div className="ResetPasswordContent">
-              <div className="ResetPasswordContentHeading">
-                <h1>Password Reset</h1>
-                <p>
-                  Enter your email address so that we can send you a link to
-                  reset your password.
-                </p>
-              </div>
-              <div className="ResetPasswordContentInputs">
-                {/* Input fields */}
-                <InputText
-                  required
-                  placeholder="Email Address"
-                  name="email"
-                  value={email}
-                  onChange={(e) => {
-                    this.handleChange(e);
-                  }}
-                />
-                {error && <div className="ResetPasswordErrorDiv">{error}</div>}
+      <div className="SectionsContainer">
+        <div className="LeftSectionContent">
+          <Logo className="Brand" />
+          <h1 className="BrandText">Crane Cloud</h1>
+          <h2 className="BrandSubText">
+            Crane Cloud is an open-source multi-cloud software platform which
+            provides a comprehensive suite of cloud services tailored to meet
+            various needs, including deploying applications, storing data, and
+            managing computing resources for cloud-native application deployment
+            and management.
+          </h2>
+        </div>
+        <div className="RightSectionContent">
+          {!registered ? (
+            <>
+              <div className="ResetPasswordContent">
+                <div className="ResetPasswordContentHeading">
+                  <h1>Password Reset</h1>
+                  <p>
+                    Enter your email address so that we can send you a link to
+                    reset your password.
+                  </p>
+                </div>
+                <div className="ResetPasswordContentInputs">
+                  {/* Input fields */}
+                  <InputText
+                    required
+                    placeholder="Email Address"
+                    name="email"
+                    value={email}
+                    onChange={(e) => {
+                      this.handleChange(e);
+                    }}
+                  />
+                  {error && (
+                    <div className="ResetPasswordErrorDiv">{error}</div>
+                  )}
 
-                <PrimaryButton onClick={this.handleSubmit}>
-                  {loading ? <Spinner /> : "RESET"}
-                </PrimaryButton>
+                  <PrimaryButton onClick={this.handleSubmit}>
+                    {loading ? <Spinner /> : "RESET"}
+                  </PrimaryButton>
 
-                <div className="ResetPasswordContentBottomLink ResetPasswordLinkContainer">
-                  <Link to="/login" className="ResetPasswordContentLink">
-                    Back to Login.
-                  </Link>
+                  <div className="ResetPasswordContentBottomLink ResetPasswordLinkContainer">
+                    <Link to="/login" className="ResetPasswordContentLink">
+                      Back to Login.
+                    </Link>
+                  </div>
                 </div>
               </div>
+            </>
+          ) : (
+            <div className="ResetPasswordSuccessContent">
+              <div className="ResetPasswordMessage">
+                <h2>Password reset link sent!</h2>
+                <p>
+                  We&apos;ve sent a link to your email address to create a new
+                  password:&nbsp;
+                  <span>{email}</span>
+                  <br />
+                  <br />
+                  The link will expire after 24 hours. Please use this link to
+                  update password and resume using your account.
+                </p>
+              </div>
             </div>
-          </>
-        ) : (
-          <div className="ResetPasswordSuccessContent">
-            <div className="ResetPasswordMessage">
-              <h2>Password reset link sent!</h2>
-              <p>
-                We&apos;ve sent a link to your email address to create a new
-                password:&nbsp;
-                <span>{email}</span>
-                <br />
-                <br />
-                The link will expire after 24 hours. Please use this link to
-                update password and resume using your account.
-              </p>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     );
   }
