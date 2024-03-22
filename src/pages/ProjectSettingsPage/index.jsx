@@ -36,7 +36,7 @@ class ProjectSettingsPage extends React.Component {
   constructor(props) {
     super(props);
     const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
-    const { name, description, organisation, project_type } = projectInfo;
+    const { name, description, organisation, project_type, age } = projectInfo;
     this.state = {
       openUpdateAlert: false,
       openRoleUpdateAlert: false,
@@ -45,6 +45,7 @@ class ProjectSettingsPage extends React.Component {
       projectName: name ? name : "",
       projectID: this.props.match.params.projectID,
       projectDescription: description ? description : "",
+      projectAge: age ? age : "",
       error: "",
       updatingProjectDetails: false,
       nameChecked: false,
@@ -123,7 +124,6 @@ class ProjectSettingsPage extends React.Component {
     this.handleEnableButtonClick = this.handleEnableButtonClick.bind(this);
     this.getProjectDetails = this.getProjectDetails.bind(this);
     this.disableProjectAlertFunc = this.disableProjectAlertFunc.bind(this);
-
   }
 
   componentDidMount() {
@@ -132,8 +132,9 @@ class ProjectSettingsPage extends React.Component {
   }
 
   disableProjectAlertFunc(disableBool) {
-    this.setState({ disableProjectAlert: disableBool,
-      disableProjectError: ''
+    this.setState({
+      disableProjectAlert: disableBool,
+      disableProjectError: "",
     });
   }
 
@@ -504,9 +505,8 @@ class ProjectSettingsPage extends React.Component {
   handleEnableButtonClick = () => {
     let { projectDetails } = this.state;
     const { projectID } = this.props.match.params;
-    this.setState({disableProjectProgress:true})
+    this.setState({ disableProjectProgress: true });
     try {
-      
       if (projectDetails.disabled) {
         handlePostRequestWithOutDataObject({}, `/projects/${projectID}/enable`)
           .then(() => {
@@ -514,7 +514,8 @@ class ProjectSettingsPage extends React.Component {
           })
           .catch((error) => {
             this.setState({
-              disableProjectError: 'Failed to complete this action. Please try again later',
+              disableProjectError:
+                "Failed to complete this action. Please try again later",
             });
           });
       } else {
@@ -524,18 +525,20 @@ class ProjectSettingsPage extends React.Component {
           })
           .catch((error) => {
             this.setState({
-              disableProjectError: 'Failed to complete this action. Please try again later',
-              disableProjectProgress:false
+              disableProjectError:
+                "Failed to complete this action. Please try again later",
+              disableProjectProgress: false,
             });
           });
       }
     } catch (error) {
       //console.error("API call error:", error);
       this.setState({
-        disableProjectError: 'Failed to complete this action. Please try again later',
-        disableProjectProgress:false
+        disableProjectError:
+          "Failed to complete this action. Please try again later",
+        disableProjectProgress: false,
       });
-    } 
+    }
   };
 
   showUpdateAlert() {
@@ -682,6 +685,7 @@ class ProjectSettingsPage extends React.Component {
       openRoleUpdateAlert,
       projectName,
       projectDescription,
+      projectAge,
       error,
       Confirmprojectname,
       disableDelete,
@@ -690,8 +694,8 @@ class ProjectSettingsPage extends React.Component {
       othersBool,
       otherType,
       nameChecked,
-      idChecked,
-      descriptionChecked,
+      // idChecked,
+      // descriptionChecked,
       showInviteModel,
       email,
       role,
@@ -713,7 +717,7 @@ class ProjectSettingsPage extends React.Component {
       deleteProjectError,
       disableProjectError,
       disableProjectAlert,
-      disableProjectProgress
+      disableProjectProgress,
     } = this.state;
     const types = retrieveProjectTypes();
     const roles = retrieveMembershipRoles();
@@ -725,52 +729,66 @@ class ProjectSettingsPage extends React.Component {
         {isUpdated || isDeleted ? this.renderRedirect() : null}
         <div className="SectionTitle">Project Details</div>
         <div className={styles.ProjectInstructions}>
-          <div>
-            <div className="SectionSubTitle">Project ID</div>
-            <div className={styles.ProjectButtonRow}>
-              <div className={styles.SettingsSectionInfo}>
-                <div>{projectID}</div>
+          <div className={styles.ProjectsDetailsInnerSection}>
+            <div className={styles.InnerContentGrid}>
+              <div className="SectionSubTitle">Project Name</div>
+              <div className={styles.ProjectButtonRow}>
+                <div className={styles.SettingsSectionInfo}>
+                  <div>{projectName}</div>
+                </div>
+                <div className={styles.CopyIcon}>
+                  <CopyText onClick={this.nameOnClick} />
+                  {nameChecked ? <Checked /> : null}
+                </div>
               </div>
-              <div className={styles.CopyIcon}>
-                <CopyText onClick={this.projectIDOnClick} />
-                {idChecked ? <Checked /> : null}
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="SectionSubTitle">Project Name</div>
-            <div className={styles.ProjectButtonRow}>
-              <div className={styles.SettingsSectionInfo}>
-                <div>{projectName}</div>
-              </div>
-              <div className={styles.CopyIcon}>
-                <CopyText onClick={this.nameOnClick} />
-                {nameChecked ? <Checked /> : null}
+              <div>
+                <div className="SectionSubTitle">Project Description</div>
+                <div className={styles.ProjectButtonRow}>
+                  <div className={styles.SettingsSectionInfo}>
+                    <div>{projectDescription}</div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div>
-            <div className="SectionSubTitle">Project Description</div>
-            <div className={styles.ProjectButtonRow}>
-              <div className={styles.SettingsSectionInfo}>
-                <div>{projectDescription}</div>
+            <div className={styles.InnerContentGrid}>
+              <div>
+                <div className="SectionSubTitle">Age</div>
+                <div className={styles.ProjectButtonRow}>
+                  <div className={styles.SettingsSectionInfo}>
+                    <div>{projectAge}</div>
+                  </div>
+                </div>
               </div>
-              <div className={styles.CopyIcon}>
-                <CopyText onClick={this.projectDescriptionOnClick} />
-                {descriptionChecked ? <Checked /> : null}
+              <div>
+                <div className="SectionSubTitle">Organization</div>
+                <div className={styles.ProjectButtonRow}>
+                  <div className={styles.SettingsSectionInfo}>
+                    <div>{projectOrganisation}</div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div>
-            <div className="SectionSubTitle">Project Status</div>
-            <div className={styles.ProjectButtonRow}>
-              <div className={styles.SettingsSectionInfo}>
-                <div>
-                  {this.state.projectDetails?.disabled === true ? (
-                    <span style={{ color: "red" }}>Disabled</span>
-                  ) : (
-                    "Enabled"
-                  )}
+            <div className={styles.InnerContentGrid}>
+              <div>
+                <div className="SectionSubTitle">Project Type</div>
+                <div className={styles.ProjectButtonRow}>
+                  <div className={styles.SettingsSectionInfo}>
+                    <div>{projectType}</div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div className="SectionSubTitle">Status</div>
+                <div className={styles.ProjectButtonRow}>
+                  <div className={styles.SettingsSectionInfo}>
+                    <div>
+                      {this.state.projectDetails?.disabled === true ? (
+                        <span style={{ color: "red" }}>Disabled</span>
+                      ) : (
+                        "Enabled"
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1271,7 +1289,6 @@ class ProjectSettingsPage extends React.Component {
             </Modal>
           </div>
         )}
-       
 
         <Modal
           showModal={removeMemberModal}
@@ -1326,7 +1343,7 @@ class ProjectSettingsPage extends React.Component {
               item={{
                 name: projectName,
                 type: "project",
-                disabled: this.state.projectDetails?.disabled
+                disabled: this.state.projectDetails?.disabled,
               }}
               disableProgress={disableProjectProgress}
               handleDisableButtonClick={() => {
