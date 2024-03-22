@@ -157,6 +157,42 @@
   flex-direction: column;
   gap: 0.4rem;
 }
+.ProjectsDetailsInnerSection{
+  display: grid;
+  grid-template-columns: 2fr 2fr 2fr ;
+  grid-template-rows: auto;
+  overflow-x: auto;
+  width: -webkit-fill-available;
+}
+
+.ProjectsDetailsInnerSection > :nth-child(1) {
+  display: grid;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 2rem;
+}
+
+.ProjectsDetailsInnerSection > :nth-child(2) {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.ProjectsDetailsInnerSection > :nth-child(3) {
+  display: grid;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 3rem;
+}
+
+.ProjectsDetailsInnerSection > *:not(:last-child) {
+  border-right: 1px solid #979595; 
+}
+
+.InnerContentGrid div {
+  padding: 0 0 0.3rem 0;
+}
+
 
 .DeleteWarning {
   color: #f00;
