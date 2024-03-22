@@ -163,6 +163,7 @@
   grid-template-rows: auto;
   overflow-x: auto;
   width: -webkit-fill-available;
+  padding-top: 1rem;
 }
 
 .ProjectsDetailsInnerSection > :nth-child(1) {
