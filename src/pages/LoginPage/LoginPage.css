@@ -67,9 +67,9 @@
   width: 25rem;
 }
 
-.LoginContentInputs>* {
+/* .LoginContentInputs>* {
   width: 100%;
-}
+} */
 
 .LowerLoginSection {
   display: flex;

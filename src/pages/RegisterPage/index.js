@@ -181,7 +181,7 @@ export default class RegisterPage extends Component {
     } else if (!passwordValidations.hasUppercase || !passwordValidations.hasLowercase || !passwordValidations.hasNumber || !passwordValidations.isMinLength) {
       this.setState({
         loading: false,
-        error: "Password must contain at least one uppercase letter, one lowercase letter , a number and  8 characters long",
+        error: "Password must contain at least one uppercase letter, one lowercase letter, a number and 8 characters long",
       });
     } else {
       this.setState({
