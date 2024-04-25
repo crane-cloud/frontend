@@ -152,6 +152,7 @@ const AdminUserOverviewPage = () => {
           <div className="TitleArea">
             <div className="SectionTitle">Users Category Summary</div>
           </div>
+
           {loading && sectionValue !== "active" ? (
             <div className="ResourceSpinnerWrapper">
               <Spinner size="big" />

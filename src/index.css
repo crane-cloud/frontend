@@ -392,7 +392,7 @@ tr.TableLoading td {
 }
 
 .TitleContainer .TitleArea {
-  padding: 1rem 2.5rem 0 2.5rem;
+  padding: 1rem 2rem 0 2rem;
 }
 
 /* //// ADMIN DASHBOARD PAGE STYLING  //// */
@@ -450,6 +450,10 @@ tr.TableLoading td {
   flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+.ContentSection .TitleArea {
+  padding: 0 0 1rem 0;
 }
 
 /*- /////////--- STYLING FOR FEEDBACK ---//////////// */

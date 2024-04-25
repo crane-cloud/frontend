@@ -93,7 +93,7 @@ const ClusterPage = ({
         />
       </div>
 
-      <div>
+      <div className="TitleContainer">
         <div className="TitleArea">
           <div className="SectionTitle" style={{ paddingTop: "1rem" }}>
             <b>Summary</b>
@@ -211,7 +211,7 @@ const ClusterPage = ({
         <div className="NoResourcesMessage">{error}</div>
       )}
 
-      <div>
+      <div className="TitleContainer">
         <div className="TitleArea">
           <div className="SectionTitle" style={{ paddingTop: "2rem" }}>
             <b>Select Infrastructure ({clusters?.metadata?.cluster_count})</b>
