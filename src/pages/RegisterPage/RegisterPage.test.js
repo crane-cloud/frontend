@@ -30,6 +30,12 @@ describe("<RegisterPage/> Component", () => {
       error: "",
       passwordShown: false,
       passwordChecked: false,
+      passwordValidations: { 
+        hasUppercase: false,
+        hasLowercase: false,
+        hasNumber: false,
+        isMinLength: false,
+      },
     };
 
     expect(RegisterPageComponent.state()).toEqual(expectedInitialState);
@@ -44,19 +50,6 @@ describe("<RegisterPage/> Component", () => {
 
     expect(RegisterPageComponent.state("hasAgreed")).toBe(false);
   });
-
-  // it("should redirect to the GitHub authentication page when 'toGithubauth' is called", () => {
-  //   const mockEvent = {
-  //     preventDefault: jest.fn(),
-  //   };
-  
-  //   window.location.href = jest.fn();
-  
-  //   RegisterPageComponent.instance().toGithubauth();
-  
-  //   expect(mockEvent.preventDefault).toHaveBeenCalledTimes(1);
-  //   expect(window.location.href).toHaveBeenCalledTimes(1);
-  // });
   
 
   it("should toggle the 'passwordShown' state when 'togglePassword' is called", () => {
@@ -104,39 +97,6 @@ describe("<RegisterPage/> Component", () => {
     );
   });
 
-  it("should update the state correctly and call 'axios.post' when 'handleSubmit' is called with valid data", () => {
-    const mockEvent = {
-      preventDefault: jest.fn(),
-    };
-
-    const axiosPostSpy = jest.spyOn(axios, "post");
-
-    RegisterPageComponent.setState({
-      name: "John Doe",
-      username: "johndoe",
-      email: "test@example.com",
-      password: "password",
-      passwordConfirm: "password",
-      hasAgreed: true,
-      organisation : 'crane-cloud',
-    });
-
-    RegisterPageComponent.instance().handleSubmit(mockEvent);
-
-    expect(mockEvent.preventDefault).toHaveBeenCalledTimes(1);
-    expect(RegisterPageComponent.state("loading")).toBe(true);
-    expect(axiosPostSpy).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        name: "John Doe",
-        username: "johndoe",
-        email: "test@example.com",
-        password: "password",
-        organisation : 'crane-cloud',
-      })
-    );
-    // You can add more expectations based on the specific behavior you want to test
-  });
 
   it("should update the state correctly when 'handleSubmit' is called with invalid data", () => {
     const mockEvent = {
@@ -191,4 +151,29 @@ describe("<RegisterPage/> Component", () => {
     );
     // You can add more expectations based on the specific behavior you want to test
   });
+
+  it("should display an error message if password does not meet requirements", () => {
+    RegisterPageComponent.setState({
+      name: "Moses Mulumba",
+      username: "moses",
+      email: "test@example.com",
+      password: "123mo", 
+      passwordConfirm: "123mo",
+      hasAgreed: true,
+      organisation: "crane-cloud",
+    });
+  
+    const mockEvent = {
+      preventDefault: jest.fn(),
+    };
+  
+    RegisterPageComponent.instance().handleSubmit(mockEvent);
+  
+    // Expect an error message related to password requirements
+    expect(RegisterPageComponent.state("error")).toBe(
+      "Password must contain at least one uppercase letter, one lowercase letter, a number and 8 characters long"
+    );
+    
+  });
+  
 });

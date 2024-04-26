@@ -31,6 +31,12 @@ export default class RegisterPage extends Component {
       error: "",
       passwordShown: false,
       passwordChecked: false,
+      passwordValidations: {
+        hasUppercase: false,
+        hasLowercase: false,
+        hasNumber: false,
+        isMinLength: false,
+      },
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -73,12 +79,34 @@ export default class RegisterPage extends Component {
     }
   };
 
+  validatePassword(password) {
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const isMinLength = password.length >= 8;
+
+    this.setState({
+      passwordValidations: {
+        hasUppercase,
+        hasLowercase,
+        hasNumber,
+        isMinLength,
+      },
+    });
+  }
+
   handleOnChange(e) {
     const { error } = this.state;
+    const { name, value } = e.target;
+    
+    if (name === 'password') {
+      this.validatePassword(value);
+    }
+  
     this.setState({
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
-
+  
     if (error) {
       this.setState({
         error: "",
@@ -109,6 +137,7 @@ export default class RegisterPage extends Component {
       password,
       passwordConfirm,
       hasAgreed,
+      passwordValidations
     } = this.state;
 
     const userData = {
@@ -148,6 +177,11 @@ export default class RegisterPage extends Component {
       this.setState({
         loading: false,
         error: "Please agree to our Terms of Service",
+      });
+    } else if (!passwordValidations.hasUppercase || !passwordValidations.hasLowercase || !passwordValidations.hasNumber || !passwordValidations.isMinLength) {
+      this.setState({
+        loading: false,
+        error: "Password must contain at least one uppercase letter, one lowercase letter, a number and 8 characters long",
       });
     } else {
       this.setState({
@@ -246,7 +280,6 @@ export default class RegisterPage extends Component {
                     value={password}
                     onChange={this.handleOnChange}
                   />
-
                   <div className="password" onClick={this.togglePassword}>
                     {passwordShown ? <Open /> : <Closed />}
                   </div>

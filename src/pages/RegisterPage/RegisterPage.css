@@ -49,7 +49,8 @@
   background-color: rgba(255, 255, 255, 0.5);
   color: #d63b3b;
   text-align: center;
-  padding: 1rem 0;
+  padding: 1rem 1rem;
+  border-radius: 5px;
 }
 
 .LogoIcon {
