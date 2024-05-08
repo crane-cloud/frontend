@@ -16,15 +16,16 @@ const AdminAppDetail = () => {
     getAppDetails(appID);
   }, [appID]);
 
-  const getAppDetails = (appID) => {
+  const getAppDetails = async (appID) => {
     try {
-      const response = handleGetRequest(`/apps/${appID}`);
-      if (response.data.status === "success") {
+      const response = await handleGetRequest(`/apps/${appID}`);
+      if (response?.data?.status === "success") {   
         setAppDetail(response.data.data);
       } else {
         throw new Error("No App detail found");
       }
     } catch (error) {
+      console.log(error)
       throw new Error("Failed to fetch app detail, please try again");
     }
   };
@@ -61,7 +62,6 @@ const AdminAppDetail = () => {
       console.error("API call error:", error);
     }
   };
-  console.log(appDetail);
   return (
     <div className={styles.Page}>
       <div className="TopRow">
@@ -87,7 +87,7 @@ const AdminAppDetail = () => {
         <div className={styles.DetailFirst}>
           <div className={styles.DetailFirstTitle}>App Information</div>
           <div className={styles.DetailFirstDetail}>
-            <div class="list-group">
+            <div className="list-group">
               <div className={styles.listItem}>
                 <strong>Name:</strong> {appDetail?.apps?.name}
               </div>
@@ -141,7 +141,7 @@ const AdminAppDetail = () => {
           <div className={styles.DetailFirstTitle}>Revisions</div>
           <div className={styles.DetailSecondColumn}>
             <div className={styles.Revision}>Current Revision</div>
-            <div class="list-group">
+            <div className="list-group">
               <div></div>
               <div className={styles.listItem}>
                 {/* <strong>Revision:</strong> {appDetail?.revisions[0]?.revision} */}
@@ -154,7 +154,7 @@ const AdminAppDetail = () => {
                 {/* <strong>Revision ID:</strong> {appDetail?.revisions[0]?.revision_id} */}
                 <strong>Revision:</strong>{" "}
                 {appDetail?.revisions?.length > 0
-                  ? appDetail.revisions[0].revision_id
+                  ? appDetail?.revisions[0]?.revision_id
                   : "N/A"}
               </div>
               <div className={styles.listItem}>
