@@ -222,7 +222,8 @@ input[type="password"] {
 div.ResourcesTable {
   padding: 1rem 0.5rem 0 0.5rem;
 }
-div.ResourcesTable div.nologs{
+
+div.ResourcesTable div.nologs {
   position: relative;
   table-layout: fixed;
   text-align: center;
@@ -235,6 +236,7 @@ div.ResourcesTable div.nologs{
   padding: 1rem 1rem 1rem 2rem;
   right: 1.6rem;
 }
+
 div.ResourcesTable.LoadingResourcesTable {
   flex-grow: 1;
 }
@@ -389,6 +391,10 @@ tr.TableLoading td {
   align-items: center;
 }
 
+.TitleContainer .TitleArea {
+  padding: 1rem 2rem 0 2rem;
+}
+
 /* //// ADMIN DASHBOARD PAGE STYLING  //// */
 
 .MainPage {
@@ -444,6 +450,10 @@ tr.TableLoading td {
   flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+.ContentSection .TitleArea {
+  padding: 0 0 1rem 0;
 }
 
 /*- /////////--- STYLING FOR FEEDBACK ---//////////// */
@@ -679,8 +689,9 @@ tr.TableLoading td {
 .footerPositionAbsolute {
   position: absolute;
 }
+
 /* Modal buttons */
-.AlertButtons{
+.AlertButtons {
   width: 90%;
   display: flex;
   justify-content: space-between;

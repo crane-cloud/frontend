@@ -1,7 +1,7 @@
 .DetailContainer {
   display: flex;
   gap: 5%;
-  padding: 1% 4%;
+  padding: 2rem;
   flex-wrap: wrap;
   justify-content: space-between;
 }
@@ -28,6 +28,7 @@
 
 .DetailSecond {
   width: 40%;
+  height: fit-content;
 }
 
 .Revision {
@@ -53,10 +54,15 @@
   border: 1px solid #ddd;
 }
 
-.DetailFirstDetail{
+.DetailFirstDetail {
   margin: 2rem;
 }
 
-.listItem strong{
+.listItem strong {
   color: var(--primary-color);
+}
+
+.SpinnerArea {
+  padding: 2rem 0 2rem 0;
+  height: 5vh;
 }
