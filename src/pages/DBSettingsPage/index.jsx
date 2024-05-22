@@ -24,6 +24,8 @@ import SettingsModal from "../../components/SettingsModal/index.jsx";
 import DisableModalContent from "../../components/DisableModalContent/index.jsx";
 import styles from "../AppMetricsPage/AppMetricsPage.module.css";
 import Tooltip from "../../components/Tooltip/index.js";
+import { DATABASE_API_URL } from "../../config.js";
+import tellAge from "../../helpers/ageUtility.js";
 
 class DBSettingsPage extends React.Component {
   constructor(props) {
@@ -110,7 +112,7 @@ class DBSettingsPage extends React.Component {
     this.setState({
       gettingDatabases: true,
     });
-    handleGetRequest(`/projects/${projectID}/databases/${databaseID}`)
+    handleGetRequest(`${DATABASE_API_URL}/databases/${databaseID}`)
       .then((response) => {
         this.setState({
           gettingDatabases: false,
@@ -289,7 +291,7 @@ class DBSettingsPage extends React.Component {
     this.setState({
       gettingPassword: true,
     });
-    handleGetRequest(`/projects/${projectID}/databases/${databaseID}/password`)
+    handleGetRequest(`${DATABASE_API_URL}/databases/${databaseID}/password`)
       .then((response) => {
         this.setState({
           gettingPassword: false,
@@ -341,7 +343,7 @@ class DBSettingsPage extends React.Component {
     });
     handlePostRequestWithOutDataObject(
       newPassword,
-      `/projects/${projectID}/databases/${databaseID}/reset_password`
+      `${DATABASE_API_URL}/databases/${databaseID}/reset_password`
     )
       .then(() => {
         window.location.href = `/projects/${projectID}/databases/${databaseID}/settings`;
@@ -361,7 +363,7 @@ class DBSettingsPage extends React.Component {
     });
     handlePostRequestWithOutDataObject(
       {},
-      `/projects/${projectID}/databases/${databaseID}/reset`
+      `${DATABASE_API_URL}/databases/${databaseID}/reset`
     )
       .then((response) => {
         this.setState({
@@ -381,7 +383,7 @@ class DBSettingsPage extends React.Component {
   }
   deleteDb(projectID, databaseID) {
     this.setState({ deletingDB: true, deleteDBError: "" });
-    handleDeleteRequest(`/projects/${projectID}/databases/${databaseID}`, {})
+    handleDeleteRequest(`${DATABASE_API_URL}/databases/${databaseID}`, {})
       .then(() => {
         window.location.href = `/projects/${projectID}/databases`;
       })
@@ -401,7 +403,7 @@ class DBSettingsPage extends React.Component {
       if (currentDB.disabled) {
         handlePostRequestWithOutDataObject(
           {},
-          `/databases/${databaseID}/enable`
+          `${DATABASE_API_URL}/databases/${databaseID}/enable`
         )
           .then(() => {
             window.location.reload();
@@ -415,7 +417,7 @@ class DBSettingsPage extends React.Component {
       } else {
         handlePostRequestWithOutDataObject(
           {},
-          `/databases/${databaseID}/disable`
+          `${DATABASE_API_URL}/databases/${databaseID}/disable`
         )
           .then(() => {
             window.location.reload();
@@ -661,7 +663,7 @@ class DBSettingsPage extends React.Component {
                       <div className={styles.InnerContentGrid}>
                         <div className={styles.InnerTitlesEnd}>Size</div>
                         <div className={styles.InnerContentEnd}>
-                          {currentDB?.db_size}
+                          {currentDB?.default_storage_kb}
                         </div>
                       </div>
                       <div className={styles.InnerContentGrid}>
@@ -669,7 +671,7 @@ class DBSettingsPage extends React.Component {
                           Date Created
                         </div>
                         <div className={styles.InnerContentEnd}>
-                          {currentDB?.age}
+                          {tellAge(currentDB?.date_created)}
                         </div>
                       </div>
                     </div>
