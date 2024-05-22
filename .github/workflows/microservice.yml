@@ -59,7 +59,7 @@ jobs:
 
       - name: Add Env vars
         env:
-          REACT_APP_API_BASE_URL: http://cranecloud-backend
+          REACT_APP_API_BASE_URL: https://product.renu-01.cranecloud.io
           REACT_APP_MIRA_API_URL: ${{ secrets.REACT_APP_MIRA_API_URL }}
           REACT_APP_FLUTTERWAVE_PUBLIC_KEY_TESTING: ${{ secrets.REACT_APP_FLUTTERWAVE_PUBLIC_KEY_TESTING }}
           REACT_APP_GITHUB_CLEINT_ID: ${{ secrets.REACT_APP_GITHUB_CLEINT_ID_STAGING }}
@@ -125,9 +125,9 @@ jobs:
             kubectl set image deployment/$deployment  $deployment=${{ env.image }}:${{ needs.build.outputs.tag }} --record -n $namespace
           else
             echo "Deployment does not exist. Creating deployment..."
-            kubectl apply -f deployment.yaml -n $namespace
+            kubectl apply -f docker/prod/deployment.yml -n $namespace
           fi
 
       - name: Monitor Rollout
         run: |
-          kubectl rollout status deployment/ $deployment --timeout=300s --namespace $namespace
+          kubectl rollout status deployment/$deployment --timeout=300s --namespace $namespace

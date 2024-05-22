@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: cranecloud-frontend
-          image: cranecloud/cranecloud-frontend:latest 
+          image: cranecloud/frontend:latest 
           ports:
             - containerPort: 3000
 ---
