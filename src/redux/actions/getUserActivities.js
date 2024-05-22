@@ -1,9 +1,10 @@
-import axios from "../../axios";
+import activityLoggerAxiosInstance from "../../apis/userActivityLoggerAxios";
 import {
   GETTING_USER_ACTIVITIES,
   USER_ACTIVITIES_SUCCESS,
   USER_ACTIVITIES_FAIL,
 } from "./actionTypes";
+import { ACTIVITY_LOGS_API_URL } from "../../config";
 
 const startFetchingUserActivities = () => ({
   type: GETTING_USER_ACTIVITIES,
@@ -27,12 +28,12 @@ const getUserActivities = (qeuryParams, currentPage) => (dispatch) => {
 
   let link;
   if (qeuryParams !== "" && currentPage !== "") {
-    link = `/users/activities?${qeuryParams}&page=${currentPage}`;
+    link = `/activities?${qeuryParams}&page=${currentPage}`;
   } else {
-    link = `/users/activities?page=${currentPage}`;
+    link = `/activities?page=${currentPage}`;
   }
-
-  return axios
+  console.log(ACTIVITY_LOGS_API_URL)
+  return activityLoggerAxiosInstance
     .get(link)
     .then((response) => {
       dispatch(userActivitiesSuccess(response));
