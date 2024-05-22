@@ -62,8 +62,6 @@ class CreateDatabase extends React.Component {
       addingDatabase: true,
       addDatabaseError: "",
     });
-    console.log(DATABASE_API_URL);
-    console.log(data);
     handlePostRequestWithOutDataObject(data, `${DATABASE_API_URL}/databases`)
       .then(() => {
         window.location.href = `/projects/${projectID}/databases`;
