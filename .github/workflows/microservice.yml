@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - microservice
-      - deploy/app
 
   workflow_dispatch:
 
