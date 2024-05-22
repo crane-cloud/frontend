@@ -1,0 +1,133 @@
+name: Microservice deployment
+
+on:
+  push:
+    branches:
+      - microservice
+      - deploy/app
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    outputs:
+      image: ${{ steps.export.outputs.image }}
+      tag: ${{ steps.export.outputs.tag }}
+
+    runs-on: ubuntu-latest
+    env:
+      namespace: cranecloud-microservice
+      image: cranecloud/frontend
+      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install (Buildx)
+        uses: docker/setup-buildx-action@v1
+
+      - name: Set up Docker Buildx
+        run: |
+          docker buildx create --use
+          docker buildx version  # Print information to verify that Buildx is set up
+        if: runner.os == 'Linux' # Only run on Linux runners
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Install kubectl
+        run: |
+          curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+          chmod +x ./kubectl
+          sudo mv ./kubectl /usr/local/bin/kubectl
+
+      - id: meta
+        name: Tag
+        uses: docker/metadata-action@v3
+        with:
+          flavor: |
+            latest=true
+          images: ${{ env.image }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha
+
+      - name: Add Env vars
+        env:
+          REACT_APP_API_BASE_URL: http://cranecloud-backend
+          REACT_APP_MIRA_API_URL: ${{ secrets.REACT_APP_MIRA_API_URL }}
+          REACT_APP_FLUTTERWAVE_PUBLIC_KEY_TESTING: ${{ secrets.REACT_APP_FLUTTERWAVE_PUBLIC_KEY_TESTING }}
+          REACT_APP_GITHUB_CLEINT_ID: ${{ secrets.REACT_APP_GITHUB_CLEINT_ID_STAGING }}
+          REACT_APP_EXCHANGE_RATE_KEY: ${{ secrets.REACT_APP_EXCHANGE_RATE_KEY }}
+          REACT_APP_DOCS_URL: ${{ secrets.REACT_APP_DOCS_URL_STAGING }}
+          REACT_APP_DOCKER_EMAIL: ${{ secrets.REACT_APP_DOCKER_EMAIL }}
+          REACT_APP_DOCKER_PASSWORD: ${{ secrets.REACT_APP_DOCKER_PASSWORD }}
+          REACT_APP_MONITORING_APP: ${{ secrets.REACT_APP_MONITORING_APP_STAGING }}
+        run: |
+          chmod +x ./.github/workflows/bin/create_envs.sh
+          ./.github/workflows/bin/create_envs.sh
+
+      - name: Build
+        uses: docker/build-push-action@v2
+        with:
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          context: .
+          file: docker/prod/Dockerfile
+          labels: ${{ steps.meta.outputs.labels }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+
+      - id: export
+        name: Export
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const metadata = JSON.parse(`${{ steps.meta.outputs.json }}`)
+            const fullUrl = metadata.tags.find((t) => t.includes(':sha-'))
+            if (fullUrl == null) {
+              core.error('Unable to find sha tag of image')
+            } else {
+              const tag = fullUrl.split(':')[1]
+              core.setOutput('image', fullUrl)
+              core.setOutput('tag', tag)
+            }
+
+  Microservice:
+    name: Deploy (Staging)
+
+    needs:
+      - build
+
+    runs-on: ubuntu-latest
+    env:
+      namespace: cranecloud-microservice
+      image: cranecloud/frontend
+      deployment: cranecloud-frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - uses: azure/k8s-set-context@v1
+        with:
+          kubeconfig: ${{ secrets.RENU_KUBECONFIG}}
+
+      - name: Deploy or Update Deployment
+        run: |
+          if kubectl get deployment $deployment -n $namespace > /dev/null 2>&1; then
+            echo "Deployment exists. Updating image..."
+            kubectl set image deployment/$deployment  $deployment=${{ env.image }}:${{ needs.build.outputs.tag }} --record -n $namespace
+          else
+            echo "Deployment does not exist. Creating deployment..."
+            kubectl apply -f deployment.yaml -n $namespace
+          fi
+
+      - name: Monitor Rollout
+        run: |
+          kubectl rollout status deployment/ $deployment --timeout=300s --namespace $namespace
