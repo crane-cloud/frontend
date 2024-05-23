@@ -1,4 +1,4 @@
-import axios from "../../axios";
+import { monitoringAxios } from "../../axios";
 import {
   FETCH_APP_NETWORK_SUCCESS,
   FETCH_APP_NETWORK_FAILED,
@@ -34,8 +34,12 @@ const clearAppNetwork = () => ({
 const getAppNetwork = (projectID, appID, params) => (dispatch) => {
   dispatch(startFetchingAppNetworkMetrics());
 
-  return axios
-    .post(`/projects/${projectID}/apps/${appID}/dashboardnetwork`, params)
+  return monitoringAxios
+    .post(`/apps/network/metrics`, {
+      ...params,
+      project_id: projectID,
+      app_id: appID,
+    })
     .then((response) => {
       dispatch(getAppNetworkMetricsSuccess(appID, response));
     })
