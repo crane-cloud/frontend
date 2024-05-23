@@ -4,7 +4,6 @@ import {
   USER_ACTIVITIES_SUCCESS,
   USER_ACTIVITIES_FAIL,
 } from "./actionTypes";
-import { ACTIVITY_LOGS_API_URL } from "../../config";
 
 const startFetchingUserActivities = () => ({
   type: GETTING_USER_ACTIVITIES,
