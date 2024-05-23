@@ -1,5 +1,4 @@
-import axios,{userActivityLoggerAxios} from "../axios";
-
+import axios from "../axios";
 
 export const handlePostRequestWithDataObject = (
   data,

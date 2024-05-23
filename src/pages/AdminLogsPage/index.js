@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 // import { useParams } from "react-router-dom";
-import { handleGetRequest, handleUserActivitiesGetRequest } from "../../apis/apis.js";
+import { handleGetRequest } from "../../apis/apis.js";
 import InformationBar from "../../components/InformationBar";
 import Header from "../../components/Header";
 import SideNav from "../../components/SideNav";
@@ -17,6 +17,7 @@ import { ReactComponent as ArrowUpDDown } from "../../assets/images/ArrowUp&Down
 import { dateInWords } from "../../helpers/dateConstants";
 import Spinner from "../../components/Spinner";
 import AppFooter from "../../components/appFooter/index.js";
+import { userActivityLoggerAxios } from "../../axios.js";
 
 const AdminLogsPage = () => {
   const clusterID = localStorage.getItem("clusterID");
@@ -84,8 +85,7 @@ const AdminLogsPage = () => {
 
   const fetchActivityLogs = (link) => {
     setLoading(true);
-    //projectID
-    handleUserActivitiesGetRequest(link)
+    handleGetRequest(link, userActivityLoggerAxios)
       .then((response) => {
         if (response.data.data.activity.length > 0) {
           setLogs(response.data.data.activity);
