@@ -32,7 +32,6 @@ const getUserActivities = (qeuryParams, currentPage) => (dispatch) => {
   } else {
     link = `/activities?page=${currentPage}`;
   }
-  console.log(ACTIVITY_LOGS_API_URL)
   return userActivityLoggerAxios
     .get(link)
     .then((response) => {
