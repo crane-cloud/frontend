@@ -1,5 +1,5 @@
-import axios from "../axios";
-import activityLoggerAxios from "./userActivityLoggerAxios";
+import axios,{userActivityLoggerAxios} from "../axios";
+
 
 export const handlePostRequestWithDataObject = (data, endpoint) => {
   return new Promise((resolve, reject) => {
@@ -43,7 +43,7 @@ export const handleGetRequest = (endpoint) => {
 
 export const handleUserActivitiesGetRequest = (endpoint) => {
   return new Promise((resolve, reject) => {
-    activityLoggerAxios
+    userActivityLoggerAxios
       .get(endpoint)
       .then((response) => {
         resolve(response);

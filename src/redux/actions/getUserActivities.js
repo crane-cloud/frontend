@@ -1,4 +1,4 @@
-import activityLoggerAxiosInstance from "../../apis/userActivityLoggerAxios";
+import {userActivityLoggerAxios} from "../../axios";
 import {
   GETTING_USER_ACTIVITIES,
   USER_ACTIVITIES_SUCCESS,
@@ -33,7 +33,7 @@ const getUserActivities = (qeuryParams, currentPage) => (dispatch) => {
     link = `/activities?page=${currentPage}`;
   }
   console.log(ACTIVITY_LOGS_API_URL)
-  return activityLoggerAxiosInstance
+  return userActivityLoggerAxios
     .get(link)
     .then((response) => {
       dispatch(userActivitiesSuccess(response));
