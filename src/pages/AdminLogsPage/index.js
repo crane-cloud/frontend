@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 // import { useParams } from "react-router-dom";
-import { handleGetRequest } from "../../apis/apis.js";
+import { handleGetRequest, handleUserActivitiesGetRequest } from "../../apis/apis.js";
 import InformationBar from "../../components/InformationBar";
 import Header from "../../components/Header";
 import SideNav from "../../components/SideNav";
@@ -21,7 +21,7 @@ import AppFooter from "../../components/appFooter/index.js";
 const AdminLogsPage = () => {
   const clusterID = localStorage.getItem("clusterID");
 
-  const baseLink = "/users/activities?";
+  const baseLink = "/activities?";
   const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState([]);
   const [users, setUsers] = useState([]);
@@ -85,7 +85,7 @@ const AdminLogsPage = () => {
   const fetchActivityLogs = (link) => {
     setLoading(true);
     //projectID
-    handleGetRequest(link)
+    handleUserActivitiesGetRequest(link)
       .then((response) => {
         if (response.data.data.activity.length > 0) {
           setLogs(response.data.data.activity);
