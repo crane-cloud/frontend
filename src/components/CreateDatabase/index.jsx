@@ -5,7 +5,7 @@ import { handlePostRequestWithOutDataObject } from "../../apis/apis.js";
 import Spinner from "../Spinner";
 import Feedback from "../Feedback";
 import "./CreateDatabase.css";
-import { DATABASE_API_URL } from "../../config.js";
+import { databaseAxios } from "../../axios.js";
 
 const flavours = [
   { name: "MYSQL", id: 1, value: "mysql" },
@@ -62,7 +62,7 @@ class CreateDatabase extends React.Component {
       addingDatabase: true,
       addDatabaseError: "",
     });
-    handlePostRequestWithOutDataObject(data, `${DATABASE_API_URL}/databases`)
+    handlePostRequestWithOutDataObject(data, "/databases", databaseAxios)
       .then(() => {
         window.location.href = `/projects/${projectID}/databases`;
       })

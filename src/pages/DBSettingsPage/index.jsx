@@ -24,8 +24,8 @@ import SettingsModal from "../../components/SettingsModal/index.jsx";
 import DisableModalContent from "../../components/DisableModalContent/index.jsx";
 import styles from "../AppMetricsPage/AppMetricsPage.module.css";
 import Tooltip from "../../components/Tooltip/index.js";
-import { DATABASE_API_URL } from "../../config.js";
 import tellAge from "../../helpers/ageUtility.js";
+import { databaseAxios } from "../../axios.js";
 
 class DBSettingsPage extends React.Component {
   constructor(props) {
@@ -103,16 +103,16 @@ class DBSettingsPage extends React.Component {
     this.deleteDb = this.deleteDb.bind(this);
   }
   componentDidMount() {
-    const { projectID, databaseID } = this.props.match.params;
-    this.fetchSelectedDb(projectID, databaseID);
+    const { databaseID } = this.props.match.params;
+    this.fetchSelectedDb(databaseID);
   }
   // componentDidUpdate(prevProps) {
   // }
-  fetchSelectedDb(projectID, databaseID) {
+  fetchSelectedDb(databaseID) {
     this.setState({
       gettingDatabases: true,
     });
-    handleGetRequest(`${DATABASE_API_URL}/databases/${databaseID}`)
+    handleGetRequest(`/databases/${databaseID}`, databaseAxios)
       .then((response) => {
         this.setState({
           gettingDatabases: false,
@@ -282,16 +282,16 @@ class DBSettingsPage extends React.Component {
   fetchPassword() {
     const {
       match: {
-        params: { projectID, databaseID },
+        params: { databaseID },
       },
     } = this.props;
-    this.fetchPasswordApis(projectID, databaseID);
+    this.fetchPasswordApis(databaseID);
   }
-  fetchPasswordApis(projectID, databaseID) {
+  fetchPasswordApis(databaseID) {
     this.setState({
       gettingPassword: true,
     });
-    handleGetRequest(`${DATABASE_API_URL}/databases/${databaseID}/password`)
+    handleGetRequest(`/databases/${databaseID}/password`, databaseAxios)
       .then((response) => {
         this.setState({
           gettingPassword: false,
@@ -343,7 +343,8 @@ class DBSettingsPage extends React.Component {
     });
     handlePostRequestWithOutDataObject(
       newPassword,
-      `${DATABASE_API_URL}/databases/${databaseID}/reset_password`
+      `/databases/${databaseID}/reset_password`,
+      databaseAxios
     )
       .then(() => {
         window.location.href = `/projects/${projectID}/databases/${databaseID}/settings`;
@@ -363,7 +364,8 @@ class DBSettingsPage extends React.Component {
     });
     handlePostRequestWithOutDataObject(
       {},
-      `${DATABASE_API_URL}/databases/${databaseID}/reset`
+      `/databases/${databaseID}/reset`,
+      databaseAxios
     )
       .then((response) => {
         this.setState({
@@ -383,7 +385,7 @@ class DBSettingsPage extends React.Component {
   }
   deleteDb(projectID, databaseID) {
     this.setState({ deletingDB: true, deleteDBError: "" });
-    handleDeleteRequest(`${DATABASE_API_URL}/databases/${databaseID}`, {})
+    handleDeleteRequest(`/databases/${databaseID}`, {}, databaseAxios)
       .then(() => {
         window.location.href = `/projects/${projectID}/databases`;
       })
@@ -403,7 +405,8 @@ class DBSettingsPage extends React.Component {
       if (currentDB.disabled) {
         handlePostRequestWithOutDataObject(
           {},
-          `${DATABASE_API_URL}/databases/${databaseID}/enable`
+          `/databases/${databaseID}/enable`,
+          databaseAxios
         )
           .then(() => {
             window.location.reload();
@@ -417,7 +420,8 @@ class DBSettingsPage extends React.Component {
       } else {
         handlePostRequestWithOutDataObject(
           {},
-          `${DATABASE_API_URL}/databases/${databaseID}/disable`
+          `/databases/${databaseID}/disable`,
+          databaseAxios
         )
           .then(() => {
             window.location.reload();

@@ -1,5 +1,4 @@
-import axios from "../../axios";
-import { DATABASE_API_URL } from "../../config";
+import { databaseAxios } from "../../axios";
 import {
   FETCH_PROJECT_DATABASES_SUCCESS,
   FETCH_PROJECT_DATABASES_FAILED,
@@ -31,8 +30,8 @@ const clearProjectDatabases = () => ({
 const getProjectDatabases = () => (dispatch) => {
   dispatch(startFetchingDatabases());
 
-  return axios
-    .get(`${DATABASE_API_URL}/databases`)
+  return databaseAxios
+    .get("/databases")
     .then((response) => {
       dispatch(getDatabasesSuccess(response));
     })
