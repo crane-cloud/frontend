@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL, ACTIVITY_LOGS_API_URL, MONITORING_API_URL } from "./config";
 
-const token = localStorage.getItem("token");
+
 
 // Create main backend axios instance
 const instance = axios.create({
@@ -18,6 +18,8 @@ const monitoringAxios = axios.create({
 });
 
 // Set default headers
+const token = localStorage.getItem("token");
+instance.defaults.headers.Authorization = `Bearer ${token}`;
 userActivityLoggerAxios.defaults.headers.Authorization = `Bearer ${token}`;
 monitoringAxios.defaults.headers.Authorization = `Bearer ${token}`;
 
