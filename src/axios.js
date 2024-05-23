@@ -1,9 +1,15 @@
 import axios from "axios";
-import { API_BASE_URL, MONITORING_API_URL } from "./config";
+import { API_BASE_URL, ACTIVITY_LOGS_API_URL, MONITORING_API_URL } from "./config";
+
+
 
 // Create main backend axios instance
 const instance = axios.create({
   baseURL: API_BASE_URL,
+});
+// Create activity axios instance
+const userActivityLoggerAxios = axios.create({
+  baseURL: ACTIVITY_LOGS_API_URL,
 });
 
 // Create monitoring axios instance
@@ -14,6 +20,7 @@ const monitoringAxios = axios.create({
 // Set default headers
 const token = localStorage.getItem("token");
 instance.defaults.headers.Authorization = `Bearer ${token}`;
+userActivityLoggerAxios.defaults.headers.Authorization = `Bearer ${token}`;
 monitoringAxios.defaults.headers.Authorization = `Bearer ${token}`;
 
 // Define response interceptor function
@@ -34,10 +41,14 @@ const errorInterceptor = (error) => {
 
 // Add response interceptors to both instances
 instance.interceptors.response.use(responseInterceptor, errorInterceptor);
+userActivityLoggerAxios.interceptors.response.use(
+  responseInterceptor,
+  errorInterceptor
+);
 monitoringAxios.interceptors.response.use(
   responseInterceptor,
   errorInterceptor
 );
 
-export { instance, monitoringAxios };
+export { instance, userActivityLoggerAxios, monitoringAxios };
 export default instance;

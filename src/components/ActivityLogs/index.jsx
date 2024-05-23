@@ -1,5 +1,5 @@
 import styles from "./ActivityLogs.module.css";
-import { handleGetRequest } from "../../apis/apis.js";
+import { handleUserActivitiesGetRequest } from "../../apis/apis.js";
 import { ReactComponent as CheckMark } from "../../assets/images/check-circle.svg";
 import { ReactComponent as Danger } from "../../assets/images/alert-octagon.svg";
 // import { ReactComponent as CloudOff } from "../../assets/images/cloud-off.svg";
@@ -32,7 +32,7 @@ const ActivityLogs = ({ projectID }) => {
   //api
   const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState([]);
-  const baseLinkRef = useRef(`/users/activities?`);
+  const baseLinkRef = useRef(`/activities?`);
   // const baseLink = baseLinkRef.current;
   useEffect(() => {
     if (projectID) {
@@ -49,7 +49,7 @@ const ActivityLogs = ({ projectID }) => {
 
   const fetchActivityLogs = (link) => {
     setLoading(true);
-    handleGetRequest(link)
+    handleUserActivitiesGetRequest(link)
       .then((response) => {
         if (response.data.data.activity.length > 0) {
           setLogs(response.data.data.activity);
