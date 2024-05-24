@@ -1,9 +1,12 @@
-import axios,{userActivityLoggerAxios} from "../axios";
+import axios from "../axios";
 
-
-export const handlePostRequestWithDataObject = (data, endpoint) => {
+export const handlePostRequestWithDataObject = (
+  data,
+  endpoint,
+  axiosInstance = axios
+) => {
   return new Promise((resolve, reject) => {
-    axios
+    axiosInstance
       .post(endpoint, {
         data,
       })
@@ -15,9 +18,13 @@ export const handlePostRequestWithDataObject = (data, endpoint) => {
       });
   });
 };
-export const handlePostRequestWithOutDataObject = (data, endpoint) => {
+export const handlePostRequestWithOutDataObject = (
+  data,
+  endpoint,
+  axiosInstance = axios
+) => {
   return new Promise((resolve, reject) => {
-    axios
+    axiosInstance
       .post(endpoint, data)
       .then((response) => {
         resolve(response);
@@ -28,9 +35,9 @@ export const handlePostRequestWithOutDataObject = (data, endpoint) => {
   });
 };
 
-export const handleGetRequest = (endpoint) => {
+export const handleGetRequest = (endpoint, axiosInstance = axios) => {
   return new Promise((resolve, reject) => {
-    axios
+    axiosInstance
       .get(endpoint)
       .then((response) => {
         resolve(response);
@@ -41,22 +48,9 @@ export const handleGetRequest = (endpoint) => {
   });
 };
 
-export const handleUserActivitiesGetRequest = (endpoint) => {
+export const handlePatchRequest = (endpoint, data, axiosInstance = axios) => {
   return new Promise((resolve, reject) => {
-    userActivityLoggerAxios
-      .get(endpoint)
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-};
-
-export const handlePatchRequest = (endpoint, data) => {
-  return new Promise((resolve, reject) => {
-    axios
+    axiosInstance
       .patch(endpoint, data)
       .then((response) => {
         resolve(response);
@@ -66,9 +60,9 @@ export const handlePatchRequest = (endpoint, data) => {
       });
   });
 };
-export const handleDeleteRequest = (endpoint, data) => {
+export const handleDeleteRequest = (endpoint, data, axiosInstance = axios) => {
   return new Promise((resolve, reject) => {
-    axios
+    axiosInstance
       .delete(endpoint, data)
       .then((response) => {
         resolve(response);
