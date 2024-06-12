@@ -261,6 +261,7 @@
     text-align: left;
     top: 0;
     right: 0;
+
 }
 
 .dateStyle {
@@ -282,6 +283,7 @@
     gap: 1rem;
     width: 100%;
     margin-top: 1rem;
+    /* min-width: 80vh; */
 }
 
 .FollowProjectCard {
@@ -316,16 +318,22 @@
     background-color: #e0e0e0;
 }
 
+
 .ProfileProjectsSection {
-    min-height: 80vh;
-    margin-bottom: 10px;
+    margin-bottom: 3rem;
     position: relative;
+    width: 100%;
+}
+.TopProjectsContainer{
+   min-width: 80vh;
+   width: 100%;
+   margin-top: -10px;
 }
 
 .ShowMoreProjectsContainer {
     position: absolute;
     color: #008AC1;
-    bottom: 20px;
+    margin-top: 15px;
     right: 0;
     cursor: pointer;
 }
@@ -467,29 +475,60 @@
 /* .selectComponent{
    
 } */
+/* tabs */
 
+.tabsContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    max-width: 50%;
+    margin-top: 20px;
+}
+
+.TabOptionLayout{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 3rem;
+}
+.TopProfileCardContainer{
+    width: 30%;
+}
 
 @media (max-width: 500px) {}
 
 @media only screen and (max-width: 900px) {}
 
 @media only screen and (max-width: 700px) {
+    .TabOptionLayout{
+        flex-direction: column;
+    }
     .ContainerSection {
         display: flex;
         flex-direction: column;
         width: auto;
+    }
+    /* .TopProjectsContainer{
+        width: 90%;
+    } */
+    .ProfileProjectsSection {
+        width: 90%;
     }
 
     .Page {
         min-width: 40rem;
         height: 180vh;
     }
+    .ProjectsContainer {
+        grid-template-columns: 1fr;
+    }
 
     .UserAvatar {
         display: none;
     }
 
-    .UserAvatarLarge {
+    .BetaUserDiv {
         display: none;
     }
 
@@ -509,7 +548,19 @@
         display: none;
     }
 
-    .ProjectsContainer {
-        grid-template-columns: 1fr;
+
+    .DateStyles{
+        display: none;
+    }
+    .FollowButton{
+        position: absolute;
+        color: #555;
+        font-size: 12px;
+        text-align: left;
+        top: 0;
+        right: 0;
+    }
+    .UserProfileInfoHeader {
+       flex-direction: column;
     }
 }

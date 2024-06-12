@@ -1,0 +1,119 @@
+.ProfileCard {
+    display: flex;
+    gap: 1rem;
+    width: 20rem;
+    flex-direction: column;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 1.3rem 1rem 1rem 2.5rem;
+  }
+  
+  .UserProfileInfoHeader {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    position: relative;
+  }
+  
+  .UserAvatarLarge {
+    width: 7rem;
+    height: 7rem;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 2.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .Identity {
+    display: flex;
+    flex-direction: column;
+    padding-left: 1rem;
+  }
+  
+  .IdentityName {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #000;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    text-transform: capitalize;
+  }
+  
+  .BetaUserDiv {
+    display: inline;
+    padding: 0.3rem 0.5rem;
+    border-radius: 999px;
+    background-color: rgba(128, 0, 128, 0.217);
+    color: purple;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: normal;
+  }
+  
+  .IdentityEmail {
+    color: #686868;
+    font-size: 0.95rem;
+  }
+  
+  .DateStyles {
+    color: #555;
+    font-size: 12px;
+    width: fit-content;
+    margin-bottom: 5px;
+  }
+  
+  .dateStyle {
+    font-weight: 600;
+  }
+  
+  .FollowButton {
+    padding: 7px;
+    position: absolute;
+    color: #555;
+    font-size: 12px;
+    text-align: left;
+    top: 0;
+    right: 0;
+  }
+  
+  .AdminProfileRowInfo {
+    display: flex;
+    /* justify-content: space-between; */
+    font-size: 0.95rem;
+    color: #4d4d4d;
+    text-align: center;
+  }
+  
+  .AdminProfileRowItem {
+    display: flex;
+    align-items: center;
+    gap: 4em;
+    padding: 0.3rem 0.3rem 0.7rem 0.3rem;
+  }
+  
+  @media only screen and (max-width: 700px) {
+    .ProfileCard {
+      padding: 1rem;
+    }
+  
+    .DateStyles {
+      display: none;
+    }
+  
+    .UserAvatarLarge {
+      width: 5rem;
+      height: 5rem;
+    }
+  
+    .IdentityName {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+  
