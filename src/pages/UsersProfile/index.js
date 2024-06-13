@@ -9,10 +9,7 @@ import AppFooter from "../../components/appFooter";
 import styles from "./UserProfile.module.css";
 import moment from "moment";
 import PrimaryButton from "../../components/PrimaryButton";
-// import { ReactComponent as UpdateIcon } from "../../assets/images/upload-cloud.svg";
-// import { ReactComponent as CreateIcon } from "../../assets/images/check-circle.svg";
-// import { ReactComponent as RightArrowIcon } from "../../assets/images/blue-right-arrow.svg";
-// import Select from "../../components/Select";
+import ProfileAnalytics from "../../components/ProfileAnalyticsCard";
 import { getYearOptions } from "../../helpers/dateConstants";
 import TabItem from "../../components/TabItem";
 import UserFeedActivities from "../../components/UserProfileActivitiesComponent";
@@ -111,6 +108,18 @@ const user = {
   followers: 7,
   projects: 38,
 };
+const user2 = {
+  name: 'Khalifan Muwonge',
+  email: 'khalifanmuwonge@gmail.com',
+  organization: 'Makerere',
+  dateJoined: '12/04/2020',
+  apps: 10,
+  projects: 15,
+  databases: 5,
+  followingProjects: 7,
+  followers: 12,
+  isBeta: true,
+};
 const tabNames = ["Overview", "Projects", "Activities"];
 const UsersProfile = () => {
   const [expanded, setExpanded] = useState({});
@@ -163,7 +172,7 @@ const UsersProfile = () => {
                 {activeTab === "Overview" && (
                   <>
                     <section className="">
-                      <div className="SectionTitle">Analytics</div>
+                      {/* 
                       <div className="AdminCardArea">
                         <div className="AdminUserProfileCard">
                           <div
@@ -225,7 +234,9 @@ const UsersProfile = () => {
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
+                      <div className="SectionTitle">Analytics</div>
+                      <ProfileAnalytics user={user2}/>
                     </section>
                     <UserFeedProjects projects={dummyProjects} />
                     <UserFeedActivities
@@ -260,6 +271,7 @@ const UsersProfile = () => {
               </div>
             </section>
           </div>
+          <AppFooter/>
         </div>
       </div>
     </div>
