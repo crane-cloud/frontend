@@ -143,139 +143,124 @@ const UsersProfile = () => {
           </div>
 
           <div className="SmallContainer">
-            <>
-              <div className="SectionTitle">Muwonge Khalifan's Profile</div>
-              <div className={styles.tabsContainer}>
-                {tabNames.map((tabName) => (
-                  <TabItem
-                    key={tabName}
-                    tabName={tabName}
-                    activeTab={activeTab}
-                    setActiveTab={setActiveTab}
-                  />
-                ))}
+            <section className={styles.TabOptionLayout}>
+              <div className={styles.TopProfileCardContainer}>
+                <ProfileCardSmall user={user} />
               </div>
-            </>
-            {activeTab === "Overview" && (
-              <>
-                {/* Information */}
-                <section className="">
-                  <div className="SectionTitle">Information</div>
-                  <div className="AdminCardArea">
-                    <div className="AdminUserProfileCard">
-                      <div
-                        className="AdminUserProfileInfoSect"
-                        style={{ width: "100%" }}
-                      >
-                        <div className={styles.UserProfileInfoHeader}>
-                          <Avatar
-                            name={"Khalifan Muwonge"}
-                            className={styles.UserAvatarLarge}
-                          />
-                          <div className={styles.Identity}>
-                            <div className={styles.IdentityName}>
-                              {"Khalifan Muwonge"}
-                              {/* {user?.is_beta_user === true && ( */}
-                              <div className={styles.BetaUserDiv}>
-                                Beta User
+              <div className={styles.OverviewContainer}>
+                
+                  <div className={styles.tabsContainer}>
+                    {tabNames.map((tabName) => (
+                      <TabItem
+                        key={tabName}
+                        tabName={tabName}
+                        activeTab={activeTab}
+                        setActiveTab={setActiveTab}
+                      />
+                    ))}
+                  </div>
+                
+                {activeTab === "Overview" && (
+                  <>
+                    <section className="">
+                      <div className="SectionTitle">Analytics</div>
+                      <div className="AdminCardArea">
+                        <div className="AdminUserProfileCard">
+                          <div
+                            className="AdminUserProfileInfoSect"
+                            style={{ width: "100%" }}
+                          >
+                            <div className={styles.UserProfileInfoHeader}>
+                              <Avatar
+                                name={"Khalifan Muwonge"}
+                                className={styles.UserAvatarLarge}
+                              />
+                              <div className={styles.Identity}>
+                                <div className={styles.IdentityName}>
+                                  {"Khalifan Muwonge"}
+                                  <div className={styles.BetaUserDiv}>
+                                    Beta User
+                                  </div>
+                                </div>
+                                <div className={styles.IdentityEmail}>
+                                  {"khalifanmuwonge@gmail.com"}
+                                </div>
+                                <div className="AdminProfileRowItem">
+                                  Organization:
+                                  <span>Makerere</span>
+                                </div>
+                                <PrimaryButton
+                                  className={styles.FollowButton}
+                                  btntype={"new"}
+                                  onClick={() => {}}
+                                >
+                                  + Follow
+                                </PrimaryButton>
                               </div>
-                              {/* )} */}
+                              <div className={styles.DateStyles}>
+                                Date Joined:
+                                <span className={styles.dateStyle}>
+                                  {moment("12/04/2020")
+                                    .utc()
+                                    .format("ddd, MMMM DD, yyyy")}
+                                </span>
+                              </div>
                             </div>
-                            <div className={styles.IdentityEmail}>
-                              {"khalifanmuwonge@gmail.com"}
-                            </div>
-                            <div className="AdminProfileRowItem">
-                              Organization:
-                              <span>
-                                {/* {user?.organisation === null
-                                        ? "Not Found"
-                                        : user?.organisation} */}
-                                Makerere
-                              </span>
-                            </div>
-                            <PrimaryButton
-                              className={styles.FollowButton}
-                              btntype={"new"}
-                              onClick={() => {}}
-                            >
-                              + Follow
-                            </PrimaryButton>
-                          </div>
-                          <div className={styles.DateStyles}>
-                            Date Joined:
-                            <span className={styles.dateStyle}>
-                              {moment("12/04/2020")
-                                .utc()
-                                .format("ddd, MMMM DD, yyyy")}
-                            </span>
-                          </div>
-                        </div>
 
-                        <div className="AdminProfileRowInfo">
-                          <div className="AdminProfileRowItem">
-                            Following:
-                            <span>1</span>
-                          </div>
-                          |
-                          <div className="AdminProfileRowItem">
-                            Followers:
-                            <span>7</span>
-                          </div>
-                          |
-                          <div className="AdminProfileRowItem">
-                            Projects:
-                            <span>38</span>
+                            <div className="AdminProfileRowInfo">
+                              <div className="AdminProfileRowItem">
+                                Following:
+                                <span>1</span>
+                              </div>
+                              |
+                              <div className="AdminProfileRowItem">
+                                Followers:
+                                <span>7</span>
+                              </div>
+                              |
+                              <div className="AdminProfileRowItem">
+                                Projects:
+                                <span>38</span>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </section>
-                {/* Projects */}
-                <UserFeedProjects projects={dummyProjects} />
-                {/* Activities */}
-                <UserFeedActivities
-                  activities={dummyActivities}
-                  yearOptions={yearOptions}
-                  selectedYear={(selectedOption) => selectedOption}
-                  expanded={expanded}
-                  toggleExpand={toggleExpand}
-                />
-              </>
-            )}
-            {activeTab === "Projects" && (
-              <>
-                <section className={styles.TabOptionLayout}>
-                  <div className={styles.TopProfileCardContainer}>
-                  <ProfileCardSmall user={user} />
-                  </div>
-                  <div className={styles.TopProjectsContainer}>
+                    </section>
                     <UserFeedProjects projects={dummyProjects} />
-                  </div>
-                </section>
-              </>
-            )}
-            {activeTab === "Activities" && (
-              <>
-                <section className={styles.TabOptionLayout}>
-                  <div className={styles.TopProfileCardContainer}>
-                  <ProfileCardSmall user={user} />
-                  </div>
-                  <div className={styles.TopProjectsContainer}>
-                  <UserFeedActivities
-                  activities={dummyActivities}
-                  yearOptions={yearOptions}
-                  selectedYear={(selectedOption) => selectedOption}
-                  expanded={expanded}
-                  toggleExpand={toggleExpand}
-                />
-                  </div>
-                </section>
-              </>
-            )}
+                    <UserFeedActivities
+                      activities={dummyActivities}
+                      yearOptions={yearOptions}
+                      selectedYear={(selectedOption) => selectedOption}
+                      expanded={expanded}
+                      toggleExpand={toggleExpand}
+                    />
+                  </>
+                )}
+                {activeTab === "Projects" && (
+                  <>
+                    <div className={styles.TopProjectsContainer}>
+                      <UserFeedProjects projects={dummyProjects} />
+                    </div>
+                  </>
+                )}
+                {activeTab === "Activities" && (
+                  <>
+                    <div className={styles.TopProjectsContainer}>
+                      <UserFeedActivities
+                        activities={dummyActivities}
+                        yearOptions={yearOptions}
+                        selectedYear={(selectedOption) => selectedOption}
+                        expanded={expanded}
+                        toggleExpand={toggleExpand}
+                      />
+                    </div>
+                  </>
+                )}
+              </div>
+            </section>
           </div>
         </div>
-        <AppFooter />
       </div>
     </div>
   );

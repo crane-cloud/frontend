@@ -1,119 +1,121 @@
 .ProfileCard {
-    display: flex;
-    gap: 1rem;
-    width: 20rem;
-    flex-direction: column;
-    border-radius: 10px;
-    background-color: #fff;
-    padding: 1.3rem 1rem 1rem 2.5rem;
-  }
-  
-  .UserProfileInfoHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20rem;
+  border-radius: 10px;
+  background-color: #ffffff;
+  padding: 1.5rem 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.ProfileCard:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.UserProfileInfoHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.UserAvatarLarge {
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 2.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.UserAvatarLarge:hover {
+  transform: scale(1.1);
+}
+
+.Identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: justify;
+  gap: 0.5rem;
+}
+
+.IdentityName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333333;
+  text-transform: capitalize;
+}
+
+.IdentityEmail {
+  color: #666666;
+  font-size: 0.95rem;
+}
+
+.Organization {
+  font-size: 0.95rem;
+  color: #4d4d4d;
+  width: 100%;
+}
+
+.DateStyles {
+  font-size: 0.85rem;
+  color: #888888;
+  margin-top: 0.3rem;
+  text-align: justify;
+  width: 100%;
+}
+
+.dateStyle {
+  font-weight: 600;
+}
+
+.FollowButton {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.AdminProfileRowInfo {
+  display: flex;
+  /* justify-content: space-between; */
+  font-size: 0.95rem;
+  color: #888888;
+  width: 100%;
+  text-align: left;
+}
+
+.AdminProfileRowItem {
+  display: flex;
+  align-items: center;
+  gap: 4em;
+  padding: 0.3rem 0.3rem 0.4rem 0;
+}
+
+@media only screen and (max-width: 700px) {
+  .ProfileCard {
     width: 100%;
-    display: flex;
-    gap: 1rem;
-    flex-direction: column;
-    position: relative;
+    padding: 1rem;
   }
-  
+
   .UserAvatarLarge {
-    width: 7rem;
-    height: 7rem;
-    border-radius: 50%;
-    text-align: center;
-    font-weight: bold;
-    font-size: 2.7rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+    width: 5rem;
+    height: 5rem;
   }
-  
-  .Identity {
-    display: flex;
-    flex-direction: column;
-    padding-left: 1rem;
-  }
-  
+
   .IdentityName {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #000;
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-    text-transform: capitalize;
+    font-size: 1.3rem;
   }
-  
-  .BetaUserDiv {
-    display: inline;
-    padding: 0.3rem 0.5rem;
-    border-radius: 999px;
-    background-color: rgba(128, 0, 128, 0.217);
-    color: purple;
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-weight: normal;
-  }
-  
-  .IdentityEmail {
-    color: #686868;
-    font-size: 0.95rem;
-  }
-  
+
   .DateStyles {
-    color: #555;
-    font-size: 12px;
-    width: fit-content;
-    margin-bottom: 5px;
+    display: none;
   }
-  
-  .dateStyle {
-    font-weight: 600;
-  }
-  
-  .FollowButton {
-    padding: 7px;
-    position: absolute;
-    color: #555;
-    font-size: 12px;
-    text-align: left;
-    top: 0;
-    right: 0;
-  }
-  
-  .AdminProfileRowInfo {
-    display: flex;
-    /* justify-content: space-between; */
-    font-size: 0.95rem;
-    color: #4d4d4d;
-    text-align: center;
-  }
-  
-  .AdminProfileRowItem {
-    display: flex;
-    align-items: center;
-    gap: 4em;
-    padding: 0.3rem 0.3rem 0.7rem 0.3rem;
-  }
-  
-  @media only screen and (max-width: 700px) {
-    .ProfileCard {
-      padding: 1rem;
-    }
-  
-    .DateStyles {
-      display: none;
-    }
-  
-    .UserAvatarLarge {
-      width: 5rem;
-      height: 5rem;
-    }
-  
-    .IdentityName {
-      flex-direction: column;
-      gap: 1rem;
-    }
-  }
-  
+}

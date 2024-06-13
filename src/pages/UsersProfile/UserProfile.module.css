@@ -13,6 +13,13 @@
     position: relative;
 }
 
+.OverviewContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+
 .BackButton {
     width: fit-content;
     color: var(--primary-color);
@@ -478,12 +485,27 @@
 /* tabs */
 
 .tabsContainer{
-    display: flex;
+    /* display: flex;
     flex-direction: row;
     gap: 1rem;
     margin-bottom: 1rem;
     max-width: 50%;
+    margin-top: 20px; */
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin-bottom: 1rem;
     margin-top: 20px;
+    width: 100%;
+    padding-bottom: 5px;
+    /* border-top: 1px solid #ccc; */
+    border-bottom: 1px solid #ccc;
+    position: sticky;
+    top: 0;
+    padding-top: 10px;
+    z-index: 20;
+    background-color: #e5ebf3;
+
 }
 
 .TabOptionLayout{
@@ -494,6 +516,9 @@
 }
 .TopProfileCardContainer{
     width: 30%;
+    position: sticky;
+    top: 10px;
+    height: fit-content;
 }
 
 @media (max-width: 500px) {}
@@ -512,6 +537,9 @@
     /* .TopProjectsContainer{
         width: 90%;
     } */
+    .TopProfileCardContainer {
+        width: 100%;
+    }
     .ProfileProjectsSection {
         width: 90%;
     }
