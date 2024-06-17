@@ -30,7 +30,7 @@ const ProfileAnalytics = ({ user }) => {
         <div className={styles.ChartsContainer}>
           <div className={styles.Chart}>
             <div className={styles.SingleChart}>
-              <h4>Resource Breakdown</h4>
+              <h4>Resources</h4>
               <PieChart width={200} height={200}>
                 <Pie
                   data={data1}
@@ -66,7 +66,7 @@ const ProfileAnalytics = ({ user }) => {
           </div>
           <div className={styles.Chart}>
             <div className={styles.SingleChart}>
-              <h4>Projects' Activity</h4>
+              <h4>Projects</h4>
               <PieChart width={200} height={200}>
                 <Pie
                   data={data2}
@@ -102,7 +102,7 @@ const ProfileAnalytics = ({ user }) => {
 
           <div className={styles.Chart}>
             <div className={styles.SingleChart}>
-              <h4>Social Activity</h4>
+              <h4>Users</h4>
               <PieChart width={200} height={200}>
                 <Pie
                   data={data3}
