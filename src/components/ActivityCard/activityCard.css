@@ -1,0 +1,32 @@
+.activity-card{
+    width: 600px;
+    border: 1px solid #ebebeb;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 0.3rem;
+    margin-bottom: 1rem;
+    background-color: #fff;
+    padding: 1rem ;
+}
+.card-header{
+    display: flex;
+    align-items: center;
+    text-indent: 10px;
+}
+
+.user-info{
+    display: flex;
+    place-items: center;
+}
+
+.card-body{
+    width: 560px;
+    border: 1px solid #dddcdc;
+    border-radius: 0.3rem;
+    /* margin-bottom: 1rem; */
+    background-color: #fafafa;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.2rem 1rem 0.2rem 1rem;
+}
+.activity-card .card-header img{
+    border-radius: 50%;
+}

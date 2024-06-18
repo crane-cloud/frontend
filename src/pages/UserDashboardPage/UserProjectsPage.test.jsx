@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
 import { shallow } from "enzyme";
-import UserProjectsPage, { mapStateToProps } from "./";
+import UserProjectsPage, { mapStateToProps } from ".";
 
 const UserProjectsPageProps = {
   data: { id:"1" },

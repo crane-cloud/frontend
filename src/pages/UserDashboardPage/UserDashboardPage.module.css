@@ -1,0 +1,408 @@
+.ProjectList {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  padding-top: 0.5rem;
+}
+
+.ProjectsDropDown {
+  display: flex;
+  flex-direction: column;
+}
+
+.ProjectCardContainer{
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 0.4rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+.RecentContainer > .ActiveUserCard{
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.ProjectCardTile{
+  font-weight: bold;
+  font-size: 24px;
+  padding: 1rem 1rem 1rem 1.5rem ;
+  border-bottom: 1px solid #d1d0d0;
+}
+
+.NewsFeedSection{
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 0.4rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.NewsFeedSectionTitle{
+  font-weight: bold;
+  font-size: 24px;
+  padding: 1rem 1rem 1rem 1.5rem ;
+  border-bottom: 1px solid #d1d0d0;
+}
+
+.FeedContainer{
+  min-height: 100vh;
+  border-radius: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.FeedContainer .ExploreContainer{
+  max-height: 180vh;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 0.4rem;
+  bottom: 3rem;
+}
+
+.projectsDashboard ,.ShowMoreProjects{
+  align-items: center;
+  display: flex;
+  place-items: center;
+}
+
+.ExploreTitle{
+  font-weight: bold;
+  font-size: 24px;
+  padding: 1.5rem 1rem 1rem 1.5rem ;
+  border-bottom: 1px solid #d1d0d0;
+}
+
+.RecentContainer{
+  top:1rem;
+  min-height: 75vh;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 0.4rem;
+  padding: 0.5rem 0.5rem;
+}
+
+.RecentTitle{
+  font-weight: bold;
+  font-size: 24px;
+  padding: 1.5rem 1rem 1rem 1.5rem ;
+  border-bottom: 1px solid #d1d0d0;
+  background-color: #ffffff;
+}
+
+.ProjectCardContainer ,.ProjectList,  .SmallContainer{
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.NewsFeedSection ,.FeedContainer ,.RecentActivities{
+  padding-left: 0.5rem;
+  padding-right: 0.5rem; 
+}
+
+.TopItem {
+  display: flex;
+  width: 13rem;
+  flex-direction: row;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 17px;
+  background-color: #d9d9d9;
+  padding: 1rem;
+  border-radius: 0.4rem;
+}
+
+.closeDrop {
+  -webkit-transform: rotateX(180deg);
+  transform: rotateX(180deg);
+}
+
+.itemsList {
+  width: 12rem;
+  gap: 1rem;
+  padding-top: .5rem;
+  position: relative;
+  animation-name: example;
+  left: 2rem;
+  animation-duration: 1s;
+}
+
+@keyframes example {
+  0% {
+    left: 0px;
+  }
+
+  100% {
+    left: 2rem;
+  }
+}
+
+.ProjectCategoryHeadings {
+  padding: 0.3rem;
+  font-size: large;
+  display: flex;
+  gap: 1.3rem;
+}
+
+.ProjectCategories {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.CurrentTab {
+  background-color: #d9d9d9;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.CurrentTab:hover,
+.Tab:hover {
+  cursor: pointer;
+}
+
+.Tab {
+  padding: 0.5rem;
+}
+
+.SmallerIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.ProjectFormErrorDiv {
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #d63b3b;
+  text-align: center;
+  padding: 1rem 0;
+  height: 1rem;
+}
+
+.ProjectDeleteModel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.Role {
+  font-weight: 600;
+}
+
+.ModelContent {
+  width: 23rem;
+}
+
+.ProjectDeleteModel .ModalParentWrap {
+  background-color: inherit;
+}
+
+.UpdateProjectModelButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.UpdateForm {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem 1.3rem;
+  grid-template-rows: 2fr;
+}
+
+.InformationText {
+  width: 20rem;
+}
+
+.InformationWarning {
+  color: #d63b3b;
+}
+
+.ModelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.BlueBtn:hover {
+  color: var(--primary-color);
+  background-color: #fff;
+  outline: 2px solid var(--primary-color);
+}
+
+.BlueBtn {
+  color: #fff;
+  background-color: var(--primary-color);
+  outline: 2px solid var(--primary-color);
+  padding: 0.5rem;
+  height: 2.5rem;
+}
+
+.ProjectDeleteModel .ModalChildWrap {
+  z-index: 3;
+}
+
+.ProjectDeleteModel .ModalChildWrap {
+  min-width: 21rem;
+  max-width: 25rem;
+}
+
+.ClusterDrop {
+  width: 25rem;
+  border: 2px solid #000000;
+  box-sizing: border-box;
+  font-size: inherit;
+  padding: 1rem;
+}
+
+.ClusterNameOption {
+  padding: 2rem 1.5rem;
+  color: #000;
+  background-color: #f9f9f9;
+  font-weight: bold;
+}
+
+.MainRow>.ConnectModal {
+  width: 100%;
+  margin-left: 0;
+}
+
+.MainRow {
+  background-color: var(--gray-bg-light-color);
+  min-height: calc(100vh - 14rem);
+  position: relative;
+  padding: 0rem 1rem 0rem 1.5rem;
+  display: grid;
+  grid-template-columns: 0.3fr 1.5fr 0.3fr; 
+  grid-gap: 1rem;
+  top:1rem;
+  padding-bottom: 3rem;
+  height: 500px;
+  overflow-x: hidden;
+}
+
+.NoResourcesMessage {
+  flex-grow: 1;
+  display: flex;
+  font-size: 16px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding: 12rem;
+}
+
+.ButtonPlusSmall {
+  width: 1rem;
+  height: 1rem;
+}
+
+.FooterRow {
+  padding: 1rem 3rem;
+  background-color: var(--gray-bg-light-color);
+}
+
+.SearchBar {
+  flex-grow: 1;
+  display: flex;
+  padding: 2rem;
+}
+
+.PaginationSection{
+  margin-bottom: 3rem;
+  padding-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ProjectsSection{
+  padding: 0rem 1rem 0rem 1rem ;
+  border-bottom: 1px solid #d1d0d0;
+}
+
+
+
+
+@media (max-width: 500px) {
+  .ProjectList>div {
+    width: 100% !important;
+  }
+  .NoResourcesMessage{
+  font-size: 12px;
+  padding: 3rem;
+  }
+}
+
+
+.SmallProjectCardList > div{
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px 20px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    margin: 10px;
+    border: 1px solid #ccc;
+}
+
+.SmallProjectCardList > div > div > div{
+  display: flex;
+  justify-content: space-between;
+  place-items: center;
+}
+
+.exploreMore{
+  color: var(--primary-color);
+  font-weight: bold;
+  padding: 1.5rem 1rem 1rem 1.5rem ;
+  place-items: center;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+}
+
+.RightArrow{
+  color: var(--primary-color);
+  align-items: center;
+  place-items: center;
+}
+
+.Activities{
+  padding: 1rem 1rem 1rem 1rem ;
+  align-items: center;
+  font-weight: 500;
+
+}
+
+.Activities p{
+  color: var(--primary-color);
+  border-bottom: 1px solid var(--primary-color);
+  max-width: 14rem;
+  font-weight: 450;
+}
+
+.MainRow ,.ProjectCardContainer ,
+.NoResourcesMessage , .SpinnerWrapper{
+  min-width: 300px;
+}
+
+.MainRow .ProjectCardContainer{
+    position: sticky;
+    top: 0;
+    bottom: 0;
+    z-index: 30;
+    min-height: 40vh;
+    max-height: 66vh;
+}
+.ShowMoreRecentActivities{
+  align-items: center;
+  display: flex;
+  place-items: center;
+}
