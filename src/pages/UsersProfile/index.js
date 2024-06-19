@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
-import Avatar from "../../components/Avatar";
 import Header from "../../components/Header";
 
 import InformationBar from "../../components/InformationBar";
 
 import AppFooter from "../../components/appFooter";
 import styles from "./UserProfile.module.css";
-import moment from "moment";
-import PrimaryButton from "../../components/PrimaryButton";
+
+import { handleGetRequest, handlePostRequestWithOutDataObject, handleDeleteRequest } from "../../apis/apis";
 import ProfileAnalytics from "../../components/ProfileAnalyticsCard";
 import { getYearOptions } from "../../helpers/dateConstants";
 import TabItem from "../../components/TabItem";
@@ -16,24 +15,8 @@ import UserFeedActivities from "../../components/UserProfileActivitiesComponent"
 import UserFeedProjects from "../../components/UserProfileProjectsComponent";
 import ProfileCardSmall from "../../components/SmallerProfileCard";
 
-const dummyProjects = [
-  { id: 1, name: "My Project 1", description: "This is my description" },
-  { id: 2, name: "My Project 1", description: "This is my description" },
-  { id: 3, name: "My Project 1", description: "This is my description" },
-  { id: 4, name: "My Project 1", description: "This is my description" },
-  { id: 5, name: "My Project 1", description: "This is my description" },
-  { id: 6, name: "My Project 1", description: "This is my description" },
-  { id: 7, name: "My Project 1", description: "This is my description" },
-  { id: 8, name: "My Project 1", description: "This is my description" },
-  { id: 9, name: "My Project 1", description: "This is my description" },
-  { id: 10, name: "My Project 1", description: "This is my description" },
-  { id: 11, name: "My Project 1", description: "This is my description" },
-  { id: 12, name: "My Project 1", description: "This is my description" },
-  { id: 13, name: "My Project 1", description: "This is my description" },
-  { id: 14, name: "My Project 1", description: "This is my description" },
-  { id: 15, name: "My Project 1", description: "This is my description" },
-  { id: 16, name: "My Project 1", description: "This is my description" },
-];
+import { useParams } from "react-router-dom";
+
 
 const dummyActivities = [
   {
@@ -76,7 +59,6 @@ const dummyActivities = [
       },
     ],
   },
-
   {
     id: 2,
     month: "July 2024",
@@ -98,21 +80,12 @@ const dummyActivities = [
     ],
   },
 ];
-const user = {
+
+const user2 = {
   name: "Khalifan Muwonge",
-  isBetaUser: true,
   email: "khalifanmuwonge@gmail.com",
   organization: "Makerere",
-  dateJoined: "2020-12-04",
-  following: 1,
-  followers: 7,
-  projects: 38,
-};
-const user2 = {
-  name: 'Khalifan Muwonge',
-  email: 'khalifanmuwonge@gmail.com',
-  organization: 'Makerere',
-  dateJoined: '12/04/2020',
+  dateJoined: "12/04/2020",
   apps: 10,
   projects: 15,
   databases: 5,
@@ -120,10 +93,54 @@ const user2 = {
   followers: 12,
   isBeta: true,
 };
+
 const tabNames = ["Overview", "Projects", "Activities"];
 const UsersProfile = () => {
   const [expanded, setExpanded] = useState({});
   const [activeTab, setActiveTab] = useState("Overview");
+  //users
+  const [userDetails, setUserDetails] = useState({});
+  const [loadingUserDetails, setLoadingUserDetails] = useState(false);
+  const [loadingUserError, setLoadingUserError] = useState(false);
+  const [userFollowLoading, setUserFollowLoading] = useState(false);
+  //projects
+  const [userProjects, setUserProjects] = useState({});
+  const [loadingUserProjects, setLoadingUserProjects] = useState(false);
+  const [loadingUserProjectsError, setUserProjectsError] = useState(false);
+  const [projectFollowLoading, setProjectFollowLoading] = useState('');
+
+  const { userID } = useParams();
+
+  const getUserDetails = () => {
+    handleGetRequest(`/users/${userID}`)
+      .then((response) => {
+        setUserDetails(response.data.data.user);
+        setLoadingUserDetails(false);
+      })
+      .catch((error) => {
+        setLoadingUserError("Failed to fetch user details");
+        setLoadingUserDetails(false);
+      });
+  };
+
+  const getUserProjects = useCallback(async () => {
+    setLoadingUserProjects(true);
+    handleGetRequest(`users/${userID}/projects`)
+      .then((response) => {
+        setUserProjects(response.data.data.projects);
+        setLoadingUserProjects(false);
+      })
+      .catch(() => {
+        setUserProjectsError("Failed to userprojects, please try again");
+        setLoadingUserProjects(false);
+      })
+     
+  }, [setLoadingUserProjects,setUserProjects, setUserProjectsError]);
+
+  useEffect(() => {
+    getUserDetails();
+    getUserProjects()
+  }, []);
 
   const toggleExpand = (id) => {
     setExpanded((prev) => ({
@@ -131,8 +148,53 @@ const UsersProfile = () => {
       [id]: !prev[id],
     }));
   };
+
   const selectedYear = (year) => {
     return;
+  };
+
+  const onFollowClick = () => {
+    setUserFollowLoading(true);
+    if(userDetails.requesting_user_follows){
+      handleDeleteRequest(`users/${userID}/following`,{})
+      .then(() => {
+        window.location.href = `/profile/${userID}`;
+      })
+      .catch((error) => {
+         setUserFollowLoading(false);
+      });
+    }else{
+      handlePostRequestWithOutDataObject({}, `users/${userID}/following`)
+      .then(() => {
+        window.location.href = `/profile/${userID}`;
+      })
+      .catch((error) => {
+        setUserFollowLoading(false);
+      });
+    }
+  };
+
+  const onProjectFollowClick =  async (projectID) => {
+    setProjectFollowLoading(projectID)
+    const project = await userProjects.find((project)=> project.id === projectID)
+    if(project.is_follower){
+      handleDeleteRequest(`projects/${projectID}/following`,{})
+      .then(() => {
+        window.location.href = `/profile/${userID}`;
+      })
+      .catch((error) => {
+        setProjectFollowLoading('');
+      });
+    }else{
+      handlePostRequestWithOutDataObject({}, `projects/${projectID}/following`)
+      .then(() => {
+        window.location.href = `/profile/${userID}`;
+      })
+      .catch((error) => {
+        setProjectFollowLoading('');
+      });
+    }
+   
   };
 
   const yearOptions = getYearOptions();
@@ -145,7 +207,7 @@ const UsersProfile = () => {
         <div className="MainContentSection">
           <div className="InformationBarSection">
             <InformationBar
-              header={"Muwonge Khalifan"}
+              header={userDetails.name}
               showBtn={false}
               showBackBtn
             />
@@ -154,91 +216,33 @@ const UsersProfile = () => {
           <div className="SmallContainer">
             <section className={styles.TabOptionLayout}>
               <div className={styles.TopProfileCardContainer}>
-                <ProfileCardSmall user={user} />
+                <ProfileCardSmall
+                  user={userDetails}
+                  loading={loadingUserDetails}
+                  error={loadingUserError}
+                  onFollowClick={onFollowClick}
+                  userFollowLoading={userFollowLoading}
+                />
               </div>
               <div className={styles.OverviewContainer}>
-                
-                  <div className={styles.tabsContainer}>
-                    {tabNames.map((tabName) => (
-                      <TabItem
-                        key={tabName}
-                        tabName={tabName}
-                        activeTab={activeTab}
-                        setActiveTab={setActiveTab}
-                      />
-                    ))}
-                  </div>
-                
+                <div className={styles.tabsContainer}>
+                  {tabNames.map((tabName) => (
+                    <TabItem
+                      key={tabName}
+                      tabName={tabName}
+                      activeTab={activeTab}
+                      setActiveTab={setActiveTab}
+                    />
+                  ))}
+                </div>
+
                 {activeTab === "Overview" && (
                   <>
                     <section className="">
-                      {/* 
-                      <div className="AdminCardArea">
-                        <div className="AdminUserProfileCard">
-                          <div
-                            className="AdminUserProfileInfoSect"
-                            style={{ width: "100%" }}
-                          >
-                            <div className={styles.UserProfileInfoHeader}>
-                              <Avatar
-                                name={"Khalifan Muwonge"}
-                                className={styles.UserAvatarLarge}
-                              />
-                              <div className={styles.Identity}>
-                                <div className={styles.IdentityName}>
-                                  {"Khalifan Muwonge"}
-                                  <div className={styles.BetaUserDiv}>
-                                    Beta User
-                                  </div>
-                                </div>
-                                <div className={styles.IdentityEmail}>
-                                  {"khalifanmuwonge@gmail.com"}
-                                </div>
-                                <div className="AdminProfileRowItem">
-                                  Organization:
-                                  <span>Makerere</span>
-                                </div>
-                                <PrimaryButton
-                                  className={styles.FollowButton}
-                                  btntype={"new"}
-                                  onClick={() => {}}
-                                >
-                                  + Follow
-                                </PrimaryButton>
-                              </div>
-                              <div className={styles.DateStyles}>
-                                Date Joined:
-                                <span className={styles.dateStyle}>
-                                  {moment("12/04/2020")
-                                    .utc()
-                                    .format("ddd, MMMM DD, yyyy")}
-                                </span>
-                              </div>
-                            </div>
-
-                            <div className="AdminProfileRowInfo">
-                              <div className="AdminProfileRowItem">
-                                Following:
-                                <span>1</span>
-                              </div>
-                              |
-                              <div className="AdminProfileRowItem">
-                                Followers:
-                                <span>7</span>
-                              </div>
-                              |
-                              <div className="AdminProfileRowItem">
-                                Projects:
-                                <span>38</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div> */}
                       <div className="SectionTitle">Analytics</div>
-                      <ProfileAnalytics user={user2}/>
+                      <ProfileAnalytics user={user2} />
                     </section>
-                    <UserFeedProjects projects={dummyProjects} />
+                    <UserFeedProjects projects={userProjects} loading={loadingUserProjects} error={loadingUserProjectsError} onProjectFollowClick={onProjectFollowClick} projectFollowLoading={projectFollowLoading}/>
                     <UserFeedActivities
                       activities={dummyActivities}
                       yearOptions={yearOptions}
@@ -251,7 +255,7 @@ const UsersProfile = () => {
                 {activeTab === "Projects" && (
                   <>
                     <div className={styles.TopProjectsContainer}>
-                      <UserFeedProjects projects={dummyProjects} />
+                      <UserFeedProjects projects={userProjects} loading={loadingUserProjects} error={loadingUserProjectsError} onProjectFollowClick={onProjectFollowClick}  projectFollowLoading={projectFollowLoading} />
                     </div>
                   </>
                 )}
@@ -271,7 +275,7 @@ const UsersProfile = () => {
               </div>
             </section>
           </div>
-          <AppFooter/>
+          <AppFooter />
         </div>
       </div>
     </div>

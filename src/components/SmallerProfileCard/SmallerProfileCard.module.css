@@ -4,6 +4,7 @@
   align-items: center;
   width: 20rem;
   border-radius: 10px;
+  min-height: 17rem;
   background-color: #ffffff;
   padding: 1.5rem 1rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

@@ -1,8 +1,8 @@
 import React from "react";
-import { PieChart, Pie, Cell, Tooltip } from "recharts";
-import moment from "moment";
+import { PieChart, Pie, Cell } from "recharts";
+// import moment from "moment";
 import styles from "./ProfileAnalyticsCard.module.css";
-import PrimaryButton from "../PrimaryButton";
+// import PrimaryButton from "../PrimaryButton";
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658"];
 
@@ -22,8 +22,7 @@ const ProfileAnalytics = ({ user }) => {
     { name: "Follows", value: 1 },
     { name: "Followers", value: 7 },
   ];
-
-
+  
   return (
     <section className="AdminCardArea">
       <div className="AdminUserProfileCard">
