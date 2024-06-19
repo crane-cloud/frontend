@@ -6,7 +6,6 @@ import styles from "./UserDashboardPage.module.css";
 import InformationBar from "../../components/InformationBar/index.js";
 import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import Header from "../../components/Header/index.js";
-import Pagination from "../../components/Pagination/index.jsx";
 import getClustersList from "../../redux/actions/clusters.js";
 import CreateProject from "../../components/CreateProject/index.jsx";
 import getUserProjects from "../../redux/actions/projectsList.js";
@@ -314,7 +313,6 @@ class UserProjectsPage extends React.Component {
     } = this.state;
     const {
       projects,
-      pagination,
       isRetrieving,
       isFetched,
       match: { params },
@@ -463,7 +461,7 @@ class UserProjectsPage extends React.Component {
               {isRetrieving ? (
                 <div className={styles.NoResourcesMessage}>
                   <div className={styles.SpinnerWrapper}>
-                    <Spinner size="small" />
+                    <Spinner size="Spinner SpinnerBig" />
                   </div>
                 </div>
               ) : Searchword !== "" ? (
@@ -610,20 +608,6 @@ class UserProjectsPage extends React.Component {
                 <div className={styles.NoResourcesMessage}>
                   Oops! Something went wrong! Failed to retrieve Projects.
                 </div>
-              )}
-
-              {pagination?.pages > 1 &&
-                    !isRetrieving &&
-                    isFetched &&
-                    !openCreateComponent && (
-                      <div className={styles.PaginationSection}>
-                        {/* customise pagination for shared and personal projects */}
-                        <Pagination
-                          total={pagination?.pages}
-                          current={this.state.currentPaginationPage}
-                          onPageChange={this.onPageChange}
-                        />
-                      </div>
               )}
 
               </div>

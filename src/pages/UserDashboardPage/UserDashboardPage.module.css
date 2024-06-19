@@ -388,9 +388,18 @@
   font-weight: 450;
 }
 
-.MainRow ,.ProjectCardContainer ,
+.MainRow , .ProjectCardContainer ,
 .NoResourcesMessage , .SpinnerWrapper{
   min-width: 300px;
+}
+
+.MainRow ,
+.ProjectCardContainer,
+.NoResourcesMessage,
+.SpinnerWrapper,
+.SmallSpinnerWrapper{
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .MainRow .ProjectCardContainer{

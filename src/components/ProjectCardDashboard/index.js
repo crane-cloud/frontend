@@ -98,30 +98,25 @@ class ProjectCard extends React.Component {
             className={`${admin_disabled ? "killPointerActions":""}`}
             key={cardID}
           >
-            {/* <div className="ProjectImageDiv">
-              <LineChartComponent
-                lineDataKey="memory"
-                preview
-                data={formattedMetrics}
-              />
-            </div> */}
           </Link>
         ) : (
-          <div
-            onClick={() => {
-              acceptInviteCallBackModel(
-                cardID,
-                this.updateRoleValue(currentUserRecord[0].role.split("."))
-              );
-            }}
-            className="PendingNote"
-          >
-            {fetchingProjectMembers ? (
-              <Spinner />
-            ) : (
-              `Invitation to this project is pending acceptance`
-            )}
-          </div>
+          <>
+          </>
+          // <div
+          //   onClick={() => {
+          //     acceptInviteCallBackModel(
+          //       cardID,
+          //       this.updateRoleValue(currentUserRecord[0].role.split("."))
+          //     );
+          //   }}
+          //   className="PendingNote"
+          // >
+          //   {fetchingProjectMembers ? (
+          //     <Spinner size="Spinner"/>
+          //   ) : (
+          //     `Invitation to this project is pending acceptance`
+          //   )}
+          // </div>
         )}
         <div className="ProjectBottomContainer">
           <div className="ProjectInfor">
