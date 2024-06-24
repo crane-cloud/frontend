@@ -16,6 +16,7 @@ import PrimaryButton from "../../components/PrimaryButton";
 import Spinner from "../../components/Spinner";
 import { handlePatchRequest } from "../../apis/apis.js";
 import "../../index.css";
+import { Link } from "react-router-dom/cjs/react-router-dom.min.js";
 
 class UserProjectsPage extends React.Component {
   constructor(props) {
@@ -69,7 +70,6 @@ class UserProjectsPage extends React.Component {
       currentTab: "My Projects",
     });
   }
-
 
   handleTabAll(selectedOption) {
     const { myProjectsList, sharedProjectsList } = this.state;
@@ -337,7 +337,14 @@ class UserProjectsPage extends React.Component {
             <div className={styles.TopRow}>
               <Header credits={credits?.amount} />
               <InformationBar
-                header="Projects"
+                header={
+                  <span>
+                    <Link className="breadcrumb" to={`/dashboard`}>
+                      Dashboard
+                    </Link>
+                    / Projects
+                  </span>
+                }
                 showBtn
                 buttontext="+ New Project"
                 showSearchBar

@@ -6,7 +6,6 @@
 .projectSection {
     flex: 1;
     min-width: 200px;
-    overflow: hidden;
     position: sticky;
     top: 0;
     height: 100vh;
