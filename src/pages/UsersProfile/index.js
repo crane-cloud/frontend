@@ -177,7 +177,7 @@ const UsersProfile = () => {
   const onProjectFollowClick =  async (projectID) => {
     setProjectFollowLoading(projectID)
     const project = await userProjects.find((project)=> project.id === projectID)
-    if(project.is_follower){
+    if(project.is_following){
       handleDeleteRequest(`projects/${projectID}/following`,{})
       .then(() => {
         window.location.href = `/profile/${userID}`;

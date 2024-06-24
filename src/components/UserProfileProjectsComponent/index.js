@@ -39,7 +39,7 @@ const UserFeedProjects = ({
                     onProjectFollowClick(project.id);
                   }}
                 >
-                  {projectFollowLoading === project.id? <Spinner/> : project.is_follower ?  "Unfollow" :  <><span style={{ fontWeight: 700, fontSize: "18px" }}>+</span>{" "}
+                  {projectFollowLoading === project.id? <Spinner/> : project.is_following ?  "Unfollow" :  <><span style={{ fontWeight: 700, fontSize: "18px" }}>+</span>{" "}
                   Follow</>}
                 </button>
               </div>
