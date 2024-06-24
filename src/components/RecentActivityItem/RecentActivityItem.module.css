@@ -1,0 +1,50 @@
+.activityItem {
+    display: flex;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    align-items: flex-start;
+}
+
+.userAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+.activityContent {
+    flex: 1;
+}
+
+.userAction {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.userAction>strong {
+    color: var(--primary-color);
+}
+
+.userAction>strong:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    transform: scale(1.05);
+}
+
+.time {
+    color: #999;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.projectCard {
+    margin-top: 10px;
+}

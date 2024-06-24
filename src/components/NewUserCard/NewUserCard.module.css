@@ -1,0 +1,105 @@
+.userCard {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffff;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 10px 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    display: flex;
+}
+
+.userInfo {
+    flex: 1;
+}
+
+.userAvatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+.cardContent {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+}
+
+.separator {
+    padding: 0 2rem 0 2rem;
+}
+
+.title {
+    font-size: 16px;
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.title:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    transform: scale(1.05);
+}
+
+.stats {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+}
+
+.statItem {
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+}
+
+.statItem p,
+.statItem span {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+.icon {
+    margin-right: 5px;
+}
+
+.followButtonArea {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    min-width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.followButton {
+    background-color: var(--secondary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .cardContent {
+        justify-content: center;
+    }
+}
