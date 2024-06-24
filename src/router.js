@@ -59,7 +59,6 @@ import VerificationSentPage from "./pages/VerificationSentPage";
 import AppCpuPage from "./pages/AppCpuPage";
 import AppMetricsPage from "./pages/AppMetricsPage";
 import ProjectSettingsPage from "./pages/ProjectSettingsPage";
-import UserDashboardPage from "./pages/UserDashboardPage";
 import UserProjectsPage from "./pages/UserProjectsPage";
 import UserActivity from "./pages/UserActivity";
 import ProjectLogs from "./pages/ProjectLogs";
