@@ -1,0 +1,234 @@
+.DashboardProjectsCard{
+  background-color: #ffffff;
+  border: 1px solid #e0dddd;
+  width: 17.5rem;
+  height: min-content;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: box-shadow .3s;
+  max-height: 15vh;
+}
+
+.ProjectsCard:hover {
+  box-shadow: 0 0 11px rgba(33,33,33,.2); 
+}
+/* .PendingNote{
+  display: flex;
+  color: rgb(175, 175, 175);
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+  font-size: 1rem;
+  height: 7rem;
+} */
+.opequeCard{
+  opacity: .4;
+}
+.unclickable{
+  cursor: not-allowed;
+}
+.killPointerActions{
+  pointer-events: none;
+}
+.opequeCard:hover{
+  box-shadow: none;
+}
+.ProjectImageDiv {
+  margin: 0;
+  width: 100%;
+  height: 7rem;
+}
+
+.appCount{
+ display: flex;
+ justify-content: flex-end;
+ border-radius: 0.4rem 0.4rem 0 0;
+}
+
+.appCount>div{
+  padding:0.1rem .5rem;
+  border-radius: 0 0.4rem 0 0;
+  background-color: rgb(235, 235, 235);
+  color: rgb(155, 155, 155);
+}
+
+
+.ProjectBottomContainer {
+  padding: 0.5rem;
+  height: 4rem;
+  display: flex;
+  flex-direction: row;
+  background-color: #ffedc7;
+  background-color: #f6fbe5;
+  justify-content: space-between;
+  border-radius: 0 0 .4rem .4rem;
+}
+.ProjectInfor{
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.ProjectsCardName {
+  width: 12rem;
+  flex-grow: 1;
+  color: #000;
+  text-overflow: ellipsis;
+  font-size: 1.1rem;
+  font-weight: 700;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ProjectsCardName:hover {
+  opacity: 0.8;
+}
+
+.ProjectInfoSection {
+  width:100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ProjectDescription {
+  text-overflow: ellipsis;
+  font-size: 0.9rem;
+  color: rgb(60, 60, 60);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.ProjectDropDown {
+  position: relative;
+}
+
+.ProjectDropDownContent div:hover {
+  background-color: #ddd;
+}
+
+.HeadingWithTooltip {
+  display: inline;
+}
+
+.SharedUsersIcon{
+  width: 1.3rem;
+  color: rgb(60, 60, 60);
+}
+
+/*///////////// Delete Model //////////////////*/
+
+.ProjectDeleteModel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.ProjectDeleteModel .ModalParentWrap {
+  background-color: inherit;
+}
+
+.ProjectDeleteModel .ModalChildWrap {
+  z-index: 3;
+}
+
+.DeleteProjectModel {
+  display: grid;
+  gap: 3rem;
+}
+
+.DeleteProjectModalLowerSection {
+  display: grid;
+  gap: 1rem;
+}
+
+.DeleteDescription {
+  cursor: default;
+}
+
+.DeleteDescription span {
+  padding: 0.2rem 0.4rem;
+  margin: 0;
+  font-size: 90%;
+  background-color: rgba(27, 31, 35, 0.1);
+  border-radius: 3px;
+}
+
+.DeleteProjectModelButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.DeleteProjectModelButtons .DeleteBtn {
+  background-color: #ff0000;
+  outline: 2px solid #ff0000;
+}
+.DeleteProjectModelButtons .DeleteBtn:hover {
+  background-color: #fff;
+  outline: 2px solid #ff0000;
+  color: #ff0000;
+}
+
+/* ////////// DropDown CSS ////////// */
+
+.DropDownImg {
+  fill: #aaa;
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+}
+
+.ProjectDropDownContent {
+  position: absolute;
+  top: 1.5rem;
+  right: 0.5rem;
+  background-color: var( --gray-bg-light-color);
+  min-width: 6.875rem;
+  z-index: 1;
+}
+
+.ProjectDropDownContent div {
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+}
+
+.ProjectDropDownContent div:hover {
+  background-color: #ddd;
+}
+
+/* ////////// Update Model ////////// */
+
+.ModalUpdateForm {
+  display: grid;
+  gap: 2rem;
+}
+
+.ModalUpdateForm .ModalFormInputs {
+  display: grid;
+  gap: 1rem;
+}
+
+.ModalUpdateForm .ModalFormInputs .InputText {
+  border: 2px solid #000000;
+  color: #000;
+}
+
+.ModalUpdateForm .ModalFormInputs .InputText::placeholder {
+  color: #000;
+}
+
+.ModalUpdateForm .ModalFormButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ProjectDeleteModel .ModalChildWrap {
+  min-width: 21rem;
+  max-width: 25rem;
+}

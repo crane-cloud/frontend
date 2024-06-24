@@ -1,21 +1,27 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Modal from "../../components/Modal";
-import styles from "./UserProjectsPage.module.css";
-import InformationBar from "../../components/InformationBar";
+import Modal from "../../components/Modal/index.js";
+import styles from "./UserDashboardPage.module.css";
+import InformationBar from "../../components/InformationBar/index.js";
 import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
-import Header from "../../components/Header";
-import Pagination from "../../components/Pagination";
-import getClustersList from "../../redux/actions/clusters";
-import CreateProject from "../../components/CreateProject";
-import getUserProjects from "../../redux/actions/projectsList";
-import getUserCredits from "../../redux/actions/userCredits";
-import ProjectCard from "../../components/ProjectCard";
-import PrimaryButton from "../../components/PrimaryButton";
-import Spinner from "../../components/Spinner";
+import Header from "../../components/Header/index.js";
+import getClustersList from "../../redux/actions/clusters.js";
+import CreateProject from "../../components/CreateProject/index.jsx";
+import getUserProjects from "../../redux/actions/projectsList.js";
+import getUserCredits from "../../redux/actions/userCredits.js";
+import DashboardProjectCard from "../../components/ProjectCardDashboard/index.js";
+import { Link } from "react-router-dom";
+import SmallProjectCard from "../../components/SmallProjectCard/index.js";
+import PrimaryButton from "../../components/PrimaryButton/index.js";
+import Spinner from "../../components/Spinner/index.js";
 import { handlePatchRequest } from "../../apis/apis.js";
 import "../../index.css";
+import { ReactComponent as RightArrow } from "../../assets/images/right-arrow.svg";
+import image from "../../assets/images/Colin.png";
+import image2 from "../../assets/images/Greatest.png";
+import RecentActivityCard from "../../components/ActivityCard/index.js";
+import ActiveUserCard from "../../components/ActiveUsersCard/index.js";
 
 class UserProjectsPage extends React.Component {
   constructor(props) {
@@ -23,7 +29,7 @@ class UserProjectsPage extends React.Component {
     this.initialState = {
       openCreateComponent: false,
       Searchword: "",
-      // SearchList: [],
+      SearchList: [],
       myProjectsList: [],
       sharedProjectsList: [],
       showInviteModel: false,
@@ -307,7 +313,6 @@ class UserProjectsPage extends React.Component {
     } = this.state;
     const {
       projects,
-      pagination,
       isRetrieving,
       isFetched,
       match: { params },
@@ -325,6 +330,107 @@ class UserProjectsPage extends React.Component {
       b.date_created > a.date_created ? 1 : -1
     );
     const adminCheck = data.username === "admin";
+
+    const recentActivities = [
+      {
+        avatarUrl: image,
+        userName: "Collins",
+        action: "followed your project",
+        projectName: "mosesmulumba/My_Project_1",
+        projectDescription: "This is my description...",
+        timestamp: "now",
+      },
+      {
+        avatarUrl: image2,
+        userName: "Derek",
+        action: "pinned a project",
+        projectName: "Firebase-1",
+        projectDescription: "Firebase in a nutshell",
+        timestamp: "yesterday",
+      },
+      {
+        avatarUrl: image,
+        userName: "Collins",
+        action: "created a project",
+        projectName: "collins/expo_refresh",
+        projectDescription: "This is a simple project",
+        timestamp: "yesterday",
+      },
+      {
+        avatarUrl: image,
+        userName: "Collins",
+        action: "created a project",
+        projectName: "collins/expo_refresh",
+        projectDescription: "This is my description...",
+        timestamp: "yesterday",
+      },
+      {
+        avatarUrl: image2,
+        userName: "Derek",
+        action: "pinned a project",
+        projectName: "Firebase-1",
+        projectDescription: "Firebase in a nutshell",
+        timestamp: "yesterday",
+      },
+      {
+        avatarUrl: image2,
+        userName: "Derek",
+        action: "pinned a project",
+        projectName: "Firebase-1",
+        projectDescription: "Firebase in a nutshell",
+        timestamp: "yesterday",
+      }
+    ];
+
+
+    const featuredProjects = [
+      {
+        name : "Sample Project",
+        description:"This is a sample project for demonstration purposes.",
+        img: image
+      },
+      {
+        name : "Sample Project",
+        description:"This is a sample project for demonstration purposes.",
+        img: image
+
+      },
+      {
+        name : "Sample Project",
+        description:"This is a sample project for demonstration purposes.",
+        img: image
+
+      },
+      {
+        name : "Sample Project",
+        description:"This is a sample project for demonstration purposes.",
+        img: image
+
+      },
+      {
+        name : "Sample Project",
+        description:"This is a sample project for demonstration purposes.",
+        img: image2
+      }
+    ];
+
+
+    const mostActiveUsers = [
+      {
+        avatarUrl: image,
+        userName: "Wagaba Collins",
+        followers: "90",
+        projects: "10",
+        apps: "1"
+      },
+      {
+        avatarUrl: image2,
+        userName: "Ssekide Derrick",
+        followers: 90,
+        projects: 10,
+        apps: 1
+      }
+    ];
     return (
       <div className={styles.Page}>
         {openCreateComponent ? (
@@ -337,68 +443,78 @@ class UserProjectsPage extends React.Component {
             <div className={styles.TopRow}>
               <Header credits={credits?.amount} />
               <InformationBar
-                header="Projects"
+                header="Dashboard"
                 showBtn
                 buttontext="+ New Project"
                 showSearchBar
-                selectedProjects={selectedProjects}
-                myProjectsList={myProjectsList}
-                sharedProjectsList={sharedProjectsList}
-                viewFilter={true}
-                placeholder="Search through projects"
+                placeholder="Enter keywords"
                 btnAction={this.openProjectCreateComponent}
                 searchAction={this.handleCallbackSearchword}
                 adminRoute={adminCheck}
-                onFilterSelect={this.onFilterSelect}
               />
             </div>
             <div className={styles.MainRow}>
-              <div className={`${styles.SelectProjects} SmallContainer`}></div>
+              <div className={`${styles.ProjectCardContainer}`}>
+                <div className={`${styles.ProjectCardTile}`}>
+                  Projects
+                </div>
               {isRetrieving ? (
                 <div className={styles.NoResourcesMessage}>
                   <div className={styles.SpinnerWrapper}>
-                    <Spinner size="big" />
+                    <Spinner size="Spinner SpinnerBig" />
                   </div>
                 </div>
               ) : Searchword !== "" ? (
-                <div className={`${styles.ProjectList}  SmallContainer`}>
-                  {isFetched &&
-                    sortedProjects !== undefined &&
-                    sortedProjects.map((project) => (
-                      <ProjectCard
-                        key={project.id}
-                        name={project.name}
-                        description={project.description}
-                        cardID={project.id}
-                        acceptInviteCallBackModel={this.showInvitationModel}
-                        userID={data.id}
-                        ownerId={project.owner_id}
-                        apps_count={project.apps_count}
-                        disabled={project.disabled}
-                        admin_disabled={project.admin_disabled}
-                      />
-                    ))}
-                </div>
-              ) : (
-                <div className={`${styles.ProjectList}  SmallContainer`}>
-                  {isFetched &&
-                    sortedProjects !== undefined &&
-                    sortedProjects.map((project) => (
-                      <ProjectCard
-                        key={project.id}
-                        name={project.name}
-                        description={project.description}
-                        cardID={project.id}
-                        userID={data.id}
-                        ownerId={project.owner_id}
-                        acceptInviteCallBackModel={this.showInvitationModel}
-                        apps_count={project.apps_count}
-                        disabled={project.disabled}
-                        admin_disabled={project.admin_disabled}
-                      />
-                    ))}
-                </div>
-              )}
+              <div className={`${styles.ProjectList}  SmallContainer`}>
+              {isFetched &&
+                sortedProjects !== undefined &&
+                sortedProjects.slice(0 ,4).map((project) => (
+                  <DashboardProjectCard
+                    key={project.id}
+                    name={project.name}
+                    description={project.description}
+                    cardID={project.id}
+                    acceptInviteCallBackModel={this.showInvitationModel}
+                    userID={data.id}
+                    ownerId={project.owner_id}
+                    apps_count={project.apps_count}
+                    disabled={project.disabled}
+                    admin_disabled={project.admin_disabled}
+                  />
+                ))}
+                  </div>
+                ) : (
+                  <div className={`${styles.ProjectList}  SmallContainer`}>
+                    {isFetched &&
+                      sortedProjects !== undefined &&
+                      sortedProjects.slice(0 , 3).map((project) => (
+                        <DashboardProjectCard
+                          key={project.id}
+                          name={project.name}
+                          description={project.description}
+                          cardID={project.id}
+                          userID={data.id}
+                          ownerId={project.owner_id}
+                          acceptInviteCallBackModel={this.showInvitationModel}
+                          apps_count={project.apps_count}
+                          disabled={project.disabled}
+                          admin_disabled={project.admin_disabled}
+                        />
+                      ))}
+                      {sortedProjects.length > 3 && (
+                        <Link to={{
+                          pathname: `/projects`,
+                        }}
+                        className={`${styles.projectsDashboard}`}
+                        >
+                          <div className={`${styles.ShowMoreProjects}`}>
+                            See all {sortedProjects.length} projects &nbsp;
+                            <RightArrow className={`${styles.RightArrow}`} />
+                          </div>
+                        </Link>
+                    )}
+                  </div>    
+                    )}
 
               {showInviteModel === true && (
                 <div className={styles.ProjectDeleteModel}>
@@ -493,23 +609,68 @@ class UserProjectsPage extends React.Component {
                   Oops! Something went wrong! Failed to retrieve Projects.
                 </div>
               )}
-            </div>
+
+              </div>
+              <div className={`${styles.NewsFeedSection}`}>
+                  <div className={`${styles.NewsFeedSectionTitle}`}>
+                      Recent Activity
+                  </div>
+                  <div className={`${styles.FeedContainer}`}>
+                  {recentActivities.length > 0 ? (
+                    <ul className={`${styles.RecentActivities}`}>
+                      {recentActivities.map((activity) => (
+                        <li key={activity.id || activity.timestamp}>
+                          <RecentActivityCard activity={activity} />
+                        </li>
+                      ))}
+                      <div className={`${styles.ShowMoreRecentActivities}`}>
+                        See all Recent Activities &nbsp;
+                        <RightArrow className={`${styles.RightArrow}`} />
+                      </div>
+                    </ul>
+                  ) : (
+                    <div className={`${styles.NoRecentActivity}`}>
+                      No recent activity yet.
+                    </div>
+                  )}
+                  
+                </div>
+              </div>
+              <div className={`${styles.FeedContainer}`}>
+                <div className={`${styles.ExploreContainer}`}>
+                  <div className={`${styles.ExploreTitle}`}>
+                      Featured Projects
+                  </div>
+                  <div className={`${styles.SmallProjectCardList}`}>
+                    {featuredProjects.map((featuredProject) => (
+                      <SmallProjectCard featuredProject={featuredProject} />
+                    ))}
+                  </div>
+                  <div className={`${styles.exploreMore}`}>
+                    Explore More &nbsp;&nbsp;
+                    <RightArrow className={`${styles.RightArrow}`} />
+                  </div>
+                  
+                </div>
+                <div className={`${styles.RecentContainer}`}>
+                    <div className={`${styles.RecentTitle}`}>
+                      Most Active Users
+                    </div>
+                    <div className={`${styles.ActiveUserCard}`}>
+                      {mostActiveUsers.map((mostActiveUser) => (
+                          <ActiveUserCard mostActiveUser={mostActiveUser} />
+                      ))}
+                    </div>
+                    <div className={`${styles.exploreMore}`}>
+                      View More &nbsp;&nbsp;
+                      <RightArrow className={`${styles.RightArrow}`} />
+                  </div>
+                </div>
+              </div>
           </div>
+        </div>
         )}
         <div className={styles.FooterRow}>
-          {pagination?.pages > 1 &&
-            !isRetrieving &&
-            isFetched &&
-            !openCreateComponent && (
-              <div className={styles.PaginationSection}>
-                {/* customise pagination for shared and personal projects */}
-                <Pagination
-                  total={pagination?.pages}
-                  current={this.state.currentPaginationPage}
-                  onPageChange={this.onPageChange}
-                />
-              </div>
-            )}
           <div>
             Copyright {new Date().getFullYear()} Crane Cloud. All Rights
             Reserved.

@@ -119,7 +119,7 @@ class LoginPage extends React.Component {
                   feedbackMessage: "Login Successful",
                 },
                 () => {
-                  window.location.href = `/projects`;
+                  window.location.href = `/dashboard`;
                 }
               );
             }
