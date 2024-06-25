@@ -59,7 +59,6 @@ import VerificationSentPage from "./pages/VerificationSentPage";
 import AppCpuPage from "./pages/AppCpuPage";
 import AppMetricsPage from "./pages/AppMetricsPage";
 import ProjectSettingsPage from "./pages/ProjectSettingsPage";
-import UserDashboardPage from "./pages/UserDashboardPage";
 import UserProjectsPage from "./pages/UserProjectsPage";
 import UserActivity from "./pages/UserActivity";
 import ProjectLogs from "./pages/ProjectLogs";
@@ -74,6 +73,7 @@ import DockerWebHook from "./components/DockerWebHook";
 import UsersProfile from "./pages/UsersProfile";
 
 import { handleGetRequest } from "./apis/apis";
+import UsersDashboardPage from "./pages/UsersDashboard";
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
@@ -133,9 +133,9 @@ const Routes = () => {
           isAllowed={hasToken}
           exact
           path="/dashboard"
-          component={UserDashboardPage}
+          component={UsersDashboardPage}
         />
-         <ProtectedRoute
+        <ProtectedRoute
           isAllowed={hasToken}
           exact
           path="/projects"

@@ -1,0 +1,95 @@
+.projectCard {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffff;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 10px 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.cardContent {
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 1em;
+    font-weight: 600;
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.title:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    transform: scale(1.05);
+}
+
+.description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    min-height: 2.3em;
+    margin: 5px 0 0 0;
+}
+
+.numberBox {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #fafae5;
+    padding: 2px;
+    border-radius: 8px;
+    min-width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.numberBox:hover {
+    cursor: pointer;
+}
+
+.number {
+    font-size: 1em;
+}
+
+.cardExtras {
+    display: flex;
+    padding-top: 0.3rem;
+}
+
+.membersIcon {
+    width: 1rem;
+    height: 1rem;
+}
+
+.memberCount {
+    padding-left: 0.5rem;
+}
+
+.followButtonArea {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    min-width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.followButton {
+    background-color: var(--secondary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}

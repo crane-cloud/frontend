@@ -1,0 +1,10 @@
+.featuredUsers {
+    background-color: #f8f9fa;
+    padding: 0.2rem 1rem 1rem 1rem;
+    border-radius: 8px;
+    margin: 10px;
+}
+
+.viewMoreButton {
+    width: 100%;
+}
