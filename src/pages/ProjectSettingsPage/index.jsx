@@ -17,7 +17,7 @@ import Feedback from "../../components/Feedback";
 import DeleteWarning from "../../components/DeleteWarning";
 import BlackInputText from "../../components/BlackInputText";
 import styles from "./ProjectSettingsPage.module.css";
-import "./ProjectSettingsPage.module.css";
+// import "./ProjectSettingsPage.module.css";
 import Select from "../../components/Select";
 import { retrieveProjectTypes } from "../../helpers/projecttypes";
 import { validateName } from "../../helpers/validation";
@@ -728,12 +728,12 @@ class ProjectSettingsPage extends React.Component {
       <DashboardLayout name={name} header="Project Settings" short>
         {isUpdated || isDeleted ? this.renderRedirect() : null}
         <div className="SectionTitle">Project Details</div>
-        <div className={styles.ProjectInstructions}>
-          <div className={styles.ProjectsDetailsInnerSection}>
+        <div className={`${styles.ProjectInstructions}`}>
+          <div className={`${styles.ProjectsDetailsInnerSection}`}>
             <div className={styles.InnerContentGrid}>
-              <div className="SectionSubTitle">Project Name</div>
+              <div className={`${styles.SectionSubTitle}`}>Project Name</div>
               <div className={styles.ProjectButtonRow}>
-                <div className={styles.SettingsSectionInfo}>
+                <div className={`${styles.SettingsSectionInfo}`}>
                   <div>{projectName}</div>
                 </div>
                 <div className={styles.CopyIcon}>
@@ -742,7 +742,7 @@ class ProjectSettingsPage extends React.Component {
                 </div>
               </div>
               <div>
-                <div className="SectionSubTitle">Project Description</div>
+                <div className={`${styles.SectionSubTitle}`}>Project Description</div>
                 <div className={styles.ProjectButtonRow}>
                   <div className={styles.SettingsSectionInfo}>
                     <div>{projectDescription}</div>
@@ -752,25 +752,26 @@ class ProjectSettingsPage extends React.Component {
             </div>
             <div className={styles.InnerContentGrid}>
               <div>
-                <div className="SectionSubTitle">Age</div>
-                <div className={styles.ProjectButtonRow}>
-                  <div className={styles.SettingsSectionInfo}>
-                    <div>{projectAge}</div>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="SectionSubTitle">Organization</div>
+
+              <div className={`${styles.SectionSubTitle}`}>Organization</div>
                 <div className={styles.ProjectButtonRow}>
                   <div className={styles.SettingsSectionInfo}>
                     <div>{projectOrganisation}</div>
                   </div>
                 </div>
               </div>
+              <div>
+                <div className={`${styles.SectionSubTitle}`}>Age</div>
+                  <div className={styles.ProjectButtonRow}>
+                    <div className={styles.SettingsSectionInfo}>
+                      <div>{projectAge}</div>
+                    </div>
+                  </div>
+              </div>
             </div>
             <div className={styles.InnerContentGrid}>
               <div>
-                <div className="SectionSubTitle">Project Type</div>
+                <div className={`${styles.SectionSubTitle}`}>Project Type</div>
                 <div className={styles.ProjectButtonRow}>
                   <div className={styles.SettingsSectionInfo}>
                     <div>{projectType}</div>
@@ -778,7 +779,7 @@ class ProjectSettingsPage extends React.Component {
                 </div>
               </div>
               <div>
-                <div className="SectionSubTitle">Status</div>
+                <div className={`${styles.SectionSubTitle}`}>Status</div>
                 <div className={styles.ProjectButtonRow}>
                   <div className={styles.SettingsSectionInfo}>
                     <div>
@@ -794,7 +795,7 @@ class ProjectSettingsPage extends React.Component {
             </div>
           </div>
         </div>
-        <div className="SectionTitle">Membership</div>
+        <div className={`${styles.SectionSubTitle}`}>Membership</div>
         <div className={styles.ProjectInstructions}>
           {fetchingProjectMembers ? (
             <Spinner />
