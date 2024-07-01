@@ -318,6 +318,7 @@
     border: 1px solid transparent;
     padding: 1px 12px;
     border-radius: 0px;
+    min-width: 6.5rem;
     cursor: pointer;
 }
 
@@ -330,6 +331,7 @@
     margin-bottom: 3rem;
     position: relative;
     width: 100%;
+    min-height: 17rem;
 }
 .TopProjectsContainer{
    min-width: 80vh;
