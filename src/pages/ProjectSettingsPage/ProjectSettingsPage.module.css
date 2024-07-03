@@ -33,6 +33,12 @@
 
 }
 
+.ProjectInputTag div div{
+  display: flex;
+  justify-content: space-between;
+  place-items: center;
+}
+
 .DeleteDescription span {
   padding: 0.2rem 0.4rem;
   margin: 0;

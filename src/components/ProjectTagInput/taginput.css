@@ -1,0 +1,41 @@
+.tagContainer{
+    border: 1px solid #ccc;
+}
+.tagContainer , input{
+    width: 70%;
+    height: 6vh;
+    border: 1px solid #000000;
+    border-radius: 0.3rem;
+    padding-left: 1rem;
+}
+.tagContainer , button{
+    padding: 0.2rem;
+    top: 0.3rem;
+}
+.tagContainer , ul li {
+    /* background-color: #fff; */
+    list-style-type: none;
+    /* display: flex; */
+    min-width: 2rem;
+    border: 1px solid #f0efef;
+    border-radius: 0.3rem;
+    gap: 5px;
+    font-weight: bold;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: 0px;
+}
+.tagContainer , ul{
+    display: flex;
+    /* flex-wrap: nowrap; */
+    gap: 0.5rem;
+    max-width: 25rem;
+    flex-flow: row;
+    flex-wrap: wrap;
+}
+.tagContainer , ul li:hover{
+    background-color: darkgrey;
+    color: #fff;
+    font-weight: bold;
+}

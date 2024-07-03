@@ -16,8 +16,7 @@
   width: auto;
   min-height: 100px;
   height: auto;
-  max-height: 80%;
-
+  min-height: 80%;
   padding: 2rem;
   background: #fff;
   display: flex;
