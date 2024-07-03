@@ -7,16 +7,20 @@ import InformationBar from "../../components/InformationBar";
 import AppFooter from "../../components/appFooter";
 import styles from "./UserProfile.module.css";
 
-import { handleGetRequest, handlePostRequestWithOutDataObject, handleDeleteRequest } from "../../apis/apis";
+import {
+  handleGetRequest,
+  handlePostRequestWithOutDataObject,
+  handleDeleteRequest,
+} from "../../apis/apis";
 import ProfileAnalytics from "../../components/ProfileAnalyticsCard";
 import { getYearOptions } from "../../helpers/dateConstants";
 import TabItem from "../../components/TabItem";
 import UserFeedActivities from "../../components/UserProfileActivitiesComponent";
 import UserFeedProjects from "../../components/UserProfileProjectsComponent";
 import ProfileCardSmall from "../../components/SmallerProfileCard";
+import Spinner from "../../components/Spinner";
 
 import { useParams } from "react-router-dom";
-
 
 const dummyActivities = [
   {
@@ -107,7 +111,9 @@ const UsersProfile = () => {
   const [userProjects, setUserProjects] = useState({});
   const [loadingUserProjects, setLoadingUserProjects] = useState(false);
   const [loadingUserProjectsError, setUserProjectsError] = useState(false);
-  const [projectFollowLoading, setProjectFollowLoading] = useState('');
+  const [projectFollowLoading, setProjectFollowLoading] = useState("");
+  const [userSummary, setUserSummary] = useState({});
+  const [userSummaryLoading, setUserSummaryLoading] = useState(false);
 
   const { userID } = useParams();
 
@@ -122,6 +128,18 @@ const UsersProfile = () => {
         setLoadingUserDetails(false);
       });
   };
+  const getUserSummary = useCallback(async () => {
+    setUserSummaryLoading(true);
+    handleGetRequest(`/users/profile_summary/${userID}`)
+      .then((response) => {
+        setUserSummary(response.data.data);
+        setUserSummaryLoading(false);
+      })
+      .catch((error) => {
+        setLoadingUserError("Something went wrong, please refresh the page");
+        setUserSummaryLoading(false);
+      });
+  }, [setUserSummaryLoading, setUserSummary, setLoadingUserError]);
 
   const getUserProjects = useCallback(async () => {
     setLoadingUserProjects(true);
@@ -133,13 +151,13 @@ const UsersProfile = () => {
       .catch(() => {
         setUserProjectsError("Failed to userprojects, please try again");
         setLoadingUserProjects(false);
-      })
-     
-  }, [setLoadingUserProjects,setUserProjects, setUserProjectsError]);
+      });
+  }, [setLoadingUserProjects, setUserProjects, setUserProjectsError]);
 
   useEffect(() => {
     getUserDetails();
-    getUserProjects()
+    getUserProjects();
+    getUserSummary();
   }, []);
 
   const toggleExpand = (id) => {
@@ -155,46 +173,47 @@ const UsersProfile = () => {
 
   const onFollowClick = () => {
     setUserFollowLoading(true);
-    if(userDetails.requesting_user_follows){
-      handleDeleteRequest(`users/${userID}/following`,{})
-      .then(() => {
-        window.location.href = `/profile/${userID}`;
-      })
-      .catch((error) => {
-         setUserFollowLoading(false);
-      });
-    }else{
+    if (userDetails.requesting_user_follows) {
+      handleDeleteRequest(`users/${userID}/following`, {})
+        .then(() => {
+          window.location.href = `/profile/${userID}`;
+        })
+        .catch((error) => {
+          setUserFollowLoading(false);
+        });
+    } else {
       handlePostRequestWithOutDataObject({}, `users/${userID}/following`)
-      .then(() => {
-        window.location.href = `/profile/${userID}`;
-      })
-      .catch((error) => {
-        setUserFollowLoading(false);
-      });
+        .then(() => {
+          window.location.href = `/profile/${userID}`;
+        })
+        .catch((error) => {
+          setUserFollowLoading(false);
+        });
     }
   };
 
-  const onProjectFollowClick =  async (projectID) => {
-    setProjectFollowLoading(projectID)
-    const project = await userProjects.find((project)=> project.id === projectID)
-    if(project.is_following){
-      handleDeleteRequest(`projects/${projectID}/following`,{})
-      .then(() => {
-        window.location.href = `/profile/${userID}`;
-      })
-      .catch((error) => {
-        setProjectFollowLoading('');
-      });
-    }else{
+  const onProjectFollowClick = async (projectID) => {
+    setProjectFollowLoading(projectID);
+    const project = await userProjects.find(
+      (project) => project.id === projectID
+    );
+    if (project.is_following) {
+      handleDeleteRequest(`projects/${projectID}/following`, {})
+        .then(() => {
+          window.location.href = `/profile/${userID}`;
+        })
+        .catch((error) => {
+          setProjectFollowLoading("");
+        });
+    } else {
       handlePostRequestWithOutDataObject({}, `projects/${projectID}/following`)
-      .then(() => {
-        window.location.href = `/profile/${userID}`;
-      })
-      .catch((error) => {
-        setProjectFollowLoading('');
-      });
+        .then(() => {
+          window.location.href = `/profile/${userID}`;
+        })
+        .catch((error) => {
+          setProjectFollowLoading("");
+        });
     }
-   
   };
 
   const yearOptions = getYearOptions();
@@ -240,9 +259,21 @@ const UsersProfile = () => {
                   <>
                     <section className="">
                       <div className="SectionTitle">Analytics</div>
-                      <ProfileAnalytics user={user2} />
+                      {userSummaryLoading ? (
+                        <div className="NoResourcesMessage">
+                          <Spinner />
+                        </div>
+                      ) : (
+                        <ProfileAnalytics user={userSummary} />
+                      )}
                     </section>
-                    <UserFeedProjects projects={userProjects} loading={loadingUserProjects} error={loadingUserProjectsError} onProjectFollowClick={onProjectFollowClick} projectFollowLoading={projectFollowLoading}/>
+                    <UserFeedProjects
+                      projects={userProjects}
+                      loading={loadingUserProjects}
+                      error={loadingUserProjectsError}
+                      onProjectFollowClick={onProjectFollowClick}
+                      projectFollowLoading={projectFollowLoading}
+                    />
                     <UserFeedActivities
                       activities={dummyActivities}
                       yearOptions={yearOptions}
@@ -255,7 +286,13 @@ const UsersProfile = () => {
                 {activeTab === "Projects" && (
                   <>
                     <div className={styles.TopProjectsContainer}>
-                      <UserFeedProjects projects={userProjects} loading={loadingUserProjects} error={loadingUserProjectsError} onProjectFollowClick={onProjectFollowClick}  projectFollowLoading={projectFollowLoading} />
+                      <UserFeedProjects
+                        projects={userProjects}
+                        loading={loadingUserProjects}
+                        error={loadingUserProjectsError}
+                        onProjectFollowClick={onProjectFollowClick}
+                        projectFollowLoading={projectFollowLoading}
+                      />
                     </div>
                   </>
                 )}

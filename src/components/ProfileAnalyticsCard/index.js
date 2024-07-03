@@ -6,21 +6,22 @@ import styles from "./ProfileAnalyticsCard.module.css";
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658"];
 
-const ProfileAnalytics = ({ user }) => {
-  const data1 = [
-    { name: "Apps", value: user.apps },
-    { name: "Projects", value: user.projects },
-    { name: "Databases", value: user.databases },
+const ProfileAnalytics = (UserProfile) => {
+  const userSummary = UserProfile.user
+  
+  const resources = [
+    { name: "Apps", value: userSummary?.apps_count },
+    { name: "Projects", value: userSummary?.projects_count },
   ];
 
-  const data2 = [
-    { name: "Following Projects", value: user.followingProjects },
-    { name: "Followers", value: user.followers },
+  const projects = [
+    { name: "Following Projects", value: userSummary?.followed_projects_count },
+    { name: "Projects' Followers", value: userSummary?.projects_followers_count },
   ];
 
-  const data3 = [
-    { name: "Follows", value: 1 },
-    { name: "Followers", value: 7 },
+  const social = [
+    { name: "Follows", value: userSummary?.follower_count },
+    { name: "Followers", value: userSummary?.following_count },
   ];
   
   return (
@@ -32,7 +33,7 @@ const ProfileAnalytics = ({ user }) => {
               <h4>Resources</h4>
               <PieChart width={200} height={200}>
                 <Pie
-                  data={data1}
+                  data={resources}
                   cx={100}
                   cy={100}
                   innerRadius={60}
@@ -41,7 +42,7 @@ const ProfileAnalytics = ({ user }) => {
                   paddingAngle={5}
                   dataKey="value"
                 >
-                  {data1.map((entry, index) => (
+                  {resources.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={COLORS[index % COLORS.length]}
@@ -49,17 +50,15 @@ const ProfileAnalytics = ({ user }) => {
                   ))}
                 </Pie>
               </PieChart>
-              <div className={styles.ChartLabel}>Apps/Projects/Databases</div>
+              <div className={styles.ChartLabel}>Apps/Projects</div>
               <div className={styles.AdminProfileRowInfo}>
                 <div className={styles.AdminProfileRowItem}>
-                  Apps: <span>{user.apps}</span>
+                  Apps: <span>{userSummary?.apps_count}</span>
                 </div>
                 <div className={styles.AdminProfileRowItem}>
-                  Projects: <span>{user.projects}</span>
+                  Projects: <span>{userSummary?.projects_count}</span>
                 </div>
-                <div className={styles.AdminProfileRowItem}>
-                  Databases: <span>{user.databases}</span>
-                </div>
+                
               </div>
             </div>
           </div>
@@ -68,7 +67,7 @@ const ProfileAnalytics = ({ user }) => {
               <h4>Projects</h4>
               <PieChart width={200} height={200}>
                 <Pie
-                  data={data2}
+                  data={projects}
                   cx={100}
                   cy={100}
                   innerRadius={60}
@@ -77,7 +76,7 @@ const ProfileAnalytics = ({ user }) => {
                   paddingAngle={5}
                   dataKey="value"
                 >
-                  {data2.map((entry, index) => (
+                  {projects.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={COLORS[index % COLORS.length]}
@@ -90,10 +89,10 @@ const ProfileAnalytics = ({ user }) => {
               </div>
               <div className={styles.AdminProfileRowInfo}>
                 <div className={styles.AdminProfileRowItem}>
-                  Follows: <span>{user.followingProjects}</span>
+                  Follows: <span>{userSummary?.followed_projects_count}</span>
                 </div>
                 <div className={styles.AdminProfileRowItem}>
-                  Followers: <span>{user.followers}</span>
+                  Followers: <span>{userSummary?.projects_followers_count}</span>
                 </div>
               </div>
             </div>
@@ -104,7 +103,7 @@ const ProfileAnalytics = ({ user }) => {
               <h4>Users</h4>
               <PieChart width={200} height={200}>
                 <Pie
-                  data={data3}
+                  data={social}
                   cx={100}
                   cy={100}
                   innerRadius={60}
@@ -113,7 +112,7 @@ const ProfileAnalytics = ({ user }) => {
                   paddingAngle={5}
                   dataKey="value"
                 >
-                  {data3.map((entry, index) => (
+                  {social.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={COLORS[index % COLORS.length]}
@@ -127,10 +126,10 @@ const ProfileAnalytics = ({ user }) => {
               </div>
               <div className={styles.AdminProfileRowInfo}>
                 <div className={styles.AdminProfileRowItem}>
-                  Follows: <span>1</span>
+                  Follows: <span>{userSummary?.following_count}</span>
                 </div>
                 <div className={styles.AdminProfileRowItem}>
-                  Followers: <span>7</span>
+                  Followers: <span>{userSummary?.follower_count}</span>
                 </div>
               </div>
             </div>
