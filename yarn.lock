@@ -3241,6 +3241,11 @@ cliui@^7.0.2:
     strip-ansi "^6.0.0"
     wrap-ansi "^7.0.0"
 
+clsx@^1.1.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.2.1.tgz#0ddc4a20a549b59c93a4116bb26f5294ca17dc12"
+  integrity sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==
+
 co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.npmjs.org/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
@@ -8052,6 +8057,13 @@ react-to-pdf@^0.0.14:
   dependencies:
     html2canvas "1.0.0-alpha.12"
     jspdf "^2.3.1"
+
+react-toastify@8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-8.0.0.tgz#f2ac0801610a72610628d739189078871ad02235"
+  integrity sha512-7a5uhwbJ5Ivp5QyJN8P9M8g+7wksJt51QuYAZW0c3pDOh0Jx8lH7XzNHzzJg4NHup9n4zcqH9rwXknnyzYg2OA==
+  dependencies:
+    clsx "^1.1.1"
 
 react-transition-group@^2.5.0:
   version "2.9.0"

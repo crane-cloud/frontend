@@ -47,6 +47,10 @@ body {
   /* justify-content: space-between; */
   background-color: var(--gray-bg-light-color);
 }
+div#root{
+  max-height: 100vh;
+  overflow-y: hidden;
+}
 
 textarea,
 input,
