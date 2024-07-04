@@ -73,6 +73,17 @@
     font-size: 0.9em;
 }
 
+.cardSummary {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.linkBlue {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
 .icon {
     margin-right: 5px;
 }

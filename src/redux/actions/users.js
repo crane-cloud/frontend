@@ -39,7 +39,15 @@ const getUsersList =
           // have a default range of 30days
           link = `/users/inactive_users?range=30&page=${page}`;
         } else {
-          link = `/users/inactive_users?range=${dateRange}&page=${page}`;
+          if (
+            dateRange === null ||
+            sectionValue === null ||
+            keywords === null
+          ) {
+            link = `/users?page=${page}`;
+          } else {
+            link = `/users/inactive_users?range=${dateRange}&page=${page}`;
+          }
         }
       }
     } else {

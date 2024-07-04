@@ -60,6 +60,7 @@ import getGraphDataReducer from "./getGraphData";
 import adminGetInactiveUsersReducer from "./adminGetInactiveUsers";
 import appsAdminListReducer from "./adminAppsList";
 import appRevisionsReducer from "./getRevisions";
+import userRecentActivitiesReducer from "./getUserRecentActivity";
 // import inviteMembersReducer from "./inviteMembers";
 //import removeMemberReducer from "./removeMembers";
 // import updateMemberRoleReducer from "./updateMemberRole";
@@ -126,6 +127,7 @@ export default combineReducers({
   appsAdminListReducer,
   userActivitiesReducer,
   appRevisionsReducer,
+  userRecentActivitiesReducer,
   // inviteMembersReducer,
   // removeMemberReducer,
   // updateMemberRoleReducer,
