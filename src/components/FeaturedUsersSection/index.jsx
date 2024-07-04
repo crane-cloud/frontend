@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "./FeaturedUsersSection.module.css";
 import NewUserCard from "../NewUserCard";
-import PrimaryButton from "../PrimaryButton";
 import { useDispatch, useSelector } from "react-redux";
 import getUsersList from "../../redux/actions/users";
 import Spinner from "../Spinner";
@@ -32,21 +31,9 @@ const FeaturedUsersSection = () => {
       ) : (
         <>
           {users?.slice(0, 7).map((user, index) => (
-            <NewUserCard
-              key={index}
-              userID={user.id}
-              name={user.name}
-              organisation={user.organisation}
-              age={user.age}
-            />
+            <NewUserCard key={index} userID={user?.id} />
           ))}
         </>
-      )}
-
-      {!isFetching && (
-        <PrimaryButton className={styles.viewMoreButton}>
-          View More
-        </PrimaryButton>
       )}
     </div>
   );
