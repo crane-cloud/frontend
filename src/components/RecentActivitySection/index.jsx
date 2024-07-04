@@ -40,7 +40,6 @@ const RecentActivitySection = () => {
     userRecentActivities();
   };
 
-  console.log(recentActivities);
 
   return (
     <div className={styles.recentActivity}>
