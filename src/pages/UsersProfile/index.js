@@ -85,18 +85,6 @@ const dummyActivities = [
   },
 ];
 
-const user2 = {
-  name: "Khalifan Muwonge",
-  email: "khalifanmuwonge@gmail.com",
-  organization: "Makerere",
-  dateJoined: "12/04/2020",
-  apps: 10,
-  projects: 15,
-  databases: 5,
-  followingProjects: 7,
-  followers: 12,
-  isBeta: true,
-};
 
 const tabNames = ["Overview", "Projects", "Activities"];
 const UsersProfile = () => {
@@ -112,8 +100,7 @@ const UsersProfile = () => {
   const [loadingUserProjects, setLoadingUserProjects] = useState(false);
   const [loadingUserProjectsError, setUserProjectsError] = useState(false);
   const [projectFollowLoading, setProjectFollowLoading] = useState("");
-  const [userSummary, setUserSummary] = useState({});
-  const [userSummaryLoading, setUserSummaryLoading] = useState(false);
+
 
   const { userID } = useParams();
 
@@ -128,19 +115,6 @@ const UsersProfile = () => {
         setLoadingUserDetails(false);
       });
   };
-  const getUserSummary = useCallback(async () => {
-    setUserSummaryLoading(true);
-    handleGetRequest(`/users/profile_summary/${userID}`)
-      .then((response) => {
-        setUserSummary(response.data.data);
-        setUserSummaryLoading(false);
-      })
-      .catch((error) => {
-        setLoadingUserError("Something went wrong, please refresh the page");
-        setUserSummaryLoading(false);
-      });
-  }, [setUserSummaryLoading, setUserSummary, setLoadingUserError]);
-
   const getUserProjects = useCallback(async () => {
     setLoadingUserProjects(true);
     handleGetRequest(`users/${userID}/projects`)
@@ -157,7 +131,6 @@ const UsersProfile = () => {
   useEffect(() => {
     getUserDetails();
     getUserProjects();
-    getUserSummary();
   }, []);
 
   const toggleExpand = (id) => {
@@ -259,12 +232,12 @@ const UsersProfile = () => {
                   <>
                     <section className="">
                       <div className="SectionTitle">Analytics</div>
-                      {userSummaryLoading ? (
+                      {loadingUserDetails ? (
                         <div className="NoResourcesMessage">
                           <Spinner />
                         </div>
                       ) : (
-                        <ProfileAnalytics user={userSummary} />
+                        <ProfileAnalytics user={userDetails} />
                       )}
                     </section>
                     <UserFeedProjects
