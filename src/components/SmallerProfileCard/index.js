@@ -10,12 +10,12 @@ const ProfileCardSmall = ({ user, loading, error, onFollowClick, userFollowLoadi
   return (
     <div className={styles.ProfileCard}>
       {loading ? (
-        <div className="AdminNoResourcesMessage">
+        <div className={styles.noInformation}>
           <Spinner />
         </div>
       ) : null}
       {error ? (
-        <div className="AdminNoResourcesMessage">
+        <div className={styles.noInformation}>
           No user information returned.
         </div>
       ) : null}

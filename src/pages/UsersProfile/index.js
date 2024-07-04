@@ -7,92 +7,22 @@ import InformationBar from "../../components/InformationBar";
 import AppFooter from "../../components/appFooter";
 import styles from "./UserProfile.module.css";
 
-import { handleGetRequest, handlePostRequestWithOutDataObject, handleDeleteRequest } from "../../apis/apis";
+import {
+  handleGetRequest,
+  handlePostRequestWithOutDataObject,
+  handleDeleteRequest,
+} from "../../apis/apis";
 import ProfileAnalytics from "../../components/ProfileAnalyticsCard";
 import { getYearOptions } from "../../helpers/dateConstants";
 import TabItem from "../../components/TabItem";
 import UserFeedActivities from "../../components/UserProfileActivitiesComponent";
 import UserFeedProjects from "../../components/UserProfileProjectsComponent";
 import ProfileCardSmall from "../../components/SmallerProfileCard";
+import getUserRecentActivities from "../../redux/actions/getUserRecentActivity";
+import { useDispatch, useSelector } from "react-redux";
+import Spinner from "../../components/Spinner";
 
 import { useParams } from "react-router-dom";
-
-
-const dummyActivities = [
-  {
-    id: 1,
-    month: "May 2024",
-    activities: [
-      {
-        type: "Updated",
-        description: "Updated 5 apps in 3 projects",
-        projects: [
-          { name: "Project1", apps: 2 },
-          { name: "Project2", apps: 1 },
-          { name: "Project3", apps: 2 },
-        ],
-      },
-      {
-        type: "Created",
-        description: "Created 1 project",
-        projects: [{ name: "MyNewProject", apps: 0 }],
-      },
-    ],
-  },
-  {
-    id: 2,
-    month: "June 2024",
-    activities: [
-      {
-        type: "Updated",
-        description: "Updated 5 apps in 3 projects",
-        projects: [
-          { name: "Project1", apps: 2 },
-          { name: "Project2", apps: 1 },
-          { name: "Project3", apps: 2 },
-        ],
-      },
-      {
-        type: "Created",
-        description: "Created 1 project",
-        projects: [{ name: "MyNewProject", apps: 0 }],
-      },
-    ],
-  },
-  {
-    id: 2,
-    month: "July 2024",
-    activities: [
-      {
-        type: "Deployed",
-        description: "Deployed 5 apps in 3 projects",
-        projects: [
-          { name: "Project1", apps: 2 },
-          { name: "Project2", apps: 1 },
-          { name: "Project3", apps: 2 },
-        ],
-      },
-      {
-        type: "Created",
-        description: "Created 1 project",
-        projects: [{ name: "MyNewProject", apps: 0 }],
-      },
-    ],
-  },
-];
-
-const user2 = {
-  name: "Khalifan Muwonge",
-  email: "khalifanmuwonge@gmail.com",
-  organization: "Makerere",
-  dateJoined: "12/04/2020",
-  apps: 10,
-  projects: 15,
-  databases: 5,
-  followingProjects: 7,
-  followers: 12,
-  isBeta: true,
-};
 
 const tabNames = ["Overview", "Projects", "Activities"];
 const UsersProfile = () => {
@@ -107,13 +37,26 @@ const UsersProfile = () => {
   const [userProjects, setUserProjects] = useState({});
   const [loadingUserProjects, setLoadingUserProjects] = useState(false);
   const [loadingUserProjectsError, setUserProjectsError] = useState(false);
-  const [projectFollowLoading, setProjectFollowLoading] = useState('');
+  const [projectFollowLoading, setProjectFollowLoading] = useState("");
+
+  //formatted activity data
+  const [userActivities, setUserActivities] = useState([]);
+  const dispatch = useDispatch();
 
   const { userID } = useParams();
 
+  const userRecentActivities = useCallback(
+    (pageSize=10) => dispatch(getUserRecentActivities(userID, 1, pageSize)),
+    [dispatch, userID]
+  );
+  
+  useEffect(() => {
+    userRecentActivities();
+  }, [userRecentActivities, userID]);
+
   const getUserDetails = () => {
-    handleGetRequest(`/users/${userID}`)
-      .then((response) => {
+    setLoadingUserDetails(true);
+    handleGetRequest(`/users/${userID}`).then((response) => {
         setUserDetails(response.data.data.user);
         setLoadingUserDetails(false);
       })
@@ -122,7 +65,6 @@ const UsersProfile = () => {
         setLoadingUserDetails(false);
       });
   };
-
   const getUserProjects = useCallback(async () => {
     setLoadingUserProjects(true);
     handleGetRequest(`users/${userID}/projects`)
@@ -133,13 +75,12 @@ const UsersProfile = () => {
       .catch(() => {
         setUserProjectsError("Failed to userprojects, please try again");
         setLoadingUserProjects(false);
-      })
-     
-  }, [setLoadingUserProjects,setUserProjects, setUserProjectsError]);
+      });
+  }, [setLoadingUserProjects, setUserProjects, setUserProjectsError]);
 
   useEffect(() => {
     getUserDetails();
-    getUserProjects()
+    getUserProjects();
   }, []);
 
   const toggleExpand = (id) => {
@@ -155,46 +96,103 @@ const UsersProfile = () => {
 
   const onFollowClick = () => {
     setUserFollowLoading(true);
-    if(userDetails.requesting_user_follows){
-      handleDeleteRequest(`users/${userID}/following`,{})
-      .then(() => {
-        window.location.href = `/profile/${userID}`;
-      })
-      .catch((error) => {
-         setUserFollowLoading(false);
-      });
-    }else{
+    if (userDetails.requesting_user_follows) {
+      handleDeleteRequest(`users/${userID}/following`, {})
+        .then(() => {
+          window.location.href = `/profile/${userID}`;
+        })
+        .catch((error) => {
+          setUserFollowLoading(false);
+        });
+    } else {
       handlePostRequestWithOutDataObject({}, `users/${userID}/following`)
-      .then(() => {
-        window.location.href = `/profile/${userID}`;
-      })
-      .catch((error) => {
-        setUserFollowLoading(false);
-      });
+        .then(() => {
+          window.location.href = `/profile/${userID}`;
+        })
+        .catch((error) => {
+          setUserFollowLoading(false);
+        });
     }
   };
 
-  const onProjectFollowClick =  async (projectID) => {
-    setProjectFollowLoading(projectID)
-    const project = await userProjects.find((project)=> project.id === projectID)
-    if(project.is_following){
-      handleDeleteRequest(`projects/${projectID}/following`,{})
-      .then(() => {
-        window.location.href = `/profile/${userID}`;
-      })
-      .catch((error) => {
-        setProjectFollowLoading('');
-      });
-    }else{
+  const onProjectFollowClick = async (projectID) => {
+    setProjectFollowLoading(projectID);
+    const project = await userProjects.find(
+      (project) => project.id === projectID
+    );
+    if (project.is_following) {
+      handleDeleteRequest(`projects/${projectID}/following`, {})
+        .then(() => {
+          window.location.href = `/profile/${userID}`;
+        })
+        .catch((error) => {
+          setProjectFollowLoading("");
+        });
+    } else {
       handlePostRequestWithOutDataObject({}, `projects/${projectID}/following`)
-      .then(() => {
-        window.location.href = `/profile/${userID}`;
-      })
-      .catch((error) => {
-        setProjectFollowLoading('');
-      });
+        .then(() => {
+          window.location.href = `/profile/${userID}`;
+        })
+        .catch((error) => {
+          setProjectFollowLoading("");
+        });
     }
-   
+  };
+
+  const {
+    recentActivities,
+    pagination,
+    isFetchingRecentActivities,
+    recentActivitiesFetched,
+  } = useSelector((state) => state.userRecentActivitiesReducer);
+
+  const noRecentActivity =
+    recentActivities?.length === 0 && recentActivitiesFetched;
+
+  const formatData = (data) => {
+    const activitiesByMonth = {};
+
+    data.forEach((item) => {
+      const date = new Date(item.creation_date);
+      const monthYear = date.toLocaleString("default", {
+        month: "long",
+        year: "numeric",
+      });
+
+      if (!activitiesByMonth[monthYear]) {
+        activitiesByMonth[monthYear] = [];
+      }
+
+      const activity = {
+        type: item.operation,
+        description: item.description,
+        projects: [
+          {
+            name: item.project.project_type,
+            apps: item.a_app_id ? 1 : 0, // Adjust this based on your app logic
+          },
+        ],
+      };
+
+      activitiesByMonth[monthYear].push(activity);
+    });
+
+    return Object.entries(activitiesByMonth).map(
+      ([month, activities], index) => ({
+        id: index + 1,
+        month,
+        activities,
+      })
+    );
+  };
+
+  useEffect(() => {
+    setUserActivities(formatData(recentActivities));
+  }, [recentActivities]);
+
+  const fetchMoreActivities = () => {
+    const nextPerPage = pagination.per_page * 2;
+    userRecentActivities(nextPerPage);
   };
 
   const yearOptions = getYearOptions();
@@ -240,35 +238,88 @@ const UsersProfile = () => {
                   <>
                     <section className="">
                       <div className="SectionTitle">Analytics</div>
-                      <ProfileAnalytics user={user2} />
+                      {loadingUserDetails ? (
+                        <div className={styles.NoResourcesMessage}>
+                          <Spinner />
+                        </div>
+                      ) : userDetails && (
+                        <ProfileAnalytics user={userDetails} />
+                      )}
+                      {loadingUserError && 
+                        <div className={styles.NoResourcesMessage}>
+                        Failed to fetch user data
+                      </div>
+                      }
                     </section>
-                    <UserFeedProjects projects={userProjects} loading={loadingUserProjects} error={loadingUserProjectsError} onProjectFollowClick={onProjectFollowClick} projectFollowLoading={projectFollowLoading}/>
-                    <UserFeedActivities
-                      activities={dummyActivities}
-                      yearOptions={yearOptions}
-                      selectedYear={(selectedOption) => selectedOption}
-                      expanded={expanded}
-                      toggleExpand={toggleExpand}
+                    <UserFeedProjects
+                      projects={userProjects}
+                      loading={loadingUserProjects}
+                      error={loadingUserProjectsError}
+                      onProjectFollowClick={onProjectFollowClick}
+                      projectFollowLoading={projectFollowLoading}
                     />
+                    <>
+                      <div className={styles.TopProjectsContainer}>
+                        {isFetchingRecentActivities ? (
+                          <div className={styles.NoResourcesMessage}>
+                            <Spinner />
+                          </div>
+                        ) : userActivities.length > 0  && (
+                          <UserFeedActivities
+                            activities={userActivities}
+                            yearOptions={yearOptions}
+                            selectedYear={(selectedOption) => selectedOption}
+                            expanded={expanded}
+                            toggleExpand={toggleExpand}
+                            pagination={pagination}
+                            fetchMoreActivities={fetchMoreActivities}
+                          />
+                        )}
+                        {noRecentActivity && (
+                        <div >
+                          No recent activities for this user
+                        </div>
+                      )}
+                      </div>
+                    </>
                   </>
                 )}
                 {activeTab === "Projects" && (
                   <>
                     <div className={styles.TopProjectsContainer}>
-                      <UserFeedProjects projects={userProjects} loading={loadingUserProjects} error={loadingUserProjectsError} onProjectFollowClick={onProjectFollowClick}  projectFollowLoading={projectFollowLoading} />
+                      <UserFeedProjects
+                        projects={userProjects}
+                        loading={loadingUserProjects}
+                        error={loadingUserProjectsError}
+                        onProjectFollowClick={onProjectFollowClick}
+                        projectFollowLoading={projectFollowLoading}
+                      />
                     </div>
                   </>
                 )}
                 {activeTab === "Activities" && (
                   <>
                     <div className={styles.TopProjectsContainer}>
-                      <UserFeedActivities
-                        activities={dummyActivities}
-                        yearOptions={yearOptions}
-                        selectedYear={(selectedOption) => selectedOption}
-                        expanded={expanded}
-                        toggleExpand={toggleExpand}
-                      />
+                      {isFetchingRecentActivities ? (
+                        <div className={styles.NoResourcesMessage}>
+                          <Spinner />
+                        </div>
+                      ) : userActivities.length > 0  &&  (
+                        <UserFeedActivities
+                          activities={userActivities}
+                          yearOptions={yearOptions}
+                          selectedYear={(selectedOption) => selectedOption}
+                          expanded={expanded}
+                          pagination={pagination}
+                          fetchMoreActivities={fetchMoreActivities}
+                          toggleExpand={toggleExpand}
+                        />
+                      )}
+                      {noRecentActivity && (
+                        <div >
+                          No recent activities for this user
+                        </div>
+                      )}
                     </div>
                   </>
                 )}

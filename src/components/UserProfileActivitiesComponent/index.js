@@ -1,12 +1,17 @@
-// Activities.jsx
-import React from 'react';
-import Select from '../Select';
+import React from "react";
+import Select from "../Select";
 import { ReactComponent as UpdateIcon } from "../../assets/images/upload-cloud.svg";
 import { ReactComponent as CreateIcon } from "../../assets/images/check-circle.svg";
 import styles from "../../pages/UsersProfile/UserProfile.module.css";
 import PrimaryButton from "../../components/PrimaryButton";
 
-const UserFeedActivities = ({ activities, yearOptions, selectedYear, expanded, toggleExpand }) => {
+const UserFeedActivities = ({ activities, yearOptions, selectedYear, expanded, toggleExpand, pagination, fetchMoreActivities }) => {
+  if (!activities) {
+    return null;
+  }
+
+  const showMore = pagination.page < pagination.pages;
+
   return (
     <section className="">
       <div className={styles.ActivitiesHeader}>
@@ -20,7 +25,7 @@ const UserFeedActivities = ({ activities, yearOptions, selectedYear, expanded, t
         </div>
       </div>
       <div className={styles.ActivitiesContainer}>
-        {activities.slice(0, 2).map((activity) => (
+        {activities && activities.slice(0, pagination.per_page).map((activity) => (
           <div key={activity.id} className={styles.ActivityMonth}>
             <div className={styles.ActivityMonthTitle}>{activity.month}</div>
             {activity.activities.map((act, index) => (
@@ -30,14 +35,14 @@ const UserFeedActivities = ({ activities, yearOptions, selectedYear, expanded, t
                   onClick={() => toggleExpand(activity.id)}
                 >
                   <span className={styles.ActivityType}>
-                    {act.type === `Updated` ? <UpdateIcon /> : <CreateIcon />}
+                    {act.type === "Updated" ? <UpdateIcon /> : <CreateIcon />}
                   </span>
                   <span className={styles.ActivityDescription}>
                     {act.description}
                   </span>
                   <span
                     className={`${styles.ActivityExpandIcon} ${
-                      expanded[activity.id] ? `${styles.expanded}` : ''
+                      expanded[activity.id] ? `${styles.expanded}` : ""
                     }`}
                   >
                     &#9650;
@@ -52,7 +57,7 @@ const UserFeedActivities = ({ activities, yearOptions, selectedYear, expanded, t
                         </span>
                         {project.apps > 0 && (
                           <span className={styles.ProjectApps}>
-                            {project.apps} {project.apps > 1 ? 'apps' : 'app'}
+                            {project.apps} {project.apps > 1 ? "apps" : "app"}
                           </span>
                         )}
                       </div>
@@ -63,9 +68,11 @@ const UserFeedActivities = ({ activities, yearOptions, selectedYear, expanded, t
             ))}
           </div>
         ))}
-        <PrimaryButton className={styles.ShowMoreButton}>
-          Show More Activity
-        </PrimaryButton>
+        {showMore && (
+          <PrimaryButton className={styles.ShowMoreButton} onClick={fetchMoreActivities}>
+            Show More Activity
+          </PrimaryButton>
+        )}
       </div>
     </section>
   );
