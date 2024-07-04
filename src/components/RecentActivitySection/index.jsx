@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import styles from "./RecentActivitySection.module.css";
 import RecentActivityItem from "../RecentActivityItem";
-import PrimaryButton from "../PrimaryButton";
 import { ReactComponent as InfoSvg } from "../../assets/images/infosvg.svg";
 import { useDispatch, useSelector } from "react-redux";
 import getUserRecentActivities from "../../redux/actions/getUserRecentActivity";
@@ -39,7 +38,6 @@ const RecentActivitySection = () => {
     handleChangePage(currentPage);
     userRecentActivities();
   };
-
 
   return (
     <div className={styles.recentActivity}>
