@@ -1,31 +1,53 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./FeaturedUsersSection.module.css";
 import NewUserCard from "../NewUserCard";
 import PrimaryButton from "../PrimaryButton";
-
-const users = [
-  { name: "User 1", followers: 120, projects: 10, apps: 5 },
-  { name: "User 2", followers: 90, projects: 8, apps: 3 },
-  { name: "User 3", followers: 150, projects: 12, apps: 7 },
-  { name: "User 4", followers: 120, projects: 10, apps: 4 },
-  { name: "User 5", followers: 100, projects: 9, apps: 5 },
-];
+import { useDispatch, useSelector } from "react-redux";
+import getUsersList from "../../redux/actions/users";
+import Spinner from "../Spinner";
 
 const FeaturedUsersSection = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUsersList(null, null, 1, null));
+  }, [dispatch]);
+
+  const { isFetching, users, isFetched } = useSelector(
+    (state) => state.usersListReducer
+  );
+
   return (
     <div className={styles.featuredUsers}>
-      <h2>Featured Users</h2>
-      {users.map((user, index) => (
-        <NewUserCard
-          key={index}
-          name={user.name}
-          followers={user.followers}
-          projects={user.projects}
-          apps={user.apps}
-        />
-      ))}
+      <h2>Suggested Users</h2>
 
-      <PrimaryButton className={styles.viewMoreButton}>View More</PrimaryButton>
+      {isFetching && !isFetched ? (
+        <div className={styles.noActivity}>
+          <div className={styles.NoResourcesMessage}>
+            <div className={styles.SpinnerWrapper}>
+              <Spinner size="big" />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
+          {users?.slice(0, 7).map((user, index) => (
+            <NewUserCard
+              key={index}
+              userID={user.id}
+              name={user.name}
+              organisation={user.organisation}
+              age={user.age}
+            />
+          ))}
+        </>
+      )}
+
+      {!isFetching && (
+        <PrimaryButton className={styles.viewMoreButton}>
+          View More
+        </PrimaryButton>
+      )}
     </div>
   );
 };
