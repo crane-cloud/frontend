@@ -35,10 +35,12 @@
 
 .ProjectInputTag div div{
   display: flex;
-  justify-content: space-between;
   place-items: center;
 }
 
+/* .UpdateInputSection , .DeleteDescription , .ProjectInputTag .tagInputContainer  .tagList{
+  max-width: 20rem;
+} */
 .DeleteDescription span {
   padding: 0.2rem 0.4rem;
   margin: 0;

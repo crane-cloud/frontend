@@ -719,6 +719,19 @@ class ProjectSettingsPage extends React.Component {
     const types = retrieveProjectTypes();
     const roles = retrieveMembershipRoles();
 
+    const suggestions = [
+      "react",
+      "javascript", 
+      "css", 
+      "html", 
+      "nodejs", 
+      "django", 
+      "firebase",
+      "python",
+      "java",
+    ];
+
+
     const { projectID } = params;
     const presetOrganisations = namedOrganisations();
     return (
@@ -1116,8 +1129,7 @@ class ProjectSettingsPage extends React.Component {
                         Project tags
                       </div>
                       <div className={styles.ProjectInputTag}>
-                        <TagInput 
-                        className={styles.tagInput}/>
+                        <TagInput suggestions={suggestions}/>
                       </div>
                     </div>
                     <div className={styles.UpdateInputSection}>

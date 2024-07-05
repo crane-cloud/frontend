@@ -1,61 +1,77 @@
-import React, { useState } from 'react';
-import PrimaryButton from '../PrimaryButton/index.js';
-import styles from './taginput.css';
+import React, { useState } from "react";
+import styles from "./TagInput.module.css";
 
-const TagInput = () => {
-  const [tag, setTag] = useState('');
+const TagInput = ({ suggestions }) => {
   const [tags, setTags] = useState([]);
-  const [error, setError] = useState('');
+  const [input, setInput] = useState("");
+  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
 
   const handleInputChange = (e) => {
-    setTag(e.target.value);
-  };
+    const value = e.target.value;
+    setInput(value);
 
-  const handleAddTag = () => {
-    if (tag.trim() === '') {
-      setError('Tag cannot be empty');
-      return;
+    if (value) {
+      const filtered = suggestions.filter((suggestion) =>
+        suggestion.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredSuggestions(filtered);
+    } else {
+      setFilteredSuggestions([]);
     }
-
-    setTags([...tags, { tag_id: Date.now(), tag }]);
-    setTag('');
-    setError('');
-  };
-
-  const handleDeleteTag = (tagId) => {
-    setTags(tags.filter(tag => tag.tag_id !== tagId));
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      handleAddTag();
+    if (e.key === "Enter" && input) {
+      if (!tags.includes(input)) {
+        setTags([...tags, input]);
+      }
+      setInput("");
+      setFilteredSuggestions([]);
     }
   };
 
+  const handleTagRemove = (index) => {
+    setTags(tags.filter((_, i) => i !== index));
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    if (!tags.includes(suggestion)) {
+      setTags([...tags, suggestion]);
+    }
+    setInput("");
+    setFilteredSuggestions([]);
+  };
+
   return (
-    <div className={`${styles.tagContainer}`}>
-     <div className={`${styles.inputsection}`}>
-        <input
-            type="text"
-            value={tag}
-            onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
-            placeholder="Enter a tag"
-        />
-        <PrimaryButton onClick={handleAddTag} size="Primary-Btn">
-            Add Tag
-        </PrimaryButton>
-     </div>
-     
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <ul>
-        {tags.map((tag) => (
-          <li key={tag.tag_id}>
-            {tag.tag} &nbsp;
-            <button onClick={() => handleDeleteTag(tag.tag_id)}>x</button>
-          </li>
+    <div className={styles.tagInputContainer}>
+      <div className={styles.tagList}>
+        {tags.map((tag, index) => (
+          <div key={index} className={styles.tag}>
+            {tag}
+            <button onClick={() => handleTagRemove(index)}>x</button>
+          </div>
         ))}
-      </ul>
+      </div>
+      <input
+        type="text"
+        value={input}
+        onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
+        className={styles.input}
+      />
+      {filteredSuggestions.length > 0 && (
+        <div className={styles.suggestions}>
+          {filteredSuggestions.map((suggestion, index) => (
+            <div
+              key={index}
+              className={styles.suggestion}
+              onClick={() => handleSuggestionClick(suggestion)}
+            >
+              {suggestion}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
