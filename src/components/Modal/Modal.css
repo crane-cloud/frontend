@@ -15,7 +15,7 @@
   position: absolute;
   width: auto;
   min-height: 100px;
-  height: 260px;
+  height: auto;
   max-height: 80%;
   align-items: center;
   justify-content: center;
