@@ -4,11 +4,11 @@ import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import {
   handleDeleteRequest,
   handleGetRequest,
-  handlePostRequestWithOutDataObject,
 } from "../../apis/apis";
 import Spinner from "../Spinner";
+import axios from "../../axios";
 
-const NewUserCard = ({ userID }) => {
+const NewUserCard = ({ userID, showFollowBtn = true }) => {
   const [userDetails, setUserDetails] = useState({});
   const [sectionLoad, setSectionLoad] = useState(false);
   const [userFollowLoading, setUserFollowLoading] = useState(false);
@@ -29,7 +29,7 @@ const NewUserCard = ({ userID }) => {
     getUserDetails();
   }, [getUserDetails, userFollowLoading]);
 
-  const onFollowClick = () => {
+  const onFollowClick = async () => {
     setUserFollowLoading(true);
     if (userDetails?.requesting_user_follows) {
       handleDeleteRequest(`users/${userDetails?.id}/following`, {})
@@ -41,17 +41,16 @@ const NewUserCard = ({ userID }) => {
           setUserFollowLoading(false);
         });
     } else {
-      handlePostRequestWithOutDataObject(
-        {},
-        `users/${userDetails?.id}/following`
-      )
-        .then(() => {
+      try {
+        const response = await axios.post(`users/${userDetails?.id}/following`);
+        if (response.status === 201) {
           setSectionLoad(true);
           setUserFollowLoading(false);
-        })
-        .catch((error) => {
-          setUserFollowLoading(false);
-        });
+        }
+      } catch (error) {
+        console.error("Error following user:", error);
+        setUserFollowLoading(false);
+      }
     }
   };
 
@@ -80,17 +79,19 @@ const NewUserCard = ({ userID }) => {
                 </Link>
               </h3>
             </div>
-            <div className={styles.followButtonArea}>
-              <button className={styles.followButton} onClick={onFollowClick}>
-                {userFollowLoading ? (
-                  <Spinner />
-                ) : userDetails?.requesting_user_follows ? (
-                  "Unfollow"
-                ) : (
-                  "+ Follow"
-                )}
-              </button>
-            </div>
+            {showFollowBtn && (
+              <div className={styles.followButtonArea}>
+                <button className={styles.followButton} onClick={onFollowClick}>
+                  {userFollowLoading ? (
+                    <Spinner />
+                  ) : userDetails?.requesting_user_follows ? (
+                    "Unfollow"
+                  ) : (
+                    "+ Follow"
+                  )}
+                </button>
+              </div>
+            )}
           </div>
           <div className={styles.cardContent}>
             <div className={styles.cardExtras}>

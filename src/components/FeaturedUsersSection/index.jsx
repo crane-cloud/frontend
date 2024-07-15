@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./FeaturedUsersSection.module.css";
 import NewUserCard from "../NewUserCard";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,17 +8,33 @@ import Spinner from "../Spinner";
 const FeaturedUsersSection = () => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getUsersList(null, null, 1, null));
-  }, [dispatch]);
-
-  const { isFetching, users, isFetched } = useSelector(
+  const { isFetching, users, isFetched, pagination } = useSelector(
     (state) => state.usersListReducer
   );
 
+  const [currentPage, setCurrentPage] = useState(
+    Math.floor(Math.random() * pagination?.pages) + 1
+  );
+
+  useEffect(() => {
+    dispatch(getUsersList(null, null, currentPage, null));
+  }, [dispatch, currentPage]);
+
+  const handleRefresh = () => {
+    setCurrentPage((prevPage) => {
+      const totalPages = pagination?.pages;
+      return prevPage < totalPages ? prevPage + 1 : 1;
+    });
+  };
+
   return (
     <div className={styles.featuredUsers}>
-      <h2>Suggested Users</h2>
+      <div className={styles.titleRow}>
+        <h2>Suggested Users</h2>
+        <button className={styles.followButton} onClick={handleRefresh}>
+          Refresh
+        </button>
+      </div>
 
       {isFetching && !isFetched ? (
         <div className={styles.noActivity}>
@@ -30,7 +46,7 @@ const FeaturedUsersSection = () => {
         </div>
       ) : (
         <>
-          {users?.slice(0, 7).map((user, index) => (
+          {users?.map((user, index) => (
             <NewUserCard key={index} userID={user?.id} />
           ))}
         </>
