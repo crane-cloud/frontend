@@ -3,6 +3,7 @@ import styles from "./RecentActivityItem.module.css";
 import NewProjectCard from "../NewProjectCard";
 import tellAge from "../../helpers/ageUtility";
 import NewAppCard from "../NewAppCard";
+import NewUserCard from "../NewUserCard";
 
 const RecentActivityItem = ({ item }) => {
   return (
@@ -15,7 +16,14 @@ const RecentActivityItem = ({ item }) => {
         </div>
         <div className={styles.time}>{tellAge(item?.creation_date)}</div>
         <div className={styles.projectCard}>
-          {item?.a_app_id == null ? (
+          {item?.a_app_id != null ? (
+            <NewAppCard
+              name={item?.app?.name}
+              url={item?.app?.url}
+              image={item?.app?.image}
+              port={item?.app?.port}
+            />
+          ) : item?.a_project_id != null ? (
             <NewProjectCard
               projectID={item?.project?.id}
               name={item?.project?.name}
@@ -24,14 +32,9 @@ const RecentActivityItem = ({ item }) => {
               type={item?.project?.project_type}
               showFollowers={false}
             />
-          ) : (
-            <NewAppCard
-              name={item?.app?.name}
-              url={item?.app?.url}
-              image={item?.app?.image}
-              port={item?.app?.port}
-            />
-          )}
+          ) : item?.a_user_id != null ? (
+            <NewUserCard userID={item?.a_user_id} showFollowBtn={false} />
+          ) : null}
         </div>
       </div>
     </div>
