@@ -363,15 +363,35 @@
   color: red;
 }
 
-.BetaUserDiv {
+.ProfileVisibilityDiv {
   display: inline;
-  padding: 0.3rem 0.5rem;
-  border-radius: 999px;
-  background-color: rgba(128, 0, 128, 0.217);
-  color: purple;
+  padding: 0.5rem 0.6rem;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  color: black;
   cursor: pointer;
-  font-size: 0.8rem;
-  font-weight: normal;
+  font-size: 1rem;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.userStatus {
+  display: flex;
+  align-items: center;
+}
+
+.userStatus svg {
+  margin-right: 5px;
+}
+
+.userStatusIcon {
+  width: 10;
+  height: 10;
+}
+
+.userStatusText {
+  font-weight: bold;
 }
 
 .IdentityEmail {
