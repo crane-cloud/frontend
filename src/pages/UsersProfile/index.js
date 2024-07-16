@@ -13,7 +13,7 @@ import {
   handleDeleteRequest,
 } from "../../apis/apis";
 import ProfileAnalytics from "../../components/ProfileAnalyticsCard";
-import { getYearOptions } from "../../helpers/dateConstants";
+// import { getYearOptions } from "../../helpers/dateConstants";
 import TabItem from "../../components/TabItem";
 import UserFeedActivities from "../../components/UserProfileActivitiesComponent";
 import UserFeedProjects from "../../components/UserProfileProjectsComponent";
@@ -100,9 +100,9 @@ const UsersProfile = () => {
     }));
   };
 
-  const selectedYear = (year) => {
-    return;
-  };
+  // const selectedYear = (year) => {
+  //   return;
+  // };
 
   const onFollowClick = () => {
     setUserFollowLoading(true);
@@ -159,42 +159,64 @@ const UsersProfile = () => {
   const noRecentActivity =
     recentActivities?.length === 0 && recentActivitiesFetched;
 
-  const formatData = (data) => {
-    const activitiesByMonth = {};
-
-    data.forEach((item) => {
-      const date = new Date(item.creation_date);
-      const monthYear = date.toLocaleString("default", {
-        month: "long",
-        year: "numeric",
+    const formatData = (data) => {
+      const activitiesByMonth = {};
+    
+      data.forEach((item) => {
+        const date = new Date(item.creation_date);
+        const monthYear = date.toLocaleString("default", {
+          month: "long",
+          year: "numeric",
+        });
+    
+        if (!activitiesByMonth[monthYear]) {
+          activitiesByMonth[monthYear] = [];
+        }
+    
+        const activity = {
+          type: item.operation,
+          description: item.description,
+          projects: item?.project
+            ? [
+                {
+                  id: item.project.id,
+                  name: item.project.name,
+                  apps: item.a_app_id ? 1 : 0,
+                },
+              ]
+            : [],
+          users: item?.a_user
+            ? [
+                {
+                  id: item.a_user.id,
+                  name: item.a_user.name,
+                  email: item.a_user.email,
+                },
+              ]
+            : [],
+          apps: item?.app
+            ? [
+                {
+                  id: item.app.id,
+                  name: item.app.name,
+                  url: item.app.url,
+                },
+              ]
+            : [],
+        };
+    
+        activitiesByMonth[monthYear].push(activity);
       });
-
-      if (!activitiesByMonth[monthYear]) {
-        activitiesByMonth[monthYear] = [];
-      }
-
-      const activity = {
-        type: item.operation,
-        description: item.description,
-        projects: [
-          {
-            name: item.project.project_type,
-            apps: item.a_app_id ? 1 : 0, // Adjust this based on your app logic
-          },
-        ],
-      };
-
-      activitiesByMonth[monthYear].push(activity);
-    });
-
-    return Object.entries(activitiesByMonth).map(
-      ([month, activities], index) => ({
-        id: index + 1,
-        month,
-        activities,
-      })
-    );
-  };
+    
+      return Object.entries(activitiesByMonth).map(
+        ([month, activities], index) => ({
+          id: index + 1,
+          month,
+          activities,
+        })
+      );
+    };
+    
 
   useEffect(() => {
     setUserActivities(formatData(recentActivities));
@@ -205,7 +227,8 @@ const UsersProfile = () => {
     userRecentActivities(nextPerPage);
   };
 
-  const yearOptions = getYearOptions();
+
+//   const yearOptions = getYearOptions();
 
   const handleCloseModal = () => {
     setShowProfileVisibilityModal(false);
@@ -215,6 +238,7 @@ const UsersProfile = () => {
 
   return (
     <div className="MainPage">
+      
       <div className="TopBarSection">
         <Header />
       </div>
@@ -240,126 +264,120 @@ const UsersProfile = () => {
                 {!isProfilePublic && !showProfileVisibilityModal && (
                   <ProfileVisibilityModal onClose={handleCloseModal} />
                 )}
-
+                 
                 <section className={styles.TabOptionLayout}>
-                  <div className={styles.TopProfileCardContainer}>
-                    <ProfileCardSmall
-                      user={userDetails}
-                      loading={loadingUserDetails}
-                      error={loadingUserError}
-                      onFollowClick={onFollowClick}
-                      userFollowLoading={userFollowLoading}
+              <div className={styles.TopProfileCardContainer}>
+                <ProfileCardSmall
+                  user={userDetails}
+                  loading={loadingUserDetails}
+                  error={loadingUserError}
+                  onFollowClick={onFollowClick}
+                  userFollowLoading={userFollowLoading}
+                />
+              </div>
+              <div className={styles.OverviewContainer}>
+                <div className={styles.tabsContainer}>
+                  {tabNames.map((tabName) => (
+                    <TabItem
+                      key={tabName}
+                      tabName={tabName}
+                      activeTab={activeTab}
+                      setActiveTab={setActiveTab}
                     />
-                  </div>
-                  <div className={styles.OverviewContainer}>
-                    <div className={styles.tabsContainer}>
-                      {tabNames.map((tabName) => (
-                        <TabItem
-                          key={tabName}
-                          tabName={tabName}
-                          activeTab={activeTab}
-                          setActiveTab={setActiveTab}
-                        />
-                      ))}
-                    </div>
+                  ))}
+                </div>
 
-                    {activeTab === "Overview" && (
-                      <>
-                        <section className="">
-                          <div className="SectionTitle">Analytics</div>
-                          {loadingUserDetails ? (
-                            <div className={styles.NoResourcesMessage}>
-                              <Spinner />
-                            </div>
-                          ) : (
-                            userDetails && (
-                              <ProfileAnalytics user={userDetails} />
-                            )
-                          )}
-                          {loadingUserError && (
-                            <div className={styles.NoResourcesMessage}>
-                              Failed to fetch user data
-                            </div>
-                          )}
-                        </section>
-                        <UserFeedProjects
-                          projects={userProjects}
-                          loading={loadingUserProjects}
-                          error={loadingUserProjectsError}
-                          onProjectFollowClick={onProjectFollowClick}
-                          projectFollowLoading={projectFollowLoading}
-                        />
-                        <>
-                          <div className={styles.TopProjectsContainer}>
-                            {isFetchingRecentActivities ? (
-                              <div className={styles.NoResourcesMessage}>
-                                <Spinner />
-                              </div>
-                            ) : (
-                              userActivities.length > 0 && (
-                                <UserFeedActivities
-                                  activities={userActivities}
-                                  yearOptions={yearOptions}
-                                  selectedYear={(selectedOption) =>
-                                    selectedOption
-                                  }
-                                  expanded={expanded}
-                                  toggleExpand={toggleExpand}
-                                  pagination={pagination}
-                                  fetchMoreActivities={fetchMoreActivities}
-                                />
-                              )
-                            )}
-                            {noRecentActivity && (
-                              <div>No recent activities for this user</div>
-                            )}
+                {activeTab === "Overview" && (
+                  <>
+                    <section className="">
+                      <div className="SectionTitle">Analytics</div>
+                      {loadingUserDetails ? (
+                        <div className={styles.NoResourcesMessage}>
+                          <Spinner />
+                        </div>
+                      ) : userDetails && (
+                        <ProfileAnalytics user={userDetails} />
+                      )}
+                      {loadingUserError && 
+                        <div className={styles.NoResourcesMessage}>
+                        Failed to fetch user data
+                      </div>
+                      }
+                    </section>
+                    <UserFeedProjects
+                      projects={userProjects}
+                      loading={loadingUserProjects}
+                      error={loadingUserProjectsError}
+                      onProjectFollowClick={onProjectFollowClick}
+                      projectFollowLoading={projectFollowLoading}
+                    />
+                    <>
+                      <div className={styles.TopProjectsContainer}>
+                        {isFetchingRecentActivities ? (
+                          <div className={styles.NoResourcesMessage}>
+                            <Spinner />
                           </div>
-                        </>
-                      </>
-                    )}
-                    {activeTab === "Projects" && (
-                      <>
-                        <div className={styles.TopProjectsContainer}>
-                          <UserFeedProjects
-                            projects={userProjects}
-                            loading={loadingUserProjects}
-                            error={loadingUserProjectsError}
-                            onProjectFollowClick={onProjectFollowClick}
-                            projectFollowLoading={projectFollowLoading}
+                        ) : userActivities.length > 0  && (
+                          <UserFeedActivities
+                            activities={userActivities}
+                            // yearOptions={yearOptions}
+                            // selectedYear={(selectedOption) => selectedOption}
+                            expanded={expanded}
+                            toggleExpand={toggleExpand}
+                            pagination={pagination}
+                            fetchMoreActivities={fetchMoreActivities}
                           />
+                        )}
+                        {noRecentActivity && (
+                        <div >
+                          No recent activities for this user
                         </div>
-                      </>
-                    )}
-                    {activeTab === "Activities" && (
-                      <>
-                        <div className={styles.TopProjectsContainer}>
-                          {isFetchingRecentActivities ? (
-                            <div className={styles.NoResourcesMessage}>
-                              <Spinner />
-                            </div>
-                          ) : (
-                            userActivities.length > 0 && (
-                              <UserFeedActivities
-                                activities={userActivities}
-                                yearOptions={yearOptions}
-                                selectedYear={(selectedOption) =>
-                                  selectedOption
-                                }
-                                expanded={expanded}
-                                pagination={pagination}
-                                fetchMoreActivities={fetchMoreActivities}
-                                toggleExpand={toggleExpand}
-                              />
-                            )
-                          )}
-                          {noRecentActivity && (
-                            <div>No recent activities for this user</div>
-                          )}
+                      )}
+                      </div>
+                    </>
+                  </>
+                )}
+                {activeTab === "Projects" && (
+                  <>
+                    <div className={styles.TopProjectsContainer}>
+                      <UserFeedProjects
+                        projects={userProjects}
+                        loading={loadingUserProjects}
+                        error={loadingUserProjectsError}
+                        onProjectFollowClick={onProjectFollowClick}
+                        projectFollowLoading={projectFollowLoading}
+                      />
+                    </div>
+                  </>
+                )}
+                {activeTab === "Activities" && (
+                  <>
+                    <div className={styles.TopProjectsContainer}>
+                      {isFetchingRecentActivities ? (
+                        <div className={styles.NoResourcesMessage}>
+                          <Spinner />
                         </div>
-                      </>
-                    )}
-                  </div>
-                </section>
+                      ) : userActivities.length > 0  &&  (
+                        <UserFeedActivities
+                          activities={userActivities}
+                          // yearOptions={yearOptions}
+                          // selectedYear={(selectedOption) => selectedOption}
+                          expanded={expanded}
+                          pagination={pagination}
+                          fetchMoreActivities={fetchMoreActivities}
+                          toggleExpand={toggleExpand}
+                        />
+                      )}
+                      {noRecentActivity && (
+                        <div >
+                          No recent activities for this user
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
+            </section>
               </div>
             </>
           )}
