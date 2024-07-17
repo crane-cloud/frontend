@@ -1,1 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-upload-cloud"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path><polyline points="16 16 12 12 8 16"></polyline></svg>
+<svg width="38" height="33" viewBox="0 0 38 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_7804_1512)">
+        <path d="M25.2724 22L18.9543 16.5L12.6362 22" stroke="black" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+        <path d="M18.9541 16.5V28.875" stroke="#41873F" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+        <path
+            d="M32.2065 25.2863C33.7471 24.5552 34.9641 23.3983 35.6655 21.9981C36.3669 20.598 36.5126 19.0345 36.0798 17.5542C35.647 16.074 34.6603 14.7614 33.2754 13.8235C31.8904 12.8857 30.1861 12.376 28.4315 12.375H26.4413C25.9632 10.7652 25.0721 9.27075 23.835 8.0039C22.5979 6.73706 21.047 5.73083 19.2989 5.06087C17.5508 4.39092 15.6509 4.07466 13.7422 4.13588C11.8334 4.1971 9.96547 4.6342 8.27872 5.41433C6.59197 6.19446 5.13032 7.29731 4.00367 8.63996C2.87702 9.98262 2.11468 11.5302 1.77396 13.1662C1.43324 14.8023 1.52301 16.4843 2.03653 18.0858C2.55004 19.6873 3.47393 21.1666 4.73874 22.4125"
+            stroke="#1E8E1B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M25.2724 22L18.9543 16.5L12.6362 22" stroke="#41873F" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+    </g>
+    <defs>
+        <clipPath id="clip0_7804_1512">
+            <rect width="37.9084" height="33" fill="white" />
+        </clipPath>
+    </defs>
+</svg>

@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+<svg width="32" height="30" viewBox="0 0 32 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+        d="M29.9613 13.3881V14.6425C29.9595 17.5827 28.9484 20.4436 27.0787 22.7985C25.209 25.1535 22.5809 26.8762 19.5864 27.7099C16.5919 28.5435 13.3915 28.4434 10.4623 27.4245C7.5332 26.4055 5.03236 24.5223 3.33277 22.0558C1.63319 19.5892 0.82593 16.6714 1.03139 13.7376C1.23685 10.8037 2.44402 8.01103 4.47286 5.77596C6.5017 3.54088 9.24352 1.98321 12.2894 1.33524C15.3352 0.687266 18.522 0.983721 21.3743 2.18039"
+        stroke="#41873F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M30.1217 4.63574L15.6411 18.2841L11.2969 14.1937" stroke="#41873F" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" />
+</svg>

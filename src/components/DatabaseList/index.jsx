@@ -10,6 +10,7 @@ import getProjectDatabases from "../../redux/actions/databaseList";
 import styles from "./DatabaseList.module.css";
 import DashboardLayout from "../Layouts/DashboardLayout";
 import { getProjectName } from "../../helpers/projectName";
+import tellAge from "../../helpers/ageUtility";
 
 class DatabaseList extends React.Component {
   constructor(props) {
@@ -23,26 +24,15 @@ class DatabaseList extends React.Component {
   }
 
   componentDidMount() {
-    const {
-      getProjectDatabases,
-      match: {
-        params: { projectID },
-      },
-    } = this.props;
-    getProjectDatabases(projectID);
+    const { getProjectDatabases } = this.props;
+    getProjectDatabases();
   }
 
   componentDidUpdate(prevProps) {
-    const {
-      isCreated,
-      getProjectDatabases,
-      match: {
-        params: { projectID },
-      },
-    } = this.props;
+    const { isCreated, getProjectDatabases } = this.props;
 
     if (isCreated !== prevProps.isCreated) {
-      getProjectDatabases(projectID);
+      getProjectDatabases();
       this.callbackCreateComponent();
     }
   }
@@ -153,7 +143,7 @@ class DatabaseList extends React.Component {
                                 to={`/projects/${projectID}/databases/${database.id}/settings`}
                                 className={styles.DatabaseLink}
                               >
-                                <Status status={database.db_status} />
+                                <Status status={!database.disabled} />
                               </Link>
                             </td>
                             <td>
@@ -161,7 +151,7 @@ class DatabaseList extends React.Component {
                                 to={`/projects/${projectID}/databases/${database.id}/settings`}
                                 className={styles.DatabaseLink}
                               >
-                                {database.age}
+                                {tellAge(database.date_created)}
                               </Link>
                             </td>
                           </tr>

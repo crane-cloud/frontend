@@ -55,6 +55,13 @@
   width: 100%;
   border-radius: 5px;
 }
+.Element div div div{
+  display: flex;
+}
+.Element div div input{
+  width: 85%;
+}
+
 .FormsSection {
   padding: 1rem;
   align-self: center;

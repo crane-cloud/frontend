@@ -1,0 +1,70 @@
+.tagInputContainer {
+    border: 1px solid #000;
+    padding: 5px;
+    border-radius: 5px;
+    display: inline-block;
+    width: 99%;
+    min-height: 4vh;
+}
+
+.tagList {
+    display: flex;
+    justify-items: flex-start;
+    max-width: 27.5rem;
+}
+
+.tagList ,.tag{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.tag {
+    background-color: #e0e0e0;
+    border-radius: 3px;
+    padding: 2px 5px;
+    display: flex;
+    align-items: center;
+}
+
+.tag:hover{
+    background-color: #ccc;
+    color: #000;
+}
+
+.tag button {
+    background: none;
+    border: none;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.input {
+    border: none;
+    outline: none;
+    flex: 1;
+}
+
+.suggestions {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+    position: absolute;
+    background: white;
+    z-index: 1;
+    width: 300px;
+}
+
+.suggestion {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.suggestion:hover {
+    background-color: #f0f0f0;
+}
+.Element > div > .tagInputContainer , .tagList{
+    min-width: 35rem;
+    max-width: 100%;
+}

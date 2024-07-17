@@ -1,4 +1,4 @@
-import axios from "../../axios";
+import { monitoringAxios } from "../../axios";
 import {
   FETCH_PROJECT_NETWORK_SUCCESS,
   FETCH_PROJECT_NETWORK_FAILED,
@@ -34,8 +34,8 @@ const clearProjectNetwork = () => ({
 const getProjectNetwork = (projectID, params) => (dispatch) => {
   dispatch(startFetchingNetworkMetrics());
 
-  return axios
-    .post(`/projects/${projectID}/metrics/network`, params)
+  return monitoringAxios
+    .post(`/projects/network/metrics`, { ...params, project_id: projectID })
     .then((response) => {
       dispatch(getNetworkMetricsSuccess(projectID, response));
     })

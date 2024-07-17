@@ -12,6 +12,7 @@ import { ReactComponent as FilterIcon } from "../../assets/images/filterIcon.svg
 import { ReactComponent as ArrowUpDDown } from "../../assets/images/ArrowUp&Down.svg";
 import { DisplayDateTime } from "../../helpers/dateConstants";
 import Spinner from "../Spinner";
+import { userActivityLoggerAxios } from "../../axios.js";
 
 const ActivityLogs = ({ projectID }) => {
   const [toTS, setToTS] = useState("none");
@@ -32,7 +33,7 @@ const ActivityLogs = ({ projectID }) => {
   //api
   const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState([]);
-  const baseLinkRef = useRef(`/users/activities?`);
+  const baseLinkRef = useRef(`/activities?`);
   // const baseLink = baseLinkRef.current;
   useEffect(() => {
     if (projectID) {
@@ -49,7 +50,7 @@ const ActivityLogs = ({ projectID }) => {
 
   const fetchActivityLogs = (link) => {
     setLoading(true);
-    handleGetRequest(link)
+    handleGetRequest(link, userActivityLoggerAxios)
       .then((response) => {
         if (response.data.data.activity.length > 0) {
           setLogs(response.data.data.activity);
@@ -138,9 +139,9 @@ const ActivityLogs = ({ projectID }) => {
   };
   const handleCalenderSubmission = () => {
     //add to link
-    const toDate = new Date(toTS) 
-    const fromDate = new Date(fromTS)
-    if(toTS !== "none" && fromTS !== "none" && (toDate < fromDate )){
+    const toDate = new Date(toTS);
+    const fromDate = new Date(fromTS);
+    if (toTS !== "none" && fromTS !== "none" && toDate < fromDate) {
       setDateError("The 'end' date must be greater than the 'start' date");
       setFromTS("none");
       setToTS("none");
@@ -211,37 +212,37 @@ const ActivityLogs = ({ projectID }) => {
           <div className={styles.Heading}>Activity Feed</div>
           <div className={styles.SimpleForm}>
             <div className={styles.OuterFilterItem}>
-            <div className={styles.DateSection}>
-                  <div className={styles.DateItem}>
-                      <div>Start:</div>
-                      <DateInput
-                        handleChange={handleFromDate}
-                        showCalendar={showFromCalendar}
-                        className={styles.dateField}
-                        position={styles.CalenderFromposition}
-                        dateValue={fromTS}
-                        onClick={switchCalendars}
-                        onCancel={closeCalendar}
-                        onSubmit={handleCalenderSubmission}
-                        value="from"
-                      />
-                    </div>
-                    <div className={styles.DateItem}>
-                      <div>End:</div>
-                      <DateInput
-                        handleChange={handleToDate}
-                        showCalendar={showToCalendar}
-                        position={styles.CalenderToposition}
-                        className={styles.dateField}
-                        dateValue={toTS}
-                        onClick={switchCalendars}
-                        onCancel={closeCalendar}
-                        onSubmit={handleCalenderSubmission}
-                        value="to"
-                      />
-                    </div>
-                  </div>
-                  <div className={styles.errorSection}>{dateError}</div>
+              <div className={styles.DateSection}>
+                <div className={styles.DateItem}>
+                  <div>Start:</div>
+                  <DateInput
+                    handleChange={handleFromDate}
+                    showCalendar={showFromCalendar}
+                    className={styles.dateField}
+                    position={styles.CalenderFromposition}
+                    dateValue={fromTS}
+                    onClick={switchCalendars}
+                    onCancel={closeCalendar}
+                    onSubmit={handleCalenderSubmission}
+                    value="from"
+                  />
+                </div>
+                <div className={styles.DateItem}>
+                  <div>End:</div>
+                  <DateInput
+                    handleChange={handleToDate}
+                    showCalendar={showToCalendar}
+                    position={styles.CalenderToposition}
+                    className={styles.dateField}
+                    dateValue={toTS}
+                    onClick={switchCalendars}
+                    onCancel={closeCalendar}
+                    onSubmit={handleCalenderSubmission}
+                    value="to"
+                  />
+                </div>
+              </div>
+              <div className={styles.errorSection}>{dateError}</div>
             </div>
             <div className={styles.Filter}>
               <FilterIcon />

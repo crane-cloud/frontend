@@ -17,11 +17,12 @@ import { ReactComponent as ArrowUpDDown } from "../../assets/images/ArrowUp&Down
 import { dateInWords } from "../../helpers/dateConstants";
 import Spinner from "../../components/Spinner";
 import AppFooter from "../../components/appFooter/index.js";
+import { userActivityLoggerAxios } from "../../axios.js";
 
 const AdminLogsPage = () => {
   const clusterID = localStorage.getItem("clusterID");
 
-  const baseLink = "/users/activities?";
+  const baseLink = "/activities?";
   const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState([]);
   const [users, setUsers] = useState([]);
@@ -84,8 +85,7 @@ const AdminLogsPage = () => {
 
   const fetchActivityLogs = (link) => {
     setLoading(true);
-    //projectID
-    handleGetRequest(link)
+    handleGetRequest(link, userActivityLoggerAxios)
       .then((response) => {
         if (response.data.data.activity.length > 0) {
           setLogs(response.data.data.activity);

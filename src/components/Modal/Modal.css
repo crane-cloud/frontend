@@ -63,12 +63,15 @@
   width: 4px;
   height: 0px;
 }
+
 .ModalChildWrap::-webkit-scrollbar-track {
-  background: var( --gray-bg-light-color);
+  background: var(--gray-bg-light-color);
 }
+
 .ModalChildWrap::-webkit-scrollbar-thumb {
   background: #555;
 }
+
 .ModalChildWrap::-webkit-scrollbar-thumb:hover {
   background: #000;
 }

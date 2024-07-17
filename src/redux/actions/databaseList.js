@@ -1,4 +1,4 @@
-import axios from "../../axios";
+import { databaseAxios } from "../../axios";
 import {
   FETCH_PROJECT_DATABASES_SUCCESS,
   FETCH_PROJECT_DATABASES_FAILED,
@@ -27,11 +27,11 @@ const clearProjectDatabases = () => ({
   type: CLEAR_PROJECT_DATABASES,
 });
 
-const getProjectDatabases = (projectID) => (dispatch) => {
+const getProjectDatabases = () => (dispatch) => {
   dispatch(startFetchingDatabases());
 
-  return axios
-    .get(`/projects/${projectID}/databases`)
+  return databaseAxios
+    .get("/databases")
     .then((response) => {
       dispatch(getDatabasesSuccess(response));
     })

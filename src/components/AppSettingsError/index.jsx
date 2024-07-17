@@ -1,10 +1,13 @@
 import Feedback from "../Feedback";
 import "./AppSettingsError.css";
 
-const AppSettingsError = ({ message }) =>
+const AppSettingsError = ({ message, type = "error" }) =>
   message ? (
     <div className="errorCenterDiv">
-      <Feedback type="error" message={message} />
+      <Feedback
+        type={type === "error" ? "error" : "success"}
+        message={message}
+      />
     </div>
   ) : null;
 

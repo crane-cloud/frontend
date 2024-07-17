@@ -1,4 +1,4 @@
-import axios from "../../axios";
+import {userActivityLoggerAxios} from "../../axios";
 import {
   GETTING_USER_ACTIVITIES,
   USER_ACTIVITIES_SUCCESS,
@@ -27,12 +27,11 @@ const getUserActivities = (qeuryParams, currentPage) => (dispatch) => {
 
   let link;
   if (qeuryParams !== "" && currentPage !== "") {
-    link = `/users/activities?${qeuryParams}&page=${currentPage}`;
+    link = `/activities?${qeuryParams}&page=${currentPage}`;
   } else {
-    link = `/users/activities?page=${currentPage}`;
+    link = `/activities?page=${currentPage}`;
   }
-
-  return axios
+  return userActivityLoggerAxios
     .get(link)
     .then((response) => {
       dispatch(userActivitiesSuccess(response));

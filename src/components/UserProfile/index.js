@@ -4,8 +4,6 @@ import { connect } from "react-redux";
 import Avatar from "../Avatar";
 import styles from "./UserProfile.module.css";
 import { handleGetRequest } from "../../apis/apis.js";
-import { API_BASE_URL } from "../../config";
-import axios from "axios";
 import Modal from "../../components/Modal";
 import InformationBar from "../../components/InformationBar";
 import Header from "../../components/Header";
@@ -23,27 +21,40 @@ import moment from "moment";
 import AppFooter from "../appFooter";
 import NewResourceCard from "../NewResourceCard";
 import SettingsActionRow from "../SettingsActionRow/index.jsx";
+import { ReactComponent as GlobeIcon } from "../../assets/images/globe.svg";
+import { ReactComponent as PadlockIcon } from "../../assets/images/padlock.svg";
+import axios from "../../axios.js";
+import AppSettingsError from "../AppSettingsError/index.jsx";
 
 class UserProfile extends React.Component {
   constructor(props) {
     super(props);
-    const { name } = props.user;
+    const { name, is_public } = props.user;
     this.initialState = {
       username: name,
+      is_public: is_public,
       showSaveModel: false,
       passwordModel: false,
+      visibilityModal: false,
       updateModal: false,
       passwordChangeLoading: false,
       passwordChangeError: "",
       passwordChangeSuccess: "",
-      projectsCount: 0,
+      profileVisibilityLoading: false,
+      profileVisibilityError: "",
+      profileVisibilitySuccess: "",
       activeProjectsCount: 0,
       disabledProjectsCount: 0,
     };
     this.state = this.initialState;
     this.handleChange = this.handleChange.bind(this);
+    this.handleToggleVisibility = this.handleToggleVisibility.bind(this);
     this.handleChangeSaving = this.handleChangeSaving.bind(this);
     this.getUserProjects = this.getUserProjects.bind(this);
+    this.showProfileVisibilityWarning =
+      this.showProfileVisibilityWarning.bind(this);
+    this.hideProfileVisibilityWarning =
+      this.hideProfileVisibilityWarning.bind(this);
     this.showPasswordWarningModel = this.showPasswordWarningModel.bind(this);
     this.hidePasswordWarningModel = this.hidePasswordWarningModel.bind(this);
     this.handlePasswordChanage = this.handlePasswordChanage.bind(this);
@@ -61,13 +72,6 @@ class UserProfile extends React.Component {
   getUserProjects = async (userID) => {
     const response = await handleGetRequest(`/users/${userID}/projects`);
 
-    const projectsList = response.data.data?.projects;
-
-    const totalAppsCount = projectsList.reduce(
-      (total, project) => total + project.apps_count,
-      0
-    );
-
     if (response.data.data?.projects.length > 0) {
       const projectsList = response.data.data?.projects;
 
@@ -79,17 +83,13 @@ class UserProfile extends React.Component {
       );
 
       this.setState({
-        projectsCount: activeProjects.length,
         activeProjectsCount: activeProjects.length - disabledProjects.length,
         disabledProjectsCount: disabledProjects.length,
-        totalAppsCount: totalAppsCount,
       });
     } else {
       this.setState({
-        projectsCount: 0,
         activeProjectsCount: 0,
         disabledProjectsCount: 0,
-        totalAppsCount: 0,
       });
 
       throw new Error("No projects found for user");
@@ -114,15 +114,83 @@ class UserProfile extends React.Component {
     this.setState({ updateModal: false });
   }
 
+  showProfileVisibilityWarning() {
+    this.setState({
+      visibilityModal: true,
+    });
+  }
+
+  hideProfileVisibilityWarning() {
+    this.setState({
+      visibilityModal: false,
+    });
+  }
+
   componentDidUpdate(prevProps) {
+    this.handleProfileUpdate(prevProps);
+  }
+
+  handleProfileUpdate = (prevProps) => {
     const { profileUpdated, user } = this.props;
-    if (profileUpdated !== prevProps.profileUpdated) {
-      //log user out
-      localStorage.clear();
-      window.location.href = "/";
+
+    if (user.is_public !== prevProps.user.is_public) {
+      this.setState({ is_public: user.is_public });
     }
-    if (user !== prevProps.user) {
+
+    if (profileUpdated !== prevProps.profileUpdated) {
       this.setState({ username: user.name });
+    }
+
+    if (user.name !== prevProps.user.name) {
+      this.setState({ username: user.name });
+    }
+
+    if (
+      user.is_public !== prevProps.user.is_public ||
+      profileUpdated !== prevProps.profileUpdated ||
+      user.name !== prevProps.user.name
+    ) {
+      this.forceReloadComponent();
+    }
+  };
+
+  forceReloadComponent = () => {
+    this.setState((prevState) => ({
+      componentKey: prevState.componentKey + 1,
+    }));
+  };
+
+  async handleToggleVisibility() {
+    const { user } = this.props;
+    const { username, is_public } = this.state;
+
+    this.setState({
+      profileVisibilityLoading: true,
+    });
+
+    const update = {
+      name: username,
+      is_public: !is_public,
+    };
+
+    try {
+      const response = await axios.patch(`/users/${user.id}`, update);
+      if (response.status === 200) {
+        this.setState({
+          is_public: !is_public,
+          profileVisibilityLoading: false,
+          profileVisibilitySuccess: "Profile Visibility Updated Successfully",
+        });
+        setTimeout(() => {
+          this.hideProfileVisibilityWarning();
+          window.location.reload();
+        }, 1500);
+      }
+    } catch (error) {
+      console.error("Error following user:", error);
+      this.setState({
+        profileVisibilityError: error,
+      });
     }
   }
 
@@ -131,6 +199,7 @@ class UserProfile extends React.Component {
     const { username } = this.state;
     if (user.name !== username) {
       const update = {
+        is_public: user.is_public,
         name: username,
       };
       updateProfile(user.id, update);
@@ -143,7 +212,7 @@ class UserProfile extends React.Component {
       passwordChangeLoading: true,
     });
     axios
-      .post(`${API_BASE_URL}/users/forgot_password`, userResetEmail)
+      .post(`/users/forgot_password`, userResetEmail)
       .then((response) => {
         if (response.data.status === "success") {
           this.setState({
@@ -167,14 +236,15 @@ class UserProfile extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { userId, username } = this.state;
+    const { userId, username, is_public } = this.state;
 
     const postData = {
+      is_public: is_public,
       username: username,
     };
 
     axios
-      .post(`${API_BASE_URL}/users/${userId}`, postData)
+      .post(`/users/${userId}`, postData)
       .then(() => {
         // this will logout the user
         localStorage.clear();
@@ -188,12 +258,16 @@ class UserProfile extends React.Component {
   render() {
     const {
       username,
+      is_public,
       passwordModel,
       updateModal,
+      visibilityModal,
       passwordChangeError,
       passwordChangeSuccess,
       passwordChangeLoading,
-      projectsCount,
+      profileVisibilityLoading,
+      profileVisibilitySuccess,
+      profileVisibilityError,
       activeProjectsCount,
       disabledProjectsCount,
     } = this.state;
@@ -231,136 +305,167 @@ class UserProfile extends React.Component {
                   </div>
                 ) : isFetched ? (
                   <div className="LeftAlignContainer">
-                    <div className="ContentSection">
-                      <div className="AdminUserPageContainer">
-                        <section>
-                          <div className="SectionTitle">
-                            Personal information
-                          </div>
-                          <div className="AdminCardArea">
-                            <div className="AdminUserProfileCard">
-                              <div className="AdminUserProfileInfoSect">
-                                <div className="AdminUserProfileInfoHeader">
-                                  <Avatar
-                                    name={user?.name}
-                                    className={styles.UserAvatarLarge}
-                                  />
-                                  <div className={styles.Identity}>
-                                    <div className={styles.IdentityName}>
-                                      {user?.name}
-                                      {user?.is_beta_user === true && (
-                                        <div className={styles.BetaUserDiv}>
-                                          Beta User
+                    <div className="AdminUserPageContainer">
+                      <section>
+                        <div className="SectionTitle">Personal information</div>
+                        <div className="AdminCardArea">
+                          <div className="AdminUserProfileCard">
+                            <div className="AdminUserProfileInfoSect">
+                              <div className="AdminUserProfileInfoHeader">
+                                <Avatar
+                                  name={user?.name}
+                                  className={styles.UserAvatarLarge}
+                                />
+                                <div className={styles.Identity}>
+                                  <div className={styles.IdentityName}>
+                                    {user?.name}
+
+                                    <div
+                                      className={styles.ProfileVisibilityDiv}
+                                    >
+                                      {user?.is_public === true ? (
+                                        <div className={styles.userStatus}>
+                                          <GlobeIcon
+                                            className={styles.userStatusIcon}
+                                          />
+                                          <span
+                                            className={styles.userStatusText}
+                                          >
+                                            Public
+                                          </span>
+                                        </div>
+                                      ) : (
+                                        <div className={styles.userStatus}>
+                                          <PadlockIcon
+                                            className={styles.userStatusIcon}
+                                          />
+                                          <span
+                                            className={styles.userStatusText}
+                                          >
+                                            Private
+                                          </span>
                                         </div>
                                       )}
                                     </div>
-                                    <div className={styles.IdentityEmail}>
-                                      {user?.email}
-                                    </div>
+                                  </div>
+                                  <div className={styles.IdentityEmail}>
+                                    {user?.email}
                                   </div>
                                 </div>
+                              </div>
 
-                                <div className="AdminProfileRowInfo">
-                                  <div className="AdminProfileRowItem">
-                                    Has
-                                    <span>{activeProjectsCount} active</span>
-                                    and
-                                    <span>
-                                      {disabledProjectsCount} disabled
-                                    </span>
-                                    projects
-                                  </div>
-                                  |
-                                  <div className="AdminProfileRowItem">
-                                    Organization:
-                                    <span>
-                                      {user?.organisation === null
-                                        ? "Not Found"
-                                        : user?.organisation}
-                                    </span>
-                                  </div>
-                                  |
-                                  <div className="AdminProfileRowItem">
-                                    Date Joined:
-                                    <span>
-                                      {moment(user?.date_created)
-                                        .utc()
-                                        .format("ddd, MMMM DD, yyyy")}
-                                    </span>
-                                  </div>
+                              <div className="AdminProfileRowInfo">
+                                <div className="AdminProfileRowItem">
+                                  Has
+                                  <span>{activeProjectsCount} active</span>
+                                  and
+                                  <span>{disabledProjectsCount} disabled</span>
+                                  projects
+                                </div>
+                                |
+                                <div className="AdminProfileRowItem">
+                                  Organization:
+                                  <span>
+                                    {user?.organisation === null
+                                      ? "Not Found"
+                                      : user?.organisation}
+                                  </span>
+                                </div>
+                                |
+                                <div className="AdminProfileRowItem">
+                                  Date Joined:
+                                  <span>
+                                    {moment(user?.date_created)
+                                      .utc()
+                                      .format("ddd, MMMM DD, yyyy")}
+                                  </span>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </section>
+                        </div>
+                      </section>
 
-                        <div>
-                          <div className="SectionTitle">
-                            User Platform Metrics
-                          </div>
-                          <div className="Cluster1Container">
-                            <NewResourceCard
-                              key={1}
-                              title="Projects"
-                              count={projectsCount}
-                            />
-                            <NewResourceCard
-                              key={1}
-                              title="Apps Deployed"
-                              count={this.state.totalAppsCount}
-                            />
+                      <div>
+                        <div className="SectionTitle">
+                          User Platform Metrics
+                        </div>
+                        <div className="Cluster1Container">
+                          <NewResourceCard
+                            key={1}
+                            title="Projects"
+                            count={user?.projects_count}
+                          />
+                          <NewResourceCard
+                            key={1}
+                            title="Apps Deployed"
+                            count={user?.apps_count}
+                          />
+                          {user?.database_count && (
                             <NewResourceCard
                               key={1}
                               title="Databases Created"
                               count={user?.database_count}
                             />
-                            <NewResourceCard
-                              key={1}
-                              title="Credits"
-                              count={
-                                user?.credits.length === 0
-                                  ? 0
-                                  : user?.credits[0].amount
-                              }
-                            />
-                          </div>
+                          )}
+                          <NewResourceCard
+                            key={1}
+                            title="Credits"
+                            count={
+                              user?.credits.length === 0
+                                ? 0
+                                : user?.credits[0].amount
+                            }
+                          />
                         </div>
-
-                        <div className="SectionTitle">Manage User</div>
-                        <div className="ProjectInstructions">
-                          <div className="MemberBody">
-                            <SettingsActionRow
-                              title="Change Password"
-                              content="This will permanently change your current
-                              password to a new one"
-                              buttonLabel="Reset Password"
-                              buttonColor="red"
-                              onButtonClick={() => {
-                                this.showPasswordWarningModel();
-                              }}
-                            />
-
-                            <SettingsActionRow
-                              title="Update Profile"
-                              content="This allows you to make changes to specific
-                              fields under your profile"
-                              buttonLabel="Edit Profile"
-                              buttonColor="primary"
-                              onButtonClick={() => {
-                                this.showUpdateModal();
-                              }}
-                            />
-                          </div>
-                        </div>
-                        {!isFetching && !isFetched && (
-                          <div className="NoResourcesMessage">
-                            <p>
-                              Oops! Something went wrong! Failed to retrieve
-                              User Profile.
-                            </p>
-                          </div>
-                        )}
                       </div>
+
+                      <div className="SectionTitle">Manage User</div>
+                      <div className="ProjectInstructions">
+                        <div className="MemberBody">
+                          <SettingsActionRow
+                            title="Change Password"
+                            content="This will permanently change your current
+                              password to a new one"
+                            buttonLabel="Reset Password"
+                            buttonColor="red"
+                            onButtonClick={() => {
+                              this.showPasswordWarningModel();
+                            }}
+                          />
+
+                          <SettingsActionRow
+                            title="Change Profile Visibility"
+                            content="This will grant or restrict other users from viewing your profile"
+                            buttonLabel={
+                              is_public ? "Make Private" : "Make Public"
+                            }
+                            buttonColor="primary"
+                            onButtonClick={() => {
+                              this.showProfileVisibilityWarning();
+                            }}
+                          />
+
+                          <SettingsActionRow
+                            title="Update Profile"
+                            content="This allows you to make changes to specific
+                              fields under your profile"
+                            buttonLabel="Edit Profile"
+                            buttonColor="primary"
+                            onButtonClick={() => {
+                              this.showUpdateModal();
+                            }}
+                          />
+                        </div>
+                      </div>
+                      {!isFetching && !isFetched && (
+                        <div className="NoResourcesMessage">
+                          <p>
+                            Oops! Something went wrong! Failed to retrieve User
+                            Profile.
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ) : null}
@@ -423,6 +528,58 @@ class UserProfile extends React.Component {
                             </PrimaryButton>
                           </div>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                </Modal>
+              </div>
+            )}
+
+            {visibilityModal && (
+              <div className={styles.ProjectDeleteModel}>
+                <Modal
+                  showModal={visibilityModal}
+                  onClickAway={() => {
+                    this.hideProfileVisibilityWarning();
+                  }}
+                >
+                  <div className={styles.ModelContent}>
+                    <div className={styles.ModelHeader}>
+                      Change Profile Visibility
+                    </div>
+                    <div className={styles.UpdateForm}>
+                      <div className={styles.InformationText}>
+                        Confirm and your profile visibility will change to{" "}
+                        {is_public ? "private" : "public"}.
+                      </div>
+                      <div className={styles.UpdateProjectModelButtons}>
+                        <PrimaryButton
+                          className="CancelBtn"
+                          onClick={() => {
+                            this.hideProfileVisibilityWarning();
+                          }}
+                        >
+                          Cancel
+                        </PrimaryButton>
+                        <PrimaryButton
+                          onClick={() => {
+                            this.handleToggleVisibility();
+                          }}
+                          color="primary"
+                        >
+                          {profileVisibilityLoading ? <Spinner /> : "Confirm"}
+                        </PrimaryButton>
+                      </div>
+                      <div>
+                        {profileVisibilitySuccess && (
+                          <AppSettingsError
+                            type="success"
+                            message={profileVisibilitySuccess}
+                          />
+                        )}
+                        {profileVisibilityError && (
+                          <AppSettingsError message={profileVisibilityError} />
+                        )}
                       </div>
                     </div>
                   </div>
