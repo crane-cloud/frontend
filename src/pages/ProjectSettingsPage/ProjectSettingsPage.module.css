@@ -165,6 +165,44 @@
   flex-direction: column;
   gap: 0.4rem;
 }
+.ProjectsDetailsInnerSection{
+  display: grid;
+  grid-template-columns: 2fr 2fr 2fr ;
+  grid-template-rows: auto;
+  overflow-x: auto;
+  width: -webkit-fill-available;
+  padding-top: 1rem;
+}
+
+.ProjectsDetailsInnerSection > :nth-child(1) {
+  display: grid;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 1rem;
+}
+
+.ProjectsDetailsInnerSection > :nth-child(2) {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.ProjectsDetailsInnerSection  > :nth-child(3) {
+  display: grid;
+  justify-content: flex-end;
+  align-items: center;
+  /* text-align: end; */
+  padding-right: 1rem;
+}
+
+.ProjectsDetailsInnerSection > *:not(:last-child) {
+  border-right: 1px solid #979595; 
+}
+
+.InnerContentGrid div {
+  padding: 0 0 0.3rem 0;
+}
+
 
 .DeleteWarning {
   color: #f00;
@@ -211,6 +249,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
+  padding: 0.5rem;
 }
 
 .MemberDescription {
@@ -218,7 +257,7 @@
 }
 
 .ProjectInstructions {
-  padding: 1rem;
+  padding: 0.5rem;
   background: #ffffff;
   border-radius: 15px;
   border: 1px solid var(--gray-light-color);
@@ -252,13 +291,9 @@
   visibility: visible;
 }
 
-
-
 .SettingsSectionInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  font-size: 0.95rem;
+  font-size: 17px;
+  font-weight:400;
 }
 
 .SectionButtons {
@@ -584,6 +619,12 @@
   display: flex;
   gap: 1rem;
 }
+.SectionSubTitle{
+  font-size: 17px;
+  font-weight: 550;
+}
+
+
 
 .SendButton,
 .BinButton {

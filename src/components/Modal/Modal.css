@@ -16,6 +16,9 @@
   width: auto;
   min-height: 100px;
   height: auto;
+  max-height: 80%;
+  align-items: center;
+  justify-content: center;
   padding: 2rem;
   background: #fff;
   display: flex;
