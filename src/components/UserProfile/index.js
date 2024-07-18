@@ -229,6 +229,7 @@ class UserProfile extends React.Component {
   render() {
     const {
       username,
+      organization,
       is_public,
       passwordModel,
       updateModal,
@@ -452,7 +453,19 @@ class UserProfile extends React.Component {
                               }}
                             />
                           </div>
-
+                          <div className={styles.UpdateInputSection}>
+                            <div className={styles.DeleteDescription}>
+                              Organization
+                            </div>
+                            <BlackInputText
+                              placeholder="Organization"
+                              name="organization"
+                              value={organization}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />
+                          </div>
                           <div className={styles.UpdateProjectModelButtons}>
                             <PrimaryButton
                               className="CancelBtn"
