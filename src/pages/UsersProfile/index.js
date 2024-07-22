@@ -1,129 +1,90 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
-import Avatar from "../../components/Avatar";
 import Header from "../../components/Header";
 
 import InformationBar from "../../components/InformationBar";
 
 import AppFooter from "../../components/appFooter";
 import styles from "./UserProfile.module.css";
-import moment from "moment";
-import PrimaryButton from "../../components/PrimaryButton";
+
+import {
+  handleGetRequest,
+  handlePostRequestWithOutDataObject,
+  handleDeleteRequest,
+} from "../../apis/apis";
 import ProfileAnalytics from "../../components/ProfileAnalyticsCard";
-import { getYearOptions } from "../../helpers/dateConstants";
+// import { getYearOptions } from "../../helpers/dateConstants";
 import TabItem from "../../components/TabItem";
 import UserFeedActivities from "../../components/UserProfileActivitiesComponent";
 import UserFeedProjects from "../../components/UserProfileProjectsComponent";
 import ProfileCardSmall from "../../components/SmallerProfileCard";
+import getUserRecentActivities from "../../redux/actions/getUserRecentActivity";
+import { useDispatch, useSelector } from "react-redux";
+import Spinner from "../../components/Spinner";
 
-const dummyProjects = [
-  { id: 1, name: "My Project 1", description: "This is my description" },
-  { id: 2, name: "My Project 1", description: "This is my description" },
-  { id: 3, name: "My Project 1", description: "This is my description" },
-  { id: 4, name: "My Project 1", description: "This is my description" },
-  { id: 5, name: "My Project 1", description: "This is my description" },
-  { id: 6, name: "My Project 1", description: "This is my description" },
-  { id: 7, name: "My Project 1", description: "This is my description" },
-  { id: 8, name: "My Project 1", description: "This is my description" },
-  { id: 9, name: "My Project 1", description: "This is my description" },
-  { id: 10, name: "My Project 1", description: "This is my description" },
-  { id: 11, name: "My Project 1", description: "This is my description" },
-  { id: 12, name: "My Project 1", description: "This is my description" },
-  { id: 13, name: "My Project 1", description: "This is my description" },
-  { id: 14, name: "My Project 1", description: "This is my description" },
-  { id: 15, name: "My Project 1", description: "This is my description" },
-  { id: 16, name: "My Project 1", description: "This is my description" },
-];
+import { useParams } from "react-router-dom";
+import ProfileVisibilityModal from "../../components/ProfileVisibilityModal";
 
-const dummyActivities = [
-  {
-    id: 1,
-    month: "May 2024",
-    activities: [
-      {
-        type: "Updated",
-        description: "Updated 5 apps in 3 projects",
-        projects: [
-          { name: "Project1", apps: 2 },
-          { name: "Project2", apps: 1 },
-          { name: "Project3", apps: 2 },
-        ],
-      },
-      {
-        type: "Created",
-        description: "Created 1 project",
-        projects: [{ name: "MyNewProject", apps: 0 }],
-      },
-    ],
-  },
-  {
-    id: 2,
-    month: "June 2024",
-    activities: [
-      {
-        type: "Updated",
-        description: "Updated 5 apps in 3 projects",
-        projects: [
-          { name: "Project1", apps: 2 },
-          { name: "Project2", apps: 1 },
-          { name: "Project3", apps: 2 },
-        ],
-      },
-      {
-        type: "Created",
-        description: "Created 1 project",
-        projects: [{ name: "MyNewProject", apps: 0 }],
-      },
-    ],
-  },
-
-  {
-    id: 2,
-    month: "July 2024",
-    activities: [
-      {
-        type: "Deployed",
-        description: "Deployed 5 apps in 3 projects",
-        projects: [
-          { name: "Project1", apps: 2 },
-          { name: "Project2", apps: 1 },
-          { name: "Project3", apps: 2 },
-        ],
-      },
-      {
-        type: "Created",
-        description: "Created 1 project",
-        projects: [{ name: "MyNewProject", apps: 0 }],
-      },
-    ],
-  },
-];
-const user = {
-  name: "Khalifan Muwonge",
-  isBetaUser: true,
-  email: "khalifanmuwonge@gmail.com",
-  organization: "Makerere",
-  dateJoined: "2020-12-04",
-  following: 1,
-  followers: 7,
-  projects: 38,
-};
-const user2 = {
-  name: 'Khalifan Muwonge',
-  email: 'khalifanmuwonge@gmail.com',
-  organization: 'Makerere',
-  dateJoined: '12/04/2020',
-  apps: 10,
-  projects: 15,
-  databases: 5,
-  followingProjects: 7,
-  followers: 12,
-  isBeta: true,
-};
 const tabNames = ["Overview", "Projects", "Activities"];
 const UsersProfile = () => {
   const [expanded, setExpanded] = useState({});
   const [activeTab, setActiveTab] = useState("Overview");
+  //users
+  const [userDetails, setUserDetails] = useState({});
+  const [, setShowProfileVisibilityModal] = useState(false);
+  const [loadingUserDetails, setLoadingUserDetails] = useState(false);
+  const [loadingUserError, setLoadingUserError] = useState(false);
+  const [userFollowLoading, setUserFollowLoading] = useState(false);
+  //projects
+  const [userProjects, setUserProjects] = useState({});
+  const [loadingUserProjects, setLoadingUserProjects] = useState(false);
+  const [loadingUserProjectsError, setUserProjectsError] = useState(false);
+  const [projectFollowLoading, setProjectFollowLoading] = useState("");
+
+  //formatted activity data
+  const [userActivities, setUserActivities] = useState([]);
+  const dispatch = useDispatch();
+
+  const { userID } = useParams();
+
+  const userRecentActivities = useCallback(
+    (pageSize = 10) => dispatch(getUserRecentActivities(userID, 1, pageSize)),
+    [dispatch, userID]
+  );
+
+  useEffect(() => {
+    userRecentActivities();
+  }, [userRecentActivities, userID]);
+
+  const getUserDetails = () => {
+    setLoadingUserDetails(true);
+    handleGetRequest(`/users/${userID}`)
+      .then((response) => {
+        setUserDetails(response.data.data.user);
+        setLoadingUserDetails(false);
+      })
+      .catch((error) => {
+        setLoadingUserError("Failed to fetch user details");
+        setLoadingUserDetails(false);
+      });
+  };
+  const getUserProjects = useCallback(async () => {
+    setLoadingUserProjects(true);
+    handleGetRequest(`users/${userID}/projects`)
+      .then((response) => {
+        setUserProjects(response.data.data.projects);
+        setLoadingUserProjects(false);
+      })
+      .catch(() => {
+        setUserProjectsError("Failed to userprojects, please try again");
+        setLoadingUserProjects(false);
+      });
+  }, [setLoadingUserProjects, setUserProjects, setUserProjectsError]);
+
+  useEffect(() => {
+    getUserDetails();
+    getUserProjects();
+  }, []);
 
   const toggleExpand = (id) => {
     setExpanded((prev) => ({
@@ -131,11 +92,141 @@ const UsersProfile = () => {
       [id]: !prev[id],
     }));
   };
-  const selectedYear = (year) => {
-    return;
+
+  // const selectedYear = (year) => {
+  //   return;
+  // };
+
+  const onFollowClick = () => {
+    setUserFollowLoading(true);
+    if (userDetails.requesting_user_follows) {
+      handleDeleteRequest(`users/${userID}/following`, {})
+        .then(() => {
+          window.location.href = `/profile/${userID}`;
+        })
+        .catch((error) => {
+          setUserFollowLoading(false);
+        });
+    } else {
+      handlePostRequestWithOutDataObject({}, `users/${userID}/following`)
+        .then(() => {
+          window.location.href = `/profile/${userID}`;
+        })
+        .catch((error) => {
+          setUserFollowLoading(false);
+        });
+    }
   };
 
-  const yearOptions = getYearOptions();
+  const onProjectFollowClick = async (projectID) => {
+    setProjectFollowLoading(projectID);
+    const project = await userProjects.find(
+      (project) => project.id === projectID
+    );
+    if (project.is_following) {
+      handleDeleteRequest(`projects/${projectID}/following`, {})
+        .then(() => {
+          window.location.href = `/profile/${userID}`;
+        })
+        .catch((error) => {
+          setProjectFollowLoading("");
+        });
+    } else {
+      handlePostRequestWithOutDataObject({}, `projects/${projectID}/following`)
+        .then(() => {
+          window.location.href = `/profile/${userID}`;
+        })
+        .catch((error) => {
+          setProjectFollowLoading("");
+        });
+    }
+  };
+
+  const {
+    recentActivities,
+    pagination,
+    isFetchingRecentActivities,
+    recentActivitiesFetched,
+  } = useSelector((state) => state.userRecentActivitiesReducer);
+
+  const noRecentActivity =
+    recentActivities?.length === 0 && recentActivitiesFetched;
+
+  const formatData = (data) => {
+    const activitiesByMonth = {};
+
+    data.forEach((item) => {
+      const date = new Date(item.creation_date);
+      const monthYear = date.toLocaleString("default", {
+        month: "long",
+        year: "numeric",
+      });
+
+      if (!activitiesByMonth[monthYear]) {
+        activitiesByMonth[monthYear] = [];
+      }
+
+      const activity = {
+        type: item.operation,
+        description: item.description,
+        projects: item?.project
+          ? [
+              {
+                id: item.project.id,
+                name: item.project.name,
+                apps: item.a_app_id ? 1 : 0,
+              },
+            ]
+          : [],
+        users: item?.a_user
+          ? [
+              {
+                id: item.a_user.id,
+                name: item.a_user.name,
+                email: item.a_user.email,
+              },
+            ]
+          : [],
+        apps: item?.app
+          ? [
+              {
+                id: item.app.id,
+                name: item.app.name,
+                url: item.app.url,
+              },
+            ]
+          : [],
+      };
+
+      activitiesByMonth[monthYear].push(activity);
+    });
+
+    return Object.entries(activitiesByMonth).map(
+      ([month, activities], index) => ({
+        id: index + 1,
+        month,
+        activities,
+      })
+    );
+  };
+
+  useEffect(() => {
+    setUserActivities(formatData(recentActivities));
+  }, [recentActivities]);
+
+  const fetchMoreActivities = () => {
+    const nextPerPage = pagination.per_page * 2;
+    userRecentActivities(nextPerPage);
+  };
+
+  //   const yearOptions = getYearOptions();
+
+  const handleCloseModal = () => {
+    setShowProfileVisibilityModal(false);
+    // Go back to the previous page
+    window.history.back();
+  };
+
   return (
     <div className="MainPage">
       <div className="TopBarSection">
@@ -145,133 +236,146 @@ const UsersProfile = () => {
         <div className="MainContentSection">
           <div className="InformationBarSection">
             <InformationBar
-              header={"Muwonge Khalifan"}
+              header={userDetails.name}
               showBtn={false}
               showBackBtn
             />
           </div>
 
-          <div className="SmallContainer">
-            <section className={styles.TabOptionLayout}>
-              <div className={styles.TopProfileCardContainer}>
-                <ProfileCardSmall user={user} />
+          {loadingUserDetails ? (
+            <div className={styles.NoResourcesMessage}>
+              <div className={styles.SpinnerWrapper}>
+                <Spinner size="big" />
               </div>
-              <div className={styles.OverviewContainer}>
-                
-                  <div className={styles.tabsContainer}>
-                    {tabNames.map((tabName) => (
-                      <TabItem
-                        key={tabName}
-                        tabName={tabName}
-                        activeTab={activeTab}
-                        setActiveTab={setActiveTab}
-                      />
-                    ))}
-                  </div>
-                
-                {activeTab === "Overview" && (
-                  <>
-                    <section className="">
-                      {/* 
-                      <div className="AdminCardArea">
-                        <div className="AdminUserProfileCard">
-                          <div
-                            className="AdminUserProfileInfoSect"
-                            style={{ width: "100%" }}
-                          >
-                            <div className={styles.UserProfileInfoHeader}>
-                              <Avatar
-                                name={"Khalifan Muwonge"}
-                                className={styles.UserAvatarLarge}
-                              />
-                              <div className={styles.Identity}>
-                                <div className={styles.IdentityName}>
-                                  {"Khalifan Muwonge"}
-                                  <div className={styles.BetaUserDiv}>
-                                    Beta User
-                                  </div>
-                                </div>
-                                <div className={styles.IdentityEmail}>
-                                  {"khalifanmuwonge@gmail.com"}
-                                </div>
-                                <div className="AdminProfileRowItem">
-                                  Organization:
-                                  <span>Makerere</span>
-                                </div>
-                                <PrimaryButton
-                                  className={styles.FollowButton}
-                                  btntype={"new"}
-                                  onClick={() => {}}
-                                >
-                                  + Follow
-                                </PrimaryButton>
-                              </div>
-                              <div className={styles.DateStyles}>
-                                Date Joined:
-                                <span className={styles.dateStyle}>
-                                  {moment("12/04/2020")
-                                    .utc()
-                                    .format("ddd, MMMM DD, yyyy")}
-                                </span>
-                              </div>
-                            </div>
+            </div>
+          ) : (
+            <>
+              <div className="SmallContainer">
+                {userDetails?.is_public !== null &&
+                  userDetails?.is_public === false && (
+                    <ProfileVisibilityModal onClose={handleCloseModal} />
+                  )}
 
-                            <div className="AdminProfileRowInfo">
-                              <div className="AdminProfileRowItem">
-                                Following:
-                                <span>1</span>
-                              </div>
-                              |
-                              <div className="AdminProfileRowItem">
-                                Followers:
-                                <span>7</span>
-                              </div>
-                              |
-                              <div className="AdminProfileRowItem">
-                                Projects:
-                                <span>38</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div> */}
-                      <div className="SectionTitle">Analytics</div>
-                      <ProfileAnalytics user={user2}/>
-                    </section>
-                    <UserFeedProjects projects={dummyProjects} />
-                    <UserFeedActivities
-                      activities={dummyActivities}
-                      yearOptions={yearOptions}
-                      selectedYear={(selectedOption) => selectedOption}
-                      expanded={expanded}
-                      toggleExpand={toggleExpand}
+                <section className={styles.TabOptionLayout}>
+                  <div className={styles.TopProfileCardContainer}>
+                    <ProfileCardSmall
+                      user={userDetails}
+                      loading={loadingUserDetails}
+                      error={loadingUserError}
+                      onFollowClick={onFollowClick}
+                      userFollowLoading={userFollowLoading}
                     />
-                  </>
-                )}
-                {activeTab === "Projects" && (
-                  <>
-                    <div className={styles.TopProjectsContainer}>
-                      <UserFeedProjects projects={dummyProjects} />
+                  </div>
+                  <div className={styles.OverviewContainer}>
+                    <div className={styles.tabsContainer}>
+                      {tabNames.map((tabName) => (
+                        <TabItem
+                          key={tabName}
+                          tabName={tabName}
+                          activeTab={activeTab}
+                          setActiveTab={setActiveTab}
+                        />
+                      ))}
                     </div>
-                  </>
-                )}
-                {activeTab === "Activities" && (
-                  <>
-                    <div className={styles.TopProjectsContainer}>
-                      <UserFeedActivities
-                        activities={dummyActivities}
-                        yearOptions={yearOptions}
-                        selectedYear={(selectedOption) => selectedOption}
-                        expanded={expanded}
-                        toggleExpand={toggleExpand}
-                      />
-                    </div>
-                  </>
-                )}
+
+                    {activeTab === "Overview" && (
+                      <>
+                        <section className="">
+                          <div className="SectionTitle">Analytics</div>
+                          {loadingUserDetails ? (
+                            <div className={styles.NoResourcesMessage}>
+                              <Spinner />
+                            </div>
+                          ) : (
+                            userDetails && (
+                              <ProfileAnalytics user={userDetails} />
+                            )
+                          )}
+                          {loadingUserError && (
+                            <div className={styles.NoResourcesMessage}>
+                              Failed to fetch user data
+                            </div>
+                          )}
+                        </section>
+                        <UserFeedProjects
+                          projects={userProjects}
+                          loading={loadingUserProjects}
+                          error={loadingUserProjectsError}
+                          onProjectFollowClick={onProjectFollowClick}
+                          projectFollowLoading={projectFollowLoading}
+                        />
+                        <>
+                          <div className={styles.TopProjectsContainer}>
+                            {isFetchingRecentActivities ? (
+                              <div className={styles.NoResourcesMessage}>
+                                <Spinner />
+                              </div>
+                            ) : (
+                              userActivities.length > 0 && (
+                                <UserFeedActivities
+                                  activities={userActivities}
+                                  // yearOptions={yearOptions}
+                                  // selectedYear={(selectedOption) => selectedOption}
+                                  expanded={expanded}
+                                  toggleExpand={toggleExpand}
+                                  pagination={pagination}
+                                  fetchMoreActivities={fetchMoreActivities}
+                                />
+                              )
+                            )}
+                            {noRecentActivity && (
+                              <div>No recent activities for this user</div>
+                            )}
+                          </div>
+                        </>
+                      </>
+                    )}
+                    {activeTab === "Projects" && (
+                      <>
+                        <div className={styles.TopProjectsContainer}>
+                          <UserFeedProjects
+                            projects={userProjects}
+                            loading={loadingUserProjects}
+                            error={loadingUserProjectsError}
+                            onProjectFollowClick={onProjectFollowClick}
+                            projectFollowLoading={projectFollowLoading}
+                          />
+                        </div>
+                      </>
+                    )}
+                    {activeTab === "Activities" && (
+                      <>
+                        <div className={styles.TopProjectsContainer}>
+                          {isFetchingRecentActivities ? (
+                            <div className={styles.NoResourcesMessage}>
+                              <Spinner />
+                            </div>
+                          ) : (
+                            userActivities.length > 0 && (
+                              <UserFeedActivities
+                                activities={userActivities}
+                                // yearOptions={yearOptions}
+                                // selectedYear={(selectedOption) => selectedOption}
+                                expanded={expanded}
+                                pagination={pagination}
+                                fetchMoreActivities={fetchMoreActivities}
+                                toggleExpand={toggleExpand}
+                              />
+                            )
+                          )}
+                          {noRecentActivity && (
+                            <div>No recent activities for this user</div>
+                          )}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </section>
               </div>
-            </section>
-          </div>
-          <AppFooter/>
+            </>
+          )}
+
+          <AppFooter />
         </div>
       </div>
     </div>

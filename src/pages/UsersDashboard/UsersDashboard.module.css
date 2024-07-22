@@ -9,6 +9,7 @@
     position: sticky;
     top: 0;
     height: 100vh;
+    overflow-y: auto;
 }
 
 .activitySection {
@@ -24,10 +25,6 @@
     flex-direction: column;
 
     overflow-y: auto;
-}
-
-.rightSection>div {
-    flex: 1;
 }
 
 .sticky {

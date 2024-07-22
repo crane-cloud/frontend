@@ -1,31 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./FeaturedUsersSection.module.css";
 import NewUserCard from "../NewUserCard";
-import PrimaryButton from "../PrimaryButton";
-
-const users = [
-  { name: "User 1", followers: 120, projects: 10, apps: 5 },
-  { name: "User 2", followers: 90, projects: 8, apps: 3 },
-  { name: "User 3", followers: 150, projects: 12, apps: 7 },
-  { name: "User 4", followers: 120, projects: 10, apps: 4 },
-  { name: "User 5", followers: 100, projects: 9, apps: 5 },
-];
+import { useDispatch, useSelector } from "react-redux";
+import getUsersList from "../../redux/actions/users";
+import Spinner from "../Spinner";
 
 const FeaturedUsersSection = () => {
+  const dispatch = useDispatch();
+
+  const { isFetching, users, isFetched, pagination } = useSelector(
+    (state) => state.usersListReducer
+  );
+
+  const [currentPage, setCurrentPage] = useState(
+    Math.floor(Math.random() * pagination?.pages) + 1
+  );
+
+  useEffect(() => {
+    dispatch(getUsersList(null, null, currentPage, null));
+  }, [dispatch, currentPage]);
+
+  const handleRefresh = () => {
+    setCurrentPage((prevPage) => {
+      const totalPages = pagination?.pages;
+      return prevPage < totalPages ? prevPage + 1 : 1;
+    });
+  };
+
   return (
     <div className={styles.featuredUsers}>
-      <h2>Featured Users</h2>
-      {users.map((user, index) => (
-        <NewUserCard
-          key={index}
-          name={user.name}
-          followers={user.followers}
-          projects={user.projects}
-          apps={user.apps}
-        />
-      ))}
+      <div className={styles.titleRow}>
+        <h2>Suggested Users</h2>
+        <button className={styles.followButton} onClick={handleRefresh}>
+          Refresh
+        </button>
+      </div>
 
-      <PrimaryButton className={styles.viewMoreButton}>View More</PrimaryButton>
+      {isFetching && !isFetched ? (
+        <div className={styles.noActivity}>
+          <div className={styles.NoResourcesMessage}>
+            <div className={styles.SpinnerWrapper}>
+              <Spinner size="big" />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
+          {users?.map((user, index) => (
+            <NewUserCard key={index} userID={user?.id} />
+          ))}
+        </>
+      )}
     </div>
   );
 };

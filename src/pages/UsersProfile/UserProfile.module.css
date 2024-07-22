@@ -318,6 +318,7 @@
     border: 1px solid transparent;
     padding: 1px 12px;
     border-radius: 0px;
+    min-width: 6.5rem;
     cursor: pointer;
 }
 
@@ -330,6 +331,7 @@
     margin-bottom: 3rem;
     position: relative;
     width: 100%;
+    min-height: 17rem;
 }
 .TopProjectsContainer{
    min-width: 80vh;
@@ -366,6 +368,10 @@
     position: relative;
     z-index: 5;
     background-color: #fff;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    cursor: pointer;
 }
 
 .ActivityMonthTitle::after {
@@ -465,7 +471,7 @@
 .ActivitiesHeader {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 15px;
     width: 100%;
     padding-bottom: 5px;

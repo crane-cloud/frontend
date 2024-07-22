@@ -15,27 +15,22 @@
     flex-direction: column;
 }
 
-.cardSummary {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
 .title {
     font-size: 1em;
     font-weight: 600;
     margin: 0;
-    color: var(--primary-color);
     text-transform: capitalize;
+    /* color: var(--primary-color); */
 }
 
-.title:hover {
+/* .title:hover {
     cursor: pointer;
     text-decoration: underline;
     transform: scale(1.05);
-}
+} */
 
 .description {
+    color: var(--primary-color);
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
@@ -43,6 +38,11 @@
     line-clamp: 2;
     min-height: 2.3em;
     margin: 5px 0 0 0;
+    text-decoration: underline;
+}
+
+.description:hover {
+    cursor: pointer;
 }
 
 .numberBox {
@@ -80,27 +80,6 @@
     padding-left: 0.5rem;
 }
 
-.followButtonArea {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    min-width: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.followButton {
-    background-color: var(--secondary-color);
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 0.9em;
-    transition: background-color 0.3s ease;
-}
-
 .stats {
     display: flex;
     flex-direction: column;
@@ -121,7 +100,13 @@
     font-size: 0.9em;
 }
 
-.linkBlue {
-    color: var(--primary-color);
+.cardSummary {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.appUrl {
     text-decoration: none;
+    color: var(--primary-color);
 }
