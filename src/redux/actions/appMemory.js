@@ -1,4 +1,4 @@
-import axios from "../../axios";
+import { monitoringAxios } from "../../axios";
 import {
   FETCH_APP_MEMORY_SUCCESS,
   FETCH_APP_MEMORY_FAILED,
@@ -34,8 +34,12 @@ const clearAppMemory = () => ({
 const getAppMemory = (projectID, appID, params) => (dispatch) => {
   dispatch(startFetchingAppMemoryMetrics());
 
-  return axios
-    .post(`/projects/${projectID}/apps/${appID}/dashboardmemory`, params)
+  return monitoringAxios
+    .post(`/apps/memory/metrics`, {
+      ...params,
+      project_id: projectID,
+      app_id: appID,
+    })
     .then((response) => {
       dispatch(getAppMemoryMetricsSuccess(appID, response));
     })

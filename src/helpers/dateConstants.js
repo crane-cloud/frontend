@@ -124,4 +124,13 @@ function getWeekday(day) {
   return weekdays[day];
 }
 
+export const getYearOptions=() =>{
+  const currentYear = new Date().getFullYear();
+  const years = [];
 
+  for (let year = currentYear; year >= 2020; year--) {
+    years.push({ name: year.toString(), value: year });
+  }
+
+  return years;
+}

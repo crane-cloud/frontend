@@ -1,4 +1,4 @@
-import axios from "../../axios";
+import { monitoringAxios } from "../../axios";
 import {
   FETCH_APP_CPU_SUCCESS,
   FETCH_APP_CPU_FAILED,
@@ -34,8 +34,12 @@ const clearAppCPU = () => ({
 const getAppCPU = (projectID, appID, params) => (dispatch) => {
   dispatch(startFetchingCPUMetrics());
 
-  return axios
-    .post(`/projects/${projectID}/apps/${appID}/dashboardcpu`, params)
+  return monitoringAxios
+    .post(`/apps/cpu/metrics`, {
+      ...params,
+      project_id: projectID,
+      app_id: appID,
+    })
     .then((response) => {
       dispatch(getAppCPUMetricsSuccess(appID, response));
     })

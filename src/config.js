@@ -19,3 +19,8 @@ export const JUPYTERHUB_URL =
   "https://jupiter-a13faf8e-83e0-4930-8898.cranecloud.io";
 export const MIRA_DOCS_URL =
   "https://docs.cranecloud.io/applications/deployWithMira/";
+
+// microservices
+export const DATABASE_API_URL = process.env.REACT_APP_DATABASE_API_URL;
+export const ACTIVITY_LOGS_API_URL = process.env.REACT_APP_ACTIVITY_LOGS_API_URL;
+export const MONITORING_API_URL = process.env.REACT_APP_MONITORING_API_URL;

@@ -1,0 +1,45 @@
+.dashboard {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.projectSection {
+    flex: 1;
+    min-width: 200px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.activitySection {
+    flex: 2;
+    min-width: 300px;
+    overflow-y: auto;
+}
+
+.rightSection {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+
+    overflow-y: auto;
+}
+
+.sticky {
+    position: sticky;
+    top: 0;
+}
+
+@media (max-width: 768px) {
+    .projectSection {
+        position: relative;
+        height: auto;
+    }
+
+    .activitySection,
+    .rightSection {
+        overflow-y: visible;
+    }
+}

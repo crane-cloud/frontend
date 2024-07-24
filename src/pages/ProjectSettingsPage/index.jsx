@@ -31,6 +31,7 @@ import { retrieveMembershipRoles } from "../../helpers/membershipRoles";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
 import { namedOrganisations } from "../../helpers/projectOrganisations";
 import SettingsActionRow from "../../components/SettingsActionRow/index.jsx";
+import TagInput from "../../components/ProjectTagInput/index.jsx";
 
 class ProjectSettingsPage extends React.Component {
   constructor(props) {
@@ -722,6 +723,19 @@ class ProjectSettingsPage extends React.Component {
     const types = retrieveProjectTypes();
     const roles = retrieveMembershipRoles();
 
+    const suggestions = [
+      "react",
+      "javascript", 
+      "css", 
+      "html", 
+      "nodejs", 
+      "django", 
+      "firebase",
+      "python",
+      "java",
+    ];
+
+
     const { projectID } = params;
     const presetOrganisations = namedOrganisations();
     return (
@@ -1128,6 +1142,14 @@ class ProjectSettingsPage extends React.Component {
                           }}
                         />
                       )}
+                    </div>
+                    <div className={styles.UpdateInputSection}>
+                      <div className={styles.DeleteDescription}>
+                        Project tags
+                      </div>
+                      <div className={styles.ProjectInputTag}>
+                        <TagInput suggestions={suggestions}/>
+                      </div>
                     </div>
                     <div className={styles.UpdateInputSection}>
                       <div className={styles.DeleteDescription}>

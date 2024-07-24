@@ -5,6 +5,7 @@ import { handlePostRequestWithOutDataObject } from "../../apis/apis.js";
 import Spinner from "../Spinner";
 import Feedback from "../Feedback";
 import "./CreateDatabase.css";
+import { databaseAxios } from "../../axios.js";
 
 const flavours = [
   { name: "MYSQL", id: 1, value: "mysql" },
@@ -18,21 +19,21 @@ class CreateDatabase extends React.Component {
     this.state = {
       databaseFlavour: "",
       error: "",
-      addingDatabase:false,
-      addDatabaseError:"",
+      addingDatabase: false,
+      addDatabaseError: "",
     };
 
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.addNewDatabase = this.addNewDatabase.bind(this)
+    this.addNewDatabase = this.addNewDatabase.bind(this);
   }
 
   // componentDidMount() {
-   
+
   // }
 
   // componentDidUpdate(prevProps) {
-   
+
   // }
 
   handleSelectChange(selected) {
@@ -53,31 +54,28 @@ class CreateDatabase extends React.Component {
         database_flavour_name: databaseFlavour,
       };
       //createDatabase(newDBType, projectID);
-      this.addNewDatabase(newDBType, projectID)
+      this.addNewDatabase(newDBType, projectID);
     }
   }
-  addNewDatabase(data,projectID) {
+  addNewDatabase(data, projectID) {
     this.setState({
-      addingDatabase:true,
-      addDatabaseError:"",
-    })
-    handlePostRequestWithOutDataObject(
-      data,
-      `/projects/${projectID}/databases`
-    ).then(() => {
+      addingDatabase: true,
+      addDatabaseError: "",
+    });
+    handlePostRequestWithOutDataObject(data, "/databases", databaseAxios)
+      .then(() => {
         window.location.href = `/projects/${projectID}/databases`;
       })
       .catch((error) => {
         this.setState({
           addDatabaseError: "Failed to add Database. Try again later",
-          addingDatabase: false
+          addingDatabase: false,
         });
       });
   }
 
   render() {
-    
-    const { error,addDatabaseError,addingDatabase } = this.state;
+    const { error, addDatabaseError, addingDatabase } = this.state;
     return (
       <div className="DatabaseForm">
         <div className="DBFormElements">
@@ -92,10 +90,7 @@ class CreateDatabase extends React.Component {
             {error && <Feedback type="error" message={error} />}
 
             {addDatabaseError && (
-              <Feedback
-                message={addDatabaseError}
-                type={"error"}
-              />
+              <Feedback message={addDatabaseError} type={"error"} />
             )}
           </div>
           <div>
@@ -107,6 +102,6 @@ class CreateDatabase extends React.Component {
       </div>
     );
   }
-};
+}
 
 export default CreateDatabase;

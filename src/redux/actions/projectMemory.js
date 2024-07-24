@@ -1,4 +1,4 @@
-import axios from "../../axios";
+import { monitoringAxios } from "../../axios";
 import {
   FETCH_PROJECT_MEMORY_SUCCESS,
   FETCH_PROJECT_MEMORY_FAILED,
@@ -34,12 +34,14 @@ const clearProjectMemory = () => ({
 const getProjectMemory = (projectID, params) => (dispatch) => {
   dispatch(startFetchingMemoryMetrics());
 
-  return axios
-    .post(`/projects/${projectID}/metrics/memory`, params)
+  return monitoringAxios
+    .post(`/projects/memory/metrics`, { ...params, project_id: projectID })
     .then((response) => {
+      console.log(response);
       dispatch(getMemoryMetricsSuccess(projectID, response));
     })
     .catch((error) => {
+      console.log(error);
       dispatch(getMemoryMetricsFailed(projectID, error));
     });
 };

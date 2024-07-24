@@ -1,0 +1,19 @@
+.projectCards {
+    background-color: #f8f9fa;
+    padding: 0.2rem 1rem 1rem 1rem;
+    border-radius: 8px;
+    margin: 10px;
+}
+
+.viewMoreButton {
+    width: 100%;
+}
+
+.noActivity {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    text-align: center;
+}

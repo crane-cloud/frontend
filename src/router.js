@@ -70,8 +70,10 @@ import AdminProjectsOverview from "./components/ProjectListing/ProjectList";
 import AdminDatabaseDetails from "./components/AdminDatabaseDetails";
 import AdminAppDetail from "./pages/AdminAppDetail";
 import DockerWebHook from "./components/DockerWebHook";
+import UsersProfile from "./pages/UsersProfile";
 
 import { handleGetRequest } from "./apis/apis";
+import UsersDashboardPage from "./pages/UsersDashboard";
 
 // Protected route should have token. If not, login.
 const ProtectedRoute = ({ isAllowed, ...props }) =>
@@ -126,6 +128,12 @@ const Routes = () => {
           exact
           path="/projects/:projectID/billing"
           component={ProjectBillingPage}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/dashboard"
+          component={UsersDashboardPage}
         />
         <ProtectedRoute
           isAllowed={hasToken}
@@ -389,6 +397,12 @@ const Routes = () => {
           exact
           path="/apps/:appID"
           component={AdminAppDetail}
+        />
+        <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/profile/:userID"
+          component={UsersProfile}
         />
         <Route path="*" component={PageNotFound} />
       </Switch>

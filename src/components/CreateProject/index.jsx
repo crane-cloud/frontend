@@ -13,6 +13,7 @@ import { handlePostRequestWithOutDataObject } from "../../apis/apis.js";
 import { retrieveProjectTypes } from "../../helpers/projecttypes";
 import { namedOrganisations } from "../../helpers/projectOrganisations";
 import handleProjectValidation from "../../helpers/validation";
+import TagInput  from "../ProjectTagInput";
 
 class CreateProject extends React.Component {
   constructor(props) {
@@ -197,6 +198,18 @@ class CreateProject extends React.Component {
     const types = retrieveProjectTypes();
     const presetOrganisations = namedOrganisations();
 
+    const suggestions = [
+      "react",
+      "javascript", 
+      "css", 
+      "html", 
+      "nodejs", 
+      "django", 
+      "firebase",
+      "python",
+      "java",
+    ];
+
     return (
       <div className={styles.MainContentSection}>
         <Header />
@@ -332,7 +345,12 @@ class CreateProject extends React.Component {
                       }}
                     />
                   </div>
-
+                  <div className={styles.Element}>
+                    <div className={styles.ElementTitle}>Project tags</div>
+                    <div className={`${styles.inputTagSection}`}>
+                      <TagInput suggestions={suggestions} />
+                    </div>
+                  </div>
                   {error && (
                     <div className={styles.CreateProjectError}>
                       <Feedback type="error" message={error} />

@@ -17,7 +17,8 @@
   min-height: 100px;
   height: auto;
   max-height: 80%;
-
+  align-items: center;
+  justify-content: center;
   padding: 2rem;
   background: #fff;
   display: flex;
@@ -62,12 +63,15 @@
   width: 4px;
   height: 0px;
 }
+
 .ModalChildWrap::-webkit-scrollbar-track {
-  background: var( --gray-bg-light-color);
+  background: var(--gray-bg-light-color);
 }
+
 .ModalChildWrap::-webkit-scrollbar-thumb {
   background: #555;
 }
+
 .ModalChildWrap::-webkit-scrollbar-thumb:hover {
   background: #000;
 }
