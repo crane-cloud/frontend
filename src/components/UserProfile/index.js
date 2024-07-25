@@ -206,6 +206,11 @@ class UserProfile extends React.Component {
       };
       updateProfile(user.id, update);
     }
+    setTimeout(() => {
+      this.hideUpdateModal();
+      this.setState({ profileUpdating: false });
+      window.location.reload();
+    }, 1500);
   }
   handlePasswordChanage() {
     const { user } = this.props;
