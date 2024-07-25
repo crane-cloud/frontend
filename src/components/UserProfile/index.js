@@ -25,14 +25,15 @@ import { ReactComponent as GlobeIcon } from "../../assets/images/globe.svg";
 import { ReactComponent as PadlockIcon } from "../../assets/images/padlock.svg";
 import axios from "../../axios.js";
 import AppSettingsError from "../AppSettingsError/index.jsx";
-
+ 
 class UserProfile extends React.Component {
   constructor(props) {
     super(props);
-    const { name, is_public } = props.user;
+    const { name, is_public, organisation } = props.user;
     this.initialState = {
       username: name,
       is_public: is_public,
+      organisation: organisation,
       showSaveModel: false,
       passwordModel: false,
       visibilityModal: false,
@@ -61,27 +62,27 @@ class UserProfile extends React.Component {
     this.showUpdateModal = this.showUpdateModal.bind(this);
     this.hideUpdateModal = this.hideUpdateModal.bind(this);
   }
-
+ 
   componentDidMount() {
     const { getUserDetail, data } = this.props;
     clearUpdateProfileState();
     getUserDetail(data.id);
     this.getUserProjects(data.id);
   }
-
+ 
   getUserProjects = async (userID) => {
     const response = await handleGetRequest(`/users/${userID}/projects`);
-
+ 
     if (response.data.data?.projects.length > 0) {
       const projectsList = response.data.data?.projects;
-
+ 
       let activeProjects = projectsList.filter(
         (project) => !project.name.includes("deleted")
       );
       let disabledProjects = activeProjects?.filter(
         (project) => project?.disabled === true
       );
-
+ 
       this.setState({
         activeProjectsCount: activeProjects.length - disabledProjects.length,
         disabledProjectsCount: disabledProjects.length,
@@ -91,11 +92,11 @@ class UserProfile extends React.Component {
         activeProjectsCount: 0,
         disabledProjectsCount: 0,
       });
-
+ 
       throw new Error("No projects found for user");
     }
   };
-
+ 
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
@@ -113,38 +114,38 @@ class UserProfile extends React.Component {
   hideUpdateModal() {
     this.setState({ updateModal: false });
   }
-
+ 
   showProfileVisibilityWarning() {
     this.setState({
       visibilityModal: true,
     });
   }
-
+ 
   hideProfileVisibilityWarning() {
     this.setState({
       visibilityModal: false,
     });
   }
-
+ 
   componentDidUpdate(prevProps) {
     this.handleProfileUpdate(prevProps);
   }
-
+ 
   handleProfileUpdate = (prevProps) => {
     const { profileUpdated, user } = this.props;
-
+ 
     if (user.is_public !== prevProps.user.is_public) {
       this.setState({ is_public: user.is_public });
     }
-
+ 
     if (profileUpdated !== prevProps.profileUpdated) {
       this.setState({ username: user.name });
     }
-
+ 
     if (user.name !== prevProps.user.name) {
       this.setState({ username: user.name });
     }
-
+ 
     if (
       user.is_public !== prevProps.user.is_public ||
       profileUpdated !== prevProps.profileUpdated ||
@@ -153,26 +154,26 @@ class UserProfile extends React.Component {
       this.forceReloadComponent();
     }
   };
-
+ 
   forceReloadComponent = () => {
     this.setState((prevState) => ({
       componentKey: prevState.componentKey + 1,
     }));
   };
-
+ 
   async handleToggleVisibility() {
     const { user } = this.props;
     const { username, is_public } = this.state;
-
+ 
     this.setState({
       profileVisibilityLoading: true,
     });
-
+ 
     const update = {
       name: username,
       is_public: !is_public,
     };
-
+ 
     try {
       const response = await axios.patch(`/users/${user.id}`, update);
       if (response.status === 200) {
@@ -193,17 +194,23 @@ class UserProfile extends React.Component {
       });
     }
   }
-
+ 
   handleChangeSaving() {
     const { updateProfile, user } = this.props;
-    const { username } = this.state;
-    if (user.name !== username) {
+    const { username, organisation } = this.state;
+    if (user.name !== username || user.organisation !== organisation) {
       const update = {
         is_public: user.is_public,
         name: username,
+        organisation: organisation,
       };
       updateProfile(user.id, update);
     }
+    setTimeout(() => {
+      this.hideUpdateModal();
+      this.setState({ profileUpdating: false });
+      window.location.reload();
+    }, 1500);
   }
   handlePasswordChanage() {
     const { user } = this.props;
@@ -233,16 +240,17 @@ class UserProfile extends React.Component {
         });
       });
   }
-
+ 
   handleSubmit(e) {
     e.preventDefault();
-    const { userId, username, is_public } = this.state;
-
+    const { userId, username, is_public, organisation } = this.state;
+ 
     const postData = {
       is_public: is_public,
       username: username,
+      organisation: organisation,
     };
-
+ 
     axios
       .post(`/users/${userId}`, postData)
       .then(() => {
@@ -254,10 +262,11 @@ class UserProfile extends React.Component {
         console.error("There was an error!", error);
       });
   }
-
+ 
   render() {
     const {
       username,
+      organisation,
       is_public,
       passwordModel,
       updateModal,
@@ -272,7 +281,7 @@ class UserProfile extends React.Component {
       disabledProjectsCount,
     } = this.state;
     const { user, isFetching, isFetched, profileUpdating } = this.props;
-
+ 
     return (
       <div className="MainPage">
         <div className="TopBarSection">
@@ -294,7 +303,7 @@ class UserProfile extends React.Component {
                 showBackBtn
               />
             </div>
-
+ 
             <div className="ContentSection">
               <div>
                 {isFetching ? (
@@ -319,7 +328,7 @@ class UserProfile extends React.Component {
                                 <div className={styles.Identity}>
                                   <div className={styles.IdentityName}>
                                     {user?.name}
-
+ 
                                     <div
                                       className={styles.ProfileVisibilityDiv}
                                     >
@@ -353,7 +362,7 @@ class UserProfile extends React.Component {
                                   </div>
                                 </div>
                               </div>
-
+ 
                               <div className="AdminProfileRowInfo">
                                 <div className="AdminProfileRowItem">
                                   Has
@@ -385,7 +394,7 @@ class UserProfile extends React.Component {
                           </div>
                         </div>
                       </section>
-
+ 
                       <div>
                         <div className="SectionTitle">
                           User Platform Metrics
@@ -419,7 +428,7 @@ class UserProfile extends React.Component {
                           />
                         </div>
                       </div>
-
+ 
                       <div className="SectionTitle">Manage User</div>
                       <div className="ProjectInstructions">
                         <div className="MemberBody">
@@ -433,7 +442,7 @@ class UserProfile extends React.Component {
                               this.showPasswordWarningModel();
                             }}
                           />
-
+ 
                           <SettingsActionRow
                             title="Change Profile Visibility"
                             content="This will grant or restrict other users from viewing your profile"
@@ -445,7 +454,7 @@ class UserProfile extends React.Component {
                               this.showProfileVisibilityWarning();
                             }}
                           />
-
+ 
                           <SettingsActionRow
                             title="Update Profile"
                             content="This allows you to make changes to specific
@@ -469,7 +478,7 @@ class UserProfile extends React.Component {
                     </div>
                   </div>
                 ) : null}
-
+ 
                 {!isFetching && !isFetched && (
                   <div className={styles.NoResourcesMessage}>
                     Oops! Something went wrong! Failed to retrieve user.
@@ -477,7 +486,7 @@ class UserProfile extends React.Component {
                 )}
               </div>
             </div>
-
+ 
             {updateModal && (
               <div className={styles.ProjectDeleteModel}>
                 <Modal
@@ -508,7 +517,21 @@ class UserProfile extends React.Component {
                               }}
                             />
                           </div>
-
+ 
+                          <div className={styles.UpdateInputSection}>
+                            <div className={styles.DeleteDescription}>
+                              Organisation
+                            </div>
+                            <BlackInputText
+                              placeholder="Organisation"
+                              name="organisation"
+                              value={organisation || ""}
+                              onChange={(e) => {
+                                this.handleChange(e);
+                              }}
+                            />
+                          </div>
+ 
                           <div className={styles.UpdateProjectModelButtons}>
                             <PrimaryButton
                               className="CancelBtn"
@@ -534,7 +557,7 @@ class UserProfile extends React.Component {
                 </Modal>
               </div>
             )}
-
+ 
             {visibilityModal && (
               <div className={styles.ProjectDeleteModel}>
                 <Modal
@@ -586,7 +609,7 @@ class UserProfile extends React.Component {
                 </Modal>
               </div>
             )}
-
+ 
             {passwordModel === true && (
               <div className={styles.ProjectDeleteModel}>
                 <Modal
@@ -645,7 +668,7 @@ class UserProfile extends React.Component {
     );
   }
 }
-
+ 
 UserProfile.propTypes = {
   getUserDetail: PropTypes.func.isRequired,
   data: PropTypes.shape({
@@ -658,7 +681,7 @@ UserProfile.propTypes = {
   profileUpdating: PropTypes.bool,
   profileUpdateFailed: PropTypes.bool,
 };
-
+ 
 UserProfile.defaultProps = {
   user: {},
   message: "",
@@ -668,7 +691,7 @@ UserProfile.defaultProps = {
   profileUpdating: false,
   profileUpdateFailed: false,
 };
-
+ 
 export const mapStateToProps = (state) => {
   const { data } = state.user;
   const { isFetching, user, isFetched, message } = state.userDetailReducer;
@@ -686,10 +709,10 @@ export const mapStateToProps = (state) => {
     profileUpdating,
   };
 };
-
+ 
 const mapDispatchToProps = {
   getUserDetail,
   updateProfile,
 };
-
+ 
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);
