@@ -86,10 +86,11 @@ const ProjectSettingsPage = () => {
     disableProjectAlert: false,
     disableProjectProgress: false,
     projectDetails: [],
-    updatedProjectTags: [],
+    
   });
 
-
+  const [removedTags, setRemovedTags] = useState([]);
+  const [newTags, setNewTags] = useState([]);
 
   useEffect(() => {
     getProjectMemberz();
@@ -358,6 +359,7 @@ const ProjectSettingsPage = () => {
       });
   };
 
+ 
   const handleSubmit = () => {
     const {
       projectName,
@@ -367,124 +369,87 @@ const ProjectSettingsPage = () => {
       otherType,
       othersBool,
     } = state;
-
-    const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
+  
+    const projectInfo = JSON.parse(localStorage.getItem("project")) || {};
     const { name, description, organisation, project_type } = projectInfo;
-
-    const Trim = (input) => input.trim();
+  
+    const trim = (input) => input.trim();
     const capitalizeFirstLetter = (input) =>
       input.charAt(0).toUpperCase() + input.slice(1);
-    const type = othersBool
-      ? capitalizeFirstLetter(otherType)
-      : capitalizeFirstLetter(projectType);
-    const trimedprojectName = Trim(projectName);
-    const trimedprojectDescription = Trim(projectDescription);
-    const trimedprojectOrganisation = Trim(projectOrganisation);
-    const trimedprojectType = Trim(type);
-
-    if (
-      trimedprojectName !== name ||
-      trimedprojectDescription !== description ||
-      trimedprojectOrganisation !== organisation ||
-      trimedprojectType !== project_type
-    ) {
-      if (
-        !trimedprojectName ||
-        !trimedprojectDescription ||
-        !trimedprojectOrganisation ||
-        !trimedprojectType
-      ) {
-        setState((prevState) => ({
-          ...prevState,
-          error:
-            "Can't update when an empty field is submited, please fill the missing field or leave it unchanged.",
-        }));
-      } else {
-        if (trimedprojectName !== name) {
-          const nameCheckResult = checkProjectInputValidity(
-            trimedprojectName,
-            "name"
-          );
-          if (nameCheckResult !== "") {
-            setState((prevState) => ({
-              ...prevState,
-              error: nameCheckResult,
-            }));
-          } else {
-            const organisationCheckResult = checkProjectInputValidity(
-              trimedprojectOrganisation,
-              "organisation"
-            );
-            const typeCheckResult = checkProjectInputValidity(
-              trimedprojectType,
-              "type"
-            );
-            if (organisationCheckResult !== "" || typeCheckResult !== "") {
-              if (organisationCheckResult !== "") {
-                setState((prevState) => ({
-                  ...prevState,
-                  error: organisationCheckResult,
-                }));
-              }
-              if (typeCheckResult !== "") {
-                setState((prevState) => ({
-                  ...prevState,
-                  error: typeCheckResult,
-                }));
-              }
-            }
-            if (typeCheckResult === "" && organisationCheckResult === "") {
-              const newProject = {
-                name: trimedprojectName,
-                project_type: trimedprojectType,
-                organisation: trimedprojectOrganisation,
-                description: trimedprojectDescription,
-              };
-              //updateProject(projectID, newProject);
-              updateProjectDetails(projectID, newProject);
-            }
-          }
-        } else {
-          const organisationCheckResult = checkProjectInputValidity(
-            trimedprojectOrganisation,
-            "organisation"
-          );
-          const typeCheckResult = checkProjectInputValidity(
-            trimedprojectType,
-            "type"
-          );
-          if (organisationCheckResult !== "" || typeCheckResult !== "") {
-            if (organisationCheckResult !== "") {
-              setState((prevState) => ({
-                ...prevState,
-                error: organisationCheckResult,
-              }));
-            }
-            if (typeCheckResult !== "") {
-              setState((prevState) => ({
-                ...prevState,
-                error: typeCheckResult,
-              }));
-            }
-          }
-          if (typeCheckResult === "" && organisationCheckResult === "") {
-            const newProject = {
-              project_type: trimedprojectType,
-              organisation: trimedprojectOrganisation,
-              description: trimedprojectDescription,
-            };
-            //updateProject(projectID, newProject);
-            updateProjectDetails(projectID, newProject);
-          }
-        }
-      }
-    } else {
+  
+    const trimmedProjectName = trim(projectName);
+    const trimmedProjectDescription = trim(projectDescription);
+    const trimmedProjectOrganisation = trim(projectOrganisation);
+    const trimmedProjectType = trim(
+      capitalizeFirstLetter(othersBool ? otherType : projectType)
+    );
+  
+    const hasEmptyField =
+      !trimmedProjectName ||
+      !trimmedProjectDescription ||
+      !trimmedProjectOrganisation ||
+      !trimmedProjectType ||
+      (removedTags.length === 0 && newTags.length === 0);
+  
+    if (hasEmptyField) {
       setState((prevState) => ({
         ...prevState,
-        error: "Please provide new information in atleast one of the fields",
+        error:
+          "Can't update when an empty field is submitted. Please fill the missing field or leave it unchanged.",
       }));
+      return;
     }
+  
+    const newProject = {};
+  
+    if (trimmedProjectName !== name) {
+      newProject.name = trimmedProjectName;
+    }
+    if (trimmedProjectDescription !== description) {
+      newProject.description = trimmedProjectDescription;
+    }
+    if (trimmedProjectOrganisation !== organisation) {
+      newProject.organisation = trimmedProjectOrganisation;
+    }
+    if (trimmedProjectType !== project_type) {
+      newProject.project_type = trimmedProjectType;
+    }
+    if (removedTags.length > 0) {
+      newProject.tags_remove = removedTags;
+    }
+    if (newTags.length > 0) {
+      newProject.tags_add = newTags;
+    }
+  
+    if (Object.keys(newProject).length === 0) {
+      setState((prevState) => ({
+        ...prevState,
+        error: "Please provide new information in at least one of the fields",
+      }));
+      return;
+    }
+  
+    const nameCheckResult = checkProjectInputValidity(trimmedProjectName, "name");
+    const organisationCheckResult = checkProjectInputValidity(trimmedProjectOrganisation, "organisation");
+    const typeCheckResult = checkProjectInputValidity(trimmedProjectType, "type");
+  
+    if (nameCheckResult) {
+      setState((prevState) => ({ ...prevState, error: nameCheckResult }));
+      return;
+    }
+    if (organisationCheckResult) {
+      setState((prevState) => ({ ...prevState, error: organisationCheckResult }));
+      return;
+    }
+    if (typeCheckResult) {
+      setState((prevState) => ({ ...prevState, error: typeCheckResult }));
+      return;
+    }
+  
+    updateProjectDetails(projectID, newProject);
   };
+  
+  
 
   const nameOnClick = (e) => {
     const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
@@ -676,17 +641,17 @@ const ProjectSettingsPage = () => {
       return role.charAt(0).toUpperCase() + role.slice(1);
     };
 
-    // const renderRedirect = () => {
-     
-    //   const { isCurrentUserRemoved } = state;
-    //   if ( isCurrentUserRemoved) {
-    //     return <Redirect to={`/projects`} noThrow />;
-    //   }
-    // };
-
+    const onTagsChange = (tags) => {
+      if(state?.projectDetails?.tags){
+        const oldTagNames = state?.projectDetails?.tags?.map(tag => tag.name);
+        const removed = oldTagNames.filter(tag => !tags.includes(tag));
+        setRemovedTags(removed);
+        setNewTags(tags);
+       }
+    
+    };
 
     let currentUserEmail = data.email;
-
 
     const {
       openUpdateAlert,
@@ -1025,6 +990,7 @@ const ProjectSettingsPage = () => {
                   title="Update Project"
                   content="Modify the project name and description"
                   buttonLabel="Update"
+                  disabled={fetchingProjectMembers}
                   onButtonClick={showUpdateAlert}
                   buttonColor="primary"
                 />
@@ -1060,7 +1026,7 @@ const ProjectSettingsPage = () => {
               </div>
             </div>
           </>
-        ) : null}
+        ) : null} 
 
         {openUpdateAlert && (
           <div className={styles.ProjectDeleteModel}>
@@ -1143,7 +1109,7 @@ const ProjectSettingsPage = () => {
                         Project tags
                       </div>
                       <div className={styles.ProjectInputTag}>
-                        <TagInput userTags={state?.projectDetails?.tags ?  state?.projectDetails?.tags?.map(tag => tag.name): []}  />
+                        <TagInput userTags={state?.projectDetails?.tags ?  state?.projectDetails?.tags?.map(tag => tag.name): []}  onTagsChange={onTagsChange}/>
                       </div>
                     </div>
                     <div className={styles.UpdateInputSection}>

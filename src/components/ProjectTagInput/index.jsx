@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./TagInput.module.css";
 import { useTags } from "../../hooks/useTags";
 import Spinner from "../Spinner";
 
-const TagInput = ({ userTags }) => {
+const TagInput = ({ userTags, onTagsChange }) => {
   const [tags, setTags] = useState([]);
   const [input, setInput] = useState("");
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+  const inputRef = useRef(null);
+
   const {
     data: tagData,
     isPending,
@@ -24,9 +26,11 @@ const TagInput = ({ userTags }) => {
     }
   }, [input, tagData]);
 
+
   useEffect(() => {
-    setTags([...tags,...userTags]);
-  }, [userTags]);
+    const newtags = [...tags, ...userTags]
+    setTags(Array.from(new Set(newtags)));
+  }, []);
 
   useEffect(() => {
     refetch(input);
@@ -46,8 +50,6 @@ const TagInput = ({ userTags }) => {
     if (!tags.includes(tag)) {
       setTags([...tags, tag]);
     }
-    setInput("");
-    setFilteredSuggestions([]);
   };
 
   const handleTagRemove = (index) => {
@@ -57,6 +59,14 @@ const TagInput = ({ userTags }) => {
   const handleSuggestionClick = (suggestion) => {
     addTag(suggestion.name);
   };
+  const handleTagsChange = () => {
+    onTagsChange(tags);
+  }
+
+  useEffect(() => {
+    handleTagsChange()
+  }, [tags]);
+
 
   return (
     <div className={styles.tagInputContainer}>
@@ -75,6 +85,7 @@ const TagInput = ({ userTags }) => {
         onKeyDown={handleKeyDown}
         className={styles.input}
         placeholder="Type to add a tag..."
+        ref={inputRef}
       />
 
       {error && <div className={styles.error}>Failed to fetch tags</div>}
