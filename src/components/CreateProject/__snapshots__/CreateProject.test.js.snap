@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`CreateProject Component matches the Header snapshot 1`] = `ShallowWrapper {}`;
+
 exports[`Testing the App Metrics Page component matchs the CreateProject component snapshot 1`] = `ShallowWrapper {}`;

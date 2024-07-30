@@ -298,27 +298,5 @@ const CreateProject = ({ closeComponent }) => {
   }
 
 
-// CreateProject.propTypes = {
-//   clusters: PropTypes.object,
-//   data: PropTypes.shape({
-//     id: PropTypes.string.isRequired,
-//   }).isRequired,
-// };
-
-// CreateProject.defaultProps = {
-//   clusters: [],
-//   params: {},
-// };
-
-// export const mapStateToProps = (state) => {
-//   const { data } = state.user;
-//   const { clusters } = state.clustersReducer;
-//   return {
-//     data,
-//     clusters,
-//   };
-// };
-
-// const mapDispatchToProps = {};
 
 export default CreateProject;
