@@ -23,12 +23,12 @@
     display: flex;
     align-items: center;
     font-size: 0.9rem;
-    color: #007BFF;
+    color:  var(--primary-color);
 }
 
 .tag:hover {
     background-color: #c0e7ff;
-    color: #0056b3;
+    color:  var(--primary-color);
 }
 
 .tag button {
@@ -37,15 +37,15 @@
     margin-left: 5px;
     cursor: pointer;
     font-weight: bold;
-    color: #007BFF;
+    color:  var(--primary-color);
 }
 
 .tag button:hover {
-    color: #0056b3;
+    color:  var(--primary-color);
 }
 
 .input {
-    border: 1px solid #007BFF;
+    border: 1px solid  var(--primary-color);
     outline: none;
     width: calc(100% - 20px);
     margin-top: 5px;
@@ -90,12 +90,12 @@
     border-top: 1px solid #ccc;
     width: 5rem;
     width: 100%;
-    color: #007BFF;
+    color:  var(--primary-color);
 }
 
 .addNewTag:hover {
     background-color: #c0e7ff;
-    color: #0056b3;
+    color:  var(--primary-color);
 }
 
 .error {
