@@ -3,7 +3,7 @@ import styles from "./TagInput.module.css";
 import { useTags } from "../../hooks/useTags";
 import Spinner from "../Spinner";
 
-const TagInput = ({ userTags, onTagsChange }) => {
+const TagInput = ({ userTags=[], onTagsChange }) => {
   const [tags, setTags] = useState([]);
   const [input, setInput] = useState("");
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);

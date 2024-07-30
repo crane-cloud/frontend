@@ -1,7 +1,6 @@
 .tagInputContainer {
-    padding: 10px;
+    /* padding: 10px; */
     display: inline-block;
-    max-width: 400px;
     width: 100%;
     min-height: 5vh;
     /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
@@ -11,6 +10,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
+    max-width: 400px;
     margin-bottom: 20px;
 }
 
