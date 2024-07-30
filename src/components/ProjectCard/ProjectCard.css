@@ -47,6 +47,11 @@
   padding-left: 0.3rem;
 }
 
+.countAndIcon{
+  display: flex;
+  align-items: center;
+}
+
 
 .appCount{
  display: flex;
@@ -56,9 +61,9 @@
 
 .appCount>div{
   padding:0.1rem .5rem;
-  border-radius: 0 0.4rem 0 0;
+  border-radius: 0 0.1rem 0 0;
   background-color: rgb(235, 235, 235);
-  color: rgb(155, 155, 155);
+  color: #000;
 }
 
 

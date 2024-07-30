@@ -83,14 +83,14 @@ const ProjectCard = ({
       }
     >
       <div className="appCount" >
-        <div>
+        <div className="countAndIcon">
           <ProjectMembers
             className={"membersIcon"}
             title={"Project followers"}
           />
           <span className={"memberCount"}>{formatCount(followers_count)}</span>
         </div>
-        <div>
+        <div className="countAndIcon">
           <Deployments
             className={"membersIcon"}
             title={"Project apps"}
