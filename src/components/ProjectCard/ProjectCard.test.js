@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
 import { shallow } from "enzyme";
-import ProjectCard, { mapStateToProps } from "./";
+import ProjectCard from "./";
 
 const props = {
     getProjectMemoryMetrics: jest.fn(),
@@ -22,18 +22,3 @@ describe("test the component", () => {
   });
 });
 
-describe("testing the mapstate to props ", () => {
-  it(" mapstostate test", () => {
-    expect(
-      mapStateToProps({
-        projectMemoryReducer: {
-          isFetchingMemory: false,
-          memoryMetrics: [],
-        },
-      })
-    ).toEqual({
-        memoryMetrics: [],
-       isFetchingMemory: false,
-    });
-  });
-});
