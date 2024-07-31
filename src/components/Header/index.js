@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, withRouter, matchPath } from "react-router-dom";
-import { connect } from "react-redux";
+import  { PropTypes } from "prop-types";
+import { useSelector, useDispatch } from "react-redux";
 import Avatar from "../Avatar";
-import PropTypes from "prop-types";
 import Logo from "../Logo";
 import { ReactComponent as DownArrow } from "../../assets/images/downarrow.svg";
 import { ReactComponent as Activity } from "../../assets/images/activity.svg";
@@ -12,26 +12,31 @@ import { ReactComponent as Book } from "../../assets/images/book.svg";
 import removeUser from "../../redux/actions/removeUser";
 import styles from "./Header.module.css";
 import { DOCS_URL } from "../../config";
-import { ReactComponent as Coin } from "../../assets/images/coin.svg";
+// import { ReactComponent as Coin } from "../../assets/images/coin.svg";
 
-const Header = (props) => {
-  const { user, match } = props;
+const Header = ({ match }) => {
   const token = localStorage.getItem("token");
-
   const [hidden, setHidden] = useState(false);
   const dropdownRef = useRef(null);
 
-  const toggleHidden = () => {
-    if (hidden) {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  // const credits = useSelector((state) => state.userCreditsReducer.credits);
+
+  const toggleHidden = () => setHidden(!hidden);
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setHidden(false);
-    } else {
-      setHidden(true);
     }
   };
 
-  const handleArrowClick = () => {
-    setHidden(!hidden);
-  };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const pageUrl = matchPath(match.path, {
     path: "/login",
@@ -41,33 +46,14 @@ const Header = (props) => {
 
   const logout = () => {
     localStorage.clear();
-    props.removeUser();
+    dispatch(removeUser());
     window.location.href = "/";
   };
 
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setHidden(false);
-    }
-  };
-
-  // componentWillMount & componentWillUnmount
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    // const { removeUser } = props;
-
-    // returned function will be called on component unmount
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  const { credits } = props;
-  let displayName = user.data.name ? user.data.name : user.data.username;
+  const displayName = user.data.name || user.data.username;
   return (
     <header className={`${styles.Header} SmallContainer`}>
       <Logo />
-
       {token && pageUrl === null && (
         <div className={styles.HeaderLinksWrap}>
           <div
@@ -76,18 +62,19 @@ const Header = (props) => {
             onClick={toggleHidden}
             role="presentation"
           >
-            <>
-              {match.path !== "/projects/:projectID/billing" && credits > 0 && (
-                <div className={styles.Credits} title="credits">
-                  {credits > 0 ? credits : 0}
-                  <Coin />
-                </div>
-              )}
-              <div className={styles.UserNames}>{displayName}</div>
-            </>
-
-            <DownArrow className={`${styles.DropdownArrowSvg} ${hidden ? styles.rotate180 : ''}`}  onClick={handleArrowClick} />
-      
+            {/* {match.path !== "/projects/:projectID/billing" && credits > 0 && (
+              <div className={styles.Credits} title="credits">
+                {credits > 0 ? credits : 0}
+                <Coin />
+              </div>
+            )} */}
+            <div className={styles.UserNames}>{displayName}</div>
+            <DownArrow
+              className={`${styles.DropdownArrowSvg} ${
+                hidden ? styles.rotate180 : ""
+              }`}
+              onClick={toggleHidden}
+            />
             {hidden && (
               <div className={styles.BelowHeader}>
                 <Link to={`/profile`} className={styles.UserInformation}>
@@ -132,32 +119,10 @@ const Header = (props) => {
     </header>
   );
 };
-
 Header.propTypes = {
-  removeUser: PropTypes.func.isRequired,
-  user: PropTypes.shape({
-    accessToken: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    data: PropTypes.shape({
-      id: PropTypes.string,
-      name: PropTypes.string,
-    }).isRequired,
-  }),
   match: PropTypes.shape({
     path: PropTypes.string.isRequired,
   }).isRequired,
 };
 
-Header.defaultProps = {
-  user: {},
-};
-
-export const mapStateToProps = (state) => {
-  const { user } = state;
-  return { user };
-};
-
-const mapDispatchToProps = {
-  removeUser,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));
+export default withRouter(Header);

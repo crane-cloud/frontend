@@ -5,6 +5,7 @@ const SettingsActionRow = ({
   content,
   buttonLabel,
   buttonColor,
+  disabled=false,
   onButtonClick,
 }) => (
   <div className="MemberTableRow">
@@ -13,7 +14,7 @@ const SettingsActionRow = ({
       <div className="SubTitleContent">{content}</div>
     </div>
     <div className="SectionButtons">
-      <PrimaryButton onClick={onButtonClick} color={buttonColor}>
+      <PrimaryButton disabled={disabled} onClick={onButtonClick} color={buttonColor}>
         {buttonLabel}
       </PrimaryButton>
     </div>

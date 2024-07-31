@@ -1,7 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+
 import PrimaryButton from "../../components/PrimaryButton";
 import {
   handleGetRequest,
@@ -32,138 +30,150 @@ import DashboardLayout from "../../components/Layouts/DashboardLayout";
 import { namedOrganisations } from "../../helpers/projectOrganisations";
 import SettingsActionRow from "../../components/SettingsActionRow/index.jsx";
 import TagInput from "../../components/ProjectTagInput/index.jsx";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min.js";
 
-class ProjectSettingsPage extends React.Component {
-  constructor(props) {
-    super(props);
-    const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
-    const { name, description, organisation, project_type, age } = projectInfo;
-    this.state = {
-      openUpdateAlert: false,
-      openRoleUpdateAlert: false,
-      openDeleteAlert: false,
-      openDropDown: false,
-      projectName: name ? name : "",
-      projectID: this.props.match.params.projectID,
-      projectDescription: description ? description : "",
-      projectAge: age ? age : "",
-      error: "",
-      updatingProjectDetails: false,
-      nameChecked: false,
-      idChecked: false,
-      tokenChecked: false,
-      descriptionChecked: false,
-      Confirmprojectname: "",
-      disableDelete: true,
-      projectOrganisation: organisation ? organisation : "",
-      projectType: project_type ? project_type : "",
-      othersBool: false,
-      otherType: "",
-      showInviteModel: false,
-      role: "",
-      email: "",
-      removeMemberModal: false,
-      isCurrentUserRemoved: false,
-      projectUsers: [],
-      fetchingProjectMembersError: "",
-      projectUnregisteredUsers: [],
-      fetchingProjectMembers: true,
-      invitingMembers: false,
-      invitingMembersError: "",
-      updateMemberError: "",
-      updatingMemberRole: false,
-      removeMemberError: "",
-      removingMember: false,
-      currentUserIsAdminOrMember: false,
-      currentUserIsAdminOrOwner: false,
-      currentUserIsMemberOnly: false,
-      deleteProjectError: "",
-      deletingProject: false,
-      disableProjectError: "",
-      fetchingProjectDetails: false,
-      disableProjectAlert: false,
-      disableProjectProgress: false,
-      projectDetails: [],
-    };
+const ProjectSettingsPage = () => {
+  const {data} = useSelector((state) => state.user);
+  const { projectID } = useParams();
+  const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
+  const { name, description, organisation, project_type, age } = projectInfo;
 
-    this.handleDeleteProject = this.handleDeleteProject.bind(this);
-    this.showUpdateAlert = this.showUpdateAlert.bind(this);
-    this.updateRoleAlert = this.updateRoleAlert.bind(this);
-    this.hideUpdateAlert = this.hideUpdateAlert.bind(this);
-    this.hideRoleUpdateAlert = this.hideRoleUpdateAlert.bind(this);
-    this.showDeleteAlert = this.showDeleteAlert.bind(this);
-    this.hideDeleteAlert = this.hideDeleteAlert.bind(this);
-    this.nameOnClick = this.nameOnClick.bind(this);
-    this.projectIDOnClick = this.projectIDOnClick.bind(this);
-    this.projectDescriptionOnClick = this.projectDescriptionOnClick.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.checkProjectInputValidity = this.checkProjectInputValidity.bind(this);
-    this.handleTypeSelectChange = this.handleTypeSelectChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.hideModal = this.hideModal.bind(this);
-    this.showInviteMenu = this.showInviteMenu.bind(this);
-    this.handleMemberInvitation = this.handleMemberInvitation.bind(this);
-    this.handleMemberRoleUpdate = this.handleMemberRoleUpdate.bind(this);
-    this.handleInvitationRole = this.handleInvitationRole.bind(this);
-    this.hideInviteMenu = this.hideInviteMenu.bind(this);
-    this.showMenu = this.showMenu.bind(this);
-    this.renderRedirect = this.renderRedirect.bind(this);
-    this.removeProjectMember = this.removeProjectMember.bind(this);
-    this.checkMembership = this.checkMembership.bind(this);
-    this.updateRoleValue = this.updateRoleValue.bind(this);
-    this.showRemoveMemberModal = this.showRemoveMemberModal.bind(this);
-    this.closeRemoveMemberModal = this.closeRemoveMemberModal.bind(this);
-    this.getProjectMemberz = this.getProjectMemberz.bind(this);
-    this.inviteMember = this.inviteMember.bind(this);
-    this.updateMemberRoles = this.updateMemberRoles.bind(this);
-    this.removeMember = this.removeMember.bind(this);
-    this.updateProjectDetails = this.updateProjectDetails.bind(this);
-    this.deleteThisProject = this.deleteThisProject.bind(this);
-    this.handleOrganisationSelectChange =
-      this.handleOrganisationSelectChange.bind(this);
-    this.handleEnableButtonClick = this.handleEnableButtonClick.bind(this);
-    this.getProjectDetails = this.getProjectDetails.bind(this);
-    this.disableProjectAlertFunc = this.disableProjectAlertFunc.bind(this);
-  }
+  const [state, setState] = useState({
+    openUpdateAlert: false,
+    openRoleUpdateAlert: false,
+    openDeleteAlert: false,
+    openDropDown: false,
+    projectName: name || "",
+    projectID: projectID,
+    projectDescription: description || "",
+    projectAge: age || "",
+    error: "",
+    updatingProjectDetails: false,
+    nameChecked: false,
+    idChecked: false,
+    tokenChecked: false,
+    descriptionChecked: false,
+    Confirmprojectname: "",
+    disableDelete: true,
+    projectOrganisation: organisation || "",
+    projectType: project_type || "",
+    othersBool: false,
+    otherType: "",
+    showInviteModel: false,
+    role: "",
+    email: "",
+    removeMemberModal: false,
+    isCurrentUserRemoved: false,
+    projectUsers: [],
+    fetchingProjectMembersError: "",
+    projectUnregisteredUsers: [],
+    fetchingProjectMembers: true,
+    invitingMembers: false,
+    invitingMembersError: "",
+    updateMemberError: "",
+    updatingMemberRole: false,
+    removeMemberError: "",
+    removingMember: false,
+    currentUserIsAdminOrMember: false,
+    currentUserIsAdminOrOwner: false,
+    currentUserIsMemberOnly: false,
+    deleteProjectError: "",
+    deletingProject: false,
+    disableProjectError: "",
+    fetchingProjectDetails: false,
+    disableProjectAlert: false,
+    disableProjectProgress: false,
+    projectDetails: [],
+    
+  });
 
-  componentDidMount() {
-    this.getProjectMemberz();
-    this.getProjectDetails();
-  }
+  const [removedTags, setRemovedTags] = useState([]);
+  const [newTags, setNewTags] = useState([]);
 
-  disableProjectAlertFunc(disableBool) {
-    this.setState({
+  useEffect(() => {
+    getProjectMemberz();
+    getProjectDetails();
+  }, []);
+
+  useEffect(() => {
+    checkMembership();
+  }, [state.projectUsers]);
+
+  // componentDidMount() {
+  //   this.getProjectMemberz();
+  //   this.getProjectDetails();
+  // }
+
+  const disableProjectAlertFunc = (disableBool) => {
+    setState((prevState) => ({
+      ...prevState,
       disableProjectAlert: disableBool,
       disableProjectError: "",
-    });
-  }
+    }));
+  };
 
-  getProjectMemberz() {
-    const projectID = this.props.match.params.projectID;
+
+  const checkMembership = () => {
+    
+    const { projectUsers } = state;
+    const result = projectUsers?.filter((item) => item.user?.id === data.id);
+    //either member or admin
+    if (
+      result[0]?.role === "RolesList.member" ||
+      result[0]?.role === "RolesList.admin"
+    ) {
+      setState((prevState) => ({
+        ...prevState,
+        currentUserIsAdminOrMember: true,
+      }));
+    }
+    //either owner or admin
+    if (
+      result[0]?.role === "RolesList.owner" ||
+      result[0]?.role === "RolesList.admin"
+    ) {
+      setState((prevState) => ({
+        ...prevState,
+        currentUserIsAdminOrOwner: true,
+      }));
+    }
+    if (result[0]?.role === "RolesList.member") {
+      setState((prevState) => ({
+        ...prevState,
+        currentUserIsMemberOnly: true,
+      }));
+    }
+  };
+
+
+  const getProjectMemberz = () => {
     handleGetRequest(`/projects/${projectID}/users`)
       .then((response) => {
-        this.setState({
+        setState((prevState) => ({
+          ...prevState,
           projectUsers: response.data.data.project_users,
           projectUnregisteredUsers: response.data.data.project_anonymous_users,
           fetchingProjectMembers: false,
-        });
-        this.checkMembership();
+        }));
+        checkMembership();
       })
       .catch((error) => {
-        this.setState({
+        setState((prevState) => ({
+          ...prevState,
           fetchingProjectMembersError: "Failed to fetch project members",
           fetchingProjectMembers: false,
-        });
+        }));
       });
-  }
+  };
 
-  inviteMember() {
-    const { email, role } = this.state;
-    this.setState({
+  const inviteMember = () => {
+    const { email, role } = state;
+    setState((prevState) => ({
+      ...prevState,
       invitingMembers: true,
-    });
-    const projectID = this.props.match.params.projectID;
+    }));
     handlePostRequestWithOutDataObject(
       { email: email, role: role },
       `/projects/${projectID}/users`
@@ -173,19 +183,20 @@ class ProjectSettingsPage extends React.Component {
         window.location.href = `/projects/${projectID}/settings`;
       })
       .catch((error) => {
-        this.setState({
+        setState((prevState) => ({
+          ...prevState,
           invitingMembersError: "Failed to invite user",
           invitingMembers: false,
-        });
+        }));
       });
-  }
+  };
 
-  updateMemberRoles() {
-    const { email, role } = this.state;
-    this.setState({
+  const updateMemberRoles = () => {
+    const { email, role } = state;
+    setState((prevState) => ({
+      ...prevState,
       updatingMemberRole: true,
-    });
-    const projectID = this.props.match.params.projectID;
+    }));
     handlePatchRequest(`/projects/${projectID}/users`, {
       email,
       role,
@@ -194,142 +205,162 @@ class ProjectSettingsPage extends React.Component {
         window.location.href = `/projects/${projectID}/settings`;
       })
       .catch((error) => {
-        this.setState({
+        setState((prevState) => ({
+          ...prevState,
           updateMemberError: "Failed to update user",
           updatingMemberRole: false,
-        });
+        }));
       });
-  }
+  };
 
-  removeMember(email) {
-    const projectID = this.props.match.params.projectID;
+  const removeMember = (email) => {
     const data = { data: email };
-    this.setState({ removingMember: true });
+    setState((prevState) => ({
+      ...prevState,
+      removingMember: true,
+    }));
     handleDeleteRequest(`/projects/${projectID}/users`, data)
       .then(() => {
         window.location.href = `/projects/${projectID}/settings`;
       })
       .catch(() => {
-        this.setState({
+        setState((prevState) => ({
+          ...prevState,
           removeMemberError: "Failed to remove user",
           removingMember: false,
-        });
+        }));
       });
-  }
-
-  componentDidUpdate(prevProps) {
-    const { isDeleted } = this.props;
-
-    if (isDeleted !== prevProps.isDeleted) {
-      this.hideDeleteAlert();
-    }
-  }
-  handleClick = (e) => {
-    if (this.state.actionsMenu) {
-      return;
-    }
-    this.setState({ actionsMenu: true });
-    e.stopPropagation();
-    document.addEventListener("click", this.hideModal);
   };
 
-  hideModal = () => {
-    this.setState({ actionsMenu: false });
-    document.removeEventListener("click", this.hideModal);
+
+  const hideDeleteAlert = () => {
+    setState((prevState) => ({
+      ...prevState,
+      openDeleteAlert: false,
+    }));
   };
 
-  showMenu(userEmail) {
-    this.setState({ email: userEmail });
-  }
 
-  showRemoveMemberModal(email) {
-    this.setState({
+
+  const showRemoveMemberModal = (email) => {
+    setState((prevState) => ({
+      ...prevState,
       removeMemberModal: true,
       removeMemberError: "",
       email: email,
-    });
-  }
+    }));
+  };
 
-  closeRemoveMemberModal() {
-    this.setState({
+  const closeRemoveMemberModal = () => {
+    setState((prevState) => ({
+      ...prevState,
       removeMemberModal: false,
-    });
-  }
+    }));
+  };
 
-  removeProjectMember(e) {
+  const removeProjectMember = (e) => {
     e.preventDefault();
-    const { data } = this.props;
-    const { email } = this.state;
+    const { email } = state;
     const emailDetails = {
       email: email,
     };
-    this.removeMember(emailDetails);
+    removeMember(emailDetails);
     if (email === data.email) {
-      this.setState({
+      setState((prevState) => ({
+        ...prevState,
         isCurrentUserRemoved: true,
-      });
+      }));
     }
-  }
+  };
 
-  handleMemberInvitation(e) {
+  const handleMemberInvitation = (e) => {
     e.preventDefault();
-    const { email, role } = this.state;
+    const { email, role } = state;
     if (email !== "" && role !== "") {
-      this.validateEmail(email);
-      this.inviteMember();
+      validateEmail(email);
+      inviteMember();
     }
-  }
+  };
 
-  handleMemberRoleUpdate(e) {
+  const handleMemberRoleUpdate = (e) => {
     e.preventDefault();
-    const { email, role } = this.state;
+    const { email, role } = state;
     if (email !== "" && role !== "") {
-      this.validateEmail(email);
-      this.updateMemberRoles();
+      validateEmail(email);
+      updateMemberRoles();
     }
-  }
+  };
 
-  validateEmail(email) {
+  const validateEmail = (email) => {
     const emailRegEx =
       // eslint-disable-next-line no-useless-escape
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegEx.test(String(email).toLowerCase());
-  }
+  };
 
-  handleChange(e) {
-    const { error, openDeleteAlert } = this.state;
+  const handleChange = (e) => {
+    const { error, openDeleteAlert } = state;
     const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
     const { name } = projectInfo;
 
-    this.setState({
+    setState((prevState) => ({
+      ...prevState,
       [e.target.name]: e.target.value,
-    });
+    }));
     if (error) {
-      this.setState({
+      setState((prevState) => ({
+        ...prevState,
         error: "",
-      });
+      }));
     }
 
     if (e.target.value === name && openDeleteAlert) {
-      this.setState({
+      setState((prevState) => ({
+        ...prevState,
         disableDelete: false,
-      });
+      }));
     } else if (e.target.value !== name && openDeleteAlert) {
-      this.setState({
+      setState((prevState) => ({
+        ...prevState,
         disableDelete: true,
-      });
+      }));
     }
-  }
+  };
 
-  showInviteMenu() {
-    this.setState({ showInviteModel: true, invitingMembersError: "" });
-  }
+  const showInviteMenu = () => {
+    setState((prevState) => ({
+      ...prevState,
+      showInviteModel: true,
+      invitingMembersError: "",
+    }));
+  };
 
-  hideInviteMenu() {
-    this.setState({ showInviteModel: false });
-  }
+  const hideInviteMenu = () => {
+    setState((prevState) => ({
+      ...prevState,
+      showInviteModel: false,
+    }));
+  };
+  const updateProjectDetails = (projectID, data) => {
+    setState((prevState) => ({
+      ...prevState,
+      updatingProjectDetails: true,
+    }));
+    handlePatchRequest(`/projects/${projectID}`, data)
+      .then(() => {
+        window.location.href = `/projects`;
+      })
+      .catch((error) => {
+        setState((prevState) => ({
+          ...prevState,
+          error: "Failed to update project",
+          updatingProjectDetails: false,
+        }));
+      });
+  };
 
-  handleSubmit() {
+ 
+  const handleSubmit = () => {
     const {
       projectName,
       projectDescription,
@@ -337,176 +368,149 @@ class ProjectSettingsPage extends React.Component {
       projectType,
       otherType,
       othersBool,
-    } = this.state;
-    const {
-      match: {
-        params: { projectID },
-      },
-    } = this.props;
-
-    const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
+    } = state;
+  
+    const projectInfo = JSON.parse(localStorage.getItem("project")) || {};
     const { name, description, organisation, project_type } = projectInfo;
-
-    const Trim = (input) => input.trim();
+  
+    const trim = (input) => input.trim();
     const capitalizeFirstLetter = (input) =>
       input.charAt(0).toUpperCase() + input.slice(1);
-    const type = othersBool
-      ? capitalizeFirstLetter(otherType)
-      : capitalizeFirstLetter(projectType);
-    const trimedprojectName = Trim(projectName);
-    const trimedprojectDescription = Trim(projectDescription);
-    const trimedprojectOrganisation = Trim(projectOrganisation);
-    const trimedprojectType = Trim(type);
-
-    if (
-      trimedprojectName !== name ||
-      trimedprojectDescription !== description ||
-      trimedprojectOrganisation !== organisation ||
-      trimedprojectType !== project_type
-    ) {
-      if (
-        !trimedprojectName ||
-        !trimedprojectDescription ||
-        !trimedprojectOrganisation ||
-        !trimedprojectType
-      ) {
-        this.setState({
-          error:
-            "Can't update when an empty field is submited, please fill the missing field or leave it unchanged.",
-        });
-      } else {
-        if (trimedprojectName !== name) {
-          const nameCheckResult = this.checkProjectInputValidity(
-            trimedprojectName,
-            "name"
-          );
-          if (nameCheckResult !== "") {
-            this.setState({
-              error: nameCheckResult,
-            });
-          } else {
-            const organisationCheckResult = this.checkProjectInputValidity(
-              trimedprojectOrganisation,
-              "organisation"
-            );
-            const typeCheckResult = this.checkProjectInputValidity(
-              trimedprojectType,
-              "type"
-            );
-            if (organisationCheckResult !== "" || typeCheckResult !== "") {
-              if (organisationCheckResult !== "") {
-                this.setState({
-                  error: organisationCheckResult,
-                });
-              }
-              if (typeCheckResult !== "") {
-                this.setState({
-                  error: typeCheckResult,
-                });
-              }
-            }
-            if (typeCheckResult === "" && organisationCheckResult === "") {
-              const newProject = {
-                name: trimedprojectName,
-                project_type: trimedprojectType,
-                organisation: trimedprojectOrganisation,
-                description: trimedprojectDescription,
-              };
-              //updateProject(projectID, newProject);
-              this.updateProjectDetails(projectID, newProject);
-            }
-          }
-        } else {
-          const organisationCheckResult = this.checkProjectInputValidity(
-            trimedprojectOrganisation,
-            "organisation"
-          );
-          const typeCheckResult = this.checkProjectInputValidity(
-            trimedprojectType,
-            "type"
-          );
-          if (organisationCheckResult !== "" || typeCheckResult !== "") {
-            if (organisationCheckResult !== "") {
-              this.setState({
-                error: organisationCheckResult,
-              });
-            }
-            if (typeCheckResult !== "") {
-              this.setState({
-                error: typeCheckResult,
-              });
-            }
-          }
-          if (typeCheckResult === "" && organisationCheckResult === "") {
-            const newProject = {
-              project_type: trimedprojectType,
-              organisation: trimedprojectOrganisation,
-              description: trimedprojectDescription,
-            };
-            //updateProject(projectID, newProject);
-            this.updateProjectDetails(projectID, newProject);
-          }
-        }
-      }
-    } else {
-      this.setState({
-        error: "Please provide new information in atleast one of the fields",
-      });
+  
+    const trimmedProjectName = trim(projectName);
+    const trimmedProjectDescription = trim(projectDescription);
+    const trimmedProjectOrganisation = trim(projectOrganisation);
+    const trimmedProjectType = trim(
+      capitalizeFirstLetter(othersBool ? otherType : projectType)
+    );
+  
+    const hasEmptyField =
+      !trimmedProjectName ||
+      !trimmedProjectDescription ||
+      !trimmedProjectOrganisation ||
+      !trimmedProjectType ||
+      (removedTags.length === 0 && newTags.length === 0);
+  
+    if (hasEmptyField) {
+      setState((prevState) => ({
+        ...prevState,
+        error:
+          "Can't update when an empty field is submitted. Please fill the missing field or leave it unchanged.",
+      }));
+      return;
     }
-  }
+  
+    const newProject = {};
+  
+    if (trimmedProjectName !== name) {
+      newProject.name = trimmedProjectName;
+    }
+    if (trimmedProjectDescription !== description) {
+      newProject.description = trimmedProjectDescription;
+    }
+    if (trimmedProjectOrganisation !== organisation) {
+      newProject.organisation = trimmedProjectOrganisation;
+    }
+    if (trimmedProjectType !== project_type) {
+      newProject.project_type = trimmedProjectType;
+    }
+    if (removedTags.length > 0) {
+      newProject.tags_remove = removedTags;
+    }
+    if (newTags.length > 0) {
+      newProject.tags_add = newTags;
+    }
+  
+    if (Object.keys(newProject).length === 0) {
+      setState((prevState) => ({
+        ...prevState,
+        error: "Please provide new information in at least one of the fields",
+      }));
+      return;
+    }
+  
+    const nameCheckResult = checkProjectInputValidity(trimmedProjectName, "name");
+    const organisationCheckResult = checkProjectInputValidity(trimmedProjectOrganisation, "organisation");
+    const typeCheckResult = checkProjectInputValidity(trimmedProjectType, "type");
+  
+    if (nameCheckResult) {
+      setState((prevState) => ({ ...prevState, error: nameCheckResult }));
+      return;
+    }
+    if (organisationCheckResult) {
+      setState((prevState) => ({ ...prevState, error: organisationCheckResult }));
+      return;
+    }
+    if (typeCheckResult) {
+      setState((prevState) => ({ ...prevState, error: typeCheckResult }));
+      return;
+    }
+  
+    updateProjectDetails(projectID, newProject);
+  };
+  
+  
 
-  nameOnClick(e) {
+  const nameOnClick = (e) => {
     const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
     const { name } = projectInfo;
     navigator.clipboard.writeText(name);
-    this.setState({ nameChecked: true });
+    setState((prevState) => ({
+      ...prevState,
+      nameChecked: true,
+    }));
     e.preventDefault();
-  }
+  };
 
-  projectIDOnClick() {
-    const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
-    const { project_id } = projectInfo;
-    navigator.clipboard.writeText(project_id);
-    this.setState({ idChecked: true });
-  }
+ 
+  const deleteThisProject = (projectID) => {
+    setState((prevState) => ({
+      ...prevState,
+      deletingProject: true,
+      deleteProjectError: "",
+    }));
+    handleDeleteRequest(`/projects/${projectID}`, {})
+      .then(() => {
+        window.location.href = `/projects`;
+      })
+      .catch(() => {
+        setState((prevState) => ({
+          ...prevState,
+          deleteProjectError: "Failed to delete this project",
+          deletingProject: false,
+        }));
+      });
+  };
 
-  projectDescriptionOnClick() {
-    const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
-    const { description } = projectInfo;
-    navigator.clipboard.writeText(description);
-    this.setState({ descriptionChecked: true });
-  }
-
-  handleDeleteProject(e, projectID) {
-    // const { deleteProject } = this.props;
+  const handleDeleteProject = (e, projectID) => {
     e.preventDefault();
-    this.deleteThisProject(projectID);
-  }
+    deleteThisProject(projectID);
+  };
+  const getProjectDetails = () => {
 
-  getProjectDetails() {
-    const {
-      match: { params },
-    } = this.props;
-    const { projectID } = params;
     handleGetRequest(`/projects/${projectID}`)
       .then((response) => {
-        this.setState({
+        setState((prevState) => ({
+          ...prevState,
           projectDetails: response.data.data.project,
           fetchingProjectDetails: false,
-        });
+        }));
       })
       .catch((error) => {
-        this.setState({
+        setState((prevState) => ({
+          ...prevState,
           error: "Failed to fetch project details",
           fetchingProjectDetails: false,
-        });
+        }));
       });
-  }
+  };
 
-  handleEnableButtonClick = () => {
-    let { projectDetails } = this.state;
-    const { projectID } = this.props.match.params;
-    this.setState({ disableProjectProgress: true });
+  const handleEnableButtonClick = () => {
+    let { projectDetails } = state;
+    setState((prevState) => ({
+      ...prevState,
+      disableProjectProgress: true,
+    }));
     try {
       if (projectDetails.disabled) {
         handlePostRequestWithOutDataObject({}, `/projects/${projectID}/enable`)
@@ -514,10 +518,11 @@ class ProjectSettingsPage extends React.Component {
             window.location.reload();
           })
           .catch((error) => {
-            this.setState({
+            setState((prevState) => ({
+              ...prevState,
               disableProjectError:
                 "Failed to complete this action. Please try again later",
-            });
+            }));
           });
       } else {
         handlePostRequestWithOutDataObject({}, `/projects/${projectID}/disable`)
@@ -525,38 +530,47 @@ class ProjectSettingsPage extends React.Component {
             window.location.reload();
           })
           .catch((error) => {
-            this.setState({
+            setState((prevState) => ({
+              ...prevState,
               disableProjectError:
                 "Failed to complete this action. Please try again later",
               disableProjectProgress: false,
-            });
+            }));
           });
       }
     } catch (error) {
       //console.error("API call error:", error);
-      this.setState({
+      setState((prevState) => ({
+        ...prevState,
         disableProjectError:
           "Failed to complete this action. Please try again later",
         disableProjectProgress: false,
-      });
+      }));
     }
   };
 
-  showUpdateAlert() {
-    this.setState({ openUpdateAlert: true });
-  }
+  const showUpdateAlert = () => {
+    setState((prevState) => ({
+      ...prevState,
+      openUpdateAlert: true,
+    }));
+  };
 
-  updateRoleAlert(email) {
-    this.setState({
+  const updateRoleAlert = (email) => {
+    setState((prevState) => ({
+      ...prevState,
       openRoleUpdateAlert: true,
       email: email,
-    });
-  }
+    }));
+  };
 
-  showDeleteAlert() {
-    this.setState({ openDeleteAlert: true });
-  }
-  checkProjectInputValidity(input, output) {
+  const showDeleteAlert = () => {
+    setState((prevState) => ({
+      ...prevState,
+      openDeleteAlert: true,
+    }));
+  };
+  const checkProjectInputValidity = (input, output) => {
     if (!validateName(input)) {
       return `${output} should start with a letter`;
     } else if (validateName(input) === "false_convention") {
@@ -566,119 +580,78 @@ class ProjectSettingsPage extends React.Component {
     } else {
       return "";
     }
-  }
-
-  hideUpdateAlert() {
-    this.setState({ openUpdateAlert: false });
-  }
-
-  hideRoleUpdateAlert() {
-    this.setState({ openRoleUpdateAlert: false });
-  }
-
-  hideDeleteAlert() {
-    this.setState({ openDeleteAlert: false });
-  }
-  handleTypeSelectChange(selected) {
-    const { othersBool } = this.state;
-    if (selected.id === 6) {
-      if (!othersBool) {
-        this.setState({ othersBool: true });
-      }
-    } else {
-      this.setState({ projectType: selected.value });
-      if (othersBool) {
-        this.setState({ othersBool: false });
-      }
-    }
-  }
-  handleInvitationRole(selected) {
-    this.setState({ role: selected.value });
-  }
-
-  handleOrganisationSelectChange(selected) {
-    this.setState({ projectOrganisation: selected.value });
-  }
-
-  checkMembership() {
-    const { data } = this.props;
-    const { projectUsers } = this.state;
-    const result = projectUsers?.filter((item) => item.user?.id === data.id);
-    //either member or admin
-    if (
-      result[0]?.role === "RolesList.member" ||
-      result[0]?.role === "RolesList.admin"
-    ) {
-      this.setState({ currentUserIsAdminOrMember: true });
-    }
-    //either owner or admin
-    if (
-      result[0]?.role === "RolesList.owner" ||
-      result[0]?.role === "RolesList.admin"
-    ) {
-      this.setState({ currentUserIsAdminOrOwner: true });
-    }
-    if (result[0]?.role === "RolesList.member") {
-      this.setState({ currentUserIsMemberOnly: true });
-    }
-  }
-
-  updateRoleValue(string) {
-    let role = string[1];
-    return role.charAt(0).toUpperCase() + role.slice(1);
-  }
-
-  renderRedirect = () => {
-    const { isDeleted, isUpdated } = this.props;
-    const { isCurrentUserRemoved } = this.state;
-    if (isDeleted || isUpdated || isCurrentUserRemoved) {
-      return <Redirect to={`/projects`} noThrow />;
-    }
   };
-  updateProjectDetails(projectID, data) {
-    this.setState({
-      updatingProjectDetails: true,
-    });
-    handlePatchRequest(`/projects/${projectID}`, data)
-      .then(() => {
-        window.location.href = `/projects`;
-      })
-      .catch((error) => {
-        this.setState({
-          error: "Failed to update project",
-          updatingProjectDetails: false,
-        });
-      });
+
+  const hideUpdateAlert = () => {
+    setState((prevState) => ({
+      ...prevState,
+      openUpdateAlert: false,
+    }));
+  };
+
+  const hideRoleUpdateAlert = () => {
+    {
+      setState((prevState) => ({
+        ...prevState,
+        openRoleUpdateAlert: false,
+      }));
+    }
   }
 
-  deleteThisProject(projectID) {
-    this.setState({ deletingProject: true, deleteProjectError: "" });
-    handleDeleteRequest(`/projects/${projectID}`, {})
-      .then(() => {
-        window.location.href = `/projects`;
-      })
-      .catch(() => {
-        this.setState({
-          deleteProjectError: "Failed to delete this project",
-          deletingProject: false,
-        });
-      });
-  }
+  
+    const handleTypeSelectChange = (selected) => {
+      const { othersBool } = state;
+      if (selected.id === 6) {
+        if (!othersBool) {
+          setState((prevState) => ({
+            ...prevState,
+            othersBool: true,
+          }));
+        }
+      } else {
+        setState((prevState) => ({
+          ...prevState,
+          projectType: selected.value,
+        }));
+        if (othersBool) {
+          setState((prevState) => ({
+            ...prevState,
+            othersBool: false,
+          }));
+        }
+      }
+    };
+    const handleInvitationRole = (selected) => {
+      setState((prevState) => ({
+        ...prevState,
+        role: selected.value,
+      }));
+    };
 
-  render() {
-    const {
-      match: { params },
-      isDeleted,
-      isUpdated,
-      errorMessage,
-      data,
-    } = this.props;
+    const handleOrganisationSelectChange = (selected) => {
+      setState((prevState) => ({
+        ...prevState,
+        projectOrganisation: selected.value,
+      }));
+    };
 
-    const projectInfo = { ...JSON.parse(localStorage.getItem("project")) };
+   
+    const updateRoleValue = (string) => {
+      let role = string[1];
+      return role.charAt(0).toUpperCase() + role.slice(1);
+    };
+
+    const onTagsChange = (tags) => {
+      if(state?.projectDetails?.tags){
+        const oldTagNames = state?.projectDetails?.tags?.map(tag => tag.name);
+        const removed = oldTagNames.filter(tag => !tags.includes(tag));
+        setRemovedTags(removed);
+        setNewTags(tags);
+       }
+    
+    };
 
     let currentUserEmail = data.email;
-
-    const { name } = projectInfo;
 
     const {
       openUpdateAlert,
@@ -719,28 +692,14 @@ class ProjectSettingsPage extends React.Component {
       disableProjectError,
       disableProjectAlert,
       disableProjectProgress,
-    } = this.state;
+    } = state;
     const types = retrieveProjectTypes();
     const roles = retrieveMembershipRoles();
 
-    const suggestions = [
-      "react",
-      "javascript", 
-      "css", 
-      "html", 
-      "nodejs", 
-      "django", 
-      "firebase",
-      "python",
-      "java",
-    ];
-
-
-    const { projectID } = params;
     const presetOrganisations = namedOrganisations();
+
     return (
       <DashboardLayout name={name} header="Project Settings" short>
-        {isUpdated || isDeleted ? this.renderRedirect() : null}
         <div className="SectionTitle">Project Details</div>
         <div className={`${styles.ProjectInstructions}`}>
           <div className={`${styles.ProjectsDetailsInnerSection}`}>
@@ -751,12 +710,14 @@ class ProjectSettingsPage extends React.Component {
                   <div>{projectName}</div>
                 </div>
                 <div className={styles.CopyIcon}>
-                  <CopyText onClick={this.nameOnClick} />
+                  <CopyText onClick={nameOnClick} />
                   {nameChecked ? <Checked /> : null}
                 </div>
               </div>
               <div>
-                <div className={`${styles.SectionSubTitle}`}>Project Description</div>
+                <div className={`${styles.SectionSubTitle}`}>
+                  Project Description
+                </div>
                 <div className={styles.ProjectButtonRow}>
                   <div className={styles.SettingsSectionInfo}>
                     <div>{projectDescription}</div>
@@ -766,8 +727,7 @@ class ProjectSettingsPage extends React.Component {
             </div>
             <div className={styles.InnerContentGrid}>
               <div>
-
-              <div className={`${styles.SectionSubTitle}`}>Organization</div>
+                <div className={`${styles.SectionSubTitle}`}>Organization</div>
                 <div className={styles.ProjectButtonRow}>
                   <div className={styles.SettingsSectionInfo}>
                     <div>{projectOrganisation}</div>
@@ -776,11 +736,11 @@ class ProjectSettingsPage extends React.Component {
               </div>
               <div>
                 <div className={`${styles.SectionSubTitle}`}>Age</div>
-                  <div className={styles.ProjectButtonRow}>
-                    <div className={styles.SettingsSectionInfo}>
-                      <div>{projectAge}</div>
-                    </div>
+                <div className={styles.ProjectButtonRow}>
+                  <div className={styles.SettingsSectionInfo}>
+                    <div>{projectAge}</div>
                   </div>
+                </div>
               </div>
             </div>
             <div className={styles.InnerContentGrid}>
@@ -797,7 +757,7 @@ class ProjectSettingsPage extends React.Component {
                 <div className={styles.ProjectButtonRow}>
                   <div className={styles.SettingsSectionInfo}>
                     <div>
-                      {this.state.projectDetails?.disabled === true ? (
+                      {state.projectDetails?.disabled === true ? (
                         <span style={{ color: "red" }}>Disabled</span>
                       ) : (
                         "Enabled"
@@ -837,7 +797,7 @@ class ProjectSettingsPage extends React.Component {
                     // className={styles.SettingsButton}
                     color="primary"
                     onClick={() => {
-                      this.showInviteMenu();
+                      showInviteMenu();
                     }}
                   >
                     Invite member
@@ -869,12 +829,12 @@ class ProjectSettingsPage extends React.Component {
                           className={styles.MemberRole}
                           onClick={() => {
                             !currentUserIsMemberOnly &&
-                              this.updateRoleAlert(entry.user.email);
+                              updateRoleAlert(entry.user.email);
                           }}
                           title="Change Role"
                         >
                           <span>Role:</span>
-                          {this.updateRoleValue(entry.role.split("."))}
+                          {updateRoleValue(entry.role.split("."))}
                         </div>
                         <div>
                           {entry.user.email === currentUserEmail
@@ -884,7 +844,7 @@ class ProjectSettingsPage extends React.Component {
                                   noPadding
                                   transparent
                                   onClick={() => {
-                                    this.showRemoveMemberModal(
+                                    showRemoveMemberModal(
                                       entry.user.email
                                     );
                                   }}
@@ -898,7 +858,7 @@ class ProjectSettingsPage extends React.Component {
                                   noPadding
                                   transparent
                                   onClick={() => {
-                                    this.showRemoveMemberModal(
+                                    showRemoveMemberModal(
                                       entry.user.email
                                     );
                                   }}
@@ -956,7 +916,7 @@ class ProjectSettingsPage extends React.Component {
                               <Bin
                                 className={styles.BinButton}
                                 onClick={() => {
-                                  this.showRemoveMemberModal(entry.email);
+                                  showRemoveMemberModal(entry.email);
                                 }}
                                 title="Delete Invite"
                               />
@@ -975,7 +935,7 @@ class ProjectSettingsPage extends React.Component {
           <div className={styles.ProjectDeleteModel}>
             <Modal
               showModal={openRoleUpdateAlert}
-              onClickAway={this.hideRoleUpdateAlert}
+              onClickAway={hideRoleUpdateAlert}
             >
               <div>
                 <div className={styles.ModelHeader}>Change Member Role</div>
@@ -1002,7 +962,7 @@ class ProjectSettingsPage extends React.Component {
                       required
                       placeholder={role ? role : "Choose membership role"}
                       options={roles}
-                      onChange={this.handleInvitationRole}
+                      onChange={handleInvitationRole}
                     />
                   </div>
                   {updateMemberError && (
@@ -1010,7 +970,7 @@ class ProjectSettingsPage extends React.Component {
                   )}
                   <div className={styles.SendInvitationButton}>
                     <PrimaryButton
-                      onClick={this.handleMemberRoleUpdate}
+                      onClick={handleMemberRoleUpdate}
                       color="primary"
                     >
                       {updatingMemberRole ? <Spinner /> : "Update Role"}
@@ -1030,28 +990,29 @@ class ProjectSettingsPage extends React.Component {
                   title="Update Project"
                   content="Modify the project name and description"
                   buttonLabel="Update"
-                  onButtonClick={this.showUpdateAlert}
+                  disabled={fetchingProjectMembers}
+                  onButtonClick={showUpdateAlert}
                   buttonColor="primary"
                 />
 
                 <SettingsActionRow
                   title={`${
-                    this.state.projectDetails?.disabled ? "Enable" : "Disable"
+                    state.projectDetails?.disabled ? "Enable" : "Disable"
                   } project
                   `}
                   content={
-                    this.state.projectDetails?.disabled
+                    state.projectDetails?.disabled
                       ? "Allow access to project resources and enable billing"
                       : "Prevent project from being billed by blocking access to it's resources."
                   }
                   buttonLabel={
-                    this.state.projectDetails?.disabled ? "Enable" : "Disable"
+                    state.projectDetails?.disabled ? "Enable" : "Disable"
                   }
                   buttonColor={
-                    this.state.projectDetails?.disabled ? "primary" : "red"
+                    state.projectDetails?.disabled ? "primary" : "red"
                   }
                   onButtonClick={() => {
-                    this.disableProjectAlertFunc(true);
+                    disableProjectAlertFunc(true);
                   }}
                 />
 
@@ -1060,23 +1021,23 @@ class ProjectSettingsPage extends React.Component {
                   content="Take down your entire project, delete all apps under it."
                   buttonLabel="Delete"
                   buttonColor="red"
-                  onButtonClick={this.showDeleteAlert}
+                  onButtonClick={showDeleteAlert}
                 />
               </div>
             </div>
           </>
-        ) : null}
+        ) : null} 
 
         {openUpdateAlert && (
           <div className={styles.ProjectDeleteModel}>
             <Modal
               showModal={openUpdateAlert}
-              onClickAway={this.hideUpdateAlert}
+              onClickAway={hideUpdateAlert}
             >
               <div>
                 <div
                   onSubmit={(e) => {
-                    this.handleSubmit();
+                    handleSubmit();
                     e.preventDefault();
                   }}
                 >
@@ -1090,7 +1051,7 @@ class ProjectSettingsPage extends React.Component {
                         name="projectName"
                         value={projectName}
                         onChange={(e) => {
-                          this.handleChange(e);
+                          handleChange(e);
                         }}
                       />
                     </div>
@@ -1106,7 +1067,7 @@ class ProjectSettingsPage extends React.Component {
                             : "Update project Organization"
                         }
                         options={presetOrganisations}
-                        onChange={this.handleOrganisationSelectChange}
+                        onChange={handleOrganisationSelectChange}
                       />
                       {othersBool && (
                         <BlackInputText
@@ -1114,7 +1075,7 @@ class ProjectSettingsPage extends React.Component {
                           name="projectOrganisation"
                           value={projectOrganisation}
                           onChange={(e) => {
-                            this.handleChange(e);
+                            handleChange(e);
                           }}
                         />
                       )}
@@ -1129,7 +1090,7 @@ class ProjectSettingsPage extends React.Component {
                           projectType ? projectType : "Update project type"
                         }
                         options={types}
-                        onChange={this.handleTypeSelectChange}
+                        onChange={handleTypeSelectChange}
                       />
                       {othersBool && (
                         <BlackInputText
@@ -1138,7 +1099,7 @@ class ProjectSettingsPage extends React.Component {
                           name="otherType"
                           value={otherType}
                           onChange={(e) => {
-                            this.handleChange(e);
+                            handleChange(e);
                           }}
                         />
                       )}
@@ -1148,7 +1109,7 @@ class ProjectSettingsPage extends React.Component {
                         Project tags
                       </div>
                       <div className={styles.ProjectInputTag}>
-                        <TagInput suggestions={suggestions}/>
+                        <TagInput userTags={state?.projectDetails?.tags ?  state?.projectDetails?.tags?.map(tag => tag.name): []}  onTagsChange={onTagsChange}/>
                       </div>
                     </div>
                     <div className={styles.UpdateInputSection}>
@@ -1161,27 +1122,27 @@ class ProjectSettingsPage extends React.Component {
                         style={styles.TextArea}
                         value={projectDescription}
                         onChange={(e) => {
-                          this.handleChange(e);
+                          handleChange(e);
                         }}
                       />
                     </div>
-                    {(errorMessage || error) && (
+                    {( error) && (
                       <Feedback
                         type="error"
                         message={
-                          errorMessage ? "Failed to update Project" : error
+                          "Failed to update Project" 
                         }
                       />
                     )}
                     <div className={styles.UpdateProjectModelButtons}>
                       <PrimaryButton
                         className="CancelBtn"
-                        onClick={this.hideUpdateAlert}
+                        onClick={hideUpdateAlert}
                       >
                         Cancel
                       </PrimaryButton>
                       <PrimaryButton
-                        onClick={this.handleSubmit}
+                        onClick={handleSubmit}
                         color="primary"
                       >
                         {updatingProjectDetails ? (
@@ -1201,7 +1162,7 @@ class ProjectSettingsPage extends React.Component {
           <div className={styles.ProjectDeleteModel}>
             <Modal
               showModal={showInviteModel}
-              onClickAway={this.hideInviteMenu}
+              onClickAway={hideInviteMenu}
             >
               <div>
                 <div className={styles.ModelHeader}>Invite Member </div>
@@ -1215,7 +1176,7 @@ class ProjectSettingsPage extends React.Component {
                       name="email"
                       value={email}
                       onChange={(e) => {
-                        this.handleChange(e);
+                        handleChange(e);
                       }}
                     />
                   </div>
@@ -1227,7 +1188,7 @@ class ProjectSettingsPage extends React.Component {
                       required
                       placeholder={role ? role : "Choose membership role"}
                       options={roles}
-                      onChange={this.handleInvitationRole}
+                      onChange={handleInvitationRole}
                     />
                   </div>
                   {invitingMembersError && (
@@ -1236,7 +1197,7 @@ class ProjectSettingsPage extends React.Component {
                   <div className={styles.SendInvitationButton}>
                     <PrimaryButton
                       color="primary"
-                      onClick={this.handleMemberInvitation}
+                      onClick={handleMemberInvitation}
                     >
                       {invitingMembers ? <Spinner /> : "Send Invitation"}
                     </PrimaryButton>
@@ -1250,7 +1211,7 @@ class ProjectSettingsPage extends React.Component {
           <div className={styles.ProjectDeleteModel}>
             <Modal
               showModal={openDeleteAlert}
-              onClickAway={this.hideDeleteAlert}
+              onClickAway={hideDeleteAlert}
             >
               <div className={styles.DeleteProjectModel}>
                 <div className={styles.DeleteProjectModalUpperSection}>
@@ -1276,7 +1237,7 @@ class ProjectSettingsPage extends React.Component {
                         name="Confirmprojectname"
                         value={Confirmprojectname}
                         onChange={(e) => {
-                          this.handleChange(e);
+                          handleChange(e);
                         }}
                       />
                       <DeleteWarning textAlignment="Left" />
@@ -1287,7 +1248,7 @@ class ProjectSettingsPage extends React.Component {
                   <div className={styles.DeleteProjectModelButtons}>
                     <PrimaryButton
                       className="CancelBtn"
-                      onClick={this.hideDeleteAlert}
+                      onClick={hideDeleteAlert}
                     >
                       Cancel
                     </PrimaryButton>
@@ -1297,7 +1258,7 @@ class ProjectSettingsPage extends React.Component {
                       }
                       disabled={disableDelete}
                       onClick={(e) =>
-                        this.handleDeleteProject(e, params.projectID)
+                        handleDeleteProject(e, projectID)
                       }
                     >
                       {deletingProject ? <Spinner /> : "Delete"}
@@ -1315,7 +1276,7 @@ class ProjectSettingsPage extends React.Component {
 
         <Modal
           showModal={removeMemberModal}
-          onClickAway={this.closeRemoveMemberModal}
+          onClickAway={closeRemoveMemberModal}
         >
           <div className={styles.DeleteProjectModel}>
             <div className={styles.DeleteProjectModalUpperSection}>
@@ -1337,14 +1298,14 @@ class ProjectSettingsPage extends React.Component {
                 <PrimaryButton
                   type="button"
                   className="CancelBtn"
-                  onClick={this.closeRemoveMemberModal}
+                  onClick={closeRemoveMemberModal}
                 >
                   Cancel
                 </PrimaryButton>
                 <PrimaryButton
                   type="button"
                   color="red"
-                  onClick={(e) => this.removeProjectMember(e)}
+                  onClick={(e) => removeProjectMember(e)}
                 >
                   {removingMember ? <Spinner /> : "Confirm"}
                 </PrimaryButton>
@@ -1359,21 +1320,21 @@ class ProjectSettingsPage extends React.Component {
           <SettingsModal
             showModal={disableProjectAlert}
             onClickAway={() => {
-              this.disableProjectAlertFunc(false);
+              disableProjectAlertFunc(false);
             }}
           >
             <DisableModalContent
               item={{
                 name: projectName,
                 type: "project",
-                disabled: this.state.projectDetails?.disabled,
+                disabled: state.projectDetails?.disabled,
               }}
               disableProgress={disableProjectProgress}
               handleDisableButtonClick={() => {
-                this.handleEnableButtonClick();
+                handleEnableButtonClick();
               }}
               hideDisableAlert={() => {
-                this.disableProjectAlertFunc(false);
+                disableProjectAlertFunc(false);
               }}
               message={disableProjectError}
               isFailed={disableProjectError ? true : false}
@@ -1382,31 +1343,9 @@ class ProjectSettingsPage extends React.Component {
         )}
       </DashboardLayout>
     );
-  }
-}
-
-ProjectSettingsPage.propTypes = {
-  name: PropTypes.string,
-  description: PropTypes.string,
+  
 };
 
-ProjectSettingsPage.defaultProps = {
-  message: "",
-  name: "",
-  description: "",
-};
 
-export const mapStateToProps = (state) => {
-  const { data } = state.user;
 
-  return {
-    data,
-  };
-};
-
-const mapDispatchToProps = {};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProjectSettingsPage);
+export default ProjectSettingsPage;
