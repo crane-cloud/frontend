@@ -5,10 +5,14 @@ import ProjectListSection from "../../components/ProjectsListSection";
 import RecentActivitySection from "../../components/RecentActivitySection";
 import FeaturedProjectsSection from "../../components/FeaturedProjectsSection";
 import FeaturedUsersSection from "../../components/FeaturedUsersSection";
+import { useGenericSearch } from "../../hooks/useGenericSearch";
 import styles from "./UsersDashboard.module.css";
+import SkeletonLoader from "../../components/SkeletonLoader";
 
 const UsersDashboardPage = () => {
   const [isSticky, setIsSticky] = useState(false);
+  const [searchword, setSearchword] = useState("");
+  const { data, isPending } = useGenericSearch(searchword);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,15 +32,27 @@ const UsersDashboardPage = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const handleCallbackSearchword = (searchword) => {
+    setSearchword(searchword);
+  };
+
   return (
     <div className="APage">
       <Header />
 
       <div className="TopRow">
-        <InformationBar header={"Dashboard"} />
+        <InformationBar header={"Dashboard"}
+         showBtn={false}
+         showSearchBar
+         placeholder="Search through cranecloud"
+         searchAction={handleCallbackSearchword}
+        />
       </div>
 
       <div className={styles.dashboard}>
+
+        {isPending && <SkeletonLoader/>}
+       
         <div
           className={`${styles.projectSection} ${
             isSticky ? styles.sticky : ""
