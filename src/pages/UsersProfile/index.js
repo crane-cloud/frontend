@@ -324,7 +324,10 @@ const UsersProfile = () => {
                               )
                             )}
                             {noRecentActivity && (
-                              <div>No recent activities for this user</div>
+                              <div>
+                                <h1 className="SectionTitle">Activities</h1>
+                                <div className={styles.NoResourcesMessage}>No recent activities for this user</div>
+                              </div>
                             )}
                           </div>
                         </>
@@ -364,7 +367,7 @@ const UsersProfile = () => {
                             )
                           )}
                           {noRecentActivity && (
-                            <div>No recent activities for this user</div>
+                            <div className={styles.NoResourcesMessage}>No recent activities for this user</div>
                           )}
                         </div>
                       </>
