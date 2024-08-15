@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./TagsModal.module.css";
 import TagCard from "../TagCard";
 
-const TagsModal = ({ tags, onClose, onFollow, isModalTag }) => {
+const TagsModal = ({ tags, onClose, isModalTag }) => {
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
@@ -18,8 +18,8 @@ const TagsModal = ({ tags, onClose, onFollow, isModalTag }) => {
               key={tag.id}
               name={tag.name}
               projects_count={tag.projects_count}
+              isFollowing={tag.is_following}
               id={tag.id}
-              onFollow={onFollow}
               isModalTag={isModalTag}
             />
           ))}
