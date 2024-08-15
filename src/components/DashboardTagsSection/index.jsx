@@ -5,14 +5,43 @@ import Spinner from "../Spinner";
 import PrimaryButton from "../PrimaryButton";
 import TagsModal from "../TagsModal";
 import { useTags } from "../../hooks/useTags";
+import axios from "../../axios";
+import { handleDeleteRequest } from "../../apis/apis";
 
 const TagsList = () => {
   const [showModal, setShowModal] = useState(false);
+  const [sectionLoad, setSectionLoad] = useState(false);
+  const [tagFollowLoading, setTagFollowLoading] = useState(false);
 
   const { data: tags, isLoadingTags } = useTags();
 
-  const handleFollow = (id) => {
-    console.log(`Follow tag with id: ${id}`);
+  const handleFollow = async (id, followsTag) => {
+    setSectionLoad(true);
+    setTagFollowLoading(true);
+    if (followsTag) {
+      handleDeleteRequest(`tags/${id}/following`, {})
+        .then(() => {
+          setSectionLoad(false);
+          setTagFollowLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error following tag:", error);
+          setSectionLoad(false);
+          setTagFollowLoading(false);
+        });
+    } else {
+      try {
+        const response = await axios.post(`tags/${id}/following`);
+        if (response.status === 201) {
+          setSectionLoad(false);
+          setTagFollowLoading(false);
+        }
+      } catch (error) {
+        console.error("Error following tag:", error);
+        setSectionLoad(false);
+        setTagFollowLoading(false);
+      }
+    }
   };
 
   const handleViewMore = () => {
@@ -42,9 +71,11 @@ const TagsList = () => {
                 key={tag.id}
                 name={tag.name}
                 projects_count={tag.projects_count}
+                isFollowing={tag.is_following}
                 id={tag.id}
                 onFollow={handleFollow}
                 isModalTag={false}
+                tagFollowLoading={tagFollowLoading}
               />
             ))}
           </>

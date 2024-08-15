@@ -1,8 +1,18 @@
 import React from "react";
 import styles from "./TagCard.module.css";
 import { ReactComponent as Stats } from "../../assets/images/bars.svg";
+import Spinner from "../Spinner";
+import PrimaryButton from "../PrimaryButton";
 
-const TagCard = ({ name, projects_count, id, onFollow, isModalTag }) => {
+const TagCard = ({
+  name,
+  projects_count,
+  isFollowing,
+  id,
+  onFollow,
+  tagFollowLoading,
+  isModalTag,
+}) => {
   return (
     <div className={styles.card}>
       <div className={styles.cardContent}>
@@ -11,9 +21,9 @@ const TagCard = ({ name, projects_count, id, onFollow, isModalTag }) => {
           <div className={styles.modalFollowButton}>
             <button
               className={styles.followButton}
-              onClick={() => onFollow(id)}
+              onClick={() => onFollow(id, isFollowing)}
             >
-              + Follow
+              {isFollowing ? "Unfollow" : "+ Follow"}
             </button>
           </div>
         )}
@@ -31,9 +41,18 @@ const TagCard = ({ name, projects_count, id, onFollow, isModalTag }) => {
 
       {!isModalTag && (
         <div className={styles.followButtonArea}>
-          <button className={styles.followButton} onClick={() => onFollow(id)}>
-            + Follow
-          </button>
+          <PrimaryButton
+            className={styles.followButton}
+            onClick={() => onFollow(id, isFollowing)}
+          >
+            {tagFollowLoading ? (
+              <Spinner size="small" />
+            ) : isFollowing ? (
+              "Unfollow"
+            ) : (
+              "+ Follow"
+            )}
+          </PrimaryButton>
         </div>
       )}
     </div>
