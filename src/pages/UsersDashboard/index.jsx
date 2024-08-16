@@ -3,7 +3,7 @@ import Header from "../../components/Header";
 import InformationBar from "../../components/InformationBar";
 import ProjectListSection from "../../components/ProjectsListSection";
 import RecentActivitySection from "../../components/RecentActivitySection";
-import FeaturedProjectsSection from "../../components/FeaturedProjectsSection";
+import FeaturedTagsSection from "../../components/DashboardTagsSection";
 import FeaturedUsersSection from "../../components/FeaturedUsersSection";
 import { useGenericSearch } from "../../hooks/useGenericSearch";
 import styles from "./UsersDashboard.module.css";
@@ -122,7 +122,7 @@ const UsersDashboardPage = () => {
               <RecentActivitySection />
             </div>
             <div className={styles.rightSection}>
-              <FeaturedProjectsSection />
+              <FeaturedTagsSection />
               <FeaturedUsersSection />
             </div>
           </>

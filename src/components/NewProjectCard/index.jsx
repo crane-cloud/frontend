@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./NewProjectCard.module.css";
-import { ReactComponent as ProjectMembers } from "../../assets/images/project-members.svg";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const NewProjectCard = ({
@@ -10,7 +9,6 @@ const NewProjectCard = ({
   organization,
   type,
   number,
-  showFollowers,
   showFollowButton,
 }) => {
   return (
