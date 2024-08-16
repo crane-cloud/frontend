@@ -136,9 +136,9 @@ const InformationBar = ({
                       <PrimaryButton color="primary">Dashboard</PrimaryButton>
                     </Link>
                   ))}
-                <PrimaryButton btntype={btntype} onClick={btnAction}>
+                {showBtn && <PrimaryButton btntype={btntype} onClick={btnAction}>
                   {buttontext}
-                </PrimaryButton>
+                </PrimaryButton>}
               </div>
             </div>
           </div>
