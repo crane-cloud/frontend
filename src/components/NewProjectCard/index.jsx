@@ -3,7 +3,7 @@ import styles from "./NewProjectCard.module.css";
 import { ReactComponent as ProjectMembers } from "../../assets/images/project-members.svg";
 import { ReactComponent as Deployments } from "../../assets/images/deployments.svg";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
-import {formatCount} from "../../helpers/counterFormat.js"
+import { formatCount } from "../../helpers/counterFormat.js";
 
 const NewProjectCard = ({
   projectID,
@@ -11,9 +11,9 @@ const NewProjectCard = ({
   description,
   organization,
   type,
-  number,
+  number = 0,
   showFollowButton,
-  projectFollowers,
+  projectFollowers = 0,
 }) => {
   return (
     <div className={styles.projectCard}>
@@ -29,21 +29,23 @@ const NewProjectCard = ({
             {name}
           </Link>
         </h3>
-        <div className={styles.appCount} >
-         <div className={styles.countAndIcon}>
-          <ProjectMembers
-            className={styles.membersIcon}
-            title={"Project followers"}
-          />
-          <span className={styles.memberCount}>{formatCount(projectFollowers)}</span>
-         </div>
-         <div className={styles.countAndIcon}>
-          <Deployments
-            className={styles.membersIcon}
-            title={"Project apps"}
-          />
-          <span className={styles.memberCount}>{formatCount(number)}</span>
-         </div>
+        <div className={styles.appCount}>
+          <div className={styles.countAndIcon}>
+            <ProjectMembers
+              className={styles.membersIcon}
+              title={"Project followers"}
+            />
+            <span className={styles.memberCount}>
+              {formatCount(projectFollowers)}
+            </span>
+          </div>
+          <div className={styles.countAndIcon}>
+            <Deployments
+              className={styles.membersIcon}
+              title={"Project apps"}
+            />
+            <span className={styles.memberCount}>{formatCount(number)}</span>
+          </div>
         </div>
         <p className={styles.description}>{description}</p>
 
