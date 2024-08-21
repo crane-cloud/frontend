@@ -53,6 +53,7 @@
 }
 
 .SelectArrow {
+  padding-left: 10px;
   transition: all 400ms;
 }
 

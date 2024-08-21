@@ -105,6 +105,14 @@
   overflow-x: auto;
   width: -webkit-fill-available;
 }
+.NoteBookInnerCard {
+  display: grid;
+  grid-template-columns: 7fr 1fr 7fr ;
+  grid-template-rows: auto;
+  grid-gap: 1rem;
+  overflow-x: auto;
+  width: -webkit-fill-available;
+}
 
 .InnerCardSections {
   display: grid;
