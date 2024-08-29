@@ -39,7 +39,6 @@ const AppMetricsPage = () => {
   const location = useLocation();
 
   const queryParams = new URLSearchParams(location.search);
-  const jupyterNotebook = queryParams.get("jupyterNotebook") === "true";
   const trainedModelApp = queryParams.get("trainedModel") === "true";
 
   const [urlChecked, setUrlChecked] = useState(false);
@@ -50,6 +49,7 @@ const AppMetricsPage = () => {
   const [redeploy, setRedeploy] = useState(false);
   const [deployError, setDeployError] = useState("");
   const [spin, setSpin] = useState(false);
+  const [isJupyterNotebook, setIsJupyterNotebook] = useState(false)
   const [activeTrainedModelTab, setActiveTrainedModelTab] = useState("readMe");
   const [trainedModelInput, setTrainedModelInput] = useState("");
 
@@ -114,6 +114,12 @@ const AppMetricsPage = () => {
     dispatch(getAppNetwork(projectID, appID, {}));
   }, [dispatch, projectID, appID]);
 
+  useEffect(() => {
+    if(app?.is_notebook){
+       setIsJupyterNotebook(true);
+    }
+  }, [app]);
+
   const getAppMemoryMetrics = useCallback(() => {
     return formatAppMemoryMetrics(appID, appMemoryMetrics);
   }, [appID, appMemoryMetrics]);
@@ -165,7 +171,7 @@ const AppMetricsPage = () => {
       viewAppLink={appInfo.url}
       // specify text for jupiter notebook
       viewAppLinkText={
-        jupyterNotebook ? "Open Notebook" : trainedModelApp ? "Run Model" : ""
+        isJupyterNotebook ? "Open Notebook" : trainedModelApp ? "Run Model" : ""
       }
     >
       <div className={trainedModelApp ? styles.TrainedModelAppMetricsPage : ""}>
@@ -188,7 +194,7 @@ const AppMetricsPage = () => {
               <div className={styles.CardBodySection}>
                 <div
                   className={
-                    jupyterNotebook || trainedModelApp
+                    isJupyterNotebook || trainedModelApp
                       ? styles.NoteBookInnerCard
                       : styles.InnerCard
                   }
@@ -279,7 +285,7 @@ const AppMetricsPage = () => {
                       </div>
                     </div>
                   </div>
-                  {!jupyterNotebook && !trainedModelApp && (
+                  {!isJupyterNotebook && !trainedModelApp && (
                     <>
                       <hr />
                       <div className={styles.InnerCardSections}>

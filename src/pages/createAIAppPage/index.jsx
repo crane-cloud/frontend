@@ -14,6 +14,11 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import Checkbox from "../../components/Checkbox";
 import BlackInputText from "../../components/BlackInputText";
 import Select from "../../components/Select";
+import { useAppDeployment } from "../../hooks/useAppDeploymentMutation";
+import { useMutation } from "@tanstack/react-query";
+import { validateName } from "../../helpers/validation";
+import Feedback  from "../../components/Feedback";
+import Spinner  from "../../components/Spinner";
 
 const replicaOptions = [
     { id: 1, name: "1" },
@@ -33,6 +38,7 @@ const CreateAIAppPage = () => {
   const [openJupyterNotebookModel, setOpenJupyterNotebookModel] =
     useState(false);
   const [jupiterNoteBookName, setJupiterNoteBookName] = useState("");
+  const [validationError, setValidationError] = useState("");
  //  form level 2
  const [imageUrl, setImageUrl] = useState("");
  const [name, setName] = useState("");
@@ -40,6 +46,9 @@ const CreateAIAppPage = () => {
  const [entryCommand, setEntryCommand] = useState("");
  const [port, setPort] = useState(80);
  const [environmentVariables, setEnvironmentVariables] = useState([{ name: "", value: "" }]);
+ const {  isSuccess:deploymentSuccess, error:deploymentError, isPending:deploymentPending, mutate:deployApp } = useMutation({
+  mutationFn: useAppDeployment,
+});
 
 
   const { projects } = useSelector((state) => ({
@@ -68,6 +77,26 @@ const CreateAIAppPage = () => {
     );
     setEnvironmentVariables(newEnvVars);
   };
+  const handleJupyterNotebookDeployment = async () => {
+     if(!jupiterNoteBookName){
+        setValidationError("Please enter a name for the app");
+     }
+     if(validateName(jupiterNoteBookName) === false) {
+      setValidationError("Name should start with a letter");
+    } else if (validateName(name) === "false_convention") {
+      setValidationError("Name may only contain letters,numbers,dot and a hypen -");
+    } else if (name.length > 27) {
+      setValidationError("Name may not exceed 27 characters")
+    } 
+    const data = {name:jupiterNoteBookName,is_notebook:true, projectID:projectID }
+    await deployApp(data);  
+  };
+
+  useEffect(() => {
+    if(deploymentSuccess) {
+      history.push(`/projects`);
+    }
+  }, [deploymentSuccess]);
 
 
   return (
@@ -328,15 +357,17 @@ const CreateAIAppPage = () => {
                   Close
                 </PrimaryButton>
                 <PrimaryButton
-                  onClick={() => {
-                    alert("not implemented yet");
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleJupyterNotebookDeployment()
                   }}
-                  disabled={ (!jupyterNotebookChecked || jupiterNoteBookName==="" ) 
-                  }
+                  disabled={ (!jupyterNotebookChecked || jupiterNoteBookName===""  || deploymentPending) }
                 >
-                  Create
+                 {deploymentPending ? <Spinner/> : "Create"}  
                 </PrimaryButton>
               </div>
+              {validationError && <Feedback type="error" message={validationError} />}
+              {deploymentError && <Feedback type="error" message={"Failed to deploy notebook, Please try again later"} />}
             </form>
           </div>
         </Modal>
