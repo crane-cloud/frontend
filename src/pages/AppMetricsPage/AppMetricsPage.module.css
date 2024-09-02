@@ -3,6 +3,57 @@
   display: grid;
   gap: 1rem;
 }
+.AppMetricsPage{
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+.TrainedModelAppMetricsPage{
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 1rem;
+}
+
+.TrainedModelPromptSection{
+  background-color: #fff;
+  width: 100%;
+  border: 1px solid #cccccc;
+  height: fit-content;
+  display: flex;
+  min-height: 25rem;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.TrainedModelPromptHeader{
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #cccccc;
+  gap: 1rem;
+  height: 20px;
+  justify-content: space-between;
+}
+.TrainedModelPromptDescription{
+  padding: 1rem;
+}
+.TrainedModelPromptOutPut{
+  display: flex;
+  background-color: #D9D9D9;
+  width: 80%;
+  border-radius: 5px;
+  flex-direction: column;
+  height: 6rem;
+  margin: 1rem;
+}
+.TrainedModelPromptInput{
+  display: flex;
+  flex-direction: row;
+  background-color: #D9D9D9;
+  width: 80%;
+  margin: 1rem;
+  border-radius: 5px;
+}
 
 .MetricsCardsSection {
   display: grid;
@@ -100,6 +151,14 @@
 .InnerCard {
   display: grid;
   grid-template-columns: 7fr 1fr 7fr 1fr 7fr;
+  grid-template-rows: auto;
+  grid-gap: 1rem;
+  overflow-x: auto;
+  width: -webkit-fill-available;
+}
+.NoteBookInnerCard {
+  display: grid;
+  grid-template-columns: 7fr 1fr 7fr ;
   grid-template-rows: auto;
   grid-gap: 1rem;
   overflow-x: auto;
@@ -258,6 +317,52 @@
 .DeployText {
   color: #fb0c0c;
 }
+
+.TrainedModelReadMeSection{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  height: fit-content;
+}
+
+.TrainedModelReadMeSectionTabs{
+  border-bottom: 1px solid #cccccc;
+  width: 90%;
+  padding: 0.5rem 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  column-gap: 2.5rem;
+}
+.TrainedModelReadMeSectionSelectedTab{
+  background-color: #D9D9D9;
+  padding: 0.3rem;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.TrainedModelReadMeSectionUnSelectedTab{
+  padding: 0.3rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.TrainedModelReadMeContainer{
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1rem;
+}
+.TrainedModelUl {
+  display: list-item;
+  list-style-type: disc;
+  margin-left: 20px;
+  color: black;
+}
+.ReadMeTittleText{
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
 
 @media only screen and (max-width: 650px) {
   .MetricCardsSection {

@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+
 import getProjectCPU, { clearProjectCPU } from "../../redux/actions/projectCPU";
 import getProjectMemory from "../../redux/actions/projectMemory";
 import getProjectNetwork from "../../redux/actions/projectNetwork";
 import LineChartComponent from "../../components/LineChart";
 import MetricsCard from "../../components/MetricsCard";
-// import { ReactComponent as MetricIcon } from "../../assets/images/resource-icon.svg";
-
 import { ReactComponent as CPUIcon } from "../../assets/images/cpu.svg";
 import { ReactComponent as NetworkIcon } from "../../assets/images/wifi.svg";
 import { ReactComponent as MemoryIcon } from "../../assets/images/hard-drive.svg";
@@ -18,122 +18,121 @@ import {
   formatNetworkMetrics,
 } from "../../helpers/formatMetrics";
 import AppsList from "../../components/AppsList";
-import {
-  getProjectCurrentProject,
-} from "../../helpers/projectName";
+import { getProjectCurrentProject } from "../../helpers/projectName";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
+import Select from "../../components/Select";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-class ProjectDashboardPage extends React.Component {
-  constructor(props) {
-    super(props);
+const ProjectDashboardPage = () => {
+  const { projectID } = useParams();
+  const dispatch = useDispatch();
+  const history =  useHistory();
 
-    this.getMemoryMetrics = this.getMemoryMetrics.bind(this);
-    this.getCPUMetrics = this.getCPUMetrics.bind(this);
-    this.getNetworkMetrics = this.getNetworkMetrics.bind(this);
-  }
+  const {
+    projects,
+    memoryMetrics,
+    cpuMetrics,
+    networkMetrics,
+    credits,
+  } = useSelector((state) => ({
+    projects: state?.userProjectsReducer?.projects,
+    memoryMetrics: state?.projectMemoryReducer?.memoryMetrics,
+    cpuMetrics: state?.projectCPUReducer?.cpuMetrics,
+    networkMetrics: state?.projectNetworkReducer?.networkMetrics,
+    credits: state?.userCreditsReducer?.credits,
+  }));
 
-  componentDidMount() {
-    const {
-      match: { params },
-      getProjectCPU,
-      clearProjectCPU,
-    } = this.props;
-    const { projectID } = params;
-    const { getProjectMemory, getProjectNetwork } = this.props;
-    getProjectMemory(projectID, {});
-    clearProjectCPU();
-    getProjectCPU(projectID, {});
-    getProjectNetwork(projectID, {});
-  }
+  useEffect(() => {
+    dispatch(getProjectMemory(projectID, {}));
+    dispatch(clearProjectCPU());
+    dispatch(getProjectCPU(projectID, {}));
+    dispatch(getProjectNetwork(projectID, {}));
+  }, [dispatch, projectID]);
 
-  getMemoryMetrics() {
-    const { projectID } = this.props.match.params;
-    const { memoryMetrics } = this.props;
-    const results = formatMemoryMetrics(projectID, memoryMetrics);
-    return results;
-  }
+  const getMemoryMetrics = useCallback(() => {
+    return formatMemoryMetrics(projectID, memoryMetrics);
+  }, [projectID, memoryMetrics]);
 
-  getCPUMetrics() {
-    const { projectID } = this.props.match.params;
-    const { cpuMetrics } = this.props;
-    const results = formatCPUMetrics(projectID, cpuMetrics);
-    return results;
-  }
+  const getCPUMetrics = useCallback(() => {
+    return formatCPUMetrics(projectID, cpuMetrics);
+  }, [projectID, cpuMetrics]);
 
-  getNetworkMetrics() {
-    const { projectID } = this.props.match.params;
-    const { networkMetrics } = this.props;
-    const results = formatNetworkMetrics(projectID, networkMetrics);
-    return results;
-  }
+  const getNetworkMetrics = useCallback(() => {
+    return formatNetworkMetrics(projectID, networkMetrics);
+  }, [projectID, networkMetrics]);
 
-  render() {
-    const {
-      match: { params },
-      projects,
-      credits,
-    } = this.props;
+  const projectDetails = getProjectCurrentProject(projects, projectID);
 
-    const { projectID } = params;
-    const projectDetails = {...getProjectCurrentProject(projects, projectID)}
-    
+  useEffect(() => {
     localStorage.setItem("project", JSON.stringify(projectDetails));
-    const formattedMemoryMetrics = this.getMemoryMetrics();
-    const formattedCPUMetrics = this.getCPUMetrics();
-    const formattedNetworkMetrics = this.getNetworkMetrics();
+  }, [projectDetails]);
 
-    return (
-      <DashboardLayout
-        credits={credits}
-        name={projectDetails?.name}
-        header="Project Dashboard"
-      >
-        <div className="SectionTitle">Project Metrics</div>
-        <div className="MetricCardsSection">
-          <MetricsCard
-            icon={<CPUIcon />}
-            title="CPU"
-            className="CardDimensions"
-          >
-            <LineChartComponent
-              lineDataKey="cpu"
-              preview
-              data={formattedCPUMetrics}
-            />
-          </MetricsCard>
-          <MetricsCard
-            icon={<MemoryIcon />}
-            title="MEMORY"
-            className="CardDimensions"
-          >
-            <LineChartComponent
-              lineDataKey="memory"
-              preview
-              data={formattedMemoryMetrics}
-            />
-          </MetricsCard>
-          <MetricsCard
-            icon={<NetworkIcon />}
-            title="NETWORK"
-            className="CardDimensions"
-          >
-            <LineChartComponent
-              lineDataKey="network"
-              preview
-              data={formattedNetworkMetrics}
-            />
-          </MetricsCard>
+  return (
+    <DashboardLayout
+      credits={credits}
+      name={projectDetails?.name}
+      header="Project Dashboard"
+    >
+      <div className="SectionTitle">Project Metrics</div>
+      <div className="MetricCardsSection">
+        <MetricsCard icon={<CPUIcon />} title="CPU" className="CardDimensions">
+          <LineChartComponent
+            lineDataKey="cpu"
+            preview
+            data={getCPUMetrics()}
+          />
+        </MetricsCard>
+        <MetricsCard
+          icon={<MemoryIcon />}
+          title="MEMORY"
+          className="CardDimensions"
+        >
+          <LineChartComponent
+            lineDataKey="memory"
+            preview
+            data={getMemoryMetrics()}
+          />
+        </MetricsCard>
+        <MetricsCard
+          icon={<NetworkIcon />}
+          title="NETWORK"
+          className="CardDimensions"
+        >
+          <LineChartComponent
+            lineDataKey="network"
+            preview
+            data={getNetworkMetrics()}
+          />
+        </MetricsCard>
+      </div>
+      <div className="SectionTitle ProjectDashboardTitleSection">
+        <div className="">Project Apps</div>
+        <div className="NewAppSelectButtonClass">
+          <Select
+            className="NewAppSelectPlaceHolder"
+            options={[
+              { id: "1", name: "Regular App" },
+              { id: "2", name: "AI App" },
+            ]}
+            placeholder="+ Deploy App"
+            onChange={(e) => {
+              if (e.name === "Regular App") {
+                history.push(`/projects/${projectID}/apps?initialOpenModal=true`);
+              } else if (e.name === "AI App") {
+                history.push(`/projects/${projectID}/ai-apps`);
+              }
+            }}
+          />
         </div>
-        <div className="SectionTitle">Project Apps</div>
-        <AppsList
-          params={params}
-          word=""
-          message="You have no apps currently, please go to Apps section on the sidebar to create one"
-        />
-      </DashboardLayout>
-    );
-  }
-}
+      </div>
+      <AppsList
+        params={{ projectID }}
+        word=""
+        message="You have no apps currently, please go to Apps section on the sidebar to create one"
+      />
+    </DashboardLayout>
+  );
+};
 
 ProjectDashboardPage.propTypes = {
   match: PropTypes.shape({
@@ -141,42 +140,6 @@ ProjectDashboardPage.propTypes = {
       projectID: PropTypes.string,
     }),
   }),
-  getProjectCPU: PropTypes.func,
-  clearProjectCPU: PropTypes.func,
-  projects: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
-export const mapStateToProps = (state) => {
-  const { isFetchingMemory, memoryMetrics, memoryMessage } =
-    state.projectMemoryReducer;
-  const { isFetchingCPU, cpuMetrics, cpuMessage } = state.projectCPUReducer;
-  const { isFetchingNetwork, networkMetrics, networkMessage } =
-    state.projectNetworkReducer;
-  const { projects } = state.userProjectsReducer;
-  const { credits } = state.userCreditsReducer;
-  return {
-    projects,
-    isFetchingMemory,
-    isFetchingCPU,
-    memoryMetrics,
-    cpuMetrics,
-    memoryMessage,
-    cpuMessage,
-    isFetchingNetwork,
-    networkMetrics,
-    networkMessage,
-    credits,
-  };
-};
-
-const mapDispatchToProps = {
-  getProjectCPU,
-  clearProjectCPU,
-  getProjectMemory,
-  getProjectNetwork,
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProjectDashboardPage);
+export default ProjectDashboardPage;
