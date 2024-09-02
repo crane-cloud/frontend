@@ -14,12 +14,20 @@
 }
 
 .userInfo {
-    flex: 1;
+    /*flex: 1;*/
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.usersubinfor{
+    display: flex;
+    flex-direction:column;
 }
 
 .userAvatar {
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background-color: #ccc;
     display: flex;
@@ -93,7 +101,7 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    min-width: 40px;
+    /*min-width: 40px;*/
     display: flex;
     justify-content: center;
     align-items: center;
