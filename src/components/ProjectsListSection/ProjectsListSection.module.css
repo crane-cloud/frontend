@@ -1,13 +1,21 @@
 .projectCards {
+    position: relative;
     background-color: #f8f9fa;
     padding: 0.2rem 1rem 1rem 1rem;
     border-radius: 8px;
     margin: 10px;
 }
-
-.viewMoreButton {
-    width: 100%;
+.projectCards .viewMoreButton{
+  position: absolute;
+  top: 25px;
+  right: 10px;
+  margin-right:0;
+  padding: 2px;
+  width: 10%;
 }
+/* .viewMoreButton {
+    width: 100%;
+} */
 
 .noActivity {
     display: flex;

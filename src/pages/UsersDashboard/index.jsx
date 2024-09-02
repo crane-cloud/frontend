@@ -10,12 +10,13 @@ import styles from "./UsersDashboard.module.css";
 import SkeletonLoader from "../../components/SkeletonLoader";
 import NewProjectCard from "../../components/NewProjectCard";
 import NewUserCard from "../../components/NewUserCard";
+import CreateProject from "../../components/CreateProject";
 
 const UsersDashboardPage = () => {
   const [isSticky, setIsSticky] = useState(false);
   const [searchword, setSearchword] = useState("");
+  const [openCreateProject, setOpenCreateProject] = useState(false);
   const projectSectionRef = useRef(null);
-
   const { data, isPending, isRefetching, isSuccess, error, refetch } = useGenericSearch(searchword);
 
   useEffect(() => {
@@ -41,11 +42,17 @@ const UsersDashboardPage = () => {
 
   return (
     <div className="APage">
+       {openCreateProject ? (
+        <CreateProject closeComponent={() => setOpenCreateProject(false)} />
+      ) : (
+        <>
       <Header />
       <div className="TopRow">
         <InformationBar
           header={"Dashboard"}
-          showBtn={false}
+          showBtn
+          buttontext="+ New Project"
+          btnAction={() => setOpenCreateProject(true)}
           showSearchBar
           placeholder="Search through cranecloud"
           searchAction={handleCallbackSearchword}
@@ -128,6 +135,8 @@ const UsersDashboardPage = () => {
           </>
         )}
       </div>
+      </>
+      )}
     </div>
   );
 };
