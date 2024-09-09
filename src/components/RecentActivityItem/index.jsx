@@ -25,6 +25,7 @@ const RecentActivityItem = ({ item }) => {
             />
           ) : item?.a_project_id != null ? (
             <NewProjectCard
+              isRecentActivity = {true}
               projectID={item?.project?.id}
               name={item?.project?.name}
               description={item?.project?.description}

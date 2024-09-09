@@ -13,6 +13,7 @@ const NewProjectCard = ({
   type,
   number = 0,
   showFollowButton,
+  isRecentActivity =false,
   projectFollowers = 0,
 }) => {
   return (
@@ -60,7 +61,7 @@ const NewProjectCard = ({
             </>
           )}
         </div> */}
-
+        {!isRecentActivity &&(
         <div className={styles.cardExtras}>
           <div className={styles.cardSummary}>
             <div className={styles.statItem}>
@@ -71,6 +72,7 @@ const NewProjectCard = ({
             </div>
           </div>
         </div>
+        )}
       </div>
       {!showFollowButton && number !== undefined ? (
         <div className={styles.numberBox} title={`Apps in this project`}>
