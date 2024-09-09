@@ -1,120 +1,88 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { useParams, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
-// import { v4 as uuidv4 } from "uuid";
 
 import AppsList from "../../components/AppsList";
 import CreateApp from "../../components/CreateApp";
 import "./AppsPage.css";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
 
-class AppsPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.initialState = {
-      name: "",
-      openModal: false, // add project component is closed initially
-      error: "",
-      port: "",
-      word: "",
-    };
+const AppsPage = () => {
+  
+  const [word, setWord] = useState("");
 
-    this.state = this.initialState;
+  const location = useLocation(); 
 
-    this.showForm = this.showForm.bind(this);
-    this.hideForm = this.hideForm.bind(this);
-    this.getProjectDetails = this.getProjectDetails.bind(this);
-    this.handleCallbackSearchword = this.handleCallbackSearchword.bind(this);
-  }
+  const queryParams = new URLSearchParams(location.search); 
+  const initialOpenModal = queryParams.get("initialOpenModal") === "true"; 
+  const [openModal, setOpenModal] = useState(initialOpenModal);
 
-  handleCallbackSearchword(word) {
-    this.setState({ word: word });
-  }
+  const { projectID } = useParams();
 
-  getProjectDetails(projects, id) {
+  const projects = useSelector((state) => state.userProjectsReducer.projects);
+
+  const getProjectDetails = (projects, id) => {
     return projects?.find((project) => project.id === id);
-  }
+  };
 
-  showForm() {
-    this.setState({ openModal: true });
-  }
+  const projectDetails = getProjectDetails(projects, projectID);
 
-  hideForm() {
-    this.setState(this.initialState);
-  }
+  const filteredDetails = {
+    name: projectDetails?.name,
+    description: projectDetails?.description,
+    organisation: projectDetails?.organisation,
+    project_type: projectDetails?.project_type,
+  };
 
-  render() {
-    const { openModal, word } = this.state;
+  localStorage.setItem("project", JSON.stringify(filteredDetails));
 
-    const {
-      match: { params },
-      projects,
-    } = this.props;
+  const showForm = () => setOpenModal(true);
+  const hideForm = () => {
+    setOpenModal(false);
+  };
 
-    const { projectID } = params;
-    const projectDetails = this.getProjectDetails(projects, projectID);
+  const handleCallbackSearchword = (word) => {
+    setWord(word);
+  };
 
-    const filteredDetails = {
-      name: projectDetails?.name,
-      description: projectDetails?.description,
-      organisation: projectDetails?.organisation,
-      project_type: projectDetails?.project_type,
-    };
-
-    localStorage.setItem("project", JSON.stringify(filteredDetails));
-
-    return (
-      <div>
-        {openModal ? (
-          <DashboardLayout
-            name={projectDetails?.name}
-            header="Create App"
-            showBtn
-            buttontext="Close"
-            btntype="close"
-            btnAction={this.hideForm}
-          >
-            <CreateApp params={params} />
-          </DashboardLayout>
-        ) : (
-          <DashboardLayout
-            name={projectDetails?.name}
-            header="Apps"
-            showBtn
-            buttontext="+ New App"
-            showSearchBar
-            placeholder="Search through apps"
-            searchAction={this.handleCallbackSearchword}
-            btnAction={this.showForm}
-          >
-            <AppsList
-              params={params}
-              word={word}
-              openComponent={this.showForm}
-            />
-          </DashboardLayout>
-        )}
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      {openModal ? (
+        <DashboardLayout
+          name={projectDetails?.name}
+          header="Create App"
+          showBtn
+          buttontext="Close"
+          btntype="close"
+          btnAction={hideForm}
+        >
+          <CreateApp params={{ projectID }} />
+        </DashboardLayout>
+      ) : (
+        <DashboardLayout
+          name={projectDetails?.name}
+          header="Apps"
+          showBtn
+          buttontext="+ New App"
+          showSearchBar
+          placeholder="Search through apps"
+          searchAction={handleCallbackSearchword}
+          btnAction={showForm}
+        >
+          <AppsList
+            params={{ projectID }}
+            word={word}
+            openComponent={showForm}
+          />
+        </DashboardLayout>
+      )}
+    </div>
+  );
+};
 
 AppsPage.propTypes = {
-  projects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  initialOpenModal: PropTypes.bool, 
 };
 
-export const mapStateToProps = (state) => {
-  const { projects } = state.userProjectsReducer;
-  return {
-    projects,
-  };
-};
-
-const mapDispatchToProps = {
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(AppsPage));
+export default AppsPage;

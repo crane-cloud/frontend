@@ -71,6 +71,7 @@ import AdminDatabaseDetails from "./components/AdminDatabaseDetails";
 import AdminAppDetail from "./pages/AdminAppDetail";
 import DockerWebHook from "./components/DockerWebHook";
 import UsersProfile from "./pages/UsersProfile";
+import CreateAIAppPage from "./pages/createAIAppPage";
 
 import { handleGetRequest } from "./apis/apis";
 import UsersDashboardPage from "./pages/UsersDashboard";
@@ -158,6 +159,12 @@ const Routes = () => {
           exact
           path="/projects/:projectID/apps"
           component={AppsPage}
+        />
+         <ProtectedRoute
+          isAllowed={hasToken}
+          exact
+          path="/projects/:projectID/ai-apps"
+          component={CreateAIAppPage}
         />
         <ProtectedRoute
           isAllowed={hasToken}

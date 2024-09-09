@@ -3,7 +3,20 @@
   overflow-y: auto;
   padding-bottom: 1rem;
 }
-
+.ProjectDashboardTitleSection{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+}
+.NewAppSelectButtonClass{
+  width: fit-content;
+}
+.NewAppSelectPlaceHolder{
+  background: var(--secondary-color);
+  color: #fff;
+  border: 1px solid var(--secondary-color);
+}
 .MetricCardsSection {
   display: grid;
   width: 100%;

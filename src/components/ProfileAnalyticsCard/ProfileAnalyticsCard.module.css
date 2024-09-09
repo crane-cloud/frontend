@@ -43,6 +43,9 @@
     font-size: 9px;
     font-weight: 700;
     color: #333333;
+    padding: auto;
+    margin-top: 30px;
+    text-align: center;
   }
   
   .Identity {

@@ -73,6 +73,7 @@ const FeaturedProjectsSection = () => {
               number={project.number}
               showFollowButton
               showFollowers={true}
+              projectFollowers={0}
             />
           ))}
         </>

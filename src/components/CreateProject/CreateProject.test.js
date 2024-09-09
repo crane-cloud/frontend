@@ -1,42 +1,47 @@
-/* eslint-disable no-undef */
 import React from "react";
 import { shallow } from "enzyme";
-import CreateProject, { mapStateToProps } from "./";
+import { useSelector } from "react-redux";
+import CreateProject from "./";
 
-const CreateProjectProps = {
-  clusters: { log1: 1, log2: 2 },
-  match: { params: { projectId: "1" } },
-  clearUpdateClusterState: jest.fn(),
-  updateCluster: jest.fn(),
-  data: { beta: true },
-  clearState: jest.fn(),
-  getClustersList: jest.fn(),
-};
-// {} ={}
-describe("Testing the App Metrics Page component", () => {
-  const WrapperCreateProject = CreateProject.WrappedComponent;
-  const CreateProjectComponent = shallow(<WrapperCreateProject {...CreateProjectProps} />);
-  it("should match the snapshot for CreateProject after adding props", () => {
-    CreateProjectComponent.setProps(CreateProjectProps);
-    expect(CreateProjectComponent).toBeDefined();
-  });
-  it("matchs the CreateProject component snapshot", () => {
-    expect(CreateProjectComponent).toMatchSnapshot();
-  });
-});
+import PrimaryButton from "../PrimaryButton";
 
-describe("Testing the exported mapstate to props and dispatch", () => {
-  it("matches the Appmetricspage mapstostate", () => {
-    expect(
-      mapStateToProps({
+jest.mock("react-redux", () => ({
+  useSelector: jest.fn(),
+}));
+
+describe("CreateProject Component", () => {
+  let closeComponent;
+
+  beforeEach(() => {
+    closeComponent = jest.fn();
+    // Mock the redux state
+    useSelector.mockImplementation((selector) =>
+      selector({
         clustersReducer: {
-          clusters: [],
+          clusters: [
+            { id: "1", name: "Cluster1" },
+            { id: "2", name: "Cluster2" },
+          ],
         },
-        user: { data: [] },
+        user: {
+          data: { id: "user1" },
+        },
       })
-    ).toEqual({
-      clusters: [],
-      data: [],
-    });
+    );
   });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should render the component correctly", () => {
+    const wrapper = shallow(<CreateProject closeComponent={closeComponent} />);
+
+    expect(wrapper.find(PrimaryButton).exists()).toBe(true);
+  });
+  it("matches the Header snapshot", () => {
+    const wrapper = shallow(<CreateProject closeComponent={closeComponent} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+
 });

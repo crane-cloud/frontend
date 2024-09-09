@@ -19,6 +19,7 @@ const InformationBar = ({
   btnAction,
   btntype = "new",
   viewAppLink,
+  viewAppLinkText="",
   credits,
   showSearchBar,
   placeholder,
@@ -136,9 +137,9 @@ const InformationBar = ({
                       <PrimaryButton color="primary">Dashboard</PrimaryButton>
                     </Link>
                   ))}
-                <PrimaryButton btntype={btntype} onClick={btnAction}>
+                {showBtn && <PrimaryButton btntype={btntype} onClick={btnAction}>
                   {buttontext}
-                </PrimaryButton>
+                </PrimaryButton>}
               </div>
             </div>
           </div>
@@ -203,7 +204,7 @@ const InformationBar = ({
         <div className="InformationBarWithButton">
           <div className="InfoHeader">{header}</div>
           <a href={viewAppLink} rel="noopener noreferrer" target="_blank">
-            <PrimaryButton color="primary-outline">Open App</PrimaryButton>
+            <PrimaryButton color="primary-outline">{viewAppLinkText ? viewAppLinkText  :"Open App"}</PrimaryButton>
           </a>
         </div>
       ) : credits ? (

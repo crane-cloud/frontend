@@ -9,6 +9,7 @@ const Select = ({
   options,
   onChange,
   isSmall = false,
+  className = ""
 }) => {
   const [showOptions, setShowOptions] = useState(false);
   const [selected, setValue] = useState(
@@ -48,7 +49,7 @@ const Select = ({
   return (
     <div ref={openSelectRef} className="SelectWrapper fix-width">
       <div
-        className="SelectElementMain"
+        className={`SelectElementMain ${className}` }
         onClick={toggleOptions}
         role="presentation"
       >
@@ -58,7 +59,13 @@ const Select = ({
           } ${
             (selected.startsWith(placeholder) || showOptions) &&
             "SelectElementPlaceholder"
-          }`}
+          }
+          ${
+            (selected.startsWith(placeholder) || showOptions) &&
+            "SelectElementPlaceholder"
+          }
+          
+          `}
         >
           {showOptions ? `${placeholder} ${required ? "*" : ""}` : selected}
           <div

@@ -28,8 +28,13 @@ const ProjectListSection = () => {
 
   return (
     <div className={styles.projectCards}>
+      <PrimaryButton
+              className={styles.viewMoreButton}
+              onClick={handleViewMoreClick}
+            >
+              View All
+            </PrimaryButton>
       <h2>Projects</h2>
-
       {isRetrieving && !isRetrieved ? (
         <div className={styles.noActivity}>
           <div className={styles.NoResourcesMessage}>
@@ -57,18 +62,19 @@ const ProjectListSection = () => {
                   organization={project.organisation}
                   type={project.project_type}
                   number={project.apps_count}
+                  projectFollowers={project.followers_count}
                 />
               ))
           )}
 
-          {!noProjectsFound && (
+          {/* {!noProjectsFound && (
             <PrimaryButton
               className={styles.viewMoreButton}
               onClick={handleViewMoreClick}
             >
-              View More
+              View All
             </PrimaryButton>
-          )}
+          )} */}
         </>
       )}
     </div>

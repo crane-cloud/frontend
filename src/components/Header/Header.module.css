@@ -83,7 +83,7 @@
   position: absolute;
   top: 100%;
   width: 13rem;
-  z-index: 20;
+  z-index: 30;
   right: 0;
   box-shadow: 0 4px 4px 0 rgba(117, 117, 117, 0.2);
   border: 1px solid #dedede;

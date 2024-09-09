@@ -32,6 +32,7 @@ const RecentActivityItem = ({ item }) => {
               organization={item?.project?.organisation}
               type={item?.project?.project_type}
               showFollowers={false}
+              projectFollowers={item?.project?.followers_count}
             />
           ) : item?.a_user_id != null ? (
             <NewUserCard userID={item?.a_user_id} showFollowBtn={false} />
