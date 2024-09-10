@@ -4,7 +4,7 @@
   width: 100%;
 }
 
-.MSFWidth{
+.MSFWidth {
   width: 80%;
   margin: auto;
 }
@@ -23,6 +23,7 @@
   padding-left: 3rem;
   overflow: auto;
 }
+
 .FeedbackSection {
   display: flex;
   padding-top: 0.5rem;
@@ -36,16 +37,13 @@
   border-bottom-left-radius: 0.7rem;
   border-bottom-right-radius: 0.7rem;
 }
-.CreateFormHolder {
-  height: calc(100vh - 14.5rem);
-}
 
 .WhiteBackground {
   background-color: #fff;
   padding: 1rem;
 }
 
-.MSAAdd{
+.MSAAdd {
   margin: 0rem 1rem 1rem 1rem;
   border: 1px solid blue;
   padding: 1rem 1rem 1rem 1rem;
@@ -54,13 +52,14 @@
   justify-content: space-between;
 }
 
-.Inliner{
+.Inliner {
   display: inline;
 }
 
-.MSAApp{
+.MSAApp {
   margin: 0rem 0rem 1.5rem 1rem;
 }
+
 .BackDiv img {
   display: inline;
 }
@@ -163,7 +162,8 @@
   display: block;
   margin: auto;
 }
-.envFileInput{
+
+.envFileInput {
   resize: none;
   transition: all;
   width: 98%;
@@ -179,8 +179,7 @@
 
 .EnvVarsTable table td img:hover {
   /* cursor: pointer; */
-  filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(180deg)
-    brightness(119%) contrast(5%);
+  filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(180deg) brightness(119%) contrast(5%);
 }
 
 .EnvVarsTable thead,

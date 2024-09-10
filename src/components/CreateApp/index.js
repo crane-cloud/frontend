@@ -65,7 +65,6 @@ class CreateApp extends React.Component {
       multiCluster: false,
       SelectedClusters: new Array(clusters?.length).fill(false),
       addingApp: false,
-      addAppError: false,
       addErrorCode: "",
       fileEnvContent: "",
       formInstances: [
@@ -137,6 +136,7 @@ class CreateApp extends React.Component {
     this.handleFileInputChange = this.handleFileInputChange.bind(this);
     this.handleMicroSFileInputChange =
       this.handleMicroSFileInputChange.bind(this);
+    this.handleDismiss = this.handleDismiss.bind(this);
   }
 
   handleOnChange(position) {
@@ -336,6 +336,10 @@ class CreateApp extends React.Component {
     this.setState({ replicas: selected.id });
   }
 
+  handleDismiss() {
+    this.setState({ error: "" });
+  }
+
   handleSubmit() {
     const {
       name,
@@ -355,7 +359,7 @@ class CreateApp extends React.Component {
     if (!name || !uri) {
       // if user tries to submit empty email/password
       this.setState({
-        error: "app name & image uri are required",
+        error: "App name & Image URI are required",
       });
     } else if (validateName(name) === false) {
       this.setState({
@@ -363,7 +367,8 @@ class CreateApp extends React.Component {
       });
     } else if (validateName(name) === "false_convention") {
       this.setState({
-        error: "Name may only contain letters,numbers,dot and a hypen -",
+        error:
+          "Name may only contain letters, numbers, dot (.) and a hypen (-)",
       });
     } else if (name.length > 27) {
       this.setState({
@@ -907,13 +912,6 @@ class CreateApp extends React.Component {
                 />
               </div>
             </div>
-
-            {/* {error && (
-              <div className={styles.FeedbackSection}>
-                {" "}
-                <Feedback type="error" message={error} />{" "}
-              </div>
-            )} */}
           </div>
 
           <div className={styles.ModalFormInputsEnvVars}>
@@ -955,25 +953,29 @@ class CreateApp extends React.Component {
                 </table>
               </div>
             )}
-            <div className={styles.EnvVarsInputGroup}>
-              <div className={styles.EnvVarsInputs}>
+            <div className="EnvInputItem">
+              <div className="VarInputGroup">
                 <BlackInputText
-                  placeholder="Name"
+                  placeholder="Key"
                   name="varName"
                   value={varName}
                   onChange={(e) => this.handleNewChange(e, instanceId)}
+                  className="settings-input name-input"
                 />
                 <BlackInputText
                   placeholder="Value"
                   name="varValue"
+                  className="settings-input value-input"
+                  style={{ flex: 1 }}
                   value={varValue}
                   onChange={(e) => this.handleNewChange(e, instanceId)}
                 />
               </div>
-              <div className={styles.EnvVarsAddBtn}>
+              <div className="EnvVarsAddBtn">
                 <PrimaryButton
                   onClick={() => this.addMicroserviceEnvVar(instanceId)}
-                  className={styles.EnvVarAddBtn}
+                  color="primary"
+                  small
                 >
                   Add
                 </PrimaryButton>
@@ -1072,20 +1074,6 @@ class CreateApp extends React.Component {
             </div>
           </div>
           <div className={styles.ModalFormButtons}>
-            {/* {addAppError && (
-              <div className={styles.FeedbackSection}>
-                <Feedback
-                  className={styles.FeedbackSection}
-                  message={
-                    addErrorCode === 409
-                      ? "Name already in use, please choose another and try again"
-                      : addAppError
-                  }
-                  type={"error"}
-                />
-              </div>
-            )} */}
-
             <div className={styles.ButtonSection}>
               <PrimaryButton
                 className="AuthBtn"
@@ -1148,7 +1136,7 @@ class CreateApp extends React.Component {
     };
     this.setState({
       addingApp: true,
-      addAppError: "",
+      error: "",
     });
     handlePostRequestWithOutDataObject(
       payload,
@@ -1160,7 +1148,7 @@ class CreateApp extends React.Component {
       .catch((error) => {
         console.log(error);
         this.setState({
-          addAppError: "Failed to add Apps. Try again later",
+          error: "Failed to add Apps. Try again later",
           addingApp: false,
           addErrorCode: error.response?.status,
         });
@@ -1170,16 +1158,15 @@ class CreateApp extends React.Component {
   createNewApp(data, projectID) {
     this.setState({
       addingApp: true,
-      addAppError: "",
+      error: "",
     });
     handlePostRequestWithOutDataObject(data, `/projects/${projectID}/apps`)
       .then(() => {
         window.location.href = `/projects/${projectID}/apps`;
       })
       .catch((error) => {
-        console.log(error);
         this.setState({
-          addAppError: "Failed to add App. Try again later",
+          error: error.response.data.message,
           addingApp: false,
           addErrorCode: error.response?.status,
         });
@@ -1214,7 +1201,6 @@ class CreateApp extends React.Component {
       SelectedClusters,
       addingApp,
       addErrorCode,
-      addAppError,
       passwordShown,
       fileEnvContent,
     } = this.state;
@@ -1382,21 +1368,6 @@ class CreateApp extends React.Component {
                   </div>
                 )}
 
-                {/** <div className={styles.ClusterSelectionSection}>
-                 <div className={styles.alignText}>Multicluster options</div>
-                  <div className={styles.TooltipStyles}>
-                    <Tooltip
-                      showIcon
-                      message="Choose cluster policy for your application deployment"
-                    />
-                  </div>
-                </div>
-                 <div className={styles.ClusterToggleSection}>
-                  <ToggleOnOffButton
-                    onClick={this.changeMultiSelectionOption}
-                  />{" "}
-                  &nbsp; Deploy app on the same datacenter(s) as project.
-                </div>*/}
                 {multiCluster && (
                   <div className={styles.ClustersSection}>
                     <div className={styles.MultiSelectionText}>
@@ -1504,13 +1475,6 @@ class CreateApp extends React.Component {
                     />
                   </div>
                 </div>
-
-                {error && (
-                  <div className={styles.FeedbackSection}>
-                    {" "}
-                    <Feedback type="error" message={error} />{" "}
-                  </div>
-                )}
               </div>
               <div className={styles.ModalFormInputsEnvVars}>
                 <div className={styles.HeadingWithTooltip}>
@@ -1549,29 +1513,33 @@ class CreateApp extends React.Component {
                     </table>
                   </div>
                 )}
-                <div className={styles.EnvVarsInputGroup}>
-                  <div className={styles.EnvVarsInputs}>
+                <div className="EnvInputItem">
+                  <div className="VarInputGroup">
                     <BlackInputText
-                      placeholder="Name"
+                      placeholder="Key"
                       name="varName"
                       value={varName}
                       onChange={(e) => {
                         this.handleChange(e);
                       }}
+                      className="settings-input name-input"
                     />
                     <BlackInputText
                       placeholder="Value"
                       name="varValue"
+                      className="settings-input value-input"
+                      style={{ flex: 1 }}
                       value={varValue}
                       onChange={(e) => {
                         this.handleChange(e);
                       }}
                     />
                   </div>
-                  <div className={styles.EnvVarsAddBtn}>
+                  <div className="EnvVarsAddBtn">
                     <PrimaryButton
                       onClick={this.addEnvVar}
-                      className={styles.EnvVarAddBtn}
+                      color="primary"
+                      small
                     >
                       Add
                     </PrimaryButton>
@@ -1599,16 +1567,16 @@ class CreateApp extends React.Component {
                 />
               </div>
               <div className={styles.ModalFormButtons}>
-                {addAppError && (
+                {error && (
                   <div className={styles.FeedbackSection}>
                     <Feedback
-                      className={styles.FeedbackSection}
+                      type="error"
                       message={
                         addErrorCode === 409
                           ? "Name already in use, please choose another and try again"
-                          : addAppError
+                          : error
                       }
-                      type={"error"}
+                      onClose={this.handleDismiss}
                     />
                   </div>
                 )}
