@@ -1,38 +1,21 @@
-import React, { useCallback, useEffect } from "react";
+import React from "react";
 import styles from "./RecentActivitySection.module.css";
 import RecentActivityItem from "../RecentActivityItem";
 import { ReactComponent as InfoSvg } from "../../assets/images/infosvg.svg";
-import { useDispatch, useSelector } from "react-redux";
-import getUserRecentActivities from "../../redux/actions/getUserRecentActivity";
+import { useSelector } from "react-redux";
 import Spinner from "../Spinner";
 import usePaginator from "../../hooks/usePaginator";
 import Pagination from "../Pagination";
+import { useRecentActivity } from "../../hooks/useRecentActivity";
 
 const RecentActivitySection = () => {
-  const dispatch = useDispatch();
-
   const [currentPage, handleChangePage] = usePaginator();
-
   const user = useSelector((state) => state.user);
-
-  const userRecentActivities = useCallback(
-    () => dispatch(getUserRecentActivities(user?.data?.id, currentPage)),
-    [dispatch, user?.data?.id, currentPage]
-  );
-
-  useEffect(() => {
-    userRecentActivities();
-  }, [userRecentActivities, user?.data?.id]);
-
-  const {
-    recentActivities,
-    pagination,
-    isFetchingRecentActivities,
-    recentActivitiesFetched,
-  } = useSelector((state) => state.userRecentActivitiesReducer);
-
+  const { data: userRecentActivities, isFetching: isFetchingRecentActivities}=useRecentActivity(1, user?.data?.id);
+  const pagination = userRecentActivities?.data?.data?.pagination ||[];
   const noRecentActivity =
-    recentActivities?.length === 0 && recentActivitiesFetched;
+  userRecentActivities?.data?.user_feed?.data?.activity.length === 0 && !isFetchingRecentActivities;
+
 
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);
@@ -61,7 +44,7 @@ const RecentActivitySection = () => {
               </p>
             </div>
           ) : (
-            recentActivities?.map((item, index) => (
+            userRecentActivities?.data?.user_feed?.data?.activity.map((item, index) => (
               <React.Fragment key={index}>
                 <RecentActivityItem item={item} />
               </React.Fragment>
@@ -77,9 +60,6 @@ const RecentActivitySection = () => {
               />
             </div>
 
-            // <PrimaryButton className={styles.viewMoreButton}>
-            //   View All Activity
-            // </PrimaryButton>
           )}
         </>
       )}

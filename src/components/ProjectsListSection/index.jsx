@@ -2,25 +2,25 @@ import React, { useEffect } from "react";
 import styles from "./ProjectsListSection.module.css";
 import NewProjectCard from "../NewProjectCard";
 import PrimaryButton from "../PrimaryButton";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Spinner from "../Spinner";
 import getUserProjects from "../../redux/actions/projectsList";
 import { ReactComponent as InfoSvg } from "../../assets/images/infosvg.svg";
+import { useProjects } from "../../hooks/useProjects";
 
 const ProjectListSection = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { isRetrieved, isRetrieving, projects } = useSelector(
-    (state) => state.userProjectsReducer
-  );
+  const { data: userProjects, isLoading: isLoadingUserProjects } =
+    useProjects(1);
 
   useEffect(() => {
     dispatch(getUserProjects(1));
   }, [dispatch]);
 
-  const noProjectsFound = projects?.length === 0 && isRetrieved;
+  const noProjectsFound = userProjects?.data?.data?.projects?.length === 0 && !isLoadingUserProjects;
 
   const handleViewMoreClick = () => {
     history.push("/projects");
@@ -35,7 +35,7 @@ const ProjectListSection = () => {
               View All
             </PrimaryButton>
       <h2>Projects</h2>
-      {isRetrieving && !isRetrieved ? (
+      {isLoadingUserProjects ? (
         <div className={styles.noActivity}>
           <div className={styles.NoResourcesMessage}>
             <div className={styles.SpinnerWrapper}>
@@ -51,7 +51,7 @@ const ProjectListSection = () => {
               <p className={styles.noActivityMessage}>No Projects Found</p>
             </div>
           ) : (
-            projects
+            userProjects?.data?.data?.projects
               ?.slice(0, 5)
               .map((project, index) => (
                 <NewProjectCard
