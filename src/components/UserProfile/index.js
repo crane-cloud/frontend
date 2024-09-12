@@ -294,7 +294,7 @@ class UserProfile extends React.Component {
                 header={
                   <span>
                     <Link className="breadcrumb" to={`/projects`}>
-                      User Profile
+                      Profile
                     </Link>
                     / {user?.name}
                   </span>
