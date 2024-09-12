@@ -172,6 +172,11 @@ input[type="password"] {
   display: block;
 }
 
+.LeftAlignContainer {
+  padding: 0 6rem 0 3rem;
+  max-width: fit-content;
+}
+
 @media (max-width: 650px) {
   .MobileView {
     display: block;
@@ -564,6 +569,11 @@ tr.TableLoading td {
     background: var(--gray-bg-light-color);
   }
 
+  .LeftAlignContainer {
+    padding: 0 1rem 0 1rem;
+    max-width: fit-content;
+  }
+
   .ContentSection {
     display: flex;
     padding-top: 2.5rem;
@@ -666,11 +676,6 @@ tr.TableLoading td {
 .AMainSection {
   padding-left: 2.5rem;
   padding-right: 2.5rem;
-  max-width: fit-content;
-}
-
-.LeftAlignContainer {
-  padding: 0 1rem 0 1rem;
   max-width: fit-content;
 }
 
