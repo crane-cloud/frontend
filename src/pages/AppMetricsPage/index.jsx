@@ -182,7 +182,8 @@ const AppMetricsPage = () => {
             }
           >
             <div className={styles.CardHeaderSection}>
-              <div className={styles.CardTitle}>App Summary</div>
+              <div className={styles.CardTitle}>
+                {isJupyterNotebook? "Notebook Summary" : "App Summary"}</div>
             </div>
             {spin ? (
               <div className={styles.SummarySectionArea}>
@@ -201,13 +202,13 @@ const AppMetricsPage = () => {
                 >
                   <div className={styles.InnerCardSections}>
                     <div className={styles.InnerContentGrid}>
-                      <div className={styles.InnerTitlesStart}>App Name</div>
+                      <div className={styles.InnerTitlesStart}>{isJupyterNotebook? "Notebook Name" : "App Name"}</div>
                       <div className={styles.InnerContentName}>
                         {appInfo.name}
                       </div>
                     </div>
                     <div className={styles.InnerContentGrid}>
-                      <div className={styles.InnerTitlesStart}>App Url</div>
+                      <div className={styles.InnerTitlesStart}>{isJupyterNotebook? "Notebook Url" : "App Url"}</div>
                       {appInfo.url ? (
                         <>
                           {redeploy ? (
@@ -262,7 +263,7 @@ const AppMetricsPage = () => {
                   <hr />
                   <div className={styles.InnerCardSections}>
                     <div className={styles.InnerContentGrid}>
-                      <div className={styles.InnerTitlesMiddle}>App Status</div>
+                      <div className={styles.InnerTitlesMiddle}>{isJupyterNotebook? "Notebook Status" : "App Status"}</div>
                       <div className={styles.InnerContentStatus}>
                         <AppStatus appStatus={appInfo.status} />
                         <div>
