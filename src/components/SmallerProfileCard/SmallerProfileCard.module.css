@@ -58,6 +58,9 @@
 .IdentityEmail {
   color: #666666;
   font-size: 0.95rem;
+  max-width: 17rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .Organization {
