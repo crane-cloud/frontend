@@ -1,0 +1,36 @@
+.dockerfilePreviewContainer {
+    background-color: #283237;
+    color: #ffffff;
+    padding: 1rem;
+    border-radius: 5px;
+    position: relative;
+    overflow: auto;
+  }
+  
+  .copyButtonContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 5px;
+  }
+  
+  .copyButton {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+  }
+  
+  .copyButton:hover {
+    background-color: #45a049;
+  }
+  
+  .dockerfileContent {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+    margin-top: -40px;
+  }
+  

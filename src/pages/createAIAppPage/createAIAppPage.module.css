@@ -156,3 +156,18 @@
   .envVarActions button:hover {
     background-color: #31b0d5;
   }
+
+  .PrivateImageCheckField{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .PrivateImageTabContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+

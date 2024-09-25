@@ -1,0 +1,42 @@
+.container {
+    position: relative;
+    width: 85%;
+    height: 250px; 
+    display: flex;
+    align-items: center;
+    background-color: #f8f8f8; 
+    border: 1px solid #ccc;
+    margin-top: 1rem;
+  }
+  
+  .pill {
+    padding: 8px 16px;
+    border: 1px solid #000;
+    border-radius: 20px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 5px;
+  }
+  
+  .pill:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .selected {
+    background-color: #d9d9d9;
+    color: #000;
+    font-weight: bold;
+  }
+  
+  .checkmark {
+    margin-right: 8px;
+    color: #000;
+  }
+
+  @media (max-width: 600px) {
+    .container {
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+  }
+  
