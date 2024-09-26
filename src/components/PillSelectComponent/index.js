@@ -15,8 +15,8 @@ const PillsSelector = ({ options, selectedOptionCallBack }) => {
       const row = Math.floor(index / columns);
       const col = index % columns;
       return {
-        top: row * 100 + Math.random() * 20, 
-        left: col * 280 + Math.random() * 20, 
+        top: row * 100 + Math.random() * 40, 
+        left: col * 280 + Math.random() * 40, 
       };
     });
   };
@@ -44,7 +44,7 @@ const PillsSelector = ({ options, selectedOptionCallBack }) => {
               position: 'absolute',
               top: `${positions[index]?.top || 0}px`,
               left: `${positions[index]?.left || 0}px`,
-            }: {display: 'flex', flexDirection: 'column'}}
+            }: {display: 'flex', flexDirection: 'column', width: '100%'}}
             onClick={() => setSelectedOption(option)}
           >
             {selectedOption === option && <span className={styles.checkmark}>✔</span>}

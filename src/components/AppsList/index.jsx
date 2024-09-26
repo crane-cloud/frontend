@@ -125,6 +125,8 @@ class AppsList extends Component {
                     otherData={params}
                     disabled={app.disabled}
                     hasDeleted={this.renderAfterDelete}
+                    is_ai={app.is_ai}
+                    is_notebook={app.is_notebook}
                   />
                 </div>
               ))}
@@ -143,6 +145,8 @@ class AppsList extends Component {
                     appId={app.id}
                     otherData={params}
                     disabled={app.disabled}
+                    is_ai={app.is_ai}
+                    is_notebook={app.is_notebook}
                     hasDeleted={this.renderAfterDelete}
                   />
                 </div>

@@ -4,8 +4,6 @@
     height: 250px; 
     display: flex;
     align-items: center;
-    background-color: #f8f8f8; 
-    border: 1px solid #ccc;
     margin-top: 1rem;
   }
   
@@ -36,7 +34,8 @@
 
   @media (max-width: 600px) {
     .container {
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      display: flex;
+      flex-direction: column;
     }
   }
   

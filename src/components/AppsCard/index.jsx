@@ -8,10 +8,12 @@ import "./AppsCard.css";
 import {  ReactComponent as AlertWarning }  from "../../assets/images/alert.svg";
 import getAppMemory, { clearAppMemory } from "../../redux/actions/appMemory";
 import { formatAppMemoryMetrics } from "../../helpers/formatMetrics";
+import { ReactComponent as JupyterNoteBookApp } from "../../assets/images/jupyter_notebook.svg";
+import { ReactComponent as TrainedAIAppIcon } from "../../assets/images/trained_model.svg";
 
 const AppsCard = (props) => {
   const { getAppMemory, name, appStatus, appId, otherData, appMemoryMetrics, url, disabled,
-    admin_disabled=false } =
+    admin_disabled=false, is_ai, is_notebook } =
     props;
   const { projectID } = props.otherData;
   useEffect(() => {
@@ -36,7 +38,7 @@ const AppsCard = (props) => {
       >
         <div className={!url ? "FailAppCard": "AppCard"}>
           <div className="AppCardHeader">
-            <div className="AppNameSection">{name}</div>
+            <div className="AppNameSection">{name} <span>{is_notebook? <JupyterNoteBookApp width="20" height="20" />: is_ai ? <TrainedAIAppIcon width="20" height="20" />: ''}</span> </div>
             <div className="AppIconsSection">
               <div className="StatusData">
                 <AppStatus appStatus={appStatus} />

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { ReactComponent as JupyterNoteBookApp } from "../../assets/images/jupyter_notebook.svg";
 import { ReactComponent as TrainedAIAppIcon } from "../../assets/images/trained_model.svg";
-import { ReactComponent as FilesIcon } from "../../assets/images/files.svg";
+// import { ReactComponent as FilesIcon } from "../../assets/images/files.svg";
 import PrimaryButton from "../../components/PrimaryButton";
 import styles from "./createAIAppPage.module.css";
 import { getProjectCurrentProject } from "../../helpers/projectName";
