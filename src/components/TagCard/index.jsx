@@ -4,50 +4,77 @@ import { ReactComponent as Stats } from "../../assets/images/bars.svg";
 import Spinner from "../Spinner";
 import axios from "../../axios";
 import { handleDeleteRequest } from "../../apis/apis";
+import { useMutation, useQueryClient} from "@tanstack/react-query"
+import { useTag } from "../../hooks/useTag";
 
-const TagCard = ({ id, name, projects_count, isFollowing, isModalTag }) => {
-  const [tagFollowLoading, setTagFollowLoading] = useState(false);
-  const [isFollowingTag, setIsFollowingTag] = useState(isFollowing);
 
-  const handleFollow = async (id) => {
-    setTagFollowLoading(true);
-    if (isFollowing) {
-      handleDeleteRequest(`tags/${id}/following`, {})
-        .then(() => {
-          setIsFollowingTag(!isFollowing);
-          setTagFollowLoading(false);
-        })
-        .catch((error) => {
-          console.error("Error following tag:", error);
-          setTagFollowLoading(false);
-        });
+
+const TagCard = ({ id, isModalTag }) => {
+const [isFollowing, setFollowing]=useState(false)
+
+  const queryClient= useQueryClient();
+
+  const {data: tag, isLoading}=useTag(id)
+  if(isLoading) <p>loading...</p>
+  console.log("data", tag)
+
+  const followTagMutation = useMutation({
+    mutationFn: () => axios.post(`tags/${id}/following`, {}),
+    onMutate: ()=>{
+      setFollowing(true)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["tag", id],
+      });
+      setTimeout(()=>{
+        setFollowing(false)
+      },2000)
+    },
+   
+  });
+
+  const unfollowTagMutation = useMutation({
+    mutationFn: () => handleDeleteRequest(`tags/${id}/following`, {}),
+    onMutate: ()=>{
+      setFollowing(true)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["tag", id],
+      });
+      setTimeout(()=>{
+        setFollowing(false)
+      },2000)
+    },
+   
+  });
+
+  const handleFollow =(id) => {
+    if (tag?.data?.data?.is_following) {
+      setFollowing(true);
+      unfollowTagMutation.mutate();
     } else {
-      try {
-        const response = await axios.post(`tags/${id}/following`);
-        if (response.status === 201) {
-          setIsFollowingTag(!isFollowing);
-          setTagFollowLoading(false);
-        }
-      } catch (error) {
-        console.error("Error following tag:", error);
-        setTagFollowLoading(false);
-      }
+      setFollowing(false);
+      followTagMutation.mutate();
     }
   };
+
 
   return (
     <div className={styles.card}>
       <div className={styles.cardContent}>
-        <div className={styles.tagName}>{name}</div>
+        <div className={styles.tagName}>{tag?.data?.data?.name}</div>
         {isModalTag && (
           <div className={styles.modalFollowButton}>
             <button
               className={styles.followButton}
               onClick={() => handleFollow(id)}
+              disabled={isFollowing}
             >
-              {tagFollowLoading ? (
+              {isFollowing? (
                 <Spinner size="small" />
-              ) : isFollowingTag ? (
+              ) : tag?.data?.data?.is_following ? (
                 "Unfollow"
               ) : (
                 "+ Follow"
@@ -60,9 +87,9 @@ const TagCard = ({ id, name, projects_count, isFollowing, isModalTag }) => {
             <Stats className={styles.stats} />{" "}
           </span>
           <span>
-            {projects_count !== 0 && projects_count === 1
+            {tag?.data?.data?.projects_count !== 0 && tag?.data?.data?.projects_count === 1
               ? "1 project"
-              : `${projects_count} projects`}
+              : `${tag?.data?.data?.projects_count} projects`}
           </span>
         </div>
       </div>
@@ -72,10 +99,11 @@ const TagCard = ({ id, name, projects_count, isFollowing, isModalTag }) => {
           <button
             className={styles.followButton}
             onClick={() => handleFollow(id)}
+            disabled={isFollowing}
           >
-            {tagFollowLoading ? (
+            {isFollowing? (
               <Spinner size="small" />
-            ) : isFollowingTag ? (
+            ) : tag?.data?.data?.is_following ? (
               "Unfollow"
             ) : (
               "+ Follow"
