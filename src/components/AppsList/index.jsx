@@ -1,8 +1,8 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import getAppsList from "../../redux/actions/appsList";
-import {ReactComponent as ButtonPlus} from "../../assets/images/buttonplus.svg";
+import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import AppsCard from "../AppsCard";
 import Spinner from "../Spinner";
 import styles from "./AppsList.module.css";
@@ -27,20 +27,20 @@ class AppsList extends Component {
 
   componentDidMount() {
     const {
-      params: {projectID},
+      params: { projectID },
       getAppsList,
     } = this.props;
-    const {currentPaginationPage, appsPerPage} = this.state;
+    const { currentPaginationPage, appsPerPage } = this.state;
     getAppsList(projectID, currentPaginationPage, appsPerPage);
   }
 
   componentDidUpdate(prevProps, prevState) {
     const {
-      params: {projectID},
+      params: { projectID },
       getAppsList,
       word,
     } = this.props;
-    const {rerender, currentPaginationPage, appsPerPage} = this.state;
+    const { rerender, currentPaginationPage, appsPerPage } = this.state;
 
     if (rerender !== prevState.rerender) {
       getAppsList(projectID, currentPaginationPage, appsPerPage);
@@ -54,11 +54,11 @@ class AppsList extends Component {
     const {
       getAppsList,
       word,
-      params: {projectID},
+      params: { projectID },
     } = this.props;
-    const {appsPerPage} = this.state;
+    const { appsPerPage } = this.state;
     //reset pagination
-    this.setState({currentPaginationPage: 1});
+    this.setState({ currentPaginationPage: 1 });
 
     getAppsList(projectID, 1, appsPerPage, word);
   }
@@ -70,7 +70,7 @@ class AppsList extends Component {
   }
 
   renderAfterDelete() {
-    const {rerender} = this.state;
+    const { rerender } = this.state;
     this.setState({
       rerender: !rerender,
     });
@@ -78,7 +78,7 @@ class AppsList extends Component {
   onPageChange(page) {
     const {
       getAppsList,
-      params: {projectID},
+      params: { projectID },
     } = this.props;
     this.setState({
       currentPaginationPage: page,
@@ -101,6 +101,7 @@ class AppsList extends Component {
     const sortedApps = allApps?.sort((a, b) =>
       b.date_created < a.date_created ? 1 : -1
     );
+
     return (
       <div>
         {isRetrieving ? (
@@ -125,6 +126,8 @@ class AppsList extends Component {
                     otherData={params}
                     disabled={app.disabled}
                     hasDeleted={this.renderAfterDelete}
+                    isAi={app.is_ai}
+                    isNotebook={app.is_notebook}
                   />
                 </div>
               ))}
@@ -144,6 +147,8 @@ class AppsList extends Component {
                     otherData={params}
                     disabled={app.disabled}
                     hasDeleted={this.renderAfterDelete}
+                    isAi={app.is_ai}
+                    isNotebook={app.is_notebook}
                   />
                 </div>
               ))}
@@ -209,15 +214,15 @@ AppsList.propTypes = {
 
 // assigning defaults
 AppsList.defaultProps = {
-  apps: {apps: [], pagination: {}},
+  apps: { apps: [], pagination: {} },
   isRetrieved: false,
   isRetrieving: true,
   message: "",
 };
 
 export const mapStateToProps = (state) => {
-  const {isRetrieving, apps, isRetrieved} = state.appsListReducer;
-  return {isRetrieving, apps, isRetrieved};
+  const { isRetrieving, apps, isRetrieved } = state.appsListReducer;
+  return { isRetrieving, apps, isRetrieved };
 };
 
 const mapDispatchToProps = {
