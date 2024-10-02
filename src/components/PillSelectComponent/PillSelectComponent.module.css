@@ -1,21 +1,29 @@
 .container {
-    position: relative;
-    width: 85%;
-    height: 250px; 
-    display: flex;
-    align-items: center;
-    margin-top: 1rem;
-  }
-  
-  .pill {
-    padding: 8px 16px;
-    border: 1px solid #000;
-    border-radius: 20px;
-    background-color: #fff;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin: 5px;
-  }
+  position: relative;
+  width: 85%;
+  max-height: 250px; 
+  display: flex;
+  flex-wrap: wrap; /* Enables wrapping */
+  flex-direction: row;
+  margin-top: 1rem;
+  overflow-y: auto;
+}
+
+.pill {
+  padding: 8px 16px;
+  border: 1px solid #000;
+  border-radius: 10px;
+  background-color: #fff;
+  cursor: pointer;
+  margin: 5px;
+  width: fit-content;
+  height: 3rem; 
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
   
   .pill:hover {
     background-color: #f0f0f0;

@@ -184,12 +184,7 @@ const CreateAIAppPage = () => {
         </div>
       )}
       <div
-        className={
-          formLevel === 2
-            ? styles.deployTrainedModelForm
-            : styles.createAIAppContentContainer
-        }
-      >
+        className={styles.createAIAppContentContainer}>
         {formLevel === 0 && (
           <>
             <div className="SectionTitle">Project Metrics</div>
