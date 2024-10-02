@@ -88,11 +88,6 @@
   flex: 1;
   display: flex;
 }
-.AppNameSection{
-  display: flex;
-  flex-direction: row;
-  gap: 0.3rem;
-}
 
 .AppNameSection:hover {
   opacity: 0.7;
