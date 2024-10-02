@@ -13,6 +13,7 @@ const Feedback = ({ type, message, onClose }) => {
     </div>
   );
 };
+// nice on close button 
 
 Feedback.propTypes = {
   type: PropTypes.string.isRequired,

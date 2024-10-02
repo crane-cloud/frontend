@@ -12,6 +12,7 @@ import { ReactComponent as AppDeployment } from "../../assets/images/deployment.
 import getAppMemory, { clearAppMemory } from "../../redux/actions/appMemory";
 import { formatAppMemoryMetrics } from "../../helpers/formatMetrics";
 
+
 const AppsCard = (props) => {
   const {
     getAppMemory,

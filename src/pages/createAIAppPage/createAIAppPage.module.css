@@ -1,10 +1,11 @@
 .createAIAppContentContainer {
-  min-height: 50vh;
-  display: flex;
+  padding: 20px;
+  width: 80%;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  padding-top: 3rem;
   background-color: #fff;
   flex-direction: column;
-  padding: 2.5rem 2rem;
-  position: relative;
 }
 
 .createAIAppTabletContainer{
@@ -70,15 +71,7 @@
     flex-direction: column;
 }
 
-.deployTrainedModelForm {
-    padding: 20px;
-    width: 80%;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 5px;
-    padding-top: 3rem;
-    background-color: #fff;
-    flex-direction: column;
-  }
+
   
   .formGroup {
     margin-bottom: 25px;
@@ -156,3 +149,18 @@
   .envVarActions button:hover {
     background-color: #31b0d5;
   }
+
+  .PrivateImageCheckField{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .PrivateImageTabContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+
