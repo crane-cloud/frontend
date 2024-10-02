@@ -9,9 +9,10 @@ import {  ReactComponent as AlertWarning }  from "../../assets/images/alert.svg"
 import getAppMemory, { clearAppMemory } from "../../redux/actions/appMemory";
 import { formatAppMemoryMetrics } from "../../helpers/formatMetrics";
 
+
 const AppsCard = (props) => {
   const { getAppMemory, name, appStatus, appId, otherData, appMemoryMetrics, url, disabled,
-    admin_disabled=false } =
+    admin_disabled=false} =
     props;
   const { projectID } = props.otherData;
   useEffect(() => {
