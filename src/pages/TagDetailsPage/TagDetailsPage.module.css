@@ -1,0 +1,64 @@
+.dashboard {
+    display: flex;
+    /* flex-wrap: wrap; */
+    justify-content: space-between;
+}
+
+.tagDetailsSection {
+    flex: 1 1 75%;
+    /* min-width: 200px; */
+    /* position: sticky; */
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.moreTagsSection {
+    flex: 1 1 25%;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.tagDetailsCard {
+    background-color: #f8f9fa;
+    padding: 0.2rem 1rem 1rem 1rem;
+    border-radius: 8px;
+    margin-right: 2rem;
+    margin-left: 2rem;
+}
+
+.tagDetailsHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 2rem;
+    margin-left: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid gray;
+}
+
+.tagName {
+    font-size: 23px;
+    font-weight: bolder;
+    color: var(--primary-color);
+}
+
+.tagDetailsSubHeader {
+    display: flex;
+    gap: 3rem;
+    margin-left: 2rem;
+    padding-bottom: 1rem;
+}
+
+.followButton {
+    background-color: var(--secondary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
