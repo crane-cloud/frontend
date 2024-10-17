@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Modal from "../../components/Modal";
@@ -17,517 +17,447 @@ import Spinner from "../../components/Spinner";
 import { handlePatchRequest } from "../../apis/apis.js";
 import "../../index.css";
 import { Link } from "react-router-dom/cjs/react-router-dom.min.js";
+import { useProjects } from "../../hooks/useProjects.js";
 
-class UserProjectsPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.initialState = {
-      openCreateComponent: false,
-      Searchword: "",
-      // SearchList: [],
-      myProjectsList: [],
-      sharedProjectsList: [],
-      showInviteModel: false,
-      selectedProjects: "My projects",
-      inviteeProjectId: "",
-      inviteeModelRole: "",
-      decliningInvitation: false,
-      acceptingInvitation: false,
-      invitationError: "",
-      currentTab: "My Projects",
-      currentPaginationPage: 1,
-      displayProjects: [],
-    };
-    this.state = this.initialState;
-    this.openProjectCreateComponent =
-      this.openProjectCreateComponent.bind(this);
-    this.callbackProjectCreateComponent =
-      this.callbackProjectCreateComponent.bind(this);
-    this.searchThroughProjects = this.searchThroughProjects.bind(this);
-    this.handleCallbackSearchword = this.handleCallbackSearchword.bind(this);
-    this.showInvitationModel = this.showInvitationModel.bind(this);
-    this.hideInvitationModel = this.hideInvitationModel.bind(this);
-    this.handleInvitationAcceptence =
-      this.handleInvitationAcceptence.bind(this);
-    this.handleInvitationDecline = this.handleInvitationDecline.bind(this);
-    this.filterProjects = this.filterProjects.bind(this);
-    this.onPageChange = this.onPageChange.bind(this);
-    this.handleTabChange = this.handleTabChange.bind(this);
-    this.handleSharedProjectsTabChange =
-      this.handleSharedProjectsTabChange.bind(this);
-    this.handleTabAll = this.handleTabAll.bind(this);
-    this.onFilterSelect = this.onFilterSelect.bind(this);
-  }
-  handleSharedProjectsTabChange() {
-    this.setState({
-      selectedProjects: "Shared Projects",
-      currentTab: "Shared Projects",
-    });
-  }
-  handleTabChange() {
-    this.setState({
-      selectedProjects: "My projects",
-      currentTab: "My Projects",
-    });
-  }
+const UserProjectsPage = (props) => {
+  const [openCreateComponent, setOpenCreateComponent] = useState(false);
+  const [searchword, setSearchword] = useState("");
+  // SearchList: [],
+  const [projectsList, setProjectList] = useState([]);
+  const [sharedProjectsList, setSharedProjectList] = useState([]);
+  const [showInviteModel, setShowInviteModel] = useState(false);
+  const [selectedProjects, setSelectedProjects] = useState("My projects");
+  const [inviteeProjectId, setInviteeProjectId] = useState("");
+  const [inviteeModelRole, setInviteeModelRole] = useState("");
+  const [decliningInvitation, setDecliningInvitation] = useState(false);
+  const [acceptingInvitation, setAcceptingInvitation] = useState(false);
+  const [invitationError, setInvitationError] = useState("");
+  const [currentTab, setCurrentTab] = useState("My Projects");
+  const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
+  const [displayProjects, setDisplayProjects] = useState([]);
+  const [userProjects, setUserProjects] = useState([]);
 
-  handleTabAll(selectedOption) {
-    const { myProjectsList, sharedProjectsList } = this.state;
-    let displayProjects;
-    if (selectedOption === "All") {
-      displayProjects = myProjectsList.concat(sharedProjectsList);
-    } else if (selectedOption === "My Projects") {
-      displayProjects = myProjectsList;
-    } else if (selectedOption === "Shared Projects") {
-      displayProjects = sharedProjectsList;
-    } else {
-      displayProjects = myProjectsList.concat(sharedProjectsList);
-    }
-    this.setState({
-      selectedProjects: selectedOption,
-      currentTab: selectedOption,
-      displayProjects: displayProjects,
-    });
-  }
-  componentDidMount() {
-    const { getClustersList, getUserProjects, data, getUserCredits } =
-      this.props;
-    //add page 1
-    getUserProjects(this.state.currentPaginationPage);
+  const { data: projectsData, isLoading, isError, isFetched, refetch} =
+    useProjects(currentPaginationPage, searchword);
+
+  const {
+    getUserProjects,
+    getClustersList,
+    getUserCredits,
+    data,
+    pagination,
+    isRetrieving,
+    credits,
+    isAdded,
+    isDeleted,
+    isUpdated,
+    clearUpdateProjectState,
+    match: { params },
+  } = props;
+
+
+  const handleSharedProjectsTabChange = () => {
+    setSelectedProjects("Shared Projects");
+    setCurrentTab("Shared Projects");
+  };
+
+  const handleTabChange = useCallback(() => {
+    setSelectedProjects("My projects");
+    setCurrentTab("My Projects");
+  }, [currentTab]);
+
+  const handleTabAll = useCallback(
+    (selectedOption) => {
+      let displayProjects;
+      if (selectedOption === "All") {
+        displayProjects = projectsList.concat(sharedProjectsList);
+      } else if (selectedOption === "My Projects") {
+        displayProjects = projectsList;
+      } else if (selectedOption === "Shared Projects") {
+        displayProjects = sharedProjectsList;
+      } else {
+        displayProjects = projectsList.concat(sharedProjectsList);
+      }
+      setCurrentTab(selectedOption);
+      setSelectedProjects(selectedOption);
+      setDisplayProjects(displayProjects);
+    },
+    [projectsList, sharedProjectsList]
+  );
+
+  useEffect(() => {
     getClustersList();
+    if(data.id){
     getUserCredits(data.id);
-  }
-  componentDidUpdate(prevProps, prevState) {
-    const {
-      isAdded,
-      getClustersList,
-      getUserProjects,
-      isDeleted,
-      isUpdated,
-      clearUpdateProjectState,
-      isFetched,
-    } = this.props;
-    const { Searchword } = this.state;
+    }
+  }, [data.id, currentPaginationPage]); 
 
-    if (isDeleted !== prevProps.isDeleted) {
-      getUserProjects(this.state.currentPaginationPage);
+  // useEffect(() => {
+  //   if (isFetched) {
+  //     const filteredData = filterProjects();
+  //     setProjectList(filteredData.myProjects);
+  //     setSharedProjectList(filteredData.sharedProjects);
+  //     setDisplayProjects(
+  //       filteredData.myProjects.concat(filteredData.sharedProjects)
+  //     );
+  //   }
+  // },[isFetched]);
+
+  // useEffect(() => {
+  //   searchThroughProjects();
+  // },[searchword]);
+
+  useEffect(() => {
+    if (isDeleted) {
+      getUserProjects(currentPaginationPage);
       getClustersList();
     }
 
-    if (isUpdated !== prevProps.isUpdated) {
+    if (isUpdated) {
       clearUpdateProjectState();
-      getUserProjects(this.state.currentPaginationPage);
+      getUserProjects(currentPaginationPage);
       getClustersList();
     }
 
-    if (isAdded !== prevProps.isAdded) {
-      getUserProjects(this.state.currentPaginationPage);
-      this.setState(this.initialState);
+    if (isAdded) {
+      getUserProjects(currentPaginationPage);
+      setUserProjects([]);
     }
-    if (isFetched !== prevProps.isFetched) {
-      //call filter
-      const filteredData = this.filterProjects();
-      this.setState({
-        myProjectsList: filteredData.myProjects,
-        sharedProjectsList: filteredData.sharedProjects,
-      });
-    }
-    if (Searchword !== prevState.Searchword) {
-      this.searchThroughProjects();
-    }
+  }, [
+    isDeleted,
+    isUpdated,
+    isAdded,
+    clearUpdateProjectState,
+    getClustersList,
+    currentPaginationPage,
+    getUserProjects
+  ]);
 
-    if (isFetched && !prevProps.isFetched) {
-      const { myProjectsList, sharedProjectsList } = this.state;
-      const displayProjects = myProjectsList.concat(sharedProjectsList);
-      this.setState({
-        selectedProjects: "All",
-        currentTab: "All",
-        displayProjects: displayProjects,
-      });
-    }
-  }
-
-  openProjectCreateComponent() {
-    this.setState({ openCreateComponent: true });
-  }
-  callbackProjectCreateComponent() {
-    const { getUserProjects } = this.props;
-    this.setState(this.initialState);
-    getUserProjects(this.state.currentPaginationPage);
-  }
-  searchThroughProjects() {
-    const { Searchword } = this.state;
-    const { getUserProjects } = this.props;
-    //reset pagination
-    this.setState({ currentPaginationPage: 1 });
-    getUserProjects(1, Searchword);
-    // ?keywords=black
-    // let searchResult = [];
-    // projects.forEach((element) => {
-    //   if (element.name.toLowerCase().includes(Searchword.toLowerCase())) {
-    //     searchResult.push(element);
-    //   }
-    // });
-    // this.setState({
-    //   SearchList: searchResult.sort((a, b) =>
-    //     b.date_created > a.date_created ? 1 : -1
-    //   ),
-    // });
-  }
-  hideInvitationModel() {
-    this.setState({ showInviteModel: false });
-  }
-  showInvitationModel(inviteeProjectId, inviteeModelRole) {
-    this.setState({
-      showInviteModel: true,
-      inviteeProjectId: inviteeProjectId,
-      inviteeModelRole: inviteeModelRole,
-    });
-  }
-  handleCallbackSearchword(word) {
-    this.setState({
-      Searchword: word,
-    });
-  }
-  handleInvitationDecline() {
-    const { getUserProjects } = this.props;
-    this.setState({
-      decliningInvitation: true,
-    });
-    const { inviteeProjectId } = this.state;
-    handlePatchRequest(`/projects/${inviteeProjectId}/users/handle_invite`, {
-      accepted_collaboration_invite: false,
-    })
-      .then((response) => {
-        this.setState({
-          decliningInvitation: false,
-        });
-        this.hideInvitationModel();
-        getUserProjects(this.state.currentPaginationPage);
-      })
-      .catch((error) => {
-        this.setState({
-          invitationError: "Something went wrong",
-          decliningInvitation: false,
-        });
-        this.hideInvitationModel();
-      });
-  }
-  handleInvitationAcceptence() {
-    const { getUserProjects } = this.props;
-    this.setState({
-      acceptingInvitation: true,
-    });
-    const { inviteeProjectId } = this.state;
-
-    handlePatchRequest(`/projects/${inviteeProjectId}/users/handle_invite`, {
-      accepted_collaboration_invite: true,
-    })
-      .then((response) => {
-        this.setState({
-          acceptingInvitation: false,
-        });
-        this.hideInvitationModel();
-        getUserProjects(this.state.currentPaginationPage);
-      })
-      .catch((error) => {
-        this.setState({
-          invitationError: "Something went wrong",
-          acceptingInvitation: false,
-        });
-        this.hideInvitationModel();
-      });
-  }
-  filterProjects() {
-    const { projects, data } = this.props;
+  const filterProjects = () => {
     let myProjects = [];
     let sharedProjects = [];
-    projects.forEach((element) => {
+
+    projectsData.data?.data?.projects.forEach((element) => {
       if (element.owner_id === data.id) {
         myProjects.push(element);
       } else {
         sharedProjects.push(element);
       }
     });
-    //by default show category with more  projects
     if (myProjects.length < sharedProjects.length) {
-      this.setState({
-        selectedProjects: "Shared Projects",
-        currentTab: "Shared Projects",
-      });
+      setSelectedProjects("Shared Projects");
+      setCurrentTab("Shared Projects");
     } else {
-      this.setState({
-        selectedProjects: "My projects",
-        currentTab: "My projects",
-      });
+      setSelectedProjects("My projects");
+      setCurrentTab("My projects");
     }
-    return {
-      sharedProjects,
-      myProjects,
-    };
+    return {myProjects, sharedProjects}
   }
-  onPageChange(page) {
-    const { getUserProjects } = this.props;
-    this.setState({
-      currentPaginationPage: page,
-    });
-    getUserProjects(page);
+  
+  useEffect(() => {
+    if (isFetched) {
+      const filteredData = filterProjects();
+
+      if (
+        JSON.stringify(projectsList) !== JSON.stringify(filteredData.myProjects) ||
+        JSON.stringify(sharedProjectsList) !== JSON.stringify(filteredData.sharedProjects)
+      ) {
+        setProjectList(filteredData.myProjects);
+        setSharedProjectList(filteredData.sharedProjects);
+        setDisplayProjects(filteredData.myProjects.concat(filteredData.sharedProjects))
+    }
   }
-  /*onFilterSelect(selectedOption, displayProjects) {
-    this.setState({
-      selectedProjects: selectedOption,
-      displayProjects: displayProjects,
-    });
-  }*/
-  onFilterSelect(selectedOption) {
-    this.setState((prevState) => ({
-      selectedProjects: selectedOption,
-      displayProjects:
-        selectedOption === "All"
-          ? prevState.myProjectsList.concat(prevState.sharedProjectsList)
-          : selectedOption === "Shared Projects"
-          ? prevState.sharedProjectsList
-          : prevState.myProjectsList,
-    }));
-  }
+  },[isFetched, projectsList, sharedProjectsList]);
 
-  render() {
-    const {
-      openCreateComponent,
-      Searchword,
-      // SearchList,
-      showInviteModel,
-      selectedProjects,
-      inviteeModelRole,
-      decliningInvitation,
-      acceptingInvitation,
-      invitationError,
-      sharedProjectsList,
-      myProjectsList,
-    } = this.state;
-    const {
-      projects,
-      pagination,
-      isRetrieving,
-      isFetched,
-      match: { params },
-      credits,
-      data,
-    } = this.props;
-    const displayProjects =
-      selectedProjects === "All"
-        ? myProjectsList.concat(sharedProjectsList)
-        : selectedProjects === "Shared Projects"
-        ? sharedProjectsList
-        : myProjectsList;
+  useEffect(() => {
+    if (searchword) {
+      searchThroughProjects();
+    }
+  },[searchword]);
 
-    const sortedProjects = displayProjects.sort((a, b) =>
-      b.date_created > a.date_created ? 1 : -1
-    );
-    const adminCheck = data.username === "admin";
-    return (
-      <div className={styles.Page}>
-        {openCreateComponent ? (
-          <CreateProject
-            closeComponent={this.callbackProjectCreateComponent}
-            params={params}
-          />
-        ) : (
-          <div>
-            <div className={styles.TopRow}>
-              <Header credits={credits?.amount} />
-              <InformationBar
-                header={
-                  <span>
-                    <Link className="breadcrumb" to={`/dashboard`}>
-                      Dashboard
-                    </Link>
-                    / Projects
-                  </span>
-                }
-                showBtn
-                buttontext="+ New Project"
-                showSearchBar
-                selectedProjects={selectedProjects}
-                myProjectsList={myProjectsList}
-                sharedProjectsList={sharedProjectsList}
-                viewFilter={true}
-                placeholder="Search through projects"
-                btnAction={this.openProjectCreateComponent}
-                searchAction={this.handleCallbackSearchword}
-                adminRoute={adminCheck}
-                onFilterSelect={this.onFilterSelect}
-              />
-            </div>
-            <div className={styles.MainRow}>
-              <div className={`${styles.SelectProjects} SmallContainer`}></div>
-              {isRetrieving ? (
-                <div className={styles.NoResourcesMessage}>
-                  <div className={styles.SpinnerWrapper}>
-                    <Spinner size="big" />
-                  </div>
-                </div>
-              ) : Searchword !== "" ? (
-                <div className={`${styles.ProjectList}  SmallContainer`}>
-                  {isFetched &&
-                    sortedProjects !== undefined &&
-                    sortedProjects.map((project) => (
-                      <ProjectCard
-                        key={project.id}
-                        name={project.name}
-                        description={project.description}
-                        cardID={project.id}
-                        acceptInviteCallBackModel={this.showInvitationModel}
-                        userID={data.id}
-                        ownerId={project.owner_id}
-                        apps_count={project.apps_count}
-                        followers_count={project.followers_count}
-                        disabled={project.disabled}
-                        admin_disabled={project.admin_disabled}
-                      />
-                    ))}
-                </div>
-              ) : (
-                <div className={`${styles.ProjectList}  SmallContainer`}>
-                  {isFetched &&
-                    sortedProjects !== undefined &&
-                    sortedProjects.map((project) => (
-                      <ProjectCard
-                        key={project.id}
-                        name={project.name}
-                        description={project.description}
-                        cardID={project.id}
-                        userID={data.id}
-                        ownerId={project.owner_id}
-                        acceptInviteCallBackModel={this.showInvitationModel}
-                        followers_count={project.followers_count}
-                        apps_count={project.apps_count}
-                        disabled={project.disabled}
-                        admin_disabled={project.admin_disabled}
-                      />
-                    ))}
-                </div>
-              )}
+  useEffect(() => {
+    if (isFetched) {
+      const combinedProjects = projectsList.concat(sharedProjectsList);
+      setSelectedProjects("All");
+      setCurrentTab("All");
+      setDisplayProjects(combinedProjects);
+    }
+  }, [isFetched, projectsList, sharedProjectsList]);
 
-              {showInviteModel === true && (
-                <div className={styles.ProjectDeleteModel}>
-                  <Modal
-                    showModal={showInviteModel}
-                    onClickAway={this.hideInvitationModel}
-                  >
-                    <div className={styles.ModelContent}>
-                      <div className={styles.ModelHeader}>
-                        Invitation to this project{" "}
-                      </div>
-                      <div className={styles.UpdateForm}>
-                        <div className={styles.InformationText}>
-                          You have been invited to join this project as (a/an)
-                          <span className={styles.Role}>
-                            {" "}
-                            {inviteeModelRole}.
-                          </span>
-                        </div>
-                        <div className={styles.InformationWarning}>
-                          If you decline, you will not be able to see this
-                          project again unless you are re-invited.
-                        </div>
-                        <div className={styles.UpdateProjectModelButtons}>
-                          <PrimaryButton
-                            color="red"
-                            onClick={() => {
-                              this.handleInvitationDecline();
-                            }}
-                          >
-                            {decliningInvitation ? <Spinner /> : "Decline"}
-                          </PrimaryButton>
-                          <PrimaryButton
-                            color="primary"
-                            onClick={() => {
-                              this.handleInvitationAcceptence();
-                            }}
-                          >
-                            {acceptingInvitation ? <Spinner /> : "Accept"}
-                          </PrimaryButton>
-                        </div>
-                        {invitationError && (
-                          <div className={styles.InformationWarning}>
-                            {invitationError}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </Modal>
-                </div>
-              )}
-              {displayProjects.length === 0 && isFetched && (
-                <div className={styles.NoResourcesMessage}>
-                  {selectedProjects === "My projects" ? (
-                    <>
-                      {this.state.currentPaginationPage === 1 ? (
-                        <div>
-                          You haven’t created any projects yet. Click the &nbsp;{" "}
-                          <ButtonPlus className={styles.ButtonPlusSmall} />{" "}
-                          &nbsp; button to add a project.
-                        </div>
-                      ) : (
-                        <div>
-                          This page of you personal projects contains no
-                          projects, switch tabs to shared to see Projects &nbsp;
-                          Or click{" "}
-                          <ButtonPlus className={styles.ButtonPlusSmall} />
-                          &nbsp; button to add a project.
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      {this.state.currentPaginationPage === 1 ? (
-                        <>No project has been shared with you as yet.</>
-                      ) : (
-                        <>This page contains no shared projects.</>
-                      )}
-                    </>
-                  )}
-                </div>
-              )}
-              {!isFetched && !projects.length === 0 && (
-                <div className={styles.NoResourcesMessage}>
-                  You haven’t created any projects yet. Click the &nbsp;{" "}
-                  <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp;
-                  button to add a project.
-                </div>
-              )}
-              {!isRetrieving && !isFetched && (
-                <div className={styles.NoResourcesMessage}>
-                  Oops! Something went wrong! Failed to retrieve Projects.
-                </div>
-              )}
-            </div>
+  const openProjectCreateComponent = () => {
+    setOpenCreateComponent(true);
+  };
+  const callbackProjectCreateComponent = useCallback(() => {
+    setOpenCreateComponent(false);
+  },[]);
+
+  const searchThroughProjects = () => {
+    setCurrentPaginationPage(1);
+    getUserProjects(1, searchword);
+  };
+
+  const hideInvitationModel = () => {
+    setShowInviteModel(false);
+  };
+
+  const showInvitationModel = (inviteeProjectId, inviteeModelRole) => {
+    setShowInviteModel(true);
+    setInviteeProjectId(inviteeProjectId);
+    setInviteeModelRole(inviteeModelRole);
+  };
+  const handleCallbackSearchword = (word) => {
+    setSearchword(word);
+  };
+  const handleInvitationDecline = () => {
+    setDecliningInvitation(true);
+    handlePatchRequest(`/projects/${inviteeProjectId}/users/handle_invite`, {
+      accepted_collaboration_invite: false,
+    })
+      .then(() => {
+        setDecliningInvitation(false);
+        setShowInviteModel(false);
+        getUserProjects(currentPaginationPage);
+      })
+      .catch(() => {
+        setInvitationError("Something went wrong");
+        setDecliningInvitation(false);
+        setShowInviteModel(false);
+      });
+  };
+
+  const handleInvitationAcceptence = () => {
+    setAcceptingInvitation(true);
+    handlePatchRequest(`/projects/${inviteeProjectId}/users/handle_invite`, {
+      accepted_collaboration_invite: true,
+    })
+      .then(() => {
+        setAcceptingInvitation(false);
+        setShowInviteModel(false);
+        getUserProjects(currentPaginationPage);
+      })
+      .catch(() => {
+        setInvitationError("Something went wrong");
+        setAcceptingInvitation(false);
+        setShowInviteModel(false);
+      });
+  };
+  
+  const onPageChange = (page) => {
+    setCurrentPaginationPage(page);
+  };
+  
+  // const onFilterSelect = (selectedOption) => {
+  //   setSelectedProjects(selectedOption);
+  //   const updatedDisplayProjects =
+  //     selectedOption === "All"
+  //       ? projectsList.concat(sharedProjectsList)
+  //       : selectedOption === "Shared Projects"
+  //       ? sharedProjectsList
+  //       : projectsList;
+
+  //   setDisplayProjects(updatedDisplayProjects);
+  // };
+
+  return (
+    <div className={styles.Page}>
+      {openCreateComponent ? (
+        <CreateProject
+          closeComponent={callbackProjectCreateComponent}
+          params={params}
+        />
+      ) : (
+        <div>
+          <div className={styles.TopRow}>
+            <Header credits={credits?.amount} />
+            <InformationBar
+              header={
+                <span>
+                  <Link className="breadcrumb" to={`/dashboard`}>
+                    Dashboard
+                  </Link>
+                  / Projects
+                </span>
+              }
+              showBtn
+              buttontext="+ New Project"
+              showSearchBar
+              selectedProjects={selectedProjects}
+              myProjectsList={projectsList}
+              sharedProjectsList={sharedProjectsList}
+              viewFilter={true}
+              placeholder="Search through projects"
+              btnAction={openProjectCreateComponent}
+              searchAction={setSearchword}
+              adminRoute={data?.username === "admin"}
+              // onFilterSelect={handleTabAll}
+            />
           </div>
-        )}
-        <div className={styles.FooterRow}>
-          {pagination?.pages > 1 &&
-            !isRetrieving &&
-            isFetched &&
-            !openCreateComponent && (
-              <div className={styles.PaginationSection}>
-                {/* customise pagination for shared and personal projects */}
-                <Pagination
-                  total={pagination?.pages}
-                  current={this.state.currentPaginationPage}
-                  onPageChange={this.onPageChange}
-                />
+          <div className={styles.MainRow}>
+            <div className={`${styles.SelectProjects} SmallContainer`}></div>
+            {isLoading ? (
+              <div className={styles.NoResourcesMessage}>
+                <div className={styles.SpinnerWrapper}>
+                  <Spinner size="big" />
+                </div>
+              </div>
+            ) : searchword !== "" ? (
+              <div className={`${styles.ProjectList}  SmallContainer`}>
+                {isFetched &&
+                  projectsData.data?.data?.projects!== undefined &&
+                  projectsData.data?.data?.projects.map((project) => (
+                    <ProjectCard
+                      key={project.id}
+                      name={project.name}
+                      description={project.description}
+                      cardID={project.id}
+                      acceptInviteCallBackModel={showInvitationModel}
+                      userID={data.id}
+                      ownerId={project.owner_id}
+                      apps_count={project.apps_count}
+                      followers_count={project.followers_count}
+                      disabled={project.disabled}
+                      admin_disabled={project.admin_disabled}
+                    />
+                  ))}
+              </div>
+            ) : (
+              <div className={`${styles.ProjectList}  SmallContainer`}>
+                {isFetched &&
+                  projectsData.data?.data?.projects!== undefined &&
+                  projectsData.data?.data?.projects.map((project) => (
+                    <ProjectCard
+                      key={project.id}
+                      name={project.name}
+                      description={project.description}
+                      cardID={project.id}
+                      userID={data.id}
+                      ownerId={project.owner_id}
+                      acceptInviteCallBackModel={showInvitationModel}
+                      followers_count={project.followers_count}
+                      apps_count={project.apps_count}
+                      disabled={project.disabled}
+                      admin_disabled={project.admin_disabled}
+                    />
+                  ))}
               </div>
             )}
-          <div>
-            Copyright {new Date().getFullYear()} Crane Cloud. All Rights
-            Reserved.
+
+            {showInviteModel === true && (
+              <div className={styles.ProjectDeleteModel}>
+                <Modal
+                  showModal={showInvitationModel}
+                  onClickAway={hideInvitationModel}
+                >
+                  <div className={styles.ModelContent}>
+                    <div className={styles.ModelHeader}>
+                      Invitation to this project{" "}
+                    </div>
+                    <div className={styles.UpdateForm}>
+                      <div className={styles.InformationText}>
+                        You have been invited to join this project as (a/an)
+                        <span className={styles.Role}>
+                          {" "}
+                          {inviteeModelRole}.
+                        </span>
+                      </div>
+                      <div className={styles.InformationWarning}>
+                        If you decline, you will not be able to see this project
+                        again unless you are re-invited.
+                      </div>
+                      <div className={styles.UpdateProjectModelButtons}>
+                        <PrimaryButton
+                          color="red"
+                          onClick={() => {
+                            handleInvitationDecline();
+                          }}
+                        >
+                          {decliningInvitation ? <Spinner /> : "Decline"}
+                        </PrimaryButton>
+                        <PrimaryButton
+                          color="primary"
+                          onClick={() => {
+                            handleInvitationAcceptence();
+                          }}
+                        >
+                          {acceptingInvitation ? <Spinner /> : "Accept"}
+                        </PrimaryButton>
+                      </div>
+                      {invitationError && (
+                        <div className={styles.InformationWarning}>
+                          {invitationError}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </Modal>
+              </div>
+            )}
+            {displayProjects.length === 0 && isFetched && (
+              <div className={styles.NoResourcesMessage}>
+                {selectedProjects === "My projects" ? (
+                  <>
+                    {currentPaginationPage === 1 ? (
+                      <div>
+                        You haven’t created any projects yet. Click the &nbsp;{" "}
+                        <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp;
+                        button to add a project.
+                      </div>
+                    ) : (
+                      <div>
+                        This page of you personal projects contains no projects,
+                        switch tabs to shared to see Projects &nbsp; Or click{" "}
+                        <ButtonPlus className={styles.ButtonPlusSmall} />
+                        &nbsp; button to add a project.
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {currentPaginationPage === 1 ? (
+                      <>No project has been shared with you as yet.</>
+                    ) : (
+                      <>This page contains no shared projects.</>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
+            {!isFetched && !projectsData?.data?.data?.projects?.length === 0 && (
+              <div className={styles.NoResourcesMessage}>
+                You haven’t created any projects yet. Click the &nbsp;{" "}
+                <ButtonPlus className={styles.ButtonPlusSmall} /> &nbsp; button
+                to add a project.
+              </div>
+            )}
+            {isError &&(
+              <div className={styles.NoResourcesMessage}>
+                Oops! Something went wrong! Failed to retrieve Projects.
+              </div>
+            )}
           </div>
         </div>
+      )}
+      <div className={styles.FooterRow}>
+        {pagination?.pages > 1 &&
+          !isRetrieving &&
+          isFetched &&
+          !openCreateComponent && (
+            <div className={styles.PaginationSection}>
+              {/* customise pagination for shared and personal projects */}
+              <Pagination
+                total={pagination?.pages}
+                current={currentPaginationPage}
+                onPageChange={onPageChange}
+              />
+            </div>
+          )}
+        <div>
+          Copyright {new Date().getFullYear()} Crane Cloud. All Rights Reserved.
+        </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 UserProjectsPage.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.shape({})),

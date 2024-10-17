@@ -13,9 +13,10 @@ export const useProjects = (page, keyword = "") => {
   
     return useQuery({
       queryFn: () => api.get(link),
-      queryKey: ["userProjects"],
+      queryKey: ["userProjects", keyword],
       meta: {
         errorMessage: "Failed to fetch projects",
       },
+      enabled: !!keyword,
     });
   };
