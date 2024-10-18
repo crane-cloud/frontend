@@ -37,7 +37,7 @@ const UserProjectsPage = (props) => {
   const [displayProjects, setDisplayProjects] = useState([]);
   const [userProjects, setUserProjects] = useState([]);
 
-  const { data: projectsData, isLoading, isError, isFetched, refetch} =
+  const { data: projectsData, isLoading, isError, isFetched} =
     useProjects(currentPaginationPage, searchword);
 
   const {
@@ -205,9 +205,7 @@ const UserProjectsPage = (props) => {
     setInviteeProjectId(inviteeProjectId);
     setInviteeModelRole(inviteeModelRole);
   };
-  const handleCallbackSearchword = (word) => {
-    setSearchword(word);
-  };
+
   const handleInvitationDecline = () => {
     setDecliningInvitation(true);
     handlePatchRequest(`/projects/${inviteeProjectId}/users/handle_invite`, {
