@@ -88,7 +88,7 @@ const InformationBar = ({
           <div className="InformationBarWithButton">
             <div className="InfoHeader">
               {header}
-              {(viewFilter && isDesktop)  && (
+              {/* {(viewFilter && isDesktop)  && (
                 <div className="InfoProjectCategories">
                   <Select
                     className="InfoFilterOption"
@@ -100,7 +100,7 @@ const InformationBar = ({
                     }
                   />
                 </div>
-              )}
+              )} */}
             </div>
             <div className="InfoContent">
               { isDesktop &&  <div className="SearchBar DesktopView">
@@ -158,7 +158,7 @@ const InformationBar = ({
               </div>
             </div>
           </div>
-          
+{/*           
             {(viewFilter && !isDesktop)  && (
                 <div className="InfoProjectCategories">
                   <Select
@@ -171,7 +171,7 @@ const InformationBar = ({
                     }
                   />
                 </div>
-              )}
+              )} */}
         </div>
       ) : showBtn ? (
         <div className="InformationBarWithButton">
