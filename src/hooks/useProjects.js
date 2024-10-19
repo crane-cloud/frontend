@@ -6,9 +6,6 @@ export const useProjects = (page, keyword = "") => {
   if (keyword) {
     link += `&keywords=${keyword}`;
   }
-
-  console.log("link", link);
-
   return useQuery({
     queryFn: () => api.get(link),
     queryKey: ["userProjects", keyword, page],
