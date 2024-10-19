@@ -65,7 +65,6 @@ const AppSettingsPage = () => {
     { id: 1, name: "1" },
     { id: 2, name: "2" },
     { id: 3, name: "3" },
-    { id: 4, name: "4" },
   ];
 
   const [activeTab, setActiveTab] = useState("General Details");
@@ -347,7 +346,6 @@ const AppSettingsPage = () => {
     const projectID = app?.project_id;
     setLoadingIndex(index);
     const keyToRemove = Object.keys(envVars)[index];
-    console.log(keyToRemove)
 
     if (keyToRemove !== null) {
       const updatePayload = { delete_env_vars: [keyToRemove] };

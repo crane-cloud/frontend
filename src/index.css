@@ -47,10 +47,6 @@ body {
   /* justify-content: space-between; */
   background-color: var(--gray-bg-light-color);
 }
-div#root{
-  max-height: 100vh;
-  overflow-y: hidden;
-}
 
 textarea,
 input,
@@ -174,6 +170,11 @@ input[type="password"] {
 
 .DesktopView {
   display: block;
+}
+
+.LeftAlignContainer {
+  padding: 0 6rem 0 3rem;
+  max-width: fit-content;
 }
 
 @media (max-width: 650px) {
@@ -461,33 +462,52 @@ tr.TableLoading td {
 }
 
 /*- /////////--- STYLING FOR FEEDBACK ---//////////// */
-.ErrorOnWhite {
-  color: rgb(0, 0, 0, 0.8);
-  background-color: rgb(214, 59, 59, 0.5);
-  text-align: center;
-  padding: 0.7rem 0;
-  border-radius: 0.4rem;
-  border: 1px solid #ff0000;
-  color: #310303;
+.FeedbackSection {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .ErrorWhite {
+  position: relative;
   color: #fff;
   background-color: #dc3545;
   text-align: center;
   padding: 0.7rem;
+  padding-right: 3rem;
   border-radius: 0.4rem;
   border: 1px solid #ff0000;
+  width: 100%;
+  box-sizing: border-box;
+  word-wrap: break-word;
 }
 
 .SuccessOnWhite {
+  position: relative;
   color: rgba(0, 0, 0, 0.8);
   background-color: rgb(0, 128, 0, 0.5);
   text-align: center;
-  padding: 0.7rem 0;
+  padding: 0.7rem;
+  padding-right: 3rem;
   border-radius: 0.4rem;
   border: 1px solid #16a416;
+  width: 100%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+}
 
+.closeButton {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: transparent;
+  border: 2px solid white;
+  font-size: 1.5rem;
+  color: #fff;
+  cursor: pointer;
+  line-height: 1;
 }
 
 /* //////////////////////////////////////////// */
@@ -566,6 +586,11 @@ tr.TableLoading td {
   .Page {
     margin: 0;
     background: var(--gray-bg-light-color);
+  }
+
+  .LeftAlignContainer {
+    padding: 0 1rem 0 1rem;
+    max-width: fit-content;
   }
 
   .ContentSection {
@@ -670,11 +695,6 @@ tr.TableLoading td {
 .AMainSection {
   padding-left: 2.5rem;
   padding-right: 2.5rem;
-  max-width: fit-content;
-}
-
-.LeftAlignContainer {
-  padding: 0 3rem 0 6rem;
   max-width: fit-content;
 }
 
