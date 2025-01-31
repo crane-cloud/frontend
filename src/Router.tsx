@@ -1,22 +1,14 @@
+import React from "react";
 import { HomePage } from './pages/Home.page';
 import { LoginPage } from './pages/Auth/loginPage';
-import ProjectsPage from './pages/Layouts/ProjectsPage';
+const ProjectsPage = React.lazy(() => import('./pages/Layouts/ProjectsPage'));
 
 export const guestRoutes = [
-  {
-    path: '/',
-    element: <HomePage />,
-  },
-  {
-    path: '/login',
-    element: <LoginPage />,
-  },
+  { path: '/', element: <HomePage /> },
+  { path: '/login', element: <LoginPage /> },
 ];
 export const DashboardRoutes = [
-  {
-    path: '/',
-    element: <ProjectsPage />,
-  },
+  { path: '/', element: <ProjectsPage />, },
 ];
 
 

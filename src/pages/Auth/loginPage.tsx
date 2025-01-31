@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import { FaGithub } from "react-icons/fa";
 import { useForm } from "@mantine/form";
-import { upperFirst, useSet, useToggle } from "@mantine/hooks";
+import { upperFirst, useToggle } from "@mantine/hooks";
 import usePost from "@/utils/usePost";
 import { useEffect } from "react";
 import { useAuth } from "@/utils/AuthContext";
@@ -41,7 +41,9 @@ export function LoginForm(props: PaperProps) {
           ? "Password should include at least 6 characters"
           : null,
       confirmPassword: (val: string): string | null =>
-        type === "register" && val !== form.values.password ? "Passwords do not match" : null,
+        type === "register" && val !== form.values.password
+          ? "Passwords do not match"
+          : null,
     },
   });
 
@@ -173,9 +175,7 @@ export function LoginForm(props: PaperProps) {
             variant="gradient"
             gradient={{ from: "blue", to: "cyan", deg: 90 }}
           >
-            {submitting ? <Loader size="sm" color="white" /> :
-              upperFirst(type)
-            }
+            {submitting ? <Loader size="sm" color="white" /> : upperFirst(type)}
           </Button>
         </Stack>
       </form>

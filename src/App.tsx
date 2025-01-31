@@ -4,7 +4,7 @@ import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { theme } from './theme';
 import { AuthProvider } from './utils/AuthContext';
-import MainNavigation from './MainNavigation';
+import MainNavigation from './utils/MainNavigation';
 import { BrowserRouter } from 'react-router-dom';
 
 export default function App() {

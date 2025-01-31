@@ -1,10 +1,11 @@
 import React, { Suspense } from 'react'
-import { useAuth } from './utils/AuthContext';
+import { useAuth } from './AuthContext';
 import { Loader } from '@mantine/core';
-import { DashboardLayout } from './pages/Layouts/DashboardLayout';
+import { DashboardLayout } from '../pages/Layouts/DashboardLayout';
 import { Route } from 'react-router-dom';
 import { Routes } from 'react-router-dom';
-import { DashboardRoutes, guestRoutes } from './Router';
+import { DashboardRoutes, guestRoutes } from '../Router';
+import { NotFoundPage } from '@/pages/common/NotFoundPage';
 
 const MainNavigation = () => {
     const { loggedIn, user } = useAuth();
@@ -16,6 +17,7 @@ const MainNavigation = () => {
                         {DashboardRoutes.map((route) => (
                             <Route key={route.path} path={route.path} element={route.element} />
                         ))}
+                        <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                 </Suspense>
             </DashboardLayout>
@@ -27,6 +29,7 @@ const MainNavigation = () => {
                 {guestRoutes.map((route) => (
                     <Route key={route.path} path={route.path} element={route.element} />
                 ))}
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </Suspense>
     )
