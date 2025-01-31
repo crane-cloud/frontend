@@ -4,6 +4,8 @@ interface AuthContextType {
   authToken: string | null;
   logout: () => void;
   login: (token: string) => void;
+  user: any;
+  loggedIn: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -12,19 +14,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [authToken, setAuthToken] = useState<string | null>(
     localStorage.getItem("token")
   );
+  const [loggedIn, setLoggedIn] = useState<boolean>(
+    localStorage.getItem("token") ? true : false
+  );
 
-  const login = (token: string) => {
-    localStorage.setItem("token", token);
-    setAuthToken(token);
+  const [user, setUser] = useState<any>(
+    localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") || "{}") : null
+  );
+
+  const login = (data: any) => {
+    localStorage.setItem("token", data?.data?.access_token);
+    localStorage.setItem("user", JSON.stringify(data?.data));
+    setAuthToken(data?.data?.access_token);
+    setUser(data?.data);
+    setLoggedIn(true);
   };
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setAuthToken(null);
+    setUser(null);
+    setLoggedIn(false);
   };
 
   return (
-    <AuthContext.Provider value={{ authToken, login, logout }}>
+    <AuthContext.Provider value={{ authToken, login, logout, user, loggedIn }}>
       {children}
     </AuthContext.Provider>
   );

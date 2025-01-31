@@ -16,10 +16,14 @@ import { FaGithub } from "react-icons/fa";
 import { useForm } from "@mantine/form";
 import { upperFirst, useSet, useToggle } from "@mantine/hooks";
 import usePost from "@/utils/usePost";
+import { useEffect } from "react";
+import { useAuth } from "@/utils/AuthContext";
 
 export function LoginForm(props: PaperProps) {
   const [type, toggle] = useToggle(["login", "register"]);
-  const { uploadData, submitting } = usePost();
+  const { uploadData, submitting, success, data } = usePost();
+  const { login } = useAuth();
+
   const form = useForm({
     initialValues: {
       email: "",
@@ -53,6 +57,12 @@ export function LoginForm(props: PaperProps) {
       errorMessage: "Login failed",
     });
   };
+
+  useEffect(() => {
+    if (success) {
+      login(data);
+    }
+  }, [success]);
 
   return (
     <Paper

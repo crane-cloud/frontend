@@ -1,8 +1,8 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { HomePage } from './pages/Home.page';
 import { LoginPage } from './pages/Auth/loginPage';
+import ProjectsPage from './pages/Layouts/ProjectsPage';
 
-const router = createBrowserRouter([
+export const guestRoutes = [
   {
     path: '/',
     element: <HomePage />,
@@ -11,8 +11,12 @@ const router = createBrowserRouter([
     path: '/login',
     element: <LoginPage />,
   },
-]);
+];
+export const DashboardRoutes = [
+  {
+    path: '/',
+    element: <ProjectsPage />,
+  },
+];
 
-export function Router() {
-  return <RouterProvider router={router} />;
-}
+

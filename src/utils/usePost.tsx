@@ -32,7 +32,6 @@ const usePost = () => {
       api: id ? `${api}${id}/` : api,
       loader: setSubmitting,
       errorHandler: (err: TError) => {
-        console.log(err);
         setError(err);
         showNotification({
           title: 'Error',

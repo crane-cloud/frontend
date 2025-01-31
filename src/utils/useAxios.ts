@@ -28,7 +28,6 @@ function useAxios() {
     error: AxiosError,
     options: RequestParams
   ) => {
-    console.log(error);
     let message: string | unknown = "An unknown error occurred";
 
     if (error.response?.status === 401) {
