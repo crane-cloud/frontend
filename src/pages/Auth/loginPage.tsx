@@ -4,6 +4,7 @@ import {
   Checkbox,
   Divider,
   Group,
+  Loader,
   Paper,
   PaperProps,
   PasswordInput,
@@ -13,10 +14,12 @@ import {
 } from "@mantine/core";
 import { FaGithub } from "react-icons/fa";
 import { useForm } from "@mantine/form";
-import { upperFirst, useToggle } from "@mantine/hooks";
+import { upperFirst, useSet, useToggle } from "@mantine/hooks";
+import usePost from "@/utils/usePost";
 
 export function LoginForm(props: PaperProps) {
   const [type, toggle] = useToggle(["login", "register"]);
+  const { uploadData, submitting } = usePost();
   const form = useForm({
     initialValues: {
       email: "",
@@ -34,7 +37,7 @@ export function LoginForm(props: PaperProps) {
           ? "Password should include at least 6 characters"
           : null,
       confirmPassword: (val: string): string | null =>
-        val !== form.values.password ? "Passwords do not match" : null,
+        type === "register" && val !== form.values.password ? "Passwords do not match" : null,
     },
   });
 
@@ -43,11 +46,22 @@ export function LoginForm(props: PaperProps) {
     if (form.validate().hasErrors) {
       return;
     }
-    console.log(form.values);
+    uploadData({
+      api: "users/login",
+      params: form.values,
+      successMessage: "Login successful",
+      errorMessage: "Login failed",
+    });
   };
 
   return (
-    <Paper radius="md" p="xl" miw={400} withBorder {...props}>
+    <Paper
+      radius="md"
+      p="xl"
+      miw={{ base: "100%", sm: 400 }}
+      withBorder
+      {...props}
+    >
       <Text
         variant="gradient"
         gradient={{ from: "blue", to: "cyan", deg: 90 }}
@@ -149,7 +163,9 @@ export function LoginForm(props: PaperProps) {
             variant="gradient"
             gradient={{ from: "blue", to: "cyan", deg: 90 }}
           >
-            {upperFirst(type)}
+            {submitting ? <Loader size="sm" color="white" /> :
+              upperFirst(type)
+            }
           </Button>
         </Stack>
       </form>
