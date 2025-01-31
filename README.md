@@ -1,28 +1,34 @@
-# Crane Cloud
+# Mantine Vite template
 
-Automated application deployment, management, and scaling.
+## Features
 
-Crane Cloud is an open source multi-cloud software platform for cloud-native application deployment and management.
+This template comes with the following features:
 
-[![Staging deployment](https://github.com/crane-cloud/frontend/actions/workflows/staging.yml/badge.svg)](https://github.com/crane-cloud/frontend/actions/workflows/staging.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/afca0db82a7d7ced4a39/maintainability)](https://codeclimate.com/github/crane-cloud/frontend/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/afca0db82a7d7ced4a39/test_coverage)](https://codeclimate.com/github/crane-cloud/frontend/test_coverage)
-## Setup
+- [PostCSS](https://postcss.org/) with [mantine-postcss-preset](https://mantine.dev/styles/postcss-preset)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Storybook](https://storybook.js.org/)
+- [Vitest](https://vitest.dev/) setup with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
+- ESLint setup with [eslint-config-mantine](https://github.com/mantinedev/eslint-config-mantine)
 
-1.  `git clone https://github.com/crane-cloud/frontend.git`.
-2.  `yarn`
-3.  Create a `.env` file in your root directory based off of the `.env.example` file and added all required enviroment variables.
-4.  Run the `source .env` command
-5.  Run `yarn start` to start the application
+## npm scripts
 
-## Tools
+## Build and dev scripts
 
-1. `Prettier` for formatting/style. Configure your editor with plugin.
-2. `ESLint` for linting. No need for any config files. Only configure your editor with plugin. **Don't use ESLint for formatting.** Repo is configured with `react-app` so no other sharable-configs/extensions are necessary at this point.
+- `dev` – start development server
+- `build` – build production version of the app
+- `preview` – locally preview production build
 
-## Pull requests
+### Testing scripts
 
-1. Push and open PR against `staging`.
-2. PR will be reviewed before changes are merged.
+- `typecheck` – checks TypeScript types
+- `lint` – runs ESLint
+- `prettier:check` – checks files with Prettier
+- `vitest` – runs vitest tests
+- `vitest:watch` – starts vitest watch
+- `test` – runs `vitest`, `prettier:check`, `lint` and `typecheck` scripts
 
-**Contribution guide to be published some time in the future.**
+### Other scripts
+
+- `storybook` – starts storybook dev server
+- `storybook:build` – build production storybook bundle to `storybook-static`
+- `prettier:write` – formats all files with Prettier

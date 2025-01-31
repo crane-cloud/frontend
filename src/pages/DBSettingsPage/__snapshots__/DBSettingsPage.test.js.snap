@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Testing the Project Settings Page component should match the snapshot for DBSettingsPage after adding props 1`] = `ShallowWrapper {}`;
