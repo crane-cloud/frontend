@@ -18,11 +18,13 @@ import { upperFirst, useToggle } from "@mantine/hooks";
 import usePost from "@/utils/usePost";
 import { useEffect } from "react";
 import { useAuth } from "@/utils/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export function LoginForm(props: PaperProps) {
   const [type, toggle] = useToggle(["login", "register"]);
   const { uploadData, submitting, success, data } = usePost();
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const form = useForm({
     initialValues: {
@@ -63,6 +65,7 @@ export function LoginForm(props: PaperProps) {
   useEffect(() => {
     if (success) {
       login(data);
+      navigate("/");
     }
   }, [success]);
 

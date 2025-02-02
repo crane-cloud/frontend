@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Avatar,
   Group,
   Image,
   Menu,
   MenuDivider,
+  Stack,
   Text,
   UnstyledButton,
   useMantineColorScheme,
@@ -18,9 +19,7 @@ import {
   IoSunnyOutline,
 } from "react-icons/io5";
 import { GoArrowSwitch } from "react-icons/go";
-import cx from "clsx";
-import classes from "../styles/UserDropDown.module.css";
-import { useColorScheme, useDisclosure } from "@mantine/hooks";
+import { useAuth } from "@/utils/AuthContext";
 
 export const Logo = () => {
   return (
@@ -34,49 +33,87 @@ export const Logo = () => {
 };
 
 export const UserDropDown = () => {
-  const [userMenuOpened, setUserMenuOpened] = useState(false);
   const { colorScheme, setColorScheme } = useMantineColorScheme();
+  const { logout, user } = useAuth();
 
-  const user = {
-    name: "Jane Spoonfighter",
-    email: "janspoon@fighter.dev",
-    image:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png",
-  };
   return (
     <Menu
       width={260}
       position="bottom-end"
       transitionProps={{ transition: "pop-top-right" }}
-      onClose={() => setUserMenuOpened(false)}
-      onOpen={() => setUserMenuOpened(true)}
       withinPortal
     >
       <Menu.Target>
         <UnstyledButton
-        //   className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
+          px={5}
+          py={5}
+          bg={
+            colorScheme === "dark"
+              ? "var(--mantine-color-dark-7)"
+              : "var(--mantine-color-gray-2)"
+          }
+          style={{ borderRadius: "100px" }}
         >
-          <Group gap={7}>
-            <Avatar src={user.image} alt={user.name} radius="xl" size={30} />
-            <Text fw={500} size="sm" lh={1} mr={3}>
-              {user.name}
-            </Text>
+          <Group gap={10} display={{ base: "none", sm: "flex" }}>
+            <Group gap={7}>
+              <Avatar
+                alt={user.username}
+                name={user.name}
+                radius="xl"
+                size={30}
+                color="initials"
+              />
+              <Text
+                fw={500}
+                size="sm"
+                lh={1}
+                display={{ base: "none", sm: "block" }}
+              >
+                {user.username}
+              </Text>
+            </Group>
             <FiChevronDown size={16} />
-            {/* <IconChevronDown size={12} stroke={1.5} /> */}
+          </Group>
+          <Group display={{ base: "flex", sm: "none" }}>
+            <Avatar
+              alt={user.username}
+              name={user.name}
+              radius="xl"
+              size={30}
+              color="initials"
+            />
           </Group>
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>
+        <Menu.Item>
+          <Group gap={10}>
+            <Avatar
+              alt={user.username}
+              name={user.name}
+              radius="xl"
+              size={30}
+              color="initials"
+            />
+            <Stack gap={0}>
+              <Text fw={500} size="sm" lh={1} mr={3}>
+                {user.username}
+              </Text>
+              <Text size="xs" c="dimmed">
+                {user.email}
+              </Text>
+            </Stack>
+          </Group>
+        </Menu.Item>
+
+        <MenuDivider />
         <Menu.Item
           onClick={() =>
             setColorScheme(colorScheme === "dark" ? "light" : "dark")
           }
           leftSection={
             colorScheme === "dark" ? (
-              <IoSunnyOutline
-                size={16}
-                // stroke={1.5}
-              />
+              <IoSunnyOutline size={16} />
             ) : (
               <IoMoonOutline size={16} />
             )
@@ -86,34 +123,17 @@ export const UserDropDown = () => {
         </Menu.Item>
         <MenuDivider />
         <Menu.Label>Settings</Menu.Label>
-        <Menu.Item
-          leftSection={
-            <IoSettingsOutline
-              size={16}
-
-              // stroke={1.5}
-            />
-          }
-        >
+        <Menu.Item leftSection={<IoSettingsOutline size={16} />}>
           Account settings
         </Menu.Item>
-        <Menu.Item
-          leftSection={
-            <GoArrowSwitch
-              size={16}
-              //   stroke={1.5}
-            />
-          }
-        >
+        <Menu.Item leftSection={<GoArrowSwitch size={16} />}>
           Change account
         </Menu.Item>
         <Menu.Item
-          leftSection={
-            <IoLogOutOutline
-              size={16}
-              // stroke={1.5}
-            />
-          }
+          leftSection={<IoLogOutOutline size={16} />}
+          onClick={() => {
+            logout();
+          }}
         >
           Logout
         </Menu.Item>

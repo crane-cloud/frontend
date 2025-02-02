@@ -13,6 +13,7 @@ import {
   ScrollArea,
   SimpleGrid,
   Text,
+  TextInput,
   ThemeIcon,
   UnstyledButton,
   useMantineTheme,
@@ -29,7 +30,7 @@ import classes from "./Header.module.css";
 //   IconNotification,
 // } from "@tabler/icons-react";
 
-import { FiBookOpen, FiChevronDown } from "react-icons/fi";
+import { FiBookOpen, FiChevronDown, FiSearch } from "react-icons/fi";
 import { Logo, UserDropDown } from "./Common";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -46,7 +47,16 @@ export const DashboardHeader = ({ opened, toggle }: HeaderProps) => {
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
           <Logo />
         </Group>
-        <UserDropDown />
+        <Group>
+          <TextInput
+            placeholder="Search"
+            radius="xl"
+            leftSection={<FiSearch />}
+            miw={{ base: "auto", sm: 300 }}
+            display={{ base: "none", sm: "block" }}
+          />
+          <UserDropDown />
+        </Group>
       </Group>
     </AppShell.Header>
   );
@@ -57,13 +67,13 @@ const mockdata = [
     // icon: IconCode,
     icon: FiBookOpen,
     title: "Open source",
-    description: "This Pokémon’s cry is very loud and distracting",
+    description: "This Pokémon's cry is very loud and distracting",
   },
   {
     // icon: IconCoin,
     icon: FiBookOpen,
     title: "Free for everyone",
-    description: "The fluid of Smeargle’s tail secretions changes",
+    description: "The fluid of Smeargle's tail secretions changes",
   },
   {
     // icon: IconBook,
@@ -75,7 +85,7 @@ const mockdata = [
     // icon: IconFingerprint,
     icon: FiBookOpen,
     title: "Security",
-    description: "The shell’s rounded shape and the grooves on its.",
+    description: "The shell's rounded shape and the grooves on its.",
   },
   {
     // icon: IconChartPie3,
