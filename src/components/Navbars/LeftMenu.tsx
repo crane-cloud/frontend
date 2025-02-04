@@ -14,12 +14,13 @@ import {
   HiOutlineUsers,
   HiOutlineCircleStack,
 } from "react-icons/hi2";
-import { Link, useLocation } from "react-router-dom";
+import { Link, matchPath, useLocation } from "react-router-dom";
 
 export type TLeftMenuType = "home" | "project" | "admin";
 
 interface ILeftMenuProps {
   menuType: TLeftMenuType;
+  projectId: string;
 }
 interface INavLink {
   label: string;
@@ -29,7 +30,7 @@ interface INavLink {
   description?: string;
 }
 
-const LeftMenu = ({ menuType }: ILeftMenuProps) => {
+const LeftMenu = ({ menuType, projectId }: ILeftMenuProps) => {
   const location = useLocation();
   const homeNavbarLinks: INavLink[] = [
     {
@@ -48,16 +49,22 @@ const LeftMenu = ({ menuType }: ILeftMenuProps) => {
   ];
   const projectNavbarLinks: INavLink[] = [
     {
+      label: "Dashboard",
+      icon: HiOutlineSquares2X2,
+      key: "dashboard",
+      link: `/projects/${projectId}`,
+    },
+    {
       label: "Databases",
       icon: HiOutlineCircleStack,
       key: "databases",
-      link: "/databases",
+      link: `/projects/${projectId}/databases`,
     },
     {
       label: "Users",
       icon: HiOutlineUsers,
       key: "users",
-      link: "/users",
+      link: `/projects/${projectId}/users`,
     },
   ];
   const adminNavbarLinks: INavLink[] = [
@@ -81,6 +88,8 @@ const LeftMenu = ({ menuType }: ILeftMenuProps) => {
       break;
   }
 
+  console.log(location.pathname);
+
   return (
     <AppShell.Navbar p="5px">
       <AppShell.Section grow component={ScrollArea}>
@@ -90,7 +99,8 @@ const LeftMenu = ({ menuType }: ILeftMenuProps) => {
             key={link.key}
             label={link.label}
             leftSection={<link.icon />}
-            active={location.pathname === link.link}
+            // active={location.pathname === link.link}
+            active={!!matchPath({ path: link.link }, location.pathname)}
             // description={link?.description}
             to={link.link}
             styles={{

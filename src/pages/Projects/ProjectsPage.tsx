@@ -5,12 +5,7 @@ import ProjectsCard from "@/components/Cards/ProjectsCard";
 import { GridLayout } from "@/components/Layouts/ListLayouts";
 
 const ProjectsPage = () => {
-  // const { setMenuType } = useContext(MenuContext);
 
-  // useEffect(() => {
-  //   setMenuType("home");
-  //   return () => setMenuType("home");
-  // }, [setMenuType]);
 
   const { data: projectsData, getData, loading, success } = useGet();
   const [projects, setProjects] = useState<any[]>([]);
