@@ -19,6 +19,12 @@ import usePost from "@/utils/usePost";
 import { useEffect } from "react";
 import { useAuth } from "@/utils/AuthContext";
 import { useNavigate } from "react-router-dom";
+import {
+  MdOutlineEmail,
+  MdOutlineLock,
+  MdDriveFileRenameOutline,
+  MdOutlinePerson,
+} from "react-icons/md";
 
 export function LoginForm(props: PaperProps) {
   const [type, toggle] = useToggle(["login", "register"]);
@@ -103,6 +109,7 @@ export function LoginForm(props: PaperProps) {
                 {...form.getInputProps("name")}
                 radius="sm"
                 color="blue"
+                leftSection={<MdDriveFileRenameOutline />}
               />
               <TextInput
                 required
@@ -111,6 +118,7 @@ export function LoginForm(props: PaperProps) {
                 {...form.getInputProps("username")}
                 radius="sm"
                 color="blue"
+                leftSection={<MdOutlinePerson />}
               />
             </Stack>
           )}
@@ -122,6 +130,7 @@ export function LoginForm(props: PaperProps) {
             error={form.errors.email && "Invalid email"}
             radius="sm"
             color="blue"
+            leftSection={<MdOutlineEmail />}
           />
 
           <PasswordInput
@@ -131,6 +140,7 @@ export function LoginForm(props: PaperProps) {
             {...form.getInputProps("password")}
             radius="sm"
             color="blue"
+            leftSection={<MdOutlineLock />}
           />
           {type === "register" && (
             <Stack>
@@ -141,6 +151,7 @@ export function LoginForm(props: PaperProps) {
                 {...form.getInputProps("confirmPassword")}
                 radius="sm"
                 color="blue"
+                leftSection={<MdOutlineLock />}
               />
               <Checkbox
                 required

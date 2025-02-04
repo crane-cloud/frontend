@@ -1,0 +1,7 @@
+:root[data-mantine-color-scheme="dark"] {
+  --mantine-color-body: #141414;
+}
+body {
+  /* background-color: light-dark(#e5ebf3, #282c34); */
+  background-color: light-dark(#edeff1, #282c34);
+}

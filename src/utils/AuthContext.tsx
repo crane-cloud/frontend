@@ -15,7 +15,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.getItem("token")
   );
   const [loggedIn, setLoggedIn] = useState<boolean>(
-    localStorage.getItem("token") ? true : false
+    !!localStorage.getItem("token")
   );
 
   const [user, setUser] = useState<any>(

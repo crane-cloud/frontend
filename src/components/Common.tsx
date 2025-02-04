@@ -92,10 +92,9 @@ export const UserDropDown = () => {
               alt={user.username}
               name={user.name}
               radius="xl"
-              size={30}
               color="initials"
             />
-            <Stack gap={0}>
+            <Stack gap={2}>
               <Text fw={500} size="sm" lh={1} mr={3}>
                 {user.username}
               </Text>

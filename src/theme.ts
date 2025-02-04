@@ -1,4 +1,4 @@
-import { Button, createTheme } from '@mantine/core';
+import { Button, createTheme, Text } from '@mantine/core';
 
 export const theme = createTheme({
   // blue: '#008AC1',
@@ -10,7 +10,11 @@ export const theme = createTheme({
         variant: 'outline',
       },
     }),
-    
+    Text: Text.extend({
+      defaultProps: {
+        size: 'md',
+      },
+    }),
   },
 
   // colors: {

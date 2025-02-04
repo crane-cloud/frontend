@@ -1,7 +1,16 @@
 import { DashboardHeader } from "@/components/Header";
-import { AppShell, Skeleton } from "@mantine/core";
+import LeftMenu, { TLeftMenuType } from "@/components/Navbars/LeftMenu";
+import { AppShell, Container } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-// import { MantineLogo } from '@mantinex/mantine-logo';
+import { useState, createContext } from "react";
+
+export const MenuContext = createContext<{
+  menuType: TLeftMenuType;
+  setMenuType: (type: TLeftMenuType) => void;
+}>({
+  menuType: "home",
+  setMenuType: () => {},
+});
 
 export const DashboardLayout = ({
   children,
@@ -10,22 +19,25 @@ export const DashboardLayout = ({
 }) => {
   const [opened, { toggle }] = useDisclosure();
 
+  const [menuType, setMenuType] = useState<TLeftMenuType>("home");
+
   return (
-    <AppShell
-      header={{ height: 60 }}
-      navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }}
-      padding="md"
-    >
-      <DashboardHeader opened={opened} toggle={toggle} />
-      <AppShell.Navbar p="md">
-        Navbar
-        {Array(15)
-          .fill(0)
-          .map((_, index) => (
-            <Skeleton key={index} h={28} mt="sm" animate={false} />
-          ))}
-      </AppShell.Navbar>
-      <AppShell.Main>{children}</AppShell.Main>
-    </AppShell>
+    <MenuContext.Provider value={{ menuType, setMenuType }}>
+      <AppShell
+        header={{ height: 60 }}
+        navbar={{
+          width: 250,
+          breakpoint: "sm",
+          collapsed: { mobile: !opened },
+        }}
+        padding="md"
+      >
+        <DashboardHeader opened={opened} toggle={toggle} />
+        <LeftMenu menuType={menuType} />
+        <AppShell.Main>
+          <Container>{children}</Container>
+        </AppShell.Main>
+      </AppShell>
+    </MenuContext.Provider>
   );
 };

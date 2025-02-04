@@ -20,7 +20,9 @@ function useAxios() {
     resp: AxiosResponse,
     options: RequestParams
   ) => {
-    if (options.successHandler) options.successHandler(resp.data);
+    if (options.successHandler) {
+      options.successHandler(resp.data);
+    }
     options.loader?.(false);
   };
 
