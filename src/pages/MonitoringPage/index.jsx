@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import NewHeader from "../../components/NewHeader";
 import LandingFooter from "../../components/LandingFooter";
 import { STATUS_MONITORING_URL } from "../../config";
@@ -12,16 +12,13 @@ import { isUserAdmin } from "../../helpers/adminUtils";
 import { groupStatusData } from "../../helpers/groupStatusData";
 import { filterStatusData } from "../../helpers/filterStatusData";
 
-const statusValue = [
-  { type: "success" },
-  { type: "partial" },
-  { type: "failed" },
-];
+
 
 const MonitoringPage = () => {
   const [statusData, setStatusData] = useState([]);
   const [statusModules, setStatusModules] = useState({});
   const [filteredData, setFilteredData] = useState([]);
+  const [uptime, setUptime] = useState({});
   const [loading, setLoading] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -36,68 +33,56 @@ const MonitoringPage = () => {
     checkAdminStatus();
   }, [currentUser]);
 
-  useEffect(() => {
-    setLoading(true);
-    const fetchData = async () => {
-      await getStatusData();
-      await getStatusGraphData();
-    };
-
-    const timeoutId = setTimeout(fetchData, 4000);
-
-    return () => {
-      setLoading(false);
-      clearTimeout(timeoutId); // Clear the timeout if the component unmounts before 4 seconds
-    };
+  //assuring certain of data rendered per service
+  const getAppStatus = useCallback((statusData, appName, variableName="app_name") => {
+    if (!statusData) return undefined;
+    return statusData.data.find(app => app[variableName] === appName)?.status;
   }, []);
-  
-  const getStatusData = async () => {
-    setLoading(true);
-    try {
-      await handleGetRequest(`${STATUS_MONITORING_URL}/statuses`).then(
-        (response) => {
-          if (response.status !== 200) {
-            return false;
-          }
-          setStatusData(response.data.data);
-          setLoading(false);
-        }
-      );
-    } catch (error) {
-      setStatusData([]);
-      setLoading(false);
-    }
-  };
 
-  const getStatusGraphData = async () => {
-    setLoading(true);
-    try {
-      await handleGetRequest(
-        `${STATUS_MONITORING_URL}/statuses/series?series=true`
-      ).then((response) => {
-        if (response.status !== 200) {
-          return false;
-        }
-        // Group the data by parent_name
-        const groupedData = groupStatusData(response.data.data.graph_data);
-        setStatusModules(groupedData);
-        setLoading(false);
-      });
-    } catch (error) {
-      setLoading(false);
-    }
+  const getTimestamp30DaysAgo = () => {
+    return Math.floor(Date.now() / 1000) - 30 * 24 * 60 * 60; 
   };
+  
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const [statusResponse, graphResponse] = await Promise.all([
+          handleGetRequest(`${STATUS_MONITORING_URL}/statuses`),
+          handleGetRequest(`${STATUS_MONITORING_URL}/statuses/series?series=true&&start=${getTimestamp30DaysAgo()}`),
+        ]);
+
+        if (statusResponse.status === 200) {
+           
+          setStatusData(statusResponse.data.data);
+
+        } else {
+          setStatusData(null);
+        }
+
+        if (graphResponse.status === 200) {
+          const groupedData = groupStatusData(graphResponse.data.data.graph_data);
+          setUptime(graphResponse.data.data.uptime);
+          setStatusModules(groupedData);
+          setFilteredData(filterStatusData(groupedData));
+        } else {
+          setStatusModules({});
+        }
+      } catch (error) {
+        setStatusData(null);
+        setStatusModules({});
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const filtered = filterStatusData(statusModules);
     setFilteredData(filtered);
   }, [statusModules]);
-
-  useEffect(() => {
-    if (!loading && Object.keys(statusModules).length > 0) {
-      setLoading(false);
-    }
-  }, [loading, statusModules]);
 
   const dataArray = Object.entries(filteredData).map(([key, value]) => ({
     key,
@@ -107,7 +92,7 @@ const MonitoringPage = () => {
   return (
     <div className="MonitoringPageMain">
       <NewHeader />
-
+      
       <div className="PageContainer">
         <div className="PrimaryTitle">Crane Cloud Status</div>
 
@@ -125,8 +110,10 @@ const MonitoringPage = () => {
                   title="Crane Cloud Frontend"
                   description="The Web Application of the platform"
                   isOperational={
-                    statusData?.cranecloud_status?.data[0].status ===
-                    statusValue[0].type
+                    getAppStatus(
+                      statusData?.cranecloud_status,
+                      "cranecloud-frontend"
+                    )
                   }
                 />
 
@@ -134,8 +121,10 @@ const MonitoringPage = () => {
                   title="Crane Cloud Backend"
                   description="The API that provides functionality to the Frontend"
                   isOperational={
-                    statusData?.cranecloud_status?.data[1].status ===
-                    statusValue[0].type
+                    getAppStatus(
+                      statusData?.cranecloud_status,
+                      "cranecloud-backend"
+                    )
                   }
                 />
 
@@ -143,8 +132,11 @@ const MonitoringPage = () => {
                   title="MySQL Databases"
                   description="This is the MySQL database flavor offered by Crane Cloud"
                   isOperational={
-                    statusData?.database_status?.data[0].status ===
-                    statusValue[0].type
+                    getAppStatus(
+                      statusData?.database_status,
+                      "mysql",
+                      "database_name"
+                    )
                   }
                 />
 
@@ -152,8 +144,11 @@ const MonitoringPage = () => {
                   title="PostgreSQL Databases"
                   description="This is the PostgreSQL database flavor offered by Crane Cloud"
                   isOperational={
-                    statusData?.database_status?.data[1].status ===
-                    statusValue[0].type
+                    getAppStatus(
+                      statusData?.database_status,
+                      "postgres",
+                      "database_name"
+                    )
                   }
                 />
 
@@ -161,25 +156,39 @@ const MonitoringPage = () => {
                   title="Image Registry"
                   description="This is the repository for storing and retrieving deployment images"
                   isOperational={
-                    statusData?.registry?.status === statusValue[0].type
+                    getAppStatus(statusData?.registry, "habor-registry")
                   }
                 />
 
                 <StatusModule
-                  title="Mira Frontend"
-                  description="This allows users to interact with the mira auto-containerization platform"
-                  isOperational={
-                    statusData?.mira_status?.data[0].status ===
-                    statusValue[0].type
-                  }
-                />
-
-                <StatusModule
-                  title="Mira Backend"
+                  title="Mira Service"
                   description="This API manages logic such that applications are seamlessly containerized"
                   isOperational={
-                    statusData?.mira_status?.data[1].status ===
-                    statusValue[0].type
+                    getAppStatus(statusData?.mira_status, "mira-backend")
+                  }
+                />
+
+                <StatusModule
+                  title="App Logger"
+                  description="Logs user activities on the platform"
+                  isOperational={
+                    getAppStatus(statusData?.services_status, "app-logger-service")
+                  }
+                />
+
+                <StatusModule
+                  title="Monitoring Service"
+                  description="Returns metrics used by applications or projects eg. CPU and Memory."
+                  isOperational={
+                    getAppStatus(statusData?.services_status, "monitoring-service") 
+                  }
+                />
+
+                <StatusModule
+                  title="Database Service"
+                  description="This API manages user databases."
+                  isOperational={
+                    getAppStatus(statusData?.services_status, "monitoring-service")
                   }
                 />
 
@@ -189,8 +198,7 @@ const MonitoringPage = () => {
                       title="Clusters"
                       description="This includes the infrastructure Crane Cloud runs on"
                       isOperational={
-                        statusData?.clusters_status?.status ===
-                        statusValue[0].type
+                        statusData?.clusters_status?.status 
                       }
                     />
 
@@ -198,8 +206,7 @@ const MonitoringPage = () => {
                       title="Prometheus"
                       description="This is Crane Cloud's alerting toolkit"
                       isOperational={
-                        statusData?.prometheus_status?.status ===
-                        statusValue[0].type
+                        statusData?.prometheus_status?.status
                       }
                     />
                   </>
@@ -213,7 +220,7 @@ const MonitoringPage = () => {
                       System Status Series Graphs
                     </div>
                   </div>
-                  <StatusGraph status={statusData} data={dataArray} />
+                  <StatusGraph  uptime={uptime} status={statusData} data={dataArray} />
                 </>
               )}
             </div>
