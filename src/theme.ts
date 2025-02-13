@@ -1,4 +1,5 @@
 import { Button, createTheme, Text, TextInput } from '@mantine/core';
+import { returnObject } from './utils/helpers';
 
 export const theme = createTheme({
   // blue: '#008AC1',
@@ -29,13 +30,21 @@ export const theme = createTheme({
       defaultProps: {
         size: 'md',
       },
+      styles: {
+        root: {
+          margin: 0,
+          padding: 0,
+        },
+      },
     }),
     TextInput: TextInput.extend({
       defaultProps: {
         styles: {
-          input: {
-            border: '1px solid var(--mantine-color-gray-5)',
-          },
+          input: (props: any) => ({
+            ...returnObject(props.variant === 'outline', {
+              border: '1px solid var(--mantine-color-gray-5)',
+            }),
+          }),
         },
       },
     }),

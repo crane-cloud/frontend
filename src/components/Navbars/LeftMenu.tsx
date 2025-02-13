@@ -16,6 +16,7 @@ import {
   HiOutlineCog6Tooth,
   HiOutlineUsers,
   HiOutlineCircleStack,
+  HiOutlineChartBar,
 } from "react-icons/hi2";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5";
@@ -81,6 +82,18 @@ const LeftMenu = ({ menuType, projectId, title }: ILeftMenuProps) => {
       icon: HiOutlineUsers,
       key: "users",
       link: `/projects/${projectId}/users`,
+    },
+    {
+      label: "Metrics",
+      icon: HiOutlineChartBar,
+      key: "metrics",
+      link: `/projects/${projectId}/metrics`,
+    },
+    {
+      label: "Settings",
+      icon: HiOutlineCog6Tooth,
+      key: "settings",
+      link: `/projects/${projectId}/settings`,
     },
   ];
 

@@ -1,6 +1,27 @@
 :root[data-mantine-color-scheme="dark"] {
   --mantine-color-body: #141414;
 }
-body {
+/* body {
   background-color: light-dark(#edeff1, #222222);
+} */
+
+/* text */
+.title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
+}
+.subtitle {
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin: 0;
+  padding: 0;
+}
+
+.subtext {
+  font-weight: 400;
+  font-size: 0.85rem;
+  margin: 0;
+  padding: 0;
 }

@@ -2,6 +2,9 @@ import React from "react";
 import { HomePage } from "./pages/Home.page";
 import { LoginPage } from "./pages/Auth/loginPage";
 import AppsListPage from "./pages/Apps/AppsListPage";
+import ProjectSettingsPage from "./pages/Projects/ProjectSettingsPage";
+import ProjectUsers from "./pages/Projects/ProjectUsers";
+import ProjectMetrics from "./pages/Projects/ProjectMetrics";
 const ProjectsPage = React.lazy(() => import("./pages/Projects/ProjectsPage"));
 const ProjectDetailsPage = React.lazy(
   () => import("./pages/Projects/ProjectDetailsPage")
@@ -14,4 +17,7 @@ export const DashboardRoutes = [
   { path: "/", element: <ProjectsPage /> },
   { path: "/projects/:project_id", element: <ProjectDetailsPage /> },
   { path: "/projects/:project_id/applications", element: <AppsListPage /> },
+  { path: "/projects/:project_id/settings", element: <ProjectSettingsPage /> },
+  { path: "/projects/:project_id/users", element: <ProjectUsers /> },
+  { path: "/projects/:project_id/metrics", element: <ProjectMetrics /> },
 ];

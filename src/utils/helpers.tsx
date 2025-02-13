@@ -12,9 +12,10 @@ export const beautify = (str: string) => {
 };
 
 export const useGetProject = (project_id: string) => {
-  const [project, setProject] = useState<any>({});
   const { setMenuType, setProjectId, setTitle } = useContext(MenuContext);
   const { data: projectData, getData, success, loading } = useGet();
+  const [project, setProject] = useState<any>({});
+  const [cluster, setCluster] = useState<any>({});
   useEffect(() => {
     getData({
       id: project_id,
@@ -25,6 +26,7 @@ export const useGetProject = (project_id: string) => {
   useEffect(() => {
     if (success) {
       setProject(projectData.data.project);
+      setCluster(projectData.data.cluster);
       if (setTitle) {
         setTitle(projectData.data.project.name);
       }
@@ -39,5 +41,9 @@ export const useGetProject = (project_id: string) => {
     }
   }, [setMenuType, setProjectId, project_id, project]);
 
-  return { project, loading, success };
+  return { project, cluster, loading, success };
+};
+
+export const returnObject = (show: boolean, object: any) => {
+  return show ? object : [];
 };

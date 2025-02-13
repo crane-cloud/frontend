@@ -3,7 +3,7 @@ import { Divider, Flex, Skeleton, Stack, Text, TextProps } from "@mantine/core";
 
 interface TitleTextProps extends TextProps {
   children: React.ReactNode;
-  loading: boolean;
+  loading?: boolean;
   rightSection?: React.ReactNode;
 }
 
@@ -18,12 +18,7 @@ const TitleText: React.FC<TitleTextProps> = ({
         {loading ? (
           <Skeleton height={30} width={300} radius="xs" />
         ) : (
-          <Text
-            variant="gradient"
-            gradient={{ from: "black", to: "blue" }}
-            fw={700}
-            fz="1.2rem"
-          >
+          <Text fw={600} fz="1.2rem">
             {children}
           </Text>
         )}

@@ -1,0 +1,128 @@
+import { Table as MantineTable, Text, Skeleton, Card } from "@mantine/core";
+
+export interface Column {
+  id: string;
+  header: string;
+  noWrap?: boolean;
+  filter?: {
+    key?: string;
+    options?: any[];
+    // Add other filter props as needed
+  };
+}
+
+interface TableProps {
+  columns: Column[];
+  data: any[];
+  loading?: boolean;
+  hideFilters?: boolean;
+  startValue?: number;
+  tableTotals?: Record<string, any>;
+  tableFooter?: Record<string, any>;
+  noEmptyText?: boolean;
+  onFilterChange?: (values: any) => void;
+  filters?: any;
+  verticalSpacing?: string;
+  striped?: boolean | "odd" | "even";
+  noHeader?: boolean;
+  header?: () => React.ReactNode;
+}
+
+export const Table = ({
+  columns,
+  data,
+  loading = false,
+  startValue = 1,
+  tableTotals,
+  tableFooter,
+  noEmptyText = false,
+  verticalSpacing = "xs",
+  striped = true,
+  noHeader = false,
+  header,
+}: TableProps) => {
+  return (
+    <Card withBorder p="md" radius="md">
+      {header && header()}
+      <MantineTable striped={striped} verticalSpacing={verticalSpacing}>
+        {!noHeader && (
+          <MantineTable.Thead>
+            <MantineTable.Tr>
+              <MantineTable.Th style={{ fontSize: "85%" }}>#</MantineTable.Th>
+              {columns?.map((column) => (
+                <MantineTable.Th
+                  key={column.id}
+                  className={column.noWrap ? "no-wrap" : ""}
+                  style={{ fontSize: "85%" }}
+                >
+                  <Text className="capitalize">{column.header}</Text>
+                </MantineTable.Th>
+              ))}
+            </MantineTable.Tr>
+          </MantineTable.Thead>
+        )}
+
+        <MantineTable.Tbody>
+          {loading ? (
+            <MantineTable.Tr>
+              <MantineTable.Td colSpan={columns.length + 1}>
+                <Skeleton height={50} animate />
+              </MantineTable.Td>
+            </MantineTable.Tr>
+          ) : data?.length ? (
+            data.map((item, idx) => (
+              <MantineTable.Tr key={item.id || idx}>
+                <MantineTable.Td style={{ fontSize: "85%" }}>
+                  {item?.index || startValue + idx}
+                </MantineTable.Td>
+                {columns.map((column) => (
+                  <MantineTable.Td
+                    key={column.id}
+                    className={column.noWrap ? "no-wrap" : ""}
+                  >
+                    {item[column.id] ||
+                      (noEmptyText && <Text c="dimmed">Empty</Text>)}
+                  </MantineTable.Td>
+                ))}
+              </MantineTable.Tr>
+            ))
+          ) : (
+            <MantineTable.Tr>
+              <MantineTable.Td colSpan={columns.length + 1} ta="center">
+                No data available
+              </MantineTable.Td>
+            </MantineTable.Tr>
+          )}
+        </MantineTable.Tbody>
+
+        {tableTotals && Object.keys(tableTotals).length > 0 && (
+          <MantineTable.Tfoot>
+            <MantineTable.Tr>
+              <MantineTable.Th style={{ fontSize: "85%" }}>
+                Totals
+              </MantineTable.Th>
+              {columns.map((column) => (
+                <MantineTable.Th key={column.id} style={{ fontSize: "85%" }}>
+                  <Text fw={700}>{tableTotals[column.id]}</Text>
+                </MantineTable.Th>
+              ))}
+            </MantineTable.Tr>
+          </MantineTable.Tfoot>
+        )}
+
+        {tableFooter && (
+          <MantineTable.Tfoot>
+            <MantineTable.Tr>
+              <MantineTable.Th style={{ fontSize: "85%" }}>#</MantineTable.Th>
+              {columns.map((column) => (
+                <MantineTable.Th key={column.id} style={{ fontSize: "85%" }}>
+                  {tableFooter[column.id]}
+                </MantineTable.Th>
+              ))}
+            </MantineTable.Tr>
+          </MantineTable.Tfoot>
+        )}
+      </MantineTable>
+    </Card>
+  );
+};
