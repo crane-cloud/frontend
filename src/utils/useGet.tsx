@@ -27,7 +27,7 @@ const useGet = () => {
     setSuccess(false);
     setLoading(true);
     get({
-      api: id ? `${api}${id}/` : api,
+      api: id ? `${api}/${id}` : api,
       loader: setLoading,
       errorHandler: (err: TError) => {
         setError(err);

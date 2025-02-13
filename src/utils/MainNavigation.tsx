@@ -11,18 +11,14 @@ const MainNavigation = () => {
   if (loggedIn) {
     return (
       <DashboardLayout>
-        <Suspense fallback={<Loader />}>
-          <Routes>
-            {DashboardRoutes.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Suspense>
+        {/* <Suspense fallback={<Loader />}> */}
+        <Routes>
+          {DashboardRoutes.map((route) => (
+            <Route key={route.path} path={route.path} element={route.element} />
+          ))}
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+        {/* </Suspense> */}
       </DashboardLayout>
     );
   }

@@ -7,6 +7,9 @@ import {
   UnstyledButton,
   rem,
   ScrollArea,
+  Stack,
+  Divider,
+  Title,
 } from "@mantine/core";
 import {
   HiOutlineSquares2X2,
@@ -15,12 +18,15 @@ import {
   HiOutlineCircleStack,
 } from "react-icons/hi2";
 import { Link, matchPath, useLocation } from "react-router-dom";
+import { IoArrowBack } from "react-icons/io5";
+import { useEffect, useState } from "react";
 
 export type TLeftMenuType = "home" | "project" | "admin";
 
 interface ILeftMenuProps {
   menuType: TLeftMenuType;
   projectId: string;
+  title?: string;
 }
 interface INavLink {
   label: string;
@@ -30,8 +36,11 @@ interface INavLink {
   description?: string;
 }
 
-const LeftMenu = ({ menuType, projectId }: ILeftMenuProps) => {
+const LeftMenu = ({ menuType, projectId, title }: ILeftMenuProps) => {
   const location = useLocation();
+  const [navbarLinks, setNavbarLinks] = useState<INavLink[]>([]);
+  const [showProjectHeader, setShowProjectHeader] = useState(false);
+
   const homeNavbarLinks: INavLink[] = [
     {
       label: "Home",
@@ -67,6 +76,7 @@ const LeftMenu = ({ menuType, projectId }: ILeftMenuProps) => {
       link: `/projects/${projectId}/users`,
     },
   ];
+
   const adminNavbarLinks: INavLink[] = [
     {
       label: "Users",
@@ -75,33 +85,49 @@ const LeftMenu = ({ menuType, projectId }: ILeftMenuProps) => {
       link: "/users",
     },
   ];
-  let navbarLinks;
-  switch (menuType) {
-    case "home":
-      navbarLinks = homeNavbarLinks;
-      break;
-    case "project":
-      navbarLinks = projectNavbarLinks;
-      break;
-    default:
-      navbarLinks = adminNavbarLinks;
-      break;
-  }
-
-  console.log(location.pathname);
+  useEffect(() => {
+    switch (menuType) {
+      case "home":
+        setNavbarLinks(homeNavbarLinks);
+        setShowProjectHeader(false);
+        break;
+      case "project":
+        setNavbarLinks(projectNavbarLinks);
+        setShowProjectHeader(true);
+        break;
+      default:
+        setNavbarLinks(adminNavbarLinks);
+        setShowProjectHeader(false);
+        break;
+    }
+  }, [menuType]);
 
   return (
     <AppShell.Navbar p="5px">
       <AppShell.Section grow component={ScrollArea}>
+        {showProjectHeader && (
+          <Stack>
+            <Group justify="space-between" align="center">
+              <UnstyledButton
+                component={Link}
+                to="/"
+                mx="md"
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              >
+                <IoArrowBack />
+                <Title order={4}>{title}</Title>
+              </UnstyledButton>
+            </Group>
+            <Divider my="md" />
+          </Stack>
+        )}
         {navbarLinks.map((link: INavLink) => (
           <NavLink
             component={Link}
             key={link.key}
             label={link.label}
             leftSection={<link.icon />}
-            // active={location.pathname === link.link}
             active={!!matchPath({ path: link.link }, location.pathname)}
-            // description={link?.description}
             to={link.link}
             styles={{
               root: {

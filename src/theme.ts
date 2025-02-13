@@ -1,7 +1,22 @@
-import { Button, createTheme, Text } from '@mantine/core';
+import { Button, createTheme, Text, TextInput } from '@mantine/core';
 
 export const theme = createTheme({
   // blue: '#008AC1',
+  // colors: {
+  //   gray: [
+  //     "#f5f5f5",
+  //     "#e7e7e7",
+  //     "#cdcdcd",
+  //     "#b2b2b2",
+  //     "#9a9a9a",
+  //     "#8b8b8b",
+  //     "#848484",
+  //     "#717171",
+  //     "#656565",
+  //     "#575757",
+  //   ],
+  // },
+
   primaryColor: 'blue',
   components: {
     Button: Button.extend({
@@ -15,21 +30,16 @@ export const theme = createTheme({
         size: 'md',
       },
     }),
-    
-  },
+    TextInput: TextInput.extend({
+      defaultProps: {
+        styles: {
+          input: {
+            border: '1px solid var(--mantine-color-gray-5)',
+          },
+        },
+      },
+    }),
 
-  // colors: {
-  //   blue: [
-  //     "#e1f8ff",
-  //     "#cbedff",
-  //     "#9ad7ff",
-  //     "#64c1ff",
-  //     "#3aaefe",
-  //     "#20a2fe",
-  //     "#099cff",
-  //     "#0088e4",
-  //     "#0079cd",
-  //     "#0068b6"
-  //   ]
-  // },
+   
+  },
 });
