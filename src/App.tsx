@@ -1,11 +1,12 @@
-import '@mantine/core/styles.css';
-import '@mantine/notifications/styles.css';
-import { MantineProvider } from '@mantine/core';
-import { Notifications } from '@mantine/notifications';
-import { theme } from './theme';
-import { AuthProvider } from './utils/AuthContext';
-import MainNavigation from './utils/MainNavigation';
-import { BrowserRouter } from 'react-router-dom';
+import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
+import "@mantine/charts/styles.css";
+import { MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
+import { theme } from "./theme";
+import { AuthProvider } from "./utils/AuthContext";
+import MainNavigation from "./utils/MainNavigation";
+import { BrowserRouter } from "react-router-dom";
 
 export default function App() {
   return (
