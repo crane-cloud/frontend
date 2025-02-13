@@ -3,6 +3,7 @@ import { MenuContext } from "../Layouts/DashboardLayout";
 import { useParams } from "react-router-dom";
 import useGet from "@/utils/useGet";
 import TitleText from "@/components/TitleText";
+import AppsList from "@/components/Layouts/AppsList";
 const ProjectDetailsPage = () => {
   const { setMenuType, setProjectId, setTitle } = useContext(MenuContext);
   const { id } = useParams();
@@ -14,6 +15,9 @@ const ProjectDetailsPage = () => {
       id,
       api: `projects`,
     });
+    if (success) {
+      setProject(projectData?.data?.project);
+    }
   }, []);
 
   useEffect(() => {
@@ -23,7 +27,7 @@ const ProjectDetailsPage = () => {
     // if (setTitle) {
     //   setTitle(project?.name);
     // }
-  }, [success]);
+  }, [success, projectData]);
 
   useEffect(() => {
     setMenuType("project");
@@ -31,13 +35,14 @@ const ProjectDetailsPage = () => {
     if (setTitle && success) {
       setTitle(project?.name);
     }
-  }, [setMenuType, setProjectId, id, setTitle, success]);
+  }, [setMenuType, setProjectId, id, setTitle]);
 
   return (
     <div>
       {success && (
         <TitleText loading={loading}>{project?.name} Dashboard</TitleText>
       )}
+      <AppsList project_id={id} />
     </div>
   );
 };
