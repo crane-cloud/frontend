@@ -54,7 +54,7 @@ export const DashboardLayout = ({
         <DashboardHeader opened={opened} toggle={toggle} />
         <LeftMenu menuType={menuType} projectId={projectId} title={title} />
         <AppShell.Main>
-          <Container fluid>{children}</Container>
+          <Container size="xl">{children}</Container>
         </AppShell.Main>
       </AppShell>
     </MenuContext.Provider>

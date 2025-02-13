@@ -26,7 +26,7 @@ export const GridLayout = ({
         xs: "100px",
         sm: "200px",
         md: "300px",
-        lg: "400px",
+        lg: "450px",
         xl: "500px",
       }}
     >

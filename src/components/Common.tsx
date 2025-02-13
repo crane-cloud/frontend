@@ -36,6 +36,32 @@ export const UserDropDown = () => {
   const { colorScheme, setColorScheme } = useMantineColorScheme();
   const { logout, user } = useAuth();
 
+  const menuItems = [
+    {
+      label: "Theme",
+      icon:
+        colorScheme === "dark" ? (
+          <IoSunnyOutline size={16} />
+        ) : (
+          <IoMoonOutline size={16} />
+        ),
+      action: () => setColorScheme(colorScheme === "dark" ? "light" : "dark"),
+    },
+    {
+      label: "Account settings",
+      icon: <IoSettingsOutline size={16} />,
+    },
+    {
+      label: "Change account",
+      icon: <GoArrowSwitch size={16} />,
+    },
+    {
+      label: "Logout",
+      icon: <IoLogOutOutline size={16} />,
+      action: () => logout(),
+    },
+  ];
+
   return (
     <Menu
       width={260}
@@ -106,36 +132,14 @@ export const UserDropDown = () => {
         </Menu.Item>
 
         <MenuDivider />
-        <Menu.Item
-          onClick={() =>
-            setColorScheme(colorScheme === "dark" ? "light" : "dark")
-          }
-          leftSection={
-            colorScheme === "dark" ? (
-              <IoSunnyOutline size={16} />
-            ) : (
-              <IoMoonOutline size={16} />
-            )
-          }
-        >
-          Theme
-        </Menu.Item>
-        <MenuDivider />
-        <Menu.Label>Settings</Menu.Label>
-        <Menu.Item leftSection={<IoSettingsOutline size={16} />}>
-          Account settings
-        </Menu.Item>
-        <Menu.Item leftSection={<GoArrowSwitch size={16} />}>
-          Change account
-        </Menu.Item>
-        <Menu.Item
-          leftSection={<IoLogOutOutline size={16} />}
-          onClick={() => {
-            logout();
-          }}
-        >
-          Logout
-        </Menu.Item>
+        {menuItems.map((item, index) => (
+          <React.Fragment key={item.label}>
+            <Menu.Item leftSection={item.icon} onClick={item.action}>
+              {item.label}
+            </Menu.Item>
+            {index === 0 && <MenuDivider />}
+          </React.Fragment>
+        ))}
       </Menu.Dropdown>
     </Menu>
   );

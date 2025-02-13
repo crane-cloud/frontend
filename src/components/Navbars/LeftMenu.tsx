@@ -20,6 +20,7 @@ import {
 import { Link, matchPath, useLocation } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5";
 import { useEffect, useState } from "react";
+import { PiCubeLight } from "react-icons/pi";
 
 export type TLeftMenuType = "home" | "project" | "admin";
 
@@ -62,6 +63,12 @@ const LeftMenu = ({ menuType, projectId, title }: ILeftMenuProps) => {
       icon: HiOutlineSquares2X2,
       key: "dashboard",
       link: `/projects/${projectId}`,
+    },
+    {
+      label: "Applications",
+      icon: PiCubeLight,
+      key: "applications",
+      link: `/projects/${projectId}/applications`,
     },
     {
       label: "Databases",

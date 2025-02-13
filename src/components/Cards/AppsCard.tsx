@@ -18,14 +18,14 @@ const AppsCard = (props: any) => {
                 href={`/apps/${app.id}`}
                 truncate
                 style={{ flex: 1 }}
-                c="dark"
+                c="var(--mantine-color-text)"
               >
                 {beautify(app.name)}
               </Anchor>
             </Flex>
           </Group>
 
-          <Anchor href={app.url} target="_blank" c="dark">
+          <Anchor href={app.url} target="_blank" c="var(--mantine-color-text)">
             <Group gap={4} align="center" wrap="nowrap">
               <Text size="xs" truncate maw={250}>
                 {new URL(app.url).hostname}
@@ -35,7 +35,7 @@ const AppsCard = (props: any) => {
         </Stack>
       </Group>
 
-      <Pill bg="gray.2" w="fit-content" mt="sm">
+      <Pill bg="gray.1" w="fit-content" mt="sm" c="gray.8">
         <Flex gap={5} wrap="nowrap" w="fit-content" align="center">
           <HiMiniCubeTransparent size={14} />
           <Text size="sm" truncate>

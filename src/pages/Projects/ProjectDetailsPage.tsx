@@ -1,50 +1,52 @@
-import React, { useContext, useEffect, useState } from "react";
-import { MenuContext } from "../Layouts/DashboardLayout";
 import { useParams } from "react-router-dom";
-import useGet from "@/utils/useGet";
-import TitleText from "@/components/TitleText";
 import AppsList from "@/components/Layouts/AppsList";
+import { Button, Menu } from "@mantine/core";
+import TitleText from "@/components/TitleText";
+import { IoIosArrowDown } from "react-icons/io";
+import { PiCubeLight } from "react-icons/pi";
+import { GoDatabase } from "react-icons/go";
+import { useGetProject } from "@/utils/helpers";
+
 const ProjectDetailsPage = () => {
-  const { setMenuType, setProjectId, setTitle } = useContext(MenuContext);
-  const { id } = useParams();
-  const { data: projectData, getData, loading, success } = useGet();
-  const [project, setProject] = useState<any>({});
-
-  useEffect(() => {
-    getData({
-      id,
-      api: `projects`,
-    });
-    if (success) {
-      setProject(projectData?.data?.project);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (success) {
-      setProject(projectData?.data?.project);
-    }
-    // if (setTitle) {
-    //   setTitle(project?.name);
-    // }
-  }, [success, projectData]);
-
-  useEffect(() => {
-    setMenuType("project");
-    setProjectId(id || "");
-    if (setTitle && success) {
-      setTitle(project?.name);
-    }
-  }, [setMenuType, setProjectId, id, setTitle]);
+  const { project_id } = useParams();
+  const { project, loading, success } = useGetProject(project_id || "");
 
   return (
     <div>
       {success && (
-        <TitleText loading={loading}>{project?.name} Dashboard</TitleText>
+        <TitleText loading={loading} rightSection={<AddServiceButton />}>
+          {project?.name} Dashboard
+        </TitleText>
       )}
-      <AppsList project_id={id} />
+
+      <AppsList project_id={project_id} />
+      {/* <DatabaseList project_id={id} /> */}
     </div>
   );
 };
 
 export default ProjectDetailsPage;
+
+const AddServiceButton = () => {
+  const menuItems = [
+    { label: "Add Application", icon: <PiCubeLight /> },
+    {
+      label: "Add Database",
+      icon: <GoDatabase />,
+    },
+  ];
+  return (
+    <Menu transitionProps={{ transition: "pop-top-right" }}>
+      <Menu.Target>
+        <Button rightSection={<IoIosArrowDown />}>Add Service</Button>
+      </Menu.Target>
+      <Menu.Dropdown>
+        {menuItems.map((item) => (
+          <Menu.Item key={item.label} leftSection={item.icon}>
+            {item.label}
+          </Menu.Item>
+        ))}
+      </Menu.Dropdown>
+    </Menu>
+  );
+};
