@@ -1,9 +1,9 @@
-import AppsList from "@/components/Layouts/AppsList";
 import TitleText from "@/components/TitleText";
 import { Button, Stack } from "@mantine/core";
 import { useParams } from "react-router-dom";
 import { useGetProject } from "@/utils/helpers";
 import { GoPlus } from "react-icons/go";
+import AppsList from "@/components/Lists/AppsList";
 const AppsListPage = () => {
   const { project_id } = useParams();
   useGetProject(project_id || "");

@@ -8,7 +8,6 @@ import {
   Paper,
   Skeleton,
   TextInput,
-  Title,
 } from "@mantine/core";
 import ProjectsCard from "@/components/Cards/ProjectsCard";
 import { GridLayout } from "@/components/Layouts/ListLayouts";
@@ -16,8 +15,9 @@ import { FiSearch } from "react-icons/fi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { HiOutlineSquares2X2 } from "react-icons/hi2";
 import { useToggle } from "@mantine/hooks";
+import TitleText from "../TitleText";
 
-const ProjectsPage = () => {
+const ProjectsList = () => {
   const { data: projectsData, getData, loading, success } = useGet();
   const [projects, setProjects] = useState<any[]>([]);
   const [viewMode, toggleViewMode] = useToggle<"grid" | "list">([
@@ -39,9 +39,9 @@ const ProjectsPage = () => {
 
   return (
     <div>
-      <Title order={4} mb="md">
+      <TitleText>
         Projects
-      </Title>
+      </TitleText>
       <Paper p="lg" radius="md">
         <Group justify="space-between" align="center">
           <TextInput
@@ -87,4 +87,4 @@ const ProjectsPage = () => {
   );
 };
 
-export default ProjectsPage;
+export default ProjectsList;

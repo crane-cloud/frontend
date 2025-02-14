@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import useGet from "./useGet";
-import { MenuContext } from "@/pages/Layouts/DashboardLayout";
+import { MenuContext } from "@/components/Layouts/DashboardLayout";
 
 export const beautify = (str: string) => {
   return (str || "")
@@ -46,4 +46,12 @@ export const useGetProject = (project_id: string) => {
 
 export const returnObject = (show: boolean, object: any) => {
   return show ? object : [];
+};
+
+
+export const useSetHomeSidebar = () => {
+  const { setMenuType } = useContext(MenuContext);
+  useEffect(() => {
+    setMenuType("home");
+  }, [setMenuType]);
 };

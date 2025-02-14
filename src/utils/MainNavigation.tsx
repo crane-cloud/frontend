@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { useAuth } from "./AuthContext";
 import { Loader } from "@mantine/core";
-import { DashboardLayout } from "../pages/Layouts/DashboardLayout";
+import { DashboardLayout } from "../components/Layouts/DashboardLayout";
 import { Route, Routes } from "react-router-dom";
 import { DashboardRoutes, guestRoutes } from "../Router";
 import { NotFoundPage } from "@/pages/common/NotFoundPage";

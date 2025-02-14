@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import { useParams } from "react-router-dom";
 
-import { MenuContext } from "../Layouts/DashboardLayout";
+import { MenuContext } from "../../components/Layouts/DashboardLayout";
 import { MembersSection } from "./ProjectUsers";
 
 const ProjectSettingsPage = () => {
@@ -78,7 +78,7 @@ const GeneralTab = ({ project, cluster }: { project: any; cluster: any }) => {
       value: project?.age,
     },
     {
-      label: "Cluster",
+      label: "Datacenter",
       value: cluster?.name,
     },
   ];
@@ -86,7 +86,7 @@ const GeneralTab = ({ project, cluster }: { project: any; cluster: any }) => {
     <Stack gap={30}>
       <Stack gap={0}>
         <TitleText>Project Details</TitleText>
-        <Card p="lg" radius="md" shadow="xs" withBorder>
+        <Card p="lg" radius="md" withBorder>
           <Grid>
             {projectInfo.map((info) => (
               <Grid.Col span={{ base: 6, md: 4, lg: 4 }}>
@@ -103,7 +103,7 @@ const GeneralTab = ({ project, cluster }: { project: any; cluster: any }) => {
       </Stack>
       <Stack gap={0}>
         <TitleText>Danger Zone</TitleText>
-        <Card p="lg" radius="md" shadow="xs" withBorder>
+        <Card p="lg" radius="md" withBorder>
           <Stack gap={10}>
             <Group justify="space-between" align="center">
               <Stack gap={0}>

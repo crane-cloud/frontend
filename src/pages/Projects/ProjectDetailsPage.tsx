@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
-import AppsList from "@/components/Layouts/AppsList";
 import { Button, Menu } from "@mantine/core";
 import TitleText from "@/components/TitleText";
 import { IoIosArrowDown } from "react-icons/io";
 import { PiCubeLight } from "react-icons/pi";
 import { GoDatabase } from "react-icons/go";
 import { useGetProject } from "@/utils/helpers";
+import AppsList from "@/components/Lists/AppsList";
 
 const ProjectDetailsPage = () => {
   const { project_id } = useParams();

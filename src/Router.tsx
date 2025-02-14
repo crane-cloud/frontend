@@ -5,7 +5,7 @@ import AppsListPage from "./pages/Apps/AppsListPage";
 import ProjectSettingsPage from "./pages/Projects/ProjectSettingsPage";
 import ProjectUsers from "./pages/Projects/ProjectUsers";
 import ProjectMetrics from "./pages/Projects/ProjectMetrics";
-const ProjectsPage = React.lazy(() => import("./pages/Projects/ProjectsPage"));
+import LandingPage from "./pages/LandingPage";
 const ProjectDetailsPage = React.lazy(
   () => import("./pages/Projects/ProjectDetailsPage")
 );
@@ -14,7 +14,7 @@ export const guestRoutes = [
   { path: "/login", element: <LoginPage /> },
 ];
 export const DashboardRoutes = [
-  { path: "/", element: <ProjectsPage /> },
+  { path: "/", element: <LandingPage /> },
   { path: "/projects/:project_id", element: <ProjectDetailsPage /> },
   { path: "/projects/:project_id/applications", element: <AppsListPage /> },
   { path: "/projects/:project_id/settings", element: <ProjectSettingsPage /> },

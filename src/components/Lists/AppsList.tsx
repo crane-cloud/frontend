@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import AppsCard from "../Cards/AppsCard";
 import useGet from "@/utils/useGet";
-import { GridLayout } from "./ListLayouts";
 import { Skeleton } from "@mantine/core";
+import { GridLayout } from "../Layouts/ListLayouts";
 
 const AppsList = (props: any) => {
   const { project_id } = props;
