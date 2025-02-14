@@ -55,3 +55,13 @@ export const useSetHomeSidebar = () => {
     setMenuType("home");
   }, [setMenuType]);
 };
+
+export const useSetContainerSize = (size: string) => {
+  const { setContainerSize } = useContext(MenuContext);
+  useEffect(() => {
+    setContainerSize(size);
+     return () => {
+      setContainerSize("xl");
+    };
+  }, [setContainerSize, size]);
+};

@@ -1,4 +1,35 @@
 export type TError = {
-    [key: string]: string | undefined;
-    data?: (Record<string, string | undefined> & { toastMessage?: string }) | any;
-  };
+  [key: string]: string | undefined;
+  data?: (Record<string, string | undefined> & { toastMessage?: string }) | any;
+};
+
+export type TForm = {
+  [key: string]:
+    | string
+    | number
+    | boolean
+    | null
+    | undefined
+    | string[]
+    | number[];
+};
+
+export type TFormUpdateValue =
+  | string
+  | number
+  | boolean
+  | null
+  | string[]
+  | number[]
+  | undefined;
+
+export type TFormValidator = {
+  field_name: string;
+  notValid?: string | null;
+  required?: boolean;
+  visible?: boolean;
+  props?: any;
+  value?: any;
+};
+
+export type TSetError = (errors: TError) => void;

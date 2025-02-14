@@ -6,6 +6,7 @@ import ProjectSettingsPage from "./pages/Projects/ProjectSettingsPage";
 import ProjectUsers from "./pages/Projects/ProjectUsers";
 import ProjectMetrics from "./pages/Projects/ProjectMetrics";
 import LandingPage from "./pages/LandingPage";
+import CreateProjectForm from "./components/Forms/CreateProjectForm";
 const ProjectDetailsPage = React.lazy(
   () => import("./pages/Projects/ProjectDetailsPage")
 );
@@ -15,6 +16,8 @@ export const guestRoutes = [
 ];
 export const DashboardRoutes = [
   { path: "/", element: <LandingPage /> },
+  // Projects
+  { path: "/projects/create", element: <CreateProjectForm /> },
   { path: "/projects/:project_id", element: <ProjectDetailsPage /> },
   { path: "/projects/:project_id/applications", element: <AppsListPage /> },
   { path: "/projects/:project_id/settings", element: <ProjectSettingsPage /> },

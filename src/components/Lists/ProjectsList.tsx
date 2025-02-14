@@ -16,6 +16,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { HiOutlineSquares2X2 } from "react-icons/hi2";
 import { useToggle } from "@mantine/hooks";
 import TitleText from "../TitleText";
+import { Link } from "react-router-dom";
 
 const ProjectsList = () => {
   const { data: projectsData, getData, loading, success } = useGet();
@@ -69,7 +70,9 @@ const ProjectsList = () => {
               <RxHamburgerMenu />
             </ActionIcon>
           </Group>
-          <Button>Add New Project</Button>
+          <Button component={Link} to="/projects/create">
+            Add New Project
+          </Button>
         </Group>
         <Divider mt="lg" mb="md" />
         <GridLayout columns={viewMode === "grid" ? 3 : 1}>

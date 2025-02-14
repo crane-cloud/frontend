@@ -13,6 +13,11 @@ interface RequestParams {
   type?: "application/json" | "multipart/form-data";
 }
 
+interface ErrorResponse {
+  message?: string;
+  data?: any;
+}
+
 function useAxios() {
   const { authToken, logout } = useAuth();
 
@@ -27,16 +32,16 @@ function useAxios() {
   };
 
   const handleError = (
-    error: AxiosError,
+    error: AxiosError<ErrorResponse>,
     options: RequestParams
   ) => {
     let message: string | unknown = "An unknown error occurred";
 
     if (error.response?.status === 401) {
       logout();
-      message = error.response.data || getStatusMessage(error.response.status);
+      message = error.response.data?.message || getStatusMessage(error.response.status);
     } else if (error.response) {
-      message = error.response.data || getStatusMessage(error.response.status);
+      message = error.response.data?.message || getStatusMessage(error.response.status);
     }
 
     options.errorHandler?.(message);
@@ -78,8 +83,8 @@ function useAxios() {
       handleResponse(response, options);
       return response.data;
     } catch (error) {
-      handleError(error as AxiosError, options);
-      throw error;
+      handleError(error as AxiosError<ErrorResponse>, options);
+      // throw error;
     }
   };
 

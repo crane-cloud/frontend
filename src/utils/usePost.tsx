@@ -21,7 +21,8 @@ const usePost = () => {
   const { post } = useAxios();
 
   const uploadData = (options: UploadDataParams) => {
-    const { api, params, method, type, id, successMessage, errorMessage } = options;
+    const { api, params, method, type, id, successMessage, errorMessage } =
+      options;
     const extras = {};
 
     // If id is passed get single instance, other fetch list
@@ -34,18 +35,21 @@ const usePost = () => {
       errorHandler: (err: TError) => {
         setError(err);
         showNotification({
-          title: 'Error',
-          message: errorMessage || err.message || 'Something went wrong!',
-          color: 'red',
+          title: "Error",
+          message:
+            errorMessage ||
+            (typeof err === "string" && err) ||
+            "Something went wrong!",
+          color: "red",
         });
       },
       successHandler: (res: any) => {
         setData(res);
         setSuccess(true);
         showNotification({
-          title: 'Success',
-          message: successMessage || 'Operation completed successfully!',
-          color: 'teal',
+          title: "Success",
+          message: successMessage || "Operation completed successfully!",
+          color: "teal",
         });
       },
       methodName: method || (id ? "PATCH" : "POST"),
