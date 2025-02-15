@@ -60,9 +60,9 @@ const ProjectsCard = (props: any) => {
         </Text>
       </Flex> */}
           <Flex gap="xs">
-            {project.tags.map((tag: string) => (
-              <Pill key={tag} size="xs" fw={500}>
-                {tag}
+            {project.tags.map((tag: any) => (
+              <Pill key={tag.id} size="xs" fw={500}>
+                {tag.name}
               </Pill>
             ))}
           </Flex>

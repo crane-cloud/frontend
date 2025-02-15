@@ -35,7 +35,8 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
     refresh = () => {},
   } = props;
   useSetContainerSize("sm");
-  const { form, onChange, updateFormValue, updateFormValues } = useForm();
+  const { form, onChange, updateFormValue, updateFormValues, editedForm } =
+    useForm();
   const { user } = useAuth();
   const navigate = useNavigate();
   const {
@@ -61,7 +62,10 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
       api: API_TAGS,
     });
     if (project) {
-      updateFormValues(project);
+      updateFormValues({
+        ...project,
+        tags_add: project?.tags?.map((tag: any) => tag.name),
+      });
     }
   }, []);
 
@@ -76,10 +80,12 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
     uploadData({
       api: API_PROJECTS,
       id: project?.id || null,
-      params: {
-        ...form,
-        owner_id: user?.id,
-      },
+      params: project?.id
+        ? editedForm
+        : {
+            ...form,
+            owner_id: user?.id,
+          },
     });
   };
   useEffect(() => {
@@ -156,12 +162,12 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
               label="Tags"
               description="Add tags to help identify your project"
               placeholder="Add tags"
-              name="tags"
+              name="tags_add"
               data={Array.from(new Set(tags))}
               rightSection={tagsLoading ? <Loader size="xs" /> : null}
-              onChange={(value) => updateFormValue("tags", value)}
-              value={form.tags as string[]}
-              error={error?.tags}
+              onChange={(value) => updateFormValue("tags_add", value)}
+              value={form.tags_add as string[]}
+              error={error?.tags_add}
             />
             <Group justify="flex-end">
               {onCancel && (
@@ -174,6 +180,10 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
                 color={project ? "blue" : "gray.9"}
                 type="submit"
                 leftSection={submitting ? <Loader size="xs" /> : null}
+                disabled={
+                  submitting ||
+                  (project?.id && Object.keys(editedForm).length <= 0)
+                }
               >
                 {project ? "Update Project" : "Create Project"}
               </Button>
