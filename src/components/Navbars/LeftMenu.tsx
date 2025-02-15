@@ -19,18 +19,19 @@ import {
   HiOutlineCircleStack,
   HiOutlineChartBar,
 } from "react-icons/hi2";
-import { Link, matchPath, useLocation } from "react-router-dom";
+import { Link, matchPath, useLocation, useNavigate } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { PiCubeLight } from "react-icons/pi";
 
-export type TLeftMenuType = "home" | "project" | "admin";
+export type TLeftMenuType = "home" | "project" | "admin" | "app";
 
 interface ILeftMenuProps {
   menuType: TLeftMenuType;
   projectId: string;
   title?: string;
   subtitle?: string;
+  appId?: string;
 }
 interface INavLink {
   label: string;
@@ -40,10 +41,17 @@ interface INavLink {
   description?: string;
 }
 
-const LeftMenu = ({ menuType, projectId, title, subtitle }: ILeftMenuProps) => {
+const LeftMenu = ({
+  menuType,
+  projectId,
+  title,
+  subtitle,
+  appId,
+}: ILeftMenuProps) => {
   const location = useLocation();
   const [navbarLinks, setNavbarLinks] = useState<INavLink[]>([]);
   const [showProjectHeader, setShowProjectHeader] = useState(false);
+  const navigate = useNavigate();
 
   const homeNavbarLinks: INavLink[] = [
     {
@@ -99,6 +107,26 @@ const LeftMenu = ({ menuType, projectId, title, subtitle }: ILeftMenuProps) => {
     },
   ];
 
+  const appsNavbarLinks: INavLink[] = [
+    {
+      label: "Dashboard",
+      icon: HiOutlineSquares2X2,
+      key: "dashboard",
+      link: `/projects/${projectId}/apps/${appId}`,
+    },
+    {
+      label: "Metrics",
+      icon: HiOutlineChartBar,
+      key: "metrics",
+      link: `/projects/${projectId}/apps/${appId}/metrics`,
+    },
+    {
+      label: "Settings",
+      icon: HiOutlineCog6Tooth,
+      key: "settings",
+      link: `/projects/${projectId}/apps/${appId}/settings`,
+    },
+  ];
   const adminNavbarLinks: INavLink[] = [
     {
       label: "Users",
@@ -117,12 +145,20 @@ const LeftMenu = ({ menuType, projectId, title, subtitle }: ILeftMenuProps) => {
         setNavbarLinks(projectNavbarLinks);
         setShowProjectHeader(true);
         break;
+      case "app":
+        setNavbarLinks(appsNavbarLinks);
+        setShowProjectHeader(true);
+        break;
       default:
         setNavbarLinks(adminNavbarLinks);
         setShowProjectHeader(false);
         break;
     }
   }, [menuType]);
+
+  const backNavigation = () => {
+    navigate(-1);
+  };
 
   return (
     <AppShell.Navbar p="5px">
@@ -131,8 +167,7 @@ const LeftMenu = ({ menuType, projectId, title, subtitle }: ILeftMenuProps) => {
           <Stack>
             <Group justify="space-between" align="center">
               <UnstyledButton
-                component={Link}
-                to="/"
+                onClick={backNavigation}
                 mx="md"
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >

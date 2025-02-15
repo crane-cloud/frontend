@@ -4,7 +4,7 @@ import { HiMiniCubeTransparent, HiOutlineCalendar } from "react-icons/hi2";
 import { PiCubeLight } from "react-icons/pi";
 
 const AppsCard = (props: any) => {
-  const { app } = props;
+  const { app, project_id } = props;
 
   return (
     <Card p="sm" radius="md" withBorder shadow="sm">
@@ -15,7 +15,7 @@ const AppsCard = (props: any) => {
             <Flex gap="sm" align="center">
               <Anchor
                 fw={600}
-                href={`/apps/${app.id}`}
+                href={`/projects/${project_id}/apps/${app.id}`}
                 truncate
                 style={{ flex: 1 }}
                 c="var(--mantine-color-text)"

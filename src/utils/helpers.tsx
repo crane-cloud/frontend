@@ -19,12 +19,13 @@ export const useGetProject = (project_id: string) => {
   const [cluster, setCluster] = useState<any>({});
   const [refresh, setRefresh] = useState(false);
 
-  useEffect(() => {
-    getData({
-      id: project_id,
-      api: `projects`,
-    });
-  }, []);
+  // useEffect(() => {
+  //   getData({
+  //     id: project_id,
+  //     api: `projects`,
+  //   });
+  // }, []);
+
   useEffect(() => {
     getData({
       id: project_id,
@@ -54,6 +55,43 @@ export const useGetProject = (project_id: string) => {
   }, [setMenuType, setProjectId, project_id, project]);
 
   return { project, cluster, loading, success, refresh, setRefresh };
+};
+
+export const useGetApp = (app_id: string) => {
+  const { setMenuType, setProjectId, setAppId, setTitle, setSubtitle } =
+    useContext(MenuContext);
+  const { data: appData, getData, success, loading } = useGet();
+  const [app, setApp] = useState<any>({});
+  useEffect(() => {
+    getData({
+      id: app_id,
+      api: `apps`,
+    });
+  }, []);
+  useEffect(() => {
+    if (success) {
+      setApp(appData.data.app);
+      setProjectId(appData.data.app.project_id || "");
+      if (setTitle) {
+        setTitle(appData.data.app.name);
+      }
+    }
+  }, [success, appData]);
+
+  useEffect(() => {
+    setMenuType("app");
+    if (setAppId) {
+      setAppId(app_id || "");
+    }
+    if (setTitle && success) {
+      setTitle(app?.name);
+      if (app?.disabled && setSubtitle) {
+        setSubtitle("Disabled");
+      }
+    }
+  }, [setMenuType, setAppId, app_id]);
+
+  return { app, loading, success };
 };
 
 export const returnObject = (show: boolean, object: any) => {

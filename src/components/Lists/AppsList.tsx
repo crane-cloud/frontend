@@ -20,7 +20,7 @@ const AppsList = (props: any) => {
             <Skeleton key={index} height={100} w="100%" radius="md" />
           ))
         : apps?.data?.apps?.map((app: any) => (
-            <AppsCard key={app.id} app={app} />
+            <AppsCard key={app.id} app={app} project_id={project_id} />
           ))}
     </GridLayout>
   );
