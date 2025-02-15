@@ -71,7 +71,7 @@ const LeftMenu = ({ menuType, projectId, title, subtitle }: ILeftMenuProps) => {
       label: "Applications",
       icon: PiCubeLight,
       key: "applications",
-      link: `/projects/${projectId}/applications`,
+      link: `/projects/${projectId}/apps`,
     },
     {
       label: "Databases",

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Menu } from "@mantine/core";
 import TitleText from "@/components/TitleText";
 import { IoIosArrowDown } from "react-icons/io";
@@ -28,8 +28,14 @@ const ProjectDetailsPage = () => {
 export default ProjectDetailsPage;
 
 const AddServiceButton = () => {
+  const { project_id } = useParams();
+  const navigate = useNavigate();
   const menuItems = [
-    { label: "Add Application", icon: <PiCubeLight /> },
+    {
+      label: "Add Application",
+      icon: <PiCubeLight />,
+      onClick: () => navigate(`/projects/${project_id}/apps/create`),
+    },
     {
       label: "Add Database",
       icon: <GoDatabase />,
@@ -42,7 +48,11 @@ const AddServiceButton = () => {
       </Menu.Target>
       <Menu.Dropdown>
         {menuItems.map((item) => (
-          <Menu.Item key={item.label} leftSection={item.icon}>
+          <Menu.Item
+            key={item.label}
+            leftSection={item.icon}
+            onClick={item.onClick}
+          >
             {item.label}
           </Menu.Item>
         ))}

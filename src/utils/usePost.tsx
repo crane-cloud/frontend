@@ -11,6 +11,7 @@ type UploadDataParams = {
   method?: string;
   successMessage?: string;
   errorMessage?: string;
+  isExternal?: boolean;
 };
 
 const usePost = () => {
@@ -21,8 +22,16 @@ const usePost = () => {
   const { post } = useAxios();
 
   const uploadData = (options: UploadDataParams) => {
-    const { api, params, method, type, id, successMessage, errorMessage } =
-      options;
+    const {
+      api,
+      params,
+      method,
+      type,
+      id,
+      successMessage,
+      errorMessage,
+      isExternal = false,
+    } = options;
     const extras = {};
 
     // If id is passed get single instance, other fetch list
@@ -55,6 +64,7 @@ const usePost = () => {
       methodName: method || (id ? "PATCH" : "POST"),
       params: { ...params, ...extras },
       type,
+      isExternal,
     });
   };
 

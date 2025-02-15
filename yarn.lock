@@ -561,6 +561,13 @@
   dependencies:
     clsx "^2.1.1"
 
+"@mantine/dropzone@^7.16.3":
+  version "7.16.3"
+  resolved "https://registry.yarnpkg.com/@mantine/dropzone/-/dropzone-7.16.3.tgz#c0daadcec8392ce984529253a3b649e5a65225ac"
+  integrity sha512-JWKmRMuV0DfgIQWvvtRfokaIopezg2AwxxcXrHs5xxxN1EfiTQWB+aQjz0ISwcAk1gtjLEKHowqsBNbna+BEKw==
+  dependencies:
+    react-dropzone-esm "15.2.0"
+
 "@mantine/form@^7.16.2":
   version "7.16.2"
   resolved "https://registry.yarnpkg.com/@mantine/form/-/form-7.16.2.tgz#2d15239621b3b63e3fbf48aa81fec1282ad9620b"
@@ -3527,6 +3534,13 @@ react-dom@^19.0.0:
   integrity sha512-4GV5sHFG0e/0AD4X+ySy6UJd3jVl1iNsNHdpad0qhABJ11twS3TTBnseqsKurKcsNqCEFeGL3uLpVChpIO3QfQ==
   dependencies:
     scheduler "^0.25.0"
+
+react-dropzone-esm@15.2.0:
+  version "15.2.0"
+  resolved "https://registry.yarnpkg.com/react-dropzone-esm/-/react-dropzone-esm-15.2.0.tgz#a2bf703796f083282fe98429ae01a2cdd761aa2a"
+  integrity sha512-pPwR8xWVL+tFLnbAb8KVH5f6Vtl397tck8dINkZ1cPMxHWH+l9dFmIgRWgbh7V7jbjIcuKXCsVrXbhQz68+dVA==
+  dependencies:
+    prop-types "^15.8.1"
 
 react-icons@^5.4.0:
   version "5.4.0"

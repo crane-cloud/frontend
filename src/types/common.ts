@@ -1,17 +1,12 @@
+import { FileWithPath } from "@mantine/dropzone";
+
 export type TError = {
   [key: string]: string | undefined;
   data?: (Record<string, string | undefined> & { toastMessage?: string }) | any;
 };
 
 export type TForm = {
-  [key: string]:
-    | string
-    | number
-    | boolean
-    | null
-    | undefined
-    | string[]
-    | number[];
+  [key: string]: string | number | boolean | string[] | number[] | { key: string; value: string }[] | FileWithPath[] | null | undefined;
 };
 
 export type TFormUpdateValue =
