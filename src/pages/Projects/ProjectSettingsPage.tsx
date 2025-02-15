@@ -20,10 +20,11 @@ import usePost from "@/utils/usePost";
 import { HiLockClosed, HiLockOpen, HiTrash } from "react-icons/hi2";
 import { API_PROJECTS } from "@/utils/apis";
 import { ModalConfirm } from "@/components/Elements/Modals";
+import CreateProjectForm from "@/components/Forms/CreateProjectForm";
 
 const ProjectSettingsPage = () => {
   const { project_id } = useParams();
-  const { project, cluster } = useGetProject(project_id || "");
+  const { project, cluster, setRefresh } = useGetProject(project_id || "");
   const { setContainerSize } = useContext(MenuContext);
 
   useEffect(() => {
@@ -32,6 +33,7 @@ const ProjectSettingsPage = () => {
       setContainerSize("xl");
     };
   }, [setContainerSize]);
+  useEffect(() => {}, [project]);
 
   return (
     <div>
@@ -43,7 +45,11 @@ const ProjectSettingsPage = () => {
         </Tabs.List>
 
         <Tabs.Panel value="general" pt={10}>
-          <GeneralTab project={project} cluster={cluster} />
+          <GeneralTab
+            project={project}
+            cluster={cluster}
+            setRefresh={setRefresh}
+          />
         </Tabs.Panel>
 
         <Tabs.Panel value="members" pt={10}>
@@ -60,10 +66,19 @@ const ProjectSettingsPage = () => {
 
 export default ProjectSettingsPage;
 
-const GeneralTab = ({ project, cluster }: { project: any; cluster: any }) => {
+const GeneralTab = ({
+  project,
+  cluster,
+  setRefresh,
+}: {
+  project: any;
+  cluster: any;
+  setRefresh: (refresh: boolean) => void;
+}) => {
   const [deleteConfirmOpened, setDeleteConfirmOpened] = useState(false);
   const [disableConfirmOpened, setDisableConfirmOpened] = useState(false);
   const [enableConfirmOpened, setEnableConfirmOpened] = useState(false);
+  const [updateConfirmOpened, setUpdateConfirmOpened] = useState(false);
 
   const {
     uploadData: deleteProject,
@@ -171,7 +186,12 @@ const GeneralTab = ({ project, cluster }: { project: any; cluster: any }) => {
                   Modify the project name and description
                 </Text>
               </Stack>
-              <Button variant="outline">Update</Button>
+              <Button
+                variant="outline"
+                onClick={() => setUpdateConfirmOpened(true)}
+              >
+                Update
+              </Button>
             </Group>
             <Divider />
             {project.disabled ? (
@@ -267,6 +287,21 @@ const GeneralTab = ({ project, cluster }: { project: any; cluster: any }) => {
           >
             Are you sure you want to enable <b>{project?.name}</b> project? This
             action will allow the project contents to be accessed.
+          </ModalConfirm>
+          <ModalConfirm
+            opened={updateConfirmOpened}
+            onClose={() => setUpdateConfirmOpened(false)}
+            title="Update Project"
+            buttonText="Update"
+            onConfirm={() => {}}
+            showFooterActions={false}
+          >
+            <CreateProjectForm
+              project={project}
+              showTitle={false}
+              onCancel={() => setUpdateConfirmOpened(false)}
+              refresh={() => setRefresh(true)}
+            />
           </ModalConfirm>
         </Card>
       </Stack>

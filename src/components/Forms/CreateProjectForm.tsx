@@ -20,9 +20,22 @@ import usePost from "@/utils/usePost";
 import { useAuth } from "@/utils/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const CreateProjectForm = () => {
+type TCreateProjectForm = {
+  project?: any;
+  showTitle?: boolean;
+  onCancel?: () => void;
+  refresh?: () => void;
+};
+
+const CreateProjectForm = (props: TCreateProjectForm) => {
+  const {
+    project,
+    showTitle = true,
+    onCancel = false,
+    refresh = () => {},
+  } = props;
   useSetContainerSize("sm");
-  const { form, onChange, updateFormValue } = useForm();
+  const { form, onChange, updateFormValue, updateFormValues } = useForm();
   const { user } = useAuth();
   const navigate = useNavigate();
   const {
@@ -47,6 +60,9 @@ const CreateProjectForm = () => {
     getTags({
       api: API_TAGS,
     });
+    if (project) {
+      updateFormValues(project);
+    }
   }, []);
 
   const clusters = clustersData?.data?.clusters?.map((cluster: any) => ({
@@ -59,6 +75,7 @@ const CreateProjectForm = () => {
     e.preventDefault();
     uploadData({
       api: API_PROJECTS,
+      id: project?.id || null,
       params: {
         ...form,
         owner_id: user?.id,
@@ -67,13 +84,18 @@ const CreateProjectForm = () => {
   };
   useEffect(() => {
     if (success && project_data) {
-      navigate(`/projects/${project_data?.data?.project?.id}`);
+      if (onCancel) {
+        onCancel();
+        refresh();
+      } else {
+        navigate(`/projects/${project_data?.data?.project?.id}`);
+      }
     }
   }, [success, project_data]);
 
   return (
     <div>
-      <TitleText>Create new Project</TitleText>
+      {showTitle && <TitleText>Create new Project</TitleText>}
       <Paper p="lg" radius="md">
         <form onSubmit={handleSubmit}>
           <Stack>
@@ -101,11 +123,11 @@ const CreateProjectForm = () => {
               description="Select the type of project you are creating"
               placeholder="Select project type"
               data={PROJECT_TYPES}
-              name="type"
-              value={form.type as string}
+              name="project_type"
+              value={form.project_type as string}
               searchable
-              onChange={(value) => updateFormValue("type", value)}
-              error={error?.type}
+              onChange={(value) => updateFormValue("project_type", value)}
+              error={error?.project_type}
             />
             <Select
               label="Organisation Name"
@@ -142,13 +164,18 @@ const CreateProjectForm = () => {
               error={error?.tags}
             />
             <Group justify="flex-end">
+              {onCancel && (
+                <Button variant="default" onClick={onCancel}>
+                  Cancel
+                </Button>
+              )}
               <Button
                 variant="filled"
-                color="gray.9"
+                color={project ? "blue" : "gray.9"}
                 type="submit"
                 leftSection={submitting ? <Loader size="xs" /> : null}
               >
-                Create Project
+                {project ? "Update Project" : "Create Project"}
               </Button>
             </Group>
           </Stack>

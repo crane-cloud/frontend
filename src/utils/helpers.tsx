@@ -17,6 +17,7 @@ export const useGetProject = (project_id: string) => {
   const { data: projectData, getData, success, loading } = useGet();
   const [project, setProject] = useState<any>({});
   const [cluster, setCluster] = useState<any>({});
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     getData({
@@ -24,6 +25,12 @@ export const useGetProject = (project_id: string) => {
       api: `projects`,
     });
   }, []);
+  useEffect(() => {
+    getData({
+      id: project_id,
+      api: `projects`,
+    });
+  }, [refresh]);
 
   useEffect(() => {
     if (success) {
@@ -46,7 +53,7 @@ export const useGetProject = (project_id: string) => {
     }
   }, [setMenuType, setProjectId, project_id, project]);
 
-  return { project, cluster, loading, success };
+  return { project, cluster, loading, success, refresh, setRefresh };
 };
 
 export const returnObject = (show: boolean, object: any) => {
