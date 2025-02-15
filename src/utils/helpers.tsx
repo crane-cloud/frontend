@@ -12,10 +12,12 @@ export const beautify = (str: string) => {
 };
 
 export const useGetProject = (project_id: string) => {
-  const { setMenuType, setProjectId, setTitle } = useContext(MenuContext);
+  const { setMenuType, setProjectId, setTitle, setSubtitle } =
+    useContext(MenuContext);
   const { data: projectData, getData, success, loading } = useGet();
   const [project, setProject] = useState<any>({});
   const [cluster, setCluster] = useState<any>({});
+
   useEffect(() => {
     getData({
       id: project_id,
@@ -38,6 +40,9 @@ export const useGetProject = (project_id: string) => {
     setProjectId(project_id || "");
     if (setTitle && success) {
       setTitle(project?.name);
+      if (project?.disabled && setSubtitle) {
+        setSubtitle("Disabled");
+      }
     }
   }, [setMenuType, setProjectId, project_id, project]);
 
@@ -47,7 +52,6 @@ export const useGetProject = (project_id: string) => {
 export const returnObject = (show: boolean, object: any) => {
   return show ? object : [];
 };
-
 
 export const useSetHomeSidebar = () => {
   const { setMenuType } = useContext(MenuContext);
@@ -60,7 +64,7 @@ export const useSetContainerSize = (size: string) => {
   const { setContainerSize } = useContext(MenuContext);
   useEffect(() => {
     setContainerSize(size);
-     return () => {
+    return () => {
       setContainerSize("xl");
     };
   }, [setContainerSize, size]);

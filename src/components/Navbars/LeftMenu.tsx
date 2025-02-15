@@ -10,6 +10,7 @@ import {
   Stack,
   Divider,
   Title,
+  Pill,
 } from "@mantine/core";
 import {
   HiOutlineSquares2X2,
@@ -29,6 +30,7 @@ interface ILeftMenuProps {
   menuType: TLeftMenuType;
   projectId: string;
   title?: string;
+  subtitle?: string;
 }
 interface INavLink {
   label: string;
@@ -38,7 +40,7 @@ interface INavLink {
   description?: string;
 }
 
-const LeftMenu = ({ menuType, projectId, title }: ILeftMenuProps) => {
+const LeftMenu = ({ menuType, projectId, title, subtitle }: ILeftMenuProps) => {
   const location = useLocation();
   const [navbarLinks, setNavbarLinks] = useState<INavLink[]>([]);
   const [showProjectHeader, setShowProjectHeader] = useState(false);
@@ -137,6 +139,11 @@ const LeftMenu = ({ menuType, projectId, title }: ILeftMenuProps) => {
                 <IoArrowBack />
                 <Title order={4}>{title}</Title>
               </UnstyledButton>
+              {subtitle && (
+                <Pill size="sm" c="gray">
+                  {subtitle}
+                </Pill>
+              )}
             </Group>
             <Divider my="md" />
           </Stack>

@@ -125,6 +125,7 @@ export const MembersSection = ({ project }: { project: any }) => {
                   color={action.color}
                   onClick={() => action.onClick()}
                   leftSection={action?.icon}
+                  key={action.label}
                 >
                   {action.label}
                 </Menu.Item>

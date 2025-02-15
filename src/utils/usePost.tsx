@@ -30,7 +30,7 @@ const usePost = () => {
     setSuccess(false);
     setSubmitting(true);
     post({
-      api: id ? `${api}${id}/` : api,
+      api: id ? `${api}/${id}` : api,
       loader: setSubmitting,
       errorHandler: (err: TError) => {
         setError(err);

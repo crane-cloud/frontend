@@ -89,7 +89,7 @@ function useAxios() {
   };
 
   const get = (options: RequestParams) => request("get", options);
-  const post = (options: RequestParams) => request("post", options);
+  const post = (options: RequestParams) => request(options.methodName || "post", options);
   const del = (options: RequestParams) => request("delete", options);
 
   return { get, post, del };

@@ -13,6 +13,7 @@ import {
 } from "@mantine/core";
 import { FaProjectDiagram } from "react-icons/fa";
 import { MdOutlineRocketLaunch } from "react-icons/md";
+import { HiLockClosed } from "react-icons/hi2";
 
 const ProjectsCard = (props: any) => {
   const { project } = props;
@@ -20,7 +21,11 @@ const ProjectsCard = (props: any) => {
     <Card p="sm" radius="md" withBorder shadow="sm" {...props}>
       <Group justify="space-between" wrap="nowrap">
         <Flex gap="sm" align="center" justify="start">
-          <FaProjectDiagram size={16} color="gray" />
+          {project.disabled ? (
+            <HiLockClosed size={16} color="gray" />
+          ) : (
+            <FaProjectDiagram size={16} color="gray" />
+          )}
           <Anchor
             fw={700}
             c="blue"

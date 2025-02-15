@@ -40,9 +40,7 @@ const ProjectsList = () => {
 
   return (
     <div>
-      <TitleText>
-        Projects
-      </TitleText>
+      <TitleText>Projects</TitleText>
       <Paper p="lg" radius="md">
         <Group justify="space-between" align="center">
           <TextInput
@@ -82,7 +80,7 @@ const ProjectsList = () => {
               ))
             : projects &&
               projects?.map((project: any) => (
-                <ProjectsCard project={project} h="100%" />
+                <ProjectsCard key={project?.id} project={project} h="100%" />
               ))}
         </GridLayout>
       </Paper>

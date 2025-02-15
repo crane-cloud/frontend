@@ -11,6 +11,8 @@ export const MenuContext = createContext<{
   setProjectId: (id: string) => void;
   title?: string;
   setTitle?: (title: string) => void;
+  subtitle?: string;
+  setSubtitle?: (subtitle: string) => void;
   setContainerSize: (size: string) => void;
 }>({
   menuType: "home",
@@ -19,6 +21,8 @@ export const MenuContext = createContext<{
   setProjectId: () => {},
   title: "",
   setTitle: () => {},
+  subtitle: "",
+  setSubtitle: () => {},
   setContainerSize: () => {},
 });
 
@@ -33,6 +37,7 @@ export const DashboardLayout = ({
   const [projectId, setProjectId] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [containerSize, setContainerSize] = useState<string>("xl");
+  const [subtitle, setSubtitle] = useState<string>("");
 
   return (
     <MenuContext.Provider
@@ -43,6 +48,8 @@ export const DashboardLayout = ({
         setProjectId,
         title,
         setTitle,
+        subtitle,
+        setSubtitle,
         setContainerSize,
       }}
     >
@@ -56,7 +63,12 @@ export const DashboardLayout = ({
         padding="md"
       >
         <DashboardHeader opened={opened} toggle={toggle} />
-        <LeftMenu menuType={menuType} projectId={projectId} title={title} />
+        <LeftMenu
+          menuType={menuType}
+          projectId={projectId}
+          title={title}
+          subtitle={subtitle}
+        />
         <AppShell.Main>
           <Container size={containerSize}>{children}</Container>
         </AppShell.Main>
