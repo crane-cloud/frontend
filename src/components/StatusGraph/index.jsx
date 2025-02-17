@@ -8,7 +8,8 @@ import {
   toSentenceCase,
 } from "../../helpers/statusGraphUtils";
 
-const StatusGraph = ({ status, data }) => {
+const StatusGraph = ({ status, data, uptime }) => {
+
   return (
     <div className="SeriesCardArea">
       {data.map(({ key, value }) => (
@@ -26,8 +27,12 @@ const StatusGraph = ({ status, data }) => {
               <div key={serviceName} className="ServiceGraph">
                 <div className="ServiceTitle">
                   {toSentenceCase(serviceName)}
+
+                  <span> Uptime: {uptime[serviceName]?.uptime_percentage}%</span>
                 </div>
+               
                 <hr />
+               
                 <div className="ServiceGraphBoxes">
                   {serviceData.map((dataItem, index) => (
                     <>
@@ -41,8 +46,8 @@ const StatusGraph = ({ status, data }) => {
                         }
                         message={`${formatTimestamp(dataItem.timestamp)} - ${
                           dataItem.status === "success"
-                            ? "Service Available"
-                            : "Issues Detected"
+                            ? "Service Available":
+                             dataItem.status === "partial" ? "Issues Detected": "Service Unavailable"
                         }`}
                         position="bottom"
                       ></Tooltip>

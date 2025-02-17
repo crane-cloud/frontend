@@ -1,5 +1,5 @@
 export const getStatusColor = (status) => {
-  return status === "success" ? "green" : "red";
+  return status === "success" ? "green" : status === "partial"? "orange" : "red";
 };
 
 export const toSentenceCase = (str) => {
@@ -9,6 +9,8 @@ export const toSentenceCase = (str) => {
     "cranecloud-backend": "Crane Cloud Backend",
     mysql: "MySQL",
     postgres: "PostgreSQL",
+    services_status: "Services Status",
+
   };
 
   Object.entries(replacements).forEach(([search, replace]) => {

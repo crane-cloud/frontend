@@ -47,6 +47,10 @@
     background-color: #FF0000;
 }
 
+.box.orange {
+    background-color: var(--secondary-color);
+}
+
 .SeriesBottomRow {
     display: flex;
     justify-content: space-between;
@@ -72,6 +76,9 @@
     font-size: 0.9rem;
     line-height: 2rem;
     font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
 }
 
 .ServiceGraphBoxes {
