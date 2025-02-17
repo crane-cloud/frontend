@@ -1,11 +1,139 @@
 import React from "react";
-import { useGetApp } from "@/utils/helpers";
-import { useParams } from "react-router-dom";
+import { useGetApp, useSetContainerSize } from "@/utils/helpers";
+import { Link, useParams } from "react-router-dom";
+import { Button, Card, Code, Flex, Grid, Stack, Text } from "@mantine/core";
+import TitleText, { CustomText } from "@/components/TitleText";
+import { TbCopy, TbWorld } from "react-icons/tb";
+import { FiExternalLink } from "react-icons/fi";
+import { FaDocker } from "react-icons/fa";
+import { LuScreenShare } from "react-icons/lu";
 
 const AppDetailPage = () => {
   const { app_id } = useParams();
   const { app } = useGetApp(app_id || "");
-  return <div>{app.name}</div>;
+  useSetContainerSize("md");
+
+  const getAppStatus = (status: string) => {
+    if (status === "running") {
+      return (
+        <Flex align="center" gap="xs">
+          <div
+            style={{
+              width: 8,
+              height: 8,
+              borderRadius: "50%",
+              backgroundColor: "var(--mantine-color-green-6)",
+              padding: 4,
+            }}
+          />
+          <Text size="xs">Running</Text>
+        </Flex>
+      );
+    }
+    if (status === "stopped") {
+      return (
+        <Flex align="center" gap={5}>
+          <div
+            style={{
+              width: 8,
+              height: 8,
+              borderRadius: "50%",
+              backgroundColor: "var(--mantine-color-red-6)",
+              padding: 4,
+            }}
+          />
+          <Text size="xs">Stopped</Text>
+        </Flex>
+      );
+    }
+    return (
+      <Flex align="center" gap={5}>
+        <div
+          style={{
+            width: 8,
+            height: 8,
+            borderRadius: "50%",
+            backgroundColor: "var(--mantine-color-gray-6)",
+            padding: 4,
+          }}
+        />
+        <Text size="xs">Unknown</Text>
+      </Flex>
+    );
+  };
+
+  const appInfo = [
+    { label: "Port", value: app?.port, icon: <LuScreenShare /> },
+    { label: "Replicas", value: app?.replicas, icon: <TbCopy /> },
+    { label: "Age", value: app?.age },
+    {
+      label: "Status",
+      value: getAppStatus(app?.app_running_status),
+    },
+  ];
+  return (
+    <Stack gap={20}>
+      <TitleText
+        rightSection={
+          <Button
+            color="gray.9"
+            variant="filled"
+            size="sm"
+            radius="md"
+            leftSection={<TbWorld />}
+            onClick={() => window.open(app?.url, "_blank")}
+          >
+            Vist
+          </Button>
+        }
+      >
+        {app?.name}
+      </TitleText>
+      <Card p="lg" radius="md" withBorder>
+        <Stack gap={20}>
+          <Flex gap={20} wrap="wrap">
+            <Stack gap={5}>
+              <Text className="subtitle">Image</Text>
+              <Code>
+                <CustomText size="sm" leftSection={<FaDocker color="gray.7" />}>
+                  {app?.image}
+                </CustomText>
+              </Code>
+            </Stack>
+            <Stack gap={5} w="fit-content">
+              <CustomText className="subtitle" leftSection={<TbWorld />}>
+                Domain
+              </CustomText>
+              <Text
+                component={Link}
+                size="sm"
+                to={app?.url}
+                target="_blank"
+                className="link"
+              >
+                {app?.url}
+                <FiExternalLink />
+              </Text>
+            </Stack>
+          </Flex>
+          <Grid>
+            {appInfo.map((info) => (
+              <Grid.Col span={{ base: 12, md: 4, lg: 3 }} key={info.label}>
+                <Flex>
+                  <Stack gap={5}>
+                    <Text className="subtitle">{info.label}</Text>
+                    <CustomText size="sm" leftSection={info?.icon}>
+                      {info.value}
+                    </CustomText>
+                  </Stack>
+                </Flex>
+              </Grid.Col>
+            ))}
+          </Grid>
+        </Stack>
+      </Card>
+    </Stack>
+  );
 };
 
 export default AppDetailPage;

@@ -23,6 +23,7 @@ import { Link, matchPath, useLocation, useNavigate } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { PiCubeLight } from "react-icons/pi";
+import { LuLogs } from "react-icons/lu";
 
 export type TLeftMenuType = "home" | "project" | "admin" | "app";
 
@@ -113,6 +114,12 @@ const LeftMenu = ({
       icon: HiOutlineSquares2X2,
       key: "dashboard",
       link: `/projects/${projectId}/apps/${appId}`,
+    },
+    {
+      label: "Logs",
+      icon: LuLogs,
+      key: "logs",
+      link: `/projects/${projectId}/apps/${appId}/logs`,
     },
     {
       label: "Metrics",

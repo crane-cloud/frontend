@@ -35,10 +35,10 @@ export const useGetProject = (project_id: string) => {
 
   useEffect(() => {
     if (success) {
-      setProject(projectData.data.project);
-      setCluster(projectData.data.cluster);
+      setProject(projectData?.data?.project || {});
+      setCluster(projectData?.data?.cluster || {});
       if (setTitle) {
-        setTitle(projectData.data.project.name);
+        setTitle(projectData?.data?.project?.name || "");
       }
     }
   }, [success, projectData]);
@@ -68,12 +68,16 @@ export const useGetApp = (app_id: string) => {
       api: `apps`,
     });
   }, []);
+
   useEffect(() => {
     if (success) {
-      setApp(appData.data.app);
-      setProjectId(appData.data.app.project_id || "");
+      setApp(appData?.data?.apps || {});
+      setProjectId(appData?.data?.apps?.project_id || "");
       if (setTitle) {
-        setTitle(appData.data.app.name);
+        setTitle(appData?.data?.apps?.name);
+      }
+      if (app?.disabled && setSubtitle) {
+        setSubtitle("Disabled");
       }
     }
   }, [success, appData]);
@@ -85,6 +89,7 @@ export const useGetApp = (app_id: string) => {
     }
     if (setTitle && success) {
       setTitle(app?.name);
+
       if (app?.disabled && setSubtitle) {
         setSubtitle("Disabled");
       }

@@ -30,3 +30,20 @@ const TitleText: React.FC<TitleTextProps> = ({
 };
 
 export default TitleText;
+
+interface CustomTextProps extends TextProps {
+  leftSection?: React.ReactNode;
+  children: React.ReactNode;
+}
+
+export const CustomText = React.forwardRef<
+  HTMLParagraphElement,
+  CustomTextProps
+>(({ leftSection, children, ...props }, ref) => (
+  <Text ref={ref} {...props}>
+    <Flex align="center" gap={4}>
+      {leftSection}
+      {children}
+    </Flex>
+  </Text>
+));

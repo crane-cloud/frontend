@@ -167,7 +167,7 @@ const GeneralTab = ({
                 <Flex>
                   <Stack gap={1}>
                     <Text className="subtitle">{info.label}</Text>
-                    <Text>{info.value}</Text>
+                    <Text size="sm">{info.value}</Text>
                   </Stack>
                 </Flex>
               </Grid.Col>

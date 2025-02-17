@@ -25,3 +25,14 @@
   margin: 0;
   padding: 0;
 }
+
+.link {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.link:hover {
+  text-decoration: underline !important;
+}
