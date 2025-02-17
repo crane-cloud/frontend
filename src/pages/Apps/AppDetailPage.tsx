@@ -1,7 +1,16 @@
 import React from "react";
 import { useGetApp, useSetContainerSize } from "@/utils/helpers";
 import { Link, useParams } from "react-router-dom";
-import { Button, Card, Code, Flex, Grid, Stack, Text } from "@mantine/core";
+import {
+  Button,
+  Card,
+  Code,
+  Flex,
+  Grid,
+  Skeleton,
+  Stack,
+  Text,
+} from "@mantine/core";
 import TitleText, { CustomText } from "@/components/TitleText";
 import { TbCopy, TbWorld } from "react-icons/tb";
 import { FiExternalLink } from "react-icons/fi";
@@ -10,7 +19,7 @@ import { LuScreenShare } from "react-icons/lu";
 
 const AppDetailPage = () => {
   const { app_id } = useParams();
-  const { app } = useGetApp(app_id || "");
+  const { app, loading } = useGetApp(app_id || "");
   useSetContainerSize("md");
 
   const getAppStatus = (status: string) => {
@@ -90,50 +99,85 @@ const AppDetailPage = () => {
         {app?.name}
       </TitleText>
       <Card p="lg" radius="md" withBorder>
-        <Stack gap={20}>
-          <Flex gap={20} wrap="wrap">
-            <Stack gap={5}>
-              <Text className="subtitle">Image</Text>
-              <Code>
-                <CustomText size="sm" leftSection={<FaDocker color="gray.7" />}>
-                  {app?.image}
+        {loading ? (
+          <AppDetailsSkeleton />
+        ) : (
+          <Stack gap={20}>
+            <Flex gap={20} wrap="wrap">
+              <Stack gap={5}>
+                <Text className="subtitle">Image</Text>
+                <Code>
+                  <CustomText
+                    size="sm"
+                    leftSection={<FaDocker color="gray.7" />}
+                  >
+                    {app?.image}
+                  </CustomText>
+                </Code>
+              </Stack>
+              <Stack gap={5} w="fit-content">
+                <CustomText className="subtitle" leftSection={<TbWorld />}>
+                  Domain
                 </CustomText>
-              </Code>
-            </Stack>
-            <Stack gap={5} w="fit-content">
-              <CustomText className="subtitle" leftSection={<TbWorld />}>
-                Domain
-              </CustomText>
-              <Text
-                component={Link}
-                size="sm"
-                to={app?.url}
-                target="_blank"
-                className="link"
-              >
-                {app?.url}
-                <FiExternalLink />
-              </Text>
-            </Stack>
-          </Flex>
-          <Grid>
-            {appInfo.map((info) => (
-              <Grid.Col span={{ base: 12, md: 4, lg: 3 }} key={info.label}>
-                <Flex>
-                  <Stack gap={5}>
-                    <Text className="subtitle">{info.label}</Text>
-                    <CustomText size="sm" leftSection={info?.icon}>
-                      {info.value}
-                    </CustomText>
-                  </Stack>
-                </Flex>
-              </Grid.Col>
-            ))}
-          </Grid>
-        </Stack>
+                <Text
+                  component={Link}
+                  size="sm"
+                  to={app?.url}
+                  target="_blank"
+                  className="link"
+                >
+                  {app?.url}
+                  <FiExternalLink />
+                </Text>
+              </Stack>
+            </Flex>
+            <Grid>
+              {appInfo.map((info) => (
+                <Grid.Col span={{ base: 12, md: 4, lg: 3 }} key={info.label}>
+                  <Flex>
+                    <Stack gap={5}>
+                      <Text className="subtitle">{info.label}</Text>
+                      <CustomText size="sm" leftSection={info?.icon}>
+                        {info.value}
+                      </CustomText>
+                    </Stack>
+                  </Flex>
+                </Grid.Col>
+              ))}
+            </Grid>
+          </Stack>
+        )}
       </Card>
     </Stack>
   );
 };
 
 export default AppDetailPage;
+
+const AppDetailsSkeleton = () => {
+  return (
+    <Stack gap={25}>
+      <Flex gap={20} wrap="wrap">
+        <Stack gap={10} w={200} flex={1}>
+          <Skeleton height={16} width="30%" />
+          <Skeleton height={15} />
+        </Stack>
+        <Stack gap={10} w={200} flex={1}>
+          <Skeleton height={16} width="30%" />
+          <Skeleton height={15} />
+        </Stack>
+      </Flex>
+
+      <Grid>
+        {[1, 2, 3, 4].map((i) => (
+          <Grid.Col span={{ base: 12, md: 4, lg: 3 }} key={i}>
+            <Stack gap={10}>
+              <Skeleton height={15} width="40%" />
+              <Skeleton height={20} width="80%" />
+            </Stack>
+          </Grid.Col>
+        ))}
+      </Grid>
+    </Stack>
+  );
+};
