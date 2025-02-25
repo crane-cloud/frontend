@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import useGet from "./useGet";
 import { MenuContext } from "@/components/Layouts/DashboardLayout";
+import { Badge } from "@mantine/core";
+import { TbCheck, TbX } from "react-icons/tb";
 
 export const beautify = (str: string) => {
   return (str || "")
@@ -111,4 +113,37 @@ export const useSetContainerSize = (size: string) => {
       setContainerSize("xl");
     };
   }, [setContainerSize, size]);
+};
+
+export const getDatabaseStatus = (status: string) => {
+  if (status) {
+    return (
+      <Badge
+        color="green"
+        variant="outline"
+        size="xs"
+        leftSection={<TbCheck />}
+      >
+        Ready
+      </Badge>
+    );
+  }
+  return (
+    <Badge color="red" variant="outline" size="xs" leftSection={<TbX />}>
+      Not Ready
+    </Badge>
+  );
+};
+
+export const numberFormat = (value: number) =>
+  Number(value || 0).toLocaleString();
+
+export const getConnectionString = (database: any) => {
+  if (!database) {
+    return "";
+  }
+  if (database?.database_flavour_name === "postgres") {
+    return `postgresql://${database?.user}:${database?.password}@${database?.host}:${database?.port}/${database?.name}`;
+  }
+  return `mysql://${database?.user}:${database?.password}@${database?.host}:${database?.port}/${database?.name}`;
 };
