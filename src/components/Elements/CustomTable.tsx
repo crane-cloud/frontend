@@ -61,12 +61,15 @@ export const Table = ({
         {!noHeader && (
           <MantineTable.Thead>
             <MantineTable.Tr>
-              {showIndex && <MantineTable.Th style={{ fontSize: "85%" }}>#</MantineTable.Th>}
-              {columns?.map((column) => (
+              {showIndex && <MantineTable.Th>#</MantineTable.Th>}
+              {columns?.map((column, columnIndex) => (
                 <MantineTable.Th
                   key={column.id}
                   className={column.noWrap ? "no-wrap" : ""}
-                  style={{ fontSize: "85%" }}
+                  style={{
+                    textAlign:
+                      columnIndex === columns.length - 1 ? "right" : "left",
+                  }}
                 >
                   <Text className="capitalize">{column.header}</Text>
                 </MantineTable.Th>
@@ -91,14 +94,18 @@ export const Table = ({
                 $clickable={!!rowClick}
               >
                 {showIndex && (
-                  <MantineTable.Td style={{ fontSize: "85%" }}>
+                  <MantineTable.Td>
                     {item?.index || startValue + idx}
                   </MantineTable.Td>
                 )}
-                {columns.map((column) => (
+                {columns.map((column, columnIndex) => (
                   <MantineTable.Td
                     key={column.id}
                     className={column.noWrap ? "no-wrap" : ""}
+                    style={{
+                      textAlign:
+                        columnIndex === columns.length - 1 ? "right" : "left",
+                    }}
                   >
                     {item[column.id] ||
                       (noEmptyText && <Text c="dimmed">Empty</Text>)}
@@ -118,11 +125,15 @@ export const Table = ({
         {tableTotals && Object.keys(tableTotals).length > 0 && (
           <MantineTable.Tfoot>
             <MantineTable.Tr>
-              <MantineTable.Th style={{ fontSize: "85%" }}>
-                Totals
-              </MantineTable.Th>
-              {columns.map((column) => (
-                <MantineTable.Th key={column.id} style={{ fontSize: "85%" }}>
+              <MantineTable.Th>Totals</MantineTable.Th>
+              {columns.map((column, columnIndex) => (
+                <MantineTable.Th
+                  key={column.id}
+                  style={{
+                    textAlign:
+                      columnIndex === columns.length - 1 ? "right" : "left",
+                  }}
+                >
                   <Text fw={700}>{tableTotals[column.id]}</Text>
                 </MantineTable.Th>
               ))}
@@ -133,9 +144,15 @@ export const Table = ({
         {tableFooter && (
           <MantineTable.Tfoot>
             <MantineTable.Tr>
-              <MantineTable.Th style={{ fontSize: "85%" }}>#</MantineTable.Th>
-              {columns.map((column) => (
-                <MantineTable.Th key={column.id} style={{ fontSize: "85%" }}>
+              <MantineTable.Th>#</MantineTable.Th>
+              {columns.map((column, columnIndex) => (
+                <MantineTable.Th
+                  key={column.id}
+                  style={{
+                    textAlign:
+                      columnIndex === columns.length - 1 ? "right" : "left",
+                  }}
+                >
                   {tableFooter[column.id]}
                 </MantineTable.Th>
               ))}
@@ -147,14 +164,16 @@ export const Table = ({
   );
 };
 
+const StyledTableRow = styled(MantineTable.Tr)<{
+  $hover: boolean;
+  $clickable: boolean;
+}>`
+  cursor: ${(props) => (props.$clickable ? "pointer" : "default")};
 
-
-
-const StyledTableRow = styled(MantineTable.Tr)<{ $hover: boolean, $clickable: boolean }>`
-  cursor: ${props => props.$clickable ? 'pointer' : 'default'};
-  
   &:hover {
-    ${props => props.$hover && `
+    ${(props) =>
+      props.$hover &&
+      `
       background-color: var(--mantine-color-gray-2);
     `}
   }

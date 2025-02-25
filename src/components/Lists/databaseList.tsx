@@ -13,6 +13,7 @@ const DatabaseList = (props: any) => {
   const { project_id, refresh } = props;
   const { getData: getDatabases, data: databases, loading } = useGet();
   const navigate = useNavigate();
+
   useEffect(() => {
     getDatabases({
       api: `${DATABASE_API_URL}/databases`,
