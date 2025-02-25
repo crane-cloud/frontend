@@ -2,7 +2,7 @@ import { DashboardHeader } from "@/components/Header";
 import LeftMenu, { TLeftMenuType } from "@/components/Navbars/LeftMenu";
 import { AppShell, Container } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useState, createContext } from "react";
+import { useState, createContext, useMemo } from "react";
 
 export const MenuContext = createContext<{
   menuType: TLeftMenuType;
@@ -43,22 +43,23 @@ export const DashboardLayout = ({
   const [containerSize, setContainerSize] = useState<string>("xl");
   const [subtitle, setSubtitle] = useState<string>("");
   const [appId, setAppId] = useState<string>("");
+
+  const contextValue = useMemo(() => ({
+    menuType,
+    setMenuType,
+    projectId,
+    setProjectId,
+    title,
+    setTitle,
+    subtitle,
+    setSubtitle,
+    setContainerSize,
+    appId,
+    setAppId,
+  }), [menuType, projectId, appId, title, subtitle, containerSize]);
+
   return (
-    <MenuContext.Provider
-      value={{
-        menuType,
-        setMenuType,
-        projectId,
-        setProjectId,
-        title,
-        setTitle,
-        subtitle,
-        setSubtitle,
-        setContainerSize,
-        appId,
-        setAppId,
-      }}
-    >
+    <MenuContext.Provider value={contextValue}>
       <AppShell
         header={{ height: 60 }}
         navbar={{

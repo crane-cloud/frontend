@@ -19,13 +19,6 @@ export const useGetProject = (project_id: string) => {
   const [cluster, setCluster] = useState<any>({});
   const [refresh, setRefresh] = useState(false);
 
-  // useEffect(() => {
-  //   getData({
-  //     id: project_id,
-  //     api: `projects`,
-  //   });
-  // }, []);
-
   useEffect(() => {
     getData({
       id: project_id,
@@ -52,7 +45,7 @@ export const useGetProject = (project_id: string) => {
         setSubtitle("Disabled");
       }
     }
-  }, [setMenuType, setProjectId, project_id, project]);
+  }, [setMenuType, project_id, project]);
 
   return { project, cluster, loading, success, refresh, setRefresh };
 };

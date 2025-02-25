@@ -21,7 +21,7 @@ import {
 } from "react-icons/hi2";
 import { Link, matchPath, useLocation, useNavigate } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5";
-import { useEffect, useState } from "react";
+import React,{ useCallback, useEffect, useMemo, useState } from "react";
 import { PiCubeLight } from "react-icons/pi";
 import { LuLogs } from "react-icons/lu";
 
@@ -42,7 +42,7 @@ interface INavLink {
   description?: string;
 }
 
-const LeftMenu = ({
+const LeftMenu = React.memo(({
   menuType,
   projectId,
   title,
@@ -54,118 +54,90 @@ const LeftMenu = ({
   const [showProjectHeader, setShowProjectHeader] = useState(false);
   const navigate = useNavigate();
 
-  const homeNavbarLinks: INavLink[] = [
-    {
-      label: "Home",
-      icon: HiOutlineSquares2X2,
-      key: "home",
-      link: "/",
-    },
+  // Get IDs from URL as fallback
+  const getPathIds = () => {
+    const pathMatch = matchPath(
+      { 
+        path: "/projects/:project_id/apps/:app_id", 
+        end: false 
+      }, 
+      location.pathname
+    );
+    return {
+      projectId: pathMatch?.params?.project_id || projectId,
+      appId: pathMatch?.params?.app_id || appId
+    };
+  };
 
-    {
-      label: "Settings",
-      icon: HiOutlineCog6Tooth,
-      key: "settings",
-      link: "/settings",
-    },
-  ];
-  const projectNavbarLinks: INavLink[] = [
-    {
-      label: "Dashboard",
-      icon: HiOutlineSquares2X2,
-      key: "dashboard",
-      link: `/projects/${projectId}`,
-    },
-    {
-      label: "Applications",
-      icon: PiCubeLight,
-      key: "applications",
-      link: `/projects/${projectId}/apps`,
-    },
-    {
-      label: "Databases",
-      icon: HiOutlineCircleStack,
-      key: "databases",
-      link: `/projects/${projectId}/databases`,
-    },
-    {
-      label: "Users",
-      icon: HiOutlineUsers,
-      key: "users",
-      link: `/projects/${projectId}/users`,
-    },
-    {
-      label: "Metrics",
-      icon: HiOutlineChartBar,
-      key: "metrics",
-      link: `/projects/${projectId}/metrics`,
-    },
-    {
-      label: "Settings",
-      icon: HiOutlineCog6Tooth,
-      key: "settings",
-      link: `/projects/${projectId}/settings`,
-    },
-  ];
+  const homeNavbarLinks = useMemo(() => [
+    { label: "Home", icon: HiOutlineSquares2X2, key: "home", link: "/" },
+    { label: "Settings", icon: HiOutlineCog6Tooth, key: "settings", link: "/settings" },
+  ], []);
 
-  const appsNavbarLinks: INavLink[] = [
-    {
-      label: "Dashboard",
-      icon: HiOutlineSquares2X2,
-      key: "dashboard",
-      link: `/projects/${projectId}/apps/${appId}`,
-    },
-    {
-      label: "Logs",
-      icon: LuLogs,
-      key: "logs",
-      link: `/projects/${projectId}/apps/${appId}/logs`,
-    },
-    {
-      label: "Metrics",
-      icon: HiOutlineChartBar,
-      key: "metrics",
-      link: `/projects/${projectId}/apps/${appId}/metrics`,
-    },
-    {
-      label: "Settings",
-      icon: HiOutlineCog6Tooth,
-      key: "settings",
-      link: `/projects/${projectId}/apps/${appId}/settings`,
-    },
-  ];
-  const adminNavbarLinks: INavLink[] = [
-    {
-      label: "Users",
-      icon: HiOutlineUsers,
-      key: "users",
-      link: "/users",
-    },
-  ];
+  const getProjectNavbarLinks = useCallback((project_id: string) => [
+    { label: "Dashboard", icon: HiOutlineSquares2X2, key: "dashboard", link: `/projects/${project_id}` },
+    { label: "Applications", icon: PiCubeLight, key: "applications", link: `/projects/${project_id}/apps` },
+    { label: "Databases", icon: HiOutlineCircleStack, key: "databases", link: `/projects/${project_id}/databases` },
+    { label: "Users", icon: HiOutlineUsers, key: "users", link: `/projects/${project_id}/users` },
+    { label: "Metrics", icon: HiOutlineChartBar, key: "metrics", link: `/projects/${project_id}/metrics` },
+    { label: "Settings", icon: HiOutlineCog6Tooth, key: "settings", link: `/projects/${project_id}/settings` },
+  ], []);
+
+  const getAppNavbarLinks = useCallback((project_id: string, app_id: string) => [
+    { label: "Dashboard", icon: HiOutlineSquares2X2, key: "dashboard", link: `/projects/${project_id}/apps/${app_id}` },
+    { label: "Logs", icon: LuLogs, key: "logs", link: `/projects/${project_id}/apps/${app_id}/logs` },
+    { label: "Metrics", icon: HiOutlineChartBar, key: "metrics", link: `/projects/${project_id}/apps/${app_id}/metrics` },
+    { label: "Settings", icon: HiOutlineCog6Tooth, key: "settings", link: `/projects/${project_id}/apps/${app_id}/settings` },
+  ], []);
+
   useEffect(() => {
+    const { projectId: project_id, appId: app_id } = getPathIds();
+    
     switch (menuType) {
       case "home":
         setNavbarLinks(homeNavbarLinks);
         setShowProjectHeader(false);
         break;
       case "project":
-        setNavbarLinks(projectNavbarLinks);
-        setShowProjectHeader(true);
+        if (project_id) {
+          setNavbarLinks(getProjectNavbarLinks(project_id));
+          setShowProjectHeader(true);
+        }
         break;
       case "app":
-        setNavbarLinks(appsNavbarLinks);
-        setShowProjectHeader(true);
+        if (project_id && app_id) {
+          setNavbarLinks(getAppNavbarLinks(project_id, app_id));
+          setShowProjectHeader(true);
+        }
         break;
       default:
-        setNavbarLinks(adminNavbarLinks);
+        setNavbarLinks(homeNavbarLinks);
         setShowProjectHeader(false);
         break;
     }
-  }, [menuType]);
+  }, [menuType, projectId, appId, location.pathname]);
 
   const backNavigation = () => {
-    navigate(-1);
+    const { projectId: project_id, appId: app_id } = getPathIds();
+    if (app_id) {
+      navigate(`/projects/${project_id}`);
+    } else if (project_id) {
+      navigate("/");
+    } else {
+      navigate(-1);
+    }
   };
+  // const backNavigation = () => {
+  //   if (appId) {
+  //     navigate(`/projects/${projectId}`);
+  //   } else if (projectId) {
+  //     navigate("/");
+  //   } else {
+  //     navigate(-1);
+  //   }
+  // };
+  // useEffect(() => {
+  // }, [appId, projectId]);
 
   return (
     <AppShell.Navbar p="5px">
@@ -230,6 +202,6 @@ const LeftMenu = ({
       </AppShell.Section>
     </AppShell.Navbar>
   );
-};
+});
 
 export default LeftMenu;
