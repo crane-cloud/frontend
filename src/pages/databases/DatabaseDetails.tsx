@@ -13,6 +13,7 @@ import {
   Tooltip,
   ActionIcon,
   Skeleton,
+  PasswordInput,
 } from "@mantine/core";
 import { HiLockOpen, HiLockClosed, HiTrash } from "react-icons/hi";
 import TitleText from "@/components/TitleText";
@@ -35,13 +36,20 @@ import { TbBrandMysql, TbCopy } from "react-icons/tb";
 import moment from "moment";
 import { useClipboard } from "@mantine/hooks";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
+import useForm from "@/hooks/useForm";
+import { showNotification } from "@mantine/notifications";
+import { MdOutlineLock } from "react-icons/md";
 
 const DatabaseDetails = () => {
   const [deleteConfirmOpened, setDeleteConfirmOpened] = useState(false);
   const [disableConfirmOpened, setDisableConfirmOpened] = useState(false);
   const [enableConfirmOpened, setEnableConfirmOpened] = useState(false);
-  const [updateConfirmOpened, setUpdateConfirmOpened] = useState(false);
   const [resetConfirmOpened, setResetConfirmOpened] = useState(false);
+  const [changePasswordConfirmOpened, setChangePasswordConfirmOpened] =
+    useState(false);
+  const { form: changePasswordForm, onChange: changePasswordOnChange } =
+    useForm();
+
   const { database_id, project_id } = useParams();
   const clipboard = useClipboard({ timeout: 500 });
   const [database, setDatabase] = useState<any>({});
@@ -58,27 +66,33 @@ const DatabaseDetails = () => {
   } = useGet();
 
   const {
-    uploadData: deleteProject,
-    submitting: deletingProject,
-    success: deletedProjectSuccess,
+    uploadData: deleteDatabase,
+    submitting: deletingDatabase,
+    success: deletedDatabaseSuccess,
   } = usePost();
 
   const {
-    uploadData: disableProject,
-    submitting: disablingProject,
-    success: disabledProjectSuccess,
+    uploadData: disableDatabase,
+    submitting: disablingDatabase,
+    success: disabledDatabaseSuccess,
   } = usePost();
 
   const {
-    uploadData: enableProject,
-    submitting: enablingProject,
-    success: enabledProjectSuccess,
+    uploadData: enableDatabase,
+    submitting: enablingDatabase,
+    success: enabledDatabaseSuccess,
   } = usePost();
 
   const {
-    uploadData: resetProject,
+    uploadData: resetDatabase,
     submitting: resettingDatabase,
-    success: resetProjectSuccess,
+    success: resetDatabaseSuccess,
+  } = usePost();
+
+  const {
+    uploadData: changePasswordDatabase,
+    submitting: changingPasswordDatabase,
+    success: changedPasswordDatabaseSuccess,
   } = usePost();
 
   const navigate = useNavigate();
@@ -88,19 +102,13 @@ const DatabaseDetails = () => {
       api: `${DATABASE_API_URL}/databases/${database_id}`,
       isExternal: true,
     });
-  }, [database_id]);
-
-  useEffect(() => {
-    if (deletedProjectSuccess || disabledProjectSuccess) {
-      navigate("/");
-    }
-  }, [deletedProjectSuccess, disabledProjectSuccess]);
-
-  useEffect(() => {
-    if (enabledProjectSuccess) {
-      navigate(`/database/${database?.id}`);
-    }
-  }, [enabledProjectSuccess]);
+  }, [
+    database_id,
+    changedPasswordDatabaseSuccess,
+    resetDatabaseSuccess,
+    disabledDatabaseSuccess,
+    enabledDatabaseSuccess,
+  ]);
 
   useEffect(() => {
     if (successDatabase) {
@@ -110,34 +118,78 @@ const DatabaseDetails = () => {
   }, [successDatabase]);
 
   const handleDelete = () => {
-    deleteProject({
+    deleteDatabase({
       id: database?.id,
-      api: `${DATABASE_API_URL}/databases/${database?.id}`,
+      api: `${DATABASE_API_URL}/databases`,
       method: "DELETE",
       isExternal: true,
+      successMessage: "Database deleted successfully",
     });
   };
 
   const handleDisable = () => {
-    disableProject({
+    disableDatabase({
       api: `${DATABASE_API_URL}/databases/${database?.id}/disable`,
       isExternal: true,
     });
   };
 
   const handleEnable = () => {
-    enableProject({
+    enableDatabase({
       api: `${DATABASE_API_URL}/databases/${database?.id}/enable`,
       isExternal: true,
     });
   };
-
   const handleReset = () => {
-    resetProject({
+    resetDatabase({
       api: `${DATABASE_API_URL}/databases/${database?.id}/reset`,
       isExternal: true,
+      successMessage: "Database reset successfully",
     });
   };
+
+  const handleChangePassword = () => {
+    if (changePasswordForm.password !== changePasswordForm.confirm_password) {
+      showNotification({
+        title: "Opps!",
+        message: "Passwords do not match",
+        color: "red",
+      });
+      return;
+    }
+    changePasswordDatabase({
+      api: `${DATABASE_API_URL}/databases/${database?.id}/reset_password`,
+      params: { password: changePasswordForm.password },
+      isExternal: true,
+      successMessage: "Password changed successfully",
+    });
+  };
+
+  useEffect(() => {
+    if (deletedDatabaseSuccess) {
+      navigate(`/projects/${project_id}/databases`);
+    }
+  }, [deletedDatabaseSuccess]);
+
+  useEffect(() => {
+    if (changedPasswordDatabaseSuccess) {
+      setChangePasswordConfirmOpened(false);
+    }
+    if (resetDatabaseSuccess) {
+      setResetConfirmOpened(false);
+    }
+    if (disabledDatabaseSuccess) {
+      setDisableConfirmOpened(false);
+    }
+    if (enabledDatabaseSuccess) {
+      setEnableConfirmOpened(false);
+    }
+  }, [
+    changedPasswordDatabaseSuccess,
+    resetDatabaseSuccess,
+    disabledDatabaseSuccess,
+    enabledDatabaseSuccess,
+  ]);
 
   const projectInfo = [
     {
@@ -329,7 +381,7 @@ const DatabaseDetails = () => {
               </Stack>
               <Button
                 variant="outline"
-                onClick={() => setUpdateConfirmOpened(true)}
+                onClick={() => setChangePasswordConfirmOpened(true)}
                 leftSection={<LiaExchangeAltSolid />}
               >
                 Change Password
@@ -392,9 +444,9 @@ const DatabaseDetails = () => {
             <Divider />
             <Group justify="space-between" align="center">
               <Stack gap={0}>
-                <Text className="title">Delete Project</Text>
+                <Text className="title">Delete Database</Text>
                 <Text className="subtext">
-                  This action is irreversible and will delete the project
+                  This action is irreversible and will delete the database
                   permanently.
                 </Text>
               </Stack>
@@ -415,7 +467,7 @@ const DatabaseDetails = () => {
             buttonColor="red"
             buttonText="Delete"
             onConfirm={handleDelete}
-            loading={deletingProject}
+            loading={deletingDatabase}
             leftSection={<HiTrash />}
           >
             Are you sure you want to delete <b>{database?.name}</b> database
@@ -428,7 +480,7 @@ const DatabaseDetails = () => {
             title="Disable Database"
             buttonText="Disable"
             onConfirm={handleDisable}
-            loading={disablingProject}
+            loading={disablingDatabase}
             buttonColor="red"
             leftSection={<HiLockClosed />}
           >
@@ -442,7 +494,7 @@ const DatabaseDetails = () => {
             buttonText="Enable"
             buttonColor="green"
             onConfirm={handleEnable}
-            loading={enablingProject}
+            loading={enablingDatabase}
             leftSection={<HiLockOpen />}
           >
             Are you sure you want to enable <b>{database?.name}</b> database?
@@ -459,6 +511,36 @@ const DatabaseDetails = () => {
             loading={resettingDatabase}
           >
             Are you sure you want to reset <b>{database?.name}</b> database?
+          </ModalConfirm>
+          <ModalConfirm
+            opened={changePasswordConfirmOpened}
+            onClose={() => setChangePasswordConfirmOpened(false)}
+            title="Change Password"
+            buttonText="Change"
+            buttonColor="red"
+            onConfirm={handleChangePassword}
+            loading={changingPasswordDatabase}
+          >
+            <form onSubmit={handleChangePassword}>
+              <Stack gap={20}>
+                <PasswordInput
+                  placeholder="New Password"
+                  label="New Password"
+                  name="password"
+                  required
+                  onChange={changePasswordOnChange}
+                  leftSection={<MdOutlineLock />}
+                />
+                <PasswordInput
+                  placeholder="Confirm New Password"
+                  label="Confirm New Password"
+                  name="confirm_password"
+                  required
+                  onChange={changePasswordOnChange}
+                  leftSection={<MdOutlineLock />}
+                />
+              </Stack>
+            </form>
           </ModalConfirm>
         </Card>
       </Stack>
