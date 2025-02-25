@@ -10,6 +10,7 @@ import CreateProjectForm from "./components/Forms/CreateProjectForm";
 import CreateAppForm from "./components/Forms/CreateAppForm";
 import AppDetailPage from "./pages/Apps/AppDetailPage";
 import AppLogsPage from "./pages/Apps/AppLogsPage";
+import DatabasePage from "./pages/databases/DatabasePage";
 const ProjectDetailsPage = React.lazy(
   () => import("./pages/Projects/ProjectDetailsPage")
 );
@@ -30,4 +31,6 @@ export const DashboardRoutes = [
   { path: "/projects/:project_id/apps/create", element: <CreateAppForm /> },
   { path: "/projects/:project_id/apps/:app_id", element: <AppDetailPage /> },
   { path: "/projects/:project_id/apps/:app_id/logs", element: <AppLogsPage /> },
+  // Databases
+  { path: "/projects/:project_id/databases", element: <DatabasePage /> },
 ];

@@ -21,8 +21,8 @@ import { IoMdSend } from "react-icons/io";
 import { useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import TitleText from "@/components/TitleText";
-import { Table } from "@/components/Elements/Table";
 import { MenuContext } from "../../components/Layouts/DashboardLayout";
+import { Table } from "@/components/Elements/CustomTable";
 
 const ProjectUsers = () => {
   const { project_id } = useParams();

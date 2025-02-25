@@ -17,6 +17,11 @@ export const PROJECT_TYPES = [
   { label: "Other", id: 6, value: "Others" },
 ];
 
+export const DATABASE_FLAVOURS = [
+  { label: "PostgreSQL", id: 1, value: "postgres" },
+  { label: "MySQL", id: 2, value: "mysql" },
+];
+
 export const FRAMEWORKS = [
   { id: 1, label: "HTML-CSS-JS", value: "Html-CSS-JS" },
   { id: 2, label: "ReactJs", value: "React" },

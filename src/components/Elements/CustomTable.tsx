@@ -1,4 +1,5 @@
 import { Table as MantineTable, Text, Skeleton, Card } from "@mantine/core";
+import styled from "styled-components";
 
 export interface Column {
   id: string;
@@ -26,6 +27,10 @@ interface TableProps {
   striped?: boolean | "odd" | "even";
   noHeader?: boolean;
   header?: () => React.ReactNode;
+  props?: any;
+  showIndex?: boolean;
+  rowHover?: boolean;
+  rowClick?: (item: any) => void;
 }
 
 export const Table = ({
@@ -40,15 +45,23 @@ export const Table = ({
   striped = true,
   noHeader = false,
   header,
+  props,
+  showIndex = true,
+  rowHover = false,
+  rowClick,
 }: TableProps) => {
   return (
     <Card withBorder p="md" radius="md">
       {header && header()}
-      <MantineTable striped={striped} verticalSpacing={verticalSpacing}>
+      <MantineTable
+        striped={striped}
+        verticalSpacing={verticalSpacing}
+        {...props}
+      >
         {!noHeader && (
           <MantineTable.Thead>
             <MantineTable.Tr>
-              <MantineTable.Th style={{ fontSize: "85%" }}>#</MantineTable.Th>
+              {showIndex && <MantineTable.Th style={{ fontSize: "85%" }}>#</MantineTable.Th>}
               {columns?.map((column) => (
                 <MantineTable.Th
                   key={column.id}
@@ -71,10 +84,17 @@ export const Table = ({
             </MantineTable.Tr>
           ) : data?.length ? (
             data.map((item, idx) => (
-              <MantineTable.Tr key={item.id || idx}>
-                <MantineTable.Td style={{ fontSize: "85%" }}>
-                  {item?.index || startValue + idx}
-                </MantineTable.Td>
+              <StyledTableRow
+                key={item.id || idx}
+                onClick={() => rowClick && rowClick(item)}
+                $hover={rowHover}
+                $clickable={!!rowClick}
+              >
+                {showIndex && (
+                  <MantineTable.Td style={{ fontSize: "85%" }}>
+                    {item?.index || startValue + idx}
+                  </MantineTable.Td>
+                )}
                 {columns.map((column) => (
                   <MantineTable.Td
                     key={column.id}
@@ -84,7 +104,7 @@ export const Table = ({
                       (noEmptyText && <Text c="dimmed">Empty</Text>)}
                   </MantineTable.Td>
                 ))}
-              </MantineTable.Tr>
+              </StyledTableRow>
             ))
           ) : (
             <MantineTable.Tr>
@@ -126,3 +146,16 @@ export const Table = ({
     </Card>
   );
 };
+
+
+
+
+const StyledTableRow = styled(MantineTable.Tr)<{ $hover: boolean, $clickable: boolean }>`
+  cursor: ${props => props.$clickable ? 'pointer' : 'default'};
+  
+  &:hover {
+    ${props => props.$hover && `
+      background-color: var(--mantine-color-gray-2);
+    `}
+  }
+`;

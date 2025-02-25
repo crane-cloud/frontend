@@ -65,7 +65,8 @@ function useAxios() {
   ): AxiosRequestConfig => {
     const headers = new AxiosHeaders({
       "Content-Type": options.type ?? "application/json",
-      ...(options.isExternal ? {} : { Authorization: `Bearer ${authToken}` })
+      // ...(options.isExternal ? {} : { Authorization: `Bearer ${authToken}` })
+      ...({ Authorization: `Bearer ${authToken}` })
     });
 
     return {
