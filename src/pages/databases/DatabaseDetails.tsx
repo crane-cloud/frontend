@@ -12,6 +12,7 @@ import {
   Input,
   Tooltip,
   ActionIcon,
+  Skeleton,
 } from "@mantine/core";
 import { HiLockOpen, HiLockClosed, HiTrash } from "react-icons/hi";
 import TitleText from "@/components/TitleText";
@@ -211,100 +212,109 @@ const DatabaseDetails = () => {
     <Stack gap={30}>
       <Stack gap={0}>
         <TitleText>Database Details</TitleText>
-        <Card p="lg" radius="md" withBorder>
-          <Grid>
-            {projectInfo.map((info) => (
-              <Grid.Col span={{ base: 6, md: 4, lg: 4 }}>
-                <Flex>
-                  <Stack gap={1}>
-                    <Text className="subtitle">{info.label}</Text>
-                    <Text size="sm">{info.value}</Text>
-                  </Stack>
-                </Flex>
-              </Grid.Col>
-            ))}
-          </Grid>
-        </Card>
+        {isLoadingDatabase ? (
+          <DatabaseDetailsSkeleton />
+        ) : (
+          <Card p="lg" radius="md" withBorder>
+            <Grid>
+              {projectInfo.map((info) => (
+                <Grid.Col span={{ base: 6, md: 4, lg: 4 }}>
+                  <Flex>
+                    <Stack gap={1}>
+                      <Text className="subtitle">{info.label}</Text>
+                      <Text size="sm">{info.value}</Text>
+                    </Stack>
+                  </Flex>
+                </Grid.Col>
+              ))}
+            </Grid>
+          </Card>
+        )}
       </Stack>
       <Stack gap={0}>
         <TitleText>Database Connection</TitleText>
-        <Card p="lg" radius="md" withBorder>
-          <Stack gap="sm">
-            {connectionInfo.map((info) => (
-              <Flex
-                key={info.label}
-                justify="space-between"
-                align="center"
-                w="100%"
-              >
-                <Text className="subtitle" w="20%">
-                  {info.label}
-                </Text>
-                <Group gap="xs" w="80%">
-                  {info.hidden && (
-                    <Tooltip
-                      label={showFields[info.label] ? "Hide" : "Show"}
-                      withArrow
-                      position="right"
-                    >
-                      <ActionIcon
-                        variant="default"
-                        style={{ cursor: "pointer" }}
-                        onClick={() =>
-                          setShowFields((prev) => ({
-                            ...prev,
-                            [info.label]: !prev[info.label],
-                          }))
-                        }
+        {isLoadingDatabase ? (
+          <DatabaseConnectionSkeleton />
+        ) : (
+          <Card p="lg" radius="md" withBorder>
+            <Stack gap="sm">
+              {connectionInfo.map((info) => (
+                <Flex
+                  key={info.label}
+                  justify="space-between"
+                  align="center"
+                  w="100%"
+                  gap={5}
+                >
+                  <Text className="subtitle" w="20%">
+                    {info.label}
+                  </Text>
+                  <Group gap="xs" w="80%">
+                    {info.hidden && (
+                      <Tooltip
+                        label={showFields[info.label] ? "Hide" : "Show"}
+                        withArrow
+                        position="right"
                       >
-                        {showFields[info.label] ? (
-                          <AiOutlineEyeInvisible size={16} />
-                        ) : (
-                          <AiOutlineEye size={16} />
-                        )}
-                      </ActionIcon>
-                    </Tooltip>
-                  )}
-                  <Tooltip
-                    label={clipboard.copied ? "Copied" : "Copy"}
-                    position="right"
-                    withArrow
-                  >
-                    <Input
-                      value={info.value}
-                      readOnly
-                      variant="filled"
-                      style={{ flex: 1 }}
-                      styles={{
-                        input: {
-                          cursor: "pointer",
-                          outline: "none",
-                          border: "none",
-                        },
-                      }}
-                      type={
-                        info.hidden
-                          ? showFields[info.label]
-                            ? "text"
-                            : "password"
-                          : "text"
-                      }
-                      rightSection={<TbCopy />}
-                      rightSectionProps={{
-                        onClick: () => {
+                        <ActionIcon
+                          variant="default"
+                          style={{ cursor: "pointer" }}
+                          onClick={() =>
+                            setShowFields((prev) => ({
+                              ...prev,
+                              [info.label]: !prev[info.label],
+                            }))
+                          }
+                        >
+                          {showFields[info.label] ? (
+                            <AiOutlineEyeInvisible size={16} />
+                          ) : (
+                            <AiOutlineEye size={16} />
+                          )}
+                        </ActionIcon>
+                      </Tooltip>
+                    )}
+                    <Tooltip
+                      label={clipboard.copied ? "Copied" : "Copy"}
+                      position="right"
+                      withArrow
+                    >
+                      <Input
+                        value={info.value}
+                        readOnly
+                        variant="filled"
+                        style={{ flex: 1 }}
+                        styles={{
+                          input: {
+                            cursor: "pointer",
+                            outline: "none",
+                            border: "none",
+                          },
+                        }}
+                        type={
+                          info.hidden
+                            ? showFields[info.label]
+                              ? "text"
+                              : "password"
+                            : "text"
+                        }
+                        rightSection={<TbCopy />}
+                        rightSectionProps={{
+                          onClick: () => {
+                            clipboard.copy(info.value);
+                          },
+                        }}
+                        onClick={() => {
                           clipboard.copy(info.value);
-                        },
-                      }}
-                      onClick={() => {
-                        clipboard.copy(info.value);
-                      }}
-                    />
-                  </Tooltip>
-                </Group>
-              </Flex>
-            ))}
-          </Stack>
-        </Card>
+                        }}
+                      />
+                    </Tooltip>
+                  </Group>
+                </Flex>
+              ))}
+            </Stack>
+          </Card>
+        )}
       </Stack>
       <Stack gap={0}>
         <TitleText>Danger Zone</TitleText>
@@ -457,3 +467,35 @@ const DatabaseDetails = () => {
 };
 
 export default DatabaseDetails;
+
+const DatabaseDetailsSkeleton = () => (
+  <Card p="lg" radius="md" withBorder>
+    <Grid>
+      {[...Array(6)].map((_, i) => (
+        <Grid.Col key={i} span={{ base: 6, md: 4, lg: 4 }}>
+          <Flex>
+            <Stack gap={7}>
+              <Skeleton height={18} width={60} />
+              <Skeleton height={14} width={150} />
+            </Stack>
+          </Flex>
+        </Grid.Col>
+      ))}
+    </Grid>
+  </Card>
+);
+
+const DatabaseConnectionSkeleton = () => (
+  <Card p="lg" radius="md" withBorder>
+    <Stack gap="sm">
+      {[...Array(6)].map((_, i) => (
+        <Flex key={i} justify="space-between" align="center" w="100%" gap={20}>
+          <Skeleton height={20} width="20%" />
+          <Group gap="xs" w="80%">
+            <Skeleton height={36} width="100%" />
+          </Group>
+        </Flex>
+      ))}
+    </Stack>
+  </Card>
+);
