@@ -377,10 +377,10 @@
 .ActivityMonthTitle::after {
     content: "";
     position: absolute;
-    width: 80%;
+    width: 75%;
     height: 1px;
     bottom: 50%;
-    left: 7rem;
+    left: 8rem;
     background-color: #000;
 
 }
@@ -440,7 +440,7 @@
     /* justify-content: space-between; */
     gap: 1rem;
     margin-bottom: 5px;
-    margin-left: 2rem;
+    /* margin-left: 2rem; */
 
 }
 

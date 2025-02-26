@@ -4,9 +4,9 @@ import {userActivityLoggerAxios} from "./../axios";
 export const useRecentActivity = (page, userID) => {
   let link;
   if (userID !== "") {
-    link = `/activity_feed?user_id=${userID}&page=${page}`;
+    link = `/activities?user_id=${userID}&page=${page}`;
   } else {
-    link = `/activity_feed`;
+    link = `/activities?general=true`;
   }
 
   return useQuery({

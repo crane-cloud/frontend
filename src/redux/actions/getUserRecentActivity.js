@@ -27,13 +27,13 @@ const getUserRecentActivities = (userID, currentPage, pageSize=10) => async (dis
 
   let link;
   if (userID !== "") {
-    link = `/activity_feed?user_id=${userID}&page=${currentPage}&per_page=${pageSize}`;
+    link = `/activities?a_user_id=${userID}&page=${currentPage}&per_page=${pageSize}&general=true`;
   } else {
-    link = `/activity_feed`;
+    link = `/activities&general=true`;
   }
   try {
     const response = await userActivityLoggerAxios.get(link);
-    dispatch(userRecentActivitiesSuccess(response.data.user_feed));
+    dispatch(userRecentActivitiesSuccess(response.data));
   } catch (error) {
     dispatch(userRecentActivitiesFailed(error));
   }

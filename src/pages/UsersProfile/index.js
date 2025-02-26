@@ -169,30 +169,31 @@ const UsersProfile = () => {
       const activity = {
         type: item.operation,
         description: item.description,
-        projects: item?.project
+        involved_username: item?.user_name,
+        status: item.status,
+        projects: item?.a_project_id
           ? [
               {
-                id: item.project.id,
-                name: item.project.name,
+                id: item.a_project_id,
                 apps: item.a_app_id ? 1 : 0,
               },
             ]
           : [],
-        users: item?.a_user
+        users: item?.user_id
           ? [
               {
-                id: item.a_user.id,
-                name: item.a_user.name,
-                email: item.a_user.email,
+                id: item?.a_user_id,
+                name: item?.user_name,
+                email: item?.user_email,
               },
             ]
           : [],
-        apps: item?.app
+        apps: item?.a_app_id
           ? [
               {
-                id: item.app.id,
-                name: item.app.name,
-                url: item.app.url,
+                id: item.a_app_id,
+                // name: item.app.name,
+                // url: item.app.url,
               },
             ]
           : [],
