@@ -59,8 +59,9 @@ const UserFeedActivities = ({
                     <span className={styles.ActivityType}>
                       {act.type === "Updated" ? <UpdateIcon /> : <CreateIcon />}
                     </span>
+                   
                     <span className={styles.ActivityDescription}>
-                      {act.description}
+                    {act.involved_username}: {act.description}
                     </span>
                   </div>
                   {expanded[activity.id] && (
@@ -70,13 +71,13 @@ const UserFeedActivities = ({
                           {act.apps.map((app, index) => (
                              <div key={index} className={styles.ActivityProject}>
                               <span>App:</span>
-                            <a
-                             href={app.url}
+                            <div
+                            //  href={app.url}
                              target="blank"
                             className={styles.ActivityProjectName}
                           >
-                            {app.name}
-                          </a>
+                            {app.id}
+                          </div>
                           </div>
                           ))}
                         </div>
@@ -93,7 +94,7 @@ const UserFeedActivities = ({
                                 }}
                                 className={styles.ActivityProjectName}
                               >
-                                {project.name}
+                                {project.id}
                               </Link>
                             </div>
                           ))}

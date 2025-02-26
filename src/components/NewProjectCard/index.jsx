@@ -13,12 +13,23 @@ const NewProjectCard = ({
   type,
   number = 0,
   showFollowButton,
-  isRecentActivity =false,
+  isRecentActivity = false,
   projectFollowers = 0,
 }) => {
   return (
     <div className={styles.projectCard}>
       <div className={styles.cardContent}>
+        {isRecentActivity && (
+          // because project information in recent activity  is not returned
+          <div className={`${styles.viewProject} ${styles.title}`}>
+            <Link
+              to={`/projects/${projectID}/dashboard`}
+              className={styles.linkBlue}
+            >
+              View Project
+            </Link>
+          </div>
+        )}
         <h3 className={styles.title}>
           <Link
             to={{
@@ -30,24 +41,26 @@ const NewProjectCard = ({
             {name}
           </Link>
         </h3>
-        <div className={styles.appCount}>
-          <div className={styles.countAndIcon}>
-            <ProjectMembers
-              className={styles.membersIcon}
-              title={"Project followers"}
-            />
-            <span className={styles.memberCount}>
-              {formatCount(projectFollowers)}
-            </span>
+        {!isRecentActivity && (
+          <div className={styles.appCount}>
+            <div className={styles.countAndIcon}>
+              <ProjectMembers
+                className={styles.membersIcon}
+                title={"Project followers"}
+              />
+              <span className={styles.memberCount}>
+                {formatCount(projectFollowers)}
+              </span>
+            </div>
+            <div className={styles.countAndIcon}>
+              <Deployments
+                className={styles.membersIcon}
+                title={"Project apps"}
+              />
+              <span className={styles.memberCount}>{formatCount(number)}</span>
+            </div>
           </div>
-          <div className={styles.countAndIcon}>
-            <Deployments
-              className={styles.membersIcon}
-              title={"Project apps"}
-            />
-            <span className={styles.memberCount}>{formatCount(number)}</span>
-          </div>
-        </div>
+        )}
         <p className={styles.description}>{description}</p>
 
         {/* <div className={styles.cardExtras}>
@@ -61,17 +74,17 @@ const NewProjectCard = ({
             </>
           )}
         </div> */}
-        {!isRecentActivity &&(
-        <div className={styles.cardExtras}>
-          <div className={styles.cardSummary}>
-            <div className={styles.statItem}>
-              <span>Organisation: {organization}</span>
-            </div>
-            <div className={styles.statItem}>
-              <span>Type: {type}</span>
+        {!isRecentActivity && (
+          <div className={styles.cardExtras}>
+            <div className={styles.cardSummary}>
+              <div className={styles.statItem}>
+                <span>Organisation: {organization}</span>
+              </div>
+              <div className={styles.statItem}>
+                <span>Type: {type}</span>
+              </div>
             </div>
           </div>
-        </div>
         )}
       </div>
       {!showFollowButton && number !== undefined ? (

@@ -26,13 +26,14 @@ const RecentActivityItem = ({ item }) => {
           ) : item?.a_project_id != null ? (
             <NewProjectCard
               isRecentActivity = {true}
-              projectID={item?.project?.id}
-              name={item?.project?.name}
-              description={item?.project?.description}
-              organization={item?.project?.organisation}
-              type={item?.project?.project_type}
+              projectID={item?.a_project_id}
+              description={item?.description}
+              // most of this data is not returned in the recent activity
+              name={item?.name}
+              organization={item?.organisation}
+              type={item?.project_type}
               showFollowers={false}
-              projectFollowers={item?.project?.followers_count}
+              projectFollowers={item?.followers_count}
             />
           ) : item?.a_user_id != null ? (
             <NewUserCard userID={item?.a_user_id} showFollowBtn={false} />

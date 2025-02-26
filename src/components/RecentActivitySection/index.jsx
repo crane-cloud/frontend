@@ -22,6 +22,7 @@ const RecentActivitySection = () => {
 
   return (
     <div className={styles.recentActivity}>
+      
       <h2 className={styles.title}>Recent Activity</h2>
 
       {isFetchingRecentActivities ? (
@@ -42,7 +43,7 @@ const RecentActivitySection = () => {
               </p>
             </div>
           ) : (
-            userRecentActivities?.data?.user_feed?.data?.activity.slice(0,4).map((item, index) => (
+            userRecentActivities?.data?.data?.activity.slice(0,4).map((item, index) => (
               <React.Fragment key={index}>
                 <RecentActivityItem item={item} />
               </React.Fragment>
