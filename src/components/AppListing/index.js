@@ -1,27 +1,35 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import Pagination from "../../components/Pagination";
 import Spinner from "../Spinner";
+import { useAppList } from "../../hooks/useApps";
 
 const AppListing = (props) => {
-  const { currentPage, gettingApps, handlePageChange } = props;
+  const {
+    sectionValue,
+    currentPage,
+    currentPaginationPage,
+    handleChangePage,
+    setCurrentPaginationPage,
+  } = props;
 
-  const { isFetching, apps, isFetched, pagination } = useSelector(
-    (state) => state.appsAdminListReducer
+  const { data: response, isLoading } = useAppList(
+    sectionValue,
+    currentPaginationPage
   );
 
-  useEffect(() => {
-    gettingApps(currentPage);
-  }, [gettingApps, currentPage]);
-
   const history = useHistory();
+
+  const handlePageChange = (currentPage) => {
+    handleChangePage(currentPage);
+    setCurrentPaginationPage(currentPage);
+  };
 
   return (
     <div className="ContentSection">
       <div
         className={
-          isFetching ? "ResourcesTable LoadingResourcesTable" : "ResourcesTable"
+          isLoading ? "ResourcesTable LoadingResourcesTable" : "ResourcesTable"
         }
       >
         <table className="UsersTable">
@@ -33,7 +41,7 @@ const AppListing = (props) => {
               <th>Age</th>
             </tr>
           </thead>
-          {isFetching ? (
+          {isLoading ? (
             <tbody>
               <tr className="TableLoading">
                 <td className="TableTdSpinner">
@@ -45,11 +53,11 @@ const AppListing = (props) => {
             </tbody>
           ) : (
             <tbody>
-              {isFetched &&
-                apps !== undefined &&
-                apps?.map((app) => (
+              {!isLoading &&
+                response?.data?.data?.apps !== undefined &&
+                response?.data?.data?.apps?.map((app) => (
                   <tr
-                    key={apps.indexOf(app)}
+                    key={response?.data?.data?.apps.indexOf(app)}
                     onClick={() => {
                       history.push(`/apps/${app?.id}`);
                     }}
@@ -64,12 +72,12 @@ const AppListing = (props) => {
           )}
         </table>
 
-        {isFetched && apps.length === 0 && (
+        {response?.data?.data?.apps.length === 0 && (
           <div className="AdminNoResourcesMessage">
             <p>No apps Available</p>
           </div>
         )}
-        {!isFetching && !isFetched && (
+        {!isLoading && response?.data?.data?.apps?.length === 0 && (
           <div className="AdminNoResourcesMessage">
             <p>
               Oops! Something went wrong! Failed to retrieve Available apps.
@@ -77,10 +85,10 @@ const AppListing = (props) => {
           </div>
         )}
       </div>
-      {pagination?.pages > 1 && (
+      {response?.data?.data?.pagination?.pages > 1 && (
         <div className="AdminPaginationSection">
           <Pagination
-            total={pagination.pages}
+            total={response?.data?.data?.pagination?.pages}
             current={currentPage}
             onPageChange={handlePageChange}
           />
