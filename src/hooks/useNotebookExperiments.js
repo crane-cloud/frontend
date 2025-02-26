@@ -1,14 +1,28 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { mlopsAxios } from "./../axios";
 
-// fetch all experiments
-export const useExperimentList = () => {
+// fetch all experiments for user
+export const useUserExperimentList = (userId) => {
   return useQuery({
-    queryKey: ["experiments"],
+    queryKey: ["userExperiments", userId],
     queryFn: async () => {
-      const response = await mlopsAxios.get("/experiments");
+      const response = await mlopsAxios.get(`/experiments?user_id=${userId}`);
       return response.data.data;
     },
+  });
+};
+
+// fetch all experiments for app
+export const useAppExperimentList = (appAlias) => {
+  return useQuery({
+    queryKey: ["appExperiments", appAlias],
+    queryFn: async () => {
+      const response = await mlopsAxios.get(
+        `/experiments?app_alias=${appAlias}`
+      );
+      return response.data.data;
+    },
+    enabled: !!appAlias,
   });
 };
 
@@ -50,6 +64,24 @@ export const useExperimentRunDetails = (runId) => {
   });
 };
 
+// create an experiment
+export const useExperimentCreate = (appAlias, userId) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      console.log(`${appAlias}, ${userId}`);
+      const response = await mlopsAxios.post(
+        `/experiments?user_id=${userId}&app_alias=${appAlias}`
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["appExperiments"]);
+    },
+  });
+};
+
 // delete a notebook experiment run by ID
 export const useExperimentRunDelete = () => {
   const queryClient = useQueryClient();
@@ -66,16 +98,16 @@ export const useExperimentRunDelete = () => {
 };
 
 // delete a notebook experiment by ID
-export const useExperimentDelete = () => {
+export const useExperimentDelete = (experimentId) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (experimentId) => {
+    mutationFn: async () => {
       const response = await mlopsAxios.delete(`/experiments/${experimentId}`);
       return response.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["experiments"]);
+      queryClient.invalidateQueries(["appExperiments"]);
     },
   });
 };
