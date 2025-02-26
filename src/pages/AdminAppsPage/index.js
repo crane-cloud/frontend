@@ -1,6 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useDispatch } from "react-redux";
-import getAppsList from "../../redux/actions/adminApps";
+import React, { useState, useEffect } from "react";
 import { getAppCategories } from "../../helpers/getAppCategories";
 import Header from "../../components/Header";
 import InformationBar from "../../components/InformationBar";
@@ -28,17 +26,17 @@ import { filterGraphData } from "../../helpers/filterGraphData.js";
 import { retrieveMonthNames } from "../../helpers/monthNames.js";
 
 const AdminAppsPage = () => {
-  // const [apps, setApps] = useState([]);
   const [appTotal, setAppTotal] = useState([]);
   const [appGraphData, setAppGraphData] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
   const [period, setPeriod] = useState("all");
-  //sectionValue will be set when being used
-  const [, setSectionValue] = useState("all");
+  const [sectionValue, setSectionValue] = useState("all");
   const [word, setWord] = useState("");
+  const [is_notebook, setIsNotebook] = useState();
+  const [disabledApps, setDisabledApps] = useState();
   const [currentPage, handleChangePage] = usePaginator();
-  const dispatch = useDispatch();
+  const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
 
   let filteredGraphData = [];
 
@@ -53,6 +51,8 @@ const AdminAppsPage = () => {
       const response = await handleGetRequest("/apps?series=true");
       setAppGraphData(response.data.data.graph_data);
       setAppTotal(response.data.data.metadata.total_apps);
+      setIsNotebook(response.data.data.metadata.is_notebook);
+      setDisabledApps(response.data.data.metadata.disabled);
     } catch (error) {
       setFeedback("Failed to fetch Apps metrics");
     } finally {
@@ -67,21 +67,12 @@ const AdminAppsPage = () => {
   const availableAppCategories = getAppCategories();
 
   const handleSectionChange = (selectedOption) => {
+   
     const selectedValue = selectedOption.value;
     setSectionValue(selectedValue);
   };
 
-  const gettingApps = useCallback(
-    () => dispatch(getAppsList(currentPage, word)),
-    [currentPage, dispatch, word]
-  );
-  
   const handleCallbackSearchword = ({ target: { value } }) => setWord(value);
-
-  const handlePageChange = (currentPage) => {
-    handleChangePage(currentPage);
-    gettingApps();
-  };
 
   filteredGraphData = filterGraphData(appGraphData, period);
 
@@ -121,6 +112,14 @@ const AdminAppsPage = () => {
               <NewResourceCard
                 title="Down Apps"
                 count={Math.floor(appTotal * 0.1)}
+              />
+              <NewResourceCard
+                title="Notebooks"
+                count={is_notebook}
+              />
+              <NewResourceCard
+                title="Disabled Apps"
+                count={disabledApps}
               />
             </div>
           )}
@@ -365,11 +364,14 @@ const AdminAppsPage = () => {
               </span>
             </div>
           </div>
-          {/* {sectionValue === "active" ? } */}
+
           <AppListing
-            gettingApps={gettingApps}
-            handlePageChange={handlePageChange}
+            handleChangePage={handleChangePage}
+            word={word}
             currentPage={currentPage}
+            sectionValue={sectionValue}
+            currentPaginationPage={currentPaginationPage}
+            setCurrentPaginationPage={setCurrentPaginationPage}
           />
         </div>
       </div>
