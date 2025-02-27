@@ -1,0 +1,22 @@
+.NoResourcesMessageSection {
+    flex-grow: 1;
+    display: flex;
+    height: 50vh;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    padding: 6rem;
+}
+
+.NoResourcesMessage {
+    font-size: 16px;
+    text-align: center;
+    justify-content: center;
+}
+
+.ButtonPlusSmall {
+    display: inline;
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+}

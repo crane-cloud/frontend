@@ -78,6 +78,7 @@ import UsersDashboardPage from "./pages/UsersDashboard";
 import TagDetailsPage from "./pages/TagDetailsPage";
 
 import NotebookExperimentPage from "./pages/NotebookExperimentPage";
+import NotebookDeploymentsPage from "./pages/NotebookDeploymentsPage";
 
 //import toast for online-offline status
 import { toast } from "react-toastify";
@@ -231,14 +232,8 @@ const Routes = () => {
         <ProtectedRoute
           isAllowed={hasToken}
           exact
-          path="/projects/:projectID/apps/:appID/experiments/:experimentID/details"
-          component={NotebookExperimentPage}
-        />
-        <ProtectedRoute
-          isAllowed={hasToken}
-          exact
           path="/projects/:projectID/apps/:appID/deployments"
-          component={NotebookExperimentPage}
+          component={NotebookDeploymentsPage}
         />
         <ProtectedRoute
           isAllowed={hasToken}
