@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./NotebookExperimentRunsPage.module.css";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
-import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { handleGetRequest } from "../../apis/apis";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import PrimaryButton from "../../components/PrimaryButton";
 import NotebookExperimentDetailsPage from "../NotebookRunDetailsPage/index.jsx";
-import Select from "../../components/Select";
 import Modal from "../../components/Modal";
-import BlackInputText from "../../components/BlackInputText";
 import {
+  useExperimentRunArtifacts,
   useExperimentRunDelete,
   useExperimentRuns,
 } from "../../hooks/useNotebookExperiments";
@@ -22,15 +20,14 @@ const NotebookExperimentRunsPage = ({
   path,
   setViewExperimentRuns,
 }) => {
-  console.log("app", appInfo);
-  console.log("anha", experiment);
-
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectedExperimentRun, setSelectedExperimentRun] = useState("");
   const [viewRunDetails, setViewRunDetails] = useState(false);
 
   // modals
   const [spin, setSpin] = useState(false);
+  const [deleteExperimentRunModal, setDeleteExperimentRunModal] =
+    useState(false);
   const [deleteExperimentRunsModal, setDeleteExperimentRunsModal] =
     useState(false);
 
@@ -39,7 +36,11 @@ const NotebookExperimentRunsPage = ({
     experiment.experiment_id
   );
 
-  console.log("runnns", experimentRuns);
+  // download experiment run artifacts
+  const { isFetching, refetch } = useExperimentRunArtifacts(
+    experiment.experiment_id,
+    selectedExperimentRun.run_id
+  );
 
   // delete runs for an experiment
   const deleteRunsMutation = useExperimentRunDelete();
@@ -49,12 +50,45 @@ const NotebookExperimentRunsPage = ({
     // setSelectedExperimentRun(runId);
   };
 
-  const handleSelectRow = (id) => {
-    setSelectedExperimentRun(id);
+  const handleDownload = async () => {
+    try {
+      const { data } = await refetch();
+
+      // Ensure data is a Blob (ZIP file)
+      if (!data || !(data instanceof Blob)) {
+        console.error("Invalid file data received:", data);
+        alert("Failed to download the file. Please try again.");
+        return;
+      }
+
+      // Create a URL for the ZIP blob
+      const blobUrl = URL.createObjectURL(data);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+
+      // Set filename with .zip extension
+      const filename = `${selectedExperimentRun.run_name}-artifact.zip`;
+      a.download = filename.endsWith(".zip") ? filename : `${filename}.zip`;
+
+      // Trigger the download
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      // Clean up the object URL
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Download failed:", error);
+      alert("An error occurred while downloading the file.");
+    }
+  };
+
+  const handleSelectRow = (row) => {
+    setSelectedExperimentRun(row);
     setSelectedRows((prevSelected) =>
-      prevSelected.includes(id)
-        ? prevSelected.filter((rowId) => rowId !== id)
-        : [...prevSelected, id]
+      prevSelected.includes(row.run_id)
+        ? prevSelected.filter((rowId) => rowId !== row.run_id)
+        : [...prevSelected, row.run_id]
     );
   };
 
@@ -66,21 +100,35 @@ const NotebookExperimentRunsPage = ({
   //     );
   //   };
 
-  //   const handleDeleteSelected = async () => {
-  //     if (selectedRows.length === 0) return;
+  const handleDeleteSelectedRun = async () => {
+    if (selectedRows.length === 0) return;
 
-  //     setSpin(true);
-  //     try {
-  //       await Promise.all(
-  //         selectedRows.map((id) => deleteRunsMutation.mutateAsync(id))
-  //       );
-  //       setSpin(false);
-  //       setDeleteExperimentRunsModal(false);
-  //       setSelectedRows([]);
-  //     } catch (error) {
-  //       console.error("Error deleting experiment runs:", error);
-  //     }
-  //   };
+    setSpin(true);
+    try {
+      deleteRunsMutation.mutateAsync(selectedExperimentRun.run_id);
+      setSpin(false);
+      setDeleteExperimentRunModal(false);
+      setSelectedRows([]);
+    } catch (error) {
+      console.error("Error deleting experiment runs:", error);
+    }
+  };
+
+  const handleDeleteSelected = async () => {
+    if (selectedRows.length === 0) return;
+
+    setSpin(true);
+    try {
+      await Promise.all(
+        selectedRows.map((id) => deleteRunsMutation.mutateAsync(id))
+      );
+      setSpin(false);
+      setDeleteExperimentRunsModal(false);
+      setSelectedRows([]);
+    } catch (error) {
+      console.error("Error deleting experiment runs:", error);
+    }
+  };
 
   return (
     <>
@@ -114,7 +162,7 @@ const NotebookExperimentRunsPage = ({
                       <>
                         <PrimaryButton
                           color="red"
-                          // onClick={() => setDeleteExperimentRunsModal(true)}
+                          onClick={() => setDeleteExperimentRunsModal(true)}
                           disabled={selectedRows.length === 0}
                         >
                           Delete runs
@@ -133,21 +181,16 @@ const NotebookExperimentRunsPage = ({
                         </PrimaryButton>
                         <PrimaryButton
                           color="primary"
-                          onClick={() => setViewRunDetails(true)}
+                          onClick={() => handleDownload()}
                           disabled={selectedRows.length === 0}
                         >
-                          Download run artifacts
-                        </PrimaryButton>
-                        <PrimaryButton
-                          color="primary-outline"
-                          // onClick={() => setDeleteExperimentRunsModal(true)}
-                          disabled={selectedRows.length === 0}
-                        >
-                          Update Run
+                          {isFetching
+                            ? "Downloading..."
+                            : "Download run artifacts"}
                         </PrimaryButton>
                         <PrimaryButton
                           color="red"
-                          // onClick={() => setDeleteExperimentRunsModal(true)}
+                          onClick={() => setDeleteExperimentRunModal(true)}
                           disabled={selectedRows.length === 0}
                         >
                           Delete run
@@ -219,7 +262,7 @@ const NotebookExperimentRunsPage = ({
                               <input
                                 type="checkbox"
                                 checked={selectedRows.includes(row.run_id)}
-                                onChange={() => handleSelectRow(row.run_id)}
+                                onChange={() => handleSelectRow(row)}
                               />
                             </td>
                             <td>{row.run_name}</td>
@@ -262,33 +305,29 @@ const NotebookExperimentRunsPage = ({
               </div>
             </div>
 
-            {/* <Modal
-        //   showModal={deleteExperimentModal}
-        //   onClickAway={() => {
-        //     setDeleteExperimentModal(false);
-        //   }}
-        >
-          <div className="ModalContainer">
-            <h2>Are you sure you want to delete this experiment run ?</h2>
-            <div className="ModalActions">
-              <PrimaryButton
-                color="primary"
-                onClick={() => {
-                  //   setDeleteExperimentModal(false);
-                }}
-              >
-                Cancel
-              </PrimaryButton>
-              <PrimaryButton
-              // onClick={() => {
-              //   handleDeleteSelectedExperiment();
-              // }}
-              >
-                {spin ? <Spinner /> : "Delete"}
-              </PrimaryButton>
-            </div>
-          </div>
-        </Modal> */}
+            <Modal
+              showModal={deleteExperimentRunModal}
+              onClickAway={() => {
+                setDeleteExperimentRunModal(false);
+              }}
+            >
+              <div className="ModalContainer">
+                <h2>Are you sure you want to delete this experiment run ?</h2>
+                <div className="ModalActions">
+                  <PrimaryButton
+                    color="primary"
+                    onClick={() => {
+                      setDeleteExperimentRunModal(false);
+                    }}
+                  >
+                    Cancel
+                  </PrimaryButton>
+                  <PrimaryButton onClick={() => handleDeleteSelectedRun()}>
+                    {spin ? <Spinner /> : "Delete"}
+                  </PrimaryButton>
+                </div>
+              </div>
+            </Modal>
 
             <Modal
               showModal={deleteExperimentRunsModal}
@@ -307,9 +346,9 @@ const NotebookExperimentRunsPage = ({
                   >
                     Cancel
                   </PrimaryButton>
-                  {/* <PrimaryButton onClick={handleDeleteSelected}>
-                {spin ? <Spinner /> : "Delete"}
-              </PrimaryButton> */}
+                  <PrimaryButton onClick={() => handleDeleteSelected()}>
+                    {spin ? <Spinner /> : "Delete"}
+                  </PrimaryButton>
                 </div>
               </div>
             </Modal>
@@ -320,7 +359,7 @@ const NotebookExperimentRunsPage = ({
           <NotebookExperimentDetailsPage
             path={path}
             appInfo={appInfo}
-            runId={selectedExperimentRun}
+            runId={selectedExperimentRun.run_id}
             setViewRunDetails={setViewRunDetails}
           />
         </>

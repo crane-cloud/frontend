@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./NotebookExperimentPage.module.css";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
 import {
@@ -8,7 +8,6 @@ import {
 import { handleGetRequest } from "../../apis/apis";
 import PrimaryButton from "../../components/PrimaryButton";
 import Modal from "../../components/Modal";
-import BlackInputText from "../../components/BlackInputText";
 import {
   useAppExperimentList,
   useExperimentCreate,
@@ -21,6 +20,7 @@ import { useSelector } from "react-redux";
 
 const NotebookExperimentPage = () => {
   const { appID } = useParams();
+  const codeRef = useRef(null);
   const user = useSelector((state) => state.user);
 
   const location = useLocation();
@@ -32,8 +32,9 @@ const NotebookExperimentPage = () => {
 
   // modals
   const [spin, setSpin] = useState(false);
-  const [createExperimentModal, setCreateExperimentModal] = useState(false);
-  const [editExperimentModal, setEditExperimentModal] = useState(false);
+  const [openNewRun, setOpenNewRun] = useState(false);
+  const [activeTab, setActiveTab] = useState("instructions");
+  const [copySuccess, setCopySuccess] = useState(false);
   const [deleteExperimentModal, setDeleteExperimentModal] = useState(false);
 
   // create an experiment
@@ -54,7 +55,6 @@ const NotebookExperimentPage = () => {
   };
 
   const handleSelectRow = (row) => {
-    console.log("selected", row.experiment_id);
     setSelectedExperiment(row);
     setSelectedRows((prevSelected) =>
       prevSelected.includes(row.experiment_id)
@@ -64,21 +64,22 @@ const NotebookExperimentPage = () => {
   };
 
   const handleCreateExperiment = () => {
+    setSpin(true);
     try {
       createExperimentMutation.mutate();
+      setSpin(false);
     } catch (error) {
       console.error("Error creating experiment:", error);
     }
   };
 
   const handleDeleteSelectedExperiment = async () => {
-    if (!selectedExperiment) return;
-
     setSpin(true);
     try {
       deleteExperimentMutation.mutate();
       setSpin(false);
       setDeleteExperimentModal(false);
+      window.location.reload();
     } catch (error) {
       console.error("Error deleting experiment:", error);
     }
@@ -110,6 +111,45 @@ const NotebookExperimentPage = () => {
 
   const appInfo = getAppInfo();
 
+  // Code to copy
+  const exampleCode = `!pip install mlflow
+import mlflow
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_diabetes
+from sklearn.ensemble import RandomForestRegressor
+from mlflow.tracking import MlflowClient
+
+# Connect to MLflow server and set experiment
+mlflow.set_tracking_uri("https://mlflow.ahumain.cranecloud.io")
+mlflow.set_experiment(experiment_id="${selectedExperiment.experiment_id}")
+
+# Enable automatic logging
+mlflow.autolog()
+
+# Load and prepare data
+db = load_diabetes()
+X_train, X_test, y_train, y_test = train_test_split(db.data, db.target)
+
+# Create and train models
+rf = RandomForestRegressor(n_estimators=100, max_depth=6, max_features=3)
+rf.fit(X_train, y_train)
+
+# Use the model to make predictions on the test dataset
+predictions = rf.predict(X_test)`;
+
+  const copyToClipboard = () => {
+    navigator.clipboard
+      .writeText(exampleCode)
+      .then(() => {
+        setCopySuccess(true);
+        // Reset success message after 2 seconds
+        setTimeout(() => setCopySuccess(false), 2000);
+      })
+      .catch((err) => {
+        console.error("Failed to copy code: ", err);
+      });
+  };
+
   return (
     <>
       {!viewExperimentRuns ? (
@@ -118,152 +158,155 @@ const NotebookExperimentPage = () => {
           header={"Notebook Experiments"}
           appCategory={"notebook"}
           showBtn
-          buttontext="+ create experiment"
+          buttontext={spin ? <Spinner /> : "+ create experiment"}
           btnAction={handleCreateExperiment}
         >
           <div className={styles.AppMetricsPage}>
             <div className={styles.Container}>
               <>
-                {isLoading ? (
-                  <tbody>
-                    <tr className="TableLoading">
-                      <td className="TableTdSpinner">
-                        <div className="SpinnerWrapper">
-                          <Spinner size="big" />
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                ) : (
-                  <>
-                    <div className={styles.Header}>
-                      <div className={styles.RightDashboardButtons}>
-                        {selectedRows.length > 1 && (
-                          <>
-                            <PrimaryButton
-                              color="red"
-                              // onClick={() => setDeleteExperimentRunsModal(true)}
-                              disabled={selectedRows.length === 0}
-                            >
-                              Delete experiments
-                            </PrimaryButton>
-                          </>
-                        )}
+                <div className={styles.Header}>
+                  <div className={styles.RightDashboardButtons}>
+                    {selectedRows.length > 1 && (
+                      <>
+                        <PrimaryButton
+                          color="red"
+                          // onClick={() => setDeleteExperimentRunsModal(true)}
+                          disabled={selectedRows.length === 0}
+                        >
+                          Delete experiments
+                        </PrimaryButton>
+                      </>
+                    )}
 
-                        {selectedRows.length === 1 && (
-                          <>
-                            <PrimaryButton
-                              color="primary-outline"
-                              onClick={() => setEditExperimentModal(true)}
-                              disabled={selectedRows.length === 0}
-                            >
-                              + Create new run
-                            </PrimaryButton>
-                            <PrimaryButton
-                              color="primary"
-                              onClick={() => setViewExperimentRuns(true)}
-                              disabled={selectedRows.length === 0}
-                            >
-                              View experiment runs
-                            </PrimaryButton>
-                            <PrimaryButton
-                              color="red"
-                              onClick={() => setDeleteExperimentModal(true)}
-                              disabled={selectedRows.length === 0}
-                            >
-                              Delete experiment
-                            </PrimaryButton>
-                          </>
-                        )}
-                      </div>
-                    </div>
+                    {selectedRows.length === 1 && (
+                      <>
+                        <PrimaryButton
+                          color="primary-outline"
+                          onClick={() => setOpenNewRun(true)}
+                          disabled={selectedRows.length === 0}
+                        >
+                          + Add new run
+                        </PrimaryButton>
+                        <PrimaryButton
+                          color="primary"
+                          onClick={() => setViewExperimentRuns(true)}
+                          disabled={selectedRows.length === 0}
+                        >
+                          View experiment runs
+                        </PrimaryButton>
+                        <PrimaryButton
+                          color="red"
+                          onClick={() => setDeleteExperimentModal(true)}
+                          disabled={selectedRows.length === 0}
+                        >
+                          {spin ? <Spinner /> : "Delete experiment"}
+                        </PrimaryButton>
+                      </>
+                    )}
+                  </div>
+                </div>
 
-                    <div className="ResourcesTable">
-                      <table className="UsersTable">
-                        <thead className="uppercase">
-                          <tr>
-                            <th>
+                <div
+                  className={
+                    isLoading
+                      ? "ResourcesTable LoadingResourcesTable"
+                      : "ResourcesTable"
+                  }
+                >
+                  <table className="UsersTable">
+                    <thead className="uppercase">
+                      <tr>
+                        <th>
+                          <input
+                            type="checkbox"
+                            onChange={(e) =>
+                              setSelectedRows(
+                                e.target.checked
+                                  ? experiments?.map((row) => row.experiment_id)
+                                  : []
+                              )
+                            }
+                            checked={
+                              selectedRows.length === experiments?.length &&
+                              experiments?.length > 0
+                            }
+                          />
+                        </th>
+                        <th>Name</th>
+                        <th>Created</th>
+                        <th>Last Updated</th>
+                        <th>Artifact Location</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    {isLoading ? (
+                      <tbody>
+                        <tr className="TableLoading">
+                          <td className="TableTdSpinner">
+                            <div className="SpinnerWrapper">
+                              <Spinner size="big" />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    ) : (
+                      <tbody>
+                        {experiments?.map((row, index) => (
+                          <tr
+                            key={index}
+                            className={{
+                              ...styles.tableCell,
+                              ...(index % 2 === 0 ? styles.rowHover : {}),
+                            }}
+                            onClick={(e) => {
+                              if (e.target.tagName !== "INPUT") {
+                                handleRowClick(row.experiment_id);
+                              }
+                            }}
+                          >
+                            <td>
                               <input
                                 type="checkbox"
-                                onChange={(e) =>
-                                  setSelectedRows(
-                                    e.target.checked
-                                      ? experiments?.map(
-                                          (row) => row.experiment_id
-                                        )
-                                      : []
-                                  )
-                                }
-                                checked={
-                                  selectedRows.length === experiments?.length &&
-                                  experiments?.length > 0
-                                }
+                                checked={selectedRows.includes(
+                                  row.experiment_id
+                                )}
+                                onChange={() => handleSelectRow(row)}
                               />
-                            </th>
-                            <th>Name</th>
-                            <th>Created</th>
-                            <th>Last Updated</th>
-                            <th>Artifact Location</th>
-                            <th>Status</th>
+                            </td>
+                            <td>{row.name}</td>
+                            <td>{tellAge(row.creation_time)}</td>
+                            <td>{tellAge(row.last_update_time)}</td>
+                            <td>{row.artifact_location}</td>
+                            <td>
+                              {row.lifecycle_stage === "active" ? (
+                                <span className="current-label">
+                                  {row.lifecycle_stage}
+                                </span>
+                              ) : (
+                                <span className="error-label">
+                                  {row.lifecycle_stage}
+                                </span>
+                              )}
+                            </td>
                           </tr>
-                        </thead>
-                        {isLoading ? (
-                          <tbody>
-                            <tr className="TableLoading">
-                              <td className="TableTdSpinner">
-                                <div className="SpinnerWrapper">
-                                  <Spinner size="big" />
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        ) : (
-                          <tbody>
-                            {experiments?.map((row, index) => (
-                              <tr
-                                key={index}
-                                className={{
-                                  ...styles.tableCell,
-                                  ...(index % 2 === 0 ? styles.rowHover : {}),
-                                }}
-                                onClick={(e) => {
-                                  if (e.target.tagName !== "INPUT") {
-                                    handleRowClick(row.experiment_id);
-                                  }
-                                }}
-                              >
-                                <td>
-                                  <input
-                                    type="checkbox"
-                                    checked={selectedRows.includes(
-                                      row.experiment_id
-                                    )}
-                                    onChange={() => handleSelectRow(row)}
-                                  />
-                                </td>
-                                <td>{row.name}</td>
-                                <td>{tellAge(row.creation_time)}</td>
-                                <td>{tellAge(row.last_update_time)}</td>
-                                <td>{row.artifact_location}</td>
-                                <td>
-                                  {row.lifecycle_stage === "active" ? (
-                                    <span className="current-label">
-                                      {row.lifecycle_stage}
-                                    </span>
-                                  ) : (
-                                    <span className="error-label">
-                                      {row.lifecycle_stage}
-                                    </span>
-                                  )}
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        )}
-                      </table>
+                        ))}
+                      </tbody>
+                    )}
+                  </table>
+                  {experiments?.length === 0 && (
+                    <div className="AdminNoResourcesMessage">
+                      <p>No experiments available</p>
                     </div>
-                  </>
-                )}
+                  )}
+                  {!isLoading && experiments?.length === 0 && (
+                    <div className="AdminNoResourcesMessage">
+                      <p>
+                        Oops! Something went wrong! Failed to retrieve available
+                        experiments.
+                      </p>
+                    </div>
+                  )}
+                </div>
               </>
             </div>
           </div>
@@ -293,6 +336,104 @@ const NotebookExperimentPage = () => {
                   {spin ? <Spinner /> : "Delete"}
                 </PrimaryButton>
               </div>
+            </div>
+          </Modal>
+
+          <Modal
+            showModal={openNewRun}
+            onClickAway={() => {
+              setOpenNewRun(false);
+            }}
+          >
+            <h2 className="ModalTitle">Add New Run to Notebook</h2>
+
+            <div className={styles.tabs}>
+              <button
+                className={`${styles.tab} ${
+                  activeTab === "instructions" ? styles.activeTab : ""
+                }`}
+                onClick={() => setActiveTab("instructions")}
+              >
+                Instructions
+              </button>
+              <button
+                className={`${styles.tab} ${
+                  activeTab === "example" ? styles.activeTab : ""
+                }`}
+                onClick={() => setActiveTab("example")}
+              >
+                Example test run
+              </button>
+            </div>
+            <div className={styles.content}>
+              {activeTab === "instructions" && (
+                <div className={styles.keySteps}>
+                  <h3>Key steps to connect to MLflow:</h3>
+                  <ol>
+                    <li>
+                      <code>!pip install mlflow</code> - Install the MLflow
+                      package
+                    </li>
+                    <li>
+                      <code>import mlflow</code> - Import the MLflow library
+                    </li>
+                    <li>
+                      <code>from mlflow.tracking import MlflowClient</code> -
+                      Import tracking client
+                    </li>
+                    <li>
+                      <code>
+                        mlflow.set_tracking_uri("https://mlflow.ahumain.cranecloud.io")
+                      </code>{" "}
+                      - Connect to our MLflow server
+                    </li>
+                    <li>
+                      <code>
+                        mlflow.set_experiment(experiment_id="
+                        {selectedExperiment.experiment_id}")
+                      </code>{" "}
+                      - This is dynamically set based on selected experiment
+                    </li>
+                    <li>
+                      <code>mlflow.autolog()</code> - Enable automatic logging
+                      of parameters and metrics
+                    </li>
+                  </ol>
+                </div>
+              )}
+
+              {activeTab === "example" && (
+                <div className={styles.codeContainer}>
+                  <div className={styles.codeHeader}>
+                    <span>Python</span>
+                    <button
+                      className={`${styles.copyButton} ${
+                        copySuccess ? styles.copySuccess : ""
+                      }`}
+                      onClick={copyToClipboard}
+                      aria-label="Copy code to clipboard"
+                    >
+                      <span className={styles.copyText}>
+                        {copySuccess ? "Copied!" : "Copy"}
+                      </span>
+                    </button>
+                  </div>
+                  <pre>
+                    <code ref={codeRef}>{exampleCode}</code>
+                  </pre>
+                </div>
+              )}
+            </div>
+
+            <div className="ModalActions">
+              <PrimaryButton
+                color="primary"
+                onClick={() => {
+                  setOpenNewRun(false);
+                }}
+              >
+                Close
+              </PrimaryButton>
             </div>
           </Modal>
         </DashboardLayout>

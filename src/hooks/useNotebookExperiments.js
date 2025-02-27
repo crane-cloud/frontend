@@ -64,6 +64,21 @@ export const useExperimentRunDetails = (runId) => {
   });
 };
 
+// download artifacts for an experiment run
+export const useExperimentRunArtifacts = (experimentId, runId) => {
+  return useQuery({
+    queryKey: ["downloadArtifact", experimentId, runId],
+    queryFn: async () => {
+      const response = await mlopsAxios.get(
+        `/artifacts/${experimentId}/download/${runId}/model`,
+        { responseType: "blob" }
+      );
+      return response.data;
+    },
+    enabled: false,
+  });
+};
+
 // create an experiment
 export const useExperimentCreate = (appAlias, userId) => {
   const queryClient = useQueryClient();
