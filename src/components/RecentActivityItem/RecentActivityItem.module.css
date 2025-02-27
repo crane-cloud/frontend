@@ -1,50 +1,208 @@
-.activityItem {
-    display: flex;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    align-items: flex-start;
+.recentActivityContainer {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
 }
 
-.userAvatar {
-    width: 40px;
-    height: 40px;
+.activityHeader {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 0.75rem;
+}
+
+.activityList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.activityItem {
+    display: flex;
+    align-items: flex-start;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+
+.activityItem:hover {
+    background-color: #f7fafc;
+}
+
+.activityItem::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background-color: var(--primary-color);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.activityItem:hover::before {
+    opacity: 1;
+}
+
+.activityItem[data-operation="DATABASE DELETE"]::before {
+    background-color: #E53E3E;
+}
+
+.activityItem[data-operation="Create"]::before {
+    background-color: #38A169;
+}
+
+.activityItem[data-operation="Follow"]::before {
+    background-color: #3182CE;
+}
+
+.activityAvatar {
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.avatarCircle {
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 50%;
     background-color: #ccc;
+    color: black;
     display: flex;
-    justify-content: center;
     align-items: center;
-    font-size: 20px;
-    font-weight: bold;
-    margin-right: 15px;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 2px 6px rgba(79, 70, 229, 0.3);
+    transition: transform 0.2s;
+}
+
+.activityItem:hover .avatarCircle {
+    transform: scale(1.05);
 }
 
 .activityContent {
     flex: 1;
 }
 
-.userAction {
-    font-size: 16px;
-    margin-bottom: 5px;
+.activityHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+    border-bottom: none;
+    padding-bottom: 0;
 }
 
-.userAction>strong {
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.userName {
+    font-weight: 600;
+    font-size: 1rem;
     color: var(--primary-color);
 }
 
-.userAction>strong:hover {
+.operationBadge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.75rem;
+    color: #718096;
+    gap: 0.25rem;
+}
+
+.operationIcon {
+    width: 0.875rem;
+    height: 0.875rem;
+}
+
+.activityTime {
+    font-size: 0.75rem;
+    color: #718096;
+    padding: 0.25rem 0.5rem;
+    background-color: #edf2f7;
+    border-radius: 9999px;
+}
+
+.activityDescription {
+    color: #4a5568;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.statusBadge {
+    font-size: 0.75rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    font-weight: 500;
+}
+
+.successBadge {
+    background-color: #F0FFF4;
+    color: #38A169;
+}
+
+.viewProjectButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
     cursor: pointer;
-    text-decoration: underline;
-    transform: scale(1.05);
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
 }
 
-.time {
-    color: #999;
-    font-size: 14px;
-    margin-bottom: 10px;
+.viewProjectButton:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(79, 70, 229, 0.25);
 }
 
-.projectCard {
-    margin-top: 10px;
+.buttonIcon {
+    width: 0.875rem;
+    height: 0.875rem;
+}
+
+.loadingState {
+    opacity: 0.7;
+    font-style: italic;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.activityItem {
+    animation: fadeIn 0.3s ease-out;
 }

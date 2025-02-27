@@ -11,9 +11,9 @@ import { useRecentActivity } from "../../hooks/useRecentActivity";
 const RecentActivitySection = () => {
   const [currentPage, handleChangePage] = usePaginator();
   const user = useSelector((state) => state.user);
-  const { data: userRecentActivities, isFetching: isFetchingRecentActivities}=useRecentActivity(1, user?.data?.id);
-  const pagination = userRecentActivities?.data?.data?.pagination ||[];
-
+  const { data: userRecentActivities, isFetching: isFetchingRecentActivities } =
+    useRecentActivity(1, user?.data?.id);
+  const pagination = userRecentActivities?.data?.data?.pagination || [];
 
   const handlePageChange = (currentPage) => {
     handleChangePage(currentPage);
@@ -22,7 +22,6 @@ const RecentActivitySection = () => {
 
   return (
     <div className={styles.recentActivity}>
-      
       <h2 className={styles.title}>Recent Activity</h2>
 
       {isFetchingRecentActivities ? (
@@ -43,7 +42,7 @@ const RecentActivitySection = () => {
               </p>
             </div>
           ) : (
-            userRecentActivities?.data?.data?.activity.slice(0,4).map((item, index) => (
+            userRecentActivities?.data?.data?.activity.map((item, index) => (
               <React.Fragment key={index}>
                 <RecentActivityItem item={item} />
               </React.Fragment>
@@ -58,7 +57,6 @@ const RecentActivitySection = () => {
                 onPageChange={handlePageChange}
               />
             </div>
-
           )}
         </>
       )}

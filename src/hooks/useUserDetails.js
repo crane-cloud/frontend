@@ -8,6 +8,6 @@ export const useUserDetails = (userID) => {
     meta: {
       errorMessage: "Failed to fetch user details",
     },
+    enabled: !!userID,
   });
 };
-
