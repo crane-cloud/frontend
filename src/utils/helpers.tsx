@@ -24,7 +24,7 @@ export const useGetProject = (project_id: string) => {
   useEffect(() => {
     getData({
       id: project_id,
-      api: `projects`,
+      api: `/projects`,
     });
   }, [refresh]);
 
@@ -60,7 +60,7 @@ export const useGetApp = (app_id: string) => {
   useEffect(() => {
     getData({
       id: app_id,
-      api: `apps`,
+      api: `/apps`,
     });
   }, []);
 

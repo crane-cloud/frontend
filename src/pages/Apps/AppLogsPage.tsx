@@ -32,7 +32,7 @@ const LogsCard = ({ project_id, app_id }: TLogsCardProps) => {
 
   useEffect(() => {
     getAppLogs({
-      api: `projects/${project_id}/apps/${app_id}/logs`,
+      api: `/projects/${project_id}/apps/${app_id}/logs`,
     });
   }, [app_id]);
 

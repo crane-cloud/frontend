@@ -6,6 +6,12 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+coverage
+.eslintcache
+.coverage
+.nyc_output
+.yarn
+.yarnrc.yml
 
 node_modules
 dist

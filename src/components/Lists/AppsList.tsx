@@ -9,7 +9,7 @@ const AppsList = (props: any) => {
   const { getData: getApps, data: apps, loading } = useGet();
   useEffect(() => {
     getApps({
-      api: `projects/${project_id}/apps`,
+      api: `/projects/${project_id}/apps`,
     });
   }, [project_id]);
 

@@ -61,7 +61,7 @@ export function LoginForm(props: PaperProps) {
       return;
     }
     uploadData({
-      api: "users/login",
+      api: "/users/login",
       params: form.values,
       successMessage: "Login successful",
       errorMessage: "Login failed",

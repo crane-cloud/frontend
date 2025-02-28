@@ -1,22 +1,20 @@
-FROM node:16-alpine as build_step
+FROM node:23-alpine as build_step
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+RUN corepack enable && corepack prepare yarn@4.6.0 --activate
 
-RUN yarn install --ignore-engines
+COPY package.json yarn.lock* ./
+RUN yarn install
 
 COPY . /app
 
 RUN yarn build
 
+FROM nginx:1.25-alpine as production 
 
-FROM node:16-alpine
+COPY --from=build_step /app/dist /usr/share/nginx/html
 
-WORKDIR /app
+EXPOSE 80 
 
-RUN npm install -g serve
-
-COPY --from=build_step /app/build .
-
-CMD ["serve", "-s", "-l", "3000"]
+CMD ["nginx", "-g", "daemon off;"]

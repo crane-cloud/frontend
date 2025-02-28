@@ -50,7 +50,7 @@ export const MembersSection = ({ project }: { project: any }) => {
 
   useEffect(() => {
     getMembers({
-      api: `projects/${project?.id}/users`,
+      api: `/projects/${project?.id}/users`,
     });
   }, [project]);
 
