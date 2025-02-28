@@ -1,34 +1,50 @@
-# Mantine Vite template
+# CraneCloud Frontend
 
-## Features
+Cloud management platform frontend built with:
 
-This template comes with the following features:
+- React + TypeScript - Core framework with type-safe development
+- Mantine UI framework - Modern component library with theming support
+- Vite build system - Fast development tooling with HMR and optimized production builds
+- Kubernetes deployment workflows - Cloud-native CI/CD pipelines and cluster management
 
-- [PostCSS](https://postcss.org/) with [mantine-postcss-preset](https://mantine.dev/styles/postcss-preset)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Storybook](https://storybook.js.org/)
-- [Vitest](https://vitest.dev/) setup with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
-- ESLint setup with [eslint-config-mantine](https://github.com/mantinedev/eslint-config-mantine)
+**Platform Capabilities:**
+A modern web interface for managing cloud infrastructure across multiple providers. Provides real-time visibility into resource utilization, automated deployment pipelines, and secure access controls. Designed for scalability with dynamic dashboard configurations and API-driven architecture.
 
-## npm scripts
+## Key Features
 
-## Build and dev scripts
+- Multi-cluster resource management
+- Real-time monitoring dashboards
+- Service deployment workflows
+- User authentication and activity logging
+- Payment integration (Flutterwave)
+- Multi-environment configuration (Staging/Production)
 
-- `dev` – start development server
-- `build` – build production version of the app
-- `preview` – locally preview production build
+## Development Setup
 
-### Testing scripts
+### Core Scripts
 
-- `typecheck` – checks TypeScript types
-- `lint` – runs ESLint
-- `prettier:check` – checks files with Prettier
-- `vitest` – runs vitest tests
-- `vitest:watch` – starts vitest watch
-- `test` – runs `vitest`, `prettier:check`, `lint` and `typecheck` scripts
+- `dev` – Start Vite development server
+- `build` – Production build
+- `preview` – Preview production build locally
+- `storybook` – Launch component storybook
 
-### Other scripts
+### Testing & Quality
 
-- `storybook` – starts storybook dev server
-- `storybook:build` – build production storybook bundle to `storybook-static`
-- `prettier:write` – formats all files with Prettier
+- `test` – Run full test suite (Vitest + typecheck + lint)
+- `vitest:watch` – Interactive test watcher
+- `lint` – Run ESLint and Stylelint
+- `prettier:write` – Format codebase
+
+## Testing Stack
+
+- Vitest + React Testing Library
+- Storybook for component development
+- ESLint + Prettier code quality
+- TypeScript type checking
+- GitHub Actions CI/CD pipelines
+
+## Documentation
+
+- [Component Library](http://storybook.cranecloud.io)
+- [API Documentation](https://api.cranecloud.io/apidocs/#)
+- [Documentation](https://docs.cranecloud.io)
