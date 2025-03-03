@@ -1,28 +1,50 @@
-# Crane Cloud
+# CraneCloud Frontend
 
-Automated application deployment, management, and scaling.
+Cloud management platform frontend built with:
 
-Crane Cloud is an open source multi-cloud software platform for cloud-native application deployment and management.
+- React + TypeScript - Core framework with type-safe development
+- Mantine UI framework - Modern component library with theming support
+- Vite build system - Fast development tooling with HMR and optimized production builds
+- Kubernetes deployment workflows - Cloud-native CI/CD pipelines and cluster management
 
-[![Staging deployment](https://github.com/crane-cloud/frontend/actions/workflows/staging.yml/badge.svg)](https://github.com/crane-cloud/frontend/actions/workflows/staging.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/afca0db82a7d7ced4a39/maintainability)](https://codeclimate.com/github/crane-cloud/frontend/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/afca0db82a7d7ced4a39/test_coverage)](https://codeclimate.com/github/crane-cloud/frontend/test_coverage)
-## Setup
+**Platform Capabilities:**
+A modern web interface for managing cloud infrastructure across multiple providers. Provides real-time visibility into resource utilization, automated deployment pipelines, and secure access controls. Designed for scalability with dynamic dashboard configurations and API-driven architecture.
 
-1.  `git clone https://github.com/crane-cloud/frontend.git`.
-2.  `yarn`
-3.  Create a `.env` file in your root directory based off of the `.env.example` file and added all required enviroment variables.
-4.  Run the `source .env` command
-5.  Run `yarn start` to start the application
+## Key Features
 
-## Tools
+- Multi-cluster resource management
+- Real-time monitoring dashboards
+- Service deployment workflows
+- User authentication and activity logging
+- Payment integration (Flutterwave)
+- Multi-environment configuration (Staging/Production)
 
-1. `Prettier` for formatting/style. Configure your editor with plugin.
-2. `ESLint` for linting. No need for any config files. Only configure your editor with plugin. **Don't use ESLint for formatting.** Repo is configured with `react-app` so no other sharable-configs/extensions are necessary at this point.
+## Development Setup
 
-## Pull requests
+### Core Scripts
 
-1. Push and open PR against `develop`.
-2. PR will be reviewed before changes are merged.
+- `dev` – Start Vite development server
+- `build` – Production build
+- `preview` – Preview production build locally
+- `storybook` – Launch component storybook
 
-**Contribution guide to be published some time in the future.**
+### Testing & Quality
+
+- `test` – Run full test suite (Vitest + typecheck + lint)
+- `vitest:watch` – Interactive test watcher
+- `lint` – Run ESLint and Stylelint
+- `prettier:write` – Format codebase
+
+## Testing Stack
+
+- Vitest + React Testing Library
+- Storybook for component development
+- ESLint + Prettier code quality
+- TypeScript type checking
+- GitHub Actions CI/CD pipelines
+
+## Documentation
+
+- [Component Library](http://storybook.cranecloud.io)
+- [API Documentation](https://api.cranecloud.io/apidocs/#)
+- [Documentation](https://docs.cranecloud.io)

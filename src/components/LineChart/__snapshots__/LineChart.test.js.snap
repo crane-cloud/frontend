@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Test the line chart component checks if the information bar component matches the snapshot 1`] = `ShallowWrapper {}`;
