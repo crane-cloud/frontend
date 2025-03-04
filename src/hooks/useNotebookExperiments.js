@@ -17,10 +17,17 @@ export const useAppExperimentList = (appAlias) => {
   return useQuery({
     queryKey: ["appExperiments", appAlias],
     queryFn: async () => {
-      const response = await mlopsAxios.get(
-        `/experiments?app_alias=${appAlias}`
-      );
-      return response.data.data;
+      try {
+        const response = await mlopsAxios.get(
+          `/experiments?app_alias=${appAlias}`
+        );
+
+        return response.data.data;
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          return [];
+        }
+      }
     },
     enabled: !!appAlias,
   });
