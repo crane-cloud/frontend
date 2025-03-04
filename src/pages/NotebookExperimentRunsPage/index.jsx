@@ -46,10 +46,6 @@ const NotebookExperimentRunsPage = ({
   const deleteRunsMutation = useExperimentRunDelete();
 
   // event handlers
-  const handleRowClick = (runId) => {
-    // setSelectedExperimentRun(runId);
-  };
-
   const handleDownload = async () => {
     try {
       const { data } = await refetch();
@@ -207,99 +203,103 @@ const NotebookExperimentRunsPage = ({
                       : "ResourcesTable"
                   }
                 >
-                  <table className="UsersTable">
-                    <thead className="uppercase">
-                      <tr>
-                        <th>
-                          <input
-                            type="checkbox"
-                            onChange={(e) =>
-                              setSelectedRows(
-                                e.target.checked
-                                  ? experimentRuns?.map((row) => row.run_id)
-                                  : []
-                              )
-                            }
-                            checked={
-                              selectedRows.length === experimentRuns?.length &&
-                              experimentRuns?.length > 0
-                            }
-                          />
-                        </th>
-                        <th>Run Name</th>
-                        <th>Created</th>
-                        <th>Duration</th>
-                        <th>Artifacts</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    {isLoadingRuns ? (
-                      <tbody>
-                        <tr className="TableLoading">
-                          <td className="TableTdSpinner">
-                            <div className="SpinnerWrapper">
-                              <Spinner size="big" />
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    ) : (
-                      <tbody>
-                        {experimentRuns?.map((row, index) => (
-                          <tr
-                            key={index}
-                            className={{
-                              ...styles.tableCell,
-                              ...(index % 2 === 0 ? styles.rowHover : {}),
-                            }}
-                            onClick={(e) => {
-                              if (e.target.tagName !== "INPUT") {
-                                handleRowClick(row.run_id);
+                  {isLoadingRuns ? (
+                    <div className="TableLoading">
+                      <div className="SpinnerWrapper">
+                        <Spinner size="big" />
+                      </div>
+                    </div>
+                  ) : experimentRuns && experimentRuns.length > 0 ? (
+                    <table className="UsersTable">
+                      <thead className="uppercase">
+                        <tr>
+                          <th>
+                            <input
+                              type="checkbox"
+                              onChange={(e) =>
+                                setSelectedRows(
+                                  e.target.checked
+                                    ? experimentRuns?.map((row) => row.run_id)
+                                    : []
+                                )
                               }
-                            }}
-                          >
-                            <td>
-                              <input
-                                type="checkbox"
-                                checked={selectedRows.includes(row.run_id)}
-                                onChange={() => handleSelectRow(row)}
-                              />
-                            </td>
-                            <td>{row.run_name}</td>
-                            <td>{tellAge(row.start_time)}</td>
-                            <td>
-                              {calculateDuration(
-                                row?.start_time,
-                                row?.end_time
-                              )}
-                            </td>
-                            <td>{row.artifact_uri}</td>
-                            <td>
-                              {row.status === "FINISHED" ? (
-                                <span className="current-label">FINISHED</span>
-                              ) : (
-                                <span className="error-label">FAILED</span>
-                              )}
+                              checked={
+                                selectedRows.length ===
+                                  experimentRuns?.length &&
+                                experimentRuns?.length > 0
+                              }
+                            />
+                          </th>
+                          <th>Run Name</th>
+                          <th>Created</th>
+                          <th>Duration</th>
+                          <th>Artifacts</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      {isLoadingRuns ? (
+                        <tbody>
+                          <tr className="TableLoading">
+                            <td className="TableTdSpinner">
+                              <div className="SpinnerWrapper">
+                                <Spinner size="big" />
+                              </div>
                             </td>
                           </tr>
-                        ))}
-                      </tbody>
-                    )}
-                  </table>
-                  {!isLoadingRuns &&
+                        </tbody>
+                      ) : (
+                        <tbody>
+                          {experimentRuns?.map((row, index) => (
+                            <tr
+                              key={index}
+                              className={{
+                                ...styles.tableCell,
+                                ...(index % 2 === 0 ? styles.rowHover : {}),
+                              }}
+                              onClick={(e) => {
+                                if (e.target.tagName !== "INPUT") {
+                                  handleSelectRow(row);
+                                }
+                              }}
+                            >
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  checked={selectedRows.includes(row.run_id)}
+                                  onChange={() => handleSelectRow(row)}
+                                />
+                              </td>
+                              <td>{row.run_name}</td>
+                              <td>{tellAge(row.start_time)}</td>
+                              <td>
+                                {calculateDuration(
+                                  row?.start_time,
+                                  row?.end_time
+                                )}
+                              </td>
+                              <td>{row.artifact_uri}</td>
+                              <td>
+                                {row.status === "FINISHED" ? (
+                                  <span className="current-label">
+                                    FINISHED
+                                  </span>
+                                ) : (
+                                  <span className="error-label">FAILED</span>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      )}
+                    </table>
+                  ) : (
+                    !isLoadingRuns &&
                     experimentRuns?.length === 0 &&
                     experimentRuns !== undefined && (
                       <div className={styles.noDataSection}>
                         <p>No runs have been logged yet!</p>
                       </div>
-                    )}
-                  {!isLoadingRuns && experimentRuns === undefined && (
-                    <div className={styles.noDataSection}>
-                      <p>
-                        No runs have been logged yet, Please choose an
-                        experiment or create one!
-                      </p>
-                    </div>
+                    )
                   )}
                 </div>
               </div>

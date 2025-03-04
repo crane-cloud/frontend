@@ -15,6 +15,7 @@ import {
 } from "../../hooks/useNotebookExperiments";
 import tellAge from "../../helpers/ageUtility.js";
 import Spinner from "../../components/Spinner/index.js";
+import { ReactComponent as ButtonPlus } from "../../assets/images/buttonplus.svg";
 import NotebookExperimentRunsPage from "../NotebookExperimentRunsPage/index.jsx";
 import { useSelector } from "react-redux";
 
@@ -41,7 +42,11 @@ const NotebookExperimentPage = () => {
   const createExperimentMutation = useExperimentCreate(app.alias, user.data.id);
 
   // fetch experiments
-  const { data: experiments, isLoading } = useAppExperimentList(app.alias);
+  const {
+    data: experiments,
+    isLoading,
+    refetch,
+  } = useAppExperimentList(app.alias);
 
   // delete an experiment
   const deleteExperimentMutation = useExperimentDelete(
@@ -49,10 +54,6 @@ const NotebookExperimentPage = () => {
   );
 
   // event handlers
-  const handleRowClick = (experimentId) => {
-    console.log("here", experimentId);
-    // setSelectedExperimentRun(runId);
-  };
 
   const handleSelectRow = (row) => {
     setSelectedExperiment(row);
@@ -78,8 +79,10 @@ const NotebookExperimentPage = () => {
     try {
       deleteExperimentMutation.mutate();
       setSpin(false);
+      setSelectedRows([]);
+      setSelectedExperiment("");
       setDeleteExperimentModal(false);
-      window.location.reload();
+      refetch();
     } catch (error) {
       console.error("Error deleting experiment:", error);
     }
@@ -213,54 +216,56 @@ predictions = rf.predict(X_test)`;
                       : "ResourcesTable"
                   }
                 >
-                  <table className="UsersTable">
-                    <thead className="uppercase">
-                      <tr>
-                        <th>
-                          <input
-                            type="checkbox"
-                            onChange={(e) =>
-                              setSelectedRows(
-                                e.target.checked
-                                  ? experiments?.map((row) => row.experiment_id)
-                                  : []
-                              )
-                            }
-                            checked={
-                              selectedRows.length === experiments?.length &&
-                              experiments?.length > 0
-                            }
-                          />
-                        </th>
-                        <th>Name</th>
-                        <th>Created</th>
-                        <th>Last Updated</th>
-                        <th>Artifact Location</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    {isLoading ? (
-                      <tbody>
-                        <tr className="TableLoading">
-                          <td className="TableTdSpinner">
-                            <div className="SpinnerWrapper">
-                              <Spinner size="big" />
-                            </div>
-                          </td>
+                  {isLoading ? (
+                    <div className="TableLoading">
+                      <div className="SpinnerWrapper">
+                        <Spinner size="big" />
+                      </div>
+                    </div>
+                  ) : experiments && experiments.length > 0 ? (
+                    <table className="UsersTable">
+                      <thead className="uppercase">
+                        <tr>
+                          <th>
+                            <input
+                              type="checkbox"
+                              onChange={(e) =>
+                                setSelectedRows(
+                                  e.target.checked
+                                    ? experiments.map(
+                                        (row) => row.experiment_id
+                                      )
+                                    : []
+                                )
+                              }
+                              checked={
+                                selectedRows.length === experiments.length &&
+                                experiments.length > 0
+                              }
+                            />
+                          </th>
+                          <th>Name</th>
+                          <th>Created</th>
+                          <th>Last Updated</th>
+                          <th>Artifact Location</th>
+                          <th>Status</th>
                         </tr>
-                      </tbody>
-                    ) : (
+                      </thead>
                       <tbody>
-                        {experiments?.map((row, index) => (
+                        {experiments.map((row, index) => (
                           <tr
                             key={index}
                             className={{
                               ...styles.tableCell,
                               ...(index % 2 === 0 ? styles.rowHover : {}),
+                              "cursor-pointer": true,
+                              "selected-row": selectedRows.includes(
+                                row.experiment_id
+                              ),
                             }}
                             onClick={(e) => {
                               if (e.target.tagName !== "INPUT") {
-                                handleRowClick(row.experiment_id);
+                                handleSelectRow(row);
                               }
                             }}
                           >
@@ -291,20 +296,26 @@ predictions = rf.predict(X_test)`;
                           </tr>
                         ))}
                       </tbody>
-                    )}
-                  </table>
-                  {experiments?.length === 0 && (
-                    <div className="AdminNoResourcesMessage">
-                      <p>No experiments available</p>
-                    </div>
-                  )}
-                  {!isLoading && experiments?.length === 0 && (
-                    <div className="AdminNoResourcesMessage">
-                      <p>
-                        Oops! Something went wrong! Failed to retrieve available
-                        experiments.
-                      </p>
-                    </div>
+                    </table>
+                  ) : (
+                    !isLoading &&
+                    experiments?.length === 0 &&
+                    experiments !== undefined && (
+                      <div className={styles.NoResourcesMessageSection}>
+                        <div className={styles.NoResourcesMessage}>
+                          You haven't created any experiments yet.
+                        </div>
+                        <br />
+                        <div className={styles.NoResourcesMessage}>
+                          Click the &nbsp;{" "}
+                          <ButtonPlus
+                            className={styles.ButtonPlusSmall}
+                            onClick={handleCreateExperiment}
+                          />{" "}
+                          &nbsp; button to create one.
+                        </div>
+                      </div>
+                    )
                   )}
                 </div>
               </>
