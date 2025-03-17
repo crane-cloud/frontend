@@ -17,7 +17,6 @@ import { ReactComponent as Disk } from "../../assets/images/server.svg";
 import { ReactComponent as Memory } from "../../assets/images/hard-drive.svg";
 import { ReactComponent as Database } from "../../assets/images/database.svg";
 import { ReactComponent as Experiment } from "../../assets/images/flask-experiment.svg";
-import { ReactComponent as AppDeployment } from "../../assets/images/deploymentCopy.svg";
 // import { ReactComponent as Activity } from "../../assets/images/activity.svg";
 import { ReactComponent as Apps } from "../../assets/images/grid.svg";
 import useMedia from "../../hooks/mediaquery";
@@ -213,15 +212,6 @@ const SideBar = (props) => {
                           >
                             <Experiment style={{ paddingBottom: "0.2rem" }} />
                             Experiments
-                          </NavLink>
-                        </div>
-                        <div>
-                          <NavLink
-                            to={`/projects/${projectID}/apps/${appID}/deployments`}
-                            className={styles.SubBarListItem}
-                          >
-                            <AppDeployment />
-                            Deployments
                           </NavLink>
                         </div>
                       </>
