@@ -45,6 +45,10 @@
   padding: 1rem 0;
 }
 
+.RegisterTerms .Checkbox input[type="checkbox"] {
+  opacity: 1;
+}
+
 .RegisterErrorDiv {
   background-color: rgba(255, 255, 255, 0.5);
   color: #d63b3b;

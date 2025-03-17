@@ -321,7 +321,7 @@ export default class RegisterPage extends Component {
             </div>
 
             {error && <div className="RegisterErrorDiv">{error}</div>}
-            <div className=" RegisterTerms">
+            <div className="RegisterTerms">
               <Checkbox onClick={this.toggleAgreed} isChecked={hasAgreed} />
               <div>
                 I agree to Crane Cloud{" "}
