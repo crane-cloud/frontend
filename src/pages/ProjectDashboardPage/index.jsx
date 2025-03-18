@@ -49,6 +49,11 @@ const ProjectDashboardPage = () => {
   const [openJupyterNotebookModel, setOpenJupyterNotebookModel] =
     useState(false);
   const [jupiterNoteBookName, setJupiterNoteBookName] = useState("");
+  const [aiModelName, setAiModelName] = useState("");
+  const [aiModelUri, setAiModelUri] = useState("");
+  const [aiModelServer, setAiModelServer] = useState("");
+  const [aiModelApiType, setAiModelApiType] = useState("");
+  const [openDeployModel, setOpenDeployModel] = useState(false);
   const [validationError, setValidationError] = useState("");
 
   const {
@@ -85,30 +90,51 @@ const ProjectDashboardPage = () => {
     localStorage.setItem("project", JSON.stringify(projectDetails));
   }, [projectDetails]);
 
-  const handleJupyterNotebookDeployment = () => {
-    if (!jupiterNoteBookName) {
+  const handleAIDeployment = () => {
+    if (!jupiterNoteBookName || !aiModelName) {
       setValidationError("Please enter a name for the app");
     }
-    if (validateName(jupiterNoteBookName) === false) {
+    if (
+      validateName(jupiterNoteBookName) === false ||
+      validateName(aiModelName) === false
+    ) {
       setValidationError("Name should start with a letter");
-    } else if (validateName(jupiterNoteBookName) === "false_convention") {
+    } else if (
+      validateName(jupiterNoteBookName) === "false_convention" ||
+      validateName(aiModelName) === "false_convention"
+    ) {
       setValidationError(
         "Name may only contain letters,numbers,dot and a hypen -"
       );
-    } else if (jupiterNoteBookName.length > 27) {
+    } else if (jupiterNoteBookName.length > 27 || aiModelName.length > 27) {
       setValidationError("Name may not exceed 27 characters");
     }
-    const data = {
+
+    // notebook data
+    const notebookData = {
       name: jupiterNoteBookName,
       is_notebook: true,
       projectID: projectID,
     };
-    deployMLApp(data);
+
+    // AI model data
+    const modelData = {
+      api_type: aiModelApiType,
+      is_modal: true,
+      is_notebook: false,
+      model_image_uri: aiModelUri,
+      model_server: aiModelServer,
+      name: aiModelName,
+      projectID: projectID,
+    };
+
+    deployMLApp(aiModelName !== "" ? modelData : notebookData);
   };
 
   useEffect(() => {
     if (deploymentSuccess) {
       setOpenJupyterNotebookModel(false);
+      setOpenDeployModel(false);
       window.location.reload();
     }
   }, [deploymentSuccess]);
@@ -159,6 +185,7 @@ const ProjectDashboardPage = () => {
             options={[
               { id: "1", name: "Regular App" },
               { id: "2", name: "Jupyter Notebook" },
+              { id: "3", name: "Deploy AI Model" },
             ]}
             placeholder="+ Create App"
             onChange={(e) => {
@@ -168,6 +195,8 @@ const ProjectDashboardPage = () => {
                 );
               } else if (e.name === "Jupyter Notebook") {
                 setOpenJupyterNotebookModel(true);
+              } else if (e.name === "Deploy AI Model") {
+                setOpenDeployModel(true);
               }
             }}
           />
@@ -211,11 +240,102 @@ const ProjectDashboardPage = () => {
               <PrimaryButton
                 onClick={(e) => {
                   e.preventDefault();
-                  handleJupyterNotebookDeployment();
+                  handleAIDeployment();
                 }}
                 disabled={jupiterNoteBookName === "" || deploymentPending}
               >
                 {deploymentPending ? <Spinner /> : "Create"}
+              </PrimaryButton>
+            </div>
+            {validationError && (
+              <Feedback type="error" message={validationError} />
+            )}
+            {deploymentError && (
+              <Feedback
+                type="error"
+                message={"Failed to deploy notebook, Please try again later"}
+              />
+            )}
+          </form>
+        </div>
+      </Modal>
+
+      <Modal
+        showModal={openDeployModel}
+        onClickAway={() => {
+          setOpenDeployModel(false);
+        }}
+      >
+        <div className={styles.createAIAppJupyterNotebookModalContainer}>
+          <h2 className={styles.createAIAppJupyterNotebookModalTitle}>
+            Deploy AI model
+          </h2>
+          <form className={styles.createAIAppJupyterNotebookModalForm}>
+            <label>Name *</label>
+            <BlackInputText
+              name={"modelName"}
+              value={aiModelName}
+              onChange={(e) => {
+                setAiModelName(e.target.value);
+              }}
+              placeholder="Enter your model name"
+              className={styles.InputStyles}
+            />
+
+            <label>Model Image URI *</label>
+            <BlackInputText
+              name={"modelImageUri"}
+              value={aiModelUri}
+              onChange={(e) => {
+                setAiModelUri(e.target.value);
+              }}
+              placeholder="Enter your model image URI"
+            />
+
+            <label>Model Server *</label>
+            <Select
+              options={[
+                { id: "1", name: "SKLEARN_SERVER" },
+                { id: "2", name: "TENSORFLOW_SERVER" },
+                { id: "3", name: "XGBOOST_SERVER" },
+                { id: "4", name: "MLFLOW_SERVER" },
+                { id: "5", name: "TRITON_SERVER" },
+                { id: "6", name: "TEMPO_SERVER" },
+                { id: "7", name: "HUGGINGFACE_SERVER" },
+                { id: "8", name: "CUSTOM_INFERENCE_SERVER" },
+              ]}
+              placeholder="Select your model server"
+              onChange={(selected) => {
+                setAiModelServer(selected.name);
+              }}
+            />
+
+            <label>Model API type *</label>
+            <Select
+              options={[{ id: "1", name: "REST" }]}
+              placeholder="Select your model API type"
+              onChange={(selected) => {
+                setAiModelApiType(selected.name);
+              }}
+            />
+
+            <div className={styles.createAIAppActionButtonsContainer}>
+              <PrimaryButton
+                color="primary"
+                onClick={() => {
+                  setOpenJupyterNotebookModel(false);
+                }}
+              >
+                Close
+              </PrimaryButton>
+              <PrimaryButton
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleAIDeployment();
+                }}
+                disabled={aiModelName === "" || deploymentPending}
+              >
+                {deploymentPending ? <Spinner /> : "Deploy"}
               </PrimaryButton>
             </div>
             {validationError && (

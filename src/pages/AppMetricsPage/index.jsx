@@ -46,6 +46,7 @@ const AppMetricsPage = () => {
   const [redeploy, setRedeploy] = useState(false);
   const [spin, setSpin] = useState(false);
   const [isJupyterNotebook, setIsJupyterNotebook] = useState(false);
+  const [isAiModel, setIsAiModel] = useState(false);
 
   const {
     appMemoryMetrics,
@@ -72,6 +73,8 @@ const AppMetricsPage = () => {
       image: app.image,
       port: app.port,
       disable: app.disabled,
+      model_server: app.model_server,
+      model_image_uri: app.model_image_uri,
     };
   };
 
@@ -111,6 +114,8 @@ const AppMetricsPage = () => {
   useEffect(() => {
     if (app?.is_notebook) {
       setIsJupyterNotebook(true);
+    } else if (app?.is_modal) {
+      setIsAiModel(true);
     }
   }, [app]);
 
@@ -164,13 +169,19 @@ const AppMetricsPage = () => {
       header={appInfo.name}
       appCategory={isJupyterNotebook ? "notebook" : ""}
       viewAppLink={appInfo.url}
-      viewAppLinkText={isJupyterNotebook ? "Open Notebook" : ""}
+      viewAppLinkText={
+        isJupyterNotebook ? "Open Notebook" : isAiModel ? "Open Model" : ""
+      }
     >
       <div className={styles.AppMetricsPage}>
         <div className={"SmallCard " + styles.SummaryCardDimentions}>
           <div className={styles.CardHeaderSection}>
             <div className={styles.CardTitle}>
-              {isJupyterNotebook ? "Notebook Summary" : "App Summary"}
+              {isJupyterNotebook
+                ? "Notebook Summary"
+                : isAiModel
+                ? "Model Summary"
+                : "App Summary"}
             </div>
           </div>
           {spin ? (
@@ -191,7 +202,11 @@ const AppMetricsPage = () => {
                 <div className={styles.InnerCardSections}>
                   <div className={styles.InnerContentGrid}>
                     <div className={styles.InnerTitlesStart}>
-                      {isJupyterNotebook ? "Notebook Name" : "App Name"}
+                      {isJupyterNotebook
+                        ? "Notebook Name"
+                        : isAiModel
+                        ? "Model Name"
+                        : "App Name"}
                     </div>
                     <div className={styles.InnerContentName}>
                       {appInfo.name}
@@ -199,7 +214,11 @@ const AppMetricsPage = () => {
                   </div>
                   <div className={styles.InnerContentGrid}>
                     <div className={styles.InnerTitlesStart}>
-                      {isJupyterNotebook ? "Notebook Url" : "App Url"}
+                      {isJupyterNotebook
+                        ? "Notebook Url"
+                        : isAiModel
+                        ? "Model Url"
+                        : "App Url"}
                     </div>
                     {appInfo.url ? (
                       <>
@@ -256,7 +275,11 @@ const AppMetricsPage = () => {
                 <div className={styles.InnerCardSections}>
                   <div className={styles.InnerContentGrid}>
                     <div className={styles.InnerTitlesMiddle}>
-                      {isJupyterNotebook ? "Notebook Status" : "App Status"}
+                      {isJupyterNotebook
+                        ? "Notebook Status"
+                        : isAiModel
+                        ? "Model Status"
+                        : "App Status"}
                     </div>
                     <div className={styles.InnerContentStatus}>
                       <AppStatus appStatus={appInfo.status} />
@@ -283,15 +306,19 @@ const AppMetricsPage = () => {
                     <hr />
                     <div className={styles.InnerCardSections}>
                       <div className={styles.InnerContentGrid}>
-                        <div className={styles.InnerTitlesEnd}>App Alias</div>
+                        <div className={styles.InnerTitlesEnd}>
+                          Model Image Url
+                        </div>
                         <div className={styles.InnerContentEnd}>
-                          {appInfo.alias}
+                          {appInfo.model_image_uri}
                         </div>
                       </div>
                       <div className={styles.InnerContentGrid}>
-                        <div className={styles.InnerTitlesEnd}>Port</div>
+                        <div className={styles.InnerTitlesEnd}>
+                          Model Server
+                        </div>
                         <div className={styles.InnerContentEnd}>
-                          {appInfo.port}
+                          {appInfo.model_server}
                         </div>
                       </div>
                     </div>{" "}
@@ -301,6 +328,7 @@ const AppMetricsPage = () => {
             </div>
           )}
         </div>
+
         <div className={styles.MetricCardsSection}>
           <Link
             to={{
@@ -354,6 +382,7 @@ const AppMetricsPage = () => {
             </MetricsCard>
           </Link>
         </div>
+
         {!spin && !isJupyterNotebook && (
           <div className={styles.LogsSection}>
             <Link
