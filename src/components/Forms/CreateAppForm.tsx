@@ -1,15 +1,18 @@
 import {
+  ActionIcon,
   Button,
   Divider,
   Fieldset,
   Flex,
   Group,
+  Input,
   Paper,
   Select,
   Stack,
   Tabs,
   Text,
   TextInput,
+  Tooltip,
 } from "@mantine/core";
 import TitleText from "../TitleText";
 import { IoIosArrowDown, IoMdAdd } from "react-icons/io";
@@ -18,7 +21,7 @@ import { useEffect, useState } from "react";
 import { HiCommandLine, HiTrash } from "react-icons/hi2";
 import useForm from "@/hooks/useForm";
 import usePost from "@/utils/usePost";
-import { API_PROJECTS } from "@/utils/apis";
+import { API_APPS, API_PROJECTS } from "@/utils/apis";
 import { useNavigate, useParams } from "react-router-dom";
 import { IoRocketSharp } from "react-icons/io5";
 import { FaDocker } from "react-icons/fa";
@@ -29,6 +32,8 @@ import { FRAMEWORKS, REGISTRIES } from "@/utils/constants";
 import { Dropzone, FileWithPath, MIME_TYPES } from "@mantine/dropzone";
 import { useAuth } from "@/utils/AuthContext";
 import { MIRA_API_URL } from "@/config";
+import { Table } from "../Elements/CustomTable";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const CreateAppForm = () => {
   useSetContainerSize("sm");
@@ -61,9 +66,24 @@ const CreateAppForm = () => {
 
 export default CreateAppForm;
 
-const CreateSingleAppForm = (props: { project: any }) => {
-  const { project } = props;
-  const { form, onChange, updateFormValue, updateFormValues } = useForm();
+export const CreateSingleAppForm = (props: {
+  project?: any;
+  app?: any;
+  showTitle?: boolean;
+  showEnvs?: boolean;
+  onCancel?: () => void;
+  refresh?: () => void;
+}) => {
+  const {
+    project,
+    app,
+    showTitle = true,
+    showEnvs = true,
+    onCancel = false,
+    refresh = () => {},
+  } = props;
+  const { form, onChange, updateFormValue, updateFormValues, editedForm } =
+    useForm();
   const { uploadData, submitting, error, success } = usePost();
   const [envVariables, setEnvVariables] = useState([{ key: "", value: "" }]);
 
@@ -95,6 +115,15 @@ const CreateSingleAppForm = (props: { project: any }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (app) {
+      uploadData({
+        api: API_APPS,
+        id: app?.id,
+        params: editedForm,
+      });
+      return;
+    }
+
     uploadData({
       api: `${API_PROJECTS}/${project?.id}/apps`,
       params: form,
@@ -102,19 +131,36 @@ const CreateSingleAppForm = (props: { project: any }) => {
   };
 
   useEffect(() => {
+    if (app) {
+      updateFormValues({
+        ...app,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
     if (success) {
-      navigate(`/projects/${project?.id}/apps`);
+      if (onCancel) {
+        onCancel();
+        if (refresh) {
+          refresh();
+        }
+      } else {
+        navigate(`/projects/${project?.id}/apps`);
+      }
     }
   }, [success]);
 
   return (
-    <div style={{ marginTop: 10 }}>
-      <TitleText>
-        <Flex align="center" gap="xs">
-          <IoRocketSharp size={15} />
-          Deploy Application
-        </Flex>
-      </TitleText>
+    <div style={{ marginTop: showTitle ? 10 : 0 }}>
+      {showTitle && (
+        <TitleText>
+          <Flex align="center" gap="xs">
+            <IoRocketSharp size={15} />
+            Deploy Application
+          </Flex>
+        </TitleText>
+      )}
 
       <Paper p="lg" radius="md">
         <form onSubmit={handleSubmit}>
@@ -180,63 +226,65 @@ const CreateSingleAppForm = (props: { project: any }) => {
               error={error?.entry_command}
               leftSection={<HiCommandLine />}
             />
-            <Fieldset
-              legend="Environment Variables"
-              //   description="Add environment variables for your application"
-            >
-              <Stack gap="sm">
-                {envVariables.map((env, index) => (
-                  <Flex key={index} gap="md" align="flex-end">
-                    <TextInput
-                      label="Key"
-                      labelProps={{ size: "xs" }}
-                      size="xs"
-                      variant="filled"
-                      placeholder="ENV_KEY"
-                      value={env.key}
-                      onChange={(e) =>
-                        handleEnvChange(index, "key", e.target.value)
-                      }
-                      flex={1}
-                      //   required
-                    />
-                    <TextInput
-                      label="Value"
-                      labelProps={{ size: "xs" }}
-                      size="xs"
-                      variant="filled"
-                      placeholder="value"
-                      value={env.value}
-                      onChange={(e) =>
-                        handleEnvChange(index, "value", e.target.value)
-                      }
-                      flex={1}
-                      //   required
-                    />
-                    {envVariables.length > 1 && (
-                      <Button
-                        variant="subtle"
-                        color="red"
-                        onClick={() => removeEnvVariable(index)}
-                        leftSection={<HiTrash size={14} />}
-                        size="compact-xs"
-                        style={{ marginBottom: 5 }}
-                      >
-                        Remove
-                      </Button>
-                    )}
-                  </Flex>
-                ))}
-                <Button
-                  variant="outline"
-                  leftSection={<IoMdAdd />}
-                  onClick={addEnvVariable}
-                  mt="sm"
-                >
-                  Add Variable
-                </Button>
-              </Stack>
-            </Fieldset>
+            {showEnvs && (
+              <Fieldset
+                legend="Environment Variables"
+                // description="Add environment variables for your application"
+              >
+                <Stack gap="sm">
+                  {envVariables.map((env, index) => (
+                    <Flex key={index} gap="md" align="flex-end">
+                      <TextInput
+                        label="Key"
+                        labelProps={{ size: "xs" }}
+                        size="xs"
+                        variant="filled"
+                        placeholder="ENV_KEY"
+                        value={env.key}
+                        onChange={(e) =>
+                          handleEnvChange(index, "key", e.target.value)
+                        }
+                        flex={1}
+                        //   required
+                      />
+                      <TextInput
+                        label="Value"
+                        labelProps={{ size: "xs" }}
+                        size="xs"
+                        variant="filled"
+                        placeholder="value"
+                        value={env.value}
+                        onChange={(e) =>
+                          handleEnvChange(index, "value", e.target.value)
+                        }
+                        flex={1}
+                        //   required
+                      />
+                      {envVariables.length > 1 && (
+                        <Button
+                          variant="subtle"
+                          color="red"
+                          onClick={() => removeEnvVariable(index)}
+                          leftSection={<HiTrash size={14} />}
+                          size="compact-xs"
+                          style={{ marginBottom: 5 }}
+                        >
+                          Remove
+                        </Button>
+                      )}
+                    </Flex>
+                  ))}
+                  <Button
+                    variant="outline"
+                    leftSection={<IoMdAdd />}
+                    onClick={addEnvVariable}
+                    mt="sm"
+                  >
+                    Add Variable
+                  </Button>
+                </Stack>
+              </Fieldset>
+            )}
             <Divider mt="md" />
             <Group justify="flex-end">
               <Button
@@ -246,7 +294,7 @@ const CreateSingleAppForm = (props: { project: any }) => {
                 leftSection={<IoRocketSharp />}
                 color="gray.9"
               >
-                Deploy App
+                {app ? "Update App" : "Deploy App"}
               </Button>
             </Group>
           </Stack>
@@ -407,5 +455,195 @@ const CreateMIRAAppForm = (props: { project: any }) => {
         </form>
       </Paper>
     </div>
+  );
+};
+
+interface EnvVariable {
+  key: string;
+  value: any;
+}
+
+interface EnvironmentVariablesSectionProps {
+  envVariables: any[];
+  setEnvVariables: React.Dispatch<React.SetStateAction<any[]>>;
+  showTitle?: boolean;
+  loading?: boolean;
+}
+
+export const EnvironmentVariablesForm: React.FC<
+  EnvironmentVariablesSectionProps
+> = ({ envVariables, setEnvVariables, showTitle = true, loading = false }) => {
+  const addEnvVariable = () => {
+    setEnvVariables([...envVariables, { key: "", value: "" }]);
+  };
+
+  const removeEnvVariable = (index: number) => {
+    const updated = envVariables.filter((_, i) => i !== index);
+    setEnvVariables(updated);
+  };
+
+  const handleEnvChange = (
+    index: number,
+    field: "key" | "value",
+    value: string
+  ) => {
+    const updated = [...envVariables];
+    updated[index][field] = value;
+    setEnvVariables(updated);
+  };
+
+  return (
+    <div className="env-variables-section">
+      {showTitle && <h3>Environment Variables</h3>}
+
+      <Stack gap="sm">
+        {envVariables.map((env, index) => (
+          <Flex key={index} gap="md" align="flex-end">
+            <TextInput
+              label="Key"
+              labelProps={{ size: "xs" }}
+              size="xs"
+              variant="filled"
+              placeholder="ENV_KEY"
+              value={env.key}
+              onChange={(e) => handleEnvChange(index, "key", e.target.value)}
+              flex={1}
+              required
+            />
+            <TextInput
+              label="Value"
+              labelProps={{ size: "xs" }}
+              size="xs"
+              variant="filled"
+              placeholder="value"
+              value={env.value}
+              onChange={(e) => handleEnvChange(index, "value", e.target.value)}
+              flex={1}
+              required
+            />
+            {envVariables.length > 1 && (
+              <Button
+                variant="subtle"
+                color="red"
+                onClick={() => removeEnvVariable(index)}
+                leftSection={<HiTrash size={14} />}
+                size="compact-xs"
+                style={{ marginBottom: 5 }}
+              >
+                Remove
+              </Button>
+            )}
+          </Flex>
+        ))}
+        <Flex justify="flex-end">
+          <Button
+            variant="outline"
+            leftSection={<IoMdAdd />}
+            onClick={addEnvVariable}
+            mt="sm"
+            loading={loading}
+          >
+            Add Variable
+          </Button>
+        </Flex>
+      </Stack>
+    </div>
+  );
+};
+
+export const EnvironmentVariablesTable = ({
+  envVariables,
+}: {
+  envVariables: EnvVariable[];
+}) => {
+  const columns = [
+    {
+      id: "key",
+      header: "Key",
+    },
+    {
+      id: "value",
+      header: "Value",
+    },
+    {
+      id: "",
+      header: "",
+    },
+  ];
+  const ValueView = (item: any) => {
+    const [showFields, setShowFields] = useState<Record<string, boolean>>({});
+    return (
+      <Flex justify="space-between" align="center" w="100%" gap={5}>
+        <Tooltip
+          label={showFields[item.value] ? "Hide" : "Show"}
+          withArrow
+          position="left"
+        >
+          <ActionIcon
+            variant="default"
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+              setShowFields((prev) => ({
+                ...prev,
+                [item.value]: !prev[item.value],
+              }))
+            }
+          >
+            {showFields[item.value] ? (
+              <AiOutlineEyeInvisible size={16} />
+            ) : (
+              <AiOutlineEye size={16} />
+            )}
+          </ActionIcon>
+        </Tooltip>
+        <Input
+          value={item.value}
+          readOnly
+          variant="filled"
+          style={{ flex: 1 }}
+          styles={{
+            input: {
+              cursor: "pointer",
+              outline: "none",
+              border: "none",
+            },
+          }}
+          type={showFields[item.value] ? "text" : "password"}
+          onClick={() => {
+            setShowFields((prev) => ({
+              ...prev,
+              [item.value]: !prev[item.value],
+            }));
+          }}
+        />
+      </Flex>
+    );
+  };
+  const tableData = (data: EnvVariable[]) => {
+    return data.map((item) => ({
+      key: item?.key,
+      value: <ValueView value={item?.value} />,
+      action: (
+        <Button
+          variant="subtle"
+          color="red"
+          size="compact-xs"
+          leftSection={<HiTrash size={14} />}
+        >
+          Remove
+        </Button>
+      ),
+    }));
+  };
+  return (
+    <Table
+      columns={columns}
+      data={tableData(envVariables)}
+      props={{
+        verticalSpacing: "sm",
+      }}
+      showIndex={false}
+      striped={false}
+    ></Table>
   );
 };

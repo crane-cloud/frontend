@@ -3,6 +3,7 @@ import useGet from "./useGet";
 import { MenuContext } from "@/components/Layouts/DashboardLayout";
 import { Badge } from "@mantine/core";
 import { TbCheck, TbX } from "react-icons/tb";
+import moment from "moment";
 
 export const beautify = (str: string) => {
   return (str || "")
@@ -57,12 +58,14 @@ export const useGetApp = (app_id: string) => {
     useContext(MenuContext);
   const { data: appData, getData, success, loading } = useGet();
   const [app, setApp] = useState<any>({});
+  const [refresh, setRefresh] = useState(false);
+
   useEffect(() => {
     getData({
       id: app_id,
       api: `/apps`,
     });
-  }, []);
+  }, [refresh]);
 
   useEffect(() => {
     if (success) {
@@ -91,7 +94,7 @@ export const useGetApp = (app_id: string) => {
     }
   }, [setMenuType, setAppId, app_id]);
 
-  return { app, loading, success };
+  return { app, loading, success, refresh, setRefresh };
 };
 
 export const returnObject = (show: boolean, object: any) => {
@@ -138,6 +141,9 @@ export const getDatabaseStatus = (status: string) => {
 export const numberFormat = (value: number) =>
   Number(value || 0).toLocaleString();
 
+export const dateFormat = (date: string, format = "DD/MMM/YYYY") =>
+  moment(date).format(format);
+
 export const getConnectionString = (database: any) => {
   if (!database) {
     return "";
@@ -146,4 +152,31 @@ export const getConnectionString = (database: any) => {
     return `postgresql://${database?.user}:${database?.password}@${database?.host}:${database?.port}/${database?.name}`;
   }
   return `mysql://${database?.user}:${database?.password}@${database?.host}:${database?.port}/${database?.name}`;
+};
+
+export const convertArrayToObject = (arrayData: any[]) => {
+  // Create an object from the array of env variables
+  if (!arrayData) {
+    return {};
+  }
+  const envObject = arrayData.reduce(
+    (acc, env) => {
+      if (env.key && env.key.trim() !== "") {
+        acc[env.key] = env.value;
+      }
+      return acc;
+    },
+    {} as Record<string, string>
+  );
+
+  return envObject;
+};
+export const convertObjectToArray = (objectData: any) => {
+  if (!objectData) {
+    return [];
+  }
+  return Object.entries(objectData).map(([key, value]) => ({
+    key,
+    value,
+  }));
 };
