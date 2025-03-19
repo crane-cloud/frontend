@@ -29,6 +29,7 @@ import { FRAMEWORKS, REGISTRIES } from "@/utils/constants";
 import { Dropzone, FileWithPath, MIME_TYPES } from "@mantine/dropzone";
 import { useAuth } from "@/utils/AuthContext";
 import { MIRA_API_URL } from "@/config";
+import { Table } from "../Elements/CustomTable";
 
 const CreateAppForm = () => {
   useSetContainerSize("sm");
@@ -77,7 +78,8 @@ export const CreateSingleAppForm = (props: {
     onCancel = false,
     refresh = () => {},
   } = props;
-  const { form, onChange, updateFormValue, updateFormValues, editedForm } = useForm();
+  const { form, onChange, updateFormValue, updateFormValues, editedForm } =
+    useForm();
   const { uploadData, submitting, error, success } = usePost();
   const [envVariables, setEnvVariables] = useState([{ key: "", value: "" }]);
 
@@ -115,14 +117,13 @@ export const CreateSingleAppForm = (props: {
         id: app?.id,
         params: editedForm,
       });
-      return
+      return;
     }
-  
-      uploadData({
-        api: `${API_PROJECTS}/${project?.id}/apps`,
-        params: form,
-      });
-    
+
+    uploadData({
+      api: `${API_PROJECTS}/${project?.id}/apps`,
+      params: form,
+    });
   };
 
   useEffect(() => {
@@ -225,58 +226,58 @@ export const CreateSingleAppForm = (props: {
               <Fieldset
                 legend="Environment Variables"
                 // description="Add environment variables for your application"
-            >
-              <Stack gap="sm">
-                {envVariables.map((env, index) => (
-                  <Flex key={index} gap="md" align="flex-end">
-                    <TextInput
-                      label="Key"
-                      labelProps={{ size: "xs" }}
-                      size="xs"
-                      variant="filled"
-                      placeholder="ENV_KEY"
-                      value={env.key}
-                      onChange={(e) =>
-                        handleEnvChange(index, "key", e.target.value)
-                      }
-                      flex={1}
-                      //   required
-                    />
-                    <TextInput
-                      label="Value"
-                      labelProps={{ size: "xs" }}
-                      size="xs"
-                      variant="filled"
-                      placeholder="value"
-                      value={env.value}
-                      onChange={(e) =>
-                        handleEnvChange(index, "value", e.target.value)
-                      }
-                      flex={1}
-                      //   required
-                    />
-                    {envVariables.length > 1 && (
-                      <Button
-                        variant="subtle"
-                        color="red"
-                        onClick={() => removeEnvVariable(index)}
-                        leftSection={<HiTrash size={14} />}
-                        size="compact-xs"
-                        style={{ marginBottom: 5 }}
-                      >
-                        Remove
-                      </Button>
-                    )}
-                  </Flex>
-                ))}
-                <Button
-                  variant="outline"
-                  leftSection={<IoMdAdd />}
-                  onClick={addEnvVariable}
-                  mt="sm"
-                >
-                  Add Variable
-                </Button>
+              >
+                <Stack gap="sm">
+                  {envVariables.map((env, index) => (
+                    <Flex key={index} gap="md" align="flex-end">
+                      <TextInput
+                        label="Key"
+                        labelProps={{ size: "xs" }}
+                        size="xs"
+                        variant="filled"
+                        placeholder="ENV_KEY"
+                        value={env.key}
+                        onChange={(e) =>
+                          handleEnvChange(index, "key", e.target.value)
+                        }
+                        flex={1}
+                        //   required
+                      />
+                      <TextInput
+                        label="Value"
+                        labelProps={{ size: "xs" }}
+                        size="xs"
+                        variant="filled"
+                        placeholder="value"
+                        value={env.value}
+                        onChange={(e) =>
+                          handleEnvChange(index, "value", e.target.value)
+                        }
+                        flex={1}
+                        //   required
+                      />
+                      {envVariables.length > 1 && (
+                        <Button
+                          variant="subtle"
+                          color="red"
+                          onClick={() => removeEnvVariable(index)}
+                          leftSection={<HiTrash size={14} />}
+                          size="compact-xs"
+                          style={{ marginBottom: 5 }}
+                        >
+                          Remove
+                        </Button>
+                      )}
+                    </Flex>
+                  ))}
+                  <Button
+                    variant="outline"
+                    leftSection={<IoMdAdd />}
+                    onClick={addEnvVariable}
+                    mt="sm"
+                  >
+                    Add Variable
+                  </Button>
                 </Stack>
               </Fieldset>
             )}
@@ -450,5 +451,145 @@ const CreateMIRAAppForm = (props: { project: any }) => {
         </form>
       </Paper>
     </div>
+  );
+};
+
+interface EnvVariable {
+  key: string;
+  value: any;
+}
+
+interface EnvironmentVariablesSectionProps {
+  envVariables: any[];
+  setEnvVariables: React.Dispatch<React.SetStateAction<any[]>>;
+  showTitle?: boolean;
+  loading?: boolean;
+}
+
+export const EnvironmentVariablesForm: React.FC<
+  EnvironmentVariablesSectionProps
+> = ({ envVariables, setEnvVariables, showTitle = true, loading = false }) => {
+  const addEnvVariable = () => {
+    setEnvVariables([...envVariables, { key: "", value: "" }]);
+  };
+
+  const removeEnvVariable = (index: number) => {
+    const updated = envVariables.filter((_, i) => i !== index);
+    setEnvVariables(updated);
+  };
+
+  const handleEnvChange = (
+    index: number,
+    field: "key" | "value",
+    value: string
+  ) => {
+    const updated = [...envVariables];
+    updated[index][field] = value;
+    setEnvVariables(updated);
+  };
+
+  return (
+    <div className="env-variables-section">
+      {showTitle && <h3>Environment Variables</h3>}
+
+      <Stack gap="sm">
+        {envVariables.map((env, index) => (
+          <Flex key={index} gap="md" align="flex-end">
+            <TextInput
+              label="Key"
+              labelProps={{ size: "xs" }}
+              size="xs"
+              variant="filled"
+              placeholder="ENV_KEY"
+              value={env.key}
+              onChange={(e) => handleEnvChange(index, "key", e.target.value)}
+              flex={1}
+              required
+            />
+            <TextInput
+              label="Value"
+              labelProps={{ size: "xs" }}
+              size="xs"
+              variant="filled"
+              placeholder="value"
+              value={env.value}
+              onChange={(e) => handleEnvChange(index, "value", e.target.value)}
+              flex={1}
+              required
+            />
+            {envVariables.length > 1 && (
+              <Button
+                variant="subtle"
+                color="red"
+                onClick={() => removeEnvVariable(index)}
+                leftSection={<HiTrash size={14} />}
+                size="compact-xs"
+                style={{ marginBottom: 5 }}
+              >
+                Remove
+              </Button>
+            )}
+          </Flex>
+        ))}
+        <Flex justify="flex-end">
+          <Button
+            variant="outline"
+            leftSection={<IoMdAdd />}
+            onClick={addEnvVariable}
+            mt="sm"
+            loading={loading}
+          >
+            Add Variable
+          </Button>
+        </Flex>
+      </Stack>
+    </div>
+  );
+};
+
+export const EnvironmentVariablesTable = ({
+  envVariables,
+}: {
+  envVariables: EnvVariable[];
+}) => {
+  const columns = [
+    {
+      id: "key",
+      header: "Key",
+    },
+    {
+      id: "value",
+      header: "Value",
+    },
+    {
+      id: "",
+      header: "",
+    },
+  ];
+  const tableData = (data: EnvVariable[]) => {
+    return data.map((item) => ({
+      key: item.key,
+      value: item.value,
+      action: (
+        <Button
+          variant="subtle"
+          color="red"
+          size="compact-xs"
+          leftSection={<HiTrash size={14} />}
+        >
+          Remove
+        </Button>
+      ),
+    }));
+  };
+  return (
+    <Table
+      columns={columns}
+      data={tableData(envVariables)}
+      props={{
+        verticalSpacing: "sm",
+      }}
+      showIndex={false}
+    ></Table>
   );
 };

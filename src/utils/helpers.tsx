@@ -149,3 +149,30 @@ export const getConnectionString = (database: any) => {
   }
   return `mysql://${database?.user}:${database?.password}@${database?.host}:${database?.port}/${database?.name}`;
 };
+
+export const convertArrayToObject = (arrayData: any[]) => {
+  // Create an object from the array of env variables
+  if (!arrayData) {
+    return {};
+  }
+  const envObject = arrayData.reduce(
+    (acc, env) => {
+      if (env.key && env.key.trim() !== "") {
+        acc[env.key] = env.value;
+      }
+      return acc;
+    },
+    {} as Record<string, string>
+  );
+
+  return envObject;
+};
+export const convertObjectToArray = (objectData: any) => {
+  if (!objectData) {
+    return [];
+  }
+  return Object.entries(objectData).map(([key, value]) => ({
+    key,
+    value,
+  }));
+};

@@ -11,6 +11,7 @@ type TModalConfirm = {
   buttonText?: string;
   buttonColor?: string;
   showFooterActions?: boolean;
+  size?: string;
 };
 
 export const ModalConfirm = (props: TModalConfirm) => {
@@ -25,9 +26,10 @@ export const ModalConfirm = (props: TModalConfirm) => {
     buttonText,
     buttonColor,
     showFooterActions = true,
+    size = "md",
   } = props;
   return (
-    <Modal opened={opened} onClose={onClose} title={title}>
+    <Modal opened={opened} onClose={onClose} title={title} size={size}>
       <Divider pb="md" />
       <Text size="sm" mb="md">
         {children}

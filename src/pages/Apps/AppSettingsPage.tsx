@@ -1,15 +1,22 @@
 import { ModalConfirm } from "@/components/Elements/Modals";
 import CreateAppForm, {
   CreateSingleAppForm,
+  EnvironmentVariablesForm,
+  EnvironmentVariablesTable,
 } from "@/components/Forms/CreateAppForm";
 import TitleText from "@/components/TitleText";
 import { API_APPS } from "@/utils/apis";
-import { useGetApp } from "@/utils/helpers";
+import {
+  convertArrayToObject,
+  convertObjectToArray,
+  useGetApp,
+} from "@/utils/helpers";
 import usePost from "@/utils/usePost";
 import {
   Button,
   Card,
   Divider,
+  Fieldset,
   Flex,
   Grid,
   Group,
@@ -54,6 +61,11 @@ const GeneralTab = ({
   const [disableConfirmOpened, setDisableConfirmOpened] = useState(false);
   const [enableConfirmOpened, setEnableConfirmOpened] = useState(false);
   const [updateConfirmOpened, setUpdateConfirmOpened] = useState(false);
+  const [envVariablesConfirmOpened, setEnvVariablesConfirmOpened] =
+    useState(false);
+  const [envVariables, setEnvVariables] = useState(
+    convertObjectToArray(app?.env_vars) || [{ key: "", value: "" }]
+  );
 
   const {
     uploadData: deleteApp,
@@ -70,6 +82,11 @@ const GeneralTab = ({
     submitting: enablingApp,
     success: enabledAppSuccess,
   } = usePost();
+  const {
+    uploadData: addEnvVariables,
+    submitting: addingEnvVariables,
+    success: addedEnvVariablesSuccess,
+  } = usePost();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -83,6 +100,27 @@ const GeneralTab = ({
       navigate(`/projects/${app?.project_id}/apps/${app?.id}`);
     }
   }, [enabledAppSuccess, disabledAppSuccess]);
+
+  useEffect(() => {
+    setRefresh(true);
+  }, [addedEnvVariablesSuccess]);
+
+  const submitEnvVariables = () => {
+    const envObject = convertArrayToObject(envVariables);
+    addEnvVariables({
+      api: "apps",
+      id: app?.id,
+      method: "PATCH",
+      params: {
+        env_vars: envObject,
+      },
+    });
+    setEnvVariablesConfirmOpened(false);
+  };
+
+  useEffect(() => {
+    setEnvVariables(convertObjectToArray(app?.env_vars));
+  }, [app]);
 
   const handleDelete = () => {
     deleteApp({
@@ -138,6 +176,7 @@ const GeneralTab = ({
       value: app?.entry_command || "N/A",
     },
   ];
+
   const appSingleInfo = [
     {
       label: "Application Link",
@@ -148,18 +187,6 @@ const GeneralTab = ({
       value: app?.internal_url || "N/A",
     },
   ];
-
-  const appDoubleInfo = [
-    {
-      label: "Application Link",
-      value: app?.url || "N/A",
-    },
-    {
-      label: "Internal Link",
-      value: app?.internal_url || "N/A",
-    },
-  ];
-
   return (
     <Stack gap={30}>
       <Stack gap={0}>
@@ -191,6 +218,28 @@ const GeneralTab = ({
             ))}
           </Grid>
         </Card>
+      </Stack>
+      <Stack gap={0}>
+        <TitleText>Environment Variables</TitleText>
+        {Object.keys(app?.env_vars || {}).length > 0 ? (
+          <EnvironmentVariablesTable
+            envVariables={convertObjectToArray(app?.env_vars)}
+          />
+        ) : (
+          <Text className="subtext">
+            Use environment variables to store API keys or secrets.
+          </Text>
+        )}
+        <Flex justify="flex-end" mt="md">
+          <Button
+            variant="outline"
+            onClick={() => setEnvVariablesConfirmOpened(true)}
+          >
+            {Object.keys(app?.env_vars || {}).length > 0
+              ? "Update Environment Variables"
+              : "Add Environment Variables"}
+          </Button>
+        </Flex>
       </Stack>
       <Stack gap={0}>
         <TitleText>Danger Zone</TitleText>
@@ -311,6 +360,7 @@ const GeneralTab = ({
             title="Update App"
             buttonText="Update"
             onConfirm={() => {}}
+            size="xl"
             showFooterActions={false}
           >
             <CreateSingleAppForm
@@ -319,6 +369,22 @@ const GeneralTab = ({
               showTitle={false}
               onCancel={() => setUpdateConfirmOpened(false)}
               refresh={() => setRefresh(true)}
+            />
+          </ModalConfirm>
+
+          <ModalConfirm
+            opened={envVariablesConfirmOpened}
+            onClose={() => setEnvVariablesConfirmOpened(false)}
+            title="Environment Variables"
+            buttonText="Add Variables"
+            size="xl"
+            onConfirm={submitEnvVariables}
+          >
+            <EnvironmentVariablesForm
+              envVariables={envVariables}
+              setEnvVariables={setEnvVariables}
+              loading={addingEnvVariables}
+              showTitle={false}
             />
           </ModalConfirm>
         </Card>
