@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import { HiCommandLine, HiTrash } from "react-icons/hi2";
 import useForm from "@/hooks/useForm";
 import usePost from "@/utils/usePost";
-import { API_PROJECTS } from "@/utils/apis";
+import { API_APPS, API_PROJECTS } from "@/utils/apis";
 import { useNavigate, useParams } from "react-router-dom";
 import { IoRocketSharp } from "react-icons/io5";
 import { FaDocker } from "react-icons/fa";
@@ -61,9 +61,23 @@ const CreateAppForm = () => {
 
 export default CreateAppForm;
 
-const CreateSingleAppForm = (props: { project: any }) => {
-  const { project } = props;
-  const { form, onChange, updateFormValue, updateFormValues } = useForm();
+export const CreateSingleAppForm = (props: {
+  project?: any;
+  app?: any;
+  showTitle?: boolean;
+  showEnvs?: boolean;
+  onCancel?: () => void;
+  refresh?: () => void;
+}) => {
+  const {
+    project,
+    app,
+    showTitle = true,
+    showEnvs = true,
+    onCancel = false,
+    refresh = () => {},
+  } = props;
+  const { form, onChange, updateFormValue, updateFormValues, editedForm } = useForm();
   const { uploadData, submitting, error, success } = usePost();
   const [envVariables, setEnvVariables] = useState([{ key: "", value: "" }]);
 
@@ -95,26 +109,53 @@ const CreateSingleAppForm = (props: { project: any }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    uploadData({
-      api: `${API_PROJECTS}/${project?.id}/apps`,
-      params: form,
-    });
+    if (app) {
+      uploadData({
+        api: API_APPS,
+        id: app?.id,
+        params: editedForm,
+      });
+      return
+    }
+  
+      uploadData({
+        api: `${API_PROJECTS}/${project?.id}/apps`,
+        params: form,
+      });
+    
   };
 
   useEffect(() => {
+    if (app) {
+      updateFormValues({
+        ...app,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
     if (success) {
-      navigate(`/projects/${project?.id}/apps`);
+      if (onCancel) {
+        onCancel();
+        if (refresh) {
+          refresh();
+        }
+      } else {
+        navigate(`/projects/${project?.id}/apps`);
+      }
     }
   }, [success]);
 
   return (
-    <div style={{ marginTop: 10 }}>
-      <TitleText>
-        <Flex align="center" gap="xs">
-          <IoRocketSharp size={15} />
-          Deploy Application
-        </Flex>
-      </TitleText>
+    <div style={{ marginTop: showTitle ? 10 : 0 }}>
+      {showTitle && (
+        <TitleText>
+          <Flex align="center" gap="xs">
+            <IoRocketSharp size={15} />
+            Deploy Application
+          </Flex>
+        </TitleText>
+      )}
 
       <Paper p="lg" radius="md">
         <form onSubmit={handleSubmit}>
@@ -180,9 +221,10 @@ const CreateSingleAppForm = (props: { project: any }) => {
               error={error?.entry_command}
               leftSection={<HiCommandLine />}
             />
-            <Fieldset
-              legend="Environment Variables"
-              //   description="Add environment variables for your application"
+            {showEnvs && (
+              <Fieldset
+                legend="Environment Variables"
+                // description="Add environment variables for your application"
             >
               <Stack gap="sm">
                 {envVariables.map((env, index) => (
@@ -235,8 +277,9 @@ const CreateSingleAppForm = (props: { project: any }) => {
                 >
                   Add Variable
                 </Button>
-              </Stack>
-            </Fieldset>
+                </Stack>
+              </Fieldset>
+            )}
             <Divider mt="md" />
             <Group justify="flex-end">
               <Button
@@ -246,7 +289,7 @@ const CreateSingleAppForm = (props: { project: any }) => {
                 leftSection={<IoRocketSharp />}
                 color="gray.9"
               >
-                Deploy App
+                {app ? "Update App" : "Deploy App"}
               </Button>
             </Group>
           </Stack>

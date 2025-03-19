@@ -57,12 +57,14 @@ export const useGetApp = (app_id: string) => {
     useContext(MenuContext);
   const { data: appData, getData, success, loading } = useGet();
   const [app, setApp] = useState<any>({});
+  const [refresh, setRefresh] = useState(false);
+
   useEffect(() => {
     getData({
       id: app_id,
       api: `/apps`,
     });
-  }, []);
+  }, [refresh]);
 
   useEffect(() => {
     if (success) {
@@ -91,7 +93,7 @@ export const useGetApp = (app_id: string) => {
     }
   }, [setMenuType, setAppId, app_id]);
 
-  return { app, loading, success };
+  return { app, loading, success, refresh, setRefresh };
 };
 
 export const returnObject = (show: boolean, object: any) => {
