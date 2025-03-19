@@ -1,5 +1,5 @@
 import { ModalConfirm } from "@/components/Elements/Modals";
-import CreateAppForm, {
+import {
   CreateSingleAppForm,
   EnvironmentVariablesForm,
   EnvironmentVariablesTable,
@@ -16,7 +16,6 @@ import {
   Button,
   Card,
   Divider,
-  Fieldset,
   Flex,
   Grid,
   Group,
@@ -24,8 +23,14 @@ import {
   Tabs,
   Text,
 } from "@mantine/core";
-import React, { useEffect, useState } from "react";
-import { HiLockClosed, HiLockOpen, HiTrash } from "react-icons/hi2";
+import { useEffect, useState } from "react";
+import {
+  HiLockClosed,
+  HiLockOpen,
+  HiPencil,
+  HiPlus,
+  HiTrash,
+} from "react-icons/hi2";
 import { useNavigate, useParams } from "react-router-dom";
 
 const AppSettingsPage = () => {
@@ -234,6 +239,13 @@ const GeneralTab = ({
           <Button
             variant="outline"
             onClick={() => setEnvVariablesConfirmOpened(true)}
+            leftSection={
+              Object.keys(app?.env_vars || {}).length > 0 ? (
+                <HiPencil />
+              ) : (
+                <HiPlus />
+              )
+            }
           >
             {Object.keys(app?.env_vars || {}).length > 0
               ? "Update Environment Variables"

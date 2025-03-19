@@ -1,15 +1,18 @@
 import {
+  ActionIcon,
   Button,
   Divider,
   Fieldset,
   Flex,
   Group,
+  Input,
   Paper,
   Select,
   Stack,
   Tabs,
   Text,
   TextInput,
+  Tooltip,
 } from "@mantine/core";
 import TitleText from "../TitleText";
 import { IoIosArrowDown, IoMdAdd } from "react-icons/io";
@@ -30,6 +33,8 @@ import { Dropzone, FileWithPath, MIME_TYPES } from "@mantine/dropzone";
 import { useAuth } from "@/utils/AuthContext";
 import { MIRA_API_URL } from "@/config";
 import { Table } from "../Elements/CustomTable";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useClipboard } from "@mantine/hooks";
 
 const CreateAppForm = () => {
   useSetContainerSize("sm");
@@ -566,10 +571,59 @@ export const EnvironmentVariablesTable = ({
       header: "",
     },
   ];
+  const ValueView = (item: any) => {
+    const [showFields, setShowFields] = useState<Record<string, boolean>>({});
+    return (
+      <Flex justify="space-between" align="center" w="100%" gap={5}>
+        <Tooltip
+          label={showFields[item.value] ? "Hide" : "Show"}
+          withArrow
+          position="left"
+        >
+          <ActionIcon
+            variant="default"
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+              setShowFields((prev) => ({
+                ...prev,
+                [item.value]: !prev[item.value],
+              }))
+            }
+          >
+            {showFields[item.value] ? (
+              <AiOutlineEyeInvisible size={16} />
+            ) : (
+              <AiOutlineEye size={16} />
+            )}
+          </ActionIcon>
+        </Tooltip>
+        <Input
+          value={item.value}
+          readOnly
+          variant="filled"
+          style={{ flex: 1 }}
+          styles={{
+            input: {
+              cursor: "pointer",
+              outline: "none",
+              border: "none",
+            },
+          }}
+          type={showFields[item.value] ? "text" : "password"}
+          onClick={() => {
+            setShowFields((prev) => ({
+              ...prev,
+              [item.value]: !prev[item.value],
+            }));
+          }}
+        />
+      </Flex>
+    );
+  };
   const tableData = (data: EnvVariable[]) => {
     return data.map((item) => ({
-      key: item.key,
-      value: item.value,
+      key: item?.key,
+      value: <ValueView value={item?.value} />,
       action: (
         <Button
           variant="subtle"
@@ -590,6 +644,7 @@ export const EnvironmentVariablesTable = ({
         verticalSpacing: "sm",
       }}
       showIndex={false}
+      striped={false}
     ></Table>
   );
 };
