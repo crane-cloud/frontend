@@ -3,6 +3,7 @@ import useGet from "./useGet";
 import { MenuContext } from "@/components/Layouts/DashboardLayout";
 import { Badge } from "@mantine/core";
 import { TbCheck, TbX } from "react-icons/tb";
+import moment from "moment";
 
 export const beautify = (str: string) => {
   return (str || "")
@@ -139,6 +140,9 @@ export const getDatabaseStatus = (status: string) => {
 
 export const numberFormat = (value: number) =>
   Number(value || 0).toLocaleString();
+
+export const dateFormat = (date: string, format = "DD/MMM/YYYY") =>
+  moment(date).format(format);
 
 export const getConnectionString = (database: any) => {
   if (!database) {

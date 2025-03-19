@@ -1,3 +1,4 @@
+import { Table } from "@/components/Elements/CustomTable";
 import { ModalConfirm } from "@/components/Elements/Modals";
 import {
   CreateSingleAppForm,
@@ -9,10 +10,13 @@ import { API_APPS } from "@/utils/apis";
 import {
   convertArrayToObject,
   convertObjectToArray,
+  dateFormat,
   useGetApp,
 } from "@/utils/helpers";
+import useGet from "@/utils/useGet";
 import usePost from "@/utils/usePost";
 import {
+  Badge,
   Button,
   Card,
   Divider,
@@ -31,22 +35,29 @@ import {
   HiPlus,
   HiTrash,
 } from "react-icons/hi2";
+import { FiCalendar } from "react-icons/fi";
+import { LiaDocker } from "react-icons/lia";
+
 import { useNavigate, useParams } from "react-router-dom";
+import { TbCheck } from "react-icons/tb";
 
 const AppSettingsPage = () => {
   const { app_id } = useParams();
   const { app, setRefresh } = useGetApp(app_id || "");
   return (
     <div>
-      <Tabs defaultValue="general">
+      <Tabs defaultValue="deployments">
         <Tabs.List>
           <Tabs.Tab value="general">General</Tabs.Tab>
-          <Tabs.Tab value="members">Members</Tabs.Tab>
+          <Tabs.Tab value="deployments">Deployments</Tabs.Tab>
           <Tabs.Tab value="settings">Settings</Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="general" pt={10}>
           <GeneralTab app={app} setRefresh={setRefresh} />
+        </Tabs.Panel>
+        <Tabs.Panel value="deployments" pt={10}>
+          <DeploymentsTab app={app} setRefresh={setRefresh} />
         </Tabs.Panel>
       </Tabs>
     </div>
@@ -402,5 +413,80 @@ const GeneralTab = ({
         </Card>
       </Stack>
     </Stack>
+  );
+};
+
+const DeploymentsTab = ({
+  app,
+  setRefresh,
+}: {
+  app: any;
+  setRefresh: (refresh: boolean) => void;
+}) => {
+  const { data: revisionsData, getData: getRevisions, loading } = useGet();
+
+  useEffect(() => {
+    if (app?.id) {
+      getRevisions({
+        api: `${API_APPS}/${app?.id}/revisions`,
+      });
+    }
+  }, [app]);
+
+  const tableColumns = [
+    { id: "revision_id", header: "Revision ID" },
+    { id: "image", header: "Image" },
+    { id: "replicas", header: "Replicas" },
+    { id: "created_at", header: "Created At" },
+  ];
+  const tableData = (data: any) => {
+    return data?.map((item: any) => ({
+      ...item,
+      replicas: item.replicas || 1,
+      revision_id: (
+        <Stack gap={0} align="flex-start">
+          <Text className="subtext">{item.revision_id}</Text>
+          {item.current && (
+            <Badge color="green" size="xs" leftSection={<TbCheck />}>
+              Current
+            </Badge>
+          )}
+        </Stack>
+      ),
+      image: (
+        <Flex gap={5} align="center">
+          <LiaDocker size={16} />
+          <Text className="subtext">{item.image}</Text>
+        </Flex>
+      ),
+      created_at: (
+        <Stack gap={0} align="flex-end">
+          <Flex gap={5} align="center">
+            <FiCalendar size={13} />
+            <Text className="subtext">{dateFormat(item.created_at)}</Text>
+          </Flex>
+          <Text className="subtext" c="dimmed">
+            {dateFormat(item.created_at, "HH:mm A")}
+          </Text>
+        </Stack>
+      ),
+    }));
+  };
+
+  return (
+    <div>
+      <TitleText>Deployments</TitleText>
+      <Table
+        verticalSpacing="sm"
+        columns={tableColumns}
+        data={tableData(revisionsData?.data?.revisions)}
+        props={{
+          verticalSpacing: "sm",
+        }}
+        showIndex={false}
+        rowHover
+        loading={loading}
+      />
+    </div>
   );
 };
