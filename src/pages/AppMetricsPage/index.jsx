@@ -163,6 +163,10 @@ const AppMetricsPage = () => {
   const formattedNetworkMetrics = getAppNetworkMetrics();
   const appInfo = getAppInfo();
 
+  console.log("model", isAiModel);
+
+  console.log("notebook", isJupyterNotebook);
+
   return (
     <DashboardLayout
       name={appInfo.name}
@@ -307,18 +311,18 @@ const AppMetricsPage = () => {
                     <div className={styles.InnerCardSections}>
                       <div className={styles.InnerContentGrid}>
                         <div className={styles.InnerTitlesEnd}>
-                          Model Image Url
+                          {isAiModel ? "Model Image Url" : "App Alias"}
                         </div>
                         <div className={styles.InnerContentEnd}>
-                          {appInfo.model_image_uri}
+                          {isAiModel ? appInfo.model_image_uri : appInfo.alias}
                         </div>
                       </div>
                       <div className={styles.InnerContentGrid}>
                         <div className={styles.InnerTitlesEnd}>
-                          Model Server
+                          {isAiModel ? "Model Server" : "Port"}
                         </div>
                         <div className={styles.InnerContentEnd}>
-                          {appInfo.model_server}
+                          {isAiModel ? appInfo.model_server : appInfo.port}
                         </div>
                       </div>
                     </div>{" "}
