@@ -23,9 +23,12 @@ import {
   Flex,
   Grid,
   Group,
+  Input,
   Stack,
   Tabs,
   Text,
+  Tooltip,
+  TextInput,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import {
@@ -39,18 +42,20 @@ import { FiCalendar } from "react-icons/fi";
 import { LiaDocker } from "react-icons/lia";
 
 import { useNavigate, useParams } from "react-router-dom";
-import { TbCheck } from "react-icons/tb";
+import { TbCheck, TbCopy } from "react-icons/tb";
+import { useClipboard } from "@mantine/hooks";
+import { useAuth } from "@/utils/AuthContext";
 
 const AppSettingsPage = () => {
   const { app_id } = useParams();
   const { app, setRefresh } = useGetApp(app_id || "");
   return (
     <div>
-      <Tabs defaultValue="deployments">
+      <Tabs defaultValue="ci/cd">
         <Tabs.List>
           <Tabs.Tab value="general">General</Tabs.Tab>
+          <Tabs.Tab value="ci/cd">CI / CD</Tabs.Tab>
           <Tabs.Tab value="deployments">Deployments</Tabs.Tab>
-          <Tabs.Tab value="settings">Settings</Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="general" pt={10}>
@@ -58,6 +63,9 @@ const AppSettingsPage = () => {
         </Tabs.Panel>
         <Tabs.Panel value="deployments" pt={10}>
           <DeploymentsTab app={app} setRefresh={setRefresh} />
+        </Tabs.Panel>
+        <Tabs.Panel value="ci/cd" pt={10}>
+          <CICDTab app={app} setRefresh={setRefresh} />
         </Tabs.Panel>
       </Tabs>
     </div>
@@ -487,6 +495,142 @@ const DeploymentsTab = ({
         rowHover
         loading={loading}
       />
+    </div>
+  );
+};
+
+const CICDTab = ({
+  app,
+  setRefresh,
+}: {
+  app: any;
+  setRefresh: (refresh: boolean) => void;
+}) => {
+  const clipboard = useClipboard();
+  const { user } = useAuth();
+  let hook = "https://crane.cloud/apps/1234567890/ci";
+  const [imageTag, setImageTag] = useState("");
+  const [webhookUrl, setwebhookUrl] = useState("");
+
+  const isStaging = /localhost|staging/.test(window.location.href);
+
+  const generateWebhook = () => {
+    const tag = imageTag || "latest";
+    const defaultUrl = isStaging
+      ? `https://staging-api.cranecloud.io/apps/${app?.id}/${user?.id}/docker`
+      : `https://api.cranecloud.io/apps/${app?.id}/${user?.id}/docker`;
+    if (app?.id && user?.id) {
+      setwebhookUrl(`${defaultUrl}/docker/${tag}/webhook`);
+    }
+  };
+
+  return (
+    <div>
+      <Stack gap={30}>
+        <Stack gap={10}>
+          <TitleText>Set up Continous Integration</TitleText>
+          <Card p="lg" radius="md" withBorder>
+            <Stack gap={20}>
+              <Stack gap={1}>
+                <Text size="md" fw={700}>
+                  Specify Image Tag
+                </Text>
+                <Text size="sm">
+                  Specify Image Tag for your image and if none is provided{" "}
+                  <b>"Latest"</b> will be chosen as the default tag.
+                </Text>
+              </Stack>
+              <TextInput
+                placeholder="Enter Image Tag"
+                value={imageTag}
+                onChange={(e) => setImageTag(e.target.value)}
+              />
+              <Stack gap={10}>
+                <Divider />
+                <Flex justify="space-between" gap={20}>
+                  <Stack gap={1}>
+                    <Text size="md" fw={700}>
+                      Generate Link
+                    </Text>
+                    <Text size="sm">
+                      To Generate a link with a token click the Generate link
+                      button.
+                    </Text>
+                  </Stack>
+                  <Button variant="outline" onClick={generateWebhook}>
+                    Generate Link
+                  </Button>
+                </Flex>
+                {webhookUrl && (
+                  <Stack gap={10}>
+                    <Flex
+                      justify="space-between"
+                      align="center"
+                      gap={30}
+                      mt={10}
+                    >
+                      <Text className="subtitle">Webhook URL</Text>
+                      <Text size="sm" flex={1}>
+                        {imageTag}
+                      </Text>
+                    </Flex>
+                    <Flex justify="space-between" align="center" gap={30}>
+                      <Text className="subtitle">Image Tag</Text>
+                      <Text size="sm" flex={1}>
+                        <Tooltip
+                          label={clipboard.copied ? "Copied" : "Copy"}
+                          position="bottom"
+                          withArrow
+                        >
+                          <Input
+                            value={webhookUrl}
+                            readOnly
+                            variant="filled"
+                            style={{ flex: 1 }}
+                            styles={{
+                              input: {
+                                cursor: "pointer",
+                                outline: "none",
+                                border: "none",
+                                wrap: "wrap",
+                              },
+                            }}
+                            rightSection={<TbCopy />}
+                            onClick={() => clipboard.copy(hook)}
+                          />
+                        </Tooltip>
+                      </Text>
+                    </Flex>
+                  </Stack>
+                )}
+              </Stack>
+            </Stack>
+          </Card>
+        </Stack>
+        <Stack gap={10}>
+          <TitleText>Add link to Dockerhub</TitleText>
+          <Card p="lg" radius="md" withBorder>
+            <Stack gap={10}>
+              <Text size="sm">
+                1. To add the webhook, copy the generated link above and head to
+                <b>dockerhub.com</b> under the repository of your docker image.
+              </Text>
+              <Text size="sm">
+                2. On the image repository click the <b>Webhooks</b> tab.
+              </Text>
+              <Text size="sm">
+                3. Under new Webhook give your webhook any name of your choice
+                and add the genereated URL token from Crane Cloud and click
+                create.
+              </Text>
+              <Text size="sm">
+                4. Continous Integration has been successfully been added for
+                your application.
+              </Text>
+            </Stack>
+          </Card>
+        </Stack>
+      </Stack>
     </div>
   );
 };

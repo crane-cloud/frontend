@@ -34,7 +34,6 @@ import { useAuth } from "@/utils/AuthContext";
 import { MIRA_API_URL } from "@/config";
 import { Table } from "../Elements/CustomTable";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { useClipboard } from "@mantine/hooks";
 
 const CreateAppForm = () => {
   useSetContainerSize("sm");
