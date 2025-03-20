@@ -51,7 +51,7 @@ const AppSettingsPage = () => {
   const { app, setRefresh } = useGetApp(app_id || "");
   return (
     <div>
-      <Tabs defaultValue="ci/cd">
+      <Tabs defaultValue="general">
         <Tabs.List>
           <Tabs.Tab value="general">General</Tabs.Tab>
           <Tabs.Tab value="ci/cd">CI / CD</Tabs.Tab>
