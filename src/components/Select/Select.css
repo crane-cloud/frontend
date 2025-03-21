@@ -45,11 +45,19 @@
   padding: 0 1rem;
   line-height: 2.5rem;
   height: 2.5rem;
+  display: flex;
 }
 
 .SelectOptionsWrapper .SelectOption:hover {
   background-color: var(--gray-bg-light-color);
   cursor: pointer;
+}
+
+.SelectIcon {
+  margin-right: 8px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
 }
 
 .SelectArrow {

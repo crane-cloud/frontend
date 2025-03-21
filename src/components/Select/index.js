@@ -67,6 +67,9 @@ const Select = ({
           
           `}
         >
+          {selected?.icon && (
+            <span className="SelectIcon">{selected.icon}</span>
+          )}
           {showOptions ? `${placeholder} ${required ? "*" : ""}` : selected}
           <div
             className={`SelectArrow ${showOptions && "SelectArrowShowOptions"}`}
@@ -75,6 +78,20 @@ const Select = ({
           </div>
         </div>
       </div>
+      {/* {showOptions && (
+        <div className="SelectOptionsWrapper">
+          {options?.map((option) => (
+            <div
+              key={option.id}
+              className="SelectOption"
+              onClick={() => handleChange(option)}
+              role="presentation"
+            >
+              {option.name}
+            </div>
+          ))}
+        </div>
+      )} */}
       {showOptions && (
         <div className="SelectOptionsWrapper">
           {options?.map((option) => (
@@ -84,6 +101,7 @@ const Select = ({
               onClick={() => handleChange(option)}
               role="presentation"
             >
+              {option.icon && <span className="SelectIcon">{option.icon}</span>}
               {option.name}
             </div>
           ))}

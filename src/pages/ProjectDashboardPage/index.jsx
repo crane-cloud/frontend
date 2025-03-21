@@ -11,6 +11,8 @@ import MetricsCard from "../../components/MetricsCard";
 import { ReactComponent as CPUIcon } from "../../assets/images/cpu.svg";
 import { ReactComponent as NetworkIcon } from "../../assets/images/wifi.svg";
 import { ReactComponent as MemoryIcon } from "../../assets/images/hard-drive.svg";
+import { FaNetworkWired } from "react-icons/fa";
+import { SiPostman } from "react-icons/si";
 import "./ProjectDashboardPage.css";
 import {
   formatCPUMetrics,
@@ -31,11 +33,14 @@ import Spinner from "../../components/Spinner";
 import { useMutation } from "@tanstack/react-query";
 import { useMlDeployment } from "../../hooks/useAppDeploymentMutation";
 import { validateInput } from "../../helpers/validation";
+import { retrieveModelServers } from "../../helpers/modelServers";
 
 const ProjectDashboardPage = () => {
   const { projectID } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const modelServers = retrieveModelServers();
 
   const { projects, memoryMetrics, cpuMetrics, networkMetrics, credits } =
     useSelector((state) => ({
@@ -302,16 +307,7 @@ const ProjectDashboardPage = () => {
 
               <label>Model Server *</label>
               <Select
-                options={[
-                  { id: "1", name: "SKLEARN_SERVER" },
-                  { id: "2", name: "TENSORFLOW_SERVER" },
-                  { id: "3", name: "XGBOOST_SERVER" },
-                  { id: "4", name: "MLFLOW_SERVER" },
-                  { id: "5", name: "TRITON_SERVER" },
-                  { id: "6", name: "TEMPO_SERVER" },
-                  { id: "7", name: "HUGGINGFACE_SERVER" },
-                  { id: "8", name: "CUSTOM_INFERENCE_SERVER" },
-                ]}
+                options={modelServers}
                 placeholder="Select your model server"
                 onChange={(selected) => {
                   setAiModelServer(selected.name);
@@ -322,8 +318,8 @@ const ProjectDashboardPage = () => {
               <label>Model API type *</label>
               <Select
                 options={[
-                  { id: "1", name: "REST" },
-                  { id: "2", name: "gRPC" },
+                  { id: "1", name: "REST", icon: <SiPostman /> },
+                  { id: "2", name: "gRPC", icon: <FaNetworkWired /> },
                 ]}
                 placeholder="Select your model API type"
                 onChange={(selected) => {
