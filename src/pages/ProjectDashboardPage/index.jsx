@@ -11,6 +11,8 @@ import MetricsCard from "../../components/MetricsCard";
 import { ReactComponent as CPUIcon } from "../../assets/images/cpu.svg";
 import { ReactComponent as NetworkIcon } from "../../assets/images/wifi.svg";
 import { ReactComponent as MemoryIcon } from "../../assets/images/hard-drive.svg";
+import { FaNetworkWired } from "react-icons/fa";
+import { SiPostman } from "react-icons/si";
 import "./ProjectDashboardPage.css";
 import {
   formatCPUMetrics,
@@ -30,12 +32,15 @@ import Feedback from "../../components/Feedback";
 import Spinner from "../../components/Spinner";
 import { useMutation } from "@tanstack/react-query";
 import { useMlDeployment } from "../../hooks/useAppDeploymentMutation";
-import { validateName } from "../../helpers/validation";
+import { validateInput } from "../../helpers/validation";
+import { retrieveModelServers } from "../../helpers/modelServers";
 
 const ProjectDashboardPage = () => {
   const { projectID } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const modelServers = retrieveModelServers();
 
   const { projects, memoryMetrics, cpuMetrics, networkMetrics, credits } =
     useSelector((state) => ({
@@ -91,23 +96,27 @@ const ProjectDashboardPage = () => {
   }, [projectDetails]);
 
   const handleAIDeployment = () => {
-    if (!jupiterNoteBookName || !aiModelName) {
-      setValidationError("Please enter a name for the app");
-    }
-    if (
-      validateName(jupiterNoteBookName) === false ||
-      validateName(aiModelName) === false
-    ) {
-      setValidationError("Name should start with a letter");
-    } else if (
-      validateName(jupiterNoteBookName) === "false_convention" ||
-      validateName(aiModelName) === "false_convention"
-    ) {
-      setValidationError(
-        "Name may only contain letters,numbers,dot and a hypen -"
+    let notebookError = "";
+    let modelError = "";
+    if (jupiterNoteBookName) {
+      notebookError = validateInput(
+        jupiterNoteBookName,
+        "Jupiter Notebook Name"
       );
-    } else if (jupiterNoteBookName.length > 27 || aiModelName.length > 27) {
-      setValidationError("Name may not exceed 27 characters");
+    } else if (aiModelName) {
+      modelError = validateInput(aiModelName, "AI Model Name");
+    } else {
+      return;
+    }
+
+    if (notebookError) {
+      setValidationError(notebookError);
+      return;
+    } else if (modelError) {
+      setValidationError(modelError);
+      return;
+    } else {
+      setValidationError("");
     }
 
     // notebook data
@@ -260,96 +269,97 @@ const ProjectDashboardPage = () => {
         </div>
       </Modal>
 
-      <Modal
-        showModal={openDeployModel}
-        onClickAway={() => {
-          setOpenDeployModel(false);
-        }}
-      >
-        <div className={styles.createAIAppJupyterNotebookModalContainer}>
-          <h2 className={styles.createAIAppJupyterNotebookModalTitle}>
-            Deploy AI model
-          </h2>
-          <form className={styles.createAIAppJupyterNotebookModalForm}>
-            <label>Name *</label>
-            <BlackInputText
-              name={"modelName"}
-              value={aiModelName}
-              onChange={(e) => {
-                setAiModelName(e.target.value);
-              }}
-              placeholder="Enter your model name"
-              className={styles.InputStyles}
-            />
-
-            <label>Model Image URI *</label>
-            <BlackInputText
-              name={"modelImageUri"}
-              value={aiModelUri}
-              onChange={(e) => {
-                setAiModelUri(e.target.value);
-              }}
-              placeholder="Enter your model image URI"
-            />
-
-            <label>Model Server *</label>
-            <Select
-              options={[
-                { id: "1", name: "SKLEARN_SERVER" },
-                { id: "2", name: "TENSORFLOW_SERVER" },
-                { id: "3", name: "XGBOOST_SERVER" },
-                { id: "4", name: "MLFLOW_SERVER" },
-                { id: "5", name: "TRITON_SERVER" },
-                { id: "6", name: "TEMPO_SERVER" },
-                { id: "7", name: "HUGGINGFACE_SERVER" },
-                { id: "8", name: "CUSTOM_INFERENCE_SERVER" },
-              ]}
-              placeholder="Select your model server"
-              onChange={(selected) => {
-                setAiModelServer(selected.name);
-              }}
-            />
-
-            <label>Model API type *</label>
-            <Select
-              options={[{ id: "1", name: "REST" }]}
-              placeholder="Select your model API type"
-              onChange={(selected) => {
-                setAiModelApiType(selected.name);
-              }}
-            />
-
-            <div className={styles.createAIAppActionButtonsContainer}>
-              <PrimaryButton
-                color="primary"
-                onClick={() => {
-                  setOpenJupyterNotebookModel(false);
+      <div className={styles.modalAreaContainer}>
+        <Modal
+          showModal={openDeployModel}
+          onClickAway={() => {
+            setOpenDeployModel(false);
+          }}
+        >
+          <div className={styles.createAIAppJupyterNotebookModalContainer}>
+            <h2 className={styles.createAIAppJupyterNotebookModalTitle}>
+              Deploy AI model
+            </h2>
+            <form className={styles.createAIAppJupyterNotebookModalForm}>
+              <label>Name *</label>
+              <BlackInputText
+                name={"modelName"}
+                value={aiModelName}
+                onChange={(e) => {
+                  setAiModelName(e.target.value);
                 }}
-              >
-                Close
-              </PrimaryButton>
-              <PrimaryButton
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleAIDeployment();
-                }}
-                disabled={aiModelName === "" || deploymentPending}
-              >
-                {deploymentPending ? <Spinner /> : "Deploy"}
-              </PrimaryButton>
-            </div>
-            {validationError && (
-              <Feedback type="error" message={validationError} />
-            )}
-            {deploymentError && (
-              <Feedback
-                type="error"
-                message={"Failed to deploy notebook, Please try again later"}
+                placeholder="Enter your model name"
+                className={styles.InputStyles}
+                required
               />
-            )}
-          </form>
-        </div>
-      </Modal>
+
+              <label>Model Source *</label>
+
+              <BlackInputText
+                name={"modelImageUri"}
+                value={aiModelUri}
+                onChange={(e) => {
+                  setAiModelUri(e.target.value);
+                }}
+                placeholder="Enter your model source"
+                required
+              />
+
+              <label>Model Server *</label>
+              <Select
+                options={modelServers}
+                placeholder="Select your model server"
+                onChange={(selected) => {
+                  setAiModelServer(selected.name);
+                }}
+                required
+              />
+
+              <label>Model API type *</label>
+              <Select
+                options={[
+                  { id: "1", name: "REST", icon: <SiPostman /> },
+                  { id: "2", name: "gRPC", icon: <FaNetworkWired /> },
+                ]}
+                placeholder="Select your model API type"
+                onChange={(selected) => {
+                  setAiModelApiType(selected.name);
+                }}
+                required
+              />
+
+              <div className={styles.createAIAppActionButtonsContainer}>
+                <PrimaryButton
+                  color="primary"
+                  onClick={() => {
+                    setOpenJupyterNotebookModel(false);
+                  }}
+                >
+                  Close
+                </PrimaryButton>
+                <PrimaryButton
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleAIDeployment();
+                  }}
+                  disabled={aiModelName === "" || deploymentPending}
+                >
+                  {deploymentPending ? <Spinner /> : "Deploy"}
+                </PrimaryButton>
+              </div>
+              {validationError && (
+                <Feedback type="error" message={validationError} />
+              )}
+              {deploymentError && (
+                <Feedback
+                  type="error"
+                  message={"Failed to deploy notebook, Please try again later"}
+                />
+              )}
+            </form>
+          </div>
+        </Modal>
+      </div>
     </DashboardLayout>
   );
 };

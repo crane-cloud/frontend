@@ -75,6 +75,7 @@ const AppMetricsPage = () => {
       disable: app.disabled,
       model_server: app.model_server,
       model_image_uri: app.model_image_uri,
+      api_type: app.api_type,
     };
   };
 
@@ -162,6 +163,10 @@ const AppMetricsPage = () => {
   const formattedCPUMetrics = getAppCPUMetrics();
   const formattedNetworkMetrics = getAppNetworkMetrics();
   const appInfo = getAppInfo();
+
+  console.log("model", isAiModel);
+
+  console.log("notebook", isJupyterNotebook);
 
   return (
     <DashboardLayout
@@ -278,20 +283,26 @@ const AppMetricsPage = () => {
                       {isJupyterNotebook
                         ? "Notebook Status"
                         : isAiModel
-                        ? "Model Status"
+                        ? "Model API Type"
                         : "App Status"}
                     </div>
                     <div className={styles.InnerContentStatus}>
-                      <AppStatus appStatus={appInfo.status} />
-                      <div>
-                        {appInfo.status === "disabled" ? (
-                          <div className={styles.DeployText}>Disabled</div>
-                        ) : appInfo.status === "running" ? (
-                          "Ready"
-                        ) : (
-                          "Down"
-                        )}
-                      </div>
+                      {isAiModel ? (
+                        <>{appInfo.api_type}</>
+                      ) : (
+                        <>
+                          <AppStatus appStatus={appInfo.status} />
+                          <div>
+                            {appInfo.status === "disabled" ? (
+                              <div className={styles.DeployText}>Disabled</div>
+                            ) : appInfo.status === "running" ? (
+                              "Ready"
+                            ) : (
+                              "Down"
+                            )}
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                   <div className={styles.InnerContentGrid}>
@@ -307,18 +318,18 @@ const AppMetricsPage = () => {
                     <div className={styles.InnerCardSections}>
                       <div className={styles.InnerContentGrid}>
                         <div className={styles.InnerTitlesEnd}>
-                          Model Image Url
+                          {isAiModel ? "Model Image Url" : "App Alias"}
                         </div>
                         <div className={styles.InnerContentEnd}>
-                          {appInfo.model_image_uri}
+                          {isAiModel ? appInfo.model_image_uri : appInfo.alias}
                         </div>
                       </div>
                       <div className={styles.InnerContentGrid}>
                         <div className={styles.InnerTitlesEnd}>
-                          Model Server
+                          {isAiModel ? "Model Server" : "Port"}
                         </div>
                         <div className={styles.InnerContentEnd}>
-                          {appInfo.model_server}
+                          {isAiModel ? appInfo.model_server : appInfo.port}
                         </div>
                       </div>
                     </div>{" "}

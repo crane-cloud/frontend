@@ -32,6 +32,124 @@
   color: initial;
 }
 
+.modalContainer {
+  padding: 24px;
+}
+
+.modalTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.formInput {
+  padding: 12px 16px;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.formInput:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.primaryButton {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.primaryButton:hover {
+  background-color: #2563eb;
+}
+
+.primaryButton:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.secondaryButton {
+  background-color: white;
+  color: #4b5563;
+  border: 1px solid #e1e4e8;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.secondaryButton:hover {
+  background-color: #f3f4f6;
+}
+
+.errorMessage {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-top: 16px;
+}
+
+.infoList {
+  margin: 8px 0 0 0;
+  padding-left: 18px;
+}
+
+.infoList li {
+  margin-bottom: 6px;
+}
+
+.infoList code {
+  display: block;
+  margin-top: 2px;
+  padding: 4px 6px;
+  background-color: #f3f4f6;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #334155;
+  word-break: break-all;
+}
+
+.ModalChildWrap {
+  width: 300px;
+}
 
 @media only screen and (max-width: 650px) {
   .MetricCardsSection {

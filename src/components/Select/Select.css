@@ -4,7 +4,7 @@
   display: grid;
   gap: 0.3rem;
   font-size: 0.8rem !important;
-  font-weight: normal!important;
+  font-weight: normal !important;
 }
 
 .SelectElementMain {
@@ -38,12 +38,14 @@
   box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
     0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
   max-height: 250px;
+  overflow-y: auto;
 }
 
 .SelectOptionsWrapper .SelectOption {
   padding: 0 1rem;
   line-height: 2.5rem;
   height: 2.5rem;
+  display: flex;
 }
 
 .SelectOptionsWrapper .SelectOption:hover {
@@ -51,12 +53,20 @@
   cursor: pointer;
 }
 
+.SelectIcon {
+  margin-right: 8px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+}
+
 .SelectArrow {
   transition: all 400ms;
   display: flex;
   align-items: center;
 }
-.SelectArrow svg{
+
+.SelectArrow svg {
   width: 0.7rem;
   height: 0.7rem;
 }

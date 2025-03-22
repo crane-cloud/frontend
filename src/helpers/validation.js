@@ -1,3 +1,22 @@
+export const validateInput = (name, fieldName) => {
+  if (!name) {
+    return `${fieldName} is required`;
+  }
+
+  const validation = validateName(name);
+  if (validation === false) {
+    return `${fieldName} should start with a letter`;
+  }
+  if (validation === "false_convention") {
+    return `${fieldName} may only contain letters, numbers, dots, and hyphens`;
+  }
+  if (name.length > 27) {
+    return `${fieldName} may not exceed 27 characters`;
+  }
+
+  return null;
+};
+
 export const validateDomain = (name) => {
   const expression =
     /^([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
