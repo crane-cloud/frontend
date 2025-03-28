@@ -14,7 +14,7 @@ const AppsList = (props: any) => {
   }, [project_id, refresh]);
 
   return (
-    <GridLayout columns={3}>
+    <GridLayout columns={2}>
       {loading
         ? [...Array(6)].map((_, index) => (
             <Skeleton key={index} height={100} w="100%" radius="md" />
