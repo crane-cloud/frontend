@@ -7,6 +7,7 @@ import {
   Code,
   Flex,
   Grid,
+  Pill,
   Skeleton,
   Stack,
   Text,
@@ -16,6 +17,7 @@ import { TbCopy, TbWorld } from "react-icons/tb";
 import { FiExternalLink } from "react-icons/fi";
 import { FaDocker } from "react-icons/fa";
 import { LuScreenShare } from "react-icons/lu";
+import { SiJupyter } from "react-icons/si";
 
 const AppDetailPage = () => {
   const { app_id } = useParams();
@@ -72,7 +74,12 @@ const AppDetailPage = () => {
   };
 
   const appInfo = [
-    { label: "Port", value: app?.port, icon: <LuScreenShare /> },
+    {
+      label: "Port",
+      value: app?.port,
+      icon: <LuScreenShare />,
+      visible: !app?.is_notebook,
+    },
     { label: "Replicas", value: app?.replicas, icon: <TbCopy /> },
     { label: "Age", value: app?.age },
     {
@@ -92,7 +99,7 @@ const AppDetailPage = () => {
             leftSection={<TbWorld />}
             onClick={() => window.open(app?.url, "_blank")}
           >
-            Vist
+            {app?.is_notebook ? "Open Notebook" : "Visit App"}
           </Button>
         }
       >
@@ -104,18 +111,20 @@ const AppDetailPage = () => {
         ) : (
           <Stack gap={20}>
             <Flex gap={20} wrap="wrap">
-              <Stack gap={5}>
-                <Text className="subtitle">Image</Text>
-                <Code>
-                  <CustomText
-                    size="sm"
-                    leftSection={<FaDocker color="gray.7" />}
-                  >
-                    {app?.image}
-                  </CustomText>
-                </Code>
-              </Stack>
-              <Stack gap={5} w="fit-content">
+              {app?.image && !app?.is_notebook && (
+                <Stack gap={5}>
+                  <Text className="subtitle">Image</Text>
+                  <Code>
+                    <CustomText
+                      size="sm"
+                      leftSection={<FaDocker color="gray.7" />}
+                    >
+                      {app?.image}
+                    </CustomText>
+                  </Code>
+                </Stack>
+              )}
+              <Stack gap={5} w="fit-content" flex={app?.is_notebook && 1}>
                 <CustomText className="subtitle" leftSection={<TbWorld />}>
                   Domain
                 </CustomText>
@@ -130,10 +139,25 @@ const AppDetailPage = () => {
                   <FiExternalLink />
                 </Text>
               </Stack>
+              {app?.is_notebook && (
+                <Pill w="fit-content">
+                  <Flex gap={5} wrap="nowrap" w="fit-content" align="center">
+                    <SiJupyter size={13} color="#f57c00" />
+                    <Text size="sm" truncate>
+                      Notebook
+                    </Text>
+                  </Flex>
+                </Pill>
+              )}
             </Flex>
+
             <Grid>
               {appInfo.map((info) => (
-                <Grid.Col span={{ base: 12, md: 4, lg: 3 }} key={info.label}>
+                <Grid.Col
+                  span={{ base: 12, md: 4, lg: 3 }}
+                  key={info.label}
+                  hidden={info?.visible === false}
+                >
                   <Flex>
                     <Stack gap={5}>
                       <Text className="subtitle">{info.label}</Text>

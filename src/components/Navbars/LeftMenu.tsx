@@ -22,11 +22,11 @@ import {
 import { Link, matchPath, useLocation, useNavigate } from "react-router-dom";
 import { IoArrowBack, IoRocketOutline } from "react-icons/io5";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { PiCubeLight } from "react-icons/pi";
 import { LuLogs } from "react-icons/lu";
 import { RiBookLine } from "react-icons/ri";
+import { PiCubeLight, PiFlask } from "react-icons/pi";
 
-export type TLeftMenuType = "home" | "project" | "admin" | "app";
+export type TLeftMenuType = "home" | "project" | "admin" | "app" | "mlops";
 
 interface ILeftMenuProps {
   menuType: TLeftMenuType;
@@ -151,6 +151,36 @@ const LeftMenu = React.memo(
       []
     );
 
+    const getMLOpsNavbarLinks = useCallback(
+      (project_id: string, app_id: string) => [
+        {
+          label: "Dashboard",
+          icon: HiOutlineSquares2X2,
+          key: "dashboard",
+          link: `/projects/${project_id}/apps/${app_id}`,
+        },
+        {
+          label: "Experiments",
+          icon: PiFlask,
+          key: "experiments",
+          link: `/projects/${project_id}/apps/${app_id}/experiments`,
+        },
+        {
+          label: "Metrics",
+          icon: HiOutlineChartBar,
+          key: "metrics",
+          link: `/projects/${project_id}/apps/${app_id}/metrics`,
+        },
+        {
+          label: "Settings",
+          icon: HiOutlineCog6Tooth,
+          key: "settings",
+          link: `/projects/${project_id}/apps/${app_id}/settings`,
+        },
+      ],
+      []
+    );
+
     useEffect(() => {
       const { projectId: project_id, appId: app_id } = getPathIds();
 
@@ -171,6 +201,12 @@ const LeftMenu = React.memo(
             setShowProjectHeader(true);
           }
           break;
+        case "mlops":
+          if (project_id && app_id) {
+            setNavbarLinks(getMLOpsNavbarLinks(project_id, app_id));
+            setShowProjectHeader(true);
+          }
+          break;
         default:
           setNavbarLinks(homeNavbarLinks);
           setShowProjectHeader(false);
@@ -184,6 +220,8 @@ const LeftMenu = React.memo(
           return <RiBookLine />;
         case "app":
           return <IoRocketOutline />;
+        case "mlops":
+          return <PiFlask />;
         default:
           return <></>;
           break;
