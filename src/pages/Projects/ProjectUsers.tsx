@@ -157,7 +157,7 @@ export const MembersSection = ({ project }: { project: any }) => {
       <TitleText>Members</TitleText>
       <Stack gap={20}>
         <Card p="lg" radius="md" withBorder>
-          <Stack gap={10}>
+          <Stack gap={20}>
             <Text className="title">Invite New Member</Text>
             <Flex gap={10} align="end">
               <TextInput
@@ -180,7 +180,7 @@ export const MembersSection = ({ project }: { project: any }) => {
             </Flex>
             <Group justify="start" mt={10}>
               <Button
-                color="var(--mantine-color-black)"
+                color="var(--mantine-color-text)"
                 leftSection={<IoMdSend />}
               >
                 Invite

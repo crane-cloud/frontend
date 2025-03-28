@@ -294,6 +294,7 @@ const GeneralTab = ({
             title="Update Project"
             buttonText="Update"
             onConfirm={() => {}}
+            size="xl"
             showFooterActions={false}
           >
             <CreateProjectForm

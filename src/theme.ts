@@ -1,4 +1,4 @@
-import { Button, createTheme, Text, TextInput } from '@mantine/core';
+import { Button, Card, createTheme, Text, TextInput } from '@mantine/core';
 import { returnObject } from './utils/helpers';
 
 export const theme = createTheme({
@@ -45,6 +45,18 @@ export const theme = createTheme({
               border: '1px solid var(--mantine-color-gray-5)',
             }),
           }),
+        },
+      },
+    }),
+    Card: Card.extend({
+      defaultProps: {
+        styles: {
+          root: {
+            backgroundColor: `light-dark(
+              var(--mantine-color-white),
+              var(--mantine-color-gray-9)
+            )`,
+          },
         },
       },
     }),
