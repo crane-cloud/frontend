@@ -644,6 +644,89 @@ export const EnvironmentVariablesTable = ({
       }}
       showIndex={false}
       striped={false}
-    ></Table>
+    />
+  );
+};
+
+interface DeployNotebookFormProps {
+  project: any;
+  showTitle?: boolean;
+  onCancel?: () => void;
+  refresh?: () => void;
+}
+
+export const DeployNotebookForm = ({
+  showTitle = true,
+  project,
+  onCancel = () => {},
+  refresh = () => {},
+}: DeployNotebookFormProps) => {
+  const { uploadData, submitting, error, success } = usePost();
+  const { form, onChange } = useForm();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    uploadData({
+      api: `${API_PROJECTS}/${project?.id}/apps/ml`,
+      params: {
+        ...form,
+        is_notebook: true,
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (success) {
+      onCancel?.();
+      if (onCancel) {
+        onCancel();
+      }
+      if (refresh) {
+        refresh();
+      }
+    }
+  }, [success]);
+
+  return (
+    <div style={{ marginTop: showTitle ? 10 : 0 }}>
+      {showTitle && (
+        <TitleText>
+          <Flex align="center" gap="xs">
+            <IoRocketSharp size={15} />
+            Deploy a Notebook
+          </Flex>
+        </TitleText>
+      )}
+      <Paper p="lg" radius="md">
+        <form onSubmit={handleSubmit}>
+          <Stack>
+            <TextInput
+              label="Application Name"
+              name="name"
+              placeholder="Enter application name"
+              description="Enter the name of the application"
+              required
+              value={form?.name as string}
+              onChange={onChange}
+              error={error?.name}
+              leftSection={<MdDriveFileRenameOutline />}
+            />
+            <Divider mt="md" />
+            <Group justify="flex-end">
+              <Button
+                type="submit"
+                variant="filled"
+                loading={submitting}
+                leftSection={<IoRocketSharp />}
+                color="gray.9"
+              >
+                Deploy Notebook
+              </Button>
+            </Group>
+          </Stack>
+        </form>
+      </Paper>
+    </div>
   );
 };

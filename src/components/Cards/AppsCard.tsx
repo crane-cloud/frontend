@@ -34,15 +34,16 @@ const AppsCard = (props: any) => {
           </Anchor>
         </Stack>
       </Group>
-
-      <Pill bg="gray.1" w="fit-content" mt="sm" c="gray.8">
-        <Flex gap={5} wrap="nowrap" w="fit-content" align="center">
-          <HiMiniCubeTransparent size={14} />
-          <Text size="sm" truncate>
-            {app.image}
-          </Text>
-        </Flex>
-      </Pill>
+      {app?.image && (
+        <Pill w="fit-content" mt="sm">
+          <Flex gap={5} wrap="nowrap" w="fit-content" align="center">
+            <HiMiniCubeTransparent size={14} />
+            <Text size="sm" truncate>
+              {app?.image}
+            </Text>
+          </Flex>
+        </Pill>
+      )}
 
       <Group justify="space-between" mt="md">
         <Flex gap={5} c="dimmed">
@@ -69,7 +70,7 @@ const getStatusColor = (status: string) => {
   const colors: Record<string, { background: string; text: string }> = {
     running: { background: "#e3fbe3", text: "#1a7a1a" },
     deployed: { background: "#e3f2fd", text: "#1a4a7a" },
-    unknown: { background: "#f5f5f5", text: "#666" },
+    unknown: { background: "", text: "" },
   };
   return colors[status.toLowerCase()] || colors.unknown;
 };
