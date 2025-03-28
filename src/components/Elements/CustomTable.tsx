@@ -186,7 +186,7 @@ const StyledTableRow = styled(MantineTable.Tr)<{
     ${(props) =>
       props.$hover &&
       `
-      background-color: var(--mantine-color-gray-2);
+      background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-gray-7));
     `}
   }
 `;

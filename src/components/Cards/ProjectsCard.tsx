@@ -26,9 +26,9 @@ const ProjectsCard = (props: any) => {
           <Group justify="space-between" wrap="nowrap">
             <Flex gap={10} align="center" justify="start">
               {project.disabled ? (
-                <HiLockClosed size={16} color="black" />
+                <HiLockClosed size={16} color="theme.black" />
               ) : (
-                <RiBookLine size={16} color="black" />
+                <RiBookLine size={16} color="theme.black" />
               )}
               <Anchor
                 c="blue"
@@ -45,7 +45,7 @@ const ProjectsCard = (props: any) => {
             </Flex>
           </Group>
 
-          <Text size="0.9rem" c="gray">
+          <Text size="0.9rem" c="theme.gray">
             {project.description}
           </Text>
           {project.tags.length > 0 && (
@@ -72,7 +72,7 @@ const ProjectsCard = (props: any) => {
           <Tooltip label="Number of applications" withArrow>
             <ActionIcon
               variant="transparent"
-              color="var(--mantine-color-dark-4)"
+              color="theme.dark"
               w="fit-content"
             >
               <Flex gap={5} align="center" justify="center" wrap="nowrap">
@@ -84,7 +84,7 @@ const ProjectsCard = (props: any) => {
           <Tooltip label="Members" withArrow>
             <ActionIcon
               variant="transparent"
-              color="var(--mantine-color-dark-4)"
+              color="theme.dark"
               w="fit-content"
             >
               <Flex gap={5} align="center" justify="center" wrap="nowrap">
@@ -96,7 +96,7 @@ const ProjectsCard = (props: any) => {
           <Tooltip label="Age of project" withArrow>
             <ActionIcon
               variant="transparent"
-              color="var(--mantine-color-dark-4)"
+              color="theme.dark"
               w="fit-content"
             >
               <Flex gap={5} align="center" justify="center" wrap="nowrap">

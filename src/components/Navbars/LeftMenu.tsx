@@ -263,7 +263,6 @@ const LeftMenu = React.memo(
                 >
                   <IoArrowBack />
                   <HeaderIcon />
-
                   <Title order={4}>{title}</Title>
                 </UnstyledButton>
                 {subtitle && (
