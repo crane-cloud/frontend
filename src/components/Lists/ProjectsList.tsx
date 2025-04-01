@@ -73,7 +73,7 @@ const ProjectsList = () => {
           </Button>
         </Group>
         <Divider mt="lg" mb="md" />
-        <GridLayout columns={viewMode === "grid" ? 3 : 1}>
+        <GridLayout columns={viewMode === "grid" ? 2 : 1}>
           {loading
             ? [...Array(6)].map((_, index) => (
                 <Skeleton key={index} height={100} w="100%" radius="md" />

@@ -81,9 +81,13 @@ export const useGetApp = (app_id: string) => {
   }, [success, appData]);
 
   useEffect(() => {
-    setMenuType("app");
     if (setAppId) {
       setAppId(app_id || "");
+    }
+    if (appData?.data?.apps?.is_notebook) {
+      setMenuType("mlops");
+    } else if (appData?.data?.apps?.is_notebook === false) {
+      setMenuType("app");
     }
     if (setTitle && success) {
       setTitle(app?.name);
@@ -92,7 +96,7 @@ export const useGetApp = (app_id: string) => {
         setSubtitle("Disabled");
       }
     }
-  }, [setMenuType, setAppId, app_id]);
+  }, [setMenuType, setAppId, app_id, appData, success]);
 
   return { app, loading, success, refresh, setRefresh };
 };

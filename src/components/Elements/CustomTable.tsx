@@ -1,4 +1,10 @@
-import { Table as MantineTable, Text, Skeleton, Card } from "@mantine/core";
+import {
+  Table as MantineTable,
+  Text,
+  Skeleton,
+  Card,
+  Stack,
+} from "@mantine/core";
 import styled from "styled-components";
 
 export interface Column {
@@ -52,55 +58,20 @@ export const Table = ({
 }: TableProps) => {
   return (
     <Card withBorder p="md" radius="md">
-      {header && header()}
-      <MantineTable.ScrollContainer minWidth="100%">
-        <MantineTable
-          striped={striped}
-          verticalSpacing={verticalSpacing}
-          {...props}
-        >
-          {!noHeader && (
-            <MantineTable.Thead>
-              <MantineTable.Tr>
-                {showIndex && <MantineTable.Th>#</MantineTable.Th>}
-                {columns?.map((column, columnIndex) => (
-                  <MantineTable.Th
-                    key={column.id}
-                    className={column.noWrap ? "no-wrap" : ""}
-                    style={{
-                      textAlign:
-                        columnIndex === columns.length - 1 ? "right" : "left",
-                    }}
-                  >
-                    <Text className="capitalize">{column.header}</Text>
-                  </MantineTable.Th>
-                ))}
-              </MantineTable.Tr>
-            </MantineTable.Thead>
-          )}
-
-          <MantineTable.Tbody>
-            {loading ? (
-              <MantineTable.Tr>
-                <MantineTable.Td colSpan={columns.length + 1}>
-                  <Skeleton height={50} animate />
-                </MantineTable.Td>
-              </MantineTable.Tr>
-            ) : data?.length ? (
-              data.map((item, idx) => (
-                <StyledTableRow
-                  key={item.id || idx}
-                  onClick={() => rowClick && rowClick(item)}
-                  $hover={rowHover}
-                  $clickable={!!rowClick}
-                >
-                  {showIndex && (
-                    <MantineTable.Td>
-                      {item?.index || startValue + idx}
-                    </MantineTable.Td>
-                  )}
-                  {columns.map((column, columnIndex) => (
-                    <MantineTable.Td
+      <Stack gap={10}>
+        {header && header()}
+        <MantineTable.ScrollContainer minWidth="100%">
+          <MantineTable
+            striped={striped}
+            verticalSpacing={verticalSpacing}
+            {...props}
+          >
+            {!noHeader && (
+              <MantineTable.Thead>
+                <MantineTable.Tr>
+                  {showIndex && <MantineTable.Th>#</MantineTable.Th>}
+                  {columns?.map((column, columnIndex) => (
+                    <MantineTable.Th
                       key={column.id}
                       className={column.noWrap ? "no-wrap" : ""}
                       style={{
@@ -108,60 +79,99 @@ export const Table = ({
                           columnIndex === columns.length - 1 ? "right" : "left",
                       }}
                     >
-                      {item[column.id] ||
-                        (noEmptyText && <Text c="dimmed">Empty</Text>)}
-                    </MantineTable.Td>
+                      <Text className="capitalize">{column.header}</Text>
+                    </MantineTable.Th>
                   ))}
-                </StyledTableRow>
-              ))
-            ) : (
-              <MantineTable.Tr>
-                <MantineTable.Td colSpan={columns.length + 1} ta="center">
-                  No data available
-                </MantineTable.Td>
-              </MantineTable.Tr>
+                </MantineTable.Tr>
+              </MantineTable.Thead>
             )}
-          </MantineTable.Tbody>
 
-          {tableTotals && Object.keys(tableTotals).length > 0 && (
-            <MantineTable.Tfoot>
-              <MantineTable.Tr>
-                <MantineTable.Th>Totals</MantineTable.Th>
-                {columns.map((column, columnIndex) => (
-                  <MantineTable.Th
-                    key={column.id}
-                    style={{
-                      textAlign:
-                        columnIndex === columns.length - 1 ? "right" : "left",
-                    }}
+            <MantineTable.Tbody>
+              {loading ? (
+                <MantineTable.Tr>
+                  <MantineTable.Td colSpan={columns.length + 1}>
+                    <Skeleton height={50} animate />
+                  </MantineTable.Td>
+                </MantineTable.Tr>
+              ) : data?.length ? (
+                data.map((item, idx) => (
+                  <StyledTableRow
+                    key={item.id || idx}
+                    onClick={() => rowClick && rowClick(item)}
+                    $hover={rowHover}
+                    $clickable={!!rowClick}
                   >
-                    <Text fw={700}>{tableTotals[column.id]}</Text>
-                  </MantineTable.Th>
-                ))}
-              </MantineTable.Tr>
-            </MantineTable.Tfoot>
-          )}
+                    {showIndex && (
+                      <MantineTable.Td>
+                        {item?.index || startValue + idx}
+                      </MantineTable.Td>
+                    )}
+                    {columns.map((column, columnIndex) => (
+                      <MantineTable.Td
+                        key={column.id}
+                        className={column.noWrap ? "no-wrap" : ""}
+                        style={{
+                          textAlign:
+                            columnIndex === columns.length - 1
+                              ? "right"
+                              : "left",
+                        }}
+                      >
+                        {item[column.id] ||
+                          (noEmptyText && <Text c="dimmed">Empty</Text>)}
+                      </MantineTable.Td>
+                    ))}
+                  </StyledTableRow>
+                ))
+              ) : (
+                <MantineTable.Tr>
+                  <MantineTable.Td colSpan={columns.length + 1} ta="center">
+                    No data available
+                  </MantineTable.Td>
+                </MantineTable.Tr>
+              )}
+            </MantineTable.Tbody>
 
-          {tableFooter && (
-            <MantineTable.Tfoot>
-              <MantineTable.Tr>
-                <MantineTable.Th>#</MantineTable.Th>
-                {columns.map((column, columnIndex) => (
-                  <MantineTable.Th
-                    key={column.id}
-                    style={{
-                      textAlign:
-                        columnIndex === columns.length - 1 ? "right" : "left",
-                    }}
-                  >
-                    {tableFooter[column.id]}
-                  </MantineTable.Th>
-                ))}
-              </MantineTable.Tr>
-            </MantineTable.Tfoot>
-          )}
-        </MantineTable>
-      </MantineTable.ScrollContainer>
+            {tableTotals && Object.keys(tableTotals).length > 0 && (
+              <MantineTable.Tfoot>
+                <MantineTable.Tr>
+                  <MantineTable.Th>Totals</MantineTable.Th>
+                  {columns.map((column, columnIndex) => (
+                    <MantineTable.Th
+                      key={column.id}
+                      style={{
+                        textAlign:
+                          columnIndex === columns.length - 1 ? "right" : "left",
+                      }}
+                    >
+                      <Text fw={700}>{tableTotals[column.id]}</Text>
+                    </MantineTable.Th>
+                  ))}
+                </MantineTable.Tr>
+              </MantineTable.Tfoot>
+            )}
+
+            {tableFooter && (
+              <MantineTable.Tfoot>
+                <MantineTable.Tr>
+                  <MantineTable.Th>#</MantineTable.Th>
+                  {columns.map((column, columnIndex) => (
+                    <MantineTable.Th
+                      key={column.id}
+                      style={{
+                        textAlign:
+                          columnIndex === columns.length - 1 ? "right" : "left",
+                      }}
+                    >
+                      {tableFooter[column.id]}
+                    </MantineTable.Th>
+                  ))}
+                </MantineTable.Tr>
+              </MantineTable.Tfoot>
+            )}
+          </MantineTable>
+        </MantineTable.ScrollContainer>
+      </Stack>
     </Card>
   );
 };
@@ -176,7 +186,7 @@ const StyledTableRow = styled(MantineTable.Tr)<{
     ${(props) =>
       props.$hover &&
       `
-      background-color: var(--mantine-color-gray-2);
+      background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-gray-7));
     `}
   }
 `;

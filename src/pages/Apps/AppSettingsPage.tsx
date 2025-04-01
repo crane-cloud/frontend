@@ -30,7 +30,7 @@ import {
   Tooltip,
   TextInput,
 } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   HiLockClosed,
   HiLockOpen,
@@ -45,10 +45,20 @@ import { useNavigate, useParams } from "react-router-dom";
 import { TbCheck, TbCopy } from "react-icons/tb";
 import { useClipboard } from "@mantine/hooks";
 import { useAuth } from "@/utils/AuthContext";
+import { MenuContext } from "@/components/Layouts/DashboardLayout";
 
 const AppSettingsPage = () => {
   const { app_id } = useParams();
   const { app, setRefresh } = useGetApp(app_id || "");
+  const { setContainerSize } = useContext(MenuContext);
+
+  useEffect(() => {
+    setContainerSize("md");
+    return () => {
+      setContainerSize("xl");
+    };
+  }, [setContainerSize]);
+  useEffect(() => {}, [app]);
   return (
     <div>
       <Tabs defaultValue="general">
@@ -62,10 +72,10 @@ const AppSettingsPage = () => {
           <GeneralTab app={app} setRefresh={setRefresh} />
         </Tabs.Panel>
         <Tabs.Panel value="deployments" pt={10}>
-          <DeploymentsTab app={app} setRefresh={setRefresh} />
+          <DeploymentsTab app={app} />
         </Tabs.Panel>
         <Tabs.Panel value="ci/cd" pt={10}>
-          <CICDTab app={app} setRefresh={setRefresh} />
+          <CICDTab app={app} />
         </Tabs.Panel>
       </Tabs>
     </div>
@@ -424,13 +434,7 @@ const GeneralTab = ({
   );
 };
 
-const DeploymentsTab = ({
-  app,
-  setRefresh,
-}: {
-  app: any;
-  setRefresh: (refresh: boolean) => void;
-}) => {
+const DeploymentsTab = ({ app }: { app: any }) => {
   const { data: revisionsData, getData: getRevisions, loading } = useGet();
 
   useEffect(() => {
@@ -499,16 +503,9 @@ const DeploymentsTab = ({
   );
 };
 
-const CICDTab = ({
-  app,
-  setRefresh,
-}: {
-  app: any;
-  setRefresh: (refresh: boolean) => void;
-}) => {
+const CICDTab = ({ app }: { app: any }) => {
   const clipboard = useClipboard();
   const { user } = useAuth();
-  let hook = "https://crane.cloud/apps/1234567890/ci";
   const [imageTag, setImageTag] = useState("");
   const [webhookUrl, setwebhookUrl] = useState("");
 
@@ -596,7 +593,7 @@ const CICDTab = ({
                               },
                             }}
                             rightSection={<TbCopy />}
-                            onClick={() => clipboard.copy(hook)}
+                            onClick={() => clipboard.copy(webhookUrl)}
                           />
                         </Tooltip>
                       </Text>
