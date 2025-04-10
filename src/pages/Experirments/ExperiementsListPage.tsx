@@ -1,14 +1,28 @@
+import React, { useEffect } from "react";
 import { Table } from "@/components/Elements/CustomTable";
+import { NoWrapText } from "@/components/Elements/elements";
+import TitleText from "@/components/TitleText";
 import { MLOPS_API_URL } from "@/config";
+import { useAuth } from "@/utils/AuthContext";
 import { dateFormat, useGetApp, useSetContainerSize } from "@/utils/helpers";
 import useGet from "@/utils/useGet";
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import usePost from "@/utils/usePost";
+import { Button, CopyButton, Text, Tooltip } from "@mantine/core";
+import moment from "moment";
+import { GoPlus } from "react-icons/go";
+import { Link, useParams } from "react-router-dom";
 
 const ExperiementsListPage = () => {
   const { app_id } = useParams();
+  const { user } = useAuth();
   const { app } = useGetApp(app_id || "");
   const { getData: getExperiments, data: experiments, loading } = useGet();
+  const {
+    uploadData: createExperiment,
+    submitting: creatingExperiment,
+    success: createExperimentSuccess,
+  } = usePost();
+
   useEffect(() => {
     if (app_id && app) {
       getExperiments({
@@ -19,11 +33,26 @@ const ExperiementsListPage = () => {
         isExternal: true,
       });
     }
-  }, [app_id, app]);
+  }, [app_id, app, createExperimentSuccess]);
+
+  const oncreateExperiment = () => {
+    createExperiment({
+      api: `${MLOPS_API_URL}experiments?app_alias=${app?.alias}&user_id=${user?.id}`,
+      isExternal: true,
+    });
+  };
   const tableColumns = [
+    {
+      header: "ID",
+      id: "experiment_id",
+    },
     {
       header: "Name",
       id: "name",
+    },
+    {
+      header: "Artifact Location",
+      id: "artifact_location",
     },
     {
       header: "Status",
@@ -48,26 +77,63 @@ const ExperiementsListPage = () => {
     }
     return data.map((experiment: any) => ({
       ...experiment,
-      name: experiment.name,
+      name: (
+        <Link
+          to={`/projects/${app?.project_id}/apps/${app?.id}/experiments/${experiment?.experiment_id}`}
+        >
+          {experiment.name}
+        </Link>
+      ),
       status: experiment.lifecycle_stage,
-      created_at: dateFormat(experiment.creation_tim, "DD/MM/YYYY HH:mm A"),
-      updated_at: dateFormat(experiment.last_update_time, "DD/MM/YYYY HH:mm A"),
+      artifact_location: (
+        <CopyButton value={experiment.artifact_location}>
+          {({ copied, copy }) => (
+            <Tooltip label={copied ? "Copied" : "Copy"} withArrow>
+              <Text
+                onClick={copy}
+                className="no-wrap"
+                size="sm"
+                style={{ cursor: "pointer" }}
+              >
+                {experiment.artifact_location}
+              </Text>
+            </Tooltip>
+          )}
+        </CopyButton>
+      ),
+      created_at: dateFormat(experiment.creation_time, "DD/MM/YYYY"),
+      updated_at: (
+        <NoWrapText>{moment(experiment.last_update_time).fromNow()}</NoWrapText>
+      ),
     }));
   };
 
   useSetContainerSize("md");
   return (
     <div>
+      <TitleText
+        loading={false}
+        rightSection={
+          <Button
+            leftSection={<GoPlus />}
+            onClick={oncreateExperiment}
+            loading={creatingExperiment}
+          >
+            Add an Experiment
+          </Button>
+        }
+      >
+        Experiments
+      </TitleText>
       <Table
-        verticalSpacing="sm"
+        verticalSpacing="xs"
         columns={tableColumns}
         data={(tableData && tableData(experiments?.data)) || []}
         props={{
           verticalSpacing: "sm",
         }}
         showIndex={false}
-        rowHover
-        // rowClick={handleRowClick}
+        // rowHover
         loading={loading}
       />
     </div>

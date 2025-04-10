@@ -43,8 +43,8 @@ export const useGetProject = (project_id: string) => {
     setMenuType("project");
     setProjectId(project_id || "");
     if (setTitle && success) {
-      setTitle(project?.name);
-      if (project?.disabled && setSubtitle) {
+      setTitle(projectData?.data?.project?.name);
+      if (projectData?.data?.project?.disabled && setSubtitle) {
         setSubtitle("Disabled");
       }
     }
@@ -84,7 +84,7 @@ export const useGetApp = (app_id: string) => {
     if (setAppId) {
       setAppId(app_id || "");
     }
-    if (appData?.data?.apps?.is_notebook || appData?.data?.apps?.is_modal) {
+    if (appData?.data?.apps?.is_notebook ) {
       setMenuType("mlops");
     } else {
       setMenuType("app");

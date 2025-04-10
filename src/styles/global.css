@@ -5,6 +5,18 @@
   background-color: light-dark(#edeff1, #222222);
 } */
 
+/* links */
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--mantine-primary-color-5);
+  text-decoration: underline;
+}
+
 /* text */
 .title {
   font-weight: 700;
@@ -35,4 +47,8 @@
 
 .link:hover {
   text-decoration: underline !important;
+}
+
+.no-wrap {
+  white-space: nowrap;
 }
