@@ -93,7 +93,15 @@ export function LoginForm(props: PaperProps) {
         Welcome {type === "login" && "back"} to Cranecloud
       </Text>
       <Group justify="center" mt="lg">
-        <Button radius="xl" leftSection={<FaGithub />} color="black">
+        <Button
+          radius="xl"
+          leftSection={<FaGithub />}
+          color="theme.black"
+          variant="default"
+          style={{
+            borderColor: "theme.black",
+          }}
+        >
           Continue with Github
         </Button>
       </Group>

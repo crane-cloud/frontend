@@ -84,15 +84,15 @@ export const useGetApp = (app_id: string) => {
     if (setAppId) {
       setAppId(app_id || "");
     }
-    if (appData?.data?.apps?.is_notebook) {
+    if (appData?.data?.apps?.is_notebook || appData?.data?.apps?.is_modal) {
       setMenuType("mlops");
-    } else if (appData?.data?.apps?.is_notebook === false) {
+    } else {
       setMenuType("app");
     }
-    if (setTitle && success) {
-      setTitle(app?.name);
+    if (setTitle && success ) {
+      setTitle(appData?.data?.apps?.name);
 
-      if (app?.disabled && setSubtitle) {
+      if (appData?.data?.apps?.disabled && setSubtitle) {
         setSubtitle("Disabled");
       }
     }
