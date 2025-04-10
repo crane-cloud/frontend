@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { Table } from "@/components/Elements/CustomTable";
-import { NoWrapText } from "@/components/Elements/elements";
+import { CopyAreaButton, NoWrap } from "@/components/Elements/elements";
 import TitleText from "@/components/TitleText";
 import { MLOPS_API_URL } from "@/config";
 import { useAuth } from "@/utils/AuthContext";
 import { dateFormat, useGetApp, useSetContainerSize } from "@/utils/helpers";
 import useGet from "@/utils/useGet";
 import usePost from "@/utils/usePost";
-import { Button, CopyButton, Text, Tooltip } from "@mantine/core";
+import { Button } from "@mantine/core";
 import moment from "moment";
 import { GoPlus } from "react-icons/go";
 import { Link, useParams } from "react-router-dom";
@@ -86,24 +86,11 @@ const ExperiementsListPage = () => {
       ),
       status: experiment.lifecycle_stage,
       artifact_location: (
-        <CopyButton value={experiment.artifact_location}>
-          {({ copied, copy }) => (
-            <Tooltip label={copied ? "Copied" : "Copy"} withArrow>
-              <Text
-                onClick={copy}
-                className="no-wrap"
-                size="sm"
-                style={{ cursor: "pointer" }}
-              >
-                {experiment.artifact_location}
-              </Text>
-            </Tooltip>
-          )}
-        </CopyButton>
+        <CopyAreaButton value={experiment.artifact_location} />
       ),
       created_at: dateFormat(experiment.creation_time, "DD/MM/YYYY"),
       updated_at: (
-        <NoWrapText>{moment(experiment.last_update_time).fromNow()}</NoWrapText>
+        <NoWrap>{moment(experiment.last_update_time).fromNow()}</NoWrap>
       ),
     }));
   };

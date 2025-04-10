@@ -79,7 +79,9 @@ export const Table = ({
                           columnIndex === columns.length - 1 ? "right" : "left",
                       }}
                     >
-                      <Text className="capitalize">{column.header}</Text>
+                      <Text className="capitalize" size="md" fw={500}>
+                        {column.header}
+                      </Text>
                     </MantineTable.Th>
                   ))}
                 </MantineTable.Tr>
