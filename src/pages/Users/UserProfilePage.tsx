@@ -14,7 +14,7 @@ const UserProfilePage = () => {
   useEffect(() => {
     setMenuType("home");
     if (user) {
-      getUser({ api: `users/${user?.id}` });
+      getUser({ api: `/users/${user?.id}` });
     }
   }, []);
 
