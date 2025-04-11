@@ -4,7 +4,8 @@ import { MenuContext } from "@/components/Layouts/DashboardLayout";
 import { Badge } from "@mantine/core";
 import { TbCheck, TbX } from "react-icons/tb";
 import moment from "moment";
-
+import { BiTrash } from "react-icons/bi";
+import { TiEdit } from "react-icons/ti";
 export const beautify = (str: string) => {
   return (str || "")
     .replaceAll("_", " ")
@@ -43,8 +44,8 @@ export const useGetProject = (project_id: string) => {
     setMenuType("project");
     setProjectId(project_id || "");
     if (setTitle && success) {
-      setTitle(project?.name);
-      if (project?.disabled && setSubtitle) {
+      setTitle(projectData?.data?.project?.name);
+      if (projectData?.data?.project?.disabled && setSubtitle) {
         setSubtitle("Disabled");
       }
     }
@@ -86,13 +87,13 @@ export const useGetApp = (app_id: string) => {
     }
     if (appData?.data?.apps?.is_notebook) {
       setMenuType("mlops");
-    } else if (appData?.data?.apps?.is_notebook === false) {
+    } else {
       setMenuType("app");
     }
     if (setTitle && success) {
-      setTitle(app?.name);
+      setTitle(appData?.data?.apps?.name);
 
-      if (app?.disabled && setSubtitle) {
+      if (appData?.data?.apps?.disabled && setSubtitle) {
         setSubtitle("Disabled");
       }
     }
@@ -183,4 +184,42 @@ export const convertObjectToArray = (objectData: any) => {
     key,
     value,
   }));
+};
+
+export const createColumn = (id: any) => {
+  return {
+    id,
+    header: beautify(id),
+  };
+};
+
+export const removeUnnecessaryFields = (data: any, keys: string[] = []) => {
+  const newData = { ...data };
+  keys.forEach((item) => {
+    delete newData[item];
+  });
+  return newData;
+};
+
+export const createEditAction = (url: string) => {
+  return {
+    label: "Edit",
+    to: url,
+    icon: <TiEdit color="var(--mantine-primary-color-7)" size={18} />,
+  };
+};
+
+export const createDeleteAction = ({
+  url,
+  params,
+}: {
+  url: string;
+  params?: any;
+}) => {
+  return {
+    label: "Delete",
+    to: url,
+    icon: <BiTrash color="var(--mantine-color-red-7)" size={18} />,
+    params,
+  };
 };

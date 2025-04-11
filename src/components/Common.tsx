@@ -20,6 +20,7 @@ import {
 } from "react-icons/io5";
 import { GoArrowSwitch } from "react-icons/go";
 import { useAuth } from "@/utils/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const Logo = () => {
   return (
@@ -35,7 +36,7 @@ export const Logo = () => {
 export const UserDropDown = () => {
   const { colorScheme, setColorScheme } = useMantineColorScheme();
   const { logout, user } = useAuth();
-
+  const navigate = useNavigate();
   const menuItems = [
     {
       label: "Theme",
@@ -50,6 +51,7 @@ export const UserDropDown = () => {
     {
       label: "Account settings",
       icon: <IoSettingsOutline size={16} />,
+      action: () => navigate(`/profile/${user?.id}`),
     },
     {
       label: "Change account",
@@ -112,7 +114,7 @@ export const UserDropDown = () => {
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Item>
+        <Menu.Item onClick={() => navigate(`/profile/${user?.id}`)}>
           <Group gap={10}>
             <Avatar
               alt={user.username}

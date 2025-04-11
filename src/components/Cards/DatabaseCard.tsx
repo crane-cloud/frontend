@@ -1,7 +1,6 @@
 import React from "react";
 
-const DatabaseCard = (props: any) => {
-  const { database } = props;
+const DatabaseCard = () => {
   return <div>DatabaseCard</div>;
 };
 

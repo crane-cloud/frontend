@@ -57,7 +57,6 @@ export const DashboardLayout = ({
     appId,
     setAppId,
   }), [menuType, projectId, appId, title, subtitle, containerSize]);
-
   return (
     <MenuContext.Provider value={contextValue}>
       <AppShell

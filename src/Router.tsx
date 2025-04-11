@@ -1,5 +1,8 @@
 import React from "react";
 import { LoginPage } from "./pages/Auth/loginPage";
+import ExperiementsDetailsPage from "./pages/Experirments/ExperiementsDetailsPage";
+import RunsDetailsPage from "./pages/Experirments/RunsDetailsPage";
+import UserProfilePage from "./pages/Users/UserProfilePage";
 // import { HomePage } from "./pages/Home.page";
 const AppsListPage = React.lazy(() => import("./pages/Apps/AppsListPage"));
 const ProjectSettingsPage = React.lazy(
@@ -36,7 +39,9 @@ export const guestRoutes = [
   { path: "/login", element: <LoginPage /> },
 ];
 export const DashboardRoutes = [
+  // Users
   { path: "/", element: <LandingPage /> },
+  { path: "/profile/:user_id", element: <UserProfilePage /> },
   // Projects
   { path: "/projects/create", element: <CreateProjectForm /> },
   { path: "/projects/:project_id", element: <ProjectDetailsPage /> },
@@ -62,5 +67,13 @@ export const DashboardRoutes = [
   {
     path: "/projects/:project_id/apps/:app_id/experiments",
     element: <ExperiementsListPage />,
+  },
+  {
+    path: "/projects/:project_id/apps/:app_id/experiments/:experiment_id",
+    element: <ExperiementsDetailsPage />,
+  },
+  {
+    path: "/projects/:project_id/apps/:app_id/experiments/:experiment_id/runs/:run_id",
+    element: <RunsDetailsPage />,
   },
 ];

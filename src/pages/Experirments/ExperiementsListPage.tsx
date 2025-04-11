@@ -1,14 +1,34 @@
-import { Table } from "@/components/Elements/CustomTable";
-import { MLOPS_API_URL } from "@/config";
-import { dateFormat, useGetApp, useSetContainerSize } from "@/utils/helpers";
-import useGet from "@/utils/useGet";
 import React, { useEffect } from "react";
+import { Table } from "@/components/Elements/CustomTable";
+import { CopyAreaButton, NoWrap } from "@/components/Elements/Elements";
+import TitleText from "@/components/TitleText";
+import { MLOPS_API_URL } from "@/config";
+import { useAuth } from "@/utils/AuthContext";
+import {
+  createDeleteAction,
+  createEditAction,
+  dateFormat,
+  useGetApp,
+} from "@/utils/helpers";
+import useGet from "@/utils/useGet";
+import usePost from "@/utils/usePost";
+import { Anchor, Button } from "@mantine/core";
+import moment from "moment";
+import { GoPlus } from "react-icons/go";
 import { useParams } from "react-router-dom";
+import { TableActions } from "@/components/Elements/TableActions";
 
 const ExperiementsListPage = () => {
   const { app_id } = useParams();
+  const { user } = useAuth();
   const { app } = useGetApp(app_id || "");
   const { getData: getExperiments, data: experiments, loading } = useGet();
+  const {
+    uploadData: createExperiment,
+    submitting: creatingExperiment,
+    success: createExperimentSuccess,
+  } = usePost();
+
   useEffect(() => {
     if (app_id && app) {
       getExperiments({
@@ -19,11 +39,26 @@ const ExperiementsListPage = () => {
         isExternal: true,
       });
     }
-  }, [app_id, app]);
+  }, [app_id, app, createExperimentSuccess]);
+
+  const oncreateExperiment = () => {
+    createExperiment({
+      api: `${MLOPS_API_URL}experiments?app_alias=${app?.alias}&user_id=${user?.id}`,
+      isExternal: true,
+    });
+  };
   const tableColumns = [
+    {
+      header: "ID",
+      id: "experiment_id",
+    },
     {
       header: "Name",
       id: "name",
+    },
+    {
+      header: "Artifact Location",
+      id: "artifact_location",
     },
     {
       header: "Status",
@@ -48,26 +83,63 @@ const ExperiementsListPage = () => {
     }
     return data.map((experiment: any) => ({
       ...experiment,
-      name: experiment.name,
+      name: (
+        <Anchor
+          size="sm"
+          href={`/projects/${app?.project_id}/apps/${app?.id}/experiments/${experiment?.experiment_id}`}
+        >
+          {experiment.name}
+        </Anchor>
+      ),
       status: experiment.lifecycle_stage,
-      created_at: dateFormat(experiment.creation_tim, "DD/MM/YYYY HH:mm A"),
-      updated_at: dateFormat(experiment.last_update_time, "DD/MM/YYYY HH:mm A"),
+      artifact_location: (
+        <CopyAreaButton value={experiment.artifact_location} />
+      ),
+      created_at: dateFormat(experiment.creation_time, "DD/MM/YYYY"),
+      updated_at: (
+        <NoWrap>{moment(experiment.last_update_time).fromNow()}</NoWrap>
+      ),
+      actions: (
+        <TableActions
+          actions={[
+            createEditAction(
+              `/projects/${app?.project_id}/apps/${app?.id}/experiments/${experiment?.experiment_id}`
+            ),
+            createDeleteAction({
+              url: `${MLOPS_API_URL}experiments/${experiment?.experiment_id}`,
+              params: { isExternal: true },
+            }),
+          ]}
+        />
+      ),
     }));
   };
 
-  useSetContainerSize("md");
   return (
     <div>
+      <TitleText
+        loading={false}
+        rightSection={
+          <Button
+            leftSection={<GoPlus />}
+            onClick={oncreateExperiment}
+            loading={creatingExperiment}
+          >
+            Add an Experiment
+          </Button>
+        }
+      >
+        Experiments
+      </TitleText>
       <Table
-        verticalSpacing="sm"
+        verticalSpacing="xs"
         columns={tableColumns}
         data={(tableData && tableData(experiments?.data)) || []}
         props={{
           verticalSpacing: "sm",
         }}
         showIndex={false}
-        rowHover
-        // rowClick={handleRowClick}
+        // rowHover
         loading={loading}
       />
     </div>

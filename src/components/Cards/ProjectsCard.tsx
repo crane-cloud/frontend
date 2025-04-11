@@ -77,7 +77,7 @@ const ProjectsCard = (props: any) => {
             >
               <Flex gap={5} align="center" justify="center" wrap="nowrap">
                 <IoRocketOutline size={16} />
-                <Text size="sm">{project.apps_count} apps</Text>
+                <Text size="sm" className="no-wrap">{project.apps_count} apps</Text>
               </Flex>
             </ActionIcon>
           </Tooltip>
@@ -89,7 +89,7 @@ const ProjectsCard = (props: any) => {
             >
               <Flex gap={5} align="center" justify="center" wrap="nowrap">
                 <LiaUserSolid size={16} />
-                <Text size="sm">{project?.members || 1} members</Text>
+                <Text size="sm" className="no-wrap" >{project?.members || 1} members</Text>
               </Flex>
             </ActionIcon>
           </Tooltip>
@@ -101,7 +101,9 @@ const ProjectsCard = (props: any) => {
             >
               <Flex gap={5} align="center" justify="center" wrap="nowrap">
                 <GoClock size={15} />
-                <Text size="sm">{project.age}</Text>
+                <Text size="sm" className="no-wrap">
+                  {project.age}
+                </Text>
               </Flex>
             </ActionIcon>
           </Tooltip>
