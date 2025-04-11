@@ -118,12 +118,17 @@ export function LoginForm(props: PaperProps) {
           </Button>
           <Button
             radius="xl"
-            leftSection={<FaGoogle />}
-            color="theme.red"
+            flex={1}
+            leftSection={
+              <FaGoogle
+                style={{
+                  color: "#EA4335",
+                }}
+              />
+            }
             variant="default"
             style={{ borderColor: "theme.red" }}
             onClick={handleGoogleAuth}
-            flex={1}
           >
             Google
           </Button>

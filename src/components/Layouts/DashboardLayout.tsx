@@ -44,19 +44,22 @@ export const DashboardLayout = ({
   const [subtitle, setSubtitle] = useState<string>("");
   const [appId, setAppId] = useState<string>("");
 
-  const contextValue = useMemo(() => ({
-    menuType,
-    setMenuType,
-    projectId,
-    setProjectId,
-    title,
-    setTitle,
-    subtitle,
-    setSubtitle,
-    setContainerSize,
-    appId,
-    setAppId,
-  }), [menuType, projectId, appId, title, subtitle, containerSize]);
+  const contextValue = useMemo(
+    () => ({
+      menuType,
+      setMenuType,
+      projectId,
+      setProjectId,
+      title,
+      setTitle,
+      subtitle,
+      setSubtitle,
+      setContainerSize,
+      appId,
+      setAppId,
+    }),
+    [menuType, projectId, appId, title, subtitle, containerSize]
+  );
   return (
     <MenuContext.Provider value={contextValue}>
       <AppShell
@@ -66,7 +69,8 @@ export const DashboardLayout = ({
           breakpoint: "sm",
           collapsed: { mobile: !opened },
         }}
-        padding="md"
+        py="md"
+        className="container"
       >
         <DashboardHeader opened={opened} toggle={toggle} />
         <LeftMenu
