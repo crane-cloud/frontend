@@ -9,7 +9,7 @@ const AppsCard = (props: any) => {
   const { app, project_id } = props;
 
   return (
-    <Card p="md" radius="md" withBorder shadow="sm">
+    <Card p="md" radius="md" withBorder>
       <Group wrap="nowrap" gap={10}>
         {app.is_notebook ? (
           <SiJupyter size={35} color="#f57c00" />
@@ -27,7 +27,12 @@ const AppsCard = (props: any) => {
             {beautify(app.name)}
           </Anchor>
 
-          <Anchor href={app.url} target="_blank" c="var(--mantine-color-text)">
+          <Anchor
+            href={app.url}
+            target="_blank"
+            c="var(--mantine-color-text)"
+            maw="95%"
+          >
             <Group gap={4} align="center" wrap="nowrap">
               <Text size="0.8rem" truncate>
                 {new URL(app.url).hostname}

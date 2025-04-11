@@ -12,7 +12,7 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 import { useForm } from "@mantine/form";
 import { upperFirst, useToggle } from "@mantine/hooks";
 import usePost from "@/utils/usePost";
@@ -25,6 +25,9 @@ import {
   MdDriveFileRenameOutline,
   MdOutlinePerson,
 } from "react-icons/md";
+import { GIT_REDIRECT_URL } from "@/config";
+import { GuestHeader } from "@/components/Header";
+import { GuestFooter } from "@/components/Footer";
 
 export function LoginForm(props: PaperProps) {
   const [type, toggle] = useToggle(["login", "register"]);
@@ -75,140 +78,173 @@ export function LoginForm(props: PaperProps) {
     }
   }, [success]);
 
+  const handleGithubAuth = () => {
+    window.location.href = GIT_REDIRECT_URL;
+  };
+
+  const handleGoogleAuth = () => {
+    window.location.href = "";
+  };
+
   return (
-    <Paper
-      radius="md"
-      p="xl"
-      miw={{ base: "100%", sm: 400 }}
-      withBorder
-      {...props}
-    >
-      <Text
-        variant="gradient"
-        gradient={{ from: "blue", to: "cyan", deg: 90 }}
-        size="xl"
-        fw={700}
-        ta="center"
+    <Stack justify="center" mt="lg">
+      <Paper
+        radius="md"
+        p="xl"
+        miw={{ base: "100%", sm: 400 }}
+        withBorder
+        {...props}
       >
-        Welcome {type === "login" && "back"} to Cranecloud
-      </Text>
-      <Group justify="center" mt="lg">
-        <Button
-          radius="xl"
-          leftSection={<FaGithub />}
-          color="theme.black"
-          variant="default"
-          style={{
-            borderColor: "theme.black",
-          }}
+        <Text
+          variant="gradient"
+          gradient={{ from: "blue", to: "cyan", deg: 90 }}
+          size="xl"
+          fw={700}
+          ta="center"
         >
-          Continue with Github
-        </Button>
-      </Group>
-      <Divider label="Or continue with email" labelPosition="center" my="lg" />
-      <form onSubmit={handleSubmit}>
-        <Stack gap="sm">
-          {type === "register" && (
-            <Stack>
-              <TextInput
-                required
-                label="Name"
-                placeholder="Your name"
-                {...form.getInputProps("name")}
-                radius="sm"
-                color="blue"
-                leftSection={<MdDriveFileRenameOutline />}
-              />
-              <TextInput
-                required
-                label="Username"
-                placeholder="Your username"
-                {...form.getInputProps("username")}
-                radius="sm"
-                color="blue"
-                leftSection={<MdOutlinePerson />}
-              />
-            </Stack>
-          )}
-          <TextInput
-            required
-            label="Email"
-            placeholder="Email Address"
-            {...form.getInputProps("email")}
-            error={form.errors.email && "Invalid email"}
-            radius="sm"
-            color="blue"
-            leftSection={<MdOutlineEmail />}
-          />
-
-          <PasswordInput
-            required
-            label="Password"
-            placeholder="Your password"
-            {...form.getInputProps("password")}
-            radius="sm"
-            color="blue"
-            leftSection={<MdOutlineLock />}
-          />
-          {type === "register" && (
-            <Stack>
-              <PasswordInput
-                required
-                label="Confirm Password"
-                placeholder="Confirm your password"
-                {...form.getInputProps("confirmPassword")}
-                radius="sm"
-                color="blue"
-                leftSection={<MdOutlineLock />}
-              />
-              <Checkbox
-                required
-                label="I agree to the terms and conditions"
-                checked={form.values.terms}
-                onChange={(event) =>
-                  form.setFieldValue("terms", event.currentTarget.checked)
-                }
-              />
-            </Stack>
-          )}
-        </Stack>
-
-        <Stack mt="xl">
-          <Group justify="space-between">
-            <Anchor
-              component="button"
-              type="button"
-              c="dimmed"
-              onClick={() => toggle()}
-              size="xs"
-            >
-              {type === "register"
-                ? "Already have an account? Login"
-                : "Don't have an account? Register"}
-            </Anchor>
-            {type === "login" && (
-              <Anchor component="button" type="button" size="sm">
-                Forgot password?
-              </Anchor>
-            )}
-          </Group>
+          Welcome {type === "login" && "back"} to Cranecloud
+        </Text>
+        <Group justify="center" mt="lg" gap="sm">
           <Button
-            type="submit"
-            variant="gradient"
-            gradient={{ from: "blue", to: "cyan", deg: 90 }}
+            radius="xl"
+            leftSection={<FaGithub />}
+            color="theme.black"
+            variant="default"
+            style={{ borderColor: "theme.black" }}
+            onClick={handleGithubAuth}
+            flex={1}
           >
-            {submitting ? <Loader size="sm" color="white" /> : upperFirst(type)}
+            Github
           </Button>
-        </Stack>
-      </form>
-    </Paper>
+          <Button
+            radius="xl"
+            leftSection={<FaGoogle />}
+            color="theme.red"
+            variant="default"
+            style={{ borderColor: "theme.red" }}
+            onClick={handleGoogleAuth}
+            flex={1}
+          >
+            Google
+          </Button>
+        </Group>
+        <Divider
+          label="Or continue with email"
+          labelPosition="center"
+          my="lg"
+        />
+        <form onSubmit={handleSubmit}>
+          <Stack gap="sm">
+            {type === "register" && (
+              <Stack>
+                <TextInput
+                  required
+                  label="Name"
+                  placeholder="Your name"
+                  {...form.getInputProps("name")}
+                  radius="sm"
+                  color="blue"
+                  leftSection={<MdDriveFileRenameOutline />}
+                />
+                <TextInput
+                  required
+                  label="Username"
+                  placeholder="Your username"
+                  {...form.getInputProps("username")}
+                  radius="sm"
+                  color="blue"
+                  leftSection={<MdOutlinePerson />}
+                />
+              </Stack>
+            )}
+            <TextInput
+              required
+              label="Email"
+              placeholder="Email Address"
+              {...form.getInputProps("email")}
+              error={form.errors.email && "Invalid email"}
+              radius="sm"
+              color="blue"
+              leftSection={<MdOutlineEmail />}
+            />
+
+            <PasswordInput
+              required
+              label="Password"
+              placeholder="Your password"
+              {...form.getInputProps("password")}
+              radius="sm"
+              color="blue"
+              leftSection={<MdOutlineLock />}
+            />
+            {type === "register" && (
+              <Stack>
+                <PasswordInput
+                  required
+                  label="Confirm Password"
+                  placeholder="Confirm your password"
+                  {...form.getInputProps("confirmPassword")}
+                  radius="sm"
+                  color="blue"
+                  leftSection={<MdOutlineLock />}
+                />
+                <Checkbox
+                  required
+                  label="I agree to the terms and conditions"
+                  checked={form.values.terms}
+                  onChange={(event) =>
+                    form.setFieldValue("terms", event.currentTarget.checked)
+                  }
+                />
+              </Stack>
+            )}
+          </Stack>
+
+          <Stack mt="xl">
+            <Group justify="space-between">
+              <Anchor
+                component="button"
+                type="button"
+                c="dimmed"
+                onClick={() => toggle()}
+                size="xs"
+              >
+                {type === "register"
+                  ? "Already have an account? Login"
+                  : "Don't have an account? Register"}
+              </Anchor>
+              {type === "login" && (
+                <Anchor component="button" type="button" size="sm">
+                  Forgot password?
+                </Anchor>
+              )}
+            </Group>
+            <Button
+              type="submit"
+              variant="gradient"
+              gradient={{ from: "blue", to: "cyan", deg: 90 }}
+            >
+              {submitting ? (
+                <Loader size="sm" color="white" />
+              ) : (
+                upperFirst(type)
+              )}
+            </Button>
+          </Stack>
+        </form>
+      </Paper>
+    </Stack>
   );
 }
 
 export function LoginPage() {
   return (
-    <Group justify="center" mt="lg">
-      <LoginForm />
-    </Group>
+    <Stack justify="space-between" h="100vh">
+      <GuestHeader />
+      <Group justify="center">
+        <LoginForm />
+      </Group>
+      <GuestFooter />
+    </Stack>
   );
 }

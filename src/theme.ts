@@ -53,7 +53,7 @@ export const theme = createTheme({
         styles: {
           root: {
             backgroundColor: `light-dark(
-              var(--mantine-color-white),
+              var(--mantine-color-default-hover),
               var(--mantine-color-gray-9)
             )`,
           },
