@@ -6,7 +6,11 @@ import { useGetApp } from "@/utils/helpers";
 import useGet from "@/utils/useGet";
 import { Table } from "@/components/Elements/CustomTable";
 import moment from "moment";
-import { CopyAreaButton, NoWrap } from "@/components/Elements/elements";
+import {
+  BreadCrumb,
+  CopyAreaButton,
+  NoWrap,
+} from "@/components/Elements/elements";
 import DetailsCard from "@/components/Cards/DetailsCard";
 import { Stack } from "@mantine/core";
 
@@ -67,7 +71,13 @@ const ExperiementsDetailsPage = () => {
 
   const handleRowClick = (item: any) => {
     navigate(
-      `/projects/${app?.project_id}/apps/${app?.id}/experiments/${experiment_id}/runs/${item?.run_id}`
+      `/projects/${app?.project_id}/apps/${app?.id}/experiments/${experiment_id}/runs/${item?.run_id}`,
+      {
+        state: {
+          experimentData: experiment?.data,
+          appDetails: app,
+        },
+      }
     );
   };
 
@@ -88,19 +98,33 @@ const ExperiementsDetailsPage = () => {
     },
   ];
 
+  const breadCrumbItems = [
+    {
+      title: "Experiments",
+      link: `/projects/${app?.project_id}/apps/${app_id}/experiments`,
+    },
+    {
+      title: experiment?.data?.name,
+      link: `/projects/${app?.project_id}/apps/${app_id}/experiments/${experiment_id}`,
+    },
+  ];
+
   return (
     <Stack gap={30}>
-      <Stack gap={0}>
-        <TitleText>
-          Experiment:{" "}
-          <Link
-            to={`/projects/${app?.project_id}/apps/${app?.id}/experiments`}
-            style={{ color: "var(--mantine-primary-color-6)" }}
-          >
-            {experiment?.data?.name}
-          </Link>
-        </TitleText>
-        <DetailsCard data={experimentInfo} />
+      <Stack>
+        <BreadCrumb items={breadCrumbItems} />
+        <Stack gap={0}>
+          <TitleText>
+            Experiment:{" "}
+            <Link
+              to={`/projects/${app?.project_id}/apps/${app?.id}/experiments`}
+              style={{ color: "var(--mantine-primary-color-6)" }}
+            >
+              {experiment?.data?.name}
+            </Link>
+          </TitleText>
+          <DetailsCard data={experimentInfo} />
+        </Stack>
       </Stack>
       <Stack gap={0}>
         <TitleText>Runs</TitleText>

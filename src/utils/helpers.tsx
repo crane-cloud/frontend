@@ -84,12 +84,12 @@ export const useGetApp = (app_id: string) => {
     if (setAppId) {
       setAppId(app_id || "");
     }
-    if (appData?.data?.apps?.is_notebook ) {
+    if (appData?.data?.apps?.is_notebook) {
       setMenuType("mlops");
     } else {
       setMenuType("app");
     }
-    if (setTitle && success ) {
+    if (setTitle && success) {
       setTitle(appData?.data?.apps?.name);
 
       if (appData?.data?.apps?.disabled && setSubtitle) {
@@ -183,4 +183,19 @@ export const convertObjectToArray = (objectData: any) => {
     key,
     value,
   }));
+};
+
+export const createColumn = (id: any) => {
+  return {
+    id,
+    header: beautify(id),
+  };
+};
+
+export const removeUnnecessaryFields = (data: any, keys: string[] = []) => {
+  const newData = { ...data };
+  keys.forEach((item) => {
+    delete newData[item];
+  });
+  return newData;
 };

@@ -1,6 +1,13 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { CopyButton, Flex, Text, Tooltip } from "@mantine/core";
+import {
+  Anchor,
+  Breadcrumbs,
+  CopyButton,
+  Flex,
+  Text,
+  Tooltip,
+} from "@mantine/core";
 import { TbCopy } from "react-icons/tb";
 
 export const LinkWithText = styled(Link)`
@@ -58,4 +65,26 @@ export const CopyAreaButton = ({
       )}
     </CopyButton>
   );
+};
+
+interface TBreadCrumbProps {
+  items: { title: string; link: string }[];
+}
+
+export const BreadCrumb = ({ items }: TBreadCrumbProps) => {
+  const anchorItems = items.map((item, index) => {
+    if (index === items.length - 1) {
+      return (
+        <Text size="sm" c="theme.gray.8" key={index}>
+          {item.title}
+        </Text>
+      );
+    }
+    return (
+      <Anchor href={item?.link} key={index} size="sm">
+        {item.title}
+      </Anchor>
+    );
+  });
+  return <Breadcrumbs>{anchorItems}</Breadcrumbs>;
 };

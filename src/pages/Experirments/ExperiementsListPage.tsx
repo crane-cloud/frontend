@@ -4,13 +4,13 @@ import { CopyAreaButton, NoWrap } from "@/components/Elements/elements";
 import TitleText from "@/components/TitleText";
 import { MLOPS_API_URL } from "@/config";
 import { useAuth } from "@/utils/AuthContext";
-import { dateFormat, useGetApp, useSetContainerSize } from "@/utils/helpers";
+import { dateFormat, useGetApp } from "@/utils/helpers";
 import useGet from "@/utils/useGet";
 import usePost from "@/utils/usePost";
-import { Button } from "@mantine/core";
+import { Anchor, Button } from "@mantine/core";
 import moment from "moment";
 import { GoPlus } from "react-icons/go";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const ExperiementsListPage = () => {
   const { app_id } = useParams();
@@ -78,11 +78,12 @@ const ExperiementsListPage = () => {
     return data.map((experiment: any) => ({
       ...experiment,
       name: (
-        <Link
-          to={`/projects/${app?.project_id}/apps/${app?.id}/experiments/${experiment?.experiment_id}`}
+        <Anchor
+          size="sm"
+          href={`/projects/${app?.project_id}/apps/${app?.id}/experiments/${experiment?.experiment_id}`}
         >
           {experiment.name}
-        </Link>
+        </Anchor>
       ),
       status: experiment.lifecycle_stage,
       artifact_location: (
@@ -95,7 +96,6 @@ const ExperiementsListPage = () => {
     }));
   };
 
-  useSetContainerSize("md");
   return (
     <div>
       <TitleText

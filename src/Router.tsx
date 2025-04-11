@@ -1,6 +1,7 @@
 import React from "react";
 import { LoginPage } from "./pages/Auth/loginPage";
 import ExperiementsDetailsPage from "./pages/Experirments/ExperiementsDetailsPage";
+import RunsDetailsPage from "./pages/Experirments/RunsDetailsPage";
 // import { HomePage } from "./pages/Home.page";
 const AppsListPage = React.lazy(() => import("./pages/Apps/AppsListPage"));
 const ProjectSettingsPage = React.lazy(
@@ -67,5 +68,9 @@ export const DashboardRoutes = [
   {
     path: "/projects/:project_id/apps/:app_id/experiments/:experiment_id",
     element: <ExperiementsDetailsPage />,
+  },
+  {
+    path: "/projects/:project_id/apps/:app_id/experiments/:experiment_id/runs/:run_id",
+    element: <RunsDetailsPage />,
   },
 ];
