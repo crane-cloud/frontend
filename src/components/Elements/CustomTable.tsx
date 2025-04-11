@@ -195,16 +195,18 @@ const StyledTableRow = styled(MantineTable.Tr)<{
 
 export const HorizontalTable = ({ data }: { data: any }) => {
   return (
-    <MantineTable variant="vertical" withTableBorder>
-      <MantineTable.Tbody>
-        {data &&
-          Object.keys(data)?.map((item, idx) => (
-            <MantineTable.Tr key={idx}>
-              <MantineTable.Th w={160}>{item}</MantineTable.Th>
-              <MantineTable.Td>{data[item]}</MantineTable.Td>
-            </MantineTable.Tr>
-          ))}
-      </MantineTable.Tbody>
-    </MantineTable>
+    <MantineTable.ScrollContainer minWidth="100%">
+      <MantineTable variant="vertical" withTableBorder>
+        <MantineTable.Tbody>
+          {data &&
+            Object.keys(data)?.map((item, idx) => (
+              <MantineTable.Tr key={idx}>
+                <MantineTable.Th w={160}>{item}</MantineTable.Th>
+                <MantineTable.Td>{data[item]}</MantineTable.Td>
+              </MantineTable.Tr>
+            ))}
+        </MantineTable.Tbody>
+      </MantineTable>
+    </MantineTable.ScrollContainer>
   );
 };

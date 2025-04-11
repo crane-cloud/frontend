@@ -4,7 +4,8 @@ import { MenuContext } from "@/components/Layouts/DashboardLayout";
 import { Badge } from "@mantine/core";
 import { TbCheck, TbX } from "react-icons/tb";
 import moment from "moment";
-
+import { BiTrash } from "react-icons/bi";
+import { TiEdit } from "react-icons/ti";
 export const beautify = (str: string) => {
   return (str || "")
     .replaceAll("_", " ")
@@ -198,4 +199,27 @@ export const removeUnnecessaryFields = (data: any, keys: string[] = []) => {
     delete newData[item];
   });
   return newData;
+};
+
+export const createEditAction = (url: string) => {
+  return {
+    label: "Edit",
+    to: url,
+    icon: <TiEdit color="var(--mantine-primary-color-7)" size={18} />,
+  };
+};
+
+export const createDeleteAction = ({
+  url,
+  params,
+}: {
+  url: string;
+  params?: any;
+}) => {
+  return {
+    label: "Delete",
+    to: url,
+    icon: <BiTrash color="var(--mantine-color-red-7)" size={18} />,
+    params,
+  };
 };

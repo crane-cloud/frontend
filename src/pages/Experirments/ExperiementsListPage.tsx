@@ -4,13 +4,19 @@ import { CopyAreaButton, NoWrap } from "@/components/Elements/elements";
 import TitleText from "@/components/TitleText";
 import { MLOPS_API_URL } from "@/config";
 import { useAuth } from "@/utils/AuthContext";
-import { dateFormat, useGetApp } from "@/utils/helpers";
+import {
+  createDeleteAction,
+  createEditAction,
+  dateFormat,
+  useGetApp,
+} from "@/utils/helpers";
 import useGet from "@/utils/useGet";
 import usePost from "@/utils/usePost";
 import { Anchor, Button } from "@mantine/core";
 import moment from "moment";
 import { GoPlus } from "react-icons/go";
 import { useParams } from "react-router-dom";
+import { TableActions } from "@/components/Elements/TableActions";
 
 const ExperiementsListPage = () => {
   const { app_id } = useParams();
@@ -92,6 +98,19 @@ const ExperiementsListPage = () => {
       created_at: dateFormat(experiment.creation_time, "DD/MM/YYYY"),
       updated_at: (
         <NoWrap>{moment(experiment.last_update_time).fromNow()}</NoWrap>
+      ),
+      actions: (
+        <TableActions
+          actions={[
+            createEditAction(
+              `/projects/${app?.project_id}/apps/${app?.id}/experiments/${experiment?.experiment_id}`
+            ),
+            createDeleteAction({
+              url: `${MLOPS_API_URL}experiments/${experiment?.experiment_id}`,
+              params: { isExternal: true },
+            }),
+          ]}
+        />
       ),
     }));
   };
