@@ -254,3 +254,15 @@ export function HomeHeader() {
     </Box>
   );
 }
+
+export const GuestHeader = () => {
+  return (
+    <Box>
+      <header className={classes.guestHeader}>
+        <Group justify="space-between" h="100%">
+          <Logo />
+        </Group>
+      </header>
+    </Box>
+  );
+};
