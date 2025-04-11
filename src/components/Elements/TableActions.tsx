@@ -1,5 +1,5 @@
 import { ActionIcon } from "@mantine/core";
-import { DropdownMenu } from "./elements";
+import { DropdownMenu } from "./Elements";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { GoDot } from "react-icons/go";
 import { useNavigate } from "react-router-dom";

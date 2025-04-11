@@ -1,4 +1,4 @@
-import { BreadCrumb } from "@/components/Elements/elements";
+import { BreadCrumb } from "@/components/Elements/Elements";
 import TitleText from "@/components/TitleText";
 import { MLOPS_API_URL } from "@/config";
 import {

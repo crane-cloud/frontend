@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Table } from "@/components/Elements/CustomTable";
-import { CopyAreaButton, NoWrap } from "@/components/Elements/elements";
+import { CopyAreaButton, NoWrap } from "@/components/Elements/Elements";
 import TitleText from "@/components/TitleText";
 import { MLOPS_API_URL } from "@/config";
 import { useAuth } from "@/utils/AuthContext";

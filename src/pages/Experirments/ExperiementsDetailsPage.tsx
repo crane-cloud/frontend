@@ -10,7 +10,7 @@ import {
   BreadCrumb,
   CopyAreaButton,
   NoWrap,
-} from "@/components/Elements/elements";
+} from "@/components/Elements/Elements";
 import DetailsCard from "@/components/Cards/DetailsCard";
 import { Stack } from "@mantine/core";
 
