@@ -20,7 +20,7 @@ import { IoRocketOutline } from "react-icons/io5";
 const ProjectsCard = (props: any) => {
   const { project } = props;
   return (
-    <Card p="md" radius="md" withBorder shadow="xs" {...props}>
+    <Card p="md" radius="md" withBorder  {...props}>
       <Stack gap={10} justify="space-between" h="100%">
         <Stack gap={7}>
           <Group justify="space-between" wrap="nowrap">
@@ -32,7 +32,7 @@ const ProjectsCard = (props: any) => {
               )}
               <Anchor
                 c="blue"
-                size="1.1rem"
+                size="1rem"
                 href={`/projects/${project.id}`}
                 style={{
                   textOverflow: "ellipsis",

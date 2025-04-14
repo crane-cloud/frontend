@@ -58,22 +58,22 @@ const AppsCard = (props: any) => {
         <Group gap={10} align="center">
           {app?.is_notebook && (
             <Pill w="fit-content">
-              <Flex gap={5} wrap="nowrap" w="fit-content" align="center">
+              <Flex gap={5} wrap="nowrap" w="fit-content" align="center" justify="center">
                 <SiJupyter size={13} color="#f57c00" />
-                <Text size="sm" truncate>
+                <Text size="xs" truncate>
                   Notebook
                 </Text>
               </Flex>
             </Pill>
           )}
           <Flex gap={5} c="var(--mantine-color-dark-3)" align="center">
-            <GoClock size={15} />
-            <Text size="sm">{app.age}</Text>
+            <GoClock size={13} />
+            <Text size="xs">{app.age}</Text>
           </Flex>
         </Group>
 
         <Pill
-          size="sm"
+          size="xs"
           fw={500}
           bg={getStatusColor(app.app_running_status).background}
           c={getStatusColor(app.app_running_status).text}
