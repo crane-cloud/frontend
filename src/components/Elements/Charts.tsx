@@ -1,8 +1,17 @@
 import { formatTimestamp, returnObject } from "@/utils/helpers";
 import { LineChart } from "@mantine/charts";
-import { Card, Stack, Text, Button, Group, Flex } from "@mantine/core";
+import {
+  Card,
+  Stack,
+  Text,
+  Button,
+  Group,
+  Flex,
+  ActionIcon,
+} from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useState, useEffect } from "react";
+import { FaChartLine, FaEye, FaEyeSlash } from "react-icons/fa";
 
 type TLineMetricChart = {
   title: string;
@@ -10,6 +19,9 @@ type TLineMetricChart = {
   valueFormatter: (value: number) => string;
   showAllXValues?: boolean;
   height?: number;
+  setBigChart?: (chartType: "cpu" | "memory" | "network") => void;
+  chartType?: "cpu" | "memory" | "network";
+  currentChart?: "cpu" | "memory" | "network";
 };
 
 export const LineMetricChart = ({
@@ -18,6 +30,9 @@ export const LineMetricChart = ({
   valueFormatter,
   showAllXValues = false,
   height = 250,
+  setBigChart,
+  chartType,
+  currentChart,
 }: TLineMetricChart) => {
   const xAxisTicks =
     data?.length > 0
@@ -26,7 +41,24 @@ export const LineMetricChart = ({
   return (
     <Card withBorder p="md" radius="md" w="100%">
       <Stack gap="lg">
-        <Text className="title">{title}</Text>
+        <Group justify="space-between">
+          <Group gap="xs">
+            <FaChartLine size={13} />
+            <Text className="title">{title}</Text>
+          </Group>
+          {setBigChart && chartType && (
+            <ActionIcon
+              variant="outline"
+              onClick={() => setBigChart(chartType)}
+            >
+              {currentChart === chartType ? (
+                <FaEye size={13} />
+              ) : (
+                <FaEyeSlash size={13} />
+              )}
+            </ActionIcon>
+          )}
+        </Group>
         <LineChart
           h={height}
           w="100%"
@@ -68,12 +100,7 @@ type TLineLargeMetricChart = TLineMetricChart & {
     startDate: Date | null;
     endDate: Date | null;
   };
-  setFilters: React.Dispatch<
-    React.SetStateAction<{
-      startDate: Date | null;
-      endDate: Date | null;
-    }>
-  >;
+  setFilters: (filter: any) => void;
 };
 
 export const LineLargeMetricChart = ({
@@ -87,6 +114,9 @@ export const LineLargeMetricChart = ({
 }: TLineLargeMetricChart) => {
   const { startDate, endDate } = filters;
   const [filteredData, setFilteredData] = useState(data);
+  const [activePreset, setActivePreset] = useState<
+    "1D" | "7D" | "30D" | "90D" | "all" | null
+  >("7D");
 
   const xAxisTicks =
     data?.length > 0
@@ -98,6 +128,7 @@ export const LineLargeMetricChart = ({
       startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
       endDate: new Date(),
     });
+    setActivePreset("7D");
   };
 
   const setLast30Days = () => {
@@ -105,6 +136,7 @@ export const LineLargeMetricChart = ({
       startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
       endDate: new Date(),
     });
+    setActivePreset("30D");
   };
 
   const setLast1Day = () => {
@@ -112,6 +144,7 @@ export const LineLargeMetricChart = ({
       startDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
       endDate: new Date(),
     });
+    setActivePreset("1D");
   };
 
   useEffect(() => {
@@ -132,37 +165,51 @@ export const LineLargeMetricChart = ({
           <Group justify="space-between">
             <Text className="title">{title}</Text>
           </Group>
-          <Flex justify="space-between" gap="xs">
+          <Flex justify="space-between" gap="xs" wrap="wrap">
             <Group gap="xs">
-              <Button variant="solid" size="xs" onClick={setLast1Day}>
+              <Button
+                variant={activePreset === "1D" ? "solid" : "outline"}
+                size="xs"
+                onClick={setLast1Day}
+              >
                 1D
               </Button>
-              <Button variant="outline" size="xs" onClick={setLast7Days}>
+              <Button
+                variant={activePreset === "7D" ? "solid" : "outline"}
+                size="xs"
+                onClick={setLast7Days}
+              >
                 7D
               </Button>
-              <Button variant="outline" size="xs" onClick={setLast30Days}>
+              <Button
+                variant={activePreset === "30D" ? "solid" : "outline"}
+                size="xs"
+                onClick={setLast30Days}
+              >
                 30D
               </Button>
               <Button
-                variant="outline"
+                variant={activePreset === "90D" ? "solid" : "outline"}
                 size="xs"
                 onClick={() => {
                   setFilters({
                     startDate: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000),
                     endDate: new Date(),
                   });
+                  setActivePreset("90D");
                 }}
               >
                 90D
               </Button>
               <Button
-                variant="outline"
+                variant={activePreset === "all" ? "solid" : "outline"}
                 size="xs"
                 onClick={() => {
                   setFilters({
                     startDate: null,
                     endDate: null,
                   });
+                  setActivePreset("all");
                 }}
               >
                 All Time
@@ -172,24 +219,26 @@ export const LineLargeMetricChart = ({
               <DatePickerInput
                 placeholder="Start date"
                 value={startDate}
-                onChange={(value) =>
+                onChange={(date) => {
                   setFilters({
                     ...filters,
-                    startDate: value,
-                  })
-                }
+                    startDate: date,
+                  });
+                  setActivePreset(null);
+                }}
                 mx="auto"
                 size="xs"
               />
               <DatePickerInput
                 placeholder="End date"
                 value={endDate}
-                onChange={(value) =>
+                onChange={(date) => {
                   setFilters({
                     ...filters,
-                    endDate: value,
-                  })
-                }
+                    endDate: date,
+                  });
+                  setActivePreset(null);
+                }}
                 mx="auto"
                 size="xs"
               />

@@ -12,6 +12,7 @@ type UploadDataParams = {
   successMessage?: string;
   errorMessage?: string;
   isExternal?: boolean;
+  showNotifications?: boolean;
 };
 
 const usePost = () => {
@@ -31,6 +32,7 @@ const usePost = () => {
       successMessage,
       errorMessage,
       isExternal = false,
+      showNotifications = true,
     } = options;
     const extras = {};
 
@@ -43,23 +45,27 @@ const usePost = () => {
       loader: setSubmitting,
       errorHandler: (err: TError) => {
         setError(err);
-        showNotification({
-          title: "Error",
-          message:
-            errorMessage ||
-            (typeof err === "string" && err) ||
-            "Something went wrong!",
-          color: "red",
-        });
+        if (showNotifications) {
+          showNotification({
+            title: "Error",
+            message:
+              errorMessage ||
+              (typeof err === "string" && err) ||
+              "Something went wrong!",
+            color: "red",
+          });
+        }
       },
       successHandler: (res: any) => {
         setData(res);
         setSuccess(true);
-        showNotification({
-          title: "Success",
-          message: successMessage || "Operation completed successfully!",
-          color: "teal",
-        });
+        if (showNotifications) {
+          showNotification({
+            title: "Success",
+            message: successMessage || "Operation completed successfully!",
+            color: "teal",
+          });
+        }
       },
       methodName: method || (id ? "PATCH" : "POST"),
       params: { ...params, ...extras },
