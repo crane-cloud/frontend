@@ -29,6 +29,7 @@
     "@mantine/notifications": "^7.16.2",
     "@types/styled-components": "^5.1.34",
     "axios": "^1.7.9",
+    "date-fns": "^4.1.0",
     "moment": "^2.30.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

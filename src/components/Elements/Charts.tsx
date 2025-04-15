@@ -1,31 +1,39 @@
+import { formatTimestamp, returnObject } from "@/utils/helpers";
 import { LineChart } from "@mantine/charts";
 import { Card, Stack, Text } from "@mantine/core";
-export const data = [
-  { date: "Jan", temperature: -25 },
-  { date: "Feb", temperature: -10 },
-  { date: "Mar", temperature: 5 },
-  { date: "Apr", temperature: 15 },
-  { date: "May", temperature: 30 },
-  { date: "Jun", temperature: 15 },
-  { date: "Jul", temperature: 30 },
-  { date: "Aug", temperature: 40 },
-  { date: "Sep", temperature: 15 },
-  { date: "Oct", temperature: 20 },
-  { date: "Nov", temperature: 0 },
-  { date: "Dec", temperature: -10 },
-];
 
-export const LineMetricChart = ({ title }: { title: string }) => {
+type TLineMetricChart = {
+  title: string;
+  data: any;
+  valueFormatter: (value: number) => string;
+  showAllXValues?: boolean;
+  height?: number;
+};
+
+export const LineMetricChart = ({
+  title,
+  data,
+  valueFormatter,
+  showAllXValues = false,
+  height = 250,
+}: TLineMetricChart) => {
+  const xAxisTicks =
+    data?.length > 0
+      ? [data[0].timestamp, data[data.length - 1].timestamp]
+      : [];
   return (
     <Card withBorder p="md" radius="md" w="100%">
       <Stack gap="lg">
         <Text className="title">{title}</Text>
         <LineChart
-          h={250}
+          h={height}
           w="100%"
           data={data}
-          series={[{ name: "temperature", label: "Avg. Temperature" }]}
-          dataKey="date"
+          series={[{ name: "value", label: "Usage" }]}
+          dataKey="timestamp"
+          dotProps={{
+            r: 2,
+          }}
           type="gradient"
           gradientStops={[
             { offset: 0, color: "red.6" },
@@ -35,10 +43,18 @@ export const LineMetricChart = ({ title }: { title: string }) => {
             { offset: 80, color: "cyan.5" },
             { offset: 100, color: "blue.5" },
           ]}
-          strokeWidth={5}
+          strokeWidth={2}
           curveType="natural"
-          yAxisProps={{ domain: [-25, 40] }}
-          valueFormatter={(value) => `${value}°C`}
+          valueFormatter={valueFormatter}
+          tooltipProps={{
+            labelFormatter: (value) => formatTimestamp(value),
+          }}
+          xAxisProps={{
+            tickFormatter: formatTimestamp,
+            ...returnObject(showAllXValues, {
+              ticks: xAxisTicks,
+            }),
+          }}
         />
       </Stack>
     </Card>
