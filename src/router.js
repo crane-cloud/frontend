@@ -40,7 +40,9 @@ import MonitoringPage from "./pages/MonitoringPage";
 import NamespacesListPage from "./components/NamespacesList";
 import ClusterNodes from "./components/NodesList";
 import PageNotFound from "./components/PageNotFound";
-import PasswordReset from "./components/PasswordReset";
+import PasswordReset, {
+  ResendVerificationEmail,
+} from "./components/PasswordReset";
 import PodsList from "./components/PodsList";
 import ProjectBillingPage from "./pages/ProjectBillingPage";
 import ProjectCPUPage from "./pages/ProjectCPUPage";
@@ -150,6 +152,10 @@ const Routes = () => {
         <Route path="/register" component={RegisterPage} />
         <Route path="/new-password" component={CreateNewPassword} />
         <Route path="/verify/:token" component={VerificationSentPage} />
+        <Route
+          path="/resend-verification-email"
+          component={ResendVerificationEmail}
+        />
         <Route path="/reset_password/:token" component={CreateNewPassword} />
         <Route path="/team" component={TeamPage} />
         <Route path="/create" component={CreateDatabase} />

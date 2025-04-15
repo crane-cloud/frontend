@@ -27,6 +27,7 @@ class LoginPage extends React.Component {
       feedbackMessage: "",
       passwordShown: false,
       hidden: true,
+      showVerifyEmail: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -131,6 +132,7 @@ class LoginPage extends React.Component {
             if (err.response.data.message === "email not verified") {
               this.setState({
                 error: "Please verify your account.",
+                showVerifyEmail: true,
               });
             } else {
               this.setState({
@@ -191,6 +193,7 @@ class LoginPage extends React.Component {
       gitLoading,
       feedbackMessage,
       passwordShown,
+      showVerifyEmail,
     } = this.state;
     return (
       <div className="SectionsContainer">
@@ -228,6 +231,19 @@ class LoginPage extends React.Component {
             </div>
 
             {error && <div className="LoginErrorDiv">!{error}</div>}
+            {showVerifyEmail && (
+              <div>
+                <Link
+                  to="/resend-verification-email"
+                  className="LoginContentLink"
+                >
+                  <PrimaryButton color="primary" type="button">
+                    {" "}
+                    Resend Verification Email
+                  </PrimaryButton>
+                </Link>
+              </div>
+            )}
             <div className="LoginLinkContainer">
               <Link to="/forgot-password" className="LoginContentLink">
                 Forgot your password?
