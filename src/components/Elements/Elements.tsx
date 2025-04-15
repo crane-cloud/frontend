@@ -1,5 +1,5 @@
+import { useNavigate, useParams, Link } from "react-router-dom";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 import {
   Anchor,
   Breadcrumbs,
@@ -9,9 +9,17 @@ import {
   Tooltip,
   Menu,
   FloatingPosition,
+  Button,
 } from "@mantine/core";
 import { TbCopy } from "react-icons/tb";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
+import { PiCubeLight, PiFlask } from "react-icons/pi";
+import { GoDatabase } from "react-icons/go";
+import { RiRobot2Line } from "react-icons/ri";
+import { ModalConfirm } from "@/components/Elements/Modals";
+import { DeployAppModalForm, DeployNotebookForm } from "@/components/Forms/CreateAppForm";
+import { IoIosArrowDown } from "react-icons/io";
+import { returnObject } from "@/utils/helpers";
 
 export const LinkWithText = styled(Link)`
   display: flex;
@@ -139,5 +147,101 @@ export const DropdownMenu = (props: DropdownMenuProps) => {
         ))}
       </Menu.Dropdown>
     </Menu>
+  );
+};
+
+export const AddServiceButton = ({
+  project,
+  setRefresh,
+  dontShowDatabase = false,
+  title = "Add Service",
+}: {
+  project: any;
+  setRefresh: (value: boolean) => void;
+  dontShowDatabase?: boolean;
+  title?: string;
+}) => {
+  const { project_id } = useParams();
+  const navigate = useNavigate();
+  const [trainModalOpened, setTrainModalOpened] = useState(false);
+  const [deployAppModalOpened, setDeployAppModalOpened] = useState(false);
+  const menuItems = [
+    {
+      label: "Deploy Application",
+      icon: <PiCubeLight />,
+      onClick: () => navigate(`/projects/${project_id}/apps/create`),
+    },
+    ...returnObject(!dontShowDatabase, [
+      {
+        label: "Spin Up a Database",
+        icon: <GoDatabase />,
+        onClick: () => navigate(`/projects/${project_id}/databases`),
+      },
+    ]),
+
+    {
+      label: "Train a Model",
+      icon: <PiFlask />,
+      onClick: () => setTrainModalOpened(true),
+    },
+
+    {
+      label: "Deploy a Trained Model",
+      icon: <RiRobot2Line />,
+      onClick: () => setDeployAppModalOpened(true),
+    },
+  ];
+
+  return (
+    <div>
+      <Menu transitionProps={{ transition: "pop-top-right" }}>
+        <Menu.Target>
+          <Button rightSection={<IoIosArrowDown />}>{title}</Button>
+        </Menu.Target>
+        <Menu.Dropdown>
+          {menuItems.map((item) => (
+            <Menu.Item
+              key={item.label}
+              leftSection={item.icon}
+              onClick={item.onClick}
+            >
+              {item.label}
+            </Menu.Item>
+          ))}
+        </Menu.Dropdown>
+      </Menu>
+      <ModalConfirm
+        opened={trainModalOpened}
+        onClose={() => setTrainModalOpened(false)}
+        title="Train a Model"
+        buttonText="Train"
+        onConfirm={() => {}}
+        size="xl"
+        showFooterActions={false}
+      >
+        <DeployNotebookForm
+          project={project}
+          showTitle={false}
+          onCancel={() => setTrainModalOpened(false)}
+          refresh={() => setRefresh(true)}
+        />
+      </ModalConfirm>
+      <ModalConfirm
+        opened={deployAppModalOpened}
+        onClose={() => setDeployAppModalOpened(false)}
+        title="Deploy a Trained Model"
+        buttonText="Deploy"
+        onConfirm={() => {}}
+        size="md"
+        showFooterActions={false}
+      >
+        <DeployAppModalForm
+          project={project}
+          showTitle={false}
+          onCancel={() => setDeployAppModalOpened(false)}
+          refresh={() => setRefresh(true)}
+        />
+      </ModalConfirm>
+    </div>
   );
 };

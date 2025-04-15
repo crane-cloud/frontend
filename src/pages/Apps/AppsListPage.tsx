@@ -1,30 +1,31 @@
 import TitleText from "@/components/TitleText";
-import { Button, Stack } from "@mantine/core";
-import { useNavigate, useParams } from "react-router-dom";
+import { Stack } from "@mantine/core";
+import { useParams } from "react-router-dom";
 import { useGetProject } from "@/utils/helpers";
-import { GoPlus } from "react-icons/go";
 import AppsList from "@/components/Lists/AppsList";
+import { AddServiceButton } from "@/components/Elements/Elements";
+import { useState } from "react";
 const AppsListPage = () => {
   const { project_id } = useParams();
-  useGetProject(project_id || "");
-  const navigate = useNavigate();
+  const { project } = useGetProject(project_id || "");
+  const [refresh, setRefresh] = useState(false);
 
   return (
     <Stack>
       <TitleText
         loading={false}
         rightSection={
-          <Button
-            leftSection={<GoPlus />}
-            onClick={() => navigate(`/projects/${project_id}/apps/create`)}
-          >
-            Add App
-          </Button>
+          <AddServiceButton
+            project={project}
+            setRefresh={setRefresh}
+            title="Add App"
+            dontShowDatabase
+          />
         }
       >
         Applications
       </TitleText>
-      <AppsList project_id={project_id} />
+      <AppsList project_id={project_id} refresh={refresh} />
     </Stack>
   );
 };

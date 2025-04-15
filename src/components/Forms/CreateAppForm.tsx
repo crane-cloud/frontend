@@ -25,15 +25,16 @@ import { API_APPS, API_PROJECTS } from "@/utils/apis";
 import { useNavigate, useParams } from "react-router-dom";
 import { IoRocketSharp } from "react-icons/io5";
 import { FaDocker } from "react-icons/fa";
-import { TbCopy, TbUpload, TbX, TbFileZip } from "react-icons/tb";
-import { LuScreenShare } from "react-icons/lu";
+import { TbCopy, TbUpload, TbX, TbFileZip, TbPlugConnected } from "react-icons/tb";
+import { LuLink, LuScreenShare, LuServer } from "react-icons/lu";
 import { MdDriveFileRenameOutline } from "react-icons/md";
-import { FRAMEWORKS, REGISTRIES } from "@/utils/constants";
+import { FRAMEWORKS, MODAL_API_TYPES, MODAL_SERVERS, REGISTRIES } from "@/utils/constants";
 import { Dropzone, FileWithPath, MIME_TYPES } from "@mantine/dropzone";
 import { useAuth } from "@/utils/AuthContext";
 import { MIRA_API_URL } from "@/config";
 import { Table } from "../Elements/CustomTable";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { RiRobot2Line } from "react-icons/ri";
 
 const CreateAppForm = () => {
   useSetContainerSize("sm");
@@ -722,6 +723,119 @@ export const DeployNotebookForm = ({
                 color="gray.9"
               >
                 Deploy Notebook
+              </Button>
+            </Group>
+          </Stack>
+        </form>
+      </Paper>
+    </div>
+  );
+};
+
+export const DeployAppModalForm = ({
+  showTitle = true,
+  project,
+  onCancel = () => {},
+  refresh = () => {},
+}: DeployNotebookFormProps) => {
+  const { uploadData, submitting, error, success } = usePost();
+  const { form, onChange, updateFormValue } = useForm();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    uploadData({
+      api: `${API_PROJECTS}/${project?.id}/apps/ml`,
+      params: {
+        ...form,
+        is_notebook: false,
+        is_modal: true,
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (success) {
+      onCancel?.();
+      if (onCancel) {
+        onCancel();
+      }
+      if (refresh) {
+        refresh();
+      }
+    }
+  }, [success]);
+
+  return (
+    <div style={{ marginTop: showTitle ? 10 : 0 }}>
+      {showTitle && (
+        <TitleText>
+          <Flex align="center" gap="xs">
+            <IoRocketSharp size={15} />
+            Deploy a Trained Model
+          </Flex>
+        </TitleText>
+      )}
+      <Paper p="lg" radius="md">
+        <form onSubmit={handleSubmit}>
+          <Stack>
+            <TextInput
+              label="Model Name"
+              name="name"
+              placeholder="Enter model name"
+              description="Enter the name of the model"
+              required
+              value={form?.name as string}
+              onChange={onChange}
+              error={error?.name}
+              leftSection={<MdDriveFileRenameOutline />}
+            />
+            <TextInput
+              label="Modal Url"
+              name="model_image_uri"
+              placeholder="Enter modal url"
+              description="Enter the url to where the model is hosted"
+              required
+              value={form?.model_image_uri as string}
+              onChange={onChange}
+              error={error?.model_image_uri}
+              leftSection={<LuLink />}
+            />
+            <Select
+              label="Modal Api type"
+              name="api_type"
+              placeholder="Select framework"
+              required
+              value={form.api_type as string}
+              onChange={(value) =>
+                updateFormValue("api_type", value)
+              }
+              error={error?.api_type}
+              data={MODAL_API_TYPES}
+              defaultValue={MODAL_API_TYPES[0].value}
+              leftSection={<TbPlugConnected />}
+            />
+            <Select
+              label="Modal Server"
+              name="model_server"
+              placeholder="Select the server that created the model"
+              required
+              value={form.model_server as string}
+              onChange={(value) => updateFormValue("model_server", value)}
+              error={error?.model_server}
+              data={MODAL_SERVERS}
+              leftSection={<LuServer />}
+            />
+            <Divider mt="md" />
+            <Group justify="flex-end">
+              <Button
+                type="submit"
+                variant="filled"
+                loading={submitting}
+                leftSection={<RiRobot2Line />}
+                color="gray.9"
+              >
+                Deploy Model
               </Button>
             </Group>
           </Stack>

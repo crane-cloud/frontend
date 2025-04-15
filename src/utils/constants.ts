@@ -17,6 +17,22 @@ export const PROJECT_TYPES = [
   { label: "Other", id: 6, value: "Others" },
 ];
 
+export const MODAL_API_TYPES = [
+  { label: "REST", id: 1, value: "REST" },
+  { label: "GRPC", id: 2, value: "GRPC" },
+];
+
+export const MODAL_SERVERS = [
+  { label: "SKLEARN", id: 1, value: "SKLEARN_SERVER" },
+  { label: "TENSORFLOW", id: 2, value: "TENSORFLOW_SERVER" },
+  { label: "XGBOOST", id: 3, value: "XGBOOST_SERVER" },
+  { label: "MLFlow", id: 4, value: "MLFLOW_SERVER" },
+  { label: "Triton", id: 5, value: "TRITON_SERVER" },
+  { label: "Tempo", id: 6, value: "TEMPO_SERVER" },
+  { label: "Hugging Face", id: 7, value: "HUGGINGFACE_SERVER" },
+  { label: "Custom Inference", id: 8, value: "CUSTOM_INFERENCE_SERVER" },
+];
+
 export const DATABASE_FLAVOURS = [
   { label: "PostgreSQL", id: 1, value: "postgres" },
   { label: "MySQL", id: 2, value: "mysql" },

@@ -6,6 +6,8 @@ import { TbCheck, TbX } from "react-icons/tb";
 import moment from "moment";
 import { BiTrash } from "react-icons/bi";
 import { TiEdit } from "react-icons/ti";
+import { format } from "date-fns";
+
 export const beautify = (str: string) => {
   return (str || "")
     .replaceAll("_", " ")
@@ -148,6 +150,10 @@ export const numberFormat = (value: number) =>
 
 export const dateFormat = (date: string, format = "DD/MMM/YYYY") =>
   moment(date).format(format);
+
+export const formatTimestamp = (timestamp: number) => {
+  return format(new Date(timestamp * 1000), "MMM dd HH:mm:ss");
+};
 
 export const getConnectionString = (database: any) => {
   if (!database) {
