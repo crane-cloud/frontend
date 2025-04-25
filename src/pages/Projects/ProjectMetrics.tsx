@@ -25,7 +25,7 @@ const ProjectMetrics = () => {
 
   useEffect(() => {
     getCPUMetrics({
-      api: `${MONITORING_API_URL}projects/cpu/metrics`,
+      api: `${MONITORING_API_URL}/projects/cpu/metrics`,
       params: {
         project_id,
         end: filters?.endDate?.getTime(),
@@ -35,7 +35,7 @@ const ProjectMetrics = () => {
       showNotifications: false,
     });
     getMemoryMetrics({
-      api: `${MONITORING_API_URL}projects/memory/metrics`,
+      api: `${MONITORING_API_URL}/projects/memory/metrics`,
       params: {
         project_id,
         end: filters?.endDate?.getTime(),
@@ -45,7 +45,7 @@ const ProjectMetrics = () => {
       showNotifications: false,
     });
     getNetworkMetrics({
-      api: `${MONITORING_API_URL}projects/network/metrics`,
+      api: `${MONITORING_API_URL}/projects/network/metrics`,
       params: {
         project_id,
         end: filters?.endDate?.getTime(),
