@@ -168,6 +168,7 @@ export const AddServiceButton = ({
   const navigate = useNavigate();
   const [trainModalOpened, setTrainModalOpened] = useState(false);
   const [deployAppModalOpened, setDeployAppModalOpened] = useState(false);
+  const supportsMl = project?.supports_ml;
   const menuItems = [
     {
       label: "Deploy Application",
@@ -181,7 +182,7 @@ export const AddServiceButton = ({
         onClick: () => navigate(`/projects/${project_id}/databases`),
       },
     ]),
-
+    ...returnObject(supportsMl, [
     {
       label: "Train a Model",
       icon: <PiFlask />,
@@ -191,8 +192,9 @@ export const AddServiceButton = ({
     {
       label: "Deploy a Trained Model",
       icon: <RiRobot2Line />,
-      onClick: () => setDeployAppModalOpened(true),
-    },
+        onClick: () => setDeployAppModalOpened(true),
+      },
+    ]),
   ];
 
   return (
