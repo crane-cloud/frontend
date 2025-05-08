@@ -45,7 +45,7 @@ const ProjectsCard = (props: any) => {
             </Flex>
           </Group>
 
-          <Text size="0.9rem" c="theme.gray">
+          <Text  c="theme.gray" truncate size="sm">
             {project.description}
           </Text>
           {project.tags.length > 0 && (
@@ -68,7 +68,7 @@ const ProjectsCard = (props: any) => {
           )}
         </Stack>
 
-        <Flex gap="md" align="center" justify="start">
+        <Flex gap="md" align="center" justify="start" size="xs">
           <Tooltip label="Number of applications" withArrow>
             <ActionIcon
               variant="transparent"
@@ -76,8 +76,8 @@ const ProjectsCard = (props: any) => {
               w="fit-content"
             >
               <Flex gap={5} align="center" justify="center" wrap="nowrap">
-                <IoRocketOutline size={16} />
-                <Text size="sm" className="no-wrap">{project.apps_count} apps</Text>
+                <IoRocketOutline size={14} color="var(--mantine-color-dimmed)" />
+                <Text size="sm" c="dimmed" className="no-wrap">{project.apps_count} apps</Text>
               </Flex>
             </ActionIcon>
           </Tooltip>
@@ -88,8 +88,8 @@ const ProjectsCard = (props: any) => {
               w="fit-content"
             >
               <Flex gap={5} align="center" justify="center" wrap="nowrap">
-                <LiaUserSolid size={16} />
-                <Text size="sm" className="no-wrap" >{project?.members || 1} members</Text>
+                <LiaUserSolid size={15} color="var(--mantine-color-dimmed)" />
+                <Text size="sm" c="dimmed" className="no-wrap" >{project?.members || 1} members</Text>
               </Flex>
             </ActionIcon>
           </Tooltip>
@@ -100,8 +100,8 @@ const ProjectsCard = (props: any) => {
               w="fit-content"
             >
               <Flex gap={5} align="center" justify="center" wrap="nowrap">
-                <GoClock size={15} />
-                <Text size="sm" className="no-wrap">
+                <GoClock size={13} color="var(--mantine-color-dimmed)" />
+                <Text size="sm" c="dimmed" className="no-wrap">
                   {project.age}
                 </Text>
               </Flex>

@@ -286,7 +286,11 @@ const LeftMenu = React.memo(
                 root: {
                   borderRadius: "0.4rem",
                 },
+                label: {
+                  fontSize: "0.8rem",
+                },
               }}
+              className="navlink"
             />
           ))}
         </AppShell.Section>

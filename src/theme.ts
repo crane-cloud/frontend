@@ -3,13 +3,21 @@ import { returnObject } from './utils/helpers';
 
 export const theme = createTheme({
   // blue: '#008AC1',
-
+  fontFamily: 'var(--font-family)',
+  fontSizes: {
+    xs: '0.7rem',
+    sm: '0.8rem',
+    md: '0.9rem',
+    lg: '1rem',
+    xl: '1.1rem',
+  },
   primaryColor: 'blue',
   components: {
     Button: Button.extend({
       defaultProps: {
         color: 'blue',
         variant: 'outline',
+        radius: 'md',
       },
     }),
     Text: Text.extend({

@@ -1,4 +1,7 @@
 
+// Boolean values
+export const YES = "Yes";
+export const NO = "No";
 
 export const ORGANISATIONS = [
   {label: "Start-up",id: 1, value:"Startup"},

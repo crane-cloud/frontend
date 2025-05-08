@@ -15,7 +15,7 @@ import { useSetContainerSize } from "@/utils/helpers";
 import useForm from "@/hooks/useForm";
 import useGet from "@/utils/useGet";
 import { API_CLUSTERS, API_PROJECTS, API_TAGS } from "@/utils/apis";
-import { ORGANISATIONS, PROJECT_TYPES } from "@/utils/constants";
+import { NO, ORGANISATIONS, PROJECT_TYPES, YES } from "@/utils/constants";
 import usePost from "@/utils/usePost";
 import { useAuth } from "@/utils/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -32,7 +32,7 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
     project,
     showTitle = true,
     onCancel = false,
-    refresh = () => {},
+    refresh = () => { },
   } = props;
   useSetContainerSize("sm");
   const { form, onChange, updateFormValue, updateFormValues, editedForm } =
@@ -64,12 +64,31 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
     if (project) {
       updateFormValues({
         ...project,
+        supports_ml: project?.supports_ml ? "Yes" : "No",
         tags_add: project?.tags?.map((tag: any) => tag.name),
       });
     }
+
   }, []);
 
-  const clusters = clustersData?.data?.clusters?.map((cluster: any) => ({
+  // useEffect(() => {
+  //   if (project && clustersData) {
+  //     updateFormValues({
+  //       ...project,
+  //       ...project,
+  //       supports_ml: ml_clusters?.some((cluster: any) => cluster.value === project.cluster),
+  //       tags_add: project?.tags?.map((tag: any) => tag.name),
+  //     });
+  //   }
+  // }, [project, clustersData]);
+
+
+
+  const clusters = clustersData?.data?.clusters?.filter((cluster: any) => !cluster.supports_ml).map((cluster: any) => ({
+    label: cluster.name,
+    value: cluster.id,
+  }));
+  const ml_clusters = clustersData?.data?.clusters?.filter((cluster: any) => cluster.supports_ml).map((cluster: any) => ({
     label: cluster.name,
     value: cluster.id,
   }));
@@ -83,9 +102,9 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
       params: project?.id
         ? editedForm
         : {
-            ...form,
-            owner_id: user?.id,
-          },
+          ...form,
+          owner_id: user?.id,
+        },
     });
   };
   useEffect(() => {
@@ -146,10 +165,22 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
               error={error?.organisation}
             />
             <Select
-              label="Project Location"
-              description="Select where your project will be deployed"
+              label="Is it an Machine Learning Project?"
+              description="Tick if it is a machine learning project"
               placeholder="Enter project location"
-              data={clusters}
+              data={[YES, NO]}
+              name="supports_ml"
+              defaultValue={NO}
+              value={form?.supports_ml}
+              onChange={(value) => updateFormValue("supports_ml", value)}
+              required
+              error={error?.supports_ml}
+            />
+            <Select
+              label={form.supports_ml === YES ? "Machine Learning Project Location" : "Project Location"}
+              description={form.supports_ml === YES ? "Select where your machine learning project will be deployed" : "Select where your project will be deployed"}
+              placeholder="Enter project location"
+              data={form.supports_ml === YES ? ml_clusters : clusters}
               name="cluster_id"
               rightSection={clustersLoading ? <Loader size="xs" /> : null}
               searchable
