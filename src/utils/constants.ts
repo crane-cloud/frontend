@@ -1,10 +1,9 @@
-
 // Boolean values
 export const YES = "Yes";
 export const NO = "No";
 
 export const ORGANISATIONS = [
-  {label: "Start-up",id: 1, value:"Startup"},
+  { label: "Start-up", id: 1, value: "Startup" },
   { label: "Company", id: 2, value: "Company" },
   { label: "University Project", id: 3, value: "University-Project" },
   { label: "Final Year Project", id: 4, value: "Final-Year-Project" },

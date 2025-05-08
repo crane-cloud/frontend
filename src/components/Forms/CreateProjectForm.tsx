@@ -32,7 +32,7 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
     project,
     showTitle = true,
     onCancel = false,
-    refresh = () => { },
+    refresh = () => {},
   } = props;
   useSetContainerSize("sm");
   const { form, onChange, updateFormValue, updateFormValues, editedForm } =
@@ -68,7 +68,6 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
         tags_add: project?.tags?.map((tag: any) => tag.name),
       });
     }
-
   }, []);
 
   // useEffect(() => {
@@ -82,16 +81,18 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
   //   }
   // }, [project, clustersData]);
 
-
-
-  const clusters = clustersData?.data?.clusters?.filter((cluster: any) => !cluster.supports_ml).map((cluster: any) => ({
-    label: cluster.name,
-    value: cluster.id,
-  }));
-  const ml_clusters = clustersData?.data?.clusters?.filter((cluster: any) => cluster.supports_ml).map((cluster: any) => ({
-    label: cluster.name,
-    value: cluster.id,
-  }));
+  const clusters = clustersData?.data?.clusters
+    ?.filter((cluster: any) => !cluster.supports_ml)
+    .map((cluster: any) => ({
+      label: cluster.name,
+      value: cluster.id,
+    }));
+  const ml_clusters = clustersData?.data?.clusters
+    ?.filter((cluster: any) => cluster.supports_ml)
+    .map((cluster: any) => ({
+      label: cluster.name,
+      value: cluster.id,
+    }));
   const tags = tagsData?.data?.map((tag: any) => tag.name);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -102,9 +103,9 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
       params: project?.id
         ? editedForm
         : {
-          ...form,
-          owner_id: user?.id,
-        },
+            ...form,
+            owner_id: user?.id,
+          },
     });
   };
   useEffect(() => {
@@ -171,14 +172,22 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
               data={[YES, NO]}
               name="supports_ml"
               defaultValue={NO}
-              value={form?.supports_ml}
+              value={form?.supports_ml as string}
               onChange={(value) => updateFormValue("supports_ml", value)}
               required
               error={error?.supports_ml}
             />
             <Select
-              label={form.supports_ml === YES ? "Machine Learning Project Location" : "Project Location"}
-              description={form.supports_ml === YES ? "Select where your machine learning project will be deployed" : "Select where your project will be deployed"}
+              label={
+                form.supports_ml === YES
+                  ? "Machine Learning Project Location"
+                  : "Project Location"
+              }
+              description={
+                form.supports_ml === YES
+                  ? "Select where your machine learning project will be deployed"
+                  : "Select where your project will be deployed"
+              }
               placeholder="Enter project location"
               data={form.supports_ml === YES ? ml_clusters : clusters}
               name="cluster_id"

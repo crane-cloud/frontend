@@ -6,33 +6,33 @@ import UserProfilePage from "./pages/Users/UserProfilePage";
 // import { HomePage } from "./pages/Home.page";
 const AppsListPage = React.lazy(() => import("./pages/Apps/AppsListPage"));
 const ProjectSettingsPage = React.lazy(
-  () => import("./pages/Projects/ProjectSettingsPage")
+  () => import("./pages/Projects/ProjectSettingsPage"),
 );
 const ProjectUsers = React.lazy(() => import("./pages/Projects/ProjectUsers"));
 const ProjectMetrics = React.lazy(
-  () => import("./pages/Projects/ProjectMetrics")
+  () => import("./pages/Projects/ProjectMetrics"),
 );
 const LandingPage = React.lazy(() => import("./pages/LandingPage"));
 const CreateProjectForm = React.lazy(
-  () => import("./components/Forms/CreateProjectForm")
+  () => import("./components/Forms/CreateProjectForm"),
 );
 const CreateAppForm = React.lazy(
-  () => import("./components/Forms/CreateAppForm")
+  () => import("./components/Forms/CreateAppForm"),
 );
 const AppDetailPage = React.lazy(() => import("./pages/Apps/AppDetailPage"));
 const AppLogsPage = React.lazy(() => import("./pages/Apps/AppLogsPage"));
 const DatabasePage = React.lazy(() => import("./pages/databases/DatabasePage"));
 const DatabaseDetails = React.lazy(
-  () => import("./pages/databases/DatabaseDetails")
+  () => import("./pages/databases/DatabaseDetails"),
 );
 const AppSettingsPage = React.lazy(
-  () => import("./pages/Apps/AppSettingsPage")
+  () => import("./pages/Apps/AppSettingsPage"),
 );
 const ExperiementsListPage = React.lazy(
-  () => import("./pages/Experirments/ExperiementsListPage")
+  () => import("./pages/Experirments/ExperiementsListPage"),
 );
 const ProjectDetailsPage = React.lazy(
-  () => import("./pages/Projects/ProjectDetailsPage")
+  () => import("./pages/Projects/ProjectDetailsPage"),
 );
 export const guestRoutes = [
   // { path: "/", element: <HomePage /> },

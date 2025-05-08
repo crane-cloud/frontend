@@ -103,7 +103,7 @@ const ExperiementsListPage = () => {
         <TableActions
           actions={[
             createEditAction(
-              `/projects/${app?.project_id}/apps/${app?.id}/experiments/${experiment?.experiment_id}`
+              `/projects/${app?.project_id}/apps/${app?.id}/experiments/${experiment?.experiment_id}`,
             ),
             createDeleteAction({
               url: `${MLOPS_API_URL}experiments/${experiment?.experiment_id}`,

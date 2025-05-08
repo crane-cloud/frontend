@@ -25,10 +25,21 @@ import { API_APPS, API_PROJECTS } from "@/utils/apis";
 import { useNavigate, useParams } from "react-router-dom";
 import { IoRocketSharp } from "react-icons/io5";
 import { FaDocker } from "react-icons/fa";
-import { TbCopy, TbUpload, TbX, TbFileZip, TbPlugConnected } from "react-icons/tb";
+import {
+  TbCopy,
+  TbUpload,
+  TbX,
+  TbFileZip,
+  TbPlugConnected,
+} from "react-icons/tb";
 import { LuLink, LuScreenShare, LuServer } from "react-icons/lu";
 import { MdDriveFileRenameOutline } from "react-icons/md";
-import { FRAMEWORKS, MODAL_API_TYPES, MODAL_SERVERS, REGISTRIES } from "@/utils/constants";
+import {
+  FRAMEWORKS,
+  MODAL_API_TYPES,
+  MODAL_SERVERS,
+  REGISTRIES,
+} from "@/utils/constants";
 import { Dropzone, FileWithPath, MIME_TYPES } from "@mantine/dropzone";
 import { useAuth } from "@/utils/AuthContext";
 import { MIRA_API_URL } from "@/config";
@@ -107,7 +118,7 @@ export const CreateSingleAppForm = (props: {
   const handleEnvChange = (
     index: number,
     field: "key" | "value",
-    value: string
+    value: string,
   ) => {
     const updated = [...envVariables];
     updated[index][field] = value;
@@ -486,7 +497,7 @@ export const EnvironmentVariablesForm: React.FC<
   const handleEnvChange = (
     index: number,
     field: "key" | "value",
-    value: string
+    value: string,
   ) => {
     const updated = [...envVariables];
     updated[index][field] = value;
@@ -807,9 +818,7 @@ export const DeployAppModalForm = ({
               placeholder="Select framework"
               required
               value={form.api_type as string}
-              onChange={(value) =>
-                updateFormValue("api_type", value)
-              }
+              onChange={(value) => updateFormValue("api_type", value)}
               error={error?.api_type}
               data={MODAL_API_TYPES}
               defaultValue={MODAL_API_TYPES[0].value}

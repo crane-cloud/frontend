@@ -17,7 +17,10 @@ import { PiCubeLight, PiFlask } from "react-icons/pi";
 import { GoDatabase } from "react-icons/go";
 import { RiRobot2Line } from "react-icons/ri";
 import { ModalConfirm } from "@/components/Elements/Modals";
-import { DeployAppModalForm, DeployNotebookForm } from "@/components/Forms/CreateAppForm";
+import {
+  DeployAppModalForm,
+  DeployNotebookForm,
+} from "@/components/Forms/CreateAppForm";
 import { IoIosArrowDown } from "react-icons/io";
 import { returnObject } from "@/utils/helpers";
 
