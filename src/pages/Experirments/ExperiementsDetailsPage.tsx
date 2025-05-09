@@ -77,7 +77,7 @@ const ExperiementsDetailsPage = () => {
           experimentData: experiment?.data,
           appDetails: app,
         },
-      }
+      },
     );
   };
 

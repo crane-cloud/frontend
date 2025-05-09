@@ -1,9 +1,27 @@
-:root[data-mantine-color-scheme="dark"] {
-  --mantine-color-body: #141414;
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+  --font-family: 'Inter', sans-serif;
 }
-/* body {
-  background-color: light-dark(#edeff1, #222222);
-} */
+
+:root[data-mantine-color-scheme="dark"] {
+  --mantine-color-body: #000;
+  --mantine-color-dark-6: var(--mantine-color-gray-9);
+  --mantine-color-dark-4: #2e373e;
+}
+
+:root[data-mantine-color-scheme="light"] {
+  --mantine-color-gray-3: #d1d9e0;
+  --mantine-color-dimmed: #5a7089 ;
+  --input-bg: var(--mantine-color-gray-2)!important;
+}
+
+body {
+  /* background-color: light-dark(#edeff1, #222222); */
+  font-family: var(--font-family);
+  font-size: 0.8rem;
+
+}
 
 /* links */
 a {
@@ -24,16 +42,17 @@ a:hover {
   margin: 0;
   padding: 0;
 }
+
 .subtitle {
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   margin: 0;
   padding: 0;
 }
 
 .subtext {
   font-weight: 400;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   margin: 0;
   padding: 0;
 }
@@ -51,4 +70,8 @@ a:hover {
 
 .no-wrap {
   white-space: nowrap;
+}
+
+.navlink:hover {
+  text-decoration: none !important;
 }

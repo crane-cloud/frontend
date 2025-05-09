@@ -6,7 +6,16 @@ export type TError = {
 };
 
 export type TForm = {
-  [key: string]: string | number | boolean | string[] | number[] | { key: string; value: string }[] | FileWithPath[] | null | undefined;
+  [key: string]:
+    | string
+    | number
+    | boolean
+    | string[]
+    | number[]
+    | { key: string; value: string }[]
+    | FileWithPath[]
+    | null
+    | undefined;
 };
 
 export type TFormUpdateValue =

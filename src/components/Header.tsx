@@ -50,7 +50,7 @@ export const DashboardHeader = ({ opened, toggle }: HeaderProps) => {
         <Group>
           <TextInput
             placeholder="Search"
-            radius="xl"
+            radius="md"
             leftSection={<FiSearch />}
             miw={{ base: "auto", sm: 300 }}
             display={{ base: "none", sm: "block" }}

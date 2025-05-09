@@ -1,20 +1,28 @@
-import { Button, Card, createTheme, Text, TextInput } from '@mantine/core';
-import { returnObject } from './utils/helpers';
+import { Button, Card, createTheme, Text, TextInput } from "@mantine/core";
+import { returnObject } from "./utils/helpers";
 
 export const theme = createTheme({
   // blue: '#008AC1',
-
-  primaryColor: 'blue',
+  fontFamily: "var(--font-family)",
+  fontSizes: {
+    xs: "0.7rem",
+    sm: "0.8rem",
+    md: "0.9rem",
+    lg: "1rem",
+    xl: "1.1rem",
+  },
+  primaryColor: "blue",
   components: {
     Button: Button.extend({
       defaultProps: {
-        color: 'blue',
-        variant: 'outline',
+        color: "blue",
+        variant: "outline",
+        radius: "md",
       },
     }),
     Text: Text.extend({
       defaultProps: {
-        size: 'md',
+        size: "md",
       },
       styles: {
         root: {
@@ -27,8 +35,8 @@ export const theme = createTheme({
       defaultProps: {
         styles: {
           input: (props: any) => ({
-            ...returnObject(props.variant === 'outline', {
-              border: '1px solid var(--mantine-color-gray-5)',
+            ...returnObject(props.variant === "outline", {
+              border: "1px solid var(--mantine-color-gray-5)",
             }),
           }),
         },
@@ -47,5 +55,4 @@ export const theme = createTheme({
       },
     }),
   },
-
 });

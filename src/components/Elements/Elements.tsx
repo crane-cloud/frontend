@@ -17,7 +17,10 @@ import { PiCubeLight, PiFlask } from "react-icons/pi";
 import { GoDatabase } from "react-icons/go";
 import { RiRobot2Line } from "react-icons/ri";
 import { ModalConfirm } from "@/components/Elements/Modals";
-import { DeployAppModalForm, DeployNotebookForm } from "@/components/Forms/CreateAppForm";
+import {
+  DeployAppModalForm,
+  DeployNotebookForm,
+} from "@/components/Forms/CreateAppForm";
 import { IoIosArrowDown } from "react-icons/io";
 import { returnObject } from "@/utils/helpers";
 
@@ -165,6 +168,7 @@ export const AddServiceButton = ({
   const navigate = useNavigate();
   const [trainModalOpened, setTrainModalOpened] = useState(false);
   const [deployAppModalOpened, setDeployAppModalOpened] = useState(false);
+  const supportsMl = project?.supports_ml;
   const menuItems = [
     {
       label: "Deploy Application",
@@ -178,25 +182,28 @@ export const AddServiceButton = ({
         onClick: () => navigate(`/projects/${project_id}/databases`),
       },
     ]),
+    ...returnObject(supportsMl, [
+      {
+        label: "Train a Model",
+        icon: <PiFlask />,
+        onClick: () => setTrainModalOpened(true),
+      },
 
-    {
-      label: "Train a Model",
-      icon: <PiFlask />,
-      onClick: () => setTrainModalOpened(true),
-    },
-
-    {
-      label: "Deploy a Trained Model",
-      icon: <RiRobot2Line />,
-      onClick: () => setDeployAppModalOpened(true),
-    },
+      {
+        label: "Deploy a Trained Model",
+        icon: <RiRobot2Line />,
+        onClick: () => setDeployAppModalOpened(true),
+      },
+    ]),
   ];
 
   return (
     <div>
       <Menu transitionProps={{ transition: "pop-top-right" }}>
         <Menu.Target>
-          <Button rightSection={<IoIosArrowDown />}>{title}</Button>
+          <Button rightSection={<IoIosArrowDown />} size="sm">
+            {title}
+          </Button>
         </Menu.Target>
         <Menu.Dropdown>
           {menuItems.map((item) => (

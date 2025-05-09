@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode, useState } from 'react';
+import { createContext, useContext, ReactNode, useState } from "react";
 
 interface AuthContextType {
   authToken: string | null;
@@ -12,14 +12,16 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [authToken, setAuthToken] = useState<string | null>(
-    localStorage.getItem("token")
+    localStorage.getItem("token"),
   );
   const [loggedIn, setLoggedIn] = useState<boolean>(
-    !!localStorage.getItem("token")
+    !!localStorage.getItem("token"),
   );
 
   const [user, setUser] = useState<any>(
-    localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") || "{}") : null
+    localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user") || "{}")
+      : null,
   );
 
   const login = (data: any) => {
