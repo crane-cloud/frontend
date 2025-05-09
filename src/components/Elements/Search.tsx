@@ -10,85 +10,57 @@ const Search = ({ type, wide }: { type?: 'projects' | 'apps' | 'users' | 'tags',
     const navigate = useNavigate();
     const { data: searchData, getData: getSearchData, loading } = useGet();
 
-    // Handle search API call with debounce
+    // Extracted debounce logic
+    const debouncedSearch = useDebounce(searchValue, 300);
+
     useEffect(() => {
-        const debounceTimer = setTimeout(() => {
-            if (searchValue.trim()) {
-                getSearchData({
-                    api: `/search`,
-                    params: {
-                        keywords: searchValue,
-                        type,
-                    },
-                });
-            }
-        }, 300);
-
-        return () => clearTimeout(debounceTimer);
-    }, [searchValue]);
-
-    // Transform API response to Select options
-    const searchOptions = [
-        ...returnObject(
-            searchData?.data?.projects?.items?.length > 0, [
-            {
-                group: 'Projects',
-                items: searchData?.data?.projects?.items?.map((item: any) => ({
-                    label: `${item.name}`,
-                    value: item?.id,
-                    original: item,
-                    type: 'project'
-                }))
-            }]
-        ),
-        ...returnObject(
-            searchData?.data?.apps?.items?.length > 0, [
-            {
-                group: 'Apps',
-                items: searchData?.data?.apps?.items?.map((item: any) => ({
-                    label: `${item.name}`,
-                    value: item.id,
-                    original: item,
-                    type: 'app'
-                }))
-            }]
-        ),
-        ...returnObject(
-            searchData?.data?.users?.items?.length > 0, [
-            {
-                group: 'Users',
-                items: searchData?.data?.users?.items?.map((item: any) => ({
-                    label: `${item.name}`,
-                    value: item.id,
-                    original: item,
-                    type: 'user'
-                }))
-            }]
-        )
-    ];
-
-    const handleSelect = (id: any, option: any) => {
-        if (id && option) {
-            switch (option.type) {
-                case 'project':
-                    navigate(`/projects/${option.original.id}`);
-                    setSearchValue('');
-                    break;
-                case 'app':
-                    navigate(`/projects/${option.original.project_id}/apps/${option.original.id}`);
-                    setSearchValue('');
-                    break;
-                case 'tag':
-                    // Handle tag selection
-                    break;
-                case 'user':
-                    // Handle user selection
-                    break;
-            }
+        if (debouncedSearch.trim()) {
+            getSearchData({
+                api: `/search`,
+                params: {
+                    keywords: debouncedSearch,
+                    type,
+                },
+            });
         }
-    }
+    }, [debouncedSearch]);
 
+    // Extracted option generators
+    const generateOptions = (type: string, items: any[] = []) => {
+        const typeMap = {
+            projects: { group: 'Projects', path: (item: any) => `/projects/${item.id}` },
+            apps: { group: 'Apps', path: (item: any) => `/projects/${item.project_id}/apps/${item.id}` },
+            users: { group: 'Users', path: () => { } }
+        };
 
+        return returnObject(items.length > 0, [{
+            group: typeMap[type as keyof typeof typeMap].group,
+            items: items.map((item: any) => ({
+                label: item.name,
+                value: item.id,
+                original: item,
+                type
+            }))
+        }]);
+    };
+
+    // Simplified search options construction
+    const searchOptions = [
+        ...generateOptions('projects', searchData?.data?.projects?.items || []),
+        ...generateOptions('apps', searchData?.data?.apps?.items || []),
+        ...generateOptions('users', searchData?.data?.users?.items || [])
+    ].filter(Boolean);
+
+    // Extracted navigation handler
+    const handleNavigation = (option: any) => {
+        const navigators = {
+            projects: () => navigate(`/projects/${option.original.id}`),
+            apps: () => navigate(`/projects/${option.original.project_id}/apps/${option.original.id}`),
+            users: () => { }
+        };
+        navigators[option.type as keyof typeof navigators]?.();
+        setSearchValue('');
+    };
 
     return (
         <Select
@@ -104,12 +76,20 @@ const Search = ({ type, wide }: { type?: 'projects' | 'apps' | 'users' | 'tags',
             searchable
             clearable
             nothingFoundMessage="No results found"
-            onChange={(selectedValue, option) => {
-                handleSelect(selectedValue, option);
-            }}
+            onChange={(_value, option) => handleNavigation(option)}
             rightSection={loading ? <Loader size="xs" /> : null}
         />
-    )
-}
+    );
+};
+
+// Custom debounce hook
+const useDebounce = (value: string, delay: number) => {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+    useEffect(() => {
+        const handler = setTimeout(() => setDebouncedValue(value), delay);
+        return () => clearTimeout(handler);
+    }, [value, delay]);
+    return debouncedValue;
+};
 
 export default Search
