@@ -18,9 +18,12 @@ import { MenuContext } from "../../components/Layouts/DashboardLayout";
 import { MembersSection } from "./ProjectUsers";
 import usePost from "@/utils/usePost";
 import { HiLockClosed, HiLockOpen, HiTrash } from "react-icons/hi2";
+import { BiTransferAlt } from "react-icons/bi";
 import { API_PROJECTS } from "@/utils/apis";
 import { ModalConfirm } from "@/components/Elements/Modals";
-import CreateProjectForm from "@/components/Forms/CreateProjectForm";
+import CreateProjectForm, {
+  MigrateProjectForm,
+} from "@/components/Forms/CreateProjectForm";
 
 const ProjectSettingsPage = () => {
   const { project_id } = useParams();
@@ -33,7 +36,7 @@ const ProjectSettingsPage = () => {
       setContainerSize("xl");
     };
   }, [setContainerSize]);
-  useEffect(() => {}, [project]);
+  useEffect(() => { }, [project]);
 
   return (
     <div>
@@ -79,6 +82,7 @@ const GeneralTab = ({
   const [disableConfirmOpened, setDisableConfirmOpened] = useState(false);
   const [enableConfirmOpened, setEnableConfirmOpened] = useState(false);
   const [updateConfirmOpened, setUpdateConfirmOpened] = useState(false);
+  const [migrateConfirmOpened, setMigrateConfirmOpened] = useState(false);
 
   const {
     uploadData: deleteProject,
@@ -194,6 +198,22 @@ const GeneralTab = ({
               </Button>
             </Group>
             <Divider />
+            <Group justify="space-between" align="center">
+              <Stack gap={0}>
+                <Text className="title">Migrate Project</Text>
+                <Text className="subtext">
+                  Migrate the project to a different server location.
+                </Text>
+              </Stack>
+              <Button
+                variant="outline"
+                onClick={() => setMigrateConfirmOpened(true)}
+                leftSection={<BiTransferAlt />}
+              >
+                Migrate
+              </Button>
+            </Group>
+            <Divider />
             {project.disabled ? (
               <Group justify="space-between" align="center">
                 <Stack gap={0}>
@@ -231,6 +251,7 @@ const GeneralTab = ({
               </Group>
             )}
             <Divider />
+
             <Group justify="space-between" align="center">
               <Stack gap={0}>
                 <Text className="title">Delete Project</Text>
@@ -289,11 +310,28 @@ const GeneralTab = ({
             action will allow the project contents to be accessed.
           </ModalConfirm>
           <ModalConfirm
+            opened={migrateConfirmOpened}
+            onClose={() => setMigrateConfirmOpened(false)}
+            title="Migrate Project"
+            buttonText="Migrate"
+            // buttonColor="red"
+            onConfirm={() => { }}
+            size="xl"
+            showFooterActions={false}
+            leftSection={<BiTransferAlt />}
+          >
+            <MigrateProjectForm project={project}
+              showTitle={false}
+              onCancel={() => setMigrateConfirmOpened(false)}
+              refresh={() => setRefresh(true)}
+            />
+          </ModalConfirm>
+          <ModalConfirm
             opened={updateConfirmOpened}
             onClose={() => setUpdateConfirmOpened(false)}
             title="Update Project"
             buttonText="Update"
-            onConfirm={() => {}}
+            onConfirm={() => { }}
             size="xl"
             showFooterActions={false}
           >
@@ -304,6 +342,7 @@ const GeneralTab = ({
               refresh={() => setRefresh(true)}
             />
           </ModalConfirm>
+
         </Card>
       </Stack>
     </Stack>
