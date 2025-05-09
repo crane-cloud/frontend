@@ -13,7 +13,6 @@ import {
   ScrollArea,
   SimpleGrid,
   Text,
-  TextInput,
   ThemeIcon,
   UnstyledButton,
   useMantineTheme,
@@ -30,7 +29,7 @@ import classes from "./Header.module.css";
 //   IconNotification,
 // } from "@tabler/icons-react";
 
-import { FiBookOpen, FiChevronDown, FiSearch } from "react-icons/fi";
+import { FiBookOpen, FiChevronDown } from "react-icons/fi";
 import { Logo, UserDropDown } from "./Common";
 import { Link, useNavigate } from "react-router-dom";
 import Search from "./Elements/Search";

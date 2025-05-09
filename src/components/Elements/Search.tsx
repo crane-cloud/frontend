@@ -5,7 +5,7 @@ import { Select, Loader } from '@mantine/core'
 import useGet from '@/utils/useGet';
 import { returnObject } from '@/utils/helpers';
 
-const Search = ({ type }: { type: 'projects' | 'apps' | 'users' | 'tags' }) => {
+const Search = ({ type }: { type?: 'projects' | 'apps' | 'users' | 'tags' }) => {
     const [searchValue, setSearchValue] = useState("");
     const navigate = useNavigate();
     const { data: searchData, getData: getSearchData, loading } = useGet();
@@ -18,7 +18,7 @@ const Search = ({ type }: { type: 'projects' | 'apps' | 'users' | 'tags' }) => {
                     api: `/search`,
                     params: {
                         keywords: searchValue,
-                        type: type,
+                        type,
                     },
                 });
             }

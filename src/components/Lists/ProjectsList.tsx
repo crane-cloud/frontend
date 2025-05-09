@@ -7,11 +7,9 @@ import {
   Group,
   Paper,
   Skeleton,
-  TextInput,
 } from "@mantine/core";
 import ProjectsCard from "@/components/Cards/ProjectsCard";
 import { GridLayout } from "@/components/Layouts/ListLayouts";
-import { FiSearch } from "react-icons/fi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { HiOutlineSquares2X2 } from "react-icons/hi2";
 import { useToggle } from "@mantine/hooks";
