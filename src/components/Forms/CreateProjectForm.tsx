@@ -10,7 +10,7 @@ import {
   TagsInput,
   Textarea,
   TextInput,
-  Text
+  Text,
 } from "@mantine/core";
 import { useSetContainerSize } from "@/utils/helpers";
 import useForm from "@/hooks/useForm";
@@ -33,7 +33,7 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
     project,
     showTitle = true,
     onCancel = false,
-    refresh = () => { },
+    refresh = () => {},
   } = props;
   useSetContainerSize("sm");
   const { form, onChange, updateFormValue, updateFormValues, editedForm } =
@@ -104,9 +104,9 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
       params: project?.id
         ? editedForm
         : {
-          ...form,
-          owner_id: user?.id,
-        },
+            ...form,
+            owner_id: user?.id,
+          },
     });
   };
   useEffect(() => {
@@ -246,14 +246,9 @@ export const MigrateProjectForm = (props: {
   onCancel?: () => void;
   refresh?: () => void;
 }) => {
-  const {
-    project,
-    onCancel = false,
-    refresh = () => { },
-  } = props;
+  const { project, onCancel = false, refresh = () => {} } = props;
   useSetContainerSize("sm");
-  const { form, updateFormValue, updateFormValues, editedForm } =
-    useForm();
+  const { form, updateFormValue, updateFormValues, editedForm } = useForm();
 
   const navigate = useNavigate();
   const {
@@ -280,7 +275,6 @@ export const MigrateProjectForm = (props: {
       });
     }
   }, []);
-
 
   const clusters = clustersData?.data?.clusters
     ?.filter((cluster: any) => !cluster.supports_ml)
@@ -319,9 +313,7 @@ export const MigrateProjectForm = (props: {
     <div>
       <form onSubmit={handleSubmit}>
         <Stack>
-          <Text>
-            Migrate the project to a different server location.
-          </Text>
+          <Text>Migrate the project to a different server location.</Text>
           <Select
             label="Is it an Machine Learning Project?"
             description="Tick if it is a machine learning project"

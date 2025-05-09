@@ -36,7 +36,7 @@ const ProjectSettingsPage = () => {
       setContainerSize("xl");
     };
   }, [setContainerSize]);
-  useEffect(() => { }, [project]);
+  useEffect(() => {}, [project]);
 
   return (
     <div>
@@ -315,12 +315,13 @@ const GeneralTab = ({
             title="Migrate Project"
             buttonText="Migrate"
             // buttonColor="red"
-            onConfirm={() => { }}
+            onConfirm={() => {}}
             size="xl"
             showFooterActions={false}
             leftSection={<BiTransferAlt />}
           >
-            <MigrateProjectForm project={project}
+            <MigrateProjectForm
+              project={project}
               showTitle={false}
               onCancel={() => setMigrateConfirmOpened(false)}
               refresh={() => setRefresh(true)}
@@ -331,7 +332,7 @@ const GeneralTab = ({
             onClose={() => setUpdateConfirmOpened(false)}
             title="Update Project"
             buttonText="Update"
-            onConfirm={() => { }}
+            onConfirm={() => {}}
             size="xl"
             showFooterActions={false}
           >
@@ -342,7 +343,6 @@ const GeneralTab = ({
               refresh={() => setRefresh(true)}
             />
           </ModalConfirm>
-
         </Card>
       </Stack>
     </Stack>

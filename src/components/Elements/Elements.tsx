@@ -183,15 +183,15 @@ export const AddServiceButton = ({
       },
     ]),
     ...returnObject(supportsMl, [
-    {
-      label: "Train a Model",
-      icon: <PiFlask />,
-      onClick: () => setTrainModalOpened(true),
-    },
+      {
+        label: "Train a Model",
+        icon: <PiFlask />,
+        onClick: () => setTrainModalOpened(true),
+      },
 
-    {
-      label: "Deploy a Trained Model",
-      icon: <RiRobot2Line />,
+      {
+        label: "Deploy a Trained Model",
+        icon: <RiRobot2Line />,
         onClick: () => setDeployAppModalOpened(true),
       },
     ]),
