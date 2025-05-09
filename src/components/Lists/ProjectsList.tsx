@@ -42,7 +42,7 @@ const ProjectsList = () => {
       <TitleText>Projects</TitleText>
       <Paper py="lg" radius="md">
         <Group justify="space-between" align="center">
-          <Search type="projects" />
+          <Search type="projects" wide />
           <Group gap={0}>
             <ActionIcon
               variant={viewMode === "grid" ? "filled" : "default"}

@@ -68,14 +68,14 @@ const ProjectsCard = (props: any) => {
           )}
         </Stack>
 
-        <Flex gap="md" align="center" justify="start">
+        <Flex gap={8} align="center" justify="start">
           <Tooltip label="Number of applications" withArrow>
             <ActionIcon
               variant="transparent"
               color="theme.dark"
               w="fit-content"
             >
-              <Flex gap={5} align="center" justify="center" wrap="nowrap">
+              <Flex gap={2} align="center" justify="center" wrap="nowrap">
                 <IoRocketOutline
                   size={14}
                   color="var(--mantine-color-dimmed)"
@@ -92,7 +92,7 @@ const ProjectsCard = (props: any) => {
               color="theme.dark"
               w="fit-content"
             >
-              <Flex gap={5} align="center" justify="center" wrap="nowrap">
+              <Flex gap={2} align="center" justify="center" wrap="nowrap">
                 <LiaUserSolid size={15} color="var(--mantine-color-dimmed)" />
                 <Text size="sm" c="dimmed" className="no-wrap">
                   {project?.members || 1} members
@@ -106,7 +106,7 @@ const ProjectsCard = (props: any) => {
               color="theme.dark"
               w="fit-content"
             >
-              <Flex gap={5} align="center" justify="center" wrap="nowrap">
+              <Flex gap={2} align="center" justify="center" wrap="nowrap">
                 <GoClock size={13} color="var(--mantine-color-dimmed)" />
                 <Text size="sm" c="dimmed" className="no-wrap">
                   {project.age}

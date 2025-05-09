@@ -5,7 +5,7 @@ import { Select, Loader } from '@mantine/core'
 import useGet from '@/utils/useGet';
 import { returnObject } from '@/utils/helpers';
 
-const Search = ({ type }: { type?: 'projects' | 'apps' | 'users' | 'tags' }) => {
+const Search = ({ type, wide }: { type?: 'projects' | 'apps' | 'users' | 'tags', wide?: boolean }) => {
     const [searchValue, setSearchValue] = useState("");
     const navigate = useNavigate();
     const { data: searchData, getData: getSearchData, loading } = useGet();
@@ -91,26 +91,24 @@ const Search = ({ type }: { type?: 'projects' | 'apps' | 'users' | 'tags' }) => 
 
 
     return (
-        <div>
-            <Select
-                placeholder="Search..."
-                radius="md"
-                leftSection={<FiSearch />}
-                miw={{ base: "auto", sm: 300 }}
-                display={{ base: "none", sm: "block" }}
-                data={searchOptions}
-                onSearchChange={setSearchValue}
-                searchValue={searchValue}
-                searchable
-                clearable
-                nothingFoundMessage="No results found"
-                onChange={(selectedValue, option) => {
-                    handleSelect(selectedValue, option);
-                }}
-                rightSection={loading ? <Loader size="xs" /> : null}
-
-            />
-        </div>
+        <Select
+            placeholder="Search..."
+            radius="md"
+            leftSection={<FiSearch />}
+            miw={{ base: "auto", sm: 300 }}
+            style={wide ? { flex: 1 } : {}}
+            display={{ base: "none", sm: "block" }}
+            data={searchOptions}
+            onSearchChange={setSearchValue}
+            searchValue={searchValue}
+            searchable
+            clearable
+            nothingFoundMessage="No results found"
+            onChange={(selectedValue, option) => {
+                handleSelect(selectedValue, option);
+            }}
+            rightSection={loading ? <Loader size="xs" /> : null}
+        />
     )
 }
 
