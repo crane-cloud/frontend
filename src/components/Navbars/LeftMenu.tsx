@@ -64,7 +64,7 @@ const LeftMenu = React.memo(
           path: "/projects/:project_id/apps/:app_id",
           end: false,
         },
-        location.pathname
+        location.pathname,
       );
       return {
         projectId: pathMatch?.params?.project_id || projectId,
@@ -82,7 +82,7 @@ const LeftMenu = React.memo(
           link: "/settings",
         },
       ],
-      []
+      [],
     );
 
     const getProjectNavbarLinks = useCallback(
@@ -124,7 +124,7 @@ const LeftMenu = React.memo(
           link: `/projects/${project_id}/settings`,
         },
       ],
-      []
+      [],
     );
 
     const getAppNavbarLinks = useCallback(
@@ -154,7 +154,7 @@ const LeftMenu = React.memo(
           link: `/projects/${project_id}/apps/${app_id}/settings`,
         },
       ],
-      []
+      [],
     );
 
     const getMLOpsNavbarLinks = useCallback(
@@ -184,7 +184,7 @@ const LeftMenu = React.memo(
           link: `/projects/${project_id}/apps/${app_id}/settings`,
         },
       ],
-      []
+      [],
     );
 
     useEffect(() => {
@@ -292,7 +292,11 @@ const LeftMenu = React.memo(
                 root: {
                   borderRadius: "0.4rem",
                 },
+                label: {
+                  fontSize: "0.8rem",
+                },
               }}
+              className="navlink"
             />
           ))}
         </AppShell.Section>
@@ -327,7 +331,7 @@ const LeftMenu = React.memo(
         </AppShell.Section>
       </AppShell.Navbar>
     );
-  }
+  },
 );
 
 export default LeftMenu;

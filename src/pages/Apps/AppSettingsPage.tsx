@@ -98,7 +98,7 @@ const GeneralTab = ({
   const [envVariablesConfirmOpened, setEnvVariablesConfirmOpened] =
     useState(false);
   const [envVariables, setEnvVariables] = useState(
-    convertObjectToArray(app?.env_vars) || [{ key: "", value: "" }]
+    convertObjectToArray(app?.env_vars) || [{ key: "", value: "" }],
   );
 
   const {

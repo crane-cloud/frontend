@@ -10,12 +10,13 @@ import {
   TagsInput,
   Textarea,
   TextInput,
+  Text,
 } from "@mantine/core";
 import { useSetContainerSize } from "@/utils/helpers";
 import useForm from "@/hooks/useForm";
 import useGet from "@/utils/useGet";
 import { API_CLUSTERS, API_PROJECTS, API_TAGS } from "@/utils/apis";
-import { ORGANISATIONS, PROJECT_TYPES } from "@/utils/constants";
+import { NO, ORGANISATIONS, PROJECT_TYPES, YES } from "@/utils/constants";
 import usePost from "@/utils/usePost";
 import { useAuth } from "@/utils/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -64,15 +65,35 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
     if (project) {
       updateFormValues({
         ...project,
+        supports_ml: project?.supports_ml ? "Yes" : "No",
         tags_add: project?.tags?.map((tag: any) => tag.name),
       });
     }
   }, []);
 
-  const clusters = clustersData?.data?.clusters?.map((cluster: any) => ({
-    label: cluster.name,
-    value: cluster.id,
-  }));
+  // useEffect(() => {
+  //   if (project && clustersData) {
+  //     updateFormValues({
+  //       ...project,
+  //       ...project,
+  //       supports_ml: ml_clusters?.some((cluster: any) => cluster.value === project.cluster),
+  //       tags_add: project?.tags?.map((tag: any) => tag.name),
+  //     });
+  //   }
+  // }, [project, clustersData]);
+
+  const clusters = clustersData?.data?.clusters
+    ?.filter((cluster: any) => !cluster.supports_ml)
+    .map((cluster: any) => ({
+      label: cluster.name,
+      value: cluster.id,
+    }));
+  const ml_clusters = clustersData?.data?.clusters
+    ?.filter((cluster: any) => cluster.supports_ml)
+    .map((cluster: any) => ({
+      label: cluster.name,
+      value: cluster.id,
+    }));
   const tags = tagsData?.data?.map((tag: any) => tag.name);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -146,10 +167,31 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
               error={error?.organisation}
             />
             <Select
-              label="Project Location"
-              description="Select where your project will be deployed"
+              label="Is it an Machine Learning Project?"
+              description="Tick if it is a machine learning project"
               placeholder="Enter project location"
-              data={clusters}
+              data={[YES, NO]}
+              name="supports_ml"
+              defaultValue={NO}
+              value={form?.supports_ml as string}
+              onChange={(value) => updateFormValue("supports_ml", value)}
+              required
+              error={error?.supports_ml}
+              disabled={project?.id}
+            />
+            <Select
+              label={
+                form.supports_ml === YES
+                  ? "Machine Learning Project Location"
+                  : "Project Location"
+              }
+              description={
+                form.supports_ml === YES
+                  ? "Select where your machine learning project will be deployed"
+                  : "Select where your project will be deployed"
+              }
+              placeholder="Enter project location"
+              data={form.supports_ml === YES ? ml_clusters : clusters}
               name="cluster_id"
               rightSection={clustersLoading ? <Loader size="xs" /> : null}
               searchable
@@ -157,6 +199,7 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
               onChange={(value) => updateFormValue("cluster_id", value)}
               required
               error={error?.cluster_id}
+              disabled={project?.id}
             />
             <TagsInput
               label="Tags"
@@ -196,3 +239,136 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
 };
 
 export default CreateProjectForm;
+
+export const MigrateProjectForm = (props: {
+  project: any;
+  showTitle?: boolean;
+  onCancel?: () => void;
+  refresh?: () => void;
+}) => {
+  const { project, onCancel = false, refresh = () => {} } = props;
+  useSetContainerSize("sm");
+  const { form, updateFormValue, updateFormValues, editedForm } = useForm();
+
+  const navigate = useNavigate();
+  const {
+    data: clustersData,
+    getData: getClusters,
+    loading: clustersLoading,
+  } = useGet();
+  const {
+    uploadData,
+    submitting,
+    error,
+    success,
+    data: project_data,
+  } = usePost();
+
+  useEffect(() => {
+    getClusters({
+      api: API_CLUSTERS,
+    });
+    if (project) {
+      updateFormValues({
+        supports_ml: project?.supports_ml ? "Yes" : "No",
+        cluster_id: project?.cluster_id,
+      });
+    }
+  }, []);
+
+  const clusters = clustersData?.data?.clusters
+    ?.filter((cluster: any) => !cluster.supports_ml)
+    .map((cluster: any) => ({
+      label: cluster.name,
+      value: cluster.id,
+    }));
+  const ml_clusters = clustersData?.data?.clusters
+    ?.filter((cluster: any) => cluster.supports_ml)
+    .map((cluster: any) => ({
+      label: cluster.name,
+      value: cluster.id,
+    }));
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    uploadData({
+      api: `${API_PROJECTS}/${project?.id}/migrate`,
+      params: {
+        new_cluster_id: form.cluster_id,
+      },
+    });
+  };
+  useEffect(() => {
+    if (success && project_data) {
+      if (onCancel) {
+        onCancel();
+        refresh();
+      } else {
+        navigate(`/projects/${project_data?.data?.project?.id}`);
+      }
+    }
+  }, [success, project_data]);
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <Stack>
+          <Text>Migrate the project to a different server location.</Text>
+          <Select
+            label="Is it an Machine Learning Project?"
+            description="Tick if it is a machine learning project"
+            placeholder="Enter project location"
+            data={[YES, NO]}
+            name="supports_ml"
+            defaultValue={NO}
+            value={form?.supports_ml as string}
+            onChange={(value) => updateFormValue("supports_ml", value)}
+            required
+            error={error?.supports_ml}
+          />
+          <Select
+            label={
+              form.supports_ml === YES
+                ? "Machine Learning Project Location"
+                : "Project Location"
+            }
+            description={
+              form.supports_ml === YES
+                ? "Select where your machine learning project will be deployed"
+                : "Select where your project will be deployed"
+            }
+            placeholder="Enter project location"
+            data={form.supports_ml === YES ? ml_clusters : clusters}
+            name="cluster_id"
+            rightSection={clustersLoading ? <Loader size="xs" /> : null}
+            searchable
+            value={form.cluster_id as string}
+            onChange={(value) => updateFormValue("cluster_id", value)}
+            required
+            error={error?.cluster_id}
+          />
+
+          <Group justify="flex-end">
+            {onCancel && (
+              <Button variant="default" onClick={onCancel}>
+                Cancel
+              </Button>
+            )}
+            <Button
+              variant="filled"
+              color={project ? "blue" : "gray.9"}
+              type="submit"
+              leftSection={submitting ? <Loader size="xs" /> : null}
+              disabled={
+                submitting ||
+                (project?.id && Object.keys(editedForm).length <= 0)
+              }
+            >
+              Migrate Project
+            </Button>
+          </Group>
+        </Stack>
+      </form>
+    </div>
+  );
+};

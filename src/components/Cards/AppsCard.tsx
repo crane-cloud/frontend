@@ -60,7 +60,13 @@ const AppsCard = (props: any) => {
         <Group gap={10} align="center">
           {app?.is_notebook && (
             <Pill w="fit-content">
-              <Flex gap={5} wrap="nowrap" w="fit-content" align="center" justify="center">
+              <Flex
+                gap={5}
+                wrap="nowrap"
+                w="fit-content"
+                align="center"
+                justify="center"
+              >
                 <SiJupyter size={13} color="#f57c00" />
                 <Text size="xs" truncate>
                   Notebook

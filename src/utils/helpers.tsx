@@ -181,7 +181,7 @@ export const convertArrayToObject = (arrayData: any[]) => {
       }
       return acc;
     },
-    {} as Record<string, string>
+    {} as Record<string, string>,
   );
 
   return envObject;

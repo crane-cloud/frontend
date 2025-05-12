@@ -7,16 +7,15 @@ import {
   Group,
   Paper,
   Skeleton,
-  TextInput,
 } from "@mantine/core";
 import ProjectsCard from "@/components/Cards/ProjectsCard";
 import { GridLayout } from "@/components/Layouts/ListLayouts";
-import { FiSearch } from "react-icons/fi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { HiOutlineSquares2X2 } from "react-icons/hi2";
 import { useToggle } from "@mantine/hooks";
 import TitleText from "../TitleText";
 import { Link } from "react-router-dom";
+import Search from "../Elements/Search";
 
 const ProjectsList = () => {
   const { data: projectsData, getData, loading, success } = useGet();
@@ -43,11 +42,7 @@ const ProjectsList = () => {
       <TitleText>Projects</TitleText>
       <Paper py="lg" radius="md">
         <Group justify="space-between" align="center">
-          <TextInput
-            placeholder="Search Projects"
-            leftSection={<FiSearch />}
-            flex={1}
-          />
+          <Search type="projects" wide />
           <Group gap={0}>
             <ActionIcon
               variant={viewMode === "grid" ? "filled" : "default"}
@@ -76,12 +71,12 @@ const ProjectsList = () => {
         <GridLayout columns={viewMode === "grid" ? 3 : 1}>
           {loading
             ? [...Array(6)].map((_, index) => (
-                <Skeleton key={index} height={100} w="100%" radius="md" />
-              ))
+              <Skeleton key={index} height={100} w="100%" radius="md" />
+            ))
             : projects &&
-              projects?.map((project: any) => (
-                <ProjectsCard key={project?.id} project={project} h="100%" />
-              ))}
+            projects?.map((project: any) => (
+              <ProjectsCard key={project?.id} project={project} h="100%" />
+            ))}
         </GridLayout>
       </Paper>
     </div>
