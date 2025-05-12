@@ -18,16 +18,16 @@ export const MenuContext = createContext<{
   setAppId?: (id: string) => void;
 }>({
   menuType: "home",
-  setMenuType: () => { },
+  setMenuType: () => {},
   projectId: "",
-  setProjectId: () => { },
+  setProjectId: () => {},
   title: "",
-  setTitle: () => { },
+  setTitle: () => {},
   subtitle: "",
-  setSubtitle: () => { },
-  setContainerSize: () => { },
+  setSubtitle: () => {},
+  setContainerSize: () => {},
   appId: "",
-  setAppId: () => { },
+  setAppId: () => {},
 });
 
 export const DashboardLayout = ({

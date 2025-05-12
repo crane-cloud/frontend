@@ -20,17 +20,24 @@ import {
   HiOutlineChartBar,
 } from "react-icons/hi2";
 import { Link, matchPath, useLocation, useNavigate } from "react-router-dom";
-import { IoArrowBack, IoRocketOutline } from "react-icons/io5";
+import {
+  IoArrowBack,
+  IoRocketOutline,
+  IoMoonOutline,
+  IoSunnyOutline,
+} from "react-icons/io5";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { LuLogs } from "react-icons/lu";
 import { RiBookLine } from "react-icons/ri";
 import { PiCubeLight, PiFlask } from "react-icons/pi";
-import {
-  IoMoonOutline,
-  IoSunnyOutline,
-} from "react-icons/io5";
 
-export type TLeftMenuType = "home" | "project" | "admin" | "app" | "mlops" | "noSidebar";
+export type TLeftMenuType =
+  | "home"
+  | "project"
+  | "admin"
+  | "app"
+  | "mlops"
+  | "noSidebar";
 
 interface ILeftMenuProps {
   menuType: TLeftMenuType;
@@ -257,7 +264,10 @@ const LeftMenu = React.memo(
     // }, [appId, projectId]);
 
     return (
-      <AppShell.Navbar p="5px" style={{ display: menuType === "noSidebar" ? "none" : "flex" }}>
+      <AppShell.Navbar
+        p="5px"
+        style={{ display: menuType === "noSidebar" ? "none" : "flex" }}
+      >
         <AppShell.Section grow component={ScrollArea}>
           {showProjectHeader && (
             <Stack>
@@ -311,17 +321,17 @@ const LeftMenu = React.memo(
                 backgroundColor: "#f8f9fa",
               },
             }}
-            onClick={() => setColorScheme(colorScheme === "dark" ? "light" : "dark")}
+            onClick={() =>
+              setColorScheme(colorScheme === "dark" ? "light" : "dark")
+            }
           >
             <Group gap={8}>
               {/* <ThemeIcon variant="light" color="gray" size="sm"> */}
-              {
-                colorScheme === "dark" ? (
-                  <IoSunnyOutline size={16} color="gray" />
-                ) : (
-                  <IoMoonOutline size={16} color="gray" />
-                )
-              }
+              {colorScheme === "dark" ? (
+                <IoSunnyOutline size={16} color="gray" />
+              ) : (
+                <IoMoonOutline size={16} color="gray" />
+              )}
               {/* </ThemeIcon> */}
               <Text size="sm" c="dimmed">
                 Theme

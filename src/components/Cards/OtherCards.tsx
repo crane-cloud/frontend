@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Button,
   Card,
   Divider,
   Group,

@@ -71,12 +71,12 @@ const ProjectsList = () => {
         <GridLayout columns={viewMode === "grid" ? 3 : 1}>
           {loading
             ? [...Array(6)].map((_, index) => (
-              <Skeleton key={index} height={100} w="100%" radius="md" />
-            ))
+                <Skeleton key={index} height={100} w="100%" radius="md" />
+              ))
             : projects &&
-            projects?.map((project: any) => (
-              <ProjectsCard key={project?.id} project={project} h="100%" />
-            ))}
+              projects?.map((project: any) => (
+                <ProjectsCard key={project?.id} project={project} h="100%" />
+              ))}
         </GridLayout>
       </Paper>
     </div>
