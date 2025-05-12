@@ -45,7 +45,9 @@ export const DashboardHeader = ({ opened, toggle }: HeaderProps) => {
       <Group h="100%" px="md" py={10} justify="space-between">
         <Group>
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Logo />
+          <Link to="/">
+            <Logo />
+          </Link>
         </Group>
         <Group>
           <Search />

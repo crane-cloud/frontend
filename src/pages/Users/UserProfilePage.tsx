@@ -1,18 +1,18 @@
 import UserProfileCard, { StatsList } from "@/components/Cards/OtherCards";
-import { MenuContext } from "@/components/Layouts/DashboardLayout";
 import TitleText from "@/components/TitleText";
 import { useAuth } from "@/utils/AuthContext";
+import { useSetContainerSize, useSetNoSidebar } from "@/utils/helpers";
 import useGet from "@/utils/useGet";
 import { Card, Flex, Stack } from "@mantine/core";
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 
 const UserProfilePage = () => {
-  const { setMenuType } = useContext(MenuContext);
   const { user } = useAuth();
   const { getData: getUser, data: userData } = useGet();
 
+  useSetNoSidebar();
+  useSetContainerSize("lg");
   useEffect(() => {
-    setMenuType("home");
     if (user) {
       getUser({ api: `/users/${user?.id}` });
     }
@@ -42,7 +42,7 @@ const UserProfilePage = () => {
           <TitleText>Stats</TitleText>
           <Card withBorder padding="xl" radius="md">
             <StatsList
-              justify="start"
+              justify="space-between"
               stats={userStats(userData?.data?.user)}
             />
           </Card>

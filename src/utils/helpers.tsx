@@ -115,13 +115,17 @@ export const useSetHomeSidebar = () => {
   }, [setMenuType]);
 };
 
+export const useSetNoSidebar = () => {
+  const { setMenuType } = useContext(MenuContext);
+  useEffect(() => {
+    setMenuType("noSidebar");
+  }, [setMenuType]);
+};
+
 export const useSetContainerSize = (size: string) => {
   const { setContainerSize } = useContext(MenuContext);
   useEffect(() => {
     setContainerSize(size);
-    return () => {
-      setContainerSize("xl");
-    };
   }, [setContainerSize, size]);
 };
 

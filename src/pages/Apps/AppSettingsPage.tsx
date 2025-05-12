@@ -609,7 +609,7 @@ const CICDTab = ({ app }: { app: any }) => {
           <Card p="lg" radius="md" withBorder>
             <Stack gap={10}>
               <Text size="sm">
-                1. To add the webhook, copy the generated link above and head to
+                1. To add the webhook, copy the generated link above and head to{" "}
                 <b>dockerhub.com</b> under the repository of your docker image.
               </Text>
               <Text size="sm">

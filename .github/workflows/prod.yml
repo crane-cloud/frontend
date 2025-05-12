@@ -1,63 +1,52 @@
 name: Production Deployment
 
 on:
-  release:
-    types:
-      - released
-      - prereleased
-
+    release:
+      types:
+        - released
+        - prereleased
+    
 jobs:
-  build_and_deploy_production:
+  build_and_deploy_staging:
     outputs:
       image: ${{ steps.export.outputs.image }}
       tag: ${{ steps.export.outputs.tag }}
 
     runs-on: ubuntu-latest
     env:
-      GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-      cluster: staging-cluster
-      REACT_APP_API_BASE_URL: https://api.cranecloud.io
+      image: cranecloud/frontend
       namespace: cranecloud-prod
       CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
-          ref: staging
+          ref: develop
 
       - name: Install (Buildx)
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
 
-      - name: Set up Docker Buildx
-        run: |
-          docker buildx create --use
-          docker buildx version  # Print information to verify that Buildx is set up
-        if: runner.os == 'Linux' # Only run on Linux runners
-
-      - name: Install kubectl
-        run: |
-          curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-          chmod +x ./kubectl
-          sudo mv ./kubectl /usr/local/bin/kubectl
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login (GCP)
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCLOUD_SERVICE_KEY }}
+          credentials_json: ${{ secrets.CREDENTIALS_JSON }}
+
+      - name: Install (Gcloud)
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: crane-cloud-274413
+          install_components: "gke-gcloud-auth-plugin"
 
       - name: Get Kubernetes credentials
         run: |
-          gcloud container clusters get-credentials $cluster --zone us-central1-a
-
-      - name: Install (Gcloud)
-        uses: google-github-actions/setup-gcloud@v1
-        with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          install_components: "gke-gcloud-auth-plugin"
-
-      - name: Login (GCR)
-        run: gcloud auth configure-docker
+          gcloud container clusters get-credentials staging-cluster --zone us-central1-a
 
       - id: meta
         name: Tag
@@ -65,7 +54,7 @@ jobs:
         with:
           flavor: |
             latest=true
-          images: gcr.io/${{ secrets.GCP_PROJECT_ID }}/cranecloud-frontend
+          images: ${{ env.image }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -73,25 +62,26 @@ jobs:
 
       - name: Add Env vars
         env:
-          REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL_PROD }}
-          REACT_APP_MIRA_API_URL: ${{ secrets.REACT_APP_MIRA_API_URL }}
-          REACT_APP_FLUTTERWAVE_PUBLIC_KEY_TESTING: ${{ secrets.REACT_APP_FLUTTERWAVE_PUBLIC_KEY_TESTING }}
-          REACT_APP_GITHUB_CLEINT_ID: ${{ secrets.REACT_APP_GITHUB_CLEINT_ID_PRODUCTION }}
-          REACT_APP_EXCHANGE_RATE_KEY: ${{ secrets.REACT_APP_EXCHANGE_RATE_KEY }}
-          REACT_APP_DOCS_URL: ${{ secrets.REACT_APP_DOCS_URL_PROD }}
-          REACT_APP_DOCKER_EMAIL: ${{ secrets.REACT_APP_DOCKER_EMAIL }}
-          REACT_APP_DOCKER_PASSWORD: ${{ secrets.REACT_APP_DOCKER_PASSWORD }}
-          REACT_APP_MONITORING_APP: ${{ secrets.REACT_APP_MONITORING_APP_PROD }}
-          REACT_APP_ACTIVITY_LOGS_API_URL: ${{ secrets.REACT_APP_ACTIVITY_LOGS_API_URL_PROD }}
-          REACT_APP_MONITORING_API_URL: ${{ secrets.REACT_APP_MONITORING_API_URL_PROD }}
-          REACT_APP_DATABASE_API_URL: ${{ secrets.REACT_APP_DATABASE_API_URL_PROD }}
-          REACT_APP_MLOPS_API_URL: ${{ secrets.REACT_APP_MLOPS_API_URL_PROD }}
+          VITE_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL_PROD }}
+          VITE_APP_MIRA_API_URL: ${{ secrets.REACT_APP_MIRA_API_URL }}
+          VITE_APP_FLUTTERWAVE_PUBLIC_KEY_TESTING: ${{ secrets.REACT_APP_FLUTTERWAVE_PUBLIC_KEY_TESTING }}
+          VITE_APP_GITHUB_CLEINT_ID: ${{ secrets.REACT_APP_GITHUB_CLEINT_ID_PRODUCTION }}
+          VITE_APP_EXCHANGE_RATE_KEY: ${{ secrets.REACT_APP_EXCHANGE_RATE_KEY }}
+          VITE_APP_DOCS_URL: ${{ secrets.REACT_APP_DOCS_URL_PROD }}
+          VITE_APP_DOCKER_EMAIL: ${{ secrets.REACT_APP_DOCKER_EMAIL }}
+          VITE_APP_DOCKER_PASSWORD: ${{ secrets.REACT_APP_DOCKER_PASSWORD }}
+          VITE_APP_MONITORING_APP: ${{ secrets.REACT_APP_MONITORING_APP_PROD }}
+          VITE_APP_ACTIVITY_LOGS_API_URL: ${{ secrets.REACT_APP_ACTIVITY_LOGS_API_URL_PROD }}
+          VITE_APP_MONITORING_API_URL: ${{ secrets.REACT_APP_MONITORING_API_URL_PROD }}
+          VITE_APP_DATABASE_API_URL: ${{ secrets.REACT_APP_DATABASE_API_URL_PROD }}
+          VITE_APP_MLOPS_API_URL: ${{ secrets.REACT_APP_MLOPS_API_URL_PROD }}
         run: |
           chmod +x ./.github/workflows/bin/create_envs.sh
           ./.github/workflows/bin/create_envs.sh
 
+      
       - name: Build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v5
         with:
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -100,10 +90,10 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-
+          
       - id: export
         name: Export
-        uses: actions/github-script@v5
+        uses: actions/github-script@v7
         with:
           script: |
             const metadata = JSON.parse(`${{ steps.meta.outputs.json }}`)
@@ -118,4 +108,4 @@ jobs:
 
       - name: Update deployment image
         run: |
-          kubectl set image deployment/cranecloud-frontend cranecloud-frontend=gcr.io/${{ secrets.GCP_PROJECT_ID }}/cranecloud-frontend:${{ steps.export.outputs.tag }} --record -n $namespace
+          kubectl set image deployment/cranecloud-frontend cranecloud-frontend=${{ env.image }}:${{ steps.export.outputs.tag }} -n $namespace
