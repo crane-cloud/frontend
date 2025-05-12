@@ -11,6 +11,7 @@ import {
   Textarea,
   TextInput,
   Text,
+  Alert,
 } from "@mantine/core";
 import { useSetContainerSize } from "@/utils/helpers";
 import useForm from "@/hooks/useForm";
@@ -57,7 +58,7 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
 
   useEffect(() => {
     getClusters({
-      api: API_CLUSTERS,
+      api: `${API_CLUSTERS}?disabled=false`,
     });
     getTags({
       api: API_TAGS,
@@ -266,7 +267,7 @@ export const MigrateProjectForm = (props: {
 
   useEffect(() => {
     getClusters({
-      api: API_CLUSTERS,
+      api: `${API_CLUSTERS}?disabled=false`,
     });
     if (project) {
       updateFormValues({
@@ -313,7 +314,21 @@ export const MigrateProjectForm = (props: {
     <div>
       <form onSubmit={handleSubmit}>
         <Stack>
-          <Text>Migrate the project to a different server location.</Text>
+          <Alert
+            title="Important migration notes"
+            color="blue"
+            withCloseButton={false}
+            variant="light"
+          >
+            <Text size="md">
+              • <strong>Environment variables</strong> are not saved by Crane Cloud — they will be pulled from the new server automatically.
+              <br />
+              • <strong>App URLs will change</strong> — all app deployments within this project will receive new URLs based on the destination server.<br />
+              We recommend saving critical environment variables and settings (e.g., in a simple text file) before proceeding. You can add them back when the project migration is complete.
+            </Text>
+          </Alert>
+
+        
           <Select
             label="Is it an Machine Learning Project?"
             description="Tick if it is a machine learning project"

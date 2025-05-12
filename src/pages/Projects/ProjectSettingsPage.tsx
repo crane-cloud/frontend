@@ -312,7 +312,7 @@ const GeneralTab = ({
           <ModalConfirm
             opened={migrateConfirmOpened}
             onClose={() => setMigrateConfirmOpened(false)}
-            title="Migrate Project"
+            title="Migrate project to a different server location"
             buttonText="Migrate"
             // buttonColor="red"
             onConfirm={() => {}}
