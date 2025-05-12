@@ -14,7 +14,21 @@ a {
 
 a:hover {
   color: var(--mantine-primary-color-5);
-  text-decoration: underline;
+  scale: 1.02;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.no-decoration {
+  text-decoration: none;
+}
+
+.no-decoration:hover {
+  text-decoration: none !important;
+}
+
+.no-scale:hover {
+  scale: 1;
 }
 
 /* text */

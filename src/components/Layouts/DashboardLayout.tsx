@@ -18,16 +18,16 @@ export const MenuContext = createContext<{
   setAppId?: (id: string) => void;
 }>({
   menuType: "home",
-  setMenuType: () => {},
+  setMenuType: () => { },
   projectId: "",
-  setProjectId: () => {},
+  setProjectId: () => { },
   title: "",
-  setTitle: () => {},
+  setTitle: () => { },
   subtitle: "",
-  setSubtitle: () => {},
-  setContainerSize: () => {},
+  setSubtitle: () => { },
+  setContainerSize: () => { },
   appId: "",
-  setAppId: () => {},
+  setAppId: () => { },
 });
 
 export const DashboardLayout = ({
@@ -40,7 +40,7 @@ export const DashboardLayout = ({
   const [menuType, setMenuType] = useState<TLeftMenuType>("home");
   const [projectId, setProjectId] = useState<string>("");
   const [title, setTitle] = useState<string>("");
-  const [containerSize, setContainerSize] = useState<string>("xl");
+  const [containerSize, setContainerSize] = useState<string>("lg");
   const [subtitle, setSubtitle] = useState<string>("");
   const [appId, setAppId] = useState<string>("");
 
@@ -65,7 +65,7 @@ export const DashboardLayout = ({
       <AppShell
         header={{ height: 60 }}
         navbar={{
-          width: 250,
+          width: menuType === "noSidebar" ? 0 : 250,
           breakpoint: "sm",
           collapsed: { mobile: !opened },
         }}

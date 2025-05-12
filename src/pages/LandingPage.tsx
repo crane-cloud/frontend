@@ -1,8 +1,9 @@
 import React from "react";
 import ProjectsList from "@/components/Lists/ProjectsList";
-import { useSetHomeSidebar } from "@/utils/helpers";
+import { useSetContainerSize, useSetNoSidebar } from "@/utils/helpers";
 const LandingPage = () => {
-  useSetHomeSidebar();
+  useSetNoSidebar();
+  useSetContainerSize("lg");
   return (
     <div>
       <ProjectsList />

@@ -23,6 +23,7 @@ const AppsCard = (props: any) => {
             truncate
             style={{ flex: 1 }}
             c="var(--mantine-color-text)"
+            className="no-scale"
           >
             {beautify(app.name)}
           </Anchor>
@@ -32,6 +33,7 @@ const AppsCard = (props: any) => {
             target="_blank"
             c="var(--mantine-color-text)"
             maw="95%"
+            className="no-scale"
           >
             <Group gap={4} align="center" wrap="nowrap">
               <Text size="0.8rem" truncate>

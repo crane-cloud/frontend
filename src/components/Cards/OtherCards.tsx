@@ -53,11 +53,11 @@ function UserProfileCard({ user }: { user: any }) {
           Joined Cranecloud {user?.age}
         </Text>
       </Stack>
-      {/* {authUser?.id !== user?.id && ( */}
-      <Button fullWidth radius="md" mt="xl" size="md" variant="default">
-        Follow
-      </Button>
-      {/* )} */}
+      {/* {authUser?.id !== user?.id && (
+        <Button fullWidth radius="md" mt="xl" size="md" variant="default">
+          Follow
+        </Button>
+      )} */}
     </Card>
   );
 }
