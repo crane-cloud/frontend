@@ -1,6 +1,6 @@
 import React from "react";
 import { LoginPage } from "./pages/Auth/loginPage";
-import CreateNewPassword from "./pages/Auth/createPasswordPage";
+import CreateNewPassword from "./pages/Auth/passwordResetPage";
 import ExperiementsDetailsPage from "./pages/Experirments/ExperiementsDetailsPage";
 import RunsDetailsPage from "./pages/Experirments/RunsDetailsPage";
 import UserProfilePage from "./pages/Users/UserProfilePage";
