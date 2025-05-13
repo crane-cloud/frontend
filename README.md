@@ -21,6 +21,33 @@ A modern web interface for managing cloud infrastructure across multiple provide
 
 ## Development Setup
 
+### Instructions
+
+1. Ensure you have Node.js installed (v18+ recommended)
+2. First uninstall your global Yarn and pnpm binaries (just leave npm). In general, you'd do this by running the following command:
+
+   ```bash
+   npm uninstall -g yarn pnpm
+   ```
+
+3. Then install [Corepack](https://www.npmjs.com/package/corepack):
+
+   ```bash
+   npm install -g corepack
+   ```
+
+4. Install dependencies:
+
+   ```bash
+   yarn install
+   ```
+
+5. Start the development server:
+
+   ```bash
+   yarn dev
+   ```
+
 ### Core Scripts
 
 - `dev` – Start Vite development server
