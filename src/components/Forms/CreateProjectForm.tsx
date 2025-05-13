@@ -58,7 +58,8 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
 
   useEffect(() => {
     getClusters({
-      api: `${API_CLUSTERS}?disabled=false`,
+      api: `${API_CLUSTERS}`,
+      params: { disabled: false }
     });
     getTags({
       api: API_TAGS,
@@ -267,7 +268,8 @@ export const MigrateProjectForm = (props: {
 
   useEffect(() => {
     getClusters({
-      api: `${API_CLUSTERS}?disabled=false`,
+      api: `${API_CLUSTERS}`,
+      params: { disabled: false }
     });
     if (project) {
       updateFormValues({

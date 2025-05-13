@@ -3,8 +3,10 @@ import useGet from "@/utils/useGet";
 import {
   ActionIcon,
   Button,
+  Center,
   Divider,
   Group,
+  Pagination,
   Paper,
   Skeleton,
 } from "@mantine/core";
@@ -16,10 +18,14 @@ import { useToggle } from "@mantine/hooks";
 import TitleText from "../TitleText";
 import { Link } from "react-router-dom";
 import Search from "../Elements/Search";
+import { API_PROJECTS } from "@/utils/apis";
 
 const ProjectsList = () => {
   const { data: projectsData, getData, loading, success } = useGet();
+
   const [projects, setProjects] = useState<any[]>([]);
+  const [pagination, setPagination] = useState<any>({})
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [viewMode, toggleViewMode] = useToggle<"grid" | "list">([
     "grid",
     "list",
@@ -27,15 +33,17 @@ const ProjectsList = () => {
 
   useEffect(() => {
     getData({
-      api: "/projects",
+      api: `${API_PROJECTS}`,
+      params: { page: currentPage, per_page: 9 },
     });
-  }, []);
+  }, [currentPage]);
 
   useEffect(() => {
     if (success) {
       setProjects(projectsData?.data?.projects);
+      setPagination(projectsData?.data?.pagination);
     }
-  }, [success]);
+  }, [success, projectsData]);
 
   return (
     <div>
@@ -78,6 +86,22 @@ const ProjectsList = () => {
                 <ProjectsCard key={project?.id} project={project} h="100%" />
               ))}
         </GridLayout>
+
+        
+
+        {pagination?.pages > 1 && (
+          <>
+            <Divider my="md" />
+
+            <Center mt="md">
+              <Pagination
+                total={pagination.pages}
+                value={currentPage}
+                onChange={setCurrentPage}
+              />
+            </Center>
+          </>
+        )}
       </Paper>
     </div>
   );
