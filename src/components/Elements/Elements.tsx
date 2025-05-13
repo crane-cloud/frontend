@@ -15,7 +15,7 @@ import {
   Stack,
   UnstyledButton,
   Select,
-  ComboboxItem
+  ComboboxItem,
 } from "@mantine/core";
 import { TbCopy } from "react-icons/tb";
 import { ReactNode, useState } from "react";
@@ -229,7 +229,7 @@ export const AddServiceButton = ({
         onClose={() => setTrainModalOpened(false)}
         title="Train a Model"
         buttonText="Train"
-        onConfirm={() => { }}
+        onConfirm={() => {}}
         size="xl"
         showFooterActions={false}
       >
@@ -245,7 +245,7 @@ export const AddServiceButton = ({
         onClose={() => setDeployAppModalOpened(false)}
         title="Deploy a Trained Model"
         buttonText="Deploy"
-        onConfirm={() => { }}
+        onConfirm={() => {}}
         size="md"
         showFooterActions={false}
       >
@@ -260,21 +260,20 @@ export const AddServiceButton = ({
   );
 };
 
-
 export const SelectProject = () => {
   const projects = [
     {
-      value: 'project1', label: <ProjectHeaderSection
-        title="Project 1"
-        subtitle="Description 1"
-      />
+      value: "project1",
+      label: (
+        <ProjectHeaderSection title="Project 1" subtitle="Description 1" />
+      ),
     },
-    { value: 'project2', label: 'Project 2', subtitle: 'Description 2' },
-    { value: 'project3', label: 'Project 3', subtitle: 'Description 3' },
-    { value: 'project4', label: 'Project 4', subtitle: 'Description 4' },
-    { value: 'project5', label: 'Project 5', subtitle: 'Description 5' },
-    { value: 'project6', label: 'Project 6', subtitle: 'Description 6' },
-    { value: 'project7', label: 'Project 7', subtitle: 'Description 7' },
+    { value: "project2", label: "Project 2", subtitle: "Description 2" },
+    { value: "project3", label: "Project 3", subtitle: "Description 3" },
+    { value: "project4", label: "Project 4", subtitle: "Description 4" },
+    { value: "project5", label: "Project 5", subtitle: "Description 5" },
+    { value: "project6", label: "Project 6", subtitle: "Description 6" },
+    { value: "project7", label: "Project 7", subtitle: "Description 7" },
   ];
 
   return (
@@ -282,24 +281,31 @@ export const SelectProject = () => {
       placeholder="Select a project"
       data={projects}
       itemComponent={({ ...others }: ComboboxItem) => (
-        <ProjectHeaderSection
-          title={others.label}
-          subtitle={others.subtitle}
-        />
+        <ProjectHeaderSection title={others.label} subtitle={others.subtitle} />
       )}
     />
   );
 };
 
-export const ProjectHeaderSection = ({ title, subtitle }: { title: string, subtitle: string }) => {
+export const ProjectHeaderSection = ({
+  title,
+  subtitle,
+}: {
+  title: string;
+  subtitle: string;
+}) => {
   return (
     <UnstyledButton>
       <ProjectWrapper gap={10} justify="space-between">
         <Flex align="center" gap={8}>
           <Avatar name={title} color="initials" radius="md" />
           <Stack gap={0}>
-            <Text size="sm" fw={700}>{title}</Text>
-            <Text size="xs" c="gray.7" fw={600}>{subtitle}</Text>
+            <Text size="sm" fw={700}>
+              {title}
+            </Text>
+            <Text size="xs" c="gray.7" fw={600}>
+              {subtitle}
+            </Text>
           </Stack>
         </Flex>
         <SlArrowDown size={12} />
