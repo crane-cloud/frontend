@@ -30,6 +30,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { LuLogs } from "react-icons/lu";
 import { RiBookLine } from "react-icons/ri";
 import { PiCubeLight, PiFlask } from "react-icons/pi";
+import { ProjectHeaderSection, SelectProject } from "../Elements/Elements";
 
 export type TLeftMenuType =
   | "home"
@@ -270,12 +271,12 @@ const LeftMenu = React.memo(
       >
         <AppShell.Section grow component={ScrollArea}>
           {showProjectHeader && (
-            <Stack>
-              <Group justify="space-between" align="center">
+            <Stack pb={30}>
+              {/* <Group justify="space-between" align="center">
                 <UnstyledButton
-                  onClick={backNavigation}
+                  // onClick={backNavigation}
                   mx="md"
-                  style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                // style={{ display: "flex", alignItems: "center", gap: "10px" }}
                 >
                   <IoArrowBack />
                   <HeaderIcon />
@@ -286,8 +287,10 @@ const LeftMenu = React.memo(
                     {subtitle}
                   </Pill>
                 )}
-              </Group>
-              <Divider my="md" />
+              </Group> */}
+              <SelectProject />
+
+              {/* <Divider my="md" /> */}
             </Stack>
           )}
           {navbarLinks.map((link: INavLink) => (
