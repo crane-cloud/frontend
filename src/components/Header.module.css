@@ -2,8 +2,7 @@
   height: 60px;
   padding-left: var(--mantine-spacing-md);
   padding-right: var(--mantine-spacing-md);
-  border-bottom: 1px solid
-    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
 }
 
 .guestHeader {
@@ -11,6 +10,7 @@
   padding-left: var(--mantine-spacing-md);
   padding-right: var(--mantine-spacing-md);
 }
+
 .link {
   display: flex;
   align-items: center;
@@ -21,7 +21,6 @@
   color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
   font-weight: 500;
   font-size: var(--mantine-font-size-sm);
-
   @media (max-width: var(--mantine-breakpoint-sm)) {
     height: 42px;
     width: 100%;

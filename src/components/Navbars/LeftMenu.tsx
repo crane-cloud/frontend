@@ -7,9 +7,6 @@ import {
   rem,
   ScrollArea,
   Stack,
-  Divider,
-  Title,
-  Pill,
   useMantineColorScheme,
 } from "@mantine/core";
 import {
@@ -20,16 +17,11 @@ import {
   HiOutlineChartBar,
 } from "react-icons/hi2";
 import { Link, matchPath, useLocation, useNavigate } from "react-router-dom";
-import {
-  IoArrowBack,
-  IoRocketOutline,
-  IoMoonOutline,
-  IoSunnyOutline,
-} from "react-icons/io5";
+import { IoArrowBack, IoMoonOutline, IoSunnyOutline } from "react-icons/io5";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { LuLogs } from "react-icons/lu";
-import { RiBookLine } from "react-icons/ri";
 import { PiCubeLight, PiFlask } from "react-icons/pi";
+import { SelectProject } from "../Elements/Elements";
 
 export type TLeftMenuType =
   | "home"
@@ -45,6 +37,7 @@ interface ILeftMenuProps {
   title?: string;
   subtitle?: string;
   appId?: string;
+  project?: any;
 }
 interface INavLink {
   label: string;
@@ -55,7 +48,7 @@ interface INavLink {
 }
 
 const LeftMenu = React.memo(
-  ({ menuType, projectId, title, subtitle, appId }: ILeftMenuProps) => {
+  ({ menuType, projectId, appId, title }: ILeftMenuProps) => {
     const location = useLocation();
     const { colorScheme, setColorScheme } = useMantineColorScheme();
 
@@ -227,30 +220,30 @@ const LeftMenu = React.memo(
       }
     }, [menuType, projectId, appId, location.pathname]);
 
-    const HeaderIcon = () => {
-      switch (menuType) {
-        case "project":
-          return <RiBookLine />;
-        case "app":
-          return <IoRocketOutline />;
-        case "mlops":
-          return <PiFlask />;
-        default:
-          return <></>;
-          break;
-      }
-    };
+    // const HeaderIcon = () => {
+    //   switch (menuType) {
+    //     case "project":
+    //       return <RiBookLine />;
+    //     case "app":
+    //       return <IoRocketOutline />;
+    //     case "mlops":
+    //       return <PiFlask />;
+    //     default:
+    //       return <></>;
+    //       break;
+    //   }
+    // };
 
-    const backNavigation = () => {
-      const { projectId: project_id, appId: app_id } = getPathIds();
-      if (app_id) {
-        navigate(`/projects/${project_id}`);
-      } else if (project_id) {
-        navigate("/");
-      } else {
-        navigate(-1);
-      }
-    };
+    // const backNavigation = () => {
+    //   const { projectId: project_id, appId: app_id } = getPathIds();
+    //   if (app_id) {
+    //     navigate(`/projects/${project_id}`);
+    //   } else if (project_id) {
+    //     navigate("/");
+    //   } else {
+    //     navigate(-1);
+    //   }
+    // };
     // const backNavigation = () => {
     //   if (appId) {
     //     navigate(`/projects/${projectId}`);
@@ -270,24 +263,39 @@ const LeftMenu = React.memo(
       >
         <AppShell.Section grow component={ScrollArea}>
           {showProjectHeader && (
-            <Stack>
-              <Group justify="space-between" align="center">
-                <UnstyledButton
-                  onClick={backNavigation}
-                  mx="md"
-                  style={{ display: "flex", alignItems: "center", gap: "10px" }}
-                >
-                  <IoArrowBack />
-                  <HeaderIcon />
-                  <Title order={4}>{title}</Title>
-                </UnstyledButton>
-                {subtitle && (
+            <Stack pb={20} gap={10}>
+              <SelectProject project_id={projectId} />
+              {["app", "mlops"].includes(menuType) && (
+                <Stack gap={5} ml={10}>
+                  <Text fz="xs" fw={500} opacity={0.5}>
+                    App Name
+                  </Text>
+                  <Group justify="space-between" align="center">
+                    <UnstyledButton
+                      onClick={() => navigate(`/projects/${projectId}`)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                        justifyContent: "start",
+                      }}
+                    >
+                      <IoArrowBack />
+                      {/* <HeaderIcon /> */}
+                      <Text fz="sm" fw={700}>
+                        {title}
+                      </Text>
+                    </UnstyledButton>
+                    {/* {subtitle && (
                   <Pill size="sm" c="gray">
-                    {subtitle}
+                  {subtitle}
                   </Pill>
-                )}
-              </Group>
-              <Divider my="md" />
+                  )} */}
+                  </Group>
+                </Stack>
+              )}
+
+              {/* <Divider my="md" /> */}
             </Stack>
           )}
           {navbarLinks.map((link: INavLink) => (
