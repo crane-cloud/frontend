@@ -15,7 +15,7 @@
   --mantine-color-dimmed: #5a7089 ;
   --input-bg: var(--mantine-color-gray-2)!important;
 }
-/*  */
+
 :root[data-mantine-color-scheme="dark"] .mantine-Paper-root{
   /* --mantine-color-body: #212529!important; */
   --mantine-color-body: #121518!important;
