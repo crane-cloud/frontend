@@ -18,10 +18,10 @@ export const beautify = (str: string) => {
 };
 
 export const useGetProject = (project_id: string) => {
-  const { setMenuType, setProjectId, setTitle, setSubtitle } =
+  const { setMenuType, setProjectId, setTitle, setSubtitle, setProject } =
     useContext(MenuContext);
   const { data: projectData, getData, success, loading } = useGet();
-  const [project, setProject] = useState<any>({});
+  const [project, setCurrentProject] = useState<any>({});
   const [cluster, setCluster] = useState<any>({});
   const [refresh, setRefresh] = useState(false);
 
@@ -34,7 +34,7 @@ export const useGetProject = (project_id: string) => {
 
   useEffect(() => {
     if (success) {
-      setProject(projectData?.data?.project || {});
+      setCurrentProject(projectData?.data?.project || {});
       setCluster(projectData?.data?.cluster || {});
       if (setTitle) {
         setTitle(projectData?.data?.project?.name || "");
@@ -45,8 +45,11 @@ export const useGetProject = (project_id: string) => {
   useEffect(() => {
     setMenuType("project");
     setProjectId(project_id || "");
+    if (setProject) {
+      setProject(projectData?.data?.project || {});
+    }
     if (setTitle && success) {
-      setTitle(projectData?.data?.project?.name);
+      setTitle(projectData?.data?.project?.name || "");
       if (projectData?.data?.project?.disabled && setSubtitle) {
         setSubtitle("Disabled");
       }

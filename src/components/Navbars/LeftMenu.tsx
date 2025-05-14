@@ -7,9 +7,6 @@ import {
   rem,
   ScrollArea,
   Stack,
-  Divider,
-  Title,
-  Pill,
   useMantineColorScheme,
 } from "@mantine/core";
 import {
@@ -19,18 +16,12 @@ import {
   HiOutlineCircleStack,
   HiOutlineChartBar,
 } from "react-icons/hi2";
-import { Link, matchPath, useLocation, useNavigate } from "react-router-dom";
-import {
-  IoArrowBack,
-  IoRocketOutline,
-  IoMoonOutline,
-  IoSunnyOutline,
-} from "react-icons/io5";
+import { Link, matchPath, useLocation } from "react-router-dom";
+import { IoMoonOutline, IoSunnyOutline } from "react-icons/io5";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { LuLogs } from "react-icons/lu";
-import { RiBookLine } from "react-icons/ri";
 import { PiCubeLight, PiFlask } from "react-icons/pi";
-import { ProjectHeaderSection, SelectProject } from "../Elements/Elements";
+import { SelectProject } from "../Elements/Elements";
 
 export type TLeftMenuType =
   | "home"
@@ -46,6 +37,7 @@ interface ILeftMenuProps {
   title?: string;
   subtitle?: string;
   appId?: string;
+  project?: any;
 }
 interface INavLink {
   label: string;
@@ -56,14 +48,14 @@ interface INavLink {
 }
 
 const LeftMenu = React.memo(
-  ({ menuType, projectId, title, subtitle, appId }: ILeftMenuProps) => {
+  ({ menuType, projectId, appId }: ILeftMenuProps) => {
     const location = useLocation();
     const { colorScheme, setColorScheme } = useMantineColorScheme();
 
     const [navbarLinks, setNavbarLinks] = useState<INavLink[]>([]);
     const [showProjectHeader, setShowProjectHeader] = useState(false);
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     // Get IDs from URL as fallback
     const getPathIds = () => {
@@ -228,30 +220,30 @@ const LeftMenu = React.memo(
       }
     }, [menuType, projectId, appId, location.pathname]);
 
-    const HeaderIcon = () => {
-      switch (menuType) {
-        case "project":
-          return <RiBookLine />;
-        case "app":
-          return <IoRocketOutline />;
-        case "mlops":
-          return <PiFlask />;
-        default:
-          return <></>;
-          break;
-      }
-    };
+    // const HeaderIcon = () => {
+    //   switch (menuType) {
+    //     case "project":
+    //       return <RiBookLine />;
+    //     case "app":
+    //       return <IoRocketOutline />;
+    //     case "mlops":
+    //       return <PiFlask />;
+    //     default:
+    //       return <></>;
+    //       break;
+    //   }
+    // };
 
-    const backNavigation = () => {
-      const { projectId: project_id, appId: app_id } = getPathIds();
-      if (app_id) {
-        navigate(`/projects/${project_id}`);
-      } else if (project_id) {
-        navigate("/");
-      } else {
-        navigate(-1);
-      }
-    };
+    // const backNavigation = () => {
+    //   const { projectId: project_id, appId: app_id } = getPathIds();
+    //   if (app_id) {
+    //     navigate(`/projects/${project_id}`);
+    //   } else if (project_id) {
+    //     navigate("/");
+    //   } else {
+    //     navigate(-1);
+    //   }
+    // };
     // const backNavigation = () => {
     //   if (appId) {
     //     navigate(`/projects/${projectId}`);
@@ -288,7 +280,7 @@ const LeftMenu = React.memo(
                   </Pill>
                 )}
               </Group> */}
-              <SelectProject />
+              <SelectProject project_id={projectId} />
 
               {/* <Divider my="md" /> */}
             </Stack>

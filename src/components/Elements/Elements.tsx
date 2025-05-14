@@ -13,12 +13,13 @@ import {
   Group,
   Avatar,
   Stack,
-  UnstyledButton,
-  Select,
-  ComboboxItem,
+  useCombobox,
+  Combobox,
+  InputBase,
+  Input,
 } from "@mantine/core";
 import { TbCopy } from "react-icons/tb";
-import { ReactNode, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import { PiCubeLight, PiFlask } from "react-icons/pi";
 import { GoDatabase } from "react-icons/go";
 import { RiRobot2Line } from "react-icons/ri";
@@ -29,7 +30,8 @@ import {
 } from "@/components/Forms/CreateAppForm";
 import { IoIosArrowDown } from "react-icons/io";
 import { returnObject } from "@/utils/helpers";
-import { SlArrowDown } from "react-icons/sl";
+import useGet from "@/utils/useGet";
+import { MenuContext } from "../Layouts/DashboardLayout";
 
 export const LinkWithText = styled(Link)`
   display: flex;
@@ -260,66 +262,151 @@ export const AddServiceButton = ({
   );
 };
 
-export const SelectProject = () => {
-  const projects = [
-    {
-      value: "project1",
-      label: (
-        <ProjectHeaderSection title="Project 1" subtitle="Description 1" />
+interface Item {
+  value: string;
+  label?: string;
+  description: string;
+}
+
+const groceries: Item[] = [
+  { value: "Apples", description: "Crisp and refreshing fruit" },
+  {
+    value: "Bananas",
+    description: "Naturally sweet and potassium-rich fruit",
+  },
+  {
+    value: "Broccoli",
+    description: "Nutrient-packed green vegetable",
+  },
+  {
+    value: "Carrots",
+    description: "Crunchy and vitamin-rich root vegetable",
+  },
+  {
+    value: "Chocolate",
+    description: "Indulgent and decadent treat",
+  },
+];
+
+function SelectOption({ value, description, label }: Item) {
+  return (
+    <Group wrap="nowrap" gap="xs">
+      <Avatar name={label || value} color="initials" radius="md" />
+      <Stack gap={0} justify="space-between">
+        <Text fz="sm" fw={700}>
+          {label || value}
+        </Text>
+        <Text fz="xs" opacity={0.6} fw={600} lineClamp={1}>
+          {description}
+        </Text>
+      </Stack>
+    </Group>
+  );
+}
+
+export function CustomSelect({
+  options = groceries,
+  loading = false,
+  defaultValue,
+  onChange,
+}: {
+  options: any[];
+  loading: boolean;
+  defaultValue: string;
+  onChange: (value: string) => void;
+}) {
+  const combobox = useCombobox({
+    onDropdownClose: () => combobox.resetSelectedOption(),
+  });
+
+  const [value, setValue] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState<Item | null>(null);
+  useEffect(() => {
+    setSelectedOption(
+      options.find(
+        (item) => item.value === value || item.value === defaultValue,
       ),
-    },
-    { value: "project2", label: "Project 2", subtitle: "Description 2" },
-    { value: "project3", label: "Project 3", subtitle: "Description 3" },
-    { value: "project4", label: "Project 4", subtitle: "Description 4" },
-    { value: "project5", label: "Project 5", subtitle: "Description 5" },
-    { value: "project6", label: "Project 6", subtitle: "Description 6" },
-    { value: "project7", label: "Project 7", subtitle: "Description 7" },
-  ];
+    );
+  }, [value, defaultValue, options, loading]);
+
+  const optionsList = options.map((item) => (
+    <Combobox.Option value={item.value} key={item.value}>
+      <SelectOption {...item} />
+    </Combobox.Option>
+  ));
 
   return (
-    <Select
-      placeholder="Select a project"
-      data={projects}
-      itemComponent={({ ...others }: ComboboxItem) => (
-        <ProjectHeaderSection title={others.label} subtitle={others.subtitle} />
-      )}
+    <Combobox
+      store={combobox}
+      withinPortal={false}
+      onOptionSubmit={(val) => {
+        setValue(val);
+        onChange(val);
+        combobox.closeDropdown();
+      }}
+      zIndex={2000}
+      shadow="md"
+    >
+      <Combobox.Target>
+        <InputBase
+          component="button"
+          type="button"
+          pointer
+          rightSection={<Combobox.Chevron />}
+          onClick={() => combobox.toggleDropdown()}
+          rightSectionPointerEvents="none"
+          multiline
+        >
+          {selectedOption ? (
+            <SelectOption {...selectedOption} />
+          ) : (
+            <Input.Placeholder>Pick value</Input.Placeholder>
+          )}
+        </InputBase>
+      </Combobox.Target>
+
+      <Combobox.Dropdown>
+        <Combobox.Options>{optionsList}</Combobox.Options>
+      </Combobox.Dropdown>
+    </Combobox>
+  );
+}
+
+export function SelectProject({ project_id }: { project_id?: string }) {
+  const { project } = useContext(MenuContext);
+  const [currentProject, setCurrentProject] = useState<any>(project);
+  const { data: projectsData, getData, loading, success } = useGet();
+  const [optionsList, setOptionsList] = useState<any[]>([]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    getData({
+      api: "/projects",
+    });
+  }, []);
+
+  useEffect(() => {
+    if (success) {
+      setOptionsList(
+        projectsData?.data?.projects.map((project: any) => ({
+          value: project.id,
+          label: project.name,
+          description: project.description,
+        })),
+      );
+    }
+  }, [success]);
+
+  const onChange = (value: string) => {
+    setCurrentProject(value);
+    navigate(`/projects/${value}`);
+  };
+
+  return (
+    <CustomSelect
+      defaultValue={currentProject?.id || project_id}
+      onChange={onChange}
+      options={optionsList}
+      loading={loading}
     />
   );
-};
-
-export const ProjectHeaderSection = ({
-  title,
-  subtitle,
-}: {
-  title: string;
-  subtitle: string;
-}) => {
-  return (
-    <UnstyledButton>
-      <ProjectWrapper gap={10} justify="space-between">
-        <Flex align="center" gap={8}>
-          <Avatar name={title} color="initials" radius="md" />
-          <Stack gap={0}>
-            <Text size="sm" fw={700}>
-              {title}
-            </Text>
-            <Text size="xs" c="gray.7" fw={600}>
-              {subtitle}
-            </Text>
-          </Stack>
-        </Flex>
-        <SlArrowDown size={12} />
-      </ProjectWrapper>
-    </UnstyledButton>
-  );
-};
-
-const ProjectWrapper = styled(Group)`
-  cursor: pointer;
-  padding: 10px;
-  border-radius: 5px;
-  // border: 1px solid var(--mantine-color-gray-3);
-  &:hover {
-    background-color: var(--mantine-color-gray-0);
-  }
-`;
+}
