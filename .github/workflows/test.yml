@@ -17,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 23
 
       - name: Enable Corepack
         run: corepack enable
@@ -25,13 +25,13 @@ jobs:
       - name: Setup Dependencies
         run: yarn
 
-      - name: Setup Code Climate test-reporter
-        run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-          chmod +x ./cc-test-reporter
-          ./cc-test-reporter before-build
+      # - name: Setup Code Climate test-reporter
+      #   run: |
+      #     curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+      #     chmod +x ./cc-test-reporter
+      #     ./cc-test-reporter before-build
 
       - name: Run Test and Coverage
         run: yarn test --detectOpenHandles --coverage --coverageReporters=lcov
-        
+
       # TODO add coverage report to code climate

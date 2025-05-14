@@ -16,8 +16,8 @@ import {
   HiOutlineCircleStack,
   HiOutlineChartBar,
 } from "react-icons/hi2";
-import { Link, matchPath, useLocation } from "react-router-dom";
-import { IoMoonOutline, IoSunnyOutline } from "react-icons/io5";
+import { Link, matchPath, useLocation, useNavigate } from "react-router-dom";
+import { IoArrowBack, IoMoonOutline, IoSunnyOutline } from "react-icons/io5";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { LuLogs } from "react-icons/lu";
 import { PiCubeLight, PiFlask } from "react-icons/pi";
@@ -48,14 +48,14 @@ interface INavLink {
 }
 
 const LeftMenu = React.memo(
-  ({ menuType, projectId, appId }: ILeftMenuProps) => {
+  ({ menuType, projectId, appId, title }: ILeftMenuProps) => {
     const location = useLocation();
     const { colorScheme, setColorScheme } = useMantineColorScheme();
 
     const [navbarLinks, setNavbarLinks] = useState<INavLink[]>([]);
     const [showProjectHeader, setShowProjectHeader] = useState(false);
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     // Get IDs from URL as fallback
     const getPathIds = () => {
@@ -263,24 +263,37 @@ const LeftMenu = React.memo(
       >
         <AppShell.Section grow component={ScrollArea}>
           {showProjectHeader && (
-            <Stack pb={30}>
-              {/* <Group justify="space-between" align="center">
-                <UnstyledButton
-                  // onClick={backNavigation}
-                  mx="md"
-                // style={{ display: "flex", alignItems: "center", gap: "10px" }}
-                >
-                  <IoArrowBack />
-                  <HeaderIcon />
-                  <Title order={4}>{title}</Title>
-                </UnstyledButton>
-                {subtitle && (
-                  <Pill size="sm" c="gray">
-                    {subtitle}
-                  </Pill>
-                )}
-              </Group> */}
+            <Stack pb={20} gap={10}>
               <SelectProject project_id={projectId} />
+              {["app", "mlops"].includes(menuType) && (
+                <Stack gap={5} ml={10}>
+                  <Text fz="xs" fw={500} opacity={0.5}>
+                    App Name
+                  </Text>
+                  <Group justify="space-between" align="center">
+                    <UnstyledButton
+                      onClick={() => navigate(`/projects/${projectId}`)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                        justifyContent: "start",
+                      }}
+                    >
+                      <IoArrowBack />
+                      {/* <HeaderIcon /> */}
+                      <Text fz="sm" fw={700}>
+                        {title}
+                      </Text>
+                    </UnstyledButton>
+                    {/* {subtitle && (
+                  <Pill size="sm" c="gray">
+                  {subtitle}
+                  </Pill>
+                  )} */}
+                  </Group>
+                </Stack>
+              )}
 
               {/* <Divider my="md" /> */}
             </Stack>
