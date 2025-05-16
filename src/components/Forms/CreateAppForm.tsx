@@ -57,7 +57,7 @@ const CreateAppForm = () => {
         <Tabs.List>
           <Tabs.Tab value="single">Single App</Tabs.Tab>
           <Tabs.Tab value="mira">Deploy with MIRA</Tabs.Tab>
-          <Tabs.Tab value="multiple">Multiple Apps</Tabs.Tab>
+          {/* <Tabs.Tab value="multiple">Multiple Apps</Tabs.Tab> */}
         </Tabs.List>
 
         <Tabs.Panel value="single" pt={10}>
@@ -68,9 +68,9 @@ const CreateAppForm = () => {
           <CreateMIRAAppForm project={project} />
         </Tabs.Panel>
 
-        <Tabs.Panel value="multiple" pt={10}>
+        {/* <Tabs.Panel value="multiple" pt={10}>
           Still in progress
-        </Tabs.Panel>
+        </Tabs.Panel> */}
       </Tabs>
     </div>
   );

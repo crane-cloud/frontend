@@ -38,7 +38,7 @@ const ProjectDetailsPage = React.lazy(
 export const guestRoutes = [
   // { path: "/", element: <HomePage /> },
   { path: "/login", element: <LoginPage /> },
-  { path: "/reset_password/:token", element: <CreateNewPassword />}
+  { path: "/reset_password/:token", element: <CreateNewPassword /> },
 ];
 export const DashboardRoutes = [
   // Users

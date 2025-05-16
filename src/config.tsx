@@ -7,7 +7,7 @@ export const STATUS_MONITORING_URL = import.meta.env.VITE_APP_MONITORING_APP;
 //mira Url
 export const MIRA_API_URL = import.meta.env.VITE_APP_MIRA_API_URL;
 //github auth urls
-export const GIT_REDIRECT_URL = `https://github.com/login/oauth/authorize?client_id=${import.meta.env.VITE_APP_GITHUB_CLIENT_ID}&scope=read:user,user:email`;
+export const GIT_REDIRECT_URL = `https://github.com/login/oauth/authorize?client_id=${import.meta.env.VITE_APP_GITHUB_CLEINT_ID}&scope=read:user,user:email`;
 export const FLUTTER_WAVE_PUBLIC_KEY = import.meta.env
   .VITE_APP_FLUTTERWAVE_PUBLIC_KEY_TESTING;
 //for live exchange rate

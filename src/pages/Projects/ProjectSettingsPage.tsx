@@ -44,7 +44,7 @@ const ProjectSettingsPage = () => {
         <Tabs.List>
           <Tabs.Tab value="general">General</Tabs.Tab>
           <Tabs.Tab value="members">Members</Tabs.Tab>
-          <Tabs.Tab value="settings">Settings</Tabs.Tab>
+          {/* <Tabs.Tab value="settings">Settings</Tabs.Tab> */}
         </Tabs.List>
 
         <Tabs.Panel value="general" pt={10}>
@@ -59,9 +59,9 @@ const ProjectSettingsPage = () => {
           <MembersSection project={project} />
         </Tabs.Panel>
 
-        <Tabs.Panel value="settings" pt={10}>
+        {/* <Tabs.Panel value="settings" pt={10}>
           Settings tab content
-        </Tabs.Panel>
+        </Tabs.Panel> */}
       </Tabs>
     </div>
   );
@@ -312,7 +312,7 @@ const GeneralTab = ({
           <ModalConfirm
             opened={migrateConfirmOpened}
             onClose={() => setMigrateConfirmOpened(false)}
-            title="Migrate Project"
+            title="Migrate project to a different server location"
             buttonText="Migrate"
             // buttonColor="red"
             onConfirm={() => {}}
