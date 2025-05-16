@@ -24,7 +24,7 @@ const ProjectsList = () => {
   const { data: projectsData, getData, loading, success } = useGet();
 
   const [projects, setProjects] = useState<any[]>([]);
-  const [pagination, setPagination] = useState<any>({})
+  const [pagination, setPagination] = useState<any>({});
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [viewMode, toggleViewMode] = useToggle<"grid" | "list">([
     "grid",
@@ -86,8 +86,6 @@ const ProjectsList = () => {
                 <ProjectsCard key={project?.id} project={project} h="100%" />
               ))}
         </GridLayout>
-
-        
 
         {pagination?.pages > 1 && (
           <>

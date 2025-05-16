@@ -2,7 +2,13 @@ import React, { Suspense, useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import { Loader } from "@mantine/core";
 import { DashboardLayout } from "../components/Layouts/DashboardLayout";
-import { matchPath, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import {
+  matchPath,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { DashboardRoutes, guestRoutes } from "../Router";
 import { NotFoundPage } from "@/pages/common/NotFoundPage";
 
@@ -15,14 +21,13 @@ const MainNavigation = () => {
 
   useEffect(() => {
     const isGuestRoute = guestPaths.some((path) =>
-      matchPath(path, location.pathname)
+      matchPath(path, location.pathname),
     );
 
     if (!loggedIn && !isGuestRoute) {
       navigate("/login");
     }
   }, [loggedIn, location]);
-
 
   if (loggedIn) {
     return (

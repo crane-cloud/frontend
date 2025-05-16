@@ -10,7 +10,7 @@ const AppsList = (props: any) => {
   const { getData: getApps, data: appsData, loading, success } = useGet();
 
   const [apps, setApps] = useState<any[]>([]);
-  const [pagination, setPagination] = useState<any>({})
+  const [pagination, setPagination] = useState<any>({});
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   useEffect(() => {
@@ -29,30 +29,29 @@ const AppsList = (props: any) => {
 
   return (
     <>
-    <GridLayout columns={2}>
-      {loading
-        ? [...Array(6)].map((_, index) => (
-            <Skeleton key={index} height={100} w="100%" radius="md" />
-          ))
-        : apps?.map((app: any) => (
-            <AppsCard key={app.id} app={app} project_id={project_id} />
-          ))}
-    </GridLayout>
+      <GridLayout columns={2}>
+        {loading
+          ? [...Array(6)].map((_, index) => (
+              <Skeleton key={index} height={100} w="100%" radius="md" />
+            ))
+          : apps?.map((app: any) => (
+              <AppsCard key={app.id} app={app} project_id={project_id} />
+            ))}
+      </GridLayout>
 
+      {pagination?.pages > 1 && (
+        <>
+          <Divider my="md" />
 
-    {pagination?.pages > 1 && (
-      <>
-        <Divider my="md" />
-        
-        <Center mt="md">
-          <Pagination
-            total={pagination.pages}
-            value={currentPage}
-            onChange={setCurrentPage}
-          />
-        </Center>
-      </>
-    )}
+          <Center mt="md">
+            <Pagination
+              total={pagination.pages}
+              value={currentPage}
+              onChange={setCurrentPage}
+            />
+          </Center>
+        </>
+      )}
     </>
   );
 };
