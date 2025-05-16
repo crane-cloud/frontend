@@ -236,3 +236,30 @@ export const createDeleteAction = ({
     params,
   };
 };
+
+export type PasswordStrength = 'weak' | 'medium' | 'strong';
+
+export const strengthColorMap: Record<PasswordStrength, string> = {
+  weak: 'red',
+  medium: 'yellow',
+  strong: 'green',
+};
+
+export const strengthValueMap: Record<PasswordStrength, number> = {
+  weak: 33,
+  medium: 66,
+  strong: 100,
+};
+
+export const getPasswordStrength = (password: string): PasswordStrength => {
+  const hasLetters = /[a-zA-Z]/.test(password);
+  const hasNumbers = /\d/.test(password);
+  const hasSymbols = /[^a-zA-Z0-9]/.test(password);
+
+  if (password.length >= 8 && hasLetters && hasNumbers && hasSymbols) {
+    return 'strong';
+  } else if (password.length >= 6 && hasLetters && hasNumbers) {
+    return 'medium';
+  }
+  return 'weak';
+};
