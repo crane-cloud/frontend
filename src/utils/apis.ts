@@ -1,5 +1,5 @@
 // Users
-export const API_USERS = "/users"
+export const API_USERS = "/users";
 
 // Projects
 export const API_PROJECTS = "/projects";

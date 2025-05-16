@@ -12,7 +12,7 @@ export const FLUTTER_WAVE_PUBLIC_KEY = import.meta.env
   .VITE_APP_FLUTTERWAVE_PUBLIC_KEY_TESTING;
 //for live exchange rate
 export const LIVE_EXCHANGE_RATE_API = `https://openexchangerates.org/api/latest.json?app_id=${import.meta.env.VITE_APP_EXCHANGE_RATE_KEY}`;
-export const GITLAB_URL ="https://gitlab.cranecloud.io/users/sign_in";
+export const GITLAB_URL = "https://gitlab.cranecloud.io/users/sign_in";
 export const GOPLAYGROUND_URL = "https://go.dev.cranecloud.io/";
 export const MIRA_DOCS_URL =
   "https://docs.cranecloud.io/applications/deployWithMira/";

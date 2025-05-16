@@ -32,3 +32,4 @@ dist-ssr
 .env.local
 
 .pnp*
+.stylelintcache

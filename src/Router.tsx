@@ -1,5 +1,6 @@
 import React from "react";
 import { LoginPage } from "./pages/Auth/loginPage";
+import CreateNewPassword from "./pages/Auth/passwordResetPage";
 import ExperiementsDetailsPage from "./pages/Experirments/ExperiementsDetailsPage";
 import RunsDetailsPage from "./pages/Experirments/RunsDetailsPage";
 import UserProfilePage from "./pages/Users/UserProfilePage";
@@ -37,6 +38,7 @@ const ProjectDetailsPage = React.lazy(
 export const guestRoutes = [
   // { path: "/", element: <HomePage /> },
   { path: "/login", element: <LoginPage /> },
+  { path: "/reset_password/:token", element: <CreateNewPassword />}
 ];
 export const DashboardRoutes = [
   // Users

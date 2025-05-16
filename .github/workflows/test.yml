@@ -17,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 23
 
       - name: Enable Corepack
         run: corepack enable
@@ -33,5 +33,5 @@ jobs:
 
       - name: Run Test and Coverage
         run: yarn test --detectOpenHandles --coverage --coverageReporters=lcov
-        
+
       # TODO add coverage report to code climate

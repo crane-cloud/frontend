@@ -10,9 +10,16 @@ import {
   Menu,
   FloatingPosition,
   Button,
+  Group,
+  Avatar,
+  Stack,
+  useCombobox,
+  Combobox,
+  InputBase,
+  Input,
 } from "@mantine/core";
 import { TbCopy } from "react-icons/tb";
-import { ReactNode, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import { PiCubeLight, PiFlask } from "react-icons/pi";
 import { GoDatabase } from "react-icons/go";
 import { RiRobot2Line } from "react-icons/ri";
@@ -23,6 +30,8 @@ import {
 } from "@/components/Forms/CreateAppForm";
 import { IoIosArrowDown } from "react-icons/io";
 import { returnObject } from "@/utils/helpers";
+import useGet from "@/utils/useGet";
+import { MenuContext } from "../Layouts/DashboardLayout";
 
 export const LinkWithText = styled(Link)`
   display: flex;
@@ -252,3 +261,152 @@ export const AddServiceButton = ({
     </div>
   );
 };
+
+interface Item {
+  value: string;
+  label?: string;
+  description: string;
+}
+
+const groceries: Item[] = [
+  { value: "Apples", description: "Crisp and refreshing fruit" },
+  {
+    value: "Bananas",
+    description: "Naturally sweet and potassium-rich fruit",
+  },
+  {
+    value: "Broccoli",
+    description: "Nutrient-packed green vegetable",
+  },
+  {
+    value: "Carrots",
+    description: "Crunchy and vitamin-rich root vegetable",
+  },
+  {
+    value: "Chocolate",
+    description: "Indulgent and decadent treat",
+  },
+];
+
+function SelectOption({ value, description, label }: Item) {
+  return (
+    <Group wrap="nowrap" gap="xs">
+      <Avatar name={label || value} color="initials" radius="md" />
+      <Stack gap={0} justify="space-between">
+        <Text fz="sm" fw={700}>
+          {label || value}
+        </Text>
+        <Text fz="xs" opacity={0.6} fw={600} lineClamp={1}>
+          {description}
+        </Text>
+      </Stack>
+    </Group>
+  );
+}
+
+export function CustomSelect({
+  options = groceries,
+  loading = false,
+  defaultValue,
+  onChange,
+}: {
+  options: any[];
+  loading: boolean;
+  defaultValue: string;
+  onChange: (value: string) => void;
+}) {
+  const combobox = useCombobox({
+    onDropdownClose: () => combobox.resetSelectedOption(),
+  });
+
+  const [value, setValue] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState<Item | null>(null);
+  useEffect(() => {
+    setSelectedOption(
+      options.find(
+        (item) => item.value === value || item.value === defaultValue,
+      ),
+    );
+  }, [value, defaultValue, options, loading]);
+
+  const optionsList = options.map((item) => (
+    <Combobox.Option value={item.value} key={item.value}>
+      <SelectOption {...item} />
+    </Combobox.Option>
+  ));
+
+  return (
+    <Combobox
+      store={combobox}
+      withinPortal={false}
+      onOptionSubmit={(val) => {
+        setValue(val);
+        onChange(val);
+        combobox.closeDropdown();
+      }}
+      zIndex={2000}
+      shadow="md"
+    >
+      <Combobox.Target>
+        <InputBase
+          component="button"
+          type="button"
+          pointer
+          rightSection={<Combobox.Chevron />}
+          onClick={() => combobox.toggleDropdown()}
+          rightSectionPointerEvents="none"
+          multiline
+        >
+          {selectedOption ? (
+            <SelectOption {...selectedOption} />
+          ) : (
+            <Input.Placeholder>Pick value</Input.Placeholder>
+          )}
+        </InputBase>
+      </Combobox.Target>
+
+      <Combobox.Dropdown>
+        <Combobox.Options>{optionsList}</Combobox.Options>
+      </Combobox.Dropdown>
+    </Combobox>
+  );
+}
+
+export function SelectProject({ project_id }: { project_id?: string }) {
+  const { project } = useContext(MenuContext);
+  const [currentProject, setCurrentProject] = useState<any>(project);
+  const { data: projectsData, getData, loading, success } = useGet();
+  const [optionsList, setOptionsList] = useState<any[]>([]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    getData({
+      api: "/projects",
+    });
+  }, []);
+
+  useEffect(() => {
+    if (success) {
+      setOptionsList(
+        projectsData?.data?.projects.map((project: any) => ({
+          value: project.id,
+          label: project.name,
+          description: project.description,
+        })),
+      );
+    }
+  }, [success]);
+
+  const onChange = (value: string) => {
+    setCurrentProject(value);
+    navigate(`/projects/${value}`);
+  };
+
+  return (
+    <CustomSelect
+      defaultValue={currentProject?.id || project_id}
+      onChange={onChange}
+      options={optionsList}
+      loading={loading}
+    />
+  );
+}
