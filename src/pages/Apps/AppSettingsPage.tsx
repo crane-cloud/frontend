@@ -34,6 +34,7 @@ import { useContext, useEffect, useState } from "react";
 import {
   HiLockClosed,
   HiLockOpen,
+  HiOutlineXCircle,
   HiPencil,
   HiPlus,
   HiTrash,
@@ -436,6 +437,15 @@ const GeneralTab = ({
 
 const DeploymentsTab = ({ app }: { app: any }) => {
   const { data: revisionsData, getData: getRevisions, loading } = useGet();
+  const {
+    uploadData: reviseApp,
+    submitting,
+    success: reviseAppSuccess,
+  } = usePost();
+
+  const navigate = useNavigate();
+  const [revisionID, setRevisionID] = useState("");
+  const [openReviseAppModel, setOpenReviseAppModel] = useState(false);
 
   useEffect(() => {
     if (app?.id) {
@@ -445,11 +455,27 @@ const DeploymentsTab = ({ app }: { app: any }) => {
     }
   }, [app]);
 
+  useEffect(() => {
+    if (reviseAppSuccess) {
+      setRevisionID("");
+      navigate(`/projects/${app?.project_id}/apps/${app?.id}`);
+    }
+  }, [reviseAppSuccess]);
+
+  const handleReviseApp = () => {
+    reviseApp({
+      api: `${API_APPS}/${app?.id}/revise/${revisionID}`,
+      successMessage: "Revised app successfully",
+      errorMessage: "Failed to revise app",
+    });
+  };
+
   const tableColumns = [
     { id: "revision_id", header: "Revision ID" },
     { id: "image", header: "Image" },
     { id: "replicas", header: "Replicas" },
     { id: "created_at", header: "Created At" },
+    { id: "actions", header: "Actions" },
   ];
   const tableData = (data: any) => {
     return data?.map((item: any) => ({
@@ -481,6 +507,35 @@ const DeploymentsTab = ({ app }: { app: any }) => {
             {dateFormat(item.created_at, "HH:mm A")}
           </Text>
         </Stack>
+      ),
+      actions: (
+        <>
+          <Stack gap={0} align="flex-end">
+            <Text
+              className="subtext"
+              c="dimmed"
+              onClick={() => {
+                setRevisionID(item.revision_id);
+                setOpenReviseAppModel(true);
+              }}
+            >
+              Rollback here
+            </Text>
+          </Stack>
+          <ModalConfirm
+            opened={openReviseAppModel}
+            onClose={() => setOpenReviseAppModel(false)}
+            title="Revise App"
+            buttonColor="red"
+            buttonText="Revise"
+            onConfirm={handleReviseApp}
+            loading={submitting}
+            leftSection={<HiOutlineXCircle />}
+          >
+            Are you sure you want to rollback this revision on{" "}
+            <b>{app?.name}</b> ? This action cannot be undone.
+          </ModalConfirm>
+        </>
       ),
     }));
   };
