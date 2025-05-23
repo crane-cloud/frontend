@@ -42,6 +42,7 @@ export const guestRoutes = [
 ];
 export const DashboardRoutes = [
   // Users
+  { path: "/login", element: <LoginPage /> },
   { path: "/", element: <LandingPage /> },
   { path: "/profile/:user_id", element: <UserProfilePage /> },
   // Projects
