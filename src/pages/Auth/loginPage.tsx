@@ -33,7 +33,7 @@ import { GuestFooter } from "@/components/Footer";
 import { API_USERS } from "@/utils/apis";
 
 export function LoginForm(props: PaperProps) {
-  const { login,loggedIn } = useAuth();
+  const { login, loggedIn } = useAuth();
   const navigate = useNavigate();
 
   const [type, toggle] = useToggle(["login", "register"]);
@@ -158,7 +158,6 @@ export function LoginForm(props: PaperProps) {
       navigate("/");
     }
   }, [loginSuccess]);
-
 
   useEffect(() => {
     // keep the user on the real home page if they are logged in
