@@ -33,7 +33,7 @@ import { GuestFooter } from "@/components/Footer";
 import { API_USERS } from "@/utils/apis";
 
 export function LoginForm(props: PaperProps) {
-  const { login,loggedIn, logout } = useAuth();
+  const { login,loggedIn } = useAuth();
   const navigate = useNavigate();
 
   const [type, toggle] = useToggle(["login", "register"]);
