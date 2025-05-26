@@ -42,6 +42,7 @@ const ProjectMetrics = () => {
     const fetchMetrics = () => {
       const baseBody = {
         project_id,
+        step: "5h",
       };
 
       const requestBody =

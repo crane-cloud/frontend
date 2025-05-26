@@ -49,6 +49,7 @@ const AppMetrics = () => {
       const baseBody = {
         app_id,
         project_id,
+        step: "5h",
       };
 
       const requestBody =
