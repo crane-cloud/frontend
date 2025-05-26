@@ -2,17 +2,16 @@ import {
   LineLargeMetricChart,
   LineMetricChart,
 } from "@/components/Elements/Charts";
+import { MenuContext } from "@/components/Layouts/DashboardLayout";
 import TitleText from "@/components/TitleText";
 import { MONITORING_API_URL } from "@/config";
-import { useGetProject } from "@/utils/helpers";
 import usePost from "@/utils/usePost";
 import { Grid } from "@mantine/core";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
-const ProjectMetrics = () => {
-  const { project_id } = useParams();
-  useGetProject(project_id || "");
+const AppMetrics = () => {
+  const { app_id, project_id } = useParams();
   const {
     uploadData: getCPUMetrics,
     data: cpuMetricsData,
@@ -30,6 +29,13 @@ const ProjectMetrics = () => {
   } = usePost();
   const [bigChart, setBigChart] = useState<"cpu" | "memory" | "network">("cpu");
 
+  const { setMenuType, setContainerSize } = useContext(MenuContext);
+
+  useEffect(() => {
+    setContainerSize("xl");
+    setMenuType("app");
+  }, [setContainerSize]);
+
   const [filters, setFilters] = useState<{
     startDate: Date | null;
     endDate: Date | null;
@@ -41,6 +47,7 @@ const ProjectMetrics = () => {
   useEffect(() => {
     const fetchMetrics = () => {
       const baseBody = {
+        app_id,
         project_id,
       };
 
@@ -54,19 +61,21 @@ const ProjectMetrics = () => {
           : baseBody;
 
       getCPUMetrics({
-        api: `${MONITORING_API_URL}/projects/cpu/metrics`,
+        api: `${MONITORING_API_URL}/apps/cpu/metrics`,
         params: requestBody,
         isExternal: true,
         showNotifications: false,
       });
+
       getMemoryMetrics({
-        api: `${MONITORING_API_URL}/projects/memory/metrics`,
+        api: `${MONITORING_API_URL}/apps/memory/metrics`,
         params: requestBody,
         isExternal: true,
         showNotifications: false,
       });
+
       getNetworkMetrics({
-        api: `${MONITORING_API_URL}/projects/network/metrics`,
+        api: `${MONITORING_API_URL}/apps/network/metrics`,
         params: requestBody,
         isExternal: true,
         showNotifications: false,
@@ -74,7 +83,7 @@ const ProjectMetrics = () => {
     };
 
     fetchMetrics();
-  }, [filters, project_id]);
+  }, [filters, app_id, project_id]);
 
   const bigChartData = useMemo(() => {
     if (bigChart === "cpu") {
@@ -103,7 +112,7 @@ const ProjectMetrics = () => {
 
   return (
     <div>
-      <TitleText>Project Metrics</TitleText>
+      <TitleText>App Metrics</TitleText>
       <Grid>
         <Grid.Col span={12}>
           <LineLargeMetricChart
@@ -164,4 +173,4 @@ const ProjectMetrics = () => {
   );
 };
 
-export default ProjectMetrics;
+export default AppMetrics;
