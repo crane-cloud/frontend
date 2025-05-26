@@ -33,7 +33,7 @@ import { GuestFooter } from "@/components/Footer";
 import { API_USERS } from "@/utils/apis";
 
 export function LoginForm(props: PaperProps) {
-  const { login } = useAuth();
+  const { login, loggedIn } = useAuth();
   const navigate = useNavigate();
 
   const [type, toggle] = useToggle(["login", "register"]);
@@ -160,6 +160,14 @@ export function LoginForm(props: PaperProps) {
   }, [loginSuccess]);
 
   useEffect(() => {
+    // keep the user on the real home page if they are logged in
+    // can only show on logout
+    if (loggedIn) {
+      navigate("/");
+    }
+  }, []);
+
+  useEffect(() => {
     if (registerSuccess) {
       setRegistrationModalOpened(true);
       form.reset();
@@ -183,8 +191,8 @@ export function LoginForm(props: PaperProps) {
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
     const code = queryParams.get("code");
-    localStorage.clear();
     if (code) {
+      localStorage.clear();
       initiateGitHubLogin(code);
     }
   }, []);
