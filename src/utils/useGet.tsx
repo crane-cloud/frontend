@@ -1,12 +1,15 @@
 import { useState } from "react";
 import useAxios from "./useAxios";
 import { TError } from "@/types/common";
+import { showNotification } from "@mantine/notifications";
 
 export type TLoadDataParams = {
   id?: string | number;
   api: string;
   params?: any;
   isExternal?: boolean;
+  errorMessage?: string;
+  showNotifications?: boolean;
   method?: string;
 };
 
@@ -19,7 +22,15 @@ const useGet = () => {
   const { get } = useAxios();
 
   const getData = (options: TLoadDataParams) => {
-    const { api, params, method, id, isExternal } = options;
+    const {
+      api,
+      params,
+      method,
+      id,
+      isExternal,
+      errorMessage,
+      showNotifications = false,
+    } = options;
     const extras = {};
 
     // If id is passed get single instance, other fetch list
@@ -31,6 +42,16 @@ const useGet = () => {
       loader: setLoading,
       errorHandler: (err: TError) => {
         setError(err);
+        if (showNotifications) {
+          showNotification({
+            title: "Error",
+            message:
+              errorMessage ||
+              (typeof err === "string" && err) ||
+              "Something went wrong!",
+            color: "red",
+          });
+        }
       },
       successHandler: (res: any) => {
         setData(res);

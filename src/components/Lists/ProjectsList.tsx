@@ -19,6 +19,8 @@ import TitleText from "../TitleText";
 import { Link } from "react-router-dom";
 import Search from "../Elements/Search";
 import { API_PROJECTS } from "@/utils/apis";
+import { DOCS_URL } from "@/config";
+import DataNotFoundMessage from "@/pages/common/DataFoundMessage";
 
 const ProjectsList = () => {
   const { data: projectsData, getData, loading, success } = useGet();
@@ -76,16 +78,26 @@ const ProjectsList = () => {
           </Button>
         </Group>
         <Divider mt="lg" mb="md" />
-        <GridLayout columns={viewMode === "grid" ? 3 : 1}>
-          {loading
-            ? [...Array(6)].map((_, index) => (
-                <Skeleton key={index} height={100} w="100%" radius="md" />
-              ))
-            : projects &&
-              projects?.map((project: any) => (
-                <ProjectsCard key={project?.id} project={project} h="100%" />
-              ))}
-        </GridLayout>
+
+        {loading ? (
+          <GridLayout columns={viewMode === "grid" ? 3 : 1}>
+            {[...Array(6)].map((_, index) => (
+              <Skeleton key={index} height={100} w="100%" radius="md" />
+            ))}
+          </GridLayout>
+        ) : projects && projects.length > 0 ? (
+          <GridLayout columns={viewMode === "grid" ? 3 : 1}>
+            {projects.map((project: any) => (
+              <ProjectsCard key={project.id} project={project} h="100%" />
+            ))}
+          </GridLayout>
+        ) : (
+          <DataNotFoundMessage
+            title="No projects found"
+            helpText="Try creating a new project or check the documentation."
+            helpLink={`${DOCS_URL}/projects/`}
+          />
+        )}
 
         {pagination?.pages > 1 && (
           <>
