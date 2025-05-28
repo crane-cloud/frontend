@@ -4,6 +4,7 @@ import CreateNewPassword from "./pages/Auth/passwordResetPage";
 import ExperiementsDetailsPage from "./pages/Experirments/ExperiementsDetailsPage";
 import RunsDetailsPage from "./pages/Experirments/RunsDetailsPage";
 import UserProfilePage from "./pages/Users/UserProfilePage";
+import AppMetrics from "./pages/Apps/AppMetrics";
 // import { HomePage } from "./pages/Home.page";
 const AppsListPage = React.lazy(() => import("./pages/Apps/AppsListPage"));
 const ProjectSettingsPage = React.lazy(
@@ -36,11 +37,12 @@ const ProjectDetailsPage = React.lazy(
   () => import("./pages/Projects/ProjectDetailsPage"),
 );
 export const guestRoutes = [
-  // { path: "/", element: <HomePage /> },
+  // { path: "/", element: <></> },
   { path: "/login", element: <LoginPage /> },
   { path: "/reset_password/:token", element: <CreateNewPassword /> },
 ];
 export const DashboardRoutes = [
+  // { path: "/login", element: <LoginPage /> },
   // Users
   { path: "/login", element: <LoginPage /> },
   { path: "/", element: <LandingPage /> },
@@ -56,6 +58,10 @@ export const DashboardRoutes = [
   { path: "/projects/:project_id/apps/create", element: <CreateAppForm /> },
   { path: "/projects/:project_id/apps/:app_id", element: <AppDetailPage /> },
   { path: "/projects/:project_id/apps/:app_id/logs", element: <AppLogsPage /> },
+  {
+    path: "/projects/:project_id/apps/:app_id/metrics",
+    element: <AppMetrics />,
+  },
   {
     path: "/projects/:project_id/apps/:app_id/settings",
     element: <AppSettingsPage />,
