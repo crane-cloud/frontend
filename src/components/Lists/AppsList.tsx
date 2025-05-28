@@ -3,6 +3,8 @@ import AppsCard from "../Cards/AppsCard";
 import useGet from "@/utils/useGet";
 import { Center, Divider, Pagination, Skeleton } from "@mantine/core";
 import { GridLayout } from "../Layouts/ListLayouts";
+import DataNotFoundMessage from "@/pages/common/DataFoundMessage";
+import { DOCS_URL } from "@/config";
 
 const AppsList = (props: any) => {
   const { project_id, refresh } = props;
@@ -29,15 +31,25 @@ const AppsList = (props: any) => {
 
   return (
     <>
-      <GridLayout columns={2}>
-        {loading
-          ? [...Array(6)].map((_, index) => (
-              <Skeleton key={index} height={100} w="100%" radius="md" />
-            ))
-          : apps?.map((app: any) => (
-              <AppsCard key={app.id} app={app} project_id={project_id} />
-            ))}
-      </GridLayout>
+      {loading ? (
+        <GridLayout columns={2}>
+          {[...Array(6)].map((_, index) => (
+            <Skeleton key={index} height={100} w="100%" radius="md" />
+          ))}
+        </GridLayout>
+      ) : apps && apps.length > 0 ? (
+        <GridLayout columns={2}>
+          {apps?.map((app: any) => (
+            <AppsCard key={app.id} app={app} project_id={project_id} />
+          ))}
+        </GridLayout>
+      ) : (
+        <DataNotFoundMessage
+          title="No apps found"
+          helpText="Try creating a new app or check the documentation."
+          helpLink={`${DOCS_URL}/applications/deploy-singleApp/`}
+        />
+      )}
 
       {pagination?.pages > 1 && (
         <>
