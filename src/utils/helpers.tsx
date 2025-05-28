@@ -90,7 +90,7 @@ export const useGetApp = (app_id: string) => {
     if (setAppId) {
       setAppId(app_id || "");
     }
-    if (appData?.data?.apps?.is_notebook) {
+    if (appData?.data?.apps?.is_ai) {
       setMenuType("mlops");
     } else {
       setMenuType("app");
@@ -159,7 +159,7 @@ export const dateFormat = (date: string, format = "DD/MMM/YYYY") =>
   moment(date).format(format);
 
 export const formatTimestamp = (timestamp: number) => {
-  return format(new Date(timestamp * 1000), "MMM dd HH:mm:ss");
+  return format(new Date(timestamp * 1000), "MMM dd HH:mm");
 };
 
 export const getConnectionString = (database: any) => {
@@ -262,4 +262,16 @@ export const getPasswordStrength = (password: string): PasswordStrength => {
     return "medium";
   }
   return "weak";
+};
+
+export const formatMetricValue = (chartType: string, value: number) => {
+  if (chartType === "cpu") {
+    return `${value.toFixed(4)} cores`;
+  } else if (chartType === "memory") {
+    return `${Math.round(value).toLocaleString()} MiB`;
+  } else if (chartType === "network") {
+    return `${Math.round(value).toLocaleString()} KB/s`;
+  }
+
+  return null;
 };
