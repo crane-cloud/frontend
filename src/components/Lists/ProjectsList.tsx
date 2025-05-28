@@ -1,15 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import useGet from "@/utils/useGet";
-import {
-  ActionIcon,
-  Button,
-  Center,
-  Divider,
-  Group,
-  Pagination,
-  Paper,
-  Skeleton,
-} from "@mantine/core";
+import { Button, Divider, Group, Paper, Skeleton } from "@mantine/core";
 import ProjectsCard from "@/components/Cards/ProjectsCard";
 import { GridLayout } from "@/components/Layouts/ListLayouts";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -21,96 +12,95 @@ import Search from "../Elements/Search";
 import { API_PROJECTS } from "@/utils/apis";
 import { DOCS_URL } from "@/config";
 import DataNotFoundMessage from "@/pages/common/DataFoundMessage";
+import { useInfiniteScrollWithPagination } from "@/hooks/useInfiniteScroll";
 
 const ProjectsList = () => {
   const { data: projectsData, getData, loading, success } = useGet();
 
-  const [projects, setProjects] = useState<any[]>([]);
-  const [pagination, setPagination] = useState<any>({});
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [viewMode, toggleViewMode] = useToggle<"grid" | "list">([
     "grid",
     "list",
   ]);
 
+  const { items: projects, lastElementRef } = useInfiniteScrollWithPagination({
+    loading,
+    success,
+    data: projectsData,
+    extractItems: (data) => data?.data?.projects || [],
+    extractPagination: (data) => data?.data?.pagination || {},
+    extractItemId: (project) => project.id,
+    onLoadMore: (page) => {
+      getData({
+        api: `${API_PROJECTS}`,
+        params: { page, per_page: 10 },
+      });
+    },
+  });
+
+  // Initial data fetch
   useEffect(() => {
     getData({
       api: `${API_PROJECTS}`,
-      params: { page: currentPage, per_page: 9 },
+      params: { page: 1, per_page: 10 },
     });
-  }, [currentPage]);
-
-  useEffect(() => {
-    if (success) {
-      setProjects(projectsData?.data?.projects);
-      setPagination(projectsData?.data?.pagination);
-    }
-  }, [success, projectsData]);
+  }, []);
 
   return (
     <div>
       <TitleText>Projects</TitleText>
+
       <Paper py="lg" radius="md">
         <Group justify="space-between" align="center">
           <Search type="projects" wide />
           <Group gap={0}>
-            <ActionIcon
-              variant={viewMode === "grid" ? "filled" : "default"}
-              color={viewMode === "grid" ? "blue" : undefined}
-              size="lg"
-              radius="5 0 0 5"
-              onClick={() => toggleViewMode("grid")}
-            >
-              <HiOutlineSquares2X2 />
-            </ActionIcon>
-            <ActionIcon
-              variant={viewMode === "list" ? "filled" : "default"}
-              color={viewMode === "list" ? "blue" : undefined}
-              size="lg"
-              radius="0 5 5 0"
-              onClick={() => toggleViewMode("list")}
-            >
-              <RxHamburgerMenu />
-            </ActionIcon>
+            <Button.Group>
+              <Button
+                variant={viewMode === "grid" ? "filled" : "default"}
+                onClick={() => toggleViewMode("grid")}
+              >
+                <HiOutlineSquares2X2 />
+              </Button>
+              <Button
+                variant={viewMode === "list" ? "filled" : "default"}
+                onClick={() => toggleViewMode("list")}
+              >
+                <RxHamburgerMenu />
+              </Button>
+            </Button.Group>
           </Group>
           <Button component={Link} to="/projects/create">
             Add New Project
           </Button>
         </Group>
+
         <Divider mt="lg" mb="md" />
 
-        {loading ? (
-          <GridLayout columns={viewMode === "grid" ? 3 : 1}>
-            {[...Array(6)].map((_, index) => (
-              <Skeleton key={index} height={100} w="100%" radius="md" />
-            ))}
-          </GridLayout>
-        ) : projects && projects.length > 0 ? (
-          <GridLayout columns={viewMode === "grid" ? 3 : 1}>
-            {projects.map((project: any) => (
-              <ProjectsCard key={project.id} project={project} h="100%" />
-            ))}
-          </GridLayout>
-        ) : (
+        {!loading && projects.length === 0 ? (
           <DataNotFoundMessage
             title="No projects found"
             helpText="Try creating a new project or check the documentation."
             helpLink={`${DOCS_URL}/projects/`}
           />
-        )}
+        ) : (
+          <GridLayout columns={viewMode === "grid" ? 3 : 1}>
+            {projects.map((project: any, index: number) => {
+              const isLast = index === projects.length - 1;
+              return (
+                <div
+                  key={project.id}
+                  ref={isLast ? lastElementRef : null}
+                  style={{ height: "100%" }}
+                >
+                  <ProjectsCard project={project} h="100%" />
+                </div>
+              );
+            })}
 
-        {pagination?.pages > 1 && (
-          <>
-            <Divider my="md" />
-
-            <Center mt="md">
-              <Pagination
-                total={pagination.pages}
-                value={currentPage}
-                onChange={setCurrentPage}
-              />
-            </Center>
-          </>
+            {loading &&
+              [...Array(6)].map((_, i) => (
+                <Skeleton key={i} height={100} w="100%" radius="md" />
+              ))}
+          </GridLayout>
         )}
       </Paper>
     </div>
