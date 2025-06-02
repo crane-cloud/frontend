@@ -56,7 +56,7 @@ export const useGetProject = (project_id: string) => {
     }
   }, [setMenuType, project_id, project]);
 
-  return { project, cluster, loading, success, refresh, setRefresh };
+  return { project, cluster, loading, success, refresh, setRefresh, getData };
 };
 
 export const useGetApp = (app_id: string) => {
