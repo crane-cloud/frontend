@@ -77,6 +77,18 @@ a:hover {
   padding: 0;
 }
 
+.subtext>span{
+  text-decoration: underline;
+  color:#008AC1;
+  cursor: pointer;
+}
+
+.subtext.disabled > span {
+  color: grey;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
 .link {
   text-decoration: none;
   display: flex;

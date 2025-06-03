@@ -34,6 +34,7 @@ import { useContext, useEffect, useState } from "react";
 import {
   HiLockClosed,
   HiLockOpen,
+  HiOutlineXCircle,
   HiPencil,
   HiPlus,
   HiTrash,
@@ -436,6 +437,14 @@ const GeneralTab = ({
 
 const DeploymentsTab = ({ app }: { app: any }) => {
   const { data: revisionsData, getData: getRevisions, loading } = useGet();
+  const {
+    uploadData: reviseApp,
+    submitting,
+    success: reviseAppSuccess,
+  } = usePost();
+
+  const [revisionID, setRevisionID] = useState("");
+  const [openReviseAppModel, setOpenReviseAppModel] = useState(false);
 
   useEffect(() => {
     if (app?.id) {
@@ -445,14 +454,40 @@ const DeploymentsTab = ({ app }: { app: any }) => {
     }
   }, [app]);
 
+  useEffect(() => {
+    if (reviseAppSuccess) {
+      setRevisionID("");
+      setOpenReviseAppModel(false);
+      getRevisions({
+        api: `${API_APPS}/${app?.id}/revisions`,
+      });
+    }
+  }, [reviseAppSuccess]);
+
+  const handleReviseApp = () => {
+    reviseApp({
+      api: `${API_APPS}/${app?.id}/revise/${revisionID}`,
+      successMessage: "Revised app successfully",
+      errorMessage: "Failed to revise app",
+    });
+  };
+
   const tableColumns = [
     { id: "revision_id", header: "Revision ID" },
     { id: "image", header: "Image" },
     { id: "replicas", header: "Replicas" },
     { id: "created_at", header: "Created At" },
+    { id: "actions", header: "Actions" },
   ];
   const tableData = (data: any) => {
-    return data?.map((item: any) => ({
+    if (!data) {
+      return [];
+    }
+    const sortedData = [...data].sort(
+      (a, b) => (b.current ? 1 : 0) - (a.current ? 1 : 0),
+    );
+
+    return sortedData?.map((item: any) => ({
       ...item,
       replicas: item.replicas || 1,
       revision_id: (
@@ -472,7 +507,7 @@ const DeploymentsTab = ({ app }: { app: any }) => {
         </Flex>
       ),
       created_at: (
-        <Stack gap={0} align="flex-end">
+        <Stack gap={0} align="flex-start">
           <Flex gap={5} align="center">
             <FiCalendar size={13} />
             <Text className="subtext">{dateFormat(item.created_at)}</Text>
@@ -481,6 +516,40 @@ const DeploymentsTab = ({ app }: { app: any }) => {
             {dateFormat(item.created_at, "HH:mm A")}
           </Text>
         </Stack>
+      ),
+      actions: (
+        <>
+          <Stack gap={0} align="flex-end">
+            <Text
+              className={`subtext ${item.current ? "disabled" : ""}`}
+              c={item.current ? "gray" : "dimmed"}
+              onClick={() => {
+                if (item.current) {
+                  return;
+                }
+                setRevisionID(item.revision_id);
+                setOpenReviseAppModel(true);
+              }}
+              style={{ cursor: item.current ? "not-allowed" : "pointer" }}
+            >
+              <span>{item.current ? "Rollback here" : "Rollback here"}</span>
+            </Text>
+          </Stack>
+          <ModalConfirm
+            opened={openReviseAppModel}
+            onClose={() => setOpenReviseAppModel(false)}
+            title="Revise App"
+            buttonColor="black"
+            buttonText="Revise"
+            onConfirm={handleReviseApp}
+            loading={submitting}
+            leftSection={<HiOutlineXCircle />}
+          >
+            Are you sure you want to rollback this revision on{" "}
+            <b>{app?.name}</b>? Doing so will replace the current version with
+            selected one.
+          </ModalConfirm>
+        </>
       ),
     }));
   };
