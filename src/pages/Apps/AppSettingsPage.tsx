@@ -443,7 +443,6 @@ const DeploymentsTab = ({ app }: { app: any }) => {
     success: reviseAppSuccess,
   } = usePost();
 
-  const navigate = useNavigate();
   const [revisionID, setRevisionID] = useState("");
   const [openReviseAppModel, setOpenReviseAppModel] = useState(false);
 
@@ -458,7 +457,10 @@ const DeploymentsTab = ({ app }: { app: any }) => {
   useEffect(() => {
     if (reviseAppSuccess) {
       setRevisionID("");
-      navigate(`/projects/${app?.project_id}/apps/${app?.id}`);
+      setOpenReviseAppModel(false);
+      getRevisions({
+        api: `${API_APPS}/${app?.id}/revisions`,
+      });
     }
   }, [reviseAppSuccess]);
 
@@ -478,7 +480,14 @@ const DeploymentsTab = ({ app }: { app: any }) => {
     { id: "actions", header: "Actions" },
   ];
   const tableData = (data: any) => {
-    return data?.map((item: any) => ({
+    if (!data) {
+      return [];
+    }
+    const sortedData = [...data].sort(
+      (a, b) => (b.current ? 1 : 0) - (a.current ? 1 : 0),
+    );
+
+    return sortedData?.map((item: any) => ({
       ...item,
       replicas: item.replicas || 1,
       revision_id: (
@@ -498,7 +507,7 @@ const DeploymentsTab = ({ app }: { app: any }) => {
         </Flex>
       ),
       created_at: (
-        <Stack gap={0} align="flex-end">
+        <Stack gap={0} align="flex-start">
           <Flex gap={5} align="center">
             <FiCalendar size={13} />
             <Text className="subtext">{dateFormat(item.created_at)}</Text>
@@ -512,28 +521,33 @@ const DeploymentsTab = ({ app }: { app: any }) => {
         <>
           <Stack gap={0} align="flex-end">
             <Text
-              className="subtext"
-              c="dimmed"
+              className={`subtext ${item.current ? "disabled" : ""}`}
+              c={item.current ? "gray" : "dimmed"}
               onClick={() => {
+                if (item.current) {
+                  return;
+                }
                 setRevisionID(item.revision_id);
                 setOpenReviseAppModel(true);
               }}
+              style={{ cursor: item.current ? "not-allowed" : "pointer" }}
             >
-              Rollback here
+              <span>{item.current ? "Rollback here" : "Rollback here"}</span>
             </Text>
           </Stack>
           <ModalConfirm
             opened={openReviseAppModel}
             onClose={() => setOpenReviseAppModel(false)}
             title="Revise App"
-            buttonColor="red"
+            buttonColor="black"
             buttonText="Revise"
             onConfirm={handleReviseApp}
             loading={submitting}
             leftSection={<HiOutlineXCircle />}
           >
             Are you sure you want to rollback this revision on{" "}
-            <b>{app?.name}</b> ? This action cannot be undone.
+            <b>{app?.name}</b>? Doing so will replace the current version with
+            selected one.
           </ModalConfirm>
         </>
       ),
