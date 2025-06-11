@@ -30,7 +30,7 @@ export const useGetProject = (project_id: string) => {
       id: project_id,
       api: `/projects`,
     });
-  }, [refresh]);
+  }, [project_id, refresh]);
 
   useEffect(() => {
     if (success) {
@@ -56,7 +56,7 @@ export const useGetProject = (project_id: string) => {
     }
   }, [setMenuType, project_id, project]);
 
-  return { project, cluster, loading, success, refresh, setRefresh, getData };
+  return { project, cluster, loading, success, refresh, setRefresh };
 };
 
 export const useGetApp = (app_id: string) => {
