@@ -196,15 +196,5 @@ jobs:
           POD_NAME=$(kubectl get pods -n $namespace -l app=frontend -o jsonpath="{.items[0].metadata.name}")
           kubectl exec -n $namespace $POD_NAME -- curl -f http://localhost:80/health || exit 1
 
-      - name: Create release notes
-        if: github.event_name == 'release'
-        uses: softprops/action-gh-release@v1
-        with:
-          body_path: CHANGELOG.md
-          draft: false
-          prerelease: ${{ github.event.release.prerelease }}
-          files: |
-            dist/*.zip
-            dist/*.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
