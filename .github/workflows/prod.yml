@@ -14,6 +14,7 @@ jobs:
     outputs:
       image: ${{ steps.export.outputs.image }}
       tag: ${{ steps.export.outputs.tag }}
+      release_version: ${{ steps.version.outputs.version }}
 
     runs-on: ubuntu-latest
     env:
@@ -25,7 +26,76 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: develop
+          fetch-depth: 0
+
+      - name: Get version
+        id: version
+        run: |
+          if [[ $GITHUB_EVENT_NAME == "release" ]]; then
+            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          else
+            echo "version=dev-$(date +'%Y%m%d')-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update CHANGELOG.md
+        if: github.event_name == 'release'
+        run: |
+          # Get the release version and date
+          VERSION=${GITHUB_REF#refs/tags/}
+          DATE=$(date +'%Y-%m-%d')
+
+          # Get the release notes from the GitHub release
+          RELEASE_NOTES=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/releases/tags/$VERSION" | \
+            jq -r '.body')
+
+          # Create the new version section
+          NEW_SECTION="## [$VERSION] - $DATE\n\n"
+
+          # Parse the release notes and categorize them
+          if echo "$RELEASE_NOTES" | grep -q "### Added"; then
+            NEW_SECTION+="### Added\n"
+            NEW_SECTION+=$(echo "$RELEASE_NOTES" | sed -n '/### Added/,/^$/p' | sed '1d')
+            NEW_SECTION+="\n"
+          fi
+
+          if echo "$RELEASE_NOTES" | grep -q "### Changed"; then
+            NEW_SECTION+="### Changed\n"
+            NEW_SECTION+=$(echo "$RELEASE_NOTES" | sed -n '/### Changed/,/^$/p' | sed '1d')
+            NEW_SECTION+="\n"
+          fi
+
+          if echo "$RELEASE_NOTES" | grep -q "### Fixed"; then
+            NEW_SECTION+="### Fixed\n"
+            NEW_SECTION+=$(echo "$RELEASE_NOTES" | sed -n '/### Fixed/,/^$/p' | sed '1d')
+            NEW_SECTION+="\n"
+          fi
+
+          if echo "$RELEASE_NOTES" | grep -q "### Security"; then
+            NEW_SECTION+="### Security\n"
+            NEW_SECTION+=$(echo "$RELEASE_NOTES" | sed -n '/### Security/,/^$/p' | sed '1d')
+            NEW_SECTION+="\n"
+          fi
+
+          # Update the CHANGELOG.md
+          awk -v new="$NEW_SECTION" '
+            /^## \[Unreleased\]/ {
+              print;
+              print "";
+              print new;
+              next;
+            }
+            { print }
+          ' CHANGELOG.md > CHANGELOG.md.new
+
+          mv CHANGELOG.md.new CHANGELOG.md
+
+          # Commit and push the changes
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add CHANGELOG.md
+          git commit -m "docs: update CHANGELOG.md for $VERSION"
+          git push
 
       - name: Install (Buildx)
         uses: docker/setup-buildx-action@v3
@@ -56,12 +126,16 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           flavor: |
-            latest=true
+            latest=auto
+            prefix=
           images: ${{ env.image }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
             type=sha
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
 
       - name: Add Env vars
         env:
@@ -78,6 +152,7 @@ jobs:
           VITE_APP_MONITORING_API_URL: ${{ secrets.REACT_APP_MONITORING_API_URL_PROD }}
           VITE_APP_DATABASE_API_URL: ${{ secrets.REACT_APP_DATABASE_API_URL_PROD }}
           VITE_APP_MLOPS_API_URL: ${{ secrets.REACT_APP_MLOPS_API_URL_PROD }}
+          VITE_APP_VERSION: ${{ steps.version.outputs.version }}
         run: |
           chmod +x ./.github/workflows/bin/create_envs.sh
           ./.github/workflows/bin/create_envs.sh
@@ -111,3 +186,28 @@ jobs:
       - name: Update deployment image
         run: |
           kubectl set image deployment/frontend frontend=${{ env.image }}:${{ steps.export.outputs.tag }} -n $namespace
+
+      - name: Verify deployment
+        run: |
+          echo "Waiting for deployment to roll out..."
+          kubectl rollout status deployment/frontend -n $namespace --timeout=300s
+
+          echo "Verifying deployment health..."
+          kubectl get pods -n $namespace -l app=frontend -o wide
+
+          # Add basic health check
+          POD_NAME=$(kubectl get pods -n $namespace -l app=frontend -o jsonpath="{.items[0].metadata.name}")
+          kubectl exec -n $namespace $POD_NAME -- curl -f http://localhost:3000/health || exit 1
+
+      - name: Create release notes
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: CHANGELOG.md
+          draft: false
+          prerelease: ${{ github.event.release.prerelease }}
+          files: |
+            dist/*.zip
+            dist/*.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
