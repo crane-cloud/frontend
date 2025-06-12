@@ -1,9 +1,6 @@
 name: Production Deployment
 
 on:
-  push:
-    branches:
-      - fix-prod-deployment
   release:
     types:
       - released
@@ -26,7 +23,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          ref: develop
 
       - name: Get version
         id: version
@@ -197,7 +194,7 @@ jobs:
 
           # Add basic health check
           POD_NAME=$(kubectl get pods -n $namespace -l app=frontend -o jsonpath="{.items[0].metadata.name}")
-          kubectl exec -n $namespace $POD_NAME -- curl -f http://localhost:3000/health || exit 1
+          kubectl exec -n $namespace $POD_NAME -- curl -f http://localhost:80/health || exit 1
 
       - name: Create release notes
         if: github.event_name == 'release'

@@ -6,6 +6,7 @@ import RunsDetailsPage from "./pages/Experirments/RunsDetailsPage";
 import UserProfilePage from "./pages/Users/UserProfilePage";
 import AccountVerification from "./pages/Auth/accountVerificationPage";
 import AppMetrics from "./pages/Apps/AppMetrics";
+import HealthCheck from "./components/HealthCheck";
 // import { HomePage } from "./pages/Home.page";
 const AppsListPage = React.lazy(() => import("./pages/Apps/AppsListPage"));
 const ProjectSettingsPage = React.lazy(
@@ -39,6 +40,7 @@ const ProjectDetailsPage = React.lazy(
 );
 export const guestRoutes = [
   // { path: "/", element: <></> },
+  { path: "/health", element: <HealthCheck /> },
   { path: "/login", element: <LoginPage /> },
   { path: "/reset_password/:token", element: <CreateNewPassword /> },
   { path: "/verify/:token", element: <AccountVerification /> },
@@ -46,6 +48,7 @@ export const guestRoutes = [
 export const DashboardRoutes = [
   // { path: "/login", element: <LoginPage /> },
   // Users
+  { path: "/health", element: <HealthCheck /> },
   { path: "/login", element: <LoginPage /> },
   { path: "/", element: <LandingPage /> },
   { path: "/profile/:user_id", element: <UserProfilePage /> },
