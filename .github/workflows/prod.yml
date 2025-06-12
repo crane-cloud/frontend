@@ -1,6 +1,9 @@
 name: Production Deployment
 
 on:
+  push:
+    branches:
+      - fix-prod-deployment
   release:
     types:
       - released
