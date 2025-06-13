@@ -7,6 +7,7 @@ import moment from "moment";
 import { BiTrash } from "react-icons/bi";
 import { TiEdit } from "react-icons/ti";
 import { format } from "date-fns";
+import { AdminMenuContext } from "@/components/Layouts/AdminDashboardLayout";
 
 export const beautify = (str: string | undefined) => {
   if (typeof str !== "string") {
@@ -130,6 +131,13 @@ export const useSetNoSidebar = () => {
 
 export const useSetContainerSize = (size: string) => {
   const { setContainerSize } = useContext(MenuContext);
+  useEffect(() => {
+    setContainerSize(size);
+  }, [setContainerSize, size]);
+};
+
+export const useSetAdminContainerSize = (size: string) => {
+  const { setContainerSize } = useContext(AdminMenuContext);
   useEffect(() => {
     setContainerSize(size);
   }, [setContainerSize, size]);

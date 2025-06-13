@@ -4,7 +4,7 @@ import { AppShell, Container } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState, createContext, useMemo } from "react";
 
-export const MenuContext = createContext<{
+export interface TMenuContextType {
   menuType: TLeftMenuType;
   setMenuType: (type: TLeftMenuType) => void;
   projectId: string;
@@ -18,7 +18,9 @@ export const MenuContext = createContext<{
   setAppId?: (id: string) => void;
   project?: any;
   setProject?: (project: any) => void;
-}>({
+}
+
+export const MenuContext = createContext<TMenuContextType>({
   menuType: "home",
   setMenuType: () => {},
   projectId: "",

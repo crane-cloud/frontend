@@ -14,6 +14,7 @@ import {
 import { FaPlus } from "react-icons/fa6";
 import { HiOutlineServer } from "react-icons/hi";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const ClusterCard = ({ cluster }: { cluster: any }) => {
   const isDisabled = cluster.disabled;
@@ -52,7 +53,7 @@ const ClusterCard = ({ cluster }: { cluster: any }) => {
 
 const AdminClustersList = () => {
   const { getData: getClusters, data: clusters, loading } = useGet();
-
+  const navigate = useNavigate();
   useEffect(() => {
     getClusters({ api: `/clusters` });
   }, []);
@@ -83,7 +84,11 @@ const AdminClustersList = () => {
     <Stack gap={0}>
       <TitleText
         rightSection={
-          <Button leftSection={<FaPlus />} variant="filled">
+          <Button
+            leftSection={<FaPlus />}
+            variant="filled"
+            onClick={() => navigate("/admin/clusters/create")}
+          >
             Add Cluster
           </Button>
         }

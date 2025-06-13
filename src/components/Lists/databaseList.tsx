@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 export const DatabaseFlavour = ({ flavour }: { flavour: string }) => {
   return (
-    <Group gap="xs" align="center">
+    <Group gap="xs" align="center" wrap="nowrap">
       {flavour === "postgres" ? (
         <BiLogoPostgresql size={16} color="#0064a5" />
       ) : (

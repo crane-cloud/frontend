@@ -3,8 +3,7 @@ import LeftMenu, { TLeftMenuType } from "@/components/Navbars/LeftMenu";
 import { AppShell, Container } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState, createContext, useMemo } from "react";
-
-export const AdminMenuContext = createContext<{
+export interface TAdminMenuContextType {
   menuType: TLeftMenuType;
   setMenuType: (type: TLeftMenuType) => void;
   clusterId: string;
@@ -14,7 +13,8 @@ export const AdminMenuContext = createContext<{
   subtitle?: string;
   setSubtitle?: (subtitle: string) => void;
   setContainerSize: (size: string) => void;
-}>({
+}
+export const AdminMenuContext = createContext<TAdminMenuContextType>({
   menuType: "home",
   setMenuType: () => {},
   clusterId: "",
@@ -72,7 +72,7 @@ export const AdminDashboardLayout = ({
           title={title}
           subtitle={subtitle}
         />
-        <AppShell.Main>
+        <AppShell.Main mih="90vh">
           <Container size={containerSize}>{children}</Container>
         </AppShell.Main>
       </AppShell>

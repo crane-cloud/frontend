@@ -91,7 +91,7 @@ const LeftMenu = React.memo(
           label: "Clusters",
           icon: HiOutlineServer,
           key: "clusters",
-          link: "/admin/clusters/list",
+          link: "/admin/clusters",
         },
         {
           label: "Users",
