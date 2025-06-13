@@ -43,7 +43,11 @@ const ExperiementsListPage = () => {
 
   const oncreateExperiment = () => {
     createExperiment({
-      api: `${MLOPS_API_URL}experiments?app_alias=${app?.alias}&user_id=${user?.id}`,
+      api: `${MLOPS_API_URL}experiments`,
+      params: {
+        app_alias: app?.alias,
+        user_id: user?.id,
+      },
       isExternal: true,
     });
   };
