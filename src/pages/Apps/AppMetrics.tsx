@@ -5,6 +5,7 @@ import {
 import { MenuContext } from "@/components/Layouts/DashboardLayout";
 import TitleText from "@/components/TitleText";
 import { MONITORING_API_URL } from "@/config";
+import { bytesToMB } from "@/utils/helpers";
 import usePost from "@/utils/usePost";
 import { Grid } from "@mantine/core";
 import { useContext, useEffect, useMemo, useState } from "react";
@@ -99,7 +100,7 @@ const AppMetrics = () => {
       return {
         data: memoryMetricsData?.data?.values,
         title: "Memory Usage",
-        unit: "MiB",
+        unit: "MB/s",
         numberOfDecimals: 0,
       };
     }
@@ -120,7 +121,7 @@ const AppMetrics = () => {
             title={bigChartData.title}
             data={bigChartData.data}
             valueFormatter={(value) =>
-              `${value.toFixed(bigChartData.numberOfDecimals)} ${bigChartData.unit}`
+              `${bigChartData.title === "Memory Usage" ? bytesToMB(value).toFixed(2) : value.toFixed(bigChartData.numberOfDecimals)} ${bigChartData.unit}`
             }
             showAllXValues
             filters={filters}
@@ -149,7 +150,7 @@ const AppMetrics = () => {
           <LineMetricChart
             title="Memory Usage"
             data={memoryMetricsData?.data?.values}
-            valueFormatter={(value) => `${value.toFixed(0)} MiB`}
+            valueFormatter={(value) => `${bytesToMB(value).toFixed(2)} MB/s`}
             height={180}
             setBigChart={setBigChart}
             chartType="memory"
