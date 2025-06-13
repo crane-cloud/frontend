@@ -9,6 +9,7 @@ import styled from "styled-components";
 import { IoAdd } from "react-icons/io5";
 import { Table } from "../Elements/CustomTable";
 import { Button } from "@mantine/core";
+import TitleText from "../TitleText";
 // import DetailsCard from "../common/DetailsCards";
 // import { TableFilter } from "../common/TableFilter";
 // interface TExportData {
@@ -21,12 +22,12 @@ const RegisterLayoutHandler = (props: any) => {
     register_status,
     api,
     rootData,
-    // title,
+    title,
     fullWidth = true,
     register_params,
     // showTotals,
   } = props;
-  let { id: source, status } = useParams<keyof TGeneralHookParams>();
+  let { source_id: source, status } = useParams<keyof TGeneralHookParams>();
   if (source_id) {
     source = source_id;
   }
@@ -47,7 +48,7 @@ const RegisterLayoutHandler = (props: any) => {
   const {
     tableData,
     tableColumns,
-    // tableTitle,
+    tableTitle,
     formRoute,
     createTitle,
     // totalsData,
@@ -105,27 +106,18 @@ const RegisterLayoutHandler = (props: any) => {
   //   }
   // };
 
-  // function getTitle() {
-  //   return `${tableTitle || beautify(source)} ${filters?.stringValue || "Register"} `;
-  // }
-  let tableDataResults = registerData?.results || registerData || [];
+  function getTitle() {
+    return `${tableTitle || beautify(source)} ${filters?.stringValue || "List"} `;
+  }
+
+  let tableDataResults =
+    registerData?.data?.[source || ""] || registerData || [];
   if (rootData) {
     tableDataResults = registerData || [];
   }
 
   return (
     <Wrapper fullWidth={fullWidth}>
-      {formRoute && (
-        <Button
-          className="capitalize"
-          rightSection={<IoAdd fontSize="small" />}
-          style={{ marginBottom: 20 }}
-          onClick={() => navigate(formRoute)}
-          size="sm"
-        >
-          {createTitle || `New ${beautify(source)}`}
-        </Button>
-      )}
       {/* {externalFilters && externalFilters.length > 0 && (
         <div style={{ display: "flex", gap: 30, marginBottom: 30 }}>
           {externalFilters.map((row: any) => (
@@ -142,7 +134,6 @@ const RegisterLayoutHandler = (props: any) => {
           ))}
         </div>
       )} */}
-
       {/* {showTotals && totalsData && ( */}
       {/* {totalsData && (
         <DetailsCard
@@ -150,8 +141,25 @@ const RegisterLayoutHandler = (props: any) => {
           horizontal
         />
       )} */}
+      <TitleText
+        rightSection={
+          formRoute && (
+            <Button
+              className="capitalize"
+              leftSection={<IoAdd fontSize="small" />}
+              onClick={() => navigate(formRoute)}
+              size="sm"
+            >
+              {createTitle || `New ${beautify(source)}`}
+            </Button>
+          )
+        }
+      >
+        {title || getTitle()}
+      </TitleText>
       <Table
         loading={loading}
+        striped
         // count={registerData?.count}
         // tableTitle={title || getTitle()}
         columns={tableColumns ? tableColumns(tableDataResults) : []}

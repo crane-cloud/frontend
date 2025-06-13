@@ -289,3 +289,7 @@ export const detailsCardView = (item: any) => {
   });
   return new_item;
 };
+
+export const formatDate = (value: any, format?: string) => {
+  return moment(value).format(format || "DD MMM YYYY");
+};

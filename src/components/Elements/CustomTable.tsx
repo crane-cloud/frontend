@@ -79,7 +79,11 @@ export const Table = ({
                           columnIndex === columns.length - 1 ? "right" : "left",
                       }}
                     >
-                      <Text className="capitalize" size="sm" fw={500}>
+                      <Text
+                        size="sm"
+                        fw={700}
+                        className={`capitalize ${column.noWrap ? "no-wrap" : ""}`}
+                      >
                         {column.header}
                       </Text>
                     </MantineTable.Th>

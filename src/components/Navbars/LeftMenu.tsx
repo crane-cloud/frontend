@@ -22,6 +22,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { LuLogs } from "react-icons/lu";
 import { PiCubeLight, PiFlask } from "react-icons/pi";
 import { SelectProject } from "../Elements/Elements";
+import { HiOutlineDatabase, HiOutlineServer } from "react-icons/hi";
 
 export type TLeftMenuType =
   | "home"
@@ -86,6 +87,24 @@ const LeftMenu = React.memo(
     const homeNavbarLinks = useMemo(
       () => [
         { label: "Home", icon: HiOutlineSquares2X2, key: "home", link: "/" },
+        {
+          label: "Clusters",
+          icon: HiOutlineServer,
+          key: "clusters",
+          link: "/admin/clusters/list",
+        },
+        {
+          label: "Users",
+          icon: HiOutlineUsers,
+          key: "users",
+          link: "/admin/users/list",
+        },
+        {
+          label: "Databases",
+          icon: HiOutlineDatabase,
+          key: "databases",
+          link: "/admin/databases/list",
+        },
         {
           label: "Settings",
           icon: HiOutlineCog6Tooth,

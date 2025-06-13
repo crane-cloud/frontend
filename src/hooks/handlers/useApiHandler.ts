@@ -1,1 +1,3 @@
-export const sourceApis: Record<string, string> = {};
+export const sourceApis: Record<string, string> = {
+  users: "/users",
+};

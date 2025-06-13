@@ -99,6 +99,6 @@ export const DashboardRoutes = [
 
 export const AdminDashboardRoutes = [
   { path: "/", element: <AdminDashboard /> },
-  { path: "/register/:id", element: <GenericRegister /> },
-  { path: "/register/:id/:status", element: <GenericRegister /> },
+  { path: "/admin/:source_id/list", element: <GenericRegister /> },
+  { path: "/admin/:source_id/:id", element: <GenericRegister /> },
 ];

@@ -47,5 +47,6 @@ export type TFormHandlerParams = {
 
 export type TGeneralHookParams = {
   status?: string;
-  id: string;
+  id?: string;
+  source_id?: string;
 };
