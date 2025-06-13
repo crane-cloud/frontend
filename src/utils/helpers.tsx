@@ -264,11 +264,13 @@ export const getPasswordStrength = (password: string): PasswordStrength => {
   return "weak";
 };
 
+export const bytesToMB = (bytesPerSecond: number) => bytesPerSecond / 1_000_000;
+
 export const formatMetricValue = (chartType: string, value: number) => {
   if (chartType === "cpu") {
     return `${value.toFixed(4)} cores`;
   } else if (chartType === "memory") {
-    return `${Math.round(value).toLocaleString()} MiB`;
+    return `${bytesToMB(value).toFixed(2)} MB/s`;
   } else if (chartType === "network") {
     return `${Math.round(value).toLocaleString()} KB/s`;
   }
