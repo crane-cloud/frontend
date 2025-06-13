@@ -9,19 +9,20 @@ import {
   Flex,
 } from "@mantine/core";
 import styled from "styled-components";
-
-export interface Column {
+import TableFilter from "./TableFilter";
+export interface TColumn {
   id: string;
   header: string;
   noWrap?: boolean;
   filter?: {
     key?: string;
-    options?: any[];
-    // Add other filter props as needed
+    type?: "text" | "select" | "date" | "number" | "date_range";
+    options?: { label: string; value: string }[];
+    placeholder?: string;
   };
 }
 
-interface PaginationData {
+interface TPaginationData {
   total: number;
   pages: number;
   page: number;
@@ -30,8 +31,8 @@ interface PaginationData {
   prev: string | number | null;
 }
 
-interface TableProps {
-  columns: Column[];
+interface TTableProps {
+  columns: TColumn[];
   data: any[];
   loading?: boolean;
   hideFilters?: boolean;
@@ -50,7 +51,7 @@ interface TableProps {
   rowHover?: boolean;
   rowClick?: (item: any) => void;
   showPagination?: boolean;
-  pagination?: PaginationData;
+  pagination?: TPaginationData;
 }
 
 export const Table = ({
@@ -72,16 +73,20 @@ export const Table = ({
   pagination,
   rowClick,
   onFilterChange,
-  filters,
-}: TableProps) => {
+  filters = {},
+  hideFilters = false,
+}: TTableProps) => {
   const startItem = pagination
-    ? (pagination.page - 1) * pagination.per_page + 1
+    ? (pagination?.page - 1) * pagination?.per_page + 1
     : 1;
   const endItem = pagination
-    ? Math.min(pagination.page * pagination.per_page, pagination.total)
-    : data.length;
+    ? Math.min(pagination?.page * pagination?.per_page, pagination?.total)
+    : data?.length;
 
-  const onChange = (key: string, value: string | number) => {
+  const onChange = (
+    key: string,
+    value: string | number | { start: string; end: string } | null,
+  ) => {
     const updatedFilters = { ...filters };
     delete updatedFilters.page;
     if (value === "" || value === null || value === undefined) {
@@ -126,6 +131,7 @@ export const Table = ({
                             columnIndex === columns.length - 1
                               ? "right"
                               : "left",
+                          verticalAlign: "top",
                         }}
                       >
                         <Text
@@ -135,6 +141,13 @@ export const Table = ({
                         >
                           {column.header}
                         </Text>
+                        {!hideFilters && (
+                          <TableFilter
+                            column={column}
+                            value={filters[column.filter?.key || column.id]}
+                            onChange={onChange}
+                          />
+                        )}
                       </MantineTable.Th>
                     ))}
                   </MantineTable.Tr>

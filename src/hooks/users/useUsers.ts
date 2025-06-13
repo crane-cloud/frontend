@@ -2,13 +2,34 @@ import { beautify, formatDate } from "@/utils/helpers";
 
 export const useUsers = () => {
   const tableColumns = () => [
-    { id: "name", header: "Name" },
+    {
+      id: "name",
+      header: "Name",
+      filter: { key: "keywords", type: "text", placeholder: "Search by name" },
+    },
     { id: "email", header: "Email" },
-    { id: "role", header: "Role" },
-    { id: "verified", header: "Verified" },
+    {
+      id: "role",
+      header: "Role",
+    },
+    {
+      id: "verified",
+      header: "Verified",
+      filter: {
+        type: "select",
+        options: [
+          { label: "Yes", value: "true" },
+          { label: "No", value: "false" },
+        ],
+      },
+    },
     { id: "last_seen", header: "Last Seen" },
     { id: "age", header: "Age" },
-    { id: "date_joined", header: "Date Joined" },
+    {
+      id: "date_joined",
+      header: "Date Joined",
+      filter: { type: "date_range" },
+    },
   ];
   const tableData = (data: any) => {
     if (!data) {
