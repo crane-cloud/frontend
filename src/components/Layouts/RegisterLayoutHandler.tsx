@@ -25,6 +25,7 @@ const RegisterLayoutHandler = (props: any) => {
     title,
     fullWidth = true,
     register_params,
+
     // showTotals,
   } = props;
   let { source_id: source, status } = useParams<keyof TGeneralHookParams>();
@@ -79,6 +80,7 @@ const RegisterLayoutHandler = (props: any) => {
       });
     }
   }
+
   // get register data from api
   useEffect(() => {
     const searchFilters = Object.fromEntries(searchParams.entries()) || {};
@@ -112,6 +114,7 @@ const RegisterLayoutHandler = (props: any) => {
 
   let tableDataResults =
     registerData?.data?.[source || ""] || registerData || [];
+  const pagination = registerData?.data?.pagination || {};
   if (rootData) {
     tableDataResults = registerData || [];
   }
@@ -159,14 +162,14 @@ const RegisterLayoutHandler = (props: any) => {
       </TitleText>
       <Table
         loading={loading}
-        striped
-        // count={registerData?.count}
-        // tableTitle={title || getTitle()}
         columns={tableColumns ? tableColumns(tableDataResults) : []}
         data={tableData ? tableData(tableDataResults) : []}
         tableTotals={tableTotals ? tableTotals(registerData) : {}}
-        // filters={filters}
-        // onFilterChange={setFilter}
+        pagination={pagination}
+        filters={filters}
+        onFilterChange={setFilter}
+        striped
+        showPagination
       />
     </Wrapper>
   );
