@@ -50,38 +50,17 @@ export const useUsers = () => {
     });
   };
 
-  const viewData = (item: any) => {
+  const metaData = (data: any) => {
     return {
-      sections: [
-        {
-          title: "User Details",
-          fields: {
-            username: item?.username,
-            first_name: item?.first_name,
-            last_name: item?.last_name,
-            other_name: item?.other_name,
-            email: item?.email,
-            phone_number: item?.phone_number,
-            alternative_phone_number: item?.alternative_phone_number,
-            organisation: item?.organisation_name,
-            is_active: item?.is_active ? "Active" : "Disabled",
-            date_joined: formatDate(item?.date_joined),
-          },
-        },
-        {
-          title: "Profile Details",
-          fields: {
-            nationality: item?.profile?.type_of_nationality,
-            department: item?.profile?.department_name,
-            NIN: item?.profile?.nin,
-            TIN: item?.profile?.tin,
-          },
-        },
-      ],
+      total: data?.total_users || 0,
+      verified: (data?.total_users || 0) - (data?.none_verified || 0),
+      unverified: data?.none_verified || 0,
+      disabled: data?.disabled || 0,
+      beta_users: data?.beta_users || 0,
     };
   };
 
-  const formRoute = "/users/create";
+  const formRoute = "#";
 
-  return { tableColumns, tableData, formRoute, viewData };
+  return { tableColumns, tableData, formRoute, metaData };
 };

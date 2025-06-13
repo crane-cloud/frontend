@@ -52,6 +52,7 @@ interface TTableProps {
   rowClick?: (item: any) => void;
   showPagination?: boolean;
   pagination?: TPaginationData;
+  title?: string;
 }
 
 export const Table = ({
@@ -75,6 +76,7 @@ export const Table = ({
   onFilterChange,
   filters = {},
   hideFilters = false,
+  title,
 }: TTableProps) => {
   const startItem = pagination
     ? (pagination?.page - 1) * pagination?.per_page + 1
@@ -104,7 +106,10 @@ export const Table = ({
       <Card withBorder p="md" radius="md">
         <Stack gap={4}>
           <Flex justify="space-between" align="center">
-            <div style={{ flex: 1 }}>{header && header()}</div>
+            <div style={{ flex: 1 }}>
+              {title ? <Text fw={700}>{title}</Text> : header && header()}
+            </div>
+
             {pagination && (
               <Text size="xs" c="dimmed">
                 Showing {startItem || 0} - {endItem || 0} of{" "}
@@ -121,7 +126,11 @@ export const Table = ({
               {!noHeader && (
                 <MantineTable.Thead>
                   <MantineTable.Tr>
-                    {showIndex && <MantineTable.Th>#</MantineTable.Th>}
+                    {showIndex && (
+                      <MantineTable.Th style={{ verticalAlign: "top" }}>
+                        #
+                      </MantineTable.Th>
+                    )}
                     {columns?.map((column, columnIndex) => (
                       <MantineTable.Th
                         key={column.id}
@@ -224,7 +233,9 @@ export const Table = ({
               {tableFooter && (
                 <MantineTable.Tfoot>
                   <MantineTable.Tr>
-                    <MantineTable.Th>#</MantineTable.Th>
+                    <MantineTable.Th style={{ verticalAlign: "top" }}>
+                      #
+                    </MantineTable.Th>
                     {columns.map((column, columnIndex) => (
                       <MantineTable.Th
                         key={column.id}

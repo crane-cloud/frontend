@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { registerHooks } from "../../hooks/handlers/useRegisterHandler";
 import { TGeneralHookParams } from "../../types/common";
-import { beautify } from "../../utils/helpers";
+import { beautify, returnObject } from "../../utils/helpers";
 import useGet from "@/utils/useGet";
 import { sourceApis } from "../../hooks/handlers/useApiHandler";
-import styled from "styled-components";
 import { IoAdd } from "react-icons/io5";
 import { Table } from "../Elements/CustomTable";
-import { Button } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import TitleText from "../TitleText";
+import { SimpleDetailsCard } from "../Cards/DetailsCard";
 // import DetailsCard from "../common/DetailsCards";
 // import { TableFilter } from "../common/TableFilter";
 // interface TExportData {
@@ -23,7 +23,6 @@ const RegisterLayoutHandler = (props: any) => {
     api,
     rootData,
     title,
-    fullWidth = true,
     register_params,
 
     // showTotals,
@@ -52,10 +51,12 @@ const RegisterLayoutHandler = (props: any) => {
     tableTitle,
     formRoute,
     createTitle,
-    // totalsData,
+    metaData,
     tableTotals,
     // externalFilters,
     initialFilters,
+    isExternalRoute,
+    showTitle,
   } =
     source && registerHooks[source]
       ? registerHooks[source]({ status, ...register_params })
@@ -77,6 +78,9 @@ const RegisterLayoutHandler = (props: any) => {
       getRegisterData({
         api: apiToUse,
         params: filters,
+        ...returnObject(isExternalRoute === true, {
+          isExternal: true,
+        }),
       });
     }
   }
@@ -120,7 +124,7 @@ const RegisterLayoutHandler = (props: any) => {
   }
 
   return (
-    <Wrapper fullWidth={fullWidth}>
+    <Stack gap={20}>
       {/* {externalFilters && externalFilters.length > 0 && (
         <div style={{ display: "flex", gap: 30, marginBottom: 30 }}>
           {externalFilters.map((row: any) => (
@@ -138,29 +142,31 @@ const RegisterLayoutHandler = (props: any) => {
         </div>
       )} */}
       {/* {showTotals && totalsData && ( */}
-      {/* {totalsData && (
-        <DetailsCard
-          viewData={detailsCardView(totalsData(registerData))}
-          horizontal
-        />
-      )} */}
-      <TitleText
-        rightSection={
-          formRoute && (
-            <Button
-              className="capitalize"
-              leftSection={<IoAdd fontSize="small" />}
-              onClick={() => navigate(formRoute)}
-              size="sm"
-            >
-              {createTitle || `New ${beautify(source)}`}
-            </Button>
-          )
-        }
-      >
-        {title || getTitle()}
-      </TitleText>
+      {showTitle && (
+        <TitleText
+          rightSection={
+            formRoute && (
+              <Button
+                className="capitalize"
+                leftSection={<IoAdd fontSize="small" />}
+                onClick={() => navigate(formRoute)}
+                size="sm"
+              >
+                {createTitle || `New ${beautify(source)}`}
+              </Button>
+            )
+          }
+        >
+          {title || getTitle()}
+        </TitleText>
+      )}
+
+      {metaData && registerData && (
+        <SimpleDetailsCard data={metaData(registerData?.data?.meta_data)} />
+      )}
+
       <Table
+        title={title || getTitle()}
         loading={loading}
         columns={tableColumns ? tableColumns(tableDataResults) : []}
         data={tableData ? tableData(tableDataResults) : []}
@@ -171,16 +177,8 @@ const RegisterLayoutHandler = (props: any) => {
         striped
         showPagination
       />
-    </Wrapper>
+    </Stack>
   );
 };
 
 export default RegisterLayoutHandler;
-interface WrapperProps {
-  fullWidth: boolean;
-}
-const Wrapper = styled.div<WrapperProps>`
-  padding: ${({ fullWidth }) => (fullWidth ? "0 20px" : "0")};
-  @media (max-width: 960px) {
-  }
-`;

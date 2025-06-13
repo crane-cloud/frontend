@@ -12,7 +12,7 @@ import Search from "../Elements/Search";
 import { API_PROJECTS } from "@/utils/apis";
 import { DOCS_URL } from "@/config";
 import DataNotFoundMessage from "@/pages/common/DataFoundMessage";
-import { useInfiniteScrollWithPagination } from "@/hooks/useInfiniteScroll";
+import { useInfiniteScrollWithPagination } from "@/hooks/generic/useInfiniteScroll";
 
 const ProjectsList = () => {
   const { data: projectsData, getData, loading, success } = useGet();

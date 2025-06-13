@@ -9,6 +9,20 @@ import { beautify } from "@/utils/helpers";
 import { TbBrandMysql } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 
+export const DatabaseFlavour = ({ flavour }: { flavour: string }) => {
+  return (
+    <Group gap="xs" align="center">
+      {flavour === "postgres" ? (
+        <BiLogoPostgresql size={16} color="#0064a5" />
+      ) : (
+        <TbBrandMysql size={16} color="#00758f" />
+      )}
+      <Text size="sm" fw={500}>
+        {beautify(flavour)}
+      </Text>
+    </Group>
+  );
+};
 const DatabaseList = (props: any) => {
   const { project_id, refresh } = props;
   const { getData: getDatabases, data: databases, loading } = useGet();
@@ -35,18 +49,7 @@ const DatabaseList = (props: any) => {
     return data?.map((database: any) => ({
       ...database,
       name: database.name,
-      type: (
-        <Group gap="xs" align="center">
-          {database.database_flavour_name === "postgres" ? (
-            <BiLogoPostgresql size={16} color="#0064a5" />
-          ) : (
-            <TbBrandMysql size={16} color="#00758f" />
-          )}
-          <Text size="sm" fw={500}>
-            {beautify(database.database_flavour_name)}
-          </Text>
-        </Group>
-      ),
+      type: <DatabaseFlavour flavour={database.database_flavour_name} />,
       age: moment(database.date_created).fromNow(),
     }));
   };
