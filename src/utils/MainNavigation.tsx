@@ -9,11 +9,12 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
-import { DashboardRoutes, guestRoutes } from "../Router";
+import { AdminDashboardRoutes, DashboardRoutes, guestRoutes } from "../Router";
 import { NotFoundPage } from "@/pages/common/NotFoundPage";
+import { AdminDashboardLayout } from "@/components/Layouts/AdminDashboardLayout";
 
 const MainNavigation = () => {
-  const { loggedIn } = useAuth();
+  const { loggedIn, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -30,6 +31,23 @@ const MainNavigation = () => {
   }, [loggedIn, location]);
 
   if (loggedIn) {
+    // If Admin, show AdminDashboardLayout
+    if (user?.is_admin) {
+      return (
+        <AdminDashboardLayout>
+          <Routes>
+            {AdminDashboardRoutes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={route.element}
+              />
+            ))}
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </AdminDashboardLayout>
+      );
+    }
     return (
       <DashboardLayout>
         {/* <Suspense fallback={<Loader />}> */}

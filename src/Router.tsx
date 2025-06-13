@@ -38,6 +38,11 @@ const ExperiementsListPage = React.lazy(
 const ProjectDetailsPage = React.lazy(
   () => import("./pages/Projects/ProjectDetailsPage"),
 );
+const AdminDashboard = React.lazy(() => import("./pages/admin/DashboardPage"));
+const GenericRegister = React.lazy(
+  () => import("./components/Layouts/GenericRegister"),
+);
+
 export const guestRoutes = [
   // { path: "/", element: <></> },
   { path: "/health", element: <HealthCheck /> },
@@ -90,4 +95,10 @@ export const DashboardRoutes = [
     path: "/projects/:project_id/apps/:app_id/experiments/:experiment_id/runs/:run_id",
     element: <RunsDetailsPage />,
   },
+];
+
+export const AdminDashboardRoutes = [
+  { path: "/", element: <AdminDashboard /> },
+  { path: "/register/:id", element: <GenericRegister /> },
+  { path: "/register/:id/:status", element: <GenericRegister /> },
 ];

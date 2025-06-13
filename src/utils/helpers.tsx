@@ -8,7 +8,10 @@ import { BiTrash } from "react-icons/bi";
 import { TiEdit } from "react-icons/ti";
 import { format } from "date-fns";
 
-export const beautify = (str: string) => {
+export const beautify = (str: string | undefined) => {
+  if (typeof str !== "string") {
+    return "";
+  }
   return (str || "")
     .replaceAll("_", " ")
     .replaceAll("-", " ")
@@ -274,4 +277,15 @@ export const formatMetricValue = (chartType: string, value: number) => {
   }
 
   return null;
+};
+
+export const detailsCardView = (item: any) => {
+  const new_item: any = {};
+  Object.keys(item).forEach((key) => {
+    if (!key.includes("-name")) {
+      new_item[key] =
+        item[`${key}-name`] != null ? item[`${key}-name`] : item[key];
+    }
+  });
+  return new_item;
 };

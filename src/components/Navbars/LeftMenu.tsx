@@ -29,15 +29,18 @@ export type TLeftMenuType =
   | "admin"
   | "app"
   | "mlops"
+  | "cluster"
+  | "admin"
   | "noSidebar";
 
 interface ILeftMenuProps {
   menuType: TLeftMenuType;
-  projectId: string;
+  projectId?: string;
   title?: string;
   subtitle?: string;
   appId?: string;
   project?: any;
+  clusterId?: string;
 }
 interface INavLink {
   label: string;
@@ -48,7 +51,7 @@ interface INavLink {
 }
 
 const LeftMenu = React.memo(
-  ({ menuType, projectId, appId, title }: ILeftMenuProps) => {
+  ({ menuType, projectId, appId, title, clusterId }: ILeftMenuProps) => {
     const location = useLocation();
     const { colorScheme, setColorScheme } = useMantineColorScheme();
 
@@ -66,9 +69,17 @@ const LeftMenu = React.memo(
         },
         location.pathname,
       );
+      const clusterMatch = matchPath(
+        {
+          path: "/clusters/:cluster_id",
+          end: false,
+        },
+        location.pathname,
+      );
       return {
         projectId: pathMatch?.params?.project_id || projectId,
         appId: pathMatch?.params?.app_id || appId,
+        clusterId: clusterMatch?.params?.cluster_id || clusterId,
       };
     };
 
@@ -80,6 +91,24 @@ const LeftMenu = React.memo(
           icon: HiOutlineCog6Tooth,
           key: "settings",
           link: "/settings",
+        },
+      ],
+      [],
+    );
+
+    const getClusterNavbarLinks = useCallback(
+      (cluster_id: string) => [
+        {
+          label: "Dashboard",
+          icon: HiOutlineSquares2X2,
+          key: "home",
+          link: `/clusters/${cluster_id}`,
+        },
+        {
+          label: "Settings",
+          icon: HiOutlineCog6Tooth,
+          key: "settings",
+          link: `/settings`,
         },
       ],
       [],
@@ -188,7 +217,11 @@ const LeftMenu = React.memo(
     );
 
     useEffect(() => {
-      const { projectId: project_id, appId: app_id } = getPathIds();
+      const {
+        projectId: project_id,
+        appId: app_id,
+        clusterId: cluster_id,
+      } = getPathIds();
 
       switch (menuType) {
         case "home":
@@ -210,6 +243,12 @@ const LeftMenu = React.memo(
         case "mlops":
           if (project_id && app_id) {
             setNavbarLinks(getMLOpsNavbarLinks(project_id, app_id));
+            setShowProjectHeader(true);
+          }
+          break;
+        case "cluster":
+          if (cluster_id) {
+            setNavbarLinks(getClusterNavbarLinks(cluster_id));
             setShowProjectHeader(true);
           }
           break;
