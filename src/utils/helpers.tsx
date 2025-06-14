@@ -42,7 +42,7 @@ export const useGetProject = (project_id: string) => {
       id: project_id,
       api: `/projects`,
     });
-  }, [refresh]);
+  }, [project_id, refresh]);
 
   useEffect(() => {
     if (success) {
@@ -68,7 +68,7 @@ export const useGetProject = (project_id: string) => {
     }
   }, [setMenuType, project_id, project]);
 
-  return { project, cluster, loading, success, refresh, setRefresh, getData };
+  return { project, cluster, loading, success, refresh, setRefresh };
 };
 
 export const useGetApp = (app_id: string) => {
@@ -283,11 +283,13 @@ export const getPasswordStrength = (password: string): PasswordStrength => {
   return "weak";
 };
 
+export const bytesToMB = (bytesPerSecond: number) => bytesPerSecond / 1_000_000;
+
 export const formatMetricValue = (chartType: string, value: number) => {
   if (chartType === "cpu") {
     return `${value.toFixed(4)} cores`;
   } else if (chartType === "memory") {
-    return `${Math.round(value).toLocaleString()} MiB`;
+    return `${bytesToMB(value).toFixed(2)} MB/s`;
   } else if (chartType === "network") {
     return `${Math.round(value).toLocaleString()} KB/s`;
   }

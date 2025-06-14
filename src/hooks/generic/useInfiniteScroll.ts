@@ -135,8 +135,10 @@ export const useInfiniteScrollWithPagination = <T = any>({
   useEffect(() => {
     if (resetTrigger !== undefined) {
       resetList();
+      setCurrentPage(1);
+      onLoadMore(1);
     }
-  }, [resetTrigger, resetList]);
+  }, [resetTrigger]);
 
   // Cleanup
   useEffect(() => {

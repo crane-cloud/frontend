@@ -25,7 +25,7 @@ const AppsList = (props: any) => {
         params: { page, per_page: 6 },
       });
     },
-    resetTrigger: refresh,
+    resetTrigger: `${project_id}-${refresh}`,
   });
 
   // Initial data fetch

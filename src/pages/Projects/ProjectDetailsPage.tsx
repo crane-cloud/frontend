@@ -3,22 +3,13 @@ import TitleText from "@/components/TitleText";
 import { useGetProject } from "@/utils/helpers";
 import AppsList from "@/components/Lists/AppsList";
 import { AddServiceButton } from "@/components/Elements/Elements";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const ProjectDetailsPage = () => {
   const { project_id } = useParams();
-  const { project, loading, success, getData } = useGetProject(
-    project_id || "",
-  );
+  const { project, loading, success } = useGetProject(project_id || "");
 
   const [refresh, setRefresh] = useState(false);
-
-  useEffect(() => {
-    getData({
-      id: project_id,
-      api: `/projects`,
-    });
-  }, [project_id]);
 
   return (
     <div>
