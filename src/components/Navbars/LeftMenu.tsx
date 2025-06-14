@@ -100,6 +100,12 @@ const LeftMenu = React.memo(
           link: "/admin/users/list",
         },
         {
+          label: "Projects",
+          icon: HiOutlineUsers,
+          key: "projects",
+          link: "/admin/projects/list",
+        },
+        {
           label: "Databases",
           icon: HiOutlineDatabase,
           key: "databases",

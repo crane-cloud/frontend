@@ -21,6 +21,14 @@ export const beautify = (str: string | undefined) => {
     .replace(/\b\w/g, (char) => char.toUpperCase());
 };
 
+export const shortenID = (value: string) => {
+  if (value) {
+    const parts = value.split("-");
+    return parts[parts.length - 1]; // Returns the last part after the last hyphen
+  }
+  return "";
+};
+
 export const useGetProject = (project_id: string) => {
   const { setMenuType, setProjectId, setTitle, setSubtitle, setProject } =
     useContext(MenuContext);

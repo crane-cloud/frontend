@@ -14,13 +14,13 @@ import {
   Alert,
 } from "@mantine/core";
 import { useSetContainerSize } from "@/utils/helpers";
-import useForm from "@/hooks/useForm";
 import useGet from "@/utils/useGet";
 import { API_CLUSTERS, API_PROJECTS, API_TAGS } from "@/utils/apis";
 import { NO, ORGANISATIONS, PROJECT_TYPES, YES } from "@/utils/constants";
 import usePost from "@/utils/usePost";
 import { useAuth } from "@/utils/AuthContext";
 import { useNavigate } from "react-router-dom";
+import useForm from "@/hooks/generic/useForm";
 
 type TCreateProjectForm = {
   project?: any;

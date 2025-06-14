@@ -1,6 +1,6 @@
 import { DatabaseFlavour } from "@/components/Lists/databaseList";
 import { DATABASE_API_URL } from "@/config";
-import { beautify, formatDate } from "@/utils/helpers";
+import { beautify, formatDate, shortenID } from "@/utils/helpers";
 import useGet from "@/utils/useGet";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -56,7 +56,9 @@ export const useDatabases = () => {
         verified: item.verified ? "Yes" : "No",
         disabled: item.disabled ? "Yes" : "No",
         project_id: (
-          <Link to={`/projects/${item.project_id}`}>{item.project_id}</Link>
+          <Link to={`/projects/${item.project_id}`}>
+            {shortenID(item.project_id)}
+          </Link>
         ),
         database_flavour_name: (
           <DatabaseFlavour flavour={item.database_flavour_name} />

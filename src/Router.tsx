@@ -107,4 +107,6 @@ export const AdminDashboardRoutes = [
   { path: "/admin/:source_id/:id", element: <GenericRegister /> },
   { path: "/admin/clusters", element: <ClustersPage /> },
   { path: "/admin/clusters/create", element: <CreateClusterPage /> },
+  { path: "/projects/:project_id", element: <ProjectSettingsPage /> },
+  { path: "/profile/:user_id", element: <UserProfilePage /> },
 ];
