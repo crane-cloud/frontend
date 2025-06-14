@@ -2,7 +2,7 @@ import { Loader, Button, Group, Paper, Select, Stack } from "@mantine/core";
 import React, { useEffect } from "react";
 import TitleText from "../TitleText";
 import usePost from "@/utils/usePost";
-import useForm from "@/hooks/useForm";
+import useForm from "@/hooks/generic/useForm";
 import { DATABASE_FLAVOURS } from "@/utils/constants";
 import { DATABASE_API_URL } from "@/config";
 
