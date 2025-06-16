@@ -7,14 +7,26 @@ import moment from "moment";
 import { BiTrash } from "react-icons/bi";
 import { TiEdit } from "react-icons/ti";
 import { format } from "date-fns";
+import { AdminMenuContext } from "@/components/Layouts/AdminDashboardLayout";
 
-export const beautify = (str: string) => {
+export const beautify = (str: string | undefined) => {
+  if (typeof str !== "string") {
+    return "";
+  }
   return (str || "")
     .replaceAll("_", " ")
     .replaceAll("-", " ")
     .replaceAll("/", "")
     .toLowerCase()
     .replace(/\b\w/g, (char) => char.toUpperCase());
+};
+
+export const shortenID = (value: string) => {
+  if (value) {
+    const parts = value.split("-");
+    return parts[parts.length - 1]; // Returns the last part after the last hyphen
+  }
+  return "";
 };
 
 export const useGetProject = (project_id: string) => {
@@ -127,6 +139,13 @@ export const useSetNoSidebar = () => {
 
 export const useSetContainerSize = (size: string) => {
   const { setContainerSize } = useContext(MenuContext);
+  useEffect(() => {
+    setContainerSize(size);
+  }, [setContainerSize, size]);
+};
+
+export const useSetAdminContainerSize = (size: string) => {
+  const { setContainerSize } = useContext(AdminMenuContext);
   useEffect(() => {
     setContainerSize(size);
   }, [setContainerSize, size]);
@@ -276,4 +295,19 @@ export const formatMetricValue = (chartType: string, value: number) => {
   }
 
   return null;
+};
+
+export const detailsCardView = (item: any) => {
+  const new_item: any = {};
+  Object.keys(item).forEach((key) => {
+    if (!key.includes("-name")) {
+      new_item[key] =
+        item[`${key}-name`] != null ? item[`${key}-name`] : item[key];
+    }
+  });
+  return new_item;
+};
+
+export const formatDate = (value: any, format?: string) => {
+  return moment(value).format(format || "DD MMM YYYY");
 };

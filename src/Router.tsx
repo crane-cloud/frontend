@@ -7,6 +7,7 @@ import UserProfilePage from "./pages/Users/UserProfilePage";
 import AccountVerification from "./pages/Auth/accountVerificationPage";
 import AppMetrics from "./pages/Apps/AppMetrics";
 import HealthCheck from "./components/HealthCheck";
+import ClustersPage from "./pages/admin/ClustersPage";
 // import { HomePage } from "./pages/Home.page";
 const AppsListPage = React.lazy(() => import("./pages/Apps/AppsListPage"));
 const ProjectSettingsPage = React.lazy(
@@ -38,6 +39,14 @@ const ExperimentsListPage = React.lazy(
 const ProjectDetailsPage = React.lazy(
   () => import("./pages/Projects/ProjectDetailsPage"),
 );
+const AdminDashboard = React.lazy(() => import("./pages/admin/DashboardPage"));
+const GenericRegister = React.lazy(
+  () => import("./components/Layouts/GenericRegister"),
+);
+const CreateClusterPage = React.lazy(
+  () => import("./pages/admin/CreateClusters"),
+);
+
 export const guestRoutes = [
   // { path: "/", element: <></> },
   { path: "/health", element: <HealthCheck /> },
@@ -90,4 +99,14 @@ export const DashboardRoutes = [
     path: "/projects/:project_id/apps/:app_id/experiments/:experiment_id/runs/:run_id",
     element: <RunsDetailsPage />,
   },
+];
+
+export const AdminDashboardRoutes = [
+  { path: "/", element: <AdminDashboard /> },
+  { path: "/admin/:source_id/list", element: <GenericRegister /> },
+  { path: "/admin/:source_id/:id", element: <GenericRegister /> },
+  { path: "/admin/clusters", element: <ClustersPage /> },
+  { path: "/admin/clusters/create", element: <CreateClusterPage /> },
+  { path: "/projects/:project_id", element: <ProjectSettingsPage /> },
+  { path: "/profile/:user_id", element: <UserProfilePage /> },
 ];
