@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { registerHooks } from "../../hooks/handlers/useRegisterHandler";
+import {
+  registerHooks,
+  sourceApis,
+} from "../../hooks/handlers/useRegisterHandler";
 import { TGeneralHookParams } from "../../types/common";
 import { beautify, returnObject } from "../../utils/helpers";
 import useGet from "@/utils/useGet";
-import { sourceApis } from "../../hooks/handlers/useApiHandler";
 import { IoAdd } from "react-icons/io5";
 import { Table } from "../Elements/CustomTable";
 import { Button, Stack } from "@mantine/core";
