@@ -8,6 +8,7 @@ import { BiTrash } from "react-icons/bi";
 import { TiEdit } from "react-icons/ti";
 import { format } from "date-fns";
 import { AdminMenuContext } from "@/components/Layouts/AdminDashboardLayout";
+import { useParams } from "react-router-dom";
 
 export const beautify = (str: string | undefined) => {
   if (typeof str !== "string") {
@@ -135,6 +136,23 @@ export const useSetNoSidebar = () => {
   useEffect(() => {
     setMenuType("noSidebar");
   }, [setMenuType]);
+};
+export const useSetAdminHomeSidebar = () => {
+  const { setMenuType } = useContext(AdminMenuContext);
+  useEffect(() => {
+    setMenuType("home");
+  }, [setMenuType]);
+};
+export const useSetAdminClusterSidebar = () => {
+  const { setMenuType, setClusterId } = useContext(AdminMenuContext);
+  const { cluster_id } = useParams();
+
+  useEffect(() => {
+    setMenuType("cluster");
+    if (cluster_id) {
+      setClusterId(cluster_id);
+    }
+  }, [setMenuType, setClusterId, cluster_id]);
 };
 
 export const useSetContainerSize = (size: string) => {

@@ -46,6 +46,9 @@ const GenericRegister = React.lazy(
 const CreateClusterPage = React.lazy(
   () => import("./pages/admin/CreateClusters"),
 );
+const ClustersDashboard = React.lazy(
+  () => import("./pages/admin/cluster/ClustersDashboard"),
+);
 
 export const guestRoutes = [
   // { path: "/", element: <></> },
@@ -109,4 +112,6 @@ export const AdminDashboardRoutes = [
   { path: "/admin/clusters/create", element: <CreateClusterPage /> },
   { path: "/projects/:project_id", element: <ProjectSettingsPage /> },
   { path: "/profile/:user_id", element: <UserProfilePage /> },
+  // clusters
+  { path: "/admin/clusters/:cluster_id", element: <ClustersDashboard /> },
 ];
