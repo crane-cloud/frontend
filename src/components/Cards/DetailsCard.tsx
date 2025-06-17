@@ -13,8 +13,8 @@ const DetailsCard = ({ data }: TDetailsCardProps) => {
           <Grid.Col span={{ base: 6, md: 4, lg: 4 }}>
             <Flex>
               <Stack gap={1}>
-                <Text className="subtitle">{info.label}</Text>
-                <Text size="sm">{info.value}</Text>
+                <Text className="subtitle">{info.label || ""}</Text>
+                <Text size="sm">{info.value || ""}</Text>
               </Stack>
             </Flex>
           </Grid.Col>
@@ -43,7 +43,7 @@ export const SimpleDetailsCard = ({ data }: TDetailsCardProps) => {
               {key}
             </Text>
             <Text fz={24} fw={700}>
-              {value.toLocaleString()}
+              {value?.toLocaleString()}
             </Text>
           </Stack>
         </Card>

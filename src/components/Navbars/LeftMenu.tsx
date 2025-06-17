@@ -387,7 +387,8 @@ const LeftMenu = React.memo(
           break;
         case "cluster":
           if (cluster_id) {
-            setNavbarLinks(getClusterNavbarLinks(cluster_id));
+            const clusterLinks = getClusterNavbarLinks(cluster_id);
+            setNavbarLinks(clusterLinks as INavLink[]);
             setShowProjectHeader(false);
           }
           break;
