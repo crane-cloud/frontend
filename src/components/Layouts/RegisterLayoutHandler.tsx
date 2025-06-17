@@ -29,7 +29,8 @@ const RegisterLayoutHandler = (props: any) => {
 
     // showTotals,
   } = props;
-  let { source_id: source, status } = useParams<keyof TGeneralHookParams>();
+  const params = useParams<keyof TGeneralHookParams>();
+  let { source_id: source, status } = params;
   if (source_id) {
     source = source_id;
   }
@@ -59,9 +60,11 @@ const RegisterLayoutHandler = (props: any) => {
     initialFilters,
     isExternalRoute,
     showTitle,
+    apiRoute,
+    dataParent,
   } =
     source && registerHooks[source]
-      ? registerHooks[source]({ status, ...register_params })
+      ? registerHooks[source]({ ...register_params, ...params, status })
       : [];
   // Convert searchParams to an object and add it to the initial filters
   const searchFilters = Object.fromEntries(searchParams.entries()) || {};
@@ -75,7 +78,7 @@ const RegisterLayoutHandler = (props: any) => {
   const { getData: getRegisterData, data: registerData, loading } = useGet();
 
   function getData(filters: any) {
-    const apiToUse = api || (source && sourceApis[source]);
+    const apiToUse = api || apiRoute || (source && sourceApis[source]);
     if (apiToUse) {
       getRegisterData({
         api: apiToUse,
@@ -119,7 +122,7 @@ const RegisterLayoutHandler = (props: any) => {
   }
 
   let tableDataResults =
-    registerData?.data?.[source || ""] || registerData || [];
+    registerData?.data?.[dataParent || source || ""] || registerData || [];
   const pagination = registerData?.data?.pagination || {};
   if (rootData) {
     tableDataResults = registerData || [];
