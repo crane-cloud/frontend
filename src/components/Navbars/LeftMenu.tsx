@@ -15,14 +15,29 @@ import {
   HiOutlineUsers,
   HiOutlineCircleStack,
   HiOutlineChartBar,
+  HiOutlineDocumentText,
+  HiOutlineCube,
+  HiOutlineArchiveBox,
+  HiOutlineServerStack,
+  HiOutlineServer,
+  HiOutlineDocumentDuplicate,
+  HiOutlineCloud,
+  HiOutlineGlobeAlt,
+  HiOutlineArrowPath,
 } from "react-icons/hi2";
+import { GiNetworkBars } from "react-icons/gi";
 import { Link, matchPath, useLocation, useNavigate } from "react-router-dom";
-import { IoArrowBack, IoMoonOutline, IoSunnyOutline } from "react-icons/io5";
+import {
+  IoArrowBack,
+  IoMoonOutline,
+  IoReturnUpBack,
+  IoSunnyOutline,
+} from "react-icons/io5";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { LuLogs } from "react-icons/lu";
 import { PiCubeLight, PiFlask } from "react-icons/pi";
 import { SelectProject } from "../Elements/Elements";
-import { HiOutlineDatabase, HiOutlineServer } from "react-icons/hi";
+import { HiOutlineDatabase } from "react-icons/hi";
 
 export type TLeftMenuType =
   | "home"
@@ -49,6 +64,7 @@ interface INavLink {
   key: string;
   link: string;
   description?: string;
+  children?: INavLink[];
 }
 
 const LeftMenu = React.memo(
@@ -124,10 +140,109 @@ const LeftMenu = React.memo(
     const getClusterNavbarLinks = useCallback(
       (cluster_id: string) => [
         {
+          label: "Back",
+          icon: IoReturnUpBack,
+          key: "back",
+          link: `/admin/clusters`,
+        },
+        {
           label: "Dashboard",
           icon: HiOutlineSquares2X2,
           key: "home",
-          link: `/clusters/${cluster_id}`,
+          link: `/admin/clusters/${cluster_id}`,
+        },
+        {
+          label: "Projects",
+          icon: HiOutlineCube,
+          key: "projects",
+          link: `/admin/clusters/${cluster_id}/projects`,
+        },
+        {
+          label: "Activity Logs",
+          icon: HiOutlineDocumentText,
+          key: "activity_logs",
+          link: `/admin/clusters/${cluster_id}/activity_logs`,
+        },
+        {
+          label: "Infrastructure",
+          icon: HiOutlineServerStack,
+          key: "infrastructure",
+          children: [
+            {
+              label: "Nodes",
+              icon: HiOutlineServer,
+              key: "nodes",
+              link: `/admin/clusters/${cluster_id}/nodes`,
+            },
+            {
+              label: "Namespaces",
+              icon: HiOutlineArchiveBox,
+              key: "namespaces",
+              link: `/admin/clusters/${cluster_id}/namespaces`,
+            },
+            {
+              label: "Deployments",
+              icon: HiOutlineArrowPath,
+              key: "deployments",
+              link: `/admin/clusters/${cluster_id}/deployments`,
+            },
+            {
+              label: "Jobs",
+              icon: HiOutlineDocumentDuplicate,
+              key: "jobs",
+              link: `/admin/clusters/${cluster_id}/jobs`,
+            },
+            {
+              label: "Pods",
+              icon: HiOutlineCircleStack,
+              key: "pods",
+              link: `/admin/clusters/${cluster_id}/pods`,
+            },
+          ],
+        },
+        {
+          label: "Network",
+          icon: HiOutlineGlobeAlt,
+          key: "infrastructure",
+          children: [
+            {
+              label: "Services",
+              icon: HiOutlineGlobeAlt,
+              key: "services",
+              link: `/admin/clusters/${cluster_id}/services`,
+            },
+            {
+              label: "Ingresses",
+              icon: GiNetworkBars,
+              key: "ingresses",
+              link: `/admin/clusters/${cluster_id}/ingresses`,
+            },
+          ],
+        },
+        {
+          label: "Storage",
+          icon: HiOutlineDatabase,
+          key: "storage",
+          children: [
+            {
+              label: "Volumes",
+              icon: HiOutlineDatabase,
+              key: "volumes",
+              link: `/admin/clusters/${cluster_id}/volumes`,
+            },
+            {
+              label: "Volume Claims",
+              icon: HiOutlineDocumentDuplicate,
+              key: "volume_claims",
+              link: `/admin/clusters/${cluster_id}/volume_claims`,
+            },
+            {
+              label: "Storage Classes",
+              icon: HiOutlineCloud,
+              key: "storage_classes",
+              link: `/admin/clusters/${cluster_id}/storage_classes`,
+            },
+          ],
         },
         {
           label: "Settings",
@@ -247,7 +362,6 @@ const LeftMenu = React.memo(
         appId: app_id,
         clusterId: cluster_id,
       } = getPathIds();
-
       switch (menuType) {
         case "home":
           setNavbarLinks(homeNavbarLinks);
@@ -274,7 +388,7 @@ const LeftMenu = React.memo(
         case "cluster":
           if (cluster_id) {
             setNavbarLinks(getClusterNavbarLinks(cluster_id));
-            setShowProjectHeader(true);
+            setShowProjectHeader(false);
           }
           break;
         default:
@@ -319,7 +433,7 @@ const LeftMenu = React.memo(
     // };
     // useEffect(() => {
     // }, [appId, projectId]);
-
+    useEffect(() => {}, [navbarLinks]);
     return (
       <AppShell.Navbar
         p="5px"
@@ -363,23 +477,59 @@ const LeftMenu = React.memo(
             </Stack>
           )}
           {navbarLinks.map((link: INavLink) => (
-            <NavLink
-              component={Link}
-              key={link.key}
-              label={link.label}
-              leftSection={<link.icon />}
-              active={!!matchPath({ path: link.link }, location.pathname)}
-              to={link.link}
-              styles={{
-                root: {
-                  borderRadius: "0.4rem",
-                },
-                label: {
-                  fontSize: "0.8rem",
-                },
-              }}
-              className="navlink"
-            />
+            <React.Fragment key={link.key}>
+              {link.children ? (
+                <Stack gap={5} my={2} mx={10} mt={20}>
+                  <Text key={link.key} className="subtitle" c="dimmed">
+                    {link.label}
+                  </Text>
+                </Stack>
+              ) : (
+                <NavLink
+                  component={Link}
+                  key={link.key}
+                  label={link.label}
+                  leftSection={<link.icon />}
+                  active={!!matchPath({ path: link.link }, location.pathname)}
+                  to={link.link}
+                  styles={{
+                    root: {
+                      borderRadius: "0.4rem",
+                    },
+                    label: {
+                      fontSize: "0.8rem",
+                    },
+                  }}
+                  className="navlink"
+                />
+              )}
+              {link.children && (
+                <Stack gap={5}>
+                  {link.children.map((child) => (
+                    <NavLink
+                      component={Link}
+                      key={child.key}
+                      label={child.label}
+                      leftSection={<child.icon />}
+                      active={
+                        !!matchPath({ path: child.link }, location.pathname)
+                      }
+                      to={child.link}
+                      styles={{
+                        root: {
+                          borderRadius: "0.4rem",
+                          paddingLeft: "1.5rem",
+                        },
+                        label: {
+                          fontSize: "0.8rem",
+                        },
+                      }}
+                      className="navlink"
+                    />
+                  ))}
+                </Stack>
+              )}
+            </React.Fragment>
           ))}
         </AppShell.Section>
 

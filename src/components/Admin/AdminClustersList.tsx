@@ -19,9 +19,14 @@ import { useNavigate } from "react-router-dom";
 const ClusterCard = ({ cluster }: { cluster: any }) => {
   const isDisabled = cluster.disabled;
   const isML = cluster.supports_ml;
+  const navigate = useNavigate();
 
   return (
-    <StyledCard key={cluster.id} withBorder>
+    <StyledCard
+      key={cluster.id}
+      withBorder
+      onClick={() => navigate(`/admin/clusters/${cluster?.id}`)}
+    >
       <Group justify="space-between" align="flex-start">
         <Group gap="xs" align="flex-start">
           <HiOutlineServer size={25} />
