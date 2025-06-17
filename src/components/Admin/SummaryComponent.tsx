@@ -15,6 +15,7 @@ import { GoPerson, GoProject, GoDatabase } from "react-icons/go";
 import styled from "styled-components";
 import { AiOutlineAppstoreAdd } from "react-icons/ai";
 import TitleText from "../TitleText";
+import { Link } from "react-router-dom";
 
 // Types
 interface StatChild {
@@ -25,6 +26,7 @@ interface StatChild {
 interface StatCategory {
   total_count: number;
   children: StatChild[];
+  link?: string;
 }
 
 interface StatsData {
@@ -124,6 +126,7 @@ function SummaryComponent() {
               (data?.Users?.total_count || 0) - (data?.Users?.verified || 0),
           },
         ],
+        link: "/admin/users/list",
       },
       Projects: {
         total_count: data?.Projects?.total_count || 0,
@@ -139,6 +142,7 @@ function SummaryComponent() {
             value: data?.Projects?.disabled || 0,
           },
         ],
+        link: "/admin/projects/list",
       },
       Apps: {
         total_count: data?.Apps?.total_count || 0,
@@ -152,6 +156,7 @@ function SummaryComponent() {
             value: data?.Apps?.stopped || 0,
           },
         ],
+        link: "/admin/apps/list",
       },
       Databases: {
         total_count: databaseData?.databases?.total_database_count || 0,
@@ -169,6 +174,7 @@ function SummaryComponent() {
               0,
           },
         ],
+        link: "/admin/databases/list",
       },
     };
 
@@ -212,12 +218,16 @@ function SummaryComponent() {
     return (
       <StyledPaper key={key}>
         <Group justify="space-between">
-          <StatLabel>{key}</StatLabel>
+          <Link to={value?.link || ""}>
+            <StatLabel>{key}</StatLabel>
+          </Link>
           <Icon size={22} color="dimmed" />
         </Group>
 
         <Group align="flex-end" gap="xs">
-          <StatValue>{value.total_count.toLocaleString()}</StatValue>
+          <Link to={value?.link || ""}>
+            <StatValue>{value.total_count.toLocaleString()}</StatValue>
+          </Link>
         </Group>
 
         <StyledProgress size={34} mt={15}>
