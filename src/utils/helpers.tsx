@@ -275,3 +275,20 @@ export const formatMetricValue = (chartType: string, value: number) => {
 
   return null;
 };
+
+export function formatPlural(count: number, singular: string, plural?: string) {
+  if (count === 1) {
+    return `${count} ${singular}`;
+  }
+  return `${count} ${plural || `${singular}s`}`;
+}
+
+export function formatAgo(age: string) {
+  return age
+    .replace(/\b1 years\b/, "1 year")
+    .replace(/\b1 months\b/, "1 month")
+    .replace(/\b1 days\b/, "1 day")
+    .replace(/\b1 hours\b/, "1 hour")
+    .replace(/\b1 minutes\b/, "1 minute")
+    .replace(/\b1 seconds\b/, "1 second");
+}
