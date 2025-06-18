@@ -23,6 +23,7 @@ import { useContext, useEffect, useState } from "react";
 import TitleText from "@/components/TitleText";
 import { MenuContext } from "../../components/Layouts/DashboardLayout";
 import { Table } from "@/components/Elements/CustomTable";
+import usePost from "@/utils/usePost";
 
 const ProjectUsers = () => {
   const { project_id } = useParams();
@@ -46,7 +47,15 @@ export default ProjectUsers;
 
 export const MembersSection = ({ project }: { project: any }) => {
   const { data: membersData, getData: getMembers, success } = useGet();
+  const {
+    uploadData: sendInvitation,
+    submitting: invitingMember,
+    success: invitationSuccess,
+    resetSuccess,
+  } = usePost();
   const [members, setMembers] = useState<any[]>([]);
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("member");
 
   useEffect(() => {
     getMembers({
@@ -59,6 +68,24 @@ export const MembersSection = ({ project }: { project: any }) => {
       setMembers(membersData?.data?.project_users);
     }
   }, [success, membersData]);
+
+  useEffect(() => {
+    if (invitationSuccess) {
+      getMembers({
+        api: `/projects/${project?.id}/users`,
+      });
+      setEmail("");
+      setRole("member");
+      resetSuccess();
+    }
+  }, [invitationSuccess, getMembers, project]);
+
+  const handleInviteMember = () => {
+    sendInvitation({
+      api: `/projects/${project?.id}/users`,
+      params: { email, role, resend: false },
+    });
+  };
 
   const updateRoleValue = (string: string[]) => {
     const role = string[1];
@@ -167,6 +194,9 @@ export const MembersSection = ({ project }: { project: any }) => {
                 required
                 variant="filled"
                 flex={1}
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+                disabled={invitingMember}
               />
               <Select
                 label="Role"
@@ -176,12 +206,17 @@ export const MembersSection = ({ project }: { project: any }) => {
                 required
                 flex={1}
                 leftSection={<MdOutlineSecurity />}
+                onChange={(value) => setRole(value || "member")}
+                value={role}
               />
             </Flex>
             <Group justify="start" mt={10}>
               <Button
                 color="var(--mantine-color-text)"
                 leftSection={<IoMdSend />}
+                onClick={handleInviteMember}
+                disabled={invitingMember}
+                loading={invitingMember}
               >
                 Invite
               </Button>

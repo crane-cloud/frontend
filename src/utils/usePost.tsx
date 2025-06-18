@@ -77,7 +77,7 @@ const usePost = () => {
   const updateErrors = (err: TError) => {
     setError(err ? { ...error, ...err } : {});
   };
-
+  const resetSuccess = () => setSuccess(false);
   return {
     submitting,
     error,
@@ -87,6 +87,7 @@ const usePost = () => {
     updateErrors,
     setError,
     setSuccess,
+    resetSuccess,
   };
 };
 
