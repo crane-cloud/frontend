@@ -25,7 +25,7 @@ import { API_PROJECTS } from "@/utils/apis";
 import { useNavigate } from "react-router-dom";
 import { formatAgo, formatPlural } from "@/utils/helpers";
 
-type ProjectUserRecord = {
+export type ProjectUserRecord = {
   user: {
     id: string;
     email: string;
