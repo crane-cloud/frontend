@@ -12,7 +12,6 @@ import {
   Stack,
   Text,
   TextInput,
-  Badge,
   Modal,
 } from "@mantine/core";
 import { HiDotsVertical } from "react-icons/hi";
@@ -145,6 +144,7 @@ export const MembersSection = ({ project }: { project: any }) => {
 
   const columns = [
     { id: "name", header: "Name" },
+    { id: "status", header: "Status" },
     { id: "role", header: "Role" },
     { id: "actions", header: "Actions" },
   ];
@@ -227,22 +227,23 @@ export const MembersSection = ({ project }: { project: any }) => {
           <Stack gap={0}>
             <Flex align="center" gap={6}>
               <Text className="subtitle">{member?.user?.name}</Text>
-              {member.isAnonymous && (
-                <Badge size="xs" color="gray" variant="filled">
-                  External User
-                </Badge>
-              )}
-              {member.accepted_collaboration_invite === false && (
-                <Badge size="xs" variant="filled">
-                  Pending invitation
-                </Badge>
-              )}
             </Flex>
             <Text size="xs">{member?.user?.email}</Text>
           </Stack>
         </Flex>
       ),
-      email: member?.user?.email,
+      status:
+        member.accepted_collaboration_invite === false ? (
+          <Text size="xs" color="dimmed">
+            Pending Invitation
+          </Text>
+        ) : member.isAnonymous ? (
+          <Text size="xs" color="dimmed">
+            Pending Invitation
+          </Text>
+        ) : (
+          ""
+        ),
       role: updateRoleValue(member.role.split(".")),
       actions: (
         <Group gap={10}>
@@ -315,51 +316,57 @@ export const MembersSection = ({ project }: { project: any }) => {
     getMembers({ api: `/projects/${project?.id}/users` });
     setModal(null);
   };
-
+  const member = members.find((m) => m?.user?.id === user?.id);
+  const isSelf = member?.user?.id === user?.id;
+  const myRole = allMembers
+    .find((m) => m?.user?.id === user?.id)
+    ?.role.split(".")[1];
   return (
     <div>
       <TitleText>Members</TitleText>
       <Stack gap={20}>
-        <Card p="lg" radius="md" withBorder>
-          <Stack gap={20}>
-            <Text className="title">Invite New Member</Text>
-            <Flex gap={10} align="end">
-              <TextInput
-                placeholder="Enter email address"
-                label="Email Address"
-                leftSection={<MdOutlineEmail />}
-                required
-                variant="filled"
-                flex={1}
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-                disabled={invitingMember}
-              />
-              <Select
-                label="Role"
-                variant="filled"
-                placeholder="Select Role"
-                data={["admin", "member"]}
-                required
-                flex={1}
-                leftSection={<MdOutlineSecurity />}
-                onChange={(value) => setRole(value || "member")}
-                value={role}
-              />
-            </Flex>
-            <Group justify="start" mt={10}>
-              <Button
-                color="var(--mantine-color-text)"
-                leftSection={<IoMdSend />}
-                onClick={handleInviteMember}
-                disabled={invitingMember}
-                loading={invitingMember}
-              >
-                Invite
-              </Button>
-            </Group>
-          </Stack>
-        </Card>
+        {isSelf && (myRole === "owner" || myRole === "admin") && (
+          <Card p="lg" radius="md" withBorder>
+            <Stack gap={20}>
+              <Text className="title">Invite New Member</Text>
+              <Flex gap={10} align="end">
+                <TextInput
+                  placeholder="Enter email address"
+                  label="Email Address"
+                  leftSection={<MdOutlineEmail />}
+                  required
+                  variant="filled"
+                  flex={1}
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
+                  disabled={invitingMember}
+                />
+                <Select
+                  label="Role"
+                  variant="filled"
+                  placeholder="Select Role"
+                  data={["admin", "member"]}
+                  required
+                  flex={1}
+                  leftSection={<MdOutlineSecurity />}
+                  onChange={(value) => setRole(value || "member")}
+                  value={role}
+                />
+              </Flex>
+              <Group justify="start" mt={10}>
+                <Button
+                  color="var(--mantine-color-text)"
+                  leftSection={<IoMdSend />}
+                  onClick={handleInviteMember}
+                  disabled={invitingMember}
+                  loading={invitingMember}
+                >
+                  Invite
+                </Button>
+              </Group>
+            </Stack>
+          </Card>
+        )}
         <Table
           striped={false}
           verticalSpacing="md"
