@@ -333,3 +333,19 @@ export const formatDate = (value: any, format?: string) => {
 export const validateProjectName = (name: string) => {
   return name.length <= 30 && /^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$/.test(name);
 };
+
+export const formatClusterServicePorts = (ports: any) => {
+  let portValue = "";
+  ports.map((port: any) => {
+    if (portValue !== "") {
+      portValue += ", ";
+    }
+    portValue += `${port.port}`;
+    if (port.nodePort !== undefined) {
+      portValue += `:${port.nodePort}`;
+    }
+    portValue += `/${port.protocol}`;
+    return portValue;
+  });
+  return portValue;
+};
