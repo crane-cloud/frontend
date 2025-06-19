@@ -339,6 +339,7 @@ const GeneralTab = ({
             <CreateProjectForm
               project={project}
               showTitle={false}
+              isUpdatingProject
               onCancel={() => setUpdateConfirmOpened(false)}
               refresh={() => setRefresh(true)}
             />
