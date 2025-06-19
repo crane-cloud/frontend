@@ -34,6 +34,7 @@ import { FiBookOpen, FiChevronDown } from "react-icons/fi";
 import { Logo, UserDropDown } from "./Common";
 import { Link, useNavigate } from "react-router-dom";
 import Search from "./Elements/Search";
+import { useAuth } from "@/utils/AuthContext";
 
 interface HeaderProps {
   opened: boolean;
@@ -41,6 +42,7 @@ interface HeaderProps {
 }
 
 export const DashboardHeader = ({ opened, toggle }: HeaderProps) => {
+  const { user } = useAuth();
   return (
     <AppShell.Header>
       <Group h="100%" px="md" py={10} justify="space-between">
@@ -49,15 +51,17 @@ export const DashboardHeader = ({ opened, toggle }: HeaderProps) => {
           <Link to="/">
             <Logo />
           </Link>
-          <Pill
-            size="sm"
-            style={{
-              backgroundColor: "var(--mantine-primary-color-2)",
-              color: "var(--mantine-primary-color-9)",
-            }}
-          >
-            Admin
-          </Pill>
+          {user?.is_admin && (
+            <Pill
+              size="sm"
+              style={{
+                backgroundColor: "var(--mantine-primary-color-2)",
+                color: "var(--mantine-primary-color-9)",
+              }}
+            >
+              Admin
+            </Pill>
+          )}
         </Group>
         <Group>
           <Search />
