@@ -37,3 +37,16 @@ export type TFormValidator = {
 };
 
 export type TSetError = (errors: TError) => void;
+
+export type TFormHandlerParams = {
+  source_id: string;
+  id?: string;
+  draft_id?: string;
+  form_params?: any;
+};
+
+export type TGeneralHookParams = {
+  status?: string;
+  id?: string;
+  source_id?: string;
+};

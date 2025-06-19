@@ -5,7 +5,7 @@ import { Skeleton } from "@mantine/core";
 import { GridLayout } from "../Layouts/ListLayouts";
 import DataNotFoundMessage from "@/pages/common/DataFoundMessage";
 import { DOCS_URL } from "@/config";
-import { useInfiniteScrollWithPagination } from "@/hooks/useInfiniteScroll";
+import { useInfiniteScrollWithPagination } from "@/hooks/generic/useInfiniteScroll";
 
 const AppsList = (props: any) => {
   const { project_id, refresh } = props;
@@ -25,7 +25,7 @@ const AppsList = (props: any) => {
         params: { page, per_page: 6 },
       });
     },
-    resetTrigger: refresh,
+    resetTrigger: `${project_id}-${refresh}`,
   });
 
   // Initial data fetch

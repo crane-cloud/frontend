@@ -10,6 +10,7 @@ import {
   Drawer,
   Group,
   HoverCard,
+  Pill,
   ScrollArea,
   SimpleGrid,
   Text,
@@ -48,6 +49,15 @@ export const DashboardHeader = ({ opened, toggle }: HeaderProps) => {
           <Link to="/">
             <Logo />
           </Link>
+          <Pill
+            size="sm"
+            style={{
+              backgroundColor: "var(--mantine-primary-color-2)",
+              color: "var(--mantine-primary-color-9)",
+            }}
+          >
+            Admin
+          </Pill>
         </Group>
         <Group>
           <Search />
