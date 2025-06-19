@@ -5,7 +5,7 @@ import {
   TSetError,
   TFormUpdateValue,
   TError,
-} from "../types/common";
+} from "@/types/common";
 
 const useForm = () => {
   const [form, setForm] = useState<TForm>({});

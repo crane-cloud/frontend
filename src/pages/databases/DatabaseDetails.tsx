@@ -36,9 +36,9 @@ import { TbBrandMysql, TbCopy } from "react-icons/tb";
 import moment from "moment";
 import { useClipboard } from "@mantine/hooks";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
-import useForm from "@/hooks/useForm";
 import { showNotification } from "@mantine/notifications";
 import { MdOutlineLock } from "react-icons/md";
+import useForm from "@/hooks/generic/useForm";
 
 const DatabaseDetails = () => {
   const [deleteConfirmOpened, setDeleteConfirmOpened] = useState(false);

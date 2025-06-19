@@ -1,11 +1,13 @@
 import React from "react";
 import { LoginPage } from "./pages/Auth/loginPage";
 import CreateNewPassword from "./pages/Auth/passwordResetPage";
-import ExperiementsDetailsPage from "./pages/Experirments/ExperiementsDetailsPage";
-import RunsDetailsPage from "./pages/Experirments/RunsDetailsPage";
+import ExperimentsDetailsPage from "./pages/Experiments/ExperimentsDetailsPage";
+import RunsDetailsPage from "./pages/Experiments/RunsDetailsPage";
 import UserProfilePage from "./pages/Users/UserProfilePage";
 import AccountVerification from "./pages/Auth/accountVerificationPage";
 import AppMetrics from "./pages/Apps/AppMetrics";
+import HealthCheck from "./components/HealthCheck";
+import ClustersPage from "./pages/admin/ClustersPage";
 // import { HomePage } from "./pages/Home.page";
 const AppsListPage = React.lazy(() => import("./pages/Apps/AppsListPage"));
 const ProjectSettingsPage = React.lazy(
@@ -31,14 +33,26 @@ const DatabaseDetails = React.lazy(
 const AppSettingsPage = React.lazy(
   () => import("./pages/Apps/AppSettingsPage"),
 );
-const ExperiementsListPage = React.lazy(
-  () => import("./pages/Experirments/ExperiementsListPage"),
+const ExperimentsListPage = React.lazy(
+  () => import("./pages/Experiments/ExperimentsListPage"),
 );
 const ProjectDetailsPage = React.lazy(
   () => import("./pages/Projects/ProjectDetailsPage"),
 );
+const AdminDashboard = React.lazy(() => import("./pages/admin/DashboardPage"));
+const GenericRegister = React.lazy(
+  () => import("./components/Layouts/GenericRegister"),
+);
+const CreateClusterPage = React.lazy(
+  () => import("./pages/admin/CreateClusters"),
+);
+const ClustersDashboard = React.lazy(
+  () => import("./pages/admin/cluster/ClustersDashboard"),
+);
+
 export const guestRoutes = [
   // { path: "/", element: <></> },
+  { path: "/health", element: <HealthCheck /> },
   { path: "/login", element: <LoginPage /> },
   { path: "/reset_password/:token", element: <CreateNewPassword /> },
   { path: "/verify/:token", element: <AccountVerification /> },
@@ -46,6 +60,7 @@ export const guestRoutes = [
 export const DashboardRoutes = [
   // { path: "/login", element: <LoginPage /> },
   // Users
+  { path: "/health", element: <HealthCheck /> },
   { path: "/login", element: <LoginPage /> },
   { path: "/", element: <LandingPage /> },
   { path: "/profile/:user_id", element: <UserProfilePage /> },
@@ -77,14 +92,34 @@ export const DashboardRoutes = [
   // Experiments
   {
     path: "/projects/:project_id/apps/:app_id/experiments",
-    element: <ExperiementsListPage />,
+    element: <ExperimentsListPage />,
   },
   {
     path: "/projects/:project_id/apps/:app_id/experiments/:experiment_id",
-    element: <ExperiementsDetailsPage />,
+    element: <ExperimentsDetailsPage />,
   },
   {
     path: "/projects/:project_id/apps/:app_id/experiments/:experiment_id/runs/:run_id",
     element: <RunsDetailsPage />,
+  },
+];
+
+export const AdminDashboardRoutes = [
+  { path: "/", element: <AdminDashboard /> },
+  { path: "/admin/:source_id/list", element: <GenericRegister /> },
+  { path: "/admin/:source_id/:id", element: <GenericRegister /> },
+  { path: "/admin/clusters", element: <ClustersPage /> },
+  { path: "/admin/clusters/create", element: <CreateClusterPage /> },
+  { path: "/projects/:project_id", element: <ProjectSettingsPage /> },
+  { path: "/profile/:user_id", element: <UserProfilePage /> },
+  // clusters
+  { path: "/admin/clusters/:cluster_id", element: <ClustersDashboard /> },
+  {
+    path: "/admin/clusters/:cluster_id/:source_id/list",
+    element: <GenericRegister />,
+  },
+  {
+    path: "/admin/clusters/:cluster_id/:source_id/:id",
+    element: <GenericRegister />,
   },
 ];

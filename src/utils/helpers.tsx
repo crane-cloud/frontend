@@ -7,14 +7,27 @@ import moment from "moment";
 import { BiTrash } from "react-icons/bi";
 import { TiEdit } from "react-icons/ti";
 import { format } from "date-fns";
+import { AdminMenuContext } from "@/components/Layouts/AdminDashboardLayout";
+import { useParams } from "react-router-dom";
 
-export const beautify = (str: string) => {
+export const beautify = (str: string | undefined) => {
+  if (typeof str !== "string") {
+    return "";
+  }
   return (str || "")
     .replaceAll("_", " ")
     .replaceAll("-", " ")
     .replaceAll("/", "")
     .toLowerCase()
     .replace(/\b\w/g, (char) => char.toUpperCase());
+};
+
+export const shortenID = (value: string) => {
+  if (value) {
+    const parts = value.split("-");
+    return parts[parts.length - 1]; // Returns the last part after the last hyphen
+  }
+  return "";
 };
 
 export const useGetProject = (project_id: string) => {
@@ -30,7 +43,7 @@ export const useGetProject = (project_id: string) => {
       id: project_id,
       api: `/projects`,
     });
-  }, [refresh]);
+  }, [project_id, refresh]);
 
   useEffect(() => {
     if (success) {
@@ -56,7 +69,7 @@ export const useGetProject = (project_id: string) => {
     }
   }, [setMenuType, project_id, project]);
 
-  return { project, cluster, loading, success, refresh, setRefresh, getData };
+  return { project, cluster, loading, success, refresh, setRefresh };
 };
 
 export const useGetApp = (app_id: string) => {
@@ -124,9 +137,33 @@ export const useSetNoSidebar = () => {
     setMenuType("noSidebar");
   }, [setMenuType]);
 };
+export const useSetAdminHomeSidebar = () => {
+  const { setMenuType } = useContext(AdminMenuContext);
+  useEffect(() => {
+    setMenuType("home");
+  }, [setMenuType]);
+};
+export const useSetAdminClusterSidebar = () => {
+  const { setMenuType, setClusterId } = useContext(AdminMenuContext);
+  const { cluster_id } = useParams();
+
+  useEffect(() => {
+    setMenuType("cluster");
+    if (cluster_id) {
+      setClusterId(cluster_id);
+    }
+  }, [setMenuType, setClusterId, cluster_id]);
+};
 
 export const useSetContainerSize = (size: string) => {
   const { setContainerSize } = useContext(MenuContext);
+  useEffect(() => {
+    setContainerSize(size);
+  }, [setContainerSize, size]);
+};
+
+export const useSetAdminContainerSize = (size: string) => {
+  const { setContainerSize } = useContext(AdminMenuContext);
   useEffect(() => {
     setContainerSize(size);
   }, [setContainerSize, size]);
@@ -264,11 +301,13 @@ export const getPasswordStrength = (password: string): PasswordStrength => {
   return "weak";
 };
 
+export const bytesToMB = (bytesPerSecond: number) => bytesPerSecond / 1_000_000;
+
 export const formatMetricValue = (chartType: string, value: number) => {
   if (chartType === "cpu") {
     return `${value.toFixed(4)} cores`;
   } else if (chartType === "memory") {
-    return `${Math.round(value).toLocaleString()} MiB`;
+    return `${bytesToMB(value).toFixed(2)} MB/s`;
   } else if (chartType === "network") {
     return `${Math.round(value).toLocaleString()} KB/s`;
   }
@@ -292,3 +331,22 @@ export function formatAgo(age: string) {
     .replace(/\b1 minutes\b/, "1 minute")
     .replace(/\b1 seconds\b/, "1 second");
 }
+
+export const detailsCardView = (item: any) => {
+  const new_item: any = {};
+  Object.keys(item).forEach((key) => {
+    if (!key.includes("-name")) {
+      new_item[key] =
+        item[`${key}-name`] != null ? item[`${key}-name`] : item[key];
+    }
+  });
+  return new_item;
+};
+
+export const formatDate = (value: any, format?: string) => {
+  return moment(value).format(format || "DD MMM YYYY");
+};
+
+export const validateProjectName = (name: string) => {
+  return name.length <= 30 && /^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$/.test(name);
+};

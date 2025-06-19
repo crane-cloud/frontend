@@ -3,40 +3,30 @@ import LeftMenu, { TLeftMenuType } from "@/components/Navbars/LeftMenu";
 import { AppShell, Container } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState, createContext, useMemo } from "react";
-
-export interface TMenuContextType {
+export interface TAdminMenuContextType {
   menuType: TLeftMenuType;
   setMenuType: (type: TLeftMenuType) => void;
-  projectId: string;
-  setProjectId: (id: string) => void;
+  clusterId: string;
+  setClusterId: (id: string) => void;
   title?: string;
   setTitle?: (title: string) => void;
   subtitle?: string;
   setSubtitle?: (subtitle: string) => void;
   setContainerSize: (size: string) => void;
-  appId?: string;
-  setAppId?: (id: string) => void;
-  project?: any;
-  setProject?: (project: any) => void;
 }
-
-export const MenuContext = createContext<TMenuContextType>({
+export const AdminMenuContext = createContext<TAdminMenuContextType>({
   menuType: "home",
   setMenuType: () => {},
-  projectId: "",
-  setProjectId: () => {},
+  clusterId: "",
+  setClusterId: () => {},
   title: "",
   setTitle: () => {},
   subtitle: "",
   setSubtitle: () => {},
   setContainerSize: () => {},
-  appId: "",
-  setAppId: () => {},
-  project: {},
-  setProject: () => {},
 });
 
-export const DashboardLayout = ({
+export const AdminDashboardLayout = ({
   children,
 }: {
   children: React.ReactNode;
@@ -44,33 +34,27 @@ export const DashboardLayout = ({
   const [opened, { toggle }] = useDisclosure();
 
   const [menuType, setMenuType] = useState<TLeftMenuType>("home");
-  const [projectId, setProjectId] = useState<string>("");
-  const [project, setProject] = useState<any>({});
+  const [clusterId, setClusterId] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [containerSize, setContainerSize] = useState<string>("lg");
   const [subtitle, setSubtitle] = useState<string>("");
-  const [appId, setAppId] = useState<string>("");
 
   const contextValue = useMemo(
     () => ({
       menuType,
       setMenuType,
-      projectId,
-      setProjectId,
+      clusterId,
+      setClusterId,
       title,
       setTitle,
       subtitle,
       setSubtitle,
       setContainerSize,
-      appId,
-      setAppId,
-      project,
-      setProject,
     }),
-    [menuType, projectId, appId, title, subtitle, containerSize, project],
+    [menuType, clusterId, title, subtitle, containerSize],
   );
   return (
-    <MenuContext.Provider value={contextValue}>
+    <AdminMenuContext.Provider value={contextValue}>
       <AppShell
         header={{ height: 60 }}
         navbar={{
@@ -84,16 +68,14 @@ export const DashboardLayout = ({
         <DashboardHeader opened={opened} toggle={toggle} />
         <LeftMenu
           menuType={menuType}
-          projectId={projectId}
-          project={project}
-          appId={appId}
+          clusterId={clusterId}
           title={title}
           subtitle={subtitle}
         />
-        <AppShell.Main>
+        <AppShell.Main mih="90vh">
           <Container size={containerSize}>{children}</Container>
         </AppShell.Main>
       </AppShell>
-    </MenuContext.Provider>
+    </AdminMenuContext.Provider>
   );
 };
