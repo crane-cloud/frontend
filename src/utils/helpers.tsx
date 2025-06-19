@@ -329,3 +329,7 @@ export const detailsCardView = (item: any) => {
 export const formatDate = (value: any, format?: string) => {
   return moment(value).format(format || "DD MMM YYYY");
 };
+
+export const validateProjectName = (name: string) => {
+  return name.length <= 30 && /^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$/.test(name);
+};

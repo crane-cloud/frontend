@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import TitleText from "../TitleText";
 import {
   Button,
@@ -13,7 +13,7 @@ import {
   Text,
   Alert,
 } from "@mantine/core";
-import { useSetContainerSize } from "@/utils/helpers";
+import { useSetContainerSize, validateProjectName } from "@/utils/helpers";
 import useGet from "@/utils/useGet";
 import { API_CLUSTERS, API_PROJECTS, API_TAGS } from "@/utils/apis";
 import { NO, ORGANISATIONS, PROJECT_TYPES, YES } from "@/utils/constants";
@@ -21,6 +21,7 @@ import usePost from "@/utils/usePost";
 import { useAuth } from "@/utils/AuthContext";
 import { useNavigate } from "react-router-dom";
 import useForm from "@/hooks/generic/useForm";
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 
 type TCreateProjectForm = {
   project?: any;
@@ -57,6 +58,14 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
     success,
     data: project_data,
   } = usePost();
+
+  const [nameValid, setNameValid] = useState<boolean | null>(null);
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e);
+    const value = e.target.value.trimStart();
+    setNameValid(value.length > 0 ? validateProjectName(value) : null);
+  };
 
   useEffect(() => {
     getClusters({
@@ -134,11 +143,22 @@ const CreateProjectForm = (props: TCreateProjectForm) => {
               label="Project Name"
               description="Helps you identify your application."
               name="name"
-              placeholder="My Project"
+              placeholder="My-Project"
               required
               value={form.name as string}
-              onChange={onChange}
-              error={error?.name}
+              onChange={handleNameChange}
+              error={
+                nameValid === false
+                  ? "Max 30 characters. Only letters, numbers, and hyphens allowed (no spaces, symbols, or leading/trailing/consecutive hyphens)."
+                  : error?.name
+              }
+              rightSection={
+                nameValid === null ? null : nameValid ? (
+                  <FaCheckCircle color="green" />
+                ) : (
+                  <FaTimesCircle color="red" />
+                )
+              }
             />
             <Textarea
               label="Project Description"
