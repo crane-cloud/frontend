@@ -17,7 +17,6 @@ import {
 } from "@mantine/core";
 import { HiDotsVertical } from "react-icons/hi";
 import { HiTrash } from "react-icons/hi2";
-import { RiLogoutBoxLine } from "react-icons/ri";
 import {
   MdEdit,
   MdOutlineEmail,
@@ -69,6 +68,8 @@ export const MembersSection = ({ project }: { project: any }) => {
   const [modal, setModal] = useState<{ type: string; member: any } | null>(
     null,
   );
+  const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
+  const [selectedRole, setSelectedRole] = useState<string | null>(null);
 
   useEffect(() => {
     getMembers({
@@ -100,6 +101,43 @@ export const MembersSection = ({ project }: { project: any }) => {
     });
   };
 
+  const handleTransferOwnership = () => {
+    if (!selectedMemberId) {
+      return;
+    }
+
+    const selectedMember = members.find(
+      (member) => member?.user?.id === selectedMemberId,
+    );
+
+    if (!selectedMember?.user?.email) {
+      return;
+    }
+
+    sendInvitation({
+      api: `/projects/${project?.id}/users/transfer`,
+      params: { email: selectedMember?.user?.email },
+    });
+    getMembers({ api: `/projects/${project?.id}/users` });
+    setModal(null);
+    setSelectedMemberId(null);
+  };
+
+  const handleChangeRole = () => {
+    if (!selectedRole) {
+      return;
+    }
+
+    sendInvitation({
+      api: `/projects/${project?.id}/users`,
+      method: "PATCH",
+      params: { email: modal?.member?.user?.email, role: selectedRole },
+    });
+    getMembers({ api: `/projects/${project?.id}/users` });
+    setModal(null);
+    setSelectedRole(null);
+  };
+
   const updateRoleValue = (string: string[]) => {
     const role = string[1];
     return role.charAt(0).toUpperCase() + role.slice(1);
@@ -126,12 +164,6 @@ export const MembersSection = ({ project }: { project: any }) => {
           label: "Transfer",
           icon: <MdTransferWithinAStation />,
           onClick: () => setModal({ type: "transfer", member }),
-        });
-      } else if (role === "admin" || role === "member") {
-        actions.push({
-          label: "Leave",
-          onClick: () => setModal({ type: "leave", member }),
-          icon: <RiLogoutBoxLine />,
         });
       }
     } else if (myRole === "owner") {
@@ -163,10 +195,8 @@ export const MembersSection = ({ project }: { project: any }) => {
         },
       );
     }
-    // If logged-in user is admin and viewing an owner, no actions (empty array)
     return actions;
   };
-
   const allMembers = [
     ...(membersData?.data?.project_users || []),
     ...(membersData?.data?.project_anonymous_users?.map((user: any) => ({
@@ -174,7 +204,15 @@ export const MembersSection = ({ project }: { project: any }) => {
       role: `project.${user.role}`,
       isAnonymous: true,
     })) || []),
-  ];
+  ].sort((a, b) => {
+    if (a.role === "RolesList.owner") {
+      return -1;
+    }
+    if (b.role === "RolesList.owner") {
+      return 1;
+    }
+    return 0;
+  });
 
   const tableData = (data: any) => {
     return data?.map((member: any) => ({
@@ -250,6 +288,34 @@ export const MembersSection = ({ project }: { project: any }) => {
     );
   };
 
+  const handleRemoveMember = (email: string) => {
+    if (!email) {
+      return;
+    }
+
+    sendInvitation({
+      api: `/projects/${project?.id}/users`,
+      method: "DELETE",
+      params: { email },
+    });
+    getMembers({ api: `/projects/${project?.id}/users` });
+    setModal(null);
+  };
+
+  const handleLeaveProject = (email: string) => {
+    if (!email) {
+      return;
+    }
+
+    sendInvitation({
+      api: `/projects/${project?.id}/users`,
+      method: "DELETE",
+      params: { email },
+    });
+    getMembers({ api: `/projects/${project?.id}/users` });
+    setModal(null);
+  };
+
   return (
     <div>
       <TitleText>Members</TitleText>
@@ -305,7 +371,10 @@ export const MembersSection = ({ project }: { project: any }) => {
       </Stack>
       <Modal
         opened={!!modal}
-        onClose={() => setModal(null)}
+        onClose={() => {
+          setModal(null);
+          setSelectedMemberId(null);
+        }}
         title={
           modal?.type === "transfer"
             ? "Transfer Ownership"
@@ -320,38 +389,106 @@ export const MembersSection = ({ project }: { project: any }) => {
         centered
       >
         {modal?.type === "transfer" && (
-          <Text>
-            Are you sure you want to transfer ownership to{" "}
-            <b>{modal.member?.user?.name}</b>?
-          </Text>
+          <Stack gap="md">
+            <Text>Select a member to transfer ownership to:</Text>
+            <Select
+              placeholder="Select Member"
+              data={members
+                .filter(
+                  (member) => member.accepted_collaboration_invite === true,
+                )
+                .map((member) => ({
+                  value: member?.user?.id,
+                  label: member?.user?.name,
+                }))}
+              onChange={(value) => setSelectedMemberId(value)}
+            />
+            <Group mt="md">
+              <Button variant="default" onClick={() => setModal(null)}>
+                Cancel
+              </Button>
+              <Button
+                color="blue"
+                onClick={handleTransferOwnership}
+                disabled={!selectedMemberId}
+              >
+                Confirm
+              </Button>
+            </Group>
+          </Stack>
         )}
         {modal?.type === "changeRole" && (
-          <Text>
-            Change role for <b>{modal.member?.user?.name}</b>?
-          </Text>
+          <>
+            <Stack gap="md">
+              <Text>
+                Change role for <b>{modal.member?.user?.name}</b>:
+              </Text>
+              <Select
+                placeholder="Select Role"
+                data={[
+                  { value: "admin", label: "Admin" },
+                  { value: "member", label: "Member" },
+                ]}
+                onChange={(value) => setSelectedRole(value || "member")}
+              />
+            </Stack>
+            <Group mt="md">
+              <Button variant="default" onClick={() => setModal(null)}>
+                Cancel
+              </Button>
+              <Button
+                color="red"
+                onClick={() => {
+                  setModal(null);
+                  handleChangeRole();
+                }}
+              >
+                Confirm
+              </Button>
+            </Group>
+          </>
         )}
         {modal?.type === "remove" && (
-          <Text>
-            Are you sure you want to remove <b>{modal.member?.user?.name}</b>{" "}
-            from the project?
-          </Text>
+          <>
+            <Text>
+              Are you sure you want to remove <b>{modal.member?.user?.name}</b>{" "}
+              from the project?
+            </Text>
+            <Group mt="md">
+              <Button variant="default" onClick={() => setModal(null)}>
+                Cancel
+              </Button>
+              <Button
+                color="red"
+                onClick={() => {
+                  setModal(null);
+                  handleRemoveMember(modal.member?.user?.email); // Trigger removal logic
+                }}
+              >
+                Confirm
+              </Button>
+            </Group>
+          </>
         )}
         {modal?.type === "leave" && (
-          <Text>Are you sure you want to leave this project?</Text>
+          <>
+            <Text>Are you sure you want to leave this project?</Text>
+            <Group mt="md">
+              <Button variant="default" onClick={() => setModal(null)}>
+                Cancel
+              </Button>
+              <Button
+                color="red"
+                onClick={() => {
+                  setModal(null);
+                  handleLeaveProject(modal.member?.user?.email);
+                }}
+              >
+                Confirm
+              </Button>
+            </Group>
+          </>
         )}
-        <Group mt="md">
-          <Button variant="default" onClick={() => setModal(null)}>
-            Cancel
-          </Button>
-          <Button
-            color="red"
-            onClick={() => {
-              setModal(null);
-            }}
-          >
-            Confirm
-          </Button>
-        </Group>
       </Modal>
     </div>
   );
