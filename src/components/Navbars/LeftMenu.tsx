@@ -122,6 +122,12 @@ const LeftMenu = React.memo(
           link: "/admin/projects/list",
         },
         {
+          label: "Applications",
+          icon: PiCubeLight,
+          key: "applications",
+          link: "/admin/apps/list",
+        },
+        {
           label: "Databases",
           icon: HiOutlineDatabase,
           key: "databases",
