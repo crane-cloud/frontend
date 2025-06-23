@@ -167,7 +167,11 @@ const RegisterLayoutHandler = (props: any) => {
       )}
 
       {metaData && registerData && (
-        <SimpleDetailsCard data={metaData(registerData?.data?.meta_data)} />
+        <SimpleDetailsCard
+          data={metaData(
+            registerData?.data?.meta_data || registerData?.data?.metadata,
+          )}
+        />
       )}
 
       <Table

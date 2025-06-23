@@ -1,3 +1,4 @@
+import { beautify } from "@/utils/helpers";
 import { Card, Flex, Grid, Group, Stack, Text } from "@mantine/core";
 import React from "react";
 
@@ -40,7 +41,7 @@ export const SimpleDetailsCard = ({ data }: TDetailsCardProps) => {
         >
           <Stack gap={1}>
             <Text tt="uppercase" fz="xs" c="dimmed" fw={700}>
-              {key}
+              {beautify(key)}
             </Text>
             <Text fz={24} fw={700}>
               {value?.toLocaleString()}

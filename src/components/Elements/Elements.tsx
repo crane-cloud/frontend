@@ -56,7 +56,7 @@ export const LinkWithText = styled(Link)`
 export const NoWrap = styled(Text)`
   white-space: nowrap;
   font-size: inherit;
-`;
+` as typeof Text;
 
 interface TCopyAreaButtonProps {
   value: string;

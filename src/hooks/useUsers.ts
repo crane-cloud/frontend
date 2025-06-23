@@ -60,7 +60,5 @@ export const useUsers = () => {
     };
   };
 
-  const formRoute = "#";
-
-  return { tableColumns, tableData, formRoute, metaData };
+  return { tableColumns, tableData, metaData };
 };
