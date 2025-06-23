@@ -248,7 +248,7 @@ const LeftMenu = React.memo(
           label: "Settings",
           icon: HiOutlineCog6Tooth,
           key: "settings",
-          link: `/settings`,
+          link: `/admin/clusters/${cluster_id}/settings`,
         },
       ],
       [],

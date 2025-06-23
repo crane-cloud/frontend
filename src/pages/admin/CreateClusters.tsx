@@ -19,10 +19,12 @@ const CreateClusters = ({
   cluster,
   onCancel,
   refresh = () => {},
+  showTitle = true,
 }: {
   cluster?: any;
   onCancel?: () => void;
   refresh?: () => void;
+  showTitle?: boolean;
 }) => {
   const { uploadData, submitting, error, success } = usePost();
   const { form, onChange, editedForm, updateFormValues } = useForm();
@@ -67,7 +69,7 @@ const CreateClusters = ({
 
   return (
     <Stack>
-      <TitleText>Create Cluster</TitleText>
+      {showTitle && <TitleText>Create Cluster</TitleText>}
       <Paper px="lg" radius="md">
         <form onSubmit={handleSubmit}>
           <Stack>
@@ -125,7 +127,7 @@ const CreateClusters = ({
               placeholder="Enter token"
               description="Token"
               flex={1}
-              required
+              required={!cluster}
               value={form?.token as string}
               onChange={onChange}
               error={error?.token}
