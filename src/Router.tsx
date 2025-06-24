@@ -8,6 +8,7 @@ import AccountVerification from "./pages/Auth/accountVerificationPage";
 import AppMetrics from "./pages/Apps/AppMetrics";
 import HealthCheck from "./components/HealthCheck";
 import ClustersPage from "./pages/admin/ClustersPage";
+import ClusterSettingsPage from "./pages/admin/cluster/ClusterSettingsPage";
 // import { HomePage } from "./pages/Home.page";
 const AppsListPage = React.lazy(() => import("./pages/Apps/AppsListPage"));
 const ProjectSettingsPage = React.lazy(
@@ -108,12 +109,20 @@ export const AdminDashboardRoutes = [
   { path: "/", element: <AdminDashboard /> },
   { path: "/admin/:source_id/list", element: <GenericRegister /> },
   { path: "/admin/:source_id/:id", element: <GenericRegister /> },
-  { path: "/admin/clusters", element: <ClustersPage /> },
-  { path: "/admin/clusters/create", element: <CreateClusterPage /> },
   { path: "/projects/:project_id", element: <ProjectSettingsPage /> },
   { path: "/profile/:user_id", element: <UserProfilePage /> },
+  {
+    path: "/admin/apps/:app_id",
+    element: <AppSettingsPage />,
+  },
   // clusters
+  { path: "/admin/clusters", element: <ClustersPage /> },
+  { path: "/admin/clusters/create", element: <CreateClusterPage /> },
   { path: "/admin/clusters/:cluster_id", element: <ClustersDashboard /> },
+  {
+    path: "/admin/clusters/:cluster_id/settings",
+    element: <ClusterSettingsPage />,
+  },
   {
     path: "/admin/clusters/:cluster_id/:source_id/list",
     element: <GenericRegister />,

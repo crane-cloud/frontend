@@ -120,6 +120,27 @@ export const useGetApp = (app_id: string) => {
   return { app, loading, success, refresh, setRefresh };
 };
 
+export const useGetAdminCluster = (cluster_id: string) => {
+  useSetAdminClusterSidebar();
+  const {
+    getData: getClusterInfo,
+    data: clusterData,
+    loading,
+    success,
+  } = useGet();
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+    if (cluster_id) {
+      getClusterInfo({ api: `/clusters/${cluster_id}` });
+    }
+  }, [cluster_id, refresh]);
+
+  const cluster = clusterData?.data?.cluster;
+
+  return { cluster, clusterData, loading, success, setRefresh };
+};
+
 export const returnObject = (show: boolean, object: any) => {
   return show ? object : [];
 };
