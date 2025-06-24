@@ -1,4 +1,4 @@
-import { useSetAdminClusterSidebar,} from "@/utils/helpers";
+import { useSetAdminClusterSidebar } from "@/utils/helpers";
 import moment from "moment";
 
 const useNamespaces = ({ cluster_id }: any) => {
@@ -18,7 +18,7 @@ const useNamespaces = ({ cluster_id }: any) => {
     if (!Array.isArray(data)) {
       return [];
     }
-    return data.map((item: any) => {                 
+    return data.map((item: any) => {
       const row = {
         // ...item,
         name: item?.metadata?.name,

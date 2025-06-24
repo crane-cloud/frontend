@@ -22,7 +22,7 @@ const useServices = ({ cluster_id }: any) => {
     if (!Array.isArray(data)) {
       return [];
     }
-    return data.map((item: any) => {                 
+    return data.map((item: any) => {
       const row = {
         // ...item,
         name: item?.metadata?.name,
