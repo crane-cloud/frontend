@@ -1,18 +1,14 @@
-import {
-  formatClusterServicePorts,
-  useSetAdminClusterSidebar,
-} from "@/utils/helpers";
+import { useSetAdminClusterSidebar,} from "@/utils/helpers";
 import moment from "moment";
 
-const useServices = ({ cluster_id }: any) => {
+const useNamespaces = ({ cluster_id }: any) => {
   useSetAdminClusterSidebar();
 
   const tableColumns = () => [
     { id: "name", header: "Name" },
-    { id: "type", header: "Type" },
-    { id: "clusterIP", header: "Cluster IP" },
-    { id: "ports", header: "Ports" },
+    { id: "labels", header: "Labels" },
     { id: "age", header: "Age" },
+    { id: "status", header: "Status" },
   ];
 
   const tableData = (data: any) => {
@@ -26,18 +22,19 @@ const useServices = ({ cluster_id }: any) => {
       const row = {
         // ...item,
         name: item?.metadata?.name,
-        type: item?.spec?.type,
-        clusterIP: item?.spec?.clusterIP,
-        ports: formatClusterServicePorts(item?.spec?.ports),
+        labels: Object.entries(item?.metadata?.labels || {})
+          .map(([key, value]) => `${key}=${value}`)
+          .join(", "),
         age: moment(item?.metadata?.creationTimestamp).fromNow(),
+        status: item?.status?.phase,
       };
       return row;
     });
   };
-  const dataParent = "services";
-  const apiRoute = `/clusters/${cluster_id}/services`;
+  const dataParent = "Namespaces";
+  const apiRoute = `/clusters/${cluster_id}/namespaces`;
 
   return { tableColumns, tableData, apiRoute, dataParent };
 };
 
-export default useServices;
+export default useNamespaces;
