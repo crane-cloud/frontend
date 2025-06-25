@@ -3,6 +3,7 @@ import useVolumes from "../cluster/useVolumes";
 import { useDatabases } from "../useDatabases";
 import { useProjects } from "../useProjects";
 import { useUsers } from "../useUsers";
+import usePods from "../cluster/usePods";
 import useServices from "../cluster/useServices";
 import { useApps } from "../useApps";
 
@@ -14,6 +15,7 @@ export const registerHooks: Record<string, any> = {
   apps: useApps,
   // cluster
   volumes: useVolumes,
+  pods: usePods,
   services: useServices,
 };
 
