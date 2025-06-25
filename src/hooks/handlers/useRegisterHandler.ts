@@ -8,6 +8,7 @@ import useServices from "../cluster/useServices";
 import useNodeList from "../cluster/useNodes";
 import { useApps } from "../useApps";
 import useVolumeClaims from "../cluster/useVolumeClaims";
+import useNamespaces from "../cluster/useNamespaces";
 
 // handle register creation
 export const registerHooks: Record<string, any> = {
@@ -20,6 +21,7 @@ export const registerHooks: Record<string, any> = {
   pods: usePods,
   services: useServices,
   volume_claims: useVolumeClaims,
+  namespaces: useNamespaces,
   nodes: useNodeList,
 
 };
