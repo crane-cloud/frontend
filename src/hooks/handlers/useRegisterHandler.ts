@@ -5,6 +5,7 @@ import { useProjects } from "../useProjects";
 import { useUsers } from "../useUsers";
 import useServices from "../cluster/useServices";
 import { useApps } from "../useApps";
+import useVolumeClaims from "../cluster/useVolumeClaims";
 
 // handle register creation
 export const registerHooks: Record<string, any> = {
@@ -15,6 +16,7 @@ export const registerHooks: Record<string, any> = {
   // cluster
   volumes: useVolumes,
   services: useServices,
+  volume_claims: useVolumeClaims
 };
 
 export const sourceApis: Record<string, string> = {
