@@ -31,7 +31,7 @@ const useNamespaces = ({ cluster_id }: any) => {
       return row;
     });
   };
-  const dataParent = "Namespaces";
+  const dataParent = "namespaces";
   const apiRoute = `/clusters/${cluster_id}/namespaces`;
 
   return { tableColumns, tableData, apiRoute, dataParent };
