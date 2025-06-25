@@ -13,7 +13,6 @@ const useVolumeClaims = ({ cluster_id }: any) => {
     { id: "status", header: "Status" },
   ];
   const tableData = (data: any) => {
-    console.log(data);
     if (!data || !Array.isArray(data)) {
       return [];
     }
