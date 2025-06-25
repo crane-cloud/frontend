@@ -1,3 +1,4 @@
+import { NoWrap } from "@/components/Elements/Elements";
 import { formatDate, shortenID } from "@/utils/helpers";
 import { Link } from "react-router-dom";
 
@@ -13,7 +14,11 @@ export const useProjects = () => {
     { id: "is_public", header: "Public" },
     { id: "supports_ml", header: "ML" },
     { id: "organisation", header: "Organisation" },
-    { id: "project_type", header: "Project Type", filter: true },
+    {
+      id: "project_type",
+      header: <NoWrap fw="inherit">Project Type</NoWrap>,
+      filter: true,
+    },
     {
       id: "disabled",
       header: "Disabled",
@@ -50,6 +55,9 @@ export const useProjects = () => {
             {shortenID(item.owner_id)}
           </Link>
         ),
+        name: <NoWrap>{item.name}</NoWrap>,
+        age: <NoWrap>{item.age}</NoWrap>,
+        organisation: <NoWrap>{item.organisation}</NoWrap>,
         date_created: formatDate(item.date_created),
         apps_count: item?.apps_count || "0",
         is_public: item.verified ? "Yes" : "No",
