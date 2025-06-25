@@ -7,7 +7,6 @@ import useServices from "../cluster/useServices";
 import useNodeList from "../cluster/useNodes";
 import { useApps } from "../useApps";
 
-
 // handle register creation
 export const registerHooks: Record<string, any> = {
   users: useUsers,
