@@ -16,7 +16,7 @@ export const registerHooks: Record<string, any> = {
   // cluster
   volumes: useVolumes,
   services: useServices,
-  volume_claims: useVolumeClaims
+  volume_claims: useVolumeClaims,
 };
 
 export const sourceApis: Record<string, string> = {
