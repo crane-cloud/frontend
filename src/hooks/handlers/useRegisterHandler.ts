@@ -23,7 +23,6 @@ export const registerHooks: Record<string, any> = {
   volume_claims: useVolumeClaims,
   namespaces: useNamespaces,
   nodes: useNodeList,
-
 };
 
 export const sourceApis: Record<string, string> = {
