@@ -1,6 +1,32 @@
 import { useSetAdminClusterSidebar } from "@/utils/helpers";
 import moment from "moment";
 
+const getRole = (labels: any) => {
+  if (!labels) {
+    return "Unknown";
+  }
+  const keys = Object.keys(labels);
+  if (keys.includes("node-role.kubernetes.io/control-plane")) {
+    return "Control Plane";
+  }
+  return "Worker";
+};
+
+const isNodeReady = (conditions: any[]) => {
+  return conditions?.find((condition) => condition.type === "Ready")
+    ? "Ready"
+    : "Not Ready";
+};
+
+const parseNode = (item: any) => ({
+  name: item?.metadata?.name,
+  taints: item?.spec?.taints?.length,
+  roles: getRole(item?.metadata?.labels),
+  version: item?.status?.nodeInfo?.kubeletVersion,
+  age: moment(item?.metadata?.creationTimestamp).fromNow(),
+  conditions: isNodeReady(item?.status?.conditions),
+});
+
 const useNodeList = ({ cluster_id }: any) => {
   useSetAdminClusterSidebar();
 
@@ -12,32 +38,6 @@ const useNodeList = ({ cluster_id }: any) => {
     { id: "age", header: "Age" },
     { id: "conditions", header: "Conditions" },
   ];
-
-  const getRole = (labels: any) => {
-    if (!labels) {
-      return "Unknown";
-    }
-    const keys = Object.keys(labels);
-    if (keys.includes("node-role.kubernetes.io/control-plane")) {
-      return "Control Plane";
-    }
-    return "Worker";
-  };
-
-  const isNodeReady = (conditions: any[]) => {
-    return conditions?.find((condition) => condition.type === "Ready")
-      ? "Ready"
-      : "Not Ready";
-  };
-
-  const parseNode = (item: any) => ({
-    name: item?.metadata?.name,
-    taints: item?.spec?.taints?.length,
-    roles: getRole(item?.metadata?.labels),
-    version: item?.status?.nodeInfo?.kubeletVersion,
-    age: moment(item?.metadata?.creationTimestamp).fromNow(),
-    conditions: isNodeReady(item?.status?.conditions),
-  });
 
   const tableData = (data: any) => {
     if (!data) {
