@@ -34,7 +34,7 @@ const useServices = ({ cluster_id }: any) => {
       return row;
     });
   };
-  const dataParent = "services";
+  const dataParent = "Services";
   const apiRoute = `/clusters/${cluster_id}/services`;
 
   return { tableColumns, tableData, apiRoute, dataParent };

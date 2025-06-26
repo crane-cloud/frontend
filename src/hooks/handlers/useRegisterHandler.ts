@@ -5,10 +5,11 @@ import { useProjects } from "../useProjects";
 import { useUsers } from "../useUsers";
 import usePods from "../cluster/usePods";
 import useServices from "../cluster/useServices";
-import useJobs from "../cluster/useJobes";
+import useJobs from "../cluster/useJobs";
 import useNodeList from "../cluster/useNodes";
 import { useApps } from "../useApps";
 import useNamespaces from "../cluster/useNamespaces";
+
 
 // handle register creation
 export const registerHooks: Record<string, any> = {
@@ -21,8 +22,7 @@ export const registerHooks: Record<string, any> = {
   jobs:useJobs,
   pods: usePods,
   services: useServices,
-  namespaces: useNamespaces,
-  nodes: useNodeList,
+  jobs: useJobs,
 };
 
 export const sourceApis: Record<string, string> = {
