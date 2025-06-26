@@ -1,7 +1,5 @@
 import { useSetAdminClusterSidebar } from "@/utils/helpers";
-import { Anchor, Text, Tooltip } from "@mantine/core";
 import moment from "moment";
-import React from "react";
 
 const useDeployments = ({ cluster_id }: { cluster_id: string }) => {
   useSetAdminClusterSidebar();
@@ -22,56 +20,16 @@ const useDeployments = ({ cluster_id }: { cluster_id: string }) => {
     if (!Array.isArray(data)) {
       return [];
     }
-
-    return data.map((item: any) => {
-      const namespace = item?.metadata?.namespace;
-      const readyReplicas = item?.status?.readyReplicas || 0;
-      const replicas = item?.status?.replicas || 0;
-      const availableReplicas = item?.status?.availableReplicas || 0;
-      const unavailableReplicas = item?.status?.unavailableReplicas || 0;
-
-      const row = {
-        name: (
-          <Tooltip label={item?.metadata?.name} withArrow>
-            <Text lineClamp={1}>{item?.metadata?.name}</Text>
-          </Tooltip>
-        ),
-        namespace: (
-          <Tooltip label={namespace} withArrow>
-            <Text lineClamp={1}>
-              <Anchor
-                href="#"
-                target="_blank"
-                underline="always"
-                onClick={(e) => e.preventDefault()}
-              >
-                {namespace}
-              </Anchor>
-            </Text>
-          </Tooltip>
-        ),
-        pods: (
-          <Tooltip label={`Ready: ${readyReplicas}/${replicas}\nAvailable: ${availableReplicas}\nUnavailable: ${unavailableReplicas}`} withArrow>
-            <Text lineClamp={1}>
-              {`${readyReplicas}/${replicas}`}
-            </Text>
-          </Tooltip>
-        ),
-        replicas: (
-          <Text lineClamp={1}>{replicas}</Text>
-        ),
-        age: moment(item?.metadata?.creationTimestamp).fromNow(),
-        status: (
-          <Text
-            c={availableReplicas === replicas ? "green" : "red"}
-            fw={500}
-          >
-            {availableReplicas === replicas ? "Ready" : "Not Ready"}
-          </Text>
-        ),
-      };
-      return row;
-    });
+    return data.map((item: any) => ({
+      name: item?.metadata?.name,
+      namespace: item?.metadata?.namespace,
+      pods: `${item?.status?.readyReplicas || 0}/${item?.status?.replicas || 0}`,
+      replicas: item?.status?.replicas || 0,
+      age: moment(item?.metadata?.creationTimestamp).fromNow(),
+      status: (item?.status?.availableReplicas || 0) === (item?.status?.replicas || 0) 
+        ? "Ready" 
+        : "Not Ready",
+    }));
   };
 
   const dataParent = "deployments";
