@@ -5,6 +5,7 @@ import { useProjects } from "../useProjects";
 import { useUsers } from "../useUsers";
 import usePods from "../cluster/usePods";
 import useServices from "../cluster/useServices";
+import useJobs from "../cluster/useJobes";
 import useNodeList from "../cluster/useNodes";
 import { useApps } from "../useApps";
 import useNamespaces from "../cluster/useNamespaces";
@@ -17,6 +18,7 @@ export const registerHooks: Record<string, any> = {
   apps: useApps,
   // cluster
   volumes: useVolumes,
+  jobs:useJobs,
   pods: usePods,
   services: useServices,
   namespaces: useNamespaces,
