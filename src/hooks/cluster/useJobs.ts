@@ -1,6 +1,4 @@
-import {
-  useSetAdminClusterSidebar,
-} from "@/utils/helpers";
+import { useSetAdminClusterSidebar } from "@/utils/helpers";
 import moment from "moment";
 
 const useJobs = ({ cluster_id }: { cluster_id: string }) => {
@@ -12,7 +10,6 @@ const useJobs = ({ cluster_id }: { cluster_id: string }) => {
     { id: "completions", header: "completions" },
     { id: "age", header: "Age" },
     { id: "conditions", header: "conditions" },
-    
   ];
 
   const tableData = (data: any[]) => {
@@ -35,7 +32,7 @@ const useJobs = ({ cluster_id }: { cluster_id: string }) => {
 
   const dataParent = "Jobs";
   const apiRoute = `/clusters/${cluster_id}/jobs`;
- // /clusters/{cluster_id}/jobs
+  // /clusters/{cluster_id}/jobs
 
   return { tableColumns, tableData, apiRoute, dataParent };
 };
