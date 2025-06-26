@@ -8,6 +8,7 @@ import useServices from "../cluster/useServices";
 import useNodeList from "../cluster/useNodes";
 import { useApps } from "../useApps";
 import useNamespaces from "../cluster/useNamespaces";
+import useJobs from "../cluster/useJobs";
 
 // handle register creation
 export const registerHooks: Record<string, any> = {
@@ -21,8 +22,8 @@ export const registerHooks: Record<string, any> = {
   services: useServices,
   namespaces: useNamespaces,
   nodes: useNodeList,
+  jobs: useJobs,
 };
-
 export const sourceApis: Record<string, string> = {
   users: "/users",
   databases: `${DATABASE_API_URL}/databases`,
