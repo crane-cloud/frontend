@@ -23,10 +23,10 @@ const useJobs = ({ cluster_id }: any) => {
       const row = {
         // ...item,
         name: item?.metadata?.name,
-        namespace: item?.spec?.namespace,
-        completion: item?.spec?.completion,
+        namespace: item?.metadata?.namespace,
+        completion: moment(item?.metadata?.completion).fromNow(),
         age: moment(item?.metadata?.creationTimestamp).fromNow(),
-        conditions: item?.spec?.ports,
+        conditions: moment(item?.metadata?.conditions).fromNow(),
       };
       return row;
     });
