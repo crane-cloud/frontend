@@ -11,9 +11,8 @@ const useJobs = ({ cluster_id }: any) => {
     { id: "name", header: "Name" },
     { id: "namespace", header: "Namespace" },
     { id: "completion", header: "Completion" },
-     { id: "age", header: "Age" },
+    { id: "age", header: "Age" },
     { id: "conditions", header: "Conditions" },
-   
   ];
 
   const tableData = (data: any) => {
@@ -30,7 +29,7 @@ const useJobs = ({ cluster_id }: any) => {
         namespace: item?.spec?.namespace,
         completion: item?.spec?.completion,
         age: moment(item?.metadata?.creationTimestamp).fromNow(),
-         conditions: item?.spec?.ports,
+        conditions: item?.spec?.ports,
       };
       return row;
     });
