@@ -1,7 +1,4 @@
-import {
-  formatClusterServicePorts,
-  useSetAdminClusterSidebar,
-} from "../../utils/helpers";
+import { useSetAdminClusterSidebar } from "../../utils/helpers";
 import moment from "moment";
 
 const useJobs = ({ cluster_id }: any) => {
