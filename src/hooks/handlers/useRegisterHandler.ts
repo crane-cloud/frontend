@@ -9,6 +9,7 @@ import useNodeList from "../cluster/useNodes";
 import { useApps } from "../useApps";
 import useVolumeClaims from "../cluster/useVolumeClaims";
 import useNamespaces from "../cluster/useNamespaces";
+import useJobs from "../cluster/useJobs";
 
 // handle register creation
 export const registerHooks: Record<string, any> = {
@@ -23,8 +24,8 @@ export const registerHooks: Record<string, any> = {
   volume_claims: useVolumeClaims,
   namespaces: useNamespaces,
   nodes: useNodeList,
+  jobs: useJobs,
 };
-
 export const sourceApis: Record<string, string> = {
   users: "/users",
   databases: `${DATABASE_API_URL}/databases`,
